@@ -224,7 +224,7 @@
 </div>
 <span class="target" id="module-src.modelAnalysis"></span><dl class="function">
 <dt id="src.modelAnalysis.FEA">
-<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/FEA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FEA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/FEA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FEA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Significane analysis - Flux enrichment analysis using hypergeometric
 1-sided test and FDR correction for multiple testing</p>
 <p><strong>Usage</strong></p>
@@ -253,7 +253,7 @@ cell structure of enriched groups</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.biomassPrecursorCheck">
-<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
+<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if biomass precursors are able to be
 synthesized.</p>
 <p>[missingMets, presentMets] = checkBiomassPrecursors(model)</p>
@@ -279,7 +279,7 @@ network such as ATP, NAD, NADPH, ACCOA.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.convertIrrevFluxDistribution">
-<code class="descname">convertIrrevFluxDistribution</code><span class="sig-paren">(</span><em>vIrrev</em>, <em>matchRev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/convertIrrevFluxDistribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.convertIrrevFluxDistribution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertIrrevFluxDistribution</code><span class="sig-paren">(</span><em>vIrrev</em>, <em>matchRev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/convertIrrevFluxDistribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.convertIrrevFluxDistribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>convertInrrevFluxDistribution  Convert irreversible flux distribution to
 reversible</p>
 <blockquote>
@@ -305,7 +305,7 @@ reversible</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.doubleRobustnessAnalysis">
-<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of</dt>
 <dd><p class="first">interest and an objective of interest</p>
@@ -352,7 +352,7 @@ reversible</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.dynamicFBA">
-<code class="descname">dynamicFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/dynamicFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.dynamicFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dynamicFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/dynamicFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.dynamicFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>dynamicFBA Perform dynamic FBA simulation using the static optimization
 approach</p>
 <blockquote>
@@ -419,7 +419,7 @@ The dynamic FBA method implemented in this function is essentially</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.geometricFBA">
-<code class="descname">geometricFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/geometricFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.geometricFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">geometricFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/geometricFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.geometricFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>geometricFBA finds a unique optimal FBA solution that is (in some sense)
 central to the range of possible fluxes; as described in</p>
 <blockquote>
@@ -468,7 +468,7 @@ www.creativecommons.org).</div></blockquote>
 
 <dl class="function">
 <dt id="src.modelAnalysis.minimizeModelFlux">
-<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/minimizeModelFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/minimizeModelFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds the minimum flux through the network and returns the
 minimized flux and an irreversible model</p>
 <p><strong>Usage</strong></p>
@@ -540,7 +540,7 @@ irreversible version of &#8216;model&#8217;</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.pFBA">
-<code class="descname">pFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/pFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.pFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/pFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.pFBA" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</dt>
 <dd>the user&#8217;s objective function and then minimizes the flux through the
@@ -600,7 +600,7 @@ updated by Anne Richelle April, 2017</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.phenotypePhasePlane">
-<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
+<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is</dt>
 <dd><p class="first">a double robustness analysis, a kind of 3D surface plot.  The second
@@ -645,7 +645,7 @@ functions to change the looks of the plots.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.productionEnvelope">
-<code class="descname">productionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>lineColor</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/productionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.productionEnvelope" title="Permalink to this definition">¶</a></dt>
+<code class="descname">productionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>lineColor</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/productionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.productionEnvelope" title="Permalink to this definition">¶</a></dt>
 <dd><p>productionEnvelope Calculates the byproduct secretion envelope</p>
 <blockquote>
 <div>[biomassValues,targetValues] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)</div></blockquote>
@@ -679,7 +679,7 @@ functions to change the looks of the plots.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.robustnessAnalysis">
-<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>robustnessAnalysis Performs robustness analysis for a reaction of</dt>
 <dd><p class="first">interest and an objective of interest</p>
