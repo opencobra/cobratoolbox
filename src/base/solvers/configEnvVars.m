@@ -1,5 +1,16 @@
 function configEnvVars(printLevel)
 % Configures the global variables based on the system's configuration
+% First, all environment variables for each solver are defined together
+% with all eventual solver paths.
+% Then, there will be 4 methods marked that can be used to define the global
+% variables:
+%
+%   * 1: solver is on the path and at a standard location (*---)
+%   * 2: solver is on path but at a non-standard location (-*--)
+%   * 3: solver path is defined through environment variables (--*-)
+%   * 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (---*)
+%
+% If none of these 4 methods applies, the global solver path variable is not set and an appropriate message is returned
 %
 % USAGE:
 %
@@ -7,6 +18,7 @@ function configEnvVars(printLevel)
 %
 % INPUT:
 %    printLevel:    default = 0, verbose level
+%
 
     global GUROBI_PATH;
     global ILOG_CPLEX_PATH;
@@ -100,7 +112,7 @@ function configEnvVars(printLevel)
                     end;
                 end
 
-                % check if the solver is already on the MATLAB path
+                % Method 1: check if the solver is already on the MATLAB path
                 isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
 
                 % find the index of the most recently added solver path
@@ -126,22 +138,22 @@ function configEnvVars(printLevel)
                     end
                 end
 
-                % solver is on the path and at a standard location
+                % Method 2: solver is on the path and at a standard location
                 if isOnPath
                     eval([globEnvVar, ' = ''', possibleDir, ''';']);
                     method = '*---';
 
-                % solver is on path but at a non-standard location and may not be compatible
+                % Method 3: solver is on path but at a non-standard location and may not be compatible
                 elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
                     eval([globEnvVar, ' = ''', tmpS{higherLevelIndex}, ''';']);
                     method = '-*--';
                 end
 
-                % solver path is defined through environment variables
+                % Method 4: solver path is defined through environment variables
                 if isempty(eval(globEnvVar))
                     eval([globEnvVar, ' = getenv(''', tmpEnvVar, ''');'])
                     if ~isempty(eval(globEnvVar))
-                        method = '---*-';
+                        method = '--*-';
                         subDir = filesep;
                         if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
