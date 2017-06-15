@@ -289,10 +289,10 @@ function initCobraToolbox()
     SOLVERS.dqqMinos.type = {'LP'};
     SOLVERS.glpk.type = {'LP', 'MILP'};
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP'};
     SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
-    SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
+    SOLVERS.pdco.type = {'LP', 'QP'};
     SOLVERS.quadMinos.type = {'LP', 'NLP'};
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
@@ -530,7 +530,7 @@ function checkGit()
         end
     else
         fprintf(result_gitVersion);
-        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html.', 'here', 'here: '), '.\n']);
+        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
         error(' > git is not installed.');
     end
 end
@@ -565,7 +565,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     else
         if throwError
             fprintf(result_curl);
-            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html.', 'here', 'here: '), '.\n']);
+            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
             error(' > curl is not installed.');
         else
             if ENV_VARS.printLevel

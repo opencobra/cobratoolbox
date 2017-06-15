@@ -1,12 +1,12 @@
 function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
     maxFluxesM, k, n_sets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
-%% DESCRIPTION: 
+%% DESCRIPTION:
 % This function export the inputs required by GAMS to run optForce. Some
 % inputs will be exported to plain text (.txt files) and others will be
 % exported using GDXMRW. Inputs will be stored in inputFolder
-
+%
 % Created by Sebastian Mendoza on 29/May/2017. snmendoz@uc.cl
-
+%
 %% INPUTS
 % model (obligatory):       Type: struct (COBRA model)
 %                           Description: a metabolic model with at least
@@ -59,11 +59,11 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %                            Description: Maxmum fluxes for each reaction
 %                            in the model for mutant strain
 %                            Example: maxFluxesW=[92; -86];
-% 
+%
 % k(obligatory):            Type: double
 %                           Description: number of intervations to be
 %                           found
-% 
+%
 % n_sets(obligatory):       Type: double
 %                           Description: maximum number of force sets
 %                           returned by optForce.
@@ -75,7 +75,7 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %                           rxnList: (Type: cell array)      Reaction list
 %                           values:  (Type: double array)    Values for constrained reactions
 %                           Example: constrOpt=struct('rxnList',{{'EX_for_e','EX_etoh_e'}},'values',[1,5]);
-% 
+%
 % excludedURxns(obligatory):Type: cell array
 %                           Description: Reactions to be excluded from
 %                           upregulations
@@ -91,13 +91,13 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 % inputFolder(obligatory)   Type: string
 %                           Description: folder where inputs will be
 %                           stored. Just the name of the folder, not the
-%                           full path. 
-
-
+%                           full path.
+%
+%
 %% OUTPUTS
 % Reactions.txt                 Type: file
 %                               Description: File containing the
-%                               identifiers for reactions 
+%                               identifiers for reactions
 %
 % Metabolites.txt               Type: file
 %                               Description: File containing the
@@ -105,23 +105,23 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %
 % Constrains.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for constrained reactions 
+%                               identifiers for constrained reactions
 %
 % Excluded_U.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for excluded reactions. These 
+%                               identifiers for excluded reactions. These
 %                               reactions will not be considered for
 %                               upregulations when running optForce.gms
 %
 % Excluded_L.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for excluded reactions. These 
+%                               identifiers for excluded reactions. These
 %                               reactions will not be considered for
 %                               downregulations when running optForce.gms
 %
 % Excluded_K.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for excluded reactions. These 
+%                               identifiers for excluded reactions. These
 %                               reactions will not be considered for
 %                               knowckouts when running optForce.gms
 %
@@ -152,7 +152,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);
