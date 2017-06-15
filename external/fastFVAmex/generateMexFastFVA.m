@@ -76,7 +76,7 @@ else
 
         % check if the library file exist
         if exist(lib, 'dir') ~= 7
-            error(['The required CPLEX library file ' library ' does not exist. Please install the CPLEX solver as explained here.']);
+            error(['The required CPLEX library file ' library ' does not exist. Please install the CPLEX solver as explained here: https://opencobra.github.io/cobratoolbox/docs/solvers.html.']);
         else
             libraryExists = true;
         end
@@ -135,6 +135,6 @@ else
     % restore the original path
     path(originalUserPath);
     addpath(originalUserPath);
-    
-    error('CPLEX is not yet installed. Please follow the instructions here: ');
+
+    error('CPLEX is not installed. Please follow the instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html');
 end
