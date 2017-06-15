@@ -91,5 +91,8 @@ tutorials/IO/Abiotrophia_defectiva_ATCC_49176.xml
 tutorials/IO/ecoli_core_model.mat
 PPP120.mat
 
+# generated tutorial documentation
+docs/source/_static/tutorials/*
+
 # hidden folders
 .vscode/
