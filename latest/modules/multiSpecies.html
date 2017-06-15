@@ -258,49 +258,6 @@ if you use this script for your own analysis.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.modelAnalysis.multiSpecies.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/multiSpecies/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
-(<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
-reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
-For all reactions, a threshold <cite>u</cite> on flux is set (default value: 0.01).</p>
-<p>To add a coupling constraint to a reaction, a coupling vector <cite>c</cite> is
-determined (default value 1000). <cite>c</cite> is multiplied by <cite>vrxnC</cite>, so that for
-all irreversible reactions in <cite>RxnList vi - c * vrxnC &lt;= u</cite>.</p>
-<p>For all reversible reactions, the following equation holds true for the
-reverse direction: <cite>vi + c * vrxnC &gt;= u</cite>.</p>
-<p>The output is a coupled model (<cite>modelCoupled</cite>), in which for every new
-entry in <cite>modelCoupled.b</cite> a &#8220;slack&#8221; variable has been added
-to <cite>modelCoupled.mets</cite>.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-<li><strong>rxnList</strong> &#8211;
-array of reaction names</li>
-<li><strong>rxnC</strong> &#8211;
-reaction that should be coupled with each reaction in the
-reaction list</li>
-<li><strong>c</strong> &#8211;
-vector of coupling factors for each rxn in rxnList (default c = 1000)</li>
-<li><strong>u</strong> &#8211;
-vector of lower bounds one reaction couples (default u = 0.01)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelCoupled</strong> &#8211;
-coupled model</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.modelAnalysis.multiSpecies.createMultipleSpeciesModel">
 <code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/modelAnalysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.

@@ -222,6 +222,7 @@ solution structure<ul>
 <div class="math">
 \[\begin{split}max/min  ~&amp; c^T v \\
 s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
+         ~&amp; C v \leq d~~~~~~~~:y \\
          ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -231,11 +232,10 @@ s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 (the following fields are required - others can be supplied)<ul>
-<li>S - Stoichiometric matrix</li>
-<li>b - Right hand side = dx/dt</li>
-<li>c - Objective coefficients</li>
-<li>lb - Lower bounds</li>
-<li>ub - Upper bounds</li>
+<li>S  - m x 1 Stoichiometric matrix</li>
+<li>c  - n x 1 Linear objective coefficients</li>
+<li>lb - n x 1 Lower bounds</li>
+<li>ub - n x 1 Upper bounds</li>
 </ul>
 </li>
 </ul>
@@ -243,6 +243,13 @@ s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+(the following fields are optional)
+* b - m x 1 Right hand side = dx/dt
+* C - k x n Left hand side of C*v &lt;= d
+* d - k x 1 Right hand side of C*v &lt;= d
+* csense - m + k x 1 character array with entries in {L,E,G}</p>
+</li>
 <li><p class="first"><strong>osenseStr</strong> &#8211;
 Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216;max&#8217;)</p>
 </li>
