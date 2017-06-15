@@ -7,6 +7,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %
 %    max/min  ~& c^T v \\
 %    s.t.     ~& S v = b~~~~~~~~~~~:y \\
+%             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
 %
 % USAGE:
@@ -17,13 +18,13 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %    model:             (the following fields are required - others can be supplied)
 %
 %                         * S  - m x 1 Stoichiometric matrix
-%                         * b  - m x 1 Right hand side = dx/dt
 %                         * c  - n x 1 Linear objective coefficients
 %                         * lb - n x 1 Lower bounds
 %                         * ub - n x 1 Upper bounds
 %
 % OPTIONAL INPUTS:
 %    model:             (the following fields are optional)
+%                         * b - m x 1 Right hand side = dx/dt
 %                         * C - k x n Left hand side of C*v <= d
 %                         * d - k x 1 Right hand side of C*v <= d
 %                         * csense - m + k x 1 character array with entries in {L,E,G}      
@@ -231,14 +232,14 @@ if isfield(model,'C')
                 fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
                 fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
             end
-            LPproblem.csense(1:nMets,1) = 'L';
+            LPproblem.csense(1:nMets,1) = 'E';
             LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
         else % if csense is in the model, move it to the lp problem structure
             if length(model.csense)~=nMets+nIneq
                 warning('Length of csense is invalid! Defaulting to equality constraints.')
                 fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
                 fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
-                LPproblem.csense(1:nMets,1) = 'L';
+                LPproblem.csense(1:nMets,1) = 'E';
                 LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
             else
                 LPproblem.csense = columnVector(model.csense);
@@ -248,6 +249,8 @@ if isfield(model,'C')
         error('For the constraints C*v <= d, model.d is missing')
     end
 else
+    %number of inequality constraints outside of the stoichiometric matrix
+    nIneq=0;
     LPproblem.A = model.S;
     % Fill in the RHS vector if not provided
     if ~isfield(model,'b')
@@ -429,7 +432,7 @@ elseif length(minNorm)> 1 || minNorm > 0
 
         if isfield(solution,'dual')
             if ~isempty(solution.dual)
-                solution.dual=solution.dual(1:nMets,1);
+                solution.dual=solution.dual(1:size(LPproblem.A,1),1);
             end
         end
     else
@@ -447,7 +450,7 @@ if (solution.stat == 1)
 
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
-            solution.dual=solution.dual(1:nMets,1);
+            solution.dual=solution.dual(1:size(LPproblem.A,1),1);
         end
     end
 

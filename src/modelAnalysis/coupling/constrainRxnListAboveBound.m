@@ -17,38 +17,43 @@ function modelConstrained=constrainRxnListAboveBound(model,rxnList,c,d,csense)
 
 [nMet,nRxn]=size(model.S);
 
+if ~isfield(model,'C')
+    model.C=[];
+end
+if ~isfield(model,'d')
+    model.d=[];
+end
+
 % Identify the indices of these reactions in the new model
 rxnInd = findRxnIDs(model, rxnList);
 
 modelConstrained=model;
-C=sparse(1,nRxn);
+nC=length(model.C);
 if ~exist('c', 'var')
-    modelConstrained.C(1,rxnInd)=1;
+    modelConstrained.C(nC+1,rxnInd)=1;
 else
     c=columnVector(c)';
     for j=1:length(rxnInd)
-        modelConstrained.C(1,rxnInd(j))=c(j);
+        modelConstrained.C(nC+1,rxnInd(j))=c(j);
     end
 end
 
-if exist('d','var')
-    modelConstrained.d=d;
-else
-    modelConstrained.d=0;
-end
+%add the rhs
+modelConstrained.d(nC+1)=d;
 
+nCsense=length(modelConstrained.csense);
 if exist('csense', 'var')
     if isfield(model,'csense')
-        modelConstrained.csense(nMet+1,1)=csense;
+        modelConstrained.csense(nCsense+1,1)=csense;
     else
         modelConstrained.csense(1:nMet,1)='E';
-        modelConstrained.csense(nMet+1,1)=csense;
+        modelConstrained.csense(nCsense+1,1)=csense;
     end
 else
     if isfield(modelConstrained,'csense')
-        modelConstrained.csense(nMet+1,1)='G';
+        modelConstrained.csense(nCsense+1,1)='G';
     else
         modelConstrained.csense(1:nMet,1)='E';
-        modelConstrained.csense(nMet+1,1)='G';
+        modelConstrained.csense(nCsense+1,1)='G';
     end
 end
