@@ -122,14 +122,19 @@ if cplexInstalled && libraryExists
     % print a status message
     fprintf(['Location of binary MEX file: ' strrep(tmpDir, '\', '\\') '\n']);
 
+    % restore the original path
+    path(originalUserPath);
+    addpath(originalUserPath);
+
+    % add the temporary file
     addpath(genpath(tmpDir));
 
     % change back to the directory
     cd(currentDir);
 else
+    % restore the original path
+    path(originalUserPath);
+    addpath(originalUserPath);
+    
     error('CPLEX is not yet installed. Please follow the instructions here: ');
 end
-
-% restore the original path
-path(originalUserPath);
-addpath(originalUserPath);
