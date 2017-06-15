@@ -661,7 +661,20 @@ problem of type &#8220;problemType&#8221;</li>
 <dl class="function">
 <dt id="src.base.solvers.configEnvVars">
 <code class="descname">configEnvVars</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/base/solvers/configEnvVars.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.configEnvVars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configures the global variables based on the system&#8217;s configuration</p>
+<dd><p>Configures the global variables based on the system&#8217;s configuration
+First, all environment variables for each solver are defined together
+with all eventual solver paths.
+Then, there will be 4 methods marked that can be used to define the global
+variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li>1: solver is on the path and at a standard location (<a href="#id2"><span class="problematic" id="id3">*</span></a>&#8212;)</li>
+<li>2: solver is on path but at a non-standard location (-<a href="#id4"><span class="problematic" id="id5">*</span></a>&#8211;)</li>
+<li>3: solver path is defined through environment variables (&#8211;<a href="#id6"><span class="problematic" id="id7">*</span></a>-)</li>
+<li>4: solver is not already on the path and the environment variable is not set, but the standard directory exists (&#8212;<a href="#id8"><span class="problematic" id="id9">*</span></a>)</li>
+</ul>
+</div></blockquote>
+<p>If none of these 4 methods applies, the global solver path variable is not set and an appropriate message is returned</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>configEnvVars(printLevel)</div></blockquote>

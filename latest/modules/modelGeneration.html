@@ -237,28 +237,23 @@ even if more are found in model.</p>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
 <code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>checkDuplicateRxn Checks model for duplicate reactions and removes them</p>
-<p><strong>Inputs</strong></p>
+<dd><p>Checks model for duplicate reactions and removes them
+By default, it detects the columns of S that are identical upto scalar
+multiplication</p>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 Cobra model structure</li>
-<li><strong>method</strong> &#8211;
-rxnAbbr &#8211;&gt; checks rxn abbreviations
-S &#8211;&gt; checks rxn S matrix
-FR &#8211;&gt; checks rxn S matrix ignoring reaction direction</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p>OPTIONAL INPUTS:
+method        S       &#8211;&gt; checks rxn S matrix (default)</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>removeFlag</strong> &#8211;
-{(1),0} boolean to remove duplicates</li>
-<li><strong>printLevel</strong></li>
-<li><strong>boundsFlag</strong> &#8211;
-Indicator to test duplicates for different bounds and
-only indicate if the bounds are als identical (not applicable to rxnAbbr, default false).</li>
-</ul>
+<div><p>rxnAbbr &#8211;&gt; checks rxn abbreviations
+FR      &#8211;&gt; checks F + R matrix, where S:=-F+R, which ignores</p>
+<blockquote>
+<div>reaction direction</div></blockquote>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
@@ -268,84 +263,6 @@ only indicate if the bounds are als identical (not applicable to rxnAbbr, defaul
 <li><strong>keptRxnInd        Reaction numbers in model that were (should be) kept</strong></li>
 </ul>
 </div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.modelGeneration.checkModelProperties">
-<code class="descname">checkModelProperties</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/reconstruction/modelGeneration/checkModelProperties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkModelProperties" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>calculates various generic properties of a model, not specific to any</dt>
-<dd>biochemistry</dd>
-</dl>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model.S</strong></li>
-<li><strong>printLevel</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model.rankFR                    rank of [F R], when using only FRrows</strong></p>
-</li>
-<li><p class="first"><strong>model.rankFRV                   rank of [F;R], when using only FRVcols</strong></p>
-</li>
-<li><p class="first"><strong>model.rankFRvanilla             rank of [F R], when using all rows</strong></p>
-</li>
-<li><p class="first"><strong>model.rankFRVvanilla            rank of [F;R], when using all cols</strong></p>
-</li>
-<li><p class="first"><strong>model.FRrows              m x 1 boolean of rows of [F R] that are nonzero,</strong> &#8211;</p>
-<p>unique upto positive scaling and part of the
-maximal conservation vector</p>
-</li>
-<li><p class="first"><strong>model.FRVcols             n x 1 boolean of cols of [F;R] that are nonzero,</strong> &#8211;</p>
-<p>unique upto positive scaling and part of the
-maximal conservation vector</p>
-</li>
-<li><p class="first"><strong>model.FRirows             m x 1 boolean of rows of [F R] that are independent</strong></p>
-</li>
-<li><p class="first"><strong>model.FRdrows             m x 1 boolean of rows of [F R] that are dependent</strong></p>
-</li>
-<li><p class="first"><strong>model.FRwrows             m x 1 boolean of independent rows of [F R] that</strong> &#8211;</p>
-<p>have dependent rows amongst model.FRdrows</p>
-</li>
-<li><p class="first"><strong>model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent</strong></p>
-</li>
-<li><p class="first"><strong>model.SConsistentMetBool  m x 1 boolean vector indicating metabolites involved</strong> &#8211;</p>
-<p>in the maximal consistent vector</p>
-</li>
-<li><p class="first"><strong>model.SConsistentRxnBool  n x 1 boolean vector indicating metabolites involved</strong> &#8211;</p>
-<p>in the maximal consistent vector</p>
-</li>
-<li><p class="first"><strong>model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved</strong> &#8211;</p>
-<p>in at least one internal reaction</p>
-</li>
-<li><p class="first"><strong>model.FRuniqueBool        m x 1 boolean vector indicating metabolites with</strong> &#8211;</p>
-<p>reaction stoichiometry unique upto scalar multiplication</p>
-</li>
-<li><p class="first"><strong>model.SIntRxnBool         n x 1 boolean vector indicating the non exchange</strong> &#8211;</p>
-<p>reactions</p>
-</li>
-<li><p class="first"><strong>model.FRVnonZeroBool      n x 1 boolean vector indicating non exchange reactions</strong> &#8211;</p>
-<p>with at least one metabolite involved</p>
-</li>
-<li><p class="first"><strong>model.FRVuniqueBool       n x 1 boolean vector indicating non exchange reactions</strong> &#8211;</p>
-<p>with stoichiometry unique upto scalar multiplication</p>
-</li>
-<li><p class="first"><strong>model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]</strong></p>
-</li>
-<li><p class="first"><strong>model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]</strong></p>
-</li>
-<li><p class="first"><strong>model.V                   S*V=0, 1&#8217;*|V|&gt;1 for all flux consistent reactions</strong></p>
-</li>
-</ul>
-</div></blockquote>
-<p>&#8216;Conditions for duality between fluxes and concentrations in biochemical networks
-by Ronan M.T. <a class="reference external" href="mailto:Fleming^{1}ronan&#46;mt&#46;fleming&#37;&#52;&#48;gmail&#46;com">Fleming^{1}ronan<span>&#46;</span>mt<span>&#46;</span>fleming<span>&#64;</span>gmail<span>&#46;</span>com</a>, Nikos Vlassis^{2}, Ines Thiele^{1}, Michael A. Saunders^{3}
-{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg, 7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
-{2} Adobe Research, 345 Park Ave, San Jose, CA, USA.
-{3} Dept of Management Science and Engineering, Stanford University, Stanford, CA, USA.</p>
 </dd></dl>
 
 <dl class="function">

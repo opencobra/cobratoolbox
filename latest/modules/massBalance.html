@@ -279,7 +279,9 @@ are not likely to be documented in any database.</li>
 <code class="descname">checkMassChargeBalance</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests for a list of reactions if these reactions are
 mass-balanced by adding all elements on left hand side and comparing them
-with the sums of elements on the right hand side of the reaction.</p>
+with the sums of elements on the right hand side of the reaction.
+A reaction is considered elementally imbalanced if any of the molecular
+species involved is missing a chemical formula.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)</div></blockquote>
@@ -329,7 +331,7 @@ boolean vector indicating imbalanced reactions (including exchange reactions!)</
 <li><strong>missingFormulaeBool</strong> &#8211;
 <cite>nMet</cite> x 1 boolean vector indicating metabolites without formulae</li>
 <li><strong>balancedMetBool</strong> &#8211;
-boolean vector indicating metabolites involved in balanced reactions</li>
+boolean vector indicating metabolites exclusively involved in balanced reactions</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -379,6 +381,7 @@ Sink reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>model = findSExRxnInd(model, nRealMet, printLevel)</div></blockquote>
+<p>model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.</p>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">

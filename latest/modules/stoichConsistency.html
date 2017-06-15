@@ -282,7 +282,7 @@ or <span class="math">\(-\infty \leq v \leq \infty\)</span></p>
 <p>and with either <span class="math">\(0 \leq y \leq \infty\)</span> (semipositive net stoichiometry = leak)
 or <span class="math">\(-\infty \leq y \leq 0\)</span> (seminegative net stoichiometry = siphon)</p>
 <p>If there are any zero rows of <cite>S</cite>, then the corresponding entry in y is
-then set to zero.</p>
+set to zero.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)</div></blockquote>
@@ -438,11 +438,15 @@ status (negative leakage modes)<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet">
 <code class="descname">findMinimalLeakageModeMet</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem</p>
-<div class="math">
-\[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
-s.t. ~&amp; Sv - y = 0, \\
-      &amp; l \leq v \leq u\end{split}\]</div>
+<dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
+minimal set of reactions involved. Test metabolites in metBool.</p>
+<p>Solve the problem</p>
+<blockquote>
+<div><p>min  ~&amp; ||v||_0 + ||y||_0 \
+s.t. ~&amp; Sv - y = 0, \</p>
+<blockquote>
+<div>&amp; l leq v leq u</div></blockquote>
+</div></blockquote>
 <p>with either <span class="math">\(l(rxnBool) &gt; 0\)</span> or <span class="math">\(u(rxnBool) &lt; 0\)</span>
 and either <span class="math">\(0 \leq y\)</span> (semipositive net stoichiometry)
 or <span class="math">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
@@ -526,16 +530,24 @@ status (negative leakage modes)<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn">
 <code class="descname">findMinimalLeakageModeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnBool</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem</p>
-<div class="math">
-\[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
-s.t. ~&amp; Sv - y = 0, \\
-      &amp; l \leq v \leq u\end{split}\]</div>
-<p>where either <span class="math">\(l(rxnBool) &gt; 0\)</span> or <span class="math">\(u(rxnBool) &lt; 0\)</span>
-and either <span class="math">\(0 \leq y\)</span> (semipositive net stoichiometry)
-or <span class="math">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
-<p>and <span class="math">\(1 \leq y(metBool)\)</span> (semipositive net stoichiometry)
-or <span class="math">\(y(metBool) \leq 1\)</span> (seminegative net stoichiometry)</p>
+<dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
+minimal set of exclusive reactions involved. Test reactions in rxnBool.</p>
+<dl class="docutils">
+<dt>Solve the problem</dt>
+<dd><p class="first">min  ~&amp; ||v||_0 + ||y||_0 \
+s.t. ~&amp; Sv - y = 0, \</p>
+<blockquote class="last">
+<div>&amp; l leq v leq u</div></blockquote>
+</dd>
+<dt>with either</dt>
+<dd>0 &lt;= v(rxnBool)</dd>
+<dt>or</dt>
+<dd>v(rxnBool) &lt;= 0</dd>
+<dt>and</dt>
+<dd>1 &lt;= y(metBool)      (semipositive net stoichiometry)</dd>
+<dt>or</dt>
+<dd>y(metBool) &lt;= -1 (seminegative net stoichiometry)</dd>
+</dl>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)</div></blockquote>
@@ -579,13 +591,12 @@ structure with fields:<ul>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>minleakMetBool</strong> &#8211;
-<cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</li>
-<li><strong>minleakRxnBool</strong> &#8211;
+<li><strong>minLeakMetBool       `m` x 1 boolean of metabolites in a positive leakage mode</strong></li>
+<li><strong>minLeakRxnBool</strong> &#8211;
 <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</li>
-<li><strong>minsiphonMetBool</strong> &#8211;
+<li><strong>minSiphonMetBool</strong> &#8211;
 <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</li>
-<li><strong>minsiphonRxnBool</strong> &#8211;
+<li><strong>minSiphonRxnBool</strong> &#8211;
 <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</li>
 <li><strong>leakY</strong> &#8211;
 <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</li>
@@ -655,42 +666,25 @@ reactions to a file</p>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p>OUTPUT:
+SConsistentMetBool            m x 1 boolean vector indicating consistent mets
+SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
+SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
+SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
+unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+model</p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>SConsistentMetBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector indicating consistent <cite>mets</cite></p>
-</li>
-<li><p class="first"><strong>SConsistentRxnBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector indicating consistent <cite>rxns</cite></p>
-</li>
-<li><p class="first"><strong>SInConsistentMetBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector indicating inconsistent <cite>mets</cite></p>
-</li>
-<li><p class="first"><strong>SInConsistentRxnBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector indicating inconsistent <cite>rxns</cite></p>
-</li>
-<li><p class="first"><strong>unknownSConsistencyMetBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector indicating unknown consistent <cite>mets</cite> (all zeros when algorithm converged perfectly!)</p>
-</li>
-<li><p class="first"><strong>unknownSConsistencyRxnBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector indicating unknown consistent <cite>rxns</cite> (all zeros when algorithm converged perfectly!)
-model:                        structure with fields</p>
-<blockquote>
-<div><ul class="simple">
-<li>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent <cite>mets</cite></li>
-<li>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating consistent <cite>rxns</cite></li>
-<li>.SInConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating inconsistent <cite>mets</cite></li>
-<li>.SInConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating inconsistent <cite>rxns</cite></li>
-<li>.unknownSConsistencyMetBool - <cite>m</cite> x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)</li>
-<li>.unknownSConsistencyRxnBool - <cite>n</cite> x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)</li>
-<li>.SIntMetBool - <cite>m</cite> x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions</li>
-<li>.SIntRxnBool - <cite>n</cite> x 1 boolean of reactions heuristically though to be mass balanced</li>
-</ul>
-</div></blockquote>
-</li>
-</ul>
-</div></blockquote>
+<div>.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
+.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
+.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
+.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
+.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
+.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
+.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced</div></blockquote>
 </dd></dl>
 
 <dl class="function">
