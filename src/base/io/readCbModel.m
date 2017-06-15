@@ -5,27 +5,36 @@ function model = readCbModel(fileName, varargin)
 %
 %    model = readCbModel(fileName, varargin)
 %
+% 
 % OPTIONAL INPUTS:
-%    fileName:            File name for file to read in (char)
-%                         not given in the `SBML` file (Default = 1000)
-%    fileType:            File type for input files: 'SBML', 'SimPheny',
-%                         'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
-%
-%                           * 'SBML' indicates a file in `SBML` format
-%                           * 'SimPheny' is a set of three files in `SimPheny` simulation output format
-%                           * 'SimPhenyPlus' is the same as 'SimPheny' except with
-%                             additional files containing gene-protein-reaction
-%                             associations andcompound information
-%                           * 'SimPhenyText' is the same as 'SimPheny' except with
-%                             additionaltext file containing gene-protein-reaction
-%                             associations
-%                           * Matlab will save the model as a matlab variable file.
-%                           * Excel will save the model as a two sheet Excel Model.
-%    modelDescription:    Description of model contents (char), default is the
-%                         choosen filename
-%    compSymbolList:      Compartment Symbol List( cell array)
-%
-%
+%    fileName:           File name for file to read in (char)
+%    varargin:           Optional values as 'ParameterName',value pairs
+%                        with the following available parameters:
+%                        - fileType:  File type for input files: 'SBML', 'SimPheny',
+%                          'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
+%                            * 'SBML' indicates a file in `SBML` format
+%                            * 'SimPheny' is a set of three files in `SimPheny` simulation output format
+%                            * 'SimPhenyPlus' is the same as 'SimPheny' except with
+%                              additional files containing gene-protein-reaction
+%                              associations andcompound information
+%                            * 'SimPhenyText' is the same as 'SimPheny' except with
+%                              additionaltext file containing gene-protein-reaction
+%                              associations
+%                            * Matlab will save the model as a matlab variable file.
+%                            * Excel will save the model as a two sheet Excel Model.
+%                        - modelDescription:    Description of model contents (char), default is the
+%                          choosen filename
+%                        - compSymbolList: Compartment Symbol List( cell array)
+%                        - defaultBound: The default bound value (default 1000)
+%                        - modelName: .mat file specific identifier, if
+%                          provided, the specified model (if valid) will be
+%                          loaded from the given mat file. If not given,
+%                          the file will be scanned for models and all
+%                          potential model structs will be provided as
+%                          options to select from.
+%                          (default: 'all')
+%                       
+%           
 % OUTPUT:
 %    model:               Returns a model in the COBRA format:
 %
@@ -78,7 +87,7 @@ function model = readCbModel(fileName, varargin)
 %    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
 %    COBRA model, others are not.
 
-optionalArgumentList = {'defaultBound', 'fileType', 'modelDescription', 'compSymbolList', 'compNameList'};
+optionalArgumentList = {'defaultBound', 'fileType', 'modelDescription', 'compSymbolList', 'compNameList', 'modelName'};
 processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
 if numel(varargin) > 0
@@ -105,6 +114,8 @@ parser.addParameter('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileT
 parser.addParameter('modelDescription', '', @ischar);
 parser.addParameter('compSymbolList', defaultCompSymbols, @iscell);
 parser.addParameter('compNameList', defaultCompNames, @iscell);
+parser.addParameter('modelName', 'all', @ischar);
+
 if exist('fileName', 'var')
     parser.parse(fileName, varargin{:})
 else
@@ -117,7 +128,7 @@ fileType = parser.Results.fileType;
 modelDescription = parser.Results.modelDescription;
 compSymbolList = parser.Results.compSymbolList;
 compNameList = parser.Results.compNameList;
-
+matlabModelName = parser.Results.modelName;
 supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 
 % Open a dialog to select file
@@ -206,7 +217,7 @@ switch fileType
         model = xls2model(filename, [], defaultbound);
     case 'Matlab'
         S = load(fileName);
-        modeloptions = getModelOptions(S);
+        modeloptions = getModelOptions(S, matlabModelName);
         if size(modeloptions, 1) > 1
             fprintf('There were multiple models in the mat file. Please select the model to load from the variables below\n')
             disp(modeloptions(:, 2));
@@ -238,11 +249,21 @@ model = orderModelFields(model);
 % End main function
 
 %% Extract potential models from the given loaded mat file (i.e. a struct of matlab elements)
-function models = getModelOptions(S)
+function models = getModelOptions(S, matlabModelName)
 structFields = fieldnames(S);
+modelNamePresent = ismember(structFields,matlabModelName);
+if any(modelNamePresent)
+    %Restrict to the selected model.
+    structFields = structFields(modelNamePresent);
+else
+    if ~strcmp(matlabModelName,'all')
+        error('The specified model name was not present in the mat file')
+    end
+end
+
 models = cell(0, 3);
 for i = 1:numel(structFields)
-    cfield = S.(structFields{i});
+    cfield = S.(structFields{i});    
     if isstruct(cfield)
         try
             % lets see, if we have a valid model

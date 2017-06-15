@@ -43,8 +43,8 @@ newFields = {'rxnConfidenceScores', 'metCharges','rxnECNumbers',...
 
 mergefunction = {maxmerge, nanmerge,cellmerge,...
 		cellmerge,cellmerge,cellmerge,...
-		cellmerge,cellmerge,cellmerge};
-
+		cellmerge,cellmerge,cellmerge};    
+    
 for i = 1:numel(oldFields)
     if (isfield(model,oldFields{i}))
         fieldRef = [newFields{i}(1:3) 's'];
@@ -57,6 +57,7 @@ for i = 1:numel(oldFields)
                     merger = strrep(mergefunction{i},'$OLD$',oldFields{i});
                     merger = strrep(merger,'$NEW$',newFields{i});
                     eval(merger);
+                    
                 else
                     warning('Size of %s does not fit to %s. Old field %s exists, but cannot be merged',newFields{i},fieldRef,oldFields{i});
                     continue
@@ -126,6 +127,19 @@ if isfield(model,'rxnConfidenceScores')
 %        model.rxnConfidenceScores = tempScores;
     end
 end
+
+modelfields = fieldnames(model);
+%Some Cell array fields (which all should have '' as default use []
+%instead. we need to fix this, i.e. we will simply replace all non char
+%entries by '' in all cell array fields.
+
+for i = 1: numel(modelfields)
+    if iscell(model.(modelfields{i}))
+        numericpos = cellfun(@(x) isnumeric(x) && isempty(x), model.(modelfields{i}));
+        model.(modelfields{i})(numericpos) = {''};
+    end
+end
+
 
 %reset warnings
 for i = 1:numel(warnstate)

@@ -9,6 +9,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 % USAGE:
 %
 %    model = findSExRxnInd(model, nRealMet, printLevel)
+% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 %
 % INPUT:
 %    model:         structure with:
@@ -34,6 +35,9 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %
 % .. Author: -  Ronan Fleming
 
+if ~exist('printLevel','var')
+    printLevel=0;
+end
 
 [nMet,nRxn]=size(model.S);
 
@@ -48,10 +52,6 @@ else
     if isempty(nRealMet)
         nRealMet=length(model.mets);
     end
-end
-
-if ~exist('printLevel','var')
-    printLevel=0;
 end
 
 %locate biomass reaction if there is one
@@ -118,8 +118,18 @@ for n=1:nRxn
     end
 end
 
-% models with typical COBRA abbreviations - heuristic
-model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+% models with typical HMR subsystems - heuristic
+if isfield(model,'subSystems')
+    model.ExchRxnBool=strcmp('Exchange reactions',model.subSystems) | strcmp('Artificial reactions',model.subSystems) | strcmp('Pool reactions',model.subSystems);
+    if isfield(model,'rxnComps')
+        model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
+    end
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+else
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model

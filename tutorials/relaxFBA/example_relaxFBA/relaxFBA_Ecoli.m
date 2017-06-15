@@ -1,4 +1,4 @@
-load('e_coli_core.mat');
+load('ecoli_core_model.mat');
 
 %Run FBA
 FBAsolution = optimizeCbModel(model,'max','zero', true);

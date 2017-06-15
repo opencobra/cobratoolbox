@@ -33,16 +33,14 @@ pairedModelsList{1, 6} = 'Strain2';
 pairedModelsList{1, 7} = 'Biomass2';
 modelList = 2;
 for i = 2:size(InfoFile, 1)
-    load(strcat(InfoFile{i, 1}, '.mat'));
-    % name the first model "model1" by default
-    model1 = model;
+    model1 = readCbModel(strcat(InfoFile{i, 1}, '.mat'));
+    % name the first model "model1" by default    
     % make sure pairs are only generated once ("microbe1_microbe2" and
     % "microbe2_microbe1" are the same pairwise model and thus only one is created)
     % also make sure models aren't paired with themselves
-    for j = i + 1:size(InfoFile, 1)
-         load(strcat(InfoFile{j, 1}, '.mat'));
+    for j = i + 1:size(InfoFile, 1)         
         % name the second model "model2 by default
-        model2 = model;
+        model2 = readCbModel(strcat(InfoFile{j, 1}, '.mat'));
         % script "createMultiSpeciesModel" will join the two microbes
         % need to create file with the two models and two corresponding
         % name tags as input for createMultipleSpeciesModel

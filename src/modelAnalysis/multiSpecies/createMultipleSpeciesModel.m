@@ -69,6 +69,17 @@ eTag = 'u';
 exTag = 'e';
 % find exchange reactions for models, but leaves demand and sink reactions
 % do this for all models to be added, remove exchange reactions from host while leaving demand and sink reactions
+%First, find the minimal number of fields common to all models.
+presentinallModels = fieldnames(models{1});
+missingFields = {};
+for i = 2:modelNumber
+    cfields = fieldnames(models{i});
+    missingFields = union(missingFields,setxor(cfields,presentinallModels));    
+    presentinallModels = intersect(presentinallModels,cfields);
+end
+fprintf('The following fields are missing in several models, they will not be merged:\n');
+disp(missingFields);
+models = restrictModelsToFields(models,presentinallModels);
 
 for i = 1:modelNumber
     % a new model each turn

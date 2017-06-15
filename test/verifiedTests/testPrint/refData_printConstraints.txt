@@ -1,4 +1,4 @@
-MinConstraitns:
+MinConstraints:
 ACALD	-1.000000e+03
 ACALDt	-1.000000e+03
 ACKr	-1.000000e+03

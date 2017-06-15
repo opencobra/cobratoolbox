@@ -1,18 +1,20 @@
 function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)
-% Solves the problem
+% Finds a minimal set of leak (or siphon) metabolites and the corresponding
+% minimal set of exclusive reactions involved. Test reactions in rxnBool.
 %
-% .. math::
-%
+% Solve the problem
 %    min  ~& ||v||_0 + ||y||_0 \\
 %    s.t. ~& Sv - y = 0, \\
 %          & l \leq v \leq u
 %
-% where either :math:`l(rxnBool) > 0` or :math:`u(rxnBool) < 0`
-% and either :math:`0 \leq y` (semipositive net stoichiometry)
-% or :math:`y \leq 0` (seminegative net stoichiometry)
-%
-% and :math:`1 \leq y(metBool)` (semipositive net stoichiometry)
-% or :math:`y(metBool) \leq 1` (seminegative net stoichiometry)
+% with either
+%       0 <= v(rxnBool)
+% or
+%            v(rxnBool) <= 0
+% and
+%       1 <= y(metBool)      (semipositive net stoichiometry)
+% or
+%            y(metBool) <= -1 (seminegative net stoichiometry)
 %
 % USAGE:
 %
@@ -41,10 +43,10 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %    printLevel:          {(0), 1}
 %
 % OUTPUTS:
-%    minleakMetBool:      `m` x 1 boolean of metabolites in a positive leakage mode
-%    minleakRxnBool:      `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
-%    minsiphonMetBool:    `m` x 1 boolean of metabolites in a negative leakage mode
-%    minsiphonRxnBool:    `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
+%    minLeakMetBool       `m` x 1 boolean of metabolites in a positive leakage mode
+%    minLeakRxnBool:      `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
+%    minSiphonMetBool:    `m` x 1 boolean of metabolites in a negative leakage mode
+%    minSiphonRxnBool:    `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
 %    leakY:               `m` x 1 boolean of metabolites in a positive leakage mode
 %    siphonY:             `m` x 1 boolean of metabolites in a negative siphon mode
 %    statp:               status (positive leakage modes)
@@ -153,9 +155,13 @@ if modelBoundsFlag
     lb(~model.SIntRxnBool)=0;
     ub(~model.SIntRxnBool)=0;
     if params.monoRxnMode
-        % bounds on internal reactions that are either inconsistent or of unknown constency are set to zero
-        lb(model.SIntRxnBool | ~model.SConsistentRxnBool)=0;
-        ub(model.SIntRxnBool | ~model.SConsistentRxnBool)=0;
+        if isfield(model,'SConsistentRxnBool')
+            % bounds on internal reactions that are either inconsistent or of unknown constency are set to zero
+            %lb(model.SIntRxnBool | ~model.SConsistentRxnBool)=0; or?
+            %ub(model.SIntRxnBool | ~model.SConsistentRxnBool)=0; or?
+            lb(model.SIntRxnBool & ~model.SConsistentRxnBool)=0;
+            ub(model.SIntRxnBool & ~model.SConsistentRxnBool)=0;
+        end
     end
     %use the model bounds for the reactions
     cardProb.lb      = [lb;zeros(mlt,1)];
@@ -187,7 +193,7 @@ siphonY=sparse(mlt,zlt);
 minSiphonRxnBool=logical(Vn);
 minSiphonMetBool=logical(siphonY);
 
-%leak/siphon of only one metabolite if true
+%leak/siphon involving only one inconsistent reaction if true
 monoRxnMode=params.monoRxnMode;
 
 if printLevel>0
@@ -205,9 +211,9 @@ warning off;
 fprintf('%6s\t%6s\t%6s\t%15s\t%6s\t%6s\t%6s\t%6s\n','#mets','#rxns','result','rxnAbbr','lb','ub','newlb','newub')
 for n=1:nlt
     if rxnBool(n)
-        if strcmp(model.rxns{n},'HMR_3526')
-            pause(0.01)
-        end
+%         if strcmp(model.rxns{n},'HMR_3526')
+%             pause(0.01)
+%         end
         %initially plan to test both positive and negative, but if positive
         %mode exists then dont compute negative
         trySemiNegativeLeakageMode=1;
@@ -257,14 +263,14 @@ for n=1:nlt
                 end
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
-                minLeakRxnBool(:,z) = Vp(:,z)>=params.eta;
-                                    if findSparseRxnSet
-                        leakY(:,z)          = solution.z(1:mlt,1);
-                    else
-                        leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
-                    end
+                minLeakRxnBool(:,z) = abs(Vp(:,z))>=params.eta;
+                if findSparseRxnSet
+                    leakY(:,z)          = solution.z(1:mlt,1);
+                else
+                    leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                end
                 minLeakMetBool(:,z) = leakY(:,z)>=params.eta;
-
+                
                 if any(minLeakMetBool(:,z))
                     % if printLevel>0
                     %     fprintf('%6u%6u%6s%10s%6g%6g%6g%6g\n',nnz(minLeakMetBool(:,z)),nnz(minLeakRxnBool(:,z)),' leak   ',model.rxns{n},lb(n),ub(n),cardProb.lb(n),cardProb.ub(n));
@@ -375,7 +381,7 @@ for n=1:nlt
                     end
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
-                    minSiphonRxnBool(:,z) = Vn(:,z)>=params.eta;
+                    minSiphonRxnBool(:,z) = abs(Vn(:,z))>=params.eta;
                     if findSparseRxnSet
                         siphonY(:,z)          = solution.z(1:mlt,1);
                     else

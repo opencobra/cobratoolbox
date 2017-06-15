@@ -182,7 +182,18 @@ switch solver
         %and start it.
         stopTimer(timeLimit,1);
 
+        % save current directory
+        currentDir = pwd;
+
+        % change to temporary directory
+        % NOTE: this change to the matlabroot is necessary, as other solvers may shade the fmincon function
+        cd([matlabroot filesep 'toolbox' filesep 'shared' filesep 'optimlib']);
+
+        % call fmincon
         [x, f, origStat, output, lambda] = fmincon(func, x0, A1, b1, A2, b2, lb, ub, [], options);
+
+        % change back to currentDir
+        cd(currentDir);
 
         %Assign Results
         if (origStat > 0)

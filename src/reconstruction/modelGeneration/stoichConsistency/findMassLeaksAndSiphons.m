@@ -13,9 +13,9 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %
 % and with either :math:`0 \leq y \leq \infty` (semipositive net stoichiometry = leak)
 % or :math:`-\infty \leq y \leq 0` (seminegative net stoichiometry = siphon)
-%
+% 
 % If there are any zero rows of `S`, then the corresponding entry in y is
-% then set to zero.
+% set to zero.
 %
 % USAGE:
 %
@@ -290,7 +290,9 @@ end
 
 %only metBool rxnBool were tested for leaks
 leakMetBool=leakY>=params.eta;
+%leakRxnBool = abs(Vp)>=params.eta;
 leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'exclusive');
+%leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'inclusive');
 if printLevel>0
     fprintf('%6u\t%6u\t%s\n',nnz(leakMetBool),nnz(leakRxnBool),' semipositive leaking metabolites (and exclusive reactions).')
 end
@@ -331,7 +333,9 @@ if printLevel>0 && any(leakMetBool)
 end
 
 siphonMetBool=siphonY>=params.eta;
+%siphonRxnBool = abs(Vn)>=params.eta;
 siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'exclusive');
+%siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'inclusive');
 if printLevel>0
     fprintf('%6u\t%6u\t%s\n',nnz(siphonMetBool),nnz(siphonRxnBool),' seminegative siphon metabolites (and exclusive reactions).');
 end

@@ -211,6 +211,9 @@ function initCobraToolbox()
         addpath(genpath([CBTDIR, filesep, folders{k}]));
     end
 
+    % add the docs/source/notes folder
+    addpath(genpath([CBTDIR filesep 'docs' filesep 'source' filesep 'notes']));
+
     % print a success message
     if ENV_VARS.printLevel
         fprintf(' Done.\n');
