@@ -1,6 +1,7 @@
 function modelConstrained=constrainRxnListAboveBound(model,rxnList,c,d,csense)
 %
-% Constrains a (weighted) sum of absolute fluxes to be above a lower bound.
+% Constrains one (weighted) sum of fluxes to be above a lower bound.
+% Appends to existing inequality constraints if they are present
 %
 %
 % INPUTS:
@@ -14,6 +15,13 @@ function modelConstrained=constrainRxnListAboveBound(model,rxnList,c,d,csense)
 %
 % OUTPUT:
 %    modelConstrained:  constrained model
+%
+% USAGE:
+% rxnList={'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
+% C=[1,1,1,1,1,1];
+% d=10;
+% csense='G';
+% modelConstrained=constrainRxnListAboveBound(modelIrrev,rxnList,C,d,csense);
 
 [nMet,nRxn]=size(model.S);
 
