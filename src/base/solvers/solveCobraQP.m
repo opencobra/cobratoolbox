@@ -438,6 +438,7 @@ switch solver
 
         if (isempty(QPproblem.csense))
             clear QPproblem.csense
+            %QPproblem.csense(1:length(b),1) = '=';
             QPproblem.csense(1:length(b),1) = '=';
         else
             QPproblem.csense(QPproblem.csense == 'L') = '<';
