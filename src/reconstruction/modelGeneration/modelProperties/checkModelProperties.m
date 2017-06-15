@@ -39,7 +39,12 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
 % model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
 % model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
+% model.leakRxnBool         m x 1 boolean of metabolites in a positive leakage mode
+% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
+% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
+% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
 
+% Code based on that repored in...
 %'Conditions for duality between fluxes and concentrations in biochemical networks
 %by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com, Nikos Vlassis^{2}, Ines Thiele^{1}, Michael A. Saunders^{3}
 %{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg, 7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
@@ -49,6 +54,9 @@ function  [model] = checkModelProperties(model,printLevel)
 if ~exist('printLevel','var')
     printLevel=1;
 end
+
+%check for duplicates or empty vectors in [F,R] and [F+R] or 
+checkTrivial=0;
 
 % scaling of stoichiometric matrix may be necessary when badly scaled, off
 % by default
@@ -81,6 +89,8 @@ switch scaling
         model.c =diag(cscale)*model.c;
 end
 
+[nMet,nRxn]=size(model.S);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %vanilla forward and reverse half stoichiometric matrices
 F       = -model.S;
@@ -95,7 +105,6 @@ model.rankFRvanilla=rankFRvanilla;      %rank of [F R], when using all rows
 model.rankFRVvanilla=rankFRVvanilla;    %rank of [F;R], when using all cols
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[nMet,nRxn]=size(model.S);
 
 if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
     %finds the reactions in the model which export/import from the model
@@ -104,8 +113,32 @@ if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
     %     Demand reactions
     %     Sink reactions
     model = findSExRxnInd(model);
+else
+    if length(model.SIntMetBool)~=size(model.S,1) || length(model.SIntRxnBool)~=size(model.S,2)
+        model = findSExRxnInd(model);
+    end
 end
 model.SIntRxnBool_findSExRxnInd=model.SIntRxnBool;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Find leakage or siphons in heuristically internal part using the bounds given with the model
+leakParams.epsilon=1e-4;
+leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
+leakParams.method='dc';
+modelBoundsFlag=1;
+[leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]...
+    = findMassLeaksAndSiphons(model,model.SIntMetBool,model.SIntRxnBool,modelBoundsFlag,leakParams,printLevel);
+model.leakMetBool=leakMetBool;
+model.leakRxnBool=leakRxnBool;
+model.siphonMetBool=siphonMetBool;
+model.siphonRxnBool=siphonRxnBool;
+% model.leakY=leakY;
+% model.siphonY=siphonY;
+% model.statp=statp;
+% model.statn=statn;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %this is the version for the subsequent cardinality optimisation paper
 massBalanceCheck=1;
@@ -136,94 +169,100 @@ if any(~model.SIntMetBool) & printLevel>0
     fprintf('---------\n')
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%metBool1=(model.SConsistentMetBool | ~model.SIntMetBool); %incorrect to
-%include mets that are only exchanged
-metBool1=model.SConsistentMetBool;
-rxnBool1=(model.SConsistentRxnBool | ~model.SIntRxnBool);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%find rows that are not all zero when a subset of reactions omitted
-A1=[F(:,rxnBool1) R(:,rxnBool1)];
-model.FRnonZeroRowBool1 = any(A1,2);
-
-%find cols that are not all zero when a subset of metabolites omitted
-A1=[F(metBool1,:); R(metBool1,:)];
-model.FRnonZeroColBool1 = any(A1,1)';
-
-%only report for the consistent rows
-if any(~model.FRnonZeroRowBool1 & metBool1) & printLevel>0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool1 & metBool1),' zero rows of [F,R]')
-    for i=1:nMet
-        if ~model.FRnonZeroRowBool1(i) && metBool1(i)
-            fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
+if checkTrivial
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %metBool1=(model.SConsistentMetBool | ~model.SIntMetBool); %incorrect to
+    %include mets that are only exchanged
+    metBool1=model.SConsistentMetBool;
+    rxnBool1=(model.SConsistentRxnBool | ~model.SIntRxnBool);
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %find rows that are not all zero when a subset of reactions omitted
+    A1=[F(:,rxnBool1) R(:,rxnBool1)];
+    model.FRnonZeroRowBool1 = any(A1,2);
+    
+    %find cols that are not all zero when a subset of metabolites omitted
+    A1=[F(metBool1,:); R(metBool1,:)];
+    model.FRnonZeroColBool1 = any(A1,1)';
+    
+    %only report for the consistent rows
+    if any(~model.FRnonZeroRowBool1 & metBool1) & printLevel>0
+        fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool1 & metBool1),' zero rows of [F,R]')
+        for i=1:nMet
+            if ~model.FRnonZeroRowBool1(i) && metBool1(i)
+                fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
+            end
+        end
+        fprintf('\n')
+    end
+    
+    %only report for the consistent cols
+    if any(~model.FRnonZeroColBool1 & rxnBool1) && 0
+        fprintf('%u%s\n',nnz(~model.FRnonZeroColBool1 & rxnBool1),' zero cols of consistent [F;R]')
+        for i=1:nRxn
+            if ~model.FRnonZeroColBool1(i) && rxnBool1(i)
+                fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
+            end
+        end
+        fprintf('\n')
+    end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    A=[F,R];%depends on the direction of reaction
+    
+    %detect the rows of A that are identical upto scalar multiplication
+    %divide each row by the sum of each row.
+    sumA2            = sum(A,2);
+    sumA2(sumA2==0) = 1;
+    normalA2          = diag(1./sumA2)*A;
+    
+    %get unique rows, but do not change the order
+    % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
+    % that C = A(IA,:) and A = C(IC,:).
+    [uniqueRowsA,IA,IC] = unique(normalA2,'rows','stable');
+    model.FRuniqueRowBool=zeros(nMet,1);
+    model.FRuniqueRowBool(IA)=1;
+    
+    if any(~model.FRuniqueRowBool & metBool1) & printLevel>0
+        fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool1),' non-unique rows of stoich consistent [F,R]')
+        for i=1:nMet
+            if ~model.FRuniqueRowBool(i) && metBool1(i)
+                fprintf('%s%s\n',model.mets{i},': not unique row of stoich consistent [F,R]')
+            end
+        end
+        fprintf('\n')
+    end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    A=F+R;%invariant to direction of reaction
+    
+    %detect the cols of A that are identical upto scalar multiplication
+    %divide each col by the sum of each row.
+    sumA1          = sum(A,1);
+    sumA1(sumA1==0)  = 1;
+    normalA1          = A*diag(1./sumA1);
+    
+    %get unique cols, but do not change the order
+    % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
+    % that C = A(IA,:) and A = C(IC,:).
+    [uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
+    model.FRuniqueColBool=zeros(nRxn,1);
+    model.FRuniqueColBool(IA)=1;
+    
+    if any(~model.FRuniqueColBool & rxnBool1) & printLevel>0
+        fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool1),' non-unique cols of stoich consistent [F;R]')
+        for i=1:nRxn
+            if ~model.FRuniqueColBool(i) && rxnBool1(i)
+                fprintf('%s%s\n',model.rxns{i},': not unique col of stoich consistent [F;R]')
+            end
         end
     end
-    fprintf('\n')
+else
+    model.FRnonZeroRowBool1=true(nMet,1);
+    model.FRuniqueRowBool=true(nMet,1);
+    model.FRnonZeroColBool1=true(nRxn,1);
+    model.FRuniqueColBool=true(nRxn,1);
 end
-
-%only report for the consistent cols
-if any(~model.FRnonZeroColBool1 & rxnBool1) && 0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool1 & rxnBool1),' zero cols of consistent [F;R]')
-    for i=1:nRxn
-        if ~model.FRnonZeroColBool1(i) && rxnBool1(i)
-            fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
-        end
-    end
-    fprintf('\n')
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A=[F,R];%depends on the direction of reaction
-
-%detect the rows of A that are identical upto scalar multiplication
-%divide each row by the sum of each row.
-sumA2            = sum(A,2);
-sumA2(sumA2==0) = 1;
-normalA2          = diag(1./sumA2)*A;
-
-%get unique rows, but do not change the order
-% [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% that C = A(IA,:) and A = C(IC,:).
-[uniqueRowsA,IA,IC] = unique(normalA2,'rows','stable');
-model.FRuniqueRowBool=zeros(nMet,1);
-model.FRuniqueRowBool(IA)=1;
-
-if any(~model.FRuniqueRowBool & metBool1) & printLevel>0
-    fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool1),' non-unique rows of stoich consistent [F,R]')
-    for i=1:nMet
-        if ~model.FRuniqueRowBool(i) && metBool1(i)
-            fprintf('%s%s\n',model.mets{i},': not unique row of stoich consistent [F,R]')
-        end
-    end
-    fprintf('\n')
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A=F+R;%invariant to direction of reaction
-
-%detect the cols of A that are identical upto scalar multiplication
-%divide each col by the sum of each row.
-sumA1          = sum(A,1);
-sumA1(sumA1==0)  = 1;
-normalA1          = A*diag(1./sumA1);
-
-%get unique cols, but do not change the order
-% [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% that C = A(IA,:) and A = C(IC,:).
-[uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
-model.FRuniqueColBool=zeros(nRxn,1);
-model.FRuniqueColBool(IA)=1;
-
-if any(~model.FRuniqueColBool & rxnBool1) & printLevel>0
-    fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool1),' non-unique cols of stoich consistent [F;R]')
-    for i=1:nRxn
-        if ~model.FRuniqueColBool(i) && rxnBool1(i)
-            fprintf('%s%s\n',model.rxns{i},': not unique col of stoich consistent [F;R]')
-        end
-    end
-end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if printLevel>0
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
@@ -326,6 +365,7 @@ end
 % metabolites exclusively involved in flux inconsistent reactions are deemed flux inconsistent also
 model.fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),model.fluxConsistentRxnBool,'exclusive');
 
+        
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically
 %inconsistent or flux inconsistent from further consideration, but keep the
@@ -482,34 +522,6 @@ Fr = F(model.FRrows,model.FRVcols);
 Rr = R(model.FRrows,model.FRVcols);
 Fc = F(model.FRrows,model.FRVcols);
 Rc = R(model.FRrows,model.FRVcols);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-method.interface='solveCobraLP';
-
-% method.solver='mosek';
-% method.param.MSK_IPAR_OPTIMIZER='MSK_OPTIMIZER_DUAL_SIMPLEX';
-method.solver='gurobi7';
-method.param.Method=1;
-
-modelCheck.S = Rr-Fr;
-modelCheck.SIntRxnBool=model.SIntRxnBool(model.FRVcols);
-modelCheck.SIntMetBool=model.SIntMetBool(model.FRrows);
-
-% this is the version for the subsequent cardinality optimisation paper
-massBalanceCheck=0;
-%fileName=model.modelID;
-[SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,modelCheck]=...
-    findStoichConsistentSubset(modelCheck,massBalanceCheck,printLevel);%,fileName,epsilon)
-model.mC=SConsistentMetBool;
-
-% [informC,mC,~]=checkStoichiometricConsistency(modelCheck,0,method);
-% %save check on consistency
-% model.mC=mC;
-% if informC~=1
-%     disp(length(mC)-nnz(mC))
-%     error('(R-F) not stoichiometrically consistent')
-% end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [A,B,C]=bilinearDecomposition(model.S(model.FRrows,model.FRVcols));
