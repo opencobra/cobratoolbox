@@ -92,7 +92,8 @@ tutorials/IO/ecoli_core_model.mat
 PPP120.mat
 
 # generated tutorial documentation
-docs/source/_static/tutorials/*
+docs/source/_static/tutorials/*html
+docs/source/tutorials/tutorial*.rst
 
 # hidden folders
 .vscode/
