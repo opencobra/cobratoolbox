@@ -1,5 +1,4 @@
-function [modelCoupled]=coupleRxnList2Rxn(model,rxnList,rxnC,c,u)
-% 
+function [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
 % This function adds coupling constraints to the fluxes `vi` of a given list of reactions
 % (`RxnList`).The constraints are proportional to the flux `v` of a specified
 % reaction `rxnC`, so that for all reactions in `RxnList` `vi ~ vrxnC`.
@@ -21,15 +20,16 @@ function [modelCoupled]=coupleRxnList2Rxn(model,rxnList,rxnC,c,u)
 %    [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
 %
 % INPUTS:
-%    model:         model structure
-%    rxnList:       array of reaction names
-%    rxnC:          reaction that should be coupled with each reaction in the
-%                   reaction list
-%    c:             vector of coupling factors for each rxn in rxnList (default c = 1000)
-%    u:             vector of lower bounds one reaction couples (default u = 0.01)
+%    model:           model structure
+%    rxnList:         array of reaction names
+%    rxnC:            reaction that should be coupled with each reaction in the
+%                     reaction list
+%    c:               vector of coupling factors for each rxn in rxnList (default c = 1000)
+%    u:               vector of lower bounds one reaction couples (default u = 0.01)
 %
 % OUTPUT:
-%    modelCoupled:  coupled model
+%    modelCoupled:    coupled model
+%
 % .. Authors:
 %    - Sept 2011 AH/IT
 %    - May 2012: Added a warning if the coupled reaction is not in model. AH

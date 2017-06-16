@@ -1,4 +1,4 @@
-function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findHiCarbonRxns(model,nCarbonThr)
+function [hiCarbonRxns, zeroCarbonRxns, nCarbon] = findHiCarbonRxns(model, nCarbonThr)
 % Returns the list of reactions that act on compounds which
 % contain cabons greater than the threshold set.
 %
@@ -7,16 +7,16 @@ function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findHiCarbonRxns(model,nCarbonT
 %    [hiCarbonRxns, nCarbon] = findHiCarbonRxns(model, nCarbonThr)
 %
 % INPUTS:
-%    model:            Structure containing all necessary variables to describe a
-%                      stoichiometric model
-%    nCarbonThr:       defines the min # of carbons that a metabolite, that is
-%                      acted on in a reaction, can have in the final list of reactions
+%    model:             Structure containing all necessary variables to describe a
+%                       stoichiometric model
+%    nCarbonThr:        defines the min # of carbons that a metabolite, that is
+%                       acted on in a reaction, can have in the final list of reactions
 %
 % OUTPUTS:
-%    hiCarbonRxns:     The list of reactions that act on metabolites with
-%                      greater than the threshold number of carbons
-%    zeroCarbonRxns    Reactions with no carbon
-%    nCarbon:          The number of carbons in each metabolite in the model
+%    hiCarbonRxns:      The list of reactions that act on metabolites with
+%                       greater than the threshold number of carbons
+%    zeroCarbonRxns:    Reactions with no carbon
+%    nCarbon:           The number of carbons in each metabolite in the model
 %
 % .. Author: - Markus Herrgard 2/7/07
 

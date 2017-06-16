@@ -30,7 +30,6 @@ function surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, showMets, nC
 %    surfNet(model, 'glc-D[c]', 0, flux, 1)  % for starting at glucose and show reactions with non-zero flux in 'flux' only
 %    surfNet(model, 'EX_glc-D(e)', 0, [], [], 0)  % to show the reaction formulas only but not the details of metabolites during navigation
 %    surfNet(model, {'glc-D[c]'; 'fru[c]'})  % to view several mets and rxns
-%
 
 fluxTol = 1e-8;  % tolerance for non-zero fluxes
 % at most print two decimal places for upper and lower bounds

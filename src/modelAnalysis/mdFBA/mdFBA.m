@@ -1,12 +1,13 @@
 function [sol, newActives] = mdFBA(model, varargin)
-% solves an metabolic dilution FBA problem based on the given model
+% Solves an metabolic dilution FBA problem based on the given model
 %
-% USAGE: 
+% USAGE:
+%
 %    [sol, newActives] = buildMDFBAProblem(model, varargin)
 %
 % INPUT:
-%
 %    model:         A COBRA style model with the following fields:
+%
 %                     * S       - Stoichiometric Matrix
 %                     * lb      - lower bounds
 %                     * ub      - upper bounds
@@ -16,42 +17,40 @@ function [sol, newActives] = mdFBA(model, varargin)
 %                     * osense  - Optimisation sense (optional, default maximisation)
 %
 % OPTIONAL INPUTS:
-%
 %    varargin:      Variable arguments as parameter/value pairs
-%                   * 'ignoredMets' - Metabolites that do not need to be
-%                     produced, even if used.
-%                   * 'minProd'     - the minimal production, if a
-%                     metabolite is used, default(max(ub,abs(lb))/10000)
-%                   * 'getInvalidSolution' - whether to return an invalid
-%                     solution, or retrieve an invalid solution that was
-%                     obtained in an earlier run. If there is a solution 
-%                     from a previous run, no calculation will be performed!  (default false)
+%
+%                     * 'ignoredMets' - Metabolites that do not need to be
+%                       produced, even if used.
+%                     * 'minProd' - the minimal production, if a
+%                       metabolite is used, default(max(ub,abs(lb))/10000)
+%                     * 'getInvalidSolution' - whether to return an invalid
+%                       solution, or retrieve an invalid solution that was
+%                       obtained in an earlier run. If there is a solution
+%                       from a previous run, no calculation will be performed!  (default false)
 %
 % OUTPUT:
-% 
-%    sol:           The solution of the MDFBA MILP with the following
-%                   fields:
-%                   * obj       - objective value
-%                   * solver    - solver used
-%                   * stat      - the COBRA status
-%                   * origStat  - the original solver status
-%                   * time      - the time needed to solve the problem
-%                   * full      - the solution of the problem
-%                   * additional field depending on the solver used, and
-%                     whether an invalid solution is returned.
+%    sol:           The solution of the MDFBA MILP with the following fields:
+%
+%                     * obj       - objective value
+%                     * solver    - solver used
+%                     * stat      - the COBRA status
+%                     * origStat  - the original solver status
+%                     * time      - the time needed to solve the problem
+%                     * full      - the solution of the problem
+%                     * additional field depending on the solver used, and
+%                       whether an invalid solution is returned.
 %
 % OPTIONAL OUTPUT:
-%    
-%    newActives:    Reactions that are only active in mdFBA 
+%    newActives:    Reactions that are only active in mdFBA
 %
 %
 % NOTE:
+%
 %    Implementation based on description in:
-%    `Benyamini et al. "Flux balance analysis accounting for metabolite 
-%    dilution." Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43
+%    `Benyamini et al. "Flux balance analysis accounting for metabolite
+%    dilution." Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43`
 %
 % .. Author:   - Thomas Pfau (June 2017)
-%
 
 persistent ressol
 
@@ -79,7 +78,7 @@ mdfbamodel = buildMDFBAProblem(model,'ignoredMets',ignoredMets,'minProd',minprod
 sol = solveCobraMILP(mdfbamodel);
 
 if sol.stat == 1
-    sol.full = sol.full(1:numel(model.rxns));    
+    sol.full = sol.full(1:numel(model.rxns));
     sol = rmfield(sol,'cont');
     sol = rmfield(sol,'int');
 else
@@ -87,11 +86,9 @@ else
     error('Could not solve the problem. if you want to get the invalid solution object, run mdFBA(model,''getInvalidSolution'',true)');
 end
 
-if nargout == 2 
+if nargout == 2
     sol2 = optimizeCbModel(model);
     milptol = getCobraSolverParams('MILP','feasTol');
     lptol = getCobraSolverParams('LP','feasTol');
     newActives = model.rxns(abs(sol2.x <= lptol) & ~abs(sol.full <= milptol));
 end
-    
-    

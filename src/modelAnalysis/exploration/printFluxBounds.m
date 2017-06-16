@@ -1,12 +1,12 @@
 function printFluxBounds(model)
-% prints the reactionID and upper/lower flux bounds.
+% Prints the reactionID and upper/lower flux bounds.
 %
 % USAGE:
 %
 %   printFluxBounds(model)
 %
 % INPUTS:
-%    model      The model to print 
+%    model:    The model to print
 %
 % .. Author: - Thomas Pfau May 2017
 
@@ -16,4 +16,3 @@ fprintf(['%' num2str(maxlength) 's\t%14s\t%14s\n'],'Reaction ID','Lower Bound','
 for i = 1: numel(model.rxns)
     fprintf(['%' num2str(maxlength) 's\t%14.3f\t%14.3f\n'],model.rxns{i},model.lb(i),model.ub(i));
 end
-

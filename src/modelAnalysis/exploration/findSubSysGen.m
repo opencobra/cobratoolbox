@@ -8,10 +8,10 @@ function [GenSubSystem]  = findSubSysGen(model)
 %    [GenSubSystem]  = findSubSysGen(model)
 %
 % INPUT:
-%    model:             COBRA model structure
+%    model:            COBRA model structure
 %
 % OUTPUT:
-%    GenSubSystem:      array listing genes and subsystmes
+%    GenSubSystem:     array listing genes and subsystmes
 %
 % .. Author: - Ines Thiele 10/09
 

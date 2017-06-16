@@ -10,7 +10,7 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %    model:             COBRA model structure
 %    metList:           Metabolite list
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
 %    verbFlag:          Print reaction formulas to screen (Default = false)
 %    Property/Value:    Allowed Properties are:
 %                       'containsAll' (True/False) - If true only reactions
@@ -22,7 +22,7 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %    rxnList:           List of reactions
 %    rxnFormulaList:    Reaction formulas coresponding to `rxnList`
 %
-% .. Author:
+% .. Authors:
 %       - Richard Que (08/12/2010)
 %       - Almut Heinken (09/25/2015)- made change so formulas are not printed if reaction list is empty.
 %       - Thomas Pfau (21/1/2016) - Additional Options, and minimal speedup of the indexing, also updated behaviour of verbFlag to accurately reflect the description.

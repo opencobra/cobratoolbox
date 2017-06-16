@@ -1,27 +1,30 @@
-function modelConstrained=constrainRxnListAboveBound(model,rxnList,c,d,csense)
-%
+function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, csense)
 % Constrains one (weighted) sum of fluxes to be above a lower bound.
 % Appends to existing inequality constraints if they are present
 %
+% USAGE:
+%
+%    modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, csense)
 %
 % INPUTS:
-%    model:         model structure
-%    rxnList:       cell array of reaction names
+%    model:               model structure
+%    rxnList:             cell array of reaction names
 %
-% OPTONAL INPUTS:
-%    C:             k x n matrix in C*v>=d
-%    d:             n x 1 vector C*v>=d
-%    csense:        k x 1 constraint sense
+% OPTIONAL INPUTS:
+%    C:                   `k x n` matrix in `C*v>=d`
+%    d:                   `n x 1` vector `C*v >= d`
+%    csense:              `k x 1` constraint sense
 %
 % OUTPUT:
-%    modelConstrained:  constrained model
+%    modelConstrained:    constrained model
 %
-% USAGE:
-% rxnList={'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
-% C=[1,1,1,1,1,1];
-% d=10;
-% csense='G';
-% modelConstrained=constrainRxnListAboveBound(modelIrrev,rxnList,C,d,csense);
+% EXAMPLE:
+%
+%    rxnList = {'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
+%    C = [1, 1, 1, 1, 1, 1];
+%    d = 10;
+%    csense = 'G';
+%    modelConstrained = constrainRxnListAboveBound(modelIrrev, rxnList, C, d, csense);
 
 [nMet,nRxn]=size(model.S);
 
