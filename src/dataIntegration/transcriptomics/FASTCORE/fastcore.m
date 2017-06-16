@@ -140,4 +140,4 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     
     toRemove = setdiff(model.rxns,model.rxns(A));
     tissueModel = removeRxns(model_orig, toRemove);
-    tissueModel = removeNonUsedGenes(tissueModel);
+    tissueModel = removeUnusedGenes(tissueModel);
