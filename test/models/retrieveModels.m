@@ -49,11 +49,11 @@ end
 for i = 1:length(modelArr)
     if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
         % check if the remote URL can be reached
-        [status_curl, result_curl] = system(['curl --max-time 10 -s -k --head ', modelArr{i, 2}]);
+        [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', modelArr{i, 2}]);
 
         % check if the URL exists
         if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-            status_curlDownload = system(['curl ', curlSilence, ' --max-time 30 -O ', modelArr{i, 2}]);
+            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', modelArr{i, 2}]);
 
             if printLevel > 0 && status_curlDownload == 0
                 fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
@@ -73,11 +73,11 @@ if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
     tmpURL = 'http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip';
 
     % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 10 -s -k --head ', tmpURL]);
+    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
 
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 30 -O ', tmpURL]);
+        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
         unzip('msb4100155-s6.zip');
         delete('Ec_iAF1260_flux2.txt');
         delete('read_me.txt');
@@ -101,13 +101,13 @@ if exist('STM_v1.0.xml', 'file') ~= 2
     tmpURL = 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP';
 
     % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 10 -s -k --head ', tmpURL]);
+    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
 
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 30 -O ', tmpURL]);
-        unzip('12918_2010_598_MOESM2_ESM.zip');
-        delete('12918_2010_598_MOESM2_ESM.zip');
+        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
+        unzip('12918_2010_598_MOESM2_ESM.ZIP');
+        delete('12918_2010_598_MOESM2_ESM.ZIP');
 
         if printLevel > 0 && status_curlDownload == 0
             fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
@@ -127,11 +127,11 @@ if exist('ME_matrix_GlcAer_WT.mat', 'file') ~= 2
     tmpURL = 'https://wwwen.uni.lu/content/download/72953/917521/file/download.zip';
 
     % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 10 -s -k --head ', tmpURL]);
+    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
 
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 30 -O ', tmpURL]);
+        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
         unzip('download.zip');
         delete('download.zip');
 
