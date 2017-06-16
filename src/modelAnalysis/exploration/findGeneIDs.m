@@ -1,4 +1,4 @@
-function geneID = findGeneIDs(model,geneList)
+function geneID = findGeneIDs(model, geneList)
 % Finds gene numbers in a model
 %
 % USAGE:
@@ -6,11 +6,11 @@ function geneID = findGeneIDs(model,geneList)
 %    geneID = findGeneIDs(model, geneList)
 %
 % INPUTS:
-%    model:     COBRA model structure
-%    geneList:  List of genes
+%    model:       COBRA model structure
+%    geneList:    List of genes
 %
 % OUTPUT:
-%    geneID:    List of gene IDs corresponding to `geneList`
+%    geneID:      List of gene IDs corresponding to `geneList`
 %
 % .. Author: - Jeff Orth 7/16/09
 

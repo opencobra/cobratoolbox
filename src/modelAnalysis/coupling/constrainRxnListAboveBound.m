@@ -19,6 +19,7 @@ function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, cse
 %    modelConstrained:    constrained model
 %
 % EXAMPLE:
+%
 %    rxnList = {'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
 %    C = [1, 1, 1, 1, 1, 1];
 %    d = 10;

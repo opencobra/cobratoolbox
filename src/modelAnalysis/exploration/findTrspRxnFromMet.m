@@ -18,7 +18,6 @@ function [TrspRxns] = findTrspRxnFromMet(model, metList, compFlag)
 %
 % .. Author: - Anne Richelle May 2017
 
-
 if nargin < 3
     compFlag={};
 end

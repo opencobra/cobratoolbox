@@ -1,5 +1,5 @@
 function printConstraints(model, minInf, maxInf)
-% Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)
+% Print all network constraints that are not `-Inf (minInf)` or `+Inf (maxInf)`
 %
 % USAGE:
 %
