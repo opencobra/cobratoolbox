@@ -40,7 +40,7 @@
 % Start CobraToolbox
 
 initCobraToolbox
-warning on
+warning off MATLAB:subscripting:noSubscriptsSpecified
 %% PROCEDURE
 %% Generate a network
 % A constraint-based metabolic model contains the stoichiometric matrix with 
@@ -315,14 +315,6 @@ load('testModelManipulation.mat', 'model', 'modelIrrev');
 % two models:
 
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
-%% 
-% Converting to reversible
-
-fprintf('>> Convert to Reversible\n');
-testModelRev = convertToReversible(testModelIrrev);
-load('testModelManipulation.mat','modelRev');
-
-assert(isSameCobraModel(modelRev, testModelRev)); 
 %% REFERENCES
 % 1.Orth, J. D. et al. What is flux balance analysis? _Nat. Biotechnol., 28_(3), 
 % 245–248 (2010).
