@@ -109,6 +109,8 @@
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -428,7 +430,8 @@ acted on in a reaction, can have in the final list of reactions</li>
 <li><strong>hiCarbonRxns</strong> &#8211;
 The list of reactions that act on metabolites with
 greater than the threshold number of carbons</li>
-<li><strong>zeroCarbonRxns    Reactions with no carbon</strong></li>
+<li><strong>zeroCarbonRxns</strong> &#8211;
+Reactions with no carbon</li>
 <li><strong>nCarbon</strong> &#8211;
 The number of carbons in each metabolite in the model</li>
 </ul>
@@ -438,28 +441,33 @@ The number of carbons in each metabolite in the model</li>
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findMetFromCompartment">
 <code class="descname">findMetFromCompartment</code><span class="sig-paren">(</span><em>model</em>, <em>compartment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/findMetFromCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetFromCompartment" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>findMetFromCompartment finds all the metabolites and their identifiers in</dt>
-<dd><p class="first">a compartment of interest.</p>
-<p>USAGE:</p>
+<dd><p>Finds all the metabolites and their identifiers in
+a compartment of interest.</p>
+<p><strong>Usage</strong></p>
 <blockquote>
 <div>[compartmentMetabolites] = findMetFromCompartment(model,Compartment)</div></blockquote>
-<dl class="last docutils">
-<dt>INPUTS:</dt>
-<dd>model         COBRA model strcture
-compartment   compartment of interest (e.g.: &#8216;[m]&#8217;, &#8216;[n]&#8217;, &#8216;[e]&#8217;, etc.)</dd>
-<dt>OUTPUT:</dt>
-<dd>compartmentMetabolites  List of metabolites in the compartment of interest</dd>
-</dl>
-</dd>
-</dl>
-<p>Form a matrix with the metabolites and its identifiers</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model strcture</li>
+<li><strong>compartment</strong> &#8211;
+compartment of interest (e.g.: &#8216;[m]&#8217;, &#8216;[n]&#8217;, &#8216;[e]&#8217;, etc.)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compartmentMetabolites</strong> &#8211;
+List of metabolites in the compartment of interest</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findMetIDs">
 <code class="descname">findMetIDs</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/findMetIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetIDs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find metabolite numbers in a model</p>
+<dd><p>Finds metabolite numbers in a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>metID = findMetIds(model, metList)</div></blockquote>
@@ -549,7 +557,6 @@ the <cite>gprs</cite> associated with the neighbor <cite>rxns</cite></li>
 the metabolites in the target reaction</li>
 </ul>
 </div></blockquote>
-<p>set defaults</p>
 </dd></dl>
 
 <dl class="function">
@@ -587,7 +594,7 @@ metabolites in a model, used by <cite>gapFind</cite></p>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model         a COBRA model</strong></li>
+<li><strong>model          a COBRA model</strong></li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -609,22 +616,26 @@ all root no production metabolites</li>
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnFromCompartment">
 <code class="descname">findRxnFromCompartment</code><span class="sig-paren">(</span><em>model</em>, <em>compartment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/findRxnFromCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnFromCompartment" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>findRxnFromCompartment finds all the reactions and their identifiers in a</dt>
-<dd><p class="first">compartment of interest.</p>
-<p>USAGE:</p>
+<dd><p>Finds all the reactions and their identifiers in a compartment of interest.</p>
+<p><strong>Usage</strong></p>
 <blockquote>
 <div>[compartmentReactions] = findRxnFromCompartment(model,Compartment)</div></blockquote>
-<dl class="last docutils">
-<dt>INPUTS:</dt>
-<dd>model         COBRA model strcture
-compartment   compartment of interest (e.g.: &#8216;[m]&#8217;, &#8216;[n]&#8217;, &#8216;[e]&#8217;, etc.)</dd>
-<dt>OUTPUT:</dt>
-<dd>compartmentMetabolites  List of reactions in the compartment of interest</dd>
-</dl>
-</dd>
-</dl>
-<p>Form a matrix with the metabolites and its identifiers</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model strcture</li>
+<li><strong>compartment</strong> &#8211;
+compartment of interest (e.g.: &#8216;[m]&#8217;, &#8216;[n]&#8217;, &#8216;[e]&#8217;, etc.)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compartmentMetabolites</strong> &#8211;
+List of reactions in the compartment of interest</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -673,8 +684,7 @@ A list of gene identifiers</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Reaclist</strong> &#8211;
-Cell array of reactions which are supported by the
-provided genes</li>
+Cell array of reactions which are supported by the provided genes</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -785,8 +795,7 @@ A list of gene identifiers</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Reaclist</strong> &#8211;
-Cell array of reactions which are supported by the
-provided genes</li>
+Cell array of reactions which are supported by the provided genes</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -857,7 +866,7 @@ List of transporters reactions</li>
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.printConstraints">
 <code class="descname">printConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>minInf</em>, <em>maxInf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/printConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)</p>
+<dd><p>Print all network constraints that are not <cite>-Inf (minInf)</cite> or <cite>+Inf (maxInf)</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>printConstraints(model, minInf, maxInf)</div></blockquote>
@@ -877,14 +886,15 @@ value that is considered as +Inf (or desired maximum cutoff value)</li>
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.printFluxBounds">
 <code class="descname">printFluxBounds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/printFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printFluxBounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>prints the reactionID and upper/lower flux bounds.</p>
+<dd><p>Prints the reactionID and upper/lower flux bounds.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>printFluxBounds(model)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model      The model to print</strong></li>
+<li><strong>model</strong> &#8211;
+The model to print</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -956,7 +966,7 @@ Sort mode, &#8216;ascend&#8217; or &#8216;descend&#8217; (opt, default &#8216;as
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.printMatrix">
 <code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/exploration/printMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>printMatrix Prints matrix into a file or screen</p>
+<dd><p>Prints matrix into a file or screen</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>printMatrix(A, format, file)</div></blockquote>

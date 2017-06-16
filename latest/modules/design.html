@@ -230,15 +230,22 @@ Problem structure used in computation</li>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong></li>
-<li><strong>targetRxn</strong></li>
-<li><strong>substrateRxn</strong></li>
-<li><strong>generxnList</strong></li>
-<li><strong>population</strong></li>
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>targetRxn</strong> &#8211;
+target reactions</li>
+<li><strong>substrateRxn</strong> &#8211;
+substrate reactions</li>
+<li><strong>generxnList</strong> &#8211;
+List of genes or <cite>rxns</cite> which can be knocked out</li>
+<li><strong>population</strong> &#8211;
+population matrix</li>
 <li><strong>x</strong> &#8211;
-The best solution</li>
-<li><strong>scores</strong></li>
-<li><strong>isGeneList</strong></li>
+the best solution</li>
+<li><strong>scores</strong> &#8211;
+an array of scores</li>
+<li><strong>isGeneList</strong> &#8211;
+boolean</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -454,8 +461,7 @@ the list of all rxns knocked out in a RandKnock</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>allRxns</strong> &#8211;
-all of the rxns knocked out in strains producing the
-product</li>
+all of the rxns knocked out in strains producing the product</li>
 <li><strong>rxnCount</strong> &#8211;
 the number of times each rxn was knocked out</li>
 </ul>
@@ -557,7 +563,8 @@ Previous solutions (optional)</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>bilevelMILPproblem</strong> &#8211;<ul>
+<li><strong>bilevelMILPproblem</strong> &#8211;
+struct with:<ul>
 <li>A - LHS matrix</li>
 <li>b - RHS</li>
 <li>c - Objective</li>
@@ -721,7 +728,8 @@ Target upper and lower bounds for plotting</li>
 Model of reconstruction</li>
 <li><strong>targetRxn</strong> &#8211;
 String name of reaction which is to be maximized.</li>
-<li><strong>substrateRxn</strong></li>
+<li><strong>substrateRxn</strong> &#8211;
+Substrate reactions</li>
 <li><strong>generxnList</strong> &#8211;
 List of genes or <cite>rxns</cite> which can be knocked out.  The
 program will guess which of the two it is, based on the
@@ -731,7 +739,8 @@ content in model.</li>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>MaxKOs</strong></li>
+<li><strong>MaxKOs</strong> &#8211;
+Maximal KnockOuts</li>
 <li><strong>population</strong> &#8211;
 population matrix (binary matrix). Use this
 parameter to interrupt simulation and resume afterwards.</li>
@@ -763,11 +772,16 @@ An array of scores</li>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>rxn_vector_matrix</strong></li>
-<li><strong>model</strong></li>
-<li><strong>targetRxn</strong></li>
-<li><strong>rxnListInput</strong></li>
-<li><strong>isGeneList</strong></li>
+<li><strong>rxn_vector_matrix</strong> &#8211;
+reactions vectors in a matrix</li>
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>targetRxn</strong> &#8211;
+target reactions</li>
+<li><strong>rxnListInput</strong> &#8211;
+list of reactions</li>
+<li><strong>isGeneList</strong> &#8211;
+bolean checking if it is a gene list</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -789,11 +803,16 @@ fitness value</li>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>rxn_vector_matrix</strong></li>
-<li><strong>model</strong></li>
-<li><strong>targetRxn</strong></li>
-<li><strong>rxnListInput</strong></li>
-<li><strong>isGeneList</strong></li>
+<li><strong>rxn_vector_matrix</strong> &#8211;
+reactions vectors in a matrix</li>
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>targetRxn</strong> &#8211;
+target reactions</li>
+<li><strong>rxnListInput</strong> &#8211;
+list of reactions</li>
+<li><strong>isGeneList</strong> &#8211;
+bolean checking if it is a gene list</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -937,7 +956,8 @@ Maximum production rate at max growth rate</li>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong></li>
+<li><strong>model</strong> &#8211;
+model structure</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>

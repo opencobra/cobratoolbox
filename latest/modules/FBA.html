@@ -109,6 +109,8 @@
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -232,10 +234,10 @@ s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 (the following fields are required - others can be supplied)<ul>
-<li>S  - m x 1 Stoichiometric matrix</li>
-<li>c  - n x 1 Linear objective coefficients</li>
-<li>lb - n x 1 Lower bounds</li>
-<li>ub - n x 1 Upper bounds</li>
+<li>S  - <cite>m x 1</cite> Stoichiometric matrix</li>
+<li>c  - <cite>n x 1</cite> Linear objective coefficients</li>
+<li>lb - <cite>n x 1</cite> Lower bounds</li>
+<li>ub - <cite>n x 1</cite> Upper bounds</li>
 </ul>
 </li>
 </ul>
@@ -245,10 +247,10 @@ s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
 <div><ul>
 <li><p class="first"><strong>model</strong> &#8211;
 (the following fields are optional)
-* b - m x 1 Right hand side = dx/dt
-* C - k x n Left hand side of C*v &lt;= d
-* d - k x 1 Right hand side of C*v &lt;= d
-* csense - m + k x 1 character array with entries in {L,E,G}</p>
+* b - <cite>m x 1</cite> Right hand side = dx/dt
+* C - <cite>k x n</cite> Left hand side of C*v &lt;= d
+* d - <cite>k x 1</cite> Right hand side of C*v &lt;= d
+* csense - <cite>m + k x 1</cite> character array with entries in {L,E,G}</p>
 </li>
 <li><p class="first"><strong>osenseStr</strong> &#8211;
 Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216;max&#8217;)</p>
@@ -315,7 +317,7 @@ appoximation type of zero-norm (only available when minNorm=&#8217;zero&#8217;) 
 <blockquote>
 <div><ul class="simple">
 <li><strong>FBAsolution</strong> &#8211;
-solution object<ul>
+solution object:<ul>
 <li>f - Objective value</li>
 <li>v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)</li>
 <li>y - Dual</li>
@@ -328,7 +330,7 @@ solution object<ul>
 <li><cite>0</cite> - Infeasible</li>
 </ul>
 </li>
-<li>origStat  Original status returned by the specific solver</li>
+<li>origStat - Original status returned by the specific solver</li>
 </ul>
 </li>
 </ul>
@@ -366,6 +368,13 @@ Cell array containing the following data:<ol class="arabic">
 (Default = <cite>minObjFrac*sol.f</cite>)</li>
 </ol>
 </li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>x0</strong> &#8211;
+solution of FBA problem</li>
 </ul>
 </div></blockquote>
 </dd></dl>

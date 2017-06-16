@@ -109,6 +109,8 @@
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -292,11 +294,10 @@ calculated</li>
 <dt id="src.modelAnalysis.rFBA.solveBooleanRegModel">
 <code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/modelAnalysis/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the next state of the regulatory network based on the current state.
-Called by optimizeRegModel and dynamicRFBA</p>
+Called by <cite>optimizeRegModel</cite> and <cite>dynamicRFBA</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[finalState, finalInputs1States, finalInputs2States] =
-solveBooleanRegModel(model, initialState, inputs1States, inputs2States)</div></blockquote>
+<div>[finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel(model, initialState, inputs1States, inputs2States)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">

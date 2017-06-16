@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tutorials &mdash; The COBRA Toolbox</title>
+  <title>Numerical characteristics of a stoichiometric matrix &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,8 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="next" title="Creating a Model" href="tutorialModelCreation.html"/>
-        <link rel="prev" title="ReconMaps" href="../modules/ReconMap.html"/> 
+        <link rel="up" title="Tutorials" href="index.html"/>
+        <link rel="next" title="Uniform sampling" href="tutorialUniformSampling.html"/>
+        <link rel="prev" title="Identifying conserved metabolic moieties" href="tutorialIdentifyMoieties.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,11 +92,11 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Documentation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tutorialModelCreation.html">Creating a Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorialIdentifyMoieties.html">Identifying conserved metabolic moieties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialNumCharact.html">Numerical characteristics of a stoichiometric matrix</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Numerical characteristics of a stoichiometric matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
 </ul>
 </li>
@@ -146,7 +147,9 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
-      <li>Tutorials</li>
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Numerical characteristics of a stoichiometric matrix</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,22 +166,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tutorials">
-<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">All tutorials are included in the folder <a class="reference external" href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials">tutorials</a>. More tutorials are currently being prepared.</p>
+  <div class="section" id="numerical-characteristics-of-a-stoichiometric-matrix">
+<h1>Numerical characteristics of a stoichiometric matrix<a class="headerlink" href="#numerical-characteristics-of-a-stoichiometric-matrix" title="Permalink to this headline">¶</a></h1>
+<style>
+h1  {font-size:0px}
+</style>
+<div style="margin:-30px; margin-right:-30px;">
+  <iframe src="../_static/tutorials/tutorial_numCharact.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
 </div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelCreation.html">Creating a Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialIdentifyMoieties.html">Identifying conserved metabolic moieties</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialNumCharact.html">Numerical characteristics of a stoichiometric matrix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
-</ul>
-</div>
-</div>
+
+<script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>
+<script type="text/javascript">
+
+  iFrameResize({
+    log                     : true,                  // Enable console logging
+    enablePublicMethods     : true,                  // Enable methods within iframe hosted page
+    resizedCallback         : function(messageData){ // Callback fn when resize is received
+      $('p#callback').html(
+        '<b>Frame ID:</b> '    + messageData.iframe.id +
+        ' <b>Height:</b> '     + messageData.height +
+        ' <b>Width:</b> '      + messageData.width +
+        ' <b>Event type:</b> ' + messageData.type
+      );
+    },
+    messageCallback         : function(messageData){ // Callback fn when message is received
+      $('p#callback').html(
+        '<b>Frame ID:</b> '    + messageData.iframe.id +
+        ' <b>Message:</b> '    + messageData.message
+      );
+      alert(messageData.message);
+    },
+    closedCallback         : function(id){ // Callback fn when iFrame is closed
+      $('p#callback').html(
+        '<b>IFrame (</b>'    + id +
+        '<b>) removed from page.</b>'
+      );
+    }
+  });
+</script></div>
 
 
            </div>
@@ -190,10 +215,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tutorialModelCreation.html" class="btn btn-neutral float-right" title="Creating a Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorialUniformSampling.html" class="btn btn-neutral float-right" title="Uniform sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../modules/ReconMap.html" class="btn btn-neutral" title="ReconMaps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorialIdentifyMoieties.html" class="btn btn-neutral" title="Identifying conserved metabolic moieties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
