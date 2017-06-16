@@ -609,7 +609,7 @@ for p = 1:length(d)
     tmpD = d{p};
     k = 1;
     for i = 1:numel(tmpD)
-        if ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..')
+        if ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..') && isempty(strfind(tmpD(i).name, '.txt'))
             tmpName = tmpD(i).name;
             tmpNameSplit = strsplit(tmpName, '.');
             tmpName = tmpNameSplit{1};
