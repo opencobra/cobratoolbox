@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops, method)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)
 % Performs flux variablity analysis
 %
 % USAGE:
@@ -6,35 +6,35 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)
 %
 % INPUT:
-%    model:             COBRA model structure
+%    model:            COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    optPercentage:     Only consider solutions that give you at least a certain
-%                       percentage of the optimal solution (Default = 100
-%                       or optimal solutions only)
-%    osenseStr:         Objective sense ('min' or 'max') (Default = 'max')
-%    rxnNameList:       List of reactions for which FVA is performed
-%                       (Default = all reactions in the model)
-%    verbFlag:          Verbose output (opt, default false)
-%    allowLoops:        Whether loops are allowed in solution. (Default = true)
-%                       See `optimizeCbModel` for description
-%    method:            when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
+%    optPercentage:    Only consider solutions that give you at least a certain
+%                      percentage of the optimal solution (Default = 100
+%                      or optimal solutions only)
+%    osenseStr:        Objective sense ('min' or 'max') (Default = 'max')
+%    rxnNameList:      List of reactions for which FVA is performed
+%                      (Default = all reactions in the model)
+%    verbFlag:         Verbose output (opt, default false)
+%    allowLoops:       Whether loops are allowed in solution. (Default = true)
+%                      See `optimizeCbModel` for description
+%    method:           when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
 %
-%                         * 'FBA'    : standards FBA solution
-%                         * '0-norm' : minimzes the vector  0-norm
-%                         * '1-norm' : minimizes the vector 1-norm
-%                         * '2-norm' : minimizes the vector 2-norm
-%                         * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
+%                        * 'FBA'    : standards FBA solution
+%                        * '0-norm' : minimzes the vector  0-norm
+%                        * '1-norm' : minimizes the vector 1-norm
+%                        * '2-norm' : minimizes the vector 2-norm
+%                        * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
 % OUTPUTS:
-%    minFlux:           Minimum flux for each reaction
-%    maxFlux:           Maximum flux for each reaction
+%    minFlux:          Minimum flux for each reaction
+%    maxFlux:          Maximum flux for each reaction
 %
 % OPTIONAL OUTPUT:
-%    Vmin:              Matrix of column flux vectors, where each column is a
-%                       separate minimization.
-%    Vmax:              Matrix of column flux vectors, where each column is a
-%                       separate maximization.
+%    Vmin:             Matrix of column flux vectors, where each column is a
+%                      separate minimization.
+%    Vmax:             Matrix of column flux vectors, where each column is a
+%                      separate maximization.
 %
 % .. Authors:
 %       - Markus Herrgard  8/21/06 Original code.

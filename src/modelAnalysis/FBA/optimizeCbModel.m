@@ -17,17 +17,17 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%                         * S  - m x 1 Stoichiometric matrix
-%                         * c  - n x 1 Linear objective coefficients
-%                         * lb - n x 1 Lower bounds
-%                         * ub - n x 1 Upper bounds
+%                         * S  - `m x 1` Stoichiometric matrix
+%                         * c  - `n x 1` Linear objective coefficients
+%                         * lb - `n x 1` Lower bounds
+%                         * ub - `n x 1` Upper bounds
 %
 % OPTIONAL INPUTS:
 %    model:             (the following fields are optional)
-%                         * b - m x 1 Right hand side = dx/dt
-%                         * C - k x n Left hand side of C*v <= d
-%                         * d - k x 1 Right hand side of C*v <= d
-%                         * csense - m + k x 1 character array with entries in {L,E,G}      
+%                         * b - `m x 1` Right hand side = dx/dt
+%                         * C - `k x n` Left hand side of C*v <= d
+%                         * d - `k x 1` Right hand side of C*v <= d
+%                         * csense - `m + k x 1` character array with entries in {L,E,G}
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
 %    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP
@@ -100,7 +100,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                          * 'all'      : try all approximations and return the best result
 %
 % OUTPUT:
-%    FBAsolution:       solution object
+%    FBAsolution:       solution object:
 %
 %                          * f - Objective value
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
@@ -113,7 +113,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                            * `1` - Optimal solution
 %                            * `2` - Unbounded solution
 %                            * `0` - Infeasible
-%                          * origStat  Original status returned by the specific solver
+%                          * origStat - Original status returned by the specific solver
 %
 % .. Author:
 %       - Markus Herrgard       9/16/03
@@ -136,7 +136,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %       - Minh Le               11/02/16 Option to minimise the cardinality of
 %                                        fluxes vector
 %       - Stefania Magnusdottir 06/02/17 Replace LPproblem2 upper bound 10000 with Inf
-%       - Ronan Fleming         13/06/17 Support for coupling C*v<=d 
+%       - Ronan Fleming         13/06/17 Support for coupling C*v<=d
 %
 % NOTE:
 %
@@ -400,22 +400,22 @@ elseif length(minNorm)> 1 || minNorm > 0
     %THE CASE WHEN THE OPTIMAL OBJECIVE WAS ZERO - RONAN June 13th 2017
 %     if nnz(LPproblem.c)>1
 %         error('Code assumes only one non-negative coefficient in linear
-%         part of objective'); 
+%         part of objective');
 %     end
 %     % quadratic minimization of the norm.
 %     % set previous optimum as constraint.
 %     LPproblem.A = [LPproblem.A;
 %         (LPproblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
 %     LPproblem.csense(end+1) = 'E';
-% 
+%
 %     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
-    
+
     % quadratic minimization of the norm.
     % set previous optimum as constraint.
     LPproblem.A = [LPproblem.A;LPproblem.c'];
     LPproblem.b = [LPproblem.b;LPproblem.c'*solution.full];
     LPproblem.csense(end+1) = 'E';
-    
+
     LPproblem.c = zeros(size(LPproblem.c)); % no need for c anymore.
     %Minimise Euclidean norm using quadratic programming
     if length(minNorm)==1

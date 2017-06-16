@@ -20,6 +20,7 @@ Model analysis
    topology
    transport
    coupling
+   mdFBA
 
 .. automodule:: src.modelAnalysis
    :members:
