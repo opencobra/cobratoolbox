@@ -641,21 +641,31 @@ type of problem especified by the user</p>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>problemType</strong> &#8211;
-String containing the problem type
-for which this function will search solvers.
-Example: problemType = &#8216;LP&#8217; (Linear Programming)</li>
+<li><strong>problemType               Type</strong> &#8211;
+string
+Description: string containing the problem
+type for which this function will search
+solvers.
+E.g.: problem type = &#8216;LP&#8217; (Linear
+Programming)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>solvers</strong> &#8211;
-Cell array of solvers that are available
-for GAMS in your systems which allow solve
-problem of type &#8220;problemType&#8221;</li>
+<li><strong>solvers                   Type</strong> &#8211;
+cell array for available GAMS solvers
+in your systems which allows the user to
+solve problems of type &#8220;problemType&#8221;</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="o">=</span> <span class="n">checkGAMSSolvers</span><span class="p">(</span><span class="s1">&#39;MIP&#39;</span><span class="p">)</span>
+<span class="n">returns</span> <span class="n">the</span> <span class="n">GAMS</span> <span class="n">solvers</span> <span class="n">available</span> <span class="n">to</span> <span class="n">solve</span> <span class="n">Mixed</span> <span class="n">Integer</span> <span class="n">Programming</span>
+<span class="n">problems</span><span class="o">.</span> <span class="n">You</span> <span class="n">can</span> <span class="n">see</span> <span class="n">the</span> <span class="n">entire</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">problem</span> <span class="n">types</span> <span class="k">with</span> <span class="n">the</span>
+<span class="n">function</span> <span class="n">getAvailableGAMSSolvers</span><span class="o">.</span><span class="n">m</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -744,28 +754,57 @@ is placed before the original file in the MATLAB path.</p>
 according to the license.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[table, numTable, problemType, solvers] = getAvailableGAMSSolvers</div></blockquote>
+<div>[summaryTable, booleanTable, problemTypes, solvers] = getAvailableGAMSSolvers</div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>table</strong> &#8211;
-Cell array - matrix summarizing which problem can be
-solved by which solver. A &#8220;yes&#8221; in position (<cite>i,j</cite>) means
-that the GAMS solver &#8220;j&#8221; is available in your system to
-solve a problem of type &#8220;i&#8221;. Please note that headers
-are included in this table, so the first column and
-the first row have labels for solvers and problem
-types, respectively.</li>
-<li><strong>numTable</strong> &#8211;
-Double matrix summarizing which problem can be
-solved by which solver. A &#8220;1&#8221; in position (<cite>i,j</cite>) means
-that the GAMS solver &#8220;j&#8221; is available in your system to
-solve a problem of type &#8220;i&#8221;</li>
-<li><strong>problemType</strong> &#8211;
-Cell array of strings - list of problem types that can be solved
-in GAMS. Example: LP, MIP, etc</li>
-<li><strong>solvers</strong> &#8211;
-Cell array of strings - list of solvers available in GAMS</li>
+<li><strong>summaryTable    Type</strong> &#8211;
+cell array
+Description: matrix summarizing which problem can be
+solved by which solver. A &#8220;yes&#8221; in position (i,j)
+means that the GAMS solver &#8220;j&#8221; is available in your
+system to solve a problem of type &#8220;i&#8221;. Please note
+that headers are included in this summaryTable, so the
+first column and the first row have labels for solvers
+and problem types, respectively.</li>
+<li><strong>booleanTable    Type</strong> &#8211;
+double matrix
+Description: matrix summarizing which problem can be
+solved by which solver. A &#8220;1&#8221; in position (i,j) means
+that the GAMS solver &#8220;j&#8221; is available in your system
+to solve a problem of type &#8220;i&#8221;</li>
+<li><strong>problemTypes    Type</strong> &#8211;
+cell array of strings
+Description: list of problem types that can be solved
+in GAMS. E.g: LP, MIP, etc</li>
+<li><strong>solvers         Type</strong> &#8211;
+cell array of strings
+Description: list of solvers available in GAMS</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.getCPLEXversion">
+<code class="descname">getCPLEXversion</code><span class="sig-paren">(</span><em>rootPathCPLEX</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/base/solvers/getCPLEXversion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCPLEXversion" title="Permalink to this definition">¶</a></dt>
+<dd><p>detects the CPLEX version</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rootPathCPLEX</strong> &#8211;
+Path to the CPLEX installation</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level (default: 0)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>cplexVersion</strong> &#8211;
+string that contains the CPLEX version number</li>
 </ul>
 </div></blockquote>
 </dd></dl>
