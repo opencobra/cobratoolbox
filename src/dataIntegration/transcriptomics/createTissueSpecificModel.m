@@ -194,6 +194,7 @@ if funcModel ==1
 	[fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,paramConsistency);
     remove=tissueModel.rxns(fluxConsistentRxnBool==0);
     tissueModel = removeRxns(tissueModel,remove);
+    tissueModel = removeUnusedGenes(tissueModel);
 end
        
 end
