@@ -6,24 +6,24 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
 %
 % INPUTS:
-%    mode:          Model of reconstruction
-%    targetRxn:     String name of reaction which is to be maximized.
-%    substrateRxn:
-%    generxnList:   List of genes or `rxns` which can be knocked out.  The
-%                   program will guess which of the two it is, based on the
-%                   content in model.
+%    mode:            Model of reconstruction
+%    targetRxn:       String name of reaction which is to be maximized.
+%    substrateRxn:    Substrate reactions
+%    generxnList:     List of genes or `rxns` which can be knocked out.  The
+%                     program will guess which of the two it is, based on the
+%                     content in model.
 %
 % OPTIONAL INPUT:
-%    MaxKOs:
-%    population:    population matrix (binary matrix). Use this
-%                   parameter to interrupt simulation and resume afterwards.
+%    MaxKOs:          Maximal KnockOuts
+%    population:      population matrix (binary matrix). Use this
+%                     parameter to interrupt simulation and resume afterwards.
 %
 % OUTPUTS:
-%    x:             best optimized value found
-%    population:    Population of individuals.  Pass this back into optgene to
-%                   continue simulating where you left off.
-%    scores:        An array of scores
-%    optGeneSol:    `optGene` solution strcture
+%    x:               best optimized value found
+%    population:      Population of individuals.  Pass this back into optgene to
+%                     continue simulating where you left off.
+%    scores:          An array of scores
+%    optGeneSol:      `optGene` solution strcture
 %
 % .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
 
