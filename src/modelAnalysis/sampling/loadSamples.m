@@ -6,16 +6,16 @@ function samples = loadSamples(filename, numFiles, pointsPerFile,numSkipped,rand
 %    samples = loadSamples(filename, numFiles, pointsPerFile, numSkipped, randPts)
 %
 % INPUTS:
-%    filename:          The name of the files containing the sample points.
-%    numFiles:          The number of files containing the sample points.
-%    pointsPerFile:     The number of points to be taken from each file.
+%    filename:         The name of the files containing the sample points.
+%    numFiles:         The number of files containing the sample points.
+%    pointsPerFile:    The number of points to be taken from each file.
 %
 % OPTIONAL INPUTS:
-%    numSkipped:        Number of files skipped (default = 0)
-%    randPts:           Select random points from each file (true/false, default = false)
+%    numSkipped:       Number of files skipped (default = 0)
+%    randPts:          Select random points from each file (true/false, default = false)
 %
 % OUTPUT:
-%    samples:           Sample flux distributions
+%    samples:          Sample flux distributions
 %
 % .. Authors: - Gregory Hannum and Markus Herrgard 8/17/05.
 

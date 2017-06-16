@@ -1,23 +1,25 @@
-function [setsSorted,setNoSorted,setSize] = identifyCorrelSets(model,samples,corrThr,R)
-%identifyCorrelSets Identify correlated reaction sets from sampling data
+function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, samples, corrThr, R)
+% Identifies correlated reaction sets from sampling data
 %
-% [sets,setNumber,setSize] =  identifyCorrelSets(model,samples,corrThr,R)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% samples       Samples to be used to identify correlated sets
+%    [sets, setNumber, setSize] =  identifyCorrelSets(model, samples, corrThr, R)
 %
-%OPTIONAL INPUTS
-% corrThr       Minimum correlation (R^2) threshold (Default = 1-1e-8)
-% R             Correlation coefficient 
+% INPUTS:
+%    model:        COBRA model structure
+%    samples:      Samples to be used to identify correlated sets
 %
-%OUTPUTS
-% sets          Sorted cell array of sets (largest first)
-% setNumber     List of set numbers for each reaction in model (0 indicates
-%               that there is no set)
-% setSize       List of set sizes
+% OPTIONAL INPUTS:
+%    corrThr:      Minimum correlation (`R^2`) threshold (Default = 1-1e-8)
+%    R:            Correlation coefficient
 %
-% Markus Herrgard 9/15/06
+% OUTPUTS:
+%    sets:         Sorted cell array of sets (largest first)
+%    setNumber:    List of set numbers for each reaction in model (0 indicates
+%                  that there is no set)
+%    setSize:      List of set sizes
+%
+% .. Author: - Markus Herrgard 9/15/06
 
 if (nargin < 3)
     corrThr = 1-1e-8;
@@ -55,7 +57,7 @@ for i = 1:length(rxnList)
 end
 setNo = zeros(size(model.rxns));
 [tmp,index1,index2] = intersect(model.rxns,rxnList);
-setNo(index1) = setNoTmp(index2);  
+setNo(index1) = setNoTmp(index2);
 
 % Construct list of sets
 for i = 1:max(setNo)

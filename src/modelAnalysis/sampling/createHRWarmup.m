@@ -1,25 +1,25 @@
-function warmupPts= createHRWarmup(model,nPoints,verbFlag,bias,nPointsCheck)
+function warmupPts = createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)
 % Creates a warmup point set for hit-and-run sampling by
 % combining orthogonal and random points
 %
 % USAGE:
 %
-%    warmupPts= createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)
+%    warmupPts = createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)
 %
 % INPUTS:
-%    model:     Model structure
+%    model:        Model structure
 %
 % OPTIONAL INPUTS:
-%    nPoints:   Number of warmup points (Default = 5000);
-%    verbFlag:  Verbose flag (Default = false)
-%    bias:      Structure with fields:
+%    nPoints:      Number of warmup points (Default = 5000);
+%    verbFlag:     Verbose flag (Default = false)
+%    bias:         Structure with fields:
 %
-%                 * method - Biasing distribution: 'uniform', 'normal'
-%                 * index - The reaction indexes which to bias (`nBias` total)
-%                 * param - nBias x 2 matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
+%                    * method - Biasing distribution: 'uniform', 'normal'
+%                    * index - The reaction indexes which to bias (`nBias` total)
+%                    * param - nBias x 2 matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
 %
 % OUTPUT:
-%    warmupPts: Set of warmup points
+%    warmupPts:    Set of warmup points
 %
 % .. Authors:
 %       - Markus Herrgard 4/21/06

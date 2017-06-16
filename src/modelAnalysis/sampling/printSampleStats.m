@@ -1,4 +1,4 @@
-function printSampleStats(samples,commonModel,sampleNames,fileName)
+function printSampleStats(samples, commonModel, sampleNames, fileName)
 % Prints out sample statistics for multiple samples
 %
 % USAGE:
@@ -6,13 +6,12 @@ function printSampleStats(samples,commonModel,sampleNames,fileName)
 %    printSampleStats(samples, commonModel, sampleNames, fileName)
 %
 % INPUTS:
-%    samples:       Samples to plot
-%    commonModel:   COBRA model structure
-%    sampleNames:   Names of samples
+%    samples:        Samples to plot
+%    commonModel:    COBRA model structure
+%    sampleNames:    Names of samples
 %
 % OPTIONAL INPUT:
-%    fileName:      Name of file to generate (Default = print to command
-%                   window)
+%    fileName:       Name of file to generate (Default = print to command window)
 %
 % .. Author: - Markus Herrgard
 

@@ -1,4 +1,4 @@
-function ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)
+function ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt)
 % Artificial centering boundary sampler
 %
 % USAGE:
@@ -6,17 +6,17 @@ function ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWa
 %    ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt)
 %
 % INPUTS:
-%    model:           Model structure
-%    warmupPoints:    Warmup points
-%    fileName:        Base `fileName` for saving results
-%    nFiles:          Number of sample point files created
-%    pointsPerFile:   Number of points per file saved
-%    nMixPts:         Number of steps initially used for mixing (not saved)
+%    model:            Model structure
+%    warmupPoints:     Warmup points
+%    fileName:         Base `fileName` for saving results
+%    nFiles:           Number of sample point files created
+%    pointsPerFile:    Number of points per file saved
+%    nMixPts:          Number of steps initially used for mixing (not saved)
 %
 % OPTIONAL INPUTS:
-%    nWarmupNeeded:   Number of warmup points needed (Default = 20000)
-%    saveMatFlag:     Save points in mat format vs txt format (Default = true)
-%    biasOpt:         Options for biasing sampler (Default = no bias)
+%    nWarmupNeeded:    Number of warmup points needed (Default = 20000)
+%    saveMatFlag:      Save points in mat format vs txt format (Default = true)
+%    biasOpt:          Options for biasing sampler (Default = no bias)
 %
 % .. Authors:
 %       - Christian Barrett 8/24/06

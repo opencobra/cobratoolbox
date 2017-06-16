@@ -1,4 +1,4 @@
-function [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux)
+function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux)
 % Generate uniform random flux samples with CHRR
 % Coordinate Hit-and-Run with Rounding
 %
@@ -7,27 +7,27 @@ function [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,n
 %    [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux);
 %
 % INPUTS:
-%    model:              COBRA model structure with fields:
+%    model:               COBRA model structure with fields:
 %
-%                          * .S - The `m` x `n` stoichiometric matrix
-%                          * .lb - `n` x 1 lower bounds on fluxes
-%                          * .ub - `n` x 1 upper bounds on fluxes
-%                          * .c - `n` x 1 linear objective
-%    numSkip:            Number of steps of coordinate hit-and-run between samples
-%    numSamples:         Number of samples
+%                           * .S - The `m x n` stoichiometric matrix
+%                           * .lb - `n x 1`lower bounds on fluxes
+%                           * .ub - `n x 1` upper bounds on fluxes
+%                           * .c - `n x 1` linear objective
+%    numSkip:             Number of steps of coordinate hit-and-run between samples
+%    numSamples:          Number of samples
 %
 % OPTIONAL INPUTS:
-%    toRound:            {0,1} Option to round the polytope before sampling.
-%    roundedPolytope:    The rounded polytope from a previous round of
-%                        sampling the same model.
-%    minFlux, maxFlux:    `n` x 1 flux minima and maxima from flux variability
-%                        analysis of the same model.
+%    toRound:             {0, 1} Option to round the polytope before sampling.
+%    roundedPolytope:     The rounded polytope from a previous round of
+%                         sampling the same model.
+%    minFlux, maxFlux:    `n x 1` flux minima and maxima from flux variability
+%                         analysis of the same model.
 %
 % OUTPUTS:
-%    samples:            `n` x `numSamples` matrix of random flux samples
-%    roundedPolytope:    The rounded polytope. Save for use in subsequent
-%                        rounds of sampling.
-%    minFlux, maxFlux:
+%    samples:             `n x numSamples` matrix of random flux samples
+%    roundedPolytope:     The rounded polytope. Save for use in subsequent
+%                         rounds of sampling.
+%    minFlux, maxFlux:    flux minima and maxima
 %
 % .. Authors: - Ben Cousins and Hulda S. Haraldsdóttir, March 2017
 %

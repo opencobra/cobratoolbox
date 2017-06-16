@@ -2,8 +2,10 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 % Samples an arbitrary linearly constrained space using a fixed
 % number of points that are moved in parallel
 % The space is defined by
-% `A x <=,==,>= b`
-% `lb <= x <= ub`
+%
+% .. math::
+%    A x \leq,=,\geq b \\
+%    lb \leq x \leq ub
 %
 % USAGE:
 %
@@ -23,7 +25,7 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 %
 % OPTIONAL INPUTS:
 %    nPoints:           Number of points used in sampling
-%                       (default = 2*`nRxns` or 5000 whichever is greater)
+%                       (default = 2 * `nRxns` or 5000 whichever is greater)
 %    bias:              Structure with fields:
 %
 %                         * method - Biasing distribution: 'uniform', 'normal'
@@ -42,7 +44,7 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 %                       speedup can be obtained by starting matlab from the
 %                       command line by "typing matlab -singleCompThread"
 %                       New feature:  if `threads` < 0, use distributed toolbox.
-%    nPointsCheck:      Checks that minimum number of points (2*`nRxns`) are
+%    nPointsCheck:      Checks that minimum number of points (2 * `nRxns`) are
 %                       used. (Default = true).
 %
 % OUTPUTS:
