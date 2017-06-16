@@ -294,6 +294,7 @@ end
 
 % add the solver path for GUROBI, MOSEK or CPLEX
 if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
+    TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
     addpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > Tomlab interface added to MATLAB path.\n');
@@ -302,6 +303,7 @@ end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
+    GUROBI_PATH = strrep(GUROBI_PATH, '~', getenv('HOME'));
     addpath(strrep(GUROBI_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > Gurobi interface added to MATLAB path.\n');
@@ -310,6 +312,7 @@ end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
     % add the solver path
+    ILOG_CPLEX_PATH = strrep(ILOG_CPLEX_PATH, '~', getenv('HOME'));
     addpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
@@ -317,6 +320,7 @@ if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
 end
 
 if  ~isempty(strfind(solverName, 'mosek')) && ~isempty(MOSEK_PATH)
+    MOSEK_PATH = strrep(MOSEK_PATH, '~', getenv('HOME'));
     addpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > MOSEK interface added to MATLAB path.\n');

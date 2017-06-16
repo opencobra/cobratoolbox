@@ -14,6 +14,10 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
 % .. Author: - Laurent Heirendt, June 2017
 %
 
+    global ILOG_CPLEX_PATH
+    global ENV_VARS
+    global SOLVERS
+
     % save the userpath
     originalUserPath = path;
 
@@ -21,22 +25,16 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
         restoredefaultpath;
     end
 
-    if nargin < 1 || isempty(rootPathCPLEX)
-        global ILOG_CPLEX_PATH
-        global ENV_VARS
-        global SOLVERS
-
-        % run initCobraToolbox when not yet initialised
-        if isempty(SOLVERS)
-            ENV_VARS.printLevel = false;
-            initCobraToolbox;
-            ENV_VARS.printLevel = true;
-        end
-
-        % Set the CPLEX file path
-        index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
-        rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
+    % run initCobraToolbox when not yet initialised
+    if isempty(SOLVERS)
+        ENV_VARS.printLevel = false;
+        initCobraToolbox;
+        ENV_VARS.printLevel = true;
     end
+
+    % Set the CPLEX file path
+    index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
+    rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
 
     if nargin < 2
         printLevel = 1;
@@ -44,6 +42,7 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
 
     % try to set the ILOG cplex solver
     %cplexInstalled = changeCobraSolver('ibm_cplex', 'LP', printLevel);
+    rootPathCPLEX = strrep(rootPathCPLEX, '~', getenv('HOME'));
     addpath(genpath(rootPathCPLEX));
 
     if exist(rootPathCPLEX, 'dir') == 7
@@ -54,7 +53,7 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
 
     if cplexInstalled
         % detect the version of CPLEX
-        possibleVersions = {'1262', '1263', '127', '1271'};
+        possibleVersions = {'1262', '1263', '1270', '1271'};
 
         % check the version based on the presence of a precompiled MEX file
         cplexVersion = 'undetermined';
