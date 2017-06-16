@@ -15,7 +15,8 @@ originalUserPath = path;
 optPercentage = 90;
 objective = 'max';
 
-tol = 1e-2;
+% set the tolerance
+tol = 1e-6;
 
 % Define the number of workers to be used
 nworkers = 2;
@@ -205,9 +206,6 @@ assert(norm(minFluxT - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT - maxFluxTref(rxnsIDlist)) < tol);
 assert(norm(statussolminT(rxnsIDlist) - statussolmin) < tol);
 assert(norm(statussolmaxT(rxnsIDlist) - statussolmax) < tol);
-
-% Reduce the tolerance
-tol = 1e-6;
 
 % test various cases of reaction lists with different optPercentage values
 testCases = {[4, 5, 7, 8]; [7:10]; [1:3]; [1:12]; [13:16, 77, 78:80, 90, 92:95]};

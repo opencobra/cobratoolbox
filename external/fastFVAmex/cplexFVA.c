@@ -350,9 +350,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     /*mexPrintf(">> The original optSol = %3.30f\n", *optSol);*/
 
     if (objective == FVA_MIN_OBJECTIVE) {
-       TargetValue = floor(*optSol/tol)*tol*optPercentage/100.0;
-    } else {
        TargetValue = ceil(*optSol/tol)*tol*optPercentage/100.0;
+    } else {
+       TargetValue = floor(*optSol/tol)*tol*optPercentage/100.0;
     }
 
     /*mexPrintf(">> The target value = %3.30f\n", TargetValue);*/
