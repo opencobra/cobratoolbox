@@ -19,7 +19,7 @@ Model analysis
    #thermo
    topology
    transport
+   coupling
 
 .. automodule:: src.modelAnalysis
    :members:
-
