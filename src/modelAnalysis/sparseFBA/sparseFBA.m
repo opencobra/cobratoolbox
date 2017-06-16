@@ -17,9 +17,9 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 % OPTIONAL INPUTS:
 %    osenseStr:           (default = 'max')
 %
-%                           * max: `f* = argmax {max c'v: Sv <=> b, l <= v <= u}`
-%                           * min: `f* = argmin {min c'v: Sv <=> b, l <= v <= u}`
-%                           * none: ignore the constraint `c'v = f*``
+%                           * max: :math:`f* = argmax \{max\ c^T v: Sv \Leftrightarrow b, l \leq v \leq u\}`
+%                           * min: :math:`f* = argmin \{min\ c^T v: Sv \Leftrightarrow b, l \leq v \leq u\}`
+%                           * none: ignore the constraint :math:`c^T v = f*`
 %
 %    checkMinimalSet:     Heuristically check if the selected set of reactions is minimal
 %                         by removing one by one the predicted active reaction
@@ -33,8 +33,8 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %                           * 'exp'      : Exponential function
 %                           * 'log'      : Logarithmic function
 %                           * 'SCAD'     : SCAD function
-%                           * 'lp-'      : L_p norm with p<0
-%                           * 'lp+'      : L_p norm with 0<p<1
+%                           * 'lp-'      : L_p norm with p < 0
+%                           * 'lp+'      : L_p norm with 0 < `p` < 1
 %                           * 'l1'       : L1 norm
 %                           * 'all'      : try all approximations and return the best result
 %    printLevel:          Printing level
@@ -52,10 +52,13 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %       - Ronan Fleming 12/07/2016 nonzero flux is set according to current feasibility tol. Default is 1e-9.
 %
 % .. math::
-%      min ||v||_0
-%      s.t   Sv <=> b
-%        c'v = f* (optimal value of objective, default is max c'v)
-%        l <= v <= u
+%      min ~&~ ||v||_0 \\
+%      s.t ~&~ Sv \Leftrightarrow b \\
+%          ~&~ c^T v = f*
+% (optimal value of objective, default is :math:`max\ c^T v`)
+%
+% .. math::
+%          ~&~ l \leq v \leq u \\
 %
 
 if exist('osenseStr', 'var')
