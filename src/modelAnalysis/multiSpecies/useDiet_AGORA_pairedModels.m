@@ -6,19 +6,18 @@ function [modelOut] = useDiet_AGORA_pairedModels(modelIn, diet)
 %    [modelOut] = useDiet_AGORA_pairedModels(modelIn, diet)
 %
 % INPUTS:
-%    modelIn:   original model
-%    diet:      string that specifies the diet to be used ('Western' or 'HighFiber')
+%    modelIn:     original model
+%    diet:        string that specifies the diet to be used ('Western' or 'HighFiber')
 %
 % OUTPUT:
-%    modelOut:  model with applied constraints
+%    modelOut:    model with applied constraints
 
 % .. Authors:
 %       - Almut Heinken 16.03.2017
 %       - Laurent Heirendt March 2017
 %
 % Please cite *Magnusdottir, Heinken et al., Nat Biotechnol. 2017
-% 35(1):81-89*
-% if you use this script for your own analysis.
+% 35(1):81-89* if you use this script for your own analysis.
 
 model = modelIn;
 model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), 0, 'l');
