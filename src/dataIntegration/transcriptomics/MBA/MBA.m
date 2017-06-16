@@ -62,6 +62,6 @@ end
         end
     end
 
-    tissueModel = removeNonUsedGenes(PM);
+    tissueModel = removeUnusedGenes(PM);
 
 end
