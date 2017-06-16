@@ -33,10 +33,10 @@ do
     underline=`printf '=%.0s' $(seq 1 $chrlen);`
 
     sed 's#<html><head>#&<script type="text/javascript" src="../js/iframeResizer.contentWindow.min.js"></script>#' "$tutorialPath/$tutorialDir/$tutorialName.html" > "$tutorialDestination/$tutorialName.html"
-    sed "s/#tutorialLongTitle#/$tutorialLongTitle/" "$rstDestination/tutorialTemplate.rst" > "$rstDestination/$tutorialLongTitle.rst"
+    sed "s/#tutorialLongTitle#/$tutorialLongTitle/" "$rstDestination/template.rst" > "$rstDestination/$tutorialLongTitle.rst"
     sed -i.bak "s/#tutorialTitle#/$tutorialTitle/" "$rstDestination/$tutorialLongTitle.rst"
     sed -i.bak "s/#underline#/$underline/" "$rstDestination/$tutorialLongTitle.rst"
-    sed -i.bak "s/#tutorialName#/$tutorialName/" "$rstDestination/$tutorialLongTitle.rst"
+    sed -i.bak "s/#tutorialName#/$tutorialName.html/" "$rstDestination/$tutorialLongTitle.rst"
     rm "$rstDestination/$tutorialLongTitle.rst.bak"
 
     echo "   $tutorialLongTitle" >> $rstDestination/index.rst
