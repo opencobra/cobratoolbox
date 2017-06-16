@@ -1,13 +1,13 @@
 function W = nullSpaceOperatorApply(nullS, V)
 % Computes a sparse matrix `W` from `V` such that `S*W = 0`.
 % First, `nullS = nullSpaceOperator(S)`
-% computes a structure `nullS` from an `m` x `n` sparse matrix `S` (`m < n`), with rank `r`.
+% computes a structure `nullS` from an `m x n` sparse matrix `S` :math:`(m < n)`, with rank `r`.
 %
-% Second, if `V` is an (`n-r`) x `k` sparse matrix (`k >= 1`),
-% `W = nullSpaceOperatorApply(nullS,V)`;
-% computes an `n` x `k` sparse matrix `W` from `V` such that `S*W` = 0.
+% Second, if `V` is an `(n-r) x k` sparse matrix :math:`(k \geq 1)`,
+% `W = nullSpaceOperatorApply(nullS, V)`;
+% computes an `n x k` sparse matrix `W` from `V` such that `S*W = 0`.
 %
-% This is an operator form of finding an `n` x `(n-r)` matrix `Z`
+% This is an operator form of finding an `n x (n-r)` matrix `Z`
 % such that `S*Z = 0` and then computing `W = Z*V`.
 % The aim is to obtain `W` without forming `Z` explicitly.
 %
