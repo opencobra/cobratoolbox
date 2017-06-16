@@ -7,26 +7,26 @@ function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, t
 %    [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)
 %
 % INPUTS:
-%    model:             Cobra model structure
-%    targetRxn:         Reaction(s) to be maximized (Cell array of strings)
+%    model:                  Cobra model structure
+%    targetRxn:              Reaction(s) to be maximized (Cell array of strings)
 %
 % OPTIONAL INPUTS:
-%    varargin:          parameters entered using either a structure or list of
-%                       parameter, parameter value. List of optional parameters:
+%    varargin:               parameters entered using either a structure or list of
+%                            parameter, parameter value. List of optional parameters:
 %
-%                         *  `nbhdsz` - Neighborhood size (default: 1)
-%                         *  `M` - Number of search paths (default: 1)
-%                         *  `maxKO` - Maximum number of knockouts (default: 50)
-%                         *  `koCost` - Cost for knocking out a reaction, gene set, or gene. A different cost can be set for each knockout (default: 1 for each knockout)
-%                         *  `selectedRxns` - List of reactions/geneSets that can be knocked out
-%                         *  `koType` - What to knockout: reactions, gene sets, or genes {('rxns'), 'geneSets', 'genes'}
-%                         *  `iterationLimit` - Maximum number of iterations (default: 70)
-%                         *  `timeLimit` - Maximum run time in seconds (default: 252000)
-%                         *  `minGrowth` - Minimum growth rate
+%                              *  `nbhdsz` - Neighborhood size (default: 1)
+%                              *  `M` - Number of search paths (default: 1)
+%                              *  `maxKO` - Maximum number of knockouts (default: 50)
+%                              *  `koCost` - Cost for knocking out a reaction, gene set, or gene. A different cost can be set for each knockout (default: 1 for each knockout)
+%                              *  `selectedRxns` - List of reactions/geneSets that can be knocked out
+%                              *  `koType` - What to knockout: reactions, gene sets, or genes {('rxns'), 'geneSets', 'genes'}
+%                              *  `iterationLimit` - Maximum number of iterations (default: 70)
+%                              *  `timeLimit` - Maximum run time in seconds (default: 252000)
+%                              *  `minGrowth` - Minimum growth rate
 %
 % OUTPUTS:
-%    gdlsSolution:          GDLS solution structure (similar to `OptKnock` `sol` struct)
-%    bilevelMILPProblem:    Problem structure used in computation
+%    gdlsSolution:           GDLS solution structure (similar to `OptKnock` `sol` struct)
+%    bilevelMILPProblem:     Problem structure used in computation
 %    gdlsSolutionStructs:
 %
 % .. Author: - Richard Que 1/28/2010 Adapted from Desmond S Lun's gdls scripts.

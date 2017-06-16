@@ -1,4 +1,4 @@
-function [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)
+function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
 % Adjusts the objective function to eliminate
 % "non-unique" optknock solutions by favoring the lowest production rate at
 % a given predicted max growth-rate.
@@ -8,16 +8,16 @@ function [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)
 %    [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
 %
 % INPUTS:
-%    model:             Structure containing all necessary variables to described a
-%                       stoichiometric model
-%    targetRxn:         objective of the optimization
+%    model:        Structure containing all necessary variables to described a
+%                  stoichiometric model
+%    targetRxn:    objective of the optimization
 %
 % OPTIONAL INPUT:
-%    epsilon:           degree of augmentation considering the biochemical objective
+%    epsilon:      degree of augmentation considering the biochemical objective
 %
 % OUTPUTS:
-%    model:             Augmented model structure
-%    rxn_name:          reaction that carries the augmented value
+%    model:        Augmented model structure
+%    rxn_name:     reaction that carries the augmented value
 %
 % .. Author: - Adam Feist 10/16/08
 %

@@ -1,4 +1,4 @@
-function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,target,biomassRxn,geneDelFlag)
+function [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
 % Determines whether an optknock solution is growth coupled
 % or not and what the maximum growth and production rates are
 %
@@ -7,22 +7,22 @@ function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,targ
 %    [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    deletions:     list of reaction or gene deletions (empty if wild type)
-%    target:        the exchange reaction for the `OptKnock` target metabolite
+%    model:          COBRA model structure
+%    deletions:      list of reaction or gene deletions (empty if wild type)
+%    target:         the exchange reaction for the `OptKnock` target metabolite
 %
 % OPTIONAL INPUTS:
-%    biomassRxn:    the biomass reaction name (Default = whatever is defined in
-%                   the model)
-%    geneDelFlag:   perform gene and not reaction deletions (Default = false)
+%    biomassRxn:     the biomass reaction name (Default = whatever is defined in
+%                    the model)
+%    geneDelFlag:    perform gene and not reaction deletions (Default = false)
 %
 % OUTPUTS:
-%    type:          the type of `OptKnock` solution (growth coupled or not)
-%    maxGrowth:     the maximum growth rate of the knockout strain
-%    maxProd:       the maximum production rate of the target compound at the
-%                   maximum growth rate
-%    minProd:       the minimum production rate of the target compound at the
-%                   maximum growth rate
+%    type:           the type of `OptKnock` solution (growth coupled or not)
+%    maxGrowth:      the maximum growth rate of the knockout strain
+%    maxProd:        the maximum production rate of the target compound at the
+%                    maximum growth rate
+%    minProd:        the minimum production rate of the target compound at the
+%                    maximum growth rate
 % .. Author: - Jeff Orth  6/25/08
 
 if (nargin < 4)
