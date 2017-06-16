@@ -80,7 +80,7 @@ if toPreprocess
             PCT='Parallel Computing Toolbox';
             if  any(strcmp(PCT,{v.Name}))
                 p = parcluster('local');
-                SetWorkerCount(p.NumWorkers);
+                setWorkerCount(p.NumWorkers);
             end
             [minFlux, maxFlux] = fastFVA(model,100);
         else
