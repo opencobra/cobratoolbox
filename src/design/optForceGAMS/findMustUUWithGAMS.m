@@ -169,7 +169,7 @@ function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWith
 %                               iteration). This file only will be saved in
 %                               the output folder is the user entered
 %                               keepGamsOutputs = 1
-%    GtoM.gdx                   Type: file
+%    GtoMUU.gdx                 Type: file
 %                               Description: file containing values for
 %                               variables, parameters, etc. which were found
 %                               by GAMS when solving findMustUU.gms. This
@@ -337,7 +337,7 @@ copyfile(pathGamsFunction);
 % export inputs for running the optimization problem in GAMS to find the
 % MustUU Set
 inputFolder = 'InputsMustUU';
-exportInputsMustOrder2ToGAMS(model,minFluxesW,maxFluxesW,constrOpt,excludedRxns,mustSetFirstOrder,inputFolder)
+exportInputsMustOrder2ToGAMS(model, 'UU', minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')
@@ -346,9 +346,9 @@ end
 
 %run
 if verbose
-    run = system(['gams ' gamsMustUUFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run = system(['gams ' gamsMustUUFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMUU']);
 else
-    run=system(['gams ' gamsMustUUFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run=system(['gams ' gamsMustUUFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMUU']);
 end
 
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
@@ -362,10 +362,10 @@ if run == 0
     if printReport; fprintf(freport,'\nGAMS was executed correctly\n'); end;
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
-    if verbose; gdxWhos GtoM; end;
+    if verbose; gdxWhos GtoMUU; end;
     try
         findMustUU.name = 'findMustUU';
-        rgdx('GtoM',findMustUU); %if do not exist the variable findMustUU in GtoM, an error will ocurr.
+        rgdx('GtoMUU',findMustUU); %if do not exist the variable findMustUU in GtoMUU, an error will ocurr.
         if printReport; fprintf(freport,'\nGAMS variables were read by MATLAB correctly\n'); end;
         if verbose; fprintf('GAMS variables were read by MATLAB correctly\n'); end;
 
@@ -374,7 +374,7 @@ if run == 0
         %first reaction in each couple of reactions
         m1.name = 'matrix1';
         m1.compress = 'true';
-        m1 = rgdx('GtoM',m1);
+        m1 = rgdx('GtoMUU',m1);
         uels_m1 = m1.uels{2};
 
 
@@ -390,7 +390,7 @@ if run == 0
             %find values for matrix 2
             m2.name = 'matrix2';
             m2.compress = 'true';
-            m2 = rgdx('GtoM',m2);
+            m2 = rgdx('GtoMUU',m2);
             uels_m2 = m2.uels{2};
             val_m2 = m2.val;
             m2_full = full(sparse(val_m2(:,1),val_m2(:,2:end-1),val_m2(:,3)));
@@ -492,10 +492,10 @@ if run == 0
         %remove or move additional files that were generated during running
         if keepGamsOutputs
             if ~isdir(outputFolder); mkdir(outputFolder); end;
-            movefile('GtoM.gdx',outputFolder);
+            movefile('GtoMUU.gdx',outputFolder);
             movefile(regexprep(gamsMustUUFunction,'gms','lst'),outputFolder);
         else
-            delete('GtoM.gdx');
+            delete('GtoMUU.gdx');
             delete(regexprep(gamsMustUUFunction,'gms','lst'));
         end
 

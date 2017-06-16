@@ -92,7 +92,7 @@ Constr_WT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b');
 Constr_MT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0,155.55], 'rxnBoundType', 'bb');
 
 % We  run the FVA analysis for both strains
-[minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT]=FVAOptForce(model, Constr_WT, Constr_MT);
+[minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT] = FVAOptForce(model, Constr_WT, Constr_MT);
 disp([minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT])
 % Now, the run the second step of OptFoce.
 %% Step 2: Find Must Sets

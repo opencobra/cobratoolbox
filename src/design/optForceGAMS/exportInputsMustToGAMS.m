@@ -1,4 +1,4 @@
-function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
+function exportInputsMustToGAMS(model, setType, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 % This function export all the inputs needed to run the GAMS functions to
 % find first order Must Sets (MustU, Must L). The inputs will
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
@@ -68,7 +68,7 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if nargin < 5 %input handling
+if nargin < 6 %input handling
     error('OptForce: All inputs must be specified when running exportInputsMustToGAMS')
 end
 
@@ -122,7 +122,8 @@ b.form = 'full';
 b.uels = {'EX_gluc','R75','EX_suc'};
 
 %Using GDXMRW to export inputs
-wgdx('MtoG', s, basemin, basemax, lb, ub, b)
+fileName = ['MtoG' setType];
+wgdx(fileName, s, basemin, basemax, lb, ub, b)
 
 cd(current);
 

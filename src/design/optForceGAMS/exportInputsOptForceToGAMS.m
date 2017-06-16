@@ -208,7 +208,7 @@ nMax.type = 'parameter';
 nMax.val = nSets;
 
 %Using GDXMRW to export inputs
-wgdx('MtoG', s, basemin, basemax, phenomin, phenomax, lb, ub, b, kg, nMax);
+wgdx('MtoGOF', s, basemin, basemax, phenomin, phenomax, lb, ub, b, kg, nMax);
 cd(current);
 
 end

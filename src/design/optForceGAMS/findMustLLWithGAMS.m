@@ -169,7 +169,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               iteration). This file only will be saved in
 %                               the output folder is the user entered
 %                               keepGamsOutputs = 1
-%    GtoM.gdx                   Type: file
+%    GtoMLL.gdx                 Type: file
 %                               Description: file containing values for
 %                               variables, parameters, etc. which were found
 %                               by GAMS when solving findMustLL.gms. This
@@ -337,7 +337,7 @@ copyfile(pathGamsFunction);
 % export inputs for running the optimization problem in GAMS to find the
 % MustLL Set
 inputFolder = 'InputsMustLL';
-exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
+exportInputsMustOrder2ToGAMS(model, 'LL', minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')
@@ -346,9 +346,9 @@ end
 
 %run
 if verbose
-    run = system(['gams ' gamsMustLLFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run = system(['gams ' gamsMustLLFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMLL']);
 else
-    run=system(['gams ' gamsMustLLFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run=system(['gams ' gamsMustLLFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMLL']);
 end
 
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
@@ -362,10 +362,10 @@ if run == 0
     if printReport; fprintf(freport, '\nGAMS was executed correctly\n'); end;
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
-    if verbose; gdxWhos GtoM; end;
+    if verbose; gdxWhos GtoMLL; end;
     try
         findMustLL.name = 'findMustLL';
-        rgdx('GtoM', findMustLL); %if do not exist the variable findMustLL in GtoM, an error will ocurr.
+        rgdx('GtoMLL', findMustLL); %if do not exist the variable findMustLL in GtoMLL, an error will ocurr.
         if printReport; fprintf(freport, '\nGAMS variables were read by MATLAB correctly\n'); end;
         if verbose; fprintf('GAMS variables were read by MATLAB correctly\n'); end;
 
@@ -374,7 +374,7 @@ if run == 0
         %first reaction in each couple of reactions
         m1.name = 'matrix1';
         m1.compress = 'true';
-        m1 = rgdx('GtoM', m1);
+        m1 = rgdx('GtoMLL', m1);
         uels_m1 = m1.uels{2};
 
 
@@ -390,7 +390,7 @@ if run == 0
             %find values for matrix 2
             m2.name = 'matrix2';
             m2.compress = 'true';
-            m2 = rgdx('GtoM', m2);
+            m2 = rgdx('GtoMLL', m2);
             uels_m2 = m2.uels{2};
             val_m2 = m2.val;
             m2_full = full(sparse(val_m2(:,1), val_m2(:,2:end-1), val_m2(:,3)));
@@ -492,10 +492,10 @@ if run == 0
         %remove or move additional files that were generated during running
         if keepGamsOutputs
             if ~isdir(outputFolder); mkdir(outputFolder); end;
-            movefile('GtoM.gdx', outputFolder);
+            movefile('GtoMLL.gdx', outputFolder);
             movefile(regexprep(gamsMustLLFunction, 'gms', 'lst'), outputFolder);
         else
-            delete('GtoM.gdx');
+            delete('GtoMLL.gdx');
             delete(regexprep(gamsMustLLFunction, 'gms', 'lst'));
         end
 

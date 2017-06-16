@@ -112,7 +112,7 @@ vmin(j), vmax(j)
 findMustUL
 ;
 
-$if not set gdxin $set gdxin MtoG
+$if not set gdxin $set gdxin MtoGUL
 $GDXIN %myroot%%gdxin%
 $LOAD s basemin basemax b lb ub
 $GDXIN

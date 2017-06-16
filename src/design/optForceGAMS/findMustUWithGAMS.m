@@ -133,7 +133,7 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %                              about the running (values at each iteration).
 %                              This file only will be saved in the output
 %                              folder is the user entered keepGamsOutputs = 1
-%    GtoM.gdx                  Type: file
+%    GtoMU.gdx                 Type: file
 %                              Description: file containing values for 
 %                              variables, parameters, etc. which were found by
 %                              GAMS when solving findMustU.gms. 
@@ -284,7 +284,7 @@ copyfile(pathGamsFunction);
 % export inputs for running the optimization problem in GAMS to find the
 % MustU Set
 inputFolder = 'InputsMustU';
-exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
+exportInputsMustToGAMS(model, 'U', minFluxesW, maxFluxesW, constrOpt,inputFolder)
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')
@@ -293,9 +293,9 @@ end
 
 %run
 if verbose
-    run = system(['gams ' gamsMustUFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run = system(['gams ' gamsMustUFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMU']);
 else
-    run = system(['gams ' gamsMustUFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
+    run = system(['gams ' gamsMustUFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMU']);
 end
 
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
@@ -308,13 +308,13 @@ if run == 0
     if printReport; fprintf(freport, '\nGAMS was executed correctly\n'); end;
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
-    if verbose; gdxWhos GtoM; end;
-
+    if verbose; gdxWhos GtoMU; end;
+    
     %if the problem was solved correctly, a variable named findMustU should be
-    %inside of GtoM. Otherwise, the wrong file is being read.
+    %inside of GtoMU. Otherwise, the wrong file is being read.
     try
         findMustU.name = 'findMustU';
-        rgdx('GtoM', findMustU);
+        rgdx('GtoMU', findMustU);
         if printReport; fprintf(freport, '\nGAMS variables were read by MATLAB correctly\n'); end;
         if verbose; fprintf('GAMS variables were read by MATLAB correctly\n'); end;
 
@@ -322,7 +322,7 @@ if run == 0
         %extract must U set found by findMustU.gms
         must.name = 'must';
         must.compress = 'true';
-        must = rgdx('GtoM', must);
+        must = rgdx('GtoMU', must);
         uelsMust = must.uels{1};
 
         %if the set is not empty
@@ -340,7 +340,7 @@ if run == 0
             %extract minimum values
             vmin.name = 'vmin';
             vmin.compress = 'true';
-            vmin = rgdx('GtoM', vmin);
+            vmin = rgdx('GtoMU', vmin);
             uels_vmin = vmin.uels{1};
             if ~isempty(uels_vmin)
                 val_vmin = vmin.val(:,2);
@@ -353,7 +353,7 @@ if run == 0
             %extract miximum values
             vmax.name = 'vmax';
             vmax.compress = 'true';
-            vmax = rgdx('GtoM', vmax);
+            vmax = rgdx('GtoMU', vmax);
             uels_vmax = vmax.uels{1};
             if ~isempty(uels_vmax)
                 val_vmax = vmax.val(:,2);
@@ -418,10 +418,10 @@ if run == 0
         %remove or move additional files that were generated during running
         if keepGamsOutputs
             if ~isdir(outputFolder); mkdir(outputFolder); end;
-            movefile('GtoM.gdx',outputFolder);
+            movefile('GtoMU.gdx',outputFolder);
             movefile(regexprep(gamsMustUFunction, 'gms', 'lst'), outputFolder);
         else
-            delete('GtoM.gdx');
+            delete('GtoMU.gdx');
             delete(regexprep(gamsMustUFunction, 'gms', 'lst'));
         end
 
