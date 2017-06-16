@@ -110,7 +110,7 @@ if cplexInstalled && libraryExists
 
     tmpDir = [CBTDIR filesep '.tmp'];
 
-    if ~exist(tmpDir)
+    if ~exist(tmpDir, 'dir')
         mkdir(tmpDir);
     end
 

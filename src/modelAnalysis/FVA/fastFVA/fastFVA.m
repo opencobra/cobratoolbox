@@ -598,12 +598,13 @@ d1 = dir([CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep
 tmpDir = [CBTDIR filesep '.tmp'];
 d2 = dir(tmpDir);
 
-% concatenate both directories if the .tmp directory is present
-if exist(tmpDir) == 7
-    d = {d1; d2};
-else
-    d = {d1};
+% create .tmp if not already present
+if ~exist(tmpDir, 'dir')
+    mkdir(tmpDir);
 end
+
+% concatenate both directories
+d = {d1; d2};
 
 for p = 1:length(d)
     tmpD = d{p};
