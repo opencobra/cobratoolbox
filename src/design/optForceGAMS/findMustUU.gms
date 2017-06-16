@@ -114,7 +114,7 @@ vmin(j), vmax(j)
 findMustUU
 ;
 
-$if not set gdxin $set gdxin MtoG
+$if not set gdxin $set gdxin MtoGUU
 $GDXIN %myroot%%gdxin%
 $LOAD s basemin basemax b lb ub
 $GDXIN
