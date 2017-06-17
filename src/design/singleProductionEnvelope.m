@@ -1,108 +1,122 @@
-function [x , y] = singleProductionEnvelope(model, deletions, prod, biomassRxn, fileName, geneDelFlag, nPts)
+function singleProductionEnvelope(model, deletions, product, biomassRxn, varargin)
 % singleProductionEnvelope plots maximum growth rate as a function of the
 % output of one specified products
 %
-% USAGE: 
-%    [x, y] = doubleProductionEnvelope(model, deletions, prod, biomassRxn, geneDelFlag, nPts)
+% USAGE:
+%    singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%    model          COBRA model structure
-%    deletions      The reactions or genes to knockout of the model
-%    prod           One of the two products to investigate
-%
+%    model:          COBRA model structure
+%    deletions:      The reactions or genes to knockout of the model
+%    product:        The product to investigate
+%    biomassRxn:     The biomass objective function rxn name
 % OPTIONAL INPUTS:
-%    biomassRxn     The biomass objective function rxn name
-%                   (Default = 'biomass_SC4_bal')
-%    geneDelFlag    Perform gene and not reaction deletions
-%                   (Default = false)
-%    nPts           Number of points to plot for each product
-%                   (Default = 20)
+%    geneDelFlag:    Perform gene and not reaction deletions
+%                    (Default = false)
+%    nPts:           Number of points to plot for each product
+%                    (Default = 20)
 %
 % OUTPUTS:
-%    x            The range of rates plotted for prod
-%    y             The plotted growth rates at each x
+%    x:              The range of rates plotted for product
+%    y:              The plotted growth rates at each x
 %
-% .. Author: Sebastian Mendoza 9/12/07
+% .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if (nargin < 6)
-    geneDelFlag = false;
-end
-if (nargin < 7)
-    nPts = 20;
-end
+parser = inputParser();
+parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
+    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
+    && isfield(model, 'c'))
+parser.addRequired('deletions', @(x)  iscell(x) && ~isempty(x))
+parser.addRequired('product', @(x) ischar && ~isempty(x))
+parser.addRequired('biomassRxn', @(x) ischar && ~isempty(x))
+parser.addParameter('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('nPts', 20, @isnumeric);
+parser.addParameter('savePlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('outputFileName', product, @(x) ischar(x))
+parser.addParameter('outputFolder', 'Results', @(x) ischar(x))
+
+parser.parse(model, deletions, product, biomassRxn, varargin{:})
+model = parser.Results.model;
+product = parser.Results.product;
+biomassRxn = parser.Results.biomassRxn;
+geneDelFlag= parser.Results.geneDelFlag;
+nPts = parser.Results.nPts;
+savePlot = parser.Results.savePlot;
+fileName = parser.Results.fileName;
+outputFolder = parser.Results.outputFolder;
 
 % Create model with deletions
-if (length(deletions) > 0)
-    if (geneDelFlag)
-        modelKO = deleteModelGenes(model,deletions);
-    else
-        modelKO = changeRxnBounds(model,deletions,zeros(size(deletions)),'b');
-    end
+
+if (geneDelFlag)
+    modelKO = deleteModelGenes(model, deletions);
+else
+    modelKO = changeRxnBounds(model, deletions, zeros(size(deletions)), 'b');
 end
 
 % find range for biomass
-model = changeObjective(model,biomassRxn);
-fbasol = optimizeCbModel(model,'max');
-max=fbasol.f;
-x = linspace(0,max,nPts);
-ymin = zeros(nPts,1);
-ymax = zeros(nPts,1);
+model = changeObjective(model, biomassRxn);
+fbasol = optimizeCbModel(model, 'max');
+max = fbasol.f;
+x = linspace(0, max, nPts);
+ymin = zeros(nPts, 1);
+ymax = zeros(nPts, 1);
 
 for i = 1:nPts
-    modelY = changeRxnBounds(model,biomassRxn,x(i),'b');
-    modelY = changeObjective(modelY,prod);
-    fmin=optimizeCbModel(modelY,'min');
-    fmax=optimizeCbModel(modelY,'max');
-    ymin(i)=fmin.f;
-    ymax(i)=fmax.f;
+    modelY = changeRxnBounds(model, biomassRxn, x(i), 'b');
+    modelY = changeObjective(modelY, product);
+    fmin = optimizeCbModel(modelY, 'min');
+    fmax = optimizeCbModel(modelY, 'max');
+    ymin(i) = fmin.f;
+    ymax(i) = fmax.f;
 end
-f=figure;
-set(gcf,'Visible','Off');
-plot(x,ymin,x,ymax,'LineWidth',2);
+f = figure;
+set(gcf, 'Visible', 'Off');
+plot(x, ymin, x, ymax, 'LineWidth', 2);
 
 % find range for biomass using K.O.s
-modelKO = changeObjective(modelKO,biomassRxn);
-fbasol = optimizeCbModel(modelKO,'max');
-max=fbasol.f;
-target=fbasol.x(strcmp(modelKO.rxns,prod));
+modelKO = changeObjective(modelKO, biomassRxn);
+fbasol = optimizeCbModel(modelKO, 'max');
+max = fbasol.f;
+target = fbasol.x(strcmp(modelKO.rxns, product));
 x2 = linspace(0,max,nPts);
 ymin_KO = zeros(nPts,1);
 ymax_KO = zeros(nPts,1);
 
 for i = 1:nPts
-    modelY = changeRxnBounds(modelKO,biomassRxn,x2(i),'b');
-    modelY = changeObjective(modelY,prod);
-    fmin=optimizeCbModel(modelY,'min');
-    fmax=optimizeCbModel(modelY,'max');
-    ymin_KO(i)=fmin.f;
-    ymax_KO(i)=fmax.f;
+    modelY = changeRxnBounds(modelKO, biomassRxn, x2(i), 'b');
+    modelY = changeObjective(modelY, product);
+    fmin = optimizeCbModel(modelY, 'min');
+    fmax = optimizeCbModel(modelY, 'max');
+    ymin_KO(i) = fmin.f;
+    ymax_KO(i) = fmax.f;
 end
 
 % plot
 hold on
-plot(x2,ymin_KO,'r',x2,ymax_KO,'m','LineWidth',2);
-legend('Minimun Wild-type','Maximun Wild-type','Minimun Mutant','Maximun Mutant')
-ylabel([strrep(prod,'_','\_'),' (mmol/gDW h)']);
+plot(x2, ymin_KO, 'r', x2, ymax_KO, 'm', 'LineWidth', 2);
+legend('Minimun Wild-type', 'Maximun Wild-type', 'Minimun Mutant', 'Maximun Mutant')
+ylabel([strrep(product, '_', '\_'), ' (mmol/gDW h)']);
 xlabel('Growth Rate (1/h)');
 
 %plot optKnock sol
-plot(max,target,'Marker','o','Color',[0 0 0],'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[0.5 0.5 0.5],'MarkerSize',10);
+plot(max, target, 'Marker', 'o', 'Color', [0 0 0], 'MarkerEdgeColor', [0 0 0], 'MarkerFaceColor', [0.5 0.5 0.5], 'MarkerSize', 10);
 
-%directory change
-currectDirectory=pwd;
-NewDirectory=[currectDirectory '\OptKnock_Results'];
-if exist(NewDirectory,'dir')==0
-    mkdir(NewDirectory)
+if savePlot
+    %directory change
+    currectDirectory = pwd;
+    NewDirectory = outputFolder;
+    if ~isdir(NewDirectory)
+        mkdir(NewDirectory)
+    end
+    cd(NewDirectory)
+    
+    set(gcf, 'PaperUnits', 'centimeters');
+    set(gcf, 'PaperPosition', [0 0 20 10]);
+    saveas(gcf,[fileName '.png'])
+    saveas(f,[fileName '.pdf'])
+    close(f);
+    cd(currectDirectory)
+    
 end
-cd(NewDirectory)
-
-set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperPosition', [0 0 20 10]);
-% saveas(gcf,[fileName '.png'])
-saveas(f,[fileName '.pdf'])
-close(f);
-cd(currectDirectory)
 
 end
-
-
