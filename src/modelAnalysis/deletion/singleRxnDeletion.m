@@ -70,7 +70,7 @@ for i = 1:nDelRxns
         grRateKO(i) = NaN;
     end
     if (verbFlag)
-        fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelRxns,rnxList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
+        fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelRxns,rxnList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
     end
 end
 
