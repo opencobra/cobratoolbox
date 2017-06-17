@@ -39,13 +39,13 @@
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/longfeimao"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars1.githubusercontent.com/u/9161887?v=3" alt="" width="90px"></a>
-            <p><a href="https://github.com/longfeimao">longfeimao</a></p>
+            <a href="https://github.com/arichelle"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/14930292?v=3" alt="" width="90px"></a>
+            <p><a href="https://github.com/arichelle">arichelle</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/arichelle"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/14930292?v=3" alt="" width="90px"></a>
-            <p><a href="https://github.com/arichelle">arichelle</a></p>
+            <a href="https://github.com/longfeimao"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars1.githubusercontent.com/u/9161887?v=3" alt="" width="90px"></a>
+            <p><a href="https://github.com/longfeimao">longfeimao</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
