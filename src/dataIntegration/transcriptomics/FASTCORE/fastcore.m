@@ -6,7 +6,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %
 % USAGE:
 %
-%    tissueModel = fastcore(model,core)
+%    tissueModel = fastcore(model, core)
 %
 % INPUTS:
 %
@@ -17,16 +17,17 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %
 % OPTIONAL INPUTS:
 %   epsilon:             smallest flux value that is considered nonzero
-%                        (default 1e-8)               
-%   printLevel:          0 = silent, 1 = summary, 2 = debug
+%                        (default 1e-4)               
+%   printLevel:          0 = silent, 1 = summary, 2 = debug (default - 0)
 %
-% OUTPUTS:
+% OUTPUT:
 %
 %   tissueModel:         extracted model
 %
 %
 % 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
-% context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.'
+% context-specific metbolic network models. PLoS Comput. Biol. 10,
+% e1003424.'
 %
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
@@ -45,7 +46,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     model_orig = model;
 
     %Find irreversible reactions
-    irrevRxns = find(model.rev>=0);
+    irrevRxns = find(model.lb>=0);
 
     A = [];
     flipped = false;
@@ -139,5 +140,4 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     
     toRemove = setdiff(model.rxns,model.rxns(A));
     tissueModel = removeRxns(model_orig, toRemove);
-    tissueModel = removeNonUsedGenes(tissueModel);
-
+    tissueModel = removeUnusedGenes(tissueModel);

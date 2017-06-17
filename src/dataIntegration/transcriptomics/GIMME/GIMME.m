@@ -7,17 +7,17 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 %
 % USAGE:
 %
-%    tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
+%    tissueModel = GIMME(model, expressionRxns, threshold)
 %
 % INPUTS:
 %
 %    model:               input model (COBRA model structure)
 %    expressionRxns:      expression data, corresponding to model.rxns (see
 %                         mapGeneToRxn.m)
-%
-% OPTIONAL INPUTS:
 %    threshold:           expression threshold, reactions below this are
-%                         minimized (default - ExpressionRxns > 75 percentile)
+%                         minimized
+%
+% OPTIONAL INPUT:
 %    obj_frac:            minimum fraction of the objective(s) of model
 %                         (default value - 0.9)
 %
@@ -29,15 +29,12 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 %
 % .. Author: - Originally written by Becker and Palsson, adapted by S. Opdam and A. Richelle - May 2017
 
+    
     if nargin < 4 || isempty(obj_frac)
         obj_frac =0.9;
     end
-    if nargin < 3 || isempty(threshold)
-        data=expressionRxns(expressionRxns>=0);
-        threshold =prctile(data,75);
-    end
 
-    objectiveCol = [find(model.c) obj_frac];
+    objectiveCol = [find(model.c) obj_frac]; 
 
     nRxns = size(model.S,2);
 
@@ -97,7 +94,7 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 
     if (gimmeSolution.stat ~= 1)
     %No solution for the problem
-        display('Failed to solve GIMME problem');
+        display('Failed to solve GIMME problem'); 
         gimmeSolution.x = zeros(nIrrevRxns,1);
     end
 
@@ -119,7 +116,8 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
             end
         end
     end
-
+    
     remove = model.rxns(reactionActivity == 0);
-    tissueModel = removeRxns(model,remove);
+    tissueModel = removeRxns(model,remove); 
 end
+
