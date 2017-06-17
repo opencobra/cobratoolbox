@@ -196,87 +196,142 @@
 </div>
 <span class="target" id="module-src.dataIntegration.transcriptomics"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em>, <em>proceedExp</em>, <em>orphan</em>, <em>exRxnRemove</em>, <em>solver</em>, <em>options</em>, <em>funcModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>options</em>, <em>funcModel</em>, <em>exRxnRemove</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates draft tissue specific model from mRNA expression data</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[tissueModel, Rxns] = createTissueSpecificModel(model, expressionData, proceedExp, orphan, exRxnRemove, solver, options, funcModel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>tissueModel = createTissueSpecificModel(model, options)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-global recon1 model</p>
-</li>
-<li><p class="first"><strong>expressionData</strong> &#8211;
-mRNA expression data structure:</p>
-<ul>
-<li><p class="first">Locus - Vector containing <cite>GeneIDs</cite></p>
-</li>
-<li><p class="first">Data - Presence/Absence Calls</p>
-<blockquote>
+<div><blockquote>
 <div><ul class="simple">
-<li>Use: (1 - Present, 0 - Absent) when proceedExp = 1</li>
-<li>Use: (2 - Present, 1 - Marginal, 0 - Absent) when proceedExp = 0</li>
+<li><strong>model</strong> &#8211;
+model strusture</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first">Transcript - RefSeq Accession (only required if proceedExp = 0)</p>
-</li>
-</ul>
-</li>
-</ul>
+<dl class="docutils">
+<dt>options:                 structure field containing method specific</dt>
+<dd><blockquote class="first">
+<div>informations</div></blockquote>
+<dl class="docutils">
+<dt>.solver:                 Use either &#8216;GIMME&#8217;,&#8217;iMAT&#8217;,&#8217;INIT&#8217;,&#8217;MBA&#8217;,</dt>
+<dd>&#8216;mCADRE&#8217;,&#8217;fastCore&#8217;</dd>
+</dl>
+<p class="last">.additionalparam:        see NOTE section below</p>
+</dd>
+</dl>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>proceedExp</strong> &#8211;
-1 - data are processed ; 0 - data need to be
-processed (Default = 1)</li>
-<li><strong>orphan</strong> &#8211;
-1 - leave orphan reactions in model for Shlomi Method
-0 - remove orphan reactions
-(Default = 1)</li>
+<li><strong>funcModel</strong> &#8211;
+1 - Build a functional model having only reactions
+that can carry a flux (using a consistency check), 0 - skip this
+step (Default = 0)</li>
 <li><strong>exRxnRemove</strong> &#8211;
 Names of exchange reactions to remove
 (Default = [])</li>
-<li><strong>solver</strong> &#8211;
-Use either &#8216;GIMME&#8217;, &#8216;iMAT&#8217;, or &#8216;Shlomi&#8217; to create tissue
-specific model. &#8216;Shlomi&#8217; is the same as &#8216;iMAT&#8217; the names
-are just maintained for historical purposes.
-(Default = &#8216;GIMME&#8217;)</li>
-<li><strong>options</strong> &#8211;
-If using GIMME, enter <cite>objectiveCol</cite> here
-Default: objective function with 90% flux cutoff,
-written as: <cite>[find(model.c) 0.9]</cite></li>
-<li><strong>funcModel</strong> &#8211;
-1 - Build a functional model having only reactions
-that can carry a flux (using <cite>FVA</cite>), 0 - skip this
-step (Default = 0)</li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>tissueModel</strong> &#8211;
-Model produced by GIMME or iMAT, containing only
-reactions carrying flux</li>
-<li><strong>Rxns</strong> &#8211;
-Statistics of test:<ul>
-<li>ExpressedRxns - predicted by mRNA data</li>
-<li>UnExpressedRxns - predicted by mRNA data</li>
-<li>unknown - unable to be predicted by mRNA data</li>
-<li>Upregulated - added back into model</li>
-<li>Downregulated - removed from model</li>
-<li>UnknownIncluded - orphans added</li>
-</ul>
-</li>
+extracted model</li>
 </ul>
 </div></blockquote>
-<p>If there are multiple transcripts to one probe that have different
-expression patterns the script will ask what the locus is of the
-expressed and unexpressed transcripts</p>
-<p>GIMME script matches objective functions flux, Shlomi algorithm is
-based on maintaining pathway length comparable to expression data, not flux</p>
+<p>NOTES:
+This section describes the additional parameter fields that need to be set in
+&#8216;options&#8217; structure depending on the solver used. Some of these
+are optional (marked by an &#8216;*&#8217;), if not defined, they will be set at their
+default values.</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="docutils">
+<dt>for iMAT</dt>
+<dd><dl class="first docutils">
+<dt>options.expressionRxns       reaction expression, expression data corresponding to model.rxns.</dt>
+<dd>Note : If no gene-expression data are
+available for the reactions, set the value to -1</dd>
+<dt>options.threshold_lb         lower bound of expression threshold, reactions with</dt>
+<dd>expression below this value are &#8220;non-expressed&#8221;</dd>
+<dt>options.threshold_ub         upper bound of expression threshold, reactions with</dt>
+<dd>expression above this value are
+&#8220;expressed&#8221;</dd>
+<dt>options.tol*                 minimum flux threshold for &#8220;expressed&#8221; reactions</dt>
+<dd>(default 1e-8)</dd>
+<dt>options.core*                cell with reaction names (strings) that are manually put in</dt>
+<dd>the high confidence set (default - no core reactions)</dd>
+</dl>
+<p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)
+options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>for GIMME</dt>
+<dd><dl class="first docutils">
+<dt>options.expressionRxns       reaction expression, expression data corresponding to model.rxns.</dt>
+<dd>Note : If no gene-expression data are
+available for the reactions, set the
+value to -1</dd>
+</dl>
+<p>options.threshold            expression threshold, reactions below this are minimized
+options.obj_frac*            minimum fraction of the model objective function</p>
+<blockquote class="last">
+<div>(default - 0.9)</div></blockquote>
+</dd>
+<dt>for INIT</dt>
+<dd><dl class="first docutils">
+<dt>options.weights              column with positive (high expression) and negative</dt>
+<dd>(low expression) weights for each reaction</dd>
+<dt>options.tol*                 minimum flux threshold for &#8220;expressed&#8221; reactions</dt>
+<dd><blockquote class="first">
+<div>(default  - 1e-8)</div></blockquote>
+<p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)</p>
+</dd>
+</dl>
+<p class="last">options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+</dd>
+<dt>for MBA</dt>
+<dd><p class="first">options.medium_set           list of reaction names with medium confidence
+options.high_set             list of reaction names with high confidence
+options.tol*                 minimum flux threshold for &#8220;expressed&#8221; reactions</p>
+<blockquote class="last">
+<div>(default - 1e-8)</div></blockquote>
+</dd>
+<dt>for mCADRE</dt>
+<dd><dl class="first last docutils">
+<dt>options.ubiquityScore        ubiquity scores, vector of the size of &#8216;model.rxns&#8217;</dt>
+<dd>quantifying how often a gene is expressed accross samples.</dd>
+<dt>options.confidenceScores     literature-based evidence for generic model,</dt>
+<dd>vector of the size of &#8216;model.rxns&#8217;</dd>
+<dt>options.protectedRxns*       cell array with reactions names that are manually added to</dt>
+<dd>the core reaction set (default- no reactions)</dd>
+<dt>options.checkFunctionality*  Boolean variable that determine if the model should be able</dt>
+<dd><dl class="first last docutils">
+<dt>to produce the metabolites associated with the protectedRxns</dt>
+<dd>0: don&#8217;t use functionality check (default value)
+1: include functionality check</dd>
+</dl>
+</dd>
+<dt>options.eta*                 tradeoff between removing core and zero-expression</dt>
+<dd>reactions (default - 1/3)</dd>
+<dt>options.tol*                 minimum flux threshold for &#8220;expressed&#8221; reactions</dt>
+<dd>(default - 1e-8)</dd>
+</dl>
+</dd>
+<dt>for fastCore</dt>
+<dd><dl class="first docutils">
+<dt>options.core                 indices of reactions in cobra model that are part of the</dt>
+<dd>core set of reactions</dd>
+<dt>options.epsilon*             smallest flux value that is considered</dt>
+<dd>nonzero (default 1e-4)</dd>
+</dl>
+<p class="last">options.printLevel*          0 = silent, 1 = summary, 2 = debug (default 0)</p>
+</dd>
+</dl>
+</div></blockquote>
 </dd></dl>
 
 </div>

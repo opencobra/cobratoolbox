@@ -194,27 +194,28 @@ specific model using data. iMAT algorithm find the optimal trade-off
 between inluding high-expression reactions and removing low-expression reactions.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime)</div></blockquote>
+<div>tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 input model (COBRA model structure)</li>
 <li><strong>expressionRxns</strong> &#8211;
-expression data, corresponding to <cite>model.rxns</cite> (see <cite>mapGeneToRxn.m</cite>)</li>
+reaction expression, expression data corresponding to model.rxns.
+Note : If no gene-expression data are
+available for the reactions, set the
+value to -1</li>
+<li><strong>threshold_lb</strong> &#8211;
+lower bound of expression threshold, reactions with
+expression below this value are &#8220;non-expressed&#8221;</li>
+<li><strong>threshold_ub</strong> &#8211;
+upper bound of expression threshold, reactions with
+expression above this value are &#8220;expressed&#8221;</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>threshold_lb</strong> &#8211;
-lower bound of expression threshold, reactions with
-expression below this value are &#8220;non-expressed&#8221;
-(default - 25 percentile of expression)</li>
-<li><strong>threshold_ub</strong> &#8211;
-upper bound of expression threshold, reactions with
-expression above this value are &#8220;expressed&#8221;
-(default - 75 percentile of expression)</li>
 <li><strong>tol</strong> &#8211;
 minimum flux threshold for &#8220;expressed&#8221; reactions
 (default 1e-8)</li>
@@ -235,6 +236,7 @@ extracted model</li>
 </ul>
 </div></blockquote>
 <p><cite>Zur et al. (2010). iMAT: an integrative metabolic analysis tool. Bioinformatics 26, 3140-3142.</cite></p>
+<p>(createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017</p>
 </dd></dl>
 
 </div>

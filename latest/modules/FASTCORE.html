@@ -326,7 +326,7 @@ reactions that is guaranteed to be active in the extracted model and find
 the minimum of reactions possible to support the core.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>tissueModel = fastcore(model,core)</div></blockquote>
+<div>tissueModel = fastcore(model, core)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -343,9 +343,9 @@ core set of reactions (called &#8216;C&#8217; in &#8216;Vlassis et al,
 <div><ul class="simple">
 <li><strong>epsilon</strong> &#8211;
 smallest flux value that is considered nonzero
-(default 1e-8)</li>
+(default 1e-4)</li>
 <li><strong>printLevel</strong> &#8211;
-0 = silent, 1 = summary, 2 = debug</li>
+0 = silent, 1 = summary, 2 = debug (default - 0)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -356,7 +356,8 @@ extracted model</li>
 </ul>
 </div></blockquote>
 <p>&#8216;Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
-context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.&#8217;</p>
+context-specific metbolic network models. PLoS Comput. Biol. 10,
+e1003424.&#8217;</p>
 </dd></dl>
 
 <dl class="function">

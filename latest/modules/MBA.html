@@ -188,7 +188,7 @@
 <span id="id1"></span><h1>MBA<a class="headerlink" href="#mba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.MBA"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.MBA.MBA">
-<code class="descname">MBA</code><span class="sig-paren">(</span><em>model</em>, <em>medium_set</em>, <em>high_set</em>, <em>tol</em>, <em>core</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/dataIntegration/transcriptomics/MBA/MBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.MBA.MBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MBA</code><span class="sig-paren">(</span><em>model</em>, <em>medium_set</em>, <em>high_set</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3d46b7c3f9c85e32a6ef118f2dff38d73442be42/src/dataIntegration/transcriptomics/MBA/MBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.MBA.MBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses the MBA algorithm (<cite>Jerby et al., 2010</cite>) to extract a context
 specific model using data. MBA algorithm defines high-confidence reactions
 to ensure activity in the extracted model. Medium confidence reactions
@@ -197,7 +197,7 @@ the algorithm prunes other reactions and removes them if not required to
 support high- or medium- confidence reactions.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>tissueModel = MBA(model, medium_set, high_set, tol, core)</div></blockquote>
+<div>tissueModel = MBA(model, medium_set, high_set)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -209,15 +209,12 @@ list of reactions with medium confidence</li>
 list of reactions with high confidence</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>tol</strong> &#8211;
 minimum flux threshold for &#8220;expressed&#8221; reactions
 (default 1e-8)</li>
-<li><strong>core</strong> &#8211;
-cell with reaction names (strings) that are manually put in
-the high confidence core</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>

@@ -196,7 +196,7 @@ value. Note that this algorithm does not favor the inclusion of reactions
 not related to the objective.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)</div></blockquote>
+<div>tissueModel = GIMME(model, expressionRxns, threshold)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -205,14 +205,14 @@ input model (COBRA model structure)</li>
 <li><strong>expressionRxns</strong> &#8211;
 expression data, corresponding to model.rxns (see
 mapGeneToRxn.m)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
 <li><strong>threshold</strong> &#8211;
 expression threshold, reactions below this are
-minimized (default - ExpressionRxns &gt; 75 percentile)</li>
+minimized</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>obj_frac</strong> &#8211;
 minimum fraction of the objective(s) of model
 (default value - 0.9)</li>
