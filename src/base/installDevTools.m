@@ -73,7 +73,7 @@ function installDevTools()
                 devToolsDir = dirReply;
             end
 
-            fprintf(['Done.\n > The MATLAB.devTools have been installed into: ', devToolsDir, '\n\n']);
+            fprintf(['Done.\n > The MATLAB.devTools have been installed into: ', strrep(devToolsDir, '\', '\\'), '\n\n']);
 
             % add the path to the devTools
             addpath(genpath(devToolsDir));
