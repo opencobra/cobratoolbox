@@ -5,7 +5,7 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 % .. math::
 %
 %    \forall ~ v_j: ~&~ max/min ~&~ v_j\\
-%                 ~&~ s.t.    ~&~ S v = b\\
+%                 ~&~ s.t.    ~&~ Sv = b\\
 %                 ~&~         ~&~ l_b \leq v \leq u_b
 %
 % If the optional fields are supplied, following LPs are solved
@@ -13,7 +13,7 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 % .. math::
 %
 %    \forall ~ v_j: ~&~ max/min ~&~ v_j\\
-%                 ~&~ s.t.    ~&~ Av {\leq | = | \geq} b\\
+%                 ~&~ s.t.    ~&~ Av (c_sense) b\\
 %                 ~&~         ~&~ l_b \leq v \leq u_b
 %
 % fastFVA returns vectors for the initial FBA in FBASOL together with matrices FVAMIN and
@@ -29,19 +29,21 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %    [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
 %
 % INPUTS:
-%   model:             COBRA Model structure
+%   model:             COBRA model structure
 %
-%                        * .S - Stoichiometric matrix
-%                        * .b - Right hand side vector
-%                        * .c - Objective coefficients
-%                        * .lb - Lower bounds
-%                        * .ub - Upper bounds
+%                        * .S - (required) Stoichiometric matrix
+%                        * .b - (required) Right hand side vector
+%                        * .c - (required) Objective coefficients
+%                        * .lb - (required) Lower bounds
+%                        * .ub - (required) Upper bounds
 %                        * .A - (optional) Stoichiometric matrix (with constraints)
-%                        * .csense - Type of constraints, `csense` is a vector with elements `E` (equal), `L` (less than) or `G` (greater than).
+%                        * .csense - (optional) Type of constraints, `csense` is a vector with elements `E` (equal), `L` (less than) or `G` (greater than).
 %   optPercentage:     Only consider solutions that give you at least a certain
 %                      percentage of the optimal solution (default = `100`, equivalent to optimal solutions only)
 %   objective:         Objective ('min' or 'max') (default 'max')
 %   solverName:        name of the solver, default: `ibm_cplex`
+%
+% OPTIONAL INPUTS:
 %   matrixAS:          `A` or `S` - choice of the model matrix, coupled (A) or uncoupled (S)
 %   cpxControl:        Parameter set of CPLEX loaded externally
 %   rxnsList:          List of reactions to analyze (default all rxns, i.e. `1:length(model.rxns)``)
@@ -60,6 +62,8 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %   maxFlux:           Maximum flux for each reaction
 %   optsol:            Optimal solution (of the initial FBA)
 %   ret:               Zero if success (global return code from FVA)
+%
+% OPTIONAL OUTPUTS:
 %   fbasol:            Initial FBA in FBASOL
 %   fvamin:            matrix with flux values for the minimization problem
 %   fvamax:            matrix with flux values for the maximization problem
@@ -75,9 +79,25 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %
 % NOTE:
 %
-%     S. Gudmundsson and I. Thiele, Computationally efficient
-%     Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
-
+%    S. Gudmundsson and I. Thiele, Computationally efficient
+%    Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
+%
+% NOTE:
+%
+%    * Matlab R2014a fully tested on UNIX and DOS Systems
+%    * Matlab R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems
+%    * Matlab R2016b and the MinGW64 compiler are not compatible with the CPLEX 12.6.3 library
+%
+%    The version of fastFVA only supports the CPLEX solver. The code has been tested with
+%    CPLEX 12.6.2, 12.6.3, 12.7.0 and 12.7.1. Install
+%    CPLEX (64-bit) as explained `here`_.
+%    A particular interface, such as TOMLAB, is not needed in order to run fastFVA.
+%    Please note that only the 64-bit versions of CPLEX 12.7.1 are supported.
+%    In order to run the code on 32-bit systems, the appropriate MEX files need to be generated
+%    using generateMexFastFVA().
+%
+% .. _here: https://opencobra.github.io/cobratoolbox/docs/solvers.html
+%
 % .. Authors:
 %       - Original author: Steinn Gudmundsson.
 %       - Contributor: Laurent Heirendt, LCSB
