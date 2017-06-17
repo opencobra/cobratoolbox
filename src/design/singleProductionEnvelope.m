@@ -6,19 +6,31 @@ function singleProductionEnvelope(model, deletions, product, biomassRxn, varargi
 %    singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%    model:          COBRA model structure
-%    deletions:      The reactions or genes to knockout of the model
-%    product:        The product to investigate
-%    biomassRxn:     The biomass objective function rxn name
+%   model:            Type: structure (COBRA model)
+%                     Description: a metabolic model with at least
+%                     the following fields:
+% 
+%                       * .rxns - Reaction IDs in the model
+%                       * .mets - Metabolite IDs in the model
+%                       * .S -    Stoichiometric matrix (sparse)
+%                       * .b -    RHS of Sv = b (usually zeros)
+%                       * .c -    Objective coefficients
+%                       * .lb -   Lower bounds for fluxes
+%                       * .ub -   Upper bounds for fluxes
+%    deletions:       The reactions or genes to knockout of the model
+%    product:         The product to investigate
+%    biomassRxn:      The biomass objective function rxn name
 % OPTIONAL INPUTS:
-%    geneDelFlag:    Perform gene and not reaction deletions
-%                    (Default = false)
-%    nPts:           Number of points to plot for each product
-%                    (Default = 20)
-%
-% OUTPUTS:
-%    x:              The range of rates plotted for product
-%    y:              The plotted growth rates at each x
+%    geneDelFlag:     Perform gene and not reaction deletions
+%                     Default = false
+%    nPts:            Number of points to plot for each product
+%                     Default = 20
+%    savePlot:        Boolean for saving 
+%                     Default = 0;
+%    fileName:        Name of the file where the plot is saved.
+%                     Default = product
+%    outputFolder:    Name of the folder where files are saved
+%                     Default = Results
 %
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
