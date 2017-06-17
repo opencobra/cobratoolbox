@@ -36,6 +36,10 @@ if isempty(CBT_MILP_SOLVER)
     CBT_MILP_SOLVER = 'gurobi';
 end
 
+fullPath = which('optKnockTutorial');
+folder = fileparts(fullPath);
+currectDirectory = pwd;
+cd(folder);
 
 % loading iJO1366
 if nargin<1
@@ -186,8 +190,8 @@ while nIter<threshold
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
         fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
         if strcmp(type,'growth coupled')
-            singleProductionEnvelope(model,SET_M1,'EX_succ_e',biomass,['succ_ex1_' num2str(nIter)]);
-        end
+            singleProductionEnvelope(model, SET_M1, 'EX_succ_e', biomass, 'savePlot', 1, 'fileName', ['succ_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
+        end, 
     else
         if nIter==1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -250,7 +254,7 @@ while nIter<threshold
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
         fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
         if strcmp(type,'growth coupled')
-            singleProductionEnvelope(model,SET_M1,'EX_succ_e',biomass,['succ_ex2_' num2str(nIter)]);
+            singleProductionEnvelope(model, SET_M1, 'EX_succ_e', biomass, 'savePlot', 1, 'fileName', ['succ_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
         end
     else
         if nIter==1
@@ -315,7 +319,7 @@ while nIter<threshold
         if strcmp(type,'growth coupled')
             fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
             fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
-            singleProductionEnvelope(model,SET_M1,'EX_succ_e',biomass,['succ_ex3_' num2str(nIter)]);
+            singleProductionEnvelope(model, SET_M1, 'EX_succ_e', biomass, 'savePlot', 1, 'fileName', ['succ_ex3_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
         end
     else
         if nIter==1
@@ -382,7 +386,7 @@ while nIter<threshold
         fprintf('The solution is of type: %s\n',type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
         fprintf('The maximun and minimun production of lactate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
-        singleProductionEnvelope(model,SET_M1,'EX_lac__D_e',biomass,['lact_ex1_' num2str(nIter)]);
+        singleProductionEnvelope(model, SET_M1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'fileName', ['lact_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
     else
         if nIter==1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -443,7 +447,7 @@ while nIter<threshold
         fprintf('The solution is of type: %s\n',type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
         fprintf('The maximun and minimun production of lactate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
-        singleProductionEnvelope(model,SET_M1,'EX_lac__D_e',biomass,['lact_ex2_' num2str(nIter)]);
+        singleProductionEnvelope(model, SET_M1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'fileName', ['lact_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
     else
         if nIter==1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -504,7 +508,7 @@ while nIter<threshold
         fprintf('The solution is of type: %s\n',type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
         fprintf('The maximun and minimun production of lactate given the optKnock set is %.2f and %.2f, respectively \n\n',minProd,maxProd);
-        singleProductionEnvelope(model,SET_M1,'EX_lac__D_e',biomass,['lact_ex3_' num2str(nIter)]);
+        singleProductionEnvelope(model, SET_M1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'fileName', ['lact_ex3_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
     else
         if nIter==1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -516,5 +520,5 @@ while nIter<threshold
     nIter=nIter+1;
 end
 
-
+cd(currectDirectory);
 end

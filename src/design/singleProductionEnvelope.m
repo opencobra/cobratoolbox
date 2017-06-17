@@ -39,12 +39,12 @@ parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model
     && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
     && isfield(model, 'c'))
 parser.addRequired('deletions', @(x)  iscell(x) && ~isempty(x))
-parser.addRequired('product', @(x) ischar && ~isempty(x))
-parser.addRequired('biomassRxn', @(x) ischar && ~isempty(x))
+parser.addRequired('product', @(x) ischar(x) && ~isempty(x))
+parser.addRequired('biomassRxn', @(x) ischar(x) && ~isempty(x))
 parser.addParameter('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('nPts', 20, @isnumeric);
 parser.addParameter('savePlot', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('outputFileName', product, @(x) ischar(x))
+parser.addParameter('fileName', product, @(x) ischar(x))
 parser.addParameter('outputFolder', 'Results', @(x) ischar(x))
 
 parser.parse(model, deletions, product, biomassRxn, varargin{:})
@@ -115,7 +115,10 @@ plot(max, target, 'Marker', 'o', 'Color', [0 0 0], 'MarkerEdgeColor', [0 0 0], '
 
 if savePlot
     %directory change
+    fullPath = which('optKnockTutorial');
+    folder = fileparts(fullPath);
     currectDirectory = pwd;
+    cd(folder);
     NewDirectory = outputFolder;
     if ~isdir(NewDirectory)
         mkdir(NewDirectory)
@@ -125,6 +128,8 @@ if savePlot
     set(gcf, 'PaperUnits', 'centimeters');
     set(gcf, 'PaperPosition', [0 0 20 10]);
     saveas(gcf,[fileName '.png'])
+    set(gcf, 'PaperOrientation', 'landscape');
+    set(gcf, 'PaperPosition', [1 1 28 19]);
     saveas(f,[fileName '.pdf'])
     close(f);
     cd(currectDirectory)
