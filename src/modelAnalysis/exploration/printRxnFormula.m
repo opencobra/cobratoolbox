@@ -46,16 +46,16 @@ function formulas = printRxnFormula(model, varargin)
 optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup    
+    %Now, we need to check, whether this is a formula, or a complex setup
         tempargin = cell(1,2*(numel(varargin)));
 
         for i = 1:numel(varargin)
-            
+
                 tempargin{2*(i-1)+1} = optionalParameters{i};
                 tempargin{2*(i-1)+2} = varargin{i};
-        end        
+        end
         varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -86,7 +86,7 @@ if gprFlag && ~isfield(model,'grRules')
 end
 
 if metNameFlag && ~isfield(model,'metNames')
-    %if we want to print the metNames, but they don't exist, just use the mets instead. 
+    %if we want to print the metNames, but they don't exist, just use the mets instead.
     warning('metNames requested, but no metNames Field exists in the model, using mets instead');
     model.metNames = model.mets;
 end

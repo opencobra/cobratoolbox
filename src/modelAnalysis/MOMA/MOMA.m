@@ -1,4 +1,4 @@
-function [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)
 % Performs a quadratic version of the MOMA (minimization of
 % metabolic adjustment) approach
 %
@@ -7,63 +7,70 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDe
 %    [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)
 %
 % INPUTS:
-%    modelWT:           Wild type model
-%    modelDel:          Deletion strain model
+%    modelWT:          Wild type model
+%    modelDel:         Deletion strain model
 %
 % OPTIONAL INPUTS:
-%    osenseStr:         Maximize ('max') / minimize ('min') (Default = 'max')
-%    verbFlag:          Verbose output (Default = false)
-%    minNormFlag:       Work with minimum 1-norm flux distribution for the FBA
-%                       problem (Default = false)
+%    osenseStr:        Maximize ('max') / minimize ('min') (Default = 'max')
+%    verbFlag:         Verbose output (Default = false)
+%    minNormFlag:      Work with minimum 1-norm flux distribution for the FBA
+%                      problem (Default = false)
 %
 % OUTPUTS:
-%    solutionDel:       Deletion solution structure
-%    solutionWT:        Wild-type solution structure
-%    totalFluxDiff:     Value of the linear MOMA objective, i.e.
-%                       `sum(v_wt-v_del)^2`
-%    solStatus:         Solution status - solves two different types of MOMA problems:
+%    solutionDel:      Deletion solution structure
+%    solutionWT:       Wild-type solution structure
+%    totalFluxDiff:    Value of the linear MOMA objective, i.e.
+%                      :math:`sum(v_{wt}-v_{del})^2`
+%    solStatus:        Solution status - solves two different types of MOMA problems:
 %
-%                         1.  MOMA that avoids problems with alternative optima (this is the
-%                             default)
-%                         2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
-%                             is used if minNormFlag = true)
-% .. math::
-%      First solve:
-%      max c_wt'*v_wt0
-%      lb_wt <= v_wt0 <= ub_wt
-%      S_wt*v_wt0 = 0
-%
-%      Then solve:
-%      min sum(v_wt - v_del)^2
-%      S_wt*v_wt = 0
-%      S_del*v_del = 0
-%      lb_wt <= v_wt <= ub_wt
-%      lb_del <= v_del <= ub_del
-%      c_wt'*v_wt = f_wt
-%
-%      Here f_wt is the optimal wild type objective value found by FBA in the
-%      first problem. Note that the FBA solution v_wt0 is not used in the second
-%      problem. This formulation avoids any problems with alternative optima
-%
+%                        1.  MOMA that avoids problems with alternative optima (this is the
+%                            default)
+%                        2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
+%                            is used if minNormFlag = true)
+% First solve:
 %
 % .. math::
-%      First solve
-%      max c_wt'*v_wt0
-%      lb_wt <= v_wt0 <= ub_wt
-%      S_wt*v_wt0 = 0
+%      max \quad c_{wt}'*v_{wt0} \\
+%      lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+%      S_{wt}*v_{wt0} = 0 \\
 %
-%      Then solve
-%      min |v_wt|
-%      S_wt*v_wt = b_wt
-%      c_wt'*v_wt = f_wt
-%      lb_wt <= v_wt <= ub_wt
+% Then solve:
 %
-%      Here f_wt is the objective value obtained in the 1st optimization.
+% .. math::
+%      min \quad sum(v_{wt} - v_{del})^2 \\
+%      S_{wt}*v_{wt} = 0 \\
+%      S_{del}*v_{del} = 0 \\
+%      lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%      lb_{del} \leq v_{del} \leq ub_{del} \\
+%      c_{wt}'*v_{wt} = f_{wt} \\
 %
-%      Finally solve:
-%      min sum(v_wt - v_del)^2
-%      S_del*v_del = 0
-%      lb_del <= v_del <= ub_del
+% Here :math:`f_{wt}` is the optimal wild type objective value found by FBA in the
+% first problem. Note that the FBA solution :math:`v_{wt0}` is not used in the second
+% problem. This formulation avoids any problems with alternative optima
+%
+% First solve
+%
+% .. math::
+%      max \quad c_{wt}'*v_{wt0} \\
+%      lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+%      S_{wt}*v_{wt0} = 0 \\
+%
+% Then solve
+%
+% .. math::
+%      min \quad |v_{wt}| \\
+%      S_{wt}*v_{wt} = b_{wt} \\
+%      c_{wt}'*v_{wt} = f_{wt} \\
+%      lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%
+% Here :math:`f_{wt}` is the objective value obtained in the 1st optimization.
+%
+% Finally solve:
+%
+% .. math::
+%      min \quad sum(v_{wt} - v_{del})^2 \\
+%      S_{del}*v_{del} = 0 \\
+%      lb_{del} \leq v_{del} \leq ub_{del}
 %
 % NOTE::
 %

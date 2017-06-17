@@ -1,8 +1,3 @@
-% define global paths
-global GUROBI_PATH
-global ILOG_CPLEX_PATH
-global TOMLAB_PATH
-
 % include the root folder and all subfolders
 addpath(genpath(pwd))
 
@@ -16,7 +11,7 @@ else
 end
 
 % define a success exit code
-exit_code = 0;
+exitCode = 0;
 currentDir = pwd;
 try
     % retrieve the models first
@@ -24,16 +19,25 @@ try
 
     % run an example of sparseLP
     changeCobraSolver('glpk')
-    sparseLP_example;
-    uniformSampling;
+    % tutorial_sparseFBA;
+
     tutorial_IO;
+
     tutorial_modelManipulation;
     tutorial_modelCreation;
+
     tutorial_numCharact;
-    %reset the path.
+
+    tutorial_metabotoolsI;
+    tutorial_metabotoolsII;
+
+    tutorial_uniformSampling;
+
+    % reset the path.
     cd(currentDir)
+
     % ensure that we ALWAYS call exit
-    exit(exit_code);
+    exit(exitCode);
 catch
     exit(1);
 end

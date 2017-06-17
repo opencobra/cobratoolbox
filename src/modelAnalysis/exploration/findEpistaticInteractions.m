@@ -1,4 +1,4 @@
-function [interactions,epistaticEffect] = findEpistaticInteractions(model,doubleDeletionFitness,lethalFlag,minEffect)
+function [interactions, epistaticEffect] = findEpistaticInteractions(model, doubleDeletionFitness, lethalFlag, minEffect)
 % Finds synthetic lethal and/or synthetic sick
 % interactions based on double deletion analysis data
 %
@@ -7,24 +7,24 @@ function [interactions,epistaticEffect] = findEpistaticInteractions(model,double
 %    [interactions, epistaticEffect] = findEpistaticInteractions(model, doubleDeletionFitness, lethalFlag, minEffect)
 %
 % INPUTS:
-%    model:                 COBRA model structure
-%    doubleDeletionFitness: A matrix of fitness (or growth rate) values for
-%                           each of the double deletion strains. The diagonal
-%                           of this matrix contains the single deletion fitness values.
+%    model:                    COBRA model structure
+%    doubleDeletionFitness:    A matrix of fitness (or growth rate) values for
+%                              each of the double deletion strains. The diagonal
+%                              of this matrix contains the single deletion fitness values.
 %
 % OPTIONAL INPUTS:
-%    lethalFlag:            Only consider SL interactions (Default = false)
-%    minEffect:             Minimum fitness effect considered to be significant
-%                           (Default = 1e-2)
+%    lethalFlag:               Only consider SL interactions (Default = false)
+%    minEffect:                Minimum fitness effect considered to be significant
+%                              (Default = 1e-2)
 %
 % OUTPUTS:
-%    interactions:          A sparse binary matrix indicating a SL or SS
-%                           interaction between two genes in the model
-%    epistaticEffect:       Magnitude of the epistatic interaction defined as
-%                           min(f1-f12, f2-f12) where f1 and f2 are the fitness
-%                           values for the deletion strain of gene 1 and gene 2
-%                           respectively and f12 is the fitness value for the
-%                           double deletion strain of genes 1 and 2
+%    interactions:             A sparse binary matrix indicating a SL or SS
+%                              interaction between two genes in the model
+%    epistaticEffect:          Magnitude of the epistatic interaction defined as
+%                              min(f1-f12, f2-f12) where f1 and f2 are the fitness
+%                              values for the deletion strain of gene 1 and gene 2
+%                              respectively and f12 is the fitness value for the
+%                              double deletion strain of genes 1 and 2
 %
 % NOTE:
 %

@@ -1,40 +1,40 @@
 function MDFBAProblem = buildMDFBAProblem(model, varargin)
-% creates a MDFBA problem from the provided model.
+% Creates a MDFBA problem from the provided model.
 %
-% USAGE: 
+% USAGE:
+%
 %    MDFBAProblem = buildMDFBAProblem(model, varargin)
 %
 % INPUT:
+%    model:           A COBRA style model with the following fields:
 %
-%    model:         A COBRA style model with the following fields:
-%                     * S       - Stoichiometric Matrix
-%                     * lb      - lower bounds
-%                     * ub      - upper bounds
-%                     * b       - metabolic constraints
-%                     * c       - objective coefficients
-%                     * csense  - Constraint senses (optional, default Equality)
-%                     * osense  - Optimisation sense (optional, default maximisation)
+%                       * S       - Stoichiometric Matrix
+%                       * lb      - lower bounds
+%                       * ub      - upper bounds
+%                       * b       - metabolic constraints
+%                       * c       - objective coefficients
+%                       * csense  - Constraint senses (optional, default Equality)
+%                       * osense  - Optimisation sense (optional, default maximisation)
 %
 % OPTIONAL INPUTS:
+%    varargin:        Variable arguments as parameter/value pairs:
 %
-%    varargin:      Variable arguments as parameter/value pairs
-%                   * 'ignoredMets' - Metabolites that do not need to be
-%                     produced, even if used.
-%                   * 'minProd'     - the minimal production, if a
-%                     metabolite is used, default(max(ub,abs(lb))/10000)
+%                       * 'ignoredMets' - Metabolites that do not need to be
+%                         produced, even if used.
+%                       * 'minProd' - the minimal production, if a
+%                         metabolite is used, default(max(ub,abs(lb))/10000)
 %
 % OUTPUT:
-% 
-%    MDFBAProblem:  The MILPproblem structure representing the MDFBA
-%                   problem
+%    MDFBAProblem:    The MILPproblem structure representing the MDFBA
+%                     problem
 %
 % NOTE:
+%
 %    Implementation based on description in:
-%    `Benyamini et al. "Flux balance analysis accounting for metabolite 
-%    dilution." Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43
+%    `Benyamini et al. "Flux balance analysis accounting for metabolite
+%    dilution." Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43`
 %
 % .. Author:   - Thomas Pfau (June 2017)
-%
 
 parser = inputParser();
 parser.addRequired('model',@isstruct)
@@ -51,7 +51,7 @@ MILPproblem = struct();
 %We need the following constraints:
 %S * v - d = 0;
 %if met i is used, then  d = minprod
-%Vars will be: 
+%Vars will be:
 % Rxns,k,d,i_act,y
 % d,i_act and y will only be generated for non ignored metabolites.
 %Constraints will be:
@@ -89,7 +89,7 @@ if isfield(model,'csense')
 else
     csense = [repmat('E',size(model.mets));repmat('G',2*nRxns,1);repmat('E',nRelMets,1);repmat('G',nRelMets,1);repmat('E',nRelMets,1)];
 end
-%All a continous except for the indicators (y).    
+%All a continous except for the indicators (y).
 vartype = [repmat('C',2*nRxns,1);repmat('C',2*nRelMets,1),;repmat('B',nRelMets,1)];
 
 A = [model.S, sparse(nMets,nRxns), -metspeyeA, sparse(nMets,2*nRelMets);...
@@ -98,8 +98,7 @@ A = [model.S, sparse(nMets,nRxns), -metspeyeA, sparse(nMets,2*nRelMets);...
      sparse(nRelMets,nRxns),abs(model.S(relmets,:)),sparse(nRelMets,nRelMets),-metspeyeB, sparse(nRelMets,nRelMets);...
      sparse(nRelMets,nRxns),sparse(nRelMets,nRxns),sparse(nRelMets,nRelMets),-metspeyeB, -M1*metspeyeB;...
      sparse(nRelMets,nRxns),sparse(nRelMets,nRxns),metspeyeB,sparse(nRelMets, nRelMets), minprod*metspeyeB];
- 
+
 %And create the COBRA MILP struct
 MDFBAProblem = struct('A', A, 'b', b, 'c', c, 'osense', osense,...
                     'lb',lb,'ub',ub,'csense',csense,'vartype',vartype,'x0',zeros(size(A,2),1));
-                

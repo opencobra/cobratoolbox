@@ -18,19 +18,19 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %    [modelJoint] = createMultipleSpeciesModel(models, nameTagsModels, modelHost, nameTagHost)
 %
 % INPUTS:
-%    models:     cell array of COBRA models(at least one).
-%                Format
+%    models:            cell array of COBRA models(at least one).
+%                       Format
 %
-%                   * models{1,1} = model 1
-%                   * models{2,1} = model 2...
+%                         * models{1,1} = model 1
+%                         * models{2,1} = model 2...
 %
 % OPTIONAL INPUTS:
 %    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
 %                       corresponding to each model.
 %                       Format
 %
-%                           * nameTagsModels{1,1} = 'name tag 1'
-%                           * nameTagsModels{2,1} = 'name tag 2'...
+%                         * nameTagsModels{1,1} = 'name tag 1'
+%                         * nameTagsModels{2,1} = 'name tag 2'...
 %    modelHost:         COBRA model for host
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
 %
@@ -39,8 +39,6 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 2011-2017 Last edited by A.H., 01.03.2017
-%
-
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -74,7 +72,7 @@ presentinallModels = fieldnames(models{1});
 missingFields = {};
 for i = 2:modelNumber
     cfields = fieldnames(models{i});
-    missingFields = union(missingFields,setxor(cfields,presentinallModels));    
+    missingFields = union(missingFields,setxor(cfields,presentinallModels));
     presentinallModels = intersect(presentinallModels,cfields);
 end
 fprintf('The following fields are missing in several models, they will not be merged:\n');

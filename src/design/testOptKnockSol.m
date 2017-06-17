@@ -1,4 +1,4 @@
-function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)
+function [growthRate, minProd, maxProd] = testOptKnockSol(model, targetRxn, deletions)
 % Tests an `OptKnock` knockout strain
 %
 % USAGE:

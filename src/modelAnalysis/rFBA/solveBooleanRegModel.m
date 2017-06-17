@@ -1,11 +1,10 @@
-function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)
+function [finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel(model, initialState, inputs1States, inputs2States)
 % Determines the next state of the regulatory network based on the current state.
-% Called by optimizeRegModel and dynamicRFBA
-% 
+% Called by `optimizeRegModel` and `dynamicRFBA`
+%
 % USAGE:
 %
-%    [finalState, finalInputs1States, finalInputs2States] =
-%    solveBooleanRegModel(model, initialState, inputs1States, inputs2States)
+%    [finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel(model, initialState, inputs1States, inputs2States)
 %
 % INPUTS:
 %    model:                 a regulatory COBRA model
@@ -20,13 +19,11 @@ function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegMod
 %
 % .. Authors: - Jeff Orth  7/24/08
 
-
-
 finalInputs1States = [];
 % determine state of inputs
 
 % determine external metabolite levels from exchange rxn bounds (maybe change this later)
-[selExc,selUpt] = findExcRxns(model); %get all exchange rxns 
+[selExc,selUpt] = findExcRxns(model); %get all exchange rxns
 for i = 1:length(model.regulatoryInputs1)
     met = model.regulatoryInputs1{i};
     fullS = full(model.S);
@@ -36,12 +33,12 @@ for i = 1:length(model.regulatoryInputs1)
     else
         finalInputs1States(i,1) = false;
     end
-end    
+end
 
 % apply initialState to model, get rxn fluxes
 drGenes = {};
 for i = 1:length(model.regulatoryGenes)
-    if initialState(i) == false 
+    if initialState(i) == false
         drGenes{length(drGenes)+1} = model.regulatoryGenes{i};
     end
 end
@@ -74,7 +71,7 @@ for i = 1:length(model.regulatoryRules)
 end
 
 finalState = geneStates;
-    
+
 
 %% parseRegulatoryRules
 function ruleList = parseRegulatoryRules(model)
@@ -86,7 +83,7 @@ for i = 1:length(model.regulatoryRules)
     newFields = fields;
     for j = 1:length(fields) %iterate through words and replace
         word = fields{j};
-        if strcmp(word,'true') 
+        if strcmp(word,'true')
             newFields{j} = 'true';
         elseif strcmp(word,'false')
             newFields{j} = 'false';
@@ -111,5 +108,3 @@ for i = 1:length(model.regulatoryRules)
     end
     ruleList{i} = newRule;
 end
-    
-

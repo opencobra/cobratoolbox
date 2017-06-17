@@ -1,4 +1,4 @@
-function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)
+function [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(model, method, rxnList, verbFlag)
 % Performs single reaction deletion analysis using FBA, MOMA or linearMOMA
 %
 % USAGE:
@@ -6,20 +6,20 @@ function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDe
 %    [grRatio, grRateKO, grRateWT, hasEffect, delRxns, hasEffect] = singleRxnDeletion(model, method, rxnList, verbFlag)
 %
 % INPUT:
-%    model:         COBRA model structure including reaction names
+%    model:           COBRA model structure including reaction names
 %
 % OPTIONAL INPUTS:
-%    method:        Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
-%    rxnList:       List of reactions to be deleted (Default = all reactions)
-%    verbFlag:      Verbose output (Default = false)
+%    method:          Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
+%    rxnList:         List of reactions to be deleted (Default = all reactions)
+%    verbFlag:        Verbose output (Default = false)
 %
 % OUTPUTS:
-%    grRatio:       Computed growth rate ratio between deletion strain and wild type
-%    grRateKO:      Deletion strain growth rates (1/h)
-%    grRateWT:      Wild type growth rate (1/h)
-%    hasEffect:     Does a reaction deletion affect anything
-%    delRxn:        Deleted reaction
-%    fluxSolution:  FBA/MOMA/lMOMA fluxes for `KO` strains
+%    grRatio:         Computed growth rate ratio between deletion strain and wild type
+%    grRateKO:        Deletion strain growth rates (1/h)
+%    grRateWT:        Wild type growth rate (1/h)
+%    hasEffect:       Does a reaction deletion affect anything
+%    delRxn:          Deleted reaction
+%    fluxSolution:    FBA/MOMA/lMOMA fluxes for `KO` strains
 %
 % .. Author: - Richard Que 12/04/2009 Based on singleGeneDeletion.m written by Markus Herrgard
 
@@ -70,7 +70,7 @@ for i = 1:nDelRxns
         grRateKO(i) = NaN;
     end
     if (verbFlag)
-        fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelRxns,rnxList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
+        fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelRxns,rxnList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
     end
 end
 

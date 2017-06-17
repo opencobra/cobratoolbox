@@ -6,14 +6,14 @@ function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnList
 %    [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
 %
 % INPUTS:
-%    rxn_vector_matrix:
-%    model:
-%    targetRxn:
-%    rxnListInput:
-%    isGeneList:
+%    rxn_vector_matrix:    reactions vectors in a matrix
+%    model:                model structure
+%    targetRxn:            target reactions
+%    rxnListInput:         list of reactions
+%    isGeneList:           bolean checking if it is a gene list
 %
 % OUTPUT:
-%    val:   fitness value
+%    val:                  fitness value
 
 global MaxKnockOuts
 %size(rxn_vector_matrix)

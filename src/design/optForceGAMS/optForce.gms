@@ -150,7 +150,7 @@ UB(j)
 optforce
 ;
 
-$if not set gdxin $set gdxin MtoG
+$if not set gdxin $set gdxin MtoGOF
 $GDXIN %myroot%%gdxin%
 $LOAD k nMax s basemin basemax b lb ub phenomin phenomax
 $GDXIN

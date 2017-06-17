@@ -1,4 +1,4 @@
-function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)
+function [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns)
 % Analyzes results with replacement knockouts
 % should get closer to local maxima.  must have num `KOs` > 1
 %

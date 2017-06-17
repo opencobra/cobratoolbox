@@ -1,4 +1,4 @@
-function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)
+function [wtRes, delRes] = simpleOptKnock(model, targetRxn, deletions, geneDelFlag, minGrowth, doubleDelFlag)
 % Simple `OptKnock` is used to check all one gene or reaction deletions for
 % growth-coupled metabolite production
 %
@@ -7,19 +7,19 @@ function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,m
 %    [wtRes, delRes] = simpleOptKnock(model, targetRxn, deletions, geneDelFlag, minGrowth, doubleDelFlag)
 %
 % INPUTS:
-%    model:           COBRA model structure
-%    targetRxn:       Target metabolite production reaction
+%    model:            COBRA model structure
+%    targetRxn:        Target metabolite production reaction
 %
 % OPTIONAL INPUTS:
-%    deletions:       Set of gene or reaction deletions to consider for `KO`
-%                     (Default = all reactions)
-%    geneDelFlag:     Gene deletion flag (Default = false)
-%    minGrowth:       Minimum `KO` growth rate (Default = 0.05)
-%    doubleDelFlag:   Double deletions (Default = false)
+%    deletions:        Set of gene or reaction deletions to consider for `KO`
+%                      (Default = all reactions)
+%    geneDelFlag:      Gene deletion flag (Default = false)
+%    minGrowth:        Minimum `KO` growth rate (Default = 0.05)
+%    doubleDelFlag:    Double deletions (Default = false)
 %
 % OUTPUTS:
-%    wtRes:           Wild type results
-%    delRes:          Deletion strain results
+%    wtRes:            Wild type results
+%    delRes:           Deletion strain results
 %
 % .. Author: - Markus Herrgard 2/14/07
 %

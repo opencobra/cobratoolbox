@@ -1,34 +1,33 @@
-function [concentrationMatrix,excRxnNames,timeVec,biomassVec,drGenes,constrainedRxns,states] = ...
-    dynamicRFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)
+function [concentrationMatrix, excRxnNames, timeVec, biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
 % Performs dynamic rFBA simulation using the static optimization approach
-% 
+%
 % USAGE:
 %
 %    [concentrationMatrix, excRxnNames, timeVec,biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
 %
 % INPUTS:
-%    model:                 a regulatory COBRA model
-%    substrateRxns:         list of exchange reaction names for substrates
-%                           initially in the media that may change (i.e. not
-%                           h2o or co2)
-%    initConcentrations:    initial concentrations of substrates (in the same
-%                           structure as substrateRxns)
-%    initBiomass:           initial biomass
-%    timeStep:              time step size
-%    nSteps:                maximum number of time steps
-%    plotRxns:              reactions to be plotted
-%    exclUptakeRxns:        list of uptake reactions whose substrate
-%                           concentrations do not change (opt, default
-%                           {'EX_co2(e)', 'EX_o2(e)', 'EX_h2o(e)', 'EX_h(e)'})
+%    model:                  a regulatory COBRA model
+%    substrateRxns:          list of exchange reaction names for substrates
+%                            initially in the media that may change (i.e. not
+%                            h2o or co2)
+%    initConcentrations:     initial concentrations of substrates (in the same
+%                            structure as substrateRxns)
+%    initBiomass:            initial biomass
+%    timeStep:               time step size
+%    nSteps:                 maximum number of time steps
+%    plotRxns:               reactions to be plotted
+%    exclUptakeRxns:         list of uptake reactions whose substrate
+%                            concentrations do not change (opt, default
+%                            {'EX_co2(e)', 'EX_o2(e)', 'EX_h2o(e)', 'EX_h(e)'})
 %
 % OUTPUTS:
-%    concentrationMatrix:   matrix of extracellular metabolite concentrations
-%    excRxnNames:           names of exchange reactions for the EC metabolites
-%    timeVec:               vector of time points
-%    biomassVec:            vector of biomass values
-%    drGenes:               vector of downregulated genes
-%    constrainedRxns:       vector of downregulated reactions
-%    states:                vector of regulatory network states
+%    concentrationMatrix:    matrix of extracellular metabolite concentrations
+%    excRxnNames:            names of exchange reactions for the EC metabolites
+%    timeVec:                vector of time points
+%    biomassVec:             vector of biomass values
+%    drGenes:                vector of downregulated genes
+%    constrainedRxns:        vector of downregulated reactions
+%    states:                 vector of regulatory network states
 %
 % If no initial concentration is given for a substrate that has an open
 % uptake in the model (i.e. model.lb < 0) the concentration is assumed to
@@ -71,7 +70,7 @@ if (~isempty(missingInd))
 end
 
 % Initialize concentrations
-[~, substrateMatchInd] = ismember(substrateRxns,excRxnNames); 
+[~, substrateMatchInd] = ismember(substrateRxns,excRxnNames);
 concentrations = zeros(length(excRxnNames),1);
 concentrations(substrateMatchInd) = initConcentrations;
 

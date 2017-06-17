@@ -6,17 +6,17 @@ function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnLis
 %    [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)
 %
 % INPUTS:
-%    model:
-%    targetRxn:
-%    substrateRxn:
-%    generxnList:
-%    population:
-%    x:                 The best solution
-%    scores:
-%    isGeneList:
+%    model:           model structure
+%    targetRxn:       target reactions
+%    substrateRxn:    substrate reactions
+%    generxnList:     List of genes or `rxns` which can be knocked out
+%    population:      population matrix
+%    x:               the best solution
+%    scores:          an array of scores
+%    isGeneList:      boolean
 %
 % OUTPUT:
-%    optGeneSol:        Solution in the desired format
+%    optGeneSol:      Solution in the desired format
 
 writeDirect = 'C:\';
 % writeDirect where the files should be saved

@@ -1,5 +1,4 @@
-function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,...
-    selRxnMatch,constrOpt,measOpt,options,selPrevSol)
+function bilevelMILPproblem = createBilevelMILPproblem(model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol)
 % Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner
 % and outer problem objective functions
 %
@@ -8,41 +7,41 @@ function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,se
 %    bilevelMILPproblem = createBilevelMILPProblem(model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol);
 %
 % INPUTS:
-%    model:         Model in irreversible format
-%    cLinear:       Objective for linear part of the MILP problem (i.e. for fluxes)
-%    cInteger:      Objective for integer part of the MILP problem
-%    selRxns:       Reactions that participate in the integer part (e.g. ones
-%                   that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
-%    selRxnMatch:   Matching of the forward and reverse parts
-%    constrOpt:     Constraint options 
+%    model:                 Model in irreversible format
+%    cLinear:               Objective for linear part of the MILP problem (i.e. for fluxes)
+%    cInteger:              Objective for integer part of the MILP problem
+%    selRxns:               Reactions that participate in the integer part (e.g. ones
+%                           that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
+%    selRxnMatch:           Matching of the forward and reverse parts
+%    constrOpt:             Constraint options
 %
-%                     *  rxnInd
-%                     *  values
-%                     *  sense
-%    measOpt:      Measured flux options
+%                             *  rxnInd
+%                             *  values
+%                             *  sense
+%    measOpt:               Measured flux options
 %
-%                     *  rxnSel
-%                     *  values
-%                     *  weights
-%    options:      General options
+%                             *  rxnSel
+%                             *  values
+%                             *  weights
+%    options:               General options
 %
-%                     *  vMax - Maximal/minimal value for cont variables
-%                     *  numDel - Number of deletions
-%                     *  numDelSense - # of `ko` <=/=/>= K (L/E/G)
-%    selPrevSol:   Previous solutions (optional)
+%                             *  vMax - Maximal/minimal value for cont variables
+%                             *  numDel - Number of deletions
+%                             *  numDelSense - # of `ko` <=/=/>= K (L/E/G)
+%    selPrevSol:            Previous solutions (optional)
 %
 % OUTPUTS:
-%    bilevelMILPproblem:
+%    bilevelMILPproblem:    struct with:
 %
-%                          *  A - LHS matrix
-%                          *  b - RHS
-%                          *  c - Objective
-%                          *  csense - Constraint types
-%                          *  lb - Lower bounds
-%                          *  ub - Upper bounds
-%                          *  vartype - Variable types
-%                          *  contSolInd - Allows selecting the continuous solution (i.e. fluxes)
-%                          *  intsSolInd - Allows selecting the integer solution (i.e. what reactions are used)
+%                             *  A - LHS matrix
+%                             *  b - RHS
+%                             *  c - Objective
+%                             *  csense - Constraint types
+%                             *  lb - Lower bounds
+%                             *  ub - Upper bounds
+%                             *  vartype - Variable types
+%                             *  contSolInd - Allows selecting the continuous solution (i.e. fluxes)
+%                             *  intsSolInd - Allows selecting the integer solution (i.e. what reactions are used)
 %
 % .. Author: - Markus Herrgard 5/27/05
 %
@@ -55,7 +54,6 @@ function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,se
 % .. 5/27/05 Added ability to rule out particular integer solutions (i.e.
 % .. existing solutions) MH
 % .. 6/10/05 Added ability to delimit fluxes to a certain range
-
 
 S = model.S;
 ub = model.ub;

@@ -7,14 +7,13 @@ function [allRxns, rxnCount] = analyzeRxns(product, listProducts, listRxns)
 %    [allRxns, rxnCount] = analyzeRxns(product, listProducts, listRxns)
 %
 % INPUTS:
-%    product:          the product to investigate
-%    listProducts:     the list of all products produced in a RandKnock
-%    listRxns:         the list of all rxns knocked out in a RandKnock
+%    product:         the product to investigate
+%    listProducts:    the list of all products produced in a RandKnock
+%    listRxns:        the list of all rxns knocked out in a RandKnock
 %
 % OUTPUTS:
-%    allRxns:          all of the rxns knocked out in strains producing the
-%                      product
-%    rxnCount:         the number of times each rxn was knocked out
+%    allRxns:         all of the rxns knocked out in strains producing the product
+%    rxnCount:        the number of times each rxn was knocked out
 %
 % .. Author: Jeff Orth (6/20/07)
 

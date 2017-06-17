@@ -7,16 +7,17 @@ function [solution] = enumerateOptimalSolutions(model)
 %    [solution] = enumerateOptimalSolution(model)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:       COBRA model structure
 %
 % OUTPUT:
-%    solution:      solution structure
+%    solution:    solution structure
 %
-%      * fluxes - Flux distribution for each iteration
-%      * nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration
+%                   * fluxes - Flux distribution for each iteration
+%                   * nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration
 %
-% .. Author: - Jan Schellenberger, August 2008 - Based on code by Jennie Reed
-% .. Reed, J.L. and Palsson, B.O., "Genome-scale in silico models of ''E. coli'' have multiple equivalent phenotypic states: assessment of correlated reaction subsets that comprise network states" , Genome Research, 14:1797-1805(2004).
+% .. Authors:
+%       - Jan Schellenberger, August 2008 - Based on code by Jennie Reed
+%       - Reed, J.L. and Palsson, B.O., "Genome-scale in silico models of ''E. coli'' have multiple equivalent phenotypic states: assessment of correlated reaction subsets that comprise network states" , Genome Research, 14:1797-1805(2004).
 
 
 [m,n] = size(model.S);

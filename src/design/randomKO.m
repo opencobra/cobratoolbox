@@ -1,4 +1,4 @@
-function [products,productRates,KOrxns,BOF] = randomKO(modelRed,selectedRxns,N)
+function [products, productRates, KOrxns, BOF] = randomKO(modelRed, selectedRxns, N)
 % Knocks out `N` random genes and reports products from FBA
 %
 % USAGE:
@@ -6,17 +6,17 @@ function [products,productRates,KOrxns,BOF] = randomKO(modelRed,selectedRxns,N)
 %    [products, productRates, KOrxns, BOF] = randomKO(modelRed, selectedRxns, N)
 %
 % INPUTS:
-%    modelRed:         a reduced model (from the `reduceModel.m` function)
-%    selectedRxns:     the reactions eligible for deletion (from the
-%                      `getOptKnockTargets.m` function)
-%    N:                the number of reactions to randomly knockout
+%    modelRed:        a reduced model (from the `reduceModel.m` function)
+%    selectedRxns:    the reactions eligible for deletion (from the
+%                     `getOptKnockTargets.m` function)
+%    N:               the number of reactions to randomly knockout
 %
 % OUTPUTS:
-%    products:         the exchange reactions that produce a siginifcant output
-%    productRates:     the rates of those exhange reactions
-%    KOrxns:           the `N` reactions randomly knocked out
-%    BOF:              the value of the biomass objective function of the
-%                      knockout strain
+%    products:        the exchange reactions that produce a siginifcant output
+%    productRates:    the rates of those exhange reactions
+%    KOrxns:          the `N` reactions randomly knocked out
+%    BOF:             the value of the biomass objective function of the
+%                     knockout strain
 %
 % .. Author: - Jeff Orth (5/15/07)
 

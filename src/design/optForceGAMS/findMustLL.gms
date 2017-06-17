@@ -112,7 +112,7 @@ vmin(j), vmax(j)
 findMustLL
 ;
 
-$if not set gdxin $set gdxin MtoG
+$if not set gdxin $set gdxin MtoGLL
 $GDXIN %myroot%%gdxin%
 $LOAD s basemin basemax b lb ub
 $GDXIN

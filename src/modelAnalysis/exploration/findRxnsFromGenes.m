@@ -6,19 +6,19 @@ function [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, L
 %    [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
 %
 % INPUTS:
-%    model:                 COBRA model structure
-%    genes:                 string of single gene or cell array of multiple
-%                           genes for which `rxns` are desired.
+%    model:              COBRA model structure
+%    genes:              string of single gene or cell array of multiple
+%                        genes for which `rxns` are desired.
 %
 % OPTIONAL INPUTS:
-%    numericFlag:           1 if using Human Recon  (Default = 0)
-%    ListResultsFlag:       1 if you want to output `ListResults` (Default = 0)
+%    numericFlag:        1 if using Human Recon  (Default = 0)
+%    ListResultsFlag:    1 if you want to output `ListResults` (Default = 0)
 %
 % OUTPUTS:
-%    results:               structure containing cell arrays for each gene.
-%                           Each cell array has one column of rxn abbreviations
-%                           and one column containing the reaction formula
-%    ListResults:           same as above, but in a cell array
+%    results:            structure containing cell arrays for each gene.
+%                        Each cell array has one column of rxn abbreviations
+%                        and one column containing the reaction formula
+%    ListResults:        same as above, but in a cell array
 %
 % .. Author:
 %       - Nathan Lewis 02/16/08

@@ -7,10 +7,10 @@ function orphans = findOrphanRxns(model)
 %    orphans = findOrphanRxns(model)
 %
 % INPUT:
-%    model:         a COBRA model with GPRs
+%    model:      a COBRA model with GPRs
 %
 % OUTPUT:
-%    orphans:       all orphan reactions in the model
+%    orphans:    all orphan reactions in the model
 %
 % .. Author: - Jeff Orth 4/15/09
 

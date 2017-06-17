@@ -1,4 +1,4 @@
-function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)
+function [x1, x2, y] = doubleProductionEnvelope(model, deletions, prod1, prod2, biomassRxn, geneDelFlag, nPts)
 % Plots maximum growth rate as a function of the
 % output of two specified products
 %
@@ -7,23 +7,23 @@ function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomas
 %    [x1, x2, y] = doubleProductionEnvelope(model, deletions, prod1, prod2, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    deletions:     The reactions or genes to knockout of the model
-%    prod1:         One of the two products to investigate
-%    prod2:         The other product to investigate
+%    model:          COBRA model structure
+%    deletions:      The reactions or genes to knockout of the model
+%    prod1:          One of the two products to investigate
+%    prod2:          The other product to investigate
 %
 % OPTIONAL INPUTS:
-%    biomassRxn:    The biomass objective function rxn name
-%                   (Default = 'biomass_SC4_bal')
-%    geneDelFlag:   Perform gene and not reaction deletions
-%                   (Default = false)
-%    nPts:          Number of points to plot for each product
-%                   (Default = 20)
+%    biomassRxn:     The biomass objective function rxn name
+%                    (Default = 'biomass_SC4_bal')
+%    geneDelFlag:    Perform gene and not reaction deletions
+%                    (Default = false)
+%    nPts:           Number of points to plot for each product
+%                    (Default = 20)
 %
 % OUTPUTS:
-%    x1:            The range of rates plotted for `prod1`
-%    x2:            The range of rates plotted for `prod2`
-%    y:             The plotted growth rates at each (`x1`, `x2`)
+%    x1:             The range of rates plotted for `prod1`
+%    x2:             The range of rates plotted for `prod2`
+%    y:              The plotted growth rates at each (`x1`, `x2`)
 %
 % .. Author: - Jeff Orth  9/12/07
 

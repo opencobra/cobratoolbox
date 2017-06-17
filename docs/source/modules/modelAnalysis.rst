@@ -19,7 +19,8 @@ Model analysis
    #thermo
    topology
    transport
+   coupling
+   mdFBA
 
 .. automodule:: src.modelAnalysis
    :members:
-

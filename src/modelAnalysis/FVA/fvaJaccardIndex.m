@@ -6,13 +6,13 @@ function J = fvaJaccardIndex(minFlux, maxFlux)
 %     J = fvaJaccardIndex(minFlux, maxFlux);
 %
 % INPUTS:
-%     minFlux:    An `n` x `k` matrix of minimum fluxes through `n` reactions in `k`
+%     minFlux:    An `n x k` matrix of minimum fluxes through `n` reactions in `k`
 %                 different constraint-based models (`k > 1`).
-%     maxFlux:    An `n` x `k` matrix of maximum fluxes through n reactions in `k`
+%     maxFlux:    An `n x k` matrix of maximum fluxes through n reactions in `k`
 %                 different constraint-based models (`k > 1`).
 %
 % OUTPUT:
-%    J:           An `n` x 1 vector of Jaccard indices, defined as the
+%    J:           An `n x 1` vector of Jaccard indices, defined as the
 %                 intersection divided by the union of all `k` flux ranges
 %
 % .. Authors:

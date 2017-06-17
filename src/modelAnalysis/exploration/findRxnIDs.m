@@ -1,4 +1,4 @@
-function rxnID = findRxnIDs(model,rxnList)
+function rxnID = findRxnIDs(model, rxnList)
 % Finds reaction numbers in a model
 %
 % USAGE:
@@ -6,11 +6,11 @@ function rxnID = findRxnIDs(model,rxnList)
 %    rxnID = findRxnIDs(model, rxnList)
 %
 % INPUTS:
-%    model:     COBRA model strcture
-%    rxnList:   List of reactions
+%    model:      COBRA model strcture
+%    rxnList:    List of reactions
 %
 % OUTPUT:
-%    rxnID:     IDs for reactions corresponding to rxnList
+%    rxnID:      IDs for reactions corresponding to rxnList
 %
 % .. Author: -  Markus Herrgard 4/21/06
 

@@ -1,5 +1,5 @@
 function retStatus = printMatrix(A, format, file)
-% printMatrix Prints matrix into a file or screen
+% Prints matrix into a file or screen
 %
 % USAGE:
 %
