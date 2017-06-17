@@ -19,7 +19,7 @@ try
 
     % run an example of sparseLP
     changeCobraSolver('glpk')
-    sparseLP_example;
+    tutorial_sparseFBA;
 
     tutorial_IO;
 
