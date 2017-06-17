@@ -216,12 +216,12 @@ Boolean variable for requesting explicitly if the files should be removed</li>
 Solves LPs of the form:</p>
 <div class="math">
 \[\begin{split}\forall ~ v_j: ~&amp;~ max/min ~&amp;~ v_j\\
-             ~&amp;~ s.t.    ~&amp;~ S v = b\\
+             ~&amp;~ s.t.    ~&amp;~ Sv = b\\
              ~&amp;~         ~&amp;~ l_b \leq v \leq u_b\end{split}\]</div>
 <p>If the optional fields are supplied, following LPs are solved</p>
 <div class="math">
 \[\begin{split}\forall ~ v_j: ~&amp;~ max/min ~&amp;~ v_j\\
-             ~&amp;~ s.t.    ~&amp;~ Av {\leq | = | \geq} b\\
+             ~&amp;~ s.t.    ~&amp;~ Av (c_sense) b\\
              ~&amp;~         ~&amp;~ l_b \leq v \leq u_b\end{split}\]</div>
 <p>fastFVA returns vectors for the initial FBA in FBASOL together with matrices FVAMIN and
 FVAMAX containing the flux values for each individual min/max problem.
@@ -236,14 +236,14 @@ minFlux and maxFlux are defined (all remaining entries are zero).</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-COBRA Model structure<ul>
-<li>.S - Stoichiometric matrix</li>
-<li>.b - Right hand side vector</li>
-<li>.c - Objective coefficients</li>
-<li>.lb - Lower bounds</li>
-<li>.ub - Upper bounds</li>
+COBRA model structure<ul>
+<li>.S - (required) Stoichiometric matrix</li>
+<li>.b - (required) Right hand side vector</li>
+<li>.c - (required) Objective coefficients</li>
+<li>.lb - (required) Lower bounds</li>
+<li>.ub - (required) Upper bounds</li>
 <li>.A - (optional) Stoichiometric matrix (with constraints)</li>
-<li>.csense - Type of constraints, <cite>csense</cite> is a vector with elements <cite>E</cite> (equal), <cite>L</cite> (less than) or <cite>G</cite> (greater than).</li>
+<li>.csense - (optional) Type of constraints, <cite>csense</cite> is a vector with elements <cite>E</cite> (equal), <cite>L</cite> (less than) or <cite>G</cite> (greater than).</li>
 </ul>
 </li>
 <li><strong>optPercentage</strong> &#8211;
@@ -253,6 +253,11 @@ percentage of the optimal solution (default = <cite>100</cite>, equivalent to op
 Objective (&#8216;min&#8217; or &#8216;max&#8217;) (default &#8216;max&#8217;)</li>
 <li><strong>solverName</strong> &#8211;
 name of the solver, default: <cite>ibm_cplex</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>matrixAS</strong> &#8211;
 <cite>A</cite> or <cite>S</cite> - choice of the model matrix, coupled (A) or uncoupled (S)</li>
 <li><strong>cpxControl</strong> &#8211;
@@ -284,6 +289,11 @@ Maximum flux for each reaction</li>
 Optimal solution (of the initial FBA)</li>
 <li><strong>ret</strong> &#8211;
 Zero if success (global return code from FVA)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>fbasol</strong> &#8211;
 Initial FBA in FBASOL</li>
 <li><strong>fvamin</strong> &#8211;
@@ -306,6 +316,21 @@ vector of solution status for each reaction (maximization)</li>
 <p class="first admonition-title">Note</p>
 <p class="last">S. Gudmundsson and I. Thiele, Computationally efficient
 Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="simple">
+<li>Matlab R2014a fully tested on UNIX and DOS Systems</li>
+<li>Matlab R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems</li>
+<li>Matlab R2016b and the MinGW64 compiler are not compatible with the CPLEX 12.6.3 library</li>
+</ul>
+<p class="last">The version of fastFVA only supports the CPLEX solver. The code has been tested with
+CPLEX 12.6.2, 12.6.3, 12.7.0 and 12.7.1. Install
+CPLEX (64-bit) as explained <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">here</a>.
+A particular interface, such as TOMLAB, is not needed in order to run fastFVA.
+Please note that only the 64-bit versions of CPLEX 12.7.1 are supported.
+In order to run the code on 32-bit systems, the appropriate MEX files need to be generated
+using generateMexFastFVA().</p>
 </div>
 </dd></dl>
 
