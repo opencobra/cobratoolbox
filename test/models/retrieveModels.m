@@ -25,7 +25,7 @@ end
 
 % define the array of models to be downloaded (name of the file and URL)
 modelArr = {
-    'AntCore.mat', 'https://raw.github.com/snmendoz/Models/master/AntCore.mat';
+    'AntCore.mat', 'https://cdn.rawgit.com/snmendoz/Models/master/AntCore.mat';
     'iJO1366.mat', 'http://bigg.ucsd.edu/static/models/iJO1366.mat';
     'iIT341.xml', 'http://bigg.ucsd.edu/static/models/iIT341.xml';
     'Abiotrophia_defectiva_ATCC_49176.xml', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/sbml/Abiotrophia_defectiva_ATCC_49176.xml';
