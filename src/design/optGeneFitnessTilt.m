@@ -16,6 +16,7 @@ function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnList
 %    val:                  fitness value
 
 global MaxKnockOuts
+global CBT_LP_SOLVER
 %size(rxn_vector_matrix)
 
 popsize = size(rxn_vector_matrix,1);
@@ -57,12 +58,17 @@ for i = 1:popsize
     if exist('LPBasis', 'var')
         modelKO.LPBasis = LPBasis;
     end
-
-    [slnKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
+    
+    if ~isempty(CBT_LP_SOLVER) && strcmp(CBT_LP_SOLVER,'cplex')
+        [solKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
+    else
+        solKO = optimizeCbModel(modelKO);
+    end
+    
     LPBasis = LPOUT.LPBasis;
-    growthrate = slnKO.obj;
-    [tmp,tar_loc] = ismember(targetRxn,modelKO.rxns);
-    minProdAtSetGR = slnKO.full(tar_loc);
+    growthrate = solKO.obj;
+    [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
+    minProdAtSetGR = solKO.full(tar_loc);
 
     % check to ensure that GR is above a certain value
     if growthrate < .10
@@ -88,16 +94,16 @@ for i = 1:popsize
 %
 %     % find the minimum production rate for the targeted reaction.
 %
-% %     slnKOsetGR = optimizeCbModel(modelKOsetGR);
-% %     minProdAtSetGR1 = -slnKOsetGR.f;  % This should be a negative value b/c of the minimization setup, so -1 is necessary.
+% %     solKOsetGR = optimizeCbModel(modelKOsetGR);
+% %     minProdAtSetGR1 = -solKOsetGR.f;  % This should be a negative value b/c of the minimization setup, so -1 is necessary.
 %
 %     if exist('LPBasis2', 'var')
 %         modelKOsetGR.LPBasis = LPBasis2;
 %     end
 %
-%     [slnKOsetGR, LPOUT2] = solveCobraLPCPLEX(modelKOsetGR, 0,1);
+%     [solKOsetGR, LPOUT2] = solveCobraLPCPLEX(modelKOsetGR, 0,1);
 %     LPBasis2 = LPOUT2.LPBasis;
-%     minProdAtSetGR = -slnKOsetGR.obj;
+%     minProdAtSetGR = -solKOsetGR.obj;
 
 
     % objective function for optGene algorithm = val (needs to be a negative value, since it is

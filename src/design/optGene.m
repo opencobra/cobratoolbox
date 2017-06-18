@@ -26,6 +26,8 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    optGeneSol:      `optGene` solution strcture
 %
 % .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
+%             - Modified by Sebastian Mendoza 18/06/17. Improving handling
+%             of optional inputs (varargin)
 
 global HTABLE % hash table for hashing results... faster than not using it.
 HTABLE = java.util.Hashtable;
@@ -52,32 +54,53 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% PARAMETERS - set parameters here %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if nargin < 5
-    MaxKnockOuts = 10;
-else
-    MaxKnockOuts = MaxKOs;
+
+optionalParameters = {'MaxKOs, population'};
+
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
+      
+    tempargin = cell(1,2*(numel(varargin)));
+    for i = 1:numel(varargin)
+        
+        tempargin{2*(i-1)+1} = optionalParameters{i};
+        tempargin{2*(i-1)+2} = varargin{i};
+    end
+    varargin = tempargin;
+    
 end
-mutationRate = 1/ngenes; % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
-crossovermutationRate = mutationRate*.2;  % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
-CrossoverFraction = .80;    % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
-PopulationSize = [125 125 125 125]; % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
-Generations = 10000;    % paper: 5000.  maximum number of generations to perform
-TimeLimit =  3600*24*2;  % global time limit in seconds
-StallTimeLimit = 3600*24*1;   % Stall time limit (terminate after this much time of not finding an improvement in fitness)
-StallGenLimit =  10000;       % terminate after this many generations of not finding an improvement
+
+parser = inputParser();
+parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
+    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
+    && isfield(model, 'c'))
+parser.addRequired('targetRxn', @(x) ischar(x))
+parser.aaddRequired('substrateRxn', @(x) ischar(x))
+parser.addRequired('generxnList',@iscell)
+parser.addParameter('MaxKOs', 10, @(x) isnumeric(x));
+parser.addParameter('population', 10, @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
+parser.addParameter('mutationRate', 1/ngenes, @(x) isnumeric(x)); % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
+parser.addParameter('crossovermutationRate', (1/ngenes)*.2, @(x) isnumeric(x)); % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
+parser.addParameter('CrossoverFraction', .80, @(x) isnumeric(x)); % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
+parser.addParameter('PopulationSize', [125 125 125 125], @(x) isnumeric(x)); % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
+parser.addParameter('Generations', 10000, @(x) isnumeric(x)); % paper: 5000.  maximum number of generations to perform
+parser.addParameter('TimeLimit', 3600*24*2, @(x) isnumeric(x)); % global time limit in seconds
+parser.addParameter('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall time limit (terminate after this much time of not finding an improvement in fitness)
+parser.addParameter('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate after this many generations of not finding an improvement
+parser.addParameter('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
+parser.addParameter('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
+parser.addParameter('population', [], @(x) isnumeric(x) || islogical(x));
+
+MaxKnockOuts = MaxKOs;
+InitialPopulation = double(population);
+
 PlotFcns =  {@gaplotscores, @gaplotbestf, @gaplotscorediversity, @gaplotstopping, @gaplotmutationdiversity}; % what to plot.
 crossfun = @(a,b,c,d,e,f) crossoverCustom(a,b,c,d,e,f,crossovermutationRate);
-MigrationFraction = .1;   % how many individuals migrate (.1 * 125 ~ 12 individuals).
-MigrationInterval = 100;  % how often individuals migrate from one population to another.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% END PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-InitialPopulation = [];
-if nargin > 5
-    InitialPopulation = double(population);
-end
 options = gaoptimset(                                   ...
     'PopulationType', 'bitstring',                          ...
     'CreationFcn', @lowmutationcreation,                    ...
