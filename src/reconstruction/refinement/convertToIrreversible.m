@@ -2,7 +2,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 % Converts model to irreversible format
 %
 % USAGE:
-% [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
+%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
 %
 % INPUT:
 %    model:         COBRA model structure
@@ -42,6 +42,7 @@ for i = 1:nRxns
     cnt = cnt + 1;
 
     %expand the new model (same for both irrev & rev rxns
+    
     irrev2rev(cnt) = i;
 
     % Reaction entirely in the negative direction
@@ -52,8 +53,8 @@ for i = 1:nRxns
         % Reverse sign
         modelIrrev.S(:, cnt) = -model.S(:, i);
         modelIrrev.c(cnt) = -model.c(i);
-        modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];   
-    else 
+        modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];                
+    else
         %if the lb is less than zero, set the forward rxn lb to zero
         modelIrrev.lb(cnt) = max(0, model.lb(i));
         modelIrrev.ub(cnt) = max(0, model.ub(i));
@@ -72,9 +73,9 @@ for i = 1:nRxns
         matchRev(cnt-1) = cnt;
         modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
         modelIrrev.S(:, cnt) = - model.S(:, i);
-        modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
+        modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];       
         modelIrrev.lb(cnt) = max(0, -model.ub(i));
-        %if original reaction has a positive lb, backwards reaction should have nonnegative upper bound.        
+        %if original reaction has a positive lb, backwards reaction should have nonnegative upper bound.
         modelIrrev.ub(cnt) = max(0, -model.lb(i));
         modelIrrev.c(cnt) = 0;
         rev2irrev{i} = [cnt-1 cnt];
