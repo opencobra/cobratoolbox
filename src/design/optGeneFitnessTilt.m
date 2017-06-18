@@ -60,23 +60,11 @@ for i = 1:popsize
     end
     
     if ~isempty(CBT_LP_SOLVER) && strcmp(CBT_LP_SOLVER,'cplex')
-        try
-            [solKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
-            LPBasis = LPOUT.LPBasis;
-            growthrate = solKO.obj;
-            [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
-            minProdAtSetGR = solKO.full(tar_loc);
-        catch
-            solKO = optimizeCbModel(modelKO);
-            if isempty(solKO.x)
-                continue;
-            else
-                growthrate = solKO.f;
-                [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
-                minProdAtSetGR = solKO.x(tar_loc);
-            end
-            
-        end
+        [solKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
+        LPBasis = LPOUT.LPBasis;
+        growthrate = solKO.obj;
+        [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
+        minProdAtSetGR = solKO.full(tar_loc);
     else
         solKO = optimizeCbModel(modelKO);
         if isempty(solKO.x)

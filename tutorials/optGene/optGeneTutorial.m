@@ -65,15 +65,18 @@ model = changeRxnBounds(model, 'EX_succ_e', 1000, 'u');
 
 % determine succinate production and growth rate before optimizacion
 fbaWT = optimizeCbModel(model);
-succFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_succ_e'));
-etohFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_etoh_e'));
-formFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_for_e'));
-lactFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_lac__D_e'));
-acetFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_ac_e'));
 growthRateWT = fbaWT.f;
-fprintf('The production of succinate before optimization is %.1f \n', succFluxWT);
+
+model = changeObjective(model, 'EX_succ_e'); 
+fbaWTMin = optimizeCbModel(model, 'min');
+fbaWTMax = optimizeCbModel(model, 'max');
+minSuccFluxWT = fbaWTMin.f;
+maxSuccFluxWT = fbaWTMax.f;
+
+model = changeObjective(model, biomass);
+
+fprintf('The minimum and maximum production of succinate before optimization is %.1f and %.1f respectively\n', minSuccFluxWT, maxSuccFluxWT);
 fprintf('The growth rate before optimization is %.1f \n', growthRateWT);
-fprintf('The production of other products such as ethanol, formate, lactate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxWT, formFluxWT, lactFluxWT, acetFluxWT);
 
 % OPTGENE SETTING
 selectedGeneList = {};
@@ -120,13 +123,13 @@ while nIter < threshold
         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, optGeneSol.geneList, 'EX_succ_e', biomass, 1);
         fprintf('The solution is of type: %s\n',type);
         fprintf('The maximun growth rate after optimizacion is %.2f\n', maxGrowth);
-        fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n', minProd, maxProd);
+        fprintf('The maximun and minimun production of succinate after optimization is %.2f and %.2f, respectively \n\n', minProd, maxProd);
         
     else
         if nIter  ==  1
-            fprintf('optGene was not able to found an optKnock set\n');
+            fprintf('optGene was not able to found an optGene set\n');
         else
-            fprintf('optGene was not able to found additional optKnock sets\n');
+            fprintf('optGene was not able to found additional optGene sets\n');
         end
         break;
     end
