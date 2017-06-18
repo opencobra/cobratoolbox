@@ -1,17 +1,17 @@
-function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)
-%convertToIrreversible Convert model to irreversible format
+function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
+% Converts model to irreversible format
 %
-% [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)
+% USAGE:
+% [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
 %
-%INPUT
-% model         COBRA model structure
+% INPUT:
+%    model:         COBRA model structure
 %
-%OUTPUTS
-% modelIrrev    Model in irreversible format
-% matchRev      Matching of forward and backward reactions of a reversible
-%               reaction
-% rev2irrev     Matching from reversible to irreversible reactions
-% irrev2rev     Matching from irreversible to reversible reactions
+% OUTPUTS:
+%    modelIrrev:    Model in irreversible format
+%    matchRev:      Matching of forward and backward reactions of a reversible reaction
+%    rev2irrev:     Matching from reversible to irreversible reactions
+%    irrev2rev:     Matching from irreversible to reversible reactions
 %
 % Uses the reversible list to construct a new model with reversible
 % reactions separated into forward and backward reactions.  Separated
@@ -20,15 +20,13 @@ function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model
 % Reactions entirely in the negative direction will be reversed and
 % appended with '_r'.
 %
-% written by Gregory Hannum 7/9/05
-%
-% Modified by Markus Herrgard 7/25/05
-% Modified by Jan Schellenberger 9/9/09 for speed.
+% .. Authors:
+%       - written by Gregory Hannum 7/9/05
+%       - Modified by Markus Herrgard 7/25/05
+%       - Modified by Jan Schellenberger 9/9/09 for speed.
 
-%declare variables
-modelIrrev.S = spalloc(size(model.S, 1), 0, 2 * nnz(model.S));
+modelIrrev.S = spalloc(size(model.S, 1), 0, 2 * nnz(model.S)); % declare variables
 modelIrrev.rxns = [];
-modelIrrev.rev = zeros(2 * length(model.rxns), 1);
 modelIrrev.lb = zeros(2 * length(model.rxns), 1);
 modelIrrev.ub = zeros(2 * length(model.rxns), 1);
 modelIrrev.c = zeros(2 * length(model.rxns), 1);
@@ -44,17 +42,7 @@ for i = 1:nRxns
     cnt = cnt + 1;
 
     %expand the new model (same for both irrev & rev rxns
-    modelIrrev.rev(cnt) = model.rev(i);
     irrev2rev(cnt) = i;
-
-    % Check if reaction is declared as irreversible, but bounds suggest
-    % reversible (i.e., having both positive and negative bounds
-    if model.ub(i) > 0 && model.lb(i) < 0 && model.rev(i) == false
-        model.rev(i) = true;
-        warning(cat(2, 'Reaction: ', model.rxns{i}, ' is classified as irreversible, but bounds are positive and negative!'))
-    elseif (sign(model.ub(i)) == sign(model.lb(i)) || sign(model.ub(i)) * sign(model.lb(i)) == 0) && model.rev(i) == true
-        model.rev(i) = false;
-    end
 
     % Reaction entirely in the negative direction
     if model.ub(i) <= 0 && model.lb(i) < 0
@@ -64,9 +52,7 @@ for i = 1:nRxns
         % Reverse sign
         modelIrrev.S(:, cnt) = -model.S(:, i);
         modelIrrev.c(cnt) = -model.c(i);
-        modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];
-        model.rev(i) = false;
-        modelIrrev.rev(cnt) = false;
+        modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];   
     else 
         %if the lb is less than zero, set the forward rxn lb to zero
         modelIrrev.lb(cnt) = max(0, model.lb(i));
@@ -80,14 +66,13 @@ for i = 1:nRxns
 
     %if the reaction is reversible, add a new rxn to the irrev model and
     %update the names of the reactions with '_f' and '_b'
-    if model.rev(i) == true
+    if model.lb(i) < 0 
         cnt = cnt + 1;
         matchRev(cnt) = cnt - 1;
         matchRev(cnt-1) = cnt;
         modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
         modelIrrev.S(:, cnt) = - model.S(:, i);
         modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-        modelIrrev.rev(cnt) = true;
         modelIrrev.lb(cnt) = max(0, -model.ub(i));
         %if original reaction has a positive lb, backwards reaction should have nonnegative upper bound.        
         modelIrrev.ub(cnt) = max(0, -model.lb(i));
@@ -109,8 +94,6 @@ modelIrrev.S = modelIrrev.S(:,1:cnt);
 modelIrrev.ub = columnVector(modelIrrev.ub(1:cnt));
 modelIrrev.lb = columnVector(modelIrrev.lb(1:cnt));
 modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
-modelIrrev.rev = modelIrrev.rev(1:cnt);
-modelIrrev.rev = columnVector(modelIrrev.rev == 1);
 modelIrrev.rxns = columnVector(modelIrrev.rxns);
 modelIrrev.mets = model.mets;
 matchRev = columnVector(matchRev(1:cnt));
