@@ -83,7 +83,6 @@ end
 
 % Secretion routes  for acetate, carbon dioxide, ethanol, formate, lactate
 % and succinate are enabled
-
 model=changeRxnBounds(model,'EX_ac_e',1000,'u');
 model=changeRxnBounds(model,'EX_co2_e',1000,'u');
 model=changeRxnBounds(model,'EX_etoh_e',1000,'u');
