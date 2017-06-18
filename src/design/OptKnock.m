@@ -101,12 +101,14 @@ end
 % solution again
 selPrevSolIrrev = [];
 for i = 1:length(prevSolutions)
-    prevSolRxnList = prevSolutions{i};
-    selPrevSol = ismember(model.rxns,prevSolRxnList);
-    selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
+    if ~isempty(prevSolRxnList)
+        prevSolRxnList = prevSolutions{i};
+        selPrevSol = ismember(model.rxns,prevSolRxnList);
+        selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
+    end
 end
 
-[nMets,nRxns] = size(modelIrrev.S);
+[~,nRxns] = size(modelIrrev.S);
 
 % Create matchings for reversible reactions in the set selected for KOs
 % This is to ensure that both directions of the reaction are knocked out
@@ -114,7 +116,6 @@ selSelectedRxn = ismember(model.rxns,selectedRxnList);
 selSelectedRxnIrrev = selSelectedRxn(irrev2rev);
 selectedRxnIndIrrev = find(selSelectedRxnIrrev);
 cnt = 0;
-prevRxnID = -10;
 nSelected = length(selectedRxnIndIrrev);
 selRxnCnt = 1;
 while selRxnCnt <= nSelected
@@ -147,7 +148,7 @@ bilevelMILPproblem = createBilevelMILPproblem(modelIrrev,cLinear,cInteger,selSel
 % Initial guess (random)
 %bilevelMILPproblem.x0 = round(rand(length(bilevelMILPproblem.c),1));
 if isfield(options,'initSolution')
-    if (length(options.initSolution) > options.numDel | ~all(ismember(options.initSolution,selectedRxnList)))
+    if (length(options.initSolution) > options.numDel || ~all(ismember(options.initSolution,selectedRxnList)))
         warning('Initial solution not valid - starting from a random initial solution')
         bilevelMILPproblem.x0 = [];
     else
@@ -157,20 +158,9 @@ if isfield(options,'initSolution')
         initRxnIndIrrev = find(selInitRxnIrrev);
         initIntegerSol = ~ismember(selectedRxnIndIrrev,initRxnIndIrrev);
         selInteger = bilevelMILPproblem.vartype == 'B';
-        [nConstr,nVar] = size(bilevelMILPproblem.A);
+        [~,nVar] = size(bilevelMILPproblem.A);
         bilevelMILPproblem.x0 = nan(nVar,1);
         bilevelMILPproblem.x0(selInteger) = initIntegerSol;
-
-%         LPproblem.b = bilevelMILPproblem.b - bilevelMILPproblem.A(:,selInteger)*initIntegerSol;
-%         LPproblem.A = bilevelMILPproblem.A(:,bilevelMILPproblem.vartype == 'C');
-%         LPproblem.c = bilevelMILPproblem.c(bilevelMILPproblem.vartype == 'C');
-%         LPproblem.lb = bilevelMILPproblem.lb(bilevelMILPproblem.vartype == 'C');
-%         LPproblem.ub = bilevelMILPproblem.ub(bilevelMILPproblem.vartype == 'C');
-%         LPproblem.osense = -1;
-%         LPproblem.csense = bilevelMILPproblem.csense;
-%         LPsol = solveCobraLP(LPproblem);
-%
-%         bilevelMILPproblem.x0(~selInteger) = LPsol.full;
     end
 else
     bilevelMILPproblem.x0 = [];
