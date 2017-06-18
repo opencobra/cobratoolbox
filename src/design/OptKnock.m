@@ -1,4 +1,4 @@
-function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)
+function [optKnockSol, bilevelMILPproblem] = OptKnock(model, selectedRxnList, options, constrOpt, prevSolutions, verbFlag, solutionFileNameTmp)
 % Runs `OptKnock` in the most general form
 %
 % USAGE:
@@ -6,45 +6,45 @@ function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,optio
 %    OptKnock(model, selectedRxnList, options, constrOpt, prevSolutions, verbFlag, solutionFileNameTmp)
 %
 % INPUTS:
-%    model:           Structure containing all necessary variables to described a
-%                     stoichiometric model
+%    model:                   Structure containing all necessary variables to described a
+%                             stoichiometric model
 %
-%                       *  `rxns` - Rxns in the model
-%                       *  `mets` - Metabolites in the model
-%                       *  `S` - Stoichiometric matrix (sparse)
-%                       *  `b` - RHS of Sv = b (usually zeros)
-%                       *  `c` - Objective coefficients
-%                       *  `lb` - Lower bounds for fluxes
-%                       *  `ub` - Upper bounds for fluxes
-%                       *  `rev` - Reversibility of fluxes
+%                               *  `rxns` - Rxns in the model
+%                               *  `mets` - Metabolites in the model
+%                               *  `S` - Stoichiometric matrix (sparse)
+%                               *  `b` - RHS of Sv = b (usually zeros)
+%                               *  `c` - Objective coefficients
+%                               *  `lb` - Lower bounds for fluxes
+%                               *  `ub` - Upper bounds for fluxes
+%                               *  `rev` - Reversibility of fluxes
 %
-%    selectedRxnList:  List of reactions that can be knocked-out in OptKnock
+%    selectedRxnList:         List of reactions that can be knocked-out in OptKnock
 %
 % OPTIONAL INPUTS:
-%    options:             `OptKnock` options
+%    options:                `OptKnock` options
 %
-%                           *  `targetRxn` - Target flux to be maximized
-%                           *  `numDel` - # of deletions allowed (Default: 5)
-%                           *  `numDelSense` - Direction of # of deletions constraint (G/E/L)
-%                              (Default: L)
-%                           *  `vMax` - Max flux (Default: 1000)
-%                           *  `solveOptKnock` - Solve problem within Matlab (Default: true)
-%                           *  `createGams` - Create GAMS input file
-%                           *  `gamsFile` - GAMS input file name
-%    constrOpt:           Explicitly constrained reaction options
+%                              *  `targetRxn` - Target flux to be maximized
+%                              *  `numDel` - # of deletions allowed (Default: 5)
+%                              *  `numDelSense` - Direction of # of deletions constraint (G/E/L)
+%                                 (Default: L)
+%                              *  `vMax` - Max flux (Default: 1000)
+%                              *  `solveOptKnock` - Solve problem within Matlab (Default: true)
+%                              *  `createGams` - Create GAMS input file
+%                              *  `gamsFile` - GAMS input file name
+%    constrOpt:              Explicitly constrained reaction options
 %
-%                           *  `rxnList` - Reaction list
-%                           *  `values` - Values for constrained reactions
-%                           *  `sense` - Constraint senses for constrained reactions (G/E/L)
-%    prevSolutions:       Previous solutions
-%    verbFlag:            Verbose flag
-%    solutionFileNameTmp: File name for storing temporary solutions
+%                              *  `rxnList` - Reaction list
+%                              *  `values` - Values for constrained reactions
+%                              *  `sense` - Constraint senses for constrained reactions (G/E/L)
+%    prevSolutions:          Previous solutions
+%    verbFlag:               Verbose flag
+%    solutionFileNameTmp:    File name for storing temporary solutions
 %
 % OUTPUTS:
-%    optKnockSol:         `optKnock` solution structure
-%    rxnList:             Reaction `KO` list
-%    fluxes:              Flux distribution
-%    bilevelMILPproblem:  `optKnock` problem structure
+%    optKnockSol:            `optKnock` solution structure
+%    rxnList:                Reaction `KO` list
+%    fluxes:                 Flux distribution
+%    bilevelMILPproblem:     `optKnock` problem structure
 %
 % .. Authors:
 %       - Markus Herrgard 3/28/05
@@ -95,20 +95,18 @@ else
 end
 
 % Convert to irreversible rxns
-[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);
+[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model,'OrderReactions',true);
 
 % Create the index of the previous KO's suggested by OptKnock to avoid obtaining the same
 % solution again
 selPrevSolIrrev = [];
 for i = 1:length(prevSolutions)
     prevSolRxnList = prevSolutions{i};
-    if ~isempty(prevSolRxnList)
-        selPrevSol = ismember(model.rxns,prevSolRxnList);
-        selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
-    end
+    selPrevSol = ismember(model.rxns,prevSolRxnList);
+    selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
 end
 
-[~,nRxns] = size(modelIrrev.S);
+[nMets,nRxns] = size(modelIrrev.S);
 
 % Create matchings for reversible reactions in the set selected for KOs
 % This is to ensure that both directions of the reaction are knocked out
@@ -116,6 +114,7 @@ selSelectedRxn = ismember(model.rxns,selectedRxnList);
 selSelectedRxnIrrev = selSelectedRxn(irrev2rev);
 selectedRxnIndIrrev = find(selSelectedRxnIrrev);
 cnt = 0;
+prevRxnID = -10;
 nSelected = length(selectedRxnIndIrrev);
 selRxnCnt = 1;
 while selRxnCnt <= nSelected
@@ -148,7 +147,7 @@ bilevelMILPproblem = createBilevelMILPproblem(modelIrrev,cLinear,cInteger,selSel
 % Initial guess (random)
 %bilevelMILPproblem.x0 = round(rand(length(bilevelMILPproblem.c),1));
 if isfield(options,'initSolution')
-    if (length(options.initSolution) > options.numDel || ~all(ismember(options.initSolution,selectedRxnList)))
+    if (length(options.initSolution) > options.numDel | ~all(ismember(options.initSolution,selectedRxnList)))
         warning('Initial solution not valid - starting from a random initial solution')
         bilevelMILPproblem.x0 = [];
     else
@@ -158,9 +157,20 @@ if isfield(options,'initSolution')
         initRxnIndIrrev = find(selInitRxnIrrev);
         initIntegerSol = ~ismember(selectedRxnIndIrrev,initRxnIndIrrev);
         selInteger = bilevelMILPproblem.vartype == 'B';
-        [~,nVar] = size(bilevelMILPproblem.A);
+        [nConstr,nVar] = size(bilevelMILPproblem.A);
         bilevelMILPproblem.x0 = nan(nVar,1);
         bilevelMILPproblem.x0(selInteger) = initIntegerSol;
+
+%         LPproblem.b = bilevelMILPproblem.b - bilevelMILPproblem.A(:,selInteger)*initIntegerSol;
+%         LPproblem.A = bilevelMILPproblem.A(:,bilevelMILPproblem.vartype == 'C');
+%         LPproblem.c = bilevelMILPproblem.c(bilevelMILPproblem.vartype == 'C');
+%         LPproblem.lb = bilevelMILPproblem.lb(bilevelMILPproblem.vartype == 'C');
+%         LPproblem.ub = bilevelMILPproblem.ub(bilevelMILPproblem.vartype == 'C');
+%         LPproblem.osense = -1;
+%         LPproblem.csense = bilevelMILPproblem.csense;
+%         LPsol = solveCobraLP(LPproblem);
+%
+%         bilevelMILPproblem.x0(~selInteger) = LPsol.full;
     end
 else
     bilevelMILPproblem.x0 = [];
