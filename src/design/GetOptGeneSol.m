@@ -31,9 +31,11 @@ optGeneSol.targetRxn = targetRxn;
 
 % for no genes or reactions found
 if sum(x) == 0
-    save (strcat(writeDirect, 'optGeneSol--target-', char(targetRxn),...
-        '--sub-',char(substrateRxn),'--KOs-0-no_solution_better_than_WT'...
-        ), 'optGeneSol')
+    if saveFile
+        save (strcat(writeDirect, 'optGeneSol--target-', char(targetRxn),...
+            '--sub-',char(substrateRxn),'--KOs-0-no_solution_better_than_WT'...
+            ), 'optGeneSol')
+    end
     return;
 end
 

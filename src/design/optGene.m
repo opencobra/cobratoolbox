@@ -180,7 +180,7 @@ for i=1:length(parents)
     if MaxKnockOuts > 0
         while(sum(child(:))> MaxKnockOuts)
             ind2 = find(child);
-            removeindex = ind2(randint(1,1,length(ind2))+1);
+            removeindex = ind2(randi(length(ind2), 1));
             child(removeindex) = 0;
         end
     end
@@ -190,7 +190,7 @@ for i=1:length(parents)
     if rand > .5 && kos > 1
         while(sum(child(:))>= kos)
             ind2 = find(child);
-            removeindex = ind2(randint(1,1,length(ind2))+1);
+            removeindex = ind2(randi(length(ind2), 1));
             child(removeindex) = 0;
         end
     end
@@ -235,7 +235,7 @@ for i=1:nKids
     if MaxKnockOuts>0
         while(sum(xoverKids(i,:))> MaxKnockOuts)
             ind2 = find(xoverKids(i,:));
-            removeindex = ind2(randint(1,1,length(ind2))+1);
+            removeindex = ind2(randi(length(ind2), 1));
             xoverKids(i,removeindex) = 0;
         end
     end
