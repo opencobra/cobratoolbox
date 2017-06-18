@@ -11,7 +11,7 @@ function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, cse
 %    rxnList:             cell array of reaction names
 %
 % OPTIONAL INPUTS:
-%    C:                   `k x n` matrix in `C*v>=d`
+%    c:                   `k x n` matrix in `C*v>=d`
 %    d:                   `n x 1` vector `C*v >= d`
 %    csense:              `k x 1` constraint sense
 %
@@ -21,7 +21,7 @@ function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, cse
 % EXAMPLE:
 %
 %    rxnList = {'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
-%    C = [1, 1, 1, 1, 1, 1];
+%    c = [1, 1, 1, 1, 1, 1];
 %    d = 10;
 %    csense = 'G';
 %    modelConstrained = constrainRxnListAboveBound(modelIrrev, rxnList, C, d, csense);
@@ -39,7 +39,9 @@ end
 rxnInd = findRxnIDs(model, rxnList);
 
 modelConstrained=model;
-nC=length(model.C);
+nC=length(modelConstrained.C);
+modelConstrained.C(nC+1, 1:length(modelConstrained.rxns)) = 0;
+
 if ~exist('c', 'var')
     modelConstrained.C(nC+1,rxnInd)=1;
 else
