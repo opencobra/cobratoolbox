@@ -2,6 +2,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 % Converts model to irreversible format
 %
 % USAGE:
+%
 %    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
 %
 % INPUT:
