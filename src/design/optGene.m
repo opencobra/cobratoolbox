@@ -1,4 +1,4 @@
-function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
+function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, varargin)
 % Implements the optgene algorithm.
 %
 % USAGE:
@@ -33,28 +33,10 @@ global HTABLE % hash table for hashing results... faster than not using it.
 HTABLE = java.util.Hashtable;
 global MaxKnockOuts
 
-ngenes = length(generxnList);
-
-% figure out if list is genes or reactions
-rxnok = 1;
-geneok = 1;
-for i = 1:length(generxnList)
-    if(~ ismember(generxnList{i}, model.rxns)),  rxnok = 0; end
-    if(~ ismember(generxnList{i}, model.genes)),geneok = 0; end
-end
-if geneok
-    display('assuming list is genes');
-elseif rxnok
-    display('assuming list is reactions');
-else
-    display('list appears to be neither genes nor reactions:  aborting');
-    return;
-end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% PARAMETERS - set parameters here %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ngenes = length(generxnList);
 optionalParameters = {'MaxKOs, population'};
 
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
@@ -77,7 +59,7 @@ parser.addRequired('targetRxn', @(x) ischar(x))
 parser.aaddRequired('substrateRxn', @(x) ischar(x))
 parser.addRequired('generxnList',@iscell)
 parser.addParameter('MaxKOs', 10, @(x) isnumeric(x));
-parser.addParameter('population', 10, @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
+parser.addParameter('population', [], @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
 parser.addParameter('mutationRate', 1/ngenes, @(x) isnumeric(x)); % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
 parser.addParameter('crossovermutationRate', (1/ngenes)*.2, @(x) isnumeric(x)); % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
 parser.addParameter('CrossoverFraction', .80, @(x) isnumeric(x)); % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
@@ -88,7 +70,24 @@ parser.addParameter('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall tim
 parser.addParameter('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate after this many generations of not finding an improvement
 parser.addParameter('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
 parser.addParameter('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
-parser.addParameter('population', [], @(x) isnumeric(x) || islogical(x));
+
+parser.parse(model, targetRxn, substrateRxn, generxnList, varargin{:});
+model = parser.Results.model;
+targetRxn = parser.Results.targetRxn;
+substrateRxn = parser.Results.substrateRxn;
+generxnList = parser.Results.generxnList;
+MaxKOs = parser.Results.MaxKOs;
+population = parser.Results.population;
+mutationRate = parser.Results.mutationRate;
+crossovermutationRate = parser.Results.crossovermutationRate; 
+CrossoverFraction = parser.Results.CrossoverFraction;
+PopulationSize = parser.Results.PopulationSize; 
+Generations = parser.Results.Generations; 
+TimeLimit = parser.Results.TimeLimit;
+StallTimeLimit = parser.Results.StallTimeLimit;
+StallGenLimit = parser.Results.StallGenLimit;
+MigrationFraction = parser.Results.MigrationFraction;
+MigrationInterval = parser.Results.MigrationInterval;
 
 MaxKnockOuts = MaxKOs;
 InitialPopulation = double(population);
@@ -96,6 +95,21 @@ InitialPopulation = double(population);
 PlotFcns =  {@gaplotscores, @gaplotbestf, @gaplotscorediversity, @gaplotstopping, @gaplotmutationdiversity}; % what to plot.
 crossfun = @(a,b,c,d,e,f) crossoverCustom(a,b,c,d,e,f,crossovermutationRate);
 
+% figure out if list is genes or reactions
+rxnok = 1;
+geneok = 1;
+for i = 1:length(generxnsList)
+    if(~ ismember(generxnList{i}, model.rxns)),  rxnok = 0; end
+    if(~ ismember(generxnList{i}, model.genes)),geneok = 0; end
+end
+if geneok
+    display('assuming list is genes');
+elseif rxnok
+    display('assuming list is reactions');
+else
+    display('list appears to be neither genes nor reactions:  aborting');
+    return;
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% END PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
