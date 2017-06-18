@@ -15,6 +15,18 @@ function optGeneTutorial(mode,threshold)
 
 %% CODE
 % loading iJO1366
+global TUTORIAL_INIT_CB;
+global CBT_LP_SOLVER;
+if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
+    initCobraToolbox
+    changeCobraSolver('gurobi','all');
+end
+if isempty(CBT_LP_SOLVER)
+    changeCobraSolver('gurobi','all');
+    CBT_LP_SOLVER = 'gurobi';
+end
+
+
 if nargin<1
     mode=1;
 end
@@ -86,20 +98,6 @@ end
 genes_Involucrados_por_Rxn=regexp(regexprep(model.grRules(find(ismember(model.rxns,selectedRxnList))),'\or|and|\(|\)',''),'\  ','split');
 for i=1:length(genes_Involucrados_por_Rxn); selectedGeneList=union(selectedGeneList,genes_Involucrados_por_Rxn{i}); end;
 
-% OPTGENE PRE-PROCESSING
-% It is recommended to verify consistency between bounds and logical
-% indices of reversability.
-nRxns=length(model.rxns);
-for i = 1:nRxns
-    % Check if reaction is declared as irreversible, but bounds suggest
-    % reversible (i.e., having both positive and negative bounds
-    if (model.ub(i) > 0 && model.lb(i) < 0) && model.rev(i) == false
-        model.rev(i) = true;
-        warning(cat(2,'Reaction: ',model.rxns{i},' is classified as irreversible, but bounds indicate reversible. Reversible flag changed to true'))
-    end
-end
-
-
 %% I) LACTATE OVERPRODUCTION
 
 % EXAMPLE 1: finding reaction knockouts sets of large 3
@@ -107,7 +105,7 @@ end
 fprintf('\n...EXAMPLE 1: Finding optGene sets\n\n')
 fprintf('...Performing optGene analysis...\n')
 %optGene algorithm is run with the following options: target: 'EX_lac__D_e'
-[x, population, scores, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 2);
+[x, population, scores, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'TimeLimit', 120);
 
 [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model,optGeneSol.geneList,'EX_succ_e','BIOMASS_Ec_iJO1366_core_53p95M',1);
 

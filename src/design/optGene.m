@@ -37,26 +37,13 @@ global MaxKnockOuts
 %%% PARAMETERS - set parameters here %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ngenes = length(generxnList);
-optionalParameters = {'MaxKOs, population'};
-
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
-    tempargin = cell(1,2*(numel(varargin)));
-    for i = 1:numel(varargin)
-        
-        tempargin{2*(i-1)+1} = optionalParameters{i};
-        tempargin{2*(i-1)+2} = varargin{i};
-    end
-    varargin = tempargin;
-    
-end
 
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
     && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
     && isfield(model, 'c'))
 parser.addRequired('targetRxn', @(x) ischar(x))
-parser.aaddRequired('substrateRxn', @(x) ischar(x))
+parser.addRequired('substrateRxn', @(x) ischar(x))
 parser.addRequired('generxnList',@iscell)
 parser.addParameter('MaxKOs', 10, @(x) isnumeric(x));
 parser.addParameter('population', [], @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
@@ -98,7 +85,7 @@ crossfun = @(a,b,c,d,e,f) crossoverCustom(a,b,c,d,e,f,crossovermutationRate);
 % figure out if list is genes or reactions
 rxnok = 1;
 geneok = 1;
-for i = 1:length(generxnsList)
+for i = 1:length(generxnList)
     if(~ ismember(generxnList{i}, model.rxns)),  rxnok = 0; end
     if(~ ismember(generxnList{i}, model.genes)),geneok = 0; end
 end
