@@ -208,33 +208,35 @@
 <blockquote>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
-<cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
+<cite>m x n</cite> stoichiometric matrix</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>A</strong> &#8211;
-<cite>m</cite> x <cite>(m + k)</cite> matrix selecting rows such that <cite>S = A*B*C</cite></li>
+<cite>m x (m + k)</cite> matrix selecting rows such that <span class="math">\(S = A B C\)</span></li>
 <li><strong>B</strong> &#8211;
-<cite>(m + k)</cite> x <cite>(n + k)</cite> bilinear stoichiometric matrix</li>
+<cite>(m + k) x (n + k)</cite> bilinear stoichiometric matrix</li>
 <li><strong>C</strong> &#8211;
-<cite>(n + k)</cite> x n` matrix adding columns to form net reaction stoichiometry such that <cite>S = A*B*C</cite></li>
+<cite>(n + k) x n</cite> matrix adding columns to form net reaction stoichiometry such that <span class="math">\(S = A B C\)</span></li>
 </ul>
 </div></blockquote>
 <p>An example &#8220;bilinearisation&#8221; of the reaction</p>
-<p><cite>A + B + C &lt;-&gt; D + E</cite></p>
+<div class="math">
+\[\begin{split}~&amp;~ A + B + C \leftrightarrow D + E\\\end{split}\]</div>
 <p>is</p>
-<p><cite>A + B &lt;-&gt; P</cite>,
-<cite>P + C &lt;-&gt; Q</cite>,
-<cite>Q &lt;-&gt; D + E</cite></p>
+<div class="math">
+\[\begin{split}~&amp;~ A + B \leftrightarrow P \\
+~&amp;~ P + C \leftrightarrow Q \\
+~&amp;~ Q \leftrightarrow D + E\end{split}\]</div>
 <p>where <cite>P</cite> and <cite>Q</cite> are faux molecular species.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.modelAnalysis.topology.FR.checkRankFR">
 <code class="descname">checkRankFR</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/topology/FR/checkRankFR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.topology.FR.checkRankFR" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the rank of [F R] and [F; R], when restricted to certain
+<dd><p>Calculates the rank of <cite>[F R]</cite> and <cite>[F; R]</cite>, when restricted to certain
 rows and columns</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -261,33 +263,33 @@ rank of [<cite>F R</cite>], when using all rows</li>
 rank of [<cite>F; R</cite>], when using all cols</li>
 <li><strong>model</strong> &#8211;
 structure with fields:<ul>
-<li>.FRrows - <cite>m</cite> x 1 boolean of rows of [<cite>F R</cite>] that are nonzero,
+<li>.FRrows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are nonzero,
 unique upto positive scaling and part of the
 maximal conservation vector</li>
-<li>.FRVcols - <cite>n</cite> x 1 boolean of cols of [<cite>F; R</cite>] that are nonzero,
+<li>.FRVcols - <cite>n x 1</cite> boolean of cols of [<cite>F; R</cite>] that are nonzero,
 unique upto positive scaling and part of the
 maximal conservation vector</li>
-<li>.FRirows - <cite>m</cite> x 1 boolean of rows of [<cite>F R</cite>] that are independent</li>
-<li>.FRdrows - <cite>m</cite> x 1 boolean of rows of [<cite>F R</cite>] that are dependent</li>
-<li>.FRwrows - <cite>m</cite> x 1 boolean of independent rows of [<cite>F R</cite>] that
+<li>.FRirows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are independent</li>
+<li>.FRdrows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are dependent</li>
+<li>.FRwrows - <cite>m x 1</cite> boolean of independent rows of [<cite>F R</cite>] that
 have dependent rows amongst <cite>model.FRdrows</cite></li>
-<li>.FRVdcols - <cite>n</cite> x 1 boolean of cols of [<cite>F; R</cite>] that are dependent</li>
-<li>model.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating metabolites involved
+<li>.FRVdcols - <cite>n x 1</cite> boolean of cols of [<cite>F; R</cite>] that are dependent</li>
+<li>model.SConsistentMetBool - <cite>m x 1</cite> boolean vector indicating metabolites involved
 in the maximal consistent vector</li>
-<li>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating metabolites involved
+<li>.SConsistentRxnBool - <cite>n x 1</cite> boolean vector indicating metabolites involved
 in the maximal consistent vector</li>
-<li>.FRnonZeroBool - <cite>m</cite> x 1 boolean vector indicating metabolites involved
+<li>.FRnonZeroBool - <cite>m x 1</cite> boolean vector indicating metabolites involved
 in at least one internal reaction</li>
-<li>.FRuniqueBool - <cite>m</cite> x 1 boolean vector indicating metabolites with
+<li>.FRuniqueBool - <cite>m x 1</cite> boolean vector indicating metabolites with
 reaction stoichiometry unique upto scalar multiplication</li>
-<li>.SIntRxnBool - <cite>n</cite> x 1 boolean vector indicating the non exchange reactions</li>
-<li>.FRVnonZeroBool - <cite>n</cite> x 1 boolean vector indicating non exchange reactions
+<li>.SIntRxnBool - <cite>n x 1</cite> boolean vector indicating the non exchange reactions</li>
+<li>.FRVnonZeroBool - <cite>n x 1</cite> boolean vector indicating non exchange reactions
 with at least one metabolite involved</li>
-<li>.FRVuniqueBool - <cite>n</cite> x 1 boolean vector indicating non exchange reactions
+<li>.FRVuniqueBool - <cite>n x 1</cite> boolean vector indicating non exchange reactions
 with stoichiometry unique upto scalar multiplication</li>
-<li>.connectedRowsFRBool - <cite>m</cite> x 1 boolean vector indicating metabolites in connected rows of [<cite>F R</cite>]</li>
-<li>.connectedRowsFRVBool - <cite>n</cite> x 1 boolean vector indicating complexes in connected columns of [<cite>F; R</cite>]</li>
-<li>.V - <cite>S*V = 0</cite>; <cite>1&#8217;*|V|&gt;1</cite> for all flux consistent reactions</li>
+<li>.connectedRowsFRBool - <cite>m x 1</cite> boolean vector indicating metabolites in connected rows of [<cite>F R</cite>]</li>
+<li>.connectedRowsFRVBool - <cite>n x 1</cite> boolean vector indicating complexes in connected columns of [<cite>F; R</cite>]</li>
+<li>.V - <span class="math">\(S V = 0\)</span>; <span class="math">\(1^T |V| &gt; 1\)</span> for all flux consistent reactions</li>
 </ul>
 </li>
 </ul>
@@ -306,18 +308,18 @@ connected set of columns of [<cite>F; R</cite>] using gamic</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>F</strong> &#8211;
-<cite>m</cite> x <cite>n</cite></li>
+<cite>m x n</cite></li>
 <li><strong>R</strong> &#8211;
-<cite>m</cite> x <cite>n</cite></li>
+<cite>m x n</cite></li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>connectedRowsFRBool</strong> &#8211;
-<cite>m</cite> x <cite>z</cite> boolean vector indicating z sets of connected rows</li>
+<cite>m x z</cite> boolean vector indicating z sets of connected rows</li>
 <li><strong>connectedColsFRVBool</strong> &#8211;
-<cite>n</cite> x <cite>z</cite> boolean vector indicating z sets of connected cols</li>
+<cite>n x z</cite> boolean vector indicating z sets of connected cols</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -334,9 +336,9 @@ connected set of columns of [<cite>F; R</cite>] using gamic</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>F</strong> &#8211;
-<cite>m</cite> x <cite>n</cite></li>
+<cite>m x n</cite></li>
 <li><strong>R</strong> &#8211;
-<cite>m</cite> x <cite>n</cite></li>
+<cite>m x n</cite></li>
 <li><strong>printLevel</strong> &#8211;
 verbose level</li>
 </ul>
@@ -345,9 +347,9 @@ verbose level</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>connectedRowsFRBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector indicating largests set of connected rows</li>
+<cite>m x 1</cite> boolean vector indicating largests set of connected rows</li>
 <li><strong>connectedColsFRVBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector indicating largests set of connected cols</li>
+<cite>n x 1</cite> boolean vector indicating largests set of connected cols</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -409,7 +411,7 @@ output of <cite>checkRankFRdriver</cite></li>
 <li><strong>nRows</strong> &#8211;
 number of rows in the subplot</li>
 <li><strong>nCols</strong> &#8211;
-number of rows in the subplot (<cite>nRows*nCols &gt;= length(FRresults)</cite>)</li>
+number of rows in the subplot (<span class="math">\(nRows*nCols \geq length(FRresults)\)</span>)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -419,6 +421,10 @@ number of rows in the subplot (<cite>nRows*nCols &gt;= length(FRresults)</cite>)
 directory where output of <cite>checkRankFRdriver</cite> has been saved</li>
 <li><strong>resultsFileName</strong> &#8211;
 filename where output of <cite>checkRankFRdriver</cite> has been saved</li>
+<li><strong>schematicFlag</strong> &#8211;
+default = 1</li>
+<li><strong>modelMetaData</strong> &#8211;
+metadata of model</li>
 </ul>
 </div></blockquote>
 </dd></dl>

@@ -253,7 +253,7 @@ FBA type model</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>obj</strong> &#8211;
-default = random vector with size depending on fbaModel.S</li>
+default = random vector with size depending on <cite>fbaModel.S</cite></li>
 <li><strong>printLevel</strong> &#8211;
 argument for <cite>solveCobraLP</cite> function, default = 0</li>
 </ul>
@@ -276,6 +276,23 @@ argument for <cite>solveCobraLP</cite> function, default = 0</li>
 matrix using optimization to pick random extreme rays, then test a
 posteriori if each is linearly independent from the existing stored
 extreme rays.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[B, L] = greedyExtremePoolBasis(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>B, L</strong> &#8211;
+non-negative basus fi the left nullspace</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 </div>

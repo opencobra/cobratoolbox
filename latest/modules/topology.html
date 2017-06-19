@@ -229,10 +229,10 @@ in the stoichiometric matrix, that is, the sets of reactions that share a set of
 <blockquote>
 <div><ul class="simple">
 <li><strong>type</strong> &#8211;
-{(&#8216;allComponents&#8217;),&#8217;largestComponent&#8217;}</li>
+{(&#8216;allComponents&#8217;), &#8216;largestComponent&#8217;}</li>
 <li><strong>figures</strong> &#8211;
 Will generate plots of the grouping algorithm as it creates block diagonal
-groups in from top left to bottom right in W.</li>
+groups in from top left to bottom right in <cite>W</cite>.</li>
 <li><strong>files</strong> &#8211;
 Indicator, whether several files containing indicator
 matrices are generated.</li>
@@ -290,7 +290,7 @@ verbose level</li>
 <li><strong>cyclicRxnBool</strong> &#8211;
 boolean value</li>
 <li><strong>rankS</strong> &#8211;
-scalar giving rank of S</li>
+scalar giving rank of <cite>S</cite></li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -308,11 +308,11 @@ correspond to true entries in <cite>rowBool</cite></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
-<cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
+<cite>m x n</cite> stoichiometric matrix</li>
 <li><strong>rowBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector</li>
+<cite>m x 1</cite> boolean vector</li>
 <li><strong>colBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector</li>
+<cite>n x 1</cite> boolean vector</li>
 <li><strong>mode</strong> &#8211;
 &#8216;exclusive&#8217; or &#8216;inclusive&#8217; or &#8216;partial&#8217;</li>
 </ul>
@@ -321,7 +321,7 @@ correspond to true entries in <cite>rowBool</cite></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>restrictedColBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector</li>
+<cite>n x 1</cite> boolean vector</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -332,8 +332,8 @@ correspond to true entries in <cite>rowBool</cite></p>
      <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>    <span class="o">-</span><span class="mi">7</span>     <span class="mi">0</span>
      <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
 
-<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
-<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span><span class="p">];</span>
+<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">];</span>
 
 <span class="o">%</span><span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
 <span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
@@ -371,11 +371,11 @@ correspond to true entries in <cite>colBool</cite></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
-<cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
+<cite>m x n</cite> stoichiometric matrix</li>
 <li><strong>rowBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector</li>
+<cite>m x 1</cite> boolean vector</li>
 <li><strong>colBool</strong> &#8211;
-<cite>n</cite> x 1 boolean vector</li>
+<cite>n x 1</cite> boolean vector</li>
 <li><strong>mode</strong> &#8211;
 &#8216;exclusive&#8217; or &#8216;inclusive&#8217;</li>
 </ul>
@@ -384,7 +384,7 @@ correspond to true entries in <cite>colBool</cite></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>restrictedRowBool</strong> &#8211;
-<cite>m</cite> x 1 boolean vector</li>
+<cite>m x 1</cite> boolean vector</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -395,8 +395,8 @@ correspond to true entries in <cite>colBool</cite></p>
      <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>    <span class="o">-</span><span class="mi">7</span>     <span class="mi">0</span>
      <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
 
-<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">];</span>
-<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span><span class="p">];</span>
 
 <span class="o">%</span> <span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
 <span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
