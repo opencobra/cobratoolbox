@@ -8,13 +8,13 @@ function restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 %    restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 %
 % INPUTS:
-%    S:                     `m` x `n` stoichiometric matrix
-%    rowBool:               `m` x 1 boolean vector
-%    colBool:               `n` x 1 boolean vector
+%    S:                     `m x n` stoichiometric matrix
+%    rowBool:               `m x 1` boolean vector
+%    colBool:               `n x 1` boolean vector
 %    mode:                  'exclusive' or 'inclusive'
 %
 % OUTPUT:
-%    restrictedRowBool:     `m` x 1 boolean vector
+%    restrictedRowBool:     `m x 1` boolean vector
 %
 % EXAMPLE:
 %
@@ -25,8 +25,8 @@ function restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 %         0     0     6    -7     0
 %         0     0     0     0     0
 %
-%    rowBool = [1;1;1;1;1];
-%    colBool = [1;1;1;0;0];
+%    rowBool = [1; 1; 1; 1; 1];
+%    colBool = [1; 1; 1; 0; 0];
 %
 %    % Therefore, the subset of rows and columns considered for inclusion are
 %    %    -1     0     0
