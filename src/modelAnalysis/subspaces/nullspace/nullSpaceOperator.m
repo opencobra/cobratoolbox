@@ -1,18 +1,18 @@
 function nullS = nullSpaceOperator(S, scale, printLevel)
 % Uses LUSOL to compute a nullspace operator `nullS`
-% We assume `S` is `m x n` with `m < n` with rank `r`.
+% We assume `S` is `m x n` with :math:`m < n` with rank `r`.
 % First `nullS = nullSpaceOperator(S)`
-% computes a structure `nullS` from an `m x n` sparse matrix `S` (`m < n`).
+% computes a structure `nullS` from an `m x n` sparse matrix `S` (:math:`m < n`).
 % Second, if `V` is an `(n-r) x k` sparse matrix :math:`(k \geq 1)`,
 % `W = nullSpaceOperatorApply(nullS, V)`;
-% computes an `n x k` sparse matrix `W` from `V` such that :math:`S*W = 0`.
+% computes an `n x k` sparse matrix `W` from `V` such that :math:`S W = 0`.
 %
 % This is an operator form of finding an `n x (n-r)` matrix `Z`
-% such that :math:`S*Z = 0` and then computing :math:`W = Z*V`.
+% such that :math:`S Z = 0` and then computing :math:`W = Z V`.
 % The aim is to obtain `W` without forming `Z` explicitly.
 %
 % `nullS.rank` returns the rank of `S` :math:`(r \leq m)`.
-% It doesn't matter if `rank < m`.
+% It doesn't matter if :math:`rank < m`.
 %
 % USAGE:
 %

@@ -1,5 +1,5 @@
 function [Z, rankS] = getNullSpace(S, printLevel)
-% Calculates the nullspace of `S` for `full(S)` or `rank(S) == m`.
+% Calculates the nullspace of `S` for `full(S)` or :math:`rank(S) == m`.
 % If full row rank i.e. `rank(S) = m`, it's much faster to work with a sparse LU.
 %
 % USAGE:

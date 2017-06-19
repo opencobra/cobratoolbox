@@ -1,15 +1,15 @@
 function [AA, aa, pp, rankA, p] = rowReduce(A, a)
-% Eliminates dependent rows from `A` & `a` where :math:`A*x = a`
+% Eliminates dependent rows from `A` & `a` where :math:`A x = a`
 %
 % USAGE:
 %
 %    [AA, aa, pp, rankA, p] = rowReduce(A, a)
 %
 % INPUT:
-%    A:        from :math:`A*x = a`
+%    A:        from :math:`A x = a`
 %
 % OPTIONAL INPUT:
-%    a:        from :math:`A*x = a`
+%    a:        from :math:`A x = a`
 %
 % OUTPUT:
 %    AA:       row reduced `A`

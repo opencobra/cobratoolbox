@@ -1,7 +1,7 @@
 function [L0, I, P, L, p] = echelonNullspace(S, side, tol)
 % Returns the Echelon form of the:
-% left nullspace, :math:`L*S = [-L0\ I]*P*S = 0`.
-% or right nullspace :math:`S*L = S*([-L0\ I]*P)^T = 0`.
+% left nullspace, :math:`L S = [-L0\ I] P S = 0` 
+% or right nullspace :math:`S L = S ([-L0\ I] P)^T = 0`.
 %
 % USAGE:
 %
@@ -18,15 +18,15 @@ function [L0, I, P, L, p] = echelonNullspace(S, side, tol)
 % OUTPUTS:
 %    if side == left
 %    L0:            `(m-r) x r` matrix which forms the non-trivial part of the
-%                    left nullspace in echelon form i.e. :math:`[-L0\ I]*P*S = 0`.
+%                    left nullspace in echelon form i.e. :math:`[-L0\ I] P S = 0`.
 %    P:              `m x m` row (permutation matrix
 %    I:              `(m-r) x (m-r)` identity matrix
-%    p:              row permutation which leaves first 1:rankA rows independent and
+%    p:              row permutation which leaves first `1:rankA` rows independent and
 %                    last rows dependent
 %
 %    if side == right
 %    L0:             `(n-r) x r` matrix which forms the non-trivial part of the
-%                    right nullspace in echelon form i.e. :math:`S*([-L0\ I]*P)^T = 0`.
+%                    right nullspace in echelon form i.e. :math:`S ([-L0\ I] P)^T = 0`.
 %    P:              `n x n` column permutaion matrix
 %    I:              `(n-r) x (n-r)` identity matrix
 %    p:              column permutation which leaves first `1:rankA` columns

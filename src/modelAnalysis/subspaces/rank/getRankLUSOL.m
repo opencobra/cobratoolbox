@@ -1,6 +1,6 @@
 function [rankA, p, q] = getRankLUSOL(A, printLevel)
 % Get the rank of a matrix using treshold rook pivoting.
-% Uses `lusolFactor` computes the sparse factorization :math:`A = L*U`
+% Uses `lusolFactor` computes the sparse factorization :math:`A = L U`
 % for a square or rectangular matrix `A`.  The vectors `p`, `q`
 % are row and column permutations giving the pivot order.
 %
@@ -22,8 +22,8 @@ function [rankA, p, q] = getRankLUSOL(A, printLevel)
 %                   `p(rankA+1:size(A, 1))` gives indices of dependent rows
 %    q:             column permutations giving the pivot order
 %
-%                   Note: `q(1:rankA)`` gives indices of independent columns
-%                   `q(rankA+1:size(A, 2))`` gives indices of dependent columns
+%                   Note: `q(1:rankA)` gives indices of independent columns
+%                   `q(rankA+1:size(A, 2))` gives indices of dependent columns
 %
 % .. Authors:
 %       - Michael Saunders, LUSOL Fortran code, May 2015
