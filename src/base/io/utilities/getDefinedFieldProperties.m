@@ -1,6 +1,5 @@
 function [fields] = getDefinedFieldProperties(varargin)
-% Returns the fields defined in the COBRA Toolbox
-% along with checks for their properties
+% Returns the fields defined in the COBRA Toolbox along with checks for their properties
 %
 % USAGE:
 %

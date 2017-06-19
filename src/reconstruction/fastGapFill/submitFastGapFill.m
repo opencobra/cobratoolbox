@@ -122,16 +122,16 @@ else
         model = readCbModel(modelFile);
         % If subSystems is empty, create a dummy subSystems for mergeTwoModels
         if ~exist('model.subSystems') || length(model.subSystems) ~= length(model.rxnNames)
-            model.subSystems = repmat({''},length(model.rxnNames));
+            model.subSystems = repmat({''},length(model.rxns));
         end
         if ~exist('model.genes')
             model.genes = repmat({'no_gene'},1);
         end
         if ~exist('model.rxnGeneMat')
-            model.rxnGeneMat = zeros(length(model.rxnNames),1);
+            model.rxnGeneMat = zeros(length(model.rxns),1);
         end
         if ~exist('model.grRules')
-            model.grRules = repmat({''},length(model.rxnNames));
+            model.grRules = repmat({''},length(model.rxns));
         end
     end
 
