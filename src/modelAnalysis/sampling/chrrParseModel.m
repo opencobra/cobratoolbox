@@ -28,7 +28,7 @@ function P = chrrParseModel(model)
 % .. math::
 %    min  ~&~ c v \\
 %    s.t. ~&~ S v = b \\
-%         ~&~ lb \leq v \leq u b^T
+%         ~&~ lb \leq v \leq ub
 
 dim = length(model.lb);
 

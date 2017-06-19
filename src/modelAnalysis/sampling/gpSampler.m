@@ -5,7 +5,7 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 %
 % .. math::
 %    A x \leq, =, \geq b \\
-%    lb \leq x \leq u b
+%    lb \leq x \leq ub
 %
 % USAGE:
 %
