@@ -1,4 +1,4 @@
-function optGeneTutorial(mode,threshold)
+function optGeneTutorial
 %% DESCRIPTION
 % This script shows 6 examples for using optGene. These examples are
 % exposed on the paper Burgard, A. P., Pharkya, P. & Maranas, C. D. (2003).
@@ -26,9 +26,10 @@ if isempty(CBT_LP_SOLVER)
     CBT_LP_SOLVER = 'gurobi';
 end
 
+threshold = 3; 
+
 load('iJO1366')
 model = iJO1366;
-
 biomass = 'BIOMASS_Ec_iJO1366_core_53p95M';
 
 %SETTING SPECIFIC CONSTRAINTS
@@ -76,13 +77,13 @@ maxSuccFluxWT = fbaWTMax.f;
 model = changeObjective(model, biomass);
 
 fprintf('The minimum and maximum production of succinate before optimization is %.1f and %.1f respectively\n', minSuccFluxWT, maxSuccFluxWT);
-fprintf('The growth rate before optimization is %.1f \n', growthRateWT);
+fprintf('The growth rate before optimization is %.2f \n', growthRateWT);
 
 % OPTGENE SETTING
 selectedGeneList = {};
 % use prespecified reactions. Faster option
 selectedRxnList = {'GLCabcpp'; 'GLCptspp'; 'HEX1'; 'PGI'; 'PFK'; 'FBA'; 'TPI'; 'GAPD'; 'PGK'; 'PGM'; 'ENO'; 'PYK'; 'LDH_D'; 'PFL'; 'ALCD2x'; 'PTAr'; 'ACKr'; 'G6PDH2r'; 'PGL'; 'GND'; 'RPI'; 'RPE'; 'TKT1'; 'TALA'; 'TKT2'; 'FUM'; 'FRD2'; 'SUCOAS'; 'AKGDH'; 'ACONTa'; 'ACONTb'; 'ICDHyr'; 'CS'; 'MDH'; 'MDH2'; 'MDH3'; 'ACALD'};
-genesByReaction = regexp(regexprep(model.grRules(find(ismember(model.rxns, selectedRxnList))), '\or|and|\(|\)', ''), '\  ', 'split');
+genesByReaction = regexp(regexprep(model.grRules(ismember(model.rxns, selectedRxnList)), '\or|and|\(|\)', ''), '\  ', 'split');
 for i = 1:length(genesByReaction)
     selectedGeneList = union(selectedGeneList, genesByReaction{i});
 end
@@ -91,16 +92,58 @@ end
 
 % EXAMPLE 1: finding reaction knockouts sets of large 2 or less
 
-fprintf('\n...EXAMPLE 1: Finding optGene sets\n\n')
+% fprintf('\n...EXAMPLE 1: Finding optGene sets\n\n')
+% previousSolutions = cell(10, 1);
+% contPreviousSolutions = 1;
+% nIter = 0;
+% while nIter < threshold
+%     fprintf('...Performing optGene analysis...\n')
+%     %optGene algorithm is run with the following options: target: 'EX_lac__D_e'
+%     [~, ~, ~, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'TimeLimit', 120);
+%     
+%     SET_M1 = optGeneSol.geneList;
+%     
+%     if ~isempty(SET_M1)
+%         previousSolutions{contPreviousSolutions} = SET_M1;
+%         contPreviousSolutions = contPreviousSolutions + 1;
+%         %printing results
+%         fprintf('optGene found a knockout set of large %d composed by ', length(SET_M1));
+%         for j = 1:length(SET_M1)
+%             if j == 1
+%                 fprintf('%s ',SET_M1{j});
+%             elseif j == length(SET_M1)
+%                 fprintf('and %s',SET_M1{j});
+%             else
+%                 fprintf(', %s ',SET_M1{j});
+%             end
+%         end
+%         fprintf('\n');
+%         fprintf('...Performing coupling analysis...\n');
+%         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, optGeneSol.geneList, 'EX_succ_e', biomass, 1);
+%         fprintf('The solution is of type: %s\n',type);
+%         fprintf('The maximun growth rate after optimizacion is %.2f\n', maxGrowth);
+%         fprintf('The maximun and minimun production of succinate after optimization is %.2f and %.2f, respectively \n\n', minProd, maxProd);
+%         
+%     else
+%         if nIter  ==  1
+%             fprintf('optGene was not able to found an optGene set\n');
+%         else
+%             fprintf('optGene was not able to found additional optGene sets\n');
+%         end
+%         break;
+%     end
+%     nIter = nIter + 1;
+%     
+% end
 
+fprintf('\n...EXAMPLE 2: Finding optGene sets\n\n')
 previousSolutions = cell(10, 1);
 contPreviousSolutions = 1;
-threshold = 5; 
 nIter = 0;
 while nIter < threshold
     fprintf('...Performing optGene analysis...\n')
     %optGene algorithm is run with the following options: target: 'EX_lac__D_e'
-    [~, ~, ~, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'TimeLimit', 120);
+    [~, ~, ~, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'Generations', 20);
     
     SET_M1 = optGeneSol.geneList;
     
@@ -136,8 +179,6 @@ while nIter < threshold
     nIter = nIter + 1;
     
 end
-
-
 
 
 end
