@@ -1,50 +1,49 @@
-function [concentrationMatrix,excRxnNames,timeVec,biomassVec] = ...
-    dynamicFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)
-%dynamicFBA Perform dynamic FBA simulation using the static optimization
-%approach
+function [concentrationMatrix, excRxnNames, timeVec, biomassVec] = dynamicFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
+% Performs dynamic FBA simulation using the static optimization approach
 %
-% [concentrationMatrix,excRxnNames,timeVec,biomassVec]
-% dynamicFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)
+% USAGE:
 %
-%INPUTS
-% model                 COBRA model structure
-% substrateRxns         List of exchange reaction names for substrates
-%                       initially in the media that may change (e.g. not
-%                       h2o or co2)
-% initConcentrations    Initial concentrations of substrates (in the same
-%                       structure as substrateRxns)
-% initBiomass           Initial biomass (must be non zero)
-% timeStep              Time step size
-% nSteps                Maximum number of time steps
+%    [concentrationMatrix, excRxnNames, timeVec, biomassVec] = dynamicFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
 %
-%OPTIONAL INPUTS
-% plotRxns              Reactions to be plotted (Default =
-%                       {'EX_glc(e)','EX_ac(e)','EX_for(e)'})
-% exclUptakeRxns        List of uptake reactions whose substrate
-%                       concentrations do not change (Default =
-%                       {'EX_co2(e)','EX_o2(e)','EX_h2o(e)','EX_h(e)'})
+% INPUTS:
+%    model:                  COBRA model structure
+%    substrateRxns:          List of exchange reaction names for substrates
+%                            initially in the media that may change (e.g. not
+%                            h2o or co2)
+%    initConcentrations:     Initial concentrations of substrates (in the same
+%                            structure as `substrateRxns`)
+%    initBiomass:            Initial biomass (must be non zero)
+%    timeStep:               Time step size
+%    nSteps:                 Maximum number of time steps
 %
-%OUTPUTS
-% concentrationMatrix   Matrix of extracellular metabolite concentrations
-% excRxnNames           Names of exchange reactions for the EC metabolites
-% timeVec               Vector of time points
-% biomassVec            Vector of biomass values
+% OPTIONAL INPUTS:
+%    plotRxns:               Reactions to be plotted (Default = {'EX_glc(e)', 'EX_ac(e)', 'EX_for(e)'})
+%    exclUptakeRxns:         List of uptake reactions whose substrate concentrations do not change
+%                            (Default = {'EX_co2(e)', 'EX_o2(e)', 'EX_h2o(e)', 'EX_h(e)'})
+%
+% OUTPUTS:
+%    concentrationMatrix:    Matrix of extracellular metabolite concentrations
+%    excRxnNames:            Names of exchange reactions for the EC metabolites
+%    timeVec:                Vector of time points
+%    biomassVec:             Vector of biomass values
 %
 % If no initial concentration is given for a substrate that has an open
-% uptake in the model (i.e. model.lb < 0) the concentration is assumed to
+% uptake in the model (i.e. `model.lb < 0`) the concentration is assumed to
 % be high enough to not be limiting. If the uptake rate for a nutrient is
 % calculated to exceed the maximum uptake rate for that nutrient specified
 % in the model and the max uptake rate specified is > 0, the maximum uptake
 % rate specified in the model is used instead of the calculated uptake
 % rate.
 %
-% NOTE: The dynamic FBA method implemented in this function is essentially
-% the same as the method described in
-% [Varma, A., and B. O. Palsson. Appl. Environ. Microbiol. 60:3724 (1994)].
-% This function does not implement the dynamic FBA using dynamic optimization approach
-% described in [Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)].
+% NOTE:
 %
-% Markus Herrgard 8/22/06
+%    The dynamic FBA method implemented in this function is essentially
+%    the same as the method described in
+%    [`Varma, A., and B. O. Palsson. Appl. Environ. Microbiol. 60:3724 (1994)`].
+%    This function does not implement the dynamic FBA using dynamic optimization approach
+%    described in [`Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)`].
+%
+% .. Author: - Markus Herrgard 8/22/06
 
 global WAITBAR_TYPE
 
@@ -72,7 +71,7 @@ if (~isempty(missingInd))
 end
 
 % Initialize concentrations
-[~, substrateMatchInd] = ismember(substrateRxns,excRxnNames); 
+[~, substrateMatchInd] = ismember(substrateRxns,excRxnNames);
 concentrations = zeros(length(excRxnNames),1);
 concentrations(substrateMatchInd) = initConcentrations;
 

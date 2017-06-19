@@ -2,41 +2,46 @@ function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
 % Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes
 % the user's objective function and then minimizes the flux through the
 % model and subsequently classifies each gene by how it contributes to the
-% optimal solution. See Lewis, et al. Mol Syst Bio doi:10.1038/msb.2010.47
+% optimal solution. See `Lewis, et al. Mol Syst Bio doi:10.1038/msb.2010.47`
 %
-%INPUTS
-%   model                     COBRA model
+% USAGE:
 %
-%   varargin:
-%       'geneoption'          0 = minimize the sum of all fluxes in the network, 
-%                             1 = only minimize the sum of the flux through
-%                             gene-associated fluxes (default),
-%                             2 = only minimize the sum of the flux through
-%                             non-gene-associated fluxes
-%       'map'                 map structure from readCbMap.m (no map
-%       written if empty
-%       'mapoutname'          File Name for map 
-%       'skipclass'           1 = Don't classify genes and reactions. Only return
-%                             model with the minimium flux set as upper bound.
-%                             0 = classify genes and reactions (default). 
+%    [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
 %
-%OUTPUTS
-%        GeneClasses          Structure with fields for each gene class
-%        RxnsClasses          Structure with fields for each reaction class
-%        modelIrrevFM         Irreversible model used for minimizing flux with
-%                             the minimum flux set as a flux upper bound
+% INPUTS:
+%    model            COBRA model
+%    varargin:        including:
 %
-% 
-% ** note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
-%       reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
-%       blue (2) = zero flux reactions, purple (1) = blocked reactions,
-%       black (0) = not classified
-% 
-% Example:
-% [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, 'geneoption',0, 'tol',1e-7)
+%                       * 'geneoption' - 0 = minimize the sum of all fluxes in the network,
+%                         1 = only minimize the sum of the flux through
+%                         gene-associated fluxes (default),
+%                         2 = only minimize the sum of the flux through
+%                         non-gene-associated fluxes
+%                       * 'map' - map structure from readCbMap.m (no map written if empty)
+%                       * 'mapoutname' - File Name for map
+%                       * 'skipclass' - 1 = Don't classify genes and reactions. Only return
+%                         model with the minimium flux set as upper bound.
+%                         0 = classify genes and reactions (default).
 %
-% by Nathan Lewis Aug 25, 2010
-% updated by Anne Richelle April, 2017
+% OUTPUTS:
+%    GeneClasses:     Structure with fields for each gene class
+%    RxnsClasses:     Structure with fields for each reaction class
+%    modelIrrevFM:    Irreversible model used for minimizing flux with
+%                     the minimum flux set as a flux upper bound
+%
+%
+% Note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
+% reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
+% blue (2) = zero flux reactions, purple (1) = blocked reactions,
+% black (0) = not classified
+%
+% EXAMPLE:
+%
+%    [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, 'geneoption',0, 'tol',1e-7)
+%
+% .. Authors:
+%       - by Nathan Lewis Aug 25, 2010
+%       - updated by Anne Richelle April, 2017
 
 
 if nargin < 2
@@ -44,7 +49,7 @@ if nargin < 2
     GeneOption = 1;
     map = []; % no map
     mapOutName = 'pFBA_map.svg';
-    skipclass = 0; 
+    skipclass = 0;
 end
 if mod(length(varargin),2)==0
     for i=1:2:length(varargin)-1
@@ -74,25 +79,25 @@ if skipclass % skip the model reduction and gene/rxn classification
     GeneClasses = [];
     RxnClasses = [];
 else
-    
+
 
     % save a copy of the inputted model
     model_sav = model;
-    
+
     % Remove all blocked reactions
     [selExc,selUpt] = findExcRxns(model,0,0); % find and open up all exchanges
     tempmodel = changeRxnBounds(model,model.rxns(selExc),-1000,'l');
     tempmodel = changeRxnBounds(tempmodel,model.rxns(selExc),1000,'u');
-    
+
     %Note can be performed faster using fastFVA instead of fluxVariability
     [maxF minF] = fluxVariability(tempmodel,.001);
     Blocked_Rxns = model.rxns(and(abs(maxF)<tol,abs(minF)<tol));
     model = removeRxns(model,Blocked_Rxns); % remove blocked reactions
-    
+
     Ind2Remove = find(~and(sum(full(model.rxnGeneMat),1),1));
     Blocked_genes = model.genes(Ind2Remove);
     model.genes(Ind2Remove)={'dead_end'}; % make sure genes that are unique to blocked reactions are tagged for removal
-    
+
     % find essential genes
     grRatio = singleGeneDeletion(model);
     grRatio(isnan(grRatio))=0;
@@ -109,37 +114,37 @@ else
     [maxF,minF] = fluxVariability(model,.001);
     ZeroFluxRxns = model.rxns(and(abs(maxF)<tol,abs(minF)<tol));
     model = removeRxns(model,ZeroFluxRxns);
-    
+
     % find MLE reactions
     FBAsoln = optimizeCbModel(model);
     model.lb(model.c==1) = FBAsoln.f;
-    
+
     %Note can be performed faster using fastFVA instead of fluxVariability
     [minFlux,maxFlux] = fluxVariability(model,100);
     for i = 1:length(minFlux)
         tmp(i,1) = max([abs(minFlux(i)) abs(maxFlux(i))])<tol;
     end
-    
+
     MLE_Rxns = setdiff(model.rxns(tmp),ZeroFluxRxns);
-    
+
     % minimize the network flux
     [ MinimizedFlux,modelIrrevFM]= minimizeModelFlux_local(model,GeneOption);
-    
+
     % separate pFBA optima rxns from ELE rxns
-    modelIrrevFM = changeRxnBounds(modelIrrevFM,'netFlux',MinimizedFlux.f,'b'); 
-    [minFlux,maxFlux] = fluxVariability(modelIrrevFM,100); 
+    modelIrrevFM = changeRxnBounds(modelIrrevFM,'netFlux',MinimizedFlux.f,'b');
+    [minFlux,maxFlux] = fluxVariability(modelIrrevFM,100);
     pFBAopt_Rxns = modelIrrevFM.rxns((abs(minFlux)+abs(maxFlux))>=tol);
     ELE_Rxns = modelIrrevFM.rxns((abs(minFlux)+abs(maxFlux))<=tol);
     pFBAopt_Rxns = unique(regexprep(pFBAopt_Rxns,'_[f|b]$',''));
-    
-    % removes non-gene associated reversible reactions that are only in the 
+
+    % removes non-gene associated reversible reactions that are only in the
     % list because there is no constraint on them looping with the reverse reaction
-    pFBAopt_Rxns(ismember(pFBAopt_Rxns,MLE_Rxns))=[]; 
-       
+    pFBAopt_Rxns(ismember(pFBAopt_Rxns,MLE_Rxns))=[];
+
     ELE_Rxns = unique(regexprep(ELE_Rxns,'_[f|b]$',''));
     ELE_Rxns = ELE_Rxns(~ismember(ELE_Rxns,pFBAopt_Rxns));
     ELE_Rxns = ELE_Rxns(~ismember(ELE_Rxns,MLE_Rxns));
-       
+
     % determine pFBA optima genes
     pFBAopt_Rxns(ismember(pFBAopt_Rxns,'netFlux'))=[];
     [geneList]=findGenesFromRxns(model,pFBAopt_Rxns);
@@ -148,25 +153,25 @@ else
         geneList2(end+1:end+length(geneList{i}),1) = columnVector( geneList{i});
     end
     pFBAOptima = unique(geneList2);
-    
+
     % determine Zero Flux genes
     Ind2Remove = find(~and(sum(full(model.rxnGeneMat),1),1));
-    ZeroFluxGenes = unique(model.genes(Ind2Remove));    
-    
+    ZeroFluxGenes = unique(model.genes(Ind2Remove));
+
     % determine ELE genes
     [geneList]=findGenesFromRxns(model,ELE_Rxns);
     geneList2 = {};
-    
+
     for i = 1:length(geneList)
         geneList2(end+1:end+length(geneList{i}),1) = columnVector( geneList{i});
     end
-    
+
     ELEGenes = unique(geneList2);
     ELEGenes = setdiff(ELEGenes,[pFBAOptima;ZeroFluxGenes]);
-    
+
     % determine Met ineff genes
     MLEGenes = setdiff(model.genes, [pFBAOptima;ZeroFluxGenes;ELEGenes]);
-    
+
     % clean up lists by removing non-genes
     pFBAOptima(~cellfun('isempty',regexp(pFBAOptima,'dead_end')))=[];
     ELEGenes(~cellfun('isempty',regexp(ELEGenes ,'dead_end')))=[];
@@ -176,15 +181,15 @@ else
     ELEGenes(cellfun('isempty',ELEGenes ))=[];
     MLEGenes(cellfun('isempty',MLEGenes))=[];
     ZeroFluxGenes(cellfun('isempty',ZeroFluxGenes))=[];
-    
+
     % filter out essential genes from pFBA optima
-    pFBAOptima(ismember(pFBAOptima,pFBAEssential))=[];    
-    
+    pFBAOptima(ismember(pFBAOptima,pFBAEssential))=[];
+
     if nargout > 1
         % filter out essential Rxns from pFBA optima
         pFBAopt_Rxns(ismember(pFBAopt_Rxns,pFBAEssentialRxns))=[];
     end
-    
+
     % prepare output variables
     GeneClasses.pFBAEssential =pFBAEssential;
     GeneClasses.pFBAoptima = pFBAOptima;
@@ -198,7 +203,7 @@ else
     RxnClasses.MLE_Rxns = MLE_Rxns;
     RxnClasses.ZeroFlux_Rxns = ZeroFluxRxns;
     RxnClasses.Blocked_Rxns = Blocked_Rxns;
-    
+
     if ~isempty(map)
         MapVector = zeros(length(model_sav.rxns),1);
         MapVector(ismember(model_sav.rxns,Blocked_Rxns))= 1;
@@ -221,7 +226,7 @@ else
         end
         drawFlux(map, model_sav, MapVector, options);
     end
-    
+
 end
 end
 function [ MinimizedFlux modelIrrev]= minimizeModelFlux_local(model,GeneOption)
@@ -230,11 +235,11 @@ function [ MinimizedFlux modelIrrev]= minimizeModelFlux_local(model,GeneOption)
 
     modelIrrev = convertToIrreversible(model);
     % add pseudo-metabolite to measure flux through network
-    
+
     if nargin==1
         GeneOption=0;
     end
-    
+
     if GeneOption==0, % signal that you want to minimize the sum of all gene and non-gene associated fluxes
         modelIrrev.S(end+1,:) = ones(size(modelIrrev.S(1,:)));
     elseif GeneOption==1, % signal that you want to minimize the sum of only gene-associated fluxes
@@ -248,17 +253,17 @@ function [ MinimizedFlux modelIrrev]= minimizeModelFlux_local(model,GeneOption)
         modelIrrev.S(end+1,:) = zeros(size(modelIrrev.S(1,:)));
         modelIrrev.S(end,Ind) = 1;
     end
-    
+
     modelIrrev.b(end+1) = 0;
     modelIrrev.mets{end+1} = 'fluxMeasure';
-    
+
     % add a pseudo reaction that measures the flux through the network
     modelIrrev = addReaction(modelIrrev,'netFlux',{'fluxMeasure'},[-1],false,0,inf,0,'','');
-    
+
     % set the flux measuring demand as the objective
     modelIrrev.c = zeros(length(modelIrrev.rxns),1);
     modelIrrev = changeObjective(modelIrrev, 'netFlux');
-    
+
     % minimize the flux measuring demand (netFlux)
     MinimizedFlux = optimizeCbModel(modelIrrev,'min');
 

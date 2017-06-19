@@ -1,15 +1,14 @@
 function [missingMets,presentMets] = biomassPrecursorCheck(model)
-% Checks if biomass precursors are able to be
-% synthesized.
+% Checks if biomass precursors are able to be synthesized.
 %
 % [missingMets, presentMets] = checkBiomassPrecursors(model)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:          COBRA model structure
 %
 % OUTPUTS:
-%    missingMets:   List of biomass precursors that are not able to be synthesized
-%    presentMets:   List of biomass precursors that are able to be synthesized
+%    missingMets:    List of biomass precursors that are not able to be synthesized
+%    presentMets:    List of biomass precursors that are able to be synthesized
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
 % May identify metabolites that are typically recycled within the
