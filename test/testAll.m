@@ -22,10 +22,6 @@ origDir = pwd;
 % if the location of initCobraToolbox is not yet known
 if length(which('initCobraToolbox.m')) == 0
     % define the path to The COBRA Toolbox
-
-% if the location of initCobraToolbox is not yet known
-if length(which('initCobraToolbox.m')) == 0
-    % define the path to The COBRA Toolbox
     pth = fileparts(which('testAll.m'));
     % Now, we are in the test folder
     cd(pth)
