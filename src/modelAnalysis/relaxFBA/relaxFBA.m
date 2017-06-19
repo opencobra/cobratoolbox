@@ -4,14 +4,14 @@ function [solution] = relaxFBA(model, relaxOption)
 % to make the FBA problem feasible
 %
 % .. math::
-%      min   c'v + lambda*||r||_0 + gamma*(||p||_0 + ||q||_0)
-%      s.t   S*v + r <=> b
-%            l - p <= v <= u + q
-%            r \in R^m
-%            p,q \in R_+^n
+%      min ~&~ c^T v + lambda ||r||_0 + gamma (||p||_0 + ||q||_0) \\
+%      s.t ~&~ S v + r <=> b \\
+%          ~&~ l - p <= v <= u + q \\
+%          ~&~ r \in R^m \\
+%          ~&~ p,q \in R_+^n \\
 %
-%      m - number of metabolites
-%      n - number of reactions
+% `m` - number of metabolites,
+% `n` - number of reactions
 %
 % USAGE:
 %
@@ -153,7 +153,7 @@ if ~isfield(relaxOption,'lambda')
 else
     relaxOption.lambda0= relaxOption.lambda;
 end
-   
+
 
 %Combine excludedReactions with internalRelax and exchangeRelax
 if relaxOption.internalRelax == 0 %Exclude all internal reactions

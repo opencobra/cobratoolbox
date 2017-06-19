@@ -20,7 +20,7 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 %    solutionDel:      Deletion solution structure
 %    solutionWT:       Wild-type solution structure
 %    totalFluxDiff:    Value of the linear MOMA objective, i.e.
-%                      :math:`sum(v_{wt}-v_{del})^2`
+%                      :math:`\sum (v_{wt}-v_{del})^2`
 %    solStatus:        Solution status - solves two different types of MOMA problems:
 %
 %                        1.  MOMA that avoids problems with alternative optima (this is the
@@ -30,19 +30,19 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 % First solve:
 %
 % .. math::
-%      max \quad c_{wt}'*v_{wt0} \\
-%      lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
-%      S_{wt}*v_{wt0} = 0 \\
+%      max ~&~ c_{wt}^T v_{wt0} \\
+%          ~&~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+%          ~&~ S_{wt}v_{wt0} = 0 \\
 %
 % Then solve:
 %
 % .. math::
-%      min \quad sum(v_{wt} - v_{del})^2 \\
-%      S_{wt}*v_{wt} = 0 \\
-%      S_{del}*v_{del} = 0 \\
-%      lb_{wt} \leq v_{wt} \leq ub_{wt} \\
-%      lb_{del} \leq v_{del} \leq ub_{del} \\
-%      c_{wt}'*v_{wt} = f_{wt} \\
+%      min ~&~ \sum (v_{wt} - v_{del})^2 \\
+%          ~&~ S_{wt}v_{wt} = 0 \\
+%          ~&~ S_{del}v_{del} = 0 \\
+%          ~&~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%          ~&~ lb_{del} \leq v_{del} \leq ub_{del} \\
+%          ~&~ c_{wt}^T v_{wt} = f_{wt} \\
 %
 % Here :math:`f_{wt}` is the optimal wild type objective value found by FBA in the
 % first problem. Note that the FBA solution :math:`v_{wt0}` is not used in the second
@@ -51,26 +51,26 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 % First solve
 %
 % .. math::
-%      max \quad c_{wt}'*v_{wt0} \\
-%      lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
-%      S_{wt}*v_{wt0} = 0 \\
+%      max ~&~ c_{wt}^T v_{wt0} \\
+%          ~&~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+%          ~&~ S_{wt}v_{wt0} = 0 \\
 %
 % Then solve
 %
 % .. math::
-%      min \quad |v_{wt}| \\
-%      S_{wt}*v_{wt} = b_{wt} \\
-%      c_{wt}'*v_{wt} = f_{wt} \\
-%      lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%      min ~&~ |v_{wt}| \\
+%          ~&~ S_{wt}v_{wt} = b_{wt} \\
+%          ~&~ c_{wt}^T v_{wt} = f_{wt} \\
+%          ~&~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
 %
 % Here :math:`f_{wt}` is the objective value obtained in the 1st optimization.
 %
 % Finally solve:
 %
 % .. math::
-%      min \quad sum(v_{wt} - v_{del})^2 \\
-%      S_{del}*v_{del} = 0 \\
-%      lb_{del} \leq v_{del} \leq ub_{del}
+%      min ~&~ sum(v_{wt} - v_{del})^2 \\
+%          ~&~ S_{del}v_{del} = 0 \\
+%          ~&~ lb_{del} \leq v_{del} \leq ub_{del}
 %
 % NOTE::
 %
