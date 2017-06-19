@@ -18,7 +18,7 @@ function P = chrrParseModel(model)
 %
 %                 * .A_eq - Equality constraint matrix (`model.S`)
 %                 * .b_eq - Right hand side of equality constraints (`model.b`)
-%                 * .A - Inequality constraint matrix ([`I_n 0`; `0 -I_n`])
+%                 * .A - Inequality constraint matrix ([:math:`I_n 0; 0 -I_n`])
 %                 * .b - Right hand side of inequality constraints ([`lb`; `-ub`])
 %
 % .. Authors: - Ben Cousins and Hulda S. Haraldsdóttir, October 2016
@@ -26,9 +26,9 @@ function P = chrrParseModel(model)
 % We are trying to sample uniformly at random from the points `v` that satisfy:
 %
 % .. math::
-%    min \quad c*v \\
-%    s.t. \quad Sv = b \\
-%    lb \leq v \leq ub`
+%    min  ~&~ c v \\
+%    s.t. ~&~ S v = b \\
+%         ~&~ lb \leq v \leq u b^T
 
 dim = length(model.lb);
 

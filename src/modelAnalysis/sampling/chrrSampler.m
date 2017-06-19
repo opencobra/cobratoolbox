@@ -10,7 +10,7 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 %    model:               COBRA model structure with fields:
 %
 %                           * .S - The `m x n` stoichiometric matrix
-%                           * .lb - `n x 1`lower bounds on fluxes
+%                           * .lb - `n x 1` lower bounds on fluxes
 %                           * .ub - `n x 1` upper bounds on fluxes
 %                           * .c - `n x 1` linear objective
 %    numSkip:             Number of steps of coordinate hit-and-run between samples

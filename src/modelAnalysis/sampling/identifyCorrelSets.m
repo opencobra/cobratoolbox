@@ -10,7 +10,7 @@ function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, samples,
 %    samples:      Samples to be used to identify correlated sets
 %
 % OPTIONAL INPUTS:
-%    corrThr:      Minimum correlation (`R^2`) threshold (Default = 1-1e-8)
+%    corrThr:      Minimum correlation (:math:`R^2`) threshold (Default = 1-1e-8)
 %    R:            Correlation coefficient
 %
 % OUTPUTS:

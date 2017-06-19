@@ -4,8 +4,8 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 % The space is defined by
 %
 % .. math::
-%    A x \leq,=,\geq b \\
-%    lb \leq x \leq ub
+%    A x \leq, =, \geq b \\
+%    lb \leq x \leq u b
 %
 % USAGE:
 %
@@ -25,12 +25,12 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 %
 % OPTIONAL INPUTS:
 %    nPoints:           Number of points used in sampling
-%                       (default = 2 * `nRxns` or 5000 whichever is greater)
+%                       (default = `2 * nRxns` or 5000 whichever is greater)
 %    bias:              Structure with fields:
 %
 %                         * method - Biasing distribution: 'uniform', 'normal'
 %                         * index - The reaction indexes which to bias (`nBias` total)
-%                         * param - `nBias` x 2 matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
+%                         * param - `nBias x 2` matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
 %    maxTime:           Maximum time alloted for the sampling in seconds
 %                       (default 600 s, pass an empty number [] to set `maxSteps` instead)
 %    maxSteps:          Maximum number of steps to take (default 1e10). Sampler
@@ -44,7 +44,7 @@ function [sampleStructOut, mixedFrac] = gpSampler(sampleStruct, nPoints, bias, m
 %                       speedup can be obtained by starting matlab from the
 %                       command line by "typing matlab -singleCompThread"
 %                       New feature:  if `threads` < 0, use distributed toolbox.
-%    nPointsCheck:      Checks that minimum number of points (2 * `nRxns`) are
+%    nPointsCheck:      Checks that minimum number of points (`2 * nRxns`) are
 %                       used. (Default = true).
 %
 % OUTPUTS:

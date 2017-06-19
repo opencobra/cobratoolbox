@@ -9,7 +9,7 @@ function sampleScatterMatrix(rxnNames, model, sample, nPoints, fontSize, dispRFl
 % INPUTS:
 %    rxnNames:     Cell array of reaction names to be plotted
 %    model:        Model structure
-%    sample:       Samples to be analyzed (`nRxns` x `nSamples`)
+%    sample:       Samples to be analyzed (`nRxns x nSamples`)
 %
 % OPTIONAL INPUTS:
 %    nPoints:      How many sample points to plot (Default `nSamples`)
