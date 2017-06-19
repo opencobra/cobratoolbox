@@ -54,11 +54,10 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 % .. math::
 %      min ~&~ ||v||_0 \\
 %      s.t ~&~ S v \leq, = or \geq b \\
-%          ~&~ c^T v = f*
-% (optimal value of objective, default is :math:`max\ c^T v`)
+%          ~&~ c^T v = f* \\
+%          ~&~ l \leq v \leq u
 %
-% .. math::
-%          ~&~ l \leq v \leq u \\
+% where :math:`f*` is the optimal value of objective (default is :math:`max c^T v`).
 %
 
 if exist('osenseStr', 'var')
