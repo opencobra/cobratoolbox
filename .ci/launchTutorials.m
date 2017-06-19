@@ -4,11 +4,8 @@ addpath(genpath(pwd))
 % run the official initialisation script
 initCobraToolbox
 
-if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-    WAITBAR_TYPE = 0;
-else
-    WAITBAR_TYPE = 1;
-end
+% Mute progress bars
+WAITBAR_TYPE = 0;
 
 % define a success exit code
 exitCode = 0;
