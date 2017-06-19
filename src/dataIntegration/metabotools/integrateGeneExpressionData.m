@@ -17,23 +17,15 @@ function [modelGE] = integrateGeneExpressionData(model,dataGenes)
 %
 % .. Author: - Maike K. Aurich 13/02/15 (Depends on deleteModelGene)
 
-Transcript = model.genes;
 
-cnt = 1;
-for i = 1 : length(Transcript);
-        a=regexp(Transcript{i,1},'\.','split');
-    if ~isempty(char(a));
-       if ~isempty(find(dataGenes== str2num(char(a(1)))));
-        j = find(dataGenes == str2num(char(a(1))));
-        Genes2Transcripts(j,cnt) = 1;
-       ExpressionData.Transcript{cnt,1} = Transcript{i,1};
-        ExpressionData.Locus(cnt,1) = dataGenes(j(1));
-        cnt = cnt +1;
-    end
-    end
+if all(~cellfun(@isempty ,regexp(model.genes,'\.[0-9]+$'))) && isnumeric(dataGenes)
+    %For backward compatability, we will check if this is recon 1 by testing,
+    %whether all absentgenes lack a transcript and all model genes have it.
+    
+   geneNumbers = cellfun(@str2num, regexprep(model.genes, '\.[0-9]+$',''));
+   presence = ismember(geneNumbers,dataGenes);
+   dataGenes = model.genes(presence);
 end
 
-
-DeleteGenes_Metabol_Transcriptome = [];
-[modelGE, hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,ExpressionData.Transcript); 
+[modelGE, hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,dataGenes); 
 end
