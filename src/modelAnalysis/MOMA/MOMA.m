@@ -68,7 +68,7 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 % Finally solve:
 %
 % .. math::
-%      min ~&~ sum(v_{wt} - v_{del})^2 \\
+%      min ~&~ \sum (v_{wt} - v_{del})^2 \\
 %          ~&~ S_{del}v_{del} = 0 \\
 %          ~&~ lb_{del} \leq v_{del} \leq ub_{del}
 %
