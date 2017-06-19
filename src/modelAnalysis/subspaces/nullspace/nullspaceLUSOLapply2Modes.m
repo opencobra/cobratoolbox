@@ -1,18 +1,18 @@
 function W = nullspaceLUSOLapply2Modes(mode, m, n, V, nullS)
 % Computes the matrix vector product with the operator nullspace
-% function handle of the form `y = pdMat(mode,m,n,x)`
+% function handle of the form `y = pdMat(mode, m, n, x)`
 %
 % USAGE:
 %
 %    W = nullspaceLUSOLapply2Modes(mode, m, n, V, nullS)
 %
 % INPUTS:
-%    mode:     `mode=1` returns `W = Z*V`, `mode=2` returns `W = Z'*V`
+%    mode:     :math:`mode = 1` returns :math:`W = Z V`, `mode = 2` returns :math:`W = Z^T V`
 %    m:        first dimension of the matrix
 %    n:        second dimension of the matrix
 %    V:        one of the components of the multiplication
 %    nullS:    structure `nullS` from the function `nullspaceLUSOLform(S)`;
-%              where `m` x `n` sparse matrix `S` (`m < n`).
+%              where `m x n` sparse matrix `S` (:math:`m < n`).
 %
 % OUTPUT:
 %    W:        Matrix vector product

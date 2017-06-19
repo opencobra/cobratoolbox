@@ -1,14 +1,14 @@
-function [L0,I,P,L,p] = echelonNullspace(S,side,tol)
+function [L0, I, P, L, p] = echelonNullspace(S, side, tol)
 % Returns the Echelon form of the:
-% left nullspace, `L*S = [-L0 I]*P*S = 0`.
-% or right nullspace `S*L = S*([-L0 I]*P)' = 0`.
+% left nullspace, :math:`L S = [-L0\ I] P S = 0` 
+% or right nullspace :math:`S L = S ([-L0\ I] P)^T = 0`.
 %
 % USAGE:
 %
 %    [L0, I, P, L, p] = echelonNullspace(S, side, tol)
 %
 % INPUT:
-%    S:             `m` x `n` stoichiometric matrix
+%    S:             `m x n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
 %    side:          {'left', 'right'} left or right nullspace, left by default.
@@ -16,26 +16,26 @@ function [L0,I,P,L,p] = echelonNullspace(S,side,tol)
 %                   default no greater than 1e-12
 %
 % OUTPUTS:
-%    if side==left
-%    L0:            `(m-r)` x `r` matrix which forms the non-trivial part of the
-%                    left nullspace in echelon form i.e. `[-L0 I]*P*S = 0`.
-%    P:              `m` x `m` row (permutation matrix
-%    I:              `(m-r)` x `(m-r)` identity matrix
-%    p:              row permutation which leaves first 1:rankA rows independent and
+%    if side == left
+%    L0:            `(m-r) x r` matrix which forms the non-trivial part of the
+%                    left nullspace in echelon form i.e. :math:`[-L0\ I] P S = 0`.
+%    P:              `m x m` row (permutation matrix
+%    I:              `(m-r) x (m-r)` identity matrix
+%    p:              row permutation which leaves first `1:rankA` rows independent and
 %                    last rows dependent
 %
-%    if side==right
-%    L0:             `(n-r)` x `r` matrix which forms the non-trivial part of the
-%                    right nullspace in echelon form i.e. `S*([-L0 I]*P)' = 0`.
-%    P:              `n` x `n` column permutaion matrix
-%    I:              `(n-r)` x `(n-r)` identity matrix
-%    p:              column permutation which leaves first 1:rankA columns
+%    if side == right
+%    L0:             `(n-r) x r` matrix which forms the non-trivial part of the
+%                    right nullspace in echelon form i.e. :math:`S ([-L0\ I] P)^T = 0`.
+%    P:              `n x n` column permutaion matrix
+%    I:              `(n-r) x (n-r)` identity matrix
+%    p:              column permutation which leaves first `1:rankA` columns
 %                    independent and last columns dependent
 %
 % .. Author: - Ronan M.T. Fleming
 %
-% See: Conservation analysis of large biochemical networks
-% Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro
+% See: `Conservation analysis of large biochemical networks
+% Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro`
 
 if ~exist('side','var')
     side='left';

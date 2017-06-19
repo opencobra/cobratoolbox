@@ -1,19 +1,19 @@
 function [Z, rankS] = getNullSpace(S, printLevel)
-% Calculates the nullspace of `S` for `full(S)` or `rank(S) == m`.
-% If full row rank i.e. `rank(S)=m`, it's much faster to work with a sparse LU.
+% Calculates the nullspace of `S` for `full(S)` or :math:`rank(S) == m`.
+% If full row rank i.e. `rank(S) = m`, it's much faster to work with a sparse LU.
 %
 % USAGE:
 %
 %    [Z, rankS] = getNullSpace(S, printLevel)
 %
 % INPUT:
-%    S:             `m` x `n` stoichiometric matrix
+%    S:             `m x n` stoichiometric matrix
 %
 % OPTIONAL INPUT:
-%    printLevel:    {0,(1)}, 0 means quiet
+%    printLevel:    {0, (1)}, 0 means quiet
 %
 % OUTPUT:
-%    Z:             (right) null space of `S` (when `m <= n`, otherwise [])
+%    Z:             (right) null space of `S` (when :math:`m \leq n`, otherwise [])
 %    rankS:         scalar giving rank of `S`
 %
 % .. Author: - 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface by Ronan Fleming
