@@ -201,7 +201,7 @@
 <dt id="src.modelAnalysis.subspaces.rank.getRankLUSOL">
 <code class="descname">getRankLUSOL</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/subspaces/rank/getRankLUSOL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.rank.getRankLUSOL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the rank of a matrix using treshold rook pivoting.
-Uses <cite>lusolFactor</cite> computes the sparse factorization <cite>A = L*U</cite>
+Uses <cite>lusolFactor</cite> computes the sparse factorization <span class="math">\(A = L U\)</span>
 for a square or rectangular matrix <cite>A</cite>.  The vectors <cite>p</cite>, <cite>q</cite>
 are row and column permutations giving the pivot order.</p>
 <p><strong>Usage</strong></p>
@@ -211,7 +211,7 @@ are row and column permutations giving the pivot order.</p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>A</strong> &#8211;
-<cite>m</cite> x <cite>n</cite> rectangular matrix</li>
+<cite>m x n</cite> rectangular matrix</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -229,13 +229,13 @@ rank of <cite>A</cite></p>
 </li>
 <li><p class="first"><strong>p</strong> &#8211;
 row permutations giving the pivot order</p>
-<p>Note: <cite>p(1:rankA)`</cite> gives indices of independent rows
-<cite>p(rankA+1:size(A,1))`</cite> gives indices of dependent rows</p>
+<p>Note: <cite>p(1:rankA)</cite> gives indices of independent rows
+<cite>p(rankA+1:size(A, 1))</cite> gives indices of dependent rows</p>
 </li>
 <li><p class="first"><strong>q</strong> &#8211;
 column permutations giving the pivot order</p>
-<p>Note: <cite>q(1:rankA)`</cite> gives indices of independent columns
-<cite>q(rankA+1:size(A,2))`</cite> gives indices of dependent columns</p>
+<p>Note: <cite>q(1:rankA)</cite> gives indices of independent columns
+<cite>q(rankA+1:size(A, 2))</cite> gives indices of dependent columns</p>
 </li>
 </ul>
 </div></blockquote>

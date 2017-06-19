@@ -232,8 +232,7 @@ string giving name of LP problem</li>
 <dl class="function">
 <dt id="src.base.io.convertCobraToSBML">
 <code class="descname">convertCobraToSBML</code><span class="sig-paren">(</span><em>model</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/convertCobraToSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCobraToSBML" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a cobra structure to an sbml
-structure using the structures provided in the SBML toolbox 3.1.0</p>
+<dd><p>Converts a cobra structure to an sbml structure - kept for backward Compatability</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>sbmlModel = convertCobraToSBML(model, sbmlLevel, sbmlVersion, compSymbolList, compNameList)</div></blockquote>
@@ -248,9 +247,9 @@ COBRA model structure</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>sbmlLevel</strong> &#8211;
-SBML Level (default = 2)</li>
+SBML Level (ignored! level 3 is used)</li>
 <li><strong>sbmlVersion</strong> &#8211;
-SBML Version (default = 1)</li>
+SBML Version (ignored! version 1 is used)</li>
 <li><strong>compSymbolList</strong> &#8211;
 List of compartment symbols</li>
 <li><strong>compNameList</strong> &#8211;
@@ -264,6 +263,12 @@ List of copmartment names correspoding to <cite>compSymbolList</cite></li>
 SBML MATLAB structure</li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">sbmlLevel and sbmlVersion are ignored by this function and it is just
+kept for backward compatability and might be deprecated in future
+versions.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -358,22 +363,20 @@ options to select from.
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-Returns a model in the COBRA format:<ul>
-<li>.description - Description of model contents (opt)</li>
+Returns a model in the COBRA format with at least the following fields:<ul>
+<li>.description - Description of model contents</li>
 <li>.rxns - Reaction names</li>
 <li>.mets - Metabolite names</li>
 <li>.S - Stoichiometric matrix</li>
 <li>.lb - Lower bounds</li>
 <li>.ub - Upper bounds</li>
 <li>.c - Objective coefficients</li>
-<li>.subSystems - Subsystem name for each reaction (opt)</li>
-<li>.grRules - Gene-reaction association rule for each reaction (opt)</li>
+<li>.osense - the objective sense (-1
+maximisation, 1 minimisation)</li>
+<li>.csense - the constraint senses (&#8216;L&#8217; for
+lower than, &#8216;G&#8217; - greated than, &#8216;E&#8217; - equal)</li>
 <li>.rules - Gene-reaction association rule in computable form</li>
-<li>.rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)</li>
 <li>.genes - List of all genes</li>
-<li>.rxnNames - Reaction description (opt)</li>
-<li>.metNames - Metabolite description (opt)</li>
-<li>.metFormulas - Metabolite chemical formula (opt)</li>
 </ul>
 </li>
 </ul>

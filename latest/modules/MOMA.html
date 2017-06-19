@@ -226,7 +226,7 @@ Deletion solution structure</li>
 Wild-type solution structure</li>
 <li><strong>totalFluxDiff</strong> &#8211;
 Value of the linear MOMA objective, i.e.
-<span class="math">\(sum(v_{wt}-v_{del})^2\)</span></li>
+<span class="math">\(\sum (v_{wt}-v_{del})^2\)</span></li>
 <li><strong>solStatus</strong> &#8211;
 Solution status - solves two different types of MOMA problems:<ol class="arabic">
 <li>MOMA that avoids problems with alternative optima (this is the
@@ -239,37 +239,37 @@ is used if minNormFlag = true)</li>
 </div></blockquote>
 <p>First solve:</p>
 <div class="math">
-\[\begin{split}max \quad c_{wt}'*v_{wt0} \\
-lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
-S_{wt}*v_{wt0} = 0 \\\end{split}\]</div>
+\[\begin{split}max ~&amp;~ c_{wt}^T v_{wt0} \\
+    ~&amp;~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+    ~&amp;~ S_{wt}v_{wt0} = 0 \\\end{split}\]</div>
 <p>Then solve:</p>
 <div class="math">
-\[\begin{split}min \quad sum(v_{wt} - v_{del})^2 \\
-S_{wt}*v_{wt} = 0 \\
-S_{del}*v_{del} = 0 \\
-lb_{wt} \leq v_{wt} \leq ub_{wt} \\
-lb_{del} \leq v_{del} \leq ub_{del} \\
-c_{wt}'*v_{wt} = f_{wt} \\\end{split}\]</div>
+\[\begin{split}min ~&amp;~ \sum (v_{wt} - v_{del})^2 \\
+    ~&amp;~ S_{wt}v_{wt} = 0 \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\\end{split}\]</div>
 <p>Here <span class="math">\(f_{wt}\)</span> is the optimal wild type objective value found by FBA in the
 first problem. Note that the FBA solution <span class="math">\(v_{wt0}\)</span> is not used in the second
 problem. This formulation avoids any problems with alternative optima</p>
 <p>First solve</p>
 <div class="math">
-\[\begin{split}max \quad c_{wt}'*v_{wt0} \\
-lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
-S_{wt}*v_{wt0} = 0 \\\end{split}\]</div>
+\[\begin{split}max ~&amp;~ c_{wt}^T v_{wt0} \\
+    ~&amp;~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+    ~&amp;~ S_{wt}v_{wt0} = 0 \\\end{split}\]</div>
 <p>Then solve</p>
 <div class="math">
-\[\begin{split}min \quad |v_{wt}| \\
-S_{wt}*v_{wt} = b_{wt} \\
-c_{wt}'*v_{wt} = f_{wt} \\
-lb_{wt} \leq v_{wt} \leq ub_{wt} \\\end{split}\]</div>
+\[\begin{split}min ~&amp;~ |v_{wt}| \\
+    ~&amp;~ S_{wt}v_{wt} = b_{wt} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\\end{split}\]</div>
 <p>Here <span class="math">\(f_{wt}\)</span> is the objective value obtained in the 1st optimization.</p>
 <p>Finally solve:</p>
 <div class="math">
-\[\begin{split}min \quad sum(v_{wt} - v_{del})^2 \\
-S_{del}*v_{del} = 0 \\
-lb_{del} \leq v_{del} \leq ub_{del}\end{split}\]</div>
+\[\begin{split}min ~&amp;~ \sum (v_{wt} - v_{del})^2 \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del}\end{split}\]</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>1) These formulation allows for selecting for more appropriate
@@ -316,18 +316,18 @@ Deletion solution structure</li>
 <li><strong>solutionWT</strong> &#8211;
 Wild-type solution structure</li>
 <li><strong>totalFluxDiff</strong> &#8211;
-Value of the linear MOMA objective, i.e. <span class="math">\(sum|v_{wt}-v_{del}|\)</span></li>
+Value of the linear MOMA objective, i.e. <span class="math">\(\sum |v_{wt}-v_{del}|\)</span></li>
 <li><strong>solStatus</strong> &#8211;
 Solution status - solves the problem: (<cite>f_wt</cite> is the optimal wild type objective value found by FBA)</li>
 </ul>
 </div></blockquote>
 <div class="math">
-\[\begin{split}min \quad sum|v_{wt} - v_{del}| \\
-S_{wt}*v_{wt} = 0 \\
-lb_{wt} \leq v_{wt} \leq ub_{wt} \\
-c_{wt}'*v_{wt} = f_{wt} \\
-S_{del}*v_{del} = 0 \\
-lb_{del} \leq v_{del} \leq ub_{del} \\\end{split}\]</div>
+\[\begin{split}min ~&amp;~  \sum |v_{wt} - v_{del}| \\
+    ~&amp;~ S_{wt}v_{wt} = 0 \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del}\end{split}\]</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>1) This formulation allows for selecting the most appropriate

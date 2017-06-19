@@ -272,8 +272,7 @@ duplicated fields merged.</li>
 <dl class="function">
 <dt id="src.base.io.utilities.creategrRulesField">
 <code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the grRules optional model field from the
-required rules and gene fields.</p>
+<dd><p>Generates the grRules optional model field from the required rules and gene fields.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>modelWithField = creategrRulesField(model)</div></blockquote>
@@ -318,6 +317,25 @@ The string written to the specified filename (or the default file)</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.getDatabaseMappings">
+<code class="descname">getDatabaseMappings</code><span class="sig-paren">(</span><em>field</em>, <em>qualifiers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/getDatabaseMappings.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDatabaseMappings" title="Permalink to this definition">¶</a></dt>
+<dd><p>getDataBaseMappings returns known field -&gt; uri mappings
+<strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>field</strong> &#8211;
+the field to extract mappings for (e.g. &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rxns&#8217;)</li>
+<li><strong>OPTIONAL INPUT</strong></li>
+<li><strong>qualifiers</strong> &#8211;
+the qualifiers to restrict the selection to.</li>
+<li><strong>OUTPUT</strong></li>
+<li><strong>returnedmappings</strong> &#8211;
+The mappings known for the given field</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.getDefaultCompartmentSymbols">
 <code class="descname">getDefaultCompartmentSymbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/getDefaultCompartmentSymbols.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefaultCompartmentSymbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the default compartment symbol and
@@ -339,10 +357,26 @@ to the <cite>i</cite>-th abbreviation in <cite>defaultCompartmentSymbolList</cit
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.getDefaultCompartments">
+<code class="descname">getDefaultCompartments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/getDefaultCompartments.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefaultCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>GETDEFAULTCOMPARTMENTS returns the default compartment Symbols and default Compartments</p>
+<blockquote>
+<div>USAGE:  [ compSymbolList, compNameList  ] = getDefaultCompartments( )</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compSymbolList</strong> &#8211;
+Default symbols of compartments</li>
+<li><strong>compNameList</strong> &#8211;
+Names of the default compartments.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.getDefinedFieldProperties">
 <code class="descname">getDefinedFieldProperties</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/getDefinedFieldProperties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefinedFieldProperties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the fields defined in the COBRA Toolbox
-along with checks for their properties</p>
+<dd><p>Returns the fields defined in the COBRA Toolbox along with checks for their properties</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[fields] = getDefinedFieldProperties(varargin)</div></blockquote>
@@ -736,7 +770,7 @@ only one of them is not empty depending on <cite>annotationField</cite></li>
 <dd><p>Parses the notes field of an SBML file to extract <cite>gene-rxn</cite> associations</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)</div></blockquote>
+<div>[subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -747,51 +781,6 @@ notes field of SBML file</li>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>genes</strong> &#8211;
-Identifiers of the genes in the model</li>
-<li><strong>rule</strong> &#8211;
-GPR rule</li>
-<li><strong>subSystem</strong> &#8211;
-subSystem assignment for each reaction</li>
-<li><strong>grRule</strong> &#8211;
-a string representation of the GPR rules defined in a readable format</li>
-<li><strong>formula</strong> &#8211;
-elementa formula</li>
-<li><strong>confidenceScore</strong> &#8211;
-confidence scores for reaction presence</li>
-<li><strong>citation</strong> &#8211;
-joins strings with authors</li>
-<li><strong>comment</strong> &#8211;
-comments and notes</li>
-<li><strong>ecNumber</strong> &#8211;
-E.C. number for each reaction</li>
-<li><strong>charge</strong> &#8211;
-charge of the respective metabolite</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.io.utilities.parseSBMLNotesField2012">
-<code class="descname">parseSBMLNotesField2012</code><span class="sig-paren">(</span><em>notesField</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/parseSBMLNotesField2012.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.parseSBMLNotesField2012" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses the notes field of an SBML file to extract <cite>gene-rxn</cite> associations</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>notesField</strong> &#8211;
-notes field of SBML file</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>genes</strong> &#8211;
-Identifiers of the genes in the model</li>
-<li><strong>rule</strong> &#8211;
-GPR rule</li>
 <li><strong>subSystem</strong> &#8211;
 subSystem assignment for each reaction</li>
 <li><strong>grRule</strong> &#8211;
@@ -911,11 +900,11 @@ regulators that affect the state of this regulator)</li>
 
 <dl class="function">
 <dt id="src.base.io.utilities.readSBML">
-<code class="descname">readSBML</code><span class="sig-paren">(</span><em>fileName</em>, <em>defaultBound</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/readSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSBML" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readSBML</code><span class="sig-paren">(</span><em>fileName</em>, <em>defaultBound</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/readSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSBML" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads in a SBML format model as a COBRA matlab structure</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = readSBML(fileName, defaultBound, compSymbolList, compNameList)</div></blockquote>
+<div>model = readSBML(fileName, defaultBound)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -923,15 +912,11 @@ regulators that affect the state of this regulator)</li>
 File name for file to read in</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>defaultBound</strong> &#8211;
 Maximum bound for model (Default = 1000)</li>
-<li><strong>compSymbolList</strong> &#8211;
-List of compartment symbols</li>
-<li><strong>compNameList</strong> &#8211;
-List of compartment names corresponding to compSymbolList</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -1133,8 +1118,7 @@ file containing the graph</li>
 <dl class="function">
 <dt id="src.base.io.utilities.writeSBML">
 <code class="descname">writeSBML</code><span class="sig-paren">(</span><em>model</em>, <em>fileName</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/base/io/utilities/writeSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.writeSBML" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports a COBRA structure into an SBML FBCv2 file.
-A SBMLFBCv2 file  a file is written to the current Matlab path.</p>
+<dd><p>Exports a COBRA structure into an SBML FBCv2 file. A SBMLFBCv2 file  a file is written to the current Matlab path.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)</div></blockquote>
@@ -1163,6 +1147,7 @@ List of copmartment names corresponding to compSymbolList</li>
 SBML MATLAB structure</li>
 </ul>
 </div></blockquote>
+<p>Compartments</p>
 </dd></dl>
 
 <dl class="function">
