@@ -6,16 +6,16 @@ function [Ematrix] = computeElementalMatrix(model, metList, warnings)
 %    [Ematrix] = computeElementalMatrix(model, metList, warnings)
 %
 % INPUT:
-%    model:       COBRA model structure (must define .mets and .metFormulas)
+%    model:       COBRA model structure (must define `.mets` and `.metFormulas`)
 %
 % OPTIONAL INPUTS:
 %    metList:     Cell array of which metabolites to search for
 %                 (Default = all metabolites in model)
 %    warnings:    Display warnings if there are errors with the
-%                 formula.  (Default = true)
+%                 formula. (Default = true)
 %
 % OUTPUT:
-%    Ematrix:     `m` x 6 matrix of order [C N O H P other]
+%    Ematrix:     `m x 6` matrix of order [C N O H P other]
 %
 % .. Author: - Richard Que (1/22/10) Extracted from computeMW.
 
