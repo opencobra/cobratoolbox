@@ -16,7 +16,7 @@ function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 % OUTPUTS:
 %    loops:         stoichiometrically balanced loops
 %    eqSets:        equivalent sets
-%    P:             as P2 but additinally dependent on `cyclicBool`
+%    P:             as `P2` but additinally dependent on `cyclicBool`
 %    P2:            output of `lrsOutputReadRay`
 %    cyclicBool:    boolean variable
 

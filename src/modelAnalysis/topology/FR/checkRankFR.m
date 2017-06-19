@@ -1,5 +1,5 @@
 function  [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(model, printLevel)
-% Calculates the rank of [F R] and [F; R], when restricted to certain
+% Calculates the rank of `[F R]` and `[F; R]`, when restricted to certain
 % rows and columns
 %
 % USAGE:
@@ -17,33 +17,33 @@ function  [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(
 %    rankFRVvanilla:    rank of [`F; R`], when using all cols
 %    model:             structure with fields:
 %
-%                         * .FRrows - `m` x 1 boolean of rows of [`F R`] that are nonzero,
+%                         * .FRrows - `m x 1` boolean of rows of [`F R`] that are nonzero,
 %                           unique upto positive scaling and part of the
 %                           maximal conservation vector
-%                         * .FRVcols - `n` x 1 boolean of cols of [`F; R`] that are nonzero,
+%                         * .FRVcols - `n x 1` boolean of cols of [`F; R`] that are nonzero,
 %                           unique upto positive scaling and part of the
 %                           maximal conservation vector
-%                         * .FRirows - `m` x 1 boolean of rows of [`F R`] that are independent
-%                         * .FRdrows - `m` x 1 boolean of rows of [`F R`] that are dependent
-%                         * .FRwrows - `m` x 1 boolean of independent rows of [`F R`] that
+%                         * .FRirows - `m x 1` boolean of rows of [`F R`] that are independent
+%                         * .FRdrows - `m x 1` boolean of rows of [`F R`] that are dependent
+%                         * .FRwrows - `m x 1` boolean of independent rows of [`F R`] that
 %                           have dependent rows amongst `model.FRdrows`
-%                         * .FRVdcols - `n` x 1 boolean of cols of [`F; R`] that are dependent
-%                         * model.SConsistentMetBool - `m` x 1 boolean vector indicating metabolites involved
+%                         * .FRVdcols - `n x 1` boolean of cols of [`F; R`] that are dependent
+%                         * model.SConsistentMetBool - `m x 1` boolean vector indicating metabolites involved
 %                           in the maximal consistent vector
-%                         * .SConsistentRxnBool - `n` x 1 boolean vector indicating metabolites involved
+%                         * .SConsistentRxnBool - `n x 1` boolean vector indicating metabolites involved
 %                           in the maximal consistent vector
-%                         * .FRnonZeroBool - `m` x 1 boolean vector indicating metabolites involved
+%                         * .FRnonZeroBool - `m x 1` boolean vector indicating metabolites involved
 %                           in at least one internal reaction
-%                         * .FRuniqueBool - `m` x 1 boolean vector indicating metabolites with
+%                         * .FRuniqueBool - `m x 1` boolean vector indicating metabolites with
 %                           reaction stoichiometry unique upto scalar multiplication
-%                         * .SIntRxnBool - `n` x 1 boolean vector indicating the non exchange reactions
-%                         * .FRVnonZeroBool - `n` x 1 boolean vector indicating non exchange reactions
+%                         * .SIntRxnBool - `n x 1` boolean vector indicating the non exchange reactions
+%                         * .FRVnonZeroBool - `n x 1` boolean vector indicating non exchange reactions
 %                           with at least one metabolite involved
-%                         * .FRVuniqueBool - `n` x 1 boolean vector indicating non exchange reactions
+%                         * .FRVuniqueBool - `n x 1` boolean vector indicating non exchange reactions
 %                           with stoichiometry unique upto scalar multiplication
-%                         * .connectedRowsFRBool - `m` x 1 boolean vector indicating metabolites in connected rows of [`F R`]
-%                         * .connectedRowsFRVBool - `n` x 1 boolean vector indicating complexes in connected columns of [`F; R`]
-%                         * .V - `S*V = 0`; `1'*|V|>1` for all flux consistent reactions
+%                         * .connectedRowsFRBool - `m x 1` boolean vector indicating metabolites in connected rows of [`F R`]
+%                         * .connectedRowsFRVBool - `n x 1` boolean vector indicating complexes in connected columns of [`F; R`]
+%                         * .V - :math:`S V = 0`; :math:`1^T |V| > 1` for all flux consistent reactions
 
 if ~exist('printLevel','var')
     printLevel=1;

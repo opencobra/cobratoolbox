@@ -1,25 +1,27 @@
-function [biomassValues,targetValues,lineHandle] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)
-%productionEnvelope Calculates the byproduct secretion envelope
+function [biomassValues, targetValues, lineHandle] = productionEnvelope(model, deletions, lineColor, targetRxn, biomassRxn, geneDelFlag, nPts)
+% Calculates the byproduct secretion envelope
 %
-% [biomassValues,targetValues] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
+%    [biomassValues, targetValues, lineHandle] = productionEnvelope(model, deletions, lineColor, targetRxn, biomassRxn, geneDelFlag, nPts)
 %
-%OPTIONAL INPUTS
-% deletions     List of reaction or gene deletions (empty if wild type)
-% lineColor     Line color for plotting (see help plot for color codes)
-% targetRxn     Target metabolite production reaction name
-% biomassRxn    Biomass rxn name
-% geneDelFlag   Perform gene and not reaction deletions
-% nPts          Number of points in the plot
+% INPUTS:
+%    model:            COBRA model structure
 %
-%OUTPUTS
-% biomassValues Biomass values for plotting
-% targetValues  Target upper and lower bounds for plotting
-% lineHandle    Handle to lineseries object
+% OPTIONAL INPUTS:
+%    deletions:        List of reaction or gene deletions (empty if wild type)
+%    lineColor:        Line color for plotting (see help plot for color codes)
+%    targetRxn:        Target metabolite production reaction name
+%    biomassRxn:       Biomass rxn name
+%    geneDelFlag:      Perform gene and not reaction deletions
+%    nPts:             Number of points in the plot
 %
-% Markus Herrgard 8/28/06
+% OUTPUTS:
+%    biomassValues:    Biomass values for plotting
+%    targetValues:     Target upper and lower bounds for plotting
+%    lineHandle:       Handle to lineseries object
+%
+% .. Author: - Markus Herrgard 8/28/06
 
 if (nargin < 2)
     deletions = {};
@@ -70,7 +72,7 @@ for i = 1:length(biomassValues)
     else
         targetUpperBound(i) = NaN;
     end
-    sol = optimizeCbModel(model,'min');    
+    sol = optimizeCbModel(model,'min');
     if (sol.stat > 0)
         targetLowerBound(i) = sol.f;
     else

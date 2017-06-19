@@ -7,12 +7,12 @@ function [connectedRowsFRBool, connectedColsFRVBool] = connectedFR(F, R)
 %    [connectedRowsFRBool, connectedColsFRVBool] = connectedFR(F, R)
 %
 % INPUTS:
-%    F:                       `m` x `n`
-%    R:                       `m` x `n`
+%    F:                       `m x n`
+%    R:                       `m x n`
 %
 % OUTPUTS:
-%    connectedRowsFRBool:     `m` x `z` boolean vector indicating z sets of connected rows
-%    connectedColsFRVBool:    `n` x `z` boolean vector indicating z sets of connected cols
+%    connectedRowsFRBool:     `m x z` boolean vector indicating z sets of connected rows
+%    connectedColsFRVBool:    `n x z` boolean vector indicating z sets of connected cols
 
 if ~exist('largest_component','file')
     error('Install gamic and add it to your path. (http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code)')

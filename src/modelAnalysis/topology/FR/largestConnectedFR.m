@@ -7,13 +7,13 @@ function [connectedRowsFRBool, connectedColsFRVBool] = largestConnectedFR(F, R, 
 %    [connectedRowsFRBool, connectedColsFRVBool] = largestConnectedFR(F, R, printLevel)
 %
 % INPUTS:
-%    F:                       `m` x `n`
-%    R:                       `m` x `n`
+%    F:                       `m x n`
+%    R:                       `m x n`
 %    printLevel:              verbose level
 %
 % OUTPUTS:
-%    connectedRowsFRBool:     `m` x 1 boolean vector indicating largests set of connected rows
-%    connectedColsFRVBool:    `n` x 1 boolean vector indicating largests set of connected cols
+%    connectedRowsFRBool:     `m x 1` boolean vector indicating largests set of connected rows
+%    connectedColsFRVBool:    `n x 1` boolean vector indicating largests set of connected cols
 %
 if ~exist('printLevel','var')
     printLevel=0;

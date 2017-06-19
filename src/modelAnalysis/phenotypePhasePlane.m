@@ -1,31 +1,30 @@
-function [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)
-%phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is
+function [growthRates, shadowPrices1, shadowPrices2] = phenotypePhasePlane(model, controlRxn1, controlRxn2, nPts, range1, range2)
+% Plots three phenotype phase planes for two reactions.  The first plot is
 % a double robustness analysis, a kind of 3D surface plot.  The second
 % two plots show the shadow prices of the metabolites from the two control
 % reactions, which define the phases.  Use the COLORMAP and SHADING
 % functions to change the looks of the plots.
 %
-% [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% controlRxn1       the first reaction to be plotted
-% controlRxn2       the second reaction to be plotted
+%    [growthRates, shadowPrices1, shadowPrices2] = phenotypePhasePlane(model, controlRxn1, controlRxn2, nPts, range1, range2)
 %
-%OPTIONAL INPUTS
-% nPts              the number of points to plot in each dimension
-%                   (Default = 50)
-% range1            the range of reaction 1 to plot
-%                   (Default = 20)
-% range2            the range of reaction 2 to plot
-%                   (Default = 20)
+% INPUTS:
+%    model:            COBRA model structure
+%    controlRxn1:      the first reaction to be plotted
+%    controlRxn2:      the second reaction to be plotted
 %
-%OUTPUTS
-% growthRates1      a matrix of maximum growth rates
-% shadowPrices1     a matrix of rxn 1 shadow prices
-% shadowPrices2     a matrix of rxn 2 shadow prices
+% OPTIONAL INPUTS:
+%    nPts:             the number of points to plot in each dimension (Default = 50)
+%    range1:           the range of reaction 1 to plot (Default = 20)
+%    range2:           the range of reaction 2 to plot (Default = 20)
 %
-% Jeff Orth 6/26/08
+% OUTPUTS:
+%    growthRates1:     a matrix of maximum growth rates
+%    shadowPrices1:    a matrix of `rxn` 1 shadow prices
+%    shadowPrices2:    a matrix of `rxn` 2 shadow prices
+%
+% .. Author: - Jeff Orth 6/26/08
 
 if (nargin < 4)
     nPts = 50;

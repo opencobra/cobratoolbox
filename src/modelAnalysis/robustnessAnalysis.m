@@ -1,28 +1,30 @@
-function [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn,objType)
-%robustnessAnalysis Performs robustness analysis for a reaction of
+function [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)
+% Performs robustness analysis for a reaction of
 % interest and an objective of interest
 %
-% [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% controlRxn    Reaction of interest whose value is to be controlled
+%    [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)
 %
-%OPTIONAL INPUTS
-% nPoints       Number of points to show on plot (Default = 20)
-% plotResFlag   Plot results (Default true)
-% objRxn        Objective reaction to be maximized
-%               (Default = whatever is defined in model)
-% objType       Maximize ('max') or minimize ('min') objective
-%               (Default = 'max')
+% INPUTS:
+%    model:         COBRA model structure
+%    controlRxn:    Reaction of interest whose value is to be controlled
 %
-%OUTPUTS
-% controlFlux   Flux values within the range of the maximum and minimum for
-%               reaction of interest
-% objFlux       Optimal values of objective reaction at each control
-%               reaction flux value
+% OPTIONAL INPUTS:
+%    nPoints:        Number of points to show on plot (Default = 20)
+%    plotResFlag:    Plot results (Default true)
+%    objRxn:         Objective reaction to be maximized
+%                    (Default = whatever is defined in model)
+%    objType:        Maximize ('max') or minimize ('min') objective
+%                    (Default = 'max')
 %
-% Monica Mo and Markus Herrgard 8/17/06
+% OUTPUTS:
+%    controlFlux:    Flux values within the range of the maximum and minimum for
+%                    reaction of interest
+%    objFlux:        Optimal values of objective reaction at each control
+%                    reaction flux value
+%
+% .. Author: - Monica Mo and Markus Herrgard 8/17/06
 
 if (nargin < 3)
     nPoints = 20;

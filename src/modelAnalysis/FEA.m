@@ -15,7 +15,6 @@ function resultCell = FEA(model, rxnSet, group)
 % OUTPUT:
 %    resultCellF:    cell structure of enriched groups
 %
-%
 % .. Authors: Marouen BEN GUEBILA 04/2016
 
 if nargin < 3
