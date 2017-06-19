@@ -4,8 +4,11 @@ addpath(genpath(pwd))
 % run the official initialisation script
 initCobraToolbox
 
-% Mute progress bars
+% Mute progress bars and initCobraToolbox
+global WAITBAR_TYPE;
+global ENV_VARS;
 WAITBAR_TYPE = 0;
+ENV_VARS.printLevel = 0;
 
 % define a success exit code
 exitCode = 0;
@@ -18,18 +21,20 @@ try
     changeCobraSolver('glpk')
     % tutorial_sparseFBA;
 
-    tutorial_IO;
+    tutorials = {'tutorial_IO', ...
+                 'tutorial_modelManipulation', ...
+                 'tutorial_modelCreation', ...
+                 'tutorial_numCharact', ...
+                 'tutorial_metabotoolsI', ...
+                 'tutorial_metabotoolsII', ...
+                 'tutorial_uniformSampling'};
 
-    tutorial_modelManipulation;
-    tutorial_modelCreation;
-
-    tutorial_numCharact;
-
-    tutorial_metabotoolsI;
-    tutorial_metabotoolsII;
-
-    tutorial_uniformSampling;
-
+    for k = 1:length(tutorials)
+        tutorial = tutorials{k};
+        fprintf('Starting %s  (WAITBAR_TYPE:%d)\n', tutorial, WAITBAR_TYPE);
+        eval(tutorial);
+        fprintf('%s is done!\n\n\n\n\n', tutorial);
+    end
     % reset the path.
     cd(currentDir)
 
