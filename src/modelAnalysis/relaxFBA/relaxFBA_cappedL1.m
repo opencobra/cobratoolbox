@@ -30,23 +30,23 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 %                        * 1  = Solution found
 %                        * 0  = Infeasible
 %                        * -1 = Invalid input
-%                      * r - relaxation on steady state constraints `S*v = b`
+%                      * r - relaxation on steady state constraints :math:`S*v = b`
 %                      * p - relaxation on lower bound of reactions
 %                      * q - relaxation on upper bound of reactions
 %                      * v - reaction rate
 %
-% .. Author: - Hoai Minh Le	20/11/2015
-%
 % .. math::
-%      min   c'v - gamma1*||v||_1 - gamma0*||v||_0
-%            + lambda1*||r||_1 + lambda0*||r||_0
-%            + alpha1*(||p||_1 + ||q||_1) + alpha0*(||p||_0 + ||q||_0)
-%      s.t   S*v + r = b
-%            l - p <= v <= u + q
-%            r \in R^m
-%            p,q \in R_+^n
-%      m - number of metabolites
-%      n - number of reactions
+%      min  ~&~ c^T v - \gamma_1 ||v||_1 - \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
+%           ~&~   + \alpha_1 (||p||_1 + ||q||_1) + \alpha_0 (||p||_0 + ||q||_0) \\
+%      s.t. ~&~ S v + r = b \\
+%           ~&~ l - p \leq v \leq u + q \\
+%           ~&~ r \in R^m \\
+%           ~&~ p,q \in R_+^n
+%
+% `m` - number of metabolites,
+% `n` - number of reactions
+%
+% .. Author: - Hoai Minh Le	20/11/2015
 
 [m,n] = size(model.S); %Check inputs
 
