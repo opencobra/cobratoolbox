@@ -4,11 +4,11 @@ function [solution] = relaxFBA(model, relaxOption)
 % to make the FBA problem feasible
 %
 % .. math::
-%      min ~&~ c^T v + lambda ||r||_0 + gamma (||p||_0 + ||q||_0) \\
-%      s.t ~&~ S v + r <=> b \\
-%          ~&~ l - p <= v <= u + q \\
+%      min ~&~ c^T v + \lambda ||r||_0 + \gamma (||p||_0 + ||q||_0) \\
+%      s.t ~&~ S v + r \leq, =, \geq  b \\
+%          ~&~ l - p \leq v \leq u + q \\
 %          ~&~ r \in R^m \\
-%          ~&~ p,q \in R_+^n \\
+%          ~&~ p,q \in R_+^n
 %
 % `m` - number of metabolites,
 % `n` - number of reactions
@@ -22,29 +22,35 @@ function [solution] = relaxFBA(model, relaxOption)
 %    relaxOption:    Structure containing the relaxation options:
 %
 %                      * internalRelax:
+%
 %                        * 0 = do not allow to relax bounds on internal reactions
 %                        * 1 = do not allow to relax bounds on internal reactions with finite bounds
 %                        * 2 = allow to relax bounds on all internal reactions
 %
 %                      * exchangeRelax:
+%
 %                        * 0 = do not allow to relax bounds on exchange reactions
 %                        * 1 = do not allow to relax bounds on exchange reactions of the type [0,0]
 %                        * 2 = allow to relax bounds on all exchange reactions
 %
 %                      * steadyStateRelax:
+%
 %                        * 0 = do not allow to relax the steady state constraint S*v = b
 %                        * 1 = allow to relax the steady state constraint S*v = b
 %
 %                      * toBeUnblockedReactions - n x 1 vector indicating the reactions to be unblocked (optional)
+%
 %                        * toBeUnblockedReactions(i) = 1 : impose v(i) to be positive
 %                        * toBeUnblockedReactions(i) = -1 : impose v(i) to be negative
 %                        * toBeUnblockedReactions(i) = 0 : do not add any constraint
 %
 %                      * excludedReactions - n x 1 bool vector indicating the reactions to be excluded from relaxation (optional)
+%
 %                        * excludedReactions(i) = false : allow to relax bounds on reaction i
 %                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i
 %
 %                      * excludedMetabolites - m x 1 bool vector indicating the metabolites to be excluded from relaxation (optional)
+%
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
