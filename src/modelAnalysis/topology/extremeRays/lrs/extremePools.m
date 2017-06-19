@@ -4,15 +4,15 @@ function [P, V, A] = extremePools(model, positivity, inequality)
 % INPUT:
 %    model:                structure with:
 %
-%                            * .S - `m` x `n` Stoichiometric matrix with integer coefficients. If no
+%                            * .S - `m x n` Stoichiometric matrix with integer coefficients. If no
 %                              other inputs are specified it is assumed that all reactions are
 %                              reversible and `S.v = 0`
-%                            * .SIntRxnBool - `n` x 1 boolean vector with 1 for internal reactions
+%                            * .SIntRxnBool - `n x 1` boolean vector with 1 for internal reactions
 %                            * .description - description
 %
 % OPTIONAL INPUT:
-%    positivity:           {0,(1)} if positivity == 1, then positive orthant base
-%    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equaltiy
+%    positivity:           {0, (1)} if `positivity == 1`, then positive orthant base
+%    inequality:           {(0), 1} if `inequality == 1`, then use two inequalities rather than a single equaltiy
 %
 % .. Author: - lrs by David Avis, McGill University
 

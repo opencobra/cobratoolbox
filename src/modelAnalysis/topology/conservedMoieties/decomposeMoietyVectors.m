@@ -6,11 +6,11 @@ function D = decomposeMoietyVectors(L, N)
 %    D = decomposeMoieties(L, N);
 %
 % INPUTS:
-%    L:    The `m` x `r` moiety matrix with moiety vectors as columns.
-%    N:    The `m` x `u` internal stoichiometric matrix such that `N'*L = 0`.
+%    L:    The `m x r` moiety matrix with moiety vectors as columns.
+%    N:    The `m x u` internal stoichiometric matrix such that :math:`N^T L = 0`.
 %
 % OUTPUTS:
-%    D:    An `m` x `t` moiety matrix with decomposed moiety vectors as columns (`t >= r`).
+%    D:    An `m x t` moiety matrix with decomposed moiety vectors as columns :math:`(t \geq r)`.
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 
