@@ -351,6 +351,28 @@ function Arguments = CheckLogical(Formula, LogicalExpression)
 % find the starting indices of all occurences of the logical expression
 Start = strfind(Formula, LogicalExpression);
 
+if (isempty(Start))
+    Arguments = {};
+    return;
+end;
+
+% need to distinguish between 'or' and 'floor'
+if (strcmp(LogicalExpression, 'or('))
+    StartFloor = strfind(Formula, 'floor(');
+    if (~isempty(StartFloor))
+        newStart = [];
+        index = 1;
+        for j = 1:length(Start)
+            floorStart = Start(j)-3;
+            if (contains(StartFloor, floorStart) == 0)
+                newStart(index) = Start(j);
+                index = index + 1;
+            end;
+        end;
+        Start = newStart;
+    end;
+end;
+
 % if not found; no arguments - return
 if (isempty(Start))
     Arguments = {};
@@ -484,4 +506,12 @@ else
     y = charArray;
 end;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function y = contains( members, individual)
+    ans = ismember(individual, members);
+    if sum(ans) >= 1
+        y = 1;
+    else
+        y = 0;
+    end;
 
