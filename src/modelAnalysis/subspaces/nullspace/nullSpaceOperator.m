@@ -5,10 +5,10 @@ function nullS = nullSpaceOperator(S, scale, printLevel)
 % computes a structure `nullS` from an `m x n` sparse matrix `S` (`m < n`).
 % Second, if `V` is an `(n-r) x k` sparse matrix :math:`(k \geq 1)`,
 % `W = nullSpaceOperatorApply(nullS, V)`;
-% computes an `n x k` sparse matrix `W` from `V` such that `S*W = 0`.
+% computes an `n x k` sparse matrix `W` from `V` such that :math:`S*W = 0`.
 %
 % This is an operator form of finding an `n x (n-r)` matrix `Z`
-% such that `S*Z = 0` and then computing `W = Z*V`.
+% such that :math:`S*Z = 0` and then computing :math:`W = Z*V`.
 % The aim is to obtain `W` without forming `Z` explicitly.
 %
 % `nullS.rank` returns the rank of `S` :math:`(r \leq m)`.

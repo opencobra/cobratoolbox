@@ -1,22 +1,22 @@
 function [AA, aa, pp, rankA, p] = rowReduce(A, a)
-% Eliminates dependent rows from `A` & `a` where `A*x = a`
+% Eliminates dependent rows from `A` & `a` where :math:`A*x = a`
 %
 % USAGE:
 %
 %    [AA, aa, pp, rankA, p] = rowReduce(A, a)
 %
 % INPUT:
-%    A:        from `A*x = a`
+%    A:        from :math:`A*x = a`
 %
 % OPTIONAL INPUT:
-%    a:        from `A*x = a`
+%    a:        from :math:`A*x = a`
 %
 % OUTPUT:
 %    AA:       row reduced `A`
 %    aa:       row reduced `a` i.e. `aa = a(pp)`
 %    pp:       1:rankA indices of independent rows
 %    rankA:    rank of `A`
-%    p:        row permutation which leaves first 1:rankA rows independent and
+%    p:        row permutation which leaves first `1:rankA` rows independent and
 %              last rows dependent
 %
 % .. Author: - Ronan Fleming, with linear algebra advice from Michael Saunders

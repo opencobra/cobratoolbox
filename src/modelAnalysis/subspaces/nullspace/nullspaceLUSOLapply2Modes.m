@@ -7,7 +7,7 @@ function W = nullspaceLUSOLapply2Modes(mode, m, n, V, nullS)
 %    W = nullspaceLUSOLapply2Modes(mode, m, n, V, nullS)
 %
 % INPUTS:
-%    mode:     `mode=1` returns :math:`W = Z*V`, `mode=2` returns :math:`W = Z^T *V`
+%    mode:     `mode=1` returns :math:`W = Z*V`, `mode = 2` returns :math:`W = Z^T *V`
 %    m:        first dimension of the matrix
 %    n:        second dimension of the matrix
 %    V:        one of the components of the multiplication
