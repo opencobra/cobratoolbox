@@ -15,18 +15,18 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 % Let
 %
 % .. math::
-%      &~ vf = vf_R + vf_N \\
-%      &~ vf_R = M S vf = PR vf \\
-%      &~ vf_N = (I - M S) vf = PN vf
+%      vf   &= vf_R + vf_N \\
+%      vf_R &= M S vf = PR vf \\
+%      vf_N &= (I - M S) vf = PN vf
 %
 % Example for potential or logarithmic concentration
 %
 % Let
 %
 % .. math::
-%      &~ u = u_C + u_L \\
-%      &~ u_C = S M u = PC u \\
-%      &~ u_L = (I - S M) u = PL u 
+%      u   &= u_C + u_L \\
+%      u_C &= S M u = PC u \\
+%      u_L &= (I - S M) u = PL u
 %
 % USAGE:
 %

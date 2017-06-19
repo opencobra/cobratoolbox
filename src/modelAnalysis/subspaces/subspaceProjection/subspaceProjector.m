@@ -13,16 +13,16 @@ function [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, full
 % Let
 %
 % .. math::
-%    &~ v = v_R + v_N \\
-%    &~ v_R = M S v = PR v \\
-%    &~ v_N = (I - M S) v = PN v
+%    v   &= v_R + v_N \\
+%    v_R &= M S v = PR v \\
+%    v_N &= (I - M S) v = PN v
 %
 % Let
 %
 % .. math::
-%    &~ u = u_C + u_L \\
-%    &~ u_C = S M u = PC u \\
-%    &~ u_L = (I - S M) u = PL u
+%    u   &= u_C + u_L \\
+%    u_C &= S M u = PC u \\
+%    u_L &= (I - S M) u = PL u
 %
 % Examples:
 %

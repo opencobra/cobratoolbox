@@ -4,8 +4,8 @@ function [u1, u2] = projectSVD(U1, u)
 % It returns the projections
 %
 % .. math::
-%    &~ u1 = U1 U1^T u \\
-%    &~ u2 = (I - U1 U1^T) u
+%    u1 &= U1 U1^T u \\
+%    u2 &= (I - U1 U1^T) u
 %
 % USAGE:
 %
