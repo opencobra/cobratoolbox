@@ -184,7 +184,7 @@ if(isfield(modelNew, 'comps'))
     [ucomps,ia,ic] = unique(modelNew.comps);
     toKeep = true(size(modelNew.comps));
     toKeep(ia) = false;
-    modelNew = removeRelevantModelFields(modelNew,~toKeep,'comps');
+    modelNew = removeRelevantModelFields(modelNew,~toKeep,'comps',numel(toKeep));
 end
 
 

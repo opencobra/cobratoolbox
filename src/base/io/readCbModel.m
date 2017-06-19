@@ -36,23 +36,21 @@ function model = readCbModel(fileName, varargin)
 %                       
 %           
 % OUTPUT:
-%    model:               Returns a model in the COBRA format:
+%    model:               Returns a model in the COBRA format with at least the following fields:
 %
-%                           * .description - Description of model contents (opt)
+%                           * .description - Description of model contents 
 %                           * .rxns - Reaction names
 %                           * .mets - Metabolite names
 %                           * .S - Stoichiometric matrix
 %                           * .lb - Lower bounds
 %                           * .ub - Upper bounds
 %                           * .c - Objective coefficients
-%                           * .subSystems - Subsystem name for each reaction (opt)
-%                           * .grRules - Gene-reaction association rule for each reaction (opt)
+%                           * .osense - the objective sense (-1
+%                             maximisation, 1 minimisation)
+%                           * .csense - the constraint senses ('L' for
+%                             lower than, 'G' - greated than, 'E' - equal)
 %                           * .rules - Gene-reaction association rule in computable form
-%                           * .rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
 %                           * .genes - List of all genes
-%                           * .rxnNames - Reaction description (opt)
-%                           * .metNames - Metabolite description (opt)
-%                           * .metFormulas - Metabolite chemical formula (opt)
 %
 % EXAMPLES:
 %
@@ -244,7 +242,36 @@ if ~isfield(model, 'b')
 end
 model.description = modelDescription;
 
+model = createDefaultFields(model);
+
 model = orderModelFields(model);
+
+
+function model = createDefaultFields(model,fileName)
+% checks the model structure for a few fields, that are always generated
+% from io, even if empty.
+% We assume that the following fields are already present:
+% rxns, mets, S, lb, ub, c
+
+if ~isfield(model,'description')
+    model.description = fileName;
+end
+
+if ~isfield(model,'genes')
+    model.genes = {};
+end
+
+if ~isfield(model,'osense')
+    model.osense = -1;
+end
+
+if ~isfield(model,'csense')
+    model.csense = repmat('E',size(model.mets));
+end
+
+if ~isfield(model,'rules')
+    model.rules = repmat({''},size(model.rxns));
+end
 
 
 % End main function

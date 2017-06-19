@@ -34,7 +34,7 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 % load the models
 modelArr = { 'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml'};
 
-% loop through the models
+%loop through the models
 for i = 1:length(modelArr)
     %reading the models takes quite a bit of time, so only do it once for
     %all solvers.
@@ -122,22 +122,23 @@ for jTest = 1:2
 
     % read in the model
     model2 = readCbModel('test_sbml_obj.xml');    
-    %Now, the model read from the SBML file should NOT contain "empty" data
-    %So we will loop over the model and test all non empty fields for
-    %equality.
+    %We are creating a few default fields in readCbModel. 
+    DefaultFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+
     modelFields = fieldnames(model);    
     modelFields = setdiff(modelFields,'rxnGeneMat'); %rxnGeneMat did not contain any information and is not created by readCbModel.
     for i = 1:numel(modelFields)
         if iscell(model.(modelFields{i}))
-            if ~all(cellfun(@isempty, model.(modelFields{i})))
+            if ~all(cellfun(@isempty, model.(modelFields{i})))  || any(ismember(modelFields{i},DefaultFields))
                 assert(isequal(model.(modelFields{i}),model2.(modelFields{i})));
             else
                 assert(~isfield(model2, modelFields{i}));
             end
         else
             if isnumeric(model.(modelFields{i}))
-                if ~all(isnan(model.(modelFields{i})))
-                    assert(isequal(model.(modelFields{i}),model2.(modelFields{i})));
+                if ~all(isnan(model.(modelFields{i})(:))) || any(ismember(modelFields{i},DefaultFields))                                        
+                    assert(isequal(model.(modelFields{i})(~isnan(model.(modelFields{i}))),model2.(modelFields{i})(~isnan(model.(modelFields{i})))));
+                    assert(isequal(~isnan(model.(modelFields{i})),~isnan(model2.(modelFields{i}))));
                 else
                     assert(~isfield(model2, modelFields{i}));
                 end

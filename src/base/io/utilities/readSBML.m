@@ -186,6 +186,8 @@ model.S = cell2mat(S)';
 %And extract Names/ids
 model.rxns = columnVector({sbmlReactions.id});
 model.rxnNames = columnVector({sbmlReactions.name});
+emptyNames = cellfun(@isempty, model.rxnNames);
+model.rxnNames(emptyNames) = model.rxns(emptyNames);
 
 %Extract Annotations.
 if isfield(sbmlReactions,'cvterms')
@@ -323,7 +325,7 @@ model.mets = cellfun(@(x) convertSBMLID(x,false),model.mets,'UniformOutput',0);
 model.rxns = cellfun(@(x) convertSBMLID(x,false),model.rxns,'UniformOutput',0);
 model.comps = cellfun(@(x) convertSBMLID(x,false),model.comps,'UniformOutput',0);
 model.genes = cellfun(@(x) convertSBMLID(x,false),model.genes,'UniformOutput',0);
-%Stay consistent in between IO. so we always geenrate geneNames, and
+%Stay consistent in between IO. so we always generate geneNames, and
 %proteins.
 if ~isfield(model,'geneNames')
     model.geneNames = model.genes;
