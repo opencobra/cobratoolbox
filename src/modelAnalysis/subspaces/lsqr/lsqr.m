@@ -1,11 +1,11 @@
 function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
-% LSQR solves  :math:`Ax = b`  or  :math:`min ||b - Ax||_2`  if `damp = 0`,
-% or :math:`min ||(b) - (A)x||` otherwise.
+% LSQR solves  :math:`A x = b`  or  :math:`min ||b - A x||_2`  if :math:`damp = 0`,
+% or :math:`min ||(b) - (A) x||` otherwise.
 % :math:`||(0) (damp\ I)||2`
 % `A` is an `m` by `n` matrix defined by  `y = aprod(mode, m, n)`,
 % where `aprod` is a function handle that performs the matrix-vector operations.
-% If `mode = 1`,   `aprod`  must return  `y = Ax`   without altering `x`.
-% If `mode = 2`,   `aprod`  must return  `y = A'x`  without altering `x`.
+% If `mode = 1`,   `aprod`  must return  :math:`y = A x`   without altering `x`.
+% If `mode = 2`,   `aprod`  must return  :math:`y = A^T x`  without altering `x`.
 %
 % USAGE:
 %
@@ -14,7 +14,7 @@ function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, 
 % INPUTS:
 %    m,n:           dimensions of the matrix
 %    aprodname:     function handle
-%    b:             from `Ax = b`
+%    b:             from :math:`A x = b`
 %    atol, btol:    are stopping tolerances. If both are 1.0e-9 (say),
 %                   the final residual norm should be accurate to about 9 digits.
 %                   (The final `x` will usually have fewer correct digits,
@@ -46,17 +46,17 @@ function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, 
 %                     * 1 means `x` is an approximate solution to `Ax = b`.
 %                     * 2 means `x` approximately solves the least-squares problem.
 %    itn:           changed to 0 in the code
-%    r1norm:        = `norm(r)`, where :math:`r = b - Ax`.
+%    r1norm:        = `norm(r)`, where :math:`r = b - A x`.
 %    r2norm:        = :math:`sqrt(norm(r)^2  +  damp^2 * norm(x)^2)`
-%                   = `r1norm` if `damp = 0`.
+%                   = `r1norm` if :math:`damp = 0`.
 %    anorm:         = estimate of Frobenius norm of Abar = [`A`]. [`damp*I`]
 %    acond:         = estimate of `cond(Abar)`.
-%    arnorm:        = estimate of :math:`norm(A^T *r - damp^2*x)`.
+%    arnorm:        = estimate of :math:`norm(A^T r - damp^2 x)`.
 %    xnorm:         = `norm(x)`.
-%    var:           (if present) estimates all diagonals of :math:`(A^T A)^{-1}` (if `damp = 0`)
-%                   or more generally :math:`(A^T A + damp^2*I)^{-1}`.
-%                   This is well defined if `A` has full column rank or `damp > 0`.
-%                   (Not sure what `var` means if `rank(A) < n` and `damp = 0`.)
+%    var:           (if present) estimates all diagonals of :math:`(A^T A)^{-1}` (if :math:`damp = 0`)
+%                   or more generally :math:`(A^T A + damp^2 I)^{-1}`.
+%                   This is well defined if `A` has full column rank or :math:`damp > 0`.
+%                   (Not sure what `var` means if :math:`rank(A) < n` and :math:`damp = 0`.)
 %    cov:           (if present) esitmates the rows and columns of the
 %                   covariance matrix specified by the covindex set.
 %    userout:       output data from the `userstop` function

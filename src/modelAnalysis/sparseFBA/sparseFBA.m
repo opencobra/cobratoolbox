@@ -17,8 +17,8 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 % OPTIONAL INPUTS:
 %    osenseStr:           (default = 'max')
 %
-%                           * max: :math:`f* = argmax \{max\ c^T v: Sv \Leftrightarrow b, l \leq v \leq u\}`
-%                           * min: :math:`f* = argmin \{min\ c^T v: Sv \Leftrightarrow b, l \leq v \leq u\}`
+%                           * max: :math:`f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}`
+%                           * min: :math:`f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}`
 %                           * none: ignore the constraint :math:`c^T v = f*`
 %
 %    checkMinimalSet:     Heuristically check if the selected set of reactions is minimal
@@ -33,8 +33,8 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %                           * 'exp'      : Exponential function
 %                           * 'log'      : Logarithmic function
 %                           * 'SCAD'     : SCAD function
-%                           * 'lp-'      : L_p norm with p < 0
-%                           * 'lp+'      : L_p norm with 0 < `p` < 1
+%                           * 'lp-'      : :math:`L_p` norm with :math:`p < 0`
+%                           * 'lp+'      : :math:`L_p` norm with :math:`0 < p < 1`
 %                           * 'l1'       : L1 norm
 %                           * 'all'      : try all approximations and return the best result
 %    printLevel:          Printing level
@@ -53,7 +53,7 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %
 % .. math::
 %      min ~&~ ||v||_0 \\
-%      s.t ~&~ Sv \Leftrightarrow b \\
+%      s.t ~&~ S v \leq, = or \geq b \\
 %          ~&~ c^T v = f*
 % (optimal value of objective, default is :math:`max\ c^T v`)
 %

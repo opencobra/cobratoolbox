@@ -9,9 +9,9 @@ function [x, resNE, k, info] = cgls(Aname ,shift, b, m, n, kmax, tol, prnt)
 %
 % 'gemat' specifies an M-file gemat.m (say), such that:
 %
-%    * `y = gemat(0,x,m,n)` identifies gemat (if you wish),
-%    * `y = gemat(1,x,m,n)` gives :math:`y = A x`,
-%    * `y = gemat(2,x,m,n)` gives :math:`y = A^T x`.
+%    * `y = gemat(0, x, m, n)` identifies gemat (if you wish),
+%    * `y = gemat(1, x, m, n)` gives :math:`y = A x`,
+%    * `y = gemat(2, x, m, n)` gives :math:`y = A^T x`.
 %
 % The M-file must not be called Aname.m!
 %
@@ -26,12 +26,12 @@ function [x, resNE, k, info] = cgls(Aname ,shift, b, m, n, kmax, tol, prnt)
 %    m, n:     dimensions of the matrix
 %    kmax:     maximum number of iterations.
 %    tol:      desired relative residual size, :math:`norm(rNE)/norm(A^T b)`,
-%              where :math:`rNE = A'b - N x`.
+%              where :math:`rNE = A^T b - N x`.
 %    prnt:     1 gives an iteration log, 0 suppresses it.
 %
 % OUTPUTS:
 %    x:        from the formulas in description
-%    resNE:    relative residual for normal equations: `norm(A'b - Nx)/norm(A'b)`.
+%    resNE:    relative residual for normal equations: :math:`norm(A^T b - Nx)/norm(A^T b)`.
 %    k:        final number of iterations performed.
 %    info:     gives information on the result:
 %
@@ -42,7 +42,7 @@ function [x, resNE, k, info] = cgls(Aname ,shift, b, m, n, kmax, tol, prnt)
 %
 % NOTE:
 %
-%    When shift = 0, `cgls` is Hestenes and Stiefel's specialized form of the
+%    When :math:`shift = 0`, `cgls` is Hestenes and Stiefel's specialized form of the
 %    conjugate-gradient method for least-squares problems. The general shift
 %    is a simple modification.
 %
