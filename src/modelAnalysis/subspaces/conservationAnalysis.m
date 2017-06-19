@@ -1,8 +1,8 @@
 function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)
 % Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.
 %
-% i.e. `L*S = 0` where ``[-Lzero I]*Pl'*S = 0`;
-% and `S*N = 0` where `S*Pn*[-Nzero; I] = S*[-Nzero' I']*Pn' = 0`;
+% i.e. :math:`L S = 0` where :math:`[-Lzero I] Pl^T S = 0`;
+% and :math:`S N = 0` where :math:`S Pn [-Nzero; I] = S, [-Nzero^T I^T] Pn^T = 0`;
 %
 % USAGE:
 %
@@ -11,10 +11,10 @@ function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalys
 % INPUT:
 %    model:                 structure
 %
-%     * model.S - `m` x `n` stoichiometric matrix
+%     * model.S - `m x n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
-%    massBalanced:            {(0),1,-1}
+%    massBalanced:            {(0), 1, -1}
 %
 %                               * 0 = conservation analysis of entire `model.S`
 %                               * 1 = conservation analysis of mass balanced reactions only
@@ -26,13 +26,13 @@ function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalys
 %                             the mass imbalanced reactions
 %
 %    model.biomassRxnAbbr:    String with abbreviation of biomass reaction
-%    model.c:                 `n` x 1 linear objective function
-%    printLevel:              {(0),1}
+%    model.c:                 `n x 1` linear objective function
+%    printLevel:              {(0), 1}
 %
 %                               * 0 = Silent
 %                               * 1 = Print out conservation relations using metabolite and reaction abbreviations
-%    model.mets:              `m` x 1 cell array of metabolite abbreviations
-%    model.rxns:              `n` x 1 cell array of reaction abbreviations
+%    model.mets:              `m x 1` cell array of metabolite abbreviations
+%    model.rxns:              `n x 1` cell array of reaction abbreviations
 %    tol:                     upper bound on tolerance of linear independence,default no greater than 1e-12
 %
 % OUTPUTS:
