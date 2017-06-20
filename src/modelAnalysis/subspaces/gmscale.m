@@ -1,6 +1,6 @@
 function [cscale, rscale] = gmscale(A, iprint, scltol)
 % Geometric-Mean Scaling finds the scale values for the
-% `m` x `n` sparse matrix `A`.
+% `m x n` sparse matrix `A`.
 %
 % USAGE:
 %
@@ -23,12 +23,12 @@ function [cscale, rscale] = gmscale(A, iprint, scltol)
 % Several passes are made through the columns and rows of `A`.
 % The main steps are:
 %
-%   1. Compute `aratio = max_j (max_i Aij / min_i Aij)`.
-%   2. Divide each row `i` by `sqrt( max_j Aij * min_j Aij)`.
-%   3. Divide each column `j` by `sqrt( max_i Aij * min_i Aij)`.
-%   4. Compute sratio as in Step 1.
-%   5. If `sratio < aratio * scltol`,
-%      set `aratio = sratio` and repeat from Step 2.
+%   1. Compute :math:`aratio = max_j (max_i Aij / min_i Aij)`.
+%   2. Divide each row `i` by :math:`sqrt( max_j Aij * min_j Aij)`.
+%   3. Divide each column `j` by :math:`sqrt( max_i Aij * min_i Aij)`.
+%   4. Compute `sratio` as in Step 1.
+%   5. If :math:`sratio < aratio * scltol`,
+%      set :math:`aratio = sratio` and repeat from Step 2.
 %
 % To dampen the effect of very small elements, on each pass,
 % a new row or column scale will not be smaller than sqrt(damp)
@@ -36,12 +36,13 @@ function [cscale, rscale] = gmscale(A, iprint, scltol)
 %
 % Use of the scales:
 % To apply the scales to a linear program,
-% `min c'x` st `Ax = b`, `l <= x <= u`,
+% :math:`min c^T x` st :math:`A x = b`, :math:`l \leq x \leq u`,
 % we need to define "barred" quantities by the following relations:
 % `A = R Abar C`, `b = R bbar`, `C cbar = c`,
 % `C l = lbar`, `C u = ubar`, `C x = xbar`.
+%
 % This gives the scaled problem
-% `min cbar'xbar` st `Abar xbar = bbar`, `lbar <= xbar <= ubar`.
+% :math:`min\ cbar^T xbar` st :math:`Abar\ xbar = bbar`, :math:`lbar \leq xbar \leq ubar`.
 %
 % .. Author: - Michael Saunders, Systems Optimization Laboratory, Stanford University.
 % ..
