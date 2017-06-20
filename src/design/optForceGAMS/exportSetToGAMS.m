@@ -1,4 +1,4 @@
-function exportSetToGAMS(set, fileName)
+function [] = exportSetToGAMS(set, fileName)
 % This function export the information in "set" to a .txt file which can be
 % read by GAMS. "set" must be a cell array of strings.
 %

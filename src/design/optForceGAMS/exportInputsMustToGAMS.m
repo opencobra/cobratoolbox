@@ -1,4 +1,4 @@
-function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
+function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 % This function export all the inputs needed to run the GAMS functions to
 % find first order Must Sets (MustU, Must L). The inputs will
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
