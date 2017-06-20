@@ -1,7 +1,6 @@
 function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWithGAMS(model, minFluxesW, ...
     maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder,...
     outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
-% DESCRIPTION
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
 % MustUL set. This script is based in the GAMS files written by Sridhar
@@ -15,19 +14,19 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %
 % Created by Sebastin Mendoza. 30/05/2017. snmendoz@uc.cl
 %
-% USAGE1: 
+% USAGE1:
 %
 %         findMustULWithGAMS(model, minFluxesW, maxFluxesW)
 %         basic configuration for running the optimization problem in GAMS
 %         to find the MustU set.
 %
-% USAGE2: 
+% USAGE2:
 %
 %         findMustULWithGAMS(model, minFluxesW, maxFluxesW, option 1, ..., option N)
 %         specify additional options such as fixed reactions, solver or if
 %         results shoulds be saved in files or not.
 %
-% 
+%
 % INPUTS:
 %
 %         model (obligatory):       Type: struct (COBRA model)
@@ -41,21 +40,21 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   lb              Lower bounds for fluxes
 %                                   ub              Upper bounds for fluxes
 %                                   rev             Reversibility flag
-% 
+%
 %         minFluxesW (obligatory) Type: double array of size n_rxns x1
 %                                   Description: Minimum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: minFluxesW=[-90; -56];
-% 
+%
 %         maxFluxesW (obligatory) Type: double array of size n_rxns x1
 %                                   Description: Maximum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: maxFluxesW=[-90; -56];
 %
-% OPTIONAL INPUTS: 
-% 
+% OPTIONAL INPUTS:
+%
 %         constrOpt (optional):     Type: Structure
 %                                   Description: structure containing additional
 %                                   contraints. The structure has the following
@@ -65,58 +64,58 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
 %                                                                    (G: Greater than; E: Equal to; L: Lower than)
 %                                   Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
-% 
+%
 %         excludedRxns(optional):   Type: cell array
 %                                   Description: Reactions to be excluded to the
 %                                   MustUL set. This could be used to avoid finding
 %                                   transporters or exchange reactions in the set
 %                                   Default: empty.
-% 
+%
 %         mustSetFirstOrder(optional):  Type: cell array
 %                                       Description: Reactions that belong to MustU
 %                                       and Must L (first order sets)
 %                                       Default: empty.
-% 
+%
 %         solverName(optional):     Type: string
 %                                   Description: Name of the solver used in GAMS
 %                                   Default: 'cplex'
-% 
+%
 %         runID (optional):         Type: string
 %                                   Description: ID for identifying this run
-% 
+%
 %         outputFolder (optional):  Type: string
 %                                   Description: name for folder in which results
 %                                   will be stored
-% 
+%
 %         outputFileName (optional):Type: string
 %                                   Description: name for files in which results
 %                                   will be stored
-% 
+%
 %         printExcel (optional) :   Type: double
 %                                   Description: boolean to describe wheter data
 %                                   must be printed in an excel file or not
-% 
+%
 %         printText (optional):    Type: double
 %                                   Description: boolean to describe wheter data
 %                                   must be printed in an plaint text file or not
-% 
+%
 %         printReport (optional):   Type: double
 %                                   Description: 1 to generate a report in a plain
 %                                   text file. 0 otherwise.
-% 
+%
 %         keepInputs (optional):    Type: double
 %                                   Description: 1 to mantain folder with inputs to
 %                                   run findMustUL.gms. 0 otherwise.
-% 
+%
 %         keepGamsOutputs (optional):Type: double
 %                                    Description: 1 to mantain files returned by
 %                                    findMustUL.gms. 0 otherwise.
-% 
+%
 %         verbose (optional):       Type: double
 %                                   Description: 1 to print results in console.
 %                                   0 otherwise.
 %
-% OUTPUTS: 
+% OUTPUTS:
 %
 %         mustUL:                   Type: cell array
 %                                   Size: number of sets found X 2
@@ -124,26 +123,26 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   reactions IDs which belong to the MustUL
 %                                   set. Each row contain a couple of
 %                                   reactions that must decrease their flux.
-%  
+%
 %         pos_mustUL:               Type: double array
 %                                   Size: number of sets found X 2
 %                                   Description: double array containing the
 %                                   positions of each reaction in mustUL with
 %                                   regard to model.rxns
-%  
+%
 %         mustUL_linear:            Type: cell array
 %                                   Size: number of unique reactions found X 1
 %                                   Description: Cell array containing the
 %                                   unique reactions ID which belong to the
 %                                   MustUL Set
-% 
+%
 %         pos_mustUL_linear:        Type: double array
 %                                   Size: number of unique reactions found X 1
 %                                   Description: double array containing
 %                                   positions for reactions in mustUL_linear.
 %                                   with regard to model.rxns
 %
-% OUTPUT FILES: 
+% OUTPUT FILES:
 %
 %         outputFileName.xls        Type: file.
 %                                   Description: File containing one column array
@@ -152,7 +151,7 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   printExcel = 1. Note that the user can choose
 %                                   the name of this file entering the input
 %                                   outputFileName = 'PutYourOwnFileNameHere';
-% 
+%
 %         outputFileName.txt        Type: file.
 %                                   Description: File containing one column array
 %                                   with identifiers for reactions in MustUL. This
@@ -160,7 +159,7 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   printText = 1. Note that the user can choose
 %                                   the name of this file entering the input
 %                                   outputFileName = 'PutYourOwnFileNameHere';
-% 
+%
 %         outputFileName_Info.xls   Type: file.
 %                                   Description: File containing one column array.
 %                                   In each row the user will find a couple of
@@ -170,7 +169,7 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   printExcel = 1. Note that the user can choose
 %                                   the name of this file entering the input
 %                                   outputFileName = 'PutYourOwnFileNameHere';
-% 
+%
 %         outputFileName_Info.txt   Type: file.
 %                                   Description: File containing one column array.
 %                                   In each row the user will find a couple of
@@ -180,19 +179,19 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                   printText = 1. Note that the user can choose
 %                                   the name of this file entering the input
 %                                   outputFileName = 'PutYourOwnFileNameHere';
-% 
-%         findMustUL.lst             Type: file. 
+%
+%         findMustUL.lst             Type: file.
 %                                   Description: file autogenerated by GAMS. It
 %                                   contains information about equations,
 %                                   variables, parameters as well as information
 %                                   about the running (values at each iteration).
 %                                   This file only will be saved in the output
 %                                   folder is the user entered keepGamsOutputs = 1
-% 
+%
 %         GtoM.gdx                  Type: file
-%                                   Description: file containing values for 
+%                                   Description: file containing values for
 %                                   variables, parameters, etc. which were found by
-%                                   GAMS when solving findMustUL.gms. 
+%                                   GAMS when solving findMustUL.gms.
 %                                   This file only will be saved in the output
 %                                   folder is the user entered keepInputs = 1
 
@@ -223,7 +222,7 @@ else
     if ~isfield(constrOpt,'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
     if ~isfield(constrOpt,'values'), error('OptForce: Missing field values in constrOpt');  end
     if ~isfield(constrOpt,'sense'), error('OptForce: Missing field sense in constrOpt');  end
-    
+
     if length(constrOpt.rxnList) == length(constrOpt.values) && length(constrOpt.rxnList) == length(constrOpt.sense)
         if size(constrOpt.rxnList,1) > size(constrOpt.rxnList, 2); constrOpt.rxnList = constrOpt.rxnList'; end;
         if size(constrOpt.values,1) > size(constrOpt.values, 2); constrOpt.values = constrOpt.values'; end;
@@ -333,7 +332,7 @@ if printReport
     hour = clock;
     reportFileName = ['report-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm.txt'];
     freport = fopen(reportFileName, 'w');
-    reportClosed = 0; 
+    reportClosed = 0;
     % print date of running.
     fprintf(freport, ['findMustULWithGAMS.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
     % print matlab version.
@@ -342,7 +341,7 @@ if printReport
     fprintf(freport, ['GAMS: ' regexprep(gamsPath, '\\', '\\\') '\n']);
     % print solver used in GAMS to solve optForce.
     fprintf(freport, ['GAMS solver: ' solverName '\n']);
-    
+
     %print each of the inputs used in this running.
     fprintf(freport, '\nThe following inputs were used to run OptForce: \n');
     fprintf(freport, '\n------INPUTS------\n');
@@ -358,32 +357,32 @@ if printReport
     for i = 1:length(model.rxns)
         fprintf(freport, '%6.4f\t%6.4f\t%6.4f\t%6.4f\n', model.lb(i), model.ub(i), minFluxesW(i), maxFluxesW(i));
     end
-    
+
     %print constraints
     fprintf(freport,'\nConstrained reactions:\n');
     for i = 1:length(constrOpt.rxnList)
         fprintf(freport,'%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
     end
-    
+
     fprintf(freport, '\nExcluded Reactions:\n');
     for i = 1:length(excludedRxns)
         rxn = printRxnFormula(model, excludedRxns{i});
         fprintf(freport, [excludedRxns{i} ': ' rxn{1} '\n']);
     end
-    
+
     fprintf(freport, '\nReactions from first order sets(MustU and MustL):\n');
     for i = 1:length(mustSetFirstOrder)
         rxn = printRxnFormula(model, mustSetFirstOrder{i});
         fprintf(freport, [mustSetFirstOrder{i} ': ' rxn{1} '\n']);
     end
-    
+
     fprintf(freport,'\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
-    
-    
+
+
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nkeepGamsOutputs: %1.0f \n\nverbose: %1.0f \n',...
         printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose);
-    
+
 end
 
 copyfile(pathGamsFunction);
@@ -412,7 +411,7 @@ if ~keepInputs; rmdir(inputFolder, 's'); end;
 
 %if findMustUL.gms was executed correctly "run" should be 0
 if run == 0
-    
+
     if printReport; fprintf(freport, '\nGAMS was executed correctly\n'); end;
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
@@ -422,7 +421,7 @@ if run == 0
         rgdx('GtoM', findMustUL); %if do not exist the variable findMustUL in GtoM, an error will ocurr.
         if printReport; fprintf(freport, '\nGAMS variables were read by MATLAB correctly\n'); end;
         if verbose; fprintf('GAMS variables were read by MATLAB correctly\n'); end;
-        
+
         %Using GDXMRW to read solutions found by findMustUL.gms
         %extract matrix 1 found by findMustII.gms. This matrix contains the
         %first reaction in each couple of reactions
@@ -430,17 +429,17 @@ if run == 0
         m1.compress = 'true';
         m1 = rgdx('GtoM', m1);
         uels_m1 = m1.uels{2};
-        
-        
+
+
         if ~isempty(uels_m1)
             %if the uel array for m1 is not empty, at least 1 couple of reations was found.
             if printReport; fprintf(freport, '\na MustUL set was found\n'); end;
             if verbose; fprintf('a MustUL set was found\n'); end;
-            
+
             %find values for matrix 1
             val_m1 = m1.val;
             m1_full = full(sparse(val_m1(:,1), val_m1(:,2:end-1), val_m1(:,3)));
-            
+
             %find values for matrix 2
             m2.name = 'matrix2';
             m2.compress = 'true';
@@ -448,13 +447,13 @@ if run == 0
             uels_m2 = m2.uels{2};
             val_m2 = m2.val;
             m2_full = full(sparse(val_m2(:,1), val_m2(:,2:end-1), val_m2(:,3)));
-            
+
             %initialize empty array for storing
             n_mustSet = size(m1_full,1);
             mustUL = cell(n_mustSet, 2);
             pos_mustUL = zeros(size(mustUL));
             mustUL_linear = {};
-            
+
             %write each couple of reactions.
             for i = 1:n_mustSet
                 rxn1 = uels_m1(m1_full(i,:) == 1);
@@ -470,14 +469,14 @@ if run == 0
             %if the uel array for m1 is empty, no couple of reations was found.
             if printReport; fprintf(freport, '\na MustUL set was not found\n'); end;
             if verbose; fprintf('a MustUL set was not found\n'); end;
-            
+
             %initialize arrays to be returned by this function
             mustUL = {};
             pos_mustUL = [];
             mustUL_linear = {};
             pos_mustUL_linear = [];
         end
-        
+
         % print info into an excel file if required by the user
         if printExcel
             if  ~isempty(uels_m1)
@@ -503,7 +502,7 @@ if run == 0
                 if printReport; fprintf(freport, '\nNo mustUL set was found. Therefore, no excel file was generated\n'); end;
             end
         end
-        
+
         % print info into a plain text file if required by the user
         if printText
             if ~isempty(uels_m1)
@@ -515,13 +514,13 @@ if run == 0
                     fprintf(f, '%s or %s\n', mustUL{i,1}, mustUL{i,2});
                 end
                 fclose(f);
-                
+
                 f = fopen([outputFileName '.txt'], 'w');
                 for i = 1:length(mustUL_linear)
                     fprintf(f, '%s\n', mustUL_linear{i});
                 end
                 fclose(f);
-                
+
                 cd(currentFolder);
                 if verbose
                     fprintf(['MustUL set was printed in ' outputFileName '.txt  \n']);
@@ -531,18 +530,18 @@ if run == 0
                     fprintf(freport, ['\nMustUL set was printed in ' outputFileName '.txt  \n']);
                     fprintf(freport, ['\nMustUL set was printed in ' outputFileName '_Info.txt  \n']);
                 end
-                
+
             else
                 if verbose; fprintf('No mustUL set was found. Therefore, no plain text file was generated\n'); end;
                 if printReport; fprintf(freport, '\nNo mustUL set was found. Therefore, no plain text file was generated\n'); end;
             end
         end
-        
+
         %close file for saving report
         if printReport; fclose(freport); reportClosed = 1; end;
         if printReport; movefile(reportFileName, outputFolder); end;
         delete(gamsMustULFunction);
-        
+
         %remove or move additional files that were generated during running
         if keepGamsOutputs
             if ~isdir(outputFolder); mkdir(outputFolder); end;
@@ -552,7 +551,7 @@ if run == 0
             delete('GtoM.gdx');
             delete(regexprep(gamsMustULFunction, 'gms', 'lst'));
         end
-        
+
         %go back to the original path
         cd(workingPath);
     catch
@@ -561,9 +560,9 @@ if run == 0
         if printReport && ~reportClosed; fprintf(freport, '\nGAMS variables were not read by MATLAB corretly\n'); fclose(freport); end;
         cd(workingPath);
         error('OptForce: GAMS variables were not read by MATLAB corretly');
-        
+
     end
-    
+
     %if findMustUL.gms was not executed correctly "run" should be different from 0
 else
     %if GAMS was not executed correcttly
@@ -571,7 +570,7 @@ else
     if verbose; fprintf('GAMS was not executed correctly\n'); end;
     cd(workingPath);
     error('OptForce: GAMS was not executed correctly');
-    
+
 end
 
 end

@@ -1,13 +1,10 @@
 function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
-%% DESCRIPTION
 % This function export all the inputs needed to run the GAMS functions to
 % find second order Must Sets (MustUU, Must LL, Must UL). The inputs will
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
 % others will be exported as simple .txt files.
 %
-% Created by Sebastin Mendoza. 30/05/2017. snmendoz@uc.cl
-%
-% USAGE: 
+% USAGE:
 %         exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW,
 %         constrOpt, excludedRxns, mustSetFirstOrder, inputFolder): export
 %         the following variables to text files: model.rxns, model.mets,
@@ -28,19 +25,19 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %                                   lb              Lower bounds for fluxes
 %                                   ub              Upper bounds for fluxes
 %                                   rev             Reversibility flag
-% 
+%
 %         minFluxesW (obligatory)   Type: double array of size n_rxns x1
 %                                   Description: Minimum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: minFluxesW=[-90; -56];
-% 
+%
 %         maxFluxesW (obligatory)   Type: double array of size n_rxns x1
 %                                   Description: Maximum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: maxFluxesW=[-90; -56];
-% 
+%
 %         constrOpt (obligatory)    Type: Structure
 %                                   Description: structure containing additional
 %                                   contraints. The structure has the following
@@ -50,17 +47,17 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %                                   sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
 %                                                                    (G: Greater than; E: Equal to; L: Lower than)
 %                                   Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
-% 
+%
 %         excludedRxns (obligatory) Type: cell array
 %                                   Description: Reactions to be excluded to the
 %                                   MustUU set. This could be used to avoid finding
 %                                   transporters or exchange reactions in the set
-% 
+%
 %         mustSetFirstOrder(obligatory):Type: cell array
 %                                       Description: Reactions that belong to MustU
 %                                       and Must L (first order sets)
-% 
-%         inputFolder(obligatory):      Type: string. 
+%
+%         inputFolder(obligatory):      Type: string.
 %                                       Description: Folder where inputs for GAMS
 %                                       function will be stored
 %
@@ -68,28 +65,28 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %
 %         Reactions.txt                 Type: file
 %                                       Description: File containing the
-%                                       identifiers for reactions 
-% 
+%                                       identifiers for reactions
+%
 %         Metabolites.txt               Type: file
 %                                       Description: File containing the
 %                                       identifiers for metabolites
-% 
+%
 %         Constrains.txt                Type: file
 %                                       Description: File containing the
-%                                       identifiers for constrained reactions 
-% 
+%                                       identifiers for constrained reactions
+%
 %         Excluded.txt                  Type: file
 %                                       Description: File containing the
-%                                       identifiers for excluded reactions. These 
+%                                       identifiers for excluded reactions. These
 %                                       reactions will not be considered in when
 %                                       running findMustXX.gms (XX=UU or LL or UL
 %                                       depending on the case)
-% 
+%
 %         MustSetFirstOrder.txt         Type: file
 %                                       Description: File containing the
 %                                       identifiers for reactions in MustL and
 %                                       MustU
-% 
+%
 %         MtoG.gdx                      Type: file
 %                                       Description: File containing the
 %                                       parameters which will be read by GAMS
@@ -97,16 +94,16 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %                                       matrix S, minimum and maximun fluxes for
 %                                       each reaction in the previous step of FVA,
 %                                       and the values for contrained reactions)
+%
+% .. Author: Sebastin Mendoza. 30/05/2017. snmendoz@uc.cl
 
-%% CODE
-%inputs handling
-if nargin < 7
+if nargin < 7 %inputs handling
     error('Optforce: All inputs must be specified when using exportInputsMustOrder2ToGAMS');
 end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

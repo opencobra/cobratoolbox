@@ -1,12 +1,11 @@
 function exportSetToGAMS(set, fileName)
-%% DESCRIPTION
 % This function export the information in "set" to a .txt file which can be
-% read by GAMS. "set" must be a cell array of strings. 
+% read by GAMS. "set" must be a cell array of strings.
 %
-% USAGE: 
+% USAGE:
 %
 %         exportSetToGAMS(set, fileName) export a particular set of
-%         elements to a text file which can be read by GAMS directly. 
+%         elements to a text file which can be read by GAMS directly.
 %
 %         Example: exportSetToGAMS(model.rxns, 'Reactions.txt') will export
 %         the list of elements in model.rxns to a file called Reactions.txt
@@ -16,21 +15,21 @@ function exportSetToGAMS(set, fileName)
 %                                   Description: cell array containing identifiers
 %                                   for certain set of elements (reactions,
 %                                   metabolites, etc)
-% 
+%
 %         fileName(obligatory)      Type: string
 %                                   Description: Name of the file in which the
 %                                   information will be stored. It is recomended to
-%                                   add the extension of the file. 
+%                                   add the extension of the file.
 %
 % OUTPUTS:
 %
 %         fileName                  Type: file
-%                                   Description: File of name "fileName" containing 
+%                                   Description: File of name "fileName" containing
 %                                   the set of elements, one for row.
 
 %% CODE
 %input handling
-if nargin > 2 
+if nargin > 2
     error('All inputs for the function exportSetToGAMS must be specified');
 end
 
