@@ -64,7 +64,7 @@ if isfield(model1, 'genes') || isfield(model2, 'genes')
     newindices1 = geneIndex(model1genePresence);
     for i = 1:numel(model1.rules)
         if ~isempty(model1.rules{i})            
-            model1.rules{i} = updateRule(model1.rules{i},oldindices1(model1.rxnGeneMat(:,i)),newindices1(model1.rxnGeneMat(:,i)));       
+            model1.rules{i} = updateRule(model1.rules{i},oldindices1(model1.rxnGeneMat(i,:)),newindices1(model1.rxnGeneMat(i,:)));       
         end
     end
     
@@ -74,7 +74,7 @@ if isfield(model1, 'genes') || isfield(model2, 'genes')
     newindices2 = geneIndex(model2genePresence);
     for i = 1:numel(model2.rules)
         if ~isempty(model2.rules{i})
-            model2.rules{i} = updateRule(model2.rules{i},oldindices2(model2.rxnGeneMat(:,i)),newindices2(model2.rxnGeneMat(:,i)));
+            model2.rules{i} = updateRule(model2.rules{i},oldindices2(model2.rxnGeneMat(i,:)),newindices2(model2.rxnGeneMat(i,:)));
         end
     end
     showprogress(0.1, 'Rules updated ...');
