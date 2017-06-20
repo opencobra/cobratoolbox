@@ -215,9 +215,9 @@
 <li><p class="first"><strong>osenseStr</strong> &#8211;
 (default = &#8216;max&#8217;)</p>
 <ul class="simple">
-<li>max: <cite>f* = argmax {max c&#8217;v: Sv &lt;=&gt; b, l &lt;= v &lt;= u}</cite></li>
-<li>min: <cite>f* = argmin {min c&#8217;v: Sv &lt;=&gt; b, l &lt;= v &lt;= u}</cite></li>
-<li>none: ignore the constraint <cite>c&#8217;v = f*`</cite></li>
+<li>max: <span class="math">\(f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>min: <span class="math">\(f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>none: ignore the constraint <span class="math">\(c^T v = f*\)</span></li>
 </ul>
 </li>
 <li><p class="first"><strong>checkMinimalSet</strong> &#8211;
@@ -240,8 +240,8 @@ appoximation type of zero-norm (only available when minNorm = &#8216;zero&#8217;
 <li>&#8216;exp&#8217;      : Exponential function</li>
 <li>&#8216;log&#8217;      : Logarithmic function</li>
 <li>&#8216;SCAD&#8217;     : SCAD function</li>
-<li>&#8216;lp-&#8216;      : L_p norm with p&lt;0</li>
-<li>&#8216;lp+&#8217;      : L_p norm with 0&lt;p&lt;1</li>
+<li>&#8216;lp-&#8216;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(p &lt; 0\)</span></li>
+<li>&#8216;lp+&#8217;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(0 &lt; p &lt; 1\)</span></li>
 <li>&#8216;l1&#8217;       : L1 norm</li>
 <li>&#8216;all&#8217;      : try all approximations and return the best result</li>
 </ul>
@@ -267,10 +267,11 @@ Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
 </ul>
 </div></blockquote>
 <div class="math">
-\[min ||v||_0
-s.t   Sv &lt;=&gt; b
-  c'v = f* (optimal value of objective, default is max c'v)
-  l &lt;= v &lt;= u\]</div>
+\[\begin{split}min ~&amp;~ ||v||_0 \\
+s.t ~&amp;~ S v \leq, = or \geq b \\
+    ~&amp;~ c^T v = f* \\
+    ~&amp;~ l \leq v \leq u\end{split}\]</div>
+<p>where <span class="math">\(f*\)</span> is the optimal value of objective (default is <span class="math">\(max c^T v\)</span>).</p>
 </dd></dl>
 
 </div>

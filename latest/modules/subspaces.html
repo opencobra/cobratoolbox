@@ -287,7 +287,7 @@ maximum and minimum column scaling coefficients</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-COBRA model structure (must define .mets and .metFormulas)</li>
+COBRA model structure (must define <cite>.mets</cite> and <cite>.metFormulas</cite>)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -298,14 +298,14 @@ Cell array of which metabolites to search for
 (Default = all metabolites in model)</li>
 <li><strong>warnings</strong> &#8211;
 Display warnings if there are errors with the
-formula.  (Default = true)</li>
+formula. (Default = true)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Ematrix</strong> &#8211;
-<cite>m</cite> x 6 matrix of order [C N O H P other]</li>
+<cite>m x 6</cite> matrix of order [C N O H P other]</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -314,8 +314,8 @@ formula.  (Default = true)</li>
 <dt id="src.modelAnalysis.subspaces.conservationAnalysis">
 <code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.</p>
-<p>i.e. <cite>L*S = 0</cite> where <a href="#id2"><span class="problematic" id="id3">``</span></a>[-Lzero I]*Pl&#8217;<a href="#id4"><span class="problematic" id="id5">*</span></a>S = 0`;
-and <cite>S*N = 0</cite> where <cite>S*Pn*[-Nzero; I] = S*[-Nzero&#8217; I&#8217;]*Pn&#8217; = 0</cite>;</p>
+<p>i.e. <span class="math">\(L S = 0\)</span> where <span class="math">\([-Lzero I] Pl^T S = 0\)</span>;
+and <span class="math">\(S N = 0\)</span> where <span class="math">\(S Pn [-Nzero; I] = S, [-Nzero^T I^T] Pn^T = 0\)</span>;</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)</div></blockquote>
@@ -324,7 +324,7 @@ and <cite>S*N = 0</cite> where <cite>S*Pn*[-Nzero; I] = S*[-Nzero&#8217; I&#8217
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 structure<ul>
-<li>model.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
+<li>model.S - <cite>m x n</cite> stoichiometric matrix</li>
 </ul>
 </li>
 </ul>
@@ -333,7 +333,7 @@ structure<ul>
 <blockquote>
 <div><ul class="simple">
 <li><strong>massBalanced</strong> &#8211;
-{(0),1,-1}<ul>
+{(0), 1, -1}<ul>
 <li>0 = conservation analysis of entire <cite>model.S</cite></li>
 <li>1 = conservation analysis of mass balanced reactions only</li>
 <li>-1 = conservation analysis of all except biomass reaction</li>
@@ -348,17 +348,17 @@ the mass imbalanced reactions</li>
 <li><strong>model.biomassRxnAbbr</strong> &#8211;
 String with abbreviation of biomass reaction</li>
 <li><strong>model.c</strong> &#8211;
-<cite>n</cite> x 1 linear objective function</li>
+<cite>n x 1</cite> linear objective function</li>
 <li><strong>printLevel</strong> &#8211;
-{(0),1}<ul>
+{(0), 1}<ul>
 <li>0 = Silent</li>
 <li>1 = Print out conservation relations using metabolite and reaction abbreviations</li>
 </ul>
 </li>
 <li><strong>model.mets</strong> &#8211;
-<cite>m</cite> x 1 cell array of metabolite abbreviations</li>
+<cite>m x 1</cite> cell array of metabolite abbreviations</li>
 <li><strong>model.rxns</strong> &#8211;
-<cite>n</cite> x 1 cell array of reaction abbreviations</li>
+<cite>n x 1</cite> cell array of reaction abbreviations</li>
 <li><strong>tol</strong> &#8211;
 upper bound on tolerance of linear independence,default no greater than 1e-12</li>
 </ul>
@@ -395,7 +395,7 @@ Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite><
 <blockquote>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
-<cite>m</cite> x <cite>n</cite> stoichiometric matrix defined to be of rank <cite>r</cite>.</li>
+<cite>m x n</cite> stoichiometric matrix defined to be of rank <cite>r</cite>.</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -409,27 +409,27 @@ default = 1</li>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>N</strong> &#8211;
-<cite>n</cite> x <cite>(n-r)</cite> null space basis
+<cite>n x (n-r)</cite> null space basis
 The null space of <cite>S</cite> contains all the steady-state flux distributions
 allowable in the network. The steady-state is of much interest since
 most homeostatic states are close to being steady-states.</p>
 </li>
 <li><p class="first"><strong>R</strong> &#8211;
-<cite>n</cite> x <cite>r</cite> row space basis:
+<cite>n x r</cite> row space basis:
 The row space of S contains all the dynamic flux distributions
 of a network, and thus the thermodynamic driving forces that change the
 rate of reaction activity.</p>
 </li>
 <li><p class="first"><strong>L</strong> &#8211;
-<cite>m</cite> x <cite>(m-r)</cite> left null space basis:
+<cite>m x (m-r)</cite> left null space basis:
 The left null space of <cite>S</cite> contains all the conservation
 relationships, or time-invariants, that a network contains. The sum of
 conserved metabolites or conserved metabolic pools do not change with
 time and are combinations of concentration variables.</p>
 </li>
 <li><p class="first"><strong>C</strong> &#8211;
-<cite>m</cite>  x <cite>r</cite> column space basis:
-The column space of <a href="#id6"><span class="problematic" id="id7">`</span></a>S <a href="#id8"><span class="problematic" id="id9">`</span></a>contains all the possible time
+<cite>m  x r</cite> column space basis:
+The column space of <a href="#id2"><span class="problematic" id="id3">`</span></a>S <a href="#id4"><span class="problematic" id="id5">`</span></a>contains all the possible time
 derivatives of the concentration vector, and thus how the thermodynamic
 driving forces move the concentration state of the network.</p>
 </li>
@@ -438,11 +438,11 @@ driving forces move the concentration state of the network.</p>
 </li>
 <li><p class="first"><strong>p</strong> &#8211;
 <cite>p(1:rankS)</cite> gives indices to the linearly independent columns of <cite>S</cite></p>
-<p><cite>p(rankS+1:end)</cite> gives indices to the linearly dependent columns of <cite>S</cite></p>
+<p><cite>p(rankS + 1:end)</cite> gives indices to the linearly dependent columns of <cite>S</cite></p>
 </li>
 <li><p class="first"><strong>q</strong> &#8211;
 <cite>q(1:rankS)</cite> gives indices to the linearly independent rows of <cite>S</cite></p>
-<p><cite>q(rankS+1:end)</cite> gives indices to the linearly dependent rows of <cite>S</cite></p>
+<p><cite>q(rankS + 1:end)</cite> gives indices to the linearly dependent rows of <cite>S</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -452,7 +452,7 @@ driving forces move the concentration state of the network.</p>
 <dt id="src.modelAnalysis.subspaces.gmscale">
 <code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/subspaces/gmscale.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Geometric-Mean Scaling finds the scale values for the
-<cite>m</cite> x <cite>n</cite> sparse matrix <cite>A</cite>.</p>
+<cite>m x n</cite> sparse matrix <cite>A</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[cscale, rscale] = gmscale(A, iprint, scltol)</div></blockquote>
@@ -484,12 +484,12 @@ Several passes are made through the columns and rows of <cite>A</cite>.
 The main steps are:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Compute <cite>aratio = max_j (max_i Aij / min_i Aij)</cite>.</li>
-<li>Divide each row <cite>i</cite> by <cite>sqrt( max_j Aij * min_j Aij)</cite>.</li>
-<li>Divide each column <cite>j</cite> by <cite>sqrt( max_i Aij * min_i Aij)</cite>.</li>
-<li>Compute sratio as in Step 1.</li>
-<li>If <cite>sratio &lt; aratio * scltol</cite>,
-set <cite>aratio = sratio</cite> and repeat from Step 2.</li>
+<li>Compute <span class="math">\(aratio = max_j (max_i Aij / min_i Aij)\)</span>.</li>
+<li>Divide each row <cite>i</cite> by <span class="math">\(sqrt( max_j Aij * min_j Aij)\)</span>.</li>
+<li>Divide each column <cite>j</cite> by <span class="math">\(sqrt( max_i Aij * min_i Aij)\)</span>.</li>
+<li>Compute <cite>sratio</cite> as in Step 1.</li>
+<li>If <span class="math">\(sratio &lt; aratio * scltol\)</span>,
+set <span class="math">\(aratio = sratio\)</span> and repeat from Step 2.</li>
 </ol>
 </div></blockquote>
 <p>To dampen the effect of very small elements, on each pass,
@@ -497,12 +497,12 @@ a new row or column scale will not be smaller than sqrt(damp)
 times the largest (scaled) element in that row or column.</p>
 <p>Use of the scales:
 To apply the scales to a linear program,
-<cite>min c&#8217;x</cite> st <cite>Ax = b</cite>, <cite>l &lt;= x &lt;= u</cite>,
+<span class="math">\(min c^T x\)</span> st <span class="math">\(A x = b\)</span>, <span class="math">\(l \leq x \leq u\)</span>,
 we need to define &#8220;barred&#8221; quantities by the following relations:
 <cite>A = R Abar C</cite>, <cite>b = R bbar</cite>, <cite>C cbar = c</cite>,
-<cite>C l = lbar</cite>, <cite>C u = ubar</cite>, <cite>C x = xbar</cite>.
-This gives the scaled problem
-<cite>min cbar&#8217;xbar</cite> st <cite>Abar xbar = bbar</cite>, <cite>lbar &lt;= xbar &lt;= ubar</cite>.</p>
+<cite>C l = lbar</cite>, <cite>C u = ubar</cite>, <cite>C x = xbar</cite>.</p>
+<p>This gives the scaled problem
+<span class="math">\(min\ cbar^T xbar\)</span> st <span class="math">\(Abar\ xbar = bbar\)</span>, <span class="math">\(lbar \leq xbar \leq ubar\)</span>.</p>
 </dd></dl>
 
 </div>

@@ -266,8 +266,7 @@ Maximum time limit (Default = 36000 s)</li>
 <dl class="function">
 <dt id="src.modelAnalysis.sampling.ACHRSamplerParallelGeneral">
 <code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/sampling/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
-<dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point
-management</p>
+<dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point management</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>sampleStruct = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)</div></blockquote>
@@ -309,7 +308,7 @@ Sampling structure with sample points</li>
 the difference between the flux vectors</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>sampleDiff = calcSampleDifference(sample1,sample2,nPts)</div></blockquote>
+<div>sampleDiff = calcSampleDifference(sample1, sample2, nPts)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -375,10 +374,10 @@ Structure with the following fields:<ul>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure with fields:<ul>
-<li><cite>.S</cite> - The <cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
-<li><cite>.lb</cite> - <cite>n</cite> x 1 lower bounds on fluxes</li>
-<li><cite>.ub</cite> - <cite>n</cite> x 1 upper bounds on fluxes</li>
-<li><cite>.c</cite> - <cite>n</cite> x 1 linear objective</li>
+<li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
+<li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
+<li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
+<li>.c - <cite>n x 1</cite> linear objective</li>
 </ul>
 </li>
 </ul>
@@ -388,22 +387,19 @@ COBRA model structure with fields:<ul>
 <div><ul class="simple">
 <li><strong>P</strong> &#8211;
 A structure with fields:<ul>
-<li><cite>.A_eq</cite> - Equality constraint matrix (<cite>model.S</cite>)</li>
-<li><cite>.b_eq</cite> - Right hand side of equality constraints (<cite>model.b</cite>)</li>
-<li><cite>.A</cite> - Inequality constraint matrix ([<cite>I_n</cite> 0; 0 <a href="#id2"><span class="problematic" id="id3">``</span></a>-I_n`])</li>
-<li><cite>.b</cite> - Right hand side of inequality constraints ([<cite>lb</cite>; <a href="#id4"><span class="problematic" id="id5">``</span></a>-ub`])</li>
+<li>.A_eq - Equality constraint matrix (<cite>model.S</cite>)</li>
+<li>.b_eq - Right hand side of equality constraints (<cite>model.b</cite>)</li>
+<li>.A - Inequality constraint matrix ([<span class="math">\(I_n 0; 0 -I_n\)</span>])</li>
+<li>.b - Right hand side of inequality constraints ([<cite>lb</cite>; <cite>-ub</cite>])</li>
 </ul>
 </li>
 </ul>
 </div></blockquote>
 <p>We are trying to sample uniformly at random from the points <cite>v</cite> that satisfy:</p>
-<blockquote>
-<div><ul class="simple">
-<li>min   <cite>c*v</cite></li>
-<li>s.t.  <cite>Sv = b</cite></li>
-<li><cite>lb &lt;= v &lt;= ub</cite></li>
-</ul>
-</div></blockquote>
+<div class="math">
+\[\begin{split}min  ~&amp;~ c v \\
+s.t. ~&amp;~ S v = b \\
+     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
 </dd></dl>
 
 <dl class="function">
@@ -419,10 +415,10 @@ Coordinate Hit-and-Run with Rounding</p>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure with fields:<ul>
-<li>.S - The <cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
-<li>.lb - <cite>n</cite> x 1 lower bounds on fluxes</li>
-<li>.ub - <cite>n</cite> x 1 upper bounds on fluxes</li>
-<li>.c - <cite>n</cite> x 1 linear objective</li>
+<li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
+<li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
+<li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
+<li>.c - <cite>n x 1</cite> linear objective</li>
 </ul>
 </li>
 <li><strong>numSkip</strong> &#8211;
@@ -435,12 +431,12 @@ Number of samples</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>toRound</strong> &#8211;
-{0,1} Option to round the polytope before sampling.</li>
+{0, 1} Option to round the polytope before sampling.</li>
 <li><strong>roundedPolytope</strong> &#8211;
 The rounded polytope from a previous round of
 sampling the same model.</li>
 <li><strong>minFlux, maxFlux</strong> &#8211;
-<cite>n</cite> x 1 flux minima and maxima from flux variability
+<cite>n x 1</cite> flux minima and maxima from flux variability
 analysis of the same model.</li>
 </ul>
 </div></blockquote>
@@ -448,11 +444,12 @@ analysis of the same model.</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>samples</strong> &#8211;
-<cite>n</cite> x <cite>numSamples</cite> matrix of random flux samples</li>
+<cite>n x numSamples</cite> matrix of random flux samples</li>
 <li><strong>roundedPolytope</strong> &#8211;
 The rounded polytope. Save for use in subsequent
 rounds of sampling.</li>
-<li><strong>minFlux, maxFlux</strong></li>
+<li><strong>minFlux, maxFlux</strong> &#8211;
+flux minima and maxima</li>
 </ul>
 </div></blockquote>
 <p><cite>chrrSampler</cite> will generate <cite>numSamples</cite> samples from model, taking
@@ -497,7 +494,7 @@ Number of bins (Default = <cite>nSamples</cite> / 25)</li>
 samples. Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[stats,pVals] = compareTwoSamplesStat(sample1, sample2, tests)</div></blockquote>
+<div>[stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -519,7 +516,7 @@ Samples to compare</li>
 <li><strong>stats</strong> &#8211;
 statistics</li>
 <li><strong>pVals</strong> &#8211;
-p values</li>
+<cite>p</cite> values</li>
 </ul>
 </div></blockquote>
 <p>Output will be in order that tests are inputed. i.e. {&#8216;ks&#8217;,&#8217;rankSum&#8217;}</p>
@@ -565,7 +562,7 @@ Sample set with negative-direction fluxes reversed</li>
 combining orthogonal and random points</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>warmupPts= createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)</div></blockquote>
+<div>warmupPts = createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -584,7 +581,7 @@ Verbose flag (Default = false)</li>
 Structure with fields:<ul>
 <li>method - Biasing distribution: &#8216;uniform&#8217;, &#8216;normal&#8217;</li>
 <li>index - The reaction indexes which to bias (<cite>nBias</cite> total)</li>
-<li>param - nBias x 2 matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
+<li>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
 </ul>
 </li>
 </ul>
@@ -603,9 +600,10 @@ Set of warmup points</li>
 <code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/sampling/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.gpSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples an arbitrary linearly constrained space using a fixed
 number of points that are moved in parallel
-The space is defined by
-<cite>A x &lt;=,==,&gt;= b</cite>
-<cite>lb &lt;= x &lt;= ub</cite></p>
+The space is defined by</p>
+<div class="math">
+\[\begin{split}A x \leq, =, \geq b \\
+lb \leq x \leq ub\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[sampleStructOut, mixedFraction] = gpSampler(sampleStruct, nPoints, bias, maxTime, maxSteps, threads, nPointsCheck)</div></blockquote>
@@ -634,12 +632,12 @@ previous point sets:</p>
 <div><ul class="simple">
 <li><strong>nPoints</strong> &#8211;
 Number of points used in sampling
-(default = 2*`nRxns` or 5000 whichever is greater)</li>
+(default = <cite>2 * nRxns</cite> or 5000 whichever is greater)</li>
 <li><strong>bias</strong> &#8211;
 Structure with fields:<ul>
 <li>method - Biasing distribution: &#8216;uniform&#8217;, &#8216;normal&#8217;</li>
 <li>index - The reaction indexes which to bias (<cite>nBias</cite> total)</li>
-<li>param - <cite>nBias</cite> x 2 matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
+<li>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
 </ul>
 </li>
 <li><strong>maxTime</strong> &#8211;
@@ -659,7 +657,7 @@ speedup can be obtained by starting matlab from the
 command line by &#8220;typing matlab -singleCompThread&#8221;
 New feature:  if <cite>threads</cite> &lt; 0, use distributed toolbox.</li>
 <li><strong>nPointsCheck</strong> &#8211;
-Checks that minimum number of points (2*`nRxns`) are
+Checks that minimum number of points (<cite>2 * nRxns</cite>) are
 used. (Default = true).</li>
 </ul>
 </div></blockquote>
@@ -678,35 +676,38 @@ means not mixed at all.  A value of .5 means completely mixed.</li>
 <dl class="function">
 <dt id="src.modelAnalysis.sampling.identifyCorrelSets">
 <code class="descname">identifyCorrelSets</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>corrThr</em>, <em>R</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/sampling/identifyCorrelSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.identifyCorrelSets" title="Permalink to this definition">¶</a></dt>
-<dd><p>identifyCorrelSets Identify correlated reaction sets from sampling data</p>
+<dd><p>Identifies correlated reaction sets from sampling data</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>[sets,setNumber,setSize] =  identifyCorrelSets(model,samples,corrThr,R)</div></blockquote>
+<div>[sets, setNumber, setSize] =  identifyCorrelSets(model, samples, corrThr, R)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model         COBRA model structure</strong></li>
-<li><strong>samples       Samples to be used to identify correlated sets</strong></li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>samples</strong> &#8211;
+Samples to be used to identify correlated sets</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>corrThr       Minimum correlation (R^2) threshold (Default = 1-1e-8)</strong></li>
-<li><strong>R             Correlation coefficient</strong></li>
+<li><strong>corrThr</strong> &#8211;
+Minimum correlation (<span class="math">\(R^2\)</span>) threshold (Default = 1-1e-8)</li>
+<li><strong>R</strong> &#8211;
+Correlation coefficient</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>sets          Sorted cell array of sets (largest first)</strong></p>
-</li>
-<li><p class="first"><strong>setNumber     List of set numbers for each reaction in model (0 indicates</strong> &#8211;</p>
-<p>that there is no set)</p>
-</li>
-<li><p class="first"><strong>setSize       List of set sizes</strong></p>
-</li>
-<li><p class="first"><strong>Markus Herrgard 9/15/06</strong></p>
-</li>
+<div><ul class="simple">
+<li><strong>sets</strong> &#8211;
+Sorted cell array of sets (largest first)</li>
+<li><strong>setNumber</strong> &#8211;
+List of set numbers for each reaction in model (0 indicates
+that there is no set)</li>
+<li><strong>setSize</strong> &#8211;
+List of set sizes</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -873,8 +874,7 @@ Names of samples</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>fileName</strong> &#8211;
-Name of file to generate (Default = print to command
-window)</li>
+Name of file to generate (Default = print to command window)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -936,18 +936,14 @@ COBRA model structure</li>
 <div><ul>
 <li><p class="first"><strong>varargin</strong> &#8211;
 Optional Inputs as Parameter/Value pairs with the
-following options:
-- sampleFile:    File names for sampling output files (only required for</p>
-<blockquote>
-<div><p>ACHR, Default &#8216;AHCRFile&#8217;)</p>
-</div></blockquote>
-<ul>
-<li><p class="first">samplerName:   {&#8216;ACHR&#8217;,(&#8216;CHRR&#8217;)} Name of the sampler to be used to sample the solution</p>
-</li>
-<li><p class="first">options:       Options for sampling and pre/postprocessing (default values
-in parenthesis)</p>
+following options:</p>
 <blockquote>
 <div><ul class="simple">
+<li>sampleFile:    File names for sampling output files (only required for
+ACHR, Default &#8216;AHCRFile&#8217;)</li>
+<li>samplerName:   {&#8216;ACHR&#8217;, (&#8216;CHRR&#8217;)} Name of the sampler to be used to sample the solution</li>
+<li>options:       Options for sampling and pre/postprocessing (default values
+in parenthesis)<ul>
 <li>.nStepsPerPoint - Number of sampler steps per point saved (200)</li>
 <li>.nPointsReturned - Number of points loaded for
 analysis (2000)</li>
@@ -958,12 +954,11 @@ analysis (2000)</li>
 <li>.maxTime - Maximum time limit (Default = 36000 s). ACHR only.</li>
 <li>.toRound - Option to round the model before sampling (true). CHRR only.</li>
 </ul>
-</div></blockquote>
 </li>
-<li><p class="first">modelSampling: From a previous round of sampling the same
-model. Input to avoid repeated preprocessing.</p>
-</li>
+<li>modelSampling: From a previous round of sampling the same
+model. Input to avoid repeated preprocessing.</li>
 </ul>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -1009,7 +1004,7 @@ Cell array of reaction names to be plotted</li>
 <li><strong>model</strong> &#8211;
 Model structure</li>
 <li><strong>sample</strong> &#8211;
-Samples to be analyzed (<cite>nRxns</cite> x <cite>nSamples</cite>)</li>
+Samples to be analyzed (<cite>nRxns x nSamples</cite>)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>

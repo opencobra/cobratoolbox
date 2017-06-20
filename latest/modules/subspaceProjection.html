@@ -203,20 +203,24 @@
 <dd><p>Projects flux, net flux, potential and logarithmic concentration onto
 their respective subspaces of the internal reaction stoichiometric matrix
 using projection matrices generated using the Moore-Penrose pseudoinverse</p>
-<p>Let M denote the Moore-Penrose pseudoinverse of the internal reaction
+<p>Let <cite>M</cite> denote the Moore-Penrose pseudoinverse of the internal reaction
 stoichiometric matrix and the subscripts are the following
-_R row space,
-_N nullspace,
-_C column space,
-_L left nullspace,</p>
+<cite>_R</cite> row space,
+<cite>_N</cite> nullspace,
+<cite>_C</cite> column space,
+<cite>_L</cite> left nullspace,</p>
 <p>Example for flux of net flux</p>
-<p>Let <cite>vf = vf_R + vf_N</cite></p>
-<p><cite>vf_R = M*S*vf = PR*vf</cite></p>
-<p><cite>vf_N = (I - M*S)*vf = PN*vf</cite></p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}vf   &amp;= vf_R + vf_N \\
+vf_R &amp;= M S vf = PR vf \\
+vf_N &amp;= (I - M S) vf = PN vf\end{split}\]</div>
 <p>Example for potential or logarithmic concentration</p>
-<p>Let <cite>u = u_C + u_L</cite></p>
-<p><cite>u_C = S*M*u = PC*u</cite></p>
-<p><cite>u_L = (I - S*M)*u = PL*u</cite></p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}u   &amp;= u_C + u_L \\
+u_C &amp;= S M u = PC u \\
+u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)</div></blockquote>
@@ -225,37 +229,47 @@ _L left nullspace,</p>
 <div><ul class="simple">
 <li><strong>modelT</strong> &#8211;
 structure with:<ul>
-<li>modelT.S - <cite>m</cite> x <cite>n</cite> matrix</li>
+<li>modelT.S - <cite>m x n</cite> matrix</li>
 <li>modelT.SIntRxnBool - Boolean vector defining the <cite>nIntRxn</cite> internal reactions</li>
 </ul>
 </li>
 <li><strong>vf</strong> &#8211;
-<cite>nIntRxn</cite> x <cite>1</cite> - forward flux for internal reactions</li>
+<cite>nIntRxn x 1</cite> - forward flux for internal reactions</li>
 <li><strong>vr</strong> &#8211;
-<cite>nIntRxn</cite> x <cite>1</cite> - reverse flux for internal reactions</li>
+<cite>nIntRxn x 1</cite> - reverse flux for internal reactions</li>
 <li><strong>vnet</strong> &#8211;
-<cite>n</cite> x <cite>1</cite> - net flux for all reactions</li>
+<cite>n x 1</cite> - net flux for all reactions</li>
 <li><strong>u</strong> &#8211;
-<cite>m</cite> x <cite>1</cite> - chemical potential</li>
+<cite>m x 1</cite> - chemical potential</li>
 <li><strong>u0</strong> &#8211;
-<cite>m</cite> x <cite>1</cite> - standard chemical potential</li>
+<cite>m x 1</cite> - standard chemical potential</li>
 <li><strong>lnx</strong> &#8211;
-<cite>m</cite> x <cite>1</cite> - logarithmic concentration</li>
+<cite>m x 1</cite> - logarithmic concentration</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>vfN</strong></li>
-<li><strong>vfR</strong></li>
-<li><strong>vrN</strong></li>
-<li><strong>vrR</strong></li>
-<li><strong>vnetN</strong></li>
-<li><strong>vnetR</strong></li>
-<li><strong>uL</strong></li>
-<li><strong>uC</strong></li>
-<li><strong>lnxL</strong></li>
-<li><strong>lnxC</strong></li>
+<li><strong>vfN</strong> &#8211;
+forward flux - nullspace</li>
+<li><strong>vfR</strong> &#8211;
+forward flux - row space</li>
+<li><strong>vrN</strong> &#8211;
+reverse flux - nullspace</li>
+<li><strong>vrR</strong> &#8211;
+reverse flux - row space</li>
+<li><strong>vnetN</strong> &#8211;
+net flux - nullspace</li>
+<li><strong>vnetR</strong> &#8211;
+net flux - row space</li>
+<li><strong>uL</strong> &#8211;
+chemical potential - left nullspace</li>
+<li><strong>uC</strong> &#8211;
+chemical potential - column space</li>
+<li><strong>lnxL</strong> &#8211;
+logarithmic concentration - left nullspace</li>
+<li><strong>lnxC</strong> &#8211;
+logarithmic concentration - column space</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -264,10 +278,14 @@ structure with:<ul>
 <dt id="src.modelAnalysis.subspaces.subspaceProjection.projectSVD">
 <code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assumes that <cite>U1</cite> has orthonormal columns
-so that <cite>U1*U1&#8217;</cite> is a projector.
+so that <span class="math">\(U1 U1^T\)</span> is a projector.
 It returns the projections</p>
-<p><cite>u1 = U1 U1&#8217; u</cite></p>
-<p><cite>u2 = (I - U1 U1&#8217;) u</cite></p>
+<div class="math">
+\[\begin{split}u1 &amp;= U1 U1^T u \\
+u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[u1, u2] = projectSVD(U1, u)</div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">U1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">subspaceSVD</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
 <span class="p">[</span><span class="n">uC</span><span class="p">,</span> <span class="n">uL</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>
@@ -285,19 +303,23 @@ reaction stoichiometric matrix specified by <cite>sub_space</cite>
 If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
 <p>Let M denote the Moore-Penrose pseudoinverse of the internal reaction
 stoichiometric matrix and the subscripts are the following
-_R row space
-_N nullspace
-_C column space
-_L left nullspace</p>
-<p>Let <cite>v = v_R + v_N</cite></p>
-<p><cite>v_R = M*S*v = PR*v</cite></p>
-<p><cite>v_N = (I - M*S)*v = PN*v</cite></p>
-<p>Let <cite>u = u_C + u_L</cite></p>
-<p><cite>u_C = S*M*u = PC*u</cite></p>
-<p><cite>u_L = (I - S*M)*u = PL*u</cite></p>
+<cite>_R</cite> row space
+<cite>_N</cite> nullspace
+<cite>_C</cite> column space
+<cite>_L</cite> left nullspace</p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}v   &amp;= v_R + v_N \\
+v_R &amp;= M S v = PR v \\
+v_N &amp;= (I - M S) v = PN v\end{split}\]</div>
+<p>Let</p>
+<div class="math">
+\[\begin{split}u   &amp;= u_C + u_L \\
+u_C &amp;= S M u = PC u \\
+u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
 <p>Examples:</p>
-<p>Given <cite>S*v=b</cite>, then <cite>v_R = M*b</cite></p>
-<p>Given <cite>S&#8217;*u=q</cite>, then <cite>u_C = M&#8217;*q</cite></p>
+<p>Given <span class="math">\(S v = b\)</span>, then <span class="math">\(v_R = M b\)</span></p>
+<p>Given <span class="math">\(S^Tu = q\)</span>, then <span class="math">\(u_C = M^T q\)</span></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, fullS)</div></blockquote>
@@ -307,8 +329,8 @@ _L left nullspace</p>
 <li><p class="first"><strong>model</strong> &#8211;
 structure with:</p>
 <ul class="simple">
-<li>model.S - <cite>m</cite> x <cite>n</cite> Stoichiometric matrix</li>
-<li>model.SIntRxnBool - <cite>n</cite> x <cite>1</cite> Boolean of reactions though to be mass balanced.</li>
+<li>model.S - <cite>m x n</cite> Stoichiometric matrix</li>
+<li>model.SIntRxnBool - <cite>n x 1</cite> Boolean of reactions though to be mass balanced.</li>
 </ul>
 <p>By default, projectors only provided for the matrix: <cite>model.S(:, model.SIntRxnBool)</cite></p>
 </li>
@@ -318,7 +340,7 @@ structure with:</p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>printLevel</strong> &#8211;
-{(1),0} 1=print diagnostics, 0 = silent</p>
+{(1), 0}, 1 = print diagnostics, 0 = silent</p>
 </li>
 <li><p class="first"><strong>sub_space</strong> &#8211;
 returns projection matrices onto all or one select</p>
@@ -333,7 +355,7 @@ returns projection matrices onto all or one select</p>
 </li>
 <li><p class="first"><strong>fullS</strong> &#8211;</p>
 <p>0 = uses only those columns given by <cite>model.SIntRxnBool</cite></p>
-<p>1 = uses full <cite>m</cite> x <cite>n</cite> Stoichiometric matrix (all columns)</p>
+<p>1 = uses full <cite>m x n</cite> Stoichiometric matrix (all columns)</p>
 </li>
 </ul>
 </div></blockquote>
@@ -349,12 +371,31 @@ projection matrices</li>
 <dl class="function">
 <dt id="src.modelAnalysis.subspaces.subspaceProjection.subspaceSVD">
 <code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/modelAnalysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns quantities satisfying <cite>S = U1*D1*V1&#8217;</cite>,
+<dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
 where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
-and <cite>D1</cite> is <cite>r</cite> x <cite>r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
+and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
 <p>The matrix <cite>S</cite> may be diagonal.
 Matrices <cite>U1</cite> and <cite>V1</cite> may be used by <cite>projectSVD.m</cite>
 to project given vectors onto certain subspaces.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[U1, D1, V1, r] = subspaceSVD(S)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+matrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>U1, D1, V1</strong> &#8211;
+matrices</li>
+<li><strong>r</strong> &#8211;
+numerical rank of <cite>D1</cite></li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 </div>
