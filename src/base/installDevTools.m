@@ -1,4 +1,11 @@
-function installDevTools()
+function [] = installDevTools()
+% checks if the MATLAB.devTools already are present and
+% installs the MATLAB.devTools next to the cloned folder cobratoolbox if not
+%
+% USAGE:
+%    installDevTools()
+%
+% .. Author: Laurent Heirendt, June 2017
 
     global ENV_VARS
     global CBTDIR
@@ -19,6 +26,7 @@ function installDevTools()
 
     installFlag = false;
 
+    % check if the devTools already exist
     if exist([CBTDIR filesep '..' filesep 'MATLAB.devTools'], 'dir') == 7
 
         reply = input([' > There is already a copy of the MATLAB.devTools installed in the default location.\n   Do you want to enter another location to install the MATLAB.devTools? Y/N [Y]: '], 's');
@@ -54,6 +62,7 @@ function installDevTools()
         installFlag = true;
     end
 
+    % install a new copy of the MATLAB.devTools
     if installFlag
 
         % changing to the local directory
