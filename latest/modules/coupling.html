@@ -208,7 +208,7 @@ cell array of reaction names</li>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>C</strong> &#8211;
+<li><strong>c</strong> &#8211;
 <cite>k x n</cite> matrix in <cite>C*v&gt;=d</cite></li>
 <li><strong>d</strong> &#8211;
 <cite>n x 1</cite> vector <cite>C*v &gt;= d</cite></li>
@@ -225,7 +225,7 @@ constrained model</li>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PCHOLP_hs_f&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_f&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_f&#39;</span><span class="p">,</span><span class="s1">&#39;PCHOLP_hs_b&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_b&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_b&#39;</span><span class="p">};</span>
-<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
 <span class="n">d</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 <span class="n">csense</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span><span class="p">;</span>
 <span class="n">modelConstrained</span> <span class="o">=</span> <span class="n">constrainRxnListAboveBound</span><span class="p">(</span><span class="n">modelIrrev</span><span class="p">,</span> <span class="n">rxnList</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">csense</span><span class="p">);</span>
