@@ -6,22 +6,24 @@ function [A, B, C] = bilinearDecomposition(S)
 %    [A, B, C] = bilinearDecomposition(S)
 %
 % INPUT:
-%    S:    `m` x `n` stoichiometric matrix
+%    S:    `m x n` stoichiometric matrix
 %
 % OUTPUTS:
-%    A:    `m` x `(m + k)` matrix selecting rows such that `S = A*B*C`
-%    B:    `(m + k)` x `(n + k)` bilinear stoichiometric matrix
-%    C:    `(n + k)` x n` matrix adding columns to form net reaction stoichiometry such that `S = A*B*C`
+%    A:    `m x (m + k)` matrix selecting rows such that :math:`S = A B C`
+%    B:    `(m + k) x (n + k)` bilinear stoichiometric matrix
+%    C:    `(n + k) x n` matrix adding columns to form net reaction stoichiometry such that :math:`S = A B C`
 %
 % An example "bilinearisation" of the reaction
 %
-% `A + B + C <-> D + E`
+% .. math::
+%     ~&~ A + B + C \leftrightarrow D + E\\
 %
 % is
 %
-% `A + B <-> P`,
-% `P + C <-> Q`,
-% `Q <-> D + E`
+% .. math::
+%     ~&~ A + B \leftrightarrow P \\
+%     ~&~ P + C \leftrightarrow Q \\
+%     ~&~ Q \leftrightarrow D + E
 %
 % where `P` and `Q` are faux molecular species.
 

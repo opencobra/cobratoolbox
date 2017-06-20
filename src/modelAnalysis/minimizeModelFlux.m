@@ -3,22 +3,23 @@ function [MinimizedFlux modelIrrev]= minimizeModelFlux(model, osenseStr, minNorm
 % minimized flux and an irreversible model
 %
 % USAGE:
-%   [MinimizedFlux modelIrrev]= minimizeModelFlux(model)
+%
+%    [MinimizedFlux modelIrrev]= minimizeModelFlux(model)
 %
 % INPUT:
-%   model:              COBRA model structure
+%    model:              COBRA model structure
 %
 % OPTIONAL INPUTS:
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
-%    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
-%                       0 - Default, normal LP
+%    minNorm:           {(0), 'one', 'zero', > 0 , `n x 1` vector}, where `[m,n]=size(S)`;
+%                       0 - Default, normal LP,
 %                       'one'  Minimise the Taxicab Norm using LP.
 %
 %                       .. math::
 %
 %                          min  ~&~ |v| \\
 %                          s.t. ~&~ S v = b \\
-%                               ~&~ c^T v = f \\ 
+%                               ~&~ c^T v = f \\
 %                               ~&~ lb \leq v \leq ub
 %
 %                       A LP solver is required.
@@ -64,10 +65,10 @@ function [MinimizedFlux modelIrrev]= minimizeModelFlux(model, osenseStr, minNorm
 %                              ~&~ lb \leq v \leq ub
 %
 % OUTPUTS:
-%   MinimizedFlux:      minimum flux possible through the netwok
-%   modelIrrev:         irreversible version of 'model'
+%   MinimizedFlux:    minimum flux possible through the netwok
+%   modelIrrev:       irreversible version of 'model'
 %
-% Authors: - Nathan E. Lewis and Anne Richelle, May 2017
+% .. Authors: - Nathan E. Lewis and Anne Richelle, May 2017
 
 if exist('osenseStr', 'var') % Process arguments and set up problem
     if isempty(osenseStr)
@@ -81,7 +82,7 @@ else
     end
 end
 
-if exist('minNorm', 'var') 
+if exist('minNorm', 'var')
     if isempty(minNorm)
         minNorm = 1;
     end

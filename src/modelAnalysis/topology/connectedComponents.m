@@ -10,9 +10,9 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 %    model:
 %
 % OPTIONAL INPUTS:
-%    type:       {('allComponents'),'largestComponent'}
+%    type:       {('allComponents'), 'largestComponent'}
 %    figures:    Will generate plots of the grouping algorithm as it creates block diagonal
-%                groups in from top left to bottom right in W.
+%                groups in from top left to bottom right in `W`.
 %    files:      Indicator, whether several files containing indicator
 %                matrices are generated.
 % OUTPUTS:

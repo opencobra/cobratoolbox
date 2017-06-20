@@ -1,10 +1,10 @@
-function y = lsqraprod( mode, m, n, x, iw, rw )
-% if `mode = 1`, `lsqraprod` computes `y = A*x`,
-% if `mode = 2`, `lsqraprod` computes `y = A'*x`
-% for some matrix  `A`.
+function y = lsqraprod(mode, m, n, x, iw, rw)
+% if `mode = 1`, `lsqraprod` computes :math:`y = A x`,
+% if `mode = 2`, `lsqraprod` computes :math:`y = A^T x`
+% for some matrix `A`.
 %
 % This is a simple example for testing  LSQR.
-% It uses the leading `m*n` submatrix from:
+% It uses the leading `m n` submatrix from:
 %
 % EXAMPLE:
 %

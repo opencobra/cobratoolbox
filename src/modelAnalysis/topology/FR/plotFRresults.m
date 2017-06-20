@@ -9,11 +9,13 @@ function plotFRresults(FRresults, nRows, nCols, resultsDirectory, resultsFileNam
 % INPUTS:
 %    FRresults:           output of `checkRankFRdriver`
 %    nRows:               number of rows in the subplot
-%    nCols:               number of rows in the subplot (`nRows*nCols >= length(FRresults)`)
+%    nCols:               number of rows in the subplot (:math:`nRows*nCols \geq length(FRresults)`)
 %
 % OPTIONAL INPUTS:
 %    resultsDirectory:    directory where output of `checkRankFRdriver` has been saved
 %    resultsFileName:     filename where output of `checkRankFRdriver` has been saved
+%    schematicFlag:       default = 1
+%    modelMetaData:       metadata of model
 
 if ~exist('nRows','var') %number of rows and columns of the figure
     nRows=6;

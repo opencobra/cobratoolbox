@@ -1,4 +1,4 @@
-function [model,samples] = convRevSamples(model,samples)
+function [model, samples] = convRevSamples(model, samples)
 % Converts signs for reactions that are only running in
 % reverse direction
 %

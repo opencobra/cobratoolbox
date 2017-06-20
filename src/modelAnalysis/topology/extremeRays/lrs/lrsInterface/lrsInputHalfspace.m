@@ -7,20 +7,20 @@ function lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 %    lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 %
 % INPUTS:
-%    A:             matrix of linear equalities `A*x=(a)`
-%    D:             matrix of linear inequalities `D*x>=(d)`
+%    A:             matrix of linear equalities :math:`A x =(a)`
+%    D:             matrix of linear inequalities :math:`D x \geq (d)`
 %    filename:      base name of output file
 %
 % OPTIONAL INPUTS:
-%    positivity:    {0,(1)} if positivity == 1, then positive orthant base
-%    inequality:    {0,(1)} if inequality == 1, then use two inequalities rather than a single equaltiy
-%    a:             boundry values for matrix of linear equalities `A*x = a`
-%    d:             boundry values for matrix of linear inequalities `D*x >= d`
+%    positivity:    {0, (1)} if positivity == 1, then positive orthant base
+%    inequality:    {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy
+%    a:             boundary values for matrix of linear equalities :math:`A x = a`
+%    d:             boundary values for matrix of linear inequalities :math:`D x \geq d`
 %    f:             linear objective for a linear optimization problem in rational arithmetic
 %
-%                   minimise `f'*x`,
-%                   subject to `A*x = (a)`, `D*x >= (d)`
-%    sh:            {(0),1} if `sh == 1`, output a shell script for submitting qsub job
+%                   minimise :math:`f^T x`,
+%                   subject to :math:`A x = (a)`, :math:`D x \geq (d)`
+%    sh:            {(0), 1} if `sh == 1`, output a shell script for submitting qsub job
 
 if ~isempty(A)
     [rlt, clt] = size(A);

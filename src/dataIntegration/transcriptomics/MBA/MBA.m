@@ -53,6 +53,7 @@ end
         eM = intersect(inactive, medium_set);
         eX = setdiff(inactive,union(high_set,medium_set));
         
+        epsil=0.5;
         if numel(eH)==0 && numel(eM) < epsil*numel(eX)
             PM = removeRxns(PM, inactive);
             NC = setdiff(NC,inactive);

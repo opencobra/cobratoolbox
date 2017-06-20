@@ -1,4 +1,4 @@
-function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, rxnInds,inclObjAsExc,irrevFlag)
+function [transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)
 % Identifes all transport reactions in a model, which are defined as reactions
 % involved with metabolites in more than 1 compartment
 %
@@ -7,22 +7,22 @@ function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, r
 %    [transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)
 %
 % INPUT:
-%    model:             COBRA model structure
+%    model:            COBRA model structure
 %
 % OPTIONAL INPUT:
-%    inclExc:           includes exchange reactions as transport = true
-%                       (Default = false)
-%    rxnInds:           indices of reactions to test for transport activity.
-%                       (default = test all columns of `model.S`)
-%    inclObjAsExc:      includes objective as an exchange reaction = true - this is
-%                       passed to `findExcRxns`. (default = false)
-%    irrevFlag:         model is irreversible = true - this is passed to `findExcRxns`.
-%                       (default=false)
+%    inclExc:          includes exchange reactions as transport = true
+%                      (Default = false)
+%    rxnInds:          indices of reactions to test for transport activity.
+%                      (default = test all columns of `model.S`)
+%    inclObjAsExc:     includes objective as an exchange reaction = true - this is
+%                      passed to `findExcRxns`. (default = false)
+%    irrevFlag:        model is irreversible = true - this is passed to `findExcRxns`.
+%                      (default=false)
 %
 % OUTPUTS:
-%    transRxns:         transport reactions in `rxnInds`
-%    nonTransRxns:      non-transport reactions in `rxnInds`
-%    transRxnsBool:     checks if `inclExc` or `isNonexchangeTransport` rxns vector is equal to 1
+%    transRxns:        transport reactions in `rxnInds`
+%    nonTransRxns:     non-transport reactions in `rxnInds`
+%    transRxnsBool:    checks if `inclExc` or `isNonexchangeTransport` rxns vector is equal to 1
 %
 % .. Authors:
 %       - Jeff Orth, 8/31/07 right now, this function only works with models the compartments [c], [p], and [e].

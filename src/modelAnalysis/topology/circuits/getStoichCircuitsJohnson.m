@@ -13,7 +13,7 @@ function [C, csigns] = getStoichCircuitsJohnson(S, undirected)
 %    undirected:    determines whether or not to treat edges as undirected (1) or directed (0);
 %                   interactions cannot be enforced in undirected graphs (default = 0)
 %
-% OUTPUT:
+% OUTPUTS:
 %    C:             matrix that contains the cycles row-wise (columns correspond to edges / the interactions)
 %    csigns:        vector indicating for each path whether it is positive (1) or negative (-1)
 

@@ -1,19 +1,19 @@
-function [sampleDiff,sampleRatio] = calcSampleDifference(sample1,sample2,nPts)
+function [sampleDiff, sampleRatio] = calcSampleDifference(sample1, sample2, nPts)
 % Selects randomly nPts flux vectors from `sample1` and `sample2` and calcutes
 % the difference between the flux vectors
 %
 % USAGE:
 %
-%    sampleDiff = calcSampleDifference(sample1,sample2,nPts)
+%    sampleDiff = calcSampleDifference(sample1, sample2, nPts)
 %
 % INPUTS:
-%    sample1:       First flux sample
-%    sample2:       Second flux sample
-%    nPts:          Number of flux difference profiles desired
+%    sample1:        First flux sample
+%    sample2:        Second flux sample
+%    nPts:           Number of flux difference profiles desired
 %
 % OUTPUTS:
-%    sampleDiff:    Difference between the flux vectors
-%    sampleRatio:   Ratio of the flux vectors
+%    sampleDiff:     Difference between the flux vectors
+%    sampleRatio:    Ratio of the flux vectors
 %
 % .. Author: - Markus Herrgard 11/13/06
 

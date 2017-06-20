@@ -18,7 +18,7 @@ if isfield(model,'rules')
         if ~isempty(model.rules{i})
             genes = regexp(model.rules{i},'(?<ids>[0-9]+)','names');
             genepos = cellfun(@str2num , {genes.ids});
-            model.rxnGeneMat(genepos,i) = true;
+            model.rxnGeneMat(i,genepos) = true;
         end
     end
 end

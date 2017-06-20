@@ -14,7 +14,7 @@ function printFRdependencies(model, filePathName)
 
 F       = -model.S; %vanilla forward and reverse half stoichiometric matrices
 F(F<0)  =    0;
-R       =  model.S; 
+R       =  model.S;
 R(R<0)  =    0;
 %recover indices from boolean vectors
 dR=find(model.FRdrows);

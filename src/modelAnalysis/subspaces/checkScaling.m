@@ -11,49 +11,49 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 %
 % OPTIONAL INPUTS:
 %
-%    estLevel:                    level of estimation: `crude`, `medium`, `fine` (default)
-%    printLevel:                  verbose level (default: 1). Level 0 is quiet.
+%    estLevel:                level of estimation: `crude`, `medium`, `fine` (default)
+%    printLevel:              verbose level (default: 1). Level 0 is quiet.
 %
 % OUTPUTS:
 %
-%    precisionEstimate:           estimation of precision (string, `double` or `quad`, default: `double`)
-%    solverRecommendation:        cell array with recommendation of solver(s) to be used (default: {'glpk'})
-%    scalingProperties:             structure with properties of scaling
+%    precisionEstimate:       estimation of precision (string, `double` or `quad`, default: `double`)
+%    solverRecommendation:    cell array with recommendation of solver(s) to be used (default: {'glpk'})
+%    scalingProperties:       structure with properties of scaling
 %
-%                                   * .estLevel: `crude`, `medium`, `fine` (default)
-%                                   * .scltol: value between 0 and 1 (column or row ratio as large as possible)
-%                                   * .matrixAS: name of matrix
-%                                   * .nMets: number of metabolites
-%                                   * .nRxns: number of reactions
-%                                   * .minS: minimum of all stoichiometric coefficients
-%                                   * .maxS: maximum of all stoichiometric coefficients
-%                                   * .rmin: minimum of all row scaling coefficients
-%                                   * .imin: index of the minimum of all row scaling coefficients
-%                                   * .rmax: maximum of all row scaling coefficients
-%                                   * .imax: index of the maximum of all row scaling coefficients
-%                                   * .cmin: minimum of all column scaling coefficients
-%                                   * .jmin: index of the minimum of all column scaling coefficients
-%                                   * .cmax: maximum of all column scaling coefficients
-%                                   * .jmax: index of the maximum of all column scaling coefficients
-%                                   * .minLB: minimum of the lower bound vector
-%                                   * .maxLB: maximum of the lower bound vector
-%                                   * .minUB: minimum of the upper bound vector
-%                                   * .maxUB: maximum of the upper bound vector
-%                                   * .ratioS: ratio of the maximum and minimum stoichiometric coefficients
-%                                   * .ratioS_orderOfMag: order of magnitude of the ratio of the
-%                                     maximum and minimum stoichiometric coefficients
-%                                   * .ratioL: ratio of the maximum and minimum values of the lower bound vector
-%                                   * .ratioL_orderOfMag: order of magnitude of the ratio of the
-%                                     maximum and minimum values of the lower bound vector
-%                                   * .ratioU: ratio of the maximum and minimum values of the upper bound vector
-%                                   * .ratioU_orderOfMag: order of magnitude of the ratio of the
-%                                     maximum and minimum values of the upper bound vector
-%                                   * .ratioU: ratio of the maximum and minimum row scaling coefficients
-%                                   * .ratioU_orderOfMag: order of magnitude of the ratio of the
-%                                     maximum and minimum row scaling coefficients
-%                                   * .ratioC: ratio of the maximum and minimum column scaling coefficients
-%                                   * .ratioC_orderOfMag: order of magnitude of the ratio of the
-%                                     maximum and minimum column scaling coefficients
+%                               * .estLevel: `crude`, `medium`, `fine` (default)
+%                               * .scltol: value between 0 and 1 (column or row ratio as large as possible)
+%                               * .matrixAS: name of matrix
+%                               * .nMets: number of metabolites
+%                               * .nRxns: number of reactions
+%                               * .minS: minimum of all stoichiometric coefficients
+%                               * .maxS: maximum of all stoichiometric coefficients
+%                               * .rmin: minimum of all row scaling coefficients
+%                               * .imin: index of the minimum of all row scaling coefficients
+%                               * .rmax: maximum of all row scaling coefficients
+%                               * .imax: index of the maximum of all row scaling coefficients
+%                               * .cmin: minimum of all column scaling coefficients
+%                               * .jmin: index of the minimum of all column scaling coefficients
+%                               * .cmax: maximum of all column scaling coefficients
+%                               * .jmax: index of the maximum of all column scaling coefficients
+%                               * .minLB: minimum of the lower bound vector
+%                               * .maxLB: maximum of the lower bound vector
+%                               * .minUB: minimum of the upper bound vector
+%                               * .maxUB: maximum of the upper bound vector
+%                               * .ratioS: ratio of the maximum and minimum stoichiometric coefficients
+%                               * .ratioS_orderOfMag: order of magnitude of the ratio of the
+%                                 maximum and minimum stoichiometric coefficients
+%                               * .ratioL: ratio of the maximum and minimum values of the lower bound vector
+%                               * .ratioL_orderOfMag: order of magnitude of the ratio of the
+%                                 maximum and minimum values of the lower bound vector
+%                               * .ratioU: ratio of the maximum and minimum values of the upper bound vector
+%                               * .ratioU_orderOfMag: order of magnitude of the ratio of the
+%                                 maximum and minimum values of the upper bound vector
+%                               * .ratioU: ratio of the maximum and minimum row scaling coefficients
+%                               * .ratioU_orderOfMag: order of magnitude of the ratio of the
+%                                 maximum and minimum row scaling coefficients
+%                               * .ratioC: ratio of the maximum and minimum column scaling coefficients
+%                               * .ratioC_orderOfMag: order of magnitude of the ratio of the
+%                                 maximum and minimum column scaling coefficients
 
     global SOLVERS
 

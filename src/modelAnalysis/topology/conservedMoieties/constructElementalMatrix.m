@@ -6,17 +6,17 @@ function [E, elements] = constructElementalMatrix(metFormulas, metCharges)
 %    [E, elements] = constructElementalMatrix(metFormulas, metCharges)
 %
 % INPUT:
-%    metFormulas:    `m` x 1 cell array of metabolite formulas, e.g., CHO2
+%    metFormulas:    `m x 1` cell array of metabolite formulas, e.g., CHO2
 %
 % OPTIONAL INPUT:
-%    metCharges:     `m` x 1 vector of metabolite charges. Used to compute the
+%    metCharges:     `m x 1` vector of metabolite charges. Used to compute the
 %                    electron vector.
 %
 % OUTPUTS:
-%    E:              The `m` x `p` elemental matrix where `p` is the number of unique
+%    E:              The `m x p` elemental matrix where `p` is the number of unique
 %                    elements in `metFormulas` (plus the electron if `metCharges` is
 %                    included as input)
-%    elements:       1 x `p` cell array of element symbols (e for electron)
+%    elements:       `1 x p` cell array of element symbols (e for electron)
 %
 % .. Author: - Hulda S. Haraldsdóttir, Nov. 2015
 

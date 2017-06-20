@@ -1,22 +1,26 @@
-function fbcEnabled = isFbcEnabled()
-% Checks whether the version of libSBML has been built with 
-% the FBC package extension enabled
-
-% Filename    : isFbcEnabled.m
-% Description : check fbc status
-% Author(s)   : SBML Team <sbml-team@caltech.edu>
-% Organization: EMBL-EBI, Caltech
-% Created     : 2011-02-08
+function enabled = isEnabled(package)
+%  enabled = isEnabled(package)
+% 
+% Takes
 %
+% 1. package - a string representing an SBML L3 package
+%
+% Returns
+%
+% 1. enabled 
+%   - 1, if the package can be used by this instance of libSBML
+%   - 0, otherwise
+
+%<!---------------------------------------------------------------------------
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2016 jointly by the following organizations:
+% Copyright (C) 2013-2017 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
 %
-% Copyright (C) 2009-2011 jointly by the following organizations: 
+% Copyright (C) 2009-2013 jointly by the following organizations: 
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %  
@@ -33,22 +37,31 @@ function fbcEnabled = isFbcEnabled()
 % agreement is provided in the file named "LICENSE.txt" included with
 % this software distribution and also available online as
 % http://sbml.org/software/libsbml/license.html
+%----------------------------------------------------------------------- -->
 
 % assume not enabled
-fbcEnabled = 0;
+enabled = 0;
+
+supported = {'fbc'};
+if ~ischar(package)
+    disp('argument must be a string representing an SBML L3 package');
+elseif ~ismember(supported, package)
+    return;
+end;
 
 if (isoctave() == '0')
-  filename = fullfile(tempdir, 'fbc.xml');
+  filename = fullfile(tempdir, 'pkg.xml');
 else
-  filename = fullfile(pwd, 'fbc.xml');
+  filename = fullfile(pwd, 'pkg.xml');
 end;
-writeTempFile(filename);
+writeTempFile(filename, package);
 
+version_field = strcat(package, '_version');
 try
   [m, e] = TranslateSBML(filename, 1, 0);
 
-  if (length(e) == 0 && isfield(m, 'fbc_version') == 1 )
-    fbcEnabled = 1;
+  if (isempty(e) && isfield(m, version_field) == 1 )
+    enabled = 1;
   end;
   
   delete(filename);
@@ -63,14 +76,15 @@ end;
 
 
 
-function writeTempFile(filename)
+function writeTempFile(filename, package)
 
 fout = fopen(filename, 'w');
 
 fprintf(fout, '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n');
 fprintf(fout, '<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" ');
-fprintf(fout, 'xmlns:fbc=\"http://www.sbml.org/sbml/level3/version1/fbc/version1\" ');
-fprintf(fout, 'level=\"3\" version=\"1\" fbc:required=\"false\">\n');
+fprintf(fout, strcat('xmlns:fbc=\"http://www.sbml.org/sbml/level3/version1/', package, '/version1\"\n'));
+fprintf(fout, 'level=\"3\" version=\"1\"\n');
+fprintf(fout, strcat(package, ':required=\"false\">\n'));
 fprintf(fout, '  <model/>\n</sbml>\n');
 
 fclose(fout);

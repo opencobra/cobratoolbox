@@ -12,7 +12,7 @@ function [cyclicRxnBool, rankS] = findCyclicRxns(model, printLevel)
 %
 % OUTPUTS:
 %    cyclicRxnBool:    boolean value
-%    rankS:            scalar giving rank of S
+%    rankS:            scalar giving rank of `S`
 
 [Z,rankS]=getNullSpace(model.S,printLevel);
 %computing the nullspace of the stoichiometric matrix

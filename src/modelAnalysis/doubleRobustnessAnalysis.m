@@ -1,29 +1,31 @@
 function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn,objType)
-%doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of
+% Performs robustness analysis for a pair of reactions of
 % interest and an objective of interest
 %
-% [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% controlRxn1   Reaction of interest whose value is to be controlled
-% controlRxn2   Reaction of interest whose value is to be controlled
+%    [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
 %
-%OPTIONAL INPUTS
-% nPoints       Number of flux values per dimension (Default = 20)
-% plotResFlag   Plot results (Default = true)
-% objRxn        Objective reaction to be maximized (Default = whatever
-%               is defined in model)
-% objType       Maximize ('max') or minimize ('min') objective
-%               (Default = 'max')
+% INPUTS:
+%    model:          COBRA model structure
+%    controlRxn1:    Reaction of interest whose value is to be controlled
+%    controlRxn2:    Reaction of interest whose value is to be controlled
 %
-%OUTPUTS
-% controlFlux   Flux values within the range of the maximum and minimum for
-%               reaction of interest
-% objFlux       Optimal values of objective reaction at each control
-%               reaction flux value
+% OPTIONAL INPUTS:
+%    nPoints:        Number of flux values per dimension (Default = 20)
+%    plotResFlag:    Plot results (Default = true)
+%    objRxn:         Objective reaction to be maximized (Default = whatever
+%                    is defined in model)
+%    objType:        Maximize ('max') or minimize ('min') objective
+%                    (Default = 'max')
 %
-% Monica Mo and Markus Herrgard 8/20/07
+% OUTPUTS:
+%    controlFlux:    Flux values within the range of the maximum and minimum for
+%                    reaction of interest
+%    objFlux:        Optimal values of objective reaction at each control
+%                    reaction flux value
+%
+% .. Authors: - Monica Mo and Markus Herrgard 8/20/07
 
 if (nargin < 4)
     nPoints = 20;

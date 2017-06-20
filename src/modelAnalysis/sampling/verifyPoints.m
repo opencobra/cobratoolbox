@@ -9,13 +9,13 @@ function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
 %    [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
 %
 % INPUT:
-%    sampleStruct:      LPProblem containing points and warmup points
+%    sampleStruct:    LPProblem containing points and warmup points
 %
 % OUTPUTS:
-%    errorsA:           Row index of the constraint in `sampleStruct` that
-%                       is not consistent with the given points
-%    errorsLUB:         Upper and lower bounds of the constraint + tolerance
-%    stuckPoints:       Index of points which did not move.
+%    errorsA:         Row index of the constraint in `sampleStruct` that
+%                     is not consistent with the given points
+%    errorsLUB:       Upper and lower bounds of the constraint + tolerance
+%    stuckPoints:     Index of points which did not move.
 %
 % .. Authors:
 %       - Ellen Tsai 2007

@@ -5,28 +5,30 @@ function [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, full
 %
 % Let M denote the Moore-Penrose pseudoinverse of the internal reaction
 % stoichiometric matrix and the subscripts are the following
-% _R row space
-% _N nullspace
-% _C column space
-% _L left nullspace
+% `_R` row space
+% `_N` nullspace
+% `_C` column space
+% `_L` left nullspace
 %
-% Let `v = v_R + v_N`
+% Let
 %
-% `v_R = M*S*v = PR*v`
+% .. math::
+%    v   &= v_R + v_N \\
+%    v_R &= M S v = PR v \\
+%    v_N &= (I - M S) v = PN v
 %
-% `v_N = (I - M*S)*v = PN*v`
+% Let
 %
-% Let `u = u_C + u_L`
-%
-% `u_C = S*M*u = PC*u`
-%
-% `u_L = (I - S*M)*u = PL*u`
+% .. math::
+%    u   &= u_C + u_L \\
+%    u_C &= S M u = PC u \\
+%    u_L &= (I - S M) u = PL u
 %
 % Examples:
 %
-% Given `S*v=b`, then `v_R = M*b`
+% Given :math:`S v = b`, then :math:`v_R = M b`
 %
-% Given `S'*u=q`, then `u_C = M'*q`
+% Given :math:`S^Tu = q`, then :math:`u_C = M^T q`
 %
 % USAGE:
 %
@@ -35,12 +37,12 @@ function [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, full
 % INPUT:
 %    model:               structure with:
 %
-%                           * model.S - `m` x `n` Stoichiometric matrix
-%                           * model.SIntRxnBool - `n` x `1` Boolean of reactions though to be mass balanced.
+%                           * model.S - `m x n` Stoichiometric matrix
+%                           * model.SIntRxnBool - `n x 1` Boolean of reactions though to be mass balanced.
 %                           By default, projectors only provided for the matrix: `model.S(:, model.SIntRxnBool)`
 %
 % OPTIONAL INPUTS:
-%    printLevel:          {(1),0} 1=print diagnostics, 0 = silent
+%    printLevel:          {(1), 0}, 1 = print diagnostics, 0 = silent
 %    sub_space:           returns projection matrices onto all or one select
 %
 %                           * sub_space
@@ -52,10 +54,11 @@ function [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, full
 %    fullS:
 %                         0 = uses only those columns given by `model.SIntRxnBool`
 %
-%                         1 = uses full `m` x `n` Stoichiometric matrix (all columns)
+%                         1 = uses full `m x n` Stoichiometric matrix (all columns)
 %
 % OUTPUTS:
 %    [PR, PN, PC, PL]:    projection matrices
+%
 % .. Author:
 %       - 10 July 2009 : Ronan Fleming. First Version.
 %       - 10 Aug  2009 : Changed to use Micheal Saunders faster approach

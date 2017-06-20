@@ -9,36 +9,36 @@ function [L, Lambda, moietyFormulas, instances2mets, instances2moieties, atoms2i
 % INPUTS:
 %    model:                 Structure with following fields:
 %
-%                             * .S - The `m` x `n` stoichiometric matrix for the metabolic network
-%                             * .mets - An `m` x 1 array of metabolite identifiers. Should match
+%                             * .S - The `m x n` stoichiometric matrix for the metabolic network
+%                             * .mets - An `m x 1` array of metabolite identifiers. Should match
 %                               metabolite identifiers in rxnfiles.
-%                             * .rxns - An `n` x 1 array of reaction identifiers. Should match
+%                             * .rxns - An `n x 1` array of reaction identifiers. Should match
 %                               `rxnfile` names in `rxnFileDir`.
 %    ATN:                   Structure with following fields:
 %
-%                             * .A - A `p` x `q` sparse incidence matrix for the atom transition
+%                             * .A - A `p x q` sparse incidence matrix for the atom transition
 %                               network, where `p` is the number of atoms and `q` is
 %                               the number of atom transitions.
-%                             * .mets - A `p` x 1 cell array of metabolite identifiers to link
+%                             * .mets - A `p x 1` cell array of metabolite identifiers to link
 %                               atoms to their metabolites. The order of atoms is the
 %                               same in `A` as in the molfile for each metabolite.
-%                             * .rxns - A `q` x 1 cell array of reaction identifiers to link atom
+%                             * .rxns - A `q x 1` cell array of reaction identifiers to link atom
 %                               transitions to their reactions. The order of atom
 %                               transitions is the same in `A` as in the `rxnfile` (with
 %                               atom mappings) for each reaction.
-%                             * .elements - A `p` x 1 cell array of element symbols for atoms in `A`.
+%                             * .elements - A `p x 1` cell array of element symbols for atoms in `A`.
 %
 % OUTPUTS
-%    L:                     An `m` x `r` matrix of r moiety vectors in the left null
+%    L:                     An `m x r` matrix of r moiety vectors in the left null
 %                           space of `S`.
-%    Lambda:                The `u` x `v` incidence matrix of the moiety supergraph
+%    Lambda:                The `u x v` incidence matrix of the moiety supergraph
 %                           where each connected component is a moiety graph.
-%    moietyFormulas:        `m` x `r` cell array with chemical formulas of moieties
-%    instances2mets:        `u` x 1 vector mapping moieties (rows of `Lambda`) to
+%    moietyFormulas:        `m x r` cell array with chemical formulas of moieties
+%    instances2mets:        `u x 1` vector mapping moieties (rows of `Lambda`) to
 %                           metabolites (rows of S)
-%    instances2moieties:    `u` x 1 vector mapping moieties (rows of `Lambda`) to
+%    instances2moieties:    `u x 1` vector mapping moieties (rows of `Lambda`) to
 %                           moiety vectors (columns of `L`)
-%    atoms2instances:       `p` x 1 vector mapping atoms (rows of `A`) to moieties
+%    atoms2instances:       `p x 1` vector mapping atoms (rows of `A`) to moieties
 %                           (rows of `Lambda`)
 %    M:                     Moiety vectors that are not in the left null space of
 %                           `S`. Should be empty.

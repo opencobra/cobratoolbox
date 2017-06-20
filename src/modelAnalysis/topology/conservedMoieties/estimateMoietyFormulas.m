@@ -1,4 +1,4 @@
-function [moietyFormulas,M] = estimateMoietyFormulas(L, E, elements)
+function [moietyFormulas, M] = estimateMoietyFormulas(L, E, elements)
 % Estimates the chemical formulas of conserved moieties in a metabolic network
 %
 % USAGE:
@@ -6,14 +6,14 @@ function [moietyFormulas,M] = estimateMoietyFormulas(L, E, elements)
 %    moietyFormulas = estimateMoietyFormulas(L, E, elements)
 %
 % INPUTS:
-%    L:                 The `m` x `r` moiety matrix for a metabolic network. Each column is a
+%    L:                 The `m x r` moiety matrix for a metabolic network. Each column is a
 %                       moiety vector.
-%    E:                 The `m` x `p` elemental matrix for metabolites in the metabolic network.
-%    elements:          A 1 x `p` cell array of element symbols.
+%    E:                 The `m x p` elemental matrix for metabolites in the metabolic network.
+%    elements:          A `1 x p` cell array of element symbols.
 %
 % OUTPUT:
-%    M:                 An `r` x `p` estimated elemental matrix for moieties.
-%    moietyFormulas:    An `r` x 1 cell array of estimated moiety formulas.
+%    M:                 An `r x p` estimated elemental matrix for moieties.
+%    moietyFormulas:    An `r x 1` cell array of estimated moiety formulas.
 %
 % .. Author: - Hulda S. Haraldsdóttir, Nov. 2015
 

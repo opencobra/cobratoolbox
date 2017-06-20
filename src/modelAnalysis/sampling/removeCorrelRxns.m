@@ -1,4 +1,4 @@
-function [selRxns,rxnSets,rxnList,Rfilt] = removeCorrelRxns(model,R,correlCutoff)
+function [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlCutoff)
 % Removes fully or almost fully correlated reactions
 %
 % USAGE:
@@ -6,17 +6,17 @@ function [selRxns,rxnSets,rxnList,Rfilt] = removeCorrelRxns(model,R,correlCutoff
 %    [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlCutoff)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    R:             Correl coefficient matrix
+%    model:           COBRA model structure
+%    R:               Correl coefficient matrix
 %
 % OPTIONAL INPUT:
-%    correlCutoff:  Cutoff level for fully correlated `rxns` (Default 0.99999)
+%    correlCutoff:    Cutoff level for fully correlated `rxns` (Default 0.99999)
 %
 % OUTPUTS:
-%    selRxns:       true/false vector that allow selecting non-redundant data
-%    rxnSets:       Correlated reaction sets
-%    rxnList:       Reaction list with correlated reactions concatenated
-%    Rfilt:         Filtered `R`
+%    selRxns:         true/false vector that allow selecting non-redundant data
+%    rxnSets:         Correlated reaction sets
+%    rxnList:         Reaction list with correlated reactions concatenated
+%    Rfilt:           Filtered `R`
 %
 % .. Author: - Markus Herrgard 3/21/07
 

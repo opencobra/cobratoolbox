@@ -6,11 +6,11 @@ function types = classifyMoieties(L, S)
 %    types = classifyMoieties(L, S)
 %
 % INPUTS:
-%    L:        The `m` x `r` moiety matrix with moiety vectors as columns.
-%    S:        The `m` x `n` total stoichiometric matrix.
+%    L:        The `m x r` moiety matrix with moiety vectors as columns.
+%    S:        The `m x n` total stoichiometric matrix.
 %
 % OUTPUT:
-%    types:    an `r` x 1 cell array of moiety classifications
+%    types:    an `r x 1` cell array of moiety classifications
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 

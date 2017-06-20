@@ -3,7 +3,7 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = single
 %
 % USAGE:
 %
-%    [grRatio, grRateKO, grRateWT, hasEffect, delRxns, hasEffect] = singleRxnDeletion(model, method, rxnList, verbFlag)
+%    [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(model, method, rxnList, verbFlag)
 %
 % INPUT:
 %    model:           COBRA model structure including reaction names

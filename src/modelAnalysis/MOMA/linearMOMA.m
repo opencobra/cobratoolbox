@@ -18,16 +18,16 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelW
 % OUTPUTS:
 %    solutionDel:      Deletion solution structure
 %    solutionWT:       Wild-type solution structure
-%    totalFluxDiff:    Value of the linear MOMA objective, i.e. :math:`sum|v_{wt}-v_{del}|`
+%    totalFluxDiff:    Value of the linear MOMA objective, i.e. :math:`\sum |v_{wt}-v_{del}|`
 %    solStatus:        Solution status - solves the problem: (`f_wt` is the optimal wild type objective value found by FBA)
 %
 % .. math::
-%     min \quad sum|v_{wt} - v_{del}| \\
-%     S_{wt}*v_{wt} = 0 \\
-%     lb_{wt} \leq v_{wt} \leq ub_{wt} \\
-%     c_{wt}'*v_{wt} = f_{wt} \\
-%     S_{del}*v_{del} = 0 \\
-%     lb_{del} \leq v_{del} \leq ub_{del} \\
+%     min ~&~  \sum |v_{wt} - v_{del}| \\
+%         ~&~ S_{wt}v_{wt} = 0 \\
+%         ~&~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%         ~&~ c_{wt}^T v_{wt} = f_{wt} \\
+%         ~&~ S_{del}v_{del} = 0 \\
+%         ~&~ lb_{del} \leq v_{del} \leq ub_{del}
 %
 % NOTE:
 %

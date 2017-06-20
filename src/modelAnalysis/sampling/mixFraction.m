@@ -7,17 +7,17 @@ function mix = mixFraction(sample1, sample2, fixed)
 %    mix = mixFraction(sample1, sample2, fixed)
 %
 % INPUTS:
-%    sample1, sample2:      Ordered set of points. The points must be in
-%                          the same order otherwise it does not make sense.
+%    sample1, sample2:    Ordered set of points. The points must be in
+%                         the same order otherwise it does not make sense.
 %
 % OPTIONAL INPUT:
-%    fixed:                The directions which are fixed and are not expected
-%                          to mix. They are ignored.
+%    fixed:               The directions which are fixed and are not expected
+%                         to mix. They are ignored.
 %
 % OUTPUT:
-%    mix:                  The mix fraction. Goes from 0 to 1 with 1 being
-%                          completely unmixed and .5 being essentially
-%                          perfectly mixed.
+%    mix:                 The mix fraction. Goes from 0 to 1 with 1 being
+%                         completely unmixed and .5 being essentially
+%                         perfectly mixed.
 
 if nargin <3
     fixed = [];
