@@ -1,15 +1,15 @@
-function saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
+function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
 % This function saves all the inputs needed to run functions to find first
 % order Must Sets (MustU, Must L). The inputs will be stored in
 % inputFolder.
 %
-% USAGE: 
+% USAGE:
 %
 %         saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
-%                       Description: a metabolic model with at least
+%    model:             (structure) (COBRA model)
+%                         a metabolic model with at least
 %                       the following fields:
 %
 %                         * .rxns - Reaction IDs in the model
@@ -18,21 +18,20 @@ function saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,i
 %                         * .b -    RHS of Sv = b (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
-%                         * .ub -   Upper bounds for fluxes 
-%    minFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Minimum fluxes for each
+%                         * .ub -   Upper bounds for fluxes
+%    minFluxesW:        (double array) of size n_rxns x1
+%                         Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
 %                       function FVAOptForce.
 %                       E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Maximum fluxes for each
+%    maxFluxesW:        (double array) of size n_rxns x1
+%                       Maximum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
 %                       function FVAOptForce.
-%                       E.g.: maxFluxesW = [90; 56]; 
-%    constrOpt:         Type: Structure
-%                       Description: structure containing
+%                       E.g.: maxFluxesW = [90; 56];
+%    constrOpt:         (structure) structure containing
 %                       additional contraints. Include here only
 %                       reactions whose flux is fixed, i.e.,
 %                       reactions whose lower and upper bounds have
@@ -44,30 +43,23 @@ function saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,i
 %                       fields:
 %
 %                         * .rxnList - Reaction list (cell array)
-%                         * .values -  Values for constrained 
+%                         * .values -  Values for constrained
 %                           reactions (double array)
 %                           E.g.: struct('rxnList', ...
 %                           {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                           'values', [-100, 0, 155.5]');  
-%    inputFolder:       Type: string. 
-%                       Description: Folder where inputs for GAMS
+%                           'values', [-100, 0, 155.5]');
+%    inputFolder:       (string) Folder where inputs for GAMS
 %                       function will be stored
 %
 % OUTPUTS:
-%    model.mat          Type: file
-%                       Description: File containing the
-%                       model 
-%    minFluxesW.mat:    Type: file
-%                       Description: File containing the
+%    model.mat          File containing the model
+%    minFluxesW.mat:    File containing the
 %                       minimum fluxes for the wild-type
-%    maxFluxesW.mat:    Type: file
-%                       Description: File containing the
+%    maxFluxesW.mat:    File containing the
 %                       maximum fluxes for the mutant
-%    constrOpt.mat:     Type: file
-%                       Description: File containing the
-%                       constraints used
+%    constrOpt.mat:     File containing the constraints used
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 5  %inputs handling
     error('OptForce: All inputs must be specified when running saveInputsMustFirstOrder')
@@ -88,7 +80,7 @@ end
 
 %Create a temporary folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);
