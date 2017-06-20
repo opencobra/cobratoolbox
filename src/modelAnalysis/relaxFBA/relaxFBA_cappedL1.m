@@ -53,13 +53,9 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 
 if isfield(model,'SIntRxnBool')
     intRxnBool = model.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
 else
     model_Ex = findSExRxnInd(model);
     intRxnBool = model_Ex.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
 end
 
 relaxOption.maxUB = max(max(model.ub),-min(model.lb));
@@ -125,7 +121,7 @@ if ~isfield(model,'csense')
     warning('csense is not defined. We assume that all constraints are equalities.')
     csense(1:m,1) = 'E';
 else
-    if length(model.csense)~=m,
+    if length(model.csense)~=m
         warning('Length of csense is invalid! Defaulting to equality constraints.')
         csense(1:m,1) = 'E';
     else
@@ -149,7 +145,7 @@ q   = zeros(n,1);
 obj_old = relaxFBA_cappedL1_obj(model,v,r,p,q,relaxOption);
 
 %DCA
-while nbIteration < nbMaxIteration && stop ~= true,
+while nbIteration < nbMaxIteration && stop ~= true
 
     x_old = [v;r;p;q];
 
@@ -203,10 +199,10 @@ while nbIteration < nbMaxIteration && stop ~= true,
             end
             nbIteration = nbIteration + 1;
 
-%             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-%             disp(strcat('Obj:',num2str(obj_new)));
-%             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
-%             disp('=================================');
+            disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
+            disp(strcat('Obj:',num2str(obj_new)));
+            disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
+            disp('=================================');
         end
 end
 

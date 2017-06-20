@@ -3,6 +3,15 @@ function [solution] = relaxFBA(model, relaxOption)
 % Finds the mimimal set of relaxations on bounds and steady state constraint
 % to make the FBA problem feasible
 %
+% .. math::
+%      min   c'v + lambda*||r||_0 + gamma*(||p||_0 + ||q||_0)
+%      s.t   S*v + r <=> b
+%            l - p <= v <= u + q
+%            r \in R^m
+%            p,q \in R_+^n
+%      m - number of metabolites
+%      n - number of reactions
+%
 % USAGE:
 %
 %    [solution] = relaxFBA(model, relaxOption)
@@ -49,21 +58,15 @@ function [solution] = relaxFBA(model, relaxOption)
 %                        * 1  = Solution found
 %                        * 0  = Infeasible
 %                        * -1 = Invalid input
+%                      * v - reaction rate
 %                      * r - relaxation on steady state constraints S*v = b
 %                      * p - relaxation on lower bound of reactions
 %                      * q - relaxation on upper bound of reactions
-%                      * v - reaction rate
+%
 %
 % .. Author: - Hoai Minh Le	15/11/2015
 %
-% .. math::
-%      min   c'v + lambda*||r||_0 + gamma*(||p||_0 + ||q||_0)
-%      s.t   S*v + r <=> b
-%            l - p <= v <= u + q
-%            r \in R^m
-%            p,q \in R_+^n
-%      m - number of metabolites
-%      n - number of reactions
+
 
 [m,n] = size(model.S); %Check inputs
 

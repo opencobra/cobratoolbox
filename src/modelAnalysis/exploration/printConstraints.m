@@ -18,7 +18,7 @@ fprintf('MinConstraitns:\n');
 for i = 1:length(minConstraints)
     fprintf('%s', model.rxns{minConstraints(i)});
     fprintf('\t');
-    fprintf('%e', model.lb(minConstraints(i)));
+    fprintf('%g', model.lb(minConstraints(i)));
     fprintf('\n');
 end
 
@@ -27,6 +27,6 @@ fprintf('maxConstraints:\n');
 for i = 1:length(maxConstraints)
     fprintf('%s', model.rxns{maxConstraints(i)});
     fprintf('\t');
-    fprintf('%e', model.ub(maxConstraints(i)));
+    fprintf('%g', model.ub(maxConstraints(i)));
     fprintf('\n');
 end
