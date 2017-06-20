@@ -101,8 +101,8 @@ end
 % solution again
 selPrevSolIrrev = [];
 for i = 1:length(prevSolutions)
+    prevSolRxnList = prevSolutions{i};
     if ~isempty(prevSolRxnList)
-        prevSolRxnList = prevSolutions{i};
         selPrevSol = ismember(model.rxns,prevSolRxnList);
         selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
     end
