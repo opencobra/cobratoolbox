@@ -2,10 +2,10 @@
 declare -a tutorials=("tutorial_IO"
                       "tutorial_modelManipulation"
                       "tutorial_modelCreation"
-                      "tutorial_numCharact")
-#                      "tutorial_metabotoolsI"
-#                      "tutorial_metabotoolsII"
-#                      "tutorial_uniformSampling")
+                      "tutorial_numCharact"
+                      "tutorial_metabotoolsI"
+                      "tutorial_metabotoolsII"
+                      "tutorial_uniformSampling")
 
 report="Tutorial report\n\n"
 report+="Name                               passed    failed    time(s)\n"
@@ -50,6 +50,7 @@ do
     report+="\n"
 done
 
+report+="\n\n"
 printf "$report"
 
 if [ $failure -ne 0 ]; then
