@@ -1,17 +1,17 @@
-function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol)
+function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution, relax, tol)
 % This function will calculate the minimum and maximum rates for target
 % production when applying a set of interventions (upregulations,
-% downregulations, knockouts) in the model. Flux for each intervened 
+% downregulations, knockouts) in the model. Flux for each intervened
 % reaction in the mutant must be specified in the structure solution (third
-% input). 
+% input).
 %
-% USAGE: 
+% USAGE:
 %
-%    [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol) 
+%    [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution, relax, tol)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
-%                       Description: a metabolic model with at least
+%    model:             structure (COBRA model)
+%                       a metabolic model with at least
 %                       the following fields:
 %
 %                         * .rxns - Reaction IDs in the model
@@ -21,14 +21,11 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-% 
-%    targetRxn:          Type: string. 
-%                        Description: reaction identifier for target
-%                        reaction
-%                        E.g.: targetRxn='EX_suc' 
-%    solution:           Type: structure. 
-%                        Description: structure containing information
-%                        about the inverventions. 
+%
+%    targetRxn:          string. Reaction identifier for target reaction
+%                        E.g.: targetRxn='EX_suc'
+%    solution:           structure. Structure containing information
+%                        about the inverventions.
 %                        E.g.: solution = struct('reactions', ...
 %                        {{'R21'; 'R24'}}, 'flux', [10; 0])
 %                        In this example, the reaction R21 will be
@@ -41,36 +38,29 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                          * .reactions - identifiers for reactions
 %                            that will be intervened
 %                          * .flux - new flux achieved in the intervened
-%                            reactions. 
+%                            reactions.
 %
 % OPTIONAL INPUTS:
-%    relax:             Type: double
-%                       Description: boolean to describe if constraints
+%    relax:             double. Boolean to describe if constraints
 %                       should be apply in an rounded way (relax = 1 )
 %                       or in an exactly way (relax = 0)
 %                       Default: relax = 1
-%     tol:              Type: double 
-%                       Description: range for tolerance when relaxing
+%     tol:              double. Rrange for tolerance when relaxing
 %                       contraints.
 %                       Default: tol = 1e-7
 %
 % OUTPUTS:
-%     maxGrowthRate:    Type: double
-%                       Description: Maximim growth rate of mutant strain
+%     maxGrowthRate:    double. Maximum growth rate of mutant strain
 %                       (after applying the inverventions)
-%     minTarget:        Type: double.
-%                       Description: Minimum production rate of target at
+%     minTarget:        double. Minimum production rate of target at
 %                       max growth rate
-%     maxTarget:        Type: double.
-%                       Description: Maximum production rate of target at
+%     maxTarget:        double. Maximum production rate of target at
 %                       max growth rate
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-%% CODE
-%input handling
-if nargin <1
-    error('OptForce: model must be specified when running analizeOptForceSol');
+if nargin <1 %input handling
+    error('OptForce: model must be specified when running analyzeOptForceSol');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
     if ~isfield(model,'rxns'), error('OptForce: Missing field rxns in model');  end
@@ -81,14 +71,14 @@ else
     if ~isfield(model,'b'), error('OptForce: Missing field b in model'); end
 end
 if nargin <2
-    error('OptForce: target reaction must be specified when running analizeOptForceSol');
+    error('OptForce: target reaction must be specified when running analyzeOptForceSol');
 else
     if ~ischar(targetRxn)
         error('OptForce: input targetRxn must be an string');
     end
 end
 if nargin <3
-    error('OptForce: intervened reactions must be specified when running analizeOptForceSol');
+    error('OptForce: intervened reactions must be specified when running analyzeOptForceSol');
 else
     if ~isfield(solution,'reactions'), error('OptForce: Missing field reactions in solution');  end
     if ~isfield(solution,'flux'), error('OptForce: Missing field flux in solution');  end
@@ -113,9 +103,9 @@ maxGrowthRate = solForce.f;
 if solForce.stat == 1
     % find minimum and maximum production rate for target at optimal growth rate
     if relax
-        grRounded = floor(solForce.f/tol)*tol; 
+        grRounded = floor(solForce.f/tol)*tol;
     else
-        grRounded = solForce.f; 
+        grRounded = solForce.f;
     end
     modelForce = changeRxnBounds(modelForce, modelForce.rxns(modelForce.c==1), grRounded,'l');
     modelForce = changeObjective(modelForce, targetRxn);
@@ -124,7 +114,7 @@ if solForce.stat == 1
     maxTarget = solMax.f;
     minTarget = solMin.f;
 else
-    warning('OptForce: infeasible model for mutant strain, according to function analizeOptForceSol')
+    warning('OptForce: infeasible model for mutant strain, according to function analyzeOptForceSol')
     maxTarget = 0;
     minTarget = 0;
 end
