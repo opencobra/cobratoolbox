@@ -1,9 +1,15 @@
 function [] = installDevTools()
-% checks if the MATLAB.devTools already are present and
+% checks if the MATLAB.devTools are already present.
 % installs the MATLAB.devTools next to the cloned folder cobratoolbox if not
 %
 % USAGE:
 %    installDevTools()
+%
+% NOTE:
+%    In order to install the devTools, please make sure that the SSH key is
+%    configured properly as explained `here`_.
+%
+% .. _here: https://opencobra.github.io/cobratoolbox/docs/solvers.html
 %
 % .. Author: Laurent Heirendt, June 2017
 
