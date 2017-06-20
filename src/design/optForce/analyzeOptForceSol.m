@@ -22,9 +22,9 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
 %
-%    targetRxn:          string. Reaction identifier for target reaction
+%    targetRxn:          (string) Reaction identifier for target reaction
 %                        E.g.: targetRxn='EX_suc'
-%    solution:           structure. Structure containing information
+%    solution:           (structure) Structure containing information
 %                        about the inverventions.
 %                        E.g.: solution = struct('reactions', ...
 %                        {{'R21'; 'R24'}}, 'flux', [10; 0])
@@ -41,20 +41,20 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %                            reactions.
 %
 % OPTIONAL INPUTS:
-%    relax:             double. Boolean to describe if constraints
+%    relax:             (double) Boolean to describe if constraints
 %                       should be apply in an rounded way (relax = 1 )
 %                       or in an exactly way (relax = 0)
 %                       Default: relax = 1
-%     tol:              double. Rrange for tolerance when relaxing
+%     tol:              (double) Rrange for tolerance when relaxing
 %                       contraints.
 %                       Default: tol = 1e-7
 %
 % OUTPUTS:
-%     maxGrowthRate:    double. Maximum growth rate of mutant strain
+%     maxGrowthRate:    (double) Maximum growth rate of mutant strain
 %                       (after applying the inverventions)
-%     minTarget:        double. Minimum production rate of target at
+%     minTarget:        (double) Minimum production rate of target at
 %                       max growth rate
-%     maxTarget:        double. Maximum production rate of target at
+%     maxTarget:        (double) Maximum production rate of target at
 %                       max growth rate
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
