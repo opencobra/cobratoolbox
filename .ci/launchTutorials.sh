@@ -1,8 +1,8 @@
 #!/bin/bash
-declare -a tutorials=("tutorial_IO")
-#                      "tutorial_modelManipulation"
-#                      "tutorial_modelCreation"
-#                      "tutorial_numCharact"
+declare -a tutorials=("tutorial_IO"
+                      "tutorial_modelManipulation"
+                      "tutorial_modelCreation"
+                      "tutorial_numCharact")
 #                      "tutorial_metabotoolsI"
 #                      "tutorial_metabotoolsII"
 #                      "tutorial_uniformSampling")
