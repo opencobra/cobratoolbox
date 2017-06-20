@@ -1175,7 +1175,7 @@ COBRA model with reactions in the specified compartmetns</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.mergeTwoModels">
-<code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em>, <em>mergeGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2f261a8583987fa0753da8c056123d27389699da/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelNew] = mergeTwoModels(model1,model2,objrxnmodel)</div></blockquote>
@@ -1188,12 +1188,15 @@ model 1</li>
 model 2</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>objrxnmodel</strong> &#8211;
 Set as 1 or 2 to set objective reaction from
 desired model</li>
+<li><strong>mergeGenes</strong> &#8211;
+Do merge the gene associated data, if false it will create
+empty fields instead (Default = true)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
