@@ -1,6 +1,6 @@
 function [] = saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 % This function saves all the inputs needed to run functions to find second
-% order Must Sets (MustUU, Must LL and MustUL). The inputs will be stored in
+% order Must Sets (MustUU, Must LL and MustUL) The inputs will be stored in
 % inputFolder.
 %
 % USAGE:
@@ -8,8 +8,7 @@ function [] = saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, const
 %         saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 %
 % INPUTS:
-%    model:               (structure) (COBRA model)
-%                         a metabolic model with at least
+%    model:               (structure) COBRA metabolic model with at least
 %                         the following fields:
 %
 %                           * .rxns - Reaction IDs in the model
@@ -57,10 +56,8 @@ function [] = saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, const
 %
 % OUTPUTS:
 %    model.mat            File containing the model
-%    minFluxesW.mat:      File containing the
-%                         minimum fluxes for the wild-type
-%    maxFluxesW.mat:      File containing the
-%                         maximum fluxes for the mutant
+%    minFluxesW.mat:      File containing the minimum fluxes for the wild-type
+%    maxFluxesW.mat:      File containing the maximum fluxes for the mutant
 %    constrOpt.mat:       File containing the constraints used
 %    excludedRsns.mat:    File containing the excluded reactions
 %

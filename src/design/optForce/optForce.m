@@ -9,9 +9,8 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %    [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, varargin)
 %
 % INPUTS:
-%    model:                  (structure) (COBRA model)
-%                              a metabolic model with at least
-%                            the following fields:
+%    model:                  (structure) COBRA metabolic model
+%                            with at least the following fields:
 %
 %                              * .rxns - Reaction IDs in the model
 %                              * .mets - Metabolite IDs in the model
@@ -123,7 +122,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 % OUTPUTS:
 %    optForceSets:           (cell array) cell array of size  n x m, where
 %                            n = number of sets found and m = size of sets
-%                            found (k). Element in position i,j is reaction
+%                            found (k) Element in position i,j is reaction
 %                            j in set i.
 %                            E.g.:
 %                                    rxn1  rxn2
@@ -133,7 +132,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 %    posOptForceSets:        (double array) double array of size  n x m, where
 %                            n = number of sets found and m = size of sets
-%                            found (k). Element in position i,j is the
+%                            found (k) Element in position i,j is the
 %                            position of reaction in optForceSets(i,j) in
 %                            model.rxns
 %                            E.g.:
@@ -144,7 +143,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 %    typeRegOptForceSets:    (cell array) cell array of size  n x m, where
 %                            n = number of sets found and m = size of sets
-%                            found (k). Element in position i,j is the kind
+%                            found (k) Element in position i,j is the kind
 %                            of intervention for reaction in
 %                            optForceSets(i,j)
 %                            E.g.:
@@ -154,7 +153,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            set 2   | upregulation    knockout
 %    fluxOptForceSets:       (double) matrix Matrix of size n +m, where
 %                            n = number of sets found and m = size of sets
-%                            found (k). The number in (i,j) is the flux
+%                            found (k) The number in (i,j) is the flux
 %                            achieved for the reaction in optForceSets(i,j)
 %    outputFileName.xls:     file containing 11 columns.
 %                            C1: Number of invervetions (k)

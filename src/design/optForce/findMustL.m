@@ -8,7 +8,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     (structure) (COBRA model) a metabolic model
+%    model:                     (structure) COBRA metabolic model
 %                               with at least the following fields:
 %
 %                                 * .rxns - Reaction IDs in the model

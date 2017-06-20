@@ -8,8 +8,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %         [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FVAOptForce(model, constrWT, constrMT)
 %
 % INPUTS:
-%    model:         (structure) (COBRA model)
-%                     a metabolic model with at least
+%    model:         (structure) COBRA metabolic model with at least
 %                   the following fields:
 %
 %                     * .rxns - Reaction IDs in the model
@@ -43,25 +42,25 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
 %
 % OUTPUTS:
-%    minFluxesW:    (double array). minimum values for reactions in
+%    minFluxesW:    (double array) minimum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    maxFluxesW:    (double array). maximum values for reactions in
+%    maxFluxesW:    (double array) maximum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    minFluxesM:    (double array). minimum values for reactions in
+%    minFluxesM:    (double array) minimum values for reactions in
 %                   the mutant strain. It has dimensions
 %                   (number of reactions) x 1
-%    maxFluxesM:    (double array). minimum values for reactions in
+%    maxFluxesM:    (double array) minimum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    boundsW:       (cell array). bounds given by the minimum and
+%    boundsW:       (cell array) bounds given by the minimum and
 %                   maximum values for reactions in the wild-type
 %                   strain. The reaction IDs are in the first
 %                   column, the minimun values in the second and
 %                   the maximum values in the third. It has
 %                   dimensions (number of reactions) x 3
-%    boundsM:       (cell array). bounds given by the minimum and
+%    boundsM:       (cell array) bounds given by the minimum and
 %                   maximum values for reactions in the mutant
 %                   strain. The reaction IDs are in the first
 %                   column, the minimun values in the second and
