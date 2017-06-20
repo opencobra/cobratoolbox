@@ -1,4 +1,4 @@
-function ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPoint,initPoint,fileBaseNo,maxTime)
+function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)
 % Artificial Centering Hit-and-Run sampler
 %
 % USAGE:
@@ -6,18 +6,18 @@ function ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPo
 %    ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)
 %
 % INPUTS:
-%    model:           Model structure
-%    warmupPoints:    Warmup points
-%    fileName:        Base `fileName` for saving results
-%    nFiles:          Number of files created
-%    pointsPerFile:   Number of points per file saved
-%    stepsPerPoint:   Number of sampler steps per point saved
+%    model:            Model structure
+%    warmupPoints:     Warmup points
+%    fileName:         Base `fileName` for saving results
+%    nFiles:           Number of files created
+%    pointsPerFile:    Number of points per file saved
+%    stepsPerPoint:    Number of sampler steps per point saved
 %
 % OPTIONAL INPUTS:
-%    initPoint:       Initial point (Default = centerPoint)
-%    fileBaseNo:      Base file number for continuing previous sampler run
-%                     (Default = 0)
-%    maxTime:         Maximum time limit (Default = 36000 s)
+%    initPoint:        Initial point (Default = centerPoint)
+%    fileBaseNo:       Base file number for continuing previous sampler run
+%                      (Default = 0)
+%    maxTime:          Maximum time limit (Default = 36000 s)
 %
 % .. Authors: -
 %       - Markus Herrgard 4/14/06

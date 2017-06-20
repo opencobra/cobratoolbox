@@ -1,4 +1,4 @@
-function [modelSampling,samples,volume] = sampleCbModel(model,varargin)
+function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 % Samples the solution-space of a constraint-based model
 %
 % USAGE:
@@ -6,31 +6,33 @@ function [modelSampling,samples,volume] = sampleCbModel(model,varargin)
 %    [modelSampling, samples] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 %
 % INPUTS:
-%    model:         COBRA model structure
+%    model:           COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    varargin:      Optional Inputs as Parameter/Value pairs with the
-%                   following options:
-%                   - sampleFile:    File names for sampling output files (only required for
-%                     ACHR, Default 'AHCRFile')
-%                   - samplerName:   {'ACHR',('CHRR')} Name of the sampler to be used to sample the solution
-%                   - options:       Options for sampling and pre/postprocessing (default values
-%                     in parenthesis)
-%                       * .nStepsPerPoint - Number of sampler steps per point saved (200)
-%                       * .nPointsReturned - Number of points loaded for
-%                         analysis (2000)
-%                       * .nWarmupPoints - Number of warmup points (5000). ACHR only.
-%                       * .nFiles - Number of output files (10). ACHR only.
-%                       * .nPointsPerFile - Number of points per file (1000). ACHR only.
-%                       * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
-%                       * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
-%                       * .toRound - Option to round the model before sampling (true). CHRR only.
-%                   - modelSampling: From a previous round of sampling the same
-%                     model. Input to avoid repeated preprocessing.
+%    varargin:        Optional Inputs as Parameter/Value pairs with the
+%                     following options:
+%
+%                       * sampleFile:    File names for sampling output files (only required for
+%                         ACHR, Default 'AHCRFile')
+%                       * samplerName:   {'ACHR', ('CHRR')} Name of the sampler to be used to sample the solution
+%                       * options:       Options for sampling and pre/postprocessing (default values
+%                         in parenthesis)
+%
+%                         * .nStepsPerPoint - Number of sampler steps per point saved (200)
+%                         * .nPointsReturned - Number of points loaded for
+%                           analysis (2000)
+%                         * .nWarmupPoints - Number of warmup points (5000). ACHR only.
+%                         * .nFiles - Number of output files (10). ACHR only.
+%                         * .nPointsPerFile - Number of points per file (1000). ACHR only.
+%                         * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
+%                         * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
+%                         * .toRound - Option to round the model before sampling (true). CHRR only.
+%                       * modelSampling: From a previous round of sampling the same
+%                         model. Input to avoid repeated preprocessing.
 %
 % OUTPUTS:
-%    modelSampling:   Cleaned up model used in sampling
-%    samples:         Uniform random samples of the solution space
+%    modelSampling:    Cleaned up model used in sampling
+%    samples:          Uniform random samples of the solution space
 %
 % EXAMPLES:
 %    %1) Sample a model called 'superModel' using default settings and save the

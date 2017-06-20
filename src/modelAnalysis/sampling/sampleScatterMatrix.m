@@ -1,4 +1,4 @@
-function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rxnNames2)
+function sampleScatterMatrix(rxnNames, model, sample, nPoints, fontSize, dispRFlag, rxnNames2)
 % Draws a scatterplot matrix with pairwise scatterplots
 % for multiple reactions
 %
@@ -7,18 +7,18 @@ function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rx
 %    sampleScatterMatrix(rxnNames, model, sample, nPoints, fontSize, dispRFlag, rxnNames2)
 %
 % INPUTS:
-%    rxnNames:      Cell array of reaction names to be plotted
-%    model:         Model structure
-%    sample:        Samples to be analyzed (`nRxns` x `nSamples`)
+%    rxnNames:     Cell array of reaction names to be plotted
+%    model:        Model structure
+%    sample:       Samples to be analyzed (`nRxns x nSamples`)
 %
 % OPTIONAL INPUTS:
-%    nPoints:       How many sample points to plot (Default `nSamples`)
-%    fontSize:      Font size for labels (Default calculated based on
-%                   number of reactions)
-%    dispRFlag:     Display correlation coefficients (Default false)
-%    rxnNames2:     Optional second set of reaction names
+%    nPoints:      How many sample points to plot (Default `nSamples`)
+%    fontSize:     Font size for labels (Default calculated based on
+%                  number of reactions)
+%    dispRFlag:    Display correlation coefficients (Default false)
+%    rxnNames2:    Optional second set of reaction names
 %
-% EXAMPLES:
+% EXAMPLE:
 %
 %    %Plots the scatterplots only between the three reactions listed -
 %    %histograms for each reaction will be on the diagonal

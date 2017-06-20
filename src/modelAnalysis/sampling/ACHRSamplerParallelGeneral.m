@@ -1,23 +1,22 @@
-function [sampleStruct] = ACHRSamplerParallelGeneral(sampleStruct,nLoops,stepsPerPoint, maxtime, proc, fdirectory)
-% Artificial Centering Hit-and-Run sampler with in place (memory) point
-% management
+function [sampleStruct] = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)
+% Artificial Centering Hit-and-Run sampler with in place (memory) point management
 %
 % USAGE:
 %
 %    sampleStruct = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)
 %
 % INPUTS:
-%    sampleStruct:      Sampling structure
-%    nLoops:            Number of iterations
-%    stepsPerPoint:     Number of sampler steps per point saved
-%    maxtime:           Amount of time to spend on calculation (in seconds)
+%    sampleStruct:     Sampling structure
+%    nLoops:           Number of iterations
+%    stepsPerPoint:    Number of sampler steps per point saved
+%    maxtime:          Amount of time to spend on calculation (in seconds)
 %
 % OPTIONAL INPUTS:
-%    proc:              Number of processes if > 0.  Otherwise, the proces #.
-%    fdirectory:        Do not use this parameter when calling function directly.
+%    proc:             Number of processes if > 0.  Otherwise, the proces #.
+%    fdirectory:       Do not use this parameter when calling function directly.
 %
 % OUTPUT:
-%    sampleStruct:      Sampling structure with sample points
+%    sampleStruct:     Sampling structure with sample points
 %
 % .. Author: - Jan Schellenberger 1/29/07
 

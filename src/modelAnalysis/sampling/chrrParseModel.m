@@ -8,26 +8,28 @@ function P = chrrParseModel(model)
 % INPUTS:
 %    model:      COBRA model structure with fields:
 %
-%                 * `.S` - The `m` x `n` stoichiometric matrix
-%                 * `.lb` - `n` x 1 lower bounds on fluxes
-%                 * `.ub` - `n` x 1 upper bounds on fluxes
-%                 * `.c` - `n` x 1 linear objective
+%                 * .S - The `m x n` stoichiometric matrix
+%                 * .lb - `n x 1` lower bounds on fluxes
+%                 * .ub - `n x 1` upper bounds on fluxes
+%                 * .c - `n x 1` linear objective
 %
 % OUTPUT:
 %    P:          A structure with fields:
 %
-%                 * `.A_eq` - Equality constraint matrix (`model.S`)
-%                 * `.b_eq` - Right hand side of equality constraints (`model.b`)
-%                 * `.A` - Inequality constraint matrix ([`I_n` 0; 0 ``-I_n`])
-%                 * `.b` - Right hand side of inequality constraints ([`lb`; ``-ub`])
+%                 * .A_eq - Equality constraint matrix (`model.S`)
+%                 * .b_eq - Right hand side of equality constraints (`model.b`)
+%                 * .A - Inequality constraint matrix ([:math:`I_n 0; 0 -I_n`])
+%                 * .b - Right hand side of inequality constraints ([`lb`; `-ub`])
 %
 % .. Authors: - Ben Cousins and Hulda S. Haraldsdóttir, October 2016
 %
 % We are trying to sample uniformly at random from the points `v` that satisfy:
 %
-%    * min   `c*v`
-%    * s.t.  `Sv = b`
-%    * `lb <= v <= ub`
+% .. math::
+%    min  ~&~ c v \\
+%    s.t. ~&~ S v = b \\
+%         ~&~ lb \leq v \leq ub
+
 dim = length(model.lb);
 
 P.A = [eye(dim); -eye(dim)];

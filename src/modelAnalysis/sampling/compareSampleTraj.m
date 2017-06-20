@@ -1,4 +1,4 @@
-function compareSampleTraj(rxnNames,samples,models,nBins)
+function compareSampleTraj(rxnNames, samples, models, nBins)
 % Compares flux histograms for two or more samples
 % for one or more reactions
 %
@@ -7,12 +7,12 @@ function compareSampleTraj(rxnNames,samples,models,nBins)
 %    compareSampleTraj(rxnNames, samples, models, nBins)
 %
 % INPUTS:
-%    rxnNames:      List of reaction names to compare
-%    samples:       Samples to compare
-%    models:        Cell array containing COBRA model structures
+%    rxnNames:    List of reaction names to compare
+%    samples:     Samples to compare
+%    models:      Cell array containing COBRA model structures
 %
 % OPTIONAL INPUTS:
-%    nBins:         Number of bins (Default = `nSamples` / 25)
+%    nBins:       Number of bins (Default = `nSamples` / 25)
 
 if (nargin < 4)
   [tmp,nSamples] = size(samples{1});
