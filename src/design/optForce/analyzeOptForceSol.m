@@ -10,8 +10,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %    [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution, relax, tol)
 %
 % INPUTS:
-%    model:             structure (COBRA model)
-%                       a metabolic model with at least
+%    model:             (structure) COBRA metabolic model with at least
 %                       the following fields:
 %
 %                         * .rxns - Reaction IDs in the model
@@ -24,15 +23,14 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %
 %    targetRxn:          (string) Reaction identifier for target reaction
 %                        E.g.: targetRxn='EX_suc'
-%    solution:           (structure) Structure containing information
-%                        about the inverventions.
+%    solution:           (structure) Structure containing information about the inverventions.
 %                        E.g.: solution = struct('reactions', ...
 %                        {{'R21'; 'R24'}}, 'flux', [10; 0])
 %                        In this example, the reaction R21 will be
 %                        regulated at 10 (mmol/gDW h) (upregulation or
 %                        downregulation depending on the value for the
 %                        wild-type strain) and R21 will be regulated at 0
-%                        (mmol/gDW h) (knockout). Only two fields are
+%                        (mmol/gDW h) (knockout) Only two fields are
 %                        needed for this structure:
 %
 %                          * .reactions - identifiers for reactions
@@ -45,7 +43,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %                       should be apply in an rounded way (relax = 1 )
 %                       or in an exactly way (relax = 0)
 %                       Default: relax = 1
-%     tol:              (double) Rrange for tolerance when relaxing
+%     tol:              (double) range for tolerance when relaxing
 %                       contraints.
 %                       Default: tol = 1e-7
 %

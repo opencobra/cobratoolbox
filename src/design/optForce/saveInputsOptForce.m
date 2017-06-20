@@ -1,7 +1,7 @@
 function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
     maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 % This function saves all the inputs needed to run functions to find second
-% order Must Sets (MustUU, Must LL and MustUL). The inputs will be stored in
+% order Must Sets (MustUU, Must LL and MustUL) The inputs will be stored in
 % inputFolder.
 %
 % USAGE:
@@ -10,8 +10,7 @@ function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, max
 %    maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
 % INPUTS
-%    model:             (structure) (COBRA model)
-%                       a metabolic model with at least
+%    model:             (structure) COBRA metabolic model with at least
 %                       the following fields:
 %
 %                         * .rxns - Reaction IDs in the model

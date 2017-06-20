@@ -1,6 +1,6 @@
 function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
 % This function saves all the inputs needed to run functions to find first
-% order Must Sets (MustU, Must L). The inputs will be stored in
+% order Must Sets (MustU, Must L) The inputs will be stored in
 % inputFolder.
 %
 % USAGE:
@@ -8,8 +8,7 @@ function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constr
 %         saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
 %
 % INPUTS:
-%    model:             (structure) (COBRA model)
-%                         a metabolic model with at least
+%    model:             (structure) COBRA metabolic model with at least
 %                       the following fields:
 %
 %                         * .rxns - Reaction IDs in the model
@@ -20,7 +19,7 @@ function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constr
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
 %    minFluxesW:        (double array) of size n_rxns x1
-%                         Minimum fluxes for each
+%                       Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
 %                       function FVAOptForce.
@@ -53,10 +52,8 @@ function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constr
 %
 % OUTPUTS:
 %    model.mat          File containing the model
-%    minFluxesW.mat:    File containing the
-%                       minimum fluxes for the wild-type
-%    maxFluxesW.mat:    File containing the
-%                       maximum fluxes for the mutant
+%    minFluxesW.mat:    File containing the minimum fluxes for the wild-type
+%    maxFluxesW.mat:    File containing the maximum fluxes for the mutant
 %    constrOpt.mat:     File containing the constraints used
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl

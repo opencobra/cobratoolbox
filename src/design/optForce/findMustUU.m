@@ -8,9 +8,8 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %    [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                      (structure) (COBRA model)
-%                                  a metabolic model with at least
-%                                the following fields:
+%    model:                      (structure) COBRA metabolic model
+%                                with at least the following fields:
 %
 %                                  * .rxns - Reaction IDs in the model
 %                                  * .mets - Metabolite IDs in the model
