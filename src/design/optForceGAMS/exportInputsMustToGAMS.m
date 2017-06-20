@@ -1,5 +1,4 @@
 function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
-%% DESCRIPTION
 % This function export all the inputs needed to run the GAMS functions to
 % find first order Must Sets (MustU, Must L). The inputs will
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
@@ -7,7 +6,7 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %
 % Created by Sebastin Mendoza. 30/05/2017. snmendoz@uc.cl
 %
-% USAGE: 
+% USAGE:
 %         exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt,
 %         inputFolder): exports model, results from FVA (minFluxesW,
 %         maxFluxesW), contraints to files in the folder "inputFolder".
@@ -29,19 +28,19 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %                                   lb              Lower bounds for fluxes
 %                                   ub              Upper bounds for fluxes
 %                                   rev             Reversibility flag
-% 
+%
 %         minFluxesW (obligatory)   Type: double array of size n_rxns x1
 %                                   Description: Minimum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: minFluxesW=[-90; -56];
-% 
+%
 %         maxFluxesW (obligatory)   Type: double array of size n_rxns x1
 %                                   Description: Maximum fluxes for each reaction
 %                                   in the model for wild-type strain. This can be
 %                                   obtained by running the function FVA_optForce
 %                                   Example: maxFluxesW=[-90; -56];
-% 
+%
 %         constrOpt (obligatory):   Type: Structure
 %                                   Description: structure containing additional
 %                                   contraints. The structure has the following
@@ -51,25 +50,25 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %                                   sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
 %                                                                    (G: Greater than; E: Equal to; L: Lower than)
 %                                   Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
-% 
-%         inputFolder(obligatory):      Type: string. 
+%
+%         inputFolder(obligatory):      Type: string.
 %                                       Description: Folder where inputs for GAMS
 %                                       function will be stored
 %
 % OUTPUTS:
-% 
+%
 %         Reactions.txt                 Type: file
 %                                       Description: File containing the
-%                                       identifiers for reactions 
-% 
+%                                       identifiers for reactions
+%
 %         Metabolites.txt               Type: file
 %                                       Description: File containing the
 %                                       identifiers for metabolites
-% 
+%
 %         Constrains.txt                Type: file
 %                                       Description: File containing the
-%                                       identifiers for constrained reactions 
-% 
+%                                       identifiers for constrained reactions
+%
 %         MtoG.gdx                      Type: file
 %                                       Description: File containing the
 %                                       parameters which will be read by GAMS
@@ -86,7 +85,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

@@ -19,13 +19,13 @@ function [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW, varargi
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
 %    minFluxesW:                (double array) of size n_rxns x1
-%                                 Minimum fluxes for each
+%                               Minimum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
 %                               function FVAOptForce.
 %                               E.g.: minFluxesW = [-90; -56];
 %    maxFluxesW:                (double array) of size n_rxns x1
-%                                 Maximum fluxes for each
+%                               Maximum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
 %                               function FVAOptForce.
