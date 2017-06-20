@@ -1,12 +1,19 @@
 #!/bin/bash
-declare -a tutorials=("tutorial_IO"
-                      "tutorial_modelManipulation"
-                      "tutorial_modelCreation"
-                      "tutorial_numCharact"
-                      "tutorial_metabotoolsI"
-                      "tutorial_metabotoolsII"
-                      "tutorial_uniformSampling")
+declare -a tutorials=("tutorial_IO")
+#                      "tutorial_modelManipulation"
+#                      "tutorial_modelCreation"
+#                      "tutorial_numCharact"
+#                      "tutorial_metabotoolsI"
+#                      "tutorial_metabotoolsII"
+#                      "tutorial_uniformSampling")
 
+report="Tutorial report\n\n"
+report+="Name                               passed    failed    time(s)\n"
+report+="--------------------------------------------------------------\n"
+failure=0
+
+# Set time format to seconds
+TIMEFORMAT=%R
 
 for tutorial in "${tutorials[@]}"
 do
@@ -19,7 +26,11 @@ do
     echo "$underline"
 
     #/mnt/data/MATLAB/$MATLAB_VER/bin/./
-    matlab -nodesktop -nosplash -r "runTutorial('$tutorial')"
+    # Time a process
+    SECONDS=0;
+    /mnt/data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash -r "addpath([pwd filesep '.ci']);runTutorial('$tutorial')"
+    CODE=$?
+    procTime=$SECONDS
 
     msg="| Done executing $tutorial! |"
     chrlen=${#msg}
@@ -29,4 +40,18 @@ do
     echo "$underline"
     echo
     echo
+
+    if [ $CODE -ne 0 ]; then
+        report+=`printf "%-32s                x         %4.1f"  "$tutorial" "$procTime"`
+        let "failure+=1"
+    else
+        report+=`printf "%-32s     x                    %4.1f"  "$tutorial" "$procTime"`
+    fi
+    report+="\n"
 done
+
+printf "$report"
+
+if [ $failure -ne 0 ]; then
+    exit 1
+fi
