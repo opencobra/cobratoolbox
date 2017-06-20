@@ -1,9 +1,9 @@
-function [expressionRxns parsedGPR] = preprocessing(model, expressionData)                                          
+function [expressionRxns parsedGPR] = mapExpressionToReactions(model, expressionData)                                          
 % Determines the expression data associated to each reaction present in
 % the model 
 %
 % USAGE:
-%    [expressionRxns parsedGPR] = preprocessing(model, expressionData) 
+%    [expressionRxns parsedGPR] = mapExpressionToReactions(model, expressionData) 
 %
 % INPUTS:
 %	model                   model strusture

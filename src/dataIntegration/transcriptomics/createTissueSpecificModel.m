@@ -1,4 +1,4 @@
-function [tissueModel] = createTissueSpecificModel(model, options, funcModel, exRxnRemove)                                          
+function [tissueModel] = createTissueSpecificModel(model, options, funcModel, exRxnRemove)
 % Creates draft tissue specific model from mRNA expression data
 %
 % USAGE:
@@ -11,7 +11,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                            informations
 %       .solver:                 Use either 'GIMME','iMAT','INIT','MBA',
 %                                'mCADRE','fastCore'
-%                           
+%
 %       .additionalparam:        see NOTE section below
 %
 % OPTIONAL INPUTS:
@@ -19,7 +19,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                            that can carry a flux (using a consistency check), 0 - skip this
 %                            step (Default = 0)
 %	exRxnRemove:             Names of exchange reactions to remove
-%                           (Default = [])                                       
+%                           (Default = [])
 %
 % OUTPUTS:
 %	tissueModel:                     extracted model
@@ -42,7 +42,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       options.tol*                 minimum flux threshold for "expressed" reactions
 %                                    (default 1e-8)
 %       options.core*                cell with reaction names (strings) that are manually put in
-%                                    the high confidence set (default - no core reactions)                           
+%                                    the high confidence set (default - no core reactions)
 %       options.logfile*             name of the file to save the MILP log (defaut - 'MILPlog')
 %       options.runtime*             maximum solve time for the MILP (default - 7200s)
 %
@@ -56,7 +56,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                                    (default - 0.9)
 %
 %   for INIT
-%       options.weights              column with positive (high expression) and negative 
+%       options.weights              column with positive (high expression) and negative
 %                                    (low expression) weights for each reaction
 %       options.tol*                 minimum flux threshold for "expressed" reactions
 %                                    (default  - 1e-8)
@@ -71,16 +71,16 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %
 %   for mCADRE
 %       options.ubiquityScore        ubiquity scores, vector of the size of 'model.rxns'
-%                                    quantifying how often a gene is expressed accross samples. 
-%                                                         
-%       options.confidenceScores     literature-based evidence for generic model, 
-%                                    vector of the size of 'model.rxns' 
+%                                    quantifying how often a gene is expressed accross samples.
+%
+%       options.confidenceScores     literature-based evidence for generic model,
+%                                    vector of the size of 'model.rxns'
 %       options.protectedRxns*       cell array with reactions names that are manually added to
 %                                    the core reaction set (default- no reactions)
-%       options.checkFunctionality*  Boolean variable that determine if the model should be able 
+%       options.checkFunctionality*  Boolean variable that determine if the model should be able
 %                                    to produce the metabolites associated with the protectedRxns
 %                                       0: don't use functionality check (default value)
-%                                       1: include functionality check                           
+%                                       1: include functionality check
 %       options.eta*                 tradeoff between removing core and zero-expression
 %                                    reactions (default - 1/3)
 %       options.tol*                 minimum flux threshold for "expressed" reactions
@@ -88,9 +88,9 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %
 %   for fastCore
 %       options.core                 indices of reactions in cobra model that are part of the
-%                                    core set of reactions 
+%                                    core set of reactions
 %       options.epsilon*             smallest flux value that is considered
-%                                    nonzero (default 1e-4)                                      
+%                                    nonzero (default 1e-4)
 %       options.printLevel*          0 = silent, 1 = summary, 2 = debug (default 0)
 %
 %
@@ -112,53 +112,52 @@ if ~exist('funcModel','var') || isempty(funcModel)
 end
 
 if ~exist('options','var') || isempty(options)
-    warning ('The option field is not defined')
-    return
+    error('The option field is not defined')
+elseif ~isfield(options,'solver')
+    error('No solver defined in the options.');
 else
-    if strcmp(options.solver,'iMAT')
-        if ~exist(options.expressionRxns) || ~exist(options.threshold_lb) || ~exist(options.threshold_ub)
-        	warning ('One of the 3 required option fields for iMAT method is not defined')
-            return
-        end
-        if ~exist(options.tol),options.tol=1e-8;end
-        if ~exist(options.core),options.core ={};end
-        if ~exist(options.logfile),options.logfile ='MILPlog';end
-        if ~exist(options.runtime),options.runtime =7200;end
-    elseif strcmp(options.solver,'GIMME')
-        if ~exist(options.expressionRxns) || ~exist(options.threshold)
-        	warning ('One of the 2 required option fields for GIMME method is not defined')
-            return
-        end
-        if ~exist(options.obj_frac),options.obj_frac=0.9;end
-    elseif strcmp(options.solver,'INIT')
-        if ~exist(options.weights)
-        	warning ('The required option field "weights" is not defined for INIT method')
-            return
-        end
-        if ~exist(options.tol),options.tol=1e-8;end
-        if ~exist(options.logfile),options.logfile ='MILPlog';end
-        if ~exist(options.runtime),options.runtime =7200;end
-    elseif strcmp(options.solver,'MBA')
-        if ~exist(options.medium_set) || ~exist(options.high_set)
-        	warning ('One of the 2 required option fields for MBA method is not defined')
-            return
-        end
-        if ~exist(options.tol),options.tol=1e-8;end
-    elseif strcmp(options.solver,'mCADRE')
-        if ~exist(options.ubiquityScore) || ~exist(options.confidenceScores)
-        	warning ('One of the 2 required option fields for mCADRE method is not defined')
-            return
-        end
-        if ~exist(options.protectedRxns),options.protectedRxns={};end
-        if ~exist(options.checkFunctionality),options.checkFunctionality=0;end
-        if ~exist(options.eta),options.eta=1/3;end
-        if ~exist(options.tol),options.tol=1e-8;end
-    elseif strcmp(options.solver,'fastCore')
-        if ~exist(options.core)
-        	warning ('The required option field "core" is not defined for fastCore method')
-            return
-        end
-        if ~exist(options.epsilon),options.epsilon=1e-4;end                                       
+    %Set some defaults for the solvers, and check whether all required
+    %fields are present
+    switch options.solver
+        case 'iMAT'
+            if ~isfield(options,'expressionRxns') || ~isfield(options,'threshold_lb') || ~isfield(options,'threshold_ub')
+                error('One of the 3 required option fields for iMAT method is not defined')
+            end
+            if ~isfield(options,'tol'),options.tol=1e-8;end
+            if ~isfield(options,'core'),options.core ={};end
+            if ~isfield(options,'logfile'),options.logfile ='MILPlog';end
+            if ~isfield(options,'runtime'),options.runtime =7200;end
+        case 'GIMME'
+            if ~isfield(options,'expressionRxns') || ~isfield(options,'threshold')
+                error('One of the 2 required option fields for GIMME method is not defined')                
+            end
+            if ~isfield(options,'obj_frac'),options.obj_frac=0.9;end
+        case 'INIT'
+            if ~isfield(options,'weights')
+                error ('The required option field "weights" is not defined for INIT method')                
+            end
+            if ~isfield(options,'tol'),options.tol=1e-8;end
+            if ~isfield(options,'logfile'),options.logfile ='MILPlog';end
+            if ~isfield(options,'runtime'),options.runtime =7200;end
+        case 'MBA'
+            if ~isfield(options,'medium_set') || ~isfield(options,'high_set')
+                error('One of the 2 required option fields for MBA method is not defined')                
+            end            
+            if ~isfield(options,'tol'),options.tol=1e-8;end
+        case 'mCADRE'
+            if ~isfield(options,'ubiquityScore') || ~isfield(options,'confidenceScores')
+                error('One of the 2 required option fields for mCADRE method is not defined')                
+            end
+            if ~isfield(options,'protectedRxns'),options.protectedRxns={};end
+            if ~isfield(options,'checkFunctionality'),options.checkFunctionality=0;end
+            if ~isfield(options,'eta'),options.eta=1/3;end
+            if ~isfield(options,'tol'),options.tol=1e-8;end
+        case 'fastCore'
+            if ~isfield(options,'core')
+                error('The required option field "core" is not defined for fastCore method')                
+            end
+            if ~isfield(options,'epsilon'),options.epsilon=1e-4;end
+            if ~isfield(options,'printlevel'),options.printlevel=0;end
     end
 end
 
@@ -170,18 +169,18 @@ end
 
 
 switch options.solver
-    case 'iMAT'      
-            tissueModel = iMAT(model, options.expressionRxns, options.threshold_lb, options.threshold_ub, options.tol, options.core, options.logfile, options.runtime);         
+    case 'iMAT'
+        tissueModel = iMAT(model, options.expressionRxns, options.threshold_lb, options.threshold_ub, options.tol, options.core, options.logfile, options.runtime);
     case 'GIMME'
-            tissueModel = GIMME(model, options.expressionRxns, options.threshold, options.obj_frac);      
+        tissueModel = GIMME(model, options.expressionRxns, options.threshold, options.obj_frac);
     case 'INIT'
-            tissueModel = INIT(model, options.weights, options.tol, options.runtime, options.logfile); 
+        tissueModel = INIT(model, options.weights, options.tol, options.runtime, options.logfile);
     case 'MBA'
-            tissueModel = MBA(model, options.medium_set, options.high_set, options.tol, options.core);       
+        tissueModel = MBA(model, options.medium_set, options.high_set, options.tol);
     case 'mCADRE'
-            tissueModel = mCADRE(model, options.ubiquityScore, options.confidenceScores, options.protectedRxns, options.checkFunctionality, options.eta, options.tol);
+        tissueModel = mCADRE(model, options.ubiquityScore, options.confidenceScores, options.protectedRxns, options.checkFunctionality, options.eta, options.tol);
     case 'fastCore'
-            tissueModel = fastcore(model, param.core, param.epsilon, param.printlevel);
+        tissueModel = fastcore(model, options.core, options.epsilon, options.printlevel);
 end
 
 
@@ -190,11 +189,11 @@ if funcModel ==1
     paramConsistency.modeFlag=0;
     paramConsistency.method='fastcc';
     
-	remove = [];
-	[fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,paramConsistency);
+    remove = [];
+    [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,paramConsistency);
     remove=tissueModel.rxns(fluxConsistentRxnBool==0);
     tissueModel = removeRxns(tissueModel,remove);
     tissueModel = removeUnusedGenes(tissueModel);
 end
-       
+
 end
