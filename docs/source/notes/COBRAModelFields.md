@@ -45,7 +45,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.proteins`| `g x 1` | Column Cell Array of Strings | Proteins associated with each reaction. | 
 |`model.rxnConfidenceScores`| `n x 1` | Column Vector of double | Confidence scores for reaction presence (0-5, with 5 being the highest confidence) | 
 |`model.rxnECNumbers`| `n x 1` | Column Cell Array of Strings | E.C. number for each reaction. | 
-|`model.rxnGeneMat`| `g x n` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
+|`model.rxnGeneMat`| `n x g ` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
 |`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
 |`model.rxnNames`| `n x 1` | Column Cell Array of Strings | Full name of each corresponding reaction. | 
 |`model.rxnNotes`| `n x 1` | Column Cell Array of Strings | Description of each corresponding reaction. | 
