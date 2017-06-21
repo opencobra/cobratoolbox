@@ -19,6 +19,7 @@ Model analysis
    #thermo
    topology
    transport
+   rumba
    coupling
    mdFBA
 
