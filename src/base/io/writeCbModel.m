@@ -57,9 +57,10 @@ if numel(varargin) > 2
         tempargin = varargin(1:2);
         % just replace the input by the options and replace varargin
         % accordingly
-        for i = 3:numel(varargin)
+        for i = 3:numel(varargin)            
             if ~isempty(varargin{i})
-                tempargin = [tempargin, optionalInputs{i - 2}, varargin{i}];
+                tempargin(end+1) = optionalInputs(i-2);
+                tempargin(end+1) = varargin(i);                                
             end
         end
         varargin = tempargin;
