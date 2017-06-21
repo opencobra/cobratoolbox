@@ -1,5 +1,5 @@
 function printConstraints(model, minInf, maxInf)
-% Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)
+% Print all network constraints that are not `-Inf (minInf)` or `+Inf (maxInf)`
 %
 % USAGE:
 %
@@ -14,7 +14,7 @@ function printConstraints(model, minInf, maxInf)
 %       - Ines Thiele 02/09
 
 minConstraints = intersect(find(model.lb > minInf), find(model.lb));
-fprintf('MinConstraitns:\n');
+fprintf('MinConstraints:\n');
 for i = 1:length(minConstraints)
     fprintf('%s', model.rxns{minConstraints(i)});
     fprintf('\t');

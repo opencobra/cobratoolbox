@@ -1,0 +1,879 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Model manipulation</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.234001159668px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S5 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S7 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S8 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S10 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S13 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { min-height: 0px; font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S15 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S17 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S18 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S19 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S20 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S21 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S22 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S23 { text-decoration: underline; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S24 { font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S25 { font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S26 { font-family: monospace; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S27 { min-height: 0px; font-family: monospace; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S28 { font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; background-color: #F7F7F7; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {margin-left: 5px;}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veVariableValueSummary {display: inline-block;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement{position: relative;}
+.matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.embeddedOutputsMatrixElement.inlineElement .veVariableName {padding-top: 0;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer {white-space: nowrap; padding-top: 10px; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Model manipulation</span></h1><p class = "S3"><span class = "S4">Author(s): Vanja Vlasov, Thomas Pfau, Systems Biochemistry Group, University of Luxembourg</span></p><p class = "S3"><span class = "S4">Reviewer(s):</span></p><h2 class = "S5"><span class = "S2">INTRODUCTION</span></h2><p class = "S3"><span class = "S2">In this tutorial, we will do a manipulation with the simple model of the first few reactions of the glycolisis metabolic pathway as created in the "Model Creation" tutorial. </span></p><p class = "S3"><span class = "S2">Glycolysis is the metabolic pathway that occurs in most organisms in the cytosol of the cell. First, we will use the beginning of that pathway to create a simple constraint-based metabolic network (Figure 1).</span></p><p class = "S6"><img class="imageNode" width="620" height="161" style="vertical-align: baseline" src="data:image/png;base64,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"></p><p class = "S3"><span class = "S2">                                                                   Figure 1: A small metabolic network consisting of the seven reactions in the glycolisis pathway. </span></p><p class = "S3"><span class = "S2">At the beginning of the reconstruction, an integrity of the draft reconstruction must be initially assessed. The accuracy of the stochiometry, necessity of each reaction and metabolite, direction and reversibility of the reactions needed to be evaluated. </span></p><p class = "S3"><span class = "S2">After creating or loading the model, the model can be modified to simulate different conditions, such as:</span></p><ul class = "S7"><li class = "S8"><span class = "S0">Creating, adding and handling reactions;</span></li><li class = "S8"><span class = "S0">Adding Exchange, Sink and Demand reactions;</span></li><li class = "S8"><span class = "S0">Altering reaction bounds;</span></li><li class = "S8"><span class = "S0">Altering Reactions;</span></li><li class = "S8"><span class = "S0">Remove reactions and metabolites;</span></li><li class = "S8"><span class = "S0">Search for duplicates and comparison of two models;</span></li><li class = "S8"><span class = "S0">Changing the model objective;</span></li><li class = "S8"><span class = "S0">Changing the direction of reaction(s);</span></li></ul></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">EQUIPMENT SETUP</span></h2><p class = "S3"><span class = "S2">Start CobraToolbox</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">initCobraToolbox;</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="2B553ADB" data-testid="output_0" data-width="1041" style="width: 1071px;"><div class="textElement">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_____&nbsp;&nbsp; _____&nbsp;&nbsp; _____&nbsp;&nbsp; _____&nbsp;&nbsp;&nbsp;&nbsp; _____&nbsp;&nbsp;&nbsp;&nbsp; |<br>&nbsp;&nbsp;&nbsp;&nbsp; /&nbsp;&nbsp;___| /&nbsp;&nbsp;_&nbsp;&nbsp;\ |&nbsp;&nbsp;_&nbsp;&nbsp;\ |&nbsp;&nbsp;_&nbsp;&nbsp;\&nbsp;&nbsp; / ___ \&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp; COnstraint-Based Reconstruction and Analysis<br>&nbsp;&nbsp;&nbsp;&nbsp; | |&nbsp;&nbsp;&nbsp;&nbsp; | | | | | |_| | | |_| |&nbsp;&nbsp;| |___| |&nbsp;&nbsp; |&nbsp;&nbsp; The COBRA Toolbox - 2017<br>&nbsp;&nbsp;&nbsp;&nbsp; | |&nbsp;&nbsp;&nbsp;&nbsp; | | | | |&nbsp;&nbsp;_&nbsp;&nbsp;{ |&nbsp;&nbsp;_&nbsp;&nbsp;/&nbsp;&nbsp;|&nbsp;&nbsp;___&nbsp;&nbsp;|&nbsp;&nbsp; |<br>&nbsp;&nbsp;&nbsp;&nbsp; | |___&nbsp;&nbsp;| |_| | | |_| | | | \ \&nbsp;&nbsp;| |&nbsp;&nbsp; | |&nbsp;&nbsp; |&nbsp;&nbsp; Documentation:<br>&nbsp;&nbsp;&nbsp;&nbsp; \_____| \_____/ |_____/ |_|&nbsp;&nbsp;\_\ |_|&nbsp;&nbsp; |_|&nbsp;&nbsp; |&nbsp;&nbsp; <a href="http://opencobra.github.io/cobratoolbox">http://opencobra.github.io/cobratoolbox</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br><br> &gt; Checking if git is installed ...&nbsp;&nbsp;Done.<br> &gt; Checking if the repository is tracked using git ...&nbsp;&nbsp;Done.<br> &gt; Checking if curl is installed ...&nbsp;&nbsp;Done.<br> &gt; Checking if remote can be reached ...&nbsp;&nbsp;Done.<br> &gt; Initializing and updating submodules ... Done.<br> &gt; Adding all the files of The COBRA Toolbox ...&nbsp;&nbsp;Done.<br> &gt; Define CB map output... set to svg.<br> &gt; Retrieving models ...&nbsp;&nbsp; Done.</div></div><div class="inlineElement embeddedOutputsWarningElement" uid="B734DA59" data-testid="output_1" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning:&nbsp;&nbsp;&gt; TranslateSBML is installed but is not working properly.</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="19C87093" data-testid="output_2" data-width="1041" style="width: 1071px;"><div class="textElement"> &gt; Try running<br>&nbsp;&nbsp; &gt;&gt; TranslateSBML('/home/vanja/fork-cobratoolbox/test/models/Ec_iAF1260_flux1.xml');<br>&nbsp;&nbsp; in order to debug.<br> &gt; Configuring solver environment variables ...<br>&nbsp;&nbsp; - [----] ILOG_CPLEX_PATH :&nbsp;&nbsp;--&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">instructions</a> )<br>&nbsp;&nbsp; - [*---] GUROBI_PATH: /opt/gurobi702/linux64/matlab<br>&nbsp;&nbsp; - [----] TOMLAB_PATH :&nbsp;&nbsp;--&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">instructions</a> )<br>&nbsp;&nbsp; - [----] MOSEK_PATH :&nbsp;&nbsp;--&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">instructions</a> )<br>&nbsp;&nbsp; Done.<br> &gt; Checking available solvers and solver interfaces ... Done.<br> &gt; Setting default solvers ... Done.<br> &gt; Saving the MATLAB path ... Done.<br>&nbsp;&nbsp; - The MATLAB path was saved as ~/pathdef.m.<br><br> &gt; Summary of available solvers and solver interfaces<br><br>			Support 	&nbsp;&nbsp; LP 	 MILP 	&nbsp;&nbsp; QP 	 MIQP 	&nbsp;&nbsp;NLP<br>	----------------------------------------------------------------------<br>	cplex_direct 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	dqqMinos&nbsp;&nbsp;&nbsp;&nbsp; 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	glpk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	gurobi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	ibm_cplex&nbsp;&nbsp;&nbsp;&nbsp;	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	matlab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;1<br>	mosek&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	pdco&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	quadMinos&nbsp;&nbsp;&nbsp;&nbsp;	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;1<br>	tomlab_cplex 	full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	qpng&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	experimental&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	tomlab_snopt 	experimental&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;0<br>	gurobi_mex&nbsp;&nbsp; 	legacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	lindo_old&nbsp;&nbsp;&nbsp;&nbsp;	legacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	lindo_legacy 	legacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	lp_solve&nbsp;&nbsp;&nbsp;&nbsp; 	legacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;- 	&nbsp;&nbsp;&nbsp;&nbsp;-<br>	opti&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	legacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0 	&nbsp;&nbsp;&nbsp;&nbsp;0<br>	----------------------------------------------------------------------<br>	Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	&nbsp;&nbsp;&nbsp;&nbsp;7 	&nbsp;&nbsp;&nbsp;&nbsp;2 	&nbsp;&nbsp;&nbsp;&nbsp;3 	&nbsp;&nbsp;&nbsp;&nbsp;1 	&nbsp;&nbsp;&nbsp;&nbsp;2<br><br> + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.<br><br><br> &gt; You can solve LP problems using: 'dqqMinos' - 'glpk' - 'gurobi' - 'matlab' - 'pdco' - 'quadMinos' - 'lp_solve' <br> &gt; You can solve MILP problems using: 'glpk' - 'gurobi' <br> &gt; You can solve QP problems using: 'gurobi' - 'pdco' - 'qpng' <br> &gt; You can solve MIQP problems using: 'gurobi' <br> &gt; You can solve NLP problems using: 'matlab' - 'quadMinos' <br><br> &gt; Checking for available updates ...<br> --&gt; You cannot update your fork using updateCobraToolbox(). [2cb5bc @ revised-tutorial].<br>&nbsp;&nbsp;&nbsp;&nbsp; Please use the MATLAB.devTools (<a href="https://github.com/opencobra/MATLAB.devTools">https://github.com/opencobra/MATLAB.devTools</a>).</div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">PROCEDURE</span></h2><h2 class = "S5"><span class = "S2">Generate a network</span></h2><p class = "S3"><span class = "S2">A constraint-based metabolic model contains the stoichiometric matrix with reactions and metabolites [1].</span></p><p class = "S3"><span class = "S14">S</span><span class = "S2"> is stoichiometric representation of metabolic networks corresponding to the reactions in the biochemical pathway. In an each column  of the </span><span class = "S14">S </span><span class = "S2">is a biochemical reaction and in each row is a precise metabolite. There is a stoichiometric coefficient of zero, which means that metabolite not participate in that distinct reaction. The coefficient also can be positive when the appropriate metabolite is produced, or negative for every metabolite depleted [1].</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">ReactionFormulas = {</span><span class = "S16">'glc-D[e]  -&gt; glc-D[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'glc-D[c] + atp[c]  -&gt; H[c] + adp[c] + g6p[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'g6p[c]  &lt;=&gt; f6p[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'atp[c] + f6p[c]  -&gt; H[c] + adp[c] + fdp[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'fdp[c] + h2o[c]  -&gt; f6p[c] + pi[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'fdp[c]  -&gt; g3p[c] + dhap[c]'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'dhap[c]  -&gt; g3p[c]'</span><span class = "S12">};</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">ReactionNames = {</span><span class = "S16">'GLCt1'</span><span class = "S15">, </span><span class = "S16">'HEX1'</span><span class = "S15">, </span><span class = "S16">'PGI'</span><span class = "S15">, </span><span class = "S16">'PFK'</span><span class = "S15">, </span><span class = "S16">'FBP'</span><span class = "S15">, </span><span class = "S16">'FBA'</span><span class = "S15">, </span><span class = "S16">'TPI'</span><span class = "S12">};</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">lowerbounds = [-20, 0, -20, 0, 0, -20, -20];</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">upperbounds = [20, 20, 20, 20, 20, 20, 20];</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = createModel(ReactionNames, ReactionNames, ReactionFormulas,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">                   </span><span class = "S16">'lowerBoundList'</span><span class = "S15">, lowerbounds, </span><span class = "S16">'upperBoundList'</span><span class = "S12">, upperbounds);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="A76B531D" data-testid="output_3" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite glc-D[e] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="088A95DE" data-testid="output_4" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite glc-D[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="9C8D092B" data-testid="output_5" data-width="1041" style="width: 1071px;"><div class="textElement">GLCt1	glc-D[e] 	&lt;=&gt;	glc-D[c] </div></div><div class="inlineElement embeddedOutputsWarningElement" uid="5A5BDAB6" data-testid="output_6" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite atp[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="36242A85" data-testid="output_7" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite H[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="C62E16FA" data-testid="output_8" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite adp[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="4E9DEED7" data-testid="output_9" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite g6p[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="C748F647" data-testid="output_10" data-width="1041" style="width: 1071px;"><div class="textElement">HEX1	glc-D[c] + atp[c] 	-&gt;	H[c] + adp[c] + g6p[c] </div></div><div class="inlineElement embeddedOutputsWarningElement" uid="D9FD7740" data-testid="output_11" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite f6p[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="864FBBDB" data-testid="output_12" data-width="1041" style="width: 1071px;"><div class="textElement">PGI	g6p[c] 	&lt;=&gt;	f6p[c] </div></div><div class="inlineElement embeddedOutputsWarningElement" uid="466C26FE" data-testid="output_13" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite fdp[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="727949CD" data-testid="output_14" data-width="1041" style="width: 1071px;"><div class="textElement">PFK	atp[c] + f6p[c] 	-&gt;	H[c] + adp[c] + fdp[c] </div></div><div class="inlineElement embeddedOutputsWarningElement" uid="C531204E" data-testid="output_15" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite h2o[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="B7B6FFF4" data-testid="output_16" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite pi[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="9ABAFB0F" data-testid="output_17" data-width="1041" style="width: 1071px;"><div class="textElement">FBP	fdp[c] + h2o[c] 	-&gt;	f6p[c] + pi[c] </div></div><div class="inlineElement embeddedOutputsWarningElement" uid="D42F7DA1" data-testid="output_18" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite g3p[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="6B8F664D" data-testid="output_19" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite dhap[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="541FFD23" data-testid="output_20" data-width="1041" style="width: 1071px;"><div class="textElement">FBA	fdp[c] 	&lt;=&gt;	g3p[c] + dhap[c] <br>TPI	dhap[c] 	&lt;=&gt;	g3p[c] </div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S3"><span class = "S2">We can now have a look at the different model fields created. The stoichiometry is stored in the S field of the model, which was described above. Since this is commonly a sparse matrix (i.e. it does contain a lot of zeros, to display it it is useful to use the full representation)</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">full(model.S)</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsMatrixElement" uid="9FF6E800" data-testid="output_21" data-width="1041" style="width: 1071px;"><div class="matrixElement veSpecifier"><div class="veVariableName"><span>ans = </span><span class="veVariableValueSummary veMetaSummary"></span></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:43.5,&quot;totalColumns&quot;:7,&quot;totalRows&quot;:12,&quot;charsPerColumn&quot;:6}"><div class="variableValue" style="width: 306.5px;">    -1     0     0     0     0     0     0
+     1    -1     0     0     0     0     0
+     0    -1     0    -1     0     0     0
+     0     1     0     1     0     0     0
+     0     1     0     1     0     0     0
+     0     1    -1     0     0     0     0
+     0     0     1    -1     1     0     0
+     0     0     0     1    -1    -1     0
+     0     0     0     0    -1     0     0
+     0     0     0     0     1     0     0
+</div><div class="horizontalEllipsis hide"></div><div class="verticalEllipsis"></div></div></div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S3"><span class = "S2">Some descriptive fields always present are model.mets and model.rxns which represent the metabolites and the reactions respectively. </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">model.mets</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement" uid="626BBAC9" data-testid="output_22" data-width="1041" style="width: 1071px;"><div class="textElement"><div>ans = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;'glc-D[e]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'glc-D[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'atp[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'H[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'adp[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'g6p[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'f6p[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'fdp[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'h2o[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'pi[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'g3p[c]'<br>&nbsp;&nbsp;&nbsp;&nbsp;'dhap[c]'<br><br></div></div></div></div></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">model.rxns</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement" uid="B0E75D2B" data-testid="output_23" data-width="1041" style="width: 1071px;"><div class="textElement"><div>ans = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;'GLCt1'<br>&nbsp;&nbsp;&nbsp;&nbsp;'HEX1'<br>&nbsp;&nbsp;&nbsp;&nbsp;'PGI'<br>&nbsp;&nbsp;&nbsp;&nbsp;'PFK'<br>&nbsp;&nbsp;&nbsp;&nbsp;'FBP'<br>&nbsp;&nbsp;&nbsp;&nbsp;'FBA'<br>&nbsp;&nbsp;&nbsp;&nbsp;'TPI'<br><br></div></div></div></div></div></div><p class = "S19"><span class = "S2">Fields in the COBRA model are commonly column vectors, which can be an important detail when writing functions manipulating these fields.</span></p><p class = "S3"><span class = "S2">There are a few more fields present in each COBRA model:</span></p><p class = "S3"><span class = "S2">model.lb, indicating the lower bounds of each reaction, and model.ub indicating the upper bound of a reaction.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">[{</span><span class = "S16">'Reaction ID'</span><span class = "S15">, </span><span class = "S16">'Lower Bound'</span><span class = "S15">, </span><span class = "S16">'Upper Bound'</span><span class = "S15">};</span><span class = "S20">...</span><span class = "S21">    % this displays an array with</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15"> model.rxns, num2cell(model.lb), num2cell(model.ub)] </span><span class = "S21">% reaction names and flux bounds. </span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement" uid="F395F38D" data-testid="output_24" data-width="1041" style="width: 1071px;"><div class="textElement"><div>ans = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;'Reaction ID'&nbsp;&nbsp;&nbsp;&nbsp;'Lower Bound'&nbsp;&nbsp;&nbsp;&nbsp;'Upper Bound'<br>&nbsp;&nbsp;&nbsp;&nbsp;'GLCt1'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-20]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'HEX1'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'PGI'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-20]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'PFK'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'FBP'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'FBA'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-20]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br>&nbsp;&nbsp;&nbsp;&nbsp;'TPI'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-20]&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20]<br><br></div></div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% This is a convenience function which does pretty much the same as the line above</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">printFluxBounds(model);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="1D490BE5" data-testid="output_25" data-width="1041" style="width: 1071px;"><div class="textElement">Reaction ID	&nbsp;&nbsp; Lower Bound	&nbsp;&nbsp; Upper Bound<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GLCt1	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -20.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HEX1	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PGI	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -20.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PFK	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FBP	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FBA	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -20.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TPI	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -20.000	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.000</div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S3"><span class = "S2">Before we start to modify the model, it might be useful to store some of the current properties of the model</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">mets_length = length(model.mets);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">rxns_length = length(model.rxns);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Creating, adding and handling reactions</span></h2><p class = "S3"><span class = "S2">If we want to add a reaction to the model or modify an existing reaction we are using function </span><span class = "S22">addReaction</span><span class = "S2">. </span></p><p class = "S3"><span class = "S2">We will add some more reactions from glycolysis.</span></p><ul class = "S7"><li class = "S8"><span class = "S23">The formula approach</span></li></ul><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'GAPDH'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">       </span><span class = "S16">'reactionFormula'</span><span class = "S15">, </span><span class = "S16">'g3p[c] + NAD[c] + 2 pi[c] -&gt; NADH[c] + H[c] + 13bpg[c]'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="D8285BD0" data-testid="output_26" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite NAD[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="DA661706" data-testid="output_27" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite NADH[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsWarningElement" uid="364ABFA5" data-testid="output_28" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite 13bpg[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="C53A6A74" data-testid="output_29" data-width="1041" style="width: 1071px;"><div class="textElement">GAPDH	2 pi[c] + g3p[c] + NAD[c] 	-&gt;	H[c] + NADH[c] + 13bpg[c] </div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'PGK'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">       </span><span class = "S16">'reactionFormula'</span><span class = "S15">, </span><span class = "S16">'13bpg[c] + adp[c] -&gt; atp[c] + 3pg[c]'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="A6457D42" data-testid="output_30" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite 3pg[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="008EB1A5" data-testid="output_31" data-width="1041" style="width: 1071px;"><div class="textElement">PGK	adp[c] + 13bpg[c] 	-&gt;	atp[c] + 3pg[c] </div></div></div></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'PGM'</span><span class = "S15">, </span><span class = "S16">'reactionFormula'</span><span class = "S15">, </span><span class = "S16">'3pg[c] &lt;=&gt; 2pg[c]' </span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="2D2E050B" data-testid="output_32" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Metabolite 2pg[c] not in model - added to the model</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="379E529E" data-testid="output_33" data-width="1041" style="width: 1071px;"><div class="textElement">PGM	3pg[c] 	&lt;=&gt;	2pg[c] </div></div></div></div></div><p class = "S19"><span class = "S2">Display of stoichiometric matrix after adding reactions. Note the enlarge link when you move your mouse over the output to display the full matrix:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">full(model.S) </span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsMatrixElement" uid="A42AE1C5" data-testid="output_34" style="width: 1071px;"><div class="matrixElement veSpecifier"><div class="veVariableName"><span>ans = </span><span class="veVariableValueSummary veMetaSummary"></span></div><div class="valueContainer" data-layout="{&quot;columnWidth&quot;:43.5,&quot;totalColumns&quot;:10,&quot;totalRows&quot;:17,&quot;charsPerColumn&quot;:6}"><div class="variableValue">    -1     0     0     0     0     0     0     0     0     0
+     1    -1     0     0     0     0     0     0     0     0
+     0    -1     0    -1     0     0     0     0     1     0
+     0     1     0     1     0     0     0     1     0     0
+     0     1     0     1     0     0     0     0    -1     0
+     0     1    -1     0     0     0     0     0     0     0
+     0     0     1    -1     1     0     0     0     0     0
+     0     0     0     1    -1    -1     0     0     0     0
+     0     0     0     0    -1     0     0     0     0     0
+     0     0     0     0     1     0     0    -2     0     0
+</div><div class="horizontalEllipsis hide"></div><div class="verticalEllipsis hide"></div></div></div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% one extra column is added(for added reaction) and 5 new </span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% rows(for NADH, NAD, 13bpg, 2pg and 3pg metabolites)</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S3"><span class = "S2">The following functions are used when we want to search reactions sequence in the model and change the order of the selected reaction.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">rxnID = findRxnIDs(model, model.rxns);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">model = moveRxn(model, 8, 1);</span></p></div></div><p class = "S19"><span class = "S2">While the latter does not modify the structure as such it can help in keeping a model tidy.</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><ul class = "S7"><li class = "S8"><span class = "S23">The list approach</span></li></ul><p class = "S3"><span class = "S2"> The </span><span class = "S22">addReaction</span><span class = "S2"> function has ability to recognize duplicate reactions when an order of metabolites and an abbreviation of the reaction are different.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'GAPDH2'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'metaboliteList'</span><span class = "S15">, {</span><span class = "S16">'g3p[c]'</span><span class = "S15">, </span><span class = "S16">'NAD[c]'</span><span class = "S15">, </span><span class = "S16">'pi[c]'</span><span class = "S15">, </span><span class = "S16">'13bpg[c]'</span><span class = "S15">, </span><span class = "S16">'NADH[c]'</span><span class = "S15">, </span><span class = "S16">'H[c]' </span><span class = "S15">},</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'stoichCoeffList'</span><span class = "S15">, [-1; -1; -2; 1; 1; 1], </span><span class = "S16">'reversible'</span><span class = "S12">, false);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="192DC923" data-testid="output_35" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Model already has the same reaction you tried to add: GAPDH</div><div class="diagnosticMessage-stackPart"></div></div></div></div></div></div><p class = "S19"><span class = "S2">Since the second call should not have added anything we will check if the number of the reaction increased by the three reactions we added (and not by the one duplicated) and the number of metabolites was incremented by five (13bpg, NAD, NADH, 23bpg and 2pg).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">assert(length(model.rxns) == rxns_length + 3);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">assert(length(model.mets) == mets_length + 5);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Adding Exchange, Sink and Demand reactions</span></h2><p class = "S3"><span class = "S2">Specific type of reactions in the constraint-based models are reactions that are using and recycling accumulated metabolites, or producing required metabolites in the model.</span></p><ol class = "S7"><li class = "S8"><span class = "S24">Exchange reactions </span><span class = "S0">-  Reactions added to the model to move metabolites across the created </span><span class = "S24">in silico </span><span class = "S0">compartments. Those compartments represent intra- and intercellular membranes.</span></li><li class = "S8"><span class = "S24">Sink reactions</span><span class = "S0"> - The metabolites, produced in reactions that are outside of an ambit of the system or in unknown reactions, are supplied to the network with reversible sink reactions.</span></li><li class = "S8"><span class = "S24">Demand reactions</span><span class = "S0"> - Irreversible reactions added to the model to consume metabolites that are deposited in the system.</span></li></ol><p class = "S3"><span class = "S2">There are two ways to implement that kind of reactions:</span></p><ol class = "S7"><li class = "S8"><span class = "S25">Use </span><span class = "S26">addReaction</span><span class = "S25"> with the documented function call:</span></li></ol><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'EX_glc-D[e]'</span><span class = "S15">, </span><span class = "S16">'metaboliteList'</span><span class = "S15">, {</span><span class = "S16">'glc-D[e]'</span><span class = "S15">} ,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">                    </span><span class = "S16">'stoichCoeffList'</span><span class = "S15">, </span><span class = "S15">[</span><span class = "S12">-1]);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="F8F78EAF" data-testid="output_36" data-width="1041" style="width: 1071px;"><div class="textElement">EX_glc-D[e]	glc-D[e] 	&lt;=&gt;	</div></div></div></div></div><p class = "S19"><span class = "S2">    In the bigger networks we can find our exchange reactions with the following functions:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% determines whether a reaction is a general exchange reaction and whether its an uptake.</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">[selExc, selUpt] = findExcRxns(model, 0, 1)</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement" uid="0CEF8922" data-testid="output_37" data-width="1041" style="width: 1071px;"><div class="textElement"><div>selExc = </div><div>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 1<br><br></div></div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="CFC06643" data-testid="output_38" data-width="1041" style="width: 1071px;"><div class="textElement"><div>selUpt = </div><div>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br>&nbsp;&nbsp; 0<br><br></div></div></div></div></div></div><p class = "S19"><span class = "S2">         </span><span class = "S4">2.  Use a utility function to create a particular reaction type: </span><span class = "S27">addExchangeRxn</span><span class = "S4">, </span><span class = "S27">addSinkReactions</span><span class = "S4">, </span><span class = "S27">addDemandReaction</span><span class = "S4">.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">model = addExchangeRxn(model, {</span><span class = "S16">'glc-D[e]'</span><span class = "S15">, </span><span class = "S16">'glc-D[c]'</span><span class = "S12">})</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="176BBEF9" data-testid="output_39" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Reaction with the same name already exists in the model, updating the reaction</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="A6EF63E7" data-testid="output_40" data-width="1041" style="width: 1071px;"><div class="textElement">EX_glc-D[e]	glc-D[e] 	&lt;=&gt;	<br>EX_glc-D[c]	glc-D[c] 	&lt;=&gt;	</div></div><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="83BE0DCE" data-testid="output_41" data-width="1041" style="width: 1071px; max-height: 266px;"><div class="textElement"><div>model = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxns: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S: [17×12 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb: [12×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ub: [12×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c: [12×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mets: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b: [17×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rules: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; genes: {0×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osense: -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;csense: [17×1 char]<br>&nbsp;&nbsp;&nbsp;&nbsp;rxnGeneMat: [12×0 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxnNames: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;subSystems: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metNames: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grRules: {12×1 cell}<br><br></div></div></div></div></div></div><p class = "S19"><span class = "S2">   </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">model = addSinkReactions(model, {</span><span class = "S16">'13bpg[c]'</span><span class = "S15">, </span><span class = "S16">'NAD[c]'</span><span class = "S12">})</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="16359EC6" data-testid="output_42" data-width="1041" style="width: 1071px;"><div class="textElement">sink_13bpg[c]	13bpg[c] 	&lt;=&gt;	<br>sink_NAD[c]	NAD[c] 	&lt;=&gt;	</div></div><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="AFF32ED3" data-testid="output_43" data-width="1041" style="width: 1071px; max-height: 266px;"><div class="textElement"><div>model = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxns: {14×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S: [17×14 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb: [14×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ub: [14×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c: [14×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mets: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b: [17×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rules: {14×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; genes: {0×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osense: -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;csense: [17×1 char]<br>&nbsp;&nbsp;&nbsp;&nbsp;rxnGeneMat: [14×0 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxnNames: {14×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;subSystems: {14×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metNames: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grRules: {14×1 cell}<br><br></div></div></div></div></div></div><p class = "S19"><span class = "S2"></span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15"> model = addDemandReaction(model, {</span><span class = "S16">'dhap[c]'</span><span class = "S15">, </span><span class = "S16">'g3p[c]'</span><span class = "S12">})</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="4C658460" data-testid="output_44" data-width="1041" style="width: 1071px;"><div class="textElement">DM_dhap[c]	dhap[c] 	-&gt;	<br>DM_g3p[c]	g3p[c] 	-&gt;	</div></div><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="B3B65C46" data-testid="output_45" data-width="1041" style="width: 1071px; max-height: 266px;"><div class="textElement"><div>model = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxns: {16×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S: [17×16 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb: [16×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ub: [16×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c: [16×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mets: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b: [17×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rules: {16×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; genes: {0×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osense: -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;csense: [17×1 char]<br>&nbsp;&nbsp;&nbsp;&nbsp;rxnGeneMat: [16×0 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxnNames: {16×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;subSystems: {16×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metNames: {17×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grRules: {16×1 cell}<br><br></div></div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Setting ratio between the reactions and changing reactions boundary</span></h2><p class = "S3"><span class = "S2">It is important to emphasize that previous knowledge base informations should be taken into account. Most of them could disrupt future analysis of the model. </span></p><p class = "S3"><span class = "S2">For instance, if it is familiar that flux through one reaction is </span><span class = "S14">X</span><span class = "S2"> times the flux through another reaction, it is recommended to specify that in your model. </span></p><p class = "S3"><span class = "S2"> E.g. </span><span style="vertical-align:-4"><img src="data:image/png;base64,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" width="272" height="21" /></span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addRatioReaction (model, {</span><span class = "S16">'EX_glc-D[c]'</span><span class = "S15">, </span><span class = "S16">'EX_glc-D[e]'</span><span class = "S12">}, [1; 2]);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Altering Reaction bounds</span></h2><p class = "S3"><span class = "S2">In order to respect the transport and exchange potential of a particular metabolite, or to resemble the different conditions in the model, we frequently need to set appropriate limits of the reactions.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = changeRxnBounds(model, </span><span class = "S16">'EX_glc-D[e]'</span><span class = "S15">, -18.5, </span><span class = "S16">'l'</span><span class = "S12">);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Modifiying Reactions</span></h2><p class = "S3"><span class = "S2">The </span><span class = "S22">addReaction</span><span class = "S2"> function also is a good choice when modifying reactions. By supplying a new stoichiometry, the old will be overwritten. For example further up, we added awrong stoichiometry for the GAP-Dehydrogenase with a phosphate coefficient of 2. (easily visiple by printing the reaction)</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">printRxnFormula(model, </span><span class = "S16">'rxnAbbrList'</span><span class = "S15">, </span><span class = "S16">'GAPDH'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="C8B239A9" data-testid="output_46" data-width="1041" style="width: 1071px;"><div class="textElement">GAPDH	2 pi[c] + g3p[c] + NAD[c] 	-&gt;	H[c] + NADH[c] + 13bpg[c] </div></div></div></div></div><p class = "S19"><span class = "S2">We can correct this by simply calling ddReaction again with the corrected stoichiometry. In essence parts which are not provided are taken from the old reaction, and only the new ones overwrite the existing data</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'GAPDH'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'metaboliteList'</span><span class = "S15">, {</span><span class = "S16">'g3p[c]'</span><span class = "S15">, </span><span class = "S16">'NAD[c]'</span><span class = "S15">, </span><span class = "S16">'pi[c]'</span><span class = "S15">, </span><span class = "S16">'13bpg[c]'</span><span class = "S15">, </span><span class = "S16">'NADH[c]'</span><span class = "S15">,</span><span class = "S16">'H[c]' </span><span class = "S15">},</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">    </span><span class = "S16">'stoichCoeffList'</span><span class = "S12">, [-1; -1; -1; 1; 1; 1]);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="1CC2A49A" data-testid="output_47" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Reaction with the same name already exists in the model, updating the reaction</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="E345E743" data-testid="output_48" data-width="1041" style="width: 1071px;"><div class="textElement">GAPDH	pi[c] + g3p[c] + NAD[c] 	-&gt;	H[c] + NADH[c] + 13bpg[c] </div></div></div></div></div><p class = "S19"><span class = "S2">We might also want to add a gene rule to the reaction. This can either be done using </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">model = changeGeneAssociation(model, </span><span class = "S16">'GAPDH'</span><span class = "S15">, </span><span class = "S16">'G1 and G2'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="2C3F5A46" data-testid="output_49" data-width="1041" style="width: 1071px;"><div class="textElement">New gene G1 added to model<br>New gene G2 added to model</div></div></div></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">printRxnFormula(model, </span><span class = "S16">'rxnAbbrList'</span><span class = "S15">, {</span><span class = "S16">'GAPDH'</span><span class = "S15">}, </span><span class = "S16">'gprFlag'</span><span class = "S12">, true);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="EAD43662" data-testid="output_50" data-width="1041" style="width: 1071px;"><div class="textElement">GAPDH	pi[c] + g3p[c] + NAD[c] 	-&gt;	H[c] + NADH[c] + 13bpg[c] 	G1 and G2</div></div></div></div></div><p class = "S19"><span class = "S2">The other option to achieve this is to use </span><span class = "S22">addReaction</span><span class = "S2"> and the </span><span class = "S22">geneRule</span><span class = "S2"> parameter </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'PGK'</span><span class = "S15">, </span><span class = "S16">'geneRule'</span><span class = "S15">, </span><span class = "S16">'G2 or G3'</span><span class = "S15">, </span><span class = "S16">'printLevel'</span><span class = "S12">, 0);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsWarningElement" uid="8DF92B36" data-testid="output_51" data-width="1041" style="width: 1071px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType"><div class="diagnosticMessage-messagePart">Warning: Reaction with the same name already exists in the model, updating the reaction</div><div class="diagnosticMessage-stackPart"></div></div></div><div class="inlineElement embeddedOutputsTextElement" uid="4918D20C" data-testid="output_52" data-width="1041" style="width: 1071px;"><div class="textElement">New gene G3 added to model</div></div></div></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">printRxnFormula(model, </span><span class = "S16">'gprFlag'</span><span class = "S12">, true);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="E4832EC8" data-testid="output_53" data-width="1041" style="width: 1071px;"><div class="textElement">GAPDH	pi[c] + g3p[c] + NAD[c] 	-&gt;	H[c] + NADH[c] + 13bpg[c] 	G1 and G2<br>GLCt1	glc-D[e] 	&lt;=&gt;	glc-D[c] 	<br>HEX1	glc-D[c] + atp[c] 	-&gt;	H[c] + adp[c] + g6p[c] 	<br>PGI	g6p[c] 	&lt;=&gt;	f6p[c] 	<br>PFK	atp[c] + f6p[c] 	-&gt;	H[c] + adp[c] + fdp[c] 	<br>FBP	fdp[c] + h2o[c] 	-&gt;	f6p[c] + pi[c] 	<br>FBA	fdp[c] 	&lt;=&gt;	g3p[c] + dhap[c] 	<br>TPI	dhap[c] 	&lt;=&gt;	g3p[c] 	<br>PGK	adp[c] + 13bpg[c] 	-&gt;	atp[c] + 3pg[c] 	G2 or G3<br>PGM	3pg[c] 	&lt;=&gt;	2pg[c] 	<br>EX_glc-D[e]	glc-D[e] 	&lt;=&gt;	2 Ratio_EX_glc-D[c]_EX_glc-D[e] 	<br>EX_glc-D[c]	glc-D[c] + Ratio_EX_glc-D[c]_EX_glc-D[e] 	&lt;=&gt;		<br>sink_13bpg[c]	13bpg[c] 	&lt;=&gt;		<br>sink_NAD[c]	NAD[c] 	&lt;=&gt;		<br>DM_dhap[c]	dhap[c] 	-&gt;		<br>DM_g3p[c]	g3p[c] 	-&gt;		</div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Remove reactions and metabolites</span></h2><p class = "S3"><span class = "S2">In order to detach reactions from the model, the foll</span><span class = "S2">owing function has been used:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15"> model = removeRxns(model, {</span><span class = "S16">'EX_glc-D[c]'</span><span class = "S15">, </span><span class = "S16">'EX_glc-D[e]'</span><span class = "S15">, </span><span class = "S16">'sink_13bpg[c]'</span><span class = "S15">, </span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">                             </span><span class = "S16">'sink_NAD[c]'</span><span class = "S15">, </span><span class = "S16">'DM_dhap[c]'</span><span class = "S15">, </span><span class = "S16">'DM_g3p[c]'</span><span class = "S12">});</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12"></span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12"> assert(rxns_length + 3 == length(model.rxns)); </span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15"> </span><span class = "S21">% The reaction length has been reevaluated </span></p></div></div><p class = "S19"><span class = "S2">Remove metabolites</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">  model = removeMetabolites(model, {</span><span class = "S16">'3pg[c]'</span><span class = "S15">, </span><span class = "S16">'2pg[c]'</span><span class = "S12">}, false);</span></p></div></div><p class = "S19"><span class = "S2">For instance, in previous code the many metabolites from '</span><span class = "S22">GAPDH</span><span class = "S2">' were deleted, but the reaction is still present in the model (since there are more metabolites left). The false indicates, that empty reactions should not be removed.</span></p><p class = "S3"><span class = "S2">To delete metabolites and reactions with zero rows and columns,the following function can be used:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">  model = removeTrivialStoichiometry(model)</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="733D8CC4" data-testid="output_54" data-width="1041" style="width: 1071px; max-height: 280px;"><div class="textElement"><div>model = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxns: {9×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S: [15×9 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb: [9×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ub: [9×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c: [9×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mets: {15×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b: [15×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rules: {9×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; genes: {3×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osense: -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;csense: [15×1 char]<br>&nbsp;&nbsp;&nbsp;&nbsp;rxnGeneMat: [9×3 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxnNames: {9×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;subSystems: {9×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metNames: {15×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grRules: {9×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;note: 'EX_glc-D[c] andEX_glc-D[e]are set to have a ratio of1:2.'<br><br></div></div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">  model = removeRxns(model,{</span><span class = "S16">'GAPDH'</span><span class = "S15">, </span><span class = "S16">'PGK'</span><span class = "S12">});</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Search for duplicates and comparison of two models</span></h2><p class = "S3"><span class = "S2">Since genome-scale metabolic models are expanding every day [2], the need for comparison and merge of them is also spreading. </span></p><p class = "S3"><span class = "S2">The elementary functions for the model manipulation, besides main actions, simultaneously perform the structural analysis and comparison (e.g. </span><span class = "S22">addReaction</span><span class = "S2">). Likewise, there are additional functions that are only dealing with analysing similarities and differences within and between the models.</span></p><ul class = "S7"><li class = "S8"><span class = "S0">Checking for reaction duplicates by reaction abbreviation, by using method '</span><span class = "S28">S</span><span class = "S0">' that will not detect reverse reactions, and method '</span><span class = "S28">FR</span><span class = "S0">' that will neglect reactions direction:</span></li></ul><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">[model, </span><span class = "S15">removedRxn</span><span class = "S15">, </span><span class = "S15">rxnRelationship</span><span class = "S15">] = checkDuplicateRxn(model, </span><span class = "S16">'S'</span><span class = "S12">, 1, 1);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="F76E1DFD" data-testid="output_55" data-width="1041" style="width: 1071px;"><div class="textElement">Checking for reaction duplicates by stoichiometry ...<br> no duplicates found.</div></div></div></div></div><p class = "S19"><span class = "S2">Adding duplicate reaction to the model:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">model = addReaction(model, </span><span class = "S16">'GLCt1_duplicate_reverse'</span><span class = "S15">,</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">                    </span><span class = "S16">'metaboliteList'</span><span class = "S15">, {</span><span class = "S16">'glc-D[e]'</span><span class = "S15">, </span><span class = "S16">'glc-D[c]'</span><span class = "S15">},</span><span class = "S17">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">                    </span><span class = "S16">'stoichCoeffList'</span><span class = "S15">, [1 -1], </span><span class = "S16">'lowerBound'</span><span class = "S15">, 0, </span><span class = "S17">...</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">                    </span><span class = "S16">'upperBound'</span><span class = "S15">, 20, </span><span class = "S16">'checkDuplicate'</span><span class = "S12">, 0);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="AF7A1E80" data-testid="output_56" data-width="1041" style="width: 1071px;"><div class="textElement">GLCt1_duplicate_reverse	glc-D[c] 	-&gt;	glc-D[e] </div></div></div></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">fprintf(</span><span class = "S16">'&gt;&gt; Detecting duplicates using S method\n'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="A90560D2" data-testid="output_57" data-width="1041" style="width: 1071px;"><div class="textElement">&gt;&gt; Detecting duplicates using S method</div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">method = </span><span class = "S16">'S'</span><span class = "S12">; </span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% will not be removed as does not detect reverse reaction</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">[model,</span><span class = "S15">removedRxn</span><span class = "S15">, </span><span class = "S15">rxnRelationship</span><span class = "S12">] = checkDuplicateRxn(model, method, 1, 1);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="3472EAFC" data-testid="output_58" data-width="1041" style="width: 1071px;"><div class="textElement">Checking for reaction duplicates by stoichiometry ...<br> no duplicates found.</div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">assert(rxns_length + 1 == length(model.rxns)); </span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% The reaction length has been reevaluated</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12"></span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S15">fprintf(</span><span class = "S16">'&gt;&gt; Detecting duplicates with using FR method\n'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="EDAD76A4" data-testid="output_59" data-width="1041" style="width: 1071px;"><div class="textElement">&gt;&gt; Detecting duplicates with using FR method</div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">method = </span><span class = "S16">'FR'</span><span class = "S12">;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% will be removed as detects reverse reaction</span></p></div><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">[model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="950A9A83" data-testid="output_60" data-width="1041" style="width: 1071px;"><div class="textElement">Checking for reaction duplicates by stoichiometry (up to orientation) ...<br>&nbsp;&nbsp;&nbsp;&nbsp; Keep: 	GLCt1	glc-D[e] 	&lt;=&gt;	glc-D[c] <br>Duplicate: 	GLCt1_duplicate_reverse	glc-D[c] 	-&gt;	glc-D[e] </div></div></div></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">assert(rxns_length == length(model.rxns));</span></p></div></div><ul class = "S7"><li class = "S8"><span class = "S0">Function</span><span class = "S28"> checkCobraModelUnique</span><span class = "S0"> marks the r</span><span class = "S0">eactions and metabolites that</span><span class = "S0"> are not unique in the model.</span></li></ul><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">model = checkCobraModelUnique(model, false)</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="12C64BD6" data-testid="output_61" data-width="1041" style="width: 1071px; max-height: 280px;"><div class="textElement"><div>model = </div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxns: {7×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S: [12×7 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb: [7×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ub: [7×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c: [7×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mets: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b: [12×1 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rules: {7×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; genes: {3×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osense: -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;csense: [12×1 char]<br>&nbsp;&nbsp;&nbsp;&nbsp;rxnGeneMat: [7×3 double]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rxnNames: {7×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;subSystems: {7×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metNames: {12×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grRules: {7×1 cell}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;note: 'EX_glc-D[c] andEX_glc-D[e]are set to have a ratio of1:2.'<br><br></div></div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Changing the model's objective</span></h2><p class = "S3"><span class = "S2">Simulating different conditions in the model is often necessery in favor of performing calculations that investigate a specific objective. One of the elementary objectives is optimal growth [3]. Model can be modified to get different conditions with changing the model objective:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">modelNew</span><span class = "S15"> = changeObjective(model, </span><span class = "S16">'GLCt1'</span><span class = "S12">, 0.5);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12"></span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S21">% multiple rxns, default coefficient (1)</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S15">modelNew = changeObjective(model, {</span><span class = "S16">'PGI'</span><span class = "S15">; </span><span class = "S16">'PFK'</span><span class = "S15">; </span><span class = "S16">'FBP'</span><span class = "S12">});</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12"></span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">The direction of reactions </span></h2><p class = "S3"><span class = "S2">For some purposes, it is important to only have irreversible reactions in a model, i.e. only allowing positive flux in all reactions. This can be important if e.g. absolute flux values are of interest and negative flux would reduce an objective while it should actually increase it. The COBRA toolbox offers functionality to change a model to an irreversible format, by splitting all reversible reactions and adjusting the respective lower and upper bounds, such that the model capacities stay the same. </span></p><p class = "S3"><span class = "S2">Lets see, how the glycolysis model currently looks:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">printRxnFormula(model);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="25A8A57D" data-testid="output_62" data-width="1041" style="width: 1071px;"><div class="textElement">GLCt1	glc-D[e] 	&lt;=&gt;	glc-D[c] <br>HEX1	glc-D[c] + atp[c] 	-&gt;	H[c] + adp[c] + g6p[c] <br>PGI	g6p[c] 	&lt;=&gt;	f6p[c] <br>PFK	atp[c] + f6p[c] 	-&gt;	H[c] + adp[c] + fdp[c] <br>FBP	fdp[c] + h2o[c] 	-&gt;	f6p[c] + pi[c] <br>FBA	fdp[c] 	&lt;=&gt;	g3p[c] + dhap[c] <br>TPI	dhap[c] 	&lt;=&gt;	g3p[c] </div></div></div></div></div><p class = "S19"><span class = "S2">To convert a model to a</span><span class = "S2">n irreversible model use the following command:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);</span></p></div></div><p class = "S19"><span class = "S2">Lets compare the irreversible model with the original model:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">printRxnFormula(modelIrrev);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="41CA9FB2" data-testid="output_63" data-width="1041" style="width: 1071px;"><div class="textElement">GLCt1_f	glc-D[e] 	-&gt;	glc-D[c] <br>HEX1	glc-D[c] + atp[c] 	-&gt;	H[c] + adp[c] + g6p[c] <br>PGI_f	g6p[c] 	-&gt;	f6p[c] <br>PFK	atp[c] + f6p[c] 	-&gt;	H[c] + adp[c] + fdp[c] <br>FBP	fdp[c] + h2o[c] 	-&gt;	f6p[c] + pi[c] <br>FBA_f	fdp[c] 	-&gt;	g3p[c] + dhap[c] <br>TPI_f	dhap[c] 	-&gt;	g3p[c] <br>GLCt1_b	glc-D[c] 	-&gt;	glc-D[e] <br>PGI_b	f6p[c] 	-&gt;	g6p[c] <br>FBA_b	g3p[c] + dhap[c] 	-&gt;	fdp[c] <br>TPI_b	g3p[c] 	-&gt;	dhap[c] </div></div></div></div></div><p class = "S19"><span class = "S2">You will notice, that there </span><span class = "S2">are more reactions in this model, and that all reactions which have a lower bound &lt; 0 are split in two. </span></p><p class = "S3"><span class = "S2">There is also a function to convert an irreversible model to a reversible model:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">modelRev = convertToReversible(modelIrrev);</span></p></div></div><p class = "S19"><span class = "S2">If we now compare the reactions of this mod</span><span class = "S2">el with those from the original model, they should look the same.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S11 lineNode"><span class = "S12">printRxnFormula(modelRev);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="FF6E0AFD" data-testid="output_64" data-width="1041" style="width: 1071px;"><div class="textElement">GLCt1	glc-D[e] 	&lt;=&gt;	glc-D[c] <br>HEX1	glc-D[c] + atp[c] 	-&gt;	H[c] + adp[c] + g6p[c] <br>PGI	g6p[c] 	&lt;=&gt;	f6p[c] <br>PFK	atp[c] + f6p[c] 	-&gt;	H[c] + adp[c] + fdp[c] <br>FBP	fdp[c] + h2o[c] 	-&gt;	f6p[c] + pi[c] <br>FBA	fdp[c] 	&lt;=&gt;	g3p[c] + dhap[c] <br>TPI	dhap[c] 	&lt;=&gt;	g3p[c] </div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">REFERENCES</span></h2><p class = "S3"><span class = "S2">[1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance analysis? </span><span class = "S14">Nat. Biotechnol., 28</span><span class = "S2">(3), 245–248.</span></p><p class = "S3"><span class = "S2">[2] Feist, A. M., Palsson, B. (2008). The growing scope of applications of genome-scale metabolic reconstructions: the case of </span><span class = "S14">E. coli</span><span class = "S2">. </span><span class = "S14">Nature Biotechnology, 26</span><span class = "S2">(6), 659–667.</span></p><p class = "S3"><span class = "S2">[3] Feist, A. M., Palsson, B. O. (2010). The Biomass Objective Function. </span><span class = "S14">Current Opinion in Microbiology, 13</span><span class = "S2">(3), 344–349.</span></p></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Model manipulation
+% *Author(s): Vanja Vlasov, Thomas Pfau, Systems Biochemistry Group, University 
+% of Luxembourg*
+% 
+% *Reviewer(s):*
+%% INTRODUCTION
+% In this tutorial, we will do a manipulation with the simple model of the first 
+% few reactions of the glycolisis metabolic pathway as created in the "Model Creation" 
+% tutorial. 
+% 
+% Glycolysis is the metabolic pathway that occurs in most organisms in the 
+% cytosol of the cell. First, we will use the beginning of that pathway to create 
+% a simple constraint-based metabolic network (Figure 1).
+% 
+% 
+% 
+%                                                                    Figure 
+% 1: A small metabolic network consisting of the seven reactions in the glycolisis 
+% pathway. 
+% 
+% At the beginning of the reconstruction, an integrity of the draft reconstruction 
+% must be initially assessed. The accuracy of the stochiometry, necessity of each 
+% reaction and metabolite, direction and reversibility of the reactions needed 
+% to be evaluated. 
+% 
+% After creating or loading the model, the model can be modified to simulate 
+% different conditions, such as:
+% 
+% * Creating, adding and handling reactions;
+% * Adding Exchange, Sink and Demand reactions;
+% * Altering reaction bounds;
+% * Altering Reactions;
+% * Remove reactions and metabolites;
+% * Search for duplicates and comparison of two models;
+% * Changing the model objective;
+% * Changing the direction of reaction(s);
+%% EQUIPMENT SETUP
+% Start CobraToolbox
+
+initCobraToolbox;
+%% PROCEDURE
+%% Generate a network
+% A constraint-based metabolic model contains the stoichiometric matrix with 
+% reactions and metabolites [1].
+% 
+% _S_ is stoichiometric representation of metabolic networks corresponding 
+% to the reactions in the biochemical pathway. In an each column  of the _S _is 
+% a biochemical reaction and in each row is a precise metabolite. There is a stoichiometric 
+% coefficient of zero, which means that metabolite not participate in that distinct 
+% reaction. The coefficient also can be positive when the appropriate metabolite 
+% is produced, or negative for every metabolite depleted [1].
+
+ReactionFormulas = {'glc-D[e]  -> glc-D[c]',...
+    'glc-D[c] + atp[c]  -> H[c] + adp[c] + g6p[c]',...
+    'g6p[c]  <=> f6p[c]',...
+    'atp[c] + f6p[c]  -> H[c] + adp[c] + fdp[c]',...
+    'fdp[c] + h2o[c]  -> f6p[c] + pi[c]',...
+    'fdp[c]  -> g3p[c] + dhap[c]',...
+    'dhap[c]  -> g3p[c]'};
+ReactionNames = {'GLCt1', 'HEX1', 'PGI', 'PFK', 'FBP', 'FBA', 'TPI'};
+lowerbounds = [-20, 0, -20, 0, 0, -20, -20];
+upperbounds = [20, 20, 20, 20, 20, 20, 20];
+model = createModel(ReactionNames, ReactionNames, ReactionFormulas,...
+                   'lowerBoundList', lowerbounds, 'upperBoundList', upperbounds);
+%% 
+% We can now have a look at the different model fields created. The stoichiometry 
+% is stored in the S field of the model, which was described above. Since this 
+% is commonly a sparse matrix (i.e. it does contain a lot of zeros, to display 
+% it it is useful to use the full representation)
+
+full(model.S)
+%% 
+% Some descriptive fields always present are model.mets and model.rxns which 
+% represent the metabolites and the reactions respectively. 
+
+model.mets
+model.rxns
+%% 
+% Fields in the COBRA model are commonly column vectors, which can be an 
+% important detail when writing functions manipulating these fields.
+% 
+% There are a few more fields present in each COBRA model:
+% 
+% model.lb, indicating the lower bounds of each reaction, and model.ub indicating 
+% the upper bound of a reaction.
+
+[{'Reaction ID', 'Lower Bound', 'Upper Bound'};...    % this displays an array with
+ model.rxns, num2cell(model.lb), num2cell(model.ub)] % reaction names and flux bounds. 
+% This is a convenience function which does pretty much the same as the line above
+printFluxBounds(model);
+%% 
+% Before we start to modify the model, it might be useful to store some 
+% of the current properties of the model
+
+mets_length = length(model.mets);
+rxns_length = length(model.rxns);
+%% Creating, adding and handling reactions
+% If we want to add a reaction to the model or modify an existing reaction we 
+% are using function |addReaction|. 
+% 
+% We will add some more reactions from glycolysis.
+% 
+% * The formula approach
+
+model = addReaction(model, 'GAPDH',...
+       'reactionFormula', 'g3p[c] + NAD[c] + 2 pi[c] -> NADH[c] + H[c] + 13bpg[c]');
+model = addReaction(model, 'PGK',...
+       'reactionFormula', '13bpg[c] + adp[c] -> atp[c] + 3pg[c]');
+model = addReaction(model, 'PGM', 'reactionFormula', '3pg[c] <=> 2pg[c]' );
+%% 
+% Display of stoichiometric matrix after adding reactions. Note the enlarge 
+% link when you move your mouse over the output to display the full matrix:
+
+full(model.S) 
+% one extra column is added(for added reaction) and 5 new 
+% rows(for NADH, NAD, 13bpg, 2pg and 3pg metabolites)
+%% 
+% The following functions are used when we want to search reactions sequence 
+% in the model and change the order of the selected reaction.
+
+rxnID = findRxnIDs(model, model.rxns);
+model = moveRxn(model, 8, 1);
+%% 
+% While the latter does not modify the structure as such it can help in 
+% keeping a model tidy.
+% 
+% * The list approach
+% 
+%  The |addReaction| function has ability to recognize duplicate reactions 
+% when an order of metabolites and an abbreviation of the reaction are different.
+
+model = addReaction(model, 'GAPDH2',...
+    'metaboliteList', {'g3p[c]', 'NAD[c]', 'pi[c]', '13bpg[c]', 'NADH[c]', 'H[c]' },...
+    'stoichCoeffList', [-1; -1; -2; 1; 1; 1], 'reversible', false);
+%% 
+% Since the second call should not have added anything we will check if 
+% the number of the reaction increased by the three reactions we added (and not 
+% by the one duplicated) and the number of metabolites was incremented by five 
+% (13bpg, NAD, NADH, 23bpg and 2pg).
+
+assert(length(model.rxns) == rxns_length + 3);
+assert(length(model.mets) == mets_length + 5);
+%% Adding Exchange, Sink and Demand reactions
+% Specific type of reactions in the constraint-based models are reactions that 
+% are using and recycling accumulated metabolites, or producing required metabolites 
+% in the model.
+% 
+% # _Exchange reactions _-  Reactions added to the model to move metabolites 
+% across the created _in silico _compartments. Those compartments represent intra- 
+% and intercellular membranes.
+% # _Sink reactions_ - The metabolites, produced in reactions that are outside 
+% of an ambit of the system or in unknown reactions, are supplied to the network 
+% with reversible sink reactions.
+% # _Demand reactions_ - Irreversible reactions added to the model to consume 
+% metabolites that are deposited in the system.
+% 
+% There are two ways to implement that kind of reactions:
+% 
+% # *Use |addReaction| with the documented function call:*
+
+model = addReaction(model, 'EX_glc-D[e]', 'metaboliteList', {'glc-D[e]'} ,...
+                    'stoichCoeffList', [-1]);
+%% 
+%     In the bigger networks we can find our exchange reactions with the 
+% following functions:
+
+% determines whether a reaction is a general exchange reaction and whether its an uptake.
+[selExc, selUpt] = findExcRxns(model, 0, 1)
+%% 
+%          *2.  Use a utility function to create a particular reaction type: 
+% |addExchangeRxn|, |addSinkReactions|, |addDemandReaction|.*
+
+model = addExchangeRxn(model, {'glc-D[e]', 'glc-D[c]'})
+%% 
+%    
+
+model = addSinkReactions(model, {'13bpg[c]', 'NAD[c]'})
+%% 
+% 
+
+ model = addDemandReaction(model, {'dhap[c]', 'g3p[c]'})
+%% Setting ratio between the reactions and changing reactions boundary
+% It is important to emphasize that previous knowledge base informations should 
+% be taken into account. Most of them could disrupt future analysis of the model. 
+% 
+% For instance, if it is familiar that flux through one reaction is _X_ times 
+% the flux through another reaction, it is recommended to specify that in your 
+% model. 
+% 
+%  E.g. $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn><mtext> 
+% </mtext><mi mathvariant="italic">v</mi><mtext> </mtext><mi>EX</mi><mo stretchy="false">_</mo><mi>glc</mi><mo>&minus;</mo><mi>D</mi><mo>[</mo><mi>c</mi><mo>]</mo><mo 
+% stretchy="false">=</mo><mn>2</mn><mtext> </mtext><mi mathvariant="italic">v</mi><mtext> 
+% </mtext><mi mathvariant="normal">EX</mi><mo stretchy="false">_</mo><mi>glc</mi><mo>&minus;</mo><mi>D</mi><mo>[</mo><mi 
+% mathvariant="italic">e</mi><mo>]</mo></mrow></math>$
+
+model = addRatioReaction (model, {'EX_glc-D[c]', 'EX_glc-D[e]'}, [1; 2]);
+%% *Altering Reaction bounds*
+% In order to respect the transport and exchange potential of a particular metabolite, 
+% or to resemble the different conditions in the model, we frequently need to 
+% set appropriate limits of the reactions.
+
+model = changeRxnBounds(model, 'EX_glc-D[e]', -18.5, 'l');
+%% Modifiying Reactions
+% The |addReaction| function also is a good choice when modifying reactions. 
+% By supplying a new stoichiometry, the old will be overwritten. For example further 
+% up, we added awrong stoichiometry for the GAP-Dehydrogenase with a phosphate 
+% coefficient of 2. (easily visiple by printing the reaction)
+
+printRxnFormula(model, 'rxnAbbrList', 'GAPDH');
+%% 
+% We can correct this by simply calling ddReaction again with the corrected 
+% stoichiometry. In essence parts which are not provided are taken from the old 
+% reaction, and only the new ones overwrite the existing data
+
+model = addReaction(model, 'GAPDH',...
+    'metaboliteList', {'g3p[c]', 'NAD[c]', 'pi[c]', '13bpg[c]', 'NADH[c]','H[c]' },...
+    'stoichCoeffList', [-1; -1; -1; 1; 1; 1]);
+%% 
+% We might also want to add a gene rule to the reaction. This can either 
+% be done using 
+
+model = changeGeneAssociation(model, 'GAPDH', 'G1 and G2');
+printRxnFormula(model, 'rxnAbbrList', {'GAPDH'}, 'gprFlag', true);
+%% 
+% The other option to achieve this is to use |addReaction| and the |geneRule| 
+% parameter 
+
+model = addReaction(model, 'PGK', 'geneRule', 'G2 or G3', 'printLevel', 0);
+printRxnFormula(model, 'gprFlag', true);
+%% Remove reactions and metabolites
+% In order to detach reactions from the model, the following function has been 
+% used:
+
+ model = removeRxns(model, {'EX_glc-D[c]', 'EX_glc-D[e]', 'sink_13bpg[c]', ...
+                             'sink_NAD[c]', 'DM_dhap[c]', 'DM_g3p[c]'});
+
+ assert(rxns_length + 3 == length(model.rxns)); 
+ % The reaction length has been reevaluated 
+%% 
+% Remove metabolites
+
+  model = removeMetabolites(model, {'3pg[c]', '2pg[c]'}, false);
+%% 
+% For instance, in previous code the many metabolites from '|GAPDH|' were 
+% deleted, but the reaction is still present in the model (since there are more 
+% metabolites left). The false indicates, that empty reactions should not be removed.
+% 
+% To delete metabolites and reactions with zero rows and columns,the following 
+% function can be used:
+
+  model = removeTrivialStoichiometry(model)
+  model = removeRxns(model,{'GAPDH', 'PGK'});
+%% Search for duplicates and comparison of two models
+% Since genome-scale metabolic models are expanding every day [2], the need 
+% for comparison and merge of them is also spreading. 
+% 
+% The elementary functions for the model manipulation, besides main actions, 
+% simultaneously perform the structural analysis and comparison (e.g. |addReaction|). 
+% Likewise, there are additional functions that are only dealing with analysing 
+% similarities and differences within and between the models.
+% 
+% * Checking for reaction duplicates by reaction abbreviation, by using method 
+% '|S|' that will not detect reverse reactions, and method '|FR|' that will neglect 
+% reactions direction:
+
+[model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, 'S', 1, 1);
+%% 
+% Adding duplicate reaction to the model:
+
+model = addReaction(model, 'GLCt1_duplicate_reverse',...
+                    'metaboliteList', {'glc-D[e]', 'glc-D[c]'},...
+                    'stoichCoeffList', [1 -1], 'lowerBound', 0, ...
+                    'upperBound', 20, 'checkDuplicate', 0);
+fprintf('>> Detecting duplicates using S method\n');
+method = 'S'; 
+% will not be removed as does not detect reverse reaction
+[model,removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1);
+assert(rxns_length + 1 == length(model.rxns)); 
+% The reaction length has been reevaluated
+
+fprintf('>> Detecting duplicates with using FR method\n');
+method = 'FR';
+% will be removed as detects reverse reaction
+[model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1);
+assert(rxns_length == length(model.rxns));
+%% 
+% * Function| checkCobraModelUnique| marks the reactions and metabolites that 
+% are not unique in the model.
+
+model = checkCobraModelUnique(model, false)
+%% Changing the model's objective
+% Simulating different conditions in the model is often necessery in favor of 
+% performing calculations that investigate a specific objective. One of the elementary 
+% objectives is optimal growth [3]. Model can be modified to get different conditions 
+% with changing the model objective:
+
+modelNew = changeObjective(model, 'GLCt1', 0.5);
+
+% multiple rxns, default coefficient (1)
+modelNew = changeObjective(model, {'PGI'; 'PFK'; 'FBP'});
+
+%% The direction of reactions 
+% For some purposes, it is important to only have irreversible reactions in 
+% a model, i.e. only allowing positive flux in all reactions. This can be important 
+% if e.g. absolute flux values are of interest and negative flux would reduce 
+% an objective while it should actually increase it. The COBRA toolbox offers 
+% functionality to change a model to an irreversible format, by splitting all 
+% reversible reactions and adjusting the respective lower and upper bounds, such 
+% that the model capacities stay the same. 
+% 
+% Lets see, how the glycolysis model currently looks:
+
+printRxnFormula(model);
+%% 
+% To convert a model to an irreversible model use the following command:
+
+[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+%% 
+% Lets compare the irreversible model with the original model:
+
+printRxnFormula(modelIrrev);
+%% 
+% You will notice, that there are more reactions in this model, and that 
+% all reactions which have a lower bound < 0 are split in two. 
+% 
+% There is also a function to convert an irreversible model to a reversible 
+% model:
+
+modelRev = convertToReversible(modelIrrev);
+%% 
+% If we now compare the reactions of this model with those from the original 
+% model, they should look the same.
+
+printRxnFormula(modelRev);
+%% REFERENCES
+% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
+% analysis? _Nat. Biotechnol., 28_(3), 245–248.
+% 
+% [2] Feist, A. M., Palsson, B. (2008). The growing scope of applications 
+% of genome-scale metabolic reconstructions: the case of _E. coli_. _Nature Biotechnology, 
+% 26_(6), 659–667.
+% 
+% [3] Feist, A. M., Palsson, B. O. (2010). The Biomass Objective Function. 
+% _Current Opinion in Microbiology, 13_(3), 344–349.
+##### SOURCE END #####
+--></body></html>

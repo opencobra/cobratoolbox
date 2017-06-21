@@ -1,4 +1,4 @@
-% Code matalb
+% Code matlab
 clear all
 %####################################################################
 % Definitions des constantes :

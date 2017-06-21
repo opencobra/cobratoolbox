@@ -1,36 +1,43 @@
-function model=findSExRxnInd(model,nRealMet,printLevel)
-%  model=findSExRxnInd(model,nRealMet,printLevel)
-%Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
+function model = findSExRxnInd(model, nRealMet, printLevel)
+% Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
+% Finds the reactions in the model which export/import from the model boundary
 %
-%finds the reactions in the model which export/import from the model
-%boundary
-%e.g. Exchange reactions
-%     Demand reactions
-%     Sink reactions
+% e.g. Exchange reactions,
+% Demand reactions,
+% Sink reactions
 %
-%INPUT
-% model
-% model.biomassRxnAbbr      abbreviation of biomass reaction
-% printLevel
+% USAGE:
 %
-%OPTIONAL INPUT
-% nRealMet                  specified in case extra rows in S which dont
-%                           correspond to metabolties
-%OUTPUT
+%    model = findSExRxnInd(model, nRealMet, printLevel)
 % model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
-% model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.
-% model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
-% model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
-% model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
-% model.biomassBool         Boolean of biomass reaction
 %
-% OPTIONAL OUTPUT
-% model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
-% model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
-% model.ExchRxnBool         Boolean of exchange reactions. Prefix 'EX_' or 'Exch_' or Ex_
+% INPUT:
+%    model:         structure with:
+%
+%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
+%
+% OPTIONAL INPUT:
+%    nRealMet:      specified in case extra rows in `S` which dont correspond to metabolties
+%    printLevel:    verbose level
+%
+% OUTPUT:
+%    model:         structure with:
+%
+%                     * .SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.
+%                     * .SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+%                     * .SOnlyIntMetBool - Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
+%                     * .SExMetBool - Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
+%                     * .SOnlyExMetBool - Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
+%                     * .biomassBool - Boolean of biomass reaction
+%                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
+%                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
+%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` (optional field)
+%
+% .. Author: -  Ronan Fleming
 
-% Ronan Fleming
-
+if ~exist('printLevel','var')
+    printLevel=0;
+end
 
 [nMet,nRxn]=size(model.S);
 
@@ -45,10 +52,6 @@ else
     if isempty(nRealMet)
         nRealMet=length(model.mets);
     end
-end
-
-if ~exist('printLevel','var')
-    printLevel=0;
 end
 
 %locate biomass reaction if there is one
@@ -115,8 +118,18 @@ for n=1:nRxn
     end
 end
 
-% models with typical COBRA abbreviations - heuristic
-model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+% models with typical HMR subsystems - heuristic
+if isfield(model,'subSystems')
+    model.ExchRxnBool=strcmp('Exchange reactions',model.subSystems) | strcmp('Artificial reactions',model.subSystems) | strcmp('Pool reactions',model.subSystems);
+    if isfield(model,'rxnComps')
+        model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
+    end
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+else
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model

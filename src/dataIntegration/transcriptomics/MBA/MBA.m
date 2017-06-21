@@ -1,4 +1,4 @@
-function tissueModel = MBA(model, medium_set, high_set, tol, core)
+function tissueModel = MBA(model, medium_set, high_set, tol)
 % Uses the MBA algorithm (`Jerby et al., 2010`) to extract a context
 % specific model using data. MBA algorithm defines high-confidence reactions
 % to ensure activity in the extracted model. Medium confidence reactions
@@ -8,7 +8,7 @@ function tissueModel = MBA(model, medium_set, high_set, tol, core)
 %
 % USAGE:
 %
-%    tissueModel = MBA(model, medium_set, high_set, tol, core)
+%    tissueModel = MBA(model, medium_set, high_set)
 %
 % INPUTS:
 %    model:          input model (COBRA model structure)
@@ -18,8 +18,6 @@ function tissueModel = MBA(model, medium_set, high_set, tol, core)
 % OPTIONAL INPUTS:
 %    tol:            minimum flux threshold for "expressed" reactions
 %                    (default 1e-8)
-%    core:           cell with reaction names (strings) that are manually put in
-%                    the high confidence core
 %
 % OUTPUT:
 %    tissueModel:    extracted model
@@ -33,34 +31,29 @@ function tissueModel = MBA(model, medium_set, high_set, tol, core)
 if nargin < 4 || isempty(tol)
     tol = 1e-8;
 end
-if nargin < 5 || isempty(core)
-    core={};
-end
 
-    if ~isempty (core)
-        high_set= union(high_set,core);
-    end
     NC = setdiff(model.rxns,union(high_set,medium_set));
-
+    
     %MBA
     PM = model;
     removed = {};
-
+    
     param.epsilon=tol;
     param.modeFlag=0;
     param.method='fastcc';
-
+    
     while ~isempty(NC)
         ri = randi([1,numel(NC)],1);
-        r = NC{ri};
-
+        r = NC{ri};       
+            
         PM = removeRxns(PM, r);
         [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(PM,param);
         inactive=PM.rxns(fluxConsistentRxnBool==0);
         eH = intersect(inactive, high_set);
         eM = intersect(inactive, medium_set);
         eX = setdiff(inactive,union(high_set,medium_set));
-
+        
+        epsil=0.5;
         if numel(eH)==0 && numel(eM) < epsil*numel(eX)
             PM = removeRxns(PM, inactive);
             NC = setdiff(NC,inactive);
@@ -70,6 +63,6 @@ end
         end
     end
 
-    tissueModel = removeNonUsedGenes(PM);
+    tissueModel = removeUnusedGenes(PM);
 
 end

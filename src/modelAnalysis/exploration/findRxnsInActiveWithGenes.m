@@ -1,4 +1,4 @@
-function Reaclist = findRxnsInActiveWithGenes(model,genes)
+function Reaclist = findRxnsInActiveWithGenes(model, genes)
 % Finds all reactions for which the provided genes
 % show sufficient evidence of their absence. (i.e. make the corresponding GPRs always be zero)
 %
@@ -6,15 +6,15 @@ function Reaclist = findRxnsInActiveWithGenes(model,genes)
 %
 %    [Reaclist] = findRxnsActiveWithGenes(model, genes)
 %
-% INPUT:
-%    model:             COBRA model structure
-%    genes:             A list of gene identifiers
+% INPUTS:
+%    model:        COBRA model structure
+%    genes:        A list of gene identifiers
 %
-% OUTPUTS:
-%    Reaclist:          Cell array of reactions which are supported by the
-%                       provided genes
+% OUTPUT:
+%    Reaclist:     Cell array of reactions which are supported by the provided genes
 %
 % NOTE:
+%
 %    Only reactions which do have a GPR are considered for this function.
 %    Reactions without GPRs are ignored, as we don't have evidence.
 %

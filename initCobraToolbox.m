@@ -191,7 +191,7 @@ function initCobraToolbox()
     end
 
     % add the folders of The COBRA Toolbox
-    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
+    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
 
     if ENV_VARS.printLevel
         fprintf(' > Adding all the files of The COBRA Toolbox ... ')
@@ -208,8 +208,14 @@ function initCobraToolbox()
 
     % add specific subfolders
     for k = 1:length(folders)
-        addpath(genpath([CBTDIR, filesep, folders{k}]));
+        tmpDir = [CBTDIR, filesep, folders{k}];
+        if exist(tmpDir, 'dir') == 7
+            addpath(genpath(tmpDir));
+        end
     end
+
+    % add the docs/source/notes folder
+    addpath(genpath([CBTDIR filesep 'docs' filesep 'source' filesep 'notes']));
 
     % print a success message
     if ENV_VARS.printLevel
@@ -289,10 +295,10 @@ function initCobraToolbox()
     SOLVERS.dqqMinos.type = {'LP'};
     SOLVERS.glpk.type = {'LP', 'MILP'};
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP'};
     SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
-    SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
+    SOLVERS.pdco.type = {'LP', 'QP'};
     SOLVERS.quadMinos.type = {'LP', 'NLP'};
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
@@ -530,7 +536,7 @@ function checkGit()
         end
     else
         fprintf(result_gitVersion);
-        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html.', 'here', 'here: '), '.\n']);
+        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
         error(' > git is not installed.');
     end
 end
@@ -565,7 +571,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     else
         if throwError
             fprintf(result_curl);
-            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html.', 'here', 'here: '), '.\n']);
+            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
             error(' > curl is not installed.');
         else
             if ENV_VARS.printLevel

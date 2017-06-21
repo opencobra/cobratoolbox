@@ -46,16 +46,16 @@ function formulas = printRxnFormula(model, varargin)
 optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup    
+    %Now, we need to check, whether this is a formula, or a complex setup
         tempargin = cell(1,2*(numel(varargin)));
 
         for i = 1:numel(varargin)
-            
+
                 tempargin{2*(i-1)+1} = optionalParameters{i};
                 tempargin{2*(i-1)+2} = varargin{i};
-        end        
+        end
         varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -86,7 +86,7 @@ if gprFlag && ~isfield(model,'grRules')
 end
 
 if metNameFlag && ~isfield(model,'metNames')
-    %if we want to print the metNames, but they don't exist, just use the mets instead. 
+    %if we want to print the metNames, but they don't exist, just use the mets instead.
     warning('metNames requested, but no metNames Field exists in the model, using mets instead');
     model.metNames = model.mets;
 end
@@ -103,17 +103,8 @@ if (~iscell(rxnAbbrList))
     end
 end
 
-% not all models have rev field
-if ~isfield(model, 'rev')
-    model.rev = ones(size(model.S, 2), 1);
-    for n = 1:size(model.S, 2)
-        if model.lb(n) >= 0
-            model.rev(n) = 0;
-        end
-    end
-end
 
-for i = 1:length(rxnAbbrList);
+for i = 1:length(rxnAbbrList)
 
     rxnAbbr = rxnAbbrList{i};
 
@@ -219,3 +210,8 @@ for i = 1:length(rxnAbbrList);
     formulas{i} = formulaStr;
 end
 formulas = formulas';
+
+% %pass out a character string if only one reaction in the abbreviation list
+% if length(rxnAbbrList)==1
+%     formulas=formulas{1};
+% end

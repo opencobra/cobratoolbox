@@ -1,22 +1,32 @@
 function solvers = checkGAMSSolvers(problemType)
-%% DESCRIPTION
 % This function return the solvers that can be used in GAMS to solve the
 % type of problem especified by the user
-
-%% INPUTS
-% problemType(obligatory)   Type: string
-%                           Description: string containing the problem type
-%                           for which this function will search solvers.
-%                           Example: problem type = 'LP'
-%                           (Linear Programming)
-
-%% OUTPUTS
-% solvers                   Type: cell array of solvers that are available
-%                           for GAMS in your systems which allow solve
-%                           problem of type "problemType"
 %
-
-%% CODE
+% USAGE:
+%
+%    solvers = checkGAMSSolvers(problemType) 
+%
+% INPUTS:
+%    problemType               Type: string
+%                              Description: string containing the problem
+%                              type for which this function will search
+%                              solvers. 
+%                              E.g.: problem type = 'LP' (Linear
+%                              Programming)
+%
+% OUTPUTS:
+%    solvers                   Type: cell array for available GAMS solvers
+%                              in your systems which allows the user to
+%                              solve problems of type "problemType"
+% 
+% EXAMPLE:
+%
+%    solvers = checkGAMSSolvers('MIP') 
+%    % returns the GAMS solvers available to solve Mixed Integer Programming
+%    % problems. You can see the entire list of problem types with the
+%    % function getAvailableGAMSSolvers.m
+%
+% .. Author: - Sebasti·n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 1
     error('The type of problem must be specified')

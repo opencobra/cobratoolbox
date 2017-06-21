@@ -1,29 +1,27 @@
 function [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(pairedGrowthOrg1, pairedGrowthOrg2, singleGrowthOrg1, singleGrowthOrg2, sigD)
 % This function evaluates the outcome of pairwise growth of two organisms
 % compared with the two organisms separately. There are six possible
-% outcomes of theinteraction, and nine possible outcomes from the
-% perspective of each organism. 
+% outcomes of the interaction, and nine possible outcomes from the
+% perspective of each organism.
 %
 % USAGE:
 %
 %    [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(pairedGrowthOrg1, pairedGrowthOrg2, singleGrowthOrg1, singleGrowthOrg2, sigD)
 %
-%
-%
 % INPUTS:
-%    pairedGrowthOrg1:   first organism's growth rate in co-growth
-%    pairedGrowthOrg2:   second organism's growth rate in co-growth
-%    singleGrowthOrg1:   first organism's growth rate when grown separately
-%    singleGrowthOrg2:   second organism's growth rate when grown separately
+%    pairedGrowthOrg1:    first organism's growth rate in co-growth
+%    pairedGrowthOrg2:    second organism's growth rate in co-growth
+%    singleGrowthOrg1:    first organism's growth rate when grown separately
+%    singleGrowthOrg2:    second organism's growth rate when grown separately
 %
 % OPTIONAL INPUT:
-%    sigD:               the difference between co-growth and single growth that is considered significant (10% =0.1 by default)
-% 
+%    sigD:                the difference between co-growth and single growth that is considered significant (10% =0.1 by default)
+%
 % OUTPUTS:
-%    iAFirstOrg:  the consequence of the interaction of the first organism
-%    iASecondOrg: the consequence of the interaction of the second organism
-%    iATotal:     the overall type of interaction between the two organisms
-%                 (six possible interactions in total)
+%    iAFirstOrg:          the consequence of the interaction of the first organism
+%    iASecondOrg:         the consequence of the interaction of the second organism
+%    iATotal:             the overall type of interaction between the two organisms
+%                         (six possible interactions in total)
 %
 % .. Author: - Almut Heinken 16.03.2017
 %
@@ -31,7 +29,7 @@ function [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(paired
 % organisms. Please note that the outcomes depend on the two genome-scale
 % reconstructions joined and are highly dependent on the applied
 % constraints.
-% 
+%
 % * Competition: both organisms grow slower in co-growth than separately
 %   (same outcome for both).
 %
@@ -55,11 +53,10 @@ function [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(paired
 %
 % * Mutualism: both organisms growth faster in co-growth than separately
 %   (same outcome for both)
-% 
-% Please cite *Magnusdottir, Heinken et al., Nat Biotechnol. 2017
-% 35(1):81-89*
-% if you use this script for your own analysis.
 %
+% Please cite `Magnusdottir, Heinken et al., Nat Biotechnol. 2017
+% 35(1):81-89` if you use this script for your own analysis.
+
 if nargin < 4
     error('Four growth rates are required as input!')
 end

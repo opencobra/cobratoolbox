@@ -18,17 +18,19 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %    [modelJoint] = createMultipleSpeciesModel(models, nameTagsModels, modelHost, nameTagHost)
 %
 % INPUTS:
-%    models:     cell array of COBRA models(at least one).
-%                Format
-%                   * models{1,1} = model 1
-%                   * models{2,1} = model 2...
+%    models:            cell array of COBRA models(at least one).
+%                       Format
+%
+%                         * models{1,1} = model 1
+%                         * models{2,1} = model 2...
 %
 % OPTIONAL INPUTS:
 %    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
 %                       corresponding to each model.
 %                       Format
-%                           * nameTagsModels{1,1} = 'name tag 1'
-%                           * nameTagsModels{2,1} = 'name tag 2'...
+%
+%                         * nameTagsModels{1,1} = 'name tag 1'
+%                         * nameTagsModels{2,1} = 'name tag 2'...
 %    modelHost:         COBRA model for host
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
 %
@@ -37,8 +39,6 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 2011-2017 Last edited by A.H., 01.03.2017
-%
-
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -67,6 +67,17 @@ eTag = 'u';
 exTag = 'e';
 % find exchange reactions for models, but leaves demand and sink reactions
 % do this for all models to be added, remove exchange reactions from host while leaving demand and sink reactions
+%First, find the minimal number of fields common to all models.
+presentinallModels = fieldnames(models{1});
+missingFields = {};
+for i = 2:modelNumber
+    cfields = fieldnames(models{i});
+    missingFields = union(missingFields,setxor(cfields,presentinallModels));
+    presentinallModels = intersect(presentinallModels,cfields);
+end
+fprintf('The following fields are missing in several models, they will not be merged:\n');
+disp(missingFields);
+models = restrictModelsToFields(models,presentinallModels);
 
 for i = 1:modelNumber
     % a new model each turn
@@ -97,7 +108,7 @@ if nargin >= 3
             ERxnForm = regexprep(ERxnForm, '\[e\]', '\[b\]');
             for j = 1:length(ERxnForm)
                 [modelHost,rxnIDexists] = addReaction(modelHost,...
-                                                      strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.rev(ERxnind(j)), ...
+                                                      strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.lb(ERxnind(j)) < 0, ...
                                                       modelHost.lb(ERxnind(j)), modelHost.ub(ERxnind(j)), modelHost.c(ERxnind(j)), 'Host exchange', '', '', '', false);
             end
         end
@@ -133,10 +144,10 @@ if nargin >= 3
     if modelNumber > 1
         for i = 2:modelNumber
             model = modelStorage(i, 1);
-            [modelJoint] = mergeTwoModels(modelJoint, model, 1, 0);
+            [modelJoint] = mergeTwoModels(modelJoint, model, 1);
         end
     end
-    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1, 0);
+    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1);
 
     modelJoint = addExchangeRxn(modelJoint, unique(MexGJoint));
 

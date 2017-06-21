@@ -6,10 +6,10 @@ function upInd = printUptakeBound(model)
 %    uptakeInd = printUptakeBound(model)
 %
 % INPUTS:
-%    model:     CORBRA model structure
+%    model:    CORBRA model structure
 %
 % OUTPUTS:
-%    upInd:     Vector containing indecies of uptake reactions
+%    upInd:    Vector containing indecies of uptake reactions
 %
 % .. Authors:
 %       - Markus Herrgard 6/9/06

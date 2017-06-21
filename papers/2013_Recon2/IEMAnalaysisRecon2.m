@@ -70,7 +70,7 @@ R2.UniqueGenes=unique(tok);
 R2.IEMGenes=IEMs(ismember(IEMs(:,2),R2.UniqueGenes),2);
 R2.IEMNames=IEMs(ismember(IEMs(:,2),R2.UniqueGenes),1);
 %% perform fastFVA calculations
-SetWorkerCount(nworkers);
+setWorkerCount(nworkers);
 
 ExR2 = modelRecon2Model.rxns(modelRecon2Model.EXRxnBool);
 ExR2ID = find(modelRecon2Model.EXRxnBool);

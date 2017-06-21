@@ -1,4 +1,4 @@
-function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)
+function [model, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, geneList, downRegFraction)
 % Deletes one or more genes and constrain the reactions
 % affected to zero and appends '_deleted' to the gene(s)
 %

@@ -1,61 +1,71 @@
-function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn] = findMassLeaksAndSiphons(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
-% Find the metabolites in a network that either leak mass or act as a
+function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
+% Finds the metabolites in a network that either leak mass or act as a
 % siphon for mass, with (default) or without the bounds on a model.
-% The approach is to solve the problem
-% max   ||y||_0
-% s.t.  Sv - y = 0
-% with either
-%       l <= v <= u
-% or
-%      -inf <= v <= inf
-% and with either
-%       0 <= y <= inf   (semipositive net stoichiometry = leak)
-% or
-%       -inf <= y <= 0  (seminegative net stoichiometry = siphon)
+% The approach is to solve the problem:
 %
-% If there are any zero rows of S, then the corresponding entry in y is
-% then set to zero.
+% .. math::
 %
-% INPUT
-% model                 (the following fields are required - others can be supplied)
-%   .S                   m x n stoichiometric matrix
+%    max  ~& ||y||_0 \\
+%    s.t. ~& Sv - y = 0
 %
-% OPTIONAL INPUT
-% model
-%   .lb                  Lower bounds
-%   .ub                  Upper bounds
-%   .SConsistentMetBool
-%   .SConsistentRxnBool
-% metBool               m x 1 boolean vector of metabolites to test for leakage
-% rxnBool               n x 1 boolean vector of reactions to test for leakage
-% modelBoundsFlag       {0,(1)}
-%                       0 = set all reaction bounds to -inf, inf
-%                       1 = use reaction bounds provided by model.lb and .ub
-% params.epsilon        (1e-4)
-% params.eta            (feasTol*100), smallest nonzero mass leak/siphon
-% params.theta          (0.5) parameter of capped l1 approximation
-% params.method         {('quasiConcave'),'dc'} method of approximation
-% printLevel            {(0),1, 2 = debug}
+% with either :math:`l \leq v \leq u`
+% or :math:`-\infty \leq v \leq \infty`
 %
-% OUTPUT
-% leakRxnBool       m x 1 boolean of metabolites in a positive leakage mode
-% leakRxnBool       n x 1 boolean of reactions exclusively involved in a positive leakage mode
-% siphonMetBool     m x 1 boolean of metabolites in a negative leakage mode
-% siphonRxnBool     n x 1 boolean of reactions exclusively involved in a negative leakage mode
-% leakY                 m x 1 boolean of metabolites in a positive leakage mode
-% siphonY               m x 1 boolean of metabolites in a negative siphon mode
-% statp             status (positive leakage modes)
-%                       1 =  Solution found
-%                       2 =  Unbounded
-%                       0 =  Infeasible
-%                      -1 =  Invalid input
-% statn               status (negative leakage modes)
-%                       1 =  Solution found
-%                       2 =  Unbounded
-%                       0 =  Infeasible
-%                      -1 =  Invalid input
-
-% Ronan Fleming Jan 2017
+% and with either :math:`0 \leq y \leq \infty` (semipositive net stoichiometry = leak)
+% or :math:`-\infty \leq y \leq 0` (seminegative net stoichiometry = siphon)
+% 
+% If there are any zero rows of `S`, then the corresponding entry in y is
+% set to zero.
+%
+% USAGE:
+%
+%    [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
+%
+% INPUT:
+%    model:              structure with fields (only `.S` is mandatory)
+%
+%                          * .S - `m` x `n` stoichiometric matrix
+%                          * .lb - Lower bounds
+%                          * .ub - Upper bounds
+%                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
+%                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%
+% OPTIONAL INPUTS:
+%    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
+%    rxnBool:            `n` x 1 boolean vector of reactions to test for leakage
+%    modelBoundsFlag:    {0, (1)}
+%
+%                          * 0 = set all reaction bounds to -inf, inf
+%                          * 1 = use reaction bounds provided by model.lb and .ub
+%    params:             structure with fields:
+%
+%                          * params.epsilon - (1e-4)
+%                          * params.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
+%                          * params.theta - (0.5) parameter of capped l1 approximation
+%                          * params.method - {('quasiConcave'), 'dc'} method of approximation
+%    printLevel:         {(0), 1, 2 = debug}
+%
+% OUTPUTS:
+%    leakRxnBool:        `m` x 1 boolean of metabolites in a positive leakage mode
+%    leakRxnBool:        `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
+%    siphonMetBool:      `m` x 1 boolean of metabolites in a negative leakage mode
+%    siphonRxnBool:      `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
+%    leakY:              `m` x 1 boolean of metabolites in a positive leakage mode
+%    siphonY:            `m` x 1 boolean of metabolites in a negative siphon mode
+%    statp:              status (positive leakage modes)
+%
+%                          * 1 =  Solution found
+%                          * 2 =  Unbounded
+%                          * 0 =  Infeasible
+%                          * -1 =  Invalid input
+%    statn:              status (negative leakage modes)
+%
+%                          * 1 =  Solution found
+%                          * 2 =  Unbounded
+%                          * 0 =  Infeasible
+%                          * -1 =  Invalid input
+%
+% .. Author: - Ronan Fleming, Jan 2017
 
 [nMet,nRxn]=size(model.S);
 
@@ -280,7 +290,9 @@ end
 
 %only metBool rxnBool were tested for leaks
 leakMetBool=leakY>=params.eta;
+%leakRxnBool = abs(Vp)>=params.eta;
 leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'exclusive');
+%leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'inclusive');
 if printLevel>0
     fprintf('%6u\t%6u\t%s\n',nnz(leakMetBool),nnz(leakRxnBool),' semipositive leaking metabolites (and exclusive reactions).')
 end
@@ -321,7 +333,9 @@ if printLevel>0 && any(leakMetBool)
 end
 
 siphonMetBool=siphonY>=params.eta;
+%siphonRxnBool = abs(Vn)>=params.eta;
 siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'exclusive');
+%siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'inclusive');
 if printLevel>0
     fprintf('%6u\t%6u\t%s\n',nnz(siphonMetBool),nnz(siphonRxnBool),' seminegative siphon metabolites (and exclusive reactions).');
 end

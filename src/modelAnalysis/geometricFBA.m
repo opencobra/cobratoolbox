@@ -1,34 +1,34 @@
-function flux = geometricFBA(model,varargin)
-%geometricFBA finds a unique optimal FBA solution that is (in some sense)
-%central to the range of possible fluxes; as described in
-%   K Smallbone, E Simeonidis (2009). Flux balance analysis: 
-%   A geometric perspective. J Theor Biol 258: 311-315
-%   http://dx.doi.org/10.1016/j.jtbi.2009.01.027
+function flux = geometricFBA(model, varargin)
+% Finds a unique optimal FBA solution that is (in some sense)
+% central to the range of possible fluxes; as described in
+% `K Smallbone, E Simeonidis (2009). Flux balance analysis:
+% A geometric perspective. J Theor Biol 258: 311-315
+% http://dx.doi.org/10.1016/j.jtbi.2009.01.027`
 %
-% flux = geometricFBA(model)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    flux = geometricFBA(model, varargin)
 %
-%OPTIONAL INPUTS
+% INPUT:
+%    model:         COBRA model structure
+%
+%
+% OPTIONAL INPUTS:
+%    printLevel:    [default: 1]  printing level,
+%                   = 0 - silent
+%                   = 1 - show algorithm progress and times
+%    epsilon:       [default: 1e-6]	convergence tolerance of algorithm,
+%                   defined in more detail in paper above
+%    flexRel:       [default: 0] flexibility to flux bounds
+%                   try e.g. 1e-3 if the algorithm has convergence problems
+%
+% OUTPUT:
+%    flux:          unique centered flux
+%
 % Optional parameters can be entered as parameter name followed by
-% parameter value: i.e. ...,'epsilon',1e-9)
-% printLevel    [default: 1]  printing level
-%               = 0     silent
-%               = 1     show algorithm progress and times
-% epsilon       [default: 1e-6]	convergence tolerance of algorithm, 
-%               defined in more detail in paper above
-% flexRel       [default: 0] flexibility to flux bounds
-%               try e.g. 1e-3 if the algorithm has convergence problems
+% parameter value: i.e. ...,'epsilon', 1e-9)
 %
-%OUTPUT
-% flux          unique centered flux
-%
-%kieran smallbone, 5 May 2010
-%
-% This script is made available under the Creative Commons
-% Attribution-Share Alike 3.0 Unported Licence (see
-% www.creativecommons.org). 
+% .. Author: - Kieran Smallbone, 5 May 2010
 
 param = struct('epsilon',1e-6,'flexRel',0,'printLevel',1);
 field = fieldnames(param);
@@ -66,7 +66,7 @@ v(J) = (L(J)+U(J))/2;
 J = find(isnan(v));
 
 if param.printLevel
-    fprintf('%s\t%g\n\n%s\t@%s\n','# reactions:',length(v),'iteration #0',datestr(now,16)); 
+    fprintf('%s\t%g\n\n%s\t@%s\n','# reactions:',length(v),'iteration #0',datestr(now,16));
 end
 
 L0 = L; U0 = U;
@@ -94,13 +94,13 @@ for k = J(:)'
         vM = 0;
     end
     if abs(vU - vL) < param.epsilon
-        vL = (1-sign(vM)* param.flexTol)*vM; 
-        vU = (1+sign(vM)* param.flexTol)*vM; 
+        vL = (1-sign(vM)* param.flexTol)*vM;
+        vU = (1+sign(vM)* param.flexTol)*vM;
     end
     L(k) = vL; U(k) = vU;
 end
 
-v = nan(size(L)); 
+v = nan(size(L));
 J = (U-L < param.epsilon);
 v(J) = (L(J)+U(J))/2; v = v.*(abs(v) > param.epsilon);
 
@@ -109,27 +109,27 @@ if param.printLevel
 end
 
 % iterate
-J  = find(U-L >= param.epsilon); 
+J  = find(U-L >= param.epsilon);
 n   = 1;
 mu  = [];
 Z   = [];
 
 while ~isempty(J)
-    
+
     if param.printLevel
-        fprintf('%s #%g\t@%s\n','iteration',n,datestr(now,16)); 
+        fprintf('%s #%g\t@%s\n','iteration',n,datestr(now,16));
     end
-    
+
     if n == 1
         M = zeros(size(L));
     else
         M = (L+U)/2;
     end
-    
-    mu(:,n) = M;                                                %#ok<AGROW>    
-    allL = L; allU = U; allA = A; allB = b;    
+
+    mu(:,n) = M;                                                %#ok<AGROW>
+    allL = L; allU = U; allA = A; allB = b;
     [a1,a2] = size(A);
-    
+
     % build new matrices
     for k = 1:(n-1)
         [b1,b2] = size(allA);
@@ -142,7 +142,7 @@ while ~isempty(J)
         allL = [allL;zeros(2*a2,1)];                            %#ok<AGROW>
         allU = [allU;inf*ones(2*a2,1)];                         %#ok<AGROW>
     end
-    
+
     [b1,b2] = size(allA);
     f = zeros(b2+2*a2,1); f((b2+1):end) = -1;
     allA = [allA,sparse(b1,2*a2);
@@ -150,22 +150,22 @@ while ~isempty(J)
     allB = [allB;M];                                            %#ok<AGROW>
     allL = [allL;zeros(2*a2,1)];                                %#ok<AGROW>
     allU = [allU;inf*ones(2*a2,1)];                             %#ok<AGROW>
-    
+
     [v,opt,conv] = easyLP(f,allA,allB,allL,allU);
-    if ~conv, disp('error: no convergence'); flux = (L+U)/2; return; end    
-    
+    if ~conv, disp('error: no convergence'); flux = (L+U)/2; return; end
+
     opt = ceil(-opt/eps)*eps;
-    Z(n) = opt;                                                 %#ok<AGROW>    
+    Z(n) = opt;                                                 %#ok<AGROW>
     allA = [allA; sparse(f(:)')];                               %#ok<AGROW>
     allB = [allB; -opt];                                        %#ok<AGROW>
-    
-    for k = J(:)'        
+
+    for k = J(:)'
         f = zeros(length(allL),1); f(k) = -1;
         [dummy,opt,conv] = easyLP(f,allA,allB,allL,allU);
         if conv
             vL = max(-opt,L(k));
         else
-            vL = L(k); 
+            vL = L(k);
         end
         [dummy,opt,conv] = easyLP(-f,allA,allB,allL,allU);
         if conv
@@ -184,34 +184,34 @@ while ~isempty(J)
             vM = 0;
         end
         if abs(vU - vL) < param.epsilon
-            vL = (1-sign(vM)* param.flexTol)*vM; 
-            vU = (1+sign(vM)* param.flexTol)*vM; 
+            vL = (1-sign(vM)* param.flexTol)*vM;
+            vU = (1+sign(vM)* param.flexTol)*vM;
         end
-        L(k) = vL; 
+        L(k) = vL;
         U(k) = vU;
     end
-    
-    v = nan(size(L)); 
+
+    v = nan(size(L));
     J = (U-L < param.epsilon);
     v(J) = (L(J)+U(J))/2; v = v.*(abs(v) > param.epsilon);
 
     if param.printLevel
         fprintf('%s\t\t%g\n%s\t\t%g\n\n','fixed:',sum(J),'@ zero:',sum(v==0));
     end
-    
+
     n = n+1;
-    J = find(U-L >= param.epsilon);   
-    
+    J = find(U-L >= param.epsilon);
+
     flux = v;
 end
 
 function [v,fOpt,conv] = easyLP(c,A,b,lb,ub)
 %easyLP
 %
-% solves the linear programming problem: 
-%   max c'x subject to 
+% solves the linear programming problem:
+%   max c'x subject to
 %   A x = b
-%   lb <= x <= ub. 
+%   lb <= x <= ub.
 %
 % Usage: [v,fOpt,conv] = easyLP(c,A,b,lb,ub)
 %

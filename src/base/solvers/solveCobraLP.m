@@ -1,103 +1,103 @@
 function solution = solveCobraLP(LPproblem, varargin)
-% solveCobraLP Solve constraint-based LP problems
+% Solves constraint-based LP problems
 %
-% solution = solveCobraLP(LPproblem, parameters)
+% USAGE:
 %
-% INPUT
-% LPproblem Structure containing the following fields describing the LP
-% problem to be solved
-%  A      LHS matrix
-%  b      RHS vector
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
+%    solveCobraLP(LPproblem, varargin)
 %
-% OPTIONAL INPUTS
-% Optional parameters can be entered in three different ways {A,B,C}
-% A) as a generic solver parameter followed by parameter value:
-% e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,);
-% e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,'feasTol',1e-8);
+% INPUT:
+%    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
-% B) parameters structure with field names specific to a particular solvers
-% internal parameter fields
-% e.g.[solution]=solveCobraLP(LPCoupled,parameters);
+%                     * .A - LHS matrix
+%                     * .b - RHS vector
+%                     * .c - Objective coeff vector
+%                     * .lb - Lower bound vector
+%                     * .ub - Upper bound vector
+%                     * .osense - Objective sense (-1 max, +1 min)
+%                     * .csense - Constraint senses, a string containting the constraint sense for
+%                       each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
-% C) as parameter followed by parameter value, with a parameter structure
-% with field names specific to a particular solvers internal parameter,
-% fields as the LAST argument
-% e.g [solution]=solveCobraLP(LPCoupled,'printLevel',1,'feasTol',1e-6,parameters);
+% OPTIONAL INPUTS:
+%    printLevel:    Printing level
 %
-% printLevel    Printing level
-%               = 0    Silent (Default)
-%               = 1    Warnings and Errors
-%               = 2    Summary information
-%               = 3    More detailed information
-%               > 10   Pause statements, and maximal printing (debug mode)
-% saveInput     Saves LPproblem to filename specified in field.
-%               i.e. parameters.saveInput = 'LPproblem.mat';
-% minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);
-%               If not zero then, minimise the Euclidean length
-%               of the solution to the LP problem. minNorm ~1e-6 should be
-%               high enough for regularisation yet maintain the same value for
-%               the linear part of the objective. However, this should be
-%               checked on a case by case basis, by optimization with and
-%               without regularisation.
-% primalOnly    {(0),1} 1=only return the primal vector (lindo solvers)
+%                     * 0 - Silent (Default)
+%                     * 1 - Warnings and Errors
+%                     * 2 - Summary information
+%                     * 3 - More detailed information
+%                     * > 10 - Pause statements, and maximal printing (debug mode)
+%    saveInput:     Saves LPproblem to filename specified in field.
+%                   i.e. parameters.saveInput = 'LPproblem.mat';
+%    minNorm:       {(0), scalar , `n x 1` vector}, where `[m, n] = size(S)`;
+%                   If not zero then, minimise the Euclidean length
+%                   of the solution to the LP problem. minNorm ~1e-6 should be
+%                   high enough for regularisation yet maintain the same value for
+%                   the linear part of the objective. However, this should be
+%                   checked on a case by case basis, by optimization with and
+%                   without regularisation.
+%    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
-% optional parameters can also be set through the
-% solver can be set through changeCobraSolver('LP', value);
-% changeCobraSolverParams('LP', 'parameter', value) function.  This
-% includes the minNorm and the printLevel flags
+% Optional parameters can also be set through the
+% solver can be set through `changeCobraSolver('LP', value)`;
+% `changeCobraSolverParams('LP', 'parameter', value)` function. This
+% includes the minNorm and the `printLevel` flags.
 %
-% OUTPUT
-% solution Structure containing the following fields describing a LP
-% solution
-%  full         Full LP solution vector
-%  obj          Objective value
-%  rcost        Reduced costs, dual solution to lb <= v <= ub
-%  dual         dual solution to A*v ('E' | 'G' | 'L') b
-%  solver       Solver used to solve LP problem
-%  algorithm    Algorithm used by solver to solve LP problem
-%  stat         Solver status in standardized form
-%               1   Optimal solution
-%               2   Unbounded solution
-%               3   Partial success (OPTI-csdp) - will not give desired
-%                   result from OptimizeCbModel
-%               0   Infeasible
-%               -1   No solution reported (timelimit, numerical problem etc)
+% OUTPUT:
+%    solution:      Structure containing the following fields describing a LP solution:
+%                     * .full:         Full LP solution vector
+%                     * .obj:          Objective value
+%                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
+%                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
+%                     * .solver:       Solver used to solve LP problem
+%                     * .algorithm:    Algorithm used by solver to solve LP problem
+%                     * .stat:         Solver status in standardized form
 %
-%  origStat     Original status returned by the specific solver
-%  time         Solve time in seconds
+%                       * 1 - Optimal solution
+%                       * 2 - Unbounded solution
+%                       * 3 - Partial success (OPTI-csdp) - will not give desired
+%                         result from OptimizeCbModel
+%                       * 0 - Infeasible
+%                       * -1 - No solution reported (timelimit, numerical problem etc)
+%                     * .origStat:     Original status returned by the specific solver
+%                     * .time:         Solve time in seconds
+%                     * .basis:        (optional) LP basis corresponding to solution
 %
-% OPTIONAL OUTPUT
-% solution.basis    LP basis corresponding to solution
+% EXAMPLE:
+%
+%    %Optional parameters can be entered in three different ways {A,B,C}
+%
+%    %A) as a generic solver parameter followed by parameter value:
+%    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1);
+%    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1, 'feasTol', 1e-8);
+%
+%    %B) parameters structure with field names specific to a particular solvers
+%    %internal parameter fields
+%    [solution] = solveCobraLP(LPCoupled, parameters);
+%
+%    %C) as parameter followed by parameter value, with a parameter structure
+%    %with field names specific to a particular solvers internal parameter,
+%    %fields as the LAST argument
+%    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1, 'feasTol', 1e-6, parameters);
+%
+% .. Authors:
+%       - Markus Herrgard, 08/29/06
+%       - Ronan Fleming, 11/12/08 'cplex_direct' allows for more refined control
+%       of cplex than tomlab tomrun
+%       - Ronan Fleming, 04/25/09 Option to minimise the Euclidean Norm of internal
+%       fluxes using either 'cplex_direct' solver or 'pdco'
+%       - Jan Schellenberger, 09/28/09 Changed header to be much simpler.  All parameters
+%       now accessed through changeCobraSolverParams(LP, parameter,value)
+%       - Richard Que, 11/30/09 Changed handling of optional parameters to use
+%       getCobraSolverParams().
+%       - Ronan Fleming, 12/07/09 Commenting of input/output
+%       - Ronan Fleming, 21/01/10 Not having second input, means use the parameters as specified in the
+%       global paramerer variable, rather than 'default' parameters
+%       - Steinn Gudmundsson, 03/03/10 Added support for the Gurobi solver
+%       - Ronan Fleming, 01/24/01 Now accepts an optional parameter structure with nonstandard
+%       solver specific parameter options
+%       - Tim Harrington, 05/18/12 Added support for the Gurobi 5.0 solver
+%       - Ronan Fleming, 07/04/13 Reinstalled support for optional parameter structure
 
-
-% Markus Herrgard    08/29/06
-% Ronan Fleming      11/12/08 'cplex_direct' allows for more refined control
-%                             of cplex than tomlab tomrun
-% Ronan Fleming      04/25/09 Option to minimise the Euclidean Norm of internal
-%                             fluxes using either 'cplex_direct' solver or 'pdco'
-% Jan Schellenberger 09/28/09 Changed header to be much simpler.  All parameters
-%                             now accessed through
-%                             changeCobraSolverParams(LP, parameter,value)
-% Richard Que        11/30/09 Changed handling of optional parameters to use
-%                             getCobraSolverParams().
-% Ronan Fleming      12/07/09 Commenting of input/output
-% Ronan Fleming      21/01/10 Not having second input, means use the parameters as specified in the
-%                             global paramerer variable, rather than 'default' parameters
-% Steinn Gudmundsson 03/03/10 Added support for the Gurobi solver
-% Ronan Fleming      01/24/01 Now accepts an optional parameter structure with nonstandard
-%                             solver specific parameter options
-% Tim Harrington     05/18/12 Added support for the Gurobi 5.0 solver
-% Ronan Fleming      07/04/13 Reinstalled support for optional parameter structure
-
-%% Process arguments etc
-
-global CBTDIR
+global CBTDIR % Process arguments etc
 global CBT_LP_SOLVER
 global MINOSPATH
 global DQQMINOSPATH
@@ -1228,13 +1228,59 @@ switch solver
             ILOGcplex.solve();
 
             origStat   = ILOGcplex.Solution.status;
+            stat = origStat;
             if origStat==1
                 f = osense*ILOGcplex.Solution.objval;
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
-                y = ILOGcplex.Solution.dual;
+                y = ILOGcplex.Solution.dual;                                            
+            elseif origStat == 4
+                %This is likely unbounded, but could be infeasible 
+                %Lets check, by solving an additional LP with a bounded
+                %objective.
+                %Store the original solution
+                Solution = ILOGcplex.Solution;
+                ILOGcplex.Param.preprocessing.presolve.Cur = 0;                
+                ILOGcplex.solve();
+                origStatNew   = ILOGcplex.Solution.status;
+                if origStatNew == 2
+                    stat = 2;
+                else
+                    stat = 0;
+                end
+                %Restore the original solution.
+                ILOGcplex.Solution = Solution;
+            elseif origStat == 3
+                stat = 0;
+            elseif origStat == 5 || origStat == 6 
+                stat = 3;                
+                f = osense*ILOGcplex.Solution.objval;
+                x = ILOGcplex.Solution.x;
+                w = ILOGcplex.Solution.reducedcost;
+                y = ILOGcplex.Solution.dual;    
+            elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
+                %Abort due to reached limit. check if there is a solution
+                %and return it.
+                stat = 3;
+                if isfield(ILOGcplex.Solution ,'x')
+                    x = ILOGcplex.Solution.x;
+                else
+                    % No solution returned
+                    stat = -1;
+                end
+                if isfield(ILOGcplex.Solution ,'reducedcost')
+                    w = ILOGcplex.Solution.reducedcost; 
+                end
+                if isfield(ILOGcplex.Solution ,'dual')            
+                    y = ILOGcplex.Solution.dual;    
+                end
+                
+            elseif origStat == 13
+                stat = -1;
+            elseif origStat == 20
+                stat = 2;
             end
-
+            
             switch ILOGcplex.Param.lpmethod.Cur
                 case 0
                     algorithm='Automatic';
@@ -1314,9 +1360,10 @@ switch solver
             w=lambda.lower-lambda.upper;
             origStat = output.cplexstatus;
             algorithm='Automatic';
+            stat=origStat;
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
-        stat=origStat;
+        
         if exist([pwd filesep 'clone1_' labindex '.log'],'file')
             delete([pwd filesep 'clone1_' labindex '.log'])
         end

@@ -1,7 +1,5 @@
-function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,IdentifyPW)
-%%[AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,IdentifyPW)
-%
-% This function uses the output from fastGapFill and signs generalized
+function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, BlockedRxns, IdentifyPW)
+% This function uses the output from `fastGapFill` and signs generalized
 % function to the identified solutions from the universal database (e.g.,
 % 'Metabolic reaction', 'Transport reaction', 'Exchange reaction'). It also
 % provides basic statistics for the solution. One can use the option
@@ -10,20 +8,23 @@ function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,Block
 % all fluxes is minimized. This analysis can be helpful to put the solution
 % reactions into the network context.
 %
-% INPUT
-% AddedRxns             Output from fastGapFill.m
-% model                 Model structure. Original model given as input into prepareFastGapFill
-% IdentifyPW            Optional: identifies reactions that are need from
-%                       consistent model and added reactions to have flux through previously
-%                       blocked reaction. default: false
+% USAGE:
 %
-% OUTPUT
-% AddedRxnsExtended     Structure containing the information present in
-%                       AddedRxns along with the statistics and if desired pathways containing
-%                       the flux vectors.
+%    [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, BlockedRxns, IdentifyPW)
 %
-% June 2013
-% Ines Thiele, http://thielelab.eu
+% INPUTS:
+%    AddedRxns:            Output from `fastGapFill.m`
+%    model:                Model structure. Original model given as input into `prepareFastGapFill`
+%    IdentifyPW:           Optional: identifies reactions that are need from
+%                          consistent model and added reactions to have flux through previously
+%                          blocked reaction, default: false
+%
+% OUTPUT:
+%    AddedRxnsExtended:    Structure containing the information present in
+%                          `AddedRxns` along with the statistics and if desired pathways containing
+%                          the flux vectors.
+%
+% .. Author: - Ines Thiele, June 2013, http://thielelab.eu
 
 
 if ~exist('IdentifyPW','var')

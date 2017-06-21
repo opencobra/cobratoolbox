@@ -1,6 +1,5 @@
 function FileString = generateFieldDescriptionFile(FileName)
-% Generates the ModelFields.md file
-% describing the Required and Optional Fields of a COBRA model.
+% Generates the ModelFields.md file describing the Required and Optional Fields of a COBRA model.
 %
 % USAGE:
 %
@@ -19,7 +18,7 @@ if ~exist('FileName','var')
     if isempty(CBTDIR)
         initCobraToolbox
     end
-    FileName = [CBTDIR filesep 'docs' filesep 'notes' filesep 'COBRAModelFields.md'];
+    FileName = [CBTDIR filesep 'docs' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'];
 end
 
 fieldProperties = getDefinedFieldProperties('Descriptions', true);

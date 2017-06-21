@@ -30,8 +30,6 @@ modelForPruning.lb(modelForPruning.lb < 0) = -1000;
 modelForPruning.ub(modelForPruning.ub < 0) = 0; % in case  uptake is enforced
 modelForPruning.ub(modelForPruning.ub > 0) = 1000;
 modelForPruning.lb(modelForPruning.lb > 0) = 0; % in case  secretion is enforced
-modelForPruning.rev = zeros(length(modelForPruning.rxns),1);
-modelForPruning.rev(find(modelForPruning.lb<0))=1;
 %set back biomass constraint
 modelForPruning.lb(find(ismember(modelForPruning.rxns,biomassRxn)))=minGrowth;
 epsilon =1e-4;

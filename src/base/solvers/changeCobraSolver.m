@@ -1,26 +1,31 @@
 function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
-% changeCobraSolver Changes the Cobra Toolbox optimization solver(s)
+% Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
-%     solverOK = changeCobraSolver(solverName,solverType)
+%
+%    solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
 %
 % INPUTS:
-%     solverName    Solver name
-%     solverType    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
+%    solverName:    Solver name
+%    solverType:    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
 %                   'LP', 'all').  'all' attempts to change all applicable
 %                   solvers to solverName.  This is purely a shorthand
 %                   convenience.
-%     printLevel    if 0, warnings and errors are silenced and if > 0, they are
+%    printLevel:    if 0, warnings and errors are silenced and if > 0, they are
 %                   thrown. (default: 1)
 %
+% OPTIONAL INPUT:
+%    unchecked:     default = 0, if exists `solverType` is checked and `solverName` is assigned to a local variable
+%
 % OUTPUT:
-%     solverOK      true if solver can be accessed, false if not
+%     solverOK:     true if solver can be accessed, false if not
 %
 % Currently allowed LP solvers:
 %
-%     fully supported solvers:
+%   - fully supported solvers
 %
-%     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
+%     ============    ============================================================
+%     cplex_direct    CPLEX accessed directly through Tomlab `cplex.m`. This gives
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
 %                     get rid of net flux around loops
@@ -33,22 +38,26 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %     pdco            PDCO solver
 %     quadMinos       quad LP solver
 %     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
+%     ============    ============================================================
 %
-%     legacy solvers:
+%   * legacy solvers:
 %
-%     lindo_new       Lindo API >v2.0
-%     lindo_legacy    Lindo API <v2.0
+%     ============    ============================================================
+%     lindo_new       Lindo API > v2.0
+%     lindo_legacy    Lindo API < v2.0
 %     lp_solve        lp_solve with Matlab API
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
 %                     solver installed and called with OPTI TB wrapper
 %                     Lower level calls with installed mex files are possible
 %                     but best avoided for all solvers
+%     ============    ============================================================
 %
 % Currently allowed MILP solvers:
 %
-%     fully supported solvers:
+%   * fully supported solvers:
 %
+%     ============    ============================================================
 %     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
@@ -57,21 +66,24 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
-%     pdco            PDCO solver
 %     tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
+%     ============    ============================================================
 %
-%     legacy solvers:
+%   * legacy solvers:
 %
+%     ============    ============================================================
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
 %                     solver installed and called with OPTI TB wrapper
 %                     Lower level calls with installed mex files are possible
 %                     but best avoided for all solvers
+%     ============    ============================================================
 %
 % Currently allowed QP solvers:
 %
-%     fully supported solvers:
+%   * fully supported solvers:
 %
+%     ============    ============================================================
 %     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
@@ -81,24 +93,29 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
 %     tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
+%     ============    ============================================================
 %
-%     experimental support:
+%   * experimental support:
 %
+%     ============    ============================================================
 %     qpng            qpng QP solver with Matlab mex interface (in glpkmex
 %                     package, only limited support for small problems)
+%     ============    ============================================================
 %
-%     legacy solvers:
+%   * legacy solvers:
 %
+%     ============    ============================================================
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
-%                     solver installed and called with OPTI TB wrapper
+%                     solver installed and called with OPTI TB wrapper.
 %                     Lower level calls with installed mex files are possible
-%                     but best avoided for all solvers
+%     ============    ============================================================
 %
 % Currently allowed MIQP solvers:
 %
-%     fully supported solvers:
+%   * fully supported solvers:
 %
+%     ============    ============================================================
 %     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
@@ -106,25 +123,34 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
+%     ============    ============================================================
 %
-%     legacy solvers:
+%   * legacy solvers:
 %
+%     ============    ============================================================
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     ============    ============================================================
 %
 % Currently allowed NLP solvers:
 %
-%     fully supported solvers:
+%   * fully supported solvers:
 %
+%     ============    ============================================================
 %     matlab          MATLAB's fmincon.m
+%     ============    ============================================================
 %
-%     experimental support:
+%   * experimental support:
 %
+%     ============    ============================================================
 %     tomlab_snopt    SNOPT solver accessed through Tomlab environment
+%     ============    ============================================================
 %
-% It is a good idea to put this function call into your startup.m file
-% (usually matlabinstall/toolboxes/local/startup.m)
+% NOTE:
 %
-% Original file: Markus Herrgard 1/19/07
+%    It is a good idea to put this function call into your `startup.m` file
+%    (usually matlabinstall/toolboxes/local/startup.m)
+%
+% .. Author: -  Original file: Markus Herrgard, 1/19/07
 
 global SOLVERS;
 global CBTDIR;
@@ -141,9 +167,14 @@ global GUROBI_PATH;
 global MINOS_PATH;
 global ILOG_CPLEX_PATH;
 
+if nargin < 3
+    printLevel = 1;
+end
+
 if ~exist('unchecked' , 'var')
     unchecked = 0;
 end
+
 if unchecked
     switch solverType
         case 'LP'
@@ -159,7 +190,6 @@ if unchecked
     end
     return
 end
-
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
@@ -227,10 +257,6 @@ else
     solverType = upper(solverType);
 end
 
-if nargin < 3
-    printLevel = 1;
-end
-
 % print an error message if the solver is not supported
 supportedSolversNames = fieldnames(SOLVERS);
 if ~any(strcmp(supportedSolversNames, solverName))
@@ -267,6 +293,7 @@ end
 
 % add the solver path for GUROBI, MOSEK or CPLEX
 if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
+    TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
     addpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > Tomlab interface added to MATLAB path.\n');
@@ -275,6 +302,7 @@ end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
+    GUROBI_PATH = strrep(GUROBI_PATH, '~', getenv('HOME'));
     addpath(strrep(GUROBI_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > Gurobi interface added to MATLAB path.\n');
@@ -283,6 +311,7 @@ end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
     % add the solver path
+    ILOG_CPLEX_PATH = strrep(ILOG_CPLEX_PATH, '~', getenv('HOME'));
     addpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
@@ -290,6 +319,7 @@ if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
 end
 
 if  ~isempty(strfind(solverName, 'mosek')) && ~isempty(MOSEK_PATH)
+    MOSEK_PATH = strrep(MOSEK_PATH, '~', getenv('HOME'));
     addpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > MOSEK interface added to MATLAB path.\n');
@@ -372,54 +402,6 @@ end
 % set solver related global variables
 if solverOK
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
-
-    % if gurobi or ibm_cplex are selected, add them to the top of the path
-    if ~isempty(strfind(solverName, 'matlab'))
-
-        % check if TOMLAB is on the PATH
-        tomlabOnPath = ~isempty(regexp(lower(path), ['(tomlab)'], 'once'));
-
-        if tomlabOnPath && ~isempty(TOMLAB_PATH)
-            rmpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
-            if printLevel > 0
-                fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
-            end
-        end
-
-        % check if GUROBI is on the PATH
-        gurobiOnPath = ~isempty(regexp(lower(path), ['(gurobi)\w+'], 'once'));
-
-        % remove the GUROBI interface
-        if gurobiOnPath && ~isempty(GUROBI_PATH)
-            rmpath(strrep(GUROBI_PATH, '\\', '\'));
-            if printLevel > 0
-                fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
-            end
-        end
-
-        % check if CPLEX is on the PATH
-        cplexOnPath = ~isempty(regexp(lower(path), ['(cplex_studio)'], 'once'));
-
-        % remove the CPLEX interface
-        if cplexOnPath && ~isempty(ILOG_CPLEX_PATH)
-            rmpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
-            if printLevel > 0
-                fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
-            end
-        end
-
-        % check if MOSEK is on the PATH
-        mosekOnPath = ~isempty(regexp(lower(path), ['(mosek)'], 'once'));
-
-        % remove the MOSEK interface
-        if mosekOnPath && ~isempty(MOSEK_PATH)
-            rmpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
-            if printLevel > 0
-                fprintf(['\n > MOSEK interface removed from MATLAB path.\n']);
-            end
-        end
-
-    end
 end
 end
 

@@ -1,4 +1,24 @@
 function configEnvVars(printLevel)
+% Configures the global variables based on the system's configuration
+% First, all environment variables for each solver are defined together
+% with all eventual solver paths.
+% Then, there will be 4 methods marked that can be used to define the global
+% variables:
+%
+%   * 1: solver is on the path and at a standard location (*---)
+%   * 2: solver is on path but at a non-standard location (-*--)
+%   * 3: solver path is defined through environment variables (--*-)
+%   * 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (---*)
+%
+% If none of these 4 methods applies, the global solver path variable is not set and an appropriate message is returned
+%
+% USAGE:
+%
+%    configEnvVars(printLevel)
+%
+% INPUT:
+%    printLevel:    default = 0, verbose level
+%
 
     global GUROBI_PATH;
     global ILOG_CPLEX_PATH;
@@ -12,7 +32,7 @@ function configEnvVars(printLevel)
 
     if exist('ENV_VARS.STATUS', 'var') == 1 || ENV_VARS.STATUS == 0
         solverPaths = {};
-        solverPaths{1, 1} = 'ILOG_CPLEX_PATH';
+        solverPaths{1, 1} = {'ILOG_CPLEX_PATH'};
         solverPaths{1, 2} = {'/Applications/IBM/ILOG/CPLEX_Studio1271', ...
                              '/Applications/IBM/ILOG/CPLEX_Studio127', ...
                              '/Applications/IBM/ILOG/CPLEX_Studio1263', ...
@@ -30,7 +50,7 @@ function configEnvVars(printLevel)
                              'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', ...
                              'C:\Program Files\IBM\ILOG\CPLEX_Studio1262'};
         solverPaths{1, 3} = 'CPLEX_Studio'; % alias
-        solverPaths{2, 1} = 'GUROBI_PATH';
+        solverPaths{2, 1} = {'GUROBI_PATH', 'GUROBI_HOME'};
         solverPaths{2, 2} = {'/Library/gurobi702', ...
                              '/Library/gurobi701', ...
                              '/Library/gurobi700', ...
@@ -56,10 +76,10 @@ function configEnvVars(printLevel)
                              'C:\gurobi650', ...
                              'C:\gurobi600'};
         solverPaths{2, 3} = 'gurobi'; % alias
-        solverPaths{3, 1} = 'TOMLAB_PATH';
+        solverPaths{3, 1} = {'TOMLAB_PATH'};
         solverPaths{3, 2} = {'/opt/tomlab', 'C:\tomlab', 'C:\Program Files\tomlab', 'C:\Program Files (x86)\tomlab', '/Applications/tomlab'};
         solverPaths{3, 3} = 'tomlab'; % alias
-        solverPaths{4, 1} = 'MOSEK_PATH';
+        solverPaths{4, 1} = {'MOSEK_PATH'};
         solverPaths{4, 2} = {'/opt/mosek/8', '/opt/mosek/7', '/Applications/mosek/8', '/Applications/mosek/7', 'C:\Program Files\Mosek\8', 'C:\Program Files\Mosek\7'};
         solverPaths{4, 3} = 'mosek'; % alias
 
@@ -69,33 +89,30 @@ function configEnvVars(printLevel)
 
             method = '----';
 
-            % try retrieving the solver path from the environment variables
-            eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
-            if ~isempty(eval(solverPaths{k, 1}))
-                method = '*---';
-                subDir = filesep;
-                if k == 1 || k == 2
-                    subDir = generateSolverSubDirectory(solverPaths{k, 3});
+            for j = 1:length(solverPaths{k, 1})
+                % temporary variable for aliases of solver defined environment variables
+                tmpEnvVar = solverPaths{k, 1}(j);
+                tmpEnvVar = tmpEnvVar{1};
+
+                % global variable (1st name defined)
+                globEnvVar = solverPaths{k, 1}(1);
+                globEnvVar = globEnvVar{1};
+
+                % loop through the list of possible directories
+                possibleDir = '';
+                tmpSolverPath = solverPaths{k, 2};
+                for i = 1:length(solverPaths{k, 2})
+                    if exist(tmpSolverPath{i}, 'dir') == 7
+                        subDir = filesep;
+                        if k == 1 || k == 2
+                            subDir = generateSolverSubDirectory(solverPaths{k, 3});
+                        end
+                        possibleDir = [tmpSolverPath{i}, subDir];
+                        break;
+                    end;
                 end
-                eval([solverPaths{k, 1}, ' = [', solverPaths{k, 1}, ', ''', subDir, '''];']);
-            end
 
-            % loop through the list of possible directories
-            possibleDir = '';
-            tmpSolverPath = solverPaths{k, 2};
-            for i = 1:length(solverPaths{k, 2})
-                if exist(tmpSolverPath{i}, 'dir') == 7
-                    subDir = filesep;
-                    if k == 1 || k == 2
-                        subDir = generateSolverSubDirectory(solverPaths{k, 3});
-                    end
-                    possibleDir = [tmpSolverPath{i}, subDir];
-                    break;
-                end;
-            end
-
-            if isempty(eval(solverPaths{k, 1}))
-                % check if the solver is already on the MATLAB path
+                % Method 1: check if the solver is already on the MATLAB path
                 isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
 
                 % find the index of the most recently added solver path
@@ -111,6 +128,7 @@ function configEnvVars(printLevel)
                 if k == 2  % gurobi
                     extraRE = '\w'; % any word, alphanumeric and underscore
                 end
+
                 idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')', extraRE, '+']);
                 higherLevelIndex = 0;
                 for i = 1:length(idCell)
@@ -120,40 +138,53 @@ function configEnvVars(printLevel)
                     end
                 end
 
-                % solver is on the path and at a standard location
+                % Method 2: solver is on the path and at a standard location
                 if isOnPath
-                    eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-                    method = '-*--';
+                    eval([globEnvVar, ' = ''', possibleDir, ''';']);
+                    method = '*---';
 
-                % solver is on path but at a non-standard location and may not be compatible
+                % Method 3: solver is on path but at a non-standard location and may not be compatible
                 elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
-                    eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
-                    method = '--*-';
+                    eval([globEnvVar, ' = ''', tmpS{higherLevelIndex}, ''';']);
+                    method = '-*--';
                 end
-            end
 
-            % solver is not already on the path and the environment variable is not set, but the directory exists
-            if isempty(eval(solverPaths{k, 1}))
-                if ~isempty(possibleDir)
-                    eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
+                % Method 4: solver path is defined through environment variables
+                if isempty(eval(globEnvVar))
+                    eval([globEnvVar, ' = getenv(''', tmpEnvVar, ''');'])
+                    if ~isempty(eval(globEnvVar))
+                        method = '--*-';
+                        subDir = filesep;
+                        if k == 1 || k == 2
+                            subDir = generateSolverSubDirectory(solverPaths{k, 3});
+                        end
+                        eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
+                    end
+                end
+
+                % solver is not already on the path and the environment variable is not set, but the standard directory exists
+                if isempty(eval(globEnvVar)) && ~isempty(possibleDir)
+                    eval([globEnvVar, ' = ''', possibleDir, ''';']);
                     method = '---*';
                 end
-            end
 
-            % if the solver variable is still empty, then give instructions on how to proceed
-            if isempty(eval(solverPaths{k, 1}))
-                if printLevel > 0
-                    solversLink = 'https://opencobra.github.io/cobratoolbox/docs/solvers.html';
-                    if usejava('desktop')
-                        solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
+                if j == 1 % only print out for global variable name
+                    % if the solver variable is still empty, then give instructions on how to proceed
+                    if isempty(eval(globEnvVar))
+                        if printLevel > 0
+                            solversLink = 'https://opencobra.github.io/cobratoolbox/docs/solvers.html';
+                            if usejava('desktop')
+                                solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
+                            end
+                            fprintf(['   - [', method, '] ', globEnvVar, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
+                        end
+                    else
+                        if printLevel > 0
+                            fprintf(['   - [', method, '] ', globEnvVar, ': ', strrep(eval(globEnvVar), '\', '\\'), '\n' ]);
+                        end
+                        ENV_VARS.STATUS = 1;
                     end
-                    fprintf(['   - [', method, '] ', solverPaths{k, 1}, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
                 end
-            else
-                if printLevel > 0
-                    fprintf(['   - [', method, '] ', solverPaths{k, 1}, ': ', strrep(eval(solverPaths{k, 1}), '\', '\\'), '\n' ]);
-                end
-                ENV_VARS.STATUS = 1;
             end
         end
     end
@@ -162,14 +193,14 @@ end
 function subDir = generateSolverSubDirectory(solverName)
 % Define the subdirectory path of the solver to be included
 %
-% Usage:
+% USAGE:
 %     subDir = generateSolverSubDirectory(solverName)
 %
-% Inputs:
-%     solverName: string with the name of the solver (or alias)
+% INPUT:
+%     solverName:     string with the name of the solver (or alias)
 %
-% Output:
-%     subDir: path to the subdirectory of the solver
+% OUTPUT:
+%     subDir:         path to the subdirectory of the solver
 %
 
     subDir = '';

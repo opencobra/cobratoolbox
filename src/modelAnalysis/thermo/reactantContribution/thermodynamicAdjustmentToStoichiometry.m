@@ -202,8 +202,7 @@ if 1
             model.subSystems{nRxn+1}='';
             model.lb(nRxn+1)=-1000;
             model.ub(nRxn+1)=1000;
-            model.c(nRxn+1)=0;
-            model.rev(nRxn+1)=1;
+            model.c(nRxn+1)=0;            
             
             model.rxns{nRxn+2}=['fadh2_enz_SDH_' uniqueCompartments{p}];
             model.rxnNames{nRxn+2}='fadh2 binding to Succinate Dehydrogenase';
@@ -211,7 +210,6 @@ if 1
             model.lb(nRxn+2)=-1000;
             model.ub(nRxn+2)=1000;
             model.c(nRxn+2)=0;
-            model.rev(nRxn+2)=1;
             
             %change S matrix
             %edit existing reaction Succinate FAD_enz <=> Fumarate + FADH2_enz

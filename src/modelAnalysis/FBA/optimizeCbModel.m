@@ -1,10 +1,14 @@
 function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
 % Solves a flux balance analysis problem
 %
+% Solves LP problems of the form
+%
 % .. math::
-%      Solves LP problems of the form: `max/min c'*v`
-%                                 subject to `S*v = b`         : y
-%                                            `lb <= v <= ub`   : w
+%
+%    max/min  ~& c^T v \\
+%    s.t.     ~& S v = b~~~~~~~~~~~:y \\
+%             ~& C v \leq d~~~~~~~~:y \\
+%             ~& lb \leq v \leq ub~~~~:w
 %
 % USAGE:
 %
@@ -13,56 +17,71 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%                         * S - Stoichiometric matrix
-%                         * b - Right hand side = dx/dt
-%                         * c - Objective coefficients
-%                         * lb - Lower bounds
-%                         * ub - Upper bounds
+%                         * S  - `m x 1` Stoichiometric matrix
+%                         * c  - `n x 1` Linear objective coefficients
+%                         * lb - `n x 1` Lower bounds
+%                         * ub - `n x 1` Upper bounds
 %
 % OPTIONAL INPUTS:
+%    model:             (the following fields are optional)
+%                         * b - `m x 1` Right hand side = dx/dt
+%                         * C - `k x n` Left hand side of C*v <= d
+%                         * d - `k x 1` Right hand side of C*v <= d
+%                         * csense - `m + k x 1` character array with entries in {L,E,G}
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
 %    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP
 %                       'one'  Minimise the Taxicab Norm using LP.
-%                            .. math::
-%                                 min |v|
-%                                 s.t. S*v = b
-%                                 c'v = f
-%                                 lb <= v <= ub
+%
+%                       .. math::
+%
+%                          min  ~& |v| \\
+%                          s.t. ~& S v = b \\
+%                               ~& c^T v = f \\
+%                               ~& lb \leq v \leq ub
+%
 %                       A LP solver is required.
 %                       'zero' Minimize the cardinality (zero-norm) of v
-%                            .. math::
-%                                 min ||v||_0
-%                                 s.t. S*v = b
-%                                 c'v = f
-%                                 lb <= v <= ub
+%
+%                       .. math::
+%
+%                          min  ~& ||v||_0 \\
+%                          s.t. ~& S v = b \\
+%                               ~& c^T v = f \\
+%                               ~& lb \leq v \leq ub
+%
 %                       The zero-norm is approximated by a non-convex approximation
 %                       Six approximations are available: capped-L1 norm, exponential function
 %                       logarithmic function, SCAD function, L_p norm with p<0, L_p norm with 0<p<1
 %                       Note : capped-L1, exponential and logarithmic function often give
 %                       the best result in term of sparsity.
 %
-%                        .. See "Le Thi et al., DC approximation approaches for sparse optimization,
-%                           European Journal of Operational Research, 2014"
-%                           http://dx.doi.org/10.1016/j.ejor.2014.11.031
-%                           A LP solver is required.
+%                       .. See "Le Thi et al., DC approximation approaches for sparse optimization,
+%                          European Journal of Operational Research, 2014"
+%                          http://dx.doi.org/10.1016/j.ejor.2014.11.031
+%                          A LP solver is required.
 %
 %                       The remaining options work only with a valid QP solver:
 %
 %                       > 0    Minimises the Euclidean Norm of internal fluxes.
 %                       Typically 1e-6 works well.
-%                            .. math::
-%                                 min ||v||
-%                                 s.t. S*v = b
-%                                 c'v = f
-%                                 lb <= v <= ub
+%
+%                       .. math::
+%
+%                          min  ~& ||v|| \\
+%                          s.t. ~& S v = b \\
+%                               ~& c^T v = f \\
+%                               ~& lb \leq v \leq ub
+%
 %                       `n` x 1   Forms the diagonal of positive definiate
 %                       matrix `F` in the quadratic program
-%                            .. math::
-%                                 min 0.5*v'*F*v
-%                                 st. S*v = b
-%                                 c'*v = f
-%                                 lb <= v <= ub
+%
+%                       .. math::
+%
+%                          min  ~& 0.5 v^T F v \\
+%                          s.t. ~& S v = b \\
+%                               ~& c^T v = f \\
+%                               ~& lb \leq v \leq ub
 %
 %    allowLoops:        {0,(1)} If false, then instead of a conventional FBA,
 %                       the solver will run an MILP version which does not allow
@@ -81,10 +100,10 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                          * 'all'      : try all approximations and return the best result
 %
 % OUTPUT:
-%    FBAsolution:       solution object
+%    FBAsolution:       solution object:
 %
 %                          * f - Objective value
-%                          * x - Primal
+%                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
 %                          * y - Dual
 %                          * w - Reduced costs
 %                          * s - Slacks
@@ -94,7 +113,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                            * `1` - Optimal solution
 %                            * `2` - Unbounded solution
 %                            * `0` - Infeasible
-%                          * origStat  Original status returned by the specific solver
+%                          * origStat - Original status returned by the specific solver
 %
 % .. Author:
 %       - Markus Herrgard       9/16/03
@@ -117,6 +136,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %       - Minh Le               11/02/16 Option to minimise the cardinality of
 %                                        fluxes vector
 %       - Stefania Magnusdottir 06/02/17 Replace LPproblem2 upper bound 10000 with Inf
+%       - Ronan Fleming         13/06/17 Support for coupling C*v<=d
 %
 % NOTE:
 %
@@ -180,40 +200,87 @@ end
 %use global solver parameter for printLevel
 [printLevel,primalOnlyFlag] = getCobraSolverParams('LP',{'printLevel','primalOnly'});
 
-[nMets,nRxns] = size(model.S);
-
-% add csense
-%Doing this makes csense a double array.  Totally smart design move.
-%LPproblem.csense = [];
-if ~isfield(model,'csense')
-    % If csense is not declared in the model, assume that all
-    % constraints are equalities.
-    if printLevel>1
-        fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
-    end
-    LPproblem.csense(1:nMets,1) = 'E';
-else % if csense is in the model, move it to the lp problem structure
-    if length(model.csense)~=nMets,
-        warning('Length of csense is invalid! Defaulting to equality constraints.')
-        LPproblem.csense(1:nMets,1) = 'E';
-    else
-        model.csense = columnVector(model.csense);
-        LPproblem.csense = model.csense;
-    end
-end
-
-% Fill in the RHS vector if not provided
-if ~isfield(model,'b')
-    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
-    LPproblem.b=zeros(nMets,1);
-else
-    LPproblem.b = model.b;
-end
-
 % Rest of the LP problem
-[m,n] = size(model.S);
-LPproblem.A = model.S;
+[nMets,nRxns] = size(model.S);
+if isfield(model,'C')
+    if isfield(model,'d')
+        [nIneq,nltC]=size(model.C);
+        [mltd,nltd]=size(model.d);
+        if nltC~=nRxns
+            error('For the constraints C*v <= d, the number of columns of S and C are inconsisent')
+        end
+        if nIneq~=mltd
+            error('For the constraints C*v <= d, the number of rows of C and d are inconsisent')
+        end
+        if nltd~=1
+            error('For the constraints C*v <= d, d must have only one column')
+        end
+        LPproblem.A = [model.S;model.C];
+        % Fill in the RHS vector if not provided
+        if ~isfield(model,'b')
+            warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+            LPproblem.b=[sparse(nMets,1);model.d];
+        else
+            LPproblem.b = [model.b;model.d];
+        end
+        % add csense
+        if ~isfield(model,'csense')
+            % If csense is not declared in the model, assume that all
+            % constraints are equalities.
+            if printLevel>1
+                fprintf('%s\n','No defined csense.')
+                fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
+                fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+            end
+            LPproblem.csense(1:nMets,1) = 'E';
+            LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
+        else % if csense is in the model, move it to the lp problem structure
+            if length(model.csense)~=nMets+nIneq
+                warning('Length of csense is invalid! Defaulting to equality constraints.')
+                fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
+                fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+                LPproblem.csense(1:nMets,1) = 'E';
+                LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
+            else
+                LPproblem.csense = columnVector(model.csense);
+            end
+        end
+    else
+        error('For the constraints C*v <= d, model.d is missing')
+    end
+else
+    %number of inequality constraints outside of the stoichiometric matrix
+    nIneq=0;
+    LPproblem.A = model.S;
+    % Fill in the RHS vector if not provided
+    if ~isfield(model,'b')
+        warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+        LPproblem.b=zeros(nMets,1);
+    else
+        LPproblem.b = model.b;
+    end
+    % add csense
+    if ~isfield(model,'csense')
+        % If csense is not declared in the model, assume that all
+        % constraints are equalities.
+        if printLevel>1
+            fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
+        end
+        LPproblem.csense(1:nMets,1) = 'E';
+    else % if csense is in the model, move it to the lp problem structure
+        if length(model.csense)~=nMets
+            warning('Length of csense is invalid! Defaulting to equality constraints.')
+            LPproblem.csense(1:nMets,1) = 'E';
+        else
+            LPproblem.csense = columnVector(model.csense);
+        end
+    end
+end
+
+%linear objective coefficient
 LPproblem.c = model.c;
+
+%box constraints
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
 
@@ -328,16 +395,27 @@ elseif strcmp(minNorm, 'zero')
     solution.rcost  = [];
 
 elseif length(minNorm)> 1 || minNorm > 0
-    if nnz(LPproblem.c)>1
-        error('Code assumes only one non-negative coefficient in linear part of objective');
-    end
+    %THIS SECTION BELOW ASSUMES WRONGLY THAT c HAVE ONLY ONE NONZERO SO I
+    %REPLACED IT WITH A MORE GENERAL FORMULATION, WHICH IS ALSO ROBUST TO
+    %THE CASE WHEN THE OPTIMAL OBJECIVE WAS ZERO - RONAN June 13th 2017
+%     if nnz(LPproblem.c)>1
+%         error('Code assumes only one non-negative coefficient in linear
+%         part of objective');
+%     end
+%     % quadratic minimization of the norm.
+%     % set previous optimum as constraint.
+%     LPproblem.A = [LPproblem.A;
+%         (LPproblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
+%     LPproblem.csense(end+1) = 'E';
+%
+%     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
+
     % quadratic minimization of the norm.
     % set previous optimum as constraint.
-    LPproblem.A = [LPproblem.A;
-        (LPproblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
+    LPproblem.A = [LPproblem.A;LPproblem.c'];
+    LPproblem.b = [LPproblem.b;LPproblem.c'*solution.full];
     LPproblem.csense(end+1) = 'E';
 
-    LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
     LPproblem.c = zeros(size(LPproblem.c)); % no need for c anymore.
     %Minimise Euclidean norm using quadratic programming
     if length(minNorm)==1
@@ -354,7 +432,7 @@ elseif length(minNorm)> 1 || minNorm > 0
 
         if isfield(solution,'dual')
             if ~isempty(solution.dual)
-                solution.dual=solution.dual(1:m,1);
+                solution.dual=solution.dual(1:size(LPproblem.A,1),1);
             end
         end
     else
@@ -372,7 +450,7 @@ if (solution.stat == 1)
 
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
-            solution.dual=solution.dual(1:m,1);
+            solution.dual=solution.dual(1:size(LPproblem.A,1),1);
         end
     end
 
@@ -406,3 +484,4 @@ FBAsolution.stat = solution.stat;
 FBAsolution.origStat = solution.origStat;
 FBAsolution.solver = solution.solver;
 FBAsolution.time = etime(clock, t1);
+FBAsolution.v = FBAsolution.x;%eventually we should depreciate FBAsolution.x

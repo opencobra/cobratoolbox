@@ -158,7 +158,7 @@ function sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_versio
       sbml_tmp_reaction.name = model.rxnNames{i};
     end
     if isfield( model, 'rev' )
-      sbml_tmp_reaction.reversible = model.rev(i);
+      sbml_tmp_reaction.reversible = double(model.lb(i) < 0);
     end
     sbml_tmp_law.parameter = [];
     sbml_tmp_law.formula = 'FLUX_VALUE';

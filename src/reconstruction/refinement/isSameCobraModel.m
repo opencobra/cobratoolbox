@@ -1,20 +1,21 @@
-function [isSame,nDiff,commonFields] = isSameCobraModel(model1,model2, printLevel)
-%isSameCobraModel Checks if two COBRA models are the same
+function [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printLevel)
+% Checks if two COBRA models are the same
 %
 % USAGE:
-%    [isSame,nDiff,commonFields] = isSameCobraModel(model1,model2)
+%
+%    [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printLevel)
 %
 % INPUTS:
-%    model1:        COBRA model structure 1
-%    model2:        COBRA model structure 2
+%    model1:          COBRA model structure 1
+%    model2:          COBRA model structure 2
 %
 % OPTIONAL INPUTS:
-%    printLevel:    Whether to provide additional output (0 - no output (default), 1 - output).
+%    printLevel:      Whether to provide additional output (0 - no output (default), 1 - output).
 %
 % OUTPUTS:
-%    isSame:        True if all common fields are identical, else false
-%    nDiff:         Number of differences between the two models for each field
-%    commonFields:  List of common fields
+%    isSame:          True if all common fields are identical, else false
+%    nDiff:           Number of differences between the two models for each field
+%    commonFields:    List of common fields
 %
 % .. Authors:
 %     - Markus Herrgard 9/14/07
@@ -48,7 +49,7 @@ end
 commonFields = intersect(fields1, fields2);
 commonFields = commonFields(~strcmpi('description', commonFields));
 
-if (~isempty(onlyIn1) && ~isempty(onlyIn2))
+if (~isempty(onlyIn1) || ~isempty(onlyIn2))
     isSame = false;
 end
 
@@ -69,8 +70,7 @@ for i = 1:nFields
     end
 
     if isnumeric(value1)
-        nDiff(i) = sum(sum(value1 ~= value2));
-
+        nDiff(i) = sum(sum(~((value1 == value2) | (isnan(value1) & isnan(value2))) ));
     elseif iscellstr(value1)
         nDiff(i) = sum(~strcmp(value1, value2));
 
@@ -86,6 +86,6 @@ for i = 1:nFields
             fprintf('Field %s differs in %d positions between the models\n',fieldName,nDiff(i));
         end
     end
-            
-    
+
+
 end

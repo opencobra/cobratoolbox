@@ -1,24 +1,24 @@
-function [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)
+function [FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel(model, initialRegState)
 % Finds the steady state solution of a model with Boolean regulatory constraints
-% 
+%
 %
 % USAGE:
 %    [FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel(model, initialRegState)
 %
 % INPUTS:
-%    model:             a regulatory COBRA model
-%    initialRegState:   the initial state of the regulatory network as a 
-%                       Boolean vector (opt, default = all false)
+%    model:              a regulatory COBRA model
+%    initialRegState:    the initial state of the regulatory network as a
+%                        Boolean vector (opt, default = all false)
 %
 % OUTPUTS:
-%    FBAsols:           all of the FBA solutions at the steady state (or stable
-%                       cycle) of the regulatory network 
-%    DRgenes:           the genes that are OFF for every FBA solution
-%    constrainedRxns:   the reactions that are OFF for every FBA solution
-%    cycleStart:        the number of iterations before the regulatory network
-%                       reaches the steady state or cycle
-%    states:            the state of the regulatory network at every iteration
-%                       calculated
+%    FBAsols:            all of the FBA solutions at the steady state (or stable
+%                        cycle) of the regulatory network
+%    DRgenes:            the genes that are OFF for every FBA solution
+%    constrainedRxns:    the reactions that are OFF for every FBA solution
+%    cycleStart:         the number of iterations before the regulatory network
+%                        reaches the steady state or cycle
+%    states:             the state of the regulatory network at every iteration
+%                        calculated
 %
 % .. Author: - Jeff Orth 8/19/08
 
@@ -36,7 +36,7 @@ else
     inputs1state = state1((length(model.regulatoryGenes)+1):(length(model.regulatoryGenes)+length(model.regulatoryInputs1)));
     inputs2state = state1((length(model.regulatoryGenes)+length(model.regulatoryInputs1)+1):(length(model.regulatoryGenes)+length(model.regulatoryInputs1)+length(model.regulatoryInputs2)));
 end
-    
+
 rFBAsols = {rFBAsol1}; % matrices of all solutions
 inputs1states = {inputs1state};
 inputs2states = {inputs2state};
@@ -80,7 +80,7 @@ for i = cycleStart:(length(states)-1)
     k = k+1;
     genes = {};
         for j = 1:length(model.regulatoryGenes)
-            if rFBAsols{i}(j) == false 
+            if rFBAsols{i}(j) == false
                 genes{length(genes)+1,1} = model.regulatoryGenes{j};
             end
         end
@@ -91,7 +91,3 @@ for i = cycleStart:(length(states)-1)
     DRgenes{k} = genes;
     constrainedRxns{k} = rxns;
 end
-
-
-
-

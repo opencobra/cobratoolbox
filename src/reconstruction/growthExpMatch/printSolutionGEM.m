@@ -1,10 +1,22 @@
 function printSolutionGEM(MatricesSUX, solution, logFile, itNum)
-%printSolution displays the solution for growthExpMatch iterations
+% Displays the solution for `growthExpMatch` iterations
 %
-% 11-10-07 IT
+% USAGE:
 %
-% Modified 11/18/09: Joseph Kang
-
+%    printSolutionGEM(MatricesSUX, solution, logFile, itNum)
+%
+% INPUTS:
+%    MatricesSUX:    SUX Matrix
+%    solution:       MILP solution that consists of the continuous solution, integer
+%                    solution, objective value, stat, full solution, and
+%                    imported reactions
+%    logFile:        solution is printed in this file (name of reaction added and
+%                    flux of that particular reaction) (Default = GEMLog.txt)
+%    itNum:          number of iterations
+%
+% .. Author:
+%       - IT,  11-10-07
+%       - Joseph Kang, modified 11/18/09
 if nargin >2
     save([logFile '_solution_' num2str(itNum)], 'solution');
     if ~strcmp(logFile(end-3:end),'.txt'), logFile = [logFile '.txt']; end

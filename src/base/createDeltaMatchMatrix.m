@@ -6,6 +6,12 @@ function A = createDeltaMatchMatrix(set1, set2)
 %
 %    A = createDeltaMatchMatrix(set1, set2)
 %
+% INPUTS:
+%    set1, set2:    input sets
+%
+% OUTPUT:
+%    A:             flux difference matrix
+%
 % .. Authors: Markus Herrgard 1/4/07
 
 nRxns1 = length(set1);

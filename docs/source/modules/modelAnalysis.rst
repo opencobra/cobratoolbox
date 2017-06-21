@@ -20,6 +20,8 @@ Model analysis
    topology
    transport
    rumba
+   coupling
+   mdFBA
 
 .. automodule:: src.modelAnalysis
    :members:

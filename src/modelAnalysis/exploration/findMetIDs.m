@@ -1,16 +1,16 @@
-function metID = findMetIDs(model,metList)
-% Find metabolite numbers in a model
+function metID = findMetIDs(model, metList)
+% Finds metabolite numbers in a model
 %
 % USAGE:
 %
 %    metID = findMetIds(model, metList)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    metList:       List of metabolites
+%    model:      COBRA model structure
+%    metList:    List of metabolites
 %
 % OUTPUT:
-%    metID:         List of metabolite IDs corresponding to `metList`
+%    metID:      List of metabolite IDs corresponding to `metList`
 %
 % .. Author: - Jan Schellenberger 8/15/08
 

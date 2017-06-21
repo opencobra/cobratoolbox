@@ -40,8 +40,5 @@ end
 model.modelID=modelName;
 
 if strmatch(modelName,filename)~=1
-    warning('fileName.mat and modelStructureName.mat did not match')
-
-end
-
+    warning('fileName.mat and modelStructureName.mat did not match')   
 end

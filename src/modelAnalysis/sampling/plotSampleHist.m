@@ -1,4 +1,4 @@
-function plotSampleHist(rxnNames,samples,models,nBins,perScreen)
+function plotSampleHist(rxnNames, samples, models, nBins, perScreen)
 % Compares flux histograms for one or more samples
 % for one or more reactions
 %
@@ -7,17 +7,18 @@ function plotSampleHist(rxnNames,samples,models,nBins,perScreen)
 %    plotSampleHist(rxnNames, samples, models, nBins, perScreen)
 %
 % INPUTS:
-%    rxnNames:      Cell array of reaction abbreviations
-%    samples:       Cell array containing samples
-%    models:        Cell array containing model structures or common model
-%                   structure
+%    rxnNames:     Cell array of reaction abbreviations
+%    samples:      Cell array containing samples
+%    models:       Cell array containing model structures or common model
+%                  structure
 %
 % OPTIONAL INPUTS:
-%    nBins:         Number of bins to be used
-%    perScreen:     Number of reactions to show per screen.  Either a number or [nY, nX] vector.
-%                   (press 'enter' to advance screens)
+%    nBins:        Number of bins to be used
+%    perScreen:    Number of reactions to show per screen.  Either a number or [nY, nX] vector.
+%                  (press 'enter' to advance screens)
 %
 % EXAMPLE:
+%
 %    sampleStructOut1 = gpSampler(model1, 2150);
 %    sampleStructOut2 = gpSampler(model2, 2150);
 %    %Plot for model 1

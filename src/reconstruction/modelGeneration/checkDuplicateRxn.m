@@ -1,22 +1,29 @@
-function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel)
-%checkDuplicateRxn Checks model for duplicate reactions and removes them
+function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel, boundsFlag)
+% Checks model for duplicate reactions and removes them
+% By default, it detects the columns of S that are identical upto scalar 
+% multiplication
 %
 % INPUTS:
-% model         Cobra model structure
-% method        rxnAbbr --> checks rxn abbreviations
-%               S --> checks rxn S matrix
-%               FR --> checks rxn S matrix ignoring reaction direction
+%    model:         Cobra model structure
 %
 % OPTIONAL INPUTS:
-% removeFlag    {(1),0} boolean to remove duplicates
-% printLevel
+% method        S       --> checks rxn S matrix (default)
+%               rxnAbbr --> checks rxn abbreviations
+%               FR      --> checks F + R matrix, where S:=-F+R, which ignores
+%                           reaction direction
+%
 %
 % OUTPUTS:
-% modelOut          COBRA model structure without (with) duplicate reactions
-% removedRxnInd     Reaction numbers in model that were (should be) removed
-% keptRxnInd        Reaction numbers in model that were (should be) kept
+%     modelOut          COBRA model structure without (with) duplicate reactions
+%     removedRxnInd     Reaction numbers in model that were (should be) removed
+%     keptRxnInd        Reaction numbers in model that were (should be) kept
+% .. Authors:
+%           - Ronan Fleming rewritten 2017
+%           - Thomas Pfau June 2017, added boundsFlag
 
-% Ronan Fleming rewritten 2017
+if ~exist('method', 'var')
+    method = 'S';
+end
 
 if ~exist('printLevel', 'var')
     printLevel = 0;
@@ -24,6 +31,10 @@ end
 
 if ~exist('removeFlag', 'var')
     removeFlag = 1;
+end
+
+if ~exist('boundsFlag', 'var')
+    boundsFlag = 0;
 end
 
 [~, nRxn] = size(model.S);
@@ -57,8 +68,11 @@ switch method
         % get unique cols, but do not change the order
         % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
         % that C = A(IA,:) and A = C(IC,:).
-        [~, ia, ic] = unique(model.S', 'rows', 'stable');
-
+        if boundsFlag
+            [~, ia, ic] = unique([model.lb, model.S' model.ub], 'rows', 'stable');
+        else
+            [~, ia, ic] = unique(model.S', 'rows', 'stable');
+        end
         nDuplicates = length(ic) - length(ia);
         if nDuplicates > 0
             if printLevel > 0
@@ -67,14 +81,16 @@ switch method
             for n = 1:nRxn
                 bool = (ic == n);
                 if nnz(bool) > 1
-                    ind = oneToN(bool);
+                    ind = oneToN(bool);                    
+                        
                     keptOneRxnInd = ind(1);
                     removedOneRxnInd = ind(end);
-
+                    
                     if length(ind) > 2
-                        warning([model.rxns{ind(1)} ' has more than one replicate'])
+                        warning(['Reaction: ' model.rxns{ind(1)} ' has more than one replicate'])
                     end
-
+                    
+                    
                     removedRxnInd = [removedRxnInd; removedOneRxnInd];
                     keptRxnInd = [keptRxnInd; keptOneRxnInd];
 
@@ -111,7 +127,12 @@ switch method
         % get unique cols, but do not change the order
         % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
         % that C = A(IA,:) and A = C(IC,:).
-        [~, ia, ic] = unique(normalA1', 'rows', 'stable');
+        if boundsFlag            
+            [~, ia, ic] = unique([model.lb, normalA1' model.ub], 'rows', 'stable');
+        else
+            [~, ia, ic] = unique(normalA1', 'rows', 'stable');
+        end
+        
 
         for n =1:nRxn
             bool = (ic == n);
@@ -140,7 +161,8 @@ switch method
         end
 end
 
-if length(removedRxnInd) == 0
+
+if length(removedRxnInd) == 0    
     if printLevel > 0
         fprintf('%s\n', ' no duplicates found.');
     end

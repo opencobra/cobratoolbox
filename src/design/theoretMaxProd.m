@@ -1,4 +1,4 @@
-function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
+function [ExRxns, MaxTheoOut] = theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
 % Determines the max theoretical output for each exchange reaction
 %
 % USAGE:
@@ -6,24 +6,24 @@ function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normali
 %    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, criterion, inputrxn, normalize, rxns)
 %
 % INPUT:
-%    model:
+%    model:         model structure
 %
 % OPTIONAL INPUT:
-%    criterion:   One of
+%    criterion:     One of
 %
-%                   * 'pr_mol' (default)
-%                   * 'pr_mw'  (same thing in molecular weight)
-%                   * 'pr_other_mol' (other carbon compounds secretion rate)
-%                   * 'pr_other_mw'  (same thing in molecular weight)
-%                     weight yield)
-%    inputrxn:    the input reaction ('EX_glu(e)', etc.)
-%    normalize:   normalize by input flux.  Either the flux rate in mol or
-%                 in molecular weight (Default = false)
-%    rxns:        Selection Vector (1 for selected, 0 otherwise)
+%                     * 'pr_mol' (default)
+%                     * 'pr_mw'  (same thing in molecular weight)
+%                     * 'pr_other_mol' (other carbon compounds secretion rate)
+%                     * 'pr_other_mw'  (same thing in molecular weight)
+%                       weight yield)
+%    inputrxn:      the input reaction ('EX_glu(e)', etc.)
+%    normalize:     normalize by input flux.  Either the flux rate in mol or
+%                   in molecular weight (Default = false)
+%    rxns:          Selection Vector (1 for selected, 0 otherwise)
 %
 % OUTPUTS:
-%    ExRxns:      Vector of exchange reactions
-%    MaxThroOut:  The max theoretical output for each exchange reaction
+%    ExRxns:        Vector of exchange reactions
+%    MaxThroOut:    The max theoretical output for each exchange reaction
 %
 % .. Author: - Jan Schellenberger 11/7/08
 

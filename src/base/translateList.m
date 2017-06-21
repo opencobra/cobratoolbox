@@ -6,26 +6,26 @@ function list = translateList(list, trList1, trList2)
 %     list = translateList(list, trList1, trList2)
 %
 % INPUTS:
-%   list:
-%   trList1:
-%   trList2:
+%    list:       original list
+%    trList1:    list of elemets to be changed
+%    trList2:    list of elements to be changed into
 %
 % OUTPUTS:
-%   list:
+%    list:       list after changes
 %
 % EXAMPLE:
 %
-%   % Define original list
-%   list = {'a', 'b', 'c'}
+%    % Define original list
+%    list = {'a', 'b', 'c'}
 %
-%   % Define dictionary
-%   trList1 = {'b', 'c'}
-%   trList2 = {'B', 'C'}
+%    % Define dictionary
+%    trList1 = {'b', 'c'}
+%    trList2 = {'B', 'C'}
 %
-%   newList = translateList(list, trList1, trList2);
+%    newList = translateList(list, trList1, trList2);
 %
-%   % returns
-%   newList = {'a', 'B', 'C'};
+%    % returns
+%    newList = {'a', 'B', 'C'};
 
 
 [isInList, listInd] = ismember(list, trList1);

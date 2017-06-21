@@ -36,8 +36,8 @@ model.S = [-1, 0, 0 ,0 , 0, 0, 0;
             0, 0, 0, 0,-1, 0, 0;
             0, 0, 0, 0, 0, 1, 1;
             0, 0, 0, 0, 0, 1, -1];
-model.lb = [0, 0, 0, 0, 0, 0, 0];
-model.ub = [20, 20, 20, 20, 20, 20, 20];
+model.lb = [0, 0, 0, 0, 0, 0, 0]';
+model.ub = [20, 20, 20, 20, 20, 20, 20]';
 model.rxns = {'GLCt1'; 'HEX1'; 'PGI'; 'PFK'; 'FBP'; 'FBA'; 'TPI'};
 model.mets = {'glc-D[e]'; 'glc-D'; 'atp'; 'H'; 'adp'; 'g6p';'f6p'; 'fdp'; 'pi'; 'h2o'; 'g3p'; 'dhap'};
 sc =  [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -133,10 +133,10 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 % Convert to reversible
 fprintf('>> Testing convertToReversible\n');
 testModelRev = convertToReversible(testModelIrrev);
-load('testModelManipulation.mat','modelRev');
+testModelRev = rmfield(testModelRev,'reversibleModel'); % this should now be the original model!
 
 % test if both models are the same
-assert(isSameCobraModel(modelRev,testModelRev));
+assert(isSameCobraModel(model,testModelRev));
 
 % test irreversibility of model
 fprintf('>> Testing convertToIrreversible (2)\n');
@@ -149,27 +149,31 @@ modelRev.lb(1) = 10;
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
-% test irreversibility of model
+
+%test Conversion with special ordering
 fprintf('>> Testing convertToIrreversible (3)\n');
-load('testModelManipulation.mat','model','modelIrrev');
-modelSave=model;
+load('testModelManipulation.mat','model','modelIrrevOrdered');
 
-% set a reaction as not reversible although the reaction is reversible as
-% suggested by the bounds (case1)
-model.rev(1) = 0;
-[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, 'orderReactions', true);
 
 % test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
+assert(isSameCobraModel(modelIrrevOrdered, testModelIrrev));
 
-% set a reaction as not reversible although the reaction is reversible as
-% suggested by the bounds (case2)
-model=modelSave;
-model.rev(20) = 1;
-[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 
-% test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
+%Test moveRxn
+model2 = moveRxn(model,10,20);
+fields = getRelevantModelFields(model,'rxns');
+rxnSize = numel(model.rxns);
+for i = 1:numel(fields)
+    if size(model.(fields{i}),1) == rxnSize
+        val1 = model.(fields{i})(10,:);    
+        val2 = model2.(fields{i})(20,:);    
+    elseif size(model.(fields{i}),2) == rxnSize
+        val1 = model.(fields{i})(:,10);    
+        val2 = model2.(fields{i})(:,20);    
+    end
+    assert(isequal(val1,val2));
+end
 
 % change the directory
 cd(currentDir)

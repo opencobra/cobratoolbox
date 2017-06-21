@@ -20,7 +20,7 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %                      * gamma - trade-off parameter of relaxation on fluxes rate
 %                      * lamda - trade-off parameter of relaxation on steady state constraint
-%                      * alpha - strade-off parameter of relaxation on bounds
+%                      * alpha - trade-off parameter of relaxation on bounds
 %
 % OUTPUT:
 %    solution:       Structure containing the following fields:
@@ -30,23 +30,23 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 %                        * 1  = Solution found
 %                        * 0  = Infeasible
 %                        * -1 = Invalid input
-%                      * r - relaxation on steady state constraints `S*v = b`
+%                      * r - relaxation on steady state constraints :math:`S*v = b`
 %                      * p - relaxation on lower bound of reactions
 %                      * q - relaxation on upper bound of reactions
 %                      * v - reaction rate
 %
-% .. Author: - Hoai Minh Le	20/11/2015
-%
 % .. math::
-%      min   c'v - gamma1*||v||_1 - gamma0*||v||_0
-%            + lambda1*||r||_1 + lambda0*||r||_0
-%            + alpha1*(||p||_1 + ||q||_1) + alpha0*(||p||_0 + ||q||_0)
-%      s.t   S*v + r = b
-%            l - p <= v <= u + q
-%            r \in R^m
-%            p,q \in R_+^n
-%      m - number of metabolites
-%      n - number of reactions
+%      min  ~&~ c^T v - \gamma_1 ||v||_1 - \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
+%           ~&~   + \alpha_1 (||p||_1 + ||q||_1) + \alpha_0 (||p||_0 + ||q||_0) \\
+%      s.t. ~&~ S v + r = b \\
+%           ~&~ l - p \leq v \leq u + q \\
+%           ~&~ r \in R^m \\
+%           ~&~ p,q \in R_+^n
+%
+% `m` - number of metabolites,
+% `n` - number of reactions
+%
+% .. Author: - Hoai Minh Le	20/11/2015
 
 [m,n] = size(model.S); %Check inputs
 
@@ -81,7 +81,8 @@ if nargin < 3
     end
 
     if isfield(relaxOption,'epsilon') == 0
-        relaxOption.epsilon = 10e-6;
+        feasTol = getCobraSolverParams('LP', 'feasTol');
+        relaxOption.epsilon = feasTol*100;
     end
 
     if isfield(relaxOption,'gamma0') == 0
@@ -122,10 +123,10 @@ end
 
 if ~isfield(model,'csense')
     % If csense is not declared in the model, assume that all constraints are equalities.
-    warning('csense is not defined. We assume that all constraints are equalities.')
+    fprintf('%s\n','csense is not defined. We assume that all constraints are equalities.')
     csense(1:m,1) = 'E';
 else
-    if length(model.csense)~=m,
+    if length(model.csense)~=m
         warning('Length of csense is invalid! Defaulting to equality constraints.')
         csense(1:m,1) = 'E';
     else
@@ -184,7 +185,6 @@ while nbIteration < nbMaxIteration && stop ~= true,
             solution.r = [];
             solution.p = [];
             solution.q = [];
-            solution.stat = 0;
             solution.stat = 2;
             error('Problem unbounded !');
         case 1
@@ -348,6 +348,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,rel
         p = solution.full(n+m+1:n+m+n);
         q = solution.full(n+m+n+1:n+m+n+n);
     else
+        warning(['solveCobraLP solution status is ' num2str(solution.stat)])
         v = [];
         r = [];
         p = [];

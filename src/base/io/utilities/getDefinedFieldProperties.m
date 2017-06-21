@@ -1,21 +1,21 @@
 function [fields] = getDefinedFieldProperties(varargin)
-% Returns the fields defined in the COBRA Toolbox
-% along with checks for their properties
+% Returns the fields defined in the COBRA Toolbox along with checks for their properties
 %
 % USAGE:
 %
-%    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
+%    [fields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
-%    Descriptions:         Whether to obtain the field descriptions (default = false).
-%    SpecificFields:       Indication whether to only obtain definitions for a
-%                          specific set of fields (default all).
-%    DataBaseFields:       Get the fields with specified Database relations.
+%    varargin:             The following parameter/value pairs can be used:
+%                          * Descriptions:         Whether to obtain the field descriptions (default = false).
+%                          * SpecificFields:       Indication whether to only obtain definitions for a
+%                            specific set of fields (default all).
+%                          * DataBaseFields:       Get the fields with specified Database relations (true, if requested).
 %
 % OUTPUTS:
-%    requiredFields:       The fields a model must have in order to be a valid
-%                          COBRA Toolbox model
-%    optionalFields:       The Fields which are supported by the COBRA Toolbox.
+%    fields:               All fields and their properties as requested, if
+%                          fields without definitions are requested, they
+%                          will not be contained in the result.
 %
 % NOTE:
 %
@@ -32,6 +32,8 @@ function [fields] = getDefinedFieldProperties(varargin)
 %        to true
 %      * X{:,4} are evaluateable statements, which have to evaluate to true for
 %        the model to be valid, these mainly check the content types.
+%      * X{:,5} are default values (or evaluateable strings for cell
+%        arrays)
 %    E.g.
 %
 %      `x = model.(X{A, 1})`;
@@ -44,12 +46,14 @@ function [fields] = getDefinedFieldProperties(varargin)
 %      * X{:, 2} - qualifier
 %      * X{:, 3} - model Field
 %      * X{:, 4} - model field reference (without s)
+%      * X{:, 5} - Patterns for ids from the respecive database.
 %
 % .. Author: - Thomas Pfau May 2017
 
 persistent CBT_PROG_FIELD_PROPS
 persistent CBT_DESC_FIELD_PROPS
 persistent CBT_DB_FIELD_PROPS
+
 
 parser = inputParser();
 parser.addParameter('Descriptions',false,@(x) isnumeric(x) | islogical(x))
@@ -77,18 +81,19 @@ if db
         qualpos = find(cellfun(@(x) ischar(x) && strcmp(x,'qualifier'),raw(1,:)));
         reffieldPos = find(cellfun(@(x) ischar(x) && strcmp(x,'referenced Field'),raw(1,:)));
         fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
+        patternPos = find(cellfun(@(x) ischar(x) && strcmp(x,'DBPatterns'),raw(1,:)));
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,dbpos));
         %Ignore the first row, headers.
         relrows(1) = false;
-        relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos]);
-        dbInfo = cell(0,4);
+        relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos,patternPos]);
+        dbInfo = cell(0,5);
         for i = 1:size(relarray)
             fieldRef = relarray{i,4}(1:end-1);
             dbs = strsplit(relarray{i,1},';');
             for db = 1:length(dbs)
                 quals = strsplit(relarray{i,2},';');
                 for qual = 1:length(quals)
-                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef};
+                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef,relarray{i,5}};
                 end
             end
         end
@@ -128,11 +133,12 @@ if isempty(CBT_PROG_FIELD_PROPS)
     yPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Ydim'),raw(1,:)));
     evalPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Evaluator'),raw(1,:)));
     fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
+    defaultPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Default Value'),raw(1,:)));
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,fieldNamePos));
     %Ignore the first row, headers.
     relrows(1) = false;
-    relarray = raw(relrows,[fieldNamePos,xPos,yPos,evalPos]);
-    dbInfo = cell(0,4);
+    relarray = raw(relrows,[fieldNamePos,xPos,yPos,evalPos,defaultPos]);
+    dbInfo = cell(0,5);
     for i = 1:size(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
@@ -148,7 +154,13 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 yval = ynumval;
             end
         end
-         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}};
+        default = relarray{i,5};
+        if ischar(default)           
+            if ~isempty(str2num(default))
+                default = str2num(default);
+            end
+        end
+         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default};
     end
     CBT_PROG_FIELD_PROPS = dbInfo;
 end

@@ -6,13 +6,16 @@ function x0 = randomObjFBASol(model, initArgs)
 %    x0 = randomObjSol(model, initArgs)
 %
 % INPUTS:
-%    model:             COBRA model structure
-%    initArgs:          Cell array containing the following data:
+%    model:        COBRA model structure
+%    initArgs:     Cell array containing the following data:
 %
-%                         1.  osenseStr - Maximize ('max') / minimize ('min')
-%                         2.  minObjFrac - Minimum initial objective fraction
-%                         3.  minObjValue - Minimum initial objective value (opt)
-%                             (Default = `minObjFrac*sol.f`)
+%                    1.  osenseStr - Maximize ('max') / minimize ('min')
+%                    2.  minObjFrac - Minimum initial objective fraction
+%                    3.  minObjValue - Minimum initial objective value (opt)
+%                        (Default = `minObjFrac*sol.f`)
+%
+% OUTPUT:
+%    x0:           solution of FBA problem
 %
 % .. Author: - Markus Herrgard
 

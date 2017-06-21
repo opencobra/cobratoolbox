@@ -6,14 +6,14 @@ function blockedReactions = findBlockedReaction(model, method)
 %
 %    BlockedReaction = findBlockedReaction(model)
 %
-% INPUTS:
-%    model:              COBRA model structure
+% INPUT:
+%    model:               COBRA model structure
 %
 % OPTIONAL INPUT:
-%    method:             'FVA' for flux variability analysis (default)
-%                        'L2'  for 2-norm minimization
+%    method:              'FVA' for flux variability analysis (default)
+%                         'L2'  for 2-norm minimization
 % OUTPUT:
-%    blockedReactions:   List of blocked reactions
+%    blockedReactions:    List of blocked reactions
 %
 % .. Authors:
 %       - Ines Thiele 02/09

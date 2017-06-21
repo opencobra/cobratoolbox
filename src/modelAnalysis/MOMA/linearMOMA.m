@@ -1,4 +1,4 @@
-function [solutionDel,solutionWT,totalFluxDiff,solStatus] = linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)
+function [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelWT, modelDel, osenseStr, minFluxFlag, verbFlag)
 % Performs a linear version of the MOMA (minimization of metabolic adjustment) approach
 %
 % USAGE:
@@ -6,28 +6,28 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = linearMOMA(modelWT,m
 %    [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelWT, modelDel, osenseStr, minFluxFlag, verbFlab)
 %
 % INPUTS:
-%    modelWT:           Wild type model
-%    modelDel:          Deletion strain model
+%    modelWT:          Wild type model
+%    modelDel:         Deletion strain model
 %
 % OPTIONAL INPUTS:
-%    osenseStr:         Maximize ('max') / minimize ('min') (Default = 'max')
-%    minFluxFlag:       Minimize the absolute value of fluxes in the optimal MOMA
-%                       solution (Default = false)
-%    verbFlag:          Verbose output (Default = false)
+%    osenseStr:        Maximize ('max') / minimize ('min') (Default = 'max')
+%    minFluxFlag:      Minimize the absolute value of fluxes in the optimal MOMA
+%                      solution (Default = false)
+%    verbFlag:         Verbose output (Default = false)
 %
 % OUTPUTS:
-%    solutionDel:       Deletion solution structure
-%    solutionWT:        Wild-type solution structure
-%    totalFluxDiff:     Value of the linear MOMA objective, i.e. `sum|v_wt-v_del|`
-%    solStatus:         Solution status - solves the problem: (`f_wt` is the optimal wild type objective value found by FBA)
+%    solutionDel:      Deletion solution structure
+%    solutionWT:       Wild-type solution structure
+%    totalFluxDiff:    Value of the linear MOMA objective, i.e. :math:`\sum |v_{wt}-v_{del}|`
+%    solStatus:        Solution status - solves the problem: (`f_wt` is the optimal wild type objective value found by FBA)
 %
 % .. math::
-%     min sum|v_{wt} - v_{del}|
-%     S_wt*v_wt = 0
-%     lb_wt <= v_wt <= ub_wt
-%     c_wt'*v_wt = f_wt
-%     S_del*v_del = 0
-%     lb_del <= v_del <= ub_del
+%     min ~&~  \sum |v_{wt} - v_{del}| \\
+%         ~&~ S_{wt}v_{wt} = 0 \\
+%         ~&~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+%         ~&~ c_{wt}^T v_{wt} = f_{wt} \\
+%         ~&~ S_{del}v_{del} = 0 \\
+%         ~&~ lb_{del} \leq v_{del} \leq ub_{del}
 %
 % NOTE:
 %

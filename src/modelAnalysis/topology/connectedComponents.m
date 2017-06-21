@@ -10,9 +10,9 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 %    model:
 %
 % OPTIONAL INPUTS:
-%    type:       {('allComponents'),'largestComponent'}
+%    type:       {('allComponents'), 'largestComponent'}
 %    figures:    Will generate plots of the grouping algorithm as it creates block diagonal
-%                groups in from top left to bottom right in W.
+%                groups in from top left to bottom right in `W`.
 %    files:      Indicator, whether several files containing indicator
 %                matrices are generated.
 % OUTPUTS:
@@ -26,8 +26,6 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 %    R:          reaction adjacency
 %    C:          compound adjacency
 %
-% .. Author: - Ronan Fleming, 2012
-%
 % All components require:
 % Connected Component Analysis on an Undirected Graph by Tristan Ursell
 % http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph.
@@ -36,7 +34,9 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 % gaimc : Graph Algorithms In Matlab Code by David Gleich
 % http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code.
 %
-% .. Author: - Thomas Pfau May 2017, Speedup and addition of files indicator
+%  .. Author:
+%        - Ronan Fleming, 2012
+%        - Thomas Pfau May 2017, Speedup and addition of files indicator
 
 if ~exist('type','var')
     type='allComponents';

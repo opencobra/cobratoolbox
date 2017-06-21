@@ -1,4 +1,4 @@
-function Reaclist = findRxnsActiveWithGenes(model,genes)
+function Reaclist = findRxnsActiveWithGenes(model, genes)
 % Finds all reactions for which the provided genes
 % show sufficient evidence (i.e. are usfficient according to the GPRs)
 %
@@ -7,14 +7,14 @@ function Reaclist = findRxnsActiveWithGenes(model,genes)
 %    [Reaclist] = findRxnsActiveWithGenes(model, genes)
 %
 % INPUT:
-%    model:             COBRA model structure
-%    genes:             A list of gene identifiers
+%    model:        COBRA model structure
+%    genes:        A list of gene identifiers
 %
 % OUTPUTS:
-%    Reaclist:          Cell array of reactions which are supported by the
-%                       provided genes
+%    Reaclist:     Cell array of reactions which are supported by the provided genes
 %
 % NOTE:
+%
 %    Only reactions which do have a GPR are considered for this function.
 %    Reactions without GPRs are ignored, as we don't have evidence.
 %

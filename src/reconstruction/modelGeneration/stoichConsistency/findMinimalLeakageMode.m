@@ -1,48 +1,56 @@
-function [Vp,Yp,statp,Vn,Yn,statn] = findMinimalLeakageMode(model,metBool,modelBoundsFlag,epsilon,printLevel)
+function [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool, modelBoundsFlag, epsilon, printLevel)
 % Solve the problem
-% min   ||v||_0 + ||y||_0
-% s.t.  Sv - y = 0
-%       l <= v <= u
-% with either
-%       0 <= y      (semipositive net stoichiometry)
-% or 
-%            y <= 0 (seminegative net stoichiometry)
 %
-% INPUT
-% model                 (the following fields are required - others can be supplied)
-%   .S                   m x n stoichiometric matrix
-%   .lb                  Lower bounds
-%   .ub                  Upper bounds
+% .. math::
 %
-% OPTIONAL INPUT
-% model
-%   .SConsistentMetBool
-%   .SConsistentRxnBool
-% metBool               m x 1 boolean vector of metabolites to test for
-%                       leakage
-% modelBoundsFlag       {0,(1)} 
-%                       0 = set all reaction bounds to -inf, inf
-%                       1 = use reaction bounds provided by model.lb and .ub
-% epsilon                1e-4, smallest nonzero reaction flux in leakage mode   
-% printLevel             {(0),1}
+%    min  ~& ||v||_0 + ||y||_0 \\
+%    s.t. ~& Sv - y = 0, \\
+%         ~& l \leq v \leq u
 %
-% OUTPUT
-%       Vp                  n x 1 vector (positive leakage modes)
-%       Yp                  m x 1 vector (positive leakage modes)
-%       statp               status (positive leakage modes)
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-%       Vn                  n x 1 vector (negative leakage modes)
-%       Yn                  m x 1 vector (negative leakage modes)
-%       statn               status (negative leakage modes)
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
+% with either :math:`0 \leq y` (semipositive net stoichiometry)
+% or :math:`y \leq 0` (seminegative net stoichiometry)
 %
-% Ines Thiele & Ronan Fleming June 2016
+% USAGE:
+%
+%    [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool, modelBoundsFlag, epsilon, printLevel)
+%
+% INPUT:
+%    model:              (the following fields are required: `.S`, `.lb`, `.ub`)
+%
+%                          * .S - `m` x `n` stoichiometric matrix
+%                          * .lb - Lower bounds
+%                          * .ub - Upper bounds
+%                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
+%                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%
+% OPTIONAL INPUTS:
+%    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
+%    modelBoundsFlag:    {0, (1)} where:
+%
+%                          * 0 = set all reaction bounds to -inf, inf
+%                          * 1 = use reaction bounds provided by model.lb and .ub
+%    epsilon:            1e-4, smallest nonzero reaction flux in leakage mode
+%    printLevel:         {(0), 1}
+%
+% OUTPUTS
+%    Vp:                 `n` x 1 vector (positive leakage modes)
+%    Yp:                 `m` x 1 vector (positive leakage modes)
+%    statp:              status (positive leakage modes)
+%
+%                          * 1 =  Solution found
+%                          * 2 =  Unbounded
+%                          * 0 =  Infeasible
+%                          * -1 =  Invalid input
+%    Vn:                 `n` x 1 vector (negative leakage modes)
+%    Yn:                 `m` x 1 vector (negative leakage modes)
+%    statn:              status (negative leakage modes)
+%
+%                          * 1 =  Solution found
+%                          * 2 =  Unbounded
+%                          * 0 =  Infeasible
+%                          * -1 =  Invalid input
+%
+% .. Author: - Ines Thiele & Ronan Fleming, June 2016
 
 [S,lb,ub] = deal(model.S,model.lb,model.ub);
 [mlt,nlt]=size(S);
@@ -116,7 +124,7 @@ Yn=sparse(mlt,zlt);
 if printLevel>0
     fprintf('%u%s\n',zlt,' rows of S to test for minimal leakage modes...')
 end
-    
+
 %%
 fhandle=fopen('leakages.txt');
 z=0;
@@ -128,7 +136,7 @@ for m=1:mlt
         trySemiNegativeLeakageMode=1;
         %increment index for results
         z=z+1;
-        
+
         %set a positive lower bound on one stoichiometrically inconsistent metabolite
         oldlb=cardPrb.lb(nlt+m);
         cardPrb.lb(nlt+m)=1;
@@ -166,7 +174,7 @@ for m=1:mlt
         end
         %reset the bound
         cardPrb.lb(nlt+m)=oldlb;
-        
+
         if trySemiNegativeLeakageMode
             %set a positive lower bound on one stoichiometrically inconsistent metabolite
             oldlb=cardPrbn.lb(nlt+m);

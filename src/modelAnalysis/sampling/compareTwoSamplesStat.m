@@ -1,23 +1,23 @@
-function [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)
+function [stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 % Compares statistically the difference between two
 % samples. Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests.
 %
 % USAGE:
 %
-%    [stats,pVals] = compareTwoSamplesStat(sample1, sample2, tests)
+%    [stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 %
 % INPUTS:
-%    sample1, sample2:          Samples to compare
-%    tests:                     {`test1`, `test2`,...} (Default = all tests)
+%    sample1, sample2:    Samples to compare
+%    tests:               {`test1`, `test2`,...} (Default = all tests)
 %
-%                                 * 'ks' - Kolmogorov-Smirnov test
-%                                 * 'rankSum' - rank-sum test
-%                                 * 'chiSquare' - chi-squre test
-%                                 * 'tTest' - T-test
+%                           * 'ks' - Kolmogorov-Smirnov test
+%                           * 'rankSum' - rank-sum test
+%                           * 'chiSquare' - chi-squre test
+%                           * 'tTest' - T-test
 %
 % OUTPUTS:
-%    stats:                     statistics
-%    pVals:                     p values
+%    stats:               statistics
+%    pVals:               `p` values
 %
 % .. Authors:
 %       - Markus Herrgard 8/14/06

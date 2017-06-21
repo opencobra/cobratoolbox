@@ -1,19 +1,19 @@
 function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
-% Identifies all blocked metabolites (anything downstream of a gap) 
-% in a model.  MILP algorithm that finds gaps that may be missed by simple 
+% Identifies all blocked metabolites (anything downstream of a gap)
+% in a model.  MILP algorithm that finds gaps that may be missed by simple
 % inspection of the S matrix. To find every gap in a model, change the rxn
 % bounds on all exchange reactions to allow uptake of every metabolite.
 %
 % USAGE:
 %
-%     [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
+%    [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
 %
 % INPUT:
 %    model:             a COBRA model
 %
 % OPTIONAL INPUTS:
 %    findNCgaps:        find no consupmption gaps as well as no production gaps
-%                       (default false)   
+%                       (default false)
 %    verbFlag:          verbose flag (default false)
 %
 % OUTPUTS:
@@ -21,7 +21,7 @@ function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFl
 %    rootGaps:          all root no production (and consumption) gaps
 %    downstreamGaps:    all downstream gaps
 %
-% based on Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.
+% Based on `Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212`.
 %
 % .. solve problem
 %    max ||xnp||
@@ -46,7 +46,6 @@ function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFl
 %            lb <= v <= ub
 %            xnp and w are binary variables, v are continuous
 %
-%
 % .. Author: Jeff Orth 7/6/09
 
 if nargin < 2
@@ -58,9 +57,9 @@ end
 
 M = length(model.rxns); %this was set to 100 in GAMS GapFind implementation
 N = length(model.mets);
-R = model.rev ~= 0; %reversible reactions
+R = model.lb < 0 ; %reversible reactions
 R_index = find(R);
-IR = model.rev == 0; %irreversible reactions
+IR = model.lb >= 0; %irreversible reactions
 IR_index = find(IR);
 e = 0.0001;
 S = model.S;
@@ -113,7 +112,7 @@ for i = 1:length(IR_index)
         wij_IR(met_index(j),row) = 1;
         row = row + 1;
     end
-end  
+end
 
 A = [A ; Sij_IR -e*speye(m_c2,n_wij_IR) sparse(m_c2,(n_wij_R+n_xnp))];
 
@@ -133,7 +132,7 @@ for i = 1:length(R_index)
         wij_R(met_index(j),row) = 1;
         row = row + 1;
     end
-end  
+end
 
 A = [A ; Sij_R sparse(m_c4,n_wij_IR) -M*speye(m_c4,n_wij_R) sparse(m_c4,n_xnp)];
 
@@ -143,13 +142,13 @@ A = [A ; Sij_R sparse(m_c5,n_wij_IR) -M*speye(m_c5,n_wij_R) sparse(m_c5,n_xnp)];
 % constraint 6
 A = [A ; sparse(m_c6,n_v) wij_IR wij_R -1*speye(m_c6,n_xnp)];
 
-% RHS vector b 
+% RHS vector b
 b = [zeros(m_c1+m_c2+m_c3,1);(e-M)*ones(m_c4,1);zeros(m_c5+m_c6,1)];
 
 % objective coefficient vector c
 c = [zeros(n_v+n_wij_IR+n_wij_R,1);ones(n_xnp,1)];
 
-% upper and lower bounds on variables (v,w,xnp) 
+% upper and lower bounds on variables (v,w,xnp)
 lb = [lb;zeros(n_wij_IR+n_wij_R+n_xnp,1)];
 ub = [ub;ones(n_wij_IR+n_wij_R+n_xnp,1)];
 
@@ -176,7 +175,7 @@ vartype((n_v+1):(n_v+n_wij_IR+n_wij_R+n_xnp)) = 'B';
 x0 = [];
 
 
-% run COBRA MILP solver    
+% run COBRA MILP solver
 gapFindMILPproblem.A = A;
 gapFindMILPproblem.b = b;
 gapFindMILPproblem.c = c;
@@ -188,7 +187,7 @@ gapFindMILPproblem.vartype = vartype;
 gapFindMILPproblem.x0 = x0;
 
 if verbFlag
-    parameters.printLevel = 3; 
+    parameters.printLevel = 3;
 else
     parameters.printLevel = 0;
 end
@@ -200,7 +199,3 @@ metsProduced = solution.full((n_v+n_wij_IR+n_wij_R+1):(n_v+n_wij_IR+n_wij_R+n_xn
 allGaps = model.mets(~metsProduced);
 rootGaps = findRootNPmets(model,findNCgaps); %identify root gaps using findRootNPmets
 downstreamGaps = allGaps(~ismember(allGaps,rootGaps));
-
-
-
-

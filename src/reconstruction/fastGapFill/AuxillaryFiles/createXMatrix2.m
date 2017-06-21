@@ -1,32 +1,31 @@
 function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
-%% ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
-% createXMatrix creates a matrix full of exchange reactions based
+% Creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
 % metabolites present in the model)
 %
-% INPUT
-% compoundsIn           List of metabolites
-% transport             if 1, transport reactions will be defined as well for every
-%                       compounds (default: 0, which corresponds to only exchange reactions)
-% compartment           [c] --> transport from cytoplasm [c] to extracellular space
-%                       [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
-% model                 model structure - used to check if exchange reaction exists
-%                       already before adding it to ExchangeRxnMatrix
+% USAGE:
 %
-% OUTPUT
-% ExchangeRxnMatrix     Model structure containing all exchange and
-%                       transport reactions
+%    ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
 %
-% 11-10-07      Ines Thiele
-% 13-06-09      Ines Thiele. Added option to add transport reactions for intracellular
-%               compartments
-% June 2013     Ines Thiele. Added option to add transport reactions for
-%               all metabolites in all model compartment to the cytosol,
-%               as well as exchange reactions for all extracellular
-%               metabolites.
+% INPUTS:
+%    compoundsIn:          List of metabolites
+%    transport:            if 1, transport reactions will be defined as well for every
+%                          compounds (default: 0, which corresponds to only exchange reactions)
+%    compartment:          [c] --> transport from cytoplasm [c] to extracellular space
+%                          [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
+%    model:                model structure - used to check if exchange reaction exists
+%                          already before adding it to `ExchangeRxnMatrix`
 %
-% Ines Thiele, http://thielelab.eu.
+% OUTPUT:
+%    ExchangeRxnMatrix:    Model structure containing all exchange and
+%                          transport reactions
 %
+% .. Authors:
+%       - Ines Thiele, 11-10-07
+%       - Ines Thiele, 13-06-09, Added option to add transport reactions for intracellular compartments
+%       - Ines Thiele, June 2013,  Added option to add transport reactions for
+%         all metabolites in all model compartment to the cytosol,
+%         as well as exchange reactions for all extracellular metabolites.
 
 if ~exist('transport','var') || isempty(transport)
     transport = 0;
@@ -225,5 +224,6 @@ for i=1:length(compounds)
     end
     showprogress(i/length(compounds));
 end
+%Currently we are likely to have a largely blown up S matrix.
+ExchangeRxnMatrix.S = ExchangeRxnMatrix.S(1:numel(ExchangeRxnMatrix.mets),1:numel(ExchangeRxnMatrix.rxns));
 
-ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';

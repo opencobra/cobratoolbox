@@ -1,198 +1,137 @@
-function [ newmodel ] = addMetabolite(model,metID,metName,formula,ChEBIID,KEGGId,PubChemID, InChi,Charge, b )
+function [ newmodel ] = addMetabolite(model,metID,varargin)
 % Adds a Metabolite to the Current Reconstruction
 %
 % USAGE:
 %
-%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b )
+%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b)
 %
 % INPUTS:
 %    model:         Cobra model structure
 %    metID:         The ID(s) of the metabolite(s) (will be the identifier in model.mets)
 %
 % OPTIONAL INPUTS:
-%    metName:       Human readable name(s) (String)
-%    formula:       The chemical formula(s) (String)
-%    ChEBIID:       The CHEBI Id(s) (String)
-%    KEGGId:        The KEGG Compound ID(s) (String)
-%    PubChemID:     The PubChemID(s) (String)
-%    InChi:         The InChi description(s) (String)
-%    Charge:        The Charge(s) (int)
-%    b:             The accumulation(s) or release(s) (double)
+%    metName:       Human readable name(s) (default metID, String)
+%    metFormula:    The chemical formula(s) (default '', String)
+%    ChEBIID:       The CHEBI Id(s) (default '', String)
+%    KEGGId:        The KEGG Compound ID(s) (default '', String)
+%    PubChemID:     The PubChemID(s) (default '', String)
+%    InChi:         The InChi description(s) (default '', String)
+%    Charge:        The Charge(s) (default NaN, int)
+%    b:             The accumulation(s) or release(s) (default 0, double)
+%    csense:        The sense of this metabolite (default 'E', char)
 %
 % OUTPUT:
 %    newModel:      COBRA model with added metabolite(s)
 %
 % .. Author: - Thomas Pfau 15/12/2014
 %
-% `metID` and all optional string arguments either have to be a single value or cell
+% `metID` and all optional arguments either have to be a single value or cell
 % arrays. `Charge` and `b` have to be double arrays.
 
-varName={'char','cell','numeric','logical'};
-%Convert into cell array
-if ~isempty(metID)
-    if ~isa(metID,'cell')
-        for i=1:numel(varName);
-            if isa(metID,varName{i});
-                type=i;
+optionalParameters = {'metName','metFormula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b', 'csense'};
+oldOptionalOrder = {'metName','metformula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b' };
+if (numel(varargin) > 0 && ischar(varargin{1}) && ~any(ismember(varargin{1},optionalParameters)))
+    %We have an old style thing....
+    %Now, we need to check, whether this is a formula, or a complex setup
+    %convert the input into the new format.
+    tempargin = cell(0);
+    for i = 1:numel(varargin)
+        if~isempty(oldOptionalOrder(i))
+            if ~isempty(varargin{i})
+                tempargin{end+1} = optionalParameters{i};
+                tempargin{end+1} = varargin{i};
             end
-
-        end
-        if type==1;
-            metID = {metID};
-        else
-            %errorMsg=sprintf('The type of the metID should be ''char'',but here the provided metID is ''%d''',varName{type});
-            errorMsg=varName{type};
-
-            errorMsg=['The type of the provided metID should be ''char'' or ''cell'', but here the provided metID is ', errorMsg];
-            errordlg(errorMsg);
         end
     end
-else
-    errordlg('metID is empty');
+    varargin = tempargin;
 end
 
-
-
-if nargin < 10
-    b = zeros(1,numel(metID));
-else
-    if numel(metID) ~= numel(b)
-        fprintf('Inconsistent Argument length (%i) and b(%i)\n',numel(metID),numel(b));
-        return
-    end
-    if ~isa(b,'double')
-        fprintf('Wrong Argument class for b: %s ; should be double\n',class(b));
-        return
-    end
+% Figure out if reaction already exists
+if ~iscell(metID)
+    metID = {metID};
+end
+defaultMetName = metID;
+defaultFormula = {''};
+defaultCHEBI = {''};
+defaultKEGG = {''};
+defaultPubChem = {''};
+defaultInChi = {''};
+defaultCharge = NaN;
+defaultb = 0;
+defaultCsense = 'E';
+if(iscell(metID))
+    defaultFormula = repmat(defaultFormula,numel(metID),1);
+    defaultCHEBI = repmat(defaultCHEBI,numel(metID),1);
+    defaultKEGG = repmat(defaultKEGG,numel(metID),1);
+    defaultPubChem = repmat(defaultPubChem,numel(metID),1);
+    defaultInChi = repmat(defaultInChi,numel(metID),1);
+    defaultCharge = repmat(defaultCharge,numel(metID),1);
+    defaultb = repmat(defaultb,numel(metID),1);
+    defaultCsense = repmat(defaultCsense,numel(metID),1);
 end
 
-if nargin < 9
-    Charge = zeros(1,numel(metID));
-else
+parser = inputParser();
+parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
+parser.addRequired('metID',@(x) iscell(x) || ischar(x))
+parser.addParameter('metName',defaultMetName,@(x) ischar(x) || iscell(x) )
+parser.addParameter('metFormula',defaultFormula, @(x) ischar(x) || iscell(x));
+parser.addParameter('ChEBIID',defaultCHEBI, @(x) ischar(x) || iscell(x));
+parser.addParameter('KEGGId',defaultKEGG, @(x) ischar(x) || iscell(x));
+parser.addParameter('PubChemID',defaultPubChem, @(x) ischar(x) || iscell(x));
+parser.addParameter('InChi',defaultInChi, @(x)  ischar(x) || iscell(x));
+parser.addParameter('Charge',defaultCharge, @(x) isnumeric(x));
+parser.addParameter('b',defaultb,@(x) isnumeric(x));
+parser.addParameter('csense',defaultCsense, @(x) ischar(x));
 
-    if numel(metID) ~= numel(Charge)
-        fprintf('Inconsistent Argument length metID (%i) and Charge(%i)\n',numel(metID),numel(Charge));
-        return
-    end
-    if ~isa(Charge,'double')
-        fprintf('Wrong Argument class for Charge: %s ; should be double\n',class(Charge));
-        return
-    end
+parser.parse(model,metID,varargin{:});
+
+usedParameters = setdiff(parser.Parameters,parser.UsingDefaults);
+
+metName = parser.Results.metName;
+if ~iscell(metName)
+    metName = {metName};
 end
 
-if nargin < 8
-    InChi = cell(1,numel(metID))
-    InChi(:) = {''};
-else
-    if ~isa(InChi,'cell')
-        if ~isa(InChi,'char')
-            fprintf('Wrong Argument class for InChi: %s ; should be char or cell\n',class(InChi));
-            return
-        else
-            InChi = {InChi};
-        end
-    end
-    if numel(metID) ~= numel(InChi)
-        fprintf('Inconsistent Argument length metID (%i) and InChi(%i)\n',numel(metID),numel(InChi));
-        return
-    end
+formula = parser.Results.metFormula;
+if ~iscell(formula)
+    formula = {formula};
 end
 
-if nargin < 7
-    PubChemID = cell(1,numel(metID))
-    PubChemID(:) = {''};
-else
-    if ~isa(PubChemID,'cell')
-         if ~isa(PubChemID,'char')
-            fprintf('Wrong Argument class for PubChemID: %s ; should be char or cell\n',class(PubChemID));
-            return
-         else
-            PubChemID = {PubChemID};
-         end
-    end
-    if numel(metID) ~= numel(PubChemID)
-        fprintf('Inconsistent Argument length metID (%i) and PubChemID(%i)\n',numel(metID),numel(PubChemID));
-        return
-    end
+ChEBIID = parser.Results.ChEBIID;
+if ~iscell(ChEBIID)
+    ChEBIID = {ChEBIID};
 end
+KEGGId = parser.Results.KEGGId;
+if ~iscell(KEGGId)
+    KEGGId = {KEGGId};
+end
+PubChemID = parser.Results.PubChemID;
+if ~iscell(PubChemID)
+    PubChemID = {PubChemID};
+end
+InChi= parser.Results.InChi;
+if ~iscell(InChi)
+    InChi = {InChi};
+end
+Charge= parser.Results.Charge;
+b= parser.Results.b;
+csense= parser.Results.csense;
 
-if nargin < 6
-    KEGGId = cell(1,numel(metID))
-    KEGGId(:) = {''};
-else
-    if ~isa(KEGGId,'cell')
-        if ~isa(KEGGId,'char')
-            fprintf('Wrong Argument class for KEGGId: %s ; should be char or cell\n',class(KEGGId));
-            return
-        else
-            KEGGId = {KEGGId};
-        end
-    end
-    if numel(metID) ~= numel(KEGGId)
-        fprintf('Inconsistent Argument length metID (%i) and KEGGId(%i)\n',numel(metID),numel(KEGGId));
-        return
-    end
-end
-
-if nargin < 5
-    ChEBIID = cell(1,numel(metID))
-    ChEBIID(:) = {''};
-else
-    if ~isa(ChEBIID,'cell')
-        if ~isa(ChEBIID,'char')
-            fprintf('Wrong Argument class for ChEBIID: %s ; should be char or cell\n',class(ChEBIID));
-            return
-        else
-            ChEBIID = {ChEBIID};
-        end
-    end
-    if numel(metID) ~= numel(ChEBIID)
-        fprintf('Inconsistent Argument length metID (%i) and ChEBIID(%i)\n',numel(metID),numel(ChEBIID));
-        return
-    end
-end
-
-if nargin < 4
-    formula = cell(1,numel(metID))
-    formula(:) = {''};
-else
-    if ~isa(formula,'cell')
-        if ~isa(formula,'char')
-            fprintf('Wrong Argument class for formula: %s ; should be char or cell\n',class(formula));
-            return
-        else
-            formula = {formula};
-        end
-    end
-    if numel(metID) ~= numel(formula)
-        fprintf('Inconsistent Argument length metID (%i) and formula(%i)\n',numel(metID),numel(formula));
-        return
-    end
-end
-
-if nargin < 3
-    metName = cell(1,numel(metID))
-    metName(:) = {''};
-else
-    if ~isa(metName,'cell')
-        if ~isa(metName,'char')
-            fprintf('Wrong Argument class for metName: %s ; should be char or cell\n',class(metName));
-            return
-        else
-            metName = {metName};
-        end
-    end
-    if numel(metID) ~= numel(metName)
-        fprintf('Inconsistent Argument length metID (%i) and metName(%i)\n',numel(metID),numel(metName));
-        return
-    end
-end
 
 for i = 1:numel(metID)
     cmetID = metID{i};
-    if isempty(find(ismember(model.mets,cmetID)))
-        model.S(end+1,:) = 0;
-        model.mets{end+1} = cmetID;
+    if ~any(ismember(model.mets,cmetID))
+        %this needs an explicit 1:end as otherwise a zero size gets set to
+        %1...
+        model.S(end+1,1:end) = 0;
+        model.mets{end+1,1} = cmetID;
+        if ~isfield(model,'csense')
+            model.csense = repmat('E',size(model.mets));
+        else
+            model.csense(end+1,1) = 'E';
+        end
+
+
         if (isfield(model,'metNames'))      %Prompts to add missing info if desired
             cmetName = metName{i};
             if strcmp(cmetName,'')
@@ -200,34 +139,75 @@ for i = 1:numel(metID)
                 warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
             else
                 model.metNames{end+1,1} = metName{i} ;
-        %          model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
+            end
+        else
+            if ~isempty(metName{i}) && ~any(ismember(parser.UsingDefaults,'metName')) && ~all(cellfun(@isempty, metName))
+                model.metNames = cell(numel(model.mets),1);
+                model.metNames(:) = {''};
+                model.metNames{end} = metName{i};
+            end
         end
         if (isfield(model,'b'))      %Prompts to add missing info if desired
-            model.b(end+1) = b(i);
+            model.b(end+1,1) = b(i,1);
         end
         if (isfield(model,'metFormulas'))
             model.metFormulas{end+1,1} = formula{i};
-            warning(['Metabolite formula for ' metID{i} ' set to ''''']);
-        %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
+        else
+            if ~isempty(formula{i}) && ~any(ismember(parser.UsingDefaults,'metFormula')) && ~all(cellfun(@isempty, formula))
+                model.metFormulas = cell(numel(model.mets),1);
+                model.metFormulas(:) = {''};
+                model.metFormulas{end} = formula{i};
+            end
         end
         if isfield(model,'metChEBIID')
             model.metChEBIID{end+1,1} = ChEBIID{i};
+        else
+            if ~isempty(ChEBIID{i}) && ~any(ismember(parser.UsingDefaults,'ChEBIID')) && ~all(cellfun(@isempty, ChEBIID))
+                model.metChEBIID = cell(numel(model.mets),1);
+                model.metChEBIID(:) = {''};
+                model.metChEBIID{end} = ChEBIID{i};
+            end
         end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = KEGGId{i};
+        else
+            if ~isempty(KEGGId{i})  && ~any(ismember(parser.UsingDefaults,'KEGGId')) && ~all(cellfun(@isempty, KEGGId))
+                model.metKEGGID = cell(numel(model.mets),1);
+                model.metKEGGID(:) = {''};
+                model.metKEGGID{end} = KEGGId{i};
+            end
         end
         if isfield(model,'metPubChemID')
             model.metPubChemID{end+1,1} = PubChemID{i};
+        else
+            if ~isempty(PubChemID{i}) && ~any(ismember(parser.UsingDefaults,'PubChemID')) && ~all(cellfun(@isempty, PubChemID))
+                model.metPubChemID = cell(numel(model.mets),1);
+                model.metPubChemID(:) = {''};
+                model.metPubChemID{end} = PubChemID{i};
+            end
         end
         if isfield(model,'metInChIString')
             model.metInChIString{end+1,1} = InChi{i};
+        else
+            if ~isempty(InChi{i}) && ~any(ismember(parser.UsingDefaults,'InChi')) && ~all(cellfun(@isempty, InChi))
+                model.metInChIString = cell(numel(model.mets),1);
+                model.metInChIString(:) = {''};
+                model.metInChIString{end} = InChi{i};
+            end
         end
         if isfield(model,'metCharges')
             model.metCharges(end+1,1) = Charge(i);
+        else
+            %We only add the field, if the new metabolites contain actual
+            %values for the charges.
+            if ~isempty(Charge(i)) && ~any(ismember(parser.UsingDefaults,'Charge')) && ~all(isnan(Charge))
+                model.metCharges = NaN(numel(model.mets),1);
+                model.metCharges(end) = Charge(i);
+            end
         end
     end
 end
 
-newmodel = model;
+newmodel = updateRelevantModelFields(model,'mets');
 
 end

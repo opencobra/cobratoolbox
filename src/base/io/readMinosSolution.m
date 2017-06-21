@@ -72,36 +72,41 @@ function sol = readMinosSolution(fname)
 %     rc(n+1:nb)  is the dual variables for each row of Ax + x = 0.
 
     data = load(fname);   % Should be a (3+nb) x 3 matrix
-    sol.inform = data(1,1);
-    sol.m      = data(1,2);
-    sol.n      = data(1,3);
-    sol.osense = data(2,1);
-    sol.objrow = data(2,2);
-    sol.obj    = data(2,3);
-    sol.numinf = data(3,2);
-    sol.suminf = data(3,3);
+    sol.inform = data(1, 1);
+    sol.m = data(1, 2);
+    sol.n = data(1, 3);
+    sol.osense = data(2, 1);
+    sol.objrow = data(2, 2);
+    sol.obj = data(2, 3);
+    sol.numinf = data(3, 2);
+    sol.suminf = data(3, 3);
 
-    m  = sol.m;
-    n  = sol.n;
-    nb = n+m;
-    X  = 3+1:3+n;
-    S  = 4+n:3+nb;
+    m = sol.m;
+    n = sol.n;
+    nb = n + m;
+    X = 3 + 1:3 + n;
+    S = 4 + n:3 + nb;
 
-    xstate = data(X,1);    x = data(X,2);   rc = data(X,3);
-    sstate = data(S,1);    s = data(S,2);   y  = data(S,3);
+    xstate = data(X, 1);
+    x = data(X, 2);
+    rc = data(X, 3);
+
+    sstate = data(S, 1);
+    s = data(S, 2);
+    y = data(S, 3);
 
     % Change MINOS slacks into SNOPT slacks.
-    s  = - s;
-    LO = find(sstate==0);
-    UP = find(sstate==1);
+    s = - s;
+    LO = find(sstate == 0);
+    UP = find(sstate == 1);
     sstate(LO) = 1;
     sstate(UP) = 0;
 
     sol.xstate = xstate;
     sol.sstate = sstate;
-    sol.x      = x;
-    sol.s      = s;
-    sol.rc     = rc;
-    sol.y      = y;
+    sol.x = x;
+    sol.s = s;
+    sol.rc = rc;
+    sol.y = y;
 
 % end function readMinosSolution

@@ -1,27 +1,36 @@
 function exportSetToGAMS(set, fileName)
-%% DESCRIPTION
-% This function export the information in "set" to a .txt file which can be
+% This function exports the information in "set" to a .txt file which can be
 % read by GAMS. "set" must be a cell array of strings. 
+%
+% USAGE: 
+%
+%         exportSetToGAMS(set, fileName)
+%
+% INPUTS:
+%    set:             Type: cell array of strings
+%                     Description: cell array containing identifiers
+%                     for certain set of elements (reactions,
+%                     metabolites, etc)
+% 
+%    fileName:        Type: string
+%                     Description: Name of the file in which the
+%                     information will be stored. It is recomended to
+%                     add the extension of the file. 
+%
+% OUTPUTS:
+%    fileName.txt:    Type: file
+%                     Description: File of name "fileName" containing 
+%                     the set of elements, one for row.
+%
+% EXAMPLE: 
+%
+%    exportSetToGAMS(model.rxns, 'Reactions.txt') 
+%    This, will export the list of elements in model.rxns to a file called
+%    Reactions.txt
+%
+% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-%% INPUTS
-% set(obligatory)           Type: cell array of strings
-%                           Description: cell array containing identifiers
-%                           for certain set of elements (reactions,
-%                           metabolites, etc)
-
-% fileName(obligatory)      Type: string
-%                           Description: Name of the file in which the
-%                           information will be stored. It is recomended to
-%                           add the extension of the file. 
-
-%% OUTPUTS
-% fileName                  Type: file
-%                           Description: File of name "fileName" containing 
-%                           the set of elements, one for row.
-
-%% CODE
-%input handling
-if nargin > 2 
+if nargin > 2  %input handling
     error('All inputs for the function exportSetToGAMS must be specified');
 end
 

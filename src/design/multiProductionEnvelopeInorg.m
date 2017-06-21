@@ -1,4 +1,4 @@
-function [biomassValues,targetValues] = multiProductionEnvelopeInorg(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)
+function [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
 % Calculates the byproduct secretion envelopes
 % for every product, including inorganic compounds
 %
@@ -7,20 +7,20 @@ function [biomassValues,targetValues] = multiProductionEnvelopeInorg(model,delet
 %    [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:            COBRA model structure
 %
 % OPTIONAL INPUT:
-%    deletions:     List of reaction or gene deletions (empty if wild type)
-%                   (Default = {})
-%    biomassRxn:    Biomass rxn name (Default = whatever is defined in model)
-%    geneDelFlag:   Perform gene and not reaction deletions (Default = false)
-%    nPts:          Number of points in the plot (Default = 20)
-%    plotAllFlag:   Plots all envelopes, even ones that are not growth coupled
-%                   (Default = false)
+%    deletions:        List of reaction or gene deletions (empty if wild type)
+%                      (Default = {})
+%    biomassRxn:       Biomass rxn name (Default = whatever is defined in model)
+%    geneDelFlag:      Perform gene and not reaction deletions (Default = false)
+%    nPts:             Number of points in the plot (Default = 20)
+%    plotAllFlag:      Plots all envelopes, even ones that are not growth coupled
+%                      (Default = false)
 %
 % OUTPUT:
-%    biomassValues: Biomass values for plotting
-%    targetValues:  Target upper and lower bounds for plotting
+%    biomassValues:    Biomass values for plotting
+%    targetValues:     Target upper and lower bounds for plotting
 %
 % .. Author: - Jeff Orth 5/1/08
 

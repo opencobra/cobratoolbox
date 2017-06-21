@@ -130,7 +130,7 @@ for i = 1:length(rxnList)
         end
     end
     % Reaction associations
-    if (model.rev(rxnNo))
+    if (model.lb(rxnNo) < 0)
         metInd = find(model.S(:,rxnNo) ~= 0 & allowedMet & selMet);
         for j = 1:length(metInd)
             metNo = metInd(j);

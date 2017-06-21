@@ -1,18 +1,19 @@
 function S = scaleSMatrix(S)
-%scaleSMatrix Scale stoichimetric matrix to integers
+% Scales stoichimetric matrix to integers
 %
-% Sscaled = scaleSMatrix(S) 
+% USAGE:
 %
-%INPUT
-% S         S matrix
+%    S = scaleSMatrix(S)
 %
-%OUTPUT
-% S         Scaled S matrix
+% INPUT:
+%    S:    `S` matrix
 %
-% Markus Herrgard 6/2/06
+% OUTPUT:
+%    S:    Scaled `S` matrix
+%
+% .. Author: - Markus Herrgard 6/2/06
 
-% Round-off tolerance
-tol = 1e-7;
+tol = 1e-7; % Round-off tolerance
 
 numNonZero = 10;
 pow = 0;

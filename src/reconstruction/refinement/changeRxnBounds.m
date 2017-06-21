@@ -1,33 +1,33 @@
-function model = changeRxnBounds(model,rxnNameList,value,boundType)
-%changeRxnBounds Change upper or lower bounds of a reaction or a set of
-%reactions
+function model = changeRxnBounds(model, rxnNameList, value, boundType)
+% Changes upper or lower bounds of a reaction or a set of reactions
 %
-% model = changeRxnBounds(model,rxnNameList,value,boundType)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% rxnNameList   List of reactions (cell array or string)
-% value         Bound values
-%               Can either be a vector or a single scalar value if the same
-%               bound value is to be assinged to all reactions
+%    model = changeRxnBounds(model, rxnNameList, value, boundType)
 %
-%OPTIONAL INPUT
-% boundType     'u' - upper, 'l' - lower, 'b' - both (Default = 'b')
-%               Bound type can either be a cell array of strings or a 
-%               string with as many letters as there are reactions in 
-%               rxnNameList
+% INPUTS:
+%    model:          COBRA model structure
+%    rxnNameList:    List of reactions (cell array or string)
+%    value:          Bound values.
+%                    Can either be a vector or a single scalar value if the same
+%                    bound value is to be assinged to all reactions
 %
-%OUTPUT
-% model         COBRA model structure with modified reaction bounds
+% OPTIONAL INPUT:
+%    boundType:      'u' - upper, 'l' - lower, 'b' - both (Default = 'b')
+%                    Bound type can either be a cell array of strings or a
+%                    string with as many letters as there are reactions in  `rxnNameList`
 %
-% Markus Herrgard 4/21/06
+% OUTPUT:
+%    model:          COBRA model structure with modified reaction bounds
+%
+% .. Author: -  Markus Herrgard 4/21/06
 
 if (nargin < 4)
     boundType = 'b';
 end
 
 if ((length(value) ~= length(rxnNameList) & length(value) > 1) | (length(boundType) ~= length(rxnNameList) & length(boundType) > 1))
-   error('Inconsistent lenghts of arguments: rxnNameList, value & boundType'); 
+   error('Inconsistent lenghts of arguments: rxnNameList, value & boundType');
 end
 
 rxnID = findRxnIDs(model,rxnNameList);
@@ -36,7 +36,7 @@ rxnID = findRxnIDs(model,rxnNameList);
 if (iscell(rxnNameList))
     missingRxns = rxnNameList(rxnID == 0);
     for i = 1:length(missingRxns)
-        warning('Reaction %s not in model',missingRxns{i});    
+        warning('Reaction %s not in model',missingRxns{i});
     end
     if (length(boundType) > 1)
         boundType = boundType(rxnID ~= 0);
@@ -44,7 +44,7 @@ if (iscell(rxnNameList))
     if (length(value) > 1)
         value = value(rxnID ~= 0);
     end
-    rxnID = rxnID(rxnID ~= 0);    
+    rxnID = rxnID(rxnID ~= 0);
 end
 
 if (isempty(rxnID))

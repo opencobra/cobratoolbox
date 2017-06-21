@@ -1,17 +1,22 @@
 function [id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)
-% Read floating point data with row identifiers (text) in the first n columns
-% and m headerlines (text)
+% Read floating point data with row identifiers (text) in the first `n` columns
+% and `m` headerlines (text)
 %
 % USAGE:
 %
 %    [id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)
 %
 % INPUTS:
-%    file:      Filename
-%    n_header:  Number of header lines (default 0)
-%    n_labels:  Number of label columns (default 1)
-%    delimiter: Delimiter character (default tab)
-%    verbose:   Print out the string to be evaluated for debugging (default 0)
+%    file:         Filename
+%    n_header:     Number of header lines (default 0)
+%    n_labels:     Number of label columns (default 1)
+%    delimiter:    Delimiter character (default tab)
+%    verbose:      Print out the string to be evaluated for debugging (default 0)
+%
+% OUTPUTS:
+%    id:           Identifiers
+%    data:         Read data
+%    header:       Headers
 %
 % .. Authors: Markus Herrgard 2/9/05
 
@@ -53,7 +58,7 @@ end
 
 % Create strings to be evaluated
 tr_lh_str = '[';
-tr_rh_str = [' = textread(''' file ''','''];
+tr_rh_str = [' = textread(''' file ''', '''];
 data_str = ['data = ['];
 for i = 1:n_labels
     tr_lh_str = [tr_lh_str 'id' num2str(i)];
@@ -68,7 +73,7 @@ for i = 1:ncol - n_labels
     data_str = [data_str 'd' num2str(i) ' '];
 end
 tr_lh_str = [tr_lh_str ']'];
-tr_rh_str = [tr_rh_str ''',''delimiter'',''' delimiter ''''];
+tr_rh_str = [tr_rh_str ''', ''delimiter'', ''' delimiter ''''];
 if (n_header > 0)
     tr_rh_str = [tr_rh_str ',''headerlines'',' num2str(n_header) ');'];
 else
@@ -91,6 +96,6 @@ end
 
 if (n_labels == 1)
     id = id1;
-elseif (n_labels == 0)
+elseif(n_labels == 0)
     id = [];
 end

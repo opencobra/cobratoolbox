@@ -5,17 +5,17 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %    printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    fluxData:      Data matrix/vector (for example, solution.x)
+%    model:          COBRA model structure
+%    fluxData:       Data matrix/vector (for example, solution.x)
 %
 % OPTIONAL INPUTS:
-%    nonZeroFlag:   Only print nonzero rows (Default = false)
-%    excFlag:       Only print exchange fluxes (Default = false)
-%    sortCol:       Column used for sorting (-1, none; 0, labels; >0, data
-%                   columns;) (Default = -1)
-%    fileName:      Name of output file (Default = [])
-%    headerRow:     Header (Default = [])
-%    formulaFlag:   Print reaction formulas (Default = false)
+%    nonZeroFlag:    Only print nonzero rows (Default = false)
+%    excFlag:        Only print exchange fluxes (Default = false)
+%    sortCol:        Column used for sorting (-1, none; 0, labels; >0, data
+%                    columns;) (Default = -1)
+%    fileName:       Name of output file (Default = [])
+%    headerRow:      Header (Default = [])
+%    formulaFlag:    Print reaction formulas (Default = false)
 %
 % .. Authors:
 %       - Markus Herrgard 6/9/06

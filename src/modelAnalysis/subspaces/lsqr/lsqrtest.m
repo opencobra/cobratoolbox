@@ -1,5 +1,5 @@
 function x = lsqrtest( m, n, damp )
-% If `m = n` and `damp = 0`, this sets up a system `Ax = b`
+% If :math:`m = n` and :math:`damp = 0`, this sets up a system :math:`A x = b`
 % and calls `lsqr.m` to solve it.  Otherwise, the usual
 % least-squares or damped least-squares problem is solved.
 % `lsqraprod.m` defines the `m` x `n` matrix `A`.

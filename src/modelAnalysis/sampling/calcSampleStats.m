@@ -6,17 +6,17 @@ function sampleStats = calcSampleStats(samples)
 %    sampleStats = calcSampleStats(samples)
 %
 % INPUT:
-%    samples:       Samples to analyze
+%    samples:        Samples to analyze
 %
 % OUTPUT:
-%    sampleStats:           Structure with the following fields:
+%    sampleStats:    Structure with the following fields:
 %
-%                             * mean
-%                             * std
-%                             * mode
-%                             * median
-%                             * skew
-%                             * kurt
+%                      * mean
+%                      * std
+%                      * mode
+%                      * median
+%                      * skew
+%                      * kurt
 %
 % .. Author: - Markus Herrgard 8/22/06
 

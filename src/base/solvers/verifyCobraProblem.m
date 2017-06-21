@@ -1,40 +1,39 @@
 function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)
-%[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)
-%
-% Verifies dimensions of fields in XPproblem and determines if they are
+% Verifies dimensions of fields in `XPproblem` and determines if they are
 % valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
-% If x is provided, it will see if x is a valid solution to tolerance
-% (tol).
+% If `x` is provided, it will see if `x` is a valid solution to tolerance (tol).
 %
-%INPUT
-% XPproblem - struct containing:
-%   .A - Constraints matrix
-%   .b - rhs
-%   .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than
-%       constriant
-%   .lb, .ub - lower and upper bound on variables
-%   .c - objective coefficients
-%   .F - quadratic objective (optional, only used for QP, MIQP problems)
-%   .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
-%       variables (optional, only used for MILP, MIQP problems).
+% USAGE:
 %
-%OPTIONAL INPUT
-% x         a vector.  Function will determine if x satisfies XPproblem
-% tol       numerical tolerance to which all constraints should be verified to.
-%           (default = 1e-8)
-% verbose   Controls whether results are printed to screen.(Default = true)
+%    [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)
 %
-%OUTPUT
-% statusOK  Returns -1 if any field in XPproblem has an error
-%           returns 0 if the x vector is not valid for XPproblem and
-%           returns 1 if at least one problem type is satisfied
-% invalidConstraints    Vector which lists a 1 for any constaint that is
-%                       invalid
-% invalidVars           Vector which lists a 1 for any variable that is
-%                       invalid
-% objective             Objective of XPproblem
+% INPUT:
+%    XPproblem:             struct containing:
 %
-% Jan Shellenberger (11/23/09) Richard Que (11/24/09)
+%                             * .A - Constraints matrix
+%                             * .b - rhs
+%                             * .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than constraint
+%                             * .lb, .ub - lower and upper bound on variables
+%                             * .c - objective coefficients
+%                             * .F - quadratic objective (optional, only used for QP, MIQP problems)
+%                             * .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
+%                               variables (optional, only used for MILP, MIQP problems).
+%
+% OPTIONAL INPUT:
+%    x:                     Vector. Function will determine if `x` satisfies `XPproblem`
+%    tol:                   numerical tolerance to which all constraints should be verified to. (default = 1e-8)
+%    verbose:               Controls whether results are printed to screen.(Default = true)
+%
+% OUTPUT:
+%    statusOK:              Returns -1 if any field in `XPproblem` has an error,
+%                           returns 0 if the x vector is not valid for `XPproblem` and
+%                           returns 1 if at least one problem type is satisfied
+%    invalidConstraints:    Vector which lists a 1 for any constaint that is invalid
+%    invalidVars:           Vector which lists a 1 for any variable that is invalid
+%    objective:             Objective of `XPproblem`
+%
+% .. Authors: - Jan Shellenberger (11/23/09), Richard Que (11/24/09)
+
 if nargin < 3
     tol = 1e-8;
 end
@@ -50,7 +49,7 @@ statusOK = 1;
 
 %Check A
 if ~isfield(XPproblem, 'A')
-    display('Required field A not found');
+    disp('Required field A not found');
     statusOK = -1;
     return;
 elseif any(isnan(XPproblem.A))
@@ -59,7 +58,7 @@ elseif any(isnan(XPproblem.A))
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ',' num2str(c(i))];
     end
-    display(['NaN present in A matrix at' strCoords '.']);
+    disp(['NaN present in A matrix at' strCoords '.']);
     statusOK = -1;
     return;
 end
@@ -68,7 +67,7 @@ end
 
 %Check b
 if ~isfield(XPproblem, 'b')
-    display('Required field b not found');
+    disp('Required field b not found');
     statusOK = -1;
     return;
 elseif any(isnan(XPproblem.b))
@@ -77,29 +76,29 @@ elseif any(isnan(XPproblem.b))
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ','];
     end
-    display(['NaN present in b vector at' strCoords '.']);
+    disp(['NaN present in b vector at' strCoords '.']);
     statusOK = -1;
     return;
 end
 if any(size(XPproblem.b) ~= [nconstraints, 1])
-    display('Wrong size b vector');
+    disp('Wrong size b vector');
     statusOK = -1;
     return;
 end
 
 %Check csense
 if ~isfield(XPproblem, 'csense')
-    display('Required field csense not found');
+    disp('Required field csense not found');
     statusOK = -1;
     return;
 end
 if length(XPproblem.csense) ~= nconstraints
-    display('Wrong size csense vector');
+    disp('Wrong size csense vector');
     statusOK = -1;
     return;
 end
 if size(XPproblem.csense,2) ~= 1
-    display('Csense should be a column vector')
+    disp('Csense should be a column vector')
     statusOK = -1;
     return;
 end
@@ -121,12 +120,12 @@ elseif any(isnan(XPproblem.lb))
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ','];
     end
-    display(['NaN present in lb vector at' strCoords '.']);
+    disp(['NaN present in lb vector at' strCoords '.']);
     statusOK = -1;
     return;
 end
 if any(size(XPproblem.lb) ~= [nvars, 1])
-    display('Wrong size lb vector');
+    disp('Wrong size lb vector');
     statusOK = -1;
     return;
 end
@@ -142,18 +141,18 @@ elseif any(isnan(XPproblem.ub))
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ','];
     end
-    display(['NaN present in ub vector at' strCoords '.']);
+    disp(['NaN present in ub vector at' strCoords '.']);
     statusOK = -1;
     return;
 end
 if any(size(XPproblem.ub) ~= [nvars, 1])
-    display('Wrong size ub vector');
+    disp('Wrong size ub vector');
     statusOK = -1;
     return;
 end
 
 if any(XPproblem.ub<XPproblem.lb)
-    fprintf('Invalid lb/ub at %s\n', num2str(find(XPproblem.ub<XPproblem.lb)));
+    fprintf('Upper bound less than lower bound (ub<lb) at %s\n', num2str(find(XPproblem.ub<XPproblem.lb)));
     statusOK = -1;
     return;
 end
@@ -169,12 +168,12 @@ elseif any(isnan(XPproblem.c))
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ','];
     end
-    display(['NaN present in c vector at' strCoords '.']);
+    disp(['NaN present in c vector at' strCoords '.']);
     statusOK = -1;
     return;
 end
 if any(size(XPproblem.c) ~= [nvars, 1])
-    display('Wrong size c vector');
+    disp('Wrong size c vector');
     statusOK = -1;
     return;
 end
@@ -189,15 +188,15 @@ if isfield(XPproblem,'F')
         for i=1:length(r)
             strCoords = [strCoords ' ' num2str(r(i)) ',' num2str(c(i))];
         end
-        display(['NaN present in F matrix at' strCoords '.']);
+        disp(['NaN present in F matrix at' strCoords '.']);
         statusOK = -1;
         return;
     end
     if nRows ~= nCols
-        display('F matrix not square');
+        disp('F matrix not square');
         statusOK = -1;
     elseif nRows ~= nvars
-        display('Wrong size F matrix');
+        disp('Wrong size F matrix');
         statusOK = -1;
     else
         validQP = true;
@@ -214,22 +213,22 @@ if isfield(XPproblem,'vartype')
             statusOK = -1;
         end
     else
-        display('Wrong size vartype vector');
+        disp('Wrong size vartype vector');
         statusOK = -1;
     end
     vartype = XPproblem.vartype;
     if any(floor(XPproblem.ub(vartype == 'I' | vartype == 'B') + tol) < ceil(XPproblem.lb(vartype =='I' | vartype == 'B') - tol))
-        display('Integer or binary variables lb to ub range does not contain an integer');
+        disp('Integer or binary variables lb to ub range does not contain an integer');
         validMI = false;
         statusOK = -1;
     end
     if any(XPproblem.lb(vartype == 'B') ~= 0)
-        display('Binary variables have lower bound not equal to zero.  This is inconsistent');
+        disp('Binary variables have lower bound not equal to zero.  This is inconsistent');
         validMI = false;
         statusOK = -1;
     end
     if any(XPproblem.ub(vartype == 'B') ~= 1)
-        display('Binary variables have upper bound not equal to one.  This is inconsistent');
+        disp('Binary variables have upper bound not equal to one.  This is inconsistent');
         validMI=false;
         statusOK = -1;
     end
@@ -237,24 +236,24 @@ end
 
 if verbose
     if validLP
-        display('Valid LP problem');
+        disp('Valid LP problem');
     else
-        display('Invalid LP problem');
+        disp('Invalid LP problem');
     end
     if validMI && validLP
-        display('Valid MILP problem');
+        disp('Valid MILP problem');
     else
-        display('Invalid MILP problem');
+        disp('Invalid MILP problem');
     end
     if validQP
-        display('Valid QP problem');
+        disp('Valid QP problem');
     else
-        display('Invalid QP problem');
+        disp('Invalid QP problem');
     end
     if validMI && validQP
-        display('Valid MIQP problem');
+        disp('Valid MIQP problem');
     else
-        display('Invalid MIQP problem');
+        disp('Invalid MIQP problem');
     end
     if ~validLP&&~validQP
         return;
@@ -266,7 +265,7 @@ if nargin >= 2 && ~isempty(x)
     validX = true;
     validXMI = false;
     if any(size(x)~=[nvars,1])
-        display('Wrong size x vector');
+        disp('Wrong size x vector');
         statusOK = 0;
         return;
     end
@@ -276,7 +275,7 @@ if nargin >= 2 && ~isempty(x)
     for i=1:length(r)
         strCoords = [strCoords ' ' num2str(r(i)) ','];
     end
-    display(['NaN present in x vector at' strCoords '.']);
+    disp(['NaN present in x vector at' strCoords '.']);
     statusOK = -1;
     return;
     end
@@ -284,49 +283,49 @@ if nargin >= 2 && ~isempty(x)
     invalidVars = zeros(nvars,1);
     if any(x > XPproblem.ub + tol)
         invalidVars(x > XPproblem.ub + tol) = 1;
-        display('Upper bound violation')
+        disp('Upper bound violation')
         statusOK = 0;
     end
     if any(x < XPproblem.lb - tol)
         invalidVars(x < XPproblem.lb - tol) = 1;
-        display('Lower bound violation')
+        disp('Lower bound violation')
         statusOK = 0;
     end
     product = XPproblem.A*x;
-    
+
     if any(abs(product(XPproblem.csense == 'E') - XPproblem.b(XPproblem.csense == 'E')) > tol)
         invalidConstraints(abs(product(XPproblem.csense == 'E') - XPproblem.b(XPproblem.csense == 'E')) > tol) = 1;
-        display('Equality constraint off');
+        disp('Equality constraint off');
         validX = false;
         statusOK = 0;
     end
     if any(product(XPproblem.csense == 'L') > XPproblem.b(XPproblem.csense == 'L') + tol)
         invalidConstraints(product(XPproblem.csense == 'L') > XPproblem.b(XPproblem.csense == 'L') + tol) = 1;
-        display('L constraint off');
+        disp('L constraint off');
         validX = false;
         statusOK = 0;
     end
     if any(product(XPproblem.csense == 'G') < XPproblem.b(XPproblem.csense == 'G') - tol)
         invalidConstraints(product(XPproblem.csense == 'G') < XPproblem.b(XPproblem.csense == 'G') - tol) = 1;
-        display('G constraint off');
+        disp('G constraint off');
         validX = false;
         statusOK = 0;
     end
-    
+
     % MI constraints
     if isfield(XPproblem, 'vartype')
         validXMI = true;
         if(abs( x(vartype == 'I' | vartype == 'B') - round(x(vartype == 'I' | vartype == 'B'))) > tol)
-            display('Integer constraint off')
+            disp('Integer constraint off')
             validXMI = false;
             statusOK = 0;
         end
     end
     if validX
         if validXMI
-            display('Valid x vector for MIXP problem');
+            disp('Valid x vector for MIXP problem');
         else
-            display('Valid x vector for XP problem');
+            disp('Valid x vector for XP problem');
         end
     end
     %objective
@@ -338,8 +337,3 @@ if nargin >= 2 && ~isempty(x)
     invalidConstraints = find(invalidConstraints);
     invalidVars = find(invalidVars);
 end
-
-
-
-
-
