@@ -264,22 +264,15 @@ if ~any(strcmp(supportedSolversNames, solverName))
 end
 
 % Attempt to set the user provided solver for all optimization problem types
-if strcmpi(solverType, 'all')
-    for i = 1:length(OPT_PROB_TYPES)
-        try
-            solverOk = changeCobraSolver(solverName, OPT_PROB_TYPES{i});            
-            if printLevel > 0
-                if (solverOk)
-                    fprintf([' > CBT_', OPT_PROB_TYPES{i}, '_SOLVER has been set to ', solverName, '.\n']);
-                else
-                    warning('Solver %s is not supported for for problems of type %s. Keeping old setting', solverName, OPT_PROB_TYPES{i});
-                end
-            end
-        catch ME
-            if printLevel > 0
-                warning([ME.message sprintf('\n') solverName ' not set to solve ' OPT_PROB_TYPES{i} ' problems']);
-            end
-        end                            
+if strcmpi(solverType, 'all')    
+    solvedProblems = SOLVERS.(solverName).type;    
+    for i = 1:length(solvedProblems)
+        changeCobraSolver(solverName, solvedProblems{i});            
+        fprintf([' > Solver for ', solvedProblems{i}, 'problems has been set to ', solverName, '.\n']);        
+    end
+    notsupportedProblems = setdiff(OPT_PROB_TYPES,solvedProblems);
+    for i = 1:length(notsupportedProblems)
+        fprintf(' > Solver %s not supported for problems of type %s \n', solverName, notsupportedProblems{i});        
     end
     return
 end
