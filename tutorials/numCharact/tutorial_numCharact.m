@@ -78,9 +78,13 @@ nNz = nnz(S)
 % *Sparsity and Density*
 % 
 % The *sparsity ratio* corresponds to the ratio of the number of zero elements 
-% and the total number of elements. Similarly, the *complementary sparsity ratio* 
-% is calculated as the difference of 100 and the sparsity ratio expressed in percent, 
-% and is the ratio of the number of nonzero elements and the total number of elements.
+% and the total number of elements. The sparser a stoichiometric matrix, the fewer 
+% metabolites participate in each reaction. The sparsity ratio is particularly 
+% useful to compare models by how many metabolites participate in each reaction.
+% 
+% Similarly, the *complementary sparsity ratio* is calculated as the difference 
+% of 100 and the sparsity ratio expressed in percent, and is the ratio of the 
+% number of nonzero elements and the total number of elements.
 
 % determine the sparsity ratio of S (in percent)
 sparsityRatio = (1 - nNz / nElem) * 100.0  % [%]
@@ -107,10 +111,11 @@ colDensityAv = colDensityAv / nRxns   % [-]
 % The *relative column density* corresponds to the ratio of the number of 
 % nonzero elements in each column and the total number of metabolites. The relative 
 % column density corresponds to the average column density divided by the total 
-% number of metabolites (expressed in parts-per-million [ppm]).
+% number of metabolites (expressed in percent). The relative column density may 
+% also be expressed as parts-per-million [ppm] for large-scale or huge-scale models.
 
 % determine the density proportional to the length of the column
-colDensityRel = colDensityAv / nMets * 1e6  % [ppm]
+colDensityRel = colDensityAv / nMets * 100  % [%]
 %% 
 % The relative column density indicates how many metabolites are being used 
 % in average in each reaction relative to the total number of metabolites in the 
@@ -130,8 +135,10 @@ spyc(S, colormap(advancedColormap('cobratoolbox')));
 set(gca, 'fontsize', 14);
 %% 
 % In the case of the _E.coli core_ model [1],  the biomass reaction is clearly 
-% (reaction number 13). Also, the metabolites with large stoichiometric coefficients 
-% can be easily determined based on their dot size.
+% visible (reaction number 13) due to its large amount of metabolites (dots in 
+% the column) and large coefficients (size of the dots). Also, the metabolites 
+% with large stoichiometric coefficients can be easily determined based on their 
+% dot size.
 % 
 % *Rank*
 % 
@@ -200,10 +207,11 @@ ylabel('Magnitude of the singular value');
 
 hold off;
 %% 
-% The* maximum singular* value is* *the square root of the largest element 
-% on the diagonal matrix obtained from singular value decomposition. The *minimum 
-% singular value* is the square root of the smallest element on the diagonal matrix 
-% obtained from singular value decomposition.
+% The* maximum singular* value is* *the largest element on the diagonal 
+% matrix obtained from singular value decomposition. Similarly, the *minimum singular 
+% value* is the smallest element on the diagonal matrix obtained from singular 
+% value decomposition. Only singular values greater than zero (numbered from |1| 
+% to |rank(S)|) are of interest.
 
 % determine the maximum and minimum singular values
 maxSingVal = svVect(1) % first value of the vector with singular values
@@ -233,7 +241,9 @@ condNumber = maxSingVal / minSingVal
 % * *Number of nonzero elements*: represents the total number of nonzero entries 
 % in the stoichiometric matrix (excluding zero elements).
 % * *Sparsity ratio*: ratio of the number of zero elements and the total number 
-% of elements.
+% of elements. The sparser a stoichiometric matrix, the fewer metabolites participate 
+% in each reaction. The sparsity ratio is particularly useful to compare models 
+% by how many metabolites participate in each reaction.
 % * *Complementary sparsity ratio*: calculated as the difference of one and 
 % the sparsity ratio, and is the ratio of the number of nonzero elements and the 
 % total number of elements.
@@ -323,6 +333,11 @@ fprintf([' --- SUMMARY ---\n',...
 % The scaling properties of the stoichiometric matrix can be determined using:
 
 [precisionEstimate, solverRecommendation] = checkScaling(model);
+%% 
+% The |precisionEstimate| yields a recommended estimate of the precision 
+% of the solver:
+
+precisionEstimate
 %% 
 % The solver recommendation is provided in |solverRecommendation| as a cell 
 % array that  can be used programmatically:
