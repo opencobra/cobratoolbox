@@ -272,7 +272,13 @@ if strcmpi(solverType, 'all')
     end
     notsupportedProblems = setdiff(OPT_PROB_TYPES,solvedProblems);
     for i = 1:length(notsupportedProblems)
-        fprintf(' > Solver %s not supported for problems of type %s \n', solverName, notsupportedProblems{i});        
+        solverUsed = eval(['CBT_' notsupportedProblems{i} '_SOLVER']);
+        if isempty(solverUsed)
+            infoString = 'No solver set for this problemtype';
+        else
+            infoString = sprintf('Currently used: %s',solverUsed);
+        end
+        fprintf(' > Solver %s not supported for problems of type %s. %s \n', solverName, notsupportedProblems{i},infoString);        
     end
     return
 end
