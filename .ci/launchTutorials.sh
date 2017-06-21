@@ -42,10 +42,10 @@ do
     echo
 
     if [ $CODE -ne 0 ]; then
-        report+=`printf "%-32s                x         %4.1f"  "$tutorial" "$procTime"`
+        report+=`printf "%-32s                x      %7.1f"  "$tutorial" "$procTime"`
         let "failure+=1"
     else
-        report+=`printf "%-32s     x                    %4.1f"  "$tutorial" "$procTime"`
+        report+=`printf "%-32s     x                 %7.1f"  "$tutorial" "$procTime"`
     fi
     report+="\n"
 done
