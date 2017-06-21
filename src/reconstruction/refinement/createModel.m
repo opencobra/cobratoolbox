@@ -24,6 +24,17 @@ function model = createModel(varargin)
 %                       from common gene names to systematic gene names)
 %    systNameList:      List of systematic names
 %
+% EXAMPLES:
+%
+%    1) Create A model with two Reaction (R1 : 'A -> B + C', R2: 'C -> D')
+%    model = createModel({'R1','R2'},{'Reaction 1','Reaction 2'},{'A -> B + C', 'C -> D'});
+%    2) Also set the subSystems of the two Reactions (R1: Sub1, R2: Sub2):
+%    model = createModel({'R1','R2'},{'Reaction 1','Reaction 2'},{'A -> B + C', 'C -> D'},...
+%    'subSystemList', {'Sub1','Sub2'});
+%    3) Also set upper and lower bounds:
+%    model = createModel({'R1','R2'},{'Reaction 1','Reaction 2'},{'A -> B + C', 'C -> D'},...
+%    'subSystemList', {'Sub1','Sub2'}, 'lowerBoundList',[-3 -1000],'upperBoundList',[120 17]);
+%
 % OUTPUT:
 %    model:             COBRA model structure
 %

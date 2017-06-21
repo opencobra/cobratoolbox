@@ -21,6 +21,13 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %
 % Optional inputs are used as parameter value pairs
 %
+% EXAMPLES:
+%    1) Remove the reactions 'ATPM' and 'TKT1' from the given model
+%    model = removeRxns(model,{'ATPM','TKT1'});
+%    2) Remove the same reactions but keep any metabolites which would now
+%    be not present in any reaction:
+%    model = removeRxns(model,{'ATPM','TKT1'}, 'metFlag', false);
+%
 % .. Authors:
 %       - Markus Herrgard 7/22/05
 %       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016

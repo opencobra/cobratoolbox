@@ -42,11 +42,10 @@ function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 %
 %    %2) Sample a model called 'hyperModel' using default settings except with a total of 50 sample files
 %    %   saved and with 5000 sample points returned.
-%    %   Save the results in files with the common beginning 'hyperModelSamples'
 %
 %    options.nFiles = 50;
 %    options.nPointsReturned = 5000;
-%    [modelSampling,samples] = sampleCbModel(hyperModel,'hyperModelSamples');
+%    [modelSampling,samples] = sampleCbModel(hyperModel,'options',options);
 %
 % .. Author: - Markus Herrgard 8/14/06
 

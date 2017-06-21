@@ -45,9 +45,17 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 % EXAMPLES:
 %
 %    %1) Add a new irreversible reaction using the formula approach
-%    model = addReaction(model,'newRxn1','A -> B + 2 C')
+%    model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C')
 %    %2) Add a the same reaction using the list approach
-%    model = addReaction(model,'newRxn1',{'A','B','C'},[-1 1 2],false);
+%    model = addReaction(model,'newRxn1','metaboliteList',{'A','B','C'},'stoichCoeffList',[-1 1 2]);
+%    %3) Add a new irreversible reaction using the formula approach with a
+%    given GPR Rule
+%    model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2
+%    C',... 'geneRule', 'Gene1 or Gene2');
+%    %4) Add a the same reaction but also mark it as being in the
+%    Glycolysis subSystem
+%    model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2, ...
+%    C', 'subSystem', 'Glycolysis', 'geneRule', 'Gene1 or Gene2');
 %
 % .. Authors:
 %       - Markus Herrgard 1/12/07

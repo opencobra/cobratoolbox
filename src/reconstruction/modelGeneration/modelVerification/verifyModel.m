@@ -48,12 +48,15 @@ function results = verifyModel(model, varargin)
 %                 Results of additional options are returned in fields with
 %                 the respective names. 
 %
-% EXAMPLE:
-%
-%    results = verifyModel(model,'simpleCheck')
-%    results = verifyModel(model,'massBalance')
-%    results = verifyModel(model,'fluxConsistency','massBalance')
-%    results = verifyModel(model,'simpleCheck','requiredFields',{'S,'lb','ub','c'})
+% EXAMPLES:
+%    1) Do a simple Field check with the default required fields.
+%    results = verifyModel(model,'simpleCheck', true)
+%    2) Do a mass balance check in addition to a field check.
+%    results = verifyModel(model,'massBalance', true)
+%    3) do a flux consistency and a mass Balance check.
+%    results = verifyModel(model,'fluxConsistency', true,'massBalance', true)
+%    4) do a simple check with a specified set of fields.
+%    results = verifyModel(model,'simpleCheck', true,'requiredFields',{'S,'lb','ub','c'})
 %
 % .. Authors:
 %       - Thomas Pfau, May 2017

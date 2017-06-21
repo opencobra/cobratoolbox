@@ -29,6 +29,13 @@ function OK = writeLPProblem(LPProblem, varargin)
 % OUTPUT:
 %    OK:           1 if saving is success, 0 otherwise
 %
+% EXAMPLE:
+%    Write a model to a specified fileName:
+%    OK = convertCobraLP2mps(LPProblem, 'fileName', 'AFileName.ext')
+%
+%    Write a model problem using the specified solverParams
+%    OK = convertCobraLP2mps(LPProblem, 'solverParams', Params)
+%
 % .. Authors:
 %       - Ronan M.T. Fleming: 7 Sept 09
 %       - Bruno Luong 03 Sep 2009  Uses MPS format exporting tool
