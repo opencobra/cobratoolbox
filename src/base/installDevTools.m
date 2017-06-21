@@ -88,12 +88,15 @@ function [] = installDevTools()
                 devToolsDir = dirReply;
             end
 
-            fprintf(['Done.\n > The MATLAB.devTools have been installed into: ', strrep(devToolsDir, '\', '\\'), '\n\n']);
+            fprintf(['Done.\n > Location of the MATLAB.devTools: ', strrep(devToolsDir, '\', '\\'), '\n\n']);
 
             % add the path to the devTools
             addpath(genpath(devToolsDir));
 
-            fprintf([' > In order to start contributing, you can now run: >> contribute\n\n']);
+            % removing .git folder
+            rmpath(genpath([devToolsDir filesep '.git']));
+
+            fprintf([' > In order to start contributing, you can now run:\n\n >> contribute\n\n']);
         else
             fprintf(result_gitClone);
             error(['The MATLAB.devTools could not be cloned. Please make sure that your SSH key is configured correctly.']);
