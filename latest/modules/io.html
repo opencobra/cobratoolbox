@@ -536,21 +536,25 @@ filename of the corresponding input name.xml file</li>
 Standard COBRA model structure</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>format</strong> &#8211;
-File format to be used (&#8216;text&#8217;,&#8217;xls&#8217;, &#8216;mat&#8217;(default) or &#8216;sbml&#8217;)
-text will only output data from required fields (with GPR rules converted to string representation)
-xls is restricted to the fields defined in the xls io documentation.</li>
-<li><strong>fileName</strong> &#8211;
-File name for output file (optional, default opens
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Optional parameters in &#8216;Parametername&#8217;,value
+format. Available parameterNames are:
+* format:   File format to be used (&#8216;text&#8217;,&#8217;xls&#8217;, &#8216;mat&#8217;(default) or &#8216;sbml&#8217;)</p>
+<blockquote>
+<div><p>text will only output data from required fields (with GPR rules converted to string representation)
+xls is restricted to the fields defined in the xls io documentation.</p>
+</div></blockquote>
+<ul class="simple">
+<li>fileName: File name for output file (optional, default opens
 dialog box)</li>
-<li><strong>compSymbolList</strong> &#8211;
-List of compartment symbols (Cell array)</li>
-<li><strong>compNameList</strong> &#8211;
-List of compartment names corresponding to
+<li>compSymbolList: List of compartment symbols (Cell array)</li>
+<li>compNameList:     List of compartment names corresponding to
 <cite>compSymbolList</cite> (Cell array)</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional output</strong></p>
@@ -561,10 +565,10 @@ Only useable with sbml export. Will return the sbml structure, otherwise the inp
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="p">(</span><span class="n">a</span> <span class="n">popup</span> <span class="n">will</span> <span class="n">ask</span> <span class="k">for</span> <span class="n">the</span> <span class="n">name</span><span class="p">)</span>
-<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">sbml</span> <span class="nb">format</span> <span class="p">(</span><span class="n">a</span> <span class="n">popup</span> <span class="n">will</span> <span class="n">ask</span> <span class="k">for</span> <span class="n">the</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">,</span><span class="s1">&#39;sbml&#39;</span><span class="p">)</span>
 <span class="o">%</span> <span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="k">with</span> <span class="n">the</span> <span class="n">given</span> <span class="n">file</span> <span class="n">name</span>
-<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
+<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">,</span><span class="s1">&#39;mat&#39;</span><span class="p">,</span> <span class="s1">&#39;fileName&#39;</span><span class="p">,</span> <span class="s1">&#39;TestModel.mat&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -660,6 +664,14 @@ true), will be ignored if solver params are provided</li>
 1 if saving is success, 0 otherwise</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="n">to</span> <span class="n">a</span> <span class="n">specified</span> <span class="n">fileName</span><span class="p">:</span>
+<span class="n">OK</span> <span class="o">=</span> <span class="n">convertCobraLP2mps</span><span class="p">(</span><span class="n">LPProblem</span><span class="p">,</span> <span class="s1">&#39;fileName&#39;</span><span class="p">,</span> <span class="s1">&#39;AFileName.ext&#39;</span><span class="p">)</span>
+
+<span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="n">problem</span> <span class="n">using</span> <span class="n">the</span> <span class="n">specified</span> <span class="n">solverParams</span>
+<span class="n">OK</span> <span class="o">=</span> <span class="n">convertCobraLP2mps</span><span class="p">(</span><span class="n">LPProblem</span><span class="p">,</span> <span class="s1">&#39;solverParams&#39;</span><span class="p">,</span> <span class="n">Params</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">

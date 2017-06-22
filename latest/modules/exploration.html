@@ -1000,28 +1000,43 @@ its directionality reversed unless directionFlag = false.</p>
 COBRA model structure</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>rxnAbbrList</strong> &#8211;
-Abbrs of reactions whose formulas are to be printed</li>
-<li><strong>printFlag</strong> &#8211;
-Print formulas or just return them (Default = true)</li>
-<li><strong>lineChangeFlag</strong> &#8211;
-Append a line change at the end of each line
-(Default = true)</li>
-<li><strong>metNameFlag</strong> &#8211;
-print full met names instead of abbreviations
-(Default = false)</li>
-<li><strong>fid</strong> &#8211;
-Optional file identifier for printing in files
-(default 1, i.e. stdout)</li>
-<li><strong>directionFlag</strong> &#8211;
-Checks directionality of reaction. See Note.
-(Default = false)</li>
-<li><strong>gprFlag</strong> &#8211;
-print gene protein reaction association
-(Default = false)</li>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Optional Inputs provided as &#8216;ParameterName&#8217;, Value</p>
+<blockquote>
+<div><p>pairs. the following parameternames are available:</p>
+</div></blockquote>
+<ul class="simple">
+<li>printFlag:         Print formulas or just return them (Default = true)</li>
+<li><dl class="first docutils">
+<dt>lineChangeFlag:    Append a line change at the end of each line</dt>
+<dd>(Default = true)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>metNameFlag:       print full met names instead of abbreviations</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>fid:               Optional file identifier for printing in files</dt>
+<dd>(default 1, i.e. stdout)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>directionFlag:     Checks directionality of reaction. See Note.</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>gprFlag:           print gene protein reaction association</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -1031,6 +1046,15 @@ print gene protein reaction association
 Cell array containing formulas of specified reactions</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="nb">print</span> <span class="n">only</span> <span class="n">ATPM</span> <span class="ow">and</span> <span class="n">TKT1</span><span class="p">:</span>
+   <span class="n">printRxnFormula</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;rxnAbbrList&#39;</span><span class="p">,{</span><span class="s1">&#39;ATPM&#39;</span><span class="p">,</span><span class="s1">&#39;TKT1&#39;</span><span class="p">});</span>
+<span class="mi">2</span><span class="p">)</span> <span class="nb">print</span> <span class="n">the</span> <span class="n">reactions</span> <span class="n">of</span> <span class="n">the</span> <span class="n">model</span> <span class="k">with</span> <span class="n">the</span> <span class="n">metabolite</span> <span class="n">Names</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">ids</span><span class="o">.</span>
+   <span class="n">printRxnFormula</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;metNameFlag&#39;</span><span class="p">,</span><span class="n">true</span><span class="p">);</span>
+<span class="mi">3</span><span class="p">)</span> <span class="nb">print</span> <span class="nb">all</span> <span class="n">reactions</span> <span class="k">with</span> <span class="n">the</span> <span class="n">metabolite</span> <span class="n">names</span> <span class="n">to</span> <span class="n">a</span> <span class="n">given</span> <span class="n">fileID</span>
+   <span class="n">printRxnFormula</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;metNameFlag&#39;</span><span class="p">,</span><span class="n">true</span><span class="p">,</span> <span class="s1">&#39;fid&#39;</span><span class="p">,</span> <span class="n">fileID</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">

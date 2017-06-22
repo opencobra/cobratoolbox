@@ -980,11 +980,10 @@ Uniform random samples of the solution space</li>
 
 <span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="n">Sample</span> <span class="n">a</span> <span class="n">model</span> <span class="n">called</span> <span class="s1">&#39;hyperModel&#39;</span> <span class="n">using</span> <span class="n">default</span> <span class="n">settings</span> <span class="k">except</span> <span class="k">with</span> <span class="n">a</span> <span class="n">total</span> <span class="n">of</span> <span class="mi">50</span> <span class="n">sample</span> <span class="n">files</span>
 <span class="o">%</span>   <span class="n">saved</span> <span class="ow">and</span> <span class="k">with</span> <span class="mi">5000</span> <span class="n">sample</span> <span class="n">points</span> <span class="n">returned</span><span class="o">.</span>
-<span class="o">%</span>   <span class="n">Save</span> <span class="n">the</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">with</span> <span class="n">the</span> <span class="n">common</span> <span class="n">beginning</span> <span class="s1">&#39;hyperModelSamples&#39;</span>
 
 <span class="n">options</span><span class="o">.</span><span class="n">nFiles</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 <span class="n">options</span><span class="o">.</span><span class="n">nPointsReturned</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">;</span>
-<span class="p">[</span><span class="n">modelSampling</span><span class="p">,</span><span class="n">samples</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampleCbModel</span><span class="p">(</span><span class="n">hyperModel</span><span class="p">,</span><span class="s1">&#39;hyperModelSamples&#39;</span><span class="p">);</span>
+<span class="p">[</span><span class="n">modelSampling</span><span class="p">,</span><span class="n">samples</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampleCbModel</span><span class="p">(</span><span class="n">hyperModel</span><span class="p">,</span><span class="s1">&#39;options&#39;</span><span class="p">,</span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>

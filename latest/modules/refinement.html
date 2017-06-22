@@ -256,27 +256,21 @@ Cobra model structure</li>
 The ID(s) of the metabolite(s) (will be the identifier in model.mets)</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>metName</strong> &#8211;
-Human readable name(s) (default metID, String)</li>
-<li><strong>metFormula</strong> &#8211;
-The chemical formula(s) (default &#8216;&#8217;, String)</li>
-<li><strong>ChEBIID</strong> &#8211;
-The CHEBI Id(s) (default &#8216;&#8217;, String)</li>
-<li><strong>KEGGId</strong> &#8211;
-The KEGG Compound ID(s) (default &#8216;&#8217;, String)</li>
-<li><strong>PubChemID</strong> &#8211;
-The PubChemID(s) (default &#8216;&#8217;, String)</li>
-<li><strong>InChi</strong> &#8211;
-The InChi description(s) (default &#8216;&#8217;, String)</li>
-<li><strong>Charge</strong> &#8211;
-The Charge(s) (default NaN, int)</li>
-<li><strong>b</strong> &#8211;
-The accumulation(s) or release(s) (default 0, double)</li>
-<li><strong>csense</strong> &#8211;
-The sense of this metabolite (default &#8216;E&#8217;, char)</li>
+<li><strong>varargin</strong> &#8211;
+Optional Inputs provided as &#8216;ParameterName&#8217;, Value
+pairs. the following parameternames are available:
+* metName:       Human readable name(s) (default metID, String)
+* metFormula:    The chemical formula(s) (default &#8216;&#8217;, String)
+* ChEBIID:       The CHEBI Id(s) (default &#8216;&#8217;, String)
+* KEGGId:        The KEGG Compound ID(s) (default &#8216;&#8217;, String)
+* PubChemID:     The PubChemID(s) (default &#8216;&#8217;, String)
+* InChi:         The InChi description(s) (default &#8216;&#8217;, String)
+* Charge:        The Charge(s) (default NaN, int)
+* b:             The accumulation(s) or release(s) (default 0, double)
+* csense:        The sense of this metabolite (default &#8216;E&#8217;, char)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -286,6 +280,13 @@ The sense of this metabolite (default &#8216;E&#8217;, char)</li>
 COBRA model with added metabolite(s)</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">add</span> <span class="n">a</span> <span class="n">Metabolite</span> <span class="n">which</span> <span class="n">should</span> <span class="n">be</span> <span class="n">accumulated</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addMetabolite</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;MetToAcc&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+<span class="mi">2</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">Metabolite</span> <span class="k">with</span> <span class="n">a</span> <span class="n">given</span> <span class="n">Formula</span> <span class="ow">and</span> <span class="n">a</span> <span class="n">given</span> <span class="n">Charge</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addMetabolite</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;MetWithForm&#39;</span><span class="p">,</span><span class="s1">&#39;metFormula&#39;</span><span class="p">,</span><span class="s1">&#39;H3O&#39;</span><span class="p">,</span><span class="s1">&#39;metCharge&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
 <p><cite>metID</cite> and all optional arguments either have to be a single value or cell
 arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
 </dd></dl>
@@ -383,9 +384,17 @@ of an identical reaction already present in the model.</li>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">irreversible</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="n">formula</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;reactionFormula&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},[</span><span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">],</span><span class="n">false</span><span class="p">);</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;metaboliteList&#39;</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},</span><span class="s1">&#39;stoichCoeffList&#39;</span><span class="p">,[</span><span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;reversible&#39;</span><span class="p">,</span><span class="n">false</span><span class="p">);</span>
+<span class="o">%</span><span class="mi">3</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">irreversible</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="n">formula</span> <span class="n">approach</span> <span class="k">with</span> <span class="n">a</span>
+<span class="n">given</span> <span class="n">GPR</span> <span class="n">Rule</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;reactionFormula&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">,</span><span class="o">...</span>
+                    <span class="s1">&#39;geneRule&#39;</span><span class="p">,</span> <span class="s1">&#39;Gene1 or Gene2&#39;</span><span class="p">);</span>
+<span class="o">%</span><span class="mi">4</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reaction</span> <span class="n">but</span> <span class="n">also</span> <span class="n">mark</span> <span class="n">it</span> <span class="k">as</span> <span class="n">being</span> <span class="ow">in</span> <span class="n">the</span>
+<span class="n">Glycolysis</span> <span class="n">subSystem</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;reactionFormula&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">,</span> <span class="o">...</span>
+                    <span class="s1">&#39;subSystem&#39;</span><span class="p">,</span> <span class="s1">&#39;Glycolysis&#39;</span><span class="p">,</span> <span class="s1">&#39;geneRule&#39;</span><span class="p">,</span> <span class="s1">&#39;Gene1 or Gene2&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -872,6 +881,17 @@ from common gene names to systematic gene names)</li>
 List of systematic names</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">Create</span> <span class="n">A</span> <span class="n">model</span> <span class="k">with</span> <span class="n">two</span> <span class="n">Reactions</span> <span class="p">(</span><span class="n">R1</span> <span class="p">:</span> <span class="s1">&#39;A -&gt; B + C&#39;</span><span class="p">,</span> <span class="n">R2</span><span class="p">:</span> <span class="s1">&#39;C -&gt; D&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">createModel</span><span class="p">({</span><span class="s1">&#39;R1&#39;</span><span class="p">,</span><span class="s1">&#39;R2&#39;</span><span class="p">},{</span><span class="s1">&#39;Reaction 1&#39;</span><span class="p">,</span><span class="s1">&#39;Reaction 2&#39;</span><span class="p">},{</span><span class="s1">&#39;A -&gt; B + C&#39;</span><span class="p">,</span> <span class="s1">&#39;C -&gt; D&#39;</span><span class="p">});</span>
+<span class="mi">2</span><span class="p">)</span> <span class="n">Also</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">subSystems</span> <span class="n">of</span> <span class="n">the</span> <span class="n">two</span> <span class="n">Reactions</span> <span class="p">(</span><span class="n">R1</span><span class="p">:</span> <span class="n">Sub1</span><span class="p">,</span> <span class="n">R2</span><span class="p">:</span> <span class="n">Sub2</span><span class="p">):</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">createModel</span><span class="p">({</span><span class="s1">&#39;R1&#39;</span><span class="p">,</span><span class="s1">&#39;R2&#39;</span><span class="p">},{</span><span class="s1">&#39;Reaction 1&#39;</span><span class="p">,</span><span class="s1">&#39;Reaction 2&#39;</span><span class="p">},{</span><span class="s1">&#39;A -&gt; B + C&#39;</span><span class="p">,</span> <span class="s1">&#39;C -&gt; D&#39;</span><span class="p">},</span><span class="o">...</span>
+<span class="s1">&#39;subSystemList&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Sub1&#39;</span><span class="p">,</span><span class="s1">&#39;Sub2&#39;</span><span class="p">});</span>
+<span class="mi">3</span><span class="p">)</span> <span class="n">Also</span> <span class="nb">set</span> <span class="n">upper</span> <span class="ow">and</span> <span class="n">lower</span> <span class="n">bounds</span><span class="p">:</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">createModel</span><span class="p">({</span><span class="s1">&#39;R1&#39;</span><span class="p">,</span><span class="s1">&#39;R2&#39;</span><span class="p">},{</span><span class="s1">&#39;Reaction 1&#39;</span><span class="p">,</span><span class="s1">&#39;Reaction 2&#39;</span><span class="p">},{</span><span class="s1">&#39;A -&gt; B + C&#39;</span><span class="p">,</span> <span class="s1">&#39;C -&gt; D&#39;</span><span class="p">},</span><span class="o">...</span>
+<span class="s1">&#39;subSystemList&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Sub1&#39;</span><span class="p">,</span><span class="s1">&#39;Sub2&#39;</span><span class="p">},</span> <span class="s1">&#39;lowerBoundList&#39;</span><span class="p">,[</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span><span class="mi">1000</span><span class="p">],</span><span class="s1">&#39;upperBoundList&#39;</span><span class="p">,[</span><span class="mi">120</span> <span class="mi">17</span><span class="p">]);</span>
+</pre></div>
+</div>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1439,6 +1459,14 @@ COBRA model w/o selected reactions</li>
 </ul>
 </div></blockquote>
 <p>Optional inputs are used as parameter value pairs</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">Remove</span> <span class="n">the</span> <span class="n">reactions</span> <span class="s1">&#39;ATPM&#39;</span> <span class="ow">and</span> <span class="s1">&#39;TKT1&#39;</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">given</span> <span class="n">model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">removeRxns</span><span class="p">(</span><span class="n">model</span><span class="p">,{</span><span class="s1">&#39;ATPM&#39;</span><span class="p">,</span><span class="s1">&#39;TKT1&#39;</span><span class="p">});</span>
+<span class="mi">2</span><span class="p">)</span> <span class="n">Remove</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reactions</span> <span class="n">but</span> <span class="n">keep</span> <span class="nb">any</span> <span class="n">metabolites</span> <span class="n">which</span> <span class="n">would</span> <span class="n">now</span>
+<span class="n">be</span> <span class="ow">not</span> <span class="n">present</span> <span class="ow">in</span> <span class="nb">any</span> <span class="n">reaction</span><span class="p">:</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">removeRxns</span><span class="p">(</span><span class="n">model</span><span class="p">,{</span><span class="s1">&#39;ATPM&#39;</span><span class="p">,</span><span class="s1">&#39;TKT1&#39;</span><span class="p">},</span> <span class="s1">&#39;metFlag&#39;</span><span class="p">,</span> <span class="n">false</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
