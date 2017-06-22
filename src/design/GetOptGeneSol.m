@@ -1,4 +1,4 @@
-function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList, saveFile)
+function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList, saveFile, outputFolder)
 % Saves the solution from optGene and `optGeneR` in same format as `OptKnock`
 %
 % USAGE:
@@ -14,15 +14,18 @@ function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnLis
 %    x:               the best solution
 %    scores:          an array of scores
 %    isGeneList:      boolean
-%    saveFile:        boolean. Default = 0;
+%    saveFile:        boolean. Default = false;
+%    outputFolder:    char. Default = pwd;    
 %
 % OUTPUT:
 %    optGeneSol:      Solution in the desired format
 
 if nargin < 9 || isempty(saveFile)
-    saveFile = 0;s
+    saveFile = 0;
 end
-writeDirect = 'C:\';
+if nargin < 10 || isempty(saveFile)
+    writeDirect = pwd;
+end
 % writeDirect where the files should be saved
 optGeneSol = struct();
 % from user input

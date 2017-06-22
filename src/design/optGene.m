@@ -58,6 +58,7 @@ parser.addParameter('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate afte
 parser.addParameter('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
 parser.addParameter('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
 parser.addParameter('saveFile', 0, @(x) isnumeric(x) || islogical(x)); 
+parser.addParameter('outputFolder', 'optGeneResults', @(x) ischar(x)); 
 
 parser.parse(model, targetRxn, substrateRxn, generxnList, varargin{:});
 model = parser.Results.model;
@@ -77,6 +78,7 @@ StallGenLimit = parser.Results.StallGenLimit;
 MigrationFraction = parser.Results.MigrationFraction;
 MigrationInterval = parser.Results.MigrationInterval;
 saveFile = parser.Results.saveFile;
+outputFolder = parser.Results.outputFolder;
 
 MaxKnockOuts = MaxKOs;
 InitialPopulation = double(population);
@@ -138,7 +140,7 @@ gap.options = options;
 [x,FVAL,REASON,OUTPUT,population, scores] = ga(gap);
 
 % save the solution
-[optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, geneok, saveFile); % in case of genes
+[optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, geneok, saveFile, outputFolder); % in case of genes
 
 return;
 
