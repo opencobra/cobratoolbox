@@ -6,8 +6,7 @@ function singleProductionEnvelope(model, deletions, product, biomassRxn, varargi
 %    singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%   model:            Type: structure (COBRA model)
-%                     Description: a metabolic model with at least
+%   model:            (struct) a metabolic model with at least
 %                     the following fields:
 % 
 %                       * .rxns - Reaction IDs in the model
@@ -17,20 +16,25 @@ function singleProductionEnvelope(model, deletions, product, biomassRxn, varargi
 %                       * .c -    Objective coefficients
 %                       * .lb -   Lower bounds for fluxes
 %                       * .ub -   Upper bounds for fluxes
-%    deletions:       The reactions or genes to knockout of the model
-%    product:         The product to investigate
-%    biomassRxn:      The biomass objective function rxn name
+%    deletions:       (cell array) the reactions or genes to knockout of
+%                     the model
+%    product:         (char) the product to investigate
+%    biomassRxn:      (char) the biomass objective function
+%
 % OPTIONAL INPUTS:
-%    geneDelFlag:     Perform gene and not reaction deletions
+%    geneDelFlag:     (double or boolean) perform gene and not reaction
+%                     deletions
 %                     Default = false
-%    nPts:            Number of points to plot for each product
+%    nPts:            (double) number of points to plot for each product
 %                     Default = 20
-%    savePlot:        Boolean for saving 
-%                     Default = 0;
-%    fileName:        Name of the file where the plot is saved.
+%    savePlot:        (double or boolean) boolean for saving plot in a file
+%                     Default = false
+%    showPlot:        (double or boolean) boolean for showing the plot
+%                     Default = false
+%    fileName:        (char) name of the file where the plot is saved.
 %                     Default = product
-%    outputFolder:    Name of the folder where files are saved
-%                     Default = Results
+%    outputFolder:    (char) name of the folder where files are saved
+%                     Default = 'Results'
 %
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
@@ -44,6 +48,7 @@ parser.addRequired('biomassRxn', @(x) ischar(x) && ~isempty(x))
 parser.addParameter('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('nPts', 20, @isnumeric);
 parser.addParameter('savePlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('showPlot', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('fileName', product, @(x) ischar(x))
 parser.addParameter('outputFolder', 'Results', @(x) ischar(x))
 
@@ -54,6 +59,7 @@ biomassRxn = parser.Results.biomassRxn;
 geneDelFlag= parser.Results.geneDelFlag;
 nPts = parser.Results.nPts;
 savePlot = parser.Results.savePlot;
+showPlot = parser.Results.showPlot;
 fileName = parser.Results.fileName;
 outputFolder = parser.Results.outputFolder;
 
@@ -82,7 +88,9 @@ for i = 1:nPts
     ymax(i) = fmax.f;
 end
 f = figure;
-set(gcf, 'Visible', 'Off');
+if ~showPlot
+    set(gcf, 'Visible', 'Off');
+end
 plot(x, ymin, x, ymax, 'LineWidth', 2);
 
 % find range for biomass using K.O.s
@@ -131,7 +139,9 @@ if savePlot
     set(gcf, 'PaperOrientation', 'landscape');
     set(gcf, 'PaperPosition', [1 1 28 19]);
     saveas(f,[fileName '.pdf'])
-    close(f);
+    if ~showPlot
+        close(f);
+    end
     cd(currectDirectory)
     
 end
