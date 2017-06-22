@@ -21,6 +21,14 @@ function writeRxnfile(s, mets, molfileNames, molfileDirectory, rxnfileName, rxnf
 %
 % Produces the file 'rxnfileDirectory/rxnfileName.rxn'
 %
+% EXAMPLE: 
+%
+%    % To write a RXN for the first reaction in a COBRA model
+%    S = full(model.S);
+%    molfileDirectory = [data filesep];
+%    writeRxnfile(s, model.mets, regexprep(model.mets,'(\[\w\])',''),...
+%       molfileDirectory, model.rxns(1), pwd)
+%
 % .. Author: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015
 
 if nargin < 3 % format inputs, set defaults for optional inputs
@@ -53,17 +61,17 @@ s = full(s);
 mols = regexprep(mols,'(\.mol)$','');
 rxn = regexprep(rxn,'(\.rxn)$','');
 
-moldir = regexprep(moldir,'\\','/');
+moldir = regexprep(moldir,'\\',filesep);
 if ~isempty(moldir)
-    if ~strcmp(moldir(end),'/')
-        moldir = [moldir '/'];
+    if ~strcmp(moldir(end),filesep)
+        moldir = [moldir filesep];
     end
 end
 
-rxndir = regexprep(rxndir,'\\','/');
+rxndir = regexprep(rxndir,'\\',filesep);
 if ~isempty(rxndir)
-    if ~strcmp(rxndir(end),'/')
-        rxndir = [rxndir '/'];
+    if ~strcmp(rxndir(end),filesep)
+        rxndir = [rxndir filesep];
     end
 end
 

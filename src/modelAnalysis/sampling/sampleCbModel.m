@@ -12,10 +12,8 @@ function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 %    varargin:        Optional Inputs as Parameter/Value pairs with the
 %                     following options:
 %
-%                       * sampleFile:    File names for sampling output files (only required for
-%                         ACHR, Default 'AHCRFile')
-%                       * samplerName:   {'ACHR', ('CHRR')} Name of the sampler to be used to sample the solution
-%                       * options:       Options for sampling and pre/postprocessing (default values
+%                       * sampler:   {'CHRR', ('ACHR')} Name of the sampler to be used to sample the solution
+%                       * options:   Options for sampling and pre/postprocessing (default values
 %                         in parenthesis)
 %
 %                         * .nStepsPerPoint - Number of sampler steps per point saved (200)
@@ -29,6 +27,8 @@ function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 %                         * .toRound - Option to round the model before sampling (true). CHRR only.
 %                       * modelSampling: From a previous round of sampling the same
 %                         model. Input to avoid repeated preprocessing.
+%                       * sampleFile:    File names for sampling output files (only required for
+%                         ACHR, Default 'AHCRFile')
 %
 % OUTPUTS:
 %    modelSampling:    Cleaned up model used in sampling
@@ -97,6 +97,9 @@ if exist('options','var')
     if (isfield(options,'nWarmupPoints'))
         nWarmupPoints = options.nWarmupPoints;
     end
+    if (isfield(options,'sampleFile'))
+        sampleFile = options.sampleFile;
+    end
     if (isfield(options,'nFiles'))
         nFiles = options.nFiles;
     end
@@ -108,6 +111,9 @@ if exist('options','var')
     end
     if (isfield(options,'maxTime'))
         maxTime = options.maxTime;
+    end
+    if (isfield(options,'modelSampling'))
+        modelSampling = options.modelSampling;
     end
     if (isfield(options,'toRound'))
         toRound = double(options.toRound);
