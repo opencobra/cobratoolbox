@@ -11,23 +11,33 @@ function formulas = printRxnFormula(model, varargin)
 % INPUTS:
 %    model:             COBRA model structure
 %
-% OPTIONAL INPUTS
-%    rxnAbbrList:       Abbrs of reactions whose formulas are to be printed
-%    printFlag:         Print formulas or just return them (Default = true)
-%    lineChangeFlag:    Append a line change at the end of each line
-%                       (Default = true)
-%    metNameFlag:       print full met names instead of abbreviations
-%                       (Default = false)
-%    fid:               Optional file identifier for printing in files
-%                       (default 1, i.e. stdout)
-%    directionFlag:     Checks directionality of reaction. See Note.
-%                       (Default = false)
-%    gprFlag:           print gene protein reaction association
-%                       (Default = false)
+% OPTIONAL INPUTS:
+%    
+%    varargin:           Optional Inputs provided as 'ParameterName', Value
+%                        pairs. the following parameternames are available:
+%    
+%                       * printFlag:         Print formulas or just return them (Default = true)
+%                       * lineChangeFlag:    Append a line change at the end of each line
+%                                            (Default = true)
+%                       * metNameFlag:       print full met names instead of abbreviations
+%                                            (Default = false)
+%                       * fid:               Optional file identifier for printing in files
+%                                            (default 1, i.e. stdout)
+%                       * directionFlag:     Checks directionality of reaction. See Note.
+%                                            (Default = false)
+%                       * gprFlag:           print gene protein reaction association
+%                                            (Default = false)
 %
 % OUTPUT:
 %    formulas:          Cell array containing formulas of specified reactions
 %
+% EXAMPLES:
+%    1) print only ATPM and TKT1:
+%       printRxnFormula(model,'rxnAbbrList',{'ATPM','TKT1'});
+%    2) print the reactions of the model with the metabolite Names instead of ids.
+%       printRxnFormula(model, 'metNameFlag',true);
+%    3) print all reactions with the metabolite names to a given fileID
+%       printRxnFormula(model, 'metNameFlag',true, 'fid', fileID);
 %
 % .. Authors:
 %       - Markus Herrgard 11/17/05
