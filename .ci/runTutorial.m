@@ -27,4 +27,11 @@ retrieveModels;
 changeCobraSolver('glpk');
 fprintf('Default solver is set to GLPK\n');
 
-eval(tutorialName);
+try
+    eval(tutorialName);
+
+    % ensure that we ALWAYS call exit
+    exit;
+catch
+    exit(1);
+end
