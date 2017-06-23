@@ -6,24 +6,53 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
 %
 % INPUTS:
-%    mode:            Model of reconstruction
-%    targetRxn:       String name of reaction which is to be maximized.
-%    substrateRxn:    Substrate reactions
-%    generxnList:     List of genes or `rxns` which can be knocked out.  The
-%                     program will guess which of the two it is, based on the
-%                     content in model.
+%    model:                    Model of reconstruction
+%    targetRxn:                (char) String name of reaction which is to
+%                              be maximized
+%    substrateRxn:             (char) Substrate reactions
+%    generxnList:              (cell array)List of genes or `rxns` which
+%                              can be knocked out.  The program will guess
+%                              which of the two it is, based on the content
+%                              in model.
 %
-% OPTIONAL INPUT:
-%    MaxKOs:          Maximal KnockOuts
-%    population:      population matrix (binary matrix). Use this
-%                     parameter to interrupt simulation and resume afterwards.
+% OPTIONAL INPUTS:
+%    MaxKOs:                   (double) Maximal KnockOuts
+%    population:               (logical matrix) population matrix. Use this
+%                              parameter to interrupt simulation and resume
+%                              afterwards.
+%    mutationRate:             (double) the rate of mutation.
+%    crossovermutationRate:    (double) the rate of mutation after a
+%                              crossover. This value should probably be
+%                              fairly low.  It is only there to ensure that
+%                              not every member of the population ends up
+%                              with the same genotype.
+%    CrossoverFraction:        (double) Percentage of offspring created by
+%                              crossing over (as opposed to mutation). 0.7
+%                              - 0.8 were found to generate the highest
+%                              mean, but this can be adjusted.
+%    PopulationSize:           (double) Number of individuals
+%    Generations:              (double) Maximum number of generations
+%    TimeLimit:                (double) global time limit in seconds
+%    StallTimeLimit:           (double) Stall time limit (terminate after
+%                              this much time of not finding an improvement
+%                              in fitness)
+%    StallGenLimit:            (double) terminate after this many
+%                              generations of not finding an improvement
+%    MigrationFraction:        (double). how many individuals migrate
+%    MigrationInterval:        (double). how often individuals migrate from
+%                              one population to another.
+%    saveFile:                 (double or boolean) saving a file with
+%                              inputs and outputs. Default = false; 
+%    outputFolder:             (char) name of folder where
+%                              files will be generated
 %
 % OUTPUTS:
-%    x:               best optimized value found
-%    population:      Population of individuals.  Pass this back into optgene to
-%                     continue simulating where you left off.
-%    scores:          An array of scores
-%    optGeneSol:      `optGene` solution strcture
+%    x:                        best optimized value found
+%    population:               Population of individuals.  Pass this back
+%                              into optgene to continue simulating where
+%                              you left off.
+%    scores:                   An array of scores
+%    optGeneSol:      `        optGene` solution strcture    
 %
 % .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
 %             - Modified by Sebastian Mendoza 18/06/17. Improving handling
@@ -50,7 +79,7 @@ parser.addParameter('population', [], @(x) isnumeric(x) && ismatrix(x) && ~isvec
 parser.addParameter('mutationRate', 1/ngenes, @(x) isnumeric(x)); % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
 parser.addParameter('crossovermutationRate', (1/ngenes)*.2, @(x) isnumeric(x)); % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
 parser.addParameter('CrossoverFraction', .80, @(x) isnumeric(x)); % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
-parser.addParameter('PopulationSize', [125 125 125 125], @(x) isnumeric(x)); % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
+parser.addParameter('PopulationSize', 125, @(x) isnumeric(x)); % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
 parser.addParameter('Generations', 10000, @(x) isnumeric(x)); % paper: 5000.  maximum number of generations to perform
 parser.addParameter('TimeLimit', 3600*24*2, @(x) isnumeric(x)); % global time limit in seconds
 parser.addParameter('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall time limit (terminate after this much time of not finding an improvement in fitness)
@@ -71,6 +100,7 @@ mutationRate = parser.Results.mutationRate;
 crossovermutationRate = parser.Results.crossovermutationRate; 
 CrossoverFraction = parser.Results.CrossoverFraction;
 PopulationSize = parser.Results.PopulationSize; 
+PopulationSize = [PopulationSize PopulationSize PopulationSize PopulationSize];
 Generations = parser.Results.Generations; 
 TimeLimit = parser.Results.TimeLimit;
 StallTimeLimit = parser.Results.StallTimeLimit;
