@@ -41,7 +41,9 @@ function initCobraToolbox()
     global ENV_VARS;
 
     % default waitbar is of type text
-    WAITBAR_TYPE = 1;
+    if isempty(WAITBAR_TYPE)
+        WAITBAR_TYPE = 1;
+    end
 
     % Linux only - default save path location
     defaultSavePathLocation = '~/pathdef.m';

@@ -90,7 +90,7 @@ if (uniqueGene == 1)
                 case 'MOMA'
                     solKO = MOMA(model,modelDel,'max',false,true);
                 otherwise
-                    solKO = optimizeCbModel(modelDel,'max')
+                    solKO = optimizeCbModel(modelDel,'max');
             end
             if (solKO.stat == 1 ||solKO.stat == 5 )
                 grRateKO(i) = solKO.f;

@@ -81,6 +81,11 @@ How to contribute
 <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
 </p>
 
+You can install the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) from within MATLAB by typing:
+```Matlab
+>> installDevTools()
+```
+
 <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" alt="bulb"> **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
 - Please follow the [Style Guide](https://opencobra.github.io/cobratoolbox/docs/styleGuide.html).

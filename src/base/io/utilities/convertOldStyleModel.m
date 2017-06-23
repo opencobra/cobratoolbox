@@ -16,6 +16,61 @@ function model = convertOldStyleModel(model, printLevel)
 %    model:         a COBRA model with old field names replaced by new ones and
 %                   duplicated fields merged.
 %
+% NOTE: 
+%    There are multiple fields which were used inconsistently in the course
+%    of the COBRA toolbox. This function provides a simple way to get these
+%    model fields converted to the current names. In addition, some fields
+%    were commonly not present in older models and are now checked in many
+%    newer models. These fields are initialized by this function, with
+%    default values, which do not alter any previous behaviour.
+%    The model fields changed are as follows:
+%    'confidenceScores' 	 -> 	 'rxnConfidenceScores'
+%    'metCharge' 	 -> 	 'metCharges' 
+%    'ecNumbers' 	 -> 	 'rxnECNumbers' 
+%    'KEGGID' 	 -> 	 'metKEGGID' 
+%    'metKeggID' 	 -> 	 'metKEGGID' 
+%    'rxnKeggID' 	 -> 	 'rxnKEGGID' 
+%    'metInchiString' 	 -> 	 'metInChIString' 
+%    'metSmile' 	 -> 	 'metSmiles' 
+%    'metHMDB' 	 -> 	 'metHMDBID' 
+%    If both an old and a new field is present, data from old fields is
+%    merged into new fields, with the data of new fields taking precedence
+%    (i.e. if not data is present in the new field at any position, the old
+%    field data replaces it, otherwise the new field data is kept.
+%    Furthermore, the following fields are created:
+%    osense: Objective Sense.
+%            By default this field is initialized as -1 (maximisation)
+%            If the osenseStr field is present, that field will be
+%            interpreted and if it is 'min' osense will be initialized to 1
+%    csense: Constraint sense.
+%            This field indicates the sense of the b matrix, i.e. if b
+%            stands for lower than ('L') or greater than ('G') or equality constraints ('E'). It
+%            is initialized as a char vector of 'E' with the same size as
+%            model.mets.
+%    rules:  The rules field is a logical representation of the GPR rules,
+%            and used in multiple functions. If the grRules field is
+%            present, this field will be initialized according to grRules,
+%            otherwise it will be initialized as a cell array of the ame size as model.rxns 
+%            with empty strings in each cell.
+%    rev:    This field was deprecated and is therefore removed, for
+%            reversibility determination the toolbox relies on the lower
+%            bounds of the reactions.
+%    The following fields might be altered to adhere to the definitions in
+%    the COBRAModelFields documentation:
+%    rxnConfidenceScores:  This field is defined as a number betwen 0 and 4
+%                          indicating the confidence of a reaction. It is
+%                          therefore assumed to be a double vector in COBRA
+%                          functions. Some old models provide this as
+%                          Strings, or a numeric cell array. Those fields
+%                          are converted to double vectors, with the data
+%                          retained.
+%    Fields with Cell arrays:  Some older models have defined cell array fields
+%                              which have individual cells which are
+%                              numeric (i.e. empty []). These empty cells
+%                              are replaced by '' for those fields, which
+%                              are defined in the COBRAModelFields file as
+%                              having cell arrays with chars.
+%       
 % .. Author: - Thomas Pfau May 2017
 warnstate = warning;
 if ~exist('printLevel','var')
@@ -128,7 +183,12 @@ if isfield(model,'rxnConfidenceScores')
     end
 end
 
+definedFields = getDefinedFieldProperties();
+%Check whether those are defined Cell fields
+%And whether they are assumed to be all chars.
+definedCharCells = definedFields(~cellfun(@isempty, regexp(definedFields(:,4),'iscell\(x\)')) & ~cellfun(@isempty, regexp(definedFields(:,4),'all\(cellfun\(@\(.\) *ischar')),1);
 modelfields = fieldnames(model);
+modelfields = intersect(modelfields,definedCharCells);
 %Some Cell array fields (which all should have '' as default use []
 %instead. we need to fix this, i.e. we will simply replace all non char
 %entries by '' in all cell array fields.
