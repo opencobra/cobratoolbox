@@ -76,7 +76,7 @@ if (all(isInModel))
         constrainRxn = false(length(rxnInd),1);
         % Figure out if any of the reaction states is changed
         for j = 1:length(rxnInd)
-            if (~isempty(model.rules{rxnInd(j)})) %To avoid errors if the rule is empty
+            if (isfield(model, 'rules') && ~isempty(model.rules{rxnInd(j)})) %To avoid errors if the rule is empty
                 if (~eval(model.rules{rxnInd(j)}))
                     constrainRxn(j) = true;
                 end

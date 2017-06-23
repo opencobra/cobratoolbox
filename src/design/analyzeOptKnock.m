@@ -25,6 +25,8 @@ function [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions,
 %                    maximum growth rate
 % .. Author: - Jeff Orth  6/25/08
 
+global CBT_QP_SOLVER
+
 if (nargin < 4)
     biomassRxn = model.rxns(model.c==1);
 end
@@ -43,13 +45,20 @@ else
     modelKO = model;
 end
 
-
-FBAsol1 = optimizeCbModel(modelKO,'max',true); %find max growth rate of strain
+if ~isempty(CBT_QP_SOLVER)
+    FBAsol1 = optimizeCbModel(modelKO,'max',true); %find max growth rate of strain
+else
+    FBAsol1 = optimizeCbModel(modelKO,'max');
+end
 modelKOfixed = changeRxnBounds(modelKO,biomassRxn,FBAsol1.f,'l'); %fix the growth rate to max
 modelKOfixed = changeObjective(modelKOfixed,target); %set target as the objective
-FBAsol2 = optimizeCbModel(modelKOfixed,'min',true); %find minimum target rate at this growth rate
-FBAsol3 = optimizeCbModel(modelKOfixed,'max',true); %find maximum target rate at this growth rate
-
+if ~isempty(CBT_QP_SOLVER)
+    FBAsol2 = optimizeCbModel(modelKOfixed,'min',true); %find minimum target rate at this growth rate
+    FBAsol3 = optimizeCbModel(modelKOfixed,'max',true); %find maximum target rate at this growth rate
+else
+    FBAsol2 = optimizeCbModel(modelKOfixed,'min'); %find minimum target rate at this growth rate
+    FBAsol3 = optimizeCbModel(modelKOfixed,'max'); %find maximum target rate at this growth rate
+end
 maxGrowth = FBAsol1.f;
 minProd = FBAsol2.f;
 maxProd = FBAsol3.f;
