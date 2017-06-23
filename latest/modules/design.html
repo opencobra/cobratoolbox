@@ -222,7 +222,7 @@ Problem structure used in computation</li>
 
 <dl class="function">
 <dt id="src.design.GetOptGeneSol">
-<code class="descname">GetOptGeneSol</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>substrateRxn</em>, <em>generxnList</em>, <em>population</em>, <em>x</em>, <em>scores</em>, <em>isGeneList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/e26f2be9e98f122b99d2377731efa789d868861a/src/design/GetOptGeneSol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.GetOptGeneSol" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetOptGeneSol</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>substrateRxn</em>, <em>generxnList</em>, <em>population</em>, <em>x</em>, <em>scores</em>, <em>isGeneList</em>, <em>saveFile</em>, <em>outputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/e26f2be9e98f122b99d2377731efa789d868861a/src/design/GetOptGeneSol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.GetOptGeneSol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the solution from optGene and <cite>optGeneR</cite> in same format as <cite>OptKnock</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -246,6 +246,10 @@ the best solution</li>
 an array of scores</li>
 <li><strong>isGeneList</strong> &#8211;
 boolean</li>
+<li><strong>saveFile</strong> &#8211;
+boolean. Default = false;</li>
+<li><strong>outputFolder</strong> &#8211;
+char. Default = pwd;</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -716,7 +720,7 @@ Target upper and lower bounds for plotting</li>
 
 <dl class="function">
 <dt id="src.design.optGene">
-<code class="descname">optGene</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>substrateRxn</em>, <em>generxnList</em>, <em>MaxKOs</em>, <em>population</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/e26f2be9e98f122b99d2377731efa789d868861a/src/design/optGene.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optGene" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optGene</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>substrateRxn</em>, <em>generxnList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/e26f2be9e98f122b99d2377731efa789d868861a/src/design/optGene.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optGene" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the optgene algorithm.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -724,26 +728,66 @@ Target upper and lower bounds for plotting</li>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>mode</strong> &#8211;
+<li><strong>model</strong> &#8211;
 Model of reconstruction</li>
 <li><strong>targetRxn</strong> &#8211;
-String name of reaction which is to be maximized.</li>
+(char) String name of reaction which is to
+be maximized</li>
 <li><strong>substrateRxn</strong> &#8211;
-Substrate reactions</li>
+(char) Substrate reactions</li>
 <li><strong>generxnList</strong> &#8211;
-List of genes or <cite>rxns</cite> which can be knocked out.  The
-program will guess which of the two it is, based on the
-content in model.</li>
+(cell array)List of genes or <cite>rxns</cite> which
+can be knocked out.  The program will guess
+which of the two it is, based on the content
+in model.</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>MaxKOs</strong> &#8211;
-Maximal KnockOuts</li>
+(double) Maximal KnockOuts</li>
 <li><strong>population</strong> &#8211;
-population matrix (binary matrix). Use this
-parameter to interrupt simulation and resume afterwards.</li>
+(logical matrix) population matrix. Use this
+parameter to interrupt simulation and resume
+afterwards.</li>
+<li><strong>mutationRate</strong> &#8211;
+(double) the rate of mutation.</li>
+<li><strong>crossovermutationRate</strong> &#8211;
+(double) the rate of mutation after a
+crossover. This value should probably be
+fairly low.  It is only there to ensure that
+not every member of the population ends up
+with the same genotype.</li>
+<li><strong>CrossoverFraction</strong> &#8211;
+(double) Percentage of offspring created by
+crossing over (as opposed to mutation). 0.7
+- 0.8 were found to generate the highest
+mean, but this can be adjusted.</li>
+<li><strong>PopulationSize</strong> &#8211;
+(double) Number of individuals</li>
+<li><strong>Generations</strong> &#8211;
+(double) Maximum number of generations</li>
+<li><strong>TimeLimit</strong> &#8211;
+(double) global time limit in seconds</li>
+<li><strong>StallTimeLimit</strong> &#8211;
+(double) Stall time limit (terminate after
+this much time of not finding an improvement
+in fitness)</li>
+<li><strong>StallGenLimit</strong> &#8211;
+(double) terminate after this many
+generations of not finding an improvement</li>
+<li><strong>MigrationFraction</strong> &#8211;
+(double). how many individuals migrate</li>
+<li><strong>MigrationInterval</strong> &#8211;
+(double). how often individuals migrate from
+one population to another.</li>
+<li><strong>saveFile</strong> &#8211;
+(double or boolean) saving a file with
+inputs and outputs. Default = false;</li>
+<li><strong>outputFolder</strong> &#8211;
+(char) name of folder where
+files will be generated</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -752,12 +796,13 @@ parameter to interrupt simulation and resume afterwards.</li>
 <li><strong>x</strong> &#8211;
 best optimized value found</li>
 <li><strong>population</strong> &#8211;
-Population of individuals.  Pass this back into optgene to
-continue simulating where you left off.</li>
+Population of individuals.  Pass this back
+into optgene to continue simulating where
+you left off.</li>
 <li><strong>scores</strong> &#8211;
 An array of scores</li>
 <li><strong>optGeneSol</strong> &#8211;
-<cite>optGene</cite> solution strcture</li>
+`        optGene` solution strcture</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -905,6 +950,69 @@ Deletion strain results</li>
 <li><cite>growth</cite> - Growth rate of strain</li>
 <li><cite>minProd</cite> - Minimum prod rate of target metabolite</li>
 <li><cite>maxProd</cite> - Maximum prod rate of target metabolite</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.design.singleProductionEnvelope">
+<code class="descname">singleProductionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>product</em>, <em>biomassRxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/e26f2be9e98f122b99d2377731efa789d868861a/src/design/singleProductionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.singleProductionEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><p>singleProductionEnvelope plots maximum growth rate as a function of the
+output of one specified products</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+(struct) a metabolic model with at least</p>
+<blockquote>
+<div><p>the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>.rxns - Reaction IDs in the model</li>
+<li>.mets - Metabolite IDs in the model</li>
+<li>.S -    Stoichiometric matrix (sparse)</li>
+<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.c -    Objective coefficients</li>
+<li>.lb -   Lower bounds for fluxes</li>
+<li>.ub -   Upper bounds for fluxes</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<dl class="docutils">
+<dt>deletions:       (cell array) the reactions or genes to knockout of</dt>
+<dd><p class="first last">the model</p>
+</dd>
+</dl>
+<p>product:         (char) the product to investigate
+biomassRxn:      (char) the biomass objective function</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>geneDelFlag</strong> &#8211;
+(double or boolean) perform gene and not reaction
+deletions
+Default = false</li>
+<li><strong>nPts</strong> &#8211;
+(double) number of points to plot for each product
+Default = 20</li>
+<li><strong>savePlot</strong> &#8211;
+(double or boolean) boolean for saving plot in a file
+Default = false</li>
+<li><strong>showPlot</strong> &#8211;
+(double or boolean) boolean for showing the plot
+Default = false</li>
+<li><strong>fileName</strong> &#8211;
+(char) name of the file where the plot is saved.
+Default = product</li>
+<li><strong>outputFolder</strong> &#8211;
+(char) name of the folder where files are saved
+Default = &#8216;Results&#8217;</li>
 </ul>
 </div></blockquote>
 </dd></dl>

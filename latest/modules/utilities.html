@@ -267,6 +267,68 @@ a COBRA model with old field names replaced by new ones and
 duplicated fields merged.</li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>There are multiple fields which were used inconsistently in the course
+of the COBRA toolbox. This function provides a simple way to get these
+model fields converted to the current names. In addition, some fields
+were commonly not present in older models and are now checked in many
+newer models. These fields are initialized by this function, with
+default values, which do not alter any previous behaviour.
+The model fields changed are as follows:
+&#8216;confidenceScores&#8217;   -&gt;      &#8216;rxnConfidenceScores&#8217;
+&#8216;metCharge&#8217;          -&gt;      &#8216;metCharges&#8217;
+&#8216;ecNumbers&#8217;          -&gt;      &#8216;rxnECNumbers&#8217;
+&#8216;KEGGID&#8217;     -&gt;      &#8216;metKEGGID&#8217;
+&#8216;metKeggID&#8217;          -&gt;      &#8216;metKEGGID&#8217;
+&#8216;rxnKeggID&#8217;          -&gt;      &#8216;rxnKEGGID&#8217;
+&#8216;metInchiString&#8217;     -&gt;      &#8216;metInChIString&#8217;
+&#8216;metSmile&#8217;   -&gt;      &#8216;metSmiles&#8217;
+&#8216;metHMDB&#8217;    -&gt;      &#8216;metHMDBID&#8217;
+If both an old and a new field is present, data from old fields is
+merged into new fields, with the data of new fields taking precedence
+(i.e. if not data is present in the new field at any position, the old
+field data replaces it, otherwise the new field data is kept.
+Furthermore, the following fields are created:
+osense: Objective Sense.</p>
+<blockquote>
+<div>By default this field is initialized as -1 (maximisation)
+If the osenseStr field is present, that field will be
+interpreted and if it is &#8216;min&#8217; osense will be initialized to 1</div></blockquote>
+<dl class="docutils">
+<dt>csense: Constraint sense.</dt>
+<dd>This field indicates the sense of the b matrix, i.e. if b
+stands for lower than (&#8216;L&#8217;) or greater than (&#8216;G&#8217;) or equality constraints (&#8216;E&#8217;). It
+is initialized as a char vector of &#8216;E&#8217; with the same size as
+model.mets.</dd>
+<dt>rules:  The rules field is a logical representation of the GPR rules,</dt>
+<dd>and used in multiple functions. If the grRules field is
+present, this field will be initialized according to grRules,
+otherwise it will be initialized as a cell array of the ame size as model.rxns
+with empty strings in each cell.</dd>
+<dt>rev:    This field was deprecated and is therefore removed, for</dt>
+<dd>reversibility determination the toolbox relies on the lower
+bounds of the reactions.</dd>
+</dl>
+<p>The following fields might be altered to adhere to the definitions in
+the COBRAModelFields documentation:
+rxnConfidenceScores:  This field is defined as a number betwen 0 and 4</p>
+<blockquote>
+<div>indicating the confidence of a reaction. It is
+therefore assumed to be a double vector in COBRA
+functions. Some old models provide this as
+Strings, or a numeric cell array. Those fields
+are converted to double vectors, with the data
+retained.</div></blockquote>
+<dl class="last docutils">
+<dt>Fields with Cell arrays:  Some older models have defined cell array fields</dt>
+<dd>which have individual cells which are
+numeric (i.e. empty []). These empty cells
+are replaced by &#8216;&#8217; for those fields, which
+are defined in the COBRAModelFields file as
+having cell arrays with chars.</dd>
+</dl>
+</div>
 </dd></dl>
 
 <dl class="function">
