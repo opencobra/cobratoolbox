@@ -1,16 +1,24 @@
 function runTutorial(tutorialName)
+% Runs the given tutorial after initialising The COBRA Toolbox.
+%
+% USAGE:
+%
+%    runTutorial(tutorialName)
+%
+% INPUT:
+%    tutorialName:       string containing the name of the tutorial to be run
+%
+% .. Author: Sylvain Arreckx, June 2017
 
-% include the root folder and all subfolders
-addpath(genpath(pwd))
+global WAITBAR_TYPE;
+global ENV_VARS;
+WAITBAR_TYPE = 0;  % Mute progress bars
+ENV_VARS.printLevel = 0;  % Mute initCobraToolbox
+
+addpath(pwd)  % include the root folder
 
 % run the official initialisation script
 initCobraToolbox
-
-% Mute progress bars and initCobraToolbox
-global WAITBAR_TYPE;
-global ENV_VARS;
-WAITBAR_TYPE = 0;
-ENV_VARS.printLevel = 0;
 
 % retrieve the models first
 retrieveModels;
@@ -20,5 +28,3 @@ changeCobraSolver('glpk');
 fprintf('Default solver is set to GLPK\n');
 
 eval(tutorialName);
-
-end
