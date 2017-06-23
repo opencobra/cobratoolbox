@@ -26,6 +26,10 @@ if isempty(CBT_LP_SOLVER)
     CBT_LP_SOLVER = 'gurobi';
 end
 
+fullPath = which ('tutorial_optGene.mlx');
+folder = fileparts(fullPath);
+cd(folder);
+
 threshold = 3; 
 
 load('iJO1366')
@@ -92,49 +96,49 @@ end
 
 % EXAMPLE 1: finding reaction knockouts sets of large 2 or less
 
-% fprintf('\n...EXAMPLE 1: Finding optGene sets\n\n')
-% previousSolutions = cell(10, 1);
-% contPreviousSolutions = 1;
-% nIter = 0;
-% while nIter < threshold
-%     fprintf('...Performing optGene analysis...\n')
-%     %optGene algorithm is run with the following options: target: 'EX_lac__D_e'
-%     [~, ~, ~, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'TimeLimit', 120);
-%     
-%     SET_M1 = optGeneSol.geneList;
-%     
-%     if ~isempty(SET_M1)
-%         previousSolutions{contPreviousSolutions} = SET_M1;
-%         contPreviousSolutions = contPreviousSolutions + 1;
-%         %printing results
-%         fprintf('optGene found a knockout set of large %d composed by ', length(SET_M1));
-%         for j = 1:length(SET_M1)
-%             if j == 1
-%                 fprintf('%s ',SET_M1{j});
-%             elseif j == length(SET_M1)
-%                 fprintf('and %s',SET_M1{j});
-%             else
-%                 fprintf(', %s ',SET_M1{j});
-%             end
-%         end
-%         fprintf('\n');
-%         fprintf('...Performing coupling analysis...\n');
-%         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, optGeneSol.geneList, 'EX_succ_e', biomass, 1);
-%         fprintf('The solution is of type: %s\n',type);
-%         fprintf('The maximun growth rate after optimizacion is %.2f\n', maxGrowth);
-%         fprintf('The maximun and minimun production of succinate after optimization is %.2f and %.2f, respectively \n\n', minProd, maxProd);
-%         
-%     else
-%         if nIter  ==  1
-%             fprintf('optGene was not able to found an optGene set\n');
-%         else
-%             fprintf('optGene was not able to found additional optGene sets\n');
-%         end
-%         break;
-%     end
-%     nIter = nIter + 1;
-%     
-% end
+fprintf('\n...EXAMPLE 1: Finding optGene sets\n\n')
+previousSolutions = cell(10, 1);
+contPreviousSolutions = 1;
+nIter = 0;
+while nIter < threshold
+    fprintf('...Performing optGene analysis...\n')
+    %optGene algorithm is run with the following options: target: 'EX_lac__D_e'
+    [~, ~, ~, optGeneSol] = optGene(model, 'EX_succ_e', 'EX_glc__D_e', selectedGeneList, 'MaxKOs', 2, 'TimeLimit', 120, 'saveFile', 1);
+    
+    SET_M1 = optGeneSol.geneList;
+    
+    if ~isempty(SET_M1)
+        previousSolutions{contPreviousSolutions} = SET_M1;
+        contPreviousSolutions = contPreviousSolutions + 1;
+        %printing results
+        fprintf('optGene found a knockout set of large %d composed by ', length(SET_M1));
+        for j = 1:length(SET_M1)
+            if j == 1
+                fprintf('%s ',SET_M1{j});
+            elseif j == length(SET_M1)
+                fprintf('and %s',SET_M1{j});
+            else
+                fprintf(', %s ',SET_M1{j});
+            end
+        end
+        fprintf('\n');
+        fprintf('...Performing coupling analysis...\n');
+        [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, optGeneSol.geneList, 'EX_succ_e', biomass, 1);
+        fprintf('The solution is of type: %s\n',type);
+        fprintf('The maximun growth rate after optimizacion is %.2f\n', maxGrowth);
+        fprintf('The maximun and minimun production of succinate after optimization is %.2f and %.2f, respectively \n\n', minProd, maxProd);
+        
+    else
+        if nIter  ==  1
+            fprintf('optGene was not able to found an optGene set\n');
+        else
+            fprintf('optGene was not able to found additional optGene sets\n');
+        end
+        break;
+    end
+    nIter = nIter + 1;
+    
+end
 
 fprintf('\n...EXAMPLE 2: Finding optGene sets\n\n')
 previousSolutions = cell(10, 1);

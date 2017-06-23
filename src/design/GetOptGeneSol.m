@@ -23,9 +23,16 @@ function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnLis
 if nargin < 9 || isempty(saveFile)
     saveFile = 0;
 end
-if nargin < 10 || isempty(saveFile)
-    writeDirect = pwd;
+if nargin < 10 || isempty(outputFolder)
+    outputFolder = 'optGeneResults';
 end
+
+if ~isdir(outputFolder)
+    mkdir(outputFolder); 
+end
+
+writeDirect = [pwd filesep outputFolder filesep];
+
 % writeDirect where the files should be saved
 optGeneSol = struct();
 % from user input
