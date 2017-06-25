@@ -39,8 +39,8 @@ end
 rxnInd = findRxnIDs(model, rxnList);
 
 modelConstrained=model;
-nC=length(modelConstrained.C);
-modelConstrained.C(nC+1, 1:length(modelConstrained.rxns)) = 0;
+nC=size(modelConstrained.C,1);
+modelConstrained.C(nC+1, 1:nRxn) = 0;
 
 if ~exist('c', 'var')
     modelConstrained.C(nC+1,rxnInd)=1;
