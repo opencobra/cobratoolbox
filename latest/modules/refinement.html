@@ -1140,7 +1140,7 @@ to determine matching fields.</p>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>matchingfields</strong> &#8211;
@@ -1151,6 +1151,10 @@ assumed, that fields named e.g. rxnXYZ are
 associated with rxns, and only those fields are
 adapted along with fields which are specified in the
 Model FieldDefinitions.</li>
+<li><strong>dimensions</strong> &#8211;
+The dimension associated with the given type in the
+given field. matchingField(X) is matching to type in
+dimenion(X)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -1562,6 +1566,36 @@ content present in the model</li>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
 Scaled <cite>S</cite> matrix</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.updateRelevantFieldOrder">
+<code class="descname">updateRelevantFieldOrder</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>newOrder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/updateRelevantFieldOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateRelevantFieldOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the fields relevant to this type to the given new Order
+<strong>Usage</strong></p>
+<blockquote>
+<div>matchingFields = getRelevantModelFields(model, type, newOrder)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model to update</li>
+<li><strong>type</strong> &#8211;
+the Type of field to update one of
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+<li><strong>newOrder</strong> &#8211;
+The new Order. must be of the same size as the
+requested model.(type) field.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model with all field associated with type
+reordered</li>
 </ul>
 </div></blockquote>
 </dd></dl>
