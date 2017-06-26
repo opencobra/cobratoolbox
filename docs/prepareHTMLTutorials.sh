@@ -3,7 +3,8 @@ declare -a tutorials=("modelCreation/tutorial_modelCreation.html"
                       "modelManipulation/tutorial_modelManipulation.html"
                       "moieties/tutorial_identifyMoieties.html"
                       "numCharact/tutorial_numCharact.html"
-                      "sampling/tutorial_uniformSampling.html")
+                      "sampling/tutorial_uniformSampling.html"
+                      "pathVectorsAndMinimalCutSets/tutorial_pathVectors_minimalCutSets.html")
 
 tutorialPath="../tutorials"
 tutorialDestination="source/_static/tutorials"
