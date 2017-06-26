@@ -52,7 +52,7 @@ else
 end
 
 %add the rhs
-modelConstrained.d(nC+1)=d;
+modelConstrained.d(nC+1,1)=d;
 
 nCsense=length(modelConstrained.csense);
 if exist('csense', 'var')
