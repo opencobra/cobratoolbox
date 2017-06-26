@@ -79,7 +79,8 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
             fprintf([' > The CPLEX version is ' cplexVersion '\n. Your currently installed version of CPLEX is unsupported or you have multiple versions of CPLEX in the path.']);
         end
     else
-        error('CPLEX is not installed. Please follow the installation instructions here:');
+        error(['CPLEX is not installed. Please follow the installation instructions here: ', ...
+               'https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
     end
 
     % restore the original path
