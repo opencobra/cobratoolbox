@@ -74,8 +74,10 @@ end
 
 if db
     if isempty(CBT_DB_FIELD_PROPS)
-        fileName = which('COBRA_structure_fields.xlsx');
-        [~,~,raw] = xlsread(fileName,'Programatic Specification');
+%        fileName = which('COBRA_structure_fields.xlsx');
+%        [~,~,raw] = xlsread(fileName,'Programatic Specification');
+        ModelFieldDefinitions;
+        raw = ProgramaticModelFields;
         %Get the indices for database, qualifier and reference.
         dbpos = find(cellfun(@(x) ischar(x) && strcmp(x,'databaseid'),raw(1,:)));
         qualpos = find(cellfun(@(x) ischar(x) && strcmp(x,'qualifier'),raw(1,:)));
@@ -105,8 +107,10 @@ end
 
 if desc
     if isempty(CBT_DESC_FIELD_PROPS)
-        fileName = which('COBRA_structure_fields.xlsx');
-        [~,~,raw] = xlsread(fileName,'Field Specification');
+        %fileName = which('COBRA_structure_fields.xlsx');
+        %[~,~,raw] = xlsread(fileName,'Field Specification');
+        ModelFieldDefinitions;
+        raw = DescriptiveFieldDefinitions;
         %Get the indices for database, qualifier and reference.
         dimPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Dimension'),raw(1,:)));
         descPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Field Description'),raw(1,:)));
@@ -126,8 +130,8 @@ if desc
 end
 
 if isempty(CBT_PROG_FIELD_PROPS)
-    fileName = which('COBRA_structure_fields.xlsx');
-    [~,~,raw] = xlsread(fileName,'Programatic Specification');
+    ModelFieldDefinitions;
+    raw = ProgramaticModelFields;
     %Get the indices for database, qualifier and reference.
     xPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Xdim'),raw(1,:)));
     yPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Ydim'),raw(1,:)));
