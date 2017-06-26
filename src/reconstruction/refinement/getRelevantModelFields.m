@@ -102,7 +102,7 @@ if fieldSize == 1
     fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
     posFields = ismember(possibleFields,fields);
     possibleFields = possibleFields(posFields);
-    dimensions = dimensions(possibleFields);
+    dimensions = dimensions(posFields);
 else
     for i = 1:numel(modelFields)
         matchingsizes = size(model.(modelFields{i})) == fieldSize;
@@ -126,8 +126,9 @@ if sameSizeExists
     definedFieldDims = ones(numel(fields),1);
     definedFieldDims(seconddim) = 2;
     definedPossibles = ismember(fields,possibleFields);
+    %Reduce the fields to those which match the size AND are defined.
     definedFieldDims = definedFieldDims(definedPossibles);    
-    fields = fields(definedFieldDims);        
+    fields = fields(definedPossibles);        
     %Now check the relevant field positions in the possible fields, i.e.
     %those starting with the respective id (e.g. rxn).
     relevantPossibles = cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);    
