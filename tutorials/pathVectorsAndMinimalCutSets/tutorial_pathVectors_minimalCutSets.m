@@ -69,7 +69,8 @@ startcna
 % Documentation>. 
 
 % define the model
-addpath(pwd)
+global CBTDIR
+addpath([CBTDIR filesep 'tutorials' filesep 'pathVectorsAndMinimalCutSets'])
 load('smallmodel.mat')
 % define the directory (the place that CNA model will % be saved there)
 directory = 'Pathwaysvector';
@@ -177,12 +178,13 @@ output = pathVectors(smallmodel, directory, 'convBasisFlag', 0)
 
 output = pathVectors(smallmodel, 'pathVectors', 'mexVersion', 2)
 %% REFERENCES
-% # Klamt. S. and Gilles ED. Minimal cut sets in biochemical reaction networks. 
+% [1] Klamt. S. and Gilles ED. Minimal cut sets in biochemical reaction networks. 
 % Bioinformatics. 20, 226?234 (2004).
-% # Klamt, S. et al.  Algorithmic approaches for computing elementary modes 
+% 
+% [2] Klamt, S. et al.  Algorithmic approaches for computing elementary modes 
 % in large biochemical reaction networks. IEE Proc. Syst. Biol., 152, 249?255 
 % (2005).
-% # Kamp. A. and Klamt S. Enumeration of smallest intervention strategies in 
-% genome-scale metabolic networks. PLoS Computational Biology, 10:e1003378. (2014).
 % 
-%
+% [3] Kamp. A. and Klamt S. Enumeration of smallest intervention strategies 
+% in genome-scale metabolic networks. PLoS Computational Biology, 10:e1003378. 
+% (2014).
