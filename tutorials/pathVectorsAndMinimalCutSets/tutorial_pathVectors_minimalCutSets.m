@@ -59,6 +59,9 @@
 % and CNA software by the following commands_
 
 initCobraToolbox;
+% Add path to Cell Net Analyzer
+CNAPath = '~/CellNetAnalyzer';
+addpath(genpath(CNAPath));
 startcna
 %% Elementary modes and extreme pathways
 % The mandatory inputs for computing elementary modes and extreme pathways are 
