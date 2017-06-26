@@ -1,4 +1,4 @@
-function matchingFields = getRelevantModelFields(model, type, varargin)
+function [matchingFields,dimensions] = getRelevantModelFields(model, type, varargin)
 % get fields which are associated with the given type.
 % USAGE:
 %     matchingFields = getRelevantModelFields(model, type, varargin)
@@ -14,7 +14,7 @@ function matchingFields = getRelevantModelFields(model, type, varargin)
 %                     - 'fieldSize', the original size of the field (if
 %                       mets was already adjusted, this size will be used
 %                       to determine matching fields.
-%
+%   
 % OUTPUT:
 %
 %    matchingfields:   A cell array of fields associated with the
@@ -24,7 +24,9 @@ function matchingFields = getRelevantModelFields(model, type, varargin)
 %                      associated with rxns, and only those fields are
 %                      adapted along with fields which are specified in the
 %                      Model FieldDefinitions.
-%
+%    dimensions:       The dimension associated with the given type in the
+%                      given field. matchingField(X) is matching to type in
+%                      dimenion(X)
 % .. Authors: 
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
 
@@ -63,30 +65,52 @@ modelFields = fieldnames(model);
 
 %Collect all fields of the given size
 possibleFields = {};
+dimensions = [];
 if fieldSize == 1
     %This is special. We will only check the first dimension in this
     %instance, and we will check the field properties of S and
     %rxnGeneMat, Also, we will ONLY return defined fields...
-    if isfield(model, 'rxnGeneMat') && ((strcmp(type,'genes') && size(model.rxnGeneMat,2) == 1) || strcmp(type,'rxns') && size(model.rxnGeneMat,1) == 1)
-        possibleFields{end+1} = 'rxnGeneMat';
+    if isfield(model, 'rxnGeneMat') 
+        if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == 1) 
+            possibleFields{end+1} = 'rxnGeneMat';
+            dimensions(end+1,1) = 2;
+        end
+        if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == 1)
+            possibleFields{end+1} = 'rxnGeneMat';
+            dimensions(end+1,1) = 1;
+        end
     end
-    if isfield(model, 'S') && ((strcmp(type,'mets') && size(model.S,1) == 1) || strcmp(type,'rxns') && size(model.S,2) == 1)
-        possibleFields{end+1} = 'S';
+    if isfield(model, 'S') 
+        if (strcmp(type,'mets') && size(model.S,1) == 1) 
+            possibleFields{end+1} = 'S';
+            dimensions(end+1,1) = 1;
+        end
+        if (strcmp(type,'rxns') && size(model.S,2) == 1)
+            possibleFields{end+1} = 'S';
+            dimensions(end+1,1) = 2;
+        end        
     end
     modelFields = setdiff(modelFields,{'S','rxnGeneMat'});
     for i = 1:numel(modelFields)
         if size(model.(modelFields{i}),1) == fieldSize
             possibleFields{end+1,1} = modelFields{i};
+            dimensions(end+1,1) = 1;
         end
     end
+    %This is a New empty model, we only look at defined fields.
     fields = getDefinedFieldProperties();
     fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
-    possibleFields = intersect(possibleFields,fields);
+    posFields = ismember(possibleFields,fields);
+    possibleFields = possibleFields(posFields);
+    dimensions = dimensions(posFields);
 else
     for i = 1:numel(modelFields)
-        if any(size(model.(modelFields{i})) == fieldSize)
-            possibleFields{end+1,1} = modelFields{i};
+        matchingsizes = size(model.(modelFields{i})) == fieldSize;
+        if any(matchingsizes) && ~(sum(matchingsizes) > 1) %A size > 1 should only happen if we have conflicting field sizes...
+            possibleFields{end+1,1} = modelFields{i};            
+            dimensions(end+1,1) = find(matchingsizes);
         end
+        
     end
 end
 
@@ -96,11 +120,27 @@ if sameSizeExists
     %fileds.
     
     fields = getDefinedFieldProperties();
-    fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
-    fields = intersect(possibleFields,fields);
-    
-    possibleFields = possibleFields(cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields));    
-    possibleFields = union(fields,possibleFields);
+    firstdim = cellfun(@(x) isequal(x,type),fields(:,2));
+    seconddim = cellfun(@(x) isequal(x,type),fields(:,3));
+    fields = fields( firstdim | seconddim ,1);
+    definedFieldDims = ones(numel(fields),1);
+    definedFieldDims(seconddim) = 2;
+    definedPossibles = ismember(fields,possibleFields);
+    %Reduce the fields to those which match the size AND are defined.
+    definedFieldDims = definedFieldDims(definedPossibles);    
+    fields = fields(definedPossibles);        
+    %Now check the relevant field positions in the possible fields, i.e.
+    %those starting with the respective id (e.g. rxn).
+    relevantPossibles = cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);    
+    dimensions = dimensions(relevantPossibles);
+    possibleFields = possibleFields(relevantPossibles);            
+    %Now, remove those fields which are in both sets from the fields and
+    %definedFieldDims and concatenate the results.
+    duplicates = ismember(fields,possibleFields);
+    fields = fields(~duplicates);
+    definedFieldDims = definedFieldDims(~duplicates);
+    dimensions = [dimensions;definedFieldDims];
+    possibleFields = [possibleFields; fields];
 end
 
 matchingFields = possibleFields;
