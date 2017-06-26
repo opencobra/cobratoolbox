@@ -1,23 +1,23 @@
 %% Metabotools tutorial II - Integration of quantitative metabolomic data
 % *Maike Aurich*
-%
+% 
 % In this tutorial we ...
+% 
+% Clear workspace and initialize the COBRA Toolboxf
 
-%%
-% Clear workspace and initialize the COBRA Toolbox
 clear
 initCobraToolbox
 global CBTDIR
 
 tol = 1e-6;
-
-%%
+%% 
 % set and check solver
+
 solver = 'gurobi';  % can be gurobi or tomlab_cplex
 solverQuant = 'ibm_cplex';
 outputPath = pwd;  % output is saved to this location, can be the same as pathToCOBRA 'C: ... \cobratoolbox\metabotools\tutorial_II\';
-
 %% set and check solver
+
 solverOK = changeCobraSolver(solverQuant, 'LP');
 if solverOK == 1
     display('The solverQuant is set.');
@@ -38,8 +38,8 @@ if solverOK == 1
 else
     error('The QP solver is not set.')
 end
-
 %% load and check tutorial input is loaded correctly
+
 tutorialPath = [CBTDIR filesep 'tutorials' filesep 'metabotools' filesep 'tutorial_II'];
 if exist([tutorialPath filesep 'starting_model.mat'], 'file') == 2  % 2 means it's a file.
     load([tutorialPath filesep 'starting_model.mat']);
@@ -60,7 +60,6 @@ try
 catch ME
     error('Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set ''outputPath'' to a different directory.', outputPath, outputPath);
 end
-
 %% Section 1 - Define the model bounds using setMediumConstraints
 
 set_inf = 2000;
@@ -93,7 +92,6 @@ close_exchanges = 0;
                                                   customizedConstraints_ub, customizedConstraints_lb, close_exchanges);
 
 clearvars -EXCEPT modelMedium tol solver outputPath tutorialPath solverQuant
-
 %% Section 2 - Generate an individual exchange profiles for each sample
 
 load([tutorialPath filesep 'tutorial_II_data.mat']);
@@ -105,16 +103,14 @@ variation = 20;
 prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation);
 
 clearvars -EXCEPT modelMedium samples tol solver outputPath tutorialPath solverQuant
-
 %% Section 2B - Prepare table to check exchange profiles
+
 nmets = 70;
 [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, outputPath, nmets);
 
 clearvars -EXCEPT modelMedium samples tol solver mapped_exchanges  outputPath tutorialPath solverQuant
 
 save([outputPath 'Result_checkExchangeProfiles']);
-
-
 %% Section 3 - Generate contextualized models
 
 changeCobraSolver(solverQuant, 'LP');
@@ -133,7 +129,6 @@ addExtraExch_value = 1;
 [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, ...
                                                              no_uptake, medium, addExtraExch, addExtraExch_value, outputPath);
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath
-
 %% Section 4 - Analyze added exchanges
 
 changeCobraSolver(solver, 'LP');
@@ -147,8 +142,6 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_add
 save([outputPath filesep 'statistics']);
 
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath
-
-
 %% Section 5 - Analyze the sets of essential genes
 
 cutoff = 0.05;
@@ -156,8 +149,6 @@ cutoff = 0.05;
 [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, outputPath, samples, cutoff, OverViewResults);
 
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes tol solver mapped_exchanges outputPath tutorialPath
-
-
 %% Section 6 - Check which individual gene-associated reaction makes the model infeasible
 
 samples_to_test = samples;
@@ -167,8 +158,6 @@ genes_to_test = {'55293.1'};
 [FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, genes_to_test, samples, ResultsAllCellLines);
 
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults tol solver mapped_exchanges outputPath tutorialPath
-
-
 %% Section 7 - Make intersect and union model
 
 mk_union = 1;
@@ -181,10 +170,9 @@ model = starting_model;
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults unionModel intersectModel  diffRxns diffExRxns tol solver mapped_exchanges outputPath model tutorialPath
 
 save([outputPath filesep 'summary']);
-
-
 %% Section 8 - Predict differences in metabolite production or consumption
 %% Section 8A ATP production
+
 obj = 'DM_atp_c_';
 carbon_source = {'EX_glc(e)'};
 samples = samples(1:4, 1);
@@ -207,8 +195,8 @@ PHs = [samples maximum_contributing_rxn(:, 1)];
 maximum_contributing_flux_ATP = maximum_contributing_flux;
 
 clear ATPprod transportRxns met2test maximum_contributing_rxn
-
 %% Section 8B NADH production
+
 met2test = {'nadh[c]', 'nadh[m]', 'nadh[n]', 'nadh[x]', 'nadh[r]'};
 
 transportRxns = {'NADHtpu'; 'NADHtru'; 'NADtpu'};
@@ -217,9 +205,8 @@ transportRxns = {'NADHtpu'; 'NADHtru'; 'NADtpu'};
 PHs = [PHs maximum_contributing_rxn(:, 1)];
 
 clear transportRxns met2test maximum_contributing_rxn
-
-
 %% Section 8C FADH2 production
+
 transportRxns = {'FADH2tru'; 'FADH2tx'};
 
 met2test = {'fadh2[c]', 'fadh2[m]', 'fadh2[n]', 'fadh2[x]', 'fadh2[r]'};
@@ -228,7 +215,6 @@ met2test = {'fadh2[c]', 'fadh2[m]', 'fadh2[n]', 'fadh2[x]', 'fadh2[r]'};
 clear transportRxns met2test
 
 PHs = [PHs maximum_contributing_rxn(:, 1)];
-
 %% Section 8D NADPH production
 
 transportRxns = {'NADPHtru'; 'NADPHtxu'};
@@ -240,14 +226,12 @@ clear transportRxns met2test
 PHs = [PHs maximum_contributing_rxn(:, 1)];
 
 save([outputPath filesep 'fluxSplits']);
-
 %% Section 8E illustrate the phenotypes (PHs) on 3Dplot
 
 diff_view = 1;
 fonts = 18;
 
 make3Dplot(PHs, maximum_contributing_flux_ATP, fonts, outputPath, diff_view);
-
 %% Section 9 Perform phase Plane Analysis
 
 mets = {'EX_glc(e)', 'EX_o2(e)'; 'EX_gln_L(e)', 'EX_o2(e)'; 'EX_lac_L(e)', 'EX_o2(e)'};
@@ -258,7 +242,6 @@ direct = [-1, -1; -1, -1; 1, -1];
 [ResultsAllCellLines] = performPPP(ResultsAllCellLines, mets, step_size, samples, step_num, direct);
 
 save([outputPath filesep 'PPP']);
-
 %% Section 9b illustrate phase plane analysis results
 
 label = {'Glucose uptake (fmol/cell/hr)'; 'Oxygen uptake (fmol/cell/hr)'; 'Growth rate (hr-1)'};
