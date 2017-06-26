@@ -1061,6 +1061,32 @@ COBRA model of selected subsystems</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.flipRxnOrientation">
+<code class="descname">flipRxnOrientation</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/flipRxnOrientation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.flipRxnOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the directionality of the given reactions and adjusts the bounds
+and objective coefficients accordingly.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = flipRxnDirectionality(model, rxnList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA Style model structure</li>
+<li><strong>rxnList</strong> &#8211;
+A List of reactions or a single reaction</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model with the specified reactions flipped.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.generateRules">
 <code class="descname">generateRules</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/generateRules.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.generateRules" title="Permalink to this definition">¶</a></dt>
 <dd><p>If a model does not have a model.rules field but has a model.grRules
