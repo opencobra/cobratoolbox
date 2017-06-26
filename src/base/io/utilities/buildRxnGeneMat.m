@@ -12,7 +12,7 @@ function model = buildRxnGeneMat(model)
 % OUTPUT:
 %    model: 	The Model including a rxnGeneMat field. 
 
-model.rxnGeneMat = false(numel(model.genes),numel(model.rxns));
+model.rxnGeneMat = false(numel(model.rxns, numel(model.genes)));
 if isfield(model,'rules')
     for i = 1:numel(model.rxns)
         if ~isempty(model.rules{i})
