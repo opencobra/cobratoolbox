@@ -3,7 +3,7 @@
 % 
 % In this tutorial we ...
 % 
-% Clear workspace and initialize the COBRA Toolboxf
+% Clear workspace and initialize the COBRA Toolbox
 
 clear
 initCobraToolbox
@@ -110,7 +110,7 @@ nmets = 70;
 
 clearvars -EXCEPT modelMedium samples tol solver mapped_exchanges  outputPath tutorialPath solverQuant
 
-save([outputPath 'Result_checkExchangeProfiles']);
+save([outputPath filesep 'Result_checkExchangeProfiles']);
 %% Section 3 - Generate contextualized models
 
 changeCobraSolver(solverQuant, 'LP');
