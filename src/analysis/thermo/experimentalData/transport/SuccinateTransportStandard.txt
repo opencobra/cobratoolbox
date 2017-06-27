@@ -1,0 +1,2 @@
+succ[c]     1   1
+succ[e]     1   1
