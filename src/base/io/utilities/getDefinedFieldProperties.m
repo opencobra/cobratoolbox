@@ -120,7 +120,8 @@ if desc
                 raw.(fields{i}) = strrep(raw.(fields{i}),'comps','c');
                 raw.(fields{i}) = strrep(raw.(fields{i}),'NaN','');
             end
-        end           
+        end   
+        
         %Get the indices for database, qualifier and reference.
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);        
         fieldDimensions = regexprep(strcat(raw.Xdim(relrows),{' x '},raw.Ydim(relrows)),'^ x $','');
