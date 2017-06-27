@@ -14,3 +14,4 @@ Tutorials
    tutorialIdentifyMoieties
    tutorialNumCharact
    tutorialUniformSampling
+   tutorialPathVectors_minimalCutSets
