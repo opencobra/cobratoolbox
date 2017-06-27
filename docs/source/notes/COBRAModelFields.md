@@ -13,16 +13,21 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 | Field Name | Dimension | Field Type | Field Description | 
 |---|---|---|---|
 |`model.S`| `m x n` | Sparse or Full Matrix of Double | The stoichiometric matrix containing the model structure (for large models a sparse format is suggested) | 
+|`model.mets`| `m x 1` | Double | The objective sense either -1 for maximisation or 1 for minimisation | 
 |`model.b`| `m x 1` | Column Cell Array of Strings | Identifiers of the metabolites | 
 |`model.csense`| `m x 1` | Column Vector of Doubles | The coefficients of the constraints of the metabolites. | 
+|`model.rxns`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
 |`model.lb`| `n x 1` | Column Vector of Chars | The sense of the constraints represented by b, each row is either E (equality), L(less than) or G(greater than) | 
 |`model.ub`| `n x 1` | Column Cell Array of Strings | Identifiers for the reactions. | 
 |`model.c`| `n x 1` | Column Vector of Doubles | The lower bounds for fluxes through the reactions. | 
-|`model.osense`| `1 x 1` | Column Vector of Doubles | The upper bounds for fluxes through the reactions. | 
-|`model.rxns`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
-|`model.mets`| `m x 1` | Double | The objective sense either -1 for maximisation or 1 for minimisation | 
-|`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
 |`model.rules`| `n x 1` | Column Cell Array of Strings | GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux | 
+|`model.osense`| `1 x 1` | Column Vector of Doubles | The upper bounds for fluxes through the reactions. | 
+|`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
+|`model.geneNames`| `g x 1` | Column Cell Array of Strings | MetaNetX identifier of the metabolite | 
+|`model.compNames`| `c x 1` | Column Cell Array of Strings | Full name of each corresponding reaction. | 
+|`model.comps`| `c x 1` | Column Cell Array of Strings | Description of each corresponding reaction. | 
+|`model.proteinNames`| `g x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
+|`model.proteins`| `g x 1` | Column Cell Array of Strings | subSystem assignment for each reaction | 
 |`model.metCharges`| `m x 1` | Column Cell Array of Strings | Descriptions of the Compartments (compNames(m) is associated with comps(m)) | 
 |`model.metFormulas`| `m x 1` | Column Cell Array of Strings | Symbols for compartments, can include Tissue information | 
 |`model.metSmiles`| `m x 1` | String or Struct | Name of a file the model is loaded from. | 
@@ -36,7 +41,6 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.metMetaNetXID`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the InCHI strings format. | 
 |`model.description`| `` | Column Cell Array of Strings | Formula for each metabolite in the KEGG format. | 
 |`model.modelVersion`| `` | Column Cell Array of Strings | PubChem ID of each metabolite | 
-|`model.geneNames`| `g x 1` | Column Cell Array of Strings | MetaNetX identifier of the metabolite | 
 |`model.geneEntrezID`| `g x 1` | Column Cell Array of Strings | Full name of each corresponding metabolite. | 
 |`model.grRules`| `n x 1` | Column Cell Array of Strings | Formula for each metabolite in the PubChem format. | 
 |`model.rxnGeneMat`| `n x g` | Column Cell Array of Strings | Formula for each metabolite in SMILES Format | 
@@ -47,10 +51,6 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnReferences`| `n x 1` | Column Cell Array of Strings | E.C. number for each reaction. | 
 |`model.rxnKEGGID`| `n x 1` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
 |`model.subSystems`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
-|`model.compNames`| `c x 1` | Column Cell Array of Strings | Full name of each corresponding reaction. | 
-|`model.comps`| `c x 1` | Column Cell Array of Strings | Description of each corresponding reaction. | 
-|`model.proteinNames`| `g x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
-|`model.proteins`| `g x 1` | Column Cell Array of Strings | subSystem assignment for each reaction | 
 ### Model Specific Fields
 Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices). 
 
