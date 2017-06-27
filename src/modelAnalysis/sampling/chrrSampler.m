@@ -38,6 +38,8 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 % of samples from a single model, you can save `roundedPolytope` from the first round and
 % input it for subsequent rounds.
 
+global SOLVERS
+
 if nargin>=5 && isempty(numSkip)
     numSkip = 8*size(roundedPolytope.A,2)^2;
 end
@@ -73,9 +75,9 @@ if toPreprocess
     fprintf('Checking for width 0 facets...\n');
 
     if toGetWidths
-        %check if we can use fastFVA
-        if exist('fastFVA')==2
-            %check if we can do parallel for fastFVA
+        % check if we can use fastFVA
+        if SOLVERS.ibm_cplex.installed
+            % check if we can do parallel for fastFVA
             v=ver;
             PCT='Parallel Computing Toolbox';
             if  any(strcmp(PCT,{v.Name}))
@@ -84,6 +86,7 @@ if toPreprocess
             end
             [minFlux, maxFlux] = fastFVA(model,100);
         else
+            fprintf('IBM CPLEX is not installed, so `fastFVA` cannot be run. Using `fluxVariability` instead\n');
             [minFlux, maxFlux] = fluxVariability(model);
         end
     end

@@ -172,10 +172,7 @@ function configEnvVars(printLevel)
                     % if the solver variable is still empty, then give instructions on how to proceed
                     if isempty(eval(globEnvVar))
                         if printLevel > 0
-                            solversLink = 'https://opencobra.github.io/cobratoolbox/docs/solvers.html';
-                            if usejava('desktop')
-                                solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
-                            end
+                            solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
                             fprintf(['   - [', method, '] ', globEnvVar, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
                         end
                     else
