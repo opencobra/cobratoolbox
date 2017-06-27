@@ -70,22 +70,19 @@ if db && desc
     error('Cannot simultaneously return database and Description fields')
 end
 
-
-
 if db
     if isempty(CBT_DB_FIELD_PROPS)
         fileName = which('COBRA_structure_fields.csv');
         [raw] = tdfread(fileName);
-        %ModelFieldDefinitions;
-        %raw = ProgramaticModelFields;
+
         fields = fieldnames(raw);
         for i = 1:numel(fields)
             %Convert everything to strings.
             raw.(fields{i}) = cellstr(raw.(fields{i}));
-        end        
+        end
         %Get the indices for database, qualifier and reference.
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.databaseid);
-        relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows)];            
+        relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows)];
         dbInfo = cell(0,5);
         for i = 1:size(relarray)
             fieldRef = relarray{i,4}(1:end-1);
@@ -107,8 +104,7 @@ if desc
     if isempty(CBT_DESC_FIELD_PROPS)
         fileName = which('COBRA_structure_fields.csv');
         [raw] = tdfread(fileName);
-        %ModelFieldDefinitions;
-        %raw = ProgramaticModelFields;
+
         fields = fieldnames(raw);
         for i = 1:numel(fields)
             %Convert everything to strings.
@@ -120,12 +116,12 @@ if desc
                 raw.(fields{i}) = strrep(raw.(fields{i}),'comps','c');
                 raw.(fields{i}) = strrep(raw.(fields{i}),'NaN','');
             end
-        end   
-        
+        end
+
         %Get the indices for database, qualifier and reference.
-        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);        
+        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
         fieldDimensions = regexprep(strcat(raw.Xdim(relrows),{' x '},raw.Ydim(relrows)),'^ x $','');
-        relarray = [raw.Model_Field(relrows),fieldDimensions,raw.Property_Description(relrows), raw.Field_Description(relrows)];        
+        relarray = [raw.Model_Field(relrows),fieldDimensions,raw.Property_Description(relrows), raw.Field_Description(relrows)];
         dbInfo = cell(size(relarray,1),4);
         for i = 1:size(relarray)
             dbInfo(i,:) = { relarray{i,1},relarray{i,2},relarray{i,3},relarray{i,4}};
@@ -139,8 +135,7 @@ end
 if isempty(CBT_PROG_FIELD_PROPS)
      fileName = which('COBRA_structure_fields.csv');
      [raw] = tdfread(fileName);
-     %ModelFieldDefinitions;
-     %raw = ProgramaticModelFields;
+     
      fields = fieldnames(raw);
      for i = 1:numel(fields)
          %Convert everything to strings.
@@ -166,7 +161,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
             end
         end
         default = relarray{i,5};
-        if ischar(default)           
+        if ischar(default)
             if ~isempty(str2num(default))
                 default = str2num(default);
             end
@@ -180,4 +175,3 @@ fields = CBT_PROG_FIELD_PROPS;
 if ~isempty(spec)
     fields = fields(ismember(fields(:,1),spec),:);
 end
-
