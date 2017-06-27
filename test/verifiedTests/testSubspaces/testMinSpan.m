@@ -37,4 +37,4 @@ minSpanVectors = detMinSpan(model, params);
 numEntries = nnz(minSpanVectors);
 
 assert(r == 94 & c == 23, 'MinSpan vector matrix wrong size');
-assert(numEntries > 479, 'MinSpan vector matrix is not minimal');
+assert(numEntries == 479, 'MinSpan vector matrix is not minimal');
