@@ -1,4 +1,4 @@
-% The COBRAToolbox: testSubspaces.m
+% The COBRAToolbox: testMinSpan.m
 %
 % Purpose:
 %     - test the ability to determine the MinSpan vectors of the
