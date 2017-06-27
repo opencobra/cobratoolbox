@@ -1,98 +1,106 @@
 function [output] = pathVectors(model, directory, varargin)
 % Computes elementary mode and extreme pathway
-% (convex basis) of an arbitrary COBRA model by the CNA software
-% package.
+% (convex basis) of an arbitrary COBRA model by the CellNetAnalyzer software
+% package [1].
 %
-% INPUT:
-%    model:          COBRA model
-%    directory:      A path that CNA model is going to be saved there
-%    constraints:    empty
-%                    cnap.numr
-%                    many rows and up to 4 columns:
-%                    - COLUMN1 specifies excluded/enforced reactions: if
-%                      (constraints(i,1)==0) then onlythose modes / rays
-%                      / points will be computed that do not include
-%                      reaction i; constraints(i,1)~=0 and
-%                      constraints(i)~=NaN enforces reaction i, i.e. only
-%                      those modes / rays / points will be computed that
-%                      involve reaction i; for all other reactions choose
-%                      constraint(i,1)=NaN; several reactions may be
-%                      suppressed/enforced simultaneously
-%                    - COLUMN2: specifies lower boundaries for the
-%                      reaction rates (choose NaN if none is active).
-%                      Note that zero boundaries (irreversibilities) are
-%                      better described by cnap.reacMin. In any case, the
-%                      lower boundary eventually considered will be zero
-%                      if cnap.reaMin(i)==0 and constraints(i,2)<0.
-%                    - COLUMN3: specifies upper boundaries for the
-%                      reaction rates (choose NaN if none is active)
-%                    - COLUMN4: specifies equalities for the reaction
-%                      rates (choose NaN if none is active).
-% mexVersion:       (default:4)
-%                   1, CNA mex files,
-%                   2, Metatool mex files,
-%                   3, CNA and Metatool mex files
-%                   4, Marco Terzer's EFM tool
+% CellNetAnalyzer can be downloaded at https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html
 %
-% irrevFlag:        (default: 1)
-%                   0, reversible
-%                   1, irreversible
+% INPUTS:
+%    model:             COBRA model
+%    directory:         A path that CNA model is going to be saved there
 %
-% convBasisFlag:    (Default: 0)
-%                   0, elementary modes
-%                   1, extreme pathways
+% OPTIONAL INPUTS:
+%    constraints:       empty
+%                       cnap.numr
+%                       many rows and up to 4 columns:
+%                       - COLUMN1 specifies excluded/enforced reactions: if
+%                         (constraints(i,1)==0) then onlythose modes / rays
+%                         / points will be computed that do not include
+%                         reaction i; constraints(i,1)~=0 and
+%                         constraints(i)~=NaN enforces reaction i, i.e. only
+%                         those modes / rays / points will be computed that
+%                         involve reaction i; for all other reactions choose
+%                         constraint(i,1)=NaN; several reactions may be
+%                         suppressed/enforced simultaneously
+%                       - COLUMN2: specifies lower boundaries for the
+%                         reaction rates (choose NaN if none is active).
+%                         Note that zero boundaries (irreversibilities) are
+%                         better described by cnap.reacMin. In any case, the
+%                         lower boundary eventually considered will be zero
+%                         if cnap.reaMin(i)==0 and constraints(i,2)<0.
+%                       - COLUMN3: specifies upper boundaries for the
+%                         reaction rates (choose NaN if none is active)
+%                       - COLUMN4: specifies equalities for the reaction
+%                         rates (choose NaN if none is active).
+%    mexVersion:        (default:4)
+%                         1, CNA mex files,
+%                         2, Metatool mex files,
+%                         3, CNA and Metatool mex files
+%                         4, Marco Terzer's EFM tool
 %
-% isoFlag:          (default: 0)
-%                   0, not consider isoenzymes
-%                   1, consider isoenzymes
+%    irrevFlag:         (default: 1)
+%                         0, reversible
+%                         1, irreversible
 %
-% cMacro:           (default: cnap.macroDefault)
-%                   empty
-%                   cnap.macroComposition
+%    convBasisFlag:     (Default: 0)
+%                         0, elementary modes
+%                         1, extreme pathways
+%
+%    isoFlag:           (default: 0)
+%                         0, not consider isoenzymes
+%                         1, consider isoenzymes
+%
+%    cMacro:            (default: cnap.macroDefault)
+%                         empty
+%                         cnap.macroComposition
 
-% printLevel:       (default: 'All')
-%                      'None'
-%                      'Iteration'
-%                      'All'
-%                      'Details'
+%    printLevel:        (default: 'All')
+%                         'None'
+%                         'Iteration'
+%                         'All'
+%                         'Details'
 %
-% efmToolOptions:   (default: {})
-%                      'arithmetic'
-%                      'fractional'
-%                      'compression'
-%                      'off'
-% positivity:       0, normal convex basis
-%                   1, positive convex basis
+%    efmToolOptions:    (default: {})
+%                         'arithmetic'
+%                         'fractional'
+%                         'compression'
+%                         'off'
+%    positivity:        0, normal convex basis
+%                       1, positive convex basis
 %
 % OUTPUT:
-%    efms:          matrix that contains (row-wise) the elementary
-%                   modes (or elemenatry vectors) or a minimal set
-%                   of generators (lineality space + extreme rays/
-%                   points), depending on the chosen scenario. The
-%                   columns  correspond to the reactions; the column
-%                   indices of efms (with respect to the columns in
-%                   cnap.stoichMat) are stored in the returned
-%                   variable idx (see below; note that columns are
-%                   removed in efms if the corresponding reactions
-%                   are not contained in any mode) %
+%    efms:              matrix that contains (row-wise) the elementary
+%                       modes (or elemenatry vectors) or a minimal set
+%                       of generators (lineality space + extreme rays/
+%                       points), depending on the chosen scenario. The
+%                       columns  correspond to the reactions; the column
+%                       indices of efms (with respect to the columns in
+%                       cnap.stoichMat) are stored in the returned
+%                       variable idx (see below; note that columns are
+%                       removed in efms if the corresponding reactions
+%                       are not contained in any mode) %
 %
-% rev:              vector indicating for each mode whether it is
-%                   reversible(0)/irreversible (1)
+%    rev:               vector indicating for each mode whether it is
+%                       reversible(0)/irreversible (1)
 %
-% idx:              maps the columns in efm onto the column indices
-%                   in cnap.stoichmat, i.e. idx(i) refers to the
-%                   column number in cnap.stoichmat (and to
-%	                  the row number in cnap.reacID)
+%    idx:               maps the columns in efm onto the column indices
+%                       in cnap.stoichmat, i.e. idx(i) refers to the
+%                       column number in cnap.stoichmat (and to
+%	                      the row number in cnap.reacID)
 %
-% ray:              indicates whether the i-th row (vector) in efm
-%                   is an unbounded (1) or bounded (0) direction
-%                   of the flux cone / flux polyhedron. Bounded
-%                   directions (such as extreme points) can only
-%                   arise if an inhomogeneous problem was defined
-%                   (see also above for 'constraints').
-% cbmodel:          If the input model be changed during computations
-%                   then the new model will be saved as cbmodel (COBRA
-%                   model)
+%    ray:               indicates whether the i-th row (vector) in efm
+%                       is an unbounded (1) or bounded (0) direction
+%                       of the flux cone / flux polyhedron. Bounded
+%                       directions (such as extreme points) can only
+%                       arise if an inhomogeneous problem was defined
+%                       (see also above for 'constraints').
+%    cbmodel:           If the input model be changed during computations
+%                       then the new model will be saved as cbmodel (COBRA
+%                       model)
+%
+% [1] Klamt S, Saez-Rodriguez J and Gilles ED (2007)
+%     Structural and functional analysis of cellular networks with CellNetAnalyzer.
+%     BMC Systems Biology 1:2
 %
 % .. Author: Susan Ghaderi, LCSB, 06.06.2017
 %
@@ -162,15 +170,16 @@ end
 
 %% Convertining reversible reactions into irreversible reactions
 if positivity
-    ind = model.rev == 1;
-    rev = [model.rev; model.rev(ind)];
-    rxns = strcat(model.rxnNames(ind), '-rev');
-    c = [model.c; model.c(ind)];
-    model.S = [model.S, -model.S(:, ind)];
-    model.lb = zeros(length(model.rev) + length(model.rev(ind)), 1);
-    model.ub = [model.ub; Inf * ones(size(model.lb(ind), 1), 1)];
+    n = size(model.S, 2);
+    rev = model.lb < 0;
+    nRev = sum(rev);
+    rxns = strcat(model.rxnNames(rev), '-rev');
+    c = [model.c; model.c(rev)];
+    model.S = [model.S, -model.S(:, rev)];
+    model.lb = zeros(n + nRev, 1);
+    model.ub = [model.ub; Inf * ones(nRev, 1)];
     model.rxns = [model.rxns; rxns];
-    model.c = [model.c; zeros(length(model.rev(ind)), 1)];
+    model.c = [model.c; zeros(nRev, 1)];
     model.rxnNames = [model.rxnNames; rxns];
 end
 
