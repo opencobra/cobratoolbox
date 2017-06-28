@@ -4,7 +4,7 @@ function [] = exportSetToGAMS(set, fileName)
 %
 % USAGE: 
 %
-%         exportSetToGAMS(set, fileName)
+%         [] = exportSetToGAMS(set, fileName)
 %
 % INPUTS:
 %    set:             Type: cell array of strings
