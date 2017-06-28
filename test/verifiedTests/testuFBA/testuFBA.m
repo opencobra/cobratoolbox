@@ -25,7 +25,7 @@ cd(fileDir);
 %   model           modified iAB-RBC-283 COBRA model structure
 %   time            time points (in days)
 %   uFBAvariables   input for uFBA algorithm
-load('sample_data.mat');
+load([CBTDIR filesep 'tutorials' filesep 'uFBA' filesep 'sample_data.mat']);
 
 % test that data is loaded correctly
 assert(size(met_data, 1) == 80 & size(met_data, 2) == 102, ...
@@ -42,8 +42,8 @@ assert(size(time, 1) == 80 & size(time, 2) == 1, ...
 assert(length(fieldnames(uFBAvariables)) == 15, ...
        'Data loaded incorrectly.')
 
-solverLPOk = changeCobraSolver('gurobi', 'LP');
-solverMILPOk = changeCobraSolver('gurobi', 'MILP');
+solverLPOk = changeCobraSolver('gurobi', 'LP', 0);
+solverMILPOk = changeCobraSolver('gurobi', 'MILP', 0);
 
 if solverMILPOk & solverLPOk
     %% Linear regression
