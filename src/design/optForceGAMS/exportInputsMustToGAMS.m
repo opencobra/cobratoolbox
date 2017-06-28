@@ -23,12 +23,12 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %    minFluxesW:        Type: double array of size n_rxns x1
 %                       Description: Minimum fluxes for each reaction in
 %                       the model for wild-type strain. This can be
-%                       obtained by running the function FVA_optForce.
+%                       obtained by running the function FVAOptForce.
 %                       E.g.: minFluxesW = [-90; -56];
 %    maxFluxesW:        Type: double array of size n_rxns x1
 %                       Description: Maximum fluxes for each reaction in
 %                       the model for wild-type strain. This can be
-%                       obtained by running the function FVA_optForce. 
+%                       obtained by running the function FVAOptForce. 
 %                       E.g.: maxFluxesW = [90; 56];
 %    constrOpt:         Type: Structure
 %                       Description: structure containing additional
