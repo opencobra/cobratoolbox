@@ -83,77 +83,67 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               0 otherwise. Default = 0
 %
 % OUTPUTS: 
-%    mustLL:                    Type: cell array
-%                               Size: number of sets found X 2.
-%                               Description: Cell array containing the
-%                               reactions IDs which belong to the MustLL
-%                               set. Each row contain a couple of reactions
-%                               that must decrease their flux.
-%    pos_mustLL:                Type: double array
-%                               Size: number of sets found X 2.
-%                               Description: double array containing the
-%                               positions of each reaction in mustLL with
-%                               regard to model.rxns
-%    mustLL_linear:             Type: cell array
-%                               Size: number of unique reactions found X 1
-%                               Description: Cell array containing the
-%                               unique reactions ID which belong to the
+%    mustLL:                    (cell array of size number of sets found X
+%                               2). Cell array containing the reactions IDs
+%                               which belong to the MustLL set. Each row
+%                               contain a couple of reactions that must
+%                               decrease their flux.
+%    pos_mustLL:                (double array of size number of sets found
+%                               X 2). Double array containing the positions
+%                               of each reaction in mustLL with regard to
+%                               model.rxns
+%    mustLL_linear:             (cell array of size number of unique
+%                               reactions found X 1) Cell array containing
+%                               the unique reactions ID which belong to the
 %                               MustLL Set
-%    pos_mustLL_linear:         Type: double array
-%                               Size: number of unique reactions found X 1
-%                               Description: double array containing
-%                               positions for reactions in mustLL_linear.
-%                               with regard to model.rxns
-%    outputFileName.xls         Type: file.
-%                               Description: File containing one column
+%    pos_mustLL_linear:         (double array of size number of unique
+%                               reactions found X 1) double array
+%                               containing positions for reactions in
+%                               mustLL_linear. with regard to model.rxns
+%    outputFileName.xls         (file) File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
 %                               the user entered printExcel = 1. Note that
 %                               the user can choose the name of this file
 %                               entering the input outputFileName =
 %                               'PutYourOwnFileNameHere';
-%    outputFileName.txt         Type: file.
-%                               Description: File containing one column
+%    outputFileName.txt         (file) File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
 %                               the user entered printText = 1. Note that
 %                               the user can choose the name of this file
 %                               entering the input outputFileName =
 %                               'PutYourOwnFileNameHere';
-%    outputFileName_Info.xls    Type: file.
-%                               Description: File containing one column
+%    outputFileName_Info.xls    (file) File containing one column
 %                               array. In each row the user will find a
-%                               couple of reactions. Each couple of reaction
-%                               was found in one iteration of
+%                               couple of reactions. Each couple of
+%                               reaction was found in one iteration of
 %                               FindMustLL.gms. This file will only be
 %                               generated if the user entered printExcel =
-%                               1. Note that the user can choose the name of
-%                               this file entering the input outputFileName
-%                               = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.txt    Type: file.
-%                               Description: File containing one column
+%                               1. Note that the user can choose the name
+%                               of this file entering the input
+%                               outputFileName = 'PutYourOwnFileNameHere';
+%    outputFileName_Info.txt    (file) File containing one column
 %                               array. In each row the user will find a
-%                               couple of reactions. Each couple of reaction
-%                               was found in one iteration of
+%                               couple of reactions. Each couple of
+%                               reaction was found in one iteration of
 %                               FindMustLL.gms. This file will only be
-%                               generated if the user entered printText = 1.
-%                               Note that the user can choose the name of
-%                               this file entering the input outputFileName
-%                               = 'PutYourOwnFileNameHere';
-%    findMustLL.lst             Type: file.
-%                               Description: file autogenerated by GAMS. It
+%                               generated if the user entered printText =
+%                               1. Note that the user can choose the name
+%                               of this file entering the input
+%                               outputFileName = 'PutYourOwnFileNameHere';
+%    findMustLL.lst             (file) file autogenerated by GAMS. It
 %                               contains information about equations,
-%                               variables, parameters as well as information
-%                               about the running (values at each
-%                               iteration). This file only will be saved in
-%                               the output folder is the user entered
-%                               keepGamsOutputs = 1
-%    GtoMLL.gdx                 Type: file
-%                               Description: file containing values for
-%                               variables, parameters, etc. which were found
-%                               by GAMS when solving findMustLL.gms. This
-%                               file only will be saved in the output folder
-%                               is the user entered keepInputs = 1
+%                               variables, parameters as well as
+%                               information about the running (values at
+%                               each iteration). This file only will be
+%                               saved in the output folder is the user
+%                               entered keepGamsOutputs = 1
+%    GtoMLL.gdx                 (file) file containing values for
+%                               variables, parameters, etc. which were
+%                               found by GAMS when solving findMustLL.gms.
+%                               This file only will be saved in the output
+%                               folder is the user entered keepInputs = 1
 %
 % NOTE: 
 %    This function is based in the GAMS files written by Sridhar
