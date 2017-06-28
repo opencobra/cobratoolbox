@@ -137,13 +137,13 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               variables, parameters as well as
 %                               information about the running (values at
 %                               each iteration). This file only will be
-%                               saved in the output folder is the user
+%                               saved in the output folder if the user
 %                               entered keepGamsOutputs = 1
 %    GtoMLL.gdx                 (file) file containing values for
 %                               variables, parameters, etc. which were
 %                               found by GAMS when solving findMustLL.gms.
 %                               This file only will be saved in the output
-%                               folder is the user entered keepInputs = 1
+%                               folder if the user entered keepInputs = 1
 %
 % NOTE: 
 %    This function is based in the GAMS files written by Sridhar
