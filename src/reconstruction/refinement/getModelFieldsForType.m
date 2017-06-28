@@ -1,7 +1,7 @@
-function [matchingFields,dimensions] = getRelevantModelFields(model, type, varargin)
-% get fields which are associated with the given type.
+function [matchingFields,dimensions] = getModelFieldsForType(model, type, varargin)
+% Get the fields in the model which are associated with the given type.
 % USAGE:
-%     matchingFields = getRelevantModelFields(model, type, varargin)
+%     matchingFields = getModelFieldsForType(model, type, varargin)
 %
 % INPUTS:
 %

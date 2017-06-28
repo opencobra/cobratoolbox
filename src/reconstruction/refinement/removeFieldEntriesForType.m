@@ -1,7 +1,8 @@
-function model = removeRelevantModelFields(model, indicesToRemove, type, fieldSize, varargin)
-% 
+function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSize, varargin)
+% Remove field entries at the specified indices from all fields associated
+% with the given type
 % USAGE:
-%    model = removeRelevantModelFields(model, indicesToRemove, type, varargin)
+%    model = removeFieldEntriesForType(model, indicesToRemove, type, varargin)
 %
 % INPUTS:
 %
@@ -55,7 +56,7 @@ if isnumeric(indicesToRemove)
     indicesToRemove = res;
 end
 
-fields = getRelevantModelFields(model, type, fieldSize);
+fields = getModelFieldsForType(model, type, fieldSize);
 
 fields = setdiff(fields,excludeFields);
 

@@ -1,7 +1,7 @@
-function model = updateRelevantFieldOrder(model,type,newOrder)
-% update the fields relevant to this type to the given new Order
+function model = updateFieldOrderForType(model,type,newOrder)
+% Reorder the fields associated with the provided type to the new order. 
 % USAGE:
-%     matchingFields = getRelevantModelFields(model, type, newOrder)
+%     matchingFields = updateFieldOrderForType(model, type, newOrder)
 %
 % INPUTS:
 %
@@ -26,7 +26,7 @@ parser.addRequired('newOrder',@(x) isnumeric(x) && all(ismember(newOrder,1:numel
 
 parser.parse(model,type,newOrder);
 
-[fields,dimensions] = getRelevantModelFields(model,type);
+[fields,dimensions] = getModelFieldsForType(model,type);
 
 for i = 1:numel(fields)
     %For now, we will only handle 2 dimensional arrays

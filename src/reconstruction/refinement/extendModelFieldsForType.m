@@ -1,7 +1,8 @@
-function model = updateRelevantModelFields(model, type, varargin)
-% update all relevant fields to have the correct size.
+function model = extendModelFieldsForType(model, type, varargin)
+% Extend all existing fields relevant for the given type to the size of the
+% field of the given type, or a specified size.
 % USAGE:
-%     model = updateRelevantModelFields(model, type, varargin)
+%     model = extendModelFieldsForType(model, type, varargin)
 %
 % INPUTS:
 %
@@ -13,12 +14,12 @@ function model = updateRelevantModelFields(model, type, varargin)
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
 %                     - 'originalSize', the original size of the field,
 %                       this is used to determine fields which have to be
-%                       adjusted.
+%                       adjusted (default length of field type - 1).
 %                     - 'targetSize', the target size to which the field
 %                       should be extended. Default values will be used as
 %                       defined in the ModelFieldDefinitions to fill empty
-%                       entries.
-%                     - 'excludeFields', fields that should eb ignored
+%                       entries (default length of field type).
+%                     - 'excludeFields', fields that should be ignored
 %                       during update.
 % OUTPUT:
 %
@@ -54,7 +55,7 @@ originalSize = parser.Results.originalSize;
 targetSize = parser.Results.targetSize;
 excludeFields = parser.Results.excludeFields;
 
-fields = getRelevantModelFields(model, type, originalSize);
+fields = getModelFieldsForType(model, type, originalSize);
 
 fields = setdiff(fields,excludeFields);
 
