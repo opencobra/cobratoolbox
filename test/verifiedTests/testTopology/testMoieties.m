@@ -29,6 +29,13 @@ model.rxns{2} = 'alternativeR2';
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)
 rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'atomicallyResolveMetabolicReconstruction' filesep 'data' filesep 'atomMapped'];
+R2rxn = regexp(fileread([rxnfileDir filesep 'R2.rxn']), '\n', 'split')';
+R2rxn{2} = 'alternativeR2';
+R2rxn{135}(62:63) = '18';
+R2rxn{151}(62:63) = '19';
+fid2 = fopen([rxnfileDir filesep 'alternativeR2.rxn'], 'w');
+fprintf(fid2, '%s\n', R2rxn{:});
+fclose(fid2);
 
 % Generate atom transition network
 ATN = buildAtomTransitionNetwork(model, rxnfileDir);

@@ -20,16 +20,16 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %                   metabolites in S. File names should correspond to
 %                   reaction identifiers in input mets.
 %
-% OPTIONAL INPUT:
-%    rxnDir         Path to directory that will contain the RXN files with
+% OPTIONAL INPUTS:
+%    rxnDir:        Path to directory that will contain the RXN files with
 %                   atom mappings (default current directory).
-%    maxTime        Maximum time assigned to compute atom mapping (default
+%    maxTime:       Maximum time assigned to compute atom mapping (default
 %                   1800s).
-%    standariseRxn  Logic value for standardising the atom mapped RXN file.
+%    standariseRxn: Logic value for standardising the atom mapped RXN file.
 %                   ChemAxon license is required (default TRUE).
 %
 % OUTPUTS:
-%    balancedRxns	List of standadised atom mapped reactions.
+%    balancedRxns:	List of standadised atom mapped reactions.
 %    A directory with standardised RXN files.
 %    A directory with atom mapped RXN files.
 %    A directory images for atom mapped reactions.
@@ -76,7 +76,7 @@ end
 % Delete the protons (hydrogens) for the metabolic network
 % From metabolites
 S = full(model.S);
-hToDelete = ismember(model.metFormulas,'H');
+hToDelete = ismember(model.metFormulas, 'H');
 S(hToDelete, :) = [];
 model.mets(hToDelete) = [];
 % From reactions
@@ -84,12 +84,12 @@ hydrogenCols = all(S == 0, 1);
 S(:, hydrogenCols) = [];
 model.rxns(hydrogenCols) = [];
 
-model.S=S;
+model.S = S;
 
 
 % Format inputs
 mets = model.mets;
-fmets = regexprep(mets,'(\[\w\])','');
+fmets = regexprep(mets, '(\[\w\])', '');
 rxns = model.rxns;
 clear model
 
@@ -99,12 +99,12 @@ d = d(~[d.isdir]);
 aMets = {d.name}';
 aMets = aMets(~cellfun('isempty',regexp(aMets,'(\.mol)$')));
 % Identifiers for atom mapped reactions
-aMets = regexprep(aMets,'(\.mol)$','');
+aMets = regexprep(aMets, '(\.mol)$','');
 assert(~isempty(aMets), 'MOL files directory is empty or nonexistent.');
 
 % Extract MOL files
 % True if MOL files are present in the model
-mbool = (ismember(fmets,aMets));
+mbool = (ismember(fmets, aMets));
 
 assert(any(mbool), 'No MOL files found for model metabolites.\nCheck that MOL files names match reaction identifiers in mets.');
 fprintf('\n\nGenerating RXN files.\n');
@@ -113,17 +113,17 @@ fprintf('\n\nGenerating RXN files.\n');
 % MOL files in the reaction, 2) No exchange reactions, 3) Only integers in
 % the stoichiometry
 for i=1:length(rxns)
-    a = ismember(regexprep(mets(find(S(:,i))),'(\[\w\])',''),aMets);
-    s = S(find(S(:,i)),i);
-    if all(a(:) > 0) && length(a)~=1 && all(abs(round(s)-s)<(1e-2))
-    	writeRxnfile(S(:,i),mets,fmets,molFileDir,rxns{i},[outputDir...
+    a = ismember(regexprep(mets(find(S(:,i))), '(\[\w\])', ''), aMets);
+    s = S(find(S(:, i)), i);
+    if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s) - s) < (1e - 2))
+    	writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [outputDir...
             filesep 'rxnFiles' filesep])
     end
 end
 
 % Atom map RXN files
 fnames = dir([outputDir filesep 'rxnFiles' filesep '*.rxn']);
-fprintf('Computing atom mappings for %d reactions.\n\n',length(fnames));
+fprintf('Computing atom mappings for %d reactions.\n\n', length(fnames));
 
 % Start from the lighter RXN to the heavier
 [~,bytes] = sort([fnames.bytes]);
@@ -144,15 +144,15 @@ for i=1:length(fnames)
 
     mNames = dir('ECBLAST_*');
     if length(mNames) == 3
-        name = regexprep({mNames.name},'ECBLAST_|_AAM','');
-        cellfun(@movefile, {mNames.name},name)
-        cellfun(@movefile, name,{[outputDir 'images'], [outputDir...
+        name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
+        cellfun(@movefile, {mNames.name}, name)
+        cellfun(@movefile, name, {[outputDir 'images'], [outputDir...
             'atomMapped'], [outputDir 'txtData']})
     elseif ~isempty(mNames)
         delete(mNames.name)
-        counterNotMapped = counterNotMapped+1;
+        counterNotMapped = counterNotMapped + 1;
     else
-        counterNotMapped = counterNotMapped+1;
+        counterNotMapped = counterNotMapped + 1;
     end
 end
 
@@ -161,12 +161,12 @@ end
      fnames = dir([outputDir filesep 'atomMapped' filesep '*.rxn']);
      for i = 1:length(fnames)
          standardised = canonicalRxn(fnames(i).name, [outputDir...
-             'atomMapped'],[outputDir 'rxnFiles']);
+             'atomMapped'], [outputDir 'rxnFiles']);
          if standardised
-             counterBalanced = counterBalanced+1;
-             standardisedRxns{counterBalanced} = regexprep(fnames(i).name,'.rxn','');
+             counterBalanced = counterBalanced + 1;
+             standardisedRxns{counterBalanced} = regexprep(fnames(i).name, '.rxn', '');
          else
-             counterUnbalanced = counterUnbalanced+1;
+             counterUnbalanced = counterUnbalanced + 1;
          end
      end
  else
@@ -174,9 +174,9 @@ end
      counterUnbalanced = length(dir([outputDir 'atomMapped' filesep '*.rxn']));
  end
 
-fprintf('\n%d reactions were atom mapped\n',length(dir([outputDir 'atomMapped' filesep '*.rxn'])));
-fprintf('%d reactions are not standardised\n',counterUnbalanced);
-fprintf('%d reactions were not mapped\n\n\n',counterNotMapped);
+fprintf('\n%d reactions were atom mapped\n', length(dir([outputDir 'atomMapped' filesep '*.rxn'])));
+fprintf('%d reactions are not standardised\n', counterUnbalanced);
+fprintf('%d reactions were not mapped\n\n\n', counterNotMapped);
 
 fprintf('RDT algorithm was developed by:\n');
 fprintf('SA Rahman et al.: Reaction Decoder Tool (RDT): Extracting Features from Chemical\n');

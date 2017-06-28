@@ -1,4 +1,4 @@
-function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,samplerName,options,modelSampling)
+function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 % Samples the solution-space of a constraint-based model
 %
 % USAGE:

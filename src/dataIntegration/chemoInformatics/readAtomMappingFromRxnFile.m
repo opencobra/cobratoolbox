@@ -31,44 +31,44 @@ rxnfileName = regexprep(rxnfileName,'(\.rxn)$',''); % Format inputs and remove r
 if nargin < 2 || isempty(rxnfileDirectory)
     rxnfileDirectory = '';
 else
-    rxnfileDirectory = [regexprep(rxnfileDirectory,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
+    rxnfileDirectory = [regexprep(rxnfileDirectory, '(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
 end
 
 % Read reaction file
-if strcmp(rxnfileName,'3AIBTm')
+if strcmp(rxnfileName, '3AIBTm')
     rxnFilePath = [rxnfileDirectory '3AIBtm (Case Conflict).rxn'];
 else
     rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
 end
 
 fileStr = fileread(rxnFilePath); % Read file contents into a string
-fileCell = regexp(fileStr,'\$MOL\r?\n','split'); % Split file into text blocks
+fileCell = regexp(fileStr, '\$MOL\r?\n', 'split'); % Split file into text blocks
 
 % Get reaction data
 headerStr = fileCell{1}; % First block contains reaction data
-headerCell = regexp(headerStr,'\r?\n','split');
+headerCell = regexp(headerStr, '\r?\n', 'split');
 
-if ~strcmp(headerCell{2},rxnfileName)
-    warning('Reaction identifier in the rxnfile %s.rxn does not match file name.',rxnfileName);
+if ~strcmp(headerCell{2}, rxnfileName)
+    warning('Reaction identifier in the rxnfile %s.rxn does not match file name.', rxnfileName);
 end
 
 rxnFormula = headerCell{4}; % fourth line should contain the reaction formula
-rxnFormula = strtrim(regexp(rxnFormula,'<=>|->','split'));
+rxnFormula = strtrim(regexp(rxnFormula,'<=>|->', 'split'));
 leftside = rxnFormula{1};
-leftside = strtrim(regexp(leftside,'\+','split'));
+leftside = strtrim(regexp(leftside, '\+', 'split'));
 rightside = rxnFormula{2};
-rightside = strtrim(regexp(rightside,'\+','split'));
+rightside = strtrim(regexp(rightside, '\+', 'split'));
 
-umets = cell(length(leftside) + length(rightside),1);
-s = zeros(length(leftside) + length(rightside),1);
+umets = cell(length(leftside) + length(rightside), 1);
+s = zeros(length(leftside) + length(rightside), 1);
 for i = 1:length(leftside)
-    [w1,w2] = strtok(leftside{i});
+    [w1, w2] = strtok(leftside{i});
     if isempty(w2)
         umets{i} = w1;
-        s(i) = -1;
+        s(i) = - 1;
     else
         umets{i} = strtrim(w2);
-        s(i) = -str2double(w1);
+        s(i) = - str2double(w1);
     end
 end
 for i = 1:length(rightside)
@@ -85,13 +85,13 @@ end
 nReactants = str2double(headerCell{5}(1:3)); % Fifth line is reactant/product line
 nProducts = str2double(headerCell{5}(4:6));
 if sum(abs(s)) ~= nReactants + nProducts
-    hidx = [find(ismember(umets,'h')) strmatch('h[',umets)]; % Atom mapping may not include hydrogen atoms
-    s = s(setdiff(1:length(s),hidx));
-    umets = umets(setdiff(1:length(umets),hidx));
+    hidx = [find(ismember(umets,'h')) strmatch('h[', umets)]; % Atom mapping may not include hydrogen atoms
+    s = s(setdiff(1:length(s), hidx));
+    umets = umets(setdiff(1:length(umets), hidx));
 end
 
 if sum(abs(s)) ~= nReactants + nProducts
-    warning('Incorrect reaction formula in the rxnfile %s.',rxnfileName);
+    warning('Incorrect reaction formula in the rxnfile %s.', rxnfileName);
 end
 
 % Get metabolite data
@@ -112,7 +112,7 @@ for i = 1:length(umets)
     for j = 1:abs(s(i)) % Molfile is repeated abs(s(j)) times
         counter = counter + 1;
         molStr = fileCell{counter}; % Mol block for metabolite
-        molCell = regexp(molStr,'\r?\n','split');
+        molCell = regexp(molStr, '\r?\n', 'split');
         %assert(strcmp(strtrim(molCell{1}),regexprep(id,'(\[\w\])$','')),'Metabolite identifiers do not match.'); % First line should be metabolite id without compartment assignment
 
         nAtoms(i) = str2double(molCell{4}(1:3)); % Fourth line is counts line. First three characters on the line are the number of atoms.
@@ -132,6 +132,6 @@ for i = 1:length(umets)
 end
 
 isSubstrate = logical(isSubstrate);
-assert(all(sort(rxnNrs(isSubstrate)) == (1:sum(isSubstrate))'),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
-assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
-assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+assert(all(sort(rxnNrs(isSubstrate)) == (1:sum(isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
