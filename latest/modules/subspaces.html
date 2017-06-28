@@ -386,6 +386,66 @@ Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite><
 </dd></dl>
 
 <dl class="function">
+<dt id="src.modelAnalysis.subspaces.detMinSpan">
+<code class="descname">detMinSpan</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>vectors</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/modelAnalysis/subspaces/detMinSpan.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.detMinSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MinSpan vectors for a COBRA model. The
+algorithm determines a set of linearly independent basis vectors that
+span the nullspace that meet the criteria of the flux bounds of the
+network and minimizes the number of reactions used. The algorithm
+operates in an interative manner and checkes for convergence after each
+iteration. Parameters may be provided to skip convergence and terminate
+the problem when models are large. See Bordbar et al. Mol Syst Biol 2014
+for more details. This algorithm has only been tested and requires Gurobi
+as MILP solver.</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure (requires S, lb, ub)
+Note: MinSpan calculations are done w/o biomass
+reaction and all reactions must be able to carry a
+flux = 0 for the trivial solution to be feasible.
+model is auto corrected by bounds but biomass
+must be removed manually</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>params</strong> &#8211;
+Optional parameters to calculate MinSpan.
+Determining the MinSpan is a NP hard calculation.
+For large models, the algorithm may not converge
+and parameters must be provided to stop the
+algorithm to provide an approximate solution.</p>
+<ul class="simple">
+<li>.coverage - Number of iterations to run the algorithm, if not</li>
+</ul>
+<p>converge (Default = 10)
+* .timeLimit - Time to spend on each MinSpan calculation (sec),
+(Default = 30)
+* .saveIntV - Save intermediate vectors in order to restart from
+latest iteration (Default = 1)
+* .cores - Number of cores to use (Default = 1)</p>
+</li>
+<li><p class="first"><strong>vectors</strong> &#8211;
+Set of intermediate MinSpan vectors that may
+have not yet reached convergence, allowing to
+pickup calculation from last spot.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>finalVectors</strong> &#8211;
+MinSpan vectors for COBRA model</li>
+</ul>
+</div></blockquote>
+<p>Ensure gurobi MILP is working</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.modelAnalysis.subspaces.fourFundamentalSubpaces">
 <code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/modelAnalysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate linearly independent bases the four fundamental subspaces of <cite>S</cite> using LUSOL or SVD</p>
