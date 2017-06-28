@@ -50,6 +50,9 @@
 % chemical reaction is needed to download JChem from ChemAxon with its respective 
 % license
 %% Section 1 Reactions atom mappings
+
+initCobraToolbox
+%% 
 % Atom mappings for the internal reactions of a metabolic network reconstruction 
 % are performed by the function |obtainAtomMappingsRDT|. The main inputs are a 
 % COBRA model structure and a directory containing the molecular structures in 

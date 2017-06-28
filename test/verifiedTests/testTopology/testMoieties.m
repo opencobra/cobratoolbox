@@ -24,10 +24,10 @@ cd(fileDir);
 load('refData_moieties.mat')
 
 % Load the dopamine synthesis network
-load('DAS.mat')
+load('subDas.mat')
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)
-rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'moieties' filesep 'Data' filesep 'AlternativeAtomMappingFiles'];
+rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'atomicallyResolveMetabolicReconstruction' filesep 'data' filesep 'atomMapped'];
 
 % Generate atom transition network
 ATN = buildAtomTransitionNetwork(model, rxnfileDir);
