@@ -3,7 +3,7 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singl
 %
 % USAGE:
 %
-%    [grRatio, grRateKO, grRateWT, delRxns, hasEffect] = singleGeneDeletion(model, method, geneList, verbFlag)
+%    [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion(model, method, geneList, verbFlag)
 %
 % INPUT:
 %    model:           COBRA model structure including gene-reaction associations
