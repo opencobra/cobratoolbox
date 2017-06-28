@@ -117,7 +117,9 @@ else
 
     grRateKO = ones(nDelGenes,1)*grRateWT;
     hasEffect = true(nDelGenes,1);
-    fluxSolution = zeros(length(model.rxns),nDelGenes);
+    % Assign the WT flux distribution to all deletions; those that differ
+    % will be replaced in the loop below
+    fluxSolution = repmat(solWT.x, 1, nDelGenes);
     delRxns = cell(nDelGenes,1);
     if (verbFlag)
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
@@ -143,6 +145,7 @@ else
                 fluxSolution(:,i) = solKO.x;
             else
                 grRateKO(i) = NaN;
+                fluxSolution(:,i) = nan(length(model.rxns),1);
             end
         end
         if (verbFlag)
