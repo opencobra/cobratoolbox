@@ -1,32 +1,34 @@
 function [] = exportSetToGAMS(set, fileName)
-% This function export the information in "set" to a .txt file which can be
-% read by GAMS. "set" must be a cell array of strings.
+% This function exports the information in "set" to a .txt file which can be
+% read by GAMS. "set" must be a cell array of strings. 
 %
-% USAGE:
+% USAGE: 
 %
-%         exportSetToGAMS(set, fileName) export a particular set of
-%         elements to a text file which can be read by GAMS directly.
-%
-%         Example: exportSetToGAMS(model.rxns, 'Reactions.txt') will export
-%         the list of elements in model.rxns to a file called Reactions.txt
+%         exportSetToGAMS(set, fileName)
 %
 % INPUTS:
-%         set(obligatory)           Type: cell array of strings
-%                                   Description: cell array containing identifiers
-%                                   for certain set of elements (reactions,
-%                                   metabolites, etc)
-%
-%         fileName(obligatory)      Type: string
-%                                   Description: Name of the file in which the
-%                                   information will be stored. It is recomended to
-%                                   add the extension of the file.
+%    set:             Type: cell array of strings
+%                     Description: cell array containing identifiers
+%                     for certain set of elements (reactions,
+%                     metabolites, etc)
+% 
+%    fileName:        Type: string
+%                     Description: Name of the file in which the
+%                     information will be stored. It is recomended to
+%                     add the extension of the file. 
 %
 % OUTPUTS:
+%    fileName.txt:    Type: file
+%                     Description: File of name "fileName" containing 
+%                     the set of elements, one for row.
 %
-%         fileName                  Type: file
-%                                   Description: File of name "fileName" containing
-%                                   the set of elements, one for row.
-
+% EXAMPLE: 
+%
+%    exportSetToGAMS(model.rxns, 'Reactions.txt') 
+%    This, will export the list of elements in model.rxns to a file called
+%    Reactions.txt
+%
+% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 %% CODE
 %input handling
 if nargin > 2
