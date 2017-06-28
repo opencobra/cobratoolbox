@@ -52,13 +52,15 @@ nPointsPerFile = 1000;
 nStepsPerPoint = 200;
 nPointsReturned = 2000;
 nFilesSkipped = 2;
-maxTime = 10*3600;
+maxTime = 10 * 3600;
 toRound = 1;
 % Default options above
 if (nargin < 3 || isempty(samplerName))
     samplerName = 'CHRR';
 end
-
+if (nargin < 5 || isempty(modelSampling))
+    modelSampling = [];
+end
 
 % Handle options
 if exist('options','var')
