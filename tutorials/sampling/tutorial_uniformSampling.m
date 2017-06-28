@@ -1,42 +1,51 @@
 %% Uniform sampling
-% *Hulda S. Haraldsdóttir*
+%% Author(s): *Hulda S. HaraldsdÃ³ttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
+%% Reviewer(s): 
+%% INTRODUCTION
+% The flux space $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
+% for a given set of biochemical and physiologic constraints is represented by: 
 % 
-% In this tutorial we will use Coordinate Hit-and-Run with Rounding (CHRR) 
-% [1] to uniformly sample a constraint-based model of the core metabolic network 
-% of _E. coli_ [2].
-% 
-% A constraint-based metabolic model consists of a set of equalities and 
-% inequalities that define a convex polytope $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ of feasible flux vectors 
-% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="italic">v</mi></mrow></math>$,
-% 
-% $$<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&ohm;</mi><mo 
-% stretchy="false">=</mo><mrow><mo>{</mo><mrow><mi mathvariant="italic">v</mi><mo 
-% stretchy="false">&mid;</mo><mi mathvariant="normal">Sv</mi><mo>=</mo><mn>0</mn><mo>,</mo><mtext>?
-% </mtext><mi mathvariant="italic">l</mi><mo stretchy="false">&leq;</mo><mi mathvariant="italic">v</mi><mo 
-% stretchy="false">&leq;</mo><mi mathvariant="italic">u</mi><mo stretchy="false">,</mo><msup><mrow><mi 
-% mathvariant="italic">c</mi></mrow><mrow><mi mathvariant="italic">T</mi></mrow></msup><mi 
-% mathvariant="italic">v</mi><mo stretchy="false">=</mo><mi>&alpha;</mi><mtext>?
-% </mtext></mrow><mo>}</mo></mrow><mo stretchy="false">,</mo></mrow></math>$$
+% $$\Omega = \{v | Sv=b; l \leq v\leq u\}$$
 % 
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="italic">S</mi></mrow></math>$ is the $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">m</mi><mo>&times;</mo><mi mathvariant="italic">n</mi></mrow></math>$ 
-% stoichiometric matrix, $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="italic">l</mi></mrow></math>$ and $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">u</mi></mrow></math>$ are lower 
-% and upper bounds on fluxes, $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">c</mi></mrow></math>$ is a linear 
-% objective and $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi></mrow></math>$ 
-% is the solution to a flux balance analysis (FBA) problem [3].
+% mathvariant="italic">v</mi></mrow></math>$ represents feasible flux vectors,  
+% $S\in\mathcal{Z}^{m\times n}$ the stoichiometric matrix, while $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">l</mi></mrow></math>$ and $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="italic">u</mi></mrow></math>$ 
+% are lower and upper bounds on fluxes. These criteria still allow a wide range 
+% of admissible flux distributions which, in FBA are commonly further restricted 
+% by introducing an objective to optimise, transforming the question of admissible 
+% fluxes into an FBA problem of the form
 % 
-% CHRR consists of rounding followed by sampling. To round an anisotropic 
-% polytope, we use a maximum volume ellipsoid algorithm [4]. The rounded polytyope 
-% is then sampled with a coordinate hit-and-run algorithm [5].
+% $$\begin{array}{ll}\min\limits _{v} & c^{T}v\\\text{s.t.} & Sv=b,\\ & l\leq 
+% v\leq u,\end{array}$$
 % 
-% Below is a high-level illustration of the process to uniformly sample a 
-% random metabolic flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">c</mi></mrow></math>$ is a linear biological objective 
+% function (biomass, ATP consumption, HEME production, etc.). Even under these 
+% conditions the there is commonly a range of optimal flux distributions. which 
+% can be investigated using flux variability analysis. If the general capabilities 
+% of the model are of interest, however, uniform sampling of the entire flux space 
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
+% is able to provide an unbiased characterization, and therefore, can be used 
+% to investigate the biochemical networks. It requires collecting a statistically 
+% meaningful number of flux distributions uniformly spread throughout the whole 
+% flux space and then analysing their properties. There are three basic steps 
+% to perform a uniform sampling for a set of feasible fluxes:
+% 
+% * Define the flux space to be sampled from physical and biochemical constraints
+% * Randomly sample the defined flux space based on uniform statistical criteria
+% * If is necessary, section the flux space according to post-sampling.
+% 
+% In COBRA v3 there are three different sampling algorithms: coordinate hit-and-run 
+% with rounding (CHRR), artificial centring hit-and-run (ACHR) and the minimum 
+% free energy (MFE). In this tutorial, we will use the CHRR algorithm [1] to uniformly 
+% sample a high dimensionally constraint-based model of the differentiation of 
+% induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm 
+% consists of rounding the anisotropic flux space  Î© using a maximum volume ellipsoid 
+% algorithm [4] and then performs a uniform sampling based on the provably efficient 
+% hit-and-run random walk [5]. Below is a high-level illustration of the process 
+% to uniformly sample a random metabolic flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">v</mi></mrow></math>$ from the 
 % set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
 % of all feasible metabolic fluxes (grey). *1)* Apply a rounding transformation 
@@ -44,7 +53,7 @@
 % mathvariant="italic">T</mi></mrow></math>$ to $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. The transformed set $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
-% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext>?</mtext></mrow></math>$ is 
+% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext>â€‰</mtext></mrow></math>$ is 
 % such that its maximal inscribed ellipsoid (blue) approximates a unit ball. *2)* 
 % Take $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">q</mi></mrow></math>$ steps of coordinate hit-and-run. 
@@ -70,24 +79,25 @@
 
 initCobraToolbox
 %% Modelling
-% We will model growth on glucose under aerobic and anaerobic conditions, following 
-% closely the flux balance analysis (FBA) tutorial published with [3].
+% We will investigate ATP energy production with limited and unlimited oxygen 
+% uptake, following closely the flux balance analysis (FBA) tutorial published 
+% with [3].
 % 
-% We start by loading the model with published flux bounds and objective 
-% function (the biomass reaction). We set the maximum glucose uptake rate to 18.5 
-% mmol/gDW/hr. To explore the entire space of feasible steady state fluxes we 
-% also remove the cellular objective.
+% We start by loading the model with its flux bounds and the objective function 
+% (ATP demand reaction). We set the maximum glucose uptake rate to 18.5 mmol/gDW/hr. 
+% To explore the entire space of feasible steady state fluxes we also remove the 
+% cellular objective.
 
-load('ecoli_core_model.mat', 'model');
-[m,n] = size(model.S);
+load('data/iPSC_DA.mat','modelUptClosed') % Load the model
+model = modelUptClosed;
 model = changeRxnBounds(model, 'EX_glc(e)', -18.5, 'l');
-model.c = 0 * model.c;  % linear objective
+model.c = 0 * model.c; % clear the objective
 %% 
-% We allow unlimited oxygen uptake in the aerobic model and no oxygen uptake 
-% in the anaerobic model.
+% We allow unlimited and limited oxygen uptake in the models creating two 
+% distinct models based on the input model.
 
-aerobic = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
-anaerobic = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
+unlimitedOx = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
+limitedOx = changeRxnBounds(model, 'EX_o2(e)', -4, 'l');
 %% Flux variability analysis
 % Flux variability analysis (FVA) returns the minimum and maximum possible flux 
 % through every reaction in a model.
@@ -95,34 +105,35 @@ anaerobic = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 try
     startup  % set user preferred LP solver etc.
 catch ME
-    changeCobraSolver('gurobi7');
+    changeCobraSolver('gurobi');
 end
-[minAer, maxAer] = fluxVariability(aerobic)
-[minAna, maxAna] = fluxVariability(anaerobic)
+[minUn, maxUn] = fluxVariability(unlimitedOx)
+[minLim, maxLim] = fluxVariability(limitedOx)
 %% 
-% FVA predicts faster maximal growth under aerobic than anaerobic conditions.
+% FVA predicts faster maximal ATP production with unlimited and limited 
+% oxygen uptake conditions.
 
-bm = 'Biomass_Ecoli_core_w_GAM';  % biomass reaction identifier
-ibm = find(ismember(model.rxns, bm));  % colunn index of biomass reaction
-fprintf('Max. aerobic growth: %.4f/h.\n', maxAer(ibm));
-fprintf('Max. anaerobic growth: %.4f/h.\n\n', maxAna(ibm));
+ATP = 'DM_atp_c_';  % Identifier of the ATP demand reaction
+ibm = find(ismember(model.rxns, ATP));  % column index of the ATP demand reaction
+fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n', maxUn(ibm));
+fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n', maxLim(ibm));
 %% 
 % An overall comparison of the FVA results can be obtained by computing 
 % the <https://en.wikipedia.org/wiki/Jaccard_index Jaccard index> for each reaction. 
 % The Jaccard index is here defined as the ratio between the intersection and 
-% union of the flux ranges in the aerobic and anaerobic models. A Jaccard index 
-% of 0 indicates completely disjoint flux ranges and a Jaccard index of 1 indicates 
-% completely overlapping flux ranges. The mean Jaccard index gives an indication 
-% of the overall similarity between the models.
+% union of the flux ranges in the unlimitedOx and limitedOx models. A Jaccard 
+% index of 0 indicates completely disjoint flux ranges and a Jaccard index of 
+% 1 indicates completely overlapping flux ranges. The mean Jaccard index gives 
+% an indication of the overall similarity between the models.
 
-J = fvaJaccardIndex([minAer, minAna],[maxAer, maxAna]);
+J = fvaJaccardIndex([minUn, minLim],[maxUn, maxLim]);
 fprintf('Mean Jaccard index = %.4f.\n', mean(J));
 %% 
 % To visualise the FVA results, we plot the flux ranges as errorbars, with 
 % reactions sorted by the Jaccard index.
 
-E = [(maxAer - minAer)/2 (maxAna - minAna)/2];
-Y = [minAer minAna] + E;
+E = [(maxUn - minUn)/2 (maxLim - minLim)/2];
+Y = [minUn minLim] + E;
 X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 
 [~, xj] = sort(J);
@@ -130,7 +141,7 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 f1 = figure;
 errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
 set(gca, 'xlim', [0, length(Y) + 1])
-legend('Aeorobic', 'Anaerobic', 'location', 'northoutside', 'orientation', 'horizontal')
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', 'orientation', 'horizontal')
 xlabel('Reaction')
 ylabel('Flux range (mmol/gDW/h)')
 
@@ -138,156 +149,143 @@ yyaxis right
 plot(J(xj))
 ylabel('Jaccard index')
 %% Sampling
-% CHRR can be called via either the function chrrSampler, or sampleCbModel. 
-% We will use the former route here. Type "|help sampleCbModel"| to learn about 
-% the second route.
-% 
-% The main inputs to chrrSampler are a COBRA model structure and parameters 
-% that control the sampling density (nSkip) and the number of samples (nSamples). 
-% The total length of the random walk is nSkip*nSamples. The time it takes to 
-% run the sampler depends on the total length of the random walk and the size 
-% of the model [1]. However, using sampling parameters that are too small will 
-% lead to invalid sampling distributions, e.g.,
+% CHRR can be called via the function |sampleCbModel|. The main inputs to |sampleCbModel| 
+% are a COBRA model structure, the name of the selected sampler and a parameter 
+% struct that controls properties of the sampler used. In the instance of CHRR, 
+% two parameters are important: the sampling density (|nStepsPerPoint)| and the 
+% number of samples (|nPointsReturned). |The total length of the random walk is 
+% |nStepsPerPoint*nPointsReturned|. The time it takes to run the sampler depends 
+% on the total length of the random walk and the size of the model [1]. However, 
+% using sampling parameters that are too small will lead to invalid sampling distributions, 
+% e.g.,
 
-nSkip = 1;
-nSamples = 100;
+options.nStepsPerPoint = 1;
+options.nPointsReturned = 100;
 %% 
-% With these parameter settings, it should only take a few seconds to sample 
-% the two E. coli core models.
-% 
-% An additional on/off parameter (toRound) controls whether or not the polytope 
-% is rounded. Rounding large models can be slow but is strongly recommended for 
-% the first round of sampling. Below we show how to get around this step in subsequent 
-% rounds.
+% An additional on/off parameter (|toRound|) controls whether or not the 
+% polytope is rounded. Rounding large models can be slow but is strongly recommended 
+% for the first round of sampling. Below we show how to get around this step in 
+% subsequent rounds. 
 
-toRound = 1;
+options.toRound = 1;
 %% 
-% To sample the aerobic and anaerobic E. coli core models, run,
+% The method outputs two results. First, the model used for sampling (in 
+% case of |toRound = 1| this would be the rounded model), and second, the samples 
+% generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,
 
-[X1_aer, P_aer] = chrrSampler(aerobic, nSkip, nSamples, toRound);
-[X1_ana, P_ana] = chrrSampler(anaerobic, nSkip, nSamples, toRound);
+[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options, []);
+[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options, []);
 %% 
-% The sampler outputs the sampled flux distributions (X_aer and X_ana) and 
-% the rounded polytope (P_aer and P_ana). Histograms of sampled biomass reaction 
-% flux show that the models are severly undersampled, as evidenced by the presence 
-% of multiple sharp peaks.
+% The sampler outputs the sampled flux distributions (X_un and X_lim) and 
+% the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show 
+% that the models are severely undersampled, as evidenced by the presence of multiple 
+% sharp peaks.
 
 nbins = 20;
-[yAer, xAer] = hist(X1_aer(ibm, :), nbins);
-[yAna, xAna] = hist(X1_ana(ibm, :), nbins);
+[yUn, xUn] = hist(X1_un(ibm, :), nbins);
+[yLim, xLim] = hist(X1_lim(ibm, :), nbins);
 
 f2 = figure;
-plot(xAer, yAer, xAna, yAna);
-legend('Aeorobic', 'Anaerobic')
+plot(xUn, yUn, xLim, yLim);
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
 xlabel('Flux (mmol/gDW/h)')
 ylabel('# samples')
 %% 
 % Undersampling results from selecting too small sampling parameters. The 
-% appropriate parameter values depend on the dimension of the polytope $<math 
-% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mtext>?
-% </mtext></mrow></math>$ defined by the model constraints (see intro). One rule 
-% of thumb says to set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
-% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>?</mtext></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
-% to ensure statistical independence of samples. The random walk should be long 
-% enough to ensure convergence to a stationary sampling distribution [1].
-% 
-% The dimension of the polytope for E. coli core is $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>?
-% </mtext></mrow><mo>)</mo></mrow><mo>=</mo><mn>22</mn></mrow></math>$ for the 
-% aerobic model and $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>?</mtext></mrow><mo>)</mo></mrow><mo 
-% stretchy="false">=</mo><mn>21</mn></mrow></math>$ for the anaerobic model. A 
-% good choice of sampling parameters is,
+% appropriate parameter values depend on the dimension of the polytope Î©â€‰ defined 
+% by the model constraints (see intro). One rule of thumb says to set  $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
+% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% to ensure the statistical independence of samples. The random walk should be 
+% long enough to ensure convergence to a stationary sampling distribution [1].
 
-nSkip = 5e3;
-nSamples = 1e3;
+options.nStepsPerPoint = 8 * size(P_lim.A, 2);
+options.nPointsReturned = 1000;
 %% 
-% With these parameter settings, it should take around 2.5 minutes to sample 
-% each E. coli core model. This time, we can avoid the rounding step by inputting 
-% the rounded polytope from the previous round of sampling.
+% This time, we can avoid the rounding step by inputting the rounded polytope 
+% from the previous round of sampling.
 
-toRound = 0;
-X2_aer = chrrSampler(aerobic, nSkip, nSamples, toRound, P_aer);
-X2_ana = chrrSampler(anaerobic, nSkip, nSamples, toRound, P_ana);
+options.toRound = 0;
+[~, X2_un] = sampleCbModel(unlimitedOx, [], [], options, P_un);
+[~, X2_lim] = sampleCbModel(limitedOx, [], [], options, P_lim);
 %% 
-% The converged sampling distributions for the biomass reaction are much 
-% smoother, with a single peak at zero flux.
+% The converged sampling distributions for the ATP synthase reaction are 
+% much smoother, with a single peak at zero flux.
 
 nbins = 20;
-[yAer, xAer] = hist(X2_aer(ibm, :), nbins);
-[yAna, xAna] = hist(X2_ana(ibm, :), nbins);
+[yUn, xUn] = hist(X2_un(ibm, :), nbins);
+[yLim, xLim] = hist(X2_lim(ibm, :), nbins);
 
 f3 = figure;
-p1 = plot(xAer, yAer, xAna, yAna);
-legend('Aeorobic', 'Anaerobic')
+p1 = plot(xUn, yUn, xLim, yLim);
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
 xlabel('Flux (mmol/gDW/h)')
 ylabel('# samples')
 %% 
 % Adding the FVA results to the plot shows that the sampling distributions 
 % give more detailed information about the differences between the two models. 
-% In particular we see that the flux minima and maxima are not equally probable. 
-% The number of samples from both the aerobic and anaerobic models peaks at the 
-% minum flux of zero, and decreases monotonically towards the maximum. It decreases 
-% more slowly in the aerobic model, indicating that higher biomass flux is more 
-% probable under aerobic conditions. It is interesting to see that maximum growth 
-% is highly improbable in both models.
+% In particular, we see that the flux minima and maxima are not equally probable. 
+% The number of samples from both the unlimitedOx and limitedOx models peaks at 
+% the minimum flux of zero, and decreases monotonically towards the maximum. It 
+% decreases more slowly in the unlimitedOx model, indicating that higher ATP production 
+% is more probable under unlimited oxygen uptake conditions. It is interesting 
+% to see that maximum ATP production is highly improbable in both models.
 
 ylim = get(gca, 'ylim');
-cAer = get(p1(1), 'color');
-cAna = get(p1(2), 'color');
+cUn = get(p1(1), 'color');
+cLim = get(p1(2), 'color');
 
 hold on
-p2 = plot([minAer(ibm), minAer(ibm)], ylim, '--', [maxAer(ibm), maxAer(ibm)], ylim, '--');
-set(p2,'color', cAer)
-p3 = plot([minAna(ibm), minAna(ibm)], ylim, '--', [maxAna(ibm), maxAna(ibm)], ylim, '--');
-set(p3, 'color', cAna)
+p2 = plot([minUn(ibm), minUn(ibm)], ylim, '--', [maxUn(ibm), maxUn(ibm)], ylim, '--');
+set(p2,'color', cUn)
+p3 = plot([minLim(ibm), minLim(ibm)], ylim, '--', [maxLim(ibm), maxLim(ibm)], ylim, '--');
+set(p3, 'color', cLim)
 hold off
 %% 
-% Finally, plotting sampling distributions for six randomly selected E. 
-% coli core reactions shows how oxygen availability affects a variety of metabolic 
-% pathways.
+% Finally, plotting sampling distributions for six selected iPSC_dopa reactions 
+% shows how oxygen availability affects a variety of metabolic pathways.
 
 f4 = figure;
 position = get(f4, 'position');
 set(f4, 'units', 'centimeters', 'position', [position(1), position(2), 18, 27])
 
-ridx = randi(n, 1,6);
+sampledRxns = {'r2139', 'GLNSERNaEx', 'HMR_9791', 'r1616', 'r1578', 'r2537'};
+rxnsIdx = findRxnIDs(model, sampledRxns);
 
-for i = ridx
+%ridx = randi(size(model.rxns,1), 1,6);
+
+for i = rxnsIdx
     nbins = 20;
-    [yAer, xAer] = hist(X2_aer(i, :), nbins);
-    [yAna, xAna] = hist(X2_ana(i, :), nbins);
+    [yUn, xUn] = hist(X2_un(i, :), nbins);
+    [yLim, xLim] = hist(X2_lim(i, :), nbins);
     
-    subplot(3, 2, find(ridx==i))
-    h1 = plot(xAer, yAer, xAna, yAna);
+    subplot(3, 2, find(rxnsIdx==i))
+    h1 = plot(xUn, yUn, xLim, yLim);
     xlabel('Flux (mmol/gDW/h)')
     ylabel('# samples')
     title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
     
     if find(ridx==i)==1
-        legend('Aeorobic','Anaerobic')
+        legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
     ylim = get(gca, 'ylim');
     
     hold on
-    h2 = plot([minAer(i), minAer(i)], ylim, '--', [maxAer(i), maxAer(i)], ylim, '--');
-    set(h2,'color',cAer)
-    h3 = plot([minAna(i), minAna(i)], ylim, '--', [maxAna(i), maxAna(i)], ylim, '--');
-    set(h3, 'color', cAna)
+    h2 = plot([minUn(i), minUn(i)], ylim, '--', [maxUn(i), maxUn(i)], ylim, '--');
+    set(h2,'color',cUn)
+    h3 = plot([minLim(i), minLim(i)], ylim, '--', [maxLim(i), maxLim(i)], ylim, '--');
+    set(h3, 'color', cLim)
     hold off
 end
 %% References
-% [1] Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
+% [1] HaraldsdÃ³ttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
 % S. (2016). CHRR: coordinate hit-and-run with rounding for uniform sampling of 
 % constraint-based metabolic models. Submitted.
 % 
-% [2] Orth, J. D., Palsson, B. Ø., and Fleming, R. M. T. (2010). Reconstruction 
-% and use of microbial metabolic networks: the core Escherichia coli metabolic 
-% model as an educational guide. EcoSal Plus, 1(10).
+% [2] Liliana...
 % 
-% [3] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
+% [3] Orth, J. D., Thiele I., and Palsson, B. Ã˜. (2010). What is flux balance 
 % analysis? Nat. Biotechnol., 28(3), 245-248.
 % 
 % [4]  Zhang, Y. and Gao, L. (2001). On Numerical Solution of the Maximum 
