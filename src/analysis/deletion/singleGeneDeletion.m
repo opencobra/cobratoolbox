@@ -27,6 +27,7 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singl
 % .. Author:
 %       - Markus Herrgard 8/7/06
 %       - Aurich/Thiele 11/2015 unique gene deletion option (delete all alternate transcripts and if solKO.stat not 1 or 5, grRateKO(i) = NaN;)
+%       - Karthik Raman 06/2017 speeding up gene deletion based on github.com/RamanLab/FastSL
 
 if (nargin < 2)
     method = 'FBA';
@@ -90,7 +91,7 @@ if (uniqueGene == 1)
                 case 'MOMA'
                     solKO = MOMA(model,modelDel,'max',false,true);
                 otherwise
-                    solKO = optimizeCbModel(modelDel,'max');
+                    solKO = optimizeCbModel(modelDel, 'max');
             end
             if (solKO.stat == 1 ||solKO.stat == 5 )
                 grRateKO(i) = solKO.f;
@@ -112,6 +113,9 @@ else
     solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
     grRateWT = solWT.f;
 
+    % Identify J_z, the set of reactions that do not carry a flux in solWT
+    Jz = solWT.x==0;
+
     grRateKO = ones(nDelGenes,1)*grRateWT;
     grRatio = ones(nDelGenes,1);
     hasEffect = true(nDelGenes,1);
@@ -125,7 +129,9 @@ else
         showprogress(i/nDelGenes);
         [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
         delRxns{i} = constrRxnNames;
-        if (hasEffect(i))
+        % If all the reactions being deleted carried no flux in WT,
+	    % deleting them cannot affect the flux solution. 
+        if (hasEffect(i) && ~all(ismember(delRxns{i},model.rxns(Jz))))
             switch method
                 case 'lMOMA'
                     solKO = linearMOMA(model,modelDel,'max');
