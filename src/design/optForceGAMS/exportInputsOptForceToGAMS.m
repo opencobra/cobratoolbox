@@ -4,7 +4,7 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 % inputs will be exported to plain text (.txt files) and others will be
 % exported using GDXMRW. Inputs will be stored in inputFolder
 %
-% USAGE: 
+% USAGE:
 %
 %         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %

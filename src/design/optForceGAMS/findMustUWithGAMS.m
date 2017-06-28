@@ -1,9 +1,9 @@
 function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a first order
-% MustU set. 
+% MustU set.
 %
-% USAGE: 
+% USAGE:
 %
 %    [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
@@ -44,7 +44,7 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %
 %                                     * .rxnList -        Reaction list (cell array)
 %                                     * .values -         Values for constrained reactions (double array)
-%                                       e.g.: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]'); 
+%                                       e.g.: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]');
 %    solverName:                 (string) Name of the solver used in GAMS
 %                                Default = 'cplex'
 %    runID:                      (string) ID for identifying this run
@@ -88,13 +88,13 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %                                entering the input outputFileName =
 %                                'PutYourOwnFileNameHere';
 %    outputFileName_Info.xls:    (file) File containing five column
-%                                arrays. 
+%                                arrays.
 %                                C1: identifiers for reactions in MustU
 %                                C2: min fluxes for reactions according to FVA
 %                                C3: max fluxes for reactions according to FVA
-%                                C4: min fluxes achieved for reactions, 
+%                                C4: min fluxes achieved for reactions,
 %                                    according to findMustU.gms
-%                                C5: max fluxes achieved for reactions, 
+%                                C5: max fluxes achieved for reactions,
 %                                    according to findMustU.gms
 %                                This file will only be generated if the
 %                                user entered printExcel = 1. Note that the
@@ -106,9 +106,9 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %                                C1: identifiers for reactions in MustU
 %                                C2: min fluxes for reactions according to FVA
 %                                C3: max fluxes for reactions according to FVA
-%                                C4: min fluxes achieved for reactions, 
+%                                C4: min fluxes achieved for reactions,
 %                                    according to findMustU.gms
-%                                C5: max fluxes achieved for reactions, 
+%                                C5: max fluxes achieved for reactions,
 %                                    according to findMustU.gms
 %                                This file will only be generated if the
 %                                user entered printText = 1. Note that the
@@ -128,7 +128,7 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %                                This file only will be saved in the output
 %                                folder is the user entered keepInputs = 1
 %
-% NOTE: 
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please

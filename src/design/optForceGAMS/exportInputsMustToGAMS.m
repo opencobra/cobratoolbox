@@ -4,7 +4,7 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
 % others will be exported as simple .txt files.
 %
-% USAGE: 
+% USAGE:
 %
 %         exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 %
@@ -38,14 +38,14 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %                       structure has the following fields:
 %
 %                         * .rxnList - Reaction list (cell array)
-%                         * .values -  Values for constrained reactions 
-%                           (double array). E.g.: struct('rxnList',...  
-%                           {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', ... 
+%                         * .values -  Values for constrained reactions
+%                           (double array). E.g.: struct('rxnList',...
+%                           {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', ...
 %                           [-100, 0, 155.5]');
 %    inputFolder:       (string) Folder where inputs for GAMS function
 %                       will be stored
 %
-% OUTPUTS: 
+% OUTPUTS:
 %    Reactions.txt      (file) File containing the identifiers for
 %                       reactions
 %    Metabolites.txt    (file) File containing the identifiers for

@@ -1,8 +1,8 @@
 function [] = exportSetToGAMS(set, fileName)
 % This function exports the information in "set" to a .txt file which can be
-% read by GAMS. "set" must be a cell array of strings. 
+% read by GAMS. "set" must be a cell array of strings.
 %
-% USAGE: 
+% USAGE:
 %
 %         [] = exportSetToGAMS(set, fileName)
 %
@@ -12,15 +12,15 @@ function [] = exportSetToGAMS(set, fileName)
 %                     metabolites, etc).
 %    fileName:        (string) Name of the file in which the
 %                     information will be stored. It is recomended to
-%                     add the extension of the file. 
+%                     add the extension of the file.
 %
 % OUTPUTS:
-%    fileName.txt:    (file) File of name "fileName" containing 
+%    fileName.txt:    (file) File of name "fileName" containing
 %                     the set of elements, one for row.
 %
-% EXAMPLE: 
+% EXAMPLE:
 %
-%    exportSetToGAMS(model.rxns, 'Reactions.txt') 
+%    exportSetToGAMS(model.rxns, 'Reactions.txt')
 %    This, will export the list of elements in model.rxns to a file called
 %    Reactions.txt
 %
