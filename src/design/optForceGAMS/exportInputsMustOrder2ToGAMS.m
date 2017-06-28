@@ -76,7 +76,7 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 %                             each reaction in the previous step of FVA,
 %                             and the values for contrained reactions)
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 7 %inputs handling
     error('Optforce: All inputs must be specified when using exportInputsMustOrder2ToGAMS');
