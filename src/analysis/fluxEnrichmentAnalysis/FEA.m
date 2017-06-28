@@ -4,16 +4,19 @@ function resultCell = FEA(model, rxnSet, group)
 %
 % USAGE:
 %
-%    resultCellF = FEA(modelEcore, 1:10, 'subSystems')
+%    resultCell = FEA(model, rxnSet, 'subSystems')
+%    e.g. 
+%        load ecoli_core_model;
+%        resultCell = FEA(modelEcore, 1:10, 'subSystems');
 %
 % INPUTS:
 %    model:           COBRA structure model
-%    rxnSet:          reaction set to be enriched (vector of reaction indices)
-%    group:           model.(group) structure e.g.
-%                    'subSystems' look for significantly enriched subsystem in rxnSet
+%    rxnSet:          reaction set to be enriched (vector of reaction indices e.g. 1:10)
+%    group:           model.group structure e.g.
+%                    'subSystems' : FEA looks for significantly enriched subsystems in rxnSet
 %
 % OUTPUT:
-%    resultCellF:    cell structure of enriched groups
+%    resultCell:    cell structure of enriched groups
 %
 % .. Authors: Marouen BEN GUEBILA 04/2016
 
