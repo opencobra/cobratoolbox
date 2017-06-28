@@ -154,7 +154,7 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 %% CODE
 % inputs handling
