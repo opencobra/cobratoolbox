@@ -9,8 +9,7 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %         exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
-%                       Description: a metabolic model with at least the
+%    model:             (structure) a metabolic model with at least the
 %                       following fields:
 %
 %                         * .rxns - Reaction IDs in the model
@@ -20,18 +19,16 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-%    minFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Minimum fluxes for each reaction in
-%                       the model for wild-type strain. This can be
-%                       obtained by running the function FVAOptForce.
-%                       E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Maximum fluxes for each reaction in
-%                       the model for wild-type strain. This can be
-%                       obtained by running the function FVAOptForce. 
-%                       E.g.: maxFluxesW = [90; 56];
-%    constrOpt:         Type: Structure
-%                       Description: structure containing additional
+%    minFluxesW:        (double array of size n_rxns x 1) minimum fluxes
+%                       for each reaction in the model for wild-type
+%                       strain. This can be obtained by running the
+%                       function FVAOptForce. E.g.: minFluxesW = [-90;
+%                       -56];
+%    maxFluxesW:        (double array of size n_rxns x 1) maximum fluxes
+%                       for each reaction in the model for wild-type
+%                       strain. This can be obtained by running the
+%                       function FVAOptForce. E.g.: maxFluxesW = [90; 56];
+%    constrOpt:         (structure) structure containing additional
 %                       contraints. Include here only reactions whose flux
 %                       is fixed, i.e., reactions whose lower and upper
 %                       bounds have the same value. Do not include here
@@ -45,22 +42,17 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %                           (double array). E.g.: struct('rxnList',...  
 %                           {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', ... 
 %                           [-100, 0, 155.5]');
-%    inputFolder:       Type: string. 
-%                       Description: Folder where inputs for GAMS function
+%    inputFolder:       (string) Folder where inputs for GAMS function
 %                       will be stored
 %
 % OUTPUTS: 
-%    Reactions.txt      Type: file
-%                       Description: File containing the identifiers for
+%    Reactions.txt      (file) File containing the identifiers for
 %                       reactions
-%    Metabolites.txt    Type: file
-%                       Description: File containing the identifiers for
+%    Metabolites.txt    (file) File containing the identifiers for
 %                       metabolites
-%    Constrains.txt     Type: file
-%                       Description: File containing the identifiers for
+%    Constrains.txt     (file) File containing the identifiers for
 %                       constrained reactions
-%    MtoG.gdx           Type: file
-%                       Description: File containing the parameters which
+%    MtoG.gdx           (file) File containing the parameters which
 %                       will be read by GAMS (lower bounds, upper bounds,
 %                       stoichiometrix matrix S, minimum and maximun fluxes
 %                       for each reaction in the previous step of FVA, and
