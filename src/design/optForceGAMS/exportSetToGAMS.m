@@ -7,19 +7,15 @@ function [] = exportSetToGAMS(set, fileName)
 %         [] = exportSetToGAMS(set, fileName)
 %
 % INPUTS:
-%    set:             Type: cell array of strings
-%                     Description: cell array containing identifiers
-%                     for certain set of elements (reactions,
-%                     metabolites, etc)
-% 
-%    fileName:        Type: string
-%                     Description: Name of the file in which the
+%    set:             (cell array of strings) cell array containing
+%                     identifiers for certain set of elements (reactions,
+%                     metabolites, etc).
+%    fileName:        (string) Name of the file in which the
 %                     information will be stored. It is recomended to
 %                     add the extension of the file. 
 %
 % OUTPUTS:
-%    fileName.txt:    Type: file
-%                     Description: File of name "fileName" containing 
+%    fileName.txt:    (file) File of name "fileName" containing 
 %                     the set of elements, one for row.
 %
 % EXAMPLE: 
