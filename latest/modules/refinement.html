@@ -292,38 +292,6 @@ arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addRatioReaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds ratio reaction.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>listOfRxns</strong> &#8211;
-List of 2 Reactions</li>
-<li><strong>ratioCoeff</strong> &#8211;
-Array of ratio coefficient between the 2 reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelNew</strong> &#8211;
-COBRA model structure containing the ratio</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span> <span class="n">v_EX_ac</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">v_EX_for</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-<span class="n">modelNew</span> <span class="o">=</span> <span class="n">addRatioReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_ac(e)&#39;</span> <span class="s1">&#39;EX_for(e)&#39;</span><span class="p">},</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.reconstruction.refinement.addReaction">
 <code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a reaction to the model or modify an existing reaction</p>
@@ -611,76 +579,6 @@ COBRA Toolbox model structure with new gene reaction associations</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.changeObjective">
-<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/changeObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeObjective" title="Permalink to this definition">¶</a></dt>
-<dd><p>Changes the objective function of a constraint-based model</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = changeObjective(model, rxnNameList, objectiveCoeff)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of reactions (cell array or string)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>objectiveCoeff</strong> &#8211;
-Value of objective coefficient for each reaction (Default = 1)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with new objective</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.refinement.changeRxnBounds">
-<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/changeRxnBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Changes upper or lower bounds of a reaction or a set of reactions</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = changeRxnBounds(model, rxnNameList, value, boundType)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of reactions (cell array or string)</li>
-<li><strong>value</strong> &#8211;
-Bound values.
-Can either be a vector or a single scalar value if the same
-bound value is to be assinged to all reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>boundType</strong> &#8211;
-&#8216;u&#8217; - upper, &#8216;l&#8217; - lower, &#8216;b&#8217; - both (Default = &#8216;b&#8217;)
-Bound type can either be a cell array of strings or a
-string with as many letters as there are reactions in  <cite>rxnNameList</cite></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with modified reaction bounds</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.reconstruction.refinement.changeRxnMets">
 <code class="descname">changeRxnMets</code><span class="sig-paren">(</span><em>model</em>, <em>Mets2change</em>, <em>NewMets</em>, <em>Rxn</em>, <em>NewStoich</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/changeRxnMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeRxnMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes metabolites in a specified reaction, or
@@ -735,6 +633,32 @@ COBRA model structure with changed reaction</li>
 </ul>
 </div></blockquote>
 <p>Nathan Lewis (Apr 24, 2009)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.convertIrrevFluxDistribution">
+<code class="descname">convertIrrevFluxDistribution</code><span class="sig-paren">(</span><em>vIrrev</em>, <em>matchRev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/convertIrrevFluxDistribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.convertIrrevFluxDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts irreversible flux distribution to reversible</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>vRev = covertIrrevFluxDistribution(vIrrev, matchRev)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vIrrev</strong> &#8211;
+Irreversible flux distribution</li>
+<li><strong>matchRev</strong> &#8211;
+Vector mapping irreversible fluxes to reversible fluxes
+(Generated by <cite>convertToIrreversible</cite>)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vRev</strong> &#8211;
+Reversible flux distribution</li>
+</ul>
 </div></blockquote>
 </dd></dl>
 

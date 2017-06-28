@@ -189,51 +189,6 @@
             
   <div class="section" id="transport">
 <span id="id1"></span><h1>Transport<a class="headerlink" href="#transport" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.modelAnalysis.transport"></span><dl class="function">
-<dt id="src.modelAnalysis.transport.findTransRxns">
-<code class="descname">findTransRxns</code><span class="sig-paren">(</span><em>model</em>, <em>inclExc</em>, <em>rxnInds</em>, <em>inclObjAsExc</em>, <em>irrevFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/modelAnalysis/transport/findTransRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.transport.findTransRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identifes all transport reactions in a model, which are defined as reactions
-involved with metabolites in more than 1 compartment</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>inclExc</strong> &#8211;
-includes exchange reactions as transport = true
-(Default = false)</li>
-<li><strong>rxnInds</strong> &#8211;
-indices of reactions to test for transport activity.
-(default = test all columns of <cite>model.S</cite>)</li>
-<li><strong>inclObjAsExc</strong> &#8211;
-includes objective as an exchange reaction = true - this is
-passed to <cite>findExcRxns</cite>. (default = false)</li>
-<li><strong>irrevFlag</strong> &#8211;
-model is irreversible = true - this is passed to <cite>findExcRxns</cite>.
-(default=false)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>transRxns</strong> &#8211;
-transport reactions in <cite>rxnInds</cite></li>
-<li><strong>nonTransRxns</strong> &#8211;
-non-transport reactions in <cite>rxnInds</cite></li>
-<li><strong>transRxnsBool</strong> &#8211;
-checks if <cite>inclExc</cite> or <cite>isNonexchangeTransport</cite> rxns vector is equal to 1</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
 </div>
 
 

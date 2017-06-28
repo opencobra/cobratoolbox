@@ -870,6 +870,50 @@ fitness value</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.design.productionEnvelope">
+<code class="descname">productionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>lineColor</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/design/productionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.productionEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the byproduct secretion envelope</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[biomassValues, targetValues, lineHandle] = productionEnvelope(model, deletions, lineColor, targetRxn, biomassRxn, geneDelFlag, nPts)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>deletions</strong> &#8211;
+List of reaction or gene deletions (empty if wild type)</li>
+<li><strong>lineColor</strong> &#8211;
+Line color for plotting (see help plot for color codes)</li>
+<li><strong>targetRxn</strong> &#8211;
+Target metabolite production reaction name</li>
+<li><strong>biomassRxn</strong> &#8211;
+Biomass rxn name</li>
+<li><strong>geneDelFlag</strong> &#8211;
+Perform gene and not reaction deletions</li>
+<li><strong>nPts</strong> &#8211;
+Number of points in the plot</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>biomassValues</strong> &#8211;
+Biomass values for plotting</li>
+<li><strong>targetValues</strong> &#8211;
+Target upper and lower bounds for plotting</li>
+<li><strong>lineHandle</strong> &#8211;
+Handle to lineseries object</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.design.randomKO">
 <code class="descname">randomKO</code><span class="sig-paren">(</span><em>modelRed</em>, <em>selectedRxns</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/design/randomKO.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.randomKO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Knocks out <cite>N</cite> random genes and reports products from FBA</p>
