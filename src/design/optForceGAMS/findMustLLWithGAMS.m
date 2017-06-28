@@ -10,8 +10,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     Type: structure (COBRA model)
-%                               Description: a metabolic model with at least
+%    model:                     (structure) a metabolic model with at least
 %                               the following fields:
 %
 %                                 * .rxns - Reaction IDs in the model
@@ -21,22 +20,19 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                                 * .c -    Objective coefficients
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
-%    minFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Minimum fluxes for each
-%                               reaction in the model for wild-type strain.
-%                               This can be obtained by running the
-%                               function FVAOptForce.
-%                               E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Maximum fluxes for each
-%                               reaction in the model for wild-type strain.
-%                               This can be obtained by running the
-%                               function FVA_optForce.
-%                               E.g.: maxFluxesW = [90; 56];
+%    minFluxesW:                (double array of size n_rxns x 1) minimum
+%                               fluxes for each reaction in the model for
+%                               wild-type strain. This can be obtained by
+%                               running the function FVAOptForce. E.g.:
+%                               minFluxesW = [-90; -56];
+%    maxFluxesW:                (double array of size n_rxns x 1) maximum
+%                               fluxes for each reaction in the model for
+%                               wild-type strain. This can be obtained by
+%                               running the function FVA_optForce. E.g.:
+%                               maxFluxesW = [90; 56];
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                 Type: Structure
-%                               Description: structure containing
+%    constrOpt:                 (Structure) structure containing
 %                               additional contraints. Include here only
 %                               reactions whose flux is fixed, i.e.,
 %                               reactions whose lower and upper bounds have
@@ -53,57 +49,38 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                                   E.g.: struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
 %                                   'values', [-100, 0, 155.5]'); 
-%    excludedRxns:              Type: cell array
-%                               Description: Reactions to be excluded to
+%    excludedRxns:              (cell array) Reactions to be excluded to
 %                               the MustLL set. This could be used to avoid
 %                               finding transporters or exchange reactions
-%                               in the set. 
-%                               Default: empty.
-%    mustSetFirstOrder:         Type: cell array
-%                               Description: Reactions that belong to MustU
-%                               and MustL (first order sets). 
-%                               Default: empty.
-%    solverName:                Type: string
-%                               Description: Name of the solver used in
-%                               GAMS. 
-%                               Default: 'cplex'.
-%    runID:                     Type: string
-%                               Description: ID for identifying this run.
-%                               Default: ['run' date hour].
-%    outputFolder:              Type: string
-%                               Description: name for folder in which
-%                               results will be stored.
-%                               Default: 'OutputsFindMustLL'.
-%    outputFileName:            Type: string
-%                               Description: name for files in which
-%                               results. will be stored
-%                               Default: 'MustLLSet'.
-%    printExcel:                Type: double
-%                               Description: boolean to describe wheter
+%                               in the set. Default = empty.
+%    mustSetFirstOrder:         (cell array) Reactions that belong to MustU
+%                               and MustL (first order sets). Default =
+%                               empty.
+%    solverName:                (string) Name of the solver used in
+%                               GAMS. Default = 'cplex'.
+%    runID:                     (string) ID for identifying this run.
+%                               Default = ['run' date hour]. 
+%    outputFolder:              (string) name for folder in which
+%                               results will be stored. Default =
+%                               'OutputsFindMustLL'.
+%    outputFileName:            (string) name for files in which
+%                               results will be stored. Default =
+%                               'MustLLSet'.
+%    printExcel:                (double) boolean to describe wheter
 %                               data must be printed in an excel file or
-%                               not.
-%                               Default: 1
-%    printText:                 Type: double
-%                               Description: boolean to describe wheter
+%                               not. Default = 1
+%    printText:                 (double) boolean to describe wheter
 %                               data must be printed in an plaint text file
-%                               or not.
-%                               Default: 1
-%    printReport:               Type: double
-%                               Description: 1 to generate a report in a
-%                               plain text file. 0 otherwise.
-%                               Default: 1
-%    keepInputs:                Type: double
-%                               Description: 1 to mantain folder with
+%                               or not. Default = 1
+%    printReport:               (double) 1 to generate a report in a
+%                               plain text file. 0 otherwise. Default = 1
+%    keepInputs:                (double) 1 to mantain folder with
 %                               inputs to run findMustLL.gms. 0 otherwise.
-%                               Default: 1
-%    keepGamsOutputs:           Type: double
-%                               Description: 1 to mantain files returned by
-%                               findMustLL.gms. 0 otherwise.
-%                               Default: 1
-%    verbose:                   Type: double.
-%                               Description: 1 to print results in console.
-%                               0 otherwise.
-%                               Default: 0
+%                               Default = 1
+%    keepGamsOutputs:           (double) 1 to mantain files returned by
+%                               findMustLL.gms. 0 otherwise. Default = 1
+%    verbose:                   (double) 1 to print results in console.
+%                               0 otherwise. Default = 0
 %
 % OUTPUTS: 
 %    mustLL:                    Type: cell array
