@@ -1,6 +1,6 @@
 function orderedModel = orderModelFields(model)
 % Orders the fields in a model according to the field
-% definitions. Required first, Optional following, Remaining fields in
+% definitions. Defined first, Remaining fields in
 % alphabetical order.
 %
 % USAGE:
