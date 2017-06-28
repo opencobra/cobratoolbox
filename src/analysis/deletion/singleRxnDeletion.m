@@ -39,19 +39,18 @@ if (nargin < 4)
     verbFlag = false;
 end
 
-nRxns = length(model.rxns);
 nDelRxns = length(rxnList);
 
 solWT = optimizeCbModel(model, 'max', 'one'); % by default uses the min manhattan distance norm FBA solution.
 grRateWT = solWT.f;
+
 % Identify reactions that do not carry a flux in solWT; none of these can be lethal
 Jnz = solWT.x~=0;  % reactions that carry a flux in the minimum norm solution
 Jz = solWT.x==0;   % reactions that do not carry a flux in the minimum norm solution
 
 grRateKO = ones(nDelRxns, 1)*grRateWT;
-grRatio = ones(nDelRxns, 1);
 hasEffect = true(nDelRxns, 1);
-fluxSolution = zeros(length(model.rxns), nDelRxns);
+fluxSolution = repmat(solWT.x, 1, nDelRxns);
 delRxn = columnVector(rxnList);
 if (verbFlag)
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n', 'No', 'Perc', 'Name', 'Growth rate', 'Rel. GR');
@@ -63,7 +62,7 @@ for i = 1:nDelRxns
 	% If the reaction carries no flux in WT, deleting it cannot affect
 	% the flux solution. Assign WT solution without solving LP.
         solKO = solWT;
-	hasEffect(i) = false;
+        hasEffect(i) = false;
     else
         modelDel = changeRxnBounds(model, rxnList{i}, 0, 'b');
         switch method
@@ -80,6 +79,7 @@ for i = 1:nDelRxns
         fluxSolution(:, i) = solKO.x;
     else
         grRateKO(i) = NaN;
+        fluxSolution(:,i) = nan(length(model.rxns),1);
     end
     if (verbFlag)
         fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n', i, 100*i/nDelRxns, rxnList{i}, grRateKO(i), grRateKO(i)/grRateWT*100);
