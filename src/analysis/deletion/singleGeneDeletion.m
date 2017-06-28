@@ -107,7 +107,6 @@ if (uniqueGene == 1)
 
 
 else
-    nGenes = length(model.genes);
     nDelGenes = length(geneList);
 
     solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
@@ -117,7 +116,6 @@ else
     Jz = solWT.x==0;
 
     grRateKO = ones(nDelGenes,1)*grRateWT;
-    grRatio = ones(nDelGenes,1);
     hasEffect = true(nDelGenes,1);
     fluxSolution = zeros(length(model.rxns),nDelGenes);
     delRxns = cell(nDelGenes,1);
