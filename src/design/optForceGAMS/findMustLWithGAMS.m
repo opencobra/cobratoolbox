@@ -22,12 +22,12 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %    minFluxesW:                 (double array of size n_rxns x 1) minimum
 %                                fluxes for each reaction in the model for
 %                                wild-type strain. This can be obtained by
-%                                running the function FVA_optForce e.g.:
+%                                running the function FVAOptForce e.g.:
 %                                minFluxesW=[-90; -56];
 %    maxFluxesW:                 (double array of size n_rxns x 1) maximum
 %                                fluxes for each reaction in the model for
 %                                wild-type strain. This can be obtained by
-%                                running the function FVA_optForce e.g.:
+%                                running the function FVAOptForce e.g.:
 %                                maxFluxesW=[90; 56];
 %
 % OPTIONAL INPUTS:
