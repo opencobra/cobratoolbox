@@ -9,8 +9,7 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %
 %
 % INPUTS:
-%    model:                    Type: structure (COBRA model)
-%                              Description: a metabolic model with at least
+%    model:                    (structure) a metabolic model with at least
 %                              the following fields:
 %
 %                                   * .rxns -           Reaction IDs in the model
@@ -20,20 +19,19 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %                                   * .c -              Objective coefficients
 %                                   * .lb -             Lower bounds for fluxes
 %                                   * .ub -             Upper bounds for fluxes
-%    minFluxesW:               Type: double array of size n_rxns x1
-%                              Description: Minimum fluxes for each
-%                              reaction in the model for wild-type strain.
-%                              This can be obtained by running the function
-%                              FVA_optForce e.g.: minFluxesW=[-90; -56];
-%    maxFluxesW:               Type: double array of size n_rxns x1
-%                              Description: Maximum fluxes for each
-%                              reaction in the model for wild-type strain.
-%                              This can be obtained by running the function
-%                              FVA_optForce e.g.: maxFluxesW=[90; 56];
+%    minFluxesW:               (double array of size n_rxns x 1) minimum
+%                              fluxes for each reaction in the model for
+%                              wild-type strain. This can be obtained by
+%                              running the function FVA_optForce e.g.:
+%                              minFluxesW=[-90; -56];
+%    maxFluxesW:               (double array of size n_rxns x 1) maximum
+%                              fluxes for each reaction in the model for
+%                              wild-type strain. This can be obtained by
+%                              running the function FVA_optForce e.g.:
+%                              maxFluxesW=[90; 56];
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                Type: Structure
-%                              Description: structure containing additional
+%    constrOpt:                (structure) structure containing additional
 %                              contraints. Include here only reactions
 %                              whose flux is fixed, i.e., reactions whose
 %                              lower and upper bounds have the same value.
@@ -42,64 +40,52 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %                              contraints should be defined in the lower
 %                              and upper bounds of the model. The structure
 %                              has the following fields:
+%
 %                                   * .rxnList -        Reaction list (cell array)
 %                                   * .values -         Values for constrained reactions (double array)
 %                                     e.g.: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]'); 
-%    solverName:               Type: string
-%                              Description: Name of the solver used in GAMS
-%                              Default: 'cplex'
-%    runID:                    Type: string
-%                              Description: ID for identifying this run
-%    outputFolder:             Type: string
-%                              Description: name for folder in which
+%    solverName:               (string) Name of the solver used in GAMS
+%                              Default = 'cplex'
+%    runID:                    (string) ID for identifying this run
+%    outputFolder:             (string) name for folder in which
 %                              results will be stored
-%    outputFileName:           Type: string
-%                              Description: name for files in which results
+%    outputFileName:           (string) name for files in which results
 %                              will be stored
-%    printExcel:               Type: double
-%                              Description: boolean to describe wheter data
+%    printExcel:               (double) boolean to describe wheter data
 %                              must be printed in an excel file or not
-%    printText:                Type: double
-%                              Description: boolean to describe wheter data
+%    printText:                (double) boolean to describe wheter data
 %                              must be printed in an plaint text file or
 %                              not
-%    printReport:              Type: double
-%                              Description: 1 to generate a report in a
+%    printReport:              (double) 1 to generate a report in a
 %                              plain text file. 0 otherwise.
-%    keepInputs:               Type: double
-%                              Description: 1 to mantain folder with inputs
+%    keepInputs:               (double) 1 to mantain folder with inputs
 %                              to run findMustUU.gms. 0 otherwise.
-%    keepGamsOutputs:          Type: double
-%                              Description: 1 to mantain files returned by
+%    keepGamsOutputs:          (double) 1 to mantain files returned by
 %                              findMustUU.gms. 0 otherwise.
-%    verbose:                  Type: double
-%                              Description: 1 to print results in console.
+%    verbose:                  (double) 1 to print results in console.
 %                              0 otherwise.
 % OUTPUTS:
-%    mustLSet:                 Type: cell array
-%                              Size: number of reactions found X 1
-%                              Description: Cell array containing the
+%    mustLSet:                 (cell array of size number of reactions
+%                              found X 1) Cell array containing the
 %                              reactions ID which belong to the Must_U Set
-%    posMustL:                 Type: double array
-%                              Size: number of reactions found X 1
-%                              Description: double array containing the
+%    posMustL:                 (double array of size number of reactions
+%                              found X 1) double array containing the
 %                              positions of reactions in the model.
-%    outputFileName.xls        Type: file.
-%                              Description: File containing one column array
-%                              with identifiers for reactions in MustL. This
-%                              file will only be generated if the user entered
-%                              printExcel = 1. Note that the user can choose
-%                              the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName.txt        Type: file.
-%                              Description: File containing one column array
-%                              with identifiers for reactions in MustL. This
-%                              file will only be generated if the user entered
-%                              printText = 1. Note that the user can choose
-%                              the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.xls   Type: file.
-%                              Description: File containing five column
+%    outputFileName.xls:       (file) File containing one column array
+%                              with identifiers for reactions in MustL.
+%                              This file will only be generated if the user
+%                              entered printExcel = 1. Note that the user
+%                              can choose the name of this file entering
+%                              the input outputFileName =
+%                              'PutYourOwnFileNameHere';
+%    outputFileName.txt:       (file) File containing one column array
+%                              with identifiers for reactions in MustL.
+%                              This file will only be generated if the user
+%                              entered printText = 1. Note that the user
+%                              can choose the name of this file entering
+%                              the input outputFileName =
+%                              'PutYourOwnFileNameHere';
+%    outputFileName_Info.xls:  (file) File containing five column
 %                              arrays. 
 %                              C1: identifiers for reactions in MustL
 %                              C2: min fluxes for reactions according to FVA
@@ -109,11 +95,11 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %                              C5: max fluxes achieved for reactions, 
 %                                  according to findMustL.gms
 %                              This file will only be generated if the user
-%                              entered printExcel = 1. Note that the user can
-%                              choose the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.txt   Type: file.
-%                              Description: File containing five column
+%                              entered printExcel = 1. Note that the user
+%                              can choose the name of this file entering
+%                              the input outputFileName =
+%                              'PutYourOwnFileNameHere';
+%    outputFileName_Info.txt:  (file) File containing five column
 %                              arrays. 
 %                              C1: identifiers for reactions in MustL
 %                              C2: min fluxes for reactions according to FVA
@@ -123,22 +109,22 @@ function [mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW,
 %                              C5: max fluxes achieved for reactions, 
 %                                  according to findMustL.gms
 %                              This file will only be generated if the user
-%                              entered printText = 1. Note that the user can
-%                              choose the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    findMustL.lst             Type: file. 
-%                              Description: file autogenerated by GAMS. It
+%                              entered printText = 1. Note that the user
+%                              can choose the name of this file entering
+%                              the input outputFileName =
+%                              'PutYourOwnFileNameHere';
+%    findMustL.lst:            (file) file autogenerated by GAMS. It
 %                              contains information about equations,
 %                              variables, parameters as well as information
-%                              about the running (values at each iteration).
-%                              This file only will be saved in the output
-%                              folder is the user entered keepGamsOutputs = 1
-%    GtoML.gdx                 Type: file
-%                              Description: file containing values for 
-%                              variables, parameters, etc. which were found by
-%                              GAMS when solving findMustL.gms. 
-%                              This file only will be saved in the output
-%                              folder is the user entered keepInputs = 1
+%                              about the running (values at each
+%                              iteration). This file only will be saved in
+%                              the output folder is the user entered
+%                              keepGamsOutputs = 1
+%    GtoML.gdx:                (file) file containing values for
+%                              variables, parameters, etc. which were found
+%                              by GAMS when solving findMustL.gms. This
+%                              file only will be saved in the output folder
+%                              is the user entered keepInputs = 1
 %
 % NOTE: 
 %    This function is based in the GAMS files written by Sridhar
