@@ -50,19 +50,19 @@ s = s(:); % Make sure s is a column vector
 s = full(s);
 
 % Reformat string inputs
-mols = regexprep(mols,'(\.mol)$','');
-rxn = regexprep(rxn,'(\.rxn)$','');
+mols = regexprep(mols,'(\.mol)$', '');
+rxn = regexprep(rxn,'(\.rxn)$', '');
 
-moldir = regexprep(moldir,'\\','/');
+moldir = regexprep(moldir, '\\', '/');
 if ~isempty(moldir)
-    if ~strcmp(moldir(end),'/')
+    if ~strcmp(moldir(end), '/')
         moldir = [moldir '/'];
     end
 end
 
-rxndir = regexprep(rxndir,'\\','/');
+rxndir = regexprep(rxndir, '\\', '/');
 if ~isempty(rxndir)
-    if ~strcmp(rxndir(end),'/')
+    if ~strcmp(rxndir(end), '/')
         rxndir = [rxndir '/'];
     end
 end
@@ -71,29 +71,29 @@ end
 
 % Write reaction equation
 reactants = [num2cell(abs(s(s < 0))) mets(s < 0)]';
-leftside = sprintf('%d %s + ',reactants{:});
-leftside = regexprep(leftside,'( \+ )$','');
-leftside = regexprep(leftside,'1 ','');
+leftside = sprintf('%d %s + ', reactants{:});
+leftside = regexprep(leftside, '( \+ )$', '');
+leftside = regexprep(leftside, '1 ', '');
 products = [num2cell(s(s > 0)) mets(s > 0)]';
-rightside = sprintf('%d %s + ',products{:});
-rightside = regexprep(rightside,'( \+ )$','');
-rightside = regexprep(rightside,'1 ','');
-rxnformula = sprintf('%s -> %s',leftside,rightside);
+rightside = sprintf('%d %s + ', products{:});
+rightside = regexprep(rightside, '( \+ )$', '');
+rightside = regexprep(rightside, '1 ', '');
+rxnformula = sprintf('%s -> %s', leftside, rightside);
 
-rxnfile = sprintf('$RXN\n%s\n\n%s\n',rxn,rxnformula); % First four lines of rxnfile
+rxnfile = sprintf('$RXN\n%s\n\n%s\n', rxn, rxnformula); % First four lines of rxnfile
 
 % Add Reactant/Product line
 nr = sum(abs(s(s < 0))); % nr. of reactants
 np = sum(abs(s(s > 0))); % nr. of products
-rxnfile = [rxnfile sprintf('% 3d% 3d\n',nr,np)];
+rxnfile = [rxnfile sprintf('% 3d% 3d\n', nr, np)];
 
 % Add molfiles for reactants
 for i = find(s < 0)'
     molfile = fileread([moldir mols{i} '.mol']);
     molfile = deblank(molfile);
-    molfile = regexprep(molfile,'^([^\n]*\n)',sprintf('%s\n',mets{i}));
-    molsection = sprintf('$MOL\n%s\n',molfile);
-    molsection = repmat(molsection,1,abs(s(i)));
+    molfile = regexprep(molfile,'^([^\n]*\n)', sprintf('%s\n', mets{i}));
+    molsection = sprintf('$MOL\n%s\n', molfile);
+    molsection = repmat(molsection, 1, abs(s(i)));
     rxnfile = [rxnfile molsection];
 end
 
@@ -101,9 +101,9 @@ end
 for i = find(s > 0)'
     molfile = fileread([moldir mols{i} '.mol']);
     molfile = deblank(molfile);
-    molfile = regexprep(molfile,'^([^\n]*\n)',sprintf('%s\n',mets{i}));
-    molsection = sprintf('$MOL\n%s\n',molfile);
-    molsection = repmat(molsection,1,abs(s(i)));
+    molfile = regexprep(molfile, '^([^\n]*\n)', sprintf('%s\n', mets{i}));
+    molsection = sprintf('$MOL\n%s\n', molfile);
+    molsection = repmat(molsection, 1, abs(s(i)));
     rxnfile = [rxnfile molsection];
 end
 
