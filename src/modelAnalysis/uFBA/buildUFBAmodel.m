@@ -1,65 +1,66 @@
 function [output] = buildUFBAmodel(model, variables)
-% buildUFBAmodel Integrate intracellular/extracellular metabolite measurements with COBRA model for flux balance analysis
+% Integrates intracellular/extracellular metabolite measurements with COBRA model for flux balance analysis
 %       1) removing all exchange reactions (retains sinks and demands)
 %       2) setting rate of change of measured metabolites
 %       3) adding additional sinks to ensure the model simulates
 %
-% INPUTS
-%   model           COBRA model structure
-%   variables       struct containing the following required fields:
-%       metNames        cell array of mets for modification -- those that
-%                           have measurements (corresponding to model.mets)
-%       changeSlopes    vector (length(metNames) x 1) that contains the
-%                           rate of change (slope) of mets in metNames
-%       changeIntervals vector (length(metNames) x 1) that contains the 95%
-%                           confidence interval of slopes in changeSlopes
-%       ignoreSlopes    binary vector (length(metNames) x 1) that instructs
-%                           specific slopes to be ignored (ignore if 1)
+% INPUTS:
+%   model:           COBRA model structure
+%   variables:       struct containing the following required fields:
 %
-% OPTIONAL INPUTS
-%   variables       struct containing the following optional fields:
-%       objRxn          objective reaction (corresponding to model.rxns)
-%       metNoSink       cell array of metabolites that should not have a
-%                           sink added, typically for mets where the
-%                           concentration is known to be 0 (default = empty
-%                           cell array, {})
-%       metNoSinkUp     cell array of metabolites that should not have a
-%                           sink added in the up direction (default = empty
-%                           cell array, {})
-%       metNoSinkDown   cell array of metabolites that should not have a
-%                           sink added in the down direction (default =
-%                           empty cell array, {})
-%       conflictingMets     cell array of intracellular metabolites
-%                           (corresponding to model.mets) that conflict
-%                           with extracellular rates (default = empty cell
-%                           array, {})
-%       neededSinks     cell array of metabolites (corresponding to
-%                           model.mets) that must have a sink at all times
-%                           due to unknown degradation (default = empty
-%                           cell array, {})
-%       solvingStrategy one of {'case1','case2','case3','case4','case5'}
-%                           (default = 'case2')
-%       lambda          relaxation parameter (default = 1.5)
-%       numIterations   number of iterations for the integer cut
-%                           optimization method (default = 100)
-%       timeLimit       time limit for solver (default = 30 seconds)
-%       eWeight         weighting for preferential selection of
-%                           extracellular sinks over intracellular (default
-%                           = 1e6); if no weighting preferred, then set
-%                           eWeight = 1
+%                    * .metNames - cell array of mets for modification -- those that
+%                                  have measurements (corresponding to model.mets)
+%                    * .changeSlopes - vector (length(metNames) x 1) that contains the
+%                                      rate of change (slope) of mets in metNames
+%                    * .changeIntervals - vector (length(metNames) x 1) that contains the 95%
+%                                         confidence interval of slopes in changeSlopes
+%                    * .ignoreSlopes - binary vector (length(metNames) x 1) that instructs
+%                                      specific slopes to be ignored (ignore if 1)
+%
+% OPTIONAL INPUTS:
+%    variables:       struct containing the following optional fields:
+%
+%                     * .objRxn - objective reaction (corresponding to model.rxns)
+%                     * .metNoSink - cell array of metabolites that should not have a
+%                                    sink added, typically for mets where the
+%                                    concentration is known to be 0 (default = empty
+%                                    cell array, {})
+%                     * .metNoSinkUp - cell array of metabolites that should not have a
+%                                      sink added in the up direction (default = empty
+%                                      cell array, {})
+%                     * .metNoSinkDown - cell array of metabolites that should not have a
+%                                        sink added in the down direction (default =
+%                                        empty cell array, {})
+%                     * .conflictingMets - cell array of intracellular metabolites
+%                                          (corresponding to model.mets) that conflict
+%                                          with extracellular rates (default = empty cell
+%                                          array, {})
+%                     * .neededSinks - cell array of metabolites (corresponding to
+%                                      model.mets) that must have a sink at all times
+%                                      due to unknown degradation (default = empty
+%                                      cell array, {})
+%                     * .solvingStrategy - one of {'case1','case2','case3','case4','case5'}
+%                                          (default = 'case2')
+%                     * .lambda - relaxation parameter (default = 1.5)
+%                     * .numIterations - number of iterations for the integer cut
+%                                        optimization method (default = 100)
+%                     * .timeLimit - time limit for solver (default = 30 seconds)
+%                     * .eWeight - weighting for preferential selection of
+%                                  extracellular sinks over intracellular (default
+%                                  = 1e6); if no weighting preferred, then set
+%                                  eWeight = 1
 %
 % OUTPUTS
-%   output          struct containing the following outputs
-%       model           constrained uFBA model
-%       metsToUse       mets with measurements applied
-%       relaxedNodes    cell array which contains which metabolites had a
-%                           sink reaction added to model, the direction of
-%                           the sink, and the bound of the sink reaction
+%    output:          struct containing the following outputs
 %
-% Aarash Bordbar, James Yurkovich 8/26/2015
+%                     * .model - constrained uFBA model
+%                     * .metsToUse - mets with measurements applied
+%                     * .relaxedNodes - cell array which contains which metabolites had a
+%                                       sink reaction added to model, the direction of
+%                                       the sink, and the bound of the sink reaction
+%
+% .. Author: Aarash Bordbar, James Yurkovich 8/26/2015
 
-
-%% parse inputs
 if ~isstruct(model)
     error('Input not in correct COBRA model format -- must be struct')
 end
