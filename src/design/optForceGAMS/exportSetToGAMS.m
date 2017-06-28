@@ -28,7 +28,7 @@ function [] = exportSetToGAMS(set, fileName)
 %    This, will export the list of elements in model.rxns to a file called
 %    Reactions.txt
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 %% CODE
 %input handling
 if nargin > 2
