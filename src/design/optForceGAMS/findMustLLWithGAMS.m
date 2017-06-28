@@ -44,11 +44,11 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               fields:
 %
 %                                 * .rxnList - Reaction list (cell array)
-%                                 * .values -  Values for constrained 
+%                                 * .values -  Values for constrained
 %                                   reactions (double array)
 %                                   E.g.: struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]'); 
+%                                   'values', [-100, 0, 155.5]');
 %    excludedRxns:              (cell array) Reactions to be excluded to
 %                               the MustLL set. This could be used to avoid
 %                               finding transporters or exchange reactions
@@ -59,7 +59,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    solverName:                (string) Name of the solver used in
 %                               GAMS. Default = 'cplex'.
 %    runID:                     (string) ID for identifying this run.
-%                               Default = ['run' date hour]. 
+%                               Default = ['run' date hour].
 %    outputFolder:              (string) name for folder in which
 %                               results will be stored. Default =
 %                               'OutputsFindMustLL'.
@@ -82,7 +82,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    verbose:                   (double) 1 to print results in console.
 %                               0 otherwise. Default = 0
 %
-% OUTPUTS: 
+% OUTPUTS:
 %    mustLL:                    (cell array of size number of sets found X
 %                               2). Cell array containing the reactions IDs
 %                               which belong to the MustLL set. Each row
@@ -145,7 +145,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               This file only will be saved in the output
 %                               folder if the user entered keepInputs = 1
 %
-% NOTE: 
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please

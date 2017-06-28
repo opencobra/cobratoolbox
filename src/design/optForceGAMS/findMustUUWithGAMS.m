@@ -44,11 +44,11 @@ function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWith
 %                                following fields:
 %
 %                                  * .rxnList - Reaction list (cell array)
-%                                  * .values -  Values for constrained 
+%                                  * .values -  Values for constrained
 %                                    reactions (double array)
 %                                    E.g.: struct('rxnList', ...
 %                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]'); 
+%                                    'values', [-100, 0, 155.5]');
 %    excludedRxns:               (cell array) Reactions to be excluded to
 %                                the MustUU set. This could be used to
 %                                avoid finding transporters or exchange
@@ -82,7 +82,7 @@ function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWith
 %    verbose:                    (double) 1 to print results in console.
 %                                0 otherwise. Default = 0
 %
-% OUTPUTS: 
+% OUTPUTS:
 %    mustUU:                     (cell array of size number of sets found X
 %                                2) Cell array containing the reactions IDs
 %                                which belong to the MustUU set. Each row
@@ -145,7 +145,7 @@ function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWith
 %                                This file only will be saved in the output
 %                                folder is the user entered keepInputs = 1
 %
-% NOTE: 
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please

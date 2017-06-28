@@ -4,7 +4,7 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
 % others will be exported as simple .txt files.
 %
-% USAGE: 
+% USAGE:
 %
 %    exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
 %
@@ -56,13 +56,13 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 %
 % OUTPUTS:
 %    Reactions.txt:           (file) File containing the
-%                             identifiers for reactions 
+%                             identifiers for reactions
 %    Metabolites.txt:         (file) File containing the
 %                             identifiers for metabolites
 %    Constrains.txt:          (file) File containing the
-%                             identifiers for constrained reactions 
+%                             identifiers for constrained reactions
 %    Excluded.txt:            (file) File containing the
-%                             identifiers for excluded reactions. These 
+%                             identifiers for excluded reactions. These
 %                             reactions will not be considered in when
 %                             running findMustXX.gms (XX=UU or LL or UL
 %                             depending on the case)
