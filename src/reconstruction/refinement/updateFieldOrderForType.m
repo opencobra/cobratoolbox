@@ -1,5 +1,5 @@
 function model = updateFieldOrderForType(model,type,newOrder)
-% update the fields relevant to this type to the given new Order
+% Reorder the fields associated with the provided type to the new order. 
 % USAGE:
 %     matchingFields = updateFieldOrderForType(model, type, newOrder)
 %

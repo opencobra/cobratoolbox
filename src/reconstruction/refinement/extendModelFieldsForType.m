@@ -1,6 +1,6 @@
 function model = extendModelFieldsForType(model, type, varargin)
 % Extend all existing fields relevant for the given type to the size of the
-% field of the given type.
+% field of the given type, or a specified size.
 % USAGE:
 %     model = extendModelFieldsForType(model, type, varargin)
 %
