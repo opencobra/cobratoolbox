@@ -9,9 +9,9 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
-%                       Description: a metabolic model with at least the
+%    model:             (structure) a metabolic model with at least the
 %                       following fields:
+%
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
@@ -19,35 +19,30 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-%    targetRxn:         Type: string
-%                       Description: string containing the ID for the
+%    targetRxn:         (string) string containing the ID for the
 %                       reaction whose flux is intented to be increased.
 %                       For example, if the production of succionate is
 %                       desired to be increased, 'EX_suc' should be
 %                       chosen as the target reaction
 %                       E.g.: targetRxn='EX_suc';
-%    mustU:             Type: cell array.
-%                       Description: List of reactions in the MustU set
+%    mustU:             (cell array) List of reactions in the MustU set
 %                       This input can be obtained by running the
 %                       script findMustU.m
 %                       E.g.: mustU={'R21_f';'R22_f'};
-%    mustL:             Type: cell array.
-%                       Description: List of reactions in the MustL set
+%    mustL:             (cell array) List of reactions in the MustL set
 %                       This input can be obtained by running the
 %                       script findMustL.m
 %                       E.g.: mustL={'R11_f';'R26_f'};
-%    minFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Minimum fluxes for each reaction
-%                       in the model for wild-type strain
+%    minFluxesW:        (double array of size n_rxns x 1) minimum fluxes
+%                       for each reaction in the model for wild-type strain
 %                       E.g.: minFluxesW=[-90; -56];
-%    maxFluxesW:        Type: double array of size n_rxnsx1
-%                       Description: Maximum fluxes for each reaction
-%                       in the model for wild-type strain
+%    maxFluxesW:        (double array of size n_rxns x 1) maximum fluxes
+%                       for each reaction in the model for wild-type strain
 %                       E.g.: maxFluxesW=[92; -86];
-%    minFluxesM:        Type: double array of size n_rxnsx1
-%                       Description: Minimum fluxes for each reaction
-%                       in the model for mutant strain
-%                       E.g.: minFluxesW=[-90; -56];
+%    minFluxesM:        (double array of size n_rxns x 1)
+%                       Description: Minimum fluxes for each reaction in
+%                       the model for mutant strain E.g.: minFluxesW=[-90;
+%                       -56];
 %    maxFluxesM:        Type: double array of size n_rxnsx1
 %                       Description: Maxmum fluxes for each reaction in the
 %                       model for mutant strain.
