@@ -936,6 +936,63 @@ compounds in compoundsIn</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.extendModelFieldsForType">
+<code class="descname">extendModelFieldsForType</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extendModelFieldsForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extendModelFieldsForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend all existing fields relevant for the given type to the size of the
+field of the given type, or a specified size.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = extendModelFieldsForType(model, type, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model to update</li>
+<li><strong>type</strong> &#8211;
+the Type of field to update one of
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional Options as &#8216;ParameterName&#8217;, Value pairs. Options are:
+- &#8216;originalSize&#8217;, the original size of the field,</p>
+<blockquote>
+<div><p>this is used to determine fields which have to be
+adjusted (default length of field type - 1).</p>
+</div></blockquote>
+<ul class="simple">
+<li>&#8216;targetSize&#8217;, the target size to which the field
+should be extended. Default values will be used as
+defined in the ModelFieldDefinitions to fill empty
+entries (default length of field type).</li>
+<li>&#8216;excludeFields&#8217;, fields that should be ignored
+during update.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A model with the requested fields associated to the
+given type updated. Associated fields are determined
+by size, and if multiple base fields have the same
+size, the Model Field definition along with checks
+for field Names (e.g. rxnXYZ is associated with
+rxns) is used. Added values are either default
+values (if defined in the ModelFieldDefinitions), or
+{&#8216;&#8217;} for cell arrays, NaN for numeric arrays and
+false for logical arrays. Char Arrays will be
+ignored.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.extractCompModel">
 <code class="descname">extractCompModel</code><span class="sig-paren">(</span><em>model</em>, <em>compSymbol</em>, <em>intOnlyFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extractCompModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractCompModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates model for a cellular compartment</p>
@@ -1111,12 +1168,12 @@ same model but with model.rules added</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.getRelevantModelFields">
-<code class="descname">getRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/getRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getRelevantModelFields" title="Permalink to this definition">¶</a></dt>
-<dd><p>get fields which are associated with the given type.
+<dt id="src.reconstruction.refinement.getModelFieldsForType">
+<code class="descname">getModelFieldsForType</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/getModelFieldsForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getModelFieldsForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the fields in the model which are associated with the given type.
 <strong>Usage</strong></p>
 <blockquote>
-<div>matchingFields = getRelevantModelFields(model, type, varargin)</div></blockquote>
+<div>matchingFields = getModelFieldsForType(model, type, varargin)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1288,6 +1345,31 @@ COBRA toolbox model structure with moved reaction</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.orderModelFields">
+<code class="descname">orderModelFields</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/orderModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.orderModelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orders the fields in a model according to the field
+definitions. Defined first, Remaining fields in
+alphabetical order.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>orderedModel = orderModelFields(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+a model structure in COBRA format</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>orderedModel</strong> &#8211;
+a model with fields ordered according to the field definitions.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.reassignFwBwMatch">
 <code class="descname">reassignFwBwMatch</code><span class="sig-paren">(</span><em>match</em>, <em>selVec</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/reassignFwBwMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.reassignFwBwMatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reassings forward-backward matches when modifying an
@@ -1368,43 +1450,13 @@ Minimum fluxes</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.removeMetabolites">
-<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/removeMetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeMetabolites" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes metabolites from a model</p>
-<p><strong>Usage</strong></p>
+<dt id="src.reconstruction.refinement.removeFieldEntriesForType">
+<code class="descname">removeFieldEntriesForType</code><span class="sig-paren">(</span><em>model</em>, <em>indicesToRemove</em>, <em>type</em>, <em>fieldSize</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/removeFieldEntriesForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeFieldEntriesForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove field entries at the specified indices from all fields associated
+with the given type
+<strong>Usage</strong></p>
 <blockquote>
-<div>model = removeMetabolites(model, metaboliteList, removeRxnFlag)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>metaboliteList</strong> &#8211;
-List of metabolites to be removed</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>removeRxnFlag</strong> &#8211;
-Remove reactions with no metabolites (Default = true)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model with removed metabolites</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.refinement.removeRelevantModelFields">
-<code class="descname">removeRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>indicesToRemove</em>, <em>type</em>, <em>fieldSize</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/removeRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRelevantModelFields" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Usage</strong></p>
-<blockquote>
-<div>model = removeRelevantModelFields(model, indicesToRemove, type, varargin)</div></blockquote>
+<div>model = removeFieldEntriesForType(model, indicesToRemove, type, varargin)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1445,6 +1497,38 @@ assumed, that fields named e.g. rxnXYZ are
 associated with rxns, and only those fields are
 adapted along with fields which are specified in the
 Model FieldDefinitions.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeMetabolites">
+<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/removeMetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes metabolites from a model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = removeMetabolites(model, metaboliteList, removeRxnFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>metaboliteList</strong> &#8211;
+List of metabolites to be removed</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>removeRxnFlag</strong> &#8211;
+Remove reactions with no metabolites (Default = true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model with removed metabolites</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -1571,12 +1655,12 @@ Scaled <cite>S</cite> matrix</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.updateRelevantFieldOrder">
-<code class="descname">updateRelevantFieldOrder</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>newOrder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/updateRelevantFieldOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateRelevantFieldOrder" title="Permalink to this definition">¶</a></dt>
-<dd><p>update the fields relevant to this type to the given new Order
+<dt id="src.reconstruction.refinement.updateFieldOrderForType">
+<code class="descname">updateFieldOrderForType</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>newOrder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/updateFieldOrderForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateFieldOrderForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder the fields associated with the provided type to the new order.
 <strong>Usage</strong></p>
 <blockquote>
-<div>matchingFields = getRelevantModelFields(model, type, newOrder)</div></blockquote>
+<div>matchingFields = updateFieldOrderForType(model, type, newOrder)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1596,62 +1680,6 @@ requested model.(type) field.</li>
 <li><strong>model</strong> &#8211;
 The model with all field associated with type
 reordered</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.refinement.updateRelevantModelFields">
-<code class="descname">updateRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/updateRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateRelevantModelFields" title="Permalink to this definition">¶</a></dt>
-<dd><p>update all relevant fields to have the correct size.
-<strong>Usage</strong></p>
-<blockquote>
-<div>model = updateRelevantModelFields(model, type, varargin)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-the model to update</li>
-<li><strong>type</strong> &#8211;
-the Type of field to update one of
-(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>varargin</strong> &#8211;
-Additional Options as &#8216;ParameterName&#8217;, Value pairs. Options are:
-- &#8216;originalSize&#8217;, the original size of the field,</p>
-<blockquote>
-<div><p>this is used to determine fields which have to be
-adjusted.</p>
-</div></blockquote>
-<ul class="simple">
-<li>&#8216;targetSize&#8217;, the target size to which the field
-should be extended. Default values will be used as
-defined in the ModelFieldDefinitions to fill empty
-entries.</li>
-<li>&#8216;excludeFields&#8217;, fields that should eb ignored
-during update.</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-A model with the requested fields associated to the
-given type updated. Associated fields are determined
-by size, and if multiple base fields have the same
-size, the Model Field definition along with checks
-for field Names (e.g. rxnXYZ is associated with
-rxns) is used. Added values are either default
-values (if defined in the ModelFieldDefinitions), or
-{&#8216;&#8217;} for cell arrays, NaN for numeric arrays and
-false for logical arrays. Char Arrays will be
-ignored.</li>
 </ul>
 </div></blockquote>
 </dd></dl>
