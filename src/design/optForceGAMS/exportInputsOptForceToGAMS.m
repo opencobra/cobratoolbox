@@ -124,7 +124,7 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %                       for each reaction in the previous step of FVA, and
 %                       the values for contrained reactions)
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 15 %inputs handling
     error('Optforce: All inputs must be specified when using exportInputsOptForceToGAMS');
