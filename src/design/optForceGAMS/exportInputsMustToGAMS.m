@@ -58,7 +58,7 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %                       for each reaction in the previous step of FVA, and
 %                       the values for contrained reactions)
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 %% CODE
 %input handling
