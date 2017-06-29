@@ -1,4 +1,4 @@
-function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
+function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 % Samples the solution-space of a constraint-based model
 %
 % USAGE:
@@ -7,28 +7,25 @@ function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 %
 % INPUTS:
 %    model:           COBRA model structure
+%    sampleFile:      File names for sampling output files (only required 
+%                     for ACHR)
 %
 % OPTIONAL INPUTS:
-%    varargin:        Optional Inputs as Parameter/Value pairs with the
-%                     following options:
+%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to 
+%                   sample the solution.  
+%    options:       Options for sampling and pre/postprocessing (default values
+%                   in parenthesis).
 %
-%                       * sampleFile:    File names for sampling output files (only required for
-%                         ACHR, Default 'AHCRFile')
-%                       * samplerName:   {'ACHR', ('CHRR')} Name of the sampler to be used to sample the solution
-%                       * options:       Options for sampling and pre/postprocessing (default values
-%                         in parenthesis)
-%
-%                         * .nStepsPerPoint - Number of sampler steps per point saved (200)
-%                         * .nPointsReturned - Number of points loaded for
-%                           analysis (2000)
-%                         * .nWarmupPoints - Number of warmup points (5000). ACHR only.
-%                         * .nFiles - Number of output files (10). ACHR only.
-%                         * .nPointsPerFile - Number of points per file (1000). ACHR only.
-%                         * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
-%                         * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
-%                         * .toRound - Option to round the model before sampling (true). CHRR only.
-%                       * modelSampling: From a previous round of sampling the same
-%                         model. Input to avoid repeated preprocessing.
+%                     * .nStepsPerPoint - Number of sampler steps per point saved (200)
+%                     * .nPointsReturned - Number of points loaded for analysis (2000)
+%                     * .nWarmupPoints - Number of warmup points (5000). ACHR only.
+%                     * .nFiles - Number of output files (10). ACHR only.
+%                     * .nPointsPerFile - Number of points per file (1000). ACHR only.
+%                     * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
+%                     * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
+%                     * .toRound - Option to round the model before sampling (true). CHRR only.
+%    modelSampling: From a previous round of sampling the same
+%                   model. Input to avoid repeated preprocessing.
 %
 % OUTPUTS:
 %    modelSampling:    Cleaned up model used in sampling
@@ -49,41 +46,21 @@ function [modelSampling, samples, volume] = sampleCbModel(model, varargin)
 %
 % .. Author: - Markus Herrgard 8/14/06
 
-optionalParameters = {'sampleFile','sampler','parameters','sampleModel'};
-oldOptionalOrder = {'sampleFile','sampler','parameters','sampleModel'};
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
-    %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup
-    tempargin = cell(2*numel(varargin),1);
-    for i = 1:numel(varargin)
-       tempargin{2*i - 1} = oldOptionalOrder{i};
-       tempargin{2*i} = varargin{i};
-    end
-    varargin = tempargin;
-end
-
 nWarmupPoints = 5000;
 nFiles = 10;
 nPointsPerFile = 1000;
 nStepsPerPoint = 200;
 nPointsReturned = 2000;
 nFilesSkipped = 2;
-maxTime = 10*3600;
+maxTime = 10 * 3600;
 toRound = 1;
-
-parser = inputParser();
-parser.addRequired('model',@isstruct);
-parser.addParameter('parameters',struct(),@isstruct);
-parser.addParameter('sampler','CHRR',@ischar);
-parser.addParameter('sampleFile','ACHRFile',@ischar);
-parser.addParameter('sampleModel',[],@isstruct);
-
-parser.parse(model,varargin{:});
-
-options = parser.Results.parameters;
-samplerName = parser.Results.sampler;
-sampleFile = parser.Results.sampleFile;
-modelSampling = parser.Results.sampleModel;
+% Default options above
+if (nargin < 3 || isempty(samplerName))
+    samplerName = 'CHRR';
+end
+if (nargin < 5 || isempty(modelSampling))
+    modelSampling = [];
+end
 
 % Handle options
 if exist('options','var')
