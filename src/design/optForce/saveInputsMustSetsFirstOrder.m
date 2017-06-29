@@ -86,7 +86,7 @@ if isempty(inputFolder)
 end
 
 
-%Create a temporaty folder for inputs
+%Create a temporary folder for inputs
 if ~exist(inputFolder, 'dir')
    mkdir(inputFolder); 
 end

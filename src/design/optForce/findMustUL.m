@@ -210,8 +210,13 @@ end
 
 %current path
 workingPath = pwd;
+runID = [workingPath filesep runID];
 %go to the path associate to the ID for this run.
-if ~isdir(runID); mkdir(runID); end; cd(runID);
+if ~isdir(runID)
+    mkdir(runID);
+end
+cd(runID)
+outputFolder = [workingPath filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -264,12 +269,12 @@ end
 % export inputs for running the optimization problem in GAMS to find the
 % MustUL Set
 if keepInputs
-    inputFolder = 'InputsMustUL';
+    inputFolder = [workingPath filesep 'InputsMustUL'];
     saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 end
 
 % create a directory to save results if this don't exist
-if ~exist(outputFolder, 'dir')
+if exist(outputFolder, 'dir') ~= 7
     mkdir(outputFolder);
 end
 
@@ -330,7 +335,7 @@ else
 end
 
 % print info into an excel file if required by the user
-if printExcel
+if printExcel && ~isunix
     if cont > 0
         currentFolder = pwd;
         cd(outputFolder);

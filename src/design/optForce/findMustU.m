@@ -199,9 +199,13 @@ end
 
 %current path
 workingPath = pwd;
-
+runID = [workingPath filesep runID];
 %go to the path associate to the ID for this run.
-if ~isdir(runID); mkdir(runID); end; cd(runID);
+if exist(runID, 'dir')~=7
+    mkdir(runID);
+end
+cd(runID);
+outputFolder = [workingPath filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -246,7 +250,7 @@ if printReport
 end
 
 % export inputs for running the optimization problem to find the MustU Set
-inputFolder = 'InputsMustU';
+inputFolder = [workingPath filesep 'InputsMustU'];
 saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder);
 
 % create a directory to save results if this don't exist
@@ -316,7 +320,7 @@ else
 end 
 
 % print info into an excel text file if required by the user
-if printExcel
+if printExcel && ~isunix
     if found
         currentFolder = pwd;
         cd(outputFolder);
