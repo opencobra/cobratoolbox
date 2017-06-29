@@ -1,19 +1,24 @@
 #!/bin/bash
 declare -a tutorials=("modelCreation/tutorial_modelCreation.html"
                       "modelManipulation/tutorial_modelManipulation.html"
-		      "atomicallyResolveMetabolicReconstruction/tutorial_atomicallyResolveReconstruction.html"
+		              "atomicallyResolveMetabolicReconstruction/tutorial_atomicallyResolveReconstruction.html"
                       "numCharact/tutorial_numCharact.html"
                       "sampling/tutorial_uniformSampling.html"
                       "pathVectorsAndMinimalCutSets/tutorial_pathVectors_minimalCutSets.html"
-		      "minSpan/tutorial_minSpan.html"
-		      "metabotools/tutorial_I/tutorial_metabotoolsI.html"
-		      "metabotools/tutorial_II/tutorial_metabotoolsII.html"
-		      "uFBA/tutorial_uFBA.html")
+		              "minSpan/tutorial_minSpan.html"
+		              "metabotools/tutorial_I/tutorial_metabotoolsI.html"
+		              "metabotools/tutorial_II/tutorial_metabotoolsII.html"
+		              "uFBA/tutorial_uFBA.html")
 
 tutorialPath="../tutorials"
 tutorialDestination="source/_static/tutorials"
 rstDestination="source/tutorials"
 mkdir -p "$tutorialDestination"
+
+# clean destination folder
+echo "Cleaning destination folders for html and rst files"
+find "$tutorialDestination" -name "tutorial*.html" -exec rm -f {} \;
+find "$rstDestination" -name "tutorial*.rst" -exec rm -f {} \;
 
 ## now loop through the above array
 echo "Preparing tutorial"
