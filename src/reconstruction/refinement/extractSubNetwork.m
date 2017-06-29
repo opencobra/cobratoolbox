@@ -1,4 +1,4 @@
-function subModel = extractSubNetwork(model, rxnList, metList)
+function subModel = extractSubNetwork(model, rxnList, metList, updateGenes)
 % Extract subnetwork model
 % USAGE:
 %
@@ -10,6 +10,8 @@ function subModel = extractSubNetwork(model, rxnList, metList)
 %
 % OPTIONAL INPUTS:
 %    metNames:    Metabolite list for the subnetwork to be extracted
+%    updateGenes: Also remove unused genes (can take some time on large
+%                 networks)
 %
 % OUTPUT:
 %    subModel:    COBRA model of subnetwork
@@ -33,8 +35,23 @@ else
     selMets = ismember(model.mets,metList);
 end
 
+if ~exist('updateGenes','var')
+    updateGenes = false;
+end
+
 subS = subS(selMets,:);
 %Remove all Metabolites not selected
 subModel = removeMetabolites(model,model.mets(~selMets),0);
 %Remove all Rxns not selected (not the mets). 
 subModel = removeRxns(subModel,model.rxns(~selRxns),'metFlag', false);
+
+if updateGenes
+    if ~isfield(model,'rxnGeneMat')
+        modelWRxnGeneMat = buildRxnGeneMat(model);
+        rxnGeneMat = modelWRxnGeneMat.rxnGeneMat;
+    else
+        rxnGeneMat = model.rxnGeneMat;
+    end
+    genesToRemove = ~any(rxnGeneMat);
+    
+end
