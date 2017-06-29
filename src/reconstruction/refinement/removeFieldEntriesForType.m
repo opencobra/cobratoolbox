@@ -56,30 +56,22 @@ if isnumeric(indicesToRemove)
     indicesToRemove = res;
 end
 
-
-
-
-fields = getModelFieldsForType(model, type, fieldSize);
-
-fields = setdiff(fields,excludeFields);
-
-for i = 1:numel(fields)
-    %Lets assume, that we only have 2 dimensional fields.
-    if size(model.(fields{i}),1) == fieldSize
-        model.(fields{i}) = model.(fields{i})(~indicesToRemove,:);
-    end
-    if size(model.(fields{i}),2) == fieldSize
-        model.(fields{i}) = model.(fields{i})(:,~indicesToRemove);
-    end
-end
-
-
 %We need a special treatment for genes, i.e. if we remove genes, we need to
 %update all rules/gprRules
 if strcmp(type,'genes')    
+    removeRulesField = false;
     genePos = find(indicesToRemove);    
+    if ~ isfield(model,'rules') && isfield(model, 'grRules')% Only use grRules, if no rules field is present.        
+        %lets make this easy. we will simply create the rules field and
+        %Then work on the rules field (removing that field again in the
+        %end.        
+        model = generateRules(model);
+        removeRulesField = true;
+    end
     %update the rules fields.
-    if isfield(model,'rules')       
+    if isfield(model,'rules') %Rely on rules first  
+        %However, we first normalize the rules.
+        model = normalizeRules(model);
         %First, eliminate all removed indices
         for i = 1:numel(genePos)
             %Replace either a trailing &, or a leading &
@@ -107,7 +99,7 @@ if strcmp(type,'genes')
         end
         %Now, replace all remaining indices.
         oldIndices = find(~indicesToRemove);
-        for i = 1:numel(model.genes)       
+        for i = 1:numel(oldIndices)
             if i ~= oldIndices(i)
                 %replace by new with an indicator that this is new.
                 model.rules = strrep(model.rules,['x(' num2str(oldIndices(i)) ')'],['x(' num2str(i) '$)']);
@@ -119,6 +111,35 @@ if strcmp(type,'genes')
             model = creategrRulesField(model);
         end
     end
+    if removeRulesField
+        model = rmfield(model,'rules');
+    end
 end
+
+
+fields = getModelFieldsForType(model, type, fieldSize);
+
+fields = setdiff(fields,excludeFields);
+
+for i = 1:numel(fields)
+    %Lets assume, that we only have 2 dimensional fields.
+    if size(model.(fields{i}),1) == fieldSize
+        model.(fields{i}) = model.(fields{i})(~indicesToRemove,:);
+    end
+    if size(model.(fields{i}),2) == fieldSize
+        model.(fields{i}) = model.(fields{i})(:,~indicesToRemove);
+    end
+end
+
+
+
         
+function model = normalizeRules(model)
+origrules = model.rules;
+model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+while ~all(strcmp(origrules,model.rules))
+    origrules = model.rules;
+    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+end
+
         
