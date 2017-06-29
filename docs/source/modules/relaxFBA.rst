@@ -5,5 +5,5 @@
 relaxFBA
 --------
 
-.. automodule:: src.modelAnalysis.relaxFBA
+.. automodule:: src.analysis.relaxFBA
    :members:

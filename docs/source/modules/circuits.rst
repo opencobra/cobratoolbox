@@ -5,5 +5,5 @@
 Circuits
 --------
 
-.. automodule:: src.modelAnalysis.topology.circuits
+.. automodule:: src.analysis.topology.circuits
    :members:
