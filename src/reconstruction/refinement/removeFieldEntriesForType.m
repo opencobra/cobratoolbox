@@ -86,7 +86,7 @@ if strcmp(type,'genes')
             rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
             matchingrules = find(~cellfun(@isempty, rules));
             for elem = 1:numel(matchingrules)
-                cres = rules{matchingrules(elem)};
+                cres = rules{matchingrules(elem)};                
                 for pos = 1:numel(cres)
                     if isequal(cres(pos).pre,'&')
                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)])'],'$1');
@@ -115,6 +115,9 @@ if strcmp(type,'genes')
         end
         %remove the indicator.
         model.rules = strrep(model.rules,'$','');
+        if isfield(model, 'grRules')
+            model = creategrRulesField(model);
+        end
     end
 end
         
