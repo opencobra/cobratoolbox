@@ -29,8 +29,6 @@ load('ecoli_core_model.mat', 'model');
 
 [minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
-
-
 % Start a parpool environment in MATLAB
 setWorkerCount(nworkers);
 
