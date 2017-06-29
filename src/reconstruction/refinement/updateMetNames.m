@@ -1,15 +1,19 @@
-function [updatedModel] = updateMetNames(referenceModel, modelToUpdate)
+function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExisting);
 % Updates model.metNames in a new model, using metNames of a reference
 % model.
 %
 % USAGE:
 %
-%    [updatedModel] = updateMetNames(referenceModel, modelToUpdate)
+%    [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExisting);
 %
 % INPUTS:
 %    referenceModel:     COBRA model structure with correct model.metNames
 %    modelToUpdate:      COBRA model structure that needs to have its
 %                        model.metNames updated 
+% OPTIONAL INPUTS:
+%    wipeExisting:       1: remove all existing model.metNames in
+%                        modelToUpdate, especially when model.metNames is
+%                        wrong.
 %
 % OUTPUT:
 %    updatedModel:       COBRA model structure with corrected metNames
@@ -17,22 +21,16 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate)
 % .. Authors:
 %       - written by Diana El Assal 27/06/2017
 
-metsReference = strtok(referenceModel.mets, '[');
-metsReference = metsReference(~cellfun('isempty',metsReference));
-metsReference = [metsReference, referenceModel.metNames];
-
-metsUpdate = strtok(modelToUpdate.mets, '[');
-metsUpdate = metsUpdate(~cellfun('isempty',metsUpdate));
-
-[ia, ib] = ismember(metsUpdate, metsReference(:,1));
-
+%remove the compartment info
+metsReference = regexprep(referenceModel.mets,'\[[^]\]$','');
+metsUpdate = regexprep(modelToUpdate.mets,'\[[^]\]$','');
 updatedModel = modelToUpdate;
-updatedModel.metNames = {};
-for i = 1:length(updatedModel.mets);
-    if ~ia(i) == 0;
-        updatedModel.metNames{i,1} = metsReference{ib(i),2};
-    else
-        updatedModel.metNames{i} = '';
-    end
+[metsToUpdate,positionsToUpdateFrom] = ismember(metsUpdate,metsReference);
+
+%reset metNames field in modelToUpdate (if requested), or initialize if not existing
+if wipeExisting || ~isfield(updatedModel,'metNames')
+  updatedModel.metNames = cell(size(updatedModel.mets));
+  updatedModel.metNames(~metsToUpdate) = {''}; % init metabolites not present in the second model.
 end
- 
+
+updatedModel.metNames(metsToUpdate) = referenceModel.metNames(positionsToUpdateFrom(metsToUpdate));
