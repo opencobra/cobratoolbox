@@ -29,7 +29,7 @@ function subModel = extractSubNetwork(model, rxnList, metList, updateGenes)
 
 selRxns = ismember(model.rxns,rxnList);
 subS = model.S(:,selRxns);
-if (nargin < 3)
+if ~exist('selMets','var') || isempty(selMets)
     selMets = ~all(subS == 0,2);
 else
     selMets = ismember(model.mets,metList);
@@ -46,12 +46,12 @@ subModel = removeMetabolites(model,model.mets(~selMets),0);
 subModel = removeRxns(subModel,model.rxns(~selRxns),'metFlag', false);
 
 if updateGenes
-    if ~isfield(model,'rxnGeneMat')
-        modelWRxnGeneMat = buildRxnGeneMat(model);
+    if ~isfield(subModel,'rxnGeneMat')
+        modelWRxnGeneMat = buildRxnGeneMat(subModel);
         rxnGeneMat = modelWRxnGeneMat.rxnGeneMat;
     else
-        rxnGeneMat = model.rxnGeneMat;
+        rxnGeneMat = subModel.rxnGeneMat;
     end
     genesToRemove = ~any(rxnGeneMat);
-    
+    subModel = removeFieldEntriesForType(subModel,genesToRemove,'genes',numel(model.genes));
 end
