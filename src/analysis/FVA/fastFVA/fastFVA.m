@@ -291,8 +291,8 @@ else
 end
 
 % creates the directory where the log files will be generated
-here = pwd;
-logFileDir = [here filesep 'fastFVALogFiles'];
+currentDir = pwd;
+logFileDir = [currentDir filesep 'fastFVALogFiles'];
 if exist(logFileDir, 'dir') ~= 7
     mkdir(logFileDir);
 end
