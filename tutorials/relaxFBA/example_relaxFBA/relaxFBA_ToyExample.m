@@ -1,8 +1,5 @@
-%changeCobraSolver('gurobi6','all');
-
-%Creat the toy example
-
-
+%Create the toy example
+clear model;
 model.S = [ 1   -1  -1  0   0   0   0   -1  0   0   0;
             0   1   0   1   0   0   0   0   0   0   0;
             0   0   1   0   1   0   0   0   0   0   0;
@@ -15,6 +12,7 @@ model.S = [ 1   -1  -1  0   0   0   0   -1  0   0   0;
 [m,n] = size(model.S);
 model.c = zeros(n,1);
 model.b = zeros(m,1);
+model.csense(1:m,1)='E';
 
 model.lb = zeros(n,1);
 model.lb(7) = 1;
@@ -24,8 +22,8 @@ model.SIntRxnBool = true(n,1);
 model.SIntRxnBool(1) = false;
 model.SIntRxnBool(7) = false;
 intRxnBool = model.SIntRxnBool;
-exRxnBool = true(size(intRxnBool));
-exRxnBool(find(intRxnBool)) = false;
+exRxnBool = ~intRxnBool;
+
 
 %Relax the model to make it flux conssitent
 relaxOption.internalRelax = 2;
@@ -39,12 +37,13 @@ relaxOption.toBeUnblockedReactions(7) = 1; %Force biomass reaction to be active
 
 relaxOption.nbMaxIteration = 1000;
 relaxOption.epsilon = 10e-6;
-relaxOption.gamma0  = 0;   %trade-off parameter of l0 part of v
-relaxOption.gamma1  = 0;    %trade-off parameter of l1 part of v
+
 relaxOption.lambda0 = 10;   %trade-off parameter of l0 part of r
 relaxOption.lambda1 = 0;    %trade-off parameter of l1 part of r
 relaxOption.alpha0  = 10;    %trade-off parameter of l0 part of p and q
-relaxOption.alpha1  = 1;     %trade-off parameter of l1 part of p and q
+relaxOption.alpha1  = 0;     %trade-off parameter of l1 part of p and q
+relaxOption.gamma0  = 0;   %trade-off parameter of l0 part of v
+relaxOption.gamma1  = 0;    %trade-off parameter of l1 part of v
 relaxOption.theta   = 2;    %parameter of capped l1 approximation
 
 solution = relaxFBA(model,relaxOption);
