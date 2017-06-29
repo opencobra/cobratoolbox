@@ -75,7 +75,7 @@ fprintf('\n>> Toy example - minimal output.\n');
 fprintf('\n>> Toy example - all output arguments.\n');
 [minFluxT, maxFluxT, optsolT, retT, fbasolT, fvaminT, fvamaxT, statussolmin, statussolmax] = fastFVA(model, optPercentage);
 
-%% Validation of Toy Example
+% Validation of Toy Example
 load('refData_fastFVA.mat');
 
 assert(isequal(maxFlux, referenceToyResults.maxFlux));

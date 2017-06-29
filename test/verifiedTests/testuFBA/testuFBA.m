@@ -17,7 +17,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testMinSpan'));
 cd(fileDir);
 
-%% Load in data and model
+% Load in data and model
 % This data is quantified and volume adjusted. The following
 % variables will be loaded into your workspace:
 %   met_data        exo- and endo-metabolomics data
@@ -46,7 +46,7 @@ solverLPOk = changeCobraSolver('gurobi', 'LP', 0);
 solverMILPOk = changeCobraSolver('gurobi', 'MILP', 0);
 
 if solverMILPOk & solverLPOk
-    %% Linear regression
+    % Linear regression
     % Find the rate of change of each metabolite concentration
     changeSlopes = zeros(length(met_IDs), 1);
     changeIntervals = zeros(length(met_IDs), 1);
@@ -71,7 +71,7 @@ if solverMILPOk & solverLPOk
         changeIntervals(i, 1) = abs(changeSlopes(i, 1) - tmp2(1));
     end
 
-    %% Run uFBA algorithm
+    % Run uFBA algorithm
     % Determine which changes in metabolite concentration are siginificant
     % (based on 95% confidence):
     tmp1 = changeSlopes - changeIntervals;
@@ -86,7 +86,7 @@ if solverMILPOk & solverLPOk
 
     uFBAoutput = buildUFBAmodel(model, uFBAvariables);
 
-    %% Test output
+    % Test output
     sol = optimizeCbModel(uFBAoutput.model);
 
     assert(sol.f > 0.225 & sol.f < 0.235, 'Solution incorrect to 2 decimals.')
