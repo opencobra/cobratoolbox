@@ -1,10 +1,10 @@
 function [solution] = relaxFBA(model, relaxOption)
 %
-% Finds the mimimal set of relaxations on bounds and steady state constraint
-% to make the FBA problem feasible
+% Finds the mimimal set of relaxations on bounds and steady state
+% constraints to make the FBA problem feasible
 %
 % .. math::
-%      min ~&~ c^T v + \lambda ||r||_0 + \gamma (||p||_0 + ||q||_0) \\
+%      min ~&~ c^T v + \lambda ||r||_0 + \alpha (||p||_0 + ||q||_0) \\
 %      s.t ~&~ S v + r \leq, =, \geq  b \\
 %          ~&~ l - p \leq v \leq u + q \\
 %          ~&~ r \in R^m \\
@@ -54,8 +54,9 @@ function [solution] = relaxFBA(model, relaxOption)
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
-%                      * lamda - trade-off parameter of relaxation on steady state constraint
-%                      * gamma - trade-off parameter of relaxation on bounds
+%                      * lamda - weighting on relaxation of relaxation on steady state constraints S*v = b
+%                      * alpha - weighting on relaxation of reaction bounds
+%                      * gamma - weighting on zero norm of fluxes
 %
 % Note, excludedReactions and excludedMetabolites override all other relaxation options.
 %
@@ -80,13 +81,11 @@ function [solution] = relaxFBA(model, relaxOption)
 
 if isfield(model,'SIntRxnBool')
     intRxnBool = model.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
+    exRxnBool = ~intRxnBool;
 else
     model_Ex = findSExRxnInd(model);
     intRxnBool = model_Ex.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
+    exRxnBool = ~intRxnBool;
 end
 
 
@@ -149,17 +148,38 @@ if nargin < 3
     excludedMetabolitesTmp=relaxOption.excludedMetabolites;
 end
 
-if ~isfield(relaxOption,'gamma')
-    relaxOption.gamma0 = 10;    %trade-off parameter of l0 part v
-else
-    relaxOption.gamma0= relaxOption.gamma;
+%set global parameters on zero norm if they do not exist
+if ~isfield(relaxOption,'alpha')
+    relaxOption.alpha = 10; 
 end
 if ~isfield(relaxOption,'lambda')
-    relaxOption.lambda0 = 10;    %trade-off parameter of l0 part v
-else
-    relaxOption.lambda0= relaxOption.lambda;
+    relaxOption.lambda = 10;    
+end
+if ~isfield(relaxOption,'gamma')
+    relaxOption.gamma = 10;   
 end
 
+%set local paramters on zero norm for capped L1
+if ~isfield(relaxOption,'alpha0')
+    relaxOption.alpha0 = relaxOption.alpha; 
+end
+if ~isfield(relaxOption,'lambda0')
+    relaxOption.lambda0 = relaxOption.lambda;    
+end
+if ~isfield(relaxOption,'gamma0')
+    relaxOption.gamma0 = relaxOption.gamma;   
+end
+
+%set local paramters on one norm for capped L1
+if ~isfield(relaxOption,'alpha1')
+    relaxOption.alpha1 = relaxOption.alpha0/10; 
+end
+if ~isfield(relaxOption,'lambda1')
+    relaxOption.lambda1 = relaxOption.lambda0/10;    
+end
+if ~isfield(relaxOption,'gamma1')
+    relaxOption.gamma1 = relaxOption.gamma0/10;   
+end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
 if relaxOption.internalRelax == 0 %Exclude all internal reactions

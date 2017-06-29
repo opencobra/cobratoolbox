@@ -53,13 +53,11 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 
 if isfield(model,'SIntRxnBool')
     intRxnBool = model.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
+    exRxnBool = ~intRxnBool;
 else
     model_Ex = findSExRxnInd(model);
     intRxnBool = model_Ex.SIntRxnBool;
-    exRxnBool = true(size(intRxnBool));
-    exRxnBool(find(intRxnBool)) = false;
+    exRxnBool = ~intRxnBool;
 end
 
 relaxOption.maxUB = max(max(model.ub),-min(model.lb));
@@ -68,7 +66,7 @@ relaxOption.minLB = min(-max(model.ub),min(model.lb));
 stop = false;
 solution.stat = 1;
 
-if nargin < 3
+if exist('relaxOption','var')
     if isfield(relaxOption,'excludedReactions') == 0
         relaxOption.excludedReactions = false(n,1);
     end
@@ -112,7 +110,6 @@ if nargin < 3
     if isfield(relaxOption,'theta') == 0
         relaxOption.theta   = 2;    %parameter of capped l1 approximation
     end
-
 end
 
 [nbMaxIteration,epsilon,theta]      = deal(relaxOption.nbMaxIteration,relaxOption.epsilon,relaxOption.theta);
