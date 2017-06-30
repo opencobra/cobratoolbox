@@ -1,4 +1,4 @@
-function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExisting);
+function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExisting)
 % Updates model.metNames in a new model, using metNames of a reference
 % model.
 %
@@ -11,7 +11,7 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExis
 %    modelToUpdate:      COBRA model structure that needs to have its
 %                        model.metNames updated 
 % OPTIONAL INPUTS:
-%    wipeExisting:       1: remove all existing model.metNames in
+%    wipeExisting:       true: remove all existing model.metNames in
 %                        modelToUpdate, especially when model.metNames is
 %                        wrong.
 %
@@ -19,7 +19,11 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExis
 %    updatedModel:       COBRA model structure with corrected metNames
 %
 % .. Authors:
-%       - written by Diana El Assal 27/06/2017
+%       - written by Diana El Assal & Thomas Pfau 27/06/2017
+
+if ~exist('wipeExistening','var')
+  wipeExisting = false;
+end
 
 %remove the compartment info
 metsReference = regexprep(referenceModel.mets,'\[[^]\]$','');
@@ -28,7 +32,7 @@ updatedModel = modelToUpdate;
 [metsToUpdate,positionsToUpdateFrom] = ismember(metsUpdate,metsReference);
 
 %reset metNames field in modelToUpdate (if requested), or initialize if not existing
-if wipeExisting || ~isfield(updatedModel,'metNames')
+if wipeExisting || ~isfield(updatedModel,'metNames') || ~(length(updatedModel.metNames) == length(updatedModel.mets))
   updatedModel.metNames = cell(size(updatedModel.mets));
   updatedModel.metNames(~metsToUpdate) = {''}; % init metabolites not present in the second model.
 end
