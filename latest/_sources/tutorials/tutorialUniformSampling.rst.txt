@@ -1,4 +1,4 @@
-.. _tutorialUniformSampling
+.. _tutorialUniformSampling:
 
 Uniform sampling
 ================

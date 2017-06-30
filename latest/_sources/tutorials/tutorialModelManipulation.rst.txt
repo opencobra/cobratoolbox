@@ -1,4 +1,4 @@
-.. _tutorialModelManipulation
+.. _tutorialModelManipulation:
 
 Model manipulation
 ==================

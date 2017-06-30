@@ -39,7 +39,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="up" title="Analysis" href="analysis.html"/>
         <link rel="next" title="Deletion" href="deletion.html"/>
         <link rel="prev" title="fastFVA" href="fastFVA.html"/> 
 
@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">MOMA</a></li>
@@ -112,6 +112,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -168,7 +169,7 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
         
       <li>MOMA</li>
     
@@ -189,6 +190,156 @@
             
   <div class="section" id="moma">
 <span id="id1"></span><h1>MOMA<a class="headerlink" href="#moma" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.MOMA"></span><dl class="function">
+<dt id="src.analysis.MOMA.MOMA">
+<code class="descname">MOMA</code><span class="sig-paren">(</span><em>modelWT</em>, <em>modelDel</em>, <em>osenseStr</em>, <em>verbFlag</em>, <em>minNormFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/MOMA/MOMA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.MOMA.MOMA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a quadratic version of the MOMA (minimization of
+metabolic adjustment) approach</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelWT</strong> &#8211;
+Wild type model</li>
+<li><strong>modelDel</strong> &#8211;
+Deletion strain model</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>osenseStr</strong> &#8211;
+Maximize (&#8216;max&#8217;) / minimize (&#8216;min&#8217;) (Default = &#8216;max&#8217;)</li>
+<li><strong>verbFlag</strong> &#8211;
+Verbose output (Default = false)</li>
+<li><strong>minNormFlag</strong> &#8211;
+Work with minimum 1-norm flux distribution for the FBA
+problem (Default = false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solutionDel</strong> &#8211;
+Deletion solution structure</li>
+<li><strong>solutionWT</strong> &#8211;
+Wild-type solution structure</li>
+<li><strong>totalFluxDiff</strong> &#8211;
+Value of the linear MOMA objective, i.e.
+<span class="math">\(\sum (v_{wt}-v_{del})^2\)</span></li>
+<li><strong>solStatus</strong> &#8211;
+Solution status - solves two different types of MOMA problems:<ol class="arabic">
+<li>MOMA that avoids problems with alternative optima (this is the
+default)</li>
+<li>MOMA that uses a minimum 1-norm wild type FBA solution (this approach
+is used if minNormFlag = true)</li>
+</ol>
+</li>
+</ul>
+</div></blockquote>
+<p>First solve:</p>
+<div class="math">
+\[\begin{split}max ~&amp;~ c_{wt}^T v_{wt0} \\
+    ~&amp;~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+    ~&amp;~ S_{wt}v_{wt0} = 0 \\\end{split}\]</div>
+<p>Then solve:</p>
+<div class="math">
+\[\begin{split}min ~&amp;~ \sum (v_{wt} - v_{del})^2 \\
+    ~&amp;~ S_{wt}v_{wt} = 0 \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\\end{split}\]</div>
+<p>Here <span class="math">\(f_{wt}\)</span> is the optimal wild type objective value found by FBA in the
+first problem. Note that the FBA solution <span class="math">\(v_{wt0}\)</span> is not used in the second
+problem. This formulation avoids any problems with alternative optima</p>
+<p>First solve</p>
+<div class="math">
+\[\begin{split}max ~&amp;~ c_{wt}^T v_{wt0} \\
+    ~&amp;~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
+    ~&amp;~ S_{wt}v_{wt0} = 0 \\\end{split}\]</div>
+<p>Then solve</p>
+<div class="math">
+\[\begin{split}min ~&amp;~ |v_{wt}| \\
+    ~&amp;~ S_{wt}v_{wt} = b_{wt} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\\end{split}\]</div>
+<p>Here <span class="math">\(f_{wt}\)</span> is the objective value obtained in the 1st optimization.</p>
+<p>Finally solve:</p>
+<div class="math">
+\[\begin{split}min ~&amp;~ \sum (v_{wt} - v_{del})^2 \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del}\end{split}\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>1) These formulation allows for selecting for more appropriate
+optimal wild type FBA solutions as the starting point as opposed to
+picking an arbitrary starting point (original MOMA implementation).</p>
+<p class="last">2) The reaction sets in the two models do not have to be equal as long as
+there is at least one reaction in common</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.MOMA.linearMOMA">
+<code class="descname">linearMOMA</code><span class="sig-paren">(</span><em>modelWT</em>, <em>modelDel</em>, <em>osenseStr</em>, <em>minFluxFlag</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/MOMA/linearMOMA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.MOMA.linearMOMA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a linear version of the MOMA (minimization of metabolic adjustment) approach</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelWT, modelDel, osenseStr, minFluxFlag, verbFlab)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelWT</strong> &#8211;
+Wild type model</li>
+<li><strong>modelDel</strong> &#8211;
+Deletion strain model</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>osenseStr</strong> &#8211;
+Maximize (&#8216;max&#8217;) / minimize (&#8216;min&#8217;) (Default = &#8216;max&#8217;)</li>
+<li><strong>minFluxFlag</strong> &#8211;
+Minimize the absolute value of fluxes in the optimal MOMA
+solution (Default = false)</li>
+<li><strong>verbFlag</strong> &#8211;
+Verbose output (Default = false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solutionDel</strong> &#8211;
+Deletion solution structure</li>
+<li><strong>solutionWT</strong> &#8211;
+Wild-type solution structure</li>
+<li><strong>totalFluxDiff</strong> &#8211;
+Value of the linear MOMA objective, i.e. <span class="math">\(\sum |v_{wt}-v_{del}|\)</span></li>
+<li><strong>solStatus</strong> &#8211;
+Solution status - solves the problem: (<cite>f_wt</cite> is the optimal wild type objective value found by FBA)</li>
+</ul>
+</div></blockquote>
+<div class="math">
+\[\begin{split}min ~&amp;~  \sum |v_{wt} - v_{del}| \\
+    ~&amp;~ S_{wt}v_{wt} = 0 \\
+    ~&amp;~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
+    ~&amp;~ c_{wt}^T v_{wt} = f_{wt} \\
+    ~&amp;~ S_{del}v_{del} = 0 \\
+    ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del}\end{split}\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>1) This formulation allows for selecting the most appropriate
+optimal wild type FBA solution as the starting point as opposed to
+picking an arbitrary starting point (original MOMA implementation).</p>
+<p class="last">2) The reaction sets in the two models do not have to be equal as long as
+there is at least one reaction in common</p>
+</div>
+</dd></dl>
+
 </div>
 
 

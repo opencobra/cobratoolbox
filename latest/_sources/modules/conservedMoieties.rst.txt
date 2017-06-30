@@ -5,5 +5,5 @@
 conservedMoieties
 -----------------
 
-.. automodule:: src.modelAnalysis.topology.conservedMoieties
+.. automodule:: src.analysis.topology.conservedMoieties
    :members:

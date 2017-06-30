@@ -1,4 +1,4 @@
-.. _tutorialNumCharact
+.. _tutorialNumCharact:
 
 Numerical characteristics of a stoichiometric matrix
 ====================================================

@@ -5,5 +5,5 @@
 Lsqr
 ----
 
-.. automodule:: src.modelAnalysis.subspaces.lsqr
+.. automodule:: src.analysis.subspaces.lsqr
    :members:

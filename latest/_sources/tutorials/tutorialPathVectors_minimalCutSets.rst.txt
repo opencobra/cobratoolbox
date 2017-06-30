@@ -1,4 +1,4 @@
-.. _tutorialPathVectors_minimalCutSets
+.. _tutorialPathVectors_minimalCutSets:
 
 Computing path vectors and minimal cut sets
 ===========================================

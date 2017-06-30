@@ -5,5 +5,5 @@
 graphHypergraphConversion
 -------------------------
 
-.. automodule:: src.modelAnalysis.topology.graphHypergraphConversion
+.. automodule:: src.analysis.topology.graphHypergraphConversion
    :members:

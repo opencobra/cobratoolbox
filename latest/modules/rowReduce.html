@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
@@ -119,6 +119,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -175,7 +176,7 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
         
           <li><a href="subspaces.html">Subspaces</a> &raquo;</li>
         
@@ -198,6 +199,45 @@
             
   <div class="section" id="rowreduce">
 <span id="id1"></span><h1>rowReduce<a class="headerlink" href="#rowreduce" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.subspaces.rowReduce"></span><dl class="function">
+<dt id="src.analysis.subspaces.rowReduce.rowReduce">
+<code class="descname">rowReduce</code><span class="sig-paren">(</span><em>A</em>, <em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/subspaces/rowReduce/rowReduce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.rowReduce.rowReduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eliminates dependent rows from <cite>A</cite> &amp; <cite>a</cite> where <span class="math">\(A x = a\)</span></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[AA, aa, pp, rankA, p] = rowReduce(A, a)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+from <span class="math">\(A x = a\)</span></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>a</strong> &#8211;
+from <span class="math">\(A x = a\)</span></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>AA</strong> &#8211;
+row reduced <cite>A</cite></li>
+<li><strong>aa</strong> &#8211;
+row reduced <cite>a</cite> i.e. <cite>aa = a(pp)</cite></li>
+<li><strong>pp</strong> &#8211;
+1:rankA indices of independent rows</li>
+<li><strong>rankA</strong> &#8211;
+rank of <cite>A</cite></li>
+<li><strong>p</strong> &#8211;
+row permutation which leaves first <cite>1:rankA</cite> rows independent and
+last rows dependent</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 

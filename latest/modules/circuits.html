@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
@@ -119,6 +119,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -175,7 +176,7 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
         
           <li><a href="topology.html">Topology</a> &raquo;</li>
         
@@ -198,6 +199,40 @@
             
   <div class="section" id="circuits">
 <span id="id1"></span><h1>Circuits<a class="headerlink" href="#circuits" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.topology.circuits"></span><dl class="function">
+<dt id="src.analysis.topology.circuits.getStoichCircuitsJohnson">
+<code class="descname">getStoichCircuitsJohnson</code><span class="sig-paren">(</span><em>S</em>, <em>undirected</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/topology/circuits/getStoichCircuitsJohnson.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.circuits.getStoichCircuitsJohnson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all elementary circuits of a bidirectional Stoichiometric matrix using Johnson&#8217;s circuit
+enumeration algorithm using code from the CellNetAnalyzer toolbox by Stefan Klampt</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[C, csigns] = getStoichCircuitsJohnson(S, undirected)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+stoichiometric matrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>undirected</strong> &#8211;
+determines whether or not to treat edges as undirected (1) or directed (0);
+interactions cannot be enforced in undirected graphs (default = 0)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>C</strong> &#8211;
+matrix that contains the cycles row-wise (columns correspond to edges / the interactions)</li>
+<li><strong>csigns</strong> &#8211;
+vector indicating for each path whether it is positive (1) or negative (-1)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 

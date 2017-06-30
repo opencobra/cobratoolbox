@@ -13,5 +13,5 @@ Subspaces
    rowReduce
    subspaceProjection
 
-.. automodule:: src.modelAnalysis.subspaces
+.. automodule:: src.analysis.subspaces
    :members:

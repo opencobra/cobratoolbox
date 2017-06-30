@@ -5,6 +5,6 @@
 Sampling
 --------
 
-.. automodule:: src.modelAnalysis.sampling
+.. automodule:: src.analysis.sampling
    :members:
 

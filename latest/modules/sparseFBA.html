@@ -39,7 +39,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="up" title="Analysis" href="analysis.html"/>
         <link rel="next" title="Subspaces" href="subspaces.html"/>
         <link rel="prev" title="Sampling" href="sampling.html"/> 
 
@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
@@ -112,6 +112,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -168,7 +169,7 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
         
       <li>sparseFBA</li>
     
@@ -189,6 +190,92 @@
             
   <div class="section" id="sparsefba">
 <span id="id1"></span><h1>sparseFBA<a class="headerlink" href="#sparsefba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.sparseFBA"></span><dl class="function">
+<dt id="src.analysis.sparseFBA.sparseFBA">
+<code class="descname">sparseFBA</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>checkMinimalSet</em>, <em>checkEssentialSet</em>, <em>zeroNormApprox</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sparseFBA/sparseFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the minimal set of reactions subject to a LP objective</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+(the following fields are required - others can be supplied):<ul>
+<li>S - Stoichiometric matrix</li>
+<li>b - Right hand side = dx/dt</li>
+<li>c - Objective coefficients</li>
+<li>lb - Lower bounds</li>
+<li>ub - Upper bounds</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>osenseStr</strong> &#8211;
+(default = &#8216;max&#8217;)</p>
+<ul class="simple">
+<li>max: <span class="math">\(f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>min: <span class="math">\(f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>none: ignore the constraint <span class="math">\(c^T v = f*\)</span></li>
+</ul>
+</li>
+<li><p class="first"><strong>checkMinimalSet</strong> &#8211;
+Heuristically check if the selected set of reactions is minimal
+by removing one by one the predicted active reaction</p>
+<blockquote>
+<div><ul class="simple">
+<li>true = check (default value)</li>
+<li>false = do not check</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>checkEssentialSet</strong> &#8211;
+Heuristically check if the selected set of reactions is essential</p>
+</li>
+<li><p class="first"><strong>zeroNormApprox</strong> &#8211;
+appoximation type of zero-norm (only available when minNorm = &#8216;zero&#8217;) (default = &#8216;cappedL1&#8217;)</p>
+<ul class="simple">
+<li>&#8216;cappedL1&#8217; : Capped-L1 norm</li>
+<li>&#8216;exp&#8217;      : Exponential function</li>
+<li>&#8216;log&#8217;      : Logarithmic function</li>
+<li>&#8216;SCAD&#8217;     : SCAD function</li>
+<li>&#8216;lp-&#8216;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(p &lt; 0\)</span></li>
+<li>&#8216;lp+&#8217;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(0 &lt; p &lt; 1\)</span></li>
+<li>&#8216;l1&#8217;       : L1 norm</li>
+<li>&#8216;all&#8217;      : try all approximations and return the best result</li>
+</ul>
+</li>
+<li><p class="first"><strong>printLevel</strong> &#8211;
+Printing level</p>
+<ul class="simple">
+<li>0 - Silent (Default)</li>
+<li>1 - Summary information</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vSparse</strong> &#8211;
+Depends on the set of reactions</li>
+<li><strong>sparseRxnBool</strong> &#8211;
+Returns a vector with 1 and 0&#8217;s, where 1 means sparse</li>
+<li><strong>essentialRxnBool</strong> &#8211;
+Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
+</ul>
+</div></blockquote>
+<div class="math">
+\[\begin{split}min ~&amp;~ ||v||_0 \\
+s.t ~&amp;~ S v \leq, = or \geq b \\
+    ~&amp;~ c^T v = f* \\
+    ~&amp;~ l \leq v \leq u\end{split}\]</div>
+<p>where <span class="math">\(f*\)</span> is the optimal value of objective (default is <span class="math">\(max c^T v\)</span>).</p>
+</dd></dl>
+
 </div>
 
 

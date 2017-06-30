@@ -5,5 +5,5 @@
 Coupling
 --------
 
-.. automodule:: src.modelAnalysis.coupling
+.. automodule:: src.analysis.coupling
    :members:

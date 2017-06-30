@@ -7,11 +7,16 @@ Tutorials
     All tutorials are included in the folder `tutorials <https://github.com/opencobra/cobratoolbox/tree/master/tutorials>`_. More tutorials are currently being prepared.
 
 
+
 .. toctree::
 
    tutorialModelCreation
    tutorialModelManipulation
-   tutorialIdentifyMoieties
+   tutorialAtomicallyResolveReconstruction
    tutorialNumCharact
    tutorialUniformSampling
    tutorialPathVectors_minimalCutSets
+   tutorialMinSpan
+   tutorialMetabotoolsI
+   tutorialMetabotoolsII
+   tutorialUFBA
