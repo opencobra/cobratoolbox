@@ -5,5 +5,5 @@
 optimalRays
 -----------
 
-.. automodule:: src.modelAnalysis.topology.extremeRays.optimalRays
+.. automodule:: src.analysis.topology.extremeRays.optimalRays
    :members:

@@ -1,7 +1,7 @@
-.. _modelAnalysis:
+.. _analysis:
 
-Model analysis
---------------
+Analysis
+--------
 
 .. toctree::
 
@@ -22,6 +22,7 @@ Model analysis
    rumba
    coupling
    mdFBA
+   uFBA
 
-.. automodule:: src.modelAnalysis
+.. automodule:: src.analysis
    :members:

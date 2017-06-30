@@ -9,5 +9,5 @@ lrs
 
    lrsInterface
 
-.. automodule:: src.modelAnalysis.topology.extremeRays.lrs
+.. automodule:: src.analysis.topology.extremeRays.lrs
    :members:
