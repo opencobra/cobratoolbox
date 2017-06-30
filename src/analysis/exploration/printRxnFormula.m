@@ -27,6 +27,8 @@ function formulas = printRxnFormula(model, varargin)
 %                                            (Default = false)
 %                       * gprFlag:           print gene protein reaction association
 %                                            (Default = false)
+%                       * proteinFlag:       print the protein names associated with the genes in the 
+%                                            GPRs associated with the reactions. (Default = false)
 %
 % OUTPUT:
 %    formulas:          Cell array containing formulas of specified reactions
@@ -53,7 +55,7 @@ function formulas = printRxnFormula(model, varargin)
 %       - Thomas Pfau May 2017 - Changed to Parameter value pair input
 
 
-optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag'};
+optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag', 'proteinFlag'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     %We have an old style thing....
     %Now, we need to check, whether this is a formula, or a complex setup
@@ -77,6 +79,8 @@ parser.addParameter('metNameFlag',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('fid',1, @isnumeric);
 parser.addParameter('directionFlag',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('gprFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('proteinFlag',false,@(x) isnumeric(x) || islogical(x));
+
 
 parser.parse(model,varargin{:})
 
@@ -88,16 +92,17 @@ metNameFlag = parser.Results.metNameFlag;
 fid = parser.Results.fid;
 directionFlag = parser.Results.directionFlag;
 gprFlag = parser.Results.gprFlag;
+proteinFlag = parser.Results.proteinFlag;
 
-if gprFlag && ~isfield(model,'grRules')
-    %if we want to print the grRules but we don't have the field, create
-    %it.
-    model = generateGrRules(model);
+if proteinFlag && ~isfield(model,'proteins')
+    %If no proteins field is present, we will use the genes field.    
+    fprintf('Proteins requested, but no proteins Field exists in the model, using genes instead!\n');    
+    model.proteins = model.genes;
 end
 
 if metNameFlag && ~isfield(model,'metNames')
     %if we want to print the metNames, but they don't exist, just use the mets instead.
-    warning('metNames requested, but no metNames Field exists in the model, using mets instead');
+    fprintf('metNames requested, but no metNames Field exists in the model, using mets instead!\n');
     model.metNames = model.mets;
 end
 
@@ -205,14 +210,37 @@ for i = 1:length(rxnAbbrList)
         formulaStr = 'NA';
     end
     if printFlag && gprFlag
-        if (rxnID > 0) && (isfield(model, 'grRules'))
-            if (isempty(model.grRules{rxnID}))
+        if (rxnID > 0) 
+            if (isfield(model, 'grRules'))
+                if (isempty(model.grRules{rxnID}))
+                    fprintf(fid, '\t');
+                else
+                    fprintf(fid, '\t%s', model.grRules{rxnID});
+                end
+            elseif (isfield(model,'rules'))
+                if (isempty(model.rules{rxnID}))
+                    fprintf(fid, '\t');
+                else            
+                    rule = regexprep(model.rules{rxnID},'|','or');
+                    rule = regexprep(rule,'&','and');
+                    rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.genes{num2str($1)}}');                
+                    fprintf(fid, '\t%s', rule);
+                end
+            end
+                
+        end
+    end
+    if printFlag && proteinFlag
+        if (rxnID > 0) && (isfield(model, 'rules'))            
+            if (isempty(model.rules{rxnID}))
                 fprintf(fid, '\t');
-            else
-                fprintf(fid, '\t%s', model.grRules{rxnID});
+            else            
+                rule = regexprep(model.rules{rxnID},'|','or');
+                rule = regexprep(rule,'&','and');
+                rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.proteins{num2str($1)}}');                
+                fprintf(fid, '\t%s', rule);
             end
         end
-
     end
     if (lineChangeFlag) && printFlag
         fprintf(fid, '\n');
