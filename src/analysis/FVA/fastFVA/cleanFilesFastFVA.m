@@ -17,7 +17,7 @@ if nargin < 1
 end
 
 % define the root directory of fastFVA
-rootDirFastFVA = [CBTDIR filesep 'src' filesep 'modelAnalysis' filesep 'FVA' filesep 'fastFVA'];
+rootDirFastFVA = [CBTDIR filesep 'src' filesep 'analysis' filesep 'FVA' filesep 'fastFVA'];
 
 % define the directory to the logFiles and results directories
 dirLogFiles = [rootDirFastFVA filesep 'logFiles'];
