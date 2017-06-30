@@ -196,14 +196,14 @@ end
 % build UFBAmodel
 uFBAmodel = model;
 
-[metFields,dimension] = getModelFieldsForType(model,'mets');
+[metFields,dimension] = getModelFieldsForType(uFBAmodel,'mets');
 metFields = setdiff(metFields,'mets'); % mets is special.
-uFBAmodel.mets = [strcat(model.mets, '_G'); strcat(model.mets, '_L')];
+uFBAmodel.mets = [strcat(uFBAmodel.mets, '_G'); strcat(uFBAmodel.mets, '_L')];
 for field = 1:numel(metFields)
     if dimension(field) == 1
-        model.(metFields{field}) = [model.metFields{field};model.metFields{field}];
+        uFBAmodel.(metFields{field}) = [uFBAmodel.(metFields{field});uFBAmodel.(metFields{field})];
     elseif dimension(field) == 2
-        model.(metFields{field}) = [model.metFields{field},model.metFields{field}];
+        uFBAmodel.(metFields{field}) = [uFBAmodel.(metFields{field}),uFBAmodel.(metFields{field})];
     end
 end
 
