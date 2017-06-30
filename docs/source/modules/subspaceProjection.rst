@@ -5,5 +5,5 @@
 subspaceProjection
 ------------------
 
-.. automodule:: src.modelAnalysis.subspaces.subspaceProjection
+.. automodule:: src.analysis.subspaces.subspaceProjection
    :members:

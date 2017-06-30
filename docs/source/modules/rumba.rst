@@ -5,5 +5,5 @@
 rumba
 -----
 
-.. automodule:: src.modelAnalysis.rumba
+.. automodule:: src.analysis.rumba
    :members:

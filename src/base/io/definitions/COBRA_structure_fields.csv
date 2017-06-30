@@ -1,0 +1,40 @@
+Model Field	Xdim	Ydim	Evaluator	databaseid	qualifier	referenced Field	Default Value	DBPatterns	Property Description	Field Description
+S	mets	rxns	isnumeric(x) || issparse(x)				0		Sparse or Full Matrix of Double	The stoichiometric matrix containing the model structure (for large models a sparse format is suggested)
+mets	mets	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))				['M' num2str(i)]		Column Cell Array of Strings	Identifiers of the metabolites
+b	mets	1	isnumeric(x)				0		Column Vector of Doubles	The coefficients of the constraints of the metabolites.
+csense	mets	1	ischar(x)				E		Column Vector of Chars	The sense of the constraints represented by b, each row is either E (equality), L(less than) or G(greater than)
+rxns	rxns	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))				['R' num2str(i)]		Column Cell Array of Strings	Identifiers for the reactions.
+lb	rxns	1	isnumeric(x)				-1000		Column Vector of Doubles	The lower bounds for fluxes through the reactions.
+ub	rxns	1	isnumeric(x)				1000		Column Vector of Doubles	The upper bounds for fluxes through the reactions.
+c	rxns	1	isnumeric(x)				0		Column Vector of Doubles	The objective coefficient of the reactions.
+osense	1	1	isnumeric(x)				-1		Double	The objective sense either -1 for maximisation or 1 for minimisation
+genes	genes	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))				['G' num2str(i)]		Column Cell Array of Strings	Identifiers of the genes in the model
+rules	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux
+geneNames	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))		is	genes	model.genes{i}		Column Cell Array of Strings	Full names of each corresponding genes.
+compNames	comps	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				model.comps{i}		Column Cell Array of Strings	Descriptions of the Compartments (compNames(m) is associated with comps(m))
+comps	comps	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				['C' num2str{i}]		Column Cell Array of Strings	Symbols for compartments, can include Tissue information
+proteinNames	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				model.proteins{i}		Column Cell Array of Strings	Full Name for each Protein
+proteins	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				['COBRAProtein' num2str(i)]		Column Cell Array of Strings	Proteins associated with each gene.
+metCharges	mets	1	isnumeric(x)				NaN		Column Vector of Double	The charge of the respective metabolite (NaN if unknown)
+metFormulas	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	Elemental formula for each metabolite.
+metSmiles	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	Formula for each metabolite in SMILES Format
+metNames	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				model.mets{i}		Column Cell Array of Strings	Full name of each corresponding metabolite.
+metNotes	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	Additional Notes for the respective metabolite.
+metHMDBID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	hmdb	is	mets	''	^HMDB\d{5}$	Column Cell Array of Strings	HMDB ID of the metabolite.
+metInChIString	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	inchi	is	mets	''	^InChI\=1S?\/[A-Za-z0-9]+(\+[0-9]+)?(\/[cnpqbtmsih][A-Za-z0-9\-\+\(\)\,\/]+)*$	Column Cell Array of Strings	Formula for each metabolite in the InCHI strings format.
+metKEGGID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.compound;kegg	is	mets	''	^C\d+$	Column Cell Array of Strings	KEGG ID of the metabolite.
+metChEBIID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	chebi;obo.chebi	is	mets	''	^CHEBI:\d+$	Column Cell Array of Strings	ChEBI ID of the metabolite.
+metPubChemID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubchem.compound	is	mets	''	^\d+$	Column Cell Array of Strings	PubChem ID of each metabolite
+metMetaNetXID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	metanetx.chemical	is	mets	''	^MNXM\d+$	Column Cell Array of Strings	MetaNetX identifier of the metabolite
+description	NaN	NaN	ischar(x) || isstruct(x)				struct()		String or Struct	Name of a file the model is loaded from.
+modelVersion	NaN	NaN	isstruct(x)				struct()		Struct	Information on the model version
+geneEntrezID	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ncbigene	is;isEncodedBy	genes	''	^\d+$	Column Cell Array of Strings	Entrez IDs of genes
+grRules	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	A string representation of the GPR rules defined in a readable format.
+rxnGeneMat	rxns	genes	issparse(x) || isnumeric(x) || islogical(x)				0		Sparse or Full Matrix of Double or Boolean	Matrix with rows corresponding to reactions and columns corresponding to genes.
+rxnConfidenceScores	rxns	1	isnumeric(x) || iscell(x) && isnumeric(cellfun(str2num,x))				0		Column Vector of double	Confidence scores for reaction presence (0-5, with 5 being the highest confidence)
+rxnNames	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				model.rxns{i}		Column Cell Array of Strings	Full name of each corresponding reaction.
+rxnNotes	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	Description of each corresponding reaction.
+rxnECNumbers	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ec-code	is	rxns	''	^\d+\.-\.-\.-|\d+\.\d+\.-\.-|\d+\.\d+\.\d+\.-|\d+\.\d+\.\d+\.(n)?\d+$	Column Cell Array of Strings	E.C. number for each reaction.
+rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDescribedBy	rxns	''	^\d+$	Column Cell Array of Strings	Description of references for each corresponding reaction.
+rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.
+subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	subSystem assignment for each reaction

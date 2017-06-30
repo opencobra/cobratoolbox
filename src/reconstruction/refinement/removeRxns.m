@@ -88,7 +88,7 @@ selectRxns = true(nRxns, 1);
 selectRxns(removeInd) = false;
 
 % Construct new model
-modelOut = removeRelevantModelFields(model,~selectRxns,'rxns',numel(model.rxns));
+modelOut = removeFieldEntriesForType(model,~selectRxns,'rxns',numel(model.rxns));
 
 % Reconstruct the match list
 if irrevFlag

@@ -70,24 +70,19 @@ if db && desc
     error('Cannot simultaneously return database and Description fields')
 end
 
-
-
 if db
     if isempty(CBT_DB_FIELD_PROPS)
-%        fileName = which('COBRA_structure_fields.xlsx');
-%        [~,~,raw] = xlsread(fileName,'Programatic Specification');
-        ModelFieldDefinitions;
-        raw = ProgramaticModelFields;
+        fileName = which('COBRA_structure_fields.csv');
+        [raw] = tdfread(fileName);
+
+        fields = fieldnames(raw);
+        for i = 1:numel(fields)
+            %Convert everything to strings.
+            raw.(fields{i}) = cellstr(raw.(fields{i}));
+        end
         %Get the indices for database, qualifier and reference.
-        dbpos = find(cellfun(@(x) ischar(x) && strcmp(x,'databaseid'),raw(1,:)));
-        qualpos = find(cellfun(@(x) ischar(x) && strcmp(x,'qualifier'),raw(1,:)));
-        reffieldPos = find(cellfun(@(x) ischar(x) && strcmp(x,'referenced Field'),raw(1,:)));
-        fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
-        patternPos = find(cellfun(@(x) ischar(x) && strcmp(x,'DBPatterns'),raw(1,:)));
-        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,dbpos));
-        %Ignore the first row, headers.
-        relrows(1) = false;
-        relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos,patternPos]);
+        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.databaseid);
+        relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows)];
         dbInfo = cell(0,5);
         for i = 1:size(relarray)
             fieldRef = relarray{i,4}(1:end-1);
@@ -107,18 +102,26 @@ end
 
 if desc
     if isempty(CBT_DESC_FIELD_PROPS)
-        %fileName = which('COBRA_structure_fields.xlsx');
-        %[~,~,raw] = xlsread(fileName,'Field Specification');
-        ModelFieldDefinitions;
-        raw = DescriptiveFieldDefinitions;
+        fileName = which('COBRA_structure_fields.csv');
+        [raw] = tdfread(fileName);
+
+        fields = fieldnames(raw);
+        for i = 1:numel(fields)
+            %Convert everything to strings.
+            raw.(fields{i}) = cellstr(raw.(fields{i}));
+            if strcmp(fields{i},'Ydim') || strcmp(fields{i},'Xdim')
+                raw.(fields{i}) = strrep(raw.(fields{i}),'rxns','n');
+                raw.(fields{i}) = strrep(raw.(fields{i}),'genes','g');
+                raw.(fields{i}) = strrep(raw.(fields{i}),'mets','m');
+                raw.(fields{i}) = strrep(raw.(fields{i}),'comps','c');
+                raw.(fields{i}) = strrep(raw.(fields{i}),'NaN','');
+            end
+        end
+
         %Get the indices for database, qualifier and reference.
-        dimPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Dimension'),raw(1,:)));
-        descPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Field Description'),raw(1,:)));
-        propPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Property Description'),raw(1,:)));
-        fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
-        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,fieldNamePos));
-        relrows(1) = 0;
-        relarray = raw(relrows,[fieldNamePos,dimPos,propPos,descPos]);
+        relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
+        fieldDimensions = regexprep(strcat(raw.Xdim(relrows),{' x '},raw.Ydim(relrows)),'^ x $','');
+        relarray = [raw.Model_Field(relrows),fieldDimensions,raw.Property_Description(relrows), raw.Field_Description(relrows)];
         dbInfo = cell(size(relarray,1),4);
         for i = 1:size(relarray)
             dbInfo(i,:) = { relarray{i,1},relarray{i,2},relarray{i,3},relarray{i,4}};
@@ -130,18 +133,17 @@ if desc
 end
 
 if isempty(CBT_PROG_FIELD_PROPS)
-    ModelFieldDefinitions;
-    raw = ProgramaticModelFields;
+     fileName = which('COBRA_structure_fields.csv');
+     [raw] = tdfread(fileName);
+     
+     fields = fieldnames(raw);
+     for i = 1:numel(fields)
+         %Convert everything to strings.
+         raw.(fields{i}) = cellstr(raw.(fields{i}));
+     end
     %Get the indices for database, qualifier and reference.
-    xPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Xdim'),raw(1,:)));
-    yPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Ydim'),raw(1,:)));
-    evalPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Evaluator'),raw(1,:)));
-    fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
-    defaultPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Default Value'),raw(1,:)));
-    relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,fieldNamePos));
-    %Ignore the first row, headers.
-    relrows(1) = false;
-    relarray = raw(relrows,[fieldNamePos,xPos,yPos,evalPos,defaultPos]);
+    relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
+    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows)];
     dbInfo = cell(0,5);
     for i = 1:size(relarray)
         xval = relarray{i,2};
@@ -151,7 +153,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 xval = xnumval;
             end
         end
-           yval = relarray{i,3};
+        yval = relarray{i,3};
         if ~isnumeric(yval)
             ynumval = str2num(yval);
             if ~isempty(ynumval)
@@ -159,7 +161,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
             end
         end
         default = relarray{i,5};
-        if ischar(default)           
+        if ischar(default)
             if ~isempty(str2num(default))
                 default = str2num(default);
             end

@@ -20,15 +20,15 @@ function abcModel = alphabetizeModel(model)
 
 [~,iRxns] = sort(model.rxns);
 [~,iMets] = sort(model.mets);
-model = updateRelevantFieldOrder(model,'rxns',iRxns);
-model = updateRelevantFieldOrder(model,'mets',iMets);
+model = updateFieldOrderForType(model,'rxns',iRxns);
+model = updateFieldOrderForType(model,'mets',iMets);
 
 if isfield(model,'genes')
     [~,iGenes] = sort(model.genes);
-    model = updateRelevantFieldOrder(model,'genes',iGenes);
+    model = updateFieldOrderForType(model,'genes',iGenes);
 end
 if isfield(model,'comps')
     [~,iComps] = sort(model.comps);
-    model = updateRelevantFieldOrder(model,'comps',iComps);
+    model = updateFieldOrderForType(model,'comps',iComps);
 end
 abcModel = model;

@@ -5,5 +5,5 @@
 FR
 --
 
-.. automodule:: src.modelAnalysis.topology.FR
+.. automodule:: src.analysis.topology.FR
    :members:

@@ -109,5 +109,5 @@ model.grRules{rxnID} = grRule;
 model.rules = columnVector(model.rules);
 model.grRules = columnVector(model.grRules);
 if nGenes > nGenesInit
-    model = updateRelevantModelFields(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
+    model = extendModelFieldsForType(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
 end
