@@ -291,11 +291,10 @@ else
 end
 
 % creates the directory where the log files will be generated
-currentDir = pwd;
-logFileDir = [currentDir filesep 'fastFVALogFiles'];
-if exist(logFileDir, 'dir') ~= 7
-    mkdir(logFileDir);
-end
+rootDirFastFVA = [CBTDIR filesep 'src' filesep 'analysis' filesep 'FVA' filesep 'fastFVA'];
+
+% define the directory to the logFiles and results directories
+logFileDir = [rootDirFastFVA filesep 'logFiles'];
 
 % Launch fastFVA on 1 core
 if nworkers <= 1
