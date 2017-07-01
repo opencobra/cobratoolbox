@@ -16,7 +16,7 @@ function model = buildRxnGeneMat(model)
 %             Diana El Assal 30/6/2017 - updates
 
 % First, update the genes in the model
-if ~isempty(model.genes)
+if ~isempty(model.grRules)
     model = updateGenes(model);
 end
 
