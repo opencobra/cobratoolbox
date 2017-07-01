@@ -5,5 +5,5 @@
 Transport
 ---------
 
-.. automodule:: src.modelAnalysis.transport
+.. automodule:: src.analysis.transport
    :members:

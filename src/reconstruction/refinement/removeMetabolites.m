@@ -34,7 +34,7 @@ end
 selMets = ~ismember(model.mets,metaboliteList);
 
 % Construct new model
-modelOut = removeRelevantModelFields(model, ~selMets, 'mets', numel(model.mets));
+modelOut = removeFieldEntriesForType(model, ~selMets, 'mets', numel(model.mets));
 
 
 if removeRxnFlag

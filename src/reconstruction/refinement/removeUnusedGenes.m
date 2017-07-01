@@ -23,6 +23,6 @@ function modelNew = removeUnusedGenes(model)
     %update the rxnGeneMatField;    
     model = buildRxnGeneMat(model);
     genesToRemove = sum(model.rxnGeneMat) == 0;
-    model = removeRelevantModelFields(model,genesToRemove,'genes',numel(model.genes));
+    model = removeFieldEntriesForType(model,genesToRemove,'genes',numel(model.genes));
     modelNew=model;    
 end

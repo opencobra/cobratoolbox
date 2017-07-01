@@ -8,15 +8,15 @@ Please ensure that you have a working `MATLAB` [installation](https://nl.mathwor
 
 #### git
 
-You can check if you have a working installation of `git` by typing in the `Terminal` (on `linux` and `macOS`) or `Git Bash` (in `Windows`):
+You can check if you have a working installation of `git` by typing in the `Terminal` (on `linux` and `macOS`) or `cmd` (in `Windows`, not `Git Bash`):
 ```bash
 $ git --version
 ```
-If installed properly, this will return `git version 2.10.1 [...]` or similar with another version number.
+If installed properly, this will return `git version 2.13.1 [...]` or similar with another version number.
 
 #### curl
 
-You can check if you have a working installation of `curl` by typing in the terminal (or GUI Bash):
+You can check if you have a working installation of `curl` by typing in the terminal (`cmd` on Windows, not `Git Bash`):
 ```bash
 $ curl --version
 ```
@@ -36,7 +36,7 @@ In order to install `git`, install the [Xcode Command Line Tools](http://osxdail
 
 **Windows**
 
-Please download the `git` tools for Windows from [here](https://git-scm.com/download). During the installation process, please ensure that you select **Use Git from the Windows Command Prompt**. In addition, please make sure that you select **Checkout as-is, commit Unix-style line endings**.
+Please download the `git` tools for Windows from [here](https://git-scm.com/download). During the installation process, please ensure that you select **Use Git Bash and optional Unix tools from the Windows Command prompt**. In addition, please make sure that you select **Checkout as-is, commit Unix-style line endings**.
 
 <div align="center">
 <img src="../_static/images/installation_git_windows_0.png" height="280px">&nbsp;&nbsp;&nbsp;<img src="../_static/images/installation_git_windows_1.png" height="280px">.

@@ -20,10 +20,6 @@ function configEnvVars(printLevel)
 %    printLevel:    default = 0, verbose level
 %
 
-    global GUROBI_PATH;
-    global ILOG_CPLEX_PATH;
-    global TOMLAB_PATH;
-    global MOSEK_PATH;
     global ENV_VARS;
 
     if nargin < 1
@@ -31,6 +27,12 @@ function configEnvVars(printLevel)
     end
 
     if exist('ENV_VARS.STATUS', 'var') == 1 || ENV_VARS.STATUS == 0
+        global GUROBI_PATH;
+        global ILOG_CPLEX_PATH;
+        global TOMLAB_PATH;
+        global MOSEK_PATH;
+        GUROBI_PATH = []; ILOG_CPLEX_PATH = []; TOMLAB_PATH = []; MOSEK_PATH = [];
+
         solverPaths = {};
         solverPaths{1, 1} = {'ILOG_CPLEX_PATH'};
         solverPaths{1, 2} = {'/Applications/IBM/ILOG/CPLEX_Studio1271', ...
@@ -172,10 +174,7 @@ function configEnvVars(printLevel)
                     % if the solver variable is still empty, then give instructions on how to proceed
                     if isempty(eval(globEnvVar))
                         if printLevel > 0
-                            solversLink = 'https://opencobra.github.io/cobratoolbox/docs/solvers.html';
-                            if usejava('desktop')
-                                solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
-                            end
+                            solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
                             fprintf(['   - [', method, '] ', globEnvVar, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
                         end
                     else

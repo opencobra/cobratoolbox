@@ -5,5 +5,5 @@
 MOMA
 ----
 
-.. automodule:: src.modelAnalysis.MOMA
+.. automodule:: src.analysis.MOMA
    :members:

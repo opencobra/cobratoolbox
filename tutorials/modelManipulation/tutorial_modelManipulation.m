@@ -1,8 +1,10 @@
 %% Model manipulation
-% *Author(s): Vanja Vlasov, Thomas Pfau, Systems Biochemistry Group, University 
-% of Luxembourg*
+% *Author(s): Vanja Vlasov, Systems Biochemistry Group, University of Luxembourg,*
 % 
-% *Reviewer(s):*
+% *Thomas Pfau,  Systems Biology Group, LSRU, University of Luxembourg.*
+% 
+% *Reviewer(s): Thomas Pfau,  Systems Biology Group, LSRU, University of 
+% Luxembourg.*
 %% INTRODUCTION
 % In this tutorial, we will do a manipulation with the simple model of the first 
 % few reactions of the glycolisis metabolic pathway as created in the "Model Creation" 
@@ -50,14 +52,14 @@ initCobraToolbox;
 % reaction. The coefficient also can be positive when the appropriate metabolite 
 % is produced, or negative for every metabolite depleted [1].
 
-ReactionFormulas = {'glc-D[e]  -> glc-D[c]',...
-    'glc-D[c] + atp[c]  -> H[c] + adp[c] + g6p[c]',...
+ReactionFormulas = {'glc_D[e]  -> glc_D[c]',...
+    'glc_D[c] + atp[c]  -> h[c] + adp[c] + g6p[c]',...
     'g6p[c]  <=> f6p[c]',...
-    'atp[c] + f6p[c]  -> H[c] + adp[c] + fdp[c]',...
+    'atp[c] + f6p[c]  -> h[c] + adp[c] + fdp[c]',...
     'fdp[c] + h2o[c]  -> f6p[c] + pi[c]',...
     'fdp[c]  -> g3p[c] + dhap[c]',...
     'dhap[c]  -> g3p[c]'};
-ReactionNames = {'GLCt1', 'HEX1', 'PGI', 'PFK', 'FBP', 'FBA', 'TPI'};
+ReactionNames = {'GLCt1r', 'HEX1', 'PGI', 'PFK', 'FBP', 'FBA', 'TPI'};
 lowerbounds = [-20, 0, -20, 0, 0, -20, -20];
 upperbounds = [20, 20, 20, 20, 20, 20, 20];
 model = createModel(ReactionNames, ReactionNames, ReactionFormulas,...
@@ -84,8 +86,9 @@ model.rxns
 % model.lb, indicating the lower bounds of each reaction, and model.ub indicating 
 % the upper bound of a reaction.
 
-[{'Reaction ID', 'Lower Bound', 'Upper Bound'};...    % this displays an array with
- model.rxns, num2cell(model.lb), num2cell(model.ub)] % reaction names and flux bounds. 
+% this displays an array with reaction names and flux bounds.
+[{'Reaction ID', 'Lower Bound', 'Upper Bound'};...   
+ model.rxns, num2cell(model.lb), num2cell(model.ub)]
 % This is a convenience function which does pretty much the same as the line above
 printFluxBounds(model);
 %% 
@@ -103,7 +106,7 @@ rxns_length = length(model.rxns);
 % * The formula approach
 
 model = addReaction(model, 'GAPDH',...
-       'reactionFormula', 'g3p[c] + NAD[c] + 2 pi[c] -> NADH[c] + H[c] + 13bpg[c]');
+       'reactionFormula', 'g3p[c] + nad[c] + 2 pi[c] -> nadh[c] + h[c] + 13bpg[c]');
 model = addReaction(model, 'PGK',...
        'reactionFormula', '13bpg[c] + adp[c] -> atp[c] + 3pg[c]');
 model = addReaction(model, 'PGM', 'reactionFormula', '3pg[c] <=> 2pg[c]' );
@@ -113,7 +116,7 @@ model = addReaction(model, 'PGM', 'reactionFormula', '3pg[c] <=> 2pg[c]' );
 
 full(model.S) 
 % one extra column is added(for added reaction) and 5 new 
-% rows(for NADH, NAD, 13bpg, 2pg and 3pg metabolites)
+% rows(for nadh, nad, 13bpg, 2pg and 3pg metabolites)
 %% 
 % The following functions are used when we want to search reactions sequence 
 % in the model and change the order of the selected reaction.
@@ -130,13 +133,13 @@ model = moveRxn(model, 8, 1);
 % when an order of metabolites and an abbreviation of the reaction are different.
 
 model = addReaction(model, 'GAPDH2',...
-    'metaboliteList', {'g3p[c]', 'NAD[c]', 'pi[c]', '13bpg[c]', 'NADH[c]', 'H[c]' },...
+    'metaboliteList', {'g3p[c]', 'nad[c]', 'pi[c]', '13bpg[c]', 'nadh[c]', 'h[c]' },...
     'stoichCoeffList', [-1; -1; -2; 1; 1; 1], 'reversible', false);
 %% 
 % Since the second call should not have added anything we will check if 
 % the number of the reaction increased by the three reactions we added (and not 
 % by the one duplicated) and the number of metabolites was incremented by five 
-% (13bpg, NAD, NADH, 23bpg and 2pg).
+% (13bpg, nad, nadh, 23bpg and 2pg).
 
 assert(length(model.rxns) == rxns_length + 3);
 assert(length(model.mets) == mets_length + 5);
@@ -158,23 +161,24 @@ assert(length(model.mets) == mets_length + 5);
 % 
 % # *Use |addReaction| with the documented function call:*
 
-model = addReaction(model, 'EX_glc-D[e]', 'metaboliteList', {'glc-D[e]'} ,...
+model = addReaction(model, 'EX_glc_D[e]', 'metaboliteList', {'glc_D[e]'} ,...
                     'stoichCoeffList', [-1]);
 %% 
 %     In the bigger networks we can find our exchange reactions with the 
 % following functions:
 
-% determines whether a reaction is a general exchange reaction and whether its an uptake.
+% determines whether a reaction is a general exchange reaction and
+% whether its an uptake.
 [selExc, selUpt] = findExcRxns(model, 0, 1)
 %% 
 %          *2.  Use a utility function to create a particular reaction type: 
 % |addExchangeRxn|, |addSinkReactions|, |addDemandReaction|.*
 
-model = addExchangeRxn(model, {'glc-D[e]', 'glc-D[c]'})
+model = addExchangeRxn(model, {'glc_D[e]', 'glc_D[c]'})
 %% 
 %    
 
-model = addSinkReactions(model, {'13bpg[c]', 'NAD[c]'})
+model = addSinkReactions(model, {'13bpg[c]', 'nad[c]'})
 %% 
 % 
 
@@ -187,19 +191,15 @@ model = addSinkReactions(model, {'13bpg[c]', 'NAD[c]'})
 % the flux through another reaction, it is recommended to specify that in your 
 % model. 
 % 
-%  E.g. $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn><mtext> 
-% </mtext><mi mathvariant="italic">v</mi><mtext> </mtext><mi>EX</mi><mo stretchy="false">_</mo><mi>glc</mi><mo>&minus;</mo><mi>D</mi><mo>[</mo><mi>c</mi><mo>]</mo><mo 
-% stretchy="false">=</mo><mn>2</mn><mtext> </mtext><mi mathvariant="italic">v</mi><mtext> 
-% </mtext><mi mathvariant="normal">EX</mi><mo stretchy="false">_</mo><mi>glc</mi><mo>&minus;</mo><mi>D</mi><mo>[</mo><mi 
-% mathvariant="italic">e</mi><mo>]</mo></mrow></math>$
+%  E.g. $$
 
-model = addRatioReaction (model, {'EX_glc-D[c]', 'EX_glc-D[e]'}, [1; 2]);
+model = addRatioReaction (model, {'EX_glc_D[c]', 'EX_glc_D[e]'}, [1; 2]);
 %% *Altering Reaction bounds*
 % In order to respect the transport and exchange potential of a particular metabolite, 
 % or to resemble the different conditions in the model, we frequently need to 
 % set appropriate limits of the reactions.
 
-model = changeRxnBounds(model, 'EX_glc-D[e]', -18.5, 'l');
+model = changeRxnBounds(model, 'EX_glc_D[e]', -18.5, 'l');
 %% Modifiying Reactions
 % The |addReaction| function also is a good choice when modifying reactions. 
 % By supplying a new stoichiometry, the old will be overwritten. For example further 
@@ -213,7 +213,7 @@ printRxnFormula(model, 'rxnAbbrList', 'GAPDH');
 % reaction, and only the new ones overwrite the existing data
 
 model = addReaction(model, 'GAPDH',...
-    'metaboliteList', {'g3p[c]', 'NAD[c]', 'pi[c]', '13bpg[c]', 'NADH[c]','H[c]' },...
+    'metaboliteList', {'g3p[c]', 'nad[c]', 'pi[c]', '13bpg[c]', 'nadh[c]','h[c]' },...
     'stoichCoeffList', [-1; -1; -1; 1; 1; 1]);
 %% 
 % We might also want to add a gene rule to the reaction. This can either 
@@ -231,8 +231,8 @@ printRxnFormula(model, 'gprFlag', true);
 % In order to detach reactions from the model, the following function has been 
 % used:
 
- model = removeRxns(model, {'EX_glc-D[c]', 'EX_glc-D[e]', 'sink_13bpg[c]', ...
-                             'sink_NAD[c]', 'DM_dhap[c]', 'DM_g3p[c]'});
+ model = removeRxns(model, {'EX_glc_D[c]', 'EX_glc_D[e]', 'sink_13bpg[c]', ...
+                             'sink_nad[c]', 'DM_dhap[c]', 'DM_g3p[c]'});
 
  assert(rxns_length + 3 == length(model.rxns)); 
  % The reaction length has been reevaluated 
@@ -267,8 +267,8 @@ printRxnFormula(model, 'gprFlag', true);
 %% 
 % Adding duplicate reaction to the model:
 
-model = addReaction(model, 'GLCt1_duplicate_reverse',...
-                    'metaboliteList', {'glc-D[e]', 'glc-D[c]'},...
+model = addReaction(model, 'GLCt1r_duplicate_reverse',...
+                    'metaboliteList', {'glc_D[e]', 'glc_D[c]'},...
                     'stoichCoeffList', [1 -1], 'lowerBound', 0, ...
                     'upperBound', 20, 'checkDuplicate', 0);
 fprintf('>> Detecting duplicates using S method\n');
@@ -294,7 +294,7 @@ model = checkCobraModelUnique(model, false)
 % objectives is optimal growth [3]. Model can be modified to get different conditions 
 % with changing the model objective:
 
-modelNew = changeObjective(model, 'GLCt1', 0.5);
+modelNew = changeObjective(model, 'GLCt1r', 0.5);
 
 % multiple rxns, default coefficient (1)
 modelNew = changeObjective(model, {'PGI'; 'PFK'; 'FBP'});
