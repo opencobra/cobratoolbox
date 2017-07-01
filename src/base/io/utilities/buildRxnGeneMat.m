@@ -26,7 +26,7 @@ if ~isempty(model.grRules)
 end
 
 %Finally, update the rxnGeneMat
-model.rxnGeneMat = false(numel(model.rxns, numel(model.genes)));
+model.rxnGeneMat = false(numel(model.rxns), numel(model.genes));
 if isfield(model,'rules')
     for i = 1:numel(model.rxns)
         if ~isempty(model.rules{i})
