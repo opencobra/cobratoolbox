@@ -241,6 +241,9 @@ if ~isfield(model,'dxdt')
                 error('model.b must equal the number of rows of S or [S;C]')
             end
         end
+    else
+        fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
+        model.dxdt=zeros(nMets,1);
     end
 else
     if length(model.dxdt)~=size(model.S,1)
