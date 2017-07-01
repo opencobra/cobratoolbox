@@ -49,7 +49,7 @@ if (nargin < 2)
 end
 if (nargin < 3)
     if isfield(model,'osenseStr')
-        osenseStr = model.osenseStr
+        osenseStr = model.osenseStr;
     else
         osenseStr = 'max';
     end

@@ -1,30 +1,35 @@
-function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, csense)
+function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)
 % Constrains one (weighted) sum of fluxes to be above a lower bound.
 % Appends to existing inequality constraints if they are present
 %
 % USAGE:
 %
-%    modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, csense)
+%    modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)
 %
 % INPUTS:
 %    model:               model structure
 %    rxnList:             cell array of reaction names
 %
 % OPTIONAL INPUTS:
-%    c:                   `k x n` matrix in `C*v>=d`
-%    d:                   `n x 1` vector `C*v >= d`
-%    csense:              `k x 1` constraint sense
+%    c:                   `k x n` matrix in `c*v >=d`
+%    d:                   `n x 1` vector `c*v >= d`
+%    ineqSense:           `k x 1` inequality sense {'L','G'}
 %
 % OUTPUT:
 %    modelConstrained:    constrained model
-%
+%                           * S - Stoichiometric matrix
+%                           * b - Right hand side = dx/dt
+%                           * C - Inequality constraint matrix
+%                           * d - Inequality constraint right hand side
+%                           [S;C]*v {=,<=,>=} [dxdt,d]   
+
 % EXAMPLE:
 %
 %    rxnList = {'PCHOLP_hs_f', 'PLA2_2_f', 'SMS_f','PCHOLP_hs_b', 'PLA2_2_b', 'SMS_b'};
 %    c = [1, 1, 1, 1, 1, 1];
 %    d = 10;
-%    csense = 'G';
-%    modelConstrained = constrainRxnListAboveBound(modelIrrev, rxnList, C, d, csense);
+%    ineqSense = 'G';
+%    modelConstrained = constrainRxnListAboveBound(modelIrrev, rxnList, C, d, ineqSense);
 
 [nMet,nRxn]=size(model.S);
 
@@ -55,18 +60,22 @@ end
 modelConstrained.d(nC+1,1)=d;
 
 nCsense=length(modelConstrained.csense);
-if exist('csense', 'var')
-    if isfield(model,'csense')
-        modelConstrained.csense(nCsense+1,1)=csense;
-    else
-        modelConstrained.csense(1:nMet,1)='E';
-        modelConstrained.csense(nCsense+1,1)=csense;
-    end
+if ~exist('ineqSense', 'var')
+    ineqSense='G';
 else
-    if isfield(modelConstrained,'csense')
-        modelConstrained.csense(nCsense+1,1)='G';
-    else
-        modelConstrained.csense(1:nMet,1)='E';
-        modelConstrained.csense(nCsense+1,1)='G';
+    if ~any(strcmp(ineqSense,{'L','G'}))
+        error('Inequality sense (ineqSense) must be either less than (''L'') or greater than (''G'')')
     end
 end
+if isfield(model,'csense')
+    %append the inequality sense to the existing constraint sense
+    modelConstrained.csense(nCsense+1,1)=ineqSense;
+else
+    %assume the existing constraint sense is all equalities
+    %for S*v = dxdt
+    modelConstrained.csense(1:nMet,1)='E';
+end
+
+%append the inequality sense to the end of the csense
+modelConstrained.csense(nCsense+1,1)=ineqSense;
+

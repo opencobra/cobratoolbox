@@ -1,4 +1,4 @@
-function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
+function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
 % Solves a flux balance analysis problem
 %
 % Solves LP problems of the form
@@ -6,13 +6,13 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 % .. math::
 %
 %    max/min  ~& c^T v \\
-%    s.t.     ~& S v = b~~~~~~~~~~~:y \\
+%    s.t.     ~& S v = dxdt ~~~~~~~~~~~:y \\
 %             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
 %
 % USAGE:
 %
-%    FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
+%    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
 %
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
@@ -24,10 +24,11 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %
 % OPTIONAL INPUTS:
 %    model:             (the following fields are optional)
-%                         * b - `m x 1` Right hand side = dx/dt
+%                         * dxdt - `m x 1` change in concentration with time
 %                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x 1` Right hand side of C*v <= d
+%                         * d - `k x n` Right hand side of C*v <= d
 %                         * csense - `m + k x 1` character array with entries in {L,E,G}
+%
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
 %    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP
@@ -36,7 +37,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                       .. math::
 %
 %                          min  ~& |v| \\
-%                          s.t. ~& S v = b \\
+%                          s.t. ~& S v = dxdt \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -46,7 +47,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                       .. math::
 %
 %                          min  ~& ||v||_0 \\
-%                          s.t. ~& S v = b \\
+%                          s.t. ~& S v = dxdt \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -69,7 +70,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                       .. math::
 %
 %                          min  ~& ||v|| \\
-%                          s.t. ~& S v = b \\
+%                          s.t. ~& S v = dxdt \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -79,7 +80,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                       .. math::
 %
 %                          min  ~& 0.5 v^T F v \\
-%                          s.t. ~& S v = b \\
+%                          s.t. ~& S v = dxdt \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -100,7 +101,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                          * 'all'      : try all approximations and return the best result
 %
 % OUTPUT:
-%    FBAsolution:       solution object:
+%    solution:       solution object:
 %
 %                          * f - Objective value
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
@@ -140,15 +141,15 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %
 % NOTE:
 %
-%    `FBAsolution.stat` is either 1, 2, 0 or -1, and is a translation from `FBAsolution.origStat`,
+%    `solution.stat` is either 1, 2, 0 or -1, and is a translation from `solution.origStat`,
 %    which is returned by each solver in a solver specific way. That is, not all solvers return
-%    the same type of `FBAsolution.origStat` and because the cobra toolbox can use many solvers,
+%    the same type of `solution.origStat` and because the cobra toolbox can use many solvers,
 %    we need to return to the user of `optimizeCbModel.m` a standard representation, which is what
-%    `FBAsolution.stat` is.
+%    `solution.stat` is.
 %
-%    When running `optimizeCbModel.m`, unless `FBAsolution.stat = 1`, then no solution is returned.
+%    When running `optimizeCbModel.m`, unless `solution.stat = 1`, then no solution is returned.
 %    This means that it is up to the person calling `optimizeCbModel` to adapt their code to the
-%    case when no solution is returned, by checking the value of `FBAsolution.stat` first.
+%    case when no solution is returned, by checking the value of `solution.stat` first.
 
 if exist('osenseStr', 'var') % Process arguments and set up problem
     if isempty(osenseStr)
@@ -200,82 +201,102 @@ end
 %use global solver parameter for printLevel
 [printLevel,primalOnlyFlag] = getCobraSolverParams('LP',{'printLevel','primalOnly'});
 
-% Rest of the LP problem
+% size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
+
+%make sure C is present if d is present
+if ~isfield(model,'C') && isfield(model,'d')
+    error('For the constraints C*v <= d, both must be present')
+end
+
 if isfield(model,'C')
-    if isfield(model,'d')
-        [nIneq,nltC]=size(model.C);
-        [mltd,nltd]=size(model.d);
-        if nltC~=nRxns
-            error('For the constraints C*v <= d, the number of columns of S and C are inconsisent')
-        end
-        if nIneq~=mltd
-            error('For the constraints C*v <= d, the number of rows of C and d are inconsisent')
-        end
-        if nltd~=1
-            error('For the constraints C*v <= d, d must have only one column')
-        end
-        LPproblem.A = [model.S;model.C];
-        % Fill in the RHS vector if not provided
-        if ~isfield(model,'b')
-            warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
-            LPproblem.b=[sparse(nMets,1);model.d];
-        else
-            LPproblem.b = [model.b;model.d];
-        end
-        % add csense
-        if ~isfield(model,'csense')
-            % If csense is not declared in the model, assume that all
-            % constraints are equalities.
-            if printLevel>1
-                fprintf('%s\n','No defined csense.')
-                fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-                fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
-            end
-            LPproblem.csense(1:nMets,1) = 'E';
-            LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
-        else % if csense is in the model, move it to the lp problem structure
-            if length(model.csense)~=nMets+nIneq
-                warning('Length of csense is invalid! Defaulting to equality constraints.')
-                fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-                fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
-                LPproblem.csense(1:nMets,1) = 'E';
-                LPproblem.csense(nMets+1:nMets+nIneq,1) = 'L';
-            else
-                LPproblem.csense = columnVector(model.csense);
-            end
-        end
-    else
-        error('For the constraints C*v <= d, model.d is missing')
+    [nIneq,nltC]=size(model.C);
+    [nIneq2,nltd]=size(model.d);
+    if nltC~=nRxns
+        error('For the constraints C*v <= d the number of columns of S and C are inconsisent')
+    end
+    if nIneq~=nIneq2
+        error('For the constraints C*v <= d, the number of rows of C and d are inconsisent')
+    end
+    if nltd~=1
+        error('For the constraints C*v <= d, d must have only one column')
     end
 else
-    %number of inequality constraints outside of the stoichiometric matrix
     nIneq=0;
-    LPproblem.A = model.S;
-    % Fill in the RHS vector if not provided
-    if ~isfield(model,'b')
-        warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
-        LPproblem.b=zeros(nMets,1);
-    else
-        LPproblem.b = model.b;
-    end
-    % add csense
-    if ~isfield(model,'csense')
-        % If csense is not declared in the model, assume that all
-        % constraints are equalities.
-        if printLevel>1
-            fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
+end
+
+if ~isfield(model,'dxdt')
+    if isfield(model,'b')
+        %old style model
+        if length(model.b)==nMets
+            model.dxdt=model.b;
+            %model=rmfield(model,'b'); %tempting to do this
+        else
+            if isfield(model,'C')
+                %new style model, b must be rhs for [S;C]*v {=,<=,>=} [dxdt,d] == b
+                if length(model.b)~=nMets+nIneq
+                    error('model.b must equal the number of rows of [S;C]')
+                end
+            else
+                error('model.b must equal the number of rows of S or [S;C]')
+            end
         end
-        LPproblem.csense(1:nMets,1) = 'E';
+    end
+else
+    if length(model.dxdt)~=size(model.S,1)
+        error('Number of rows in model.dxdt and model.S must match')
+    end
+end
+
+%check the csense and make sure it is consistent
+if isfield(model,'C')
+    if ~isfield(model,'csense')
+        if printLevel>1
+            fprintf('%s\n','No defined csense.')
+            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
+            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+        end
+        model.csense(1:nMets,1) = 'E';
+        model.csense(nMets+1:nMets+nIneq,1) = 'L';
+    else 
+        if length(model.csense)~=nMets+nIneq
+            error('Length of csense is invalid! Defaulting to equality constraints.')
+        else
+            model.csense = columnVector(model.csense);
+        end
+    end
+else   
+    if ~isfield(model,'csense')
+        % If csense is not declared in the model, assume that all constraints are equalities.
+        if printLevel>1
+            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
+        end
+        model.csense(1:nMets,1) = 'E';
     else % if csense is in the model, move it to the lp problem structure
         if length(model.csense)~=nMets
-            warning('Length of csense is invalid! Defaulting to equality constraints.')
-            LPproblem.csense(1:nMets,1) = 'E';
+            error('The length of csense does not match the number of rows of model.S.')
+            model.csense(1:nMets,1) = 'E';
         else
-            LPproblem.csense = columnVector(model.csense);
+            model.csense = columnVector(model.csense);
         end
     end
 end
+
+%now build the equality and inequality constraint matrices
+if isfield(model,'d')    
+    LPproblem.b = [model.dxdt;model.d];
+else
+    LPproblem.b = model.dxdt;
+end
+
+if isfield(model,'C')    
+    LPproblem.A = [model.S;model.C];
+else
+    LPproblem.A = model.S;
+end
+
+%copy over the constraint sense also
+LPproblem.csense=model.csense;
 
 %linear objective coefficient
 LPproblem.c = model.c;
@@ -302,19 +323,19 @@ end
 
 global CBT_LP_SOLVER
 if strcmp(CBT_LP_SOLVER,'mps')
-    FBAsolution=solution;
+    solution=solution;
     return;
 else
     if (solution.stat ~= 1) % check if initial solution was successful.
         if printLevel>0
             warning('Optimal solution was not found');
         end
-        FBAsolution.f = 0;
-        FBAsolution.x = [];
-        FBAsolution.stat = solution.stat;
-        FBAsolution.origStat = solution.origStat;
-        FBAsolution.solver = solution.solver;
-        FBAsolution.time = etime(clock, t1);
+        solution.f = 0;
+        solution.x = [];
+        solution.stat = solution.stat;
+        solution.origStat = solution.origStat;
+        solution.solver = solution.solver;
+        solution.time = etime(clock, t1);
         return;
     end
 end
@@ -446,7 +467,7 @@ end
 % Store results
 if (solution.stat == 1)
     %solution found.
-    FBAsolution.x = solution.full(1:nRxns);
+    solution.x = solution.full(1:nRxns);
 
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
@@ -455,8 +476,8 @@ if (solution.stat == 1)
     end
 
     %this line IS necessary.
-    FBAsolution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
-    if abs(FBAsolution.f - objective) > .01
+    solution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
+    if abs(solution.f - objective) > .01
         if strcmp(minNorm,'one')
             display('optimizeCbModel.m warning:  objective appears to have changed while minimizing taxicab norm');
         else
@@ -468,20 +489,20 @@ if (solution.stat == 1)
     % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
     % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan
     if (~primalOnlyFlag && allowLoops)
-        FBAsolution.y = solution.dual;
-        FBAsolution.w = solution.rcost;
+        solution.y = solution.dual;
+        solution.w = solution.rcost;
     end
 else
     %some sort of error occured.
     if printLevel>0
         warning('Optimal solution was not found');
     end
-    FBAsolution.f = 0;
-    FBAsolution.x = [];
+    solution.f = 0;
+    solution.x = [];
 end
 
-FBAsolution.stat = solution.stat;
-FBAsolution.origStat = solution.origStat;
-FBAsolution.solver = solution.solver;
-FBAsolution.time = etime(clock, t1);
-FBAsolution.v = FBAsolution.x;%eventually we should depreciate FBAsolution.x
+solution.stat = solution.stat;
+solution.origStat = solution.origStat;
+solution.solver = solution.solver;
+solution.time = etime(clock, t1);
+solution.v = solution.x;%eventually we should depreciate solution.x
