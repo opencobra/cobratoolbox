@@ -366,12 +366,12 @@ irreversible version of &#8216;model&#8217;</li>
 <p>Solves LP problems of the form</p>
 <div class="math">
 \[\begin{split}max/min  ~&amp; c^T v \\
-s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
+s.t.     ~&amp; S v = dxdt ~~~~~~~~~~~:y \\
          ~&amp; C v \leq d~~~~~~~~:y \\
          ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)</div></blockquote>
+<div>solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -390,9 +390,9 @@ s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
 <div><ul>
 <li><p class="first"><strong>model</strong> &#8211;
 (the following fields are optional)
-* b - <cite>m x 1</cite> Right hand side = dx/dt
+* dxdt - <cite>m x 1</cite> change in concentration with time
 * C - <cite>k x n</cite> Left hand side of C*v &lt;= d
-* d - <cite>k x 1</cite> Right hand side of C*v &lt;= d
+* d - <cite>k x n</cite> Right hand side of C*v &lt;= d
 * csense - <cite>m + k x 1</cite> character array with entries in {L,E,G}</p>
 </li>
 <li><p class="first"><strong>osenseStr</strong> &#8211;
@@ -404,14 +404,14 @@ Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216
 &#8216;one&#8217;  Minimise the Taxicab Norm using LP.</p>
 <div class="math">
 \[\begin{split}min  ~&amp; |v| \\
-s.t. ~&amp; S v = b \\
+s.t. ~&amp; S v = dxdt \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>A LP solver is required.
 &#8216;zero&#8217; Minimize the cardinality (zero-norm) of v</p>
 <div class="math">
 \[\begin{split}min  ~&amp; ||v||_0 \\
-s.t. ~&amp; S v = b \\
+s.t. ~&amp; S v = dxdt \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>The zero-norm is approximated by a non-convex approximation
@@ -424,14 +424,14 @@ the best result in term of sparsity.</p>
 Typically 1e-6 works well.</p>
 <div class="math">
 \[\begin{split}min  ~&amp; ||v|| \\
-s.t. ~&amp; S v = b \\
+s.t. ~&amp; S v = dxdt \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p><cite>n</cite> x 1   Forms the diagonal of positive definiate
 matrix <cite>F</cite> in the quadratic program</p>
 <div class="math">
 \[\begin{split}min  ~&amp; 0.5 v^T F v \\
-s.t. ~&amp; S v = b \\
+s.t. ~&amp; S v = dxdt \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 </li>
@@ -459,7 +459,7 @@ appoximation type of zero-norm (only available when minNorm=&#8217;zero&#8217;) 
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>FBAsolution</strong> &#8211;
+<li><strong>solution</strong> &#8211;
 solution object:<ul>
 <li>f - Objective value</li>
 <li>v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)</li>
@@ -480,14 +480,14 @@ solution object:<ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p><cite>FBAsolution.stat</cite> is either 1, 2, 0 or -1, and is a translation from <cite>FBAsolution.origStat</cite>,
+<p><cite>solution.stat</cite> is either 1, 2, 0 or -1, and is a translation from <cite>solution.origStat</cite>,
 which is returned by each solver in a solver specific way. That is, not all solvers return
-the same type of <cite>FBAsolution.origStat</cite> and because the cobra toolbox can use many solvers,
+the same type of <cite>solution.origStat</cite> and because the cobra toolbox can use many solvers,
 we need to return to the user of <cite>optimizeCbModel.m</cite> a standard representation, which is what
-<cite>FBAsolution.stat</cite> is.</p>
-<p class="last">When running <cite>optimizeCbModel.m</cite>, unless <cite>FBAsolution.stat = 1</cite>, then no solution is returned.
+<cite>solution.stat</cite> is.</p>
+<p class="last">When running <cite>optimizeCbModel.m</cite>, unless <cite>solution.stat = 1</cite>, then no solution is returned.
 This means that it is up to the person calling <cite>optimizeCbModel</cite> to adapt their code to the
-case when no solution is returned, by checking the value of <cite>FBAsolution.stat</cite> first.</p>
+case when no solution is returned, by checking the value of <cite>solution.stat</cite> first.</p>
 </div>
 </dd></dl>
 

@@ -201,19 +201,22 @@
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-(the following fields are required - others can be supplied):<ul>
-<li>S - Stoichiometric matrix</li>
-<li>b - Right hand side = dx/dt</li>
-<li>c - Objective coefficients</li>
-<li>lb - Lower bounds</li>
-<li>ub - Upper bounds</li>
-</ul>
-</li>
+(the following fields are required - others can be supplied):
+* S - Stoichiometric matrix
+* b - Right hand side = dx/dt
+* c - Objective coefficients
+* lb - Lower bounds
+* ub - Upper bounds</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+(optional for C*v&lt;=d):
+* C - Stoichiometric matrix
+* d - Right hand side = dx/dt</p>
+</li>
 <li><p class="first"><strong>osenseStr</strong> &#8211;
 (default = &#8216;max&#8217;)</p>
 <ul class="simple">
@@ -223,7 +226,7 @@
 </ul>
 </li>
 <li><p class="first"><strong>checkMinimalSet</strong> &#8211;
-Heuristically check if the selected set of reactions is minimal
+{0,(1)} Heuristically check if the selected set of reactions is minimal
 by removing one by one the predicted active reaction</p>
 <blockquote>
 <div><ul class="simple">
@@ -233,7 +236,7 @@ by removing one by one the predicted active reaction</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>checkEssentialSet</strong> &#8211;
-Heuristically check if the selected set of reactions is essential</p>
+{0,(1)} Heuristically check if the selected set of reactions is essential</p>
 </li>
 <li><p class="first"><strong>zeroNormApprox</strong> &#8211;
 appoximation type of zero-norm (only available when minNorm = &#8216;zero&#8217;) (default = &#8216;cappedL1&#8217;)</p>

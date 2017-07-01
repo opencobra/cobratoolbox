@@ -224,12 +224,12 @@ COBRA model structure containing the ratio</li>
 
 <dl class="function">
 <dt id="src.analysis.coupling.constrainRxnListAboveBound">
-<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>csense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
+<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
 Appends to existing inequality constraints if they are present</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, csense)</div></blockquote>
+<div>modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -243,26 +243,31 @@ cell array of reaction names</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>c</strong> &#8211;
-<cite>k x n</cite> matrix in <cite>C*v&gt;=d</cite></li>
+<cite>k x n</cite> matrix in <cite>c*v &gt;=d</cite></li>
 <li><strong>d</strong> &#8211;
-<cite>n x 1</cite> vector <cite>C*v &gt;= d</cite></li>
-<li><strong>csense</strong> &#8211;
-<cite>k x 1</cite> constraint sense</li>
+<cite>n x 1</cite> vector <cite>c*v &gt;= d</cite></li>
+<li><strong>ineqSense</strong> &#8211;
+<cite>k x 1</cite> inequality sense {&#8216;L&#8217;,&#8217;G&#8217;}</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>modelConstrained</strong> &#8211;
-constrained model</li>
+constrained model
+* S - Stoichiometric matrix
+* b - Right hand side = dx/dt
+* C - Inequality constraint matrix
+* d - Inequality constraint right hand side
+[S;C]*v {=,&lt;=,&gt;=} [dxdt,d]</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PCHOLP_hs_f&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_f&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_f&#39;</span><span class="p">,</span><span class="s1">&#39;PCHOLP_hs_b&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_b&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_b&#39;</span><span class="p">};</span>
 <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
 <span class="n">d</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="n">csense</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span><span class="p">;</span>
-<span class="n">modelConstrained</span> <span class="o">=</span> <span class="n">constrainRxnListAboveBound</span><span class="p">(</span><span class="n">modelIrrev</span><span class="p">,</span> <span class="n">rxnList</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">csense</span><span class="p">);</span>
+<span class="n">ineqSense</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span><span class="p">;</span>
+<span class="n">modelConstrained</span> <span class="o">=</span> <span class="n">constrainRxnListAboveBound</span><span class="p">(</span><span class="n">modelIrrev</span><span class="p">,</span> <span class="n">rxnList</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ineqSense</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
