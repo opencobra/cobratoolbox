@@ -444,7 +444,7 @@ if checkMinimalSet == true
         if  1 && checkEssentialSet && ~essentialTightRxnsBool(i)
             %try to remove reaction entirely from model
             tighterRxnsBool(i)=0;
-            tighterLPproblem = struct('c',tightLPproblem.c(tighterRxnsBool),'osense',osense,'A',tightLPproblem.A(:,tighterRxnsBool),'csense',csense,'b',rhs,'lb',tightLPproblem.lb(tighterRxnsBool),'ub',tightLPproblem.ub(tighterRxnsBool));
+            tighterLPproblem = struct('c',tightLPproblem.c(tighterRxnsBool),'osense',osense,'A',tightLPproblem.A(:,tighterRxnsBool),'csense',tightLPproblem.csense,'b',tightLPproblem.b,'lb',tightLPproblem.lb(tighterRxnsBool),'ub',tightLPproblem.ub(tighterRxnsBool));
             %see if a solution exists
             LPsolution = solveCobraLP(tighterLPproblem,CobraParams);
             if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=epsilon)
