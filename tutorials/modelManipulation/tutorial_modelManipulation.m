@@ -37,6 +37,7 @@
 % * Search for duplicates and comparison of two models;
 % * Changing the model objective;
 % * Changing the direction of reaction(s);
+% * Create gene-reaction-associations ('GPRs');
 %% EQUIPMENT SETUP
 % Start CobraToolbox
 
@@ -186,7 +187,7 @@ model = addSinkReactions(model, {'13bpg[c]', 'nad[c]'})
 
  model = addDemandReaction(model, {'dhap[c]', 'g3p[c]'})
 %% Setting ratio between the reactions and changing reactions boundary
-% It is important to emphasize that previous knowledge base information should 
+% It is important to emphasise that previous knowledge base information should 
 % be taken into account. Most of them could disrupt future analysis of the model. 
 % 
 % For instance, if it is familiar that flux through one reaction is _X_ times 
@@ -209,9 +210,9 @@ model = addRatioReaction (model, {'EX_glc_D[c]', 'EX_glc_D[e]'}, [1; 2]);
 model = changeRxnBounds(model, 'EX_glc_D[e]', -18.5, 'l');
 %% Modifying Reactions
 % The |addReaction| function also is a good choice when modifying reactions. 
-% By supplying a new stoichiometry, the old will be overwritten. For example further 
-% up, we added a wrong stoichiometry for the GAP-Dehydrogenase with a phosphate 
-% coefficient of 2. (easily visible by printing the reaction)
+% By supplying a new stoichiometry, the old will be overwritten. For example, 
+% further up, we added a wrong stoichiometry for the GAP-Dehydrogenase with a 
+% phosphate coefficient of 2. (easily visible by printing the reaction)
 
 printRxnFormula(model, 'rxnAbbrList', 'GAPDH');
 %% 
@@ -339,6 +340,69 @@ modelRev = convertToReversible(modelIrrev);
 % model, they should look the same.
 
 printRxnFormula(modelRev);
+%% Create gene-reaction-associations ('GPRs') from scratch.
+
+model.genes = [];
+model.rxnGeneMat = [];
+modelgrRule = model.grRules;
+for i = 1 : length(modelgrRule)
+    if ~isempty(modelgrRule{i})
+        model = changeGeneAssociation(model,model.rxns{i},modelgrRule{i});
+    end
+end
+%% 
+% Check that there are no empy columns left.
+
+find(sum(model.rxnGeneMat)==0)
+%% Replace an old GPR with a new one. 
+% Here, we will search for all instances of the old GPR and replace it by the 
+% new one.
+% 
+% Define the old and the new one. 
+
+GPRsReplace={'(126.1) or (137872.1) '	'126.1 or 137872.1'};
+GP = (model.grRules);
+a = 1;
+for  i = 1 : size(GPRsReplace,1)
+    tmp2=[];
+    for j = 1 :length(GP)
+        tmp2 = strmatch(GPRsReplace{i,1},GP{j});
+        % replace old GPR by new
+        model.grRules{j} = GPRsReplace{i,2};
+    end
+end
+%% 
+% Remove issues with hyphens in the GPR definitions.
+
+for i = 1 : length(model.grRules)
+    model.grRules{i} = strrep(model.grRules{i}, '''', '');
+end
+%% 
+% Remove spaces from reaction abbreviations.
+
+for i = 1 : length(model.rxns)
+    model.rxns{i} = strrep(model.rxns{i}, ' ', '');
+end
+%% 
+% Remove unneccessary brackets from the GPR associations. 
+
+for i = 1 : length(model.grRules)
+    model.grRules{i} = strrep(model.grRules{i}, '''', '');
+    % remove unnecessary brackets
+    if length(strfind(model.grRules{i},'and')) == 0 % no AND in gprs
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+        
+    elseif length(strfind(model.grRules{i},'or')) == 0 % no OR in gprs
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+    elseif length(strfind(model.grRules{i},'(')) == 1 && length(strfind...
+            (model.grRules{i},'or')) == 0 && length(strfind...
+            (model.grRules{i},'and')) == 0
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+    end
+end
 %% REFERENCES
 % [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
 % analysis? _Nat. Biotechnol., 28_(3), 245–248.
