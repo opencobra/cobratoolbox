@@ -115,7 +115,7 @@ fprintf('\n\nGenerating RXN files.\n');
 for i=1:length(rxns)
     a = ismember(regexprep(mets(find(S(:,i))), '(\[\w\])', ''), aMets);
     s = S(find(S(:, i)), i);
-    if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s) - s) < (1e - 2))
+    if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s)- s) < (1e-2))
     	writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [outputDir...
             filesep 'rxnFiles' filesep])
     end
