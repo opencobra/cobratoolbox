@@ -193,10 +193,10 @@
 <span class="target" id="module-src.analysis.relaxFBA"></span><dl class="function">
 <dt id="src.analysis.relaxFBA.relaxFBA">
 <code class="descname">relaxFBA</code><span class="sig-paren">(</span><em>model</em>, <em>relaxOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/relaxFBA/relaxFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxFBA.relaxFBA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the mimimal set of relaxations on bounds and steady state constraint
-to make the FBA problem feasible</p>
+<dd><p>Finds the mimimal set of relaxations on bounds and steady state
+constraints to make the FBA problem feasible</p>
 <div class="math">
-\[\begin{split}min ~&amp;~ c^T v + \lambda ||r||_0 + \gamma (||p||_0 + ||q||_0) \\
+\[\begin{split}min ~&amp;~ c^T v + \lambda ||r||_0 + \alpha (||p||_0 + ||q||_0) \\
 s.t ~&amp;~ S v + r \leq, =, \geq  b \\
     ~&amp;~ l - p \leq v \leq u + q \\
     ~&amp;~ r \in R^m \\
@@ -246,8 +246,9 @@ Structure containing the relaxation options:<ul>
 <li>excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
 </ul>
 </li>
-<li>lamda - trade-off parameter of relaxation on steady state constraint</li>
-<li>gamma - trade-off parameter of relaxation on bounds</li>
+<li>lamda - weighting on relaxation of relaxation on steady state constraints S*v = b</li>
+<li>alpha - weighting on relaxation of reaction bounds</li>
+<li>gamma - weighting on zero norm of fluxes</li>
 </ul>
 </li>
 </ul>

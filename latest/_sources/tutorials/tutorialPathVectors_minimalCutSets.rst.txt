@@ -1,7 +1,7 @@
 .. _tutorialPathVectors_minimalCutSets:
 
-Computing path vectors and minimal cut sets
-===========================================
+
+=
 
 .. raw:: html
 
