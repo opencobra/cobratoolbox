@@ -1,13 +1,14 @@
 %% Model manipulation
-% *Author(s): Vanja Vlasov, Systems Biochemistry Group, University of Luxembourg,*
+% *Author(s): Vanja Vlasov, Systems Biochemistry Group, LCSB, University of 
+% Luxembourg,*
 % 
 % *Thomas Pfau,  Systems Biology Group, LSRU, University of Luxembourg.*
 % 
-% *Reviewer(s): Thomas Pfau,  Systems Biology Group, LSRU, University of 
-% Luxembourg.*
+% *Reviewer(s): Ines Thiele, Systems Biochemistry Group, LCSB, University 
+% of Luxembourg.*
 %% INTRODUCTION
 % In this tutorial, we will do a manipulation with the simple model of the first 
-% few reactions of the glycolisis metabolic pathway as created in the "Model Creation" 
+% few reactions of the glycolysis metabolic pathway as created in the "Model Creation" 
 % tutorial. 
 % 
 % Glycolysis is the metabolic pathway that occurs in most organisms in the 
@@ -17,13 +18,13 @@
 % 
 % 
 %                                                                    Figure 
-% 1: A small metabolic network consisting of the seven reactions in the glycolisis 
+% 1: A small metabolic network consisting of the seven reactions in the glycolysis 
 % pathway. 
 % 
-% At the beginning of the reconstruction, an integrity of the draft reconstruction 
-% must be initially assessed. The accuracy of the stochiometry, necessity of each 
-% reaction and metabolite, direction and reversibility of the reactions needed 
-% to be evaluated. 
+% At the beginning of the reconstruction, the initial step is to assess an 
+% integrity of the draft reconstruction. Furthermore, an accuracy evaluation is 
+% needed: check necessity of each reaction and metabolite,  the accuracy of the 
+% stoichiometry and direction and reversibility of the reactions.
 % 
 % After creating or loading the model, the model can be modified to simulate 
 % different conditions, such as:
@@ -36,6 +37,7 @@
 % * Search for duplicates and comparison of two models;
 % * Changing the model objective;
 % * Changing the direction of reaction(s);
+% * Create gene-reaction-associations ('GPRs');
 %% EQUIPMENT SETUP
 % Start CobraToolbox
 
@@ -45,12 +47,13 @@ initCobraToolbox;
 % A constraint-based metabolic model contains the stoichiometric matrix with 
 % reactions and metabolites [1].
 % 
-% _S_ is stoichiometric representation of metabolic networks corresponding 
-% to the reactions in the biochemical pathway. In an each column  of the _S _is 
-% a biochemical reaction and in each row is a precise metabolite. There is a stoichiometric 
-% coefficient of zero, which means that metabolite not participate in that distinct 
-% reaction. The coefficient also can be positive when the appropriate metabolite 
-% is produced, or negative for every metabolite depleted [1].
+% $$S$ is a stoichiometric representation of metabolic networks corresponding 
+% to the reactions in the biochemical pathway. In each column of the $$S$ is a 
+% biochemical reaction ($$n$) and in each row is a precise metabolite ($$m$). 
+% There is a stoichiometric coefficient of zero, which means that metabolite does 
+% not participate in that distinct reaction. The coefficient also can be positive 
+% when the appropriate metabolite is produced, or negative  for every metabolite 
+% depleted [1].
 
 ReactionFormulas = {'glc_D[e]  -> glc_D[c]',...
     'glc_D[c] + atp[c]  -> h[c] + adp[c] + g6p[c]',...
@@ -66,14 +69,14 @@ model = createModel(ReactionNames, ReactionNames, ReactionFormulas,...
                    'lowerBoundList', lowerbounds, 'upperBoundList', upperbounds);
 %% 
 % We can now have a look at the different model fields created. The stoichiometry 
-% is stored in the S field of the model, which was described above. Since this 
-% is commonly a sparse matrix (i.e. it does contain a lot of zeros, to display 
-% it it is useful to use the full representation)
+% is stored in the $$S$ field of the model, which was described above. Since this 
+% is commonly a sparse matrix (i.e. it does contain a lot of zeros) to display 
+% it, it is useful to use the full representation:
 
 full(model.S)
 %% 
-% Some descriptive fields always present are model.mets and model.rxns which 
-% represent the metabolites and the reactions respectively. 
+% Some descriptive fields always present are |model.mets| and |model.rxns| 
+% which represent the metabolites and the reactions respectively. 
 
 model.mets
 model.rxns
@@ -83,13 +86,13 @@ model.rxns
 % 
 % There are a few more fields present in each COBRA model:
 % 
-% model.lb, indicating the lower bounds of each reaction, and model.ub indicating 
-% the upper bound of a reaction.
+% |model.lb|, indicating the lower bounds of each reaction, and |model.ub| 
+% indicating the upper bound of a reaction.
 
 % this displays an array with reaction names and flux bounds.
 [{'Reaction ID', 'Lower Bound', 'Upper Bound'};...   
  model.rxns, num2cell(model.lb), num2cell(model.ub)]
-% This is a convenience function which does pretty much the same as the line above
+% This is a convenience function which does pretty much the same as the line above.
 printFluxBounds(model);
 %% 
 % Before we start to modify the model, it might be useful to store some 
@@ -118,8 +121,8 @@ full(model.S)
 % one extra column is added(for added reaction) and 5 new 
 % rows(for nadh, nad, 13bpg, 2pg and 3pg metabolites)
 %% 
-% The following functions are used when we want to search reactions sequence 
-% in the model and change the order of the selected reaction.
+% If you want to search reactions sequence in the model and change the order 
+% of the selected reaction, use the following functions.
 
 rxnID = findRxnIDs(model, model.rxns);
 model = moveRxn(model, 8, 1);
@@ -144,8 +147,8 @@ model = addReaction(model, 'GAPDH2',...
 assert(length(model.rxns) == rxns_length + 3);
 assert(length(model.mets) == mets_length + 5);
 %% Adding Exchange, Sink and Demand reactions
-% Specific type of reactions in the constraint-based models are reactions that 
-% are using and recycling accumulated metabolites, or producing required metabolites 
+% The specific type of reactions in the constraint-based models are reactions 
+% that are using and recycling accumulated metabolites or producing required metabolites 
 % in the model.
 % 
 % # _Exchange reactions _-  Reactions added to the model to move metabolites 
@@ -184,14 +187,19 @@ model = addSinkReactions(model, {'13bpg[c]', 'nad[c]'})
 
  model = addDemandReaction(model, {'dhap[c]', 'g3p[c]'})
 %% Setting ratio between the reactions and changing reactions boundary
-% It is important to emphasize that previous knowledge base informations should 
+% It is important to emphasise that previous knowledge base information should 
 % be taken into account. Most of them could disrupt future analysis of the model. 
 % 
 % For instance, if it is familiar that flux through one reaction is _X_ times 
 % the flux through another reaction, it is recommended to specify that in your 
 % model. 
 % 
-%  E.g. $$
+%  E.g. $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn><mtext> 
+% </mtext><mi mathvariant="italic">v</mi><mtext> </mtext><mi mathvariant="normal">EX</mi><mo 
+% stretchy="false">_</mo><mi mathvariant="normal">glc</mi><mo stretchy="false">_</mo><mi>D</mi><mo>[</mo><mi>c</mi><mo>]</mo><mo 
+% stretchy="false">=</mo><mn>2</mn><mtext> </mtext><mi mathvariant="italic">v</mi><mtext> 
+% </mtext><mi mathvariant="normal">EX</mi><mo stretchy="false">_</mo><mi mathvariant="normal">glc</mi><mo 
+% stretchy="false">_</mo><mi>D</mi><mo>[</mo><mi mathvariant="italic">e</mi><mo>]</mo></mrow></math>$
 
 model = addRatioReaction (model, {'EX_glc_D[c]', 'EX_glc_D[e]'}, [1; 2]);
 %% *Altering Reaction bounds*
@@ -200,17 +208,17 @@ model = addRatioReaction (model, {'EX_glc_D[c]', 'EX_glc_D[e]'}, [1; 2]);
 % set appropriate limits of the reactions.
 
 model = changeRxnBounds(model, 'EX_glc_D[e]', -18.5, 'l');
-%% Modifiying Reactions
+%% Modifying Reactions
 % The |addReaction| function also is a good choice when modifying reactions. 
-% By supplying a new stoichiometry, the old will be overwritten. For example further 
-% up, we added awrong stoichiometry for the GAP-Dehydrogenase with a phosphate 
-% coefficient of 2. (easily visiple by printing the reaction)
+% By supplying a new stoichiometry, the old will be overwritten. For example, 
+% further up, we added a wrong stoichiometry for the GAP-Dehydrogenase with a 
+% phosphate coefficient of 2. (easily visible by printing the reaction)
 
 printRxnFormula(model, 'rxnAbbrList', 'GAPDH');
 %% 
-% We can correct this by simply calling ddReaction again with the corrected 
-% stoichiometry. In essence parts which are not provided are taken from the old 
-% reaction, and only the new ones overwrite the existing data
+% We can correct this by simply calling |addReaction| again with the corrected 
+% stoichiometry. In essence, parts which are not provided are taken from the old 
+% reaction, and only the new ones overwrite the existing data.
 
 model = addReaction(model, 'GAPDH',...
     'metaboliteList', {'g3p[c]', 'nad[c]', 'pi[c]', '13bpg[c]', 'nadh[c]','h[c]' },...
@@ -223,7 +231,7 @@ model = changeGeneAssociation(model, 'GAPDH', 'G1 and G2');
 printRxnFormula(model, 'rxnAbbrList', {'GAPDH'}, 'gprFlag', true);
 %% 
 % The other option to achieve this is to use |addReaction| and the |geneRule| 
-% parameter 
+% parameter. 
 
 model = addReaction(model, 'PGK', 'geneRule', 'G2 or G3', 'printLevel', 0);
 printRxnFormula(model, 'gprFlag', true);
@@ -241,7 +249,7 @@ printRxnFormula(model, 'gprFlag', true);
 
   model = removeMetabolites(model, {'3pg[c]', '2pg[c]'}, false);
 %% 
-% For instance, in previous code the many metabolites from '|GAPDH|' were 
+% For instance, in the previous code, many metabolites from '|GAPDH|' were 
 % deleted, but the reaction is still present in the model (since there are more 
 % metabolites left). The false indicates, that empty reactions should not be removed.
 % 
@@ -252,15 +260,15 @@ printRxnFormula(model, 'gprFlag', true);
   model = removeRxns(model,{'GAPDH', 'PGK'});
 %% Search for duplicates and comparison of two models
 % Since genome-scale metabolic models are expanding every day [2], the need 
-% for comparison and merge of them is also spreading. 
+% for comparison of them is also spreading. 
 % 
 % The elementary functions for the model manipulation, besides main actions, 
 % simultaneously perform the structural analysis and comparison (e.g. |addReaction|). 
-% Likewise, there are additional functions that are only dealing with analysing 
+% Likewise, there are additional functions that are only dealing with analyzing 
 % similarities and differences within and between the models.
 % 
 % * Checking for reaction duplicates by reaction abbreviation, by using method 
-% '|S|' that will not detect reverse reactions, and method '|FR|' that will neglect 
+% '|S|' that will not detect reverse reactions and method '|FR|' that will neglect 
 % reactions direction:
 
 [model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, 'S', 1, 1);
@@ -273,14 +281,14 @@ model = addReaction(model, 'GLCt1r_duplicate_reverse',...
                     'upperBound', 20, 'checkDuplicate', 0);
 fprintf('>> Detecting duplicates using S method\n');
 method = 'S'; 
-% will not be removed as does not detect reverse reaction
+% will not be removed as does not detect a reverse reaction
 [model,removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1);
 assert(rxns_length + 1 == length(model.rxns)); 
 % The reaction length has been reevaluated
 
 fprintf('>> Detecting duplicates with using FR method\n');
 method = 'FR';
-% will be removed as detects reverse reaction
+% will be removed as detects a reverse reaction
 [model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1);
 assert(rxns_length == length(model.rxns));
 %% 
@@ -289,26 +297,26 @@ assert(rxns_length == length(model.rxns));
 
 model = checkCobraModelUnique(model, false)
 %% Changing the model's objective
-% Simulating different conditions in the model is often necessery in favor of 
-% performing calculations that investigate a specific objective. One of the elementary 
-% objectives is optimal growth [3]. Model can be modified to get different conditions 
-% with changing the model objective:
+% Simulating different conditions in the model is often necessary for a favor 
+% of performing calculations that investigate a specific objective. One of the 
+% elementary objectives is optimal growth [3]. The model can be modified to get 
+% different conditions with changing the model objective:
 
 modelNew = changeObjective(model, 'GLCt1r', 0.5);
 
-% multiple rxns, default coefficient (1)
+% multiple reactions, default coefficient (1)
 modelNew = changeObjective(model, {'PGI'; 'PFK'; 'FBP'});
 
 %% The direction of reactions 
 % For some purposes, it is important to only have irreversible reactions in 
 % a model, i.e. only allowing positive flux in all reactions. This can be important 
 % if e.g. absolute flux values are of interest and negative flux would reduce 
-% an objective while it should actually increase it. The COBRA toolbox offers 
+% an objective while it should actually increase it. The COBRA Toolbox offers 
 % functionality to change a model to an irreversible format, by splitting all 
 % reversible reactions and adjusting the respective lower and upper bounds, such 
 % that the model capacities stay the same. 
 % 
-% Lets see, how the glycolysis model currently looks:
+% Let us see, how the glycolysis model currently looks:
 
 printRxnFormula(model);
 %% 
@@ -316,11 +324,11 @@ printRxnFormula(model);
 
 [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 %% 
-% Lets compare the irreversible model with the original model:
+% Compare the irreversible model with the original model:
 
 printRxnFormula(modelIrrev);
 %% 
-% You will notice, that there are more reactions in this model, and that 
+% You will notice, that there are more reactions in this model and that 
 % all reactions which have a lower bound < 0 are split in two. 
 % 
 % There is also a function to convert an irreversible model to a reversible 
@@ -332,6 +340,69 @@ modelRev = convertToReversible(modelIrrev);
 % model, they should look the same.
 
 printRxnFormula(modelRev);
+%% Create gene-reaction-associations ('GPRs') from scratch.
+
+model.genes = [];
+model.rxnGeneMat = [];
+modelgrRule = model.grRules;
+for i = 1 : length(modelgrRule)
+    if ~isempty(modelgrRule{i})
+        model = changeGeneAssociation(model,model.rxns{i},modelgrRule{i});
+    end
+end
+%% 
+% Check that there are no empy columns left.
+
+find(sum(model.rxnGeneMat)==0)
+%% Replace an old GPR with a new one. 
+% Here, we will search for all instances of the old GPR and replace it by the 
+% new one.
+% 
+% Define the old and the new one. 
+
+GPRsReplace={'(126.1) or (137872.1) '	'126.1 or 137872.1'};
+GP = (model.grRules);
+a = 1;
+for  i = 1 : size(GPRsReplace,1)
+    tmp2=[];
+    for j = 1 :length(GP)
+        tmp2 = strmatch(GPRsReplace{i,1},GP{j});
+        % replace old GPR by new
+        model.grRules{j} = GPRsReplace{i,2};
+    end
+end
+%% 
+% Remove issues with hyphens in the GPR definitions.
+
+for i = 1 : length(model.grRules)
+    model.grRules{i} = strrep(model.grRules{i}, '''', '');
+end
+%% 
+% Remove spaces from reaction abbreviations.
+
+for i = 1 : length(model.rxns)
+    model.rxns{i} = strrep(model.rxns{i}, ' ', '');
+end
+%% 
+% Remove unneccessary brackets from the GPR associations. 
+
+for i = 1 : length(model.grRules)
+    model.grRules{i} = strrep(model.grRules{i}, '''', '');
+    % remove unnecessary brackets
+    if length(strfind(model.grRules{i},'and')) == 0 % no AND in gprs
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+        
+    elseif length(strfind(model.grRules{i},'or')) == 0 % no OR in gprs
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+    elseif length(strfind(model.grRules{i},'(')) == 1 && length(strfind...
+            (model.grRules{i},'or')) == 0 && length(strfind...
+            (model.grRules{i},'and')) == 0
+        model.grRules{i} = strrep(model.grRules{i}, '(', '');
+        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+    end
+end
 %% REFERENCES
 % [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
 % analysis? _Nat. Biotechnol., 28_(3), 245–248.
