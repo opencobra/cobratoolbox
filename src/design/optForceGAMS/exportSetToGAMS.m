@@ -1,36 +1,33 @@
-function exportSetToGAMS(set, fileName)
+function [] = exportSetToGAMS(set, fileName)
 % This function exports the information in "set" to a .txt file which can be
-% read by GAMS. "set" must be a cell array of strings. 
+% read by GAMS. "set" must be a cell array of strings.
 %
-% USAGE: 
+% USAGE:
 %
-%         exportSetToGAMS(set, fileName)
+%         [] = exportSetToGAMS(set, fileName)
 %
 % INPUTS:
-%    set:             Type: cell array of strings
-%                     Description: cell array containing identifiers
-%                     for certain set of elements (reactions,
-%                     metabolites, etc)
-% 
-%    fileName:        Type: string
-%                     Description: Name of the file in which the
+%    set:             (cell array of strings) cell array containing
+%                     identifiers for certain set of elements (reactions,
+%                     metabolites, etc).
+%    fileName:        (string) Name of the file in which the
 %                     information will be stored. It is recomended to
-%                     add the extension of the file. 
+%                     add the extension of the file.
 %
 % OUTPUTS:
-%    fileName.txt:    Type: file
-%                     Description: File of name "fileName" containing 
+%    fileName.txt:    (file) File of name "fileName" containing
 %                     the set of elements, one for row.
 %
-% EXAMPLE: 
+% EXAMPLE:
 %
-%    exportSetToGAMS(model.rxns, 'Reactions.txt') 
+%    exportSetToGAMS(model.rxns, 'Reactions.txt')
 %    This, will export the list of elements in model.rxns to a file called
 %    Reactions.txt
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
-
-if nargin > 2  %input handling
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+%% CODE
+%input handling
+if nargin > 2
     error('All inputs for the function exportSetToGAMS must be specified');
 end
 

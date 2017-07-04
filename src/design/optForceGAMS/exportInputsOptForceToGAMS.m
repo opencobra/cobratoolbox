@@ -1,17 +1,17 @@
-function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
-    maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
+function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
+    maxFluxesM, k, n_sets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 % This function export the inputs required by GAMS to run optForce. Some
 % inputs will be exported to plain text (.txt files) and others will be
 % exported using GDXMRW. Inputs will be stored in inputFolder
 %
-% USAGE: 
+% USAGE:
 %
 %         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
-%                       Description: a metabolic model with at least the
+%    model:             (structure) a metabolic model with at least the
 %                       following fields:
+%
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
@@ -19,46 +19,37 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-%    targetRxn:         Type: string
-%                       Description: string containing the ID for the
+%    targetRxn:         (string) string containing the ID for the
 %                       reaction whose flux is intented to be increased.
 %                       For example, if the production of succionate is
 %                       desired to be increased, 'EX_suc' should be
 %                       chosen as the target reaction
 %                       E.g.: targetRxn='EX_suc';
-%    mustU:             Type: cell array.
-%                       Description: List of reactions in the MustU set
+%    mustU:             (cell array) List of reactions in the MustU set
 %                       This input can be obtained by running the
 %                       script findMustU.m
 %                       E.g.: mustU={'R21_f';'R22_f'};
-%    mustL:             Type: cell array.
-%                       Description: List of reactions in the MustL set
+%    mustL:             (cell array) List of reactions in the MustL set
 %                       This input can be obtained by running the
 %                       script findMustL.m
 %                       E.g.: mustL={'R11_f';'R26_f'};
-%    minFluxesW:        Type: double array of size n_rxns x1
-%                       Description: Minimum fluxes for each reaction
-%                       in the model for wild-type strain
+%    minFluxesW:        (double array of size n_rxns x 1) minimum fluxes
+%                       for each reaction in the model for wild-type strain
 %                       E.g.: minFluxesW=[-90; -56];
-%    maxFluxesW:        Type: double array of size n_rxnsx1
-%                       Description: Maximum fluxes for each reaction
-%                       in the model for wild-type strain
+%    maxFluxesW:        (double array of size n_rxns x 1) maximum fluxes
+%                       for each reaction in the model for wild-type strain
 %                       E.g.: maxFluxesW=[92; -86];
-%    minFluxesM:        Type: double array of size n_rxnsx1
-%                       Description: Minimum fluxes for each reaction
-%                       in the model for mutant strain
-%                       E.g.: minFluxesW=[-90; -56];
-%    maxFluxesM:        Type: double array of size n_rxnsx1
-%                       Description: Maxmum fluxes for each reaction in the
-%                       model for mutant strain.
+%    minFluxesM:        (double array of size n_rxns x 1)
+%                       Description: Minimum fluxes for each reaction in
+%                       the model for mutant strain E.g.: minFluxesW=[-90;
+%                       -56];
+%    maxFluxesM:        (double array of size n_rxns x 1) maximum fluxes
+%                       for each reaction in the model for mutant strain.
 %                       E.g.: maxFluxesW=[92; -86];
-%    k:                 Type: double
-%                       Description: number of intervations to be found
-%    nSets:             Type: double
-%                       Description: maximum number of force sets returned
+%    k:                 (double) number of intervations to be found
+%    nSets:             (double) maximum number of force sets returned
 %                       by optForce.
-%    constrOpt:         Type: Structure
-%                       Description: structure containing additional
+%    constrOpt:         (Structure) structure containing additional
 %                       contraints. Include here only reactions whose flux
 %                       is fixed, i.e., reactions whose lower and upper
 %                       bounds have the same value. Do not include here
@@ -72,59 +63,46 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %                           (double array). E.g.: struct('rxnList', ...
 %                           {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', ...
 %                           [-100, 0, 155.5]');
-%    excludedURxns:     Type: cell array
-%                       Description: Reactions to be excluded from
+%    excludedURxns:     (cell array) Reactions to be excluded from
 %                       upregulations
-%    excludedLRxns:     Type: cell array
-%                       Description: Reactions to be excluded from
+%    excludedLRxns:     (cell array) Reactions to be excluded from
 %                       downregulations
-%    excludedKRxns:     Type: cell array
-%                       Description: Reactions to be excluded from
+%    excludedKRxns:     (cell array) Reactions to be excluded from
 %                       knockouts
-%    inputFolder:       Type: string
-%                       Description: folder where inputs will be stored.
+%    inputFolder:       (string) folder where inputs will be stored.
 %                       Just the name of the folder, not the full path.
 %
 % OUTPUTS:
-%    Reactions.txt      Type: file
-%                       Description: File containing the identifiers for
+%    Reactions.txt      (file) File containing the identifiers for
 %                       reactions
-%    Metabolites.txt    Type: file
-%                       Description: File containing the identifiers for
+%    Metabolites.txt    (file) File containing the identifiers for
 %                       metabolites
-%    Constrains.txt     Type: file
-%                       Description: File containing the identifiers for
+%    Constrains.txt     (file) File containing the identifiers for
 %                       constrained reactions
-%    Excluded_U.txt     Type: file
-%                       Description: File containing the identifiers for
+%    Excluded_U.txt     (file) File containing the identifiers for
 %                       excluded reactions. These reactions will not be
 %                       considered for upregulations when running
 %                       optForcE.gms
-%    Excluded_L.txt     Type: file
-%                       Description: File containing the identifiers for
+%    Excluded_L.txt     (file) File containing the identifiers for
 %                       excluded reactions. These reactions will not be
 %                       considered for downregulations when running
 %                       optForcE.gms
-%    Excluded_K.txt     Type: file
-%                       Description: File containing the identifiers for
+%    Excluded_K.txt     (file) File containing the identifiers for
 %                       excluded reactions. These reactions will not be
 %                       considered for knowckouts when running optForcE.gms
-%    MustU.txt          Type: file
-%                       Description: File containing the identifiers for
+%    MustU.txt          (file) File containing the identifiers for
 %                       upregulated reactions find in MustU, MustUU and
 %                       MustUL
-%    MustU.txt          Type: file
-%                       Description: File containing the identifiers for
+%    MustU.txt          (file) File containing the identifiers for
 %                       downregulated reactions find in MustL, MustLL and
 %                       MustUL
-%    MtoG.gdx           Type: file
-%                       Description: File containing the parameters which
+%    MtoG.gdx           (file) File containing the parameters which
 %                       will be read by GAMS (lower bounds, upper bounds,
 %                       stoichiometrix matrix S, minimum and maximun fluxes
 %                       for each reaction in the previous step of FVA, and
 %                       the values for contrained reactions)
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 15 %inputs handling
     error('Optforce: All inputs must be specified when using exportInputsOptForceToGAMS');
@@ -203,10 +181,10 @@ kg.val = k;
 
 nMax.name = 'nMax';
 nMax.type = 'parameter';
-nMax.val = nSets;
+nMax.val = n_sets;
 
 %Using GDXMRW to export inputs
-wgdx('MtoGOF', s, basemin, basemax, phenomin, phenomax, lb, ub, b, kg, nMax);
+wgdx('MtoG', s, basemin, basemax, phenomin, phenomax, lb, ub, b, kg, nMax);
 cd(current);
 
 end

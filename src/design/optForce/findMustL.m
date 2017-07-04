@@ -1,17 +1,16 @@
 function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a first order
-% MustL set. 
+% MustL set.
 %
-% USAGE: 
-%        
+% USAGE:
+%
 %    [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     Type: structure (COBRA model)
-%                               Description: a metabolic model with at least
-%                               the following fields:
-% 
+%    model:                     (structure) COBRA metabolic model
+%                               with at least the following fields:
+%
 %                                 * .rxns - Reaction IDs in the model
 %                                 * .mets - Metabolite IDs in the model
 %                                 * .S -    Stoichiometric matrix (sparse)
@@ -19,21 +18,20 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                                 * .c -    Objective coefficients
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
-%    minFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Minimum fluxes for each
+%    minFluxesW:                (double array) of size n_rxns x1
+%                               Minimum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
 %                               function FVAOptForce.
 %                               E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Maximum fluxes for each
+%    maxFluxesW:                (double array) of size n_rxns x1
+%                               Maximum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
 %                               function FVAOptForce.
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                 Type: Structure
-%                               Description: structure containing
+%    constrOpt:                 (structure) structure containing
 %                               additional contraints. Include here only
 %                               reactions whose flux is fixed, i.e.,
 %                               reactions whose lower and upper bounds have
@@ -45,95 +43,80 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                               fields:
 %
 %                                 * .rxnList - Reaction list (cell array)
-%                                 * .values -  Values for constrained 
+%                                 * .values -  Values for constrained
 %                                   reactions (double array)
 %                                   E.g.: struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]'); 
-%    runID:                     Type: string
-%                               Description: ID for identifying this run
+%                                   'values', [-100, 0, 155.5]');
+%    runID:                     (string) ID for identifying this run
 %                               Default: ['run' date hour].
-%    outputFolder:              Type: string
-%                               Description: name for folder in which results
+%    outputFolder:              (string) name for folder in which results
 %                               will be stored
 %                               Default: 'OutputsFindMustL'.
-%    outputFileName:            Type: string
-%                               Description: name for files in which results
+%    outputFileName:            (string) name for files in which results
 %                               will be stored
 %                               Default: 'MustLSet'.
-%    printExcel:                Type: double
-%                               Description: boolean to describe wheter data
+%    printExcel:                (double) boolean to describe wheter data
 %                               must be printed in an excel file or not
 %                               Default: 1
-%    printText:                 Type: double
-%                               Description: boolean to describe wheter data
+%    printText:                 (double) boolean to describe wheter data
 %                               must be printed in an plaint text file or not
 %                               Default: 1
-%    printReport:               Type: double
-%                               Description: 1 to generate a report in a plain
+%    printReport:               (double) 1 to generate a report in a plain
 %                               text file. 0 otherwise.
 %                               Default: 1
-%    keepInputs:                Type: double
-%                               Description: 1 to save inputs to run
+%    keepInputs:                (double) 1 to save inputs to run
 %                               findMustL.m 0 otherwise.
 %                               Default: 1
-%    verbose:                   Type: double
-%                               Description: 1 to print results in console.
+%    verbose:                   (double) 1 to print results in console.
 %                               0 otherwise.
 %                               Default: 0
 %
 % OUTPUTS:
-%    mustLSet:                  Type: cell array
-%                               Size: number of reactions found X 1
-%                               Description: Cell array containing the
+%    mustLSet:                  (cell array) Size: number of reactions found X 1
+%                               Cell array containing the
 %                               reactions ID which belong to the Must_U Set
-%    posMustL:                  Type: double array
+%    posMustL:                  (double array)
 %                               Size: number of reactions found X 1
-%                               Description: double array containing the
+%                               double array containing the
 %                               positions of reactions in the model.
-%    outputFileName.xls         Type: file.
-%                               Description: File containing one column array
+%    outputFileName.xls          File containing one column array
 %                               with identifiers for reactions in MustL. This
 %                               file will only be generated if the user entered
 %                               printExcel = 1. Note that the user can choose
 %                               the name of this file entering the input
 %                               outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName.txt         Type: file.
-%                               Description: File containing one column array
+%    outputFileName.txt          File containing one column array
 %                               with identifiers for reactions in MustL. This
 %                               file will only be generated if the user entered
 %                               printText = 1. Note that the user can choose
 %                               the name of this file entering the input
 %                               outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.xls    Type: file.
-%                               Description: File containing five column
-%                               arrays. 
+%    outputFileName_Info.xls     File containing five column arrays.
 %                               C1: identifiers for reactions in MustL
 %                               C2: min fluxes for reactions according to FVA
 %                               C3: max fluxes for reactions according to FVA
-%                               C4: min fluxes achieved for reactions, 
+%                               C4: min fluxes achieved for reactions,
 %                               according to findMustL
-%                               C5: max fluxes achieved for reactions, 
+%                               C5: max fluxes achieved for reactions,
 %                               according to findMustL
 %                               This file will only be generated if the user
 %                               entered printExcel = 1. Note that the user can
 %                               choose the name of this file entering the input
 %                               outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.txt    Type: file.
-%                               Description: File containing five column
-%                               arrays. 
+%    outputFileName_Info.txt     File containing five column arrays.
 %                               C1: identifiers for reactions in MustL.
 %                               C2: min fluxes for reactions according to FVA
 %                               C3: max fluxes for reactions according to FVA
-%                               C4: min fluxes achieved for reactions, 
+%                               C4: min fluxes achieved for reactions,
 %                               according to findMustL
-%                               C5: max fluxes achieved for reactions, 
+%                               C5: max fluxes achieved for reactions,
 %                               according to findMustL
 %                               This file will only be generated if the user
 %                               entered printText = 1. Note that the user can
 %                               choose the name of this file entering the input
 %                               outputFileName = 'PutYourOwnFileNameHere';
-% NOTE: 
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
@@ -142,21 +125,21 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
 
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+
     tempargin = cell(1,2*(numel(varargin)));
     for i = 1:numel(varargin)
-        
+
         tempargin{2*(i-1)+1} = optionalParameters{i};
         tempargin{2*(i-1)+2} = varargin{i};
     end
     varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -208,12 +191,12 @@ if printReport
     %create name for file.
     hour = clock;
     reportFileName = ['report-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm.txt'];
-    freport = fopen(reportFileName, 'w'); 
+    freport = fopen(reportFileName, 'w');
     % print date of running.
     fprintf(freport, ['findMustL.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
     % print matlab version.
     fprintf(freport, ['MATLAB: Release R' version('-release') '\n']);
-    
+
     %print each of the inputs used in this running.
     fprintf(freport, '\nThe following inputs were used to run OptForce: \n');
     fprintf(freport, '\n------INPUTS------\n');
@@ -229,20 +212,20 @@ if printReport
     for i = 1:length(model.rxns)
         fprintf(freport, '%6.4f\t%6.4f\t%6.4f\t%6.4f\n', model.lb(i), model.ub(i), minFluxesW(i), maxFluxesW(i));
     end
-    
+
     %print constraints
     fprintf(freport,'\nConstrained reactions:\n');
     for i = 1:length(constrOpt.rxnList)
         fprintf(freport,'%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
     end
-    
+
     fprintf(freport,'\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
-    
-    
+
+
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nverbose: %1.0f \n',...
         printExcel, printText, printReport, keepInputs, verbose);
-    
+
 end
 
 % export inputs for running the optimization problem to find the MustL Set
@@ -265,20 +248,20 @@ must = zeros(n_rxns, 1);
 mustL = zeros(n_rxns, 1);
 vmin = zeros(n_rxns, 1);
 vmax = zeros(n_rxns, 1);
- 
-found = 0; 
+
+found = 0;
 %while a solution is still found
 while 1
     % create bilevel problem
     bilevelMILPproblem = buildBilevelMILPproblemForFindMustL(model, can, must, minFluxesW, constrOpt);
     % solve problem
     MustLSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
-    
+
     if MustLSol.stat~=1
         break;
     else
         % if there is a solution
-        found = 1; 
+        found = 1;
         %find which reaction was found
         pos_actives = find(MustLSol.int);
         %update must sets
@@ -305,7 +288,7 @@ if found
     if verbose; fprintf('a MustL set was found\n'); end;
     %find mustL sets
     posMustL=find(mustL);
-    mustLSet=model.rxns(posMustL); 
+    mustLSet=model.rxns(posMustL);
 else
     %if no solution is found
     if printReport; fprintf(freport, '\na MustL set was not found\n'); end;
@@ -313,7 +296,7 @@ else
     %initilize empty arrays
     mustLSet = {};
     posMustL = {};
-end 
+end
 
 % print info into an excel text file if required by the user
 if printExcel
@@ -344,18 +327,18 @@ if printText
             fprintf(f, '%s\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', model.rxns{posMustL(i)}, minFluxesW(posMustL(i)), maxFluxesW(posMustL(i)), vmin(posMustL(i)), vmax(posMustL(i)));
         end
         fclose(f);
-        
+
         f = fopen([outputFileName '.txt'], 'w');
         for i = 1:length(posMustL)
             fprintf(f, '%s\n', mustLSet{i});
         end
         fclose(f);
-        
+
         cd(currentFolder);
         if verbose; fprintf(['MustL set was printed in ' outputFileName '.txt  \n']); end;
         if printReport; fprintf(freport, ['\nMustL set was printed in ' outputFileName '.txt  \n']); end;
     else
-        if verbose; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end; 
+        if verbose; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustL set was not found. Therefore, no excel file was generated\n'); end;
     end
 end
@@ -383,7 +366,7 @@ else
     %sort for rxn index
     [sorted, ind_sorted] = sort(ind_a);
     ind_ic = sorted;
-    b_ic = aux(ind_sorted); if size(b_ic, 1) > size(b_ic, 2); b_ic = b_ic'; end; 
+    b_ic = aux(ind_sorted); if size(b_ic, 1) > size(b_ic, 2); b_ic = b_ic'; end;
     sel_ic = zeros(length(model.rxns), 1);
     sel_ic(ind_ic) = 1;
     sel_ic_b = zeros(length(model.rxns), 1);
@@ -394,7 +377,7 @@ end
 S = model.S;
 ub = model.ub;
 lb = model.lb;
-% Dimensions 
+% Dimensions
 [n_mets, n_rxns] = size(S);
 
 % indices of not contrained variables

@@ -1,4 +1,6 @@
-function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
+function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, ...
+    maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder,...
+    outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming problem to find a second order
 % MustLL set.
@@ -8,8 +10,7 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     Type: structure (COBRA model)
-%                               Description: a metabolic model with at least
+%    model:                     (structure) a metabolic model with at least
 %                               the following fields:
 %
 %                                 * .rxns - Reaction IDs in the model
@@ -19,22 +20,19 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                                 * .c -    Objective coefficients
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
-%    minFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Minimum fluxes for each
-%                               reaction in the model for wild-type strain.
-%                               This can be obtained by running the
-%                               function FVAOptForce.
-%                               E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                Type: double array of size n_rxns x1
-%                               Description: Maximum fluxes for each
-%                               reaction in the model for wild-type strain.
-%                               This can be obtained by running the
-%                               function FVA_optForce.
-%                               E.g.: maxFluxesW = [90; 56];
+%    minFluxesW:                (double array of size n_rxns x 1) minimum
+%                               fluxes for each reaction in the model for
+%                               wild-type strain. This can be obtained by
+%                               running the function FVAOptForce. E.g.:
+%                               minFluxesW = [-90; -56];
+%    maxFluxesW:                (double array of size n_rxns x 1) maximum
+%                               fluxes for each reaction in the model for
+%                               wild-type strain. This can be obtained by
+%                               running the function FVA_optForce. E.g.:
+%                               maxFluxesW = [90; 56];
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                 Type: Structure
-%                               Description: structure containing
+%    constrOpt:                 (Structure) structure containing
 %                               additional contraints. Include here only
 %                               reactions whose flux is fixed, i.e.,
 %                               reactions whose lower and upper bounds have
@@ -46,137 +44,108 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               fields:
 %
 %                                 * .rxnList - Reaction list (cell array)
-%                                 * .values -  Values for constrained 
+%                                 * .values -  Values for constrained
 %                                   reactions (double array)
 %                                   E.g.: struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]'); 
-%    excludedRxns:              Type: cell array
-%                               Description: Reactions to be excluded to
+%                                   'values', [-100, 0, 155.5]');
+%    excludedRxns:              (cell array) Reactions to be excluded to
 %                               the MustLL set. This could be used to avoid
 %                               finding transporters or exchange reactions
-%                               in the set. 
-%                               Default: empty.
-%    mustSetFirstOrder:         Type: cell array
-%                               Description: Reactions that belong to MustU
-%                               and MustL (first order sets). 
-%                               Default: empty.
-%    solverName:                Type: string
-%                               Description: Name of the solver used in
-%                               GAMS. 
-%                               Default: 'cplex'.
-%    runID:                     Type: string
-%                               Description: ID for identifying this run.
-%                               Default: ['run' date hour].
-%    outputFolder:              Type: string
-%                               Description: name for folder in which
-%                               results will be stored.
-%                               Default: 'OutputsFindMustLL'.
-%    outputFileName:            Type: string
-%                               Description: name for files in which
-%                               results. will be stored
-%                               Default: 'MustLLSet'.
-%    printExcel:                Type: double
-%                               Description: boolean to describe wheter
+%                               in the set. Default = empty.
+%    mustSetFirstOrder:         (cell array) Reactions that belong to MustU
+%                               and MustL (first order sets). Default =
+%                               empty.
+%    solverName:                (string) Name of the solver used in
+%                               GAMS. Default = 'cplex'.
+%    runID:                     (string) ID for identifying this run.
+%                               Default = ['run' date hour].
+%    outputFolder:              (string) name for folder in which
+%                               results will be stored. Default =
+%                               'OutputsFindMustLL'.
+%    outputFileName:            (string) name for files in which
+%                               results will be stored. Default =
+%                               'MustLLSet'.
+%    printExcel:                (double) boolean to describe wheter
 %                               data must be printed in an excel file or
-%                               not.
-%                               Default: 1
-%    printText:                 Type: double
-%                               Description: boolean to describe wheter
+%                               not. Default = 1
+%    printText:                 (double) boolean to describe wheter
 %                               data must be printed in an plaint text file
-%                               or not.
-%                               Default: 1
-%    printReport:               Type: double
-%                               Description: 1 to generate a report in a
-%                               plain text file. 0 otherwise.
-%                               Default: 1
-%    keepInputs:                Type: double
-%                               Description: 1 to mantain folder with
+%                               or not. Default = 1
+%    printReport:               (double) 1 to generate a report in a
+%                               plain text file. 0 otherwise. Default = 1
+%    keepInputs:                (double) 1 to mantain folder with
 %                               inputs to run findMustLL.gms. 0 otherwise.
-%                               Default: 1
-%    keepGamsOutputs:           Type: double
-%                               Description: 1 to mantain files returned by
-%                               findMustLL.gms. 0 otherwise.
-%                               Default: 1
-%    verbose:                   Type: double.
-%                               Description: 1 to print results in console.
-%                               0 otherwise.
-%                               Default: 0
+%                               Default = 1
+%    keepGamsOutputs:           (double) 1 to mantain files returned by
+%                               findMustLL.gms. 0 otherwise. Default = 1
+%    verbose:                   (double) 1 to print results in console.
+%                               0 otherwise. Default = 0
 %
-% OUTPUTS: 
-%    mustLL:                    Type: cell array
-%                               Size: number of sets found X 2.
-%                               Description: Cell array containing the
-%                               reactions IDs which belong to the MustLL
-%                               set. Each row contain a couple of reactions
-%                               that must decrease their flux.
-%    pos_mustLL:                Type: double array
-%                               Size: number of sets found X 2.
-%                               Description: double array containing the
-%                               positions of each reaction in mustLL with
-%                               regard to model.rxns
-%    mustLL_linear:             Type: cell array
-%                               Size: number of unique reactions found X 1
-%                               Description: Cell array containing the
-%                               unique reactions ID which belong to the
+% OUTPUTS:
+%    mustLL:                    (cell array of size number of sets found X
+%                               2). Cell array containing the reactions IDs
+%                               which belong to the MustLL set. Each row
+%                               contain a couple of reactions that must
+%                               decrease their flux.
+%    pos_mustLL:                (double array of size number of sets found
+%                               X 2). Double array containing the positions
+%                               of each reaction in mustLL with regard to
+%                               model.rxns
+%    mustLL_linear:             (cell array of size number of unique
+%                               reactions found X 1) Cell array containing
+%                               the unique reactions ID which belong to the
 %                               MustLL Set
-%    pos_mustLL_linear:         Type: double array
-%                               Size: number of unique reactions found X 1
-%                               Description: double array containing
-%                               positions for reactions in mustLL_linear.
-%                               with regard to model.rxns
-%    outputFileName.xls         Type: file.
-%                               Description: File containing one column
+%    pos_mustLL_linear:         (double array of size number of unique
+%                               reactions found X 1) double array
+%                               containing positions for reactions in
+%                               mustLL_linear. with regard to model.rxns
+%    outputFileName.xls         (file) File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
 %                               the user entered printExcel = 1. Note that
 %                               the user can choose the name of this file
 %                               entering the input outputFileName =
 %                               'PutYourOwnFileNameHere';
-%    outputFileName.txt         Type: file.
-%                               Description: File containing one column
+%    outputFileName.txt         (file) File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
 %                               the user entered printText = 1. Note that
 %                               the user can choose the name of this file
 %                               entering the input outputFileName =
 %                               'PutYourOwnFileNameHere';
-%    outputFileName_Info.xls    Type: file.
-%                               Description: File containing one column
+%    outputFileName_Info.xls    (file) File containing one column
 %                               array. In each row the user will find a
-%                               couple of reactions. Each couple of reaction
-%                               was found in one iteration of
+%                               couple of reactions. Each couple of
+%                               reaction was found in one iteration of
 %                               FindMustLL.gms. This file will only be
 %                               generated if the user entered printExcel =
-%                               1. Note that the user can choose the name of
-%                               this file entering the input outputFileName
-%                               = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.txt    Type: file.
-%                               Description: File containing one column
+%                               1. Note that the user can choose the name
+%                               of this file entering the input
+%                               outputFileName = 'PutYourOwnFileNameHere';
+%    outputFileName_Info.txt    (file) File containing one column
 %                               array. In each row the user will find a
-%                               couple of reactions. Each couple of reaction
-%                               was found in one iteration of
+%                               couple of reactions. Each couple of
+%                               reaction was found in one iteration of
 %                               FindMustLL.gms. This file will only be
-%                               generated if the user entered printText = 1.
-%                               Note that the user can choose the name of
-%                               this file entering the input outputFileName
-%                               = 'PutYourOwnFileNameHere';
-%    findMustLL.lst             Type: file.
-%                               Description: file autogenerated by GAMS. It
+%                               generated if the user entered printText =
+%                               1. Note that the user can choose the name
+%                               of this file entering the input
+%                               outputFileName = 'PutYourOwnFileNameHere';
+%    findMustLL.lst             (file) file autogenerated by GAMS. It
 %                               contains information about equations,
-%                               variables, parameters as well as information
-%                               about the running (values at each
-%                               iteration). This file only will be saved in
-%                               the output folder is the user entered
-%                               keepGamsOutputs = 1
-%    GtoMLL.gdx                 Type: file
-%                               Description: file containing values for
-%                               variables, parameters, etc. which were found
-%                               by GAMS when solving findMustLL.gms. This
-%                               file only will be saved in the output folder
-%                               is the user entered keepInputs = 1
+%                               variables, parameters as well as
+%                               information about the running (values at
+%                               each iteration). This file only will be
+%                               saved in the output folder if the user
+%                               entered keepGamsOutputs = 1
+%    GtoMLL.gdx                 (file) file containing values for
+%                               variables, parameters, etc. which were
+%                               found by GAMS when solving findMustLL.gms.
+%                               This file only will be saved in the output
+%                               folder if the user entered keepInputs = 1
 %
-% NOTE: 
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
@@ -185,78 +154,123 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-optionalParameters = {'constrOpt', 'excludedRxns', 'mustSetFirstOrder', 'solverName', 'runID', 'outputFolder', 'outputFileName',  ...
-    'printExcel', 'printText', 'printReport', 'keepInputs', 'keepGamsOutputs', 'verbose'};
-
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
-    tempargin = cell(1,2*(numel(varargin)));
-    for i = 1:numel(varargin)
-        
-        tempargin{2*(i-1)+1} = optionalParameters{i};
-        tempargin{2*(i-1)+2} = varargin{i};
-    end
-    varargin = tempargin;
-    
-end
-
-parser = inputParser();
-parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
-    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
-    && isfield(model, 'c'))
-parser.addRequired('minFluxesW', @isnumeric)
-parser.addRequired('maxFluxesW', @isnumeric)
-parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []),@ (x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
-    && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
-parser.addParameter('excludedRxns', {}, @(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
-parser.addParameter('mustSetFirstOrder', {}, @(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
-solvers = checkGAMSSolvers('MIP');
-if isempty(solvers)
-    error('there is no GAMS solvers available to solve Mixed Integer Programming problems') ; 
+%% CODE
+% inputs handling
+if nargin < 1 || isempty(model)
+    error('OptForce: No model specified');
 else
-    if ismember('cplex', lower(solvers))
-        defaultSolverName = 'cplex';
-    else
-        defaultSolverName = lower(solvers(1));
-    end
+    if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
+    if ~isfield(model,'rxns'), error('OptForce: Missing field rxns in model');  end
+    if ~isfield(model,'mets'), error('OptForce: Missing field mets in model');  end
+    if ~isfield(model,'lb'), error('OptForce: Missing field lb in model');  end
+    if ~isfield(model,'ub'), error('OptForce: Missing field ub in model');  end
+    if ~isfield(model,'c'), error('OptForce: Missing field c in model'); end
+    if ~isfield(model,'b'), error('OptForce: Missing field b in model'); end
 end
 
-parser.addParameter('solverName', defaultSolverName, @(x) ischar(x))
-hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-parser.addParameter('runID', defaultRunID, @(x) ischar(x))
-parser.addParameter('outputFolder', 'OutputsFindMustLL', @(x) ischar(x))
-parser.addParameter('outputFileName', 'MustLLSet', @(x) ischar(x))
-parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepGamsOutputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
+if nargin < 2 || isempty(maxFluxesW)
+    error('OptForce: Minimum values for reactions in wild-type strain not specified');
+end
+if nargin < 3 || isempty(maxFluxesW)
+    error('OptForce: Maximum values for reactions in wild-type strain not specified');
+end
+if nargin <4
+    constrOpt = {};
+else
+    %check correct fields and correct size.
+    if ~isfield(constrOpt,'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
+    if ~isfield(constrOpt,'values'), error('OptForce: Missing field values in constrOpt');  end
+    if ~isfield(constrOpt,'sense'), error('OptForce: Missing field sense in constrOpt');  end
 
-parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
-model = parser.Results.model;
-minFluxesW = parser.Results.minFluxesW;
-maxFluxesW = parser.Results.maxFluxesW;
-constrOpt= parser.Results.constrOpt;
-excludedRxns= parser.Results.excludedRxns;
-mustSetFirstOrder = parser.Results.mustSetFirstOrder; 
-solverName = parser.Results.solverName; 
-runID = parser.Results.runID;
-outputFolder = parser.Results.outputFolder;
-outputFileName = parser.Results.outputFileName;
-printExcel = parser.Results.printExcel;
-printText = parser.Results.printText;
-printReport = parser.Results.printReport;
-keepInputs = parser.Results.keepInputs;
-keepGamsOutputs = parser.Results.keepGamsOutputs;
-verbose = parser.Results.verbose;
-
-% correct size of constrOpt
-if ~isempty(constrOpt.rxnList)
-    if size(constrOpt.rxnList, 1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
-    if size(constrOpt.values, 1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
+    if length(constrOpt.rxnList) == length(constrOpt.values) && length(constrOpt.rxnList) == length(constrOpt.sense)
+        if size(constrOpt.rxnList,1) > size(constrOpt.rxnList, 2); constrOpt.rxnList = constrOpt.rxnList'; end;
+        if size(constrOpt.values,1) > size(constrOpt.values, 2); constrOpt.values = constrOpt.values'; end;
+        if size(constrOpt.sense,1) > size(constrOpt.sense, 2); constrOpt.sense = constrOpt.sense'; end;
+    else
+        error('OptForce: Incorrect size of fields in constrOpt');
+    end
+    if length(intersect(constrOpt.rxnList, model.rxns)) ~= length(constrOpt.rxnList);
+        error('OptForce: identifiers for reactions in constrOpt.rxnList must be in model.rxns');
+    end
+end
+if nargin <5
+    excludedRxns = {};
+else
+    if length(intersect(excludedRxns, model.rxns)) ~= length(excludedRxns);
+        error('OptForce: identifiers for excluded reactions must be in model.rxns');
+    end
+end
+if nargin <6
+    mustSetFirstOrder = {};
+    warning('OptForce: If you do not specify mustSetFirstOrder, the algorithm could be very time-consuming.')
+else
+    if length(intersect(mustSetFirstOrder, model.rxns)) ~= length(mustSetFirstOrder);
+        error('OptForce: identifiers for reactions in mustSetFirstOrder must be in model.rxns');
+    end
+end
+solvers = checkGAMSSolvers('MIP');
+if nargin < 5 || isempty(solverName)
+    if ismember('cplex', lower(solvers))
+        solverName = 'cplex';
+    else
+        solverName = lower(solvers(1));
+    end
+else
+    if ~ischar(solverName); error('OptForce: solverName must be an string');  end
+    if ~ismember(solverName, lower(solvers)); error(['OptForce: ' solverName ' is not available for GAMS']);  end
+end
+if nargin < 8 || isempty(runID)
+    hour = clock; runID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+else
+    if ~ischar(runID); error('OptForce: runID must be an string');  end
+end
+if nargin < 9 || isempty(outputFolder)
+    outputFolder = 'OutputsFindMustLL';
+else
+    if ~ischar(outputFolder); error('OptForce: outputFolder must be an string');  end
+end
+if nargin < 10 || isempty(outputFileName)
+    outputFileName = 'MustLLSet';
+else
+    if ~ischar(outputFileName); error('OptForce: outputFileName must be an string');  end
+end
+if nargin < 11
+    printExcel = 1;
+else
+    if ~isnumeric(printExcel); error('OptForce: printExcel must be a number');  end
+    if printExcel ~= 0 && printExcel ~= 1; error('OptForce: printExcel must be 0 or 1');  end
+end
+if nargin < 12
+    printText = 1;
+else
+    if ~isnumeric(printText); error('OptForce: printText must be a number');  end
+    if printText ~= 0 && printText ~= 1; error('OptForce: printText must be 0 or 1');  end
+end
+if nargin < 13
+    printReport = 1;
+else
+    if ~isnumeric(printReport); error('OptForce: printReport must be a number');  end
+    if printReport ~= 0 && printReport ~= 1; error('OptForce: printReportl must be 0 or 1');  end
+end
+if nargin < 14
+    keepInputs = 1;
+else
+    if ~isnumeric(keepInputs); error('OptForce: keepInputs must be a number');  end
+    if keepInputs ~= 0 && keepInputs ~= 1; error('OptForce: keepInputs must be 0 or 1');  end
+end
+if nargin < 15
+    keepGamsOutputs = 1;
+else
+    if ~isnumeric(keepGamsOutputs); error('OptForce: keepGamsOutputs must be a number');  end
+    if keepGamsOutputs ~= 0 && keepGamsOutputs ~= 1; error('OptForce: keepGamsOutputs must be 0 or 1');  end
+end
+if nargin < 16
+    verbose = 0;
+else
+    if ~isnumeric(verbose); error('OptForce: verbose must be a number');  end
+    if verbose ~= 0 && verbose  ~=  1; error('OptForce: verbose must be 0 or 1');  end
 end
 
 % first, verify that GAMS is installed in your system
@@ -295,7 +309,7 @@ if printReport
     %print model.
     fprintf(freport, '\nModel:\n');
     for i = 1:length(model.rxns)
-        rxn = printRxnFormula(model, model.rxns{i}, false);
+        rxn = printRxnFormula(model, model.rxns{i});
         fprintf(freport, [model.rxns{i} ': ' rxn{1} '\n']);
     end
     %print lower and upper bounds, minimum and maximum values for each of
@@ -313,13 +327,13 @@ if printReport
 
     fprintf(freport, '\nExcluded Reactions:\n');
     for i = 1:length(excludedRxns)
-        rxn = printRxnFormula(model, excludedRxns{i}, false);
+        rxn = printRxnFormula(model, excludedRxns{i});
         fprintf(freport, [excludedRxns{i} ': ' rxn{1} '\n']);
     end
 
     fprintf(freport, '\nReactions from first order sets(MustU and MustL):\n');
     for i = 1:length(mustSetFirstOrder)
-        rxn = printRxnFormula(model, mustSetFirstOrder{i}, false);
+        rxn = printRxnFormula(model, mustSetFirstOrder{i});
         fprintf(freport, [mustSetFirstOrder{i} ': ' rxn{1} '\n']);
     end
 
@@ -337,7 +351,7 @@ copyfile(pathGamsFunction);
 % export inputs for running the optimization problem in GAMS to find the
 % MustLL Set
 inputFolder = 'InputsMustLL';
-exportInputsMustOrder2ToGAMS(model, 'LL', minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
+exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')
@@ -346,9 +360,9 @@ end
 
 %run
 if verbose
-    run = system(['gams ' gamsMustLLFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMLL']);
+    run = system(['gams ' gamsMustLLFunction ' lo=3 --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
 else
-    run=system(['gams ' gamsMustLLFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoMLL']);
+    run=system(['gams ' gamsMustLLFunction ' --myroot=' inputFolder '/ --solverName=' solverName ' gdx=GtoM']);
 end
 
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
@@ -362,10 +376,10 @@ if run == 0
     if printReport; fprintf(freport, '\nGAMS was executed correctly\n'); end;
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
-    if verbose; gdxWhos GtoMLL; end;
+    if verbose; gdxWhos GtoM; end;
     try
         findMustLL.name = 'findMustLL';
-        rgdx('GtoMLL', findMustLL); %if do not exist the variable findMustLL in GtoMLL, an error will ocurr.
+        rgdx('GtoM', findMustLL); %if do not exist the variable findMustLL in GtoM, an error will ocurr.
         if printReport; fprintf(freport, '\nGAMS variables were read by MATLAB correctly\n'); end;
         if verbose; fprintf('GAMS variables were read by MATLAB correctly\n'); end;
 
@@ -374,7 +388,7 @@ if run == 0
         %first reaction in each couple of reactions
         m1.name = 'matrix1';
         m1.compress = 'true';
-        m1 = rgdx('GtoMLL', m1);
+        m1 = rgdx('GtoM', m1);
         uels_m1 = m1.uels{2};
 
 
@@ -390,7 +404,7 @@ if run == 0
             %find values for matrix 2
             m2.name = 'matrix2';
             m2.compress = 'true';
-            m2 = rgdx('GtoMLL', m2);
+            m2 = rgdx('GtoM', m2);
             uels_m2 = m2.uels{2};
             val_m2 = m2.val;
             m2_full = full(sparse(val_m2(:,1), val_m2(:,2:end-1), val_m2(:,3)));
@@ -492,10 +506,10 @@ if run == 0
         %remove or move additional files that were generated during running
         if keepGamsOutputs
             if ~isdir(outputFolder); mkdir(outputFolder); end;
-            movefile('GtoMLL.gdx', outputFolder);
+            movefile('GtoM.gdx', outputFolder);
             movefile(regexprep(gamsMustLLFunction, 'gms', 'lst'), outputFolder);
         else
-            delete('GtoMLL.gdx');
+            delete('GtoM.gdx');
             delete(regexprep(gamsMustLLFunction, 'gms', 'lst'));
         end
 
