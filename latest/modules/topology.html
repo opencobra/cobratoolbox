@@ -538,16 +538,23 @@ BMC Systems Biology 1:2</dd>
 <dt id="src.analysis.topology.pathVectors">
 <code class="descname">pathVectors</code><span class="sig-paren">(</span><em>model</em>, <em>directory</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/topology/pathVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.pathVectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes elementary mode and extreme pathway
-(convex basis) of an arbitrary COBRA model by the CellNetAnalyzer software
+(convex basis) of a COBRA model using the CellNetAnalyzer software
 package [1].</p>
 <p>CellNetAnalyzer can be downloaded at <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html</a></p>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-COBRA model</li>
+COBRA model<ul>
+<li>S  - <cite>m x 1</cite> Stoichiometric matrix</li>
+<li>c  - <cite>n x 1</cite> Linear objective coefficients</li>
+<li>lb - <cite>n x 1</cite> Lower bounds</li>
+<li>ub - <cite>n x 1</cite> Upper bounds</li>
+</ul>
+</li>
 <li><strong>directory</strong> &#8211;
-A path that CNA model is going to be saved there</li>
+folder path to where the CNA model is going to be
+saved (required for intermediate computations)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -663,9 +670,9 @@ directions (such as extreme points) can only
 arise if an inhomogeneous problem was defined
 (see also above for &#8216;constraints&#8217;).</p>
 </li>
-<li><p class="first"><strong>cbmodel</strong> &#8211;
+<li><p class="first"><strong>modelOut</strong> &#8211;
 If the input model be changed during computations
-then the new model will be saved as cbmodel (COBRA
+then the new model will be saved as modelOut (COBRA
 model)</p>
 </li>
 </ul>
