@@ -656,14 +656,16 @@ if run == 0
             if n_sols > 0
                 if ~isdir(outputFolder); mkdir(outputFolder); end;
                 cd(outputFolder);
-                Info = cell(2 * n_sols + 1,11);
+                Info = cell(2 * n_sols + 1,13);
                 Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'}, ...
-                    {'Min flux in Wild Type (mmol/gDW hr)'}, {'Max flux in Wild Type (mmol/gDW hr)'}, {'Achieved flux (mmol/gDW hr)'},...
+                    {'Min flux in Wild Type (mmol/gDW hr)'}, {'Max flux in Wild Type (mmol/gDW hr)'},...
+                    {'Min flux in Mutant (mmol/gDW hr)'}, {'Max flux in Mutant (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},...
                     {'Objective function (mmol/gDW hr)'}, {'Minimum guaranteed for target (mmol/gDW hr)'}, ...
                     {'Maximum guaranteed for target (mmol/gDW hr)'}, {'Maximum growth rate (1/hr)'}];
                 for i = 1:n_sols
                     Info(k * (i - 1) + 2:k * (i) + 1,:) = [[{k};cell(k - 1,1)], [{i};cell(k - 1,1)], solutions{i}.reactions ...
-                        solutions{i}.type num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos))...
+                        solutions{i}.type num2cell(minFluxesW(solutions{i}.pos)) num2cell(maxFluxesW(solutions{i}.pos))...
+                        num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos))...
                         num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k - 1,1)] [{solutions{i}.minTarget};cell(k - 1,1)]...
                         [{solutions{i}.maxTarget};cell(k - 1,1)] [{solutions{i}.growth};cell(k - 1,1)]];
                 end
@@ -683,26 +685,34 @@ if run == 0
                 if ~isdir(outputFolder); mkdir(outputFolder); end;
                 cd(outputFolder);
                 f = fopen([outputFileName '.txt'],'w');
-                fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\Maximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
+                fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tMin Flux in Mutant (mmol/gDW hr)\tMax Flux in Mutant (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\tMaximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
                 for i = 1:n_sols
                     sols = strjoin(solutions{i}.reactions', ', ');
                     type = strjoin(solutions{i}.type', ', ');
-                    min_str = cell(1,k);
-                    max_str = cell(1,k);
+                    minW_str = cell(1,k);
+                    maxW_str = cell(1,k);
+                    minM_str = cell(1,k);
+                    maxM_str = cell(1,k);
                     flux_str = cell(1,k);
-                    min = minFluxesM(solutions{i}.pos);
-                    max = maxFluxesM(solutions{i}.pos);
+                    minM = minFluxesM(solutions{i}.pos);
+                    maxM = maxFluxesM(solutions{i}.pos);
+                    minW = minFluxesW(solutions{i}.pos);
+                    maxW = maxFluxesW(solutions{i}.pos);
                     flux = solutions{i}.flux;
                     for j = 1:k
-                        min_str{j} = num2str(min(j));
-                        max_str{j} = num2str(max(j));
+                        minW_str{j} = num2str(minW(j));
+                        maxW_str{j} = num2str(maxW(j));
+                        minM_str{j} = num2str(minM(j));
+                        maxM_str{j} = num2str(maxM(j));
                         flux_str{j} = num2str(flux(j));
                     end
-                    MinFlux = strjoin(min_str,', ');
-                    MaxFlux = strjoin(max_str,', ');
+                    MinFluxM = strjoin(minM_str,', ');
+                    MaxFluxM = strjoin(maxM_str,', ');
+                    MinFluxW = strjoin(minW_str,', ');
+                    MaxFluxW = strjoin(maxW_str,', ');
                     achieved = strjoin(flux_str,', ');
-                    fprintf(f,'%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
-                        MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+                    fprintf(f,'%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFluxW, MaxFluxW, MinFluxM,...
+                        MaxFluxM, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
                 end
                 fclose(f);
                 cd([workingPath '/' runID]);
