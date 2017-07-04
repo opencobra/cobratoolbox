@@ -129,8 +129,8 @@ runID = 'TestOptForceM';
 
 constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');
 %% 
-% We then run the functions findMustL.m and findMustU.m that will allow 
-% us to find mustU and mustL sets, respectively.
+% We then run the functions |findMustL| and |findMustU| that will allow 
+% us to find |mustU| and |mustL| sets, respectively.
 % 
 % *i) MustL Set: *
 
@@ -142,13 +142,13 @@ constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0
 % Note that the folder "TestOptForceM" was created. Inside this folder, 
 % two additional folders were created: "InputsMustL" and "OutputsMustL". In the 
 % inputs folder you will find all the inputs required to run the the function 
-% "findMustL.m". Additionally, in the outputs folder you will find the mustL set 
+% |findMustL|. Additionally, in the outputs folder you will find the |mustL| set 
 % found, which were saved in two files (.xls and .txt). Furthermore, a report 
 % which summarize all the inputs and outputs used during your running was generated. 
 % The name of the report will be in this format "report-Day-Month-Year-Hour-Minutes". 
 % So, you can mantain a chronological order of your experiments. 
 % 
-% We display the reactions that belongs to the mustL set
+% We display the reactions that belongs to the |mustL| set
 
 disp(mustLSet)
 %% 
@@ -160,9 +160,9 @@ disp(mustLSet)
                                   'printReport', 1, 'keepInputs', 1, 'verbose', 0);
 %% 
 % Note that the folders "InputsMustU" and "OutputsFindMustU" were created. 
-% These folders contain the inputs and outputs of findMustU.m, respectively. 
+% These folders contain the inputs and outputs of |findMustU|, respectively. 
 % 
-% We display the reactions that belongs to the mustU set
+% We display the reactions that belongs to the |mustU| set
 
 disp(mustUSet)
 %% 
@@ -188,9 +188,9 @@ excludedRxns = unique([mustUSet; mustLSet; exchangeRxns]);
                'verbose', 1);
 %% 
 % Note that the folders "InputsMustUU" and "OutputsFindMustUU" were created. 
-% These folders contain the inputs and outputs of findMustUU.m, respectively. 
+% These folders contain the inputs and outputs of |findMustUU|, respectively. 
 % 
-% We display the reactions that belongs to the mustUU set
+% We display the reactions that belongs to the| mustUU| set
 
 disp(mustUU);
 
@@ -205,10 +205,10 @@ disp(mustUU);
                'verbose', 1);
 %% 
 % Note that the folders "InputsMustLL" and "OutputsFindMustLL" were created. 
-% These folders contain the inputs and outputs of findMustLL.m, respectively. 
+% These folders contain the inputs and outputs of |findMustLL|, respectively. 
 % 
-% We display the reactions that belongs to the mustLL set. In this case, 
-% MustLL is an empty array because no reaction was found in the mustLL set.
+% We display the reactions that belongs to the |mustLL| set. In this case, 
+% |mustLL| is an empty array because no reaction was found in the |mustLL| set.
 
 disp(mustLL);
 %% 
@@ -222,27 +222,27 @@ disp(mustLL);
                'verbose', 1);
 %% 
 % Note that the folders "InputsMustUL" and "OutputsFindMustUL" were created. 
-% These folders contain the inputs and outputs of findMustUL.m, respectively. 
+% These folders contain the inputs and outputs of |findMustUL|, respectively. 
 % 
-% We display the reactions that belongs to the mustUL set. In this case, 
-% MustUL is an empty array because no reaction was found in the mustUL set.
+% We display the reactions that belongs to the |mustUL| set. In this case, 
+% |mustUL| is an empty array because no reaction was found in the |mustUL| set.
 
 disp(mustUL);
 %% 
 % *TROUBLESHOOTING 1: * "I didn't find any reaction in my must sets"
 % 
-% *TROUBLESHOOTING 2: * "I got an error when running the findMustX.m functions 
+% *TROUBLESHOOTING 2: * "I got an error when running the |findMustX| functions 
 % (X = L or U or LL or UL or UU depending on the case)"
 %% Step 4: OptForce
 % *TIMING: *This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
 % 
-% We define constraints and we define "K" the number of interventions allowed, 
-% "nSets" the maximum number of sets to find, and "targetRxn" the reaction producing 
+% We define constraints and we define |K| the number of interventions allowed, 
+% |nSets| the maximum number of sets to find, and |targetRxn| the reaction producing 
 % the metabolite of interest (in this case, succinate). 
 % 
-% Additionally, we define the mustU set as the union of the reactions that 
-% must be upregulated in both first and second order must sets; and mustL set 
+% Additionally, we define the |mustU| set as the union of the reactions that 
+% must be upregulated in both first and second order must sets; and |mustL| set 
 % as the union of the reactions that must be downregulated in both first and second 
 % order must sets .
 
@@ -261,9 +261,9 @@ constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
                                                                                    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 %% 
 % Note that the folders "InputsOptForce" and "OutputsOptForce" were created. 
-% These folders contain the inputs and outputs of optForce.m, respectively.
+% These folders contain the inputs and outputs of |optForce|, respectively.
 % 
-% We display the reactions found by optForce
+% We display the reactions found by |optForce|
 
 disp(optForceSets)
 
@@ -271,7 +271,7 @@ disp(optForceSets)
 % The reaction found was "SUCt", i.e. a transporter for succinate (a very 
 % intuitive solution).
 % 
-% Next, we will increase "k" and we will exclude "SUCt" from upregulations 
+% Next, we will increase |k| and we will exclude "SUCt" from upregulations 
 % to found non-intuitive solutions. We will only search for the 20 best solutions, 
 % but you can try with a higher number.
 % 
@@ -293,10 +293,10 @@ excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
 
 %% 
 % Note that the folders "InputsOptForce" and "OutputsOptForce" were created 
-% inside TestOptForce2. These folders contain the inputs and outputs of optForce.m, 
+% inside TestOptForce2. These folders contain the inputs and outputs of |optForce|, 
 % respectively.
 % 
-% We display the reactions found by optForce 
+% We display the reactions found by |optForce| 
 
 disp(optForceSets)
 %% TIMING
@@ -315,13 +315,13 @@ disp(optForceSets)
 % 
 % 
 % 
-% 2) problem: "I got an error when running the findMust functions"
+% 2) problem: "I got an error when running the |findMust| functions"
 % 
 % possible reason: inputs are not defined well or solver is not defined
 % 
-% solution: verify your inputs, use changeCobraSolver, verify that the global 
-% variable CBT_MILP_SOLVER is not empty. It should containg the identifier for 
-% a MILP solver.
+% solution: verify your inputs, use |changeCobraSolver|, verify that the 
+% global variable |CBT_MILP_SOLVER| is not empty. It should containg the identifier 
+% for a MILP solver.
 %% ANTICIPATED RESULTS
 % In this tutorial some folders will be created inside the folder called "runID" 
 % to store inputs and outputs of the optForce functions (findMustU.m, findMustL.m, 
@@ -358,10 +358,10 @@ disp(optForceSets)
 % 
 % ||   |   ??? OutputsOptForce|
 % 
-% |The input folders contain inputs (.mat files) for running the functions 
+% The input folders contain inputs (.mat files) for running the functions 
 % to solve each one of the bilevel problems. Output folders contain results of 
 % the algorithms (.xls and .txt files) as well as a report (.txt) summarizing 
-% the outcomes of the steps performed during the execution of the optForce functions.|
+% the outcomes of the steps performed during the execution of the optForce functions.
 % 
 % The optForce algorithm will find sets of reactions that should increase 
 % the production of your target. The first sets found should be the best ones 
