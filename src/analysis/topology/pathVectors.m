@@ -1,13 +1,20 @@
 function [output] = pathVectors(model, directory, varargin)
 % Computes elementary mode and extreme pathway
-% (convex basis) of an arbitrary COBRA model by the CellNetAnalyzer software
+% (convex basis) of a COBRA model using the CellNetAnalyzer software
 % package [1].
 %
 % CellNetAnalyzer can be downloaded at https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html
 %
 % INPUTS:
 %    model:             COBRA model
-%    directory:         A path that CNA model is going to be saved there
+%
+%                         * S  - `m x 1` Stoichiometric matrix
+%                         * c  - `n x 1` Linear objective coefficients
+%                         * lb - `n x 1` Lower bounds
+%                         * ub - `n x 1` Upper bounds
+%
+%    directory:         folder path to where the CNA model is going to be 
+%                       saved (required for intermediate computations)
 %
 % OPTIONAL INPUTS:
 %    constraints:       empty
@@ -94,8 +101,8 @@ function [output] = pathVectors(model, directory, varargin)
 %                       directions (such as extreme points) can only
 %                       arise if an inhomogeneous problem was defined
 %                       (see also above for 'constraints').
-%    cbmodel:           If the input model be changed during computations
-%                       then the new model will be saved as cbmodel (COBRA
+%    modelOut:          If the input model be changed during computations
+%                       then the new model will be saved as modelOut (COBRA
 %                       model)
 %
 % [1] Klamt S, Saez-Rodriguez J and Gilles ED (2007)
@@ -194,11 +201,11 @@ cnap = CNAsaveNetwork(cnap);
                                             isoFlag, cMacro, display, ...
                                             efmToolOptions);
 %% export CNA model to COBRA model
-cbmodel = CNAcna2cobra(cnap);
+modelOut = CNAcna2cobra(cnap);
 
 %% OUTPUT
 output.rev = rev;
 output.idx = idx;
 output.ray = ray;
-output.model = cbmodel;
+output.model = modelOut;
 end
