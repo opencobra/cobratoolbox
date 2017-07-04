@@ -33,6 +33,6 @@ try
     % ensure that we ALWAYS call exit
     exit;
 catch ME
-    rethrow(ME);
+    getReport(ME, 'extended')
     exit(1);
 end
