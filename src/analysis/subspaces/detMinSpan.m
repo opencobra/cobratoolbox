@@ -29,7 +29,7 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 %                       * .timeLimit - Time to spend on each MinSpan calculation (sec),
 %                       (Default = 30)
 %                       * .saveIntV - Save intermediate vectors in order to restart from
-%                       latest iteration (Default = 1)
+%                       latest iteration (Default = 0)
 %                       * .cores - Number of cores to use (Default = 1)
 %
 %    vectors:           Set of intermediate MinSpan vectors that may
@@ -40,13 +40,7 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 %    finalVectors:      MinSpan vectors for COBRA model
 %
 % .. Author: Aarash Bordbar 05/15/2017
-
-% Ensure gurobi MILP is working
-test1 = changeCobraSolver('gurobi', 'MILP');
-test2 = changeCobraSolver('gurobi', 'LP');
-if test1 == 0 | test2 == 0
-    error('Gurobi v5+ not detected');
-end
+%            Ronan Fleming, nullspace computation with LUSOL 
 
 % Ensure model has correct bounds
 origModel = model;
@@ -66,8 +60,9 @@ model = removeRxns(model, remRxns);
 if ~exist('params', 'var')
     params.coverage = 10;
     params.timeLimit = 30;
-    params.saveIntV = 1;
+    params.saveIntV = 0;
     params.cores = 1;
+    params.nullAlg = 'matlab';
 else
     if ~isfield(params, 'coverage')
         params.coverage = 10;
@@ -81,6 +76,9 @@ else
     if ~isfield(params, 'cores')
         params.cores = 1;
     end
+    if ~isfield(params, 'nullAlg')
+        params.nullAlg = 'matlab';
+    end
 end
 
 MILPparams.TimeLimit = params.timeLimit;
@@ -90,15 +88,18 @@ MILPparams.Threads = params.cores;
 MILPparams.DisplayInterval = 10;
 
 if ~exist('vectors', 'var')
-    vectors = null(full(model.S));
+    if strcmp('params.nullAlg','lusol')
+        [vectors, rankS] = getNullSpace(model.S, 0);
+    else
+        vectors = null(full(model.S));
+    end
 end
 
 % Prepratory steps for MinSpan determination
 rng('shuffle');
 
-if 1
-    printLevel=1;
-    [N, rankS] = getNullSpace(S, printLevel);
+if strcmp('params.nullAlg','lusol')
+    [N, ~] = getNullSpace(S, 0);
 else
     N = null(full(model.S));
 end
@@ -128,7 +129,13 @@ for k = 1:params.coverage
 
         sizeN = 1;
         theta = N \ vectors;
-        tmpN = sparse(N * null(theta'));
+        
+        if strcmp('params.nullAlg','lusol')
+            [Z, ~] = getNullSpace(theta', 0);
+            tmpN = sparse(N * Z);
+        else
+            tmpN = sparse(N * null(theta'));
+        end
 
         tmptmpNprod = tmpN' * oldPath;
         tmpN = tmpN * (1 / tmptmpNprod);
@@ -211,7 +218,13 @@ for k = 1:params.coverage
         % matrix
         vector = MILPsolution.full(1:n);
         vector(abs(vector) < 1e-6) = 0;
-        tmpNullCheck = N * null((N \ [vectors, vector])');
+        
+        if strcmp('params.nullAlg','lusol')
+            [Z, ~] = getNullSpace((N \ [vectors, vector])', 0);
+            tmpNullCheck = N * Z;
+        else
+            tmpNullCheck = N * null((N \ [vectors, vector])');
+        end
 
         if nnz(vector) > 0 & length(tmpNullCheck) == 0
             vector = vector / norm(vector);
