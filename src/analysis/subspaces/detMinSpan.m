@@ -96,7 +96,13 @@ end
 % Prepratory steps for MinSpan determination
 rng('shuffle');
 
-N = null(full(model.S));
+if 1
+    printLevel=1;
+    [N, rankS] = getNullSpace(S, printLevel);
+else
+    N = null(full(model.S));
+end
+
 [m, n] = size(model.S);
 
 locRev = find(model.lb < 0);
