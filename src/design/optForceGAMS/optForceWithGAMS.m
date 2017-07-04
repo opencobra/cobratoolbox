@@ -231,21 +231,6 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-optionalParameters = {'k', 'nSets', 'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
-    'solverName', 'printExcel', 'printText', 'printReport', 'keepInputs', 'keepGamsOutputs', 'verbose'};
-
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
-    tempargin = cell(1,2*(numel(varargin)));
-    for i = 1:numel(varargin)
-        
-        tempargin{2*(i-1)+1} = optionalParameters{i};
-        tempargin{2*(i-1)+2} = varargin{i};
-    end
-    varargin = tempargin;
-    
-end
-
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
     && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
