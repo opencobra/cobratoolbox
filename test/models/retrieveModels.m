@@ -165,7 +165,7 @@ function downloadModelZipFile(filename, url, varargin)
             delete(zipName);
 
             if exist('__MACOSX', 'dir') == 7
-                rmdir('__MACOSX');
+                rmdir('__MACOSX', 's');
             end
 
             if printLevel > 0 && status_curlDownload == 0
