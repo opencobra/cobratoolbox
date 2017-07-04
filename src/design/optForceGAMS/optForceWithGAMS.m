@@ -683,7 +683,7 @@ if run == 0
                 if ~isdir(outputFolder); mkdir(outputFolder); end;
                 cd(outputFolder);
                 f = fopen([outputFileName '.txt'],'w');
-                fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+                fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\Maximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
                 for i = 1:n_sols
                     sols = strjoin(solutions{i}.reactions', ', ');
                     type = strjoin(solutions{i}.type', ', ');
