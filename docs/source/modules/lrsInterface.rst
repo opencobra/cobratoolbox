@@ -5,5 +5,5 @@
 lrsInterface
 ------------
 
-.. automodule:: src.modelAnalysis.topology.extremeRays.lrs.lrsInterface
+.. automodule:: src.analysis.topology.extremeRays.lrs.lrsInterface
    :members:

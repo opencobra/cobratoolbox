@@ -13,7 +13,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .c - Objective coeff vector
 %                     * .lb - Lower bound vector
 %                     * .ub - Upper bound vector
-%                     * .osense - Objective sense (-1 max, +1 min)
+%                     * .osense - Objective sense (-1 means maximise (default), 1 means minimise)
 %                     * .csense - Constraint senses, a string containting the constraint sense for
 %                       each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
@@ -988,7 +988,8 @@ switch solver
 
         LPproblem.A = deal(sparse(LPproblem.A));
         LPproblem.modelsense = LPproblem.osense;
-        [LPproblem.rhs,LPproblem.obj,LPproblem.sense] = deal(LPproblem.b,double(LPproblem.c),LPproblem.csense);
+        %gurobi wants a dense double vector as an objective
+        [LPproblem.rhs,LPproblem.obj,LPproblem.sense] = deal(LPproblem.b,double(LPproblem.c)+0,LPproblem.csense);
 
         % basis reuse - Ronan
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)

@@ -316,7 +316,7 @@ else
 end 
 
 % print info into an excel text file if required by the user
-if printExcel
+if printExcel && ~isunix
     if found
         currentFolder = pwd;
         cd(outputFolder);

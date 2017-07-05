@@ -5,5 +5,5 @@
 MultiSpecies
 ------------
 
-.. automodule:: src.modelAnalysis.multiSpecies
+.. automodule:: src.analysis.multiSpecies
    :members:

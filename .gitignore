@@ -66,6 +66,7 @@ test/verifiedTests/testFastGapFill/*.mat
 test/verifiedTests/testTools/testData_printLabeledData.txt
 test/verifiedTests/testSolvers/MILPProblem.mat
 test/verifiedTests/testOutputNetworkCytoscape/data*
+test/verifiedTests/testPrint/printConstraints.txt
 
 # shared libraries
 *.so

@@ -1,4 +1,4 @@
-.. _#tutorialLongTitle#
+.. _#tutorialLongTitle#:
 
 #tutorialTitle#
 #underline#

@@ -10,9 +10,23 @@ function model = buildRxnGeneMat(model)
 %               otherwise the rxnGeneMat is empty
 %
 % OUTPUT:
-%    model: 	The Model including a rxnGeneMat field. 
+%    model: 	The Model including a rxnGeneMat field.
+%
+% .. Authors: - written by ?
+%             Diana El Assal 30/6/2017 - updates
 
-model.rxnGeneMat = false(numel(model.genes),numel(model.rxns));
+% First, update the genes in the model
+if ~isempty(model.grRules)
+    model = updateGenes(model);
+end
+
+%Then, update the gene rules of the model
+if ~isempty(model.grRules)
+    model = generateRules(model);
+end
+
+%Finally, update the rxnGeneMat
+model.rxnGeneMat = false(numel(model.rxns), numel(model.genes));
 if isfield(model,'rules')
     for i = 1:numel(model.rxns)
         if ~isempty(model.rules{i})

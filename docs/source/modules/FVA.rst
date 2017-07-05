@@ -9,5 +9,5 @@ FVA
 
    fastFVA
 
-.. automodule:: src.modelAnalysis.FVA
+.. automodule:: src.analysis.FVA
    :members:

@@ -107,7 +107,7 @@ model.rxns(revReacs) = strcat(RelReacNames,'_f');
 model.rxns(end+1:end+nRevRxns) = strcat(RelReacNames,'_b');
 
 %And update all other relevant fields (which have not yet been altered)
-fields = getRelevantModelFields(model,'rxns','fieldSize',nRxns);
+fields = getModelFieldsForType(model,'rxns','fieldSize',nRxns);
 for i = 1:length(fields)    
     cfield = fields{i};
     if size(model.(cfield),1) == nRxns
@@ -156,7 +156,7 @@ if orderReactions
     end
     %Now, get the relevant fields for this models rxns again and reorder
     %them....
-    fields = getRelevantModelFields(model,'rxns');
+    fields = getModelFieldsForType(model,'rxns');
     nIrrevRxns = length(model.rxns);
     for i = 1:length(fields)
         cfield = fields{i};

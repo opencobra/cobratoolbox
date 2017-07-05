@@ -10,6 +10,6 @@ extremeRays
    lrs
    optimalRays   
 
-.. automodule:: src.modelAnalysis.topology.extremeRays
+.. automodule:: src.analysis.topology.extremeRays
    :members:
 

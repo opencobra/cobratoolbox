@@ -5,5 +5,5 @@
 rowReduce
 ---------
 
-.. automodule:: src.modelAnalysis.subspaces.rowReduce
+.. automodule:: src.analysis.subspaces.rowReduce
    :members:

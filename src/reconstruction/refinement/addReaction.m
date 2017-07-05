@@ -325,7 +325,7 @@ else
     else
         try
         model.S = [Stmp Scolumn];
-        model = updateRelevantModelFields(model,'rxns');
+        model = extendModelFieldsForType(model,'rxns');
         catch
             disp('test')
         end
