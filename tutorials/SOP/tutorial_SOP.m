@@ -24,7 +24,7 @@
 
 initCobraToolbox
 %% *Setting the *optimization* solver.*
-% This tutorial will be run with a |'glpk'| package, which is a linear programming 
+% This tutorial will be run with the |'glpk'| package, which is a linear programming 
 % ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
 % and configuration.
 
@@ -49,8 +49,8 @@ warning off MATLAB:subscripting:noSubscriptsSpecified
 % The metabolic network reconstruction, containing a reaction and metabolite 
 % list, is contained by the file 'Ecoli_core_model.mat'.
 
-load('Ecoli_core_model.mat');
-modelEcore = model; % TODO model does not load into workspace a 'modelEcore' but as 'model'.
+load('ecoli_core_model.mat', 'model');
+modelEcore = model;
 %% 
 % The reconstruction is contained in the resulting model structure.  
 % 
@@ -62,7 +62,9 @@ modelEcore = model; % TODO model does not load into workspace a 'modelEcore' but
 % 
 % Use the command |open| to view the model structure in Matlab.
 
-open modelEcore
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
+    open modelEcore
+end
 %% 
 % The content of the structure can be assessed as follows:
 % 
