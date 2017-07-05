@@ -64,12 +64,12 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                       The remaining options work only with a valid QP solver:
 %
-%                       > 0    Minimises the Euclidean Norm of internal fluxes.
+%                       > 0    Minimises the squared Euclidean Norm of internal fluxes.
 %                       Typically 1e-6 works well.
 %
 %                       .. math::
 %
-%                          min  ~& ||v|| \\
+%                          min  ~& 1/2 v'*v \\
 %                          s.t. ~& S v = dxdt \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
