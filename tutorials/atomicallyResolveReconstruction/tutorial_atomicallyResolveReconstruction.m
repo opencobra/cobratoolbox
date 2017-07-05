@@ -1,5 +1,5 @@
 %% Atomically resolve a metabolic reconstruction
-%% Author(s): *Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
+%% Author(s): *Hulda S. Haraldsd�ttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
 %% Reviewer(s): 
 %% INTRODUCTION
 % Genome-scale metabolic network reconstructions have become a relevant tool 
@@ -87,7 +87,7 @@ maxTime = 1800;
 % |isChemaxonInstalled| contains a logical value defined by the user if the license 
 % is installed or not.
 
-isChemaxonInstalled = true; % Change to "false" if Chemaxon is not installed
+isChemaxonInstalled = false; % Change to "true" if Chemaxon is not installed
 %% TIMING
 % The time to compute atom mappings for metabolic reactions depends on the size 
 % of the genome-scale model and the size of the molecules in the reactions. This 
@@ -95,7 +95,7 @@ isChemaxonInstalled = true; % Change to "false" if Chemaxon is not installed
 
 tic
 standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, ...
-    isChemaxonInstalled);
+                                         isChemaxonInstalled);
 toc
 %% 
 % As output, it is generated a list of atom mapped mass balanced reactions 
@@ -226,7 +226,7 @@ fprintf('Computation time: %.1e s\n\n', t); % Print computation time
 %% 
 % This function outputs the moiety matrix (|L|), the moiety supergraph (|Lambda|), 
 % the chemical formulas of moieties (|moietyFormulas|), and three vectors that 
-% map between the various inputs and outputs. The 10×5 moiety matrix |L| has a 
+% map between the various inputs and outputs. The 10�5 moiety matrix |L| has a 
 % row for each metabolite and a column for each conserved moiety in DAS. Each 
 % column is a moiety vector, with elements corresponding to the number of instances 
 % of a conserved moiety in each metabolite. To find the number of instances of 
@@ -237,7 +237,7 @@ full(L(iLDOPA, 2))
 %% 
 % i.e., L-DOPA contains one instance of moiety 2.
 % 
-% The 19×17 moiety supergraph (|Lambda|) contains the graphs of all seven 
+% The 19�17 moiety supergraph (|Lambda|) contains the graphs of all seven 
 % conserved moieties in DAS (Figure 6).
 % 
 % 
@@ -250,7 +250,7 @@ full(L(iLDOPA, 2))
 % Each row of Lambda represents a single instance of a conserved moiety in 
 % a particular metabolite. The vector moieties2vectors maps between the rows of 
 % Lambda and the columns of L. To obtain the incidence matrix of a particular 
-% moiety graph, e.g., λ2 in Figure 6, run
+% moiety graph, e.g., ?2 in Figure 6, run
 
 i2 = find(moieties2vectors == 2);
 c2 = find(any(Lambda(i2, :)));
@@ -277,15 +277,15 @@ find(ismember(atoms2moieties, i2) & ismember(ATN.mets, '34dhphe[c]'))'
 
 types = classifyMoieties(L, model.S)
 %% 
-% The internal moiety (λ3 in Fig. 3) is conserved in both the open and closed 
+% The internal moiety (?3 in Fig. 3) is conserved in both the open and closed 
 % DAS network, whereas the transitive and integrative moieties are only conserved 
 % in the closed network [6].
 %% Part 2: Effects of variable atom mappings between reoccurring metabolite pairs
 % Here, we will again identify conserved moieties in DAS but with a slightly 
 % different set of atom mappings (Figure 7). The different atom mappings give 
 % rise to a different atom transition network with a different set of conserved 
-% moieties. In particular, it contains a single composite moiety, λ8 in Figure 
-% 4, in place of the two moieties λ4 and λ5 in Figure 3. The composite moiety 
+% moieties. In particular, it contains a single composite moiety, ?8 in Figure 
+% 4, in place of the two moieties ?4 and ?5 in Figure 3. The composite moiety 
 % is the result of variable atom mappings between the reoccurring metabolite pair 
 % O2 and H2O in reactions R1 and R2.
 % 
@@ -293,7 +293,7 @@ types = classifyMoieties(L, model.S)
 % 
 % Figure 7: (a) Oxygen atom transitions used in Part 1. Oxygen atom 1 in 
 % O2 maps to the oxygen atom in H2O in both R1 and R2. These atom transitions 
-% contain two separate moieties, with two disconnected moiety graphs (λ4 and λ5 
+% contain two separate moieties, with two disconnected moiety graphs (?4 and ?5 
 % in Figure 6), and two linearly independent moiety vectors (L(:,4) and L(:,5)). 
 % (b) Oxygen atom transitions used in Part 2. A different oxygen atom maps from 
 % O2 to H2O in R1 than in R2. These atom transitions contain only one composite 
@@ -353,13 +353,13 @@ decomposedMoietyFormulas([4 5])'
 %% 
 % i.e., each decomposed moiety contains an oxygen atom.
 %% References
-% [1] Haraldsdóttir, H.S., Thiele, I., Fleming, R.M.: Comparative evaluation 
+% [1] Haraldsd�ttir, H.S., Thiele, I., Fleming, R.M.: Comparative evaluation 
 % of open source software for mapping between metabolite identifiers in metabolic 
 % network reconstructions: application to Recon 2. Journal of cheminformatics 
 % 6(1), 2 (2014).
 % 
 % [2] Elizabeth Brunk, Swagatika Sahoo, Daniel C. Zielinski, Ali Altunkaya,_ 
-% _Andreas Dräger, Nathan Mih, Andreas Prlić, Anand Sastry, German A. Preciat 
+% _Andreas Dr�ger, Nathan Mih, Andreas Prli?, Anand Sastry, German A. Preciat 
 % Gonzalez, Anna D. Danielsdottir, Alberto Noronha, Maike K. Aurich, Peter W. 
 % Rose, Stephen K. Burley, Ronan M.T. Fleming, Jens Nielsen, Ines Thiele, Bernhard 
 % O. Palsson. Recon 3D: A Three-Dimensional View of Human Metabolism and Disease. 
@@ -368,19 +368,19 @@ decomposedMoietyFormulas([4 5])'
 % [3] Rahman, S.A., Torrance, G., Baldacci, L., Cuesta, S.M., Fenninger, 
 % F., Gopal, N., Choudhary, S., May, J.W., Holliday, G.L., Steinbeck, C., Thornton, 
 % J.M.: Reaction Decoder Tool (RDT): extracting features from chemical reactions.  
-% Bioinformatics 32(13), 2065–2066 (2016).
+% Bioinformatics 32(13), 2065?2066 (2016).
 % 
 % [4] German A. Preciat Gonzalez, Lemmer El Assal, Alberto Noronha, Ines 
-% Thiele, Hulda S. Haraldsdóttir, Ronan M.T. Fleming. Comparative evaluation of 
+% Thiele, Hulda S. Haraldsd�ttir, Ronan M.T. Fleming. Comparative evaluation of 
 % atom mapping algorithms for balanced metabolic reactions: application to Recon 
 % 3D. J Cheminform. 2017.
 % 
-% [5] Hulda S. Haraldsdóttir and Ronan M. T. Fleming. Identification of conserved 
+% [5] Hulda S. Haraldsd�ttir and Ronan M. T. Fleming. Identification of conserved 
 % moieties in metabolic networks by graph theoretical analysis of atom transition 
 % networks. PLOS Computational Biology, 12(11): e1004999, 2016.
 % 
-% [6] Iman Famili and B. Ø. Palsson. The convex basis of the left null space 
+% [6] Iman Famili and B. �. Palsson. The convex basis of the left null space 
 % of the stoichiometric matrix leads to the definition of metabolically meaningful 
-% pools. Biophysical Journal, 85(1):16–26, 2003.
+% pools. Biophysical Journal, 85(1):16?26, 2003.
 % 
 %
