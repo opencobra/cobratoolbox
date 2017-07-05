@@ -1,4 +1,4 @@
-function [output] = pathVectors(model, directory, varargin)
+function [E, id, ir, rev, modelOut] = pathVectors(model, directory, varargin)
 % Computes elementary mode and extreme pathway
 % (convex basis) of a COBRA model using the CellNetAnalyzer software
 % package [1].
@@ -18,7 +18,7 @@ function [output] = pathVectors(model, directory, varargin)
 %
 % OPTIONAL INPUTS:
 %    constraints:       empty
-%                       cnap.numr
+%                       the number of reactions
 %                       many rows and up to 4 columns:
 %                       - COLUMN1 specifies excluded/enforced reactions: if
 %                         (constraints(i,1)==0) then onlythose modes / rays
@@ -32,9 +32,10 @@ function [output] = pathVectors(model, directory, varargin)
 %                       - COLUMN2: specifies lower boundaries for the
 %                         reaction rates (choose NaN if none is active).
 %                         Note that zero boundaries (irreversibilities) are
-%                         better described by cnap.reacMin. In any case, the
+%                         better described by the vector containg all lower 
+%                         bound of reactions(Lb). In any case, the
 %                         lower boundary eventually considered will be zero
-%                         if cnap.reaMin(i)==0 and constraints(i,2)<0.
+%                         if Lb(i)==0 and constraints(i,2)<0.
 %                       - COLUMN3: specifies upper boundaries for the
 %                         reaction rates (choose NaN if none is active)
 %                       - COLUMN4: specifies equalities for the reaction
@@ -57,9 +58,12 @@ function [output] = pathVectors(model, directory, varargin)
 %                         0, not consider isoenzymes
 %                         1, consider isoenzymes
 %
-%    cMacro:            (default: cnap.macroDefault)
+%    cMacro:            (default: the vector containing the default 
+%                         value of the macromolecules)
 %                         empty
-%                         cnap.macroComposition
+%                         MC : A (m*w) matrix defining the stoichiometry
+%                         of the macromolucules with respect to the
+%                         metabolietes
 
 %    printLevel:        (default: 'All')
 %                         'None'
@@ -79,10 +83,10 @@ function [output] = pathVectors(model, directory, varargin)
 %    efms:              matrix that contains (row-wise) the elementary
 %                       modes (or elemenatry vectors) or a minimal set
 %                       of generators (lineality space + extreme rays/
-%                       points), depending on the chosen scenario. The
+%                       points), depending on the chosen option. The
 %                       columns  correspond to the reactions; the column
 %                       indices of efms (with respect to the columns in
-%                       cnap.stoichMat) are stored in the returned
+%                       stoichiometric matrix) are stored in the returned
 %                       variable idx (see below; note that columns are
 %                       removed in efms if the corresponding reactions
 %                       are not contained in any mode) %
@@ -90,12 +94,13 @@ function [output] = pathVectors(model, directory, varargin)
 %    rev:               vector indicating for each mode whether it is
 %                       reversible(0)/irreversible (1)
 %
-%    idx:               maps the columns in efm onto the column indices
-%                       in cnap.stoichmat, i.e. idx(i) refers to the
-%                       column number in cnap.stoichmat (and to
-%	                      the row number in cnap.reacID)
+%    id:               maps the columns in efm onto the column indices
+%                       in stoichiometric matrix, i.e. idx(i) refers to the
+%                       column number in stoichmatric matrix (and to
+%	                    the row number in a vector containing the 
+%                       identifiers of the reactions)
 %
-%    ray:               indicates whether the i-th row (vector) in efm
+%    ir:               indicates whether the i-th row (vector) in efm
 %                       is an unbounded (1) or bounded (0) direction
 %                       of the flux cone / flux polyhedron. Bounded
 %                       directions (such as extreme points) can only
@@ -196,16 +201,18 @@ cnap.path = directory;
 cnap = CNAsaveNetwork(cnap);
 
 %% computing convex basis or elementary modes
-[output.efm, rev, idx, ray] = CNAcomputeEFM(cnap, constraints, mexVersion, ...
+[efm, rev, idx, ray] = CNAcomputeEFM(cnap, constraints, mexVersion, ...
                                             irrevFlag, convBasisFlag, ...
                                             isoFlag, cMacro, display, ...
                                             efmToolOptions);
+                                        
 %% export CNA model to COBRA model
 modelOut = CNAcna2cobra(cnap);
 
 %% OUTPUT
-output.rev = rev;
-output.idx = idx;
-output.ray = ray;
-output.model = modelOut;
+E =efm';
+id = idx';
+ir = ray';
+rev = rev;
+
 end
