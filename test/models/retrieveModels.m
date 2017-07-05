@@ -25,7 +25,7 @@ end
 
 % define the array of models to be downloaded (name of the file and URL)
 modelArr = {
-    'AntCore.mat', 'https://cdn.rawgit.com/snmendoz/Models/master/AntCore.mat';
+    'AntCore.mat', 'https://raw.github.com/snmendoz/Models/master/AntCore.mat';
     'iIT341.xml', 'http://bigg.ucsd.edu/static/models/iIT341.xml';
     'Abiotrophia_defectiva_ATCC_49176.xml', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/sbml/Abiotrophia_defectiva_ATCC_49176.xml';
     'Sc_iND750_flux1.xml', 'http://gcrg.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/yeast/Sc_iND750_flux1.xml';
@@ -51,11 +51,11 @@ end
 for i = 1:length(modelArr)
     if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
         % check if the remote URL can be reached
-        [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', modelArr{i, 2}]);
+        [status_curl, result_curl] = system(['curl --max-time 15 -s -k -L --head ', modelArr{i, 2}]);
 
         % check if the URL exists
         if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', modelArr{i, 2}]);
+            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O -L ', modelArr{i, 2}]);
 
             if printLevel > 0 && status_curlDownload == 0
                 fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
