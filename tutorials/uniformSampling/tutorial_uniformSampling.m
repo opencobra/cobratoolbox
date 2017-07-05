@@ -23,8 +23,8 @@
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">c</mi></mrow></math>$ is a linear biological objective 
 % function (biomass, ATP consumption, HEME production, etc.). Even under these 
-% conditions the there is commonly a range of optimal flux distributions. which 
-% can be investigated using flux variability analysis. If the general capabilities 
+% conditions there is commonly a range of optimal flux distributions, which can 
+% be investigated using flux variability analysis. If the general capabilities 
 % of the model are of interest, however, uniform sampling of the entire flux space 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
 % is able to provide an unbiased characterization, and therefore, can be used 
@@ -107,16 +107,18 @@ try
 catch ME
     changeCobraSolver('gurobi');
 end
-[minUn, maxUn] = fluxVariability(unlimitedOx)
-[minLim, maxLim] = fluxVariability(limitedOx)
+[minUn, maxUn] = fastFVA(unlimitedOx, 100);
+[minLim, maxLim] = fastFVA(limitedOx, 100); 
 %% 
-% FVA predicts faster maximal ATP production with unlimited and limited 
+% FVA predicts faster maximal ATP production with an unlimited and limited 
 % oxygen uptake conditions.
 
 ATP = 'DM_atp_c_';  % Identifier of the ATP demand reaction
 ibm = find(ismember(model.rxns, ATP));  % column index of the ATP demand reaction
-fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n', maxUn(ibm));
-fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n', maxLim(ibm));
+fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n',...
+    maxUn(ibm));
+fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n',...
+    maxLim(ibm));
 %% 
 % An overall comparison of the FVA results can be obtained by computing 
 % the <https://en.wikipedia.org/wiki/Jaccard_index Jaccard index> for each reaction. 
@@ -141,7 +143,8 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 f1 = figure;
 errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
 set(gca, 'xlim', [0, length(Y) + 1])
-legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', 'orientation', 'horizontal')
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location',...
+    'northoutside', 'orientation', 'horizontal')
 xlabel('Reaction')
 ylabel('Flux range (mmol/gDW/h)')
 
@@ -173,8 +176,8 @@ options.toRound = 1;
 % case of |toRound = 1| this would be the rounded model), and second, the samples 
 % generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,
 
-[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options, []);
-[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options, []);
+[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options);
+[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options);
 %% 
 % The sampler outputs the sampled flux distributions (X_un and X_lim) and 
 % the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show 
@@ -236,9 +239,11 @@ cUn = get(p1(1), 'color');
 cLim = get(p1(2), 'color');
 
 hold on
-p2 = plot([minUn(ibm), minUn(ibm)], ylim, '--', [maxUn(ibm), maxUn(ibm)], ylim, '--');
+p2 = plot([minUn(ibm), minUn(ibm)], ylim, '--', [maxUn(ibm), maxUn(ibm)], ylim,...
+    '--');
 set(p2,'color', cUn)
-p3 = plot([minLim(ibm), minLim(ibm)], ylim, '--', [maxLim(ibm), maxLim(ibm)], ylim, '--');
+p3 = plot([minLim(ibm), minLim(ibm)], ylim, '--', [maxLim(ibm), maxLim(ibm)],...
+    ylim, '--');
 set(p3, 'color', cLim)
 hold off
 %% 
@@ -250,22 +255,23 @@ position = get(f4, 'position');
 set(f4, 'units', 'centimeters', 'position', [position(1), position(2), 18, 27])
 
 sampledRxns = {'r2139', 'GLNSERNaEx', 'HMR_9791', 'r1616', 'r1578', 'r2537'};
-rxnsIdx = findRxnIDs(model, sampledRxns);
+ridx = findRxnIDs(model, sampledRxns);
 
 %ridx = randi(size(model.rxns,1), 1,6);
 
-for i = rxnsIdx
+for i = ridx
     nbins = 20;
     [yUn, xUn] = hist(X2_un(i, :), nbins);
     [yLim, xLim] = hist(X2_lim(i, :), nbins);
     
-    subplot(3, 2, find(rxnsIdx==i))
+    subplot(3, 2, find(ridx==i))
     h1 = plot(xUn, yUn, xLim, yLim);
     xlabel('Flux (mmol/gDW/h)')
     ylabel('# samples')
-    title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
+    title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight',...
+        'normal')
     
-    if find(ridx==i)==1
+    if find(ridx==i)==2
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
@@ -274,7 +280,8 @@ for i = rxnsIdx
     hold on
     h2 = plot([minUn(i), minUn(i)], ylim, '--', [maxUn(i), maxUn(i)], ylim, '--');
     set(h2,'color',cUn)
-    h3 = plot([minLim(i), minLim(i)], ylim, '--', [maxLim(i), maxLim(i)], ylim, '--');
+    h3 = plot([minLim(i), minLim(i)], ylim, '--', [maxLim(i), maxLim(i)], ylim,...
+        '--');
     set(h3, 'color', cLim)
     hold off
 end
