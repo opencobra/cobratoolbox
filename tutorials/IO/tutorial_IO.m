@@ -1,41 +1,44 @@
-%% IO Tutorial 
+%% Input and output of reconstructions and mdoels 
 %% Author(s): Thomas Pfau, University of Luxembourg
-%% Reviewers: 
+%% Reviewers: Catherine Clancy
 %% INTRODUCTION
 % This tutorial aims at providing information on how to load models into The 
 % COBRA Toolbox and export them to other formats.
 %% Available input formats
-% The COBRA Toolbox supports the use of models in multiple formats. Internally, 
-% it uses a simple MATLAB |struct| with fields defined in the <https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html 
-% Documentation>. These models are commonly provided in a |.mat| file.
+% The COBRA Toolbox supports the use of models in multiple formats, including:
 % 
-% There are additional model formats for which io functions exist in The 
-% COBRA Toolbox. These incluse
+% * MAT-file format 
+% * Systems Biology Markup Language (SBML) format 
+% * SimPheny format
+% * Excel format
 % 
-% * Models in SBML Format 
-% * Models in SimPheny format
-% * Models in an Excel Format
-%% MATLAB save files:
-% The format of a model struct provided in a |.mat| file has to stick to the 
-% rules defined in the <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
+% The most commonly used model format is a MAT-file (|.mat| ) format where 
+% by a simple MATLAB |struct| contains one or more of the fields defined in The 
+% COBRA Toolbox <https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html 
 % Documentation>. 
-%% SBML Format
-% The COBRA Toolbox currently supports SBML models provided as Level 3 version 
+%% MAT-file format
+% A model in a MAT-file format is required to follow the rules defined in The 
+% COBRA Toolbox <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
+% Documentation>. 
+%% SBML format
+% The COBRA Toolbox currently supports models formats of SBML Level 3 version 
 % 1 (as defined <http://sbml.org/Documents/Specifications here>) and has legacy 
-% support for older versions of SBML. It also supports the Level 3 FBC package 
-% (both in version 1 and version 2). 
+% support for older versions of SBML. It also supports the Level 3 Flux Balance 
+% Constraints (FBC) package (both in version 1 and version 2). 
 % 
 % The COBRA Toolbox will use the provided SBML IDs as IDs for the respective 
 % elements of the model structure, and use the name fields as names. It is assumed 
-% (but not necessary), that metabolite IDs start with a "M_", reaction ids start 
-% with a "R_" ,  gene ids start with a "G_" and compartment ids start with a "C_". 
+% (but not necessary), that metabolite IDs start with a "M_", reaction IDs start 
+% with a "R_" , gene IDs start with a "G_", and compartment IDs start with a "C_". 
 % This is due to the limitation on identifiers in SBML and those starting sequences 
-% will be removed if they are consistently present in the model. Since metabolites 
-% in The COBRA Toolbox model |struct| are commonly provided with a metabolite 
-% ID followed by a compartment identifier e.g. ('ala_L[c]'), and brackets are 
-% illegal characters for an SBML ID. It is assumed, that if all non boundary species 
-% have a trailing compartment identifier preceded by a underscore (e.g. SBML ID: 
-% M_ala_L_c) those identifiers should be converted to model compartment identifiers.
+% will be removed if they are consistently present in the model. 
+% 
+% Metabolite IDs of the MAT-file format use a metabolite identfier followed 
+% by a compartment identifier in square brackets (e.g. ala_L[c]). Since brackets 
+% are illegal characters for SBML IDs, The COBRA Toolbox assumes, for all non 
+% boundary species, that a compartment identifier preceded by an underscore (e.g. 
+% SBML ID: M_ala_L_c) is equivalent to the MAT-file compartment identifiers and 
+% converted to a model as such.
 % 
 % The COBRA Toolbox has a legacy support for the NOTE Fields defined in <http://www.nature.com/nprot/journal/v6/n9/abs/nprot.2011.308.html 
 % Schellenberger et al, Nature Protocols, 2011>, but it is suggested to instead 
@@ -45,139 +48,119 @@
 % i.e. if there is an annotation for an EC number, the Notes field EC Number will 
 % be ignored. However, the charge field in SBML Level 2 will be overwritten by 
 % the Notes field definitions.
-% 
-% 
-%% *SimPheny Format*
-% SimPheny models provide their models in 3 or 4 files (4 if GPR rules are provided). 
-% The model identifiers will be used as presented in the SimPheny files.
-% 
-% 
-%% Excel Format
-% Excel files adhereing to the COBRA xls specifications listed in the <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
-% Documentation>. Parseable Excel models contain two sheets for reactions and 
-% metabolites respectively.
-% 
-% 
+%% *SimPheny format*
+% SimPheny models provided in 3 or 4 files (4 if GPR rules are provided). The 
+% model identifiers will be used as presented in the SimPheny files.
+%% Excel format
+% A model in a excel file formats are accepted by The COBRA Toolbox if the file 
+% adheres to the specifications listed in The COBRA Toolbox <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
+% Documentation>. 
 %% Available output formats
-% The COBRA Toolbox also allows storage in multiple file types as detailed below:
-%% MATLAB |.mat| files
-% This format is simply the model being saved as a MATLAB save file, and is 
-% the default save method. It has the advantage of lossless data storage even 
-% for model specific fields not supported by The COBRA Toolbox.
-%% SBML format (|.xml|)
-% The systems biology markup language (SBML) is a very common format to store 
-% biological models. The COBRA Toolbox allows generation of models using Level 
-% 3 Version 1 and uses the fbc-package extension to encode constraint based properties. 
-% This is the format that is recommended for publication, as it can be used by 
-% many different tools and allows the best use of the model.
+% The COBRA Toolbox also allows storage in multiple file types as detailed below.
+%% MAT-files formats
+% The MAT-file (|.mat| ) format is most commonly used. The MAT-file format make 
+% up is a simple MATLAB |struct| containing one or more of the fields defined 
+% in The COBRA Toolbox <https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html 
+% Documentation>. It has the advantage of lossless data storage even for model 
+% specific fields not supported by The COBRA Toolbox.
+%% SBML format 
+% SBML is a commonly used format to store biological models. The COBRA Toolbox 
+% allows the generation of models using SBML Level 3 Version 1 and uses the FBC-package 
+% extension to encode constraint based properties. This is the format that is 
+% recommended for publication, as it can be used by many different tools and allows 
+% the best use of the model.
 %% Excel format
 % Historically, models were often exchanged using Excel files, and this is still 
-% in use today. Some users prefer to get an overview over a model using Excel, 
-% since it provides a general overview at a first glance. The COBRA Toolbox offers 
-% an Excel export using the format described in the Documentation (see above).
+% in use today. Some users prefer to have an overview of a model using Excel. 
+% The COBRA Toolbox offers an Excel export of the format described in The COBRA 
+% Toolbox <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
+% Documentation>.
 %% Text Format
-% Finally The COBRA Toolbox offers a simple textual export, which is essentially 
+% Finally, The COBRA Toolbox offers a simple textual export, which is essentially 
 % a tab separated file containing the reactions with their reaction formulas along 
 % with the associated GPRs, but no further information. This format only uses 
 % the required fields and will ignore any optional fields.
-% 
-% 
 %% MATERIALS
-% We will use two model files for this tutorial, one MATLAB |.mat| file and 
-% an |.xml| file stored in SBML format. The following code loads these files into 
-% the tutorial directory (cleaning any old copies).
+% We will use two model files for this tutorial: a MAT-file formated model and 
+% an SBML formated model. First we must loads both files into the tutorial directory 
+% (cleaning any old copies).
 
 cd(fileparts(which('tutorial_IO.mlx')));
 
-% Copy two files that can be loaded (if they are nto yet present).
+% Copies the two files required for this tutorial (if they are not yet present).
 try
     delete 'ecoli_core_model.mat';
-    delete 'Abiotrophia_defectiva_ATCC_49176.xml'
+    delete 'Abiotrophia_defectiva_ATCC_49176.xml'  
     copyfile(which('ecoli_core_model.mat'), '.');
-    copyfile(which('Abiotrophia_defectiva_ATCC_49176.xml'), '.');
+    copyfile(which('Abiotrophia_defectiva_ATCC_49176.xml'), '.'); %TODO: The 'Abiotrophia_defectiva_ATCC_49176.xml' not found in corbatoolbox therefore cannot copy file. Also this file is not used in the tutorial. 
 end
 %% PROCEDURE
-% The time it takes to load a model depends on the file format and the complexity 
-% of a model. While |.mat| file loading even for large models is a question of 
-% seconds, very large SBML files can take a few minutes to load depending on the 
-% machine. 
-%% Reading a model (TIMING 1s to a few minutes)
-% The most straightforward way to import a model into the The COBRA Toolbox 
-% is to use the |readCbModel| function. To e.g. load a model from a |.mat| file, 
-% you can simply use the filename (with or without file extension). 
+% The time that it takes to load a model depends on the file format, the complexity 
+% of a model and the machine. The loading of a MAT-file, even of some large models, 
+% can take only seconds, whereas large SBML files can take a few minutes to load. 
+%% Reading a model (timing: 1 second to a few minutes)
+% The most direct way to load a model into The COBRA Toolbox is to use the |readCbModel| 
+% function. For example, to load a model from a MAT-file, you can simply use the 
+% filename (with or without file extension). 
 
-fileName = 'ecoli_core_model';
+fileName = 'ecoli_core_model.mat';
 model = readCbModel(fileName);
 %% 
-% |readCbModel| assumes, that .mat files are a MATLAB save file, |.xml| 
-% files are models in SBML format, |.sto| are SimPheny models, and |.xls| or |.xlsx| 
-% are models in Excel format.
-
-% This code is to avoid execution in non gui-environments
-if usejava('desktop')
-%% 
-% You can also call the function without a fileName to get a file selection 
-% dialog   
-
-model = readCbModel();
-%% 
-% The model loaded in this way can directly be used with The COBRA Toolbox 
-% functions. You can view the data stored in the model by e.g. using
-
-open model
-
-% This code is to avoid execution in non gui-environments
-end
-%% 
+% The |readCbModel |function has a second optional input that specifies 
+% the file type being loaded. In the above example the file type does not need 
+% to be specified since the input default is a 'Matlab' file type. To load file 
+% types other than a MAT-file, specificy the file type for input as: ?SBML?, ?SimPheny?, 
+% ?SimPhenyPlus?, ?SimPhenyText?, or 'Excel?. 
 % 
-%% Writing a model (TIMING: 1s to a few minutes)
+% You can also call the |readCbModel |function without a fileName to get 
+% a dialog box, this is provided the Java feature is available. 
 
-% This code is to avoid execution in non gui-environments
-if usejava('desktop')
-%% 
-% To write files, use the |writeCbModel| function. The function can be called 
-% directly with a model.
-
-writeCbModel(model)
-%% 
-% This will call a file selection dialog, which allows the selection of 
-% a filename and, depending on the selected format from the dropdown, the output 
-% will be generated. 
-
-% This code is to avoid execution in non gui-environments
-end
-% This code is to avoid execution in non gui-environments
-if usejava('desktop')
-%% 
-% If no |fileName| is provided, a popup will ask you to provide a |fileName| 
-% with the specified format. 
-
-writeCbModel(model,'text')
-%% 
-% The available format options are:
-% 
-% * '|mat' |- for a MATLAB save file
-% * |'sbml'| - for a SBML model
-% * |'xls'| - for a model in Excel format
-% * |'text'| - for a textual export.
-
-% This code is to avoid execution in non gui-environments
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
+    model = readCbModel();
 end
 %% 
-% It is also possible to specify the format and filename explicitly:
+% Once the model is loaded it can be used directly with The COBRA Toolbox 
+% functions. To view the data stored in the model use the following command.
 
-writeCbModel(model, 'SBML', 'Acidaminococcus.xml')
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
+    open model
+end
+%% Writing a model (timing: 1 second to a few minutes)
+% To write files, use the |writeCbModel| function. A dialog box will appear, 
+% select or enter the filename and the file format. The output is then generated 
+% and saved to the directory indicated in the diaglog box. A summary of the fields 
+% present in the model will also appear in the command window. 
+
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
+    writeCbModel(model)
+end
 %% 
-% which will write the model to the file Acidaminococcus.xml.
+% The |writeCbModel |function has a second optional input that specifies 
+% the file type in which the model should be written and saved. In the above example 
+% the file type was not specified and so the default file type to be saved was 
+% as a MAT-file. To use the function to write a file types other than a MAT-file, 
+% specificy the file type for input as: ?text?,?xls?, or ?sbml?. 
 
-% Some Cleanup 
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
+    writeCbModel(model,'text')
+end
+%% 
+% It is also possible to specify the file type and file name explicitly. 
+% The following example writes a model directly to the file name 'Acidaminococcus.xml'.
+
+if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
+    writeCbModel(model, 'SBML', 'Acidaminococcus.xml')
+end
+%% CLEAN UP
+% Clean up of materials used in the tutorial.  
+
 currentDir = pwd;
 cd(fileparts(which('tutorial_IO.mlx')));
 
-% Copy two files that can be loaded (if they are nto yet present).
+% Delete the files used in this tutorial (if they are present).
 try
     delete('ecoli_core_model.mat');
-    delete('Abiotrophia_defectiva_ATCC_49176.xml');
+    delete('Abiotrophia_defectiva_ATCC_49176.xml'); %TODO: The 'Abiotrophia_defectiva_ATCC_49176.xml' not found in corbatoolbox therefore cannot copy file. Also this file is not used in the tutorial. 
     delete('Acidaminococcus.xml');
 end
 cd(currentDir)
