@@ -14,7 +14,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testMinSpan'));
+fileDir = fileparts(which('testuFBA'));
 cd(fileDir);
 
 % Load in data and model

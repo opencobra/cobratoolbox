@@ -6,11 +6,14 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %    [modelSampling, samples] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 %
 % INPUTS:
-%    model:           COBRA model structure
-%    sampleFile:      File names for sampling output files (only required 
-%                     for ACHR)
+%    model:           COBRA model structure with fields
+%                        * .S - Stoichiometric matrix
+%                        * .b - Right hand side vector
+%                        * .lb - Lower bounds
+%                        * .ub - Upper bounds
 %
 % OPTIONAL INPUTS:
+%    sampleFile:    File names for sampling output files (only implemented for ACHR)
 %    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to 
 %                   sample the solution.  
 %    options:       Options for sampling and pre/postprocessing (default values
@@ -29,7 +32,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %
 % OUTPUTS:
 %    modelSampling:    Cleaned up model used in sampling
-%    samples:          Uniform random samples of the solution space
+%    samples:          `n x numSamples` matrix of flux vectors
 %
 % EXAMPLES:
 %    %1) Sample a model called 'superModel' using default settings and save the
@@ -55,6 +58,13 @@ nFilesSkipped = 2;
 maxTime = 10 * 3600;
 toRound = 1;
 % Default options above
+if ~exist('sampleFile','var')
+    samplerName = 'sampleFile.mat';
+end
+if ~exist('samplerName','var')
+    samplerName = 'CHRR';
+end
+
 if (nargin < 3 || isempty(samplerName))
     samplerName = 'CHRR';
 end

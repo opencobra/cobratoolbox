@@ -1,11 +1,11 @@
 %% Uniform sampling
-%% Author(s): *Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
+%% Author(s): *Hulda S. Haraldsd�ttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
 %% Reviewer(s): 
 %% INTRODUCTION
 % The flux space $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
 % for a given set of biochemical and physiologic constraints is represented by: 
 % 
-% $$\Omega = \{v | Sv=b; l \leq v\leq u\}$$
+% $$\Omega = \{v \mid Sv=b; l \leq v\leq u\}$$
 % 
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">v</mi></mrow></math>$ represents feasible flux vectors,  
@@ -23,8 +23,8 @@
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">c</mi></mrow></math>$ is a linear biological objective 
 % function (biomass, ATP consumption, HEME production, etc.). Even under these 
-% conditions there is commonly a range of optimal flux distributions, which can 
-% be investigated using flux variability analysis. If the general capabilities 
+% conditions the there is commonly a range of optimal flux distributions. which 
+% can be investigated using flux variability analysis. If the general capabilities 
 % of the model are of interest, however, uniform sampling of the entire flux space 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
 % is able to provide an unbiased characterization, and therefore, can be used 
@@ -42,7 +42,7 @@
 % free energy (MFE). In this tutorial, we will use the CHRR algorithm [1] to uniformly 
 % sample a high dimensionally constraint-based model of the differentiation of 
 % induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm 
-% consists of rounding the anisotropic flux space  Ω using a maximum volume ellipsoid 
+% consists of rounding the anisotropic flux space  ? using a maximum volume ellipsoid 
 % algorithm [4] and then performs a uniform sampling based on the provably efficient 
 % hit-and-run random walk [5]. Below is a high-level illustration of the process 
 % to uniformly sample a random metabolic flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
@@ -53,7 +53,7 @@
 % mathvariant="italic">T</mi></mrow></math>$ to $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. The transformed set $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
-% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext> </mtext></mrow></math>$ is 
+% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext>?</mtext></mrow></math>$ is 
 % such that its maximal inscribed ellipsoid (blue) approximates a unit ball. *2)* 
 % Take $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">q</mi></mrow></math>$ steps of coordinate hit-and-run. 
@@ -76,8 +76,9 @@
 % mathvariant="italic">v</mi><msub><mrow><mo>&prime;</mo></mrow><mrow><mi mathvariant="italic">k</mi></mrow></msub></mrow></math>$.
 % 
 % 
+%% Equipment setup
 
-initCobraToolbox
+ changeCobraSolver('gurobi');
 %% Modelling
 % We will investigate ATP energy production with limited and unlimited oxygen 
 % uptake, following closely the flux balance analysis (FBA) tutorial published 
@@ -100,25 +101,18 @@ unlimitedOx = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
 limitedOx = changeRxnBounds(model, 'EX_o2(e)', -4, 'l');
 %% Flux variability analysis
 % Flux variability analysis (FVA) returns the minimum and maximum possible flux 
-% through every reaction in a model.
+% through every reaction in a model.  
 
-try
-    startup  % set user preferred LP solver etc.
-catch ME
-    changeCobraSolver('gurobi');
-end
-[minUn, maxUn] = fastFVA(unlimitedOx, 100);
-[minLim, maxLim] = fastFVA(limitedOx, 100); 
+[minUn, maxUn] = fluxVariability(unlimitedOx)
+[minLim, maxLim] = fluxVariability(limitedOx)
 %% 
-% FVA predicts faster maximal ATP production with an unlimited and limited 
+% FVA predicts faster maximal ATP production with unlimited and limited 
 % oxygen uptake conditions.
 
 ATP = 'DM_atp_c_';  % Identifier of the ATP demand reaction
 ibm = find(ismember(model.rxns, ATP));  % column index of the ATP demand reaction
-fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n',...
-    maxUn(ibm));
-fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n',...
-    maxLim(ibm));
+fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n', maxUn(ibm));
+fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n', maxLim(ibm));
 %% 
 % An overall comparison of the FVA results can be obtained by computing 
 % the <https://en.wikipedia.org/wiki/Jaccard_index Jaccard index> for each reaction. 
@@ -143,8 +137,7 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 f1 = figure;
 errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
 set(gca, 'xlim', [0, length(Y) + 1])
-legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location',...
-    'northoutside', 'orientation', 'horizontal')
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', 'orientation', 'horizontal')
 xlabel('Reaction')
 ylabel('Flux range (mmol/gDW/h)')
 
@@ -176,8 +169,8 @@ options.toRound = 1;
 % case of |toRound = 1| this would be the rounded model), and second, the samples 
 % generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,
 
-[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options);
-[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options);
+[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options, []);
+[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options, []);
 %% 
 % The sampler outputs the sampled flux distributions (X_un and X_lim) and 
 % the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show 
@@ -195,7 +188,7 @@ xlabel('Flux (mmol/gDW/h)')
 ylabel('# samples')
 %% 
 % Undersampling results from selecting too small sampling parameters. The 
-% appropriate parameter values depend on the dimension of the polytope Ω  defined 
+% appropriate parameter values depend on the dimension of the polytope ?? defined 
 % by the model constraints (see intro). One rule of thumb says to set  $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
 % mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
@@ -239,11 +232,9 @@ cUn = get(p1(1), 'color');
 cLim = get(p1(2), 'color');
 
 hold on
-p2 = plot([minUn(ibm), minUn(ibm)], ylim, '--', [maxUn(ibm), maxUn(ibm)], ylim,...
-    '--');
+p2 = plot([minUn(ibm), minUn(ibm)], ylim, '--', [maxUn(ibm), maxUn(ibm)], ylim, '--');
 set(p2,'color', cUn)
-p3 = plot([minLim(ibm), minLim(ibm)], ylim, '--', [maxLim(ibm), maxLim(ibm)],...
-    ylim, '--');
+p3 = plot([minLim(ibm), minLim(ibm)], ylim, '--', [maxLim(ibm), maxLim(ibm)], ylim, '--');
 set(p3, 'color', cLim)
 hold off
 %% 
@@ -255,23 +246,22 @@ position = get(f4, 'position');
 set(f4, 'units', 'centimeters', 'position', [position(1), position(2), 18, 27])
 
 sampledRxns = {'r2139', 'GLNSERNaEx', 'HMR_9791', 'r1616', 'r1578', 'r2537'};
-ridx = findRxnIDs(model, sampledRxns);
+rxnsIdx = findRxnIDs(model, sampledRxns);
 
 %ridx = randi(size(model.rxns,1), 1,6);
 
-for i = ridx
+for i = rxnsIdx
     nbins = 20;
     [yUn, xUn] = hist(X2_un(i, :), nbins);
     [yLim, xLim] = hist(X2_lim(i, :), nbins);
     
-    subplot(3, 2, find(ridx==i))
+    subplot(3, 2, find(rxnsIdx==i))
     h1 = plot(xUn, yUn, xLim, yLim);
     xlabel('Flux (mmol/gDW/h)')
     ylabel('# samples')
-    title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight',...
-        'normal')
+    title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
     
-    if find(ridx==i)==2
+    if find(ridx==i)==1
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
@@ -280,19 +270,18 @@ for i = ridx
     hold on
     h2 = plot([minUn(i), minUn(i)], ylim, '--', [maxUn(i), maxUn(i)], ylim, '--');
     set(h2,'color',cUn)
-    h3 = plot([minLim(i), minLim(i)], ylim, '--', [maxLim(i), maxLim(i)], ylim,...
-        '--');
+    h3 = plot([minLim(i), minLim(i)], ylim, '--', [maxLim(i), maxLim(i)], ylim, '--');
     set(h3, 'color', cLim)
     hold off
 end
 %% References
-% [1] Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
+% [1] Haraldsd�ttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
 % S. (2016). CHRR: coordinate hit-and-run with rounding for uniform sampling of 
 % constraint-based metabolic models. Submitted.
 % 
 % [2] Liliana...
 % 
-% [3] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
+% [3] Orth, J. D., Thiele I., and Palsson, B. �. (2010). What is flux balance 
 % analysis? Nat. Biotechnol., 28(3), 245-248.
 % 
 % [4]  Zhang, Y. and Gao, L. (2001). On Numerical Solution of the Maximum 

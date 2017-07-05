@@ -17,6 +17,14 @@ currentDir = pwd;
 fileDir = fileparts(which('testMinSpan'));
 cd(fileDir);
 
+% create a parallel pool
+poolobj = gcp('nocreate');  % if no pool, do not create new one.
+if isempty(poolobj)
+    parpool(2);  % launch 2 workers
+end
+
+changeCobraSolver('glpk', 'all');
+
 % load the model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
@@ -25,8 +33,7 @@ bmName = {'Biomass_Ecoli_core_w_GAM'};
 model = removeRxns(model, bmName);
 
 [m, n] = size(model.S);
-assert(m == 72 & n == 94, ...
-      'Unable to setup input for MinSpan determination');
+assert(m == 72 & n == 94, 'Unable to setup input for MinSpan determination');
 
 % Setup parameters and run detMinSpan
 params.saveIntV = 0; % Do not save intermediate output

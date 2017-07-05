@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
+function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, osenseStr, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
 % Flux variablity analysis optimized for the CPLEX solver.
 % Solves LPs of the form:
 %
@@ -26,7 +26,7 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %
 % USAGE:
 %
-%    [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
+%    [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, osenseStr, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
 %
 % INPUTS:
 %   model:             COBRA model structure
@@ -40,7 +40,7 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %                        * .csense - (optional) Type of constraints, `csense` is a vector with elements `E` (equal), `L` (less than) or `G` (greater than).
 %   optPercentage:     Only consider solutions that give you at least a certain
 %                      percentage of the optimal solution (default = `100`, equivalent to optimal solutions only)
-%   objective:         Objective ('min' or 'max') (default 'max')
+%   osenseStr:         Objective ('min' or 'max') (default 'max')
 %   solverName:        name of the solver, default: `ibm_cplex`
 %
 % OPTIONAL INPUTS:
@@ -170,8 +170,8 @@ end
 if (nargin < 4 || isempty(solverName))
     solverName = 'ibm_cplex';
 end
-if (nargin < 3 || isempty(objective))
-    objective = 'max';
+if (nargin < 3 || isempty(osenseStr))
+    osenseStr = 'max';
 end
 if (nargin < 2 || isempty(optPercentage))
     optPercentage = 100;
@@ -198,13 +198,13 @@ if nargout ~= 4 && nargout ~= 7 && nargout ~= 9
     fprintf('\n-- Warning:: You may only ouput 4, 7 or 9 variables.\n\n')
 end
 
-% Define the objective
-if strcmpi(objective, 'max')
+% Define the osenseStr
+if strcmpi(osenseStr, 'max')
     obj = -1;
-elseif strcmpi(objective, 'min')
+elseif strcmpi(osenseStr, 'min')
     obj = 1;
 else
-    error('Unknown objective');
+    error('Unknown osenseStr');
 end
 
 % Define the solverName
