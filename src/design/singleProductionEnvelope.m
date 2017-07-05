@@ -1,14 +1,14 @@
 function singleProductionEnvelope(model, deletions, product, biomassRxn, varargin)
-% singleProductionEnvelope plots maximum growth rate as a function of the
+% Plots maximum growth rate as a function of the
 % output of one specified products
 %
 % USAGE:
 %    singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%   model:            (struct) a metabolic model with at least
+%    model:           (struct) a metabolic model with at least
 %                     the following fields:
-% 
+%
 %                       * .rxns - Reaction IDs in the model
 %                       * .mets - Metabolite IDs in the model
 %                       * .S -    Stoichiometric matrix (sparse)
@@ -23,18 +23,12 @@ function singleProductionEnvelope(model, deletions, product, biomassRxn, varargi
 %
 % OPTIONAL INPUTS:
 %    geneDelFlag:     (double or boolean) perform gene and not reaction
-%                     deletions
-%                     Default = false
-%    nPts:            (double) number of points to plot for each product
-%                     Default = 20
-%    savePlot:        (double or boolean) boolean for saving plot in a file
-%                     Default = false
-%    showPlot:        (double or boolean) boolean for showing the plot
-%                     Default = false
-%    fileName:        (char) name of the file where the plot is saved.
-%                     Default = product
-%    outputFolder:    (char) name of the folder where files are saved
-%                     Default = 'Results'
+%                     deletions. Default = false
+%    nPts:            (double) number of points to plot for each product. Default = 20
+%    savePlot:        (double or boolean) boolean for saving plot in a file. Default = false
+%    showPlot:        (double or boolean) boolean for showing the plot. Default = false
+%    fileName:        (char) name of the file where the plot is saved. Default = product
+%    outputFolder:    (char) name of the folder where files are saved Default = 'Results'
 %
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
@@ -132,7 +126,7 @@ if savePlot
         mkdir(NewDirectory)
     end
     cd(NewDirectory)
-    
+
     set(gcf, 'PaperUnits', 'centimeters');
     set(gcf, 'PaperPosition', [0 0 20 10]);
     saveas(gcf,[fileName '.png'])
@@ -143,7 +137,7 @@ if savePlot
         close(f);
     end
     cd(currectDirectory)
-    
+
 end
 
 end

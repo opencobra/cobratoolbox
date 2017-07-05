@@ -21,11 +21,11 @@ function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
 %
 % .. Author: - Adam Feist 10/16/08
 %
-% This funtion uses the outermembrane transport reaction, therefore:
+% This function uses the outermembrane transport reaction, therefore:
 %
 %   1. the model must have an extracellular compartment and a periplasm (e.g. `iAF1260`)
 %   2. there should not be an extracellular reaction acting on the metabolite
-%   besides the exchange reaction and the OM transport reaction
+%      besides the exchange reaction and the OM transport reaction
 
 if (nargin < 3)
     % Biomass flux
