@@ -213,7 +213,7 @@ Boolean variable for requesting explicitly if the files should be removed</li>
 
 <dl class="function">
 <dt id="src.analysis.FVA.fastFVA.fastFVA">
-<code class="descname">fastFVA</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>objective</em>, <em>solverName</em>, <em>rxnsList</em>, <em>matrixAS</em>, <em>cpxControl</em>, <em>strategy</em>, <em>rxnsOptMode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/FVA/fastFVA/fastFVA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fastFVA.fastFVA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastFVA</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>solverName</em>, <em>rxnsList</em>, <em>matrixAS</em>, <em>cpxControl</em>, <em>strategy</em>, <em>rxnsOptMode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/FVA/fastFVA/fastFVA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fastFVA.fastFVA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flux variablity analysis optimized for the CPLEX solver.
 Solves LPs of the form:</p>
 <div class="math">
@@ -233,7 +233,7 @@ To save large <cite>fvamin</cite> and <cite>fvamax</cite> matrices, toggle v7.3 
 minFlux and maxFlux are defined (all remaining entries are zero).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)</div></blockquote>
+<div>[minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, osenseStr, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -251,7 +251,7 @@ COBRA model structure<ul>
 <li><strong>optPercentage</strong> &#8211;
 Only consider solutions that give you at least a certain
 percentage of the optimal solution (default = <cite>100</cite>, equivalent to optimal solutions only)</li>
-<li><strong>objective</strong> &#8211;
+<li><strong>osenseStr</strong> &#8211;
 Objective (&#8216;min&#8217; or &#8216;max&#8217;) (default &#8216;max&#8217;)</li>
 <li><strong>solverName</strong> &#8211;
 name of the solver, default: <cite>ibm_cplex</cite></li>

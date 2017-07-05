@@ -191,119 +191,6 @@
   <div class="section" id="sampling">
 <span id="id1"></span><h1>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sampling"></span><dl class="function">
-<dt id="src.analysis.sampling.ACBSampler">
-<code class="descname">ACBSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>nMixPts</em>, <em>nWarmupNeeded</em>, <em>saveMatFlag</em>, <em>biasOpt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/ACBSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACBSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Artificial centering boundary sampler</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Model structure</li>
-<li><strong>warmupPoints</strong> &#8211;
-Warmup points</li>
-<li><strong>fileName</strong> &#8211;
-Base <cite>fileName</cite> for saving results</li>
-<li><strong>nFiles</strong> &#8211;
-Number of sample point files created</li>
-<li><strong>pointsPerFile</strong> &#8211;
-Number of points per file saved</li>
-<li><strong>nMixPts</strong> &#8211;
-Number of steps initially used for mixing (not saved)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nWarmupNeeded</strong> &#8211;
-Number of warmup points needed (Default = 20000)</li>
-<li><strong>saveMatFlag</strong> &#8211;
-Save points in mat format vs txt format (Default = true)</li>
-<li><strong>biasOpt</strong> &#8211;
-Options for biasing sampler (Default = no bias)</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.ACHRSampler">
-<code class="descname">ACHRSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>stepsPerPoint</em>, <em>initPoint</em>, <em>fileBaseNo</em>, <em>maxTime</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/ACHRSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHRSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Artificial Centering Hit-and-Run sampler</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Model structure</li>
-<li><strong>warmupPoints</strong> &#8211;
-Warmup points</li>
-<li><strong>fileName</strong> &#8211;
-Base <cite>fileName</cite> for saving results</li>
-<li><strong>nFiles</strong> &#8211;
-Number of files created</li>
-<li><strong>pointsPerFile</strong> &#8211;
-Number of points per file saved</li>
-<li><strong>stepsPerPoint</strong> &#8211;
-Number of sampler steps per point saved</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>initPoint</strong> &#8211;
-Initial point (Default = centerPoint)</li>
-<li><strong>fileBaseNo</strong> &#8211;
-Base file number for continuing previous sampler run
-(Default = 0)</li>
-<li><strong>maxTime</strong> &#8211;
-Maximum time limit (Default = 36000 s)</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.ACHRSamplerParallelGeneral">
-<code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
-<dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point management</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>sampleStruct = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sampleStruct</strong> &#8211;
-Sampling structure</li>
-<li><strong>nLoops</strong> &#8211;
-Number of iterations</li>
-<li><strong>stepsPerPoint</strong> &#8211;
-Number of sampler steps per point saved</li>
-<li><strong>maxtime</strong> &#8211;
-Amount of time to spend on calculation (in seconds)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>proc</strong> &#8211;
-Number of processes if &gt; 0.  Otherwise, the proces #.</li>
-<li><strong>fdirectory</strong> &#8211;
-Do not use this parameter when calling function directly.</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sampleStruct</strong> &#8211;
-Sampling structure with sample points</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.analysis.sampling.calcSampleDifference">
 <code class="descname">calcSampleDifference</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/calcSampleDifference.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.calcSampleDifference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects randomly nPts flux vectors from <cite>sample1</cite> and <cite>sample2</cite> and calcutes
@@ -362,103 +249,6 @@ Structure with the following fields:<ul>
 </li>
 </ul>
 </div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.chrrParseModel">
-<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.chrrParseModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a COBRA model into the right format for the CHRR sampler</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>P = chrrParseModel(model);</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
-<li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
-<li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
-<li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
-<li>.c - <cite>n x 1</cite> linear objective</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>P</strong> &#8211;
-A structure with fields:<ul>
-<li>.A_eq - Equality constraint matrix (<cite>model.S</cite>)</li>
-<li>.b_eq - Right hand side of equality constraints (<cite>model.b</cite>)</li>
-<li>.A - Inequality constraint matrix ([<span class="math">\(I_n 0; 0 -I_n\)</span>])</li>
-<li>.b - Right hand side of inequality constraints ([<cite>lb</cite>; <cite>-ub</cite>])</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p>We are trying to sample uniformly at random from the points <cite>v</cite> that satisfy:</p>
-<div class="math">
-\[\begin{split}min  ~&amp;~ c v \\
-s.t. ~&amp;~ S v = b \\
-     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.chrrSampler">
-<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.chrrSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate uniform random flux samples with CHRR
-Coordinate Hit-and-Run with Rounding</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux);</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
-<li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
-<li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
-<li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
-<li>.c - <cite>n x 1</cite> linear objective</li>
-</ul>
-</li>
-<li><strong>numSkip</strong> &#8211;
-Number of steps of coordinate hit-and-run between samples</li>
-<li><strong>numSamples</strong> &#8211;
-Number of samples</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>toRound</strong> &#8211;
-{0, 1} Option to round the polytope before sampling.</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope from a previous round of
-sampling the same model.</li>
-<li><strong>minFlux, maxFlux</strong> &#8211;
-<cite>n x 1</cite> flux minima and maxima from flux variability
-analysis of the same model.</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>samples</strong> &#8211;
-<cite>n x numSamples</cite> matrix of random flux samples</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope. Save for use in subsequent
-rounds of sampling.</li>
-<li><strong>minFlux, maxFlux</strong> &#8211;
-flux minima and maxima</li>
-</ul>
-</div></blockquote>
-<p><cite>chrrSampler</cite> will generate <cite>numSamples</cite> samples from model, taking
-<cite>numSkip</cite> steps of a random walk between each sample</p>
-<p>Rounding the polytope is a potentially expensive step. If you generate multiple rounds
-of samples from a single model, you can save <cite>roundedPolytope</cite> from the first round and
-input it for subsequent rounds.</p>
 </dd></dl>
 
 <dl class="function">
@@ -522,157 +312,6 @@ statistics</li>
 </ul>
 </div></blockquote>
 <p>Output will be in order that tests are inputed. i.e. {&#8216;ks&#8217;,&#8217;rankSum&#8217;}</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.convRevSamples">
-<code class="descname">convRevSamples</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/convRevSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.convRevSamples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts signs for reactions that are only running in
-reverse direction</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[model, samples] = convRevSamples(model, samples)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Constraint-based model</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>samples</strong> &#8211;
-Sample set</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with negative-direction fluxes reversed</li>
-<li><strong>samples</strong> &#8211;
-Sample set with negative-direction fluxes reversed</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.createHRWarmup">
-<code class="descname">createHRWarmup</code><span class="sig-paren">(</span><em>model</em>, <em>nPoints</em>, <em>verbFlag</em>, <em>bias</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/createHRWarmup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.createHRWarmup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a warmup point set for hit-and-run sampling by
-combining orthogonal and random points</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>warmupPts = createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nPoints</strong> &#8211;
-Number of warmup points (Default = 5000);</li>
-<li><strong>verbFlag</strong> &#8211;
-Verbose flag (Default = false)</li>
-<li><strong>bias</strong> &#8211;
-Structure with fields:<ul>
-<li>method - Biasing distribution: &#8216;uniform&#8217;, &#8216;normal&#8217;</li>
-<li>index - The reaction indexes which to bias (<cite>nBias</cite> total)</li>
-<li>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>warmupPts</strong> &#8211;
-Set of warmup points</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.gpSampler">
-<code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.gpSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Samples an arbitrary linearly constrained space using a fixed
-number of points that are moved in parallel
-The space is defined by</p>
-<div class="math">
-\[\begin{split}A x \leq, =, \geq b \\
-lb \leq x \leq ub\end{split}\]</div>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[sampleStructOut, mixedFraction] = gpSampler(sampleStruct, nPoints, bias, maxTime, maxSteps, threads, nPointsCheck)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>sampleStruct</strong> &#8211;
-Structure describing the space to be sampled and
-previous point sets:</p>
-<blockquote>
-<div><ul class="simple">
-<li>A - LHS matrix (optionally, if not A script checks for S)</li>
-<li>b - RHS vector</li>
-<li>lb - Lower bound</li>
-<li>ub - Upper bound</li>
-<li>csense - Constraint type for each row in <cite>A</cite> (&#8216;G&#8217;, &#8216;L&#8217;, &#8216;E&#8217;)</li>
-<li>warmupPoints - Set of warmup points (optional, generated by default)</li>
-<li>points - Currently sampled points (optional)</li>
-</ul>
-</div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nPoints</strong> &#8211;
-Number of points used in sampling
-(default = <cite>2 * nRxns</cite> or 5000 whichever is greater)</li>
-<li><strong>bias</strong> &#8211;
-Structure with fields:<ul>
-<li>method - Biasing distribution: &#8216;uniform&#8217;, &#8216;normal&#8217;</li>
-<li>index - The reaction indexes which to bias (<cite>nBias</cite> total)</li>
-<li>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it&#8217;s min max, for normal it&#8217;s <cite>mu</cite>, <cite>sigma</cite>).</li>
-</ul>
-</li>
-<li><strong>maxTime</strong> &#8211;
-Maximum time alloted for the sampling in seconds
-(default 600 s, pass an empty number [] to set <cite>maxSteps</cite> instead)</li>
-<li><strong>maxSteps</strong> &#8211;
-Maximum number of steps to take (default 1e10). Sampler
-will run until either maxStep or maxTime is reached.
-Set maxStep or maxTime to 0 and no sampling will occur
-(only warmup points generated).</li>
-<li><strong>threads</strong> &#8211;
-number of threads the sampler will use.  If you have a
-dual core machine, you can set it to 2 etc.  The speed
-up is almost linear w/ the number of cores.
-If using this feature and 2009a or newer, a futher
-speedup can be obtained by starting matlab from the
-command line by &#8220;typing matlab -singleCompThread&#8221;
-New feature:  if <cite>threads</cite> &lt; 0, use distributed toolbox.</li>
-<li><strong>nPointsCheck</strong> &#8211;
-Checks that minimum number of points (<cite>2 * nRxns</cite>) are
-used. (Default = true).</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sampleStructOut</strong> &#8211;
-The sampling structure with some extra fields.</li>
-<li><strong>mixedFract</strong> &#8211;
-The fraction mixed (relative to the <cite>warmupPts</cite>).  A value of 1
-means not mixed at all.  A value of .5 means completely mixed.</li>
-</ul>
-</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -746,41 +385,6 @@ Select random points from each file (true/false, default = false)</li>
 <div><ul class="simple">
 <li><strong>samples</strong> &#8211;
 Sample flux distributions</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.mixFraction">
-<code class="descname">mixFraction</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>fixed</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/mixFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.mixFraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compares two sets of sampled points and determines how mixed
-they are.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>mix = mixFraction(sample1, sample2, fixed)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sample1, sample2</strong> &#8211;
-Ordered set of points. The points must be in
-the same order otherwise it does not make sense.</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>fixed</strong> &#8211;
-The directions which are fixed and are not expected
-to mix. They are ignored.</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>mix</strong> &#8211;
-The mix fraction. Goes from 0 to 1 with 1 being
-completely unmixed and .5 being essentially
-perfectly mixed.</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -882,63 +486,29 @@ Name of file to generate (Default = print to command window)</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.sampling.removeCorrelRxns">
-<code class="descname">removeCorrelRxns</code><span class="sig-paren">(</span><em>model</em>, <em>R</em>, <em>correlCutoff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/removeCorrelRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes fully or almost fully correlated reactions</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlCutoff)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>R</strong> &#8211;
-Correl coefficient matrix</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>correlCutoff</strong> &#8211;
-Cutoff level for fully correlated <cite>rxns</cite> (Default 0.99999)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>selRxns</strong> &#8211;
-true/false vector that allow selecting non-redundant data</li>
-<li><strong>rxnSets</strong> &#8211;
-Correlated reaction sets</li>
-<li><strong>rxnList</strong> &#8211;
-Reaction list with correlated reactions concatenated</li>
-<li><strong>Rfilt</strong> &#8211;
-Filtered <cite>R</cite></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.analysis.sampling.sampleCbModel">
 <code class="descname">sampleCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>sampleFile</em>, <em>samplerName</em>, <em>options</em>, <em>modelSampling</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/sampleCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.sampleCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples the solution-space of a constraint-based model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelSampling, samples] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>sampleFile</strong> &#8211;
-File names for sampling output files (only required
-for ACHR)</li>
+COBRA model structure with fields
+* .S - Stoichiometric matrix
+* .b - Right hand side vector
+* .lb - Lower bounds
+* .ub - Upper bounds</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul>
+<li><p class="first"><strong>sampleFile</strong> &#8211;
+File names for sampling output files (only implemented for ACHR)</p>
+</li>
 <li><p class="first"><strong>samplerName</strong> &#8211;
 {(&#8216;CHRR&#8217;), &#8216;ACHR&#8217;} Name of the sampler to be used to
 sample the solution.</p>
@@ -971,7 +541,7 @@ model. Input to avoid repeated preprocessing.</p>
 <li><strong>modelSampling</strong> &#8211;
 Cleaned up model used in sampling</li>
 <li><strong>samples</strong> &#8211;
-Uniform random samples of the solution space</li>
+<cite>n x numSamples</cite> matrix of flux vectors</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -1032,37 +602,6 @@ Optional second set of reaction names</li>
 <span class="n">sampleScatterMatrix</span><span class="p">({</span><span class="s1">&#39;PFK&#39;</span><span class="p">,</span><span class="s1">&#39;PYK&#39;</span><span class="p">,</span><span class="s1">&#39;PGL&#39;</span><span class="p">},</span><span class="n">model</span><span class="p">,</span><span class="n">sample</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">true</span><span class="p">,{</span><span class="s1">&#39;ENO&#39;</span><span class="p">,</span><span class="s1">&#39;TPI&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.sampling.verifyPoints">
-<code class="descname">verifyPoints</code><span class="sig-paren">(</span><em>sampleStruct</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/verifyPoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.verifyPoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify that a set of points are in the solutoin space of <cite>sampleStruct</cite>.
-Typically, this method would be called to check a set of warmup points or
-points generated via <cite>gpSampler</cite>. Also verifies if points moved from
-warmup points.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sampleStruct</strong> &#8211;
-LPProblem containing points and warmup points</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>errorsA</strong> &#8211;
-Row index of the constraint in <cite>sampleStruct</cite> that
-is not consistent with the given points</li>
-<li><strong>errorsLUB</strong> &#8211;
-Upper and lower bounds of the constraint + tolerance</li>
-<li><strong>stuckPoints</strong> &#8211;
-Index of points which did not move.</li>
-</ul>
-</div></blockquote>
 </dd></dl>
 
 </div>
