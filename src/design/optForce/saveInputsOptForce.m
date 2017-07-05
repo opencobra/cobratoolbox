@@ -1,10 +1,9 @@
-function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
-    maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
+function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 % This function saves all the inputs needed to run functions to find second
 % order Must Sets (MustUU, Must LL and MustUL). The inputs will be stored in
 % inputFolder.
 %
-% USAGE: 
+% USAGE:
 %
 %    saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
 %    maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
@@ -20,7 +19,7 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                         * .b -    RHS of Sv = b (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
-%                         * .ub -   Upper bounds for fluxes 
+%                         * .ub -   Upper bounds for fluxes
 %    minFluxesW:        Type: double array of size n_rxns x1
 %                       Description: Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
@@ -56,11 +55,11 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                       fields:
 %
 %                         * .rxnList - Reaction list (cell array)
-%                         * .values -  Values for constrained 
+%                         * .values -  Values for constrained
 %                           reactions (double array)
 %                           E.g.: struct('rxnList', ...
 %                           {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                           'values', [-100, 0, 155.5]');  
+%                           'values', [-100, 0, 155.5]');
 %    excludedURxns:     Type: cell array
 %                       Description: Reactions to be excluded from
 %                       upregulations. This could be used to avoid finding
@@ -74,7 +73,7 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                       Description: Reactions to be excluded from
 %                       knockouts This could be used to avoid finding
 %                       transporters or exchange reactions in the set
-%   inputFolder:        Type: string. 
+%   inputFolder:        Type: string.
 %                       Description: Folder where inputs for GAMS function
 %                       will be stored
 %
@@ -106,12 +105,12 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                       Description: File containing the maximum number of
 %                       sets found by optForce
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastiï¿½n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 
 %% CODE
 %input handling
-if nargin < 15 
+if nargin < 15
     error('OptForce: All inputs must be specified. Please add empty array if needed.')
 end
 if  isempty(model)
@@ -147,7 +146,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

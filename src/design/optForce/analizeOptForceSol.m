@@ -1,13 +1,13 @@
 function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol)
 % This function will calculate the minimum and maximum rates for target
 % production when applying a set of interventions (upregulations,
-% downregulations, knockouts) in the model. Flux for each intervened 
+% downregulations, knockouts) in the model. Flux for each intervened
 % reaction in the mutant must be specified in the structure solution (third
-% input). 
+% input).
 %
-% USAGE: 
+% USAGE:
 %
-%    [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol) 
+%    [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol)
 %
 % INPUTS:
 %    model:             Type: structure (COBRA model)
@@ -21,41 +21,41 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-% 
-%    targetRxn:          Type: string. 
-%                        Description: reaction identifier for target
-%                        reaction
-%                        E.g.: targetRxn='EX_suc' 
-%    solution:           Type: structure. 
-%                        Description: structure containing information
-%                        about the inverventions. 
-%                        E.g.: solution = struct('reactions', ...
-%                        {{'R21'; 'R24'}}, 'flux', [10; 0])
-%                        In this example, the reaction R21 will be
-%                        regulated at 10 (mmol/gDW h) (upregulation or
-%                        downregulation depending on the value for the
-%                        wild-type strain) and R21 will be regulated at 0
-%                        (mmol/gDW h) (knockout). Only two fields are
-%                        needed for this structure:
 %
-%                          * .reactions - identifiers for reactions
-%                            that will be intervened
-%                          * .flux - new flux achieved in the intervened
-%                            reactions. 
+%    targetRxn:         Type: string.
+%                       Description: reaction identifier for target
+%                       reaction
+%                       E.g.: targetRxn='EX_suc'
+%    solution:          Type: structure.
+%                       Description: structure containing information
+%                       about the inverventions.
+%                       E.g.: solution = struct('reactions', ...
+%                       {{'R21'; 'R24'}}, 'flux', [10; 0])
+%                       In this example, the reaction R21 will be
+%                       regulated at 10 (mmol/gDW h) (upregulation or
+%                       downregulation depending on the value for the
+%                       wild-type strain) and R21 will be regulated at 0
+%                       (mmol/gDW h) (knockout). Only two fields are
+%                       needed for this structure:
+%
+%                         * .reactions - identifiers for reactions
+%                           that will be intervened
+%                         * .flux - new flux achieved in the intervened
+%                           reactions.
 %
 % OPTIONAL INPUTS:
-%    relax:             Type: double
+%    relax:             Type: double.
 %                       Description: boolean to describe if constraints
 %                       should be apply in an rounded way (relax = 1 )
 %                       or in an exactly way (relax = 0)
 %                       Default: relax = 1
-%     tol:              Type: double 
+%     tol:              Type: double.
 %                       Description: range for tolerance when relaxing
 %                       contraints.
 %                       Default: tol = 1e-7
 %
 % OUTPUTS:
-%     maxGrowthRate:    Type: double
+%     maxGrowthRate:    Type: double.
 %                       Description: Maximim growth rate of mutant strain
 %                       (after applying the inverventions)
 %     minTarget:        Type: double.
@@ -65,11 +65,9 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                       Description: Maximum production rate of target at
 %                       max growth rate
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-%% CODE
-%input handling
-if nargin <1
+if nargin <1 % CODE %input handling
     error('OptForce: model must be specified when running analizeOptForceSol');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
@@ -113,9 +111,9 @@ maxGrowthRate = solForce.f;
 if solForce.stat == 1
     % find minimum and maximum production rate for target at optimal growth rate
     if relax
-        grRounded = floor(solForce.f/tol)*tol; 
+        grRounded = floor(solForce.f/tol)*tol;
     else
-        grRounded = solForce.f; 
+        grRounded = solForce.f;
     end
     modelForce = changeRxnBounds(modelForce, modelForce.rxns(modelForce.c==1), grRounded,'l');
     modelForce = changeObjective(modelForce, targetRxn);

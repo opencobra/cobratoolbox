@@ -1,10 +1,9 @@
-function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM,...
-    maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
+function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 % This function export the inputs required by GAMS to run optForce. Some
 % inputs will be exported to plain text (.txt files) and others will be
 % exported using GDXMRW. Inputs will be stored in inputFolder
 %
-% USAGE: 
+% USAGE:
 %
 %         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
@@ -124,7 +123,7 @@ function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, 
 %                       for each reaction in the previous step of FVA, and
 %                       the values for contrained reactions)
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastiï¿½n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 15 %inputs handling
     error('Optforce: All inputs must be specified when using exportInputsOptForceToGAMS');

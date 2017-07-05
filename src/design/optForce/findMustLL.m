@@ -1,17 +1,17 @@
 function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
-% MustLL set. 
+% MustLL set.
 %
-% USAGE: 
+% USAGE:
 %
-%    [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, varargin)      
+%    [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
 %    model:                      Type: structure (COBRA model)
 %                                Description: a metabolic model with at least
 %                                the following fields:
-% 
+%
 %                                  * .rxns - Reaction IDs in the model
 %                                  * .mets - Metabolite IDs in the model
 %                                  * .S -    Stoichiometric matrix (sparse)
@@ -30,7 +30,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by
 %
-% OPTIONAL INPUTS
+% OPTIONAL INPUTS:
 %    constrOpt:                  Type: Structure
 %                                Description: structure containing
 %                                additional contraints. Include here only
@@ -42,18 +42,18 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                defined in the lower and upper bounds of
 %                                the model. The structure has the following
 %                                fields:
-% 
+%
 %                                  * .rxnList - Reaction list (cell array)
-%                                  * .values -  Values for constrained 
+%                                  * .values -  Values for constrained
 %                                    reactions (double array)
 %                                    E.g.: struct('rxnList', ...
 %                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]'); 
+%                                    'values', [-100, 0, 155.5]');
 %    excludedRxns:               Type: cell array
 %                                Description: Reactions to be excluded to
 %                                the MustLL set. This could be used to avoid
 %                                finding transporters or exchange reactions
-%                                in the set. 
+%                                in the set.
 %                                Default: empty.
 %    runID:                      Type: string
 %                                Description: ID for identifying this run
@@ -87,7 +87,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                0 otherwise.
 %                                Default: 0
 %
-% OUTPUTS
+% OUTPUTS:
 %    mustLL:                     Type: cell array
 %                                Size: number of sets found X 2
 %                                Description: Cell array containing the
@@ -142,7 +142,8 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                the name of this file entering the input
 %                                outputFileName = 'PutYourOwnFileNameHere';
 %
-% NOTE: 
+% NOTE:
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
@@ -151,21 +152,21 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastiï¿½n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
 
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+
     tempargin = cell(1,2*(numel(varargin)));
     for i = 1:numel(varargin)
-        
+
         tempargin{2*(i-1)+1} = optionalParameters{i};
         tempargin{2*(i-1)+2} = varargin{i};
     end
     varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -223,7 +224,7 @@ if printReport
     fprintf(freport, ['findMustLL.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
     % print matlab version.
     fprintf(freport, ['MATLAB: Release R' version('-release') '\n']);
-    
+
     %print each of the inputs used in this running.
     fprintf(freport, '\nThe following inputs were used to run OptForce: \n');
     fprintf(freport, '\n------INPUTS------\n');
@@ -239,26 +240,26 @@ if printReport
     for i = 1:length(model.rxns)
         fprintf(freport, '%6.4f\t%6.4f\t%6.4f\t%6.4f\n', model.lb(i), model.ub(i), minFluxesW(i), maxFluxesW(i));
     end
-    
+
     %print constraints
     fprintf(freport,'\nConstrained reactions:\n');
     for i = 1:length(constrOpt.rxnList)
         fprintf(freport,'%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
     end
-    
+
     fprintf(freport, '\nExcluded Reactions:\n');
     for i = 1:length(excludedRxns)
         rxn = printRxnFormula(model, excludedRxns{i}, false);
         fprintf(freport, [excludedRxns{i} ': ' rxn{1} '\n']);
     end
-    
+
     fprintf(freport,'\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
-    
-    
+
+
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nverbose: %1.0f \n',...
         printExcel, printText, printReport, keepInputs, verbose);
-    
+
 end
 
 % export inputs for running the optimization problem in GAMS to find the
@@ -308,12 +309,12 @@ end
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
 
 if cont>0
-    
+
     if printReport; fprintf(freport, '\na MustLL set was found\n'); end;
     if verbose; fprintf('a MustLL set was found\n'); end;
     mustLL = mustLL(1:cont, :);
     posMustLL = posMustLL(1:cont, :);
-    
+
     mustLL_linear = {};
     for i = 1:size(mustLL,1)
         mustLL_linear = union(mustLL_linear, mustLL(i,:));
@@ -322,7 +323,7 @@ if cont>0
 else
     if printReport; fprintf(freport, '\na MustLL set was not found\n'); end;
     if verbose; fprintf('a MustLL set was not found\n'); end;
-    
+
     mustLL = {};
     posMustLL = [];
     mustLL_linear = {};
@@ -348,7 +349,7 @@ if printExcel
         if printReport
             fprintf(freport, ['\nMustLL set was printed in ' outputFileName '.xls  \n']);
             fprintf(freport, ['\nMustLL set was printed in ' outputFileName '_Info.xls  \n']);
-        end       
+        end
     else
         if verbose; fprintf('No mustLL set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustLL set was not found. Therefore, no excel file was generated\n'); end;
@@ -366,14 +367,14 @@ if printText
             fprintf(f, '%s or %s\n', mustLL{i,1}, mustLL{i,2});
         end
         fclose(f);
-        
+
         f = fopen([outputFileName '.txt'], 'w');
         for i = 1:length(mustLL_linear)
             fprintf(f, '%s\n', mustLL_linear{i});
         end
         fclose(f);
         cd(currentFolder);
-        
+
         if verbose
             fprintf(['MustLL set was printed in ' outputFileName '.txt  \n']);
             fprintf(['MustLL set was also printed in ' outputFileName '_Info.txt  \n']);
@@ -382,7 +383,7 @@ if printText
             fprintf(freport, ['\nMustLL set was printed in ' outputFileName '.txt  \n']);
             fprintf(freport, ['\nMustLL set was printed in ' outputFileName '_Info.txt  \n']);
         end
-        
+
     else
         if verbose; fprintf('No mustLL set was not found. Therefore, no plain text file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustLL set was not found. Therefore, no plain text file was generated\n'); end;
@@ -612,7 +613,7 @@ for i = 1:length(solutions)
     A_bl = [A_bl; zeros(1, n_rxns) sel_prev zeros(1, 7 * n_rxns + n_mets + 3)];
     b_bl =[b_bl; 1];
     csense_bl(end + 1) = 'L';
-    
+
     sel_prev = zeros(1, 2 * n_int);
     sel_prev(pos(2)) = 1;
     sel_prev(pos(1) + n_rxns) = 1;
