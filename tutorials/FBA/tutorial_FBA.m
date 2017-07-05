@@ -182,11 +182,11 @@ FBAanaerob = optimizeCbModel(modelanaerobic,'max')
 
 % [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr,...
 %  checkMinimalSet, checkEssentialSet, zeroNormApprox)
+%% 
+% As an optional input there are different appoximation types of zero-norm 
+% (only available when |minNorm = 'zero'|). Default is |cappedL1|.
 
-% As an optional input there are different appoximation types
-% of zero-norm (only available when minNorm = 'zero')
-% (default = 'cappedL1').
-%
+% Other types of zero-norm:
 %  * 'cappedL1' : Capped-L1 norm
 %  * 'exp'      : Exponential function
 %  * 'log'      : Logarithmic function
@@ -196,11 +196,12 @@ FBAanaerob = optimizeCbModel(modelanaerobic,'max')
 %  * 'l1'       : L1 norm
 %  * 'all'      : try all approximations and return the best result
 %% TIMING
-% The time to determine a sparseFBA solution depends on the size of the genome-scale 
-% model and is taking from $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo 
-% stretchy="false">&lt;</mo><mn>1</mn></mrow></math>$ second for a 1,000 reaction 
-% model, to $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&lt;</mo><mn>2</mn></mrow></math>$ 
-% seconds for a model with more than 10,000 reactions.
+% The time to determine a |sparseFBA()| solution depends on the size of the 
+% genome-scale model and is taking from $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mo stretchy="false">&lt;</mo><mn>1</mn></mrow></math>$ 
+% second for a 1,000 reaction model, to $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mo>&lt;</mo><mn>2</mn></mrow></math>$ seconds for a 
+% model with more than 10,000 reactions.
 
 modelspar = modelalter;
 modelspar = changeRxnBounds(modelspar, 'EX_glc_D[e]',-20,'l');
@@ -225,13 +226,13 @@ end
 %% Metabolite dilution flux balance analysis (mdFBA)
 % This is a variant of FBA for predicting metabolic flux distributions by accounting 
 % for growth-associated dilution of all metabolites in a context-dependent manner 
-% [3]. A solution from mdFBA guarantees, that all metabolites used in any reaction 
+% [3]. A solution from |mdFBA()| supports, that all metabolites used in any reaction 
 % of the solution can either be produced by the network or taken up from the surrounding 
 % medium.
 %% TIMING
 % Since this is a MIXED Integer Problem it can take a long time to solve.
 % 
-% * _Calculating ATP energy production under aerobic condition  with the mdFBA_
+% * _Calculating ATP energy production under aerobic condition with the mdFBA_
 % 
 % In this function, there is an optional output |newActives|, that represent 
 % reactions that are only active in this analysis.
@@ -246,71 +247,118 @@ modelmd = changeObjective(modelmd, 'DM_atp_c_');
 % When a model does not have a feasible solution, we are adding an input:  |'getInvalidSolution', 
 % true|.
 
+clear modelmd
 modelnosol = modelalter;
 modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 [sol, newActives] = mdFBA(modelnosol,  'getInvalidSolution', true)
+%% 
+% If we run the same FBA (objective function and constraints are the same) 
+% many times or using different LP logarithm, each time we may get different fluxes 
+% for each reaction. That means we could possibly have different sets of |'x'| 
+% values (fluxes of the reactions) and still get the same objective function value 
+% |'f'|. Therefore, in a case where we need to compare flux changes between two 
+% conditions, some unique values of |'x'| are needed.
+% 
+% This issue can be solved with the |geometricFBA()|, where method provides 
+% a standard, central, reproducible solution; or with the |pFBA()|, where results 
+% are minimal fluxes through the model, with a classification of each gene by 
+% how it contributes to the optimal solution.
 %% Geometric FBA
-% The constraint-based models contain often internal flux loops that are not 
-% biologically relevant, though that provides flux distributions that have correct 
-% mathematical objectives.
+% The geometric FBA solves the smallest frame that contains all sets of optimal 
+% FBA solutions and posts a set of multiple linear programming problems [4].
 % 
-% Above mentioned issue can be solved with the geometric FBA approach, which 
-% resolves one single solution of the flux distribution. It finds the smallest 
-% frame that contains all sets of optimal FBA solutions and posts a set of multiple 
-% linear programming problems [4].
-% 
-% Geometric FBA solves this problem in a way that with each applied iteration, 
-% the allowable solution space is reduced by the algorithm. After a finite number 
-% of iterations, the bounds converge to a single solution, which is free of internal 
-% loops.
-%% TIMING
-% The time to determine a geometricFBA solution depends on the size of the genome-scale 
-% model and is taking more $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&geq;</mo><mn>30</mn></mrow></math>$ 
-% minutes for a model with more than 10,000 reactions.
+% This variant of the FBA with each applied iteration, reduce by the algorithm 
+% the permissible solution space. After a finite number of iterations resolves 
+% one single solution of the flux distribution.
 
-modelgeo = model;
+% USAGE:
+% flux = geometricFBA(model, varargin)
+%% TIMING
+% The time to determine a geometric FBA solution depends on the size of the 
+% genome-scale model and the number of iterations. For a model with more than 
+% 10,000 reactions and 3 iterations takes $$minutes.
+
+modelgeo = modelalter;
 modelgeo = changeRxnBounds(modelgeo, 'EX_glc_D[e]',-20,'l');
 modelgeo = changeRxnBounds (modelgeo, 'EX_o2[e]', 0, 'l');
 modelgeo = changeObjective(modelgeo, 'DM_atp_c_');
 FBAgeo = geometricFBA (modelgeo);
+%% 
+% Display the unique fluxes from reactions, that are non-zero in the geometric 
+% FBA solution.
+
+for i=1:length(FBAgeo)
+    if FBAgeo(i)~=0
+        fprintf('%10d \t %s\n', FBAgeo(i), modelgeo.rxns{i})
+    end
+end
+%% TROUBLESHOOTING
+%  When the algorithm has convergence problems, change one of the optional inputs, 
+% |flexRel|, into e.g. |1e-3|. The default is 0 when there is flexibility to flux 
+% bounds
+% 
+% Enter the optional parameters as parameter name followed by parameter value: 
+% 
+% i.e. |flux = geometricFBA(model, 'epsilon', 1e-9)|
 %% Parsimonious enzyme usage Flux Balance Analysis (pFBA)
 % The pFBA method was developed to achieve higher flux levels when more enzymes 
-% are needed [5]. The pFBA method first completes the FBA to find the optimal 
-% value for the objective function. Thereupon, satisfying a constraint that the 
-% original FBA objective function equals the optimal value, get the answer of 
-% an another linear program to discover the flux distribution that minimises the 
-% total flux through all metabolic reactions in the model.
+% are required [5]. 
 % 
-% Following example tests the basic solution for minimising the flux of all 
-% reactions, while growing on glucose or lactose minimal media. 
-
-% Loading models and expected results
-load('testpFBAData.mat', 'model_glc', 'model_lac');
-objGenes = load('testpFBAData.mat', 'GeneClasses_glc2', 'GeneClasses_glc1',...
-    'GeneClasses_glc0', 'GeneClasses_lac2', 'GeneClasses_lac1', 'GeneClasses_lac0');
-objRxns = load('testpFBAData.mat', 'RxnClasses_glc2', 'RxnClasses_glc1',...
-    'RxnClasses_glc0', 'RxnClasses_lac2', 'RxnClasses_lac1', 'RxnClasses_lac0');
-objModel = load('testpFBAData.mat', 'modelIrrev_glc2', 'modelIrrev_glc1',...
-    'modelIrrev_glc0', 'modelIrrev_lac2', 'modelIrrev_lac1', 'modelIrrev_lac0');
+% After performing the FBA to find the optimal value for the objective function, 
+% pFBA gets the answer of an another linear program to determine the flux distribution 
+% that minimises the total flux through all metabolic reactions in the model.
 %% TIMING
 % The time to determine a pFBA solution depends on the size of the genome-scale 
 % model and is taking from $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo 
 % stretchy="false">&lt;</mo><mn>1</mn></mrow></math>$ minute for a 1,000 reaction 
 % model, to 5 minutes for a model with more than 10,000 reactions.
 % 
-% * Minimise all flux for glucose
+% The function is:
 
-[t_objGenes.GeneClasses_glc0 t_objRxns.RxnClasses_glc0...
-    t_objModel.modelIrrev_glc0] = pFBA(model_glc, 'geneoption', 0);
+% [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
 %% 
-% * Minimise all flux for lactate
+% Where 'varagin' includes required inputs:
 
-[t_objGenes.GeneClasses_lac0 t_objRxns.RxnClasses_lac0...
-    t_objModel.modelIrrev_lac0] = pFBA(model_lac, 'geneoption', 0);
-t_objRxnsf = fieldnames(t_objRxns);
-t_objModelf = fieldnames(t_objModel);
-disp (t_objRxnsf)
-disp (t_objModelf)
+% * 'geneoption' - 0 = minimize the sum of all fluxes in the network,
+%                   1 = only minimize the sum of the flux through
+%                   gene-associated fluxes (default),
+%                   2 = only minimize the sum of the flux through
+%                   non-gene-associated fluxes
+%
+% * 'map' - map structure from readCbMap.m (no map written if empty)
+%
+% * 'mapoutname' - File Name for map
+%
+% * 'skipclass' - 0 = classify genes and reactions (default).
+%                 1 = Don't classify genes and reactions. Only return
+%                     model with the minimium flux set as upper bound.
+%% 
+% Given outputs in this function are:
+
+% OUTPUTS:
+% GeneClasses:  Structure with fields for each gene class
+% RxnsClasses:  Structure with fields for each reaction class
+% modelIrrevFM: Irreversible model used for minimizing flux with
+%               the minimum flux set as a flux upper bound
+%% 
+% Following example tests the basic solution for minimising the flux of 
+% all reactions, while producing energy only from glucose media.
+
+modelp = modelalter;
+modelp = changeRxnBounds(modelp, 'EX_glc_D[e]',-20,'l');
+modelp = changeRxnBounds (modelp, 'EX_o2[e]', 0, 'l');
+modelp = changeObjective(modelp, 'DM_atp_c_');
+[GeneClasses RxnClasses modelIrrevFM] = pFBA(modelp,...
+    'geneoption', 0, 'skipclass', 1)
+%% 
+% Display minimal fluxes of the reactions that are required for producing 
+% energy only from only glucose media. 
+
+for i=1:length(modelIrrevFM.lb)
+    if modelIrrevFM.lb(i)~=0
+        fprintf('%10d \t %s\n', modelIrrevFM.lb(i), modelIrrevFM.rxns{i})
+    end
+end
 %% Dynamic FBA
 % The dynamic FBA is an extension of standard FBA that accounts for cell culture 
 % dynamics, implementing both dynamic (nonlinear programming) and static (LP) 
@@ -341,6 +389,17 @@ time = 1.0/dt; % simulation time
 
 modelrelax = modelalter;
 FBArel = relaxFBA(modelrelax)
+%% 
+% The output |FBArel| contains solution fields, where 
+% 
+% |FBArel.v| is the reaction rate; 
+% 
+% |FBArel.r| is set of reactions that need relaxation on steady state constraints 
+% |S*v = b|;
+% 
+% |FBArel.p| is relaxation on lower bound of reactions;
+% 
+% |FBArel.r| is relaxation on upper bound of reactions;
 %% Flux enrichment analysis (FEA)
 % The flux enrichment analysis calculates the likelihood that a set of fluxes 
 % would belong to a subsystem or pathway.
