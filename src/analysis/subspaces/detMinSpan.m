@@ -40,10 +40,13 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 %    finalVectors:      MinSpan vectors for COBRA model
 %
 % .. Author: Aarash Bordbar 05/15/2017
-%            Ronan Fleming, nullspace computation with LUSOL 
+%            Ronan Fleming, nullspace computation with LUSOL
 
 global CBT_MILP_SOLVER
-if ~strcmp(CBT_MILP_SOLVER, 'gurobi')
+global CBT_LP_SOLVER
+global CBT_QP_SOLVER
+
+if ~strcmp(CBT_MILP_SOLVER, 'gurobi') && ~strcmp(CBT_LP_SOLVER, 'gurobi') && ~strcmp(CBT_QP_SOLVER, 'gurobi')
     error('detMinSpan only runs with Gurobi.\nTry to run `changeCobraSolver(''gurobi'', ''MILP'')` to use Gurobi.');
 end
 
@@ -134,7 +137,7 @@ for k = 1:params.coverage
 
         sizeN = 1;
         theta = N \ vectors;
-        
+
         if strcmp('params.nullAlg','lusol')
             [Z, ~] = getNullSpace(theta', 0);
             tmpN = sparse(N * Z);
@@ -223,7 +226,7 @@ for k = 1:params.coverage
         % matrix
         vector = MILPsolution.full(1:n);
         vector(abs(vector) < 1e-6) = 0;
-        
+
         if strcmp('params.nullAlg','lusol')
             [Z, ~] = getNullSpace((N \ [vectors, vector])', 0);
             tmpNullCheck = N * Z;
