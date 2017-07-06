@@ -147,6 +147,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            Description: 1 to print results in console.
 %                            0 otherwise.
 %                            Default: 0
+%    loop:                   (boolean). 1 to search from k = kMin to k = 
+%                            kMax. 0 to search only for a particular k. 
+%                            default: 0
+%    kMin:                   (double). Minumum number of interventions to
+%                            search when "loop" variable is true.
 %
 % OUTPUTS:
 %    optForceSets:           Type: cell array
