@@ -42,6 +42,11 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 % .. Author: Aarash Bordbar 05/15/2017
 %            Ronan Fleming, nullspace computation with LUSOL 
 
+global CBT_MILP_SOLVER
+if ~strcmp(CBT_MILP_SOLVER, 'gurobi')
+    error('detMinSpan only runs with Gurobi.\nTry to run `changeCobraSolver(''gurobi'', ''MILP'')` to use Gurobi.');
+end
+
 % Ensure model has correct bounds
 origModel = model;
 model.lb(model.lb < 0) = -1000;
@@ -53,7 +58,7 @@ model.ub(model.ub < 0) = 0;
 [minF, maxF] = fluxVariability(model, 0);
 minF(abs(minF) < 1e-8) = 0;
 maxF(abs(maxF) < 1e-8) = 0;
-remRxns = model.rxns(find(minF == 0 & maxF == 0));
+remRxns = model.rxns(minF == 0 & maxF == 0);
 model = removeRxns(model, remRxns);
 
 % Setup MILP and solving parameters
@@ -89,7 +94,7 @@ MILPparams.DisplayInterval = 10;
 
 if ~exist('vectors', 'var')
     if strcmp('params.nullAlg','lusol')
-        [vectors, rankS] = getNullSpace(model.S, 0);
+        [vectors, ~] = getNullSpace(model.S, 0);
     else
         vectors = null(full(model.S));
     end
@@ -226,7 +231,7 @@ for k = 1:params.coverage
             tmpNullCheck = N * null((N \ [vectors, vector])');
         end
 
-        if nnz(vector) > 0 & length(tmpNullCheck) == 0
+        if nnz(vector) > 0 && isempty(tmpNullCheck)
             vector = vector / norm(vector);
             vectors(:, numToCheck(i)) = vector;
         else
