@@ -23,8 +23,8 @@
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">c</mi></mrow></math>$ is a linear biological objective 
 % function (biomass, ATP consumption, HEME production, etc.). Even under these 
-% conditions the there is commonly a range of optimal flux distributions. which 
-% can be investigated using flux variability analysis. If the general capabilities 
+% conditions there is commonly a range of optimal flux distributions, which can 
+% be investigated using flux variability analysis. If the general capabilities 
 % of the model are of interest, however, uniform sampling of the entire flux space 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
 % is able to provide an unbiased characterization, and therefore, can be used 
@@ -101,10 +101,10 @@ unlimitedOx = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
 limitedOx = changeRxnBounds(model, 'EX_o2(e)', -4, 'l');
 %% Flux variability analysis
 % Flux variability analysis (FVA) returns the minimum and maximum possible flux 
-% through every reaction in a model.  
+% through every reaction in a model.
 
-[minUn, maxUn] = fluxVariability(unlimitedOx)
-[minLim, maxLim] = fluxVariability(limitedOx)
+[minUn, maxUn] = fastFVA(unlimitedOx, 100);
+[minLim, maxLim] = fastFVA(limitedOx, 100);
 %% 
 % FVA predicts faster maximal ATP production with unlimited and limited 
 % oxygen uptake conditions.
@@ -137,7 +137,8 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 f1 = figure;
 errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
 set(gca, 'xlim', [0, length(Y) + 1])
-legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', 'orientation', 'horizontal')
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', ...
+       'orientation', 'horizontal')
 xlabel('Reaction')
 ylabel('Flux range (mmol/gDW/h)')
 
@@ -169,8 +170,8 @@ options.toRound = 1;
 % case of |toRound = 1| this would be the rounded model), and second, the samples 
 % generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,
 
-[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options, []);
-[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options, []);
+[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options);
+[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options);
 %% 
 % The sampler outputs the sampled flux distributions (X_un and X_lim) and 
 % the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show 
@@ -261,7 +262,7 @@ for i = rxnsIdx
     ylabel('# samples')
     title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
     
-    if find(ridx==i)==1
+    if find(ridx==i)==2
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
