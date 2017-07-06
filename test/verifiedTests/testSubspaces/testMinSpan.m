@@ -17,14 +17,6 @@ currentDir = pwd;
 fileDir = fileparts(which('testMinSpan'));
 cd(fileDir);
 
-% create a parallel pool
-poolobj = gcp('nocreate');  % if no pool, do not create new one.
-if isempty(poolobj)
-    parpool(2);  % launch 2 workers
-end
-
-changeCobraSolver('glpk', 'all');
-
 % load the model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
@@ -37,11 +29,30 @@ assert(m == 72 & n == 94, 'Unable to setup input for MinSpan determination');
 
 % Setup parameters and run detMinSpan
 params.saveIntV = 0; % Do not save intermediate output
-minSpanVectors = detMinSpan(model, params);
 
-% Check size of vectors and number of entries
-[r, c] = size(minSpanVectors);
-numEntries = nnz(minSpanVectors);
+% Test detMinSpan with GLPK. It should fail!
+changeCobraSolver('glpk', 'MILP');
+try
+    minSpanVectors = detMinSpan(model, params);
+catch ME
+    assert(~isempty(ME.message))
+end
 
-assert(r == 94 & c == 23, 'MinSpan vector matrix wrong size');
-assert(numEntries == 479, 'MinSpan vector matrix is not minimal');
+if changeCobraSolver('gurobi', 'MILP');
+    % create a parallel pool
+    poolobj = gcp('nocreate');  % if no pool, do not create new one.
+    if isempty(poolobj)
+        parpool(2);  % launch 2 workers
+    end
+
+    minSpanVectors = detMinSpan(model, params);
+    
+    % Check size of vectors and number of entries
+    [r, c] = size(minSpanVectors);
+    numEntries = nnz(minSpanVectors);
+
+    assert(r == 94 & c == 23, 'MinSpan vector matrix wrong size');
+    assert(numEntries == 479, 'MinSpan vector matrix is not minimal');
+else
+    fprintf('testMinSpan is skipped as Gurobi is not installed.\n');
+end
