@@ -266,9 +266,9 @@ parser.addParameter('solverName', defaultSolverName, @(x) ischar(x))
 if strcmp(filesep,'\')
     defaultPrintExcel = 1;
 else
-    defaultPrintExcel = 1;
+    defaultPrintExcel = 0;
 end
-parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
