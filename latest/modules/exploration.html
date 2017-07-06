@@ -1108,41 +1108,43 @@ Vector containing indecies of uptake reactions</li>
 
 <dl class="function">
 <dt id="src.analysis.exploration.surfNet">
-<code class="descname">surfNet</code><span class="sig-paren">(</span><em>model</em>, <em>metrxn</em>, <em>metNameFlag</em>, <em>flux</em>, <em>NonzeroFluxFlag</em>, <em>showMets</em>, <em>nCharBreak</em>, <em>iterOptions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/exploration/surfNet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.surfNet" title="Permalink to this definition">¶</a></dt>
+<code class="descname">surfNet</code><span class="sig-paren">(</span><em>model</em>, <em>metrxn</em>, <em>metNameFlag</em>, <em>flux</em>, <em>nonzeroFluxFlag</em>, <em>showMets</em>, <em>field2print</em>, <em>nCharBreak</em>, <em>iterOptions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/exploration/surfNet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.surfNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple and convenient tool to navigate through the metabolic network
-interactively, possibly with a given flux vector, in the Matlab command
+interactively, possibly with given flux vectors, in the Matlab command
 window using mouse once the starting point is called by command.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, showMets,field2print, nCharBreak)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model</li>
-<li><strong>metrxn</strong> &#8211;
-mets or rxns names, can be a cell array of multiple
-rxns and mets, or simply a string</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
+<li><strong>metrxn</strong> &#8211;
+mets or rxns names, can be a cell array of multiple rxns and mets, or simply a string
+(default: objective reactions or a random reaction)</li>
 <li><strong>metNameFlag</strong> &#8211;
-print model.metNames in reaction formulas. (false)</li>
+print model.metNames in reaction formulas. (default: false)</li>
 <li><strong>flux</strong> &#8211;
-flux vector for the model. Show fluxes if given.([])
+flux vectors for the model, a #reactions x #columns matrix. (default: [])
 If given, the producing and consuming reactions displayed
 are in accordance with the flux direction.</li>
-<li><strong>NonzeroFluxFlag</strong> &#8211;
-show only reactions with nonzero flux if flux is given (true)</li>
+<li><strong>nonzeroFluxFlag</strong> &#8211;
+show only reactions with nonzero fluxes if flux is given (default: true)</li>
 <li><strong>showMets</strong> &#8211;
-show metabolites in a list when printing reactions (true)</li>
+show metabolites in a list when printing reactions (default: true)</li>
+<li><strong>field2print</strong> &#8211;
+print fields associated with mets or rxns, e.g. metNames, rxnNames, grRules. Either:
+(i) a cell array of two cells, 1st being a character array for met fields and 2nd for rxn fields
+or (ii) a character array of field names recognizable from the field names or the sizes
+(default: {{&#8216;metNames&#8217;,&#8217;metFormulas&#8217;}, {&#8216;rxnNames&#8217;,&#8217;lb&#8217;,&#8217;ub&#8217;}})</li>
 <li><strong>nCharBreak</strong> &#8211;
-max. no. of characters per line for reaction formulas (65)</li>
-<li><strong>iterOptions</strong> &#8211;
-Not used for calling, for interactive calling only.
-Display the path of the previous navigation. (false)</li>
+max. no. of characters per line for reaction formulas (default 0, the current width of the command window)</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>

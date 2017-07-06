@@ -462,7 +462,7 @@ matrix used by <cite>mu</cite></li>
 <p>CellNetAnalyzer can be downloaded at <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html</a></p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>output = minimialCutSets(targets, varargin)</div></blockquote>
+<div>C = minimialCutSets(targets, varargin)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -516,7 +516,7 @@ in combination with sets2save]</dd>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>cutsets</strong> &#8211;
+<li><strong>C</strong> &#8211;
 matrix that contains the (constrained) cutsets
 row-wise; a &#8216;1&#8217; means that the reaction/interaction
 is part of the cutset, 0 means the
@@ -562,7 +562,7 @@ saved (required for intermediate computations)</li>
 <div><ul>
 <li><p class="first"><strong>constraints</strong> &#8211;
 empty
-cnap.numr
+the number of reactions
 many rows and up to 4 columns:
 - COLUMN1 specifies excluded/enforced reactions: if</p>
 <blockquote>
@@ -579,9 +579,10 @@ suppressed/enforced simultaneously</p>
 <li>COLUMN2: specifies lower boundaries for the
 reaction rates (choose NaN if none is active).
 Note that zero boundaries (irreversibilities) are
-better described by cnap.reacMin. In any case, the
+better described by the vector containg all lower
+bound of reactions(Lb). In any case, the
 lower boundary eventually considered will be zero
-if cnap.reaMin(i)==0 and constraints(i,2)&lt;0.</li>
+if Lb(i)==0 and constraints(i,2)&lt;0.</li>
 <li>COLUMN3: specifies upper boundaries for the
 reaction rates (choose NaN if none is active)</li>
 <li>COLUMN4: specifies equalities for the reaction
@@ -611,9 +612,12 @@ rates (choose NaN if none is active).</li>
 1, consider isoenzymes</p>
 </li>
 <li><p class="first"><strong>cMacro</strong> &#8211;
-(default: cnap.macroDefault)
+(default: the vector containing the default
+value of the macromolecules)
 empty
-cnap.macroComposition</p>
+MC : A (m*w) matrix defining the stoichiometry
+of the macromolucules with respect to the
+metabolietes</p>
 </li>
 <li><p class="first"><strong>printLevel</strong> &#8211;
 (default: &#8216;All&#8217;)
@@ -642,10 +646,10 @@ cnap.macroComposition</p>
 matrix that contains (row-wise) the elementary
 modes (or elemenatry vectors) or a minimal set
 of generators (lineality space + extreme rays/
-points), depending on the chosen scenario. The
+points), depending on the chosen option. The
 columns  correspond to the reactions; the column
 indices of efms (with respect to the columns in
-cnap.stoichMat) are stored in the returned
+stoichiometric matrix) are stored in the returned
 variable idx (see below; note that columns are
 removed in efms if the corresponding reactions
 are not contained in any mode) %</p>
@@ -654,15 +658,16 @@ are not contained in any mode) %</p>
 vector indicating for each mode whether it is
 reversible(0)/irreversible (1)</p>
 </li>
-<li><p class="first"><strong>idx</strong> &#8211;
+<li><p class="first"><strong>id</strong> &#8211;
 maps the columns in efm onto the column indices
-in cnap.stoichmat, i.e. idx(i) refers to the
-column number in cnap.stoichmat (and to</p>
+in stoichiometric matrix, i.e. idx(i) refers to the
+column number in stoichmatric matrix (and to</p>
 <blockquote>
-<div><p>the row number in cnap.reacID)</p>
+<div><p>the row number in a vector containing the</p>
 </div></blockquote>
+<p>identifiers of the reactions)</p>
 </li>
-<li><p class="first"><strong>ray</strong> &#8211;
+<li><p class="first"><strong>ir</strong> &#8211;
 indicates whether the i-th row (vector) in efm
 is an unbounded (1) or bounded (0) direction
 of the flux cone / flux polyhedron. Bounded
