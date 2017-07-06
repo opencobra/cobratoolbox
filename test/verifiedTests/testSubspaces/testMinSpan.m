@@ -38,6 +38,8 @@ catch ME
     assert(~isempty(ME.message))
 end
 
+changeCobraSolver('gurobi', 'all');
+
 if changeCobraSolver('gurobi', 'MILP');
     % create a parallel pool
     poolobj = gcp('nocreate');  % if no pool, do not create new one.
@@ -46,7 +48,7 @@ if changeCobraSolver('gurobi', 'MILP');
     end
 
     minSpanVectors = detMinSpan(model, params);
-    
+
     % Check size of vectors and number of entries
     [r, c] = size(minSpanVectors);
     numEntries = nnz(minSpanVectors);
