@@ -130,7 +130,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            Description: boolean to describe wheter
 %                            data must be printed in an plaint text file
 %                            or not.
-%                            Default: 1
+%                            Default: 1 for Windows System. 0 Otherwise
 %    printReport:            Type: double
 %                            Description: 1 to generate a report in a
 %                            plain text file. 0 otherwise.
@@ -263,6 +263,11 @@ else
     end
 end
 parser.addParameter('solverName', defaultSolverName, @(x) ischar(x))
+if strcmp(filesep,'\')
+    defaultPrintExcel = 1;
+else
+    defaultPrintExcel = 1;
+end
 parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
@@ -656,7 +661,9 @@ if loop % if k = kMin:k
                 %initialize name for files in which information will be printed
                 hour = clock;
                 if isempty(outputFileName);
-                    outputFileName = ['optForceSolution-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+                    outputFileName = ['optForceSolution-k' num2str(currentK) '-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+                else
+                    outputFileNameK = [outputFileName '_k' num2str(currentK)];
                 end
                 
                 % print info into an excel file if required by the user
@@ -677,13 +684,13 @@ if loop % if k = kMin:k
                                 num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k - 1,1)] [{solutions{i}.minTarget};cell(k - 1,1)]...
                                 [{solutions{i}.maxTarget};cell(k - 1,1)] [{solutions{i}.growth};cell(k - 1,1)]];
                         end
-                        xlswrite(outputFileName,Info)
+                        xlswrite(outputFileNameK,Info)
                         cd([workingPath '/' runID]);
-                        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
-                        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
+                        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
+                        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
                     else
-                        if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no excel file was generated\n'); end;
-                        if verbose; fprintf('No solution to optForce was found. Therefore, no excel file was generated\n'); end;
+                        if printReport; fprintf(freport, '\nNo solution to optForce was found using k = %1.0f. Therefore, no excel file was generated\n', currentK); end;
+                        if verbose; fprintf('No solution to optForce was found using k = %1.0f. Therefore, no excel file was generated\n', currentK); end;
                     end
                 end
                 
@@ -692,7 +699,7 @@ if loop % if k = kMin:k
                     if n_sols > 0
                         if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                         cd(outputFolderK);
-                        f = fopen([outputFileName '.txt'],'w');
+                        f = fopen([outputFileNameK '.txt'],'w');
                         fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tMin Flux in Mutant (mmol/gDW hr)\tMax Flux in Mutant (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\tMaximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
                         for i = 1:n_sols
                             sols = strjoin(solutions{i}.reactions', ', ');
@@ -724,19 +731,20 @@ if loop % if k = kMin:k
                         end
                         fclose(f);
                         cd([workingPath '/' runID]);
-                        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
-                        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
+                        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
+                        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
                     else
-                        if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no plain text file was generated\n'); end;
-                        if verbose; fprintf('No solution to optForce was found. Therefore, no plain text file was generated\n'); end;
+                        if printReport; fprintf(freport, '\nNo solution to optForce was found using k = %1.0f. Therefore, no plain text file was generated\n', currentK); end;
+                        if verbose; fprintf('No solution to optForce was found using k = %1.0f. Therefore, no plain text file was generated\n', currentK); end;
                     end
                 end
                 
-                %close file for saving report
-                if printReport; fclose(freport); end;
-                if printReport; movefile(reportFileName, outputFolderK); end;
-                delete(optForceFunction);
-                cd(workingPath);
+                if ~noSolution
+                    %close file for saving report
+                    if printReport; fclose(freport); end;
+                    delete(optForceFunction);
+                    cd(workingPath);
+                end
                 
             catch
                 %GAMS variables were not read correctly by MATLAB
@@ -753,6 +761,13 @@ if loop % if k = kMin:k
             error('OptForce: GAMS was not executed correctly');
         end
         
+    end
+    
+    if noSolution
+        %close file for saving report
+        if printReport; fclose(freport); end;
+        delete(optForceFunction);
+        cd(workingPath);
     end
     
 else % if k = fixed number
