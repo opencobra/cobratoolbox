@@ -1,4 +1,4 @@
-function [output] = minimalCutSets(targets, varargin)
+function [C ] = minimalCutSets(targets, varargin)
 % Computes minimal cut sets for paths/cycles/elementary modes with Berge algorithm
 % (equivalent to hypergraph transversal) by the CellNetAnalyzer software package [1].
 %
@@ -7,7 +7,7 @@ function [output] = minimalCutSets(targets, varargin)
 %
 % USAGE:
 %
-%    output = minimialCutSets(targets, varargin)
+%    C = minimialCutSets(targets, varargin)
 %
 % INPUT:
 %    targets:     a binary matrix that row-wise contains the
@@ -51,7 +51,7 @@ function [output] = minimalCutSets(targets, varargin)
 %                 in combination with sets2save]
 %
 % OUTPUT:
-%    cutsets:     matrix that contains the (constrained) cutsets
+%    C:     matrix that contains the (constrained) cutsets
 %                 row-wise; a '1' means that the reaction/interaction
 %                 is part of the cutset, 0 means the
 %                 element/reaction/interaction is not involved.
@@ -93,9 +93,7 @@ if numel(varargin) > 1
     end
 end
 %%
-cutsets = CNAcomputeCutsets(targets, mcsmax, names, ...
+C = CNAcomputeCutsets(targets, mcsmax, names, ...
                             sets2save, earlycheck)
 
-%% OUTPUT :
-output.cutsets = cutsets;
 end
