@@ -1,5 +1,5 @@
 function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
-% This function runs the second step of optForce, that is to solve a
+% This function runs the second step of `optForce`, that is to solve a
 % bilevel mixed integer linear programming  problem to find a first order
 % MustL set.
 %
@@ -8,31 +8,31 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     Type: structure (COBRA model)
+%    model:                     Type: structure (COBRA model).
 %                               Description: a metabolic model with at least
 %                               the following fields:
 %
 %                                 * .rxns - Reaction IDs in the model
 %                                 * .mets - Metabolite IDs in the model
 %                                 * .S -    Stoichiometric matrix (sparse)
-%                                 * .b -    RHS of Sv = b (usually zeros)
+%                                 * .b -    RHS of `Sv = b` (usually zeros)
 %                                 * .c -    Objective coefficients
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
-%    minFluxesW:                Type: double array of size n_rxns x1
+%    minFluxesW:                Type: double array of size `n_rxns x 1`.
 %                               Description: Minimum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
-%                               function FVAOptForce.
-%                               E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                Type: double array of size n_rxns x1
+%                               function `FVAOptForce`.
+%                               E.g.: `minFluxesW = [-90; -56]``;
+%    maxFluxesW:                Type: double array of size `n_rxns x 1`.
 %                               Description: Maximum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
-%                               function FVAOptForce.
+%                               function `FVAOptForce`.
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                 Type: Structure
+%    constrOpt:                 Type: Structure.
 %                               Description: structure containing
 %                               additional contraints. Include here only
 %                               reactions whose flux is fixed, i.e.,
@@ -50,44 +50,44 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                                   E.g.: struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
 %                                   'values', [-100, 0, 155.5]');
-%    runID:                     Type: string
-%                               Description: ID for identifying this run
+%    runID:                     Type: string.
+%                               Description: ID for identifying this run.
 %                               Default: ['run' date hour].
-%    outputFolder:              Type: string
+%    outputFolder:              Type: string.
 %                               Description: name for folder in which results
-%                               will be stored
+%                               will be stored.
 %                               Default: 'OutputsFindMustL'.
-%    outputFileName:            Type: string
+%    outputFileName:            Type: string.
 %                               Description: name for files in which results
-%                               will be stored
+%                               will be stored.
 %                               Default: 'MustLSet'.
-%    printExcel:                Type: double
+%    printExcel:                Type: double.
 %                               Description: boolean to describe wheter data
-%                               must be printed in an excel file or not
+%                               must be printed in an excel file or not.
 %                               Default: 1
-%    printText:                 Type: double
+%    printText:                 Type: double.
 %                               Description: boolean to describe wheter data
-%                               must be printed in an plaint text file or not
+%                               must be printed in an plaint text file or not.
 %                               Default: 1
-%    printReport:               Type: double
+%    printReport:               Type: double.
 %                               Description: 1 to generate a report in a plain
 %                               text file. 0 otherwise.
 %                               Default: 1
-%    keepInputs:                Type: double
+%    keepInputs:                Type: double.
 %                               Description: 1 to save inputs to run
-%                               findMustL.m 0 otherwise.
+%                               findMustL.m 0 otherwise..
 %                               Default: 1
-%    verbose:                   Type: double
+%    verbose:                   Type: double.
 %                               Description: 1 to print results in console.
 %                               0 otherwise.
 %                               Default: 0
 %
 % OUTPUTS:
-%    mustLSet:                  Type: cell array
+%    mustLSet:                  Type: cell array.
 %                               Size: number of reactions found X 1
 %                               Description: Cell array containing the
 %                               reactions ID which belong to the Must_U Set
-%    posMustL:                  Type: double array
+%    posMustL:                  Type: double array.
 %                               Size: number of reactions found X 1
 %                               Description: double array containing the
 %                               positions of reactions in the model.
@@ -97,7 +97,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                               file will only be generated if the user entered
 %                               printExcel = 1. Note that the user can choose
 %                               the name of this file entering the input
-%                               outputFileName = 'PutYourOwnFileNameHere';
+%                               `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName.txt         Type: file.
 %                               Description: File containing one column array
 %                               with identifiers for reactions in MustL. This
@@ -108,17 +108,17 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    outputFileName_Info.xls    Type: file.
 %                               Description: File containing five column
 %                               arrays.
-%                               C1: identifiers for reactions in MustL
-%                               C2: min fluxes for reactions according to FVA
-%                               C3: max fluxes for reactions according to FVA
+%                               C1: identifiers for reactions in MustL,
+%                               C2: min fluxes for reactions according to FVA,
+%                               C3: max fluxes for reactions according to FVA,
 %                               C4: min fluxes achieved for reactions,
-%                               according to findMustL
+%                               according to `findMustL`,
 %                               C5: max fluxes achieved for reactions,
-%                               according to findMustL
+%                               according to `findMustL`.
 %                               This file will only be generated if the user
-%                               entered printExcel = 1. Note that the user can
+%                               entered `printExcel = 1`. Note that the user can
 %                               choose the name of this file entering the input
-%                               outputFileName = 'PutYourOwnFileNameHere';
+%                               `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.txt    Type: file.
 %                               Description: File containing five column
 %                               arrays.
@@ -130,18 +130,18 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                               C5: max fluxes achieved for reactions,
 %                               according to findMustL
 %                               This file will only be generated if the user
-%                               entered printText = 1. Note that the user can
+%                               entered `printText = 1`. Note that the user can
 %                               choose the name of this file entering the input
-%                               outputFileName = 'PutYourOwnFileNameHere';
+%                               `outputFileName` = 'PutYourOwnFileNameHere';
 % NOTE:
-% 
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
-%    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    Maranas. For a detailed description of the `optForce` procedure, please
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
 % .. Author: - Sebasti�n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 

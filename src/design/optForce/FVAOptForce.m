@@ -8,7 +8,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %         [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FVAOptForce(model, constrWT, constrMT)
 %
 % INPUTS:
-%    model:         Type: structure (COBRA model)
+%    model:         Type: structure (COBRA model).
 %                   Description: a metabolic model with at least
 %                   the following fields:
 %
@@ -19,7 +19,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                     * .c -    Objective coefficients
 %                     * .lb -   Lower bounds for fluxes
 %                     * .ub -   Upper bounds for fluxes
-%    constrW:       Type: structure
+%    constrW:       Type: structure.
 %                   Description: structure containing contraints
 %                   for the wild-type strain. The structure has
 %                   the following fields:
@@ -31,9 +31,9 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
 %                       E.g.: constrW=struct('rxnList', {{'R75'; 'EX_suc'}}, ...
 %                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
-%    constrM:       Type: structure
+%    constrM:       Type: structure.
 %                   Description: structure containing contraints
-%                   for the mutant strain
+%                   for the mutant strain.
 %                   The structure has the following:
 %                   fields:
 %
@@ -77,10 +77,9 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                   the maximum values in the third. It has
 %                   dimensions (number of reactions) x 3
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-% Inputs handling
-if nargin < 1 || isempty(model)
+if nargin < 1 || isempty(model) % Inputs handling
     error('OptForce: No model specified');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
@@ -93,21 +92,21 @@ else
 end
 
 if (nargin < 2 || isempty(constrW)) || (nargin < 3 || isempty(constrM))
-    error('OptForce: You should specify constraints for at least one strain'); 
+    error('OptForce: You should specify constraints for at least one strain');
 end
 
 if nargin < 2 || isempty(constrW)
     constrW.rxnList = {};
 else
-    
+
     % check class for constrW
     if ~isstruct(constrW); error('OptForce: Incorrect format for input constrW. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrW,'rxnList'), error('OptForce: Missing field rxnList in constrW');  end
     if ~isfield(constrW,'rxnValues'), error('OptForce: Missing field rxnValues in constrW');  end
     if ~isfield(constrW,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrW');  end
-    
+
     % check correct length for fields
     if length(constrW.rxnList) == length(constrW.rxnValues) && length(constrW.rxnList) == length(constrW.rxnBoundType)
         if size(constrW.rxnList,1) > size(constrW.rxnList,2); constrW.rxnList = constrW.rxnList'; end;
@@ -116,7 +115,7 @@ else
     else
         error('OptForce: Incorrect size of fields in constrW');
     end
-    
+
 end
 
 if nargin < 3 || isempty(constrM)
@@ -124,12 +123,12 @@ if nargin < 3 || isempty(constrM)
 else
     % check class for constrW
     if ~isstruct(constrM); error('OptForce: Incorrect format for input constrM. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrM,'rxnList'), error('OptForce: Missing field rxnList in constrM');  end
     if ~isfield(constrM,'rxnValues'), error('OptForce: Missing field rxnValues in constrM');  end
     if ~isfield(constrM,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrM');  end
-    
+
     % check correct length for fields
     if length(constrM.rxnList) == length(constrM.rxnValues) && length(constrM.rxnList) == length(constrM.rxnBoundType)
         if size(constrM.rxnList,1) > size(constrM.rxnList,2); constrM.rxnList = constrM.rxnList'; end;

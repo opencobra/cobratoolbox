@@ -17,7 +17,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of Sv = b (usually zeros)
+%                         * .b -    RHS of `Sv = b` (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
@@ -25,7 +25,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %    targetRxn:         Type: string.
 %                       Description: reaction identifier for target
 %                       reaction
-%                       E.g.: targetRxn='EX_suc'
+%                       E.g.: targetRxn = 'EX_suc'
 %    solution:          Type: structure.
 %                       Description: structure containing information
 %                       about the inverventions.
@@ -49,19 +49,19 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %                       should be apply in an rounded way (relax = 1 )
 %                       or in an exactly way (relax = 0)
 %                       Default: relax = 1
-%     tol:              Type: double.
+%    tol:               Type: double.
 %                       Description: range for tolerance when relaxing
 %                       contraints.
 %                       Default: tol = 1e-7
 %
 % OUTPUTS:
-%     maxGrowthRate:    Type: double.
-%                       Description: Maximim growth rate of mutant strain
+%    maxGrowthRate:     Type: double.
+%                       Description: Maximum growth rate of mutant strain
 %                       (after applying the inverventions)
-%     minTarget:        Type: double.
+%    minTarget:         Type: double.
 %                       Description: Minimum production rate of target at
 %                       max growth rate
-%     maxTarget:        Type: double.
+%    maxTarget:         Type: double.
 %                       Description: Maximum production rate of target at
 %                       max growth rate
 %

@@ -1,5 +1,5 @@
 function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, varargin)
-% This function runs the second step of optForce, that is to solve a
+% This function runs the second step of `optForce`, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
 % MustLL set.
 %
@@ -8,7 +8,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %    [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                      Type: structure (COBRA model)
+%    model:                      Type: structure (COBRA model).
 %                                Description: a metabolic model with at least
 %                                the following fields:
 %
@@ -19,19 +19,18 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                  * .c -    Objective coefficients
 %                                  * .lb -   Lower bounds for fluxes
 %                                  * .ub -   Upper bounds for fluxes
-%    minFluxesW:                 Type: double array of size n_rxns x1
+%    minFluxesW:                 Type: double array of size `n_rxns x 1`.
 %                                Description: Minimum fluxes for each
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by running the
 %                                function FVAOptForce.
-%                                E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                 Type: double array of size n_rxns x1
+%                                E.g.: `minFluxesW = [-90; -56]``;
+%    maxFluxesW:                 Type: double array of size `n_rxns x 1`.
 %                                Description: Maximum fluxes for each
 %                                reaction in the model for wild-type strain.
-%                                This can be obtained by
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                  Type: Structure
+%    constrOpt:                  Type: Structure.
 %                                Description: structure containing
 %                                additional contraints. Include here only
 %                                reactions whose flux is fixed, i.e.,
@@ -49,110 +48,110 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                    E.g.: struct('rxnList', ...
 %                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
 %                                    'values', [-100, 0, 155.5]');
-%    excludedRxns:               Type: cell array
+%    excludedRxns:               Type: cell array.
 %                                Description: Reactions to be excluded to
 %                                the MustLL set. This could be used to avoid
 %                                finding transporters or exchange reactions
 %                                in the set.
 %                                Default: empty.
-%    runID:                      Type: string
+%    runID:                      Type: string.
 %                                Description: ID for identifying this run
 %                                Default: ['run' date hour].
-%    outputFolder:               Type: string
+%    outputFolder:               Type: string.
 %                                Description: name for folder in which results
 %                                will be stored
 %                                Default: 'OutputsFindMustLL'.
-%    outputFileName:             Type: string
+%    outputFileName:             Type: string.
 %                                Description: name for files in which results
 %                                will be stored
 %                                Default: 'MustLLSet'.
-%    printExcel:                 Type: double
+%    printExcel:                 Type: double.
 %                                Description: boolean to describe wheter data
 %                                must be printed in an excel file or not
 %                                Default: 1
-%    printText:                  Type: double
+%    printText:                  Type: double.
 %                                Description: boolean to describe wheter data
 %                                must be printed in an plaint text file or not
 %                                Default: 1
-%    printReport:                Type: double
+%    printReport:                Type: double.
 %                                Description: 1 to generate a report in a plain
 %                                text file. 0 otherwise.
 %                                Default: 1
-%    keepInputs:                 Type: double
+%    keepInputs:                 Type: double.
 %                                Description: 1 to save inputs to run
 %                                findMustLL.m 0 otherwise.
 %                                Default: 1
-%    verbose:                    Type: double
+%    verbose:                    Type: double.
 %                                Description: 1 to print results in console.
 %                                0 otherwise.
-%                                Default: 0
+%                                Default: 0.
 %
 % OUTPUTS:
-%    mustLL:                     Type: cell array
-%                                Size: number of sets found X 2
+%    mustLL:                     Type: cell array.
+%                                Size: number of sets found X 2.
 %                                Description: Cell array containing the
 %                                reactions IDs which belong to the MustLL
 %                                set. Each row contain a couple of
 %                                reactions.
-%    posMustLL:                  Type: double array
-%                                Size: number of sets found X 2
+%    posMustLL:                  Type: double array.
+%                                Size: number of sets found X 2.
 %                                Description: double array containing the
 %                                positions of each reaction in mustLL with
-%                                regard to model.rxns
-%    mustLL_linear:              Type: cell array
-%                                Size: number of unique reactions found X 1
+%                                regard to `model.rxns`
+%    mustLL_linear:              Type: cell array.
+%                                Size: number of unique reactions found X 1.
 %                                Description: Cell array containing the
 %                                unique reactions ID which belong to the
 %                                MustLL Set
-%    pos_mustLL_linear:          Type: double array
-%                                Size: number of unique reactions found X 1
+%    pos_mustLL_linear:          Type: double array.
+%                                Size: number of unique reactions found X 1.
 %                                Description: double array containing
-%                                positions for reactions in mustLL_linear.
+%                                positions for reactions in `mustLL_linear`.
 %                                with regard to model.rxns
 %    outputFileName.xls:         Type: file.
 %                                Description: File containing one column array
 %                                with identifiers for reactions in MustLL. This
 %                                file will only be generated if the user entered
-%                                printExcel = 1. Note that the user can choose
+%                                `printExcel = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName.txt:         Type: file.
 %                                Description: File containing one column array
 %                                with identifiers for reactions in MustLL. This
 %                                file will only be generated if the user entered
-%                                printText = 1. Note that the user can choose
+%                                `printText = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.xls:    Type: file.
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
 %                                one iteration of FindMustLL.gms. This file will
 %                                only be generated if the user entered
-%                                printExcel = 1. Note that the user can choose
+%                                `printExcel = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.txt:    Type: file.
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
 %                                one iteration of FindMustLL.gms. This file will
 %                                only be generated if the user entered
-%                                printText = 1. Note that the user can choose
+%                                `printText = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %
 % NOTE:
 %
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
-%    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    Maranas. For a detailed description of the `optForce` procedure, please
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebasti�n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};

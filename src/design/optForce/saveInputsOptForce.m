@@ -107,10 +107,7 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %
 % .. Author: - Sebasti�n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-
-%% CODE
-%input handling
-if nargin < 15
+if nargin < 15 % input handling
     error('OptForce: All inputs must be specified. Please add empty array if needed.')
 end
 if  isempty(model)
