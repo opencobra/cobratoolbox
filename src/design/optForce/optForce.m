@@ -459,7 +459,7 @@ if loop % if k = kMin:k
                 
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
-                Info = cell( 2 * nSolsFound + 1, 11);
+                Info = cell( 2 * nSolsFound + 1, 13);
                 Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},...
                     {'Min flux in Wild Type (mmol/gDW hr)'}, {'Max flux in Wild Type (mmol/gDW hr)'}, ...
                     {'Min flux in Mutant (mmol/gDW hr)'}, {'Max flux in Mutant (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},...
@@ -473,7 +473,7 @@ if loop % if k = kMin:k
                         [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
                 end
                 xlswrite(outputFileNameK,Info)
-                cd([workingPath '/' runID]);
+                cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
                 if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
             end
@@ -660,7 +660,7 @@ else
         if nSolsFound > 0
             if ~isdir(outputFolder); mkdir(outputFolder); end;
             cd(outputFolder);
-            Info = cell( 2 * nSolsFound + 1, 11);  
+            Info = cell( 2 * nSolsFound + 1, 13);  
             Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},...
                 {'Min flux in Wild Type (mmol/gDW hr)'}, {'Max flux in Wild Type (mmol/gDW hr)'}, ...
                 {'Min flux in Mutant (mmol/gDW hr)'}, {'Max flux in Mutant (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},...
@@ -674,7 +674,7 @@ else
                     [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
             end
             xlswrite(outputFileName,Info)
-            cd([workingPath '/' runID]);
+            cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
             if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
         else

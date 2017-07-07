@@ -196,7 +196,7 @@ if ~isdir(runID)
     mkdir(runID);
 end
 cd(runID)
-outputFolder = [workingPath filesep outputFolder];
+outputFolder = [runID filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -249,7 +249,7 @@ end
 % export inputs for running the optimization problem in GAMS to find the
 % MustUL Set
 if keepInputs
-    inputFolder = [workingPath filesep 'InputsMustUL'];
+    inputFolder = [runID filesep 'InputsMustUL'];
     saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 end
 

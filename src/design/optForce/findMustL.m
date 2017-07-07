@@ -182,6 +182,13 @@ end
 
 %current path
 workingPath = pwd;
+runID = [workingPath filesep runID];
+%go to the path associate to the ID for this run.
+if exist(runID, 'dir')~=7
+    mkdir(runID);
+end
+cd(runID);
+outputFolder = [runID filesep outputFolder];
 
 %go to the path associate to the ID for this run.
 if ~isdir(runID); mkdir(runID); end; cd(runID);
@@ -229,8 +236,8 @@ if printReport
 end
 
 % export inputs for running the optimization problem to find the MustL Set
-inputFolder = 'InputsMustL';
-saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder);
+inputFolder = [runID filesep 'InputsMustU'];
+saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt, inputFolder);
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')
