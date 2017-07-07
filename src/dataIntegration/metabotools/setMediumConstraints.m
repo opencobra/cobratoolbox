@@ -1,5 +1,5 @@
 function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
-% Calculates and sets constraints according to medium composition in mM. Is based on the function `Conc2Rate`. Returns a model with constraints.
+% Calculates and sets constraints according to fresh medium composition in mM. Is based on the function `Conc2Rate`. Returns a model with constraints.
 %
 % USAGE:
 %

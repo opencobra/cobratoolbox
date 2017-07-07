@@ -1,10 +1,10 @@
-function [L, Lambda, moietyFormulas, instances2mets, instances2moieties, atoms2instances, M] = identifyConservedMoieties(model, ATN)
+function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances, E] = identifyConservedMoieties(model, ATN)
 % Identifies conserved moieties in a metabolic network (model) by graph
 % theoretical analysis of the corresponding atom transition network (ATN).
 %
 % USAGE:
 %
-%    [L, Lambda, moietyFormulas, instances2mets, instances2moieties, atoms2instances, M] = identifyConservedMoieties(model, ATN)
+%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances, E] = identifyConservedMoieties(model, ATN)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -31,16 +31,16 @@ function [L, Lambda, moietyFormulas, instances2mets, instances2moieties, atoms2i
 % OUTPUTS
 %    L:                     An `m x r` matrix of r moiety vectors in the left null
 %                           space of `S`.
-%    Lambda:                The `u x v` incidence matrix of the moiety supergraph
+%    M:                     The `u x v` incidence matrix of the moiety supergraph
 %                           where each connected component is a moiety graph.
 %    moietyFormulas:        `m x r` cell array with chemical formulas of moieties
-%    instances2mets:        `u x 1` vector mapping moieties (rows of `Lambda`) to
+%    instances2mets:        `u x 1` vector mapping moieties (rows of `M`) to
 %                           metabolites (rows of S)
-%    instances2moieties:    `u x 1` vector mapping moieties (rows of `Lambda`) to
+%    instances2moieties:    `u x 1` vector mapping moieties (rows of `M`) to
 %                           moiety vectors (columns of `L`)
 %    atoms2instances:       `p x 1` vector mapping atoms (rows of `A`) to moieties
-%                           (rows of `Lambda`)
-%    M:                     Moiety vectors that are not in the left null space of
+%                           (rows of `M`)
+%    E:                     Moiety vectors that are not in the left null space of
 %                           `S`. Should be empty.
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
@@ -96,11 +96,11 @@ end
 L = L'; % Moiety vectors to columns
 
 leftNullBool = ~any(S'*L); % Indicates vectors in the left null space of S.
-M = L(:,~leftNullBool);
+E = L(:,~leftNullBool);
 L = L(:,leftNullBool);
 xi = xi(leftNullBool);
 
-if ~isempty(M)
+if ~isempty(E)
     warning('Not all moiety vectors are in the left null space of S. Check that atom transitions in A match the stoichiometry in S.');
 end
 
@@ -110,11 +110,11 @@ nMoieties = sum(sum(L)); % Total number of nodes in moiety supergraph
 nEdges = sum(any(A([components{xi}],:))); % Total number of edges in moiety supergraph
 
 moietyFormulas = cell(nVectors,1); % Cell array with chemical formulas of moieties
-instances2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of Lambda) to metabolites (rows of S)
-instances2moieties = zeros(nMoieties,1); % Vector mapping moieties (rows of Lambda) to moiety vectors (columns of L)
-atoms2instances = zeros(nAtoms,1); % Vector mapping atoms (rows of A) to moieties (rows of Lambda)
+instances2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to metabolites (rows of S)
+instances2moieties = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to moiety vectors (columns of L)
+atoms2instances = zeros(nAtoms,1); % Vector mapping atoms (rows of A) to moieties (rows of M)
 
-Lambda = sparse(nMoieties,nEdges); % Moiety supergraph
+M = sparse(nMoieties,nEdges); % Moiety supergraph
 firstrow = 1;
 firstcol = 1;
 
@@ -126,7 +126,7 @@ for i = 1:nVectors
     [nrows,ncols] = size(mgraph1);
     rowidx = firstrow:(firstrow + nrows - 1);
     colidx = firstcol:(firstcol + ncols - 1);
-    Lambda(rowidx,colidx) = mgraph1;
+    M(rowidx,colidx) = mgraph1;
     firstrow = firstrow + nrows;
     firstcol = firstcol + ncols;
 

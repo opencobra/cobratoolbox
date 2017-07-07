@@ -1,6 +1,6 @@
 %% Computing  minimal cut sets
-%% Author: Susan Ghaderi, Luxembourg Centere for Systems Biomedicine 
-%% Reviewers: Sylvain Arreckx, Laurent Heirendt
+%% Author: Susan Ghaderi, Luxembourg Centre for Systems Biomedicine 
+%% Reviewers:
 %% INTRODUCTION
 % During this tutorial, you will learn how to compute  cutsets for paths/cycles/elementary 
 % modes with Berge algorithm [1].
@@ -26,7 +26,7 @@
 % 
 %   The set of all feasible fluxes
 % 
-% $$K=\{ r \in R^n|Sr=0,r \geq 0, r\in Irr \}$$
+% $$K=\{ v\in R^n \mid Sv=0,v \geq 0, v\in Irr \}$$
 % 
 % is a polyhedral cone in $R^n$where $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="normal">Irr</mi></mrow></math>$ is a 
@@ -36,11 +36,11 @@
 % display="inline"><mrow><mi mathvariant="italic">j</mi><mtext>??</mtext></mrow></math>$among 
 % reactions, if 
 % 
-% $$r_c=0 ~leads~to ~r_j=0~\forall~r \in K$$
+% $$v_c=0 ~leads~to ~v_j=0~\forall~r \in K.$$
 % 
-% We present an algorithm which enable the computation of the elementary 
-% modes/extreme pathways in each network related to user-defined objective models 
-% and reactions.
+% We introduce an interface to software that enables the computation of the 
+% elementary modes/extreme pathways in each network related to user-defined objective 
+% models and reactions.
 %% MATERIALS
 % * _Please ensure that the COBRA Toolbox has been properly installed and initialised. 
 % _
@@ -57,37 +57,79 @@
 % https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html> where also a how-to 
 % tutorial on CellNetAnalyzer is provided.
 %% PROCEDURE 
-% _Before you start with these codes, you should initialise The COBRA Toolbox 
-% and CNA software by the following commands_
+% _Before you start with these codes, you should initialise CNA software by 
+% the following commands_
 
 % Add path to Cell Net Analyzer
 CNAPath = '~/CellNetAnalyzer';
 addpath(genpath(CNAPath));
 startcna
 %% Computing minimal cut set
-% The mandatory input in minimal cut set code is the set such as paths/cycles/elementary 
-% modes that you are going to compute its minimal cut set. To understand the meaning 
-% of all of the output you can type |help pathVectors|
+% The mandatory input in minimal cut set code is a set |E| such as paths/cycles/elementary-modes 
+% that you are going to compute its minimal cut set. 
 
 % define the model
 global CBTDIR
 addpath([CBTDIR filesep 'tutorials' filesep 'minimalCutSets'])
-load('efm.mat')
-output = minimalCutSets(efm)
-%% 
-% To understand the meaning of all of the output you can type |help pathVectors|
+load('E.mat')% the set of elementary modes which we are going to compute its minimal cut set.
+output = minimalCutSets(E)
+%% INPUT
+% The neccesirelly input for computing minimal cut set of a set is |targets.|
+% 
+%   |targets|:     a binary matrix that row-wise contains the target paths/cycles/elementary 
+% modes; a '1' in the i-th row and j-th column in targets indicates participation 
+% of element (reaction) j in mode i;
+%% OPTIONAL INPUTS:
+% *    |mcsmax|:      maximal size of cutsets to be calculated; must be a value 
+% grater 0; Inf means no size limit (default: Inf)
+% 
+% 
+% 
+% *     |names|:       a char matrix; its rows are names corresponding to the 
+% columns of 'targets'; used for diagnostics in preprocessing (default:[]; the 
+% matrix is then constructed with 'I1,',I2',....)
+% 
+% 
+% 
+% *     |sets2save|:   (default: []) struct array with sets of (desired) modes/paths/cycles 
+% that should be preserved (not be hit by the   cut sets computed). Should have 
+% the following fields
+% 
+%                  * sets2save(k).tabl2save = k-th matrix containing row-wise 
+% 'desired' sets (desired paths/cycles/ modes) that should not     be hit by the 
+% cut sets to be computed. be saved A '1' in the i-th row and j-th column of sets2save(k) 
+% indicates participation of element j in mode i in set k of desired modes. These 
+% matrics must have the same number of columns (reactions) as 'targets'.
+% 
+% 
+% 
+%                * sets2save(k).min2save = specifies the minimum number of 
+% desired paths/cycles/modes in sets2save(k).tabl2save that should not be hit 
+% by the cut sets computed.
+% 
+% 
+% 
+% *  |earlycheck|:   whether the test checking for the fulfillment of constraints 
+% in sets2save should be caried out during (1) or after (0) computation of cut 
+% sets [default: 1; makes only sense in combination with sets2save]
+%%  OUTPUT:
+%    |C|:     matrix that contains the (constrained) cutsets row-wise; a '1' 
+% means that the reaction/interaction  is part of the cutset, 0 means the element/reaction/interaction 
+% is not involved. Each cutset hits all modes stored in "targets" while it does 
+% not hit at least
+% 
+%   "sets2save(k).min2save" many modes in "sets2save(k).tabl2save".
 %% TIMING
-% Running, the codes are dependent on the size of models may take long from 
-% 30 seconds to few hours. But in addition to the time of running you should consider 
-% between 60 seconds for start-up CNA software.
+% The running time of this code is dependent on the size of the model and may 
+% take long (from 30 seconds to few hours). In addition to the running time you 
+% should consider between 60 seconds for start-up CellNetAnalyzer software.
 %% ANTICIPATED RESULTS
-% The anticipated results is minimal cut set of every set which as an input.
+% The anticipated results is minimal cut set of every set which is as an input.
 %% REFERENCES
 % [1] Klamt. S. and Gilles ED. Minimal cut sets in biochemical reaction networks. 
 % Bioinformatics. 20, 226?234 (2004).
 % 
-% [2] Klamt, S. et al.  Algorithmic approaches for computing elementary modes 
-% in large biochemical reaction networks. IEE Proc. Syst. Biol., 152, 249?255 
-% (2005).
+% [2] Berge. C.  Hypergraphs, ser.North holland Mathematical Library. Elsiver 
+% Science Publishers B. V. 45, (1989).
 % 
 %

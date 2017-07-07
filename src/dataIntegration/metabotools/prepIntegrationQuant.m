@@ -24,6 +24,8 @@ function prepIntegrationQuant(model,metData,exchanges,samples,test_max,test_min,
 %       test_max:                Minimal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 500)
 %       test_min:                Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)
 %       outputPath:              Path where output files should be saved (e.g. 'Y:\Studies\Data_integration\CORE\usingRecon1\models\')
+%
+% OPTIONAL INPUTS:
 %       tol:                     All fluxes below this value are considered to be zero, (e.g., 1e-6)
 %       variation:               Lower and upper bound are established with this value as error range in % (e.g.,20)
 %
@@ -47,6 +49,12 @@ function prepIntegrationQuant(model,metData,exchanges,samples,test_max,test_min,
 %       - Ines Thiele
 %       - Maike K. Aurich 18/02/15
 
+if ~exist('tol','var')
+    tol = 1e-6;
+end
+if ~exist('variation','var')
+    variation = 20; 
+end
 
 for i=1:length(exchanges)
     %% check which mets cannot be produced or consumed
