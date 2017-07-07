@@ -1,4 +1,4 @@
-function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin)
+function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin)
 % This function runs the third step of optForce that is to solve a
 % bilevel mixed integer linear programming problem to find sets of
 % interventions that lead to an increased production of a particular target
@@ -191,26 +191,12 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 
-optionalParameters = {'k', 'nSets', 'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
-    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
-
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
-
-    tempargin = cell(1,2*(numel(varargin)));
-    for i = 1:numel(varargin)
-
-        tempargin{2*(i-1)+1} = optionalParameters{i};
-        tempargin{2*(i-1)+2} = varargin{i};
-    end
-    varargin = tempargin;
-
-end
-
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
     && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
     && isfield(model, 'c'))
 parser.addRequired('targetRxn', @ischar)
+parser.addRequired('biomassRxn', @ischar)
 parser.addRequired('mustU', @iscell)
 parser.addRequired('mustL', @iscell)
 parser.addRequired('minFluxesW', @isnumeric)
@@ -240,9 +226,10 @@ parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('loop', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('kMin', 1, @(x) isnumeric(x));
 
-parser.parse(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
+parser.parse(model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
 model = parser.Results.model;
 targetRxn = parser.Results.targetRxn;
+biomassRxn = parser.Results.biomassRxn;
 mustU = parser.Results.mustU;
 mustL = parser.Results.mustL;
 minFluxesW = parser.Results.minFluxesW;
@@ -282,7 +269,7 @@ if exist(runID, 'dir')~=7
     mkdir(runID);
 end
 cd(runID);
-outputFolder = [workingPath filesep outputFolder];
+outputFolder = [runID filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -369,7 +356,7 @@ if loop % if k = kMin:k
         
         if keepInputs
             %save inputs
-            inputFolder = [workingPath filesep 'InputsOptForce_k' num2str(currentK)];
+            inputFolder = [runID filesep 'InputsOptForce_k' num2str(currentK)];
             saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
                 constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
         end
@@ -482,7 +469,7 @@ if loop % if k = kMin:k
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
                 f = fopen([outputFileNameK '.txt'],'w');
-                fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+                fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tMin Flux in Mutant (mmol/gDW hr)\tMax Flux in Mutant (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\tMaximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
                 for i=1:nSolsFound
                     sols = strjoin(solutions{i}.reactions', ', ');
                     type = strjoin(solutions{i}.type', ', ');
@@ -558,7 +545,7 @@ else
     
     if keepInputs
         %save inputs
-        inputFolder = [workingPath filesep 'InputsOptForce'];
+        inputFolder = [runID filesep 'InputsOptForce'];
         saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
             constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
     end
@@ -575,8 +562,7 @@ else
     posOptForceSets = zeros(size(optForceSets));
     fluxOptForceSets = zeros(size(optForceSets));
     typeRegOptForceSets = cell(nSolsFound, k);
-    
-    
+        
     while nSolsFound < nSets
 
         bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
@@ -617,7 +603,7 @@ else
             solution.posbl = posbl;
             solution.flux = flux;
             solution.obj = Force.obj;
-            [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
+            [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, biomassRxn, solution);
             solution.growth = maxGrowthRate;
             solution.minTarget = minTarget;
             solution.maxTarget = maxTarget;
@@ -689,7 +675,7 @@ else
             if ~isdir(outputFolder); mkdir(outputFolder); end;
             cd(outputFolder);
             f = fopen([outputFileName '.txt'],'w');
-            fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+            fprintf(f,'Number of interventions\tSet number\tForce Set\tType of regulation\tMin Flux in Wild-type(mmol/gDW hr)\tMax Flux in Wild-type (mmol/gDW hr)\tMin Flux in Mutant (mmol/gDW hr)\tMax Flux in Mutant (mmol/gDW hr)\tAchieved flux (mmol/gDW hr)\tObjective function (mmol/gDW hr)\tMinimum guaranteed for target (mmol/gDW hr)\tMaximum guaranteed for target (mmol/gDW hr)\tMaximum growth rate (1/hr)\n');
             for i=1:nSolsFound
                 sols = strjoin(solutions{i}.reactions', ', ');
                 type = strjoin(solutions{i}.type', ', ');

@@ -76,14 +76,21 @@ else
     end
 end
 if nargin <3
+    error('OptForce: biomassRxn reaction must be specified when running analizeOptForceSol');
+else
+    if ~ischar(biomassRxn)
+        error('OptForce: input biomassRxn must be an string');
+    end
+end
+if nargin <4
     error('OptForce: intervened reactions must be specified when running analizeOptForceSol');
 else
     if ~isfield(solution,'reactions'), error('OptForce: Missing field reactions in solution');  end
     if ~isfield(solution,'flux'), error('OptForce: Missing field flux in solution');  end
 end
-if nargin<4; relax = 1; end;
+if nargin<5; relax = 1; end;
 % tolerance for growh rate
-if nargin<5; tol = 1e-7; end;
+if nargin<6; tol = 1e-7; end;
 
 % Number of interventions
 nInt = length(solution.reactions);
@@ -95,6 +102,7 @@ for i = 1:nInt
 end
 
 % Calculate optimal growth rate in the mutant strain
+modelForce = changeObjective(modelForce, biomassRxn);
 solForce = optimizeCbModel(modelForce);
 maxGrowthRate = solForce.f;
 
