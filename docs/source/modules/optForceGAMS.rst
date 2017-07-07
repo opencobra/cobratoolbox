@@ -5,5 +5,5 @@
 optForceGAMS
 ------------
 
-.. automodule:: src.design.optForceGAMS2
+.. automodule:: src.design.optForceGAMS
    :members:

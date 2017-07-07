@@ -149,9 +149,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            found (`k`). Element in position `i`, `j` is reaction
 %                            `j` in set `i`.
 %                            E.g.:
+%
 %                                    rxn1  rxn2
-%                                      __    __
+%
 %                            set 1   | R4    R2
+%
 %                            set 2   | R3    R1
 %
 %    posOptForceSets:        Type: double array.
@@ -161,9 +163,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            position of reaction in optForceSets(`i`, `j`) in
 %                            `model.rxns`
 %                            E.g.:
+%
 %                                    rxn1  rxn2
-%                                     __   __
+%
 %                            set 1   | 4    2
+%
 %                            set 2   | 3    1
 %
 %    typeRegOptForceSets:    Type: cell array.
@@ -173,9 +177,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            of intervention for reaction in
 %                            optForceSets(`i`, `j`)
 %                            E.g.:
+%
 %                                         rxn1            rxn2
-%                                      ____________    ______________
+%
 %                            set 1   | upregulation    downregulation
+%
 %                            set 2   | upregulation    knockout
 %    fluxOptForceSets:       Type: double matrix.
 %                            Description: Matrix of size `n + m`, where
