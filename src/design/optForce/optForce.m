@@ -478,22 +478,30 @@ if loop % if k = kMin:k
                 for i=1:nSolsFound
                     sols = strjoin(solutions{i}.reactions', ', ');
                     type = strjoin(solutions{i}.type', ', ');
-                    min_str = cell(1, k);
-                    max_str = cell(1, k);
+                    minW_str = cell(1, k);
+                    maxW_str = cell(1, k);
+                    minM_str = cell(1, k);
+                    maxM_str = cell(1, k);
                     flux_str = cell(1, k);
-                    min = minFluxesM(solutions{i}.pos);
-                    max = maxFluxesM(solutions{i}.pos);
+                    minM = minFluxesM(solutions{i}.pos);
+                    maxM = maxFluxesM(solutions{i}.pos);
+                    minW = minFluxesW(solutions{i}.pos);
+                    maxW = maxFluxesW(solutions{i}.pos);
                     flux = solutions{i}.flux;
                     for j = 1:k
-                        min_str{j} = num2str(min(j));
-                        max_str{j} = num2str(max(j));
+                        minW_str{j} = num2str(minW(j));
+                        maxW_str{j} = num2str(maxW(j));
+                        minM_str{j} = num2str(minM(j));
+                        maxM_str{j} = num2str(maxM(j));
                         flux_str{j} = num2str(flux(j));
                     end
-                    MinFlux = strjoin(min_str, ', ');
-                    MaxFlux = strjoin(max_str, ', ');
+                    MinFluxM = strjoin(minM_str,', ');
+                    MaxFluxM = strjoin(maxM_str,', ');
+                    MinFluxW = strjoin(minW_str,', ');
+                    MaxFluxW = strjoin(maxW_str,', ');
                     achieved = strjoin(flux_str, ', ');
-                    fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
-                        MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+                    fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFluxW, MaxFluxW, MinFluxM,...
+                        MaxFluxM, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
                 end
                 fclose(f);
                 cd(runID);
@@ -502,7 +510,7 @@ if loop % if k = kMin:k
             end
             
             %close file for saving report
-            if printReport; fclose(freport); end;            
+            if printReport; fclose(freport); end;
             cd(workingPath);
             
         else
@@ -514,10 +522,10 @@ if loop % if k = kMin:k
                 end
             end
             if verbose
-                fprintf('\n optForce did not find any set using k = %1.0f \n', currentK); 
+                fprintf('\n optForce did not find any set using k = %1.0f \n', currentK);
                 if currentK < k -1
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
-                end                
+                end
             end
             
             currentK = currentK + 1;
@@ -529,7 +537,7 @@ if loop % if k = kMin:k
             end
             
         end
-               
+        
     end
     
     if noSolution
@@ -669,22 +677,30 @@ else
             for i=1:nSolsFound
                 sols = strjoin(solutions{i}.reactions', ', ');
                 type = strjoin(solutions{i}.type', ', ');
-                min_str = cell(1, k);
-                max_str = cell(1, k);
+                minW_str = cell(1, k);
+                maxW_str = cell(1, k);
+                minM_str = cell(1, k);
+                maxM_str = cell(1, k);
                 flux_str = cell(1, k);
-                min = minFluxesM(solutions{i}.pos);
-                max = maxFluxesM(solutions{i}.pos);
+                minM = minFluxesM(solutions{i}.pos);
+                maxM = maxFluxesM(solutions{i}.pos);
+                minW = minFluxesW(solutions{i}.pos);
+                maxW = maxFluxesW(solutions{i}.pos);
                 flux = solutions{i}.flux;
                 for j = 1:k
-                    min_str{j} = num2str(min(j));
-                    max_str{j} = num2str(max(j));
+                    minW_str{j} = num2str(minW(j));
+                    maxW_str{j} = num2str(maxW(j));
+                    minM_str{j} = num2str(minM(j));
+                    maxM_str{j} = num2str(maxM(j));
                     flux_str{j} = num2str(flux(j));
                 end
-                MinFlux = strjoin(min_str, ', ');
-                MaxFlux = strjoin(max_str, ', ');
+                MinFluxM = strjoin(minM_str,', ');
+                MaxFluxM = strjoin(maxM_str,', ');
+                MinFluxW = strjoin(minW_str,', ');
+                MaxFluxW = strjoin(maxW_str,', ');
                 achieved = strjoin(flux_str, ', ');
-                fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
-                    MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+                fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFluxW, MaxFluxW, MinFluxM,...
+                    MaxFluxM, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
             end
             fclose(f);
             cd(runID);
