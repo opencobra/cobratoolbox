@@ -321,7 +321,7 @@ An <cite>r x 1</cite> cell array of estimated moiety formulas.</li>
 theoretical analysis of the corresponding atom transition network (ATN).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[L, Lambda, moietyFormulas, instances2mets, instances2moieties, atoms2instances, M] = identifyConservedMoieties(model, ATN)</div></blockquote>
+<div>[L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances, E] = identifyConservedMoieties(model, ATN)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -357,21 +357,21 @@ atom mappings) for each reaction.</li>
 <li><strong>L</strong> &#8211;
 An <cite>m x r</cite> matrix of r moiety vectors in the left null
 space of <cite>S</cite>.</li>
-<li><strong>Lambda</strong> &#8211;
+<li><strong>M</strong> &#8211;
 The <cite>u x v</cite> incidence matrix of the moiety supergraph
 where each connected component is a moiety graph.</li>
 <li><strong>moietyFormulas</strong> &#8211;
 <cite>m x r</cite> cell array with chemical formulas of moieties</li>
 <li><strong>instances2mets</strong> &#8211;
-<cite>u x 1</cite> vector mapping moieties (rows of <cite>Lambda</cite>) to
+<cite>u x 1</cite> vector mapping moieties (rows of <cite>M</cite>) to
 metabolites (rows of S)</li>
 <li><strong>instances2moieties</strong> &#8211;
-<cite>u x 1</cite> vector mapping moieties (rows of <cite>Lambda</cite>) to
+<cite>u x 1</cite> vector mapping moieties (rows of <cite>M</cite>) to
 moiety vectors (columns of <cite>L</cite>)</li>
 <li><strong>atoms2instances</strong> &#8211;
 <cite>p x 1</cite> vector mapping atoms (rows of <cite>A</cite>) to moieties
-(rows of <cite>Lambda</cite>)</li>
-<li><strong>M</strong> &#8211;
+(rows of <cite>M</cite>)</li>
+<li><strong>E</strong> &#8211;
 Moiety vectors that are not in the left null space of
 <cite>S</cite>. Should be empty.</li>
 </ul>

@@ -989,6 +989,11 @@ Minimal uptake/secretion set while testing if model can perform uptake and secre
 Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)</li>
 <li><strong>outputPath</strong> &#8211;
 Path where output files should be saved (e.g. &#8216;Y:StudiesData_integrationCOREusingRecon1models&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>tol</strong> &#8211;
 All fluxes below this value are considered to be zero, (e.g., 1e-6)</li>
 <li><strong>variation</strong> &#8211;
@@ -1078,7 +1083,7 @@ Model constrained with condition-specific growth rates</li>
 <dl class="function">
 <dt id="src.dataIntegration.metabotools.setMediumConstraints">
 <code class="descname">setMediumConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>set_inf</em>, <em>current_inf</em>, <em>medium_composition</em>, <em>met_Conc_mM</em>, <em>cellConc</em>, <em>t</em>, <em>cellWeight</em>, <em>mediumCompounds</em>, <em>mediumCompounds_lb</em>, <em>customizedConstraints</em>, <em>customizedConstraints_ub</em>, <em>customizedConstraints_lb</em>, <em>close_exchanges</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/dataIntegration/metabotools/setMediumConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setMediumConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates and sets constraints according to medium composition in mM. Is based on the function <cite>Conc2Rate</cite>. Returns a model with constraints.</p>
+<dd><p>Calculates and sets constraints according to fresh medium composition in mM. Is based on the function <cite>Conc2Rate</cite>. Returns a model with constraints.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelMedium, basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)</div></blockquote>
