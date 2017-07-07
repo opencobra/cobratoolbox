@@ -73,6 +73,7 @@ test/verifiedTests/testPrint/printConstraints.txt
 
 # Windows executable files
 *.exe
+*.exe.*
 
 # Windows dynamic library files
 *.dll
@@ -94,9 +95,10 @@ tutorials/fastGapFill/prepareFGFResultsDefault.mat
 tutorials/IO/Abiotrophia_defectiva_ATCC_49176.xml
 tutorials/IO/ecoli_core_model.mat
 PPP120.mat
+E.mat
 
 # generated tutorial documentation
-docs/source/_static/tutorials/*html
+docs/source/_static/tutorials/*.html
 docs/source/tutorials/tutorial*.rst
 
 # hidden folders
