@@ -194,7 +194,7 @@ workingPath = pwd;
 runID = [workingPath filesep runID];
 %go to the path associate to the ID for this run.
 if ~isdir(runID)
-    mkdir(runID); 
+    mkdir(runID);
 end
 cd(runID);
 outputFolder = [workingPath filesep outputFolder];
