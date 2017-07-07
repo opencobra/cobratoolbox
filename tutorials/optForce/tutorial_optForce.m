@@ -1,6 +1,6 @@
 %% OptForce Tutorial
-%% Author: Sebastián N. Mendoza,  Center for Mathematical Modelling, University of Chile. snmendoz@uc.cl
-%% *Reviewers(s): -----*
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group)*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
 % please see [1]. Briefly, the problem is to find a set of interventions of size 
@@ -21,26 +21,72 @@
 % # A solver for Mixed Integer Linear Programming (MILP) problems. For example, 
 % Gurobi.
 %% *EQUIPMENT SETUP*
-% Use |changeCobraSolver| to choose the solver for MILP problems. Verify that 
-% the global variable |CBT_MILP_SOLVER| was assigned. It will be used when finding 
-% must and force sets (step 3 and 4).
+% Use |changeCobraSolver| to choose the solver for MILP problems. 
 %% PROCEDURE
 % The proceduce consists on the following steps
 % 
-% 1) Define constraints for both wild-type and mutant strain: 
+% 1) Maximize specific growth rate and product formation.
 % 
-% 2) Perform flux variability analysis for both wild-type and mutant strain.
+% 2) Define constraints for both wild-type and mutant strain: 
 % 
-% 3) Find must sets,  i.e, reactions that MUST increase or decrease their 
+% 3) Perform flux variability analysis for both wild-type and mutant strain.
+% 
+% 4) Find must sets,  i.e, reactions that MUST increase or decrease their 
 % flux in order to achieve the phenotype in the mutant strain. 
 %% Figure 1.
+%  
 % 
-% 
-% 4) Find the interventions needed that will ensure a increased production 
+% 5) Find the interventions needed that will ensure a increased production 
 % of the target of interest
 % 
 % Now, we will approach each step in detail.
-%% STEP 1: Define constraints for both wild-type and mutant strain
+% 
+% 
+%% STEP 1: Maximize specific growth rate and product formation
+% First, we load the model. This model comprises only 90 reactions, which describe 
+% the central metabolism of E. coli [2].
+% 
+% Then, we change the objective function to maximize biomass ("R75"). We 
+% also change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
+% sulfate, ammomium, citrate and glycerol.
+
+global TUTORIAL_INIT_CB;
+if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
+    initCobraToolbox
+    changeCobraSolver('gurobi','all');
+end
+
+pathTutorial = which('tutorial_OptForce.mlx');
+pathstr = fileparts(pathTutorial);
+cd(pathstr)
+
+load('AntCore');
+model.c(strcmp(model.rxns,'R75')) = 1;
+model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_so4', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_nh3', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_cit', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_glyc', -100, 'l'); 
+%% 
+% Then, we calculate the maximum specific growth rate and the maximum production 
+% rate for succinate
+
+growthRate = optimizeCbModel(model); 
+fprintf('The maximum growth rate is %1.2f', growthRate.f);
+
+model = changeObjective(model, 'EX_suc');
+maxSucc = optimizeCbModel(model);
+fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
+%% 
+% *TIP: *The biomass reaction is usually set to 1%-10% of maximum theoretical 
+% biomass yield when running the following steps, to prevent solutions with not 
+% biomass formation
+% 
+% # maximizing product formation
+% # finding MUST sets of second order
+% # finding FORCE sets
+%% STEP 2: Define constraints for both wild-type and mutant strain
 % *TIMING*: This step should take a few days or weeks, depending on the information 
 % available for your species. 
 % 
@@ -57,29 +103,12 @@
 % also change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
 % sulfate, ammomium, citrate and glycerol. Finally, we change the reversibility 
 % flag because these reactions are now reversible
-
-initCobraToolbox
-changeCobraSolver('gurobi', 'all');
-
-pathTutorial = which('tutorial_OptForce.mlx');
-pathstr = fileparts(pathTutorial);
-cd(pathstr)
-
-load('AntCore.mat');
-model.c(strcmp(model.rxns,'R75')) = 1;
-model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
-model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
-model = changeRxnBounds(model, 'EX_so4', -100, 'l'); 
-model = changeRxnBounds(model, 'EX_nh3', -100, 'l'); 
-model = changeRxnBounds(model, 'EX_cit', -100, 'l'); 
-model = changeRxnBounds(model, 'EX_glyc', -100, 'l');
-
-%% 
+% 
 % We define constraints for each strain
 
 constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b');
 constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxnBoundType', 'bb');
-%% Step 2: Flux Variability Analysis
+%% Step 3: Flux Variability Analysis
 % *TIMING*: This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
 % 
@@ -89,7 +118,7 @@ constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxn
 disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 %% 
 % Now, the run the next step of OptForce.
-%% Step 3: Find Must Sets
+%% Step 4: Find Must Sets
 % *TIMING: *This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
 % 
@@ -233,7 +262,7 @@ disp(mustUL);
 % 
 % *TROUBLESHOOTING 2: * "I got an error when running the |findMustX| functions 
 % (X = L or U or LL or UL or UU depending on the case)"
-%% Step 4: OptForce
+%% Step 5: OptForce
 % *TIMING: *This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
 % 
@@ -249,11 +278,12 @@ disp(mustUL);
 mustU = unique(union(mustUSet, mustUU));
 mustL = unique(union(mustLSet, mustLL));
 targetRxn = 'EX_suc';
+biomassRxn = 'R75';
 k = 1;
 nSets = 1;
 constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
 
-[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model, targetRxn, mustU, mustL, ...
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
                                                                                    minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
                                                                                    'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
                                                                                    'runID', runID, 'outputFolder', 'OutputsOptForce', ...
@@ -272,8 +302,15 @@ disp(optForceSets)
 % intuitive solution).
 % 
 % Next, we will increase |k| and we will exclude "SUCt" from upregulations 
-% to found non-intuitive solutions. We will only search for the 20 best solutions, 
-% but you can try with a higher number.
+% to found non-intuitive solutions. 
+% 
+% *TIP: *Sometimes the product is at the end of a long linear pathway. In 
+% that case, the recomendation is to also exclude most reactions on the linear 
+% pathway. Essential reactions and reactions not associated with any gene should 
+% also be excluded. 
+% 
+% We will only search for the 20 best solutions, but you can try with a higher 
+% number.
 % 
 % We will change the runID to save this second result (K = 2) in a diffetent 
 % folder than the previous result (K = 1) 
@@ -283,7 +320,7 @@ nSets = 20;
 runID = 'TestOptForceM2';
 excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
 [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
-    optForce(model, targetRxn, mustU, mustL, ...
+    optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
              minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
              'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
              'excludedRxns', excludedRxns, ...
