@@ -58,7 +58,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin <1 %input handling
-    error('OptForce: model must be specified when running analyzeOptForceSol');
+    error('OptForce: model must be specified when running analizeOptForceSol');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
     if ~isfield(model,'rxns'), error('OptForce: Missing field rxns in model');  end
@@ -69,14 +69,14 @@ else
     if ~isfield(model,'b'), error('OptForce: Missing field b in model'); end
 end
 if nargin <2
-    error('OptForce: target reaction must be specified when running analyzeOptForceSol');
+    error('OptForce: target reaction must be specified when running analizeOptForceSol');
 else
     if ~ischar(targetRxn)
         error('OptForce: input targetRxn must be an string');
     end
 end
 if nargin <3
-    error('OptForce: intervened reactions must be specified when running analyzeOptForceSol');
+    error('OptForce: intervened reactions must be specified when running analizeOptForceSol');
 else
     if ~isfield(solution,'reactions'), error('OptForce: Missing field reactions in solution');  end
     if ~isfield(solution,'flux'), error('OptForce: Missing field flux in solution');  end
@@ -112,7 +112,7 @@ if solForce.stat == 1
     maxTarget = solMax.f;
     minTarget = solMin.f;
 else
-    warning('OptForce: infeasible model for mutant strain, according to function analyzeOptForceSol')
+    warning('OptForce: infeasible model for mutant strain, according to function analizeOptForceSol')
     maxTarget = 0;
     minTarget = 0;
 end
