@@ -190,6 +190,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
+
 optionalParameters = {'k', 'nSets', 'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
 
@@ -266,8 +267,13 @@ end
 
 %current path
 workingPath = pwd;
+runID = [workingPath filesep runID];
 %go to the path associate to the ID for this run.
-if ~isdir(runID); mkdir(runID); end; cd(runID);
+if exist(runID, 'dir')~=7
+    mkdir(runID);
+end
+cd(runID);
+outputFolder = [workingPath filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -345,7 +351,7 @@ end
 
 if keepInputs
     %save inputs
-    inputFolder = 'InputsOptForce';
+    inputFolder = [workingPath filesep 'InputsOptForce'];
     saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
     constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
 end
@@ -404,7 +410,7 @@ while nSolsFound < nSets
         solution.posbl = posbl;
         solution.flux = flux;
         solution.obj = Force.obj;
-        [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution);
+        [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
         solution.growth = maxGrowthRate;
         solution.minTarget = minTarget;
         solution.maxTarget = maxTarget;
@@ -443,7 +449,7 @@ if isempty(outputFileName);
 end
 
 % print info into an excel file if required by the user
-if printExcel
+if printExcel && ~isunix
     if nSolsFound > 0
         if ~isdir(outputFolder); mkdir(outputFolder); end;
         cd(outputFolder);
@@ -490,7 +496,7 @@ if printText
                 MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
         end
         fclose(f);
-        cd([workingPath '/' runID]);
+        cd(runID);
         if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
         if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
     else
