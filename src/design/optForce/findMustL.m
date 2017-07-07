@@ -24,7 +24,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
 %                               function `FVAOptForce`.
-%                               E.g.: `minFluxesW = [-90; -56]``;
+%                               E.g.: `minFluxesW = [-90; -56]`;
 %    maxFluxesW:                Type: double array of size `n_rxns x 1`.
 %                               Description: Maximum fluxes for each
 %                               reaction in the model for wild-type strain.
@@ -47,9 +47,9 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                                 * .rxnList - Reaction list (cell array)
 %                                 * .values -  Values for constrained
 %                                   reactions (double array)
-%                                   E.g.: struct('rxnList', ...
+%                                   E.g.: `struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]');
+%                                   'values', [-100, 0, 155.5]');`
 %    runID:                     Type: string.
 %                               Description: ID for identifying this run.
 %                               Default: ['run' date hour].

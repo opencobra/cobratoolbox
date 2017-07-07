@@ -25,12 +25,12 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %    targetRxn:         Type: string.
 %                       Description: reaction identifier for target
 %                       reaction
-%                       E.g.: targetRxn = 'EX_suc'
+%                       E.g.: `targetRxn = 'EX_suc'`
 %    solution:          Type: structure.
 %                       Description: structure containing information
 %                       about the inverventions.
-%                       E.g.: solution = struct('reactions', ...
-%                       {{'R21'; 'R24'}}, 'flux', [10; 0])
+%                       E.g.: `solution = struct('reactions', ...
+%                       {{'R21'; 'R24'}}, 'flux', [10; 0])`
 %                       In this example, the reaction R21 will be
 %                       regulated at 10 (mmol/gDW h) (upregulation or
 %                       downregulation depending on the value for the

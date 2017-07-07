@@ -15,7 +15,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                  * .rxns - Reaction IDs in the model
 %                                  * .mets - Metabolite IDs in the model
 %                                  * .S -    Stoichiometric matrix (sparse)
-%                                  * .b -    RHS of Sv = b (usually zeros)
+%                                  * .b -    RHS of `Sv = b` (usually zeros)
 %                                  * .c -    Objective coefficients
 %                                  * .lb -   Lower bounds for fluxes
 %                                  * .ub -   Upper bounds for fluxes
@@ -23,8 +23,8 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                Description: Minimum fluxes for each
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by running the
-%                                function FVAOptForce.
-%                                E.g.: `minFluxesW = [-90; -56]``;
+%                                function `FVAOptForce`.
+%                                E.g.: `minFluxesW = [-90; -56]`;
 %    maxFluxesW:                 Type: double array of size `n_rxns x 1`.
 %                                Description: Maximum fluxes for each
 %                                reaction in the model for wild-type strain.
@@ -45,9 +45,9 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                  * .rxnList - Reaction list (cell array)
 %                                  * .values -  Values for constrained
 %                                    reactions (double array)
-%                                    E.g.: struct('rxnList', ...
+%                                    E.g.: `struct('rxnList', ...
 %                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]');
+%                                    'values', [-100, 0, 155.5]');`
 %    excludedRxns:               Type: cell array.
 %                                Description: Reactions to be excluded to
 %                                the MustLL set. This could be used to avoid

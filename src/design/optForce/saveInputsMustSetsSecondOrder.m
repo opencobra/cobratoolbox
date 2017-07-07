@@ -3,7 +3,7 @@ function saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt,
 % order Must Sets (MustUU, Must LL and MustUL). The inputs will be stored in
 % inputFolder.
 %
-% USAGE: 
+% USAGE:
 %
 %         saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 %
@@ -15,23 +15,23 @@ function saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt,
 %                           * .rxns - Reaction IDs in the model
 %                           * .mets - Metabolite IDs in the model
 %                           * .S -    Stoichiometric matrix (sparse)
-%                           * .b -    RHS of Sv = b (usually zeros)
+%                           * .b -    RHS of `Sv = b` (usually zeros)
 %                           * .c -    Objective coefficients
 %                           * .lb -   Lower bounds for fluxes
-%                           * .ub -   Upper bounds for fluxes 
-%    minFluxesW:          Type: double array of size n_rxns x1
+%                           * .ub -   Upper bounds for fluxes
+%    minFluxesW:          Type: double array of size `n_rxns x 1`.
 %                         Description: Minimum fluxes for each
 %                         reaction in the model for wild-type strain.
 %                         This can be obtained by running the
-%                         function FVAOptForce.
-%                         E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:          Type: double array of size n_rxns x1
+%                         function `FVAOptForce`.
+%                         E.g.: `minFluxesW = [-90; -56]`;
+%    maxFluxesW:          Type: double array of size `n_rxns x 1`
 %                         Description: Maximum fluxes for each
 %                         reaction in the model for wild-type strain.
 %                         This can be obtained by running the
-%                         function FVAOptForce.
-%                         E.g.: maxFluxesW = [90; 56]; 
-%    constrOpt:           Type: Structure
+%                         function `FVAOptForce`.
+%                         E.g.: `maxFluxesW = [90; 56]`;
+%    constrOpt:           Type: Structure.
 %                         Description: structure containing
 %                         additional contraints. Include here only
 %                         reactions whose flux is fixed, i.e.,
@@ -44,39 +44,38 @@ function saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt,
 %                         fields:
 %
 %                           * .rxnList - Reaction list (cell array)
-%                           * .values -  Values for constrained 
+%                           * .values -  Values for constrained
 %                             reactions (double array)
-%                             E.g.: struct('rxnList', ...
+%                             E.g.: `struct('rxnList', ...
 %                             {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                             'values', [-100, 0, 155.5]');  
-%    excludedRxns:        Type: cell array
+%                             'values', [-100, 0, 155.5]');`
+%    excludedRxns:        Type: cell array.
 %                         Description: Reactions to be excluded to the
 %                         MustXX set. This could be used to avoid finding
 %                         transporters or exchange reactions in the set
 %                         Default: empty.
-%    inputFolder:         Type: string. 
+%    inputFolder:         Type: string.
 %                         Description: Folder where inputs for GAMS
 %                         function will be stored
 %
 % OUTPUTS:
-%    model.mat            Type: file
+%    model.mat            Type: file.
 %                         Description: File containing the
-%                         model 
-%    minFluxesW.mat:      Type: file
+%                         model
+%    minFluxesW.mat:      Type: file.
 %                         Description: File containing the
 %                         minimum fluxes for the wild-type
-%    maxFluxesW.mat:      Type: file
+%    maxFluxesW.mat:      Type: file.
 %                         Description: File containing the
 %                         maximum fluxes for the mutant
-%    constrOpt.mat:       Type: file
+%    constrOpt.mat:       Type: file.
 %                         Description: File containing the
 %                         constraints used
-%    excludedRsns.mat:    Type: file
+%    excludedRsns.mat:    Type: file.
 %                         Description: File containing the
 %                         excluded reactions
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
-
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 6 %input handling
     error('OptForce: All inputs must be specified when running saveInputsMustSecondOrder')
@@ -96,7 +95,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

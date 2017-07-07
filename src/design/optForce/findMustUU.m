@@ -1,37 +1,37 @@
 function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
-% MustUU set. 
+% MustUU set.
 %
-% USAGE: 
+% USAGE:
 %
-%    [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, maxFluxesW, varargin)       
+%    [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                      Type: structure (COBRA model)
+%    model:                      Type: structure (COBRA model).
 %                                Description: a metabolic model with at least
 %                                the following fields:
-% 
+%
 %                                  * .rxns - Reaction IDs in the model
 %                                  * .mets - Metabolite IDs in the model
 %                                  * .S -    Stoichiometric matrix (sparse)
-%                                  * .b -    RHS of Sv = b (usually zeros)
+%                                  * .b -    RHS of `Sv = b` (usually zeros)
 %                                  * .c -    Objective coefficients
 %                                  * .lb -   Lower bounds for fluxes
 %                                  * .ub -   Upper bounds for fluxes
-%    minFluxesW:                 Type: double array of size n_rxns x1
+%    minFluxesW:                 Type: double array of size `n_rxns x 1`.
 %                                Description: Minimum fluxes for each
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by running the
-%                                function FVAOptForce.
-%                                E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                 Type: double array of size n_rxns x1
+%                                function `FVAOptForce`.
+%                                E.g.: `minFluxesW = [-90; -56]`;
+%    maxFluxesW:                 Type: double array of size `n_rxns x 1`.
 %                                Description: Maximum fluxes for each
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by
 %
 % OPTIONAL INPUTS
-%    constrOpt:                  Type: Structure
+%    constrOpt:                  Type: Structure.
 %                                Description: structure containing
 %                                additional contraints. Include here only
 %                                reactions whose flux is fixed, i.e.,
@@ -42,70 +42,70 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %                                defined in the lower and upper bounds of
 %                                the model. The structure has the following
 %                                fields:
-% 
+%
 %                                  * .rxnList - Reaction list (cell array)
-%                                  * .values -  Values for constrained 
+%                                  * .values -  Values for constrained
 %                                    reactions (double array)
-%                                    E.g.: struct('rxnList', ...
+%                                    E.g.: `struct('rxnList', ...
 %                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]'); 
-%    excludedRxns:               Type: cell array
+%                                    'values', [-100, 0, 155.5]');`
+%    excludedRxns:               Type: cell array.
 %                                Description: Reactions to be excluded to
 %                                the MustUU set. This could be used to avoid
 %                                finding transporters or exchange reactions
-%                                in the set. 
+%                                in the set.
 %                                Default: empty.
-%    runID:                      Type: string
-%                                Description: ID for identifying this run
+%    runID:                      Type: string.
+%                                Description: ID for identifying this run.
 %                                Default: ['run' date hour].
-%    outputFolder:               Type: string
+%    outputFolder:               Type: string.
 %                                Description: name for folder in which results
-%                                will be stored
+%                                will be stored.
 %                                Default: 'OutputsFindMustUU'.
-%    outputFileName:             Type: string
+%    outputFileName:             Type: string.
 %                                Description: name for files in which results
-%                                will be stored
+%                                will be stored.
 %                                Default: 'MustUUSet'.
-%    printExcel:                 Type: double
+%    printExcel:                 Type: double.
 %                                Description: boolean to describe wheter data
-%                                must be printed in an excel file or not
+%                                must be printed in an excel file or not.
 %                                Default: 1
-%    printText:                  Type: double
+%    printText:                  Type: double.
 %                                Description: boolean to describe wheter data
-%                                must be printed in an plaint text file or not
+%                                must be printed in an plaint text file or not.
 %                                Default: 1
-%    printReport:                Type: double
+%    printReport:                Type: double.
 %                                Description: 1 to generate a report in a plain
 %                                text file. 0 otherwise.
 %                                Default: 1
-%    keepInputs:                 Type: double
+%    keepInputs:                 Type: double.
 %                                Description: 1 to save inputs to run
 %                                findMustUU.m 0 otherwise.
 %                                Default: 1
-%    verbose:                    Type: double
+%    verbose:                    Type: double.
 %                                Description: 1 to print results in console.
 %                                0 otherwise.
 %                                Default: 0
 %
-% OUTPUTS
-%    mustUU:                     Type: cell array
-%                                Size: number of sets found X 2
+% OUTPUTS:
+%    mustUU:                     Type: cell array.
+%                                Size: number of sets found X 2.
 %                                Description: Cell array containing the
 %                                reactions IDs which belong to the MustUU
 %                                set. Each row contain a couple of
 %                                reactions.
-%    posMustUU:                  Type: double array
-%                                Size: number of sets found X 2
+%    posMustUU:                  Type: double array.
+%                                Size: number of sets found X 2.
 %                                Description: double array containing the
 %                                positions of each reaction in mustUU with
 %                                regard to model.rxns
-%    mustUU_linear:              Type: cell array
-%                                Size: number of unique reactions found X 1
+%    mustUU_linear:              Type: cell array.
+%                                Size: number of unique reactions found X 1.
 %                                Description: Cell array containing the
 %                                unique reactions ID which belong to the
 %                                MustUU Set
-%    pos_mustUU_linear:          Type: double array
-%                                Size: number of unique reactions found X 1
+%    pos_mustUU_linear:          Type: double array.
+%                                Size: number of unique reactions found X 1.
 %                                Description: double array containing
 %                                positions for reactions in mustUU_linear.
 %                                with regard to model.rxns
@@ -113,59 +113,60 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %                                Description: File containing one column array
 %                                with identifiers for reactions in MustUU. This
 %                                file will only be generated if the user entered
-%                                printExcel = 1. Note that the user can choose
+%                                `printExcel = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName.txt:         Type: file.
 %                                Description: File containing one column array
 %                                with identifiers for reactions in MustUU. This
 %                                file will only be generated if the user entered
-%                                printText = 1. Note that the user can choose
+%                                `printText = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.xls:    Type: file.
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
 %                                one iteration of FindMustUU.gms. This file will
 %                                only be generated if the user entered
-%                                printExcel = 1. Note that the user can choose
+%                                `printExcel = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.txt:    Type: file.
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
 %                                one iteration of FindMustUU.gms. This file will
 %                                only be generated if the user entered
-%                                printText = 1. Note that the user can choose
+%                                `printText = 1`. Note that the user can choose
 %                                the name of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName` = 'PutYourOwnFileNameHere';
 %
-% NOTE: 
+% NOTE:
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
 
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+
     tempargin = cell(1,2*(numel(varargin)));
     for i = 1:numel(varargin)
-        
+
         tempargin{2*(i-1)+1} = optionalParameters{i};
         tempargin{2*(i-1)+2} = varargin{i};
     end
     varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -223,7 +224,7 @@ if printReport
     fprintf(freport, ['findMustUU.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
     % print matlab version.
     fprintf(freport, ['MATLAB: Release R' version('-release') '\n']);
-    
+
     %print each of the inputs used in this running.
     fprintf(freport, '\nThe following inputs were used to run OptForce: \n');
     fprintf(freport, '\n------INPUTS------\n');
@@ -239,26 +240,26 @@ if printReport
     for i = 1:length(model.rxns)
         fprintf(freport, '%6.4f\t%6.4f\t%6.4f\t%6.4f\n', model.lb(i), model.ub(i), minFluxesW(i), maxFluxesW(i));
     end
-    
+
     %print constraints
     fprintf(freport,'\nConstrained reactions:\n');
     for i = 1:length(constrOpt.rxnList)
         fprintf(freport,'%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
     end
-    
+
     fprintf(freport, '\nExcluded Reactions:\n');
     for i = 1:length(excludedRxns)
         rxn = printRxnFormula(model, excludedRxns{i}, false);
         fprintf(freport, [excludedRxns{i} ': ' rxn{1} '\n']);
     end
-    
+
     fprintf(freport,'\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
-    
-    
+
+
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nverbose: %1.0f \n',...
         printExcel, printText, printReport, keepInputs, verbose);
-    
+
 end
 
 % export inputs for running the optimization problem in GAMS to find the
@@ -308,12 +309,12 @@ end
 if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
 
 if cont>0
-    
+
     if printReport; fprintf(freport, '\na MustUU set was found\n'); end;
     if verbose; fprintf('a MustUU set was found\n'); end;
     mustUU = mustUU(1:cont, :);
     posMustUU = posMustUU(1:cont, :);
-    
+
     mustUU_linear = {};
     for i = 1:size(mustUU,1)
         mustUU_linear = union(mustUU_linear, mustUU(i,:));
@@ -322,7 +323,7 @@ if cont>0
 else
     if printReport; fprintf(freport, '\na MustUU set was not found\n'); end;
     if verbose; fprintf('a MustUU set was not found\n'); end;
-    
+
     mustUU = {};
     posMustUU = [];
     mustUU_linear = {};
@@ -348,7 +349,7 @@ if printExcel
         if printReport
             fprintf(freport, ['\nMustUU set was printed in ' outputFileName '.xls  \n']);
             fprintf(freport, ['\nMustUU set was printed in ' outputFileName '_Info.xls  \n']);
-        end       
+        end
     else
         if verbose; fprintf('No mustUU set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustUU set was not found. Therefore, no excel file was generated\n'); end;
@@ -366,14 +367,14 @@ if printText
             fprintf(f, '%s or %s\n', mustUU{i,1}, mustUU{i,2});
         end
         fclose(f);
-        
+
         f = fopen([outputFileName '.txt'], 'w');
         for i = 1:length(mustUU_linear)
             fprintf(f, '%s\n', mustUU_linear{i});
         end
         fclose(f);
         cd(currentFolder);
-        
+
         if verbose
             fprintf(['MustUU set was printed in ' outputFileName '.txt  \n']);
             fprintf(['MustUU set was also printed in ' outputFileName '_Info.txt  \n']);
@@ -382,7 +383,7 @@ if printText
             fprintf(freport, ['\nMustUU set was printed in ' outputFileName '.txt  \n']);
             fprintf(freport, ['\nMustUU set was printed in ' outputFileName '_Info.txt  \n']);
         end
-        
+
     else
         if verbose; fprintf('No mustUU set was not found. Therefore, no plain text file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustUU set was not found. Therefore, no plain text file was generated\n'); end;
@@ -612,7 +613,7 @@ for i = 1:length(solutions)
     A_bl = [A_bl; zeros(1, n_rxns) sel_prev zeros(1, 7 * n_rxns + n_mets + 3)];
     b_bl =[b_bl; 1];
     csense_bl(end + 1) = 'L';
-    
+
     sel_prev = zeros(1, 2 * n_int);
     sel_prev(pos(2)) = 1;
     sel_prev(pos(1) + n_rxns) = 1;

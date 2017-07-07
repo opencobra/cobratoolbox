@@ -16,33 +16,33 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of Sv = b (usually zeros)
+%                         * .b -    RHS of `Sv = b` (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-%    minFluxesW:        Type: double array of size n_rxns x1
+%    minFluxesW:        Type: double array of size `n_rxns x 1`.
 %                       Description: Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%                       E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:        Type: double array of size n_rxns x1
+%                       function `FVAOptForce`.
+%                       E.g.: `minFluxesW = [-90; -56]`;
+%    maxFluxesW:        Type: double array of size `n_rxns x 1`
 %                       Description: Maximum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%    minFluxesM:        Type: double array of size n_rxns x1
+%                       function `FVAOptForce`.
+%    minFluxesM:        Type: double array of size `n_rxns x 1`.
 %                       Description: Minimum fluxes for each
 %                       reaction in the model for mutant strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%                       E.g.: minFluxesW = [-90; -56];
-%    maxFluxesM:        Type: double array of size n_rxns x1
+%                       function `FVAOptForce`.
+%                       E.g.: `minFluxesW = [-90; -56]`;
+%    maxFluxesM:        Type: double array of size `n_rxns x 1`.
 %                       Description: Maximum fluxes for each
 %                       reaction in the model for mutant strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%    constrOpt:         Type: Structure
+%                       function `FVAOptForce`.
+%    constrOpt:         Type: Structure.
 %                       Description: structure containing
 %                       additional contraints. Include here only
 %                       reactions whose flux is fixed, i.e.,
@@ -57,55 +57,55 @@ function saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxe
 %                         * .rxnList - Reaction list (cell array)
 %                         * .values -  Values for constrained
 %                           reactions (double array)
-%                           E.g.: struct('rxnList', ...
+%                           E.g.: `struct('rxnList', ...
 %                           {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                           'values', [-100, 0, 155.5]');
-%    excludedURxns:     Type: cell array
+%                           'values', [-100, 0, 155.5]');`
+%    excludedURxns:     Type: cell array.
 %                       Description: Reactions to be excluded from
 %                       upregulations. This could be used to avoid finding
 %                       transporters or exchange reactions in the set
-%    excludedLRxns:     Type: cell array
+%    excludedLRxns:     Type: cell array.
 %                       Description: Reactions to be excluded from
 %                       downregulations. This could be used to avoid
 %                       finding transporters or exchange reactions in the
 %                       set
-%    excludedKRxns:     Type: cell array
+%    excludedKRxns:     Type: cell array.
 %                       Description: Reactions to be excluded from
 %                       knockouts This could be used to avoid finding
 %                       transporters or exchange reactions in the set
-%   inputFolder:        Type: string.
+%    inputFolder:       Type: string.
 %                       Description: Folder where inputs for GAMS function
 %                       will be stored
 %
 % OUTPUTS:
-%    model.mat:         Type: file
+%    model.mat:         Type: file.
 %                       Description: File containing the model
-%    targetRxn.mat:     Type: file
+%    targetRxn.mat:     Type: file.
 %                       Description: File containing the target reaction
-%    mustU.mat:         Type: file
+%    mustU.mat:         Type: file.
 %                       Description: File containing mustU set
-%    mustL.mat:         Type: file
+%    mustL.mat:         Type: file.
 %                       Description: File containing mustL set
-%    minFluxesW.mat:    Type: file
+%    minFluxesW.mat:    Type: file.
 %                       Description: File containing the minimum fluxes for
 %                       the wild-type
-%    maxFluxes.mat:     Type: file
+%    maxFluxes.mat:     Type: file.
 %                       Description: File containing the maximum fluxes for
 %                       the wild-type
-%    minFluxesM.mat:    Type: file
+%    minFluxesM.mat:    Type: file.
 %                       Description: File containing the minimum fluxes for
 %                       the mutant
-%    maxFluxesM.mat:    Type: file
+%    maxFluxesM.mat:    Type: file.
 %                       Description: File containing the maximum fluxes for
 %                       the mutant
-%    k.mat:             Type: file
+%    k.mat:             Type: file.
 %                       Description: File containing "k" the number of
-%                       reactions in the optForce set
-%    nSets.mat:         Type: file
+%                       reactions in the `optForce` set
+%    nSets.mat:         Type: file.
 %                       Description: File containing the maximum number of
-%                       sets found by optForce
+%                       sets found by `optForce`
 %
-% .. Author: - Sebasti�n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 15 % input handling
     error('OptForce: All inputs must be specified. Please add empty array if needed.')
