@@ -377,7 +377,7 @@ while nSolsFound < nSets
     Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
     if Force.stat == 1
         nSolsFound = nSolsFound + 1;
-        if verbose; fprintf('set n� %1.0f was found\n', nSolsFound), end;
+        if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
         pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
         prev = cell(k, 1);
         flux = zeros(k, 1);
