@@ -60,9 +60,7 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-%% CODE
-%input handling
-if nargin < 5
+if nargin < 6 %input handling
     error('OptForce: All inputs must be specified when running exportInputsMustToGAMS')
 end
 
@@ -116,7 +114,8 @@ b.form = 'full';
 b.uels = {'EX_gluc','R75','EX_suc'};
 
 %Using GDXMRW to export inputs
-wgdx('MtoG', s, basemin, basemax, lb, ub, b)
+fileName = ['MtoG' setType];
+wgdx(fileName, s, basemin, basemax, lb, ub, b)
 
 cd(current);
 
