@@ -9,7 +9,8 @@
 %
 
 global CBTDIR
-CBTDIR = '/Users/jt/drive/code/cobratoolbox/'; 
+pth=which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 
 % status is 0 if failed, 1 when all scripts run successfully.
 status = 0 ; 
