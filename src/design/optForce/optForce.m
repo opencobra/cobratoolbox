@@ -227,11 +227,18 @@ hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(h
 parser.addParameter('runID', defaultRunID, @(x) ischar(x))
 parser.addParameter('outputFolder', 'OutputsOptForce', @(x) ischar(x))
 parser.addParameter('outputFileName', 'OptForce', @(x) ischar(x))
-parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+if strcmp(filesep,'\')
+    defaultPrintExcel = 1;
+else
+    defaultPrintExcel = 0;
+end
+parser.addParameter('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('loop', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('kMin', 1, @(x) isnumeric(x));
 
 parser.parse(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
 model = parser.Results.model;
@@ -254,6 +261,8 @@ printText = parser.Results.printText;
 printReport = parser.Results.printReport;
 keepInputs = parser.Results.keepInputs;
 verbose = parser.Results.verbose;
+loop = parser.Results.loop;
+kMin = parser.Results.kMin;
 
 % correct size of constrOpt
 if ~isempty(constrOpt.rxnList)
@@ -321,10 +330,10 @@ if printReport
     end
     %print excludad reactions
     fprintf(freport, '\nExcluded reactions:\n');
-        for i = 1:length(excludedRxns.rxnList)
-            fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
-                regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
-        end
+    for i = 1:length(excludedRxns.rxnList)
+        fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
+            regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+    end
     fprintf(freport, '\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
 
@@ -349,167 +358,350 @@ if ~isempty(excludedRxns)
     end
 end
 
-if keepInputs
-    %save inputs
-    inputFolder = [workingPath filesep 'InputsOptForce'];
-    saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
-    constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
-end
-% if the user wants to generate a report, print results.
-if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
-
-n_int=length(model.rxns);
-nSolsFound=0;
-solutions=cell(nSets,1);
-
-%initialize empty array for saving info related to optForce
-%sets
-optForceSets = cell(nSolsFound, k);
-posOptForceSets = zeros(size(optForceSets));
-fluxOptForceSets = zeros(size(optForceSets));
-typeRegOptForceSets = cell(nSolsFound, k);
-
-
-while nSolsFound < nSets
-
-    bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
-    % Solve problem
-    Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
-    if Force.stat == 1
-        nSolsFound = nSolsFound + 1;
-        if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
-        pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
-        prev = cell(k, 1);
-        flux = zeros(k, 1);
-        type = cell(k, 1);
-        pos = zeros(k, 1);
-        posbl = zeros(k, 1);
-        for i = 1:length(pos_bin)
-            posbl(i) = pos_bin(i);
-            if pos_bin(i) <= n_int
-                pos(i) = pos_bin(i);
-                prev(i) = model.rxns(pos_bin(i));
-                flux(i) = Force.cont(pos_bin(i));
-                type{i} = 'upregulation';
-            elseif pos_bin(i) <= 2 * n_int
-                pos(i) = pos_bin(i) - n_int;
-                prev(i) = model.rxns(pos_bin(i) - n_int);
-                flux(i) = Force.cont(pos_bin(i) - n_int);
-                type{i} = 'downregulation';
+if loop % if k = kMin:k
+    % if the user wants to generate a report, print results.
+    if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
+    
+    noSolution = 1;
+    currentK = kMin;
+    
+    while noSolution && currentK <= k
+        
+        if keepInputs
+            %save inputs
+            inputFolder = [workingPath filesep 'InputsOptForce_k' num2str(currentK)];
+            saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
+                constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
+        end
+        
+        n_int=length(model.rxns);
+        nSolsFound=0;
+        solutions=cell(nSets,1);
+        
+        %initialize empty array for saving info related to optForce
+        %sets
+        optForceSets = cell(nSolsFound, k);
+        posOptForceSets = zeros(size(optForceSets));
+        fluxOptForceSets = zeros(size(optForceSets));
+        typeRegOptForceSets = cell(nSolsFound, k);
+        
+        
+        while nSolsFound < nSets
+            
+            bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
+            % Solve problem
+            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+            if Force.stat == 1
+                nSolsFound = nSolsFound + 1;
+                if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+                pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
+                prev = cell(k, 1);
+                flux = zeros(k, 1);
+                type = cell(k, 1);
+                pos = zeros(k, 1);
+                posbl = zeros(k, 1);
+                for i = 1:length(pos_bin)
+                    posbl(i) = pos_bin(i);
+                    if pos_bin(i) <= n_int
+                        pos(i) = pos_bin(i);
+                        prev(i) = model.rxns(pos_bin(i));
+                        flux(i) = Force.cont(pos_bin(i));
+                        type{i} = 'upregulation';
+                    elseif pos_bin(i) <= 2 * n_int
+                        pos(i) = pos_bin(i) - n_int;
+                        prev(i) = model.rxns(pos_bin(i) - n_int);
+                        flux(i) = Force.cont(pos_bin(i) - n_int);
+                        type{i} = 'downregulation';
+                    else
+                        pos(i) = pos_bin(i) - 2 * n_int;
+                        prev(i) = model.rxns(pos_bin(i) - 2 * n_int);
+                        flux(i) = Force.cont(pos_bin(i) - 2 * n_int);
+                        type{i} = 'knockout';
+                    end
+                end
+                
+                solution.reactions = prev;
+                solution.type = type;
+                solution.pos = pos;
+                solution.posbl = posbl;
+                solution.flux = flux;
+                solution.obj = Force.obj;
+                [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
+                solution.growth = maxGrowthRate;
+                solution.minTarget = minTarget;
+                solution.maxTarget = maxTarget;
+                solutions{nSolsFound} = solution;
             else
-                pos(i) = pos_bin(i) - 2 * n_int;
-                prev(i) = model.rxns(pos_bin(i) - 2 * n_int);
-                flux(i) = Force.cont(pos_bin(i) - 2 * n_int);
-                type{i} = 'knockout';
+                break;
             end
         end
-
-        solution.reactions = prev;
-        solution.type = type;
-        solution.pos = pos;
-        solution.posbl = posbl;
-        solution.flux = flux;
-        solution.obj = Force.obj;
-        [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
-        solution.growth = maxGrowthRate;
-        solution.minTarget = minTarget;
-        solution.maxTarget = maxTarget;
-        solutions{nSolsFound} = solution;
-    else
-        break;
+        
+        if nSolsFound > 0
+            % a solution was found so this ends the loop
+            noSolution = 0;
+            
+            if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
+            if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
+            
+            for i = 1:nSolsFound
+                %incorporte info of set i into general matrices.
+                optForceSets(i,:) = solutions{i}.reactions;
+                posOptForceSets(i,:) = solutions{i}.pos;
+                typeRegOptForceSets(i,:) = solutions{i}.type;
+                fluxOptForceSets(i,:) = solutions{i}.flux;
+            end
+            
+            outputFolderK = [outputFolder '_k' num2str(currentK)];
+            outputFileNameK = [outputFileName '_k' num2str(currentK)];
+            
+            % print info into an excel file if required by the user
+            if printExcel && ~isunix
+                
+                if ~isdir(outputFolderK); mkdir(outputFolderK); end;
+                cd(outputFolderK);
+                Info = cell( 2 * nSolsFound + 1, 11);
+                Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},{'Min flux in Wild Type (mmol/gDW hr)'},{'Max flux in Wild Type (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},{'Objective function (mmol/gDW hr)'},{'Minimum guaranteed for target (mmol/gDW hr)'},{'Maximum guaranteed for target (mmol/gDW hr)'},{'Maximum growth rate (1/hr)'}];
+                for i=1:nSolsFound
+                    Info(k * (i - 1) + 2:k * (i) + 1,:) = [[{k}; cell(k-1,1)], [{i};cell(k-1,1)], solutions{i}.reactions solutions{i}.type num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos)) num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
+                end
+                xlswrite(outputFileNameK,Info)
+                cd([workingPath '/' runID]);
+                if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
+                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
+            end
+            
+            if printText
+                if ~isdir(outputFolderK); mkdir(outputFolderK); end;
+                cd(outputFolderK);
+                f = fopen([outputFileNameK '.txt'],'w');
+                fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+                for i=1:nSolsFound
+                    sols = strjoin(solutions{i}.reactions', ', ');
+                    type = strjoin(solutions{i}.type', ', ');
+                    min_str = cell(1, k);
+                    max_str = cell(1, k);
+                    flux_str = cell(1, k);
+                    min = minFluxesM(solutions{i}.pos);
+                    max = maxFluxesM(solutions{i}.pos);
+                    flux = solutions{i}.flux;
+                    for j = 1:k
+                        min_str{j} = num2str(min(j));
+                        max_str{j} = num2str(max(j));
+                        flux_str{j} = num2str(flux(j));
+                    end
+                    MinFlux = strjoin(min_str, ', ');
+                    MaxFlux = strjoin(max_str, ', ');
+                    achieved = strjoin(flux_str, ', ');
+                    fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
+                        MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+                end
+                fclose(f);
+                cd(runID);
+                if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
+                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
+            end
+            
+            %close file for saving report
+            if printReport; fclose(freport); end;            
+            cd(workingPath);
+            
+        else
+            %in case that none set was found, initialize empty arrays
+            if printReport
+                fprintf(freport, '\n optForce did not find any set using k = %1.0f \n', currentK);
+                if currentK < k -1
+                    fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
+                end
+            end
+            if verbose
+                fprintf('\n optForce did not find any set using k = %1.0f \n', currentK); 
+                if currentK < k -1
+                    fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
+                end                
+            end
+            
+            currentK = currentK + 1;
+            if currentK > k
+                optForceSets = {};
+                posOptForceSets = [];
+                typeRegOptForceSets = {};
+                fluxOptForceSets=[];
+            end
+            
+        end
+               
     end
-end
-
-if nSolsFound > 0
-    if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
-    if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
-
-    for i = 1:nSolsFound
-        %incorporte info of set i into general matrices.
-        optForceSets(i,:) = solutions{i}.reactions;
-        posOptForceSets(i,:) = solutions{i}.pos;
-        typeRegOptForceSets(i,:) = solutions{i}.type;
-        fluxOptForceSets(i,:) = solutions{i}.flux;
+    
+    if noSolution
+        %close file for saving report
+        if printReport; fclose(freport); end;
+        cd(workingPath);
     end
+    
 else
-    %in case that none set was found, initialize empty arrays
-    if printReport; fprintf(freport, '\n optForce did not find any set \n'); end;
-    if verbose; fprintf('\n optForce did not find any set \n'); end;
-    optForceSets = {};
-    posOptForceSets = [];
-    typeRegOptForceSets = {};
-    fluxOptForceSets=[];
-
-end
-
-%initialize name for files in which information will be printed
-hour = clock;
-if isempty(outputFileName);
-    outputFileName = ['optForceSolution-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-end
-
-% print info into an excel file if required by the user
-if printExcel && ~isunix
-    if nSolsFound > 0
-        if ~isdir(outputFolder); mkdir(outputFolder); end;
-        cd(outputFolder);
-        Info = cell( 2 * nSolsFound + 1, 11);
-        Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},{'Min flux in Wild Type (mmol/gDW hr)'},{'Max flux in Wild Type (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},{'Objective function (mmol/gDW hr)'},{'Minimum guaranteed for target (mmol/gDW hr)'},{'Maximum guaranteed for target (mmol/gDW hr)'},{'Maximum growth rate (1/hr)'}];
-        for i=1:nSolsFound
-            Info(k * (i - 1) + 2:k * (i) + 1,:) = [[{k}; cell(k-1,1)], [{i};cell(k-1,1)], solutions{i}.reactions solutions{i}.type num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos)) num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
-        end
-        xlswrite(outputFileName,Info)
-        cd([workingPath '/' runID]);
-        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
-        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
-    else
-        if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no excel file was generated\n'); end;
-        if verbose; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
+    
+    if keepInputs
+        %save inputs
+        inputFolder = [workingPath filesep 'InputsOptForce'];
+        saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
+            constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
     end
-end
+    % if the user wants to generate a report, print results.
+    if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
+    
+    n_int=length(model.rxns);
+    nSolsFound=0;
+    solutions=cell(nSets,1);
+    
+    %initialize empty array for saving info related to optForce
+    %sets
+    optForceSets = cell(nSolsFound, k);
+    posOptForceSets = zeros(size(optForceSets));
+    fluxOptForceSets = zeros(size(optForceSets));
+    typeRegOptForceSets = cell(nSolsFound, k);
+    
+    
+    while nSolsFound < nSets
 
-% print info into a plain text file if required by the user
-if printText
-    if nSolsFound > 0
-        if ~isdir(outputFolder); mkdir(outputFolder); end;
-        cd(outputFolder);
-        f = fopen([outputFileName '.txt'],'w');
-        fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
-        for i=1:nSolsFound
-            sols = strjoin(solutions{i}.reactions', ', ');
-            type = strjoin(solutions{i}.type', ', ');
-            min_str = cell(1, k);
-            max_str = cell(1, k);
-            flux_str = cell(1, k);
-            min = minFluxesM(solutions{i}.pos);
-            max = maxFluxesM(solutions{i}.pos);
-            flux = solutions{i}.flux;
-            for j = 1:k
-                min_str{j} = num2str(min(j));
-                max_str{j} = num2str(max(j));
-                flux_str{j} = num2str(flux(j));
+        bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
+        % Solve problem
+        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+        if Force.stat == 1
+            nSolsFound = nSolsFound + 1;
+            if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+            pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
+            prev = cell(k, 1);
+            flux = zeros(k, 1);
+            type = cell(k, 1);
+            pos = zeros(k, 1);
+            posbl = zeros(k, 1);
+            for i = 1:length(pos_bin)
+                posbl(i) = pos_bin(i);
+                if pos_bin(i) <= n_int
+                    pos(i) = pos_bin(i);
+                    prev(i) = model.rxns(pos_bin(i));
+                    flux(i) = Force.cont(pos_bin(i));
+                    type{i} = 'upregulation';
+                elseif pos_bin(i) <= 2 * n_int
+                    pos(i) = pos_bin(i) - n_int;
+                    prev(i) = model.rxns(pos_bin(i) - n_int);
+                    flux(i) = Force.cont(pos_bin(i) - n_int);
+                    type{i} = 'downregulation';
+                else
+                    pos(i) = pos_bin(i) - 2 * n_int;
+                    prev(i) = model.rxns(pos_bin(i) - 2 * n_int);
+                    flux(i) = Force.cont(pos_bin(i) - 2 * n_int);
+                    type{i} = 'knockout';
+                end
             end
-            MinFlux = strjoin(min_str, ', ');
-            MaxFlux = strjoin(max_str, ', ');
-            achieved = strjoin(flux_str, ', ');
-            fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
-                MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+
+            solution.reactions = prev;
+            solution.type = type;
+            solution.pos = pos;
+            solution.posbl = posbl;
+            solution.flux = flux;
+            solution.obj = Force.obj;
+            [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
+            solution.growth = maxGrowthRate;
+            solution.minTarget = minTarget;
+            solution.maxTarget = maxTarget;
+            solutions{nSolsFound} = solution;
+        else
+            break;
         end
-        fclose(f);
-        cd(runID);
-        if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
-        if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
-    else
-        if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
-        if verbose; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
     end
+    
+    if nSolsFound > 0
+        if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
+        if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
+
+        for i = 1:nSolsFound
+            %incorporte info of set i into general matrices.
+            optForceSets(i,:) = solutions{i}.reactions;
+            posOptForceSets(i,:) = solutions{i}.pos;
+            typeRegOptForceSets(i,:) = solutions{i}.type;
+            fluxOptForceSets(i,:) = solutions{i}.flux;
+        end
+    else
+        %in case that none set was found, initialize empty arrays
+        if printReport; fprintf(freport, '\n optForce did not find any set \n'); end;
+        if verbose; fprintf('\n optForce did not find any set \n'); end;
+        optForceSets = {};
+        posOptForceSets = [];
+        typeRegOptForceSets = {};
+        fluxOptForceSets=[];
+
+    end
+    
+    %initialize name for files in which information will be printed
+    hour = clock;
+    if isempty(outputFileName);
+        outputFileName = ['optForceSolution-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+    end
+    
+    % print info into an excel file if required by the user
+    if printExcel && ~isunix
+        if nSolsFound > 0
+            if ~isdir(outputFolder); mkdir(outputFolder); end;
+            cd(outputFolder);
+            Info = cell( 2 * nSolsFound + 1, 11);
+            Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},{'Min flux in Wild Type (mmol/gDW hr)'},{'Max flux in Wild Type (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},{'Objective function (mmol/gDW hr)'},{'Minimum guaranteed for target (mmol/gDW hr)'},{'Maximum guaranteed for target (mmol/gDW hr)'},{'Maximum growth rate (1/hr)'}];
+            for i=1:nSolsFound
+                Info(k * (i - 1) + 2:k * (i) + 1,:) = [[{k}; cell(k-1,1)], [{i};cell(k-1,1)], solutions{i}.reactions solutions{i}.type num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos)) num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
+            end
+            xlswrite(outputFileName,Info)
+            cd([workingPath '/' runID]);
+            if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
+            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
+        else
+            if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no excel file was generated\n'); end;
+            if verbose; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
+        end
+    end
+    
+    % print info into a plain text file if required by the user
+    if printText
+        if nSolsFound > 0
+            if ~isdir(outputFolder); mkdir(outputFolder); end;
+            cd(outputFolder);
+            f = fopen([outputFileName '.txt'],'w');
+            fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+            for i=1:nSolsFound
+                sols = strjoin(solutions{i}.reactions', ', ');
+                type = strjoin(solutions{i}.type', ', ');
+                min_str = cell(1, k);
+                max_str = cell(1, k);
+                flux_str = cell(1, k);
+                min = minFluxesM(solutions{i}.pos);
+                max = maxFluxesM(solutions{i}.pos);
+                flux = solutions{i}.flux;
+                for j = 1:k
+                    min_str{j} = num2str(min(j));
+                    max_str{j} = num2str(max(j));
+                    flux_str{j} = num2str(flux(j));
+                end
+                MinFlux = strjoin(min_str, ', ');
+                MaxFlux = strjoin(max_str, ', ');
+                achieved = strjoin(flux_str, ', ');
+                fprintf(f, '%1.0f\t%1.0f\t{%s}\t{%s}\t{%s}\t{%s}\t{%s}\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', k, i, sols, type, MinFlux,...
+                    MaxFlux, achieved, solutions{i}.obj, solutions{i}.minTarget, solutions{i}.maxTarget, solutions{i}.growth);
+            end
+            fclose(f);
+            cd(runID);
+            if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
+            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
+        else
+            if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
+            if verbose; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
+        end
+    end
+    
+    %close file for saving report
+    if printReport; fclose(freport); end;
+    if printReport; movefile(reportFileName, outputFolder); end;
+    
+    cd(workingPath);
 end
-
-%close file for saving report
-if printReport; fclose(freport); end;
-if printReport; movefile(reportFileName, outputFolder); end;
-
-cd(workingPath);
 
 end
 
