@@ -25,9 +25,8 @@ function [] = exportSetToGAMS(set, fileName)
 %    Reactions.txt
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
-%% CODE
-%input handling
-if nargin > 2
+
+if nargin > 2  %input handling
     error('All inputs for the function exportSetToGAMS must be specified');
 end
 
