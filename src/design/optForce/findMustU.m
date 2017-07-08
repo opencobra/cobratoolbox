@@ -187,7 +187,7 @@ if exist(runID, 'dir')~=7
     mkdir(runID);
 end
 cd(runID);
-outputFolder = [workingPath filesep outputFolder];
+outputFolder = [runID filesep outputFolder];
 
 % if the user wants to generate a report.
 if printReport
@@ -232,8 +232,8 @@ if printReport
 end
 
 % export inputs for running the optimization problem to find the MustU Set
-inputFolder = [workingPath filesep 'InputsMustU'];
-saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder);
+inputFolder = [runID filesep 'InputsMustU'];
+saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt, inputFolder);
 
 % create a directory to save results if this don't exist
 if ~exist(outputFolder, 'dir')

@@ -1,4 +1,4 @@
-function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
+function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 % This function saves all the inputs needed to run functions to find first
 % order Must Sets (MustU, Must L) The inputs will be stored in
 % inputFolder.
