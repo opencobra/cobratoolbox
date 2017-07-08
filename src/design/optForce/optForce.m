@@ -413,7 +413,7 @@ if loop % if k = kMin:k
                 solution.posbl = posbl;
                 solution.flux = flux;
                 solution.obj = Force.obj;
-                [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution);
+                [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution);
                 solution.growth = maxGrowthRate;
                 solution.minTarget = minTarget;
                 solution.maxTarget = maxTarget;
@@ -603,7 +603,7 @@ else
             solution.posbl = posbl;
             solution.flux = flux;
             solution.obj = Force.obj;
-            [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, biomassRxn, solution);
+            [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, biomassRxn, solution);
             solution.growth = maxGrowthRate;
             solution.minTarget = minTarget;
             solution.maxTarget = maxTarget;
