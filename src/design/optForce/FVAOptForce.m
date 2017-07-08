@@ -8,8 +8,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %         [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FVAOptForce(model, constrWT, constrMT)
 %
 % INPUTS:
-%    model:         Type: structure (COBRA model)
-%                   Description: a metabolic model with at least
+%    model:         (structure) COBRA metabolic model with at least
 %                   the following fields:
 %
 %                     * .rxns - Reaction IDs in the model
@@ -19,8 +18,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                     * .c -    Objective coefficients
 %                     * .lb -   Lower bounds for fluxes
 %                     * .ub -   Upper bounds for fluxes
-%    constrW:       Type: structure
-%                   Description: structure containing contraints
+%    constrW:       (structure) structure containing contraints
 %                   for the wild-type strain. The structure has
 %                   the following fields:
 %
@@ -31,10 +29,8 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
 %                       E.g.: constrW=struct('rxnList', {{'R75'; 'EX_suc'}}, ...
 %                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
-%    constrM:       Type: structure
-%                   Description: structure containing contraints
-%                   for the mutant strain
-%                   The structure has the following:
+%    constrM:       (structure) structure containing contraints
+%                   for the mutant strain. The structure has the following:
 %                   fields:
 %
 %                     * .rxnList -      Reaction list (cell array)
@@ -46,41 +42,34 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
 %
 % OUTPUTS:
-%    minFluxesW:    Type: double array.
-%                   Description: minimum values for reactions in
+%    minFluxesW:    (double array) minimum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    maxFluxesW:    Type: double array.
-%                   Description: maximum values for reactions in
+%    maxFluxesW:    (double array) maximum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    minFluxesM:    Type: double array.
-%                   Description: minimum values for reactions in
+%    minFluxesM:    (double array) minimum values for reactions in
 %                   the mutant strain. It has dimensions
 %                   (number of reactions) x 1
-%    maxFluxesM:    Type: double array.
-%                   Description: minimum values for reactions in
+%    maxFluxesM:    (double array) minimum values for reactions in
 %                   the wild-type strain. It has dimensions
 %                   (number of reactions) x 1
-%    boundsW:       Type: cell array.
-%                   Description: bounds given by the minimum and
+%    boundsW:       (cell array) bounds given by the minimum and
 %                   maximum values for reactions in the wild-type
 %                   strain. The reaction IDs are in the first
 %                   column, the minimun values in the second and
 %                   the maximum values in the third. It has
 %                   dimensions (number of reactions) x 3
-%    boundsM:       Type: cell array.
-%                   Description: bounds given by the minimum and
+%    boundsM:       (cell array) bounds given by the minimum and
 %                   maximum values for reactions in the mutant
 %                   strain. The reaction IDs are in the first
 %                   column, the minimun values in the second and
 %                   the maximum values in the third. It has
 %                   dimensions (number of reactions) x 3
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-% Inputs handling
-if nargin < 1 || isempty(model)
+if nargin < 1 || isempty(model) % Inputs handling
     error('OptForce: No model specified');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
@@ -93,21 +82,21 @@ else
 end
 
 if (nargin < 2 || isempty(constrW)) || (nargin < 3 || isempty(constrM))
-    error('OptForce: You should specify constraints for at least one strain'); 
+    error('OptForce: You should specify constraints for at least one strain');
 end
 
 if nargin < 2 || isempty(constrW)
     constrW.rxnList = {};
 else
-    
+
     % check class for constrW
     if ~isstruct(constrW); error('OptForce: Incorrect format for input constrW. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrW,'rxnList'), error('OptForce: Missing field rxnList in constrW');  end
     if ~isfield(constrW,'rxnValues'), error('OptForce: Missing field rxnValues in constrW');  end
     if ~isfield(constrW,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrW');  end
-    
+
     % check correct length for fields
     if length(constrW.rxnList) == length(constrW.rxnValues) && length(constrW.rxnList) == length(constrW.rxnBoundType)
         if size(constrW.rxnList,1) > size(constrW.rxnList,2); constrW.rxnList = constrW.rxnList'; end;
@@ -116,7 +105,7 @@ else
     else
         error('OptForce: Incorrect size of fields in constrW');
     end
-    
+
 end
 
 if nargin < 3 || isempty(constrM)
@@ -124,12 +113,12 @@ if nargin < 3 || isempty(constrM)
 else
     % check class for constrW
     if ~isstruct(constrM); error('OptForce: Incorrect format for input constrM. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrM,'rxnList'), error('OptForce: Missing field rxnList in constrM');  end
     if ~isfield(constrM,'rxnValues'), error('OptForce: Missing field rxnValues in constrM');  end
     if ~isfield(constrM,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrM');  end
-    
+
     % check correct length for fields
     if length(constrM.rxnList) == length(constrM.rxnValues) && length(constrM.rxnList) == length(constrM.rxnBoundType)
         if size(constrM.rxnList,1) > size(constrM.rxnList,2); constrM.rxnList = constrM.rxnList'; end;
