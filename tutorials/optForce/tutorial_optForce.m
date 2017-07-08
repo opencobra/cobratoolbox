@@ -1,5 +1,5 @@
 %% OptForce Tutorial
-%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% Author: Sebasti?n N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
 %% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group)*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
@@ -34,7 +34,7 @@
 % 4) Find must sets,  i.e, reactions that MUST increase or decrease their 
 % flux in order to achieve the phenotype in the mutant strain. 
 %% Figure 1.
-%  
+% 
 % 
 % 5) Find the interventions needed that will ensure a increased production 
 % of the target of interest
@@ -101,8 +101,7 @@ fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
 % 
 % Then, we change the objective function to maximize biomass ("R75"). We 
 % also change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
-% sulfate, ammomium, citrate and glycerol. Finally, we change the reversibility 
-% flag because these reactions are now reversible
+% sulfate, ammomium, citrate and glycerol. 
 % 
 % We define constraints for each strain
 
@@ -417,7 +416,7 @@ disp(optForceSets)
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. 
 % PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.
 % 
-% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, 
+% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna Gonz?lez-Lergier, 
 % Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary 
 % system: Fed-batch fermentation of a high yielding strain of E. coli producing 
 % 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, 
