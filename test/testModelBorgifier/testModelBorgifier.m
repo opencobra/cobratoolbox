@@ -8,15 +8,15 @@
 %     - Original File: JT Sauls June 21 2017
 %
 
+% save the current path
+currentDir = pwd;
+
 global CBTDIR
 pth=which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 
 % status is 0 if failed, 1 when all scripts run successfully.
 status = 0 ; 
-
-% save the current path
-currentDir = pwd;
 
 % initialize the test
 cd(fileparts(which('testModelBorgifier.m')));
