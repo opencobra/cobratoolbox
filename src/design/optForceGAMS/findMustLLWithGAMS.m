@@ -1,5 +1,5 @@
 function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
-% This function runs the second step of optForce, that is to solve a
+% This function runs the second step of `optForce`, that is to solve a
 % bilevel mixed integer linear programming problem to find a second order
 % MustLL set.
 %
@@ -8,32 +8,32 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %    [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
-%    model:                     Type: structure (COBRA model)
+%    model:                     Type: structure (COBRA model).
 %                               Description: a metabolic model with at least
 %                               the following fields:
 %
 %                                 * .rxns - Reaction IDs in the model
 %                                 * .mets - Metabolite IDs in the model
 %                                 * .S -    Stoichiometric matrix (sparse)
-%                                 * .b -    RHS of Sv = b (usually zeros)
+%                                 * .b -    RHS of `Sv = b` (usually zeros)
 %                                 * .c -    Objective coefficients
 %                                 * .lb -   Lower bounds for fluxes
 %                                 * .ub -   Upper bounds for fluxes
-%    minFluxesW:                Type: double array of size n_rxns x1
+%    minFluxesW:                Type: double array of size `n_rxns x 1`.
 %                               Description: Minimum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
-%                               function FVAOptForce.
-%                               E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:                Type: double array of size n_rxns x1
+%                               function `FVAOptForce`.
+%                               E.g.: `minFluxesW = [-90; -56];`
+%    maxFluxesW:                Type: double array of size `n_rxns x 1`.
 %                               Description: Maximum fluxes for each
 %                               reaction in the model for wild-type strain.
 %                               This can be obtained by running the
-%                               function FVA_optForce.
-%                               E.g.: maxFluxesW = [90; 56];
+%                               function `FVA_optForce`.
+%                               E.g.: `maxFluxesW = [90; 56];`
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                 Type: Structure
+%    constrOpt:                 Type: Structure.
 %                               Description: structure containing
 %                               additional contraints. Include here only
 %                               reactions whose flux is fixed, i.e.,
@@ -46,55 +46,55 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               fields:
 %
 %                                 * .rxnList - Reaction list (cell array)
-%                                 * .values -  Values for constrained 
+%                                 * .values -  Values for constrained
 %                                   reactions (double array)
-%                                   E.g.: struct('rxnList', ...
+%                                   E.g.: `struct('rxnList', ...
 %                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]'); 
-%    excludedRxns:              Type: cell array
+%                                   'values', [-100, 0, 155.5]');`
+%    excludedRxns:              Type: cell array.
 %                               Description: Reactions to be excluded to
 %                               the MustLL set. This could be used to avoid
 %                               finding transporters or exchange reactions
-%                               in the set. 
+%                               in the set.
 %                               Default: empty.
-%    mustSetFirstOrder:         Type: cell array
+%    mustSetFirstOrder:         Type: cell array.
 %                               Description: Reactions that belong to MustU
-%                               and MustL (first order sets). 
+%                               and MustL (first order sets).
 %                               Default: empty.
-%    solverName:                Type: string
+%    solverName:                Type: string.
 %                               Description: Name of the solver used in
-%                               GAMS. 
+%                               GAMS.
 %                               Default: 'cplex'.
-%    runID:                     Type: string
+%    runID:                     Type: string.
 %                               Description: ID for identifying this run.
 %                               Default: ['run' date hour].
-%    outputFolder:              Type: string
+%    outputFolder:              Type: string.
 %                               Description: name for folder in which
 %                               results will be stored.
 %                               Default: 'OutputsFindMustLL'.
-%    outputFileName:            Type: string
+%    outputFileName:            Type: string.
 %                               Description: name for files in which
-%                               results. will be stored
+%                               results will be stored.
 %                               Default: 'MustLLSet'.
 %    printExcel:                Type: double
 %                               Description: boolean to describe wheter
 %                               data must be printed in an excel file or
 %                               not.
 %                               Default: 1
-%    printText:                 Type: double
+%    printText:                 Type: double.
 %                               Description: boolean to describe wheter
 %                               data must be printed in an plaint text file
 %                               or not.
 %                               Default: 1
-%    printReport:               Type: double
+%    printReport:               Type: double.
 %                               Description: 1 to generate a report in a
 %                               plain text file. 0 otherwise.
 %                               Default: 1
 %    keepInputs:                Type: double
 %                               Description: 1 to mantain folder with
-%                               inputs to run findMustLL.gms. 0 otherwise.
+%                               inputs to run `findMustLL.gms`. 0 otherwise.
 %                               Default: 1
-%    keepGamsOutputs:           Type: double
+%    keepGamsOutputs:           Type: double.
 %                               Description: 1 to mantain files returned by
 %                               findMustLL.gms. 0 otherwise.
 %                               Default: 1
@@ -103,43 +103,43 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               0 otherwise.
 %                               Default: 0
 %
-% OUTPUTS: 
-%    mustLL:                    Type: cell array
+% OUTPUTS:
+%    mustLL:                    Type: cell array.
 %                               Size: number of sets found X 2.
 %                               Description: Cell array containing the
 %                               reactions IDs which belong to the MustLL
 %                               set. Each row contain a couple of reactions
 %                               that must decrease their flux.
-%    pos_mustLL:                Type: double array
+%    pos_mustLL:                Type: double array.
 %                               Size: number of sets found X 2.
 %                               Description: double array containing the
-%                               positions of each reaction in mustLL with
-%                               regard to model.rxns
-%    mustLL_linear:             Type: cell array
+%                               positions of each reaction in `mustLL` with
+%                               regard to `model.rxns`
+%    mustLL_linear:             Type: cell array.
 %                               Size: number of unique reactions found X 1
 %                               Description: Cell array containing the
 %                               unique reactions ID which belong to the
 %                               MustLL Set
-%    pos_mustLL_linear:         Type: double array
+%    pos_mustLL_linear:         Type: double array.
 %                               Size: number of unique reactions found X 1
 %                               Description: double array containing
-%                               positions for reactions in mustLL_linear.
+%                               positions for reactions in `mustLL_linear`.
 %                               with regard to model.rxns
 %    outputFileName.xls         Type: file.
 %                               Description: File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
-%                               the user entered printExcel = 1. Note that
+%                               the user entered `printExcel = 1`. Note that
 %                               the user can choose the name of this file
-%                               entering the input outputFileName =
+%                               entering the input `outputFileName` =
 %                               'PutYourOwnFileNameHere';
 %    outputFileName.txt         Type: file.
 %                               Description: File containing one column
 %                               array with identifiers for reactions in
 %                               MustLL. This file will only be generated if
-%                               the user entered printText = 1. Note that
+%                               the user entered `printText = 1`. Note that
 %                               the user can choose the name of this file
-%                               entering the input outputFileName =
+%                               entering the input `outputFileName` =
 %                               'PutYourOwnFileNameHere';
 %    outputFileName_Info.xls    Type: file.
 %                               Description: File containing one column
@@ -147,9 +147,9 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               couple of reactions. Each couple of reaction
 %                               was found in one iteration of
 %                               FindMustLL.gms. This file will only be
-%                               generated if the user entered printExcel =
-%                               1. Note that the user can choose the name of
-%                               this file entering the input outputFileName
+%                               generated if the user entered `printExcel =
+%                               1`. Note that the user can choose the name of
+%                               this file entering the input `outputFileName`
 %                               = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.txt    Type: file.
 %                               Description: File containing one column
@@ -157,9 +157,9 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               couple of reactions. Each couple of reaction
 %                               was found in one iteration of
 %                               FindMustLL.gms. This file will only be
-%                               generated if the user entered printText = 1.
+%                               generated if the user entered `printText = 1`.
 %                               Note that the user can choose the name of
-%                               this file entering the input outputFileName
+%                               this file entering the input `outputFileName`
 %                               = 'PutYourOwnFileNameHere';
 %    findMustLL.lst             Type: file.
 %                               Description: file autogenerated by GAMS. It
@@ -168,38 +168,39 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %                               about the running (values at each
 %                               iteration). This file only will be saved in
 %                               the output folder is the user entered
-%                               keepGamsOutputs = 1
+%                               `keepGamsOutputs = 1`
 %    GtoMLL.gdx                 Type: file
 %                               Description: file containing values for
 %                               variables, parameters, etc. which were found
-%                               by GAMS when solving findMustLL.gms. This
+%                               by GAMS when solving `findMustLL.gms`. This
 %                               file only will be saved in the output folder
-%                               is the user entered keepInputs = 1
+%                               is the user entered `keepInputs = 1`
 %
-% NOTE: 
+% NOTE:
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'excludedRxns', 'mustSetFirstOrder', 'solverName', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'keepGamsOutputs', 'verbose'};
 
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+
     tempargin = cell(1,2*(numel(varargin)));
     for i = 1:numel(varargin)
-        
+
         tempargin{2*(i-1)+1} = optionalParameters{i};
         tempargin{2*(i-1)+2} = varargin{i};
     end
     varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -214,7 +215,7 @@ parser.addParameter('excludedRxns', {}, @(x) iscell(x) && length(intersect(x, mo
 parser.addParameter('mustSetFirstOrder', {}, @(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
 solvers = checkGAMSSolvers('MIP');
 if isempty(solvers)
-    error('there is no GAMS solvers available to solve Mixed Integer Programming problems') ; 
+    error('there is no GAMS solvers available to solve Mixed Integer Programming problems') ;
 else
     if ismember('cplex', lower(solvers))
         defaultSolverName = 'cplex';
@@ -241,8 +242,8 @@ minFluxesW = parser.Results.minFluxesW;
 maxFluxesW = parser.Results.maxFluxesW;
 constrOpt= parser.Results.constrOpt;
 excludedRxns= parser.Results.excludedRxns;
-mustSetFirstOrder = parser.Results.mustSetFirstOrder; 
-solverName = parser.Results.solverName; 
+mustSetFirstOrder = parser.Results.mustSetFirstOrder;
+solverName = parser.Results.solverName;
 runID = parser.Results.runID;
 outputFolder = parser.Results.outputFolder;
 outputFileName = parser.Results.outputFileName;
