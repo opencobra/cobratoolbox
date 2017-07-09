@@ -126,7 +126,7 @@ function [mustUL, posMustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(mode
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
-%                                one iteration of FindMustUL.gms. This file will
+%                                one iteration of `FindMustUL.gms`. This file will
 %                                only be generated if the user entered
 %                                `printExcel = 1`. Note that the user can choose
 %                                the name of this file entering the input

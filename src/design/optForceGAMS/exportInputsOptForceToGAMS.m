@@ -1,5 +1,5 @@
 function exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
-% This function export the inputs required by GAMS to run 1optForce1. Some
+% This function export the inputs required by GAMS to run `optForce`. Some
 % inputs will be exported to plain text (.txt files) and others will be
 % exported using GDXMRW. Inputs will be stored in inputFolder
 %

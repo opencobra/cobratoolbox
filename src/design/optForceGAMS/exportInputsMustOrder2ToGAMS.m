@@ -76,11 +76,11 @@ function exportInputsMustOrder2ToGAMS(model, setType, minFluxesW, maxFluxesW, co
 %                             reactions will not be considered in when
 %                             running `findMustXX.gms` (`XX = UU` or `LL` or `UL`
 %                             depending on the case)
-%   MustSetFirstOrder.txt:    Type: file.
+%    MustSetFirstOrder.txt:   Type: file.
 %                             Description: File containing the
 %                             identifiers for reactions in MustL and
 %                             MustU
-%   MtoG.gdx:                 Type: file.
+%    MtoG.gdx:                Type: file.
 %                             Description: File containing the
 %                             parameters which will be read by GAMS
 %                             (lower bounds, upper bounds, stoichiometrix

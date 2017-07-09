@@ -40,7 +40,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            Description: Minimum fluxes for each
 %                            reaction in the model for wild-type strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
+%                            function `FVAOptForce`.
 %                            E.g.: `minFluxesW = [-90; -56]`;
 %    maxFluxesW:             Type: double array of size `n_rxns x 1`.
 %                            Description: Maximum fluxes for each
@@ -137,11 +137,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            Default: 1
 %    keepInputs:             Type: double.
 %                            Description: 1 to mantain folder with
-%                            inputs to run findMustLL.gms. 0 otherwise.
+%                            inputs to run `findMustLL.gms`. 0 otherwise.
 %                            Default: 1
 %    keepGamsOutputs:        Type: double.
 %                            Description: 1 to mantain files returned by
-%                            findMustLL.gms. 0 otherwise.
+%                            `findMustLL.gms`. 0 otherwise.
 %                            Default: 1
 %    verbose:                Type: double.
 %                            Description: 1 to print results in console.
@@ -194,22 +194,22 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            achieved for the reaction in `optForceSets(i,j)`
 %    outputFileName.xls:     Type: file.
 %                            Description: file containing 11 columns.
-%                            C1: Number of invervetions (k)
-%                            C2: Set Number
-%                            C3: Identifiers for reactions in the force set
+%                            C1: Number of invervetions (`k`),
+%                            C2: Set Number,
+%                            C3: Identifiers for reactions in the force set,
 %                            C4: Type of regulations for each reaction in
-%                            the force set
+%                            the force set,
 %                            C5: min flux of each reaction in force set,
-%                            according to FVA
+%                            according to FVA,
 %                            C6: max flux of each reaction in force set,
-%                            according to FVA
+%                            according to FVA,
 %                            C7: achieved flux of each of the reactions in
-%                            the force set after applying the inverventions
-%                            C8: objetive function achieved by OptForce.gms
+%                            the force set after applying the inverventions,
+%                            C8: objetive function achieved by `OptForce.gms`,
 %                            C9: Minimum flux fot target when applying the
-%                            interventions
+%                            interventions,
 %                            C10: Maximum flux fot target when applying the
-%                            interventions
+%                            interventions,
 %                            C11: Maximum growth rate when applying the
 %                            interventions.
 %                            In the rows, the user can see each of the

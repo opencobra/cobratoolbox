@@ -95,14 +95,14 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %                               Description: File containing one column array
 %                               with identifiers for reactions in MustL. This
 %                               file will only be generated if the user entered
-%                               printExcel = 1. Note that the user can choose
+%                               `printExcel = 1`. Note that the user can choose
 %                               the name of this file entering the input
 %                               `outputFileName` = 'PutYourOwnFileNameHere';
 %    outputFileName.txt         Type: file.
 %                               Description: File containing one column array
 %                               with identifiers for reactions in MustL. This
 %                               file will only be generated if the user entered
-%                               printText = 1. Note that the user can choose
+%                               `printText = 1`. Note that the user can choose
 %                               the name of this file entering the input
 %                               outputFileName = 'PutYourOwnFileNameHere';
 %    outputFileName_Info.xls    Type: file.
@@ -122,13 +122,13 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    outputFileName_Info.txt    Type: file.
 %                               Description: File containing five column
 %                               arrays.
-%                               C1: identifiers for reactions in MustL.
-%                               C2: min fluxes for reactions according to FVA
-%                               C3: max fluxes for reactions according to FVA
+%                               C1: identifiers for reactions in MustL,
+%                               C2: min fluxes for reactions according to FVA,
+%                               C3: max fluxes for reactions according to FVA,
 %                               C4: min fluxes achieved for reactions,
-%                               according to findMustL
+%                               according to `findMustL`,
 %                               C5: max fluxes achieved for reactions,
-%                               according to findMustL
+%                               according to `findMustL`.
 %                               This file will only be generated if the user
 %                               entered `printText = 1`. Note that the user can
 %                               choose the name of this file entering the input
@@ -143,7 +143,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebasti�n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};

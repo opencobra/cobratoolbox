@@ -30,36 +30,36 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %    mustU:                  Type: cell array.
 %                            Description: List of reactions in the MustU set
 %                            This input can be obtained by running the
-%                            script findMustU.m
+%                            script `findMustU.m`
 %                            E.g. `mustU` = {'R21_f'; 'R22_f'};
 %    mustL:                  Type: cell array.
 %                            Description: List of reactions in the MustL set
 %                            This input can be obtained by running the
-%                            script findMustL.m
+%                            script `findMustL.m`
 %                            E.g. first usage: `mustL` = {'R11_f'; 'R26_f'};
 %    minFluxesW:             Type: double array of size `n_rxns x 1`.
 %                            Description: Minimum fluxes for each
 %                            reaction in the model for wild-type strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
+%                            function `FVAOptForce`.
 %                            E.g.: `minFluxesW = [-90; -56]`;
 %    maxFluxesW:             Type: double array of size `n_rxns x 1`.
 %                            Description: Maximum fluxes for each
 %                            reaction in the model for wild-type strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
+%                            function `FVAOptForce`.
 %                            E.g.: `maxFluxesW = [90; 56]`;
 %    minFluxesM:             Type: double array of size `n_rxns x 1`.
 %                            Description: Minimum fluxes for each
 %                            reaction in the model for mutant strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
+%                            function `FVAOptForce`.
 %                            E.g.: `minFluxesM = [-90; -56]`;
 %    maxFluxesM:             Type: double array of size `n_rxns x 1`.
 %                            Description: Maximum fluxes for each
 %                            reaction in the model for mutant strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
+%                            function `FVAOptForce`.
 %                            E.g.: `maxFluxesM = [90; 56]`;
 %
 % OPTIONAL INPUTS:
@@ -201,7 +201,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            according to FVA,
 %                            C7: achieved flux of each of the reactions in
 %                            the force set after applying the inverventions,
-%                            C8: objetive function achieved by OptForce.gms,
+%                            C8: objetive function achieved by `OptForce.gms`,
 %                            C9: Minimum flux fot target when applying the
 %                            interventions,
 %                            C10: Maximum flux fot target when applying the

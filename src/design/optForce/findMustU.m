@@ -112,9 +112,9 @@ function [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW, varargi
 %                               C2: min fluxes for reactions according to FVA,
 %                               C3: max fluxes for reactions according to FVA,
 %                               C4: min fluxes achieved for reactions,
-%                               according to findMustU,
+%                               according to `findMustU`,
 %                               C5: max fluxes achieved for reactions,
-%                               according to findMustU.
+%                               according to `findMustU`.
 %                               This file will only be generated if the user
 %                               entered `printExcel = 1`. Note that the user can
 %                               choose the name of this file entering the input

@@ -107,8 +107,8 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %    pos_mustUU_linear:          Type: double array.
 %                                Size: number of unique reactions found X 1.
 %                                Description: double array containing
-%                                positions for reactions in mustUU_linear.
-%                                with regard to model.rxns
+%                                positions for reactions in `mustUU_linear`.
+%                                with regard to `model.rxns`
 %    outputFileName.xls:         Type: file.
 %                                Description: File containing one column array
 %                                with identifiers for reactions in MustUU. This
@@ -136,7 +136,7 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %                                Description: File containing one column array.
 %                                In each row the user will find a couple of
 %                                reactions. Each couple of reaction was found in
-%                                one iteration of FindMustUU.gms. This file will
+%                                one iteration of `FindMustUU.gms`. This file will
 %                                only be generated if the user entered
 %                                `printText = 1`. Note that the user can choose
 %                                the name of this file entering the input

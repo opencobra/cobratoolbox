@@ -10,7 +10,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 %    [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targetRxn, solution, relax, tol)
 %
 % INPUTS:
-%    model:             Type: structure (COBRA model)
+%    model:             Type: structure (COBRA model).
 %                       Description: a metabolic model with at least
 %                       the following fields:
 %
@@ -46,13 +46,13 @@ function [maxGrowthRate, minTarget, maxTarget] = analizeOptForceSol(model, targe
 % OPTIONAL INPUTS:
 %    relax:             Type: double.
 %                       Description: boolean to describe if constraints
-%                       should be apply in an rounded way (relax = 1 )
-%                       or in an exactly way (relax = 0)
-%                       Default: relax = 1
+%                       should be apply in an rounded way (`relax = 1`)
+%                       or in an exactly way (`relax = 0`)
+%                       Default: `relax = 1`
 %    tol:               Type: double.
 %                       Description: range for tolerance when relaxing
 %                       contraints.
-%                       Default: tol = 1e-7
+%                       Default: `tol = 1e-7`
 %
 % OUTPUTS:
 %    maxGrowthRate:     Type: double.
