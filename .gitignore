@@ -42,25 +42,25 @@ test/models/*.xml
 test/models/*.mat
 
 # tests
-test/testGrowthExpMatch/GEMLog.txt
-test/testGrowthExpMatch/GEMLog_solution_1.mat
-test/testMaps/target.svg
+test/additionalTests/testGrowthExpMatch/GEMLog.txt
+test/additionalTests/testGrowthExpMatch/GEMLog_solution_1.mat
+test/additionalTests/testMaps/target.svg
 
 # verified tests
-test/verifiedTests/testSampling/ACHRParallelError.txt
-test/verifiedTests/testSampling/ACHR_last_point.mat
-test/verifiedTests/testSampling/ACHRerror.txt
-test/verifiedTests/testSampling/EcoliModelSamples_1.mat
-test/verifiedTests/testSampling/EcoliModelSamples_2.mat
-test/verifiedTests/testSampling/EcoliModelSamples_3.mat
-test/verifiedTests/testSampling/EcoliModelSamples_4.mat
-test/verifiedTests/testSampling/modelRedTmp.mat
-test/verifiedTests/testSampling/sampleCbModelTmp.mat
-test/verifiedTests/testSampling/sampleStructTmp.mat
-test/verifiedTests/testMultiSpeciesModelling/*.mat
+test/verifiedTests/analysis/testSampling/ACHRParallelError.txt
+test/verifiedTests/analysis/testSampling/ACHR_last_point.mat
+test/verifiedTests/analysis/testSampling/ACHRerror.txt
+test/verifiedTests/analysis/testSampling/EcoliModelSamples_1.mat
+test/verifiedTests/analysis/testSampling/EcoliModelSamples_2.mat
+test/verifiedTests/analysis/testSampling/EcoliModelSamples_3.mat
+test/verifiedTests/analysis/testSampling/EcoliModelSamples_4.mat
+test/verifiedTests/analysis/testSampling/modelRedTmp.mat
+test/verifiedTests/analysis/testSampling/sampleCbModelTmp.mat
+test/verifiedTests/analysis/testSampling/sampleStructTmp.mat
+test/verifiedTests/analysis/testMultiSpeciesModelling/*.mat
 test/verifiedTests/testSBML/*.sbml.xml
 test/verifiedTests/testFastGapFill/KEGGMatrix.mat
-test/verifiedTests/testTools/testPrintMatrix.txt
+test/verifiedTests/analysis/testTools/testPrintMatrix.txt
 test/verifiedTests/testMassChargeBalance/*.txt
 test/verifiedTests/testFastGapFill/*.mat
 test/verifiedTests/testTools/testData_printLabeledData.txt
