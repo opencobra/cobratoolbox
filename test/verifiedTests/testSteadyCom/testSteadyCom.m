@@ -7,6 +7,9 @@
 % Authors:
 %    - Siu Hung Joshua Chan July 2017
 
+% choose tolerance according to the solver used
+global CBT_LP_SOLVER
+
 % save the current path
 currentDir = pwd;
 
@@ -44,7 +47,7 @@ modelJoint = changeRxnBounds(modelJoint, modelJoint.infoCom.EXcom(bCom | cCom), 
 % organism-specific uptake rate for b and c set at a finite value
 modelJoint = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom | cCom, :), -5, 'l');
 modelJoint = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom | cCom, :), 5, 'u');
-%%
+
 % TEST printUptakeBoundCom to look at the uptake bound for community model
 diary('printUptakeBoundCom.txt');
 printUptakeBoundCom(modelJoint, 1);
@@ -86,10 +89,22 @@ assert(isequal(indCom, modelJoint.indCom))
 infoCom = infoCom2indCom(modelJoint, modelJoint.indCom, true, {'Org1'; 'Org2'});  % get infoCom from indCom
 assert(isequal(infoCom, modelJoint.infoCom))
 
+switch CBT_LP_SOLVER
+    case {'gurobi', 'ibm_cplex', 'glpk', 'dqqMinos', 'quadMinos'}
+        feasTol = 1e-8;  % feasibility tolerance
+        tol = 1e-3;  % tolerance for comparing results
+    case {'mosek', 'matlab'}
+        feasTol = 1e-6;  % feasibility tolerance
+        tol = 1e-3;  % tolerance for comparing results
+    otherwise
+        feasTol = 1e-4;  % feasibility tolerance
+        tol = 1e-2;  % tolerance for comparing results
+end
+
 % TEST SteadyCom
 options.algorithm = 2;
 options.GRtol = 1e-6;  % tolerance for max. growth rate gap
-[~, result] = SteadyCom(modelJoint, options);
+[~, result] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
 data = load('refData_SteadyCom', 'result');
 % only the maximum growth rate must be equal. Others may differ.
 assert(abs(result.GRmax - data.result.GRmax) < 1e-5)
@@ -97,19 +112,20 @@ assert(abs(result.GRmax - data.result.GRmax) < 1e-5)
 % TEST SteadyComFVA
 options.optGRpercent = [100 90 80];
 options.rxnNameList = {'X_Org1'; 'X_Org2'};
-[minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelJoint, options);
+[minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
 data = load('refData_SteadyComFVA', 'minFlux', 'maxFlux', 'GRvector');
+
 % Different solvers may give slightly different results. Give a percentage tolerance
-assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < 1e-4)
-assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < 1e-4)
-assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < 1e-4)
+assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
+assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
+assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
 
 % TEST SteadyComPOA
 options.savePOA = ['testSteadyComPOA' filesep 'test'];
 % look at the relationship between the abundance of Org1 and its exchange of b and c
 options.rxnNameList = [{'X_Org1'}; modelJoint.infoCom.EXsp(bCom | cCom, 1)];
 options.Nstep = 25;
-[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelJoint, options);
+[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelJoint, options, 'feasTol', feasTol);
 data = load('refData_SteadyComPOA', 'POAtable', 'fluxRange', 'Stat', 'GRvector');
 devPOA = 0;  % percentage deviation
 devSt = 0;  % absolute deviation of the correlation statistics (since zeros may appear here)
@@ -122,10 +138,10 @@ for i = 1:size(POAtable, 1)
         end
     end
 end
-assert(devPOA < 1e-4)
-assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < 1e-4)
-assert(devSt < 1e-3)
-assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < 1e-4)
+assert(devPOA < tol)
+assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
+assert(devSt < tol)
+assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
 % delete created files
 rmdir([pwd filesep 'testSteadyComPOA'], 's')
 

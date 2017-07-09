@@ -130,9 +130,9 @@ if init
             % infeasible model
             warning('Model is infeasible.');
             POAtable = cell(nRxnPOA);
-            fluxRange = NaN(nRxnPOA,2); 
-            Stat = repmat(struct('cor',[],'r2',[]),nRxnPOA,nRxnPOA);
             GRvector = NaN(numel(optGRpercent), 1);
+            fluxRange = NaN(nRxnPOA, 2, numel(GRvector)); 
+            Stat = repmat(struct('cor', [], 'r2', []), nRxnPOA, nRxnPOA, numel(GRvector));
             return
         end
         GRmax = result.GRmax;
@@ -251,9 +251,9 @@ if init
     if ~(dev <= feasTol)   % dev can be NaN, which still means infeasibility. So use ~(dev <= feasTol) instead of dev > feasTol
         warning('Model is infeasible.');
         POAtable = cell(nRxnPOA);
-        fluxRange = NaN(nRxnPOA,2);
-        Stat = repmat(struct('cor',[],'r2',[]),nRxnPOA,nRxnPOA);
         GRvector = NaN(numel(optGRpercent), 1);
+        fluxRange = NaN(nRxnPOA, 2, numel(GRvector));
+        Stat = repmat(struct('cor', [], 'r2', []), nRxnPOA, nRxnPOA, numel(GRvector));
         return
     end
     if ibm_cplex

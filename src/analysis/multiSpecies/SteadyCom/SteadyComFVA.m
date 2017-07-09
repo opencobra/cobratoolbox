@@ -225,8 +225,8 @@ while ~(dev <= feasTol) && kBMadjust < 10
 end
 if ~(dev <= feasTol)  % dev can be NaN, which still means infeasibility. So use ~(dev <= feasTol) instead of dev > feasTol
     warning('Model not feasible.')
-    [minFlux, maxFlux] = deal(NaN(nRxnFVA, 1));
-    [minFD, maxFD] = deal(NaN(numel(rxnFluxList), nRxnFVA));
+    [minFlux, maxFlux] = deal(NaN(nRxnFVA, numel(optGRpercent)));
+    [minFD, maxFD] = deal(NaN(numel(rxnFluxList), nRxnFVA, numel(optGRpercent)));
     GRvector = NaN(numel(optGRpercent), 1);
     result.stat = 'infeasible';
     return
