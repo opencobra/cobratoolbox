@@ -107,7 +107,7 @@ options.GRtol = 1e-6;  % tolerance for max. growth rate gap
 [~, result] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
 data = load('refData_SteadyCom', 'result');
 % only the maximum growth rate must be equal. Others may differ.
-assert(abs(result.GRmax - data.result.GRmax) < 1e-5)
+assert(abs(result.GRmax - data.result.GRmax) < tol)
 
 % TEST SteadyComFVA
 options.optGRpercent = [100 90 80];
