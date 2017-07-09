@@ -28,7 +28,7 @@ load('subDas.mat')
 model.rxns{2} = 'alternativeR2';
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)
-rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep 'data' filesep 'atomMapped'];
+rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'reconstruction' filesep 'atomicallyResolveReconstruction' filesep 'data' filesep 'atomMapped'];
 R2rxn = regexp(fileread([rxnfileDir filesep 'R2.rxn']), '\n', 'split')';
 R2rxn{2} = 'alternativeR2';
 R2rxn{135}(62:63) = '18';
