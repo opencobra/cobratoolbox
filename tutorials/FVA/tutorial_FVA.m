@@ -1,7 +1,7 @@
 %% *Flux Variability analysis (FVA)*
 % Flux variability analysis (FVA) is a widely used computational tool for evaluating 
 % the minimum and maximum range of each reaction flux that can still satisfy the 
-% constraints using two optimisation problems for each reaction of interest [1]. 
+% constraints using two optimisation problems for each reaction of interest$$^1$. 
 % 
 % 
 % 
@@ -12,14 +12,14 @@
 % typically an infinite set of steady state flux vectors exist can satisfy the 
 % same requirement for an optimal objective $$ c_{T}v* = c_{T}v$. As well as for 
 % the flux balance analysis (FBA), there are also many possible variations on 
-% flux variability analysis (FVA) [2].
+% flux variability analysis (FVA)$$^2$.
 % 
 % Depending on the size of the model you are using for the analysis, use:
 % 
 % * |fluxVariability()| function - for the low dimensional FVA;
 % * |fastFVA()| function - for the models with more than 1,000 reactions;
 % * <https://github.com/opencobra/COBRA.jl distributedFBA.jl> - for high dimensional 
-% FVA,* *models larger than 10,000 reactions [2];
+% FVA,* *models larger than 10,000 reactions$$^2$;
 %% EQUIPMENT SETUP
 % If necessary, initialize the cobra toolbox:
 
@@ -34,11 +34,17 @@ initCobraToolbox
 % glpk package>, which does not require additional installation and configuration. 
 % Although, for the analysis of large models is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
 % GUROBI> package.
+% 
+% Setup the the approrpriate solver for the machine you are using by removing 
+% the "%" (comment) sign for only the desired solver.
 
+% changeCobraSolver('glpk','all');
+% changeCobraSolver('tomlab_cplex','all');
+% changeCobraASolver('ibm_cplex','all');
 changeCobraSolver ('gurobi', 'all', 1);
 %% PROCEDURE
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D [3]. Therefore, we assume, that the cellular objectives 
+% metabolism, Recon 3D$$^3$. Therefore, we assume, that the cellular objectives 
 % include energy production or optimisation of uptake rates and by-product secretion 
 % for various physiological functions of the human body.
 % 
@@ -242,13 +248,13 @@ ylabel('Fluxes')
 legend({'Aerobic', 'Anaerobic'})
 title('Variations in fluxes in the aerobic and anaerobic conditions')
 %% REFERENCES 
-% [1] Gudmundsson S., Ines Thiele; Computationally efficient flux variability 
+% [1] Gudmundsson, S., Thiele, I. Computationally efficient flux variability 
 % analysis. _BMC Bioinformatics. _11, 489 (2010).
 % 
-% [2] Laurent Heirendt, Ines Thiele, Ronan M. T. Fleming; DistributedFBA.jl:  
-% high-level, high-performance flux balance analysis in Julia. _Bioinformatics._ 
-% 33 (9), 1421-1423 (2017).
+% [2] Heirendt, L., Thiele, I, Fleming, R.M. DistributedFBA.jl: high-level, 
+% high-performance flux balance analysis in Julia. _Bioinformatics._ 33 (9), 1421-1423 
+% (2017).
 % 
-% [3] Ines Thiele, Nathan D. Price, Thuy D. Vo, Bernhard O. Palsson; Candidate 
-% Metabolic Network States in Human Mitochondria. Impact of diabetes, ischemia 
-% and diet. _J Bio Chem. _280 (12), 11683–11695 (2005).
+% [3] Thiele, I., Price, N.D., Vo, T.D., Palsson. B.Ø. Candidate Metabolic 
+% Network States in Human Mitochondria. Impact of diabetes, ischemia and diet. 
+% _J Bio Chem. _280 (12), 11683–11695 (2005).

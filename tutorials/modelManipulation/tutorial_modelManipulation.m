@@ -26,6 +26,9 @@
 % needed: check necessity of each reaction and metabolite,  the accuracy of the 
 % stoichiometry and direction and reversibility of the reactions.
 % 
+% The metabolites structures and reactions are from the Virtual Metabolic 
+% Human database (VMH, <http://vmh.life http://vmh.life>).
+% 
 % After creating or loading the model, the model can be modified to simulate 
 % different conditions, such as:
 % 
@@ -45,7 +48,7 @@ initCobraToolbox;
 %% PROCEDURE
 %% Generate a network
 % A constraint-based metabolic model contains the stoichiometric matrix with 
-% reactions and metabolites [1].
+% reactions and metabolites$$^1$.
 % 
 % $$S$ is a stoichiometric representation of metabolic networks corresponding 
 % to the reactions in the biochemical pathway. In each column of the $$S$ is a 
@@ -53,7 +56,7 @@ initCobraToolbox;
 % There is a stoichiometric coefficient of zero, which means that metabolite does 
 % not participate in that distinct reaction. The coefficient also can be positive 
 % when the appropriate metabolite is produced, or negative  for every metabolite 
-% depleted [1].
+% depleted$$^1$.
 
 ReactionFormulas = {'glc_D[e]  -> glc_D[c]',...
     'glc_D[c] + atp[c]  -> h[c] + adp[c] + g6p[c]',...
@@ -239,15 +242,15 @@ printRxnFormula(model, 'gprFlag', true);
 % In order to detach reactions from the model, the following function has been 
 % used:
 
- model = removeRxns(model, {'EX_glc_D[c]', 'EX_glc_D[e]', 'sink_13bpg[c]', ...
+model = removeRxns(model, {'EX_glc_D[c]', 'EX_glc_D[e]', 'sink_13bpg[c]', ...
                              'sink_nad[c]', 'DM_dhap[c]', 'DM_g3p[c]'});
 
- assert(rxns_length + 3 == length(model.rxns)); 
+assert(rxns_length + 3 == length(model.rxns)); 
  % The reaction length has been reevaluated 
 %% 
 % Remove metabolites
 
-  model = removeMetabolites(model, {'3pg[c]', '2pg[c]'}, false);
+model = removeMetabolites(model, {'3pg[c]', '2pg[c]'}, false);
 %% 
 % For instance, in the previous code, many metabolites from '|GAPDH|' were 
 % deleted, but the reaction is still present in the model (since there are more 
@@ -256,10 +259,10 @@ printRxnFormula(model, 'gprFlag', true);
 % To delete metabolites and reactions with zero rows and columns,the following 
 % function can be used:
 
-  model = removeTrivialStoichiometry(model)
-  model = removeRxns(model,{'GAPDH', 'PGK'});
+model = removeTrivialStoichiometry(model)
+model = removeRxns(model,{'GAPDH', 'PGK'});
 %% Search for duplicates and comparison of two models
-% Since genome-scale metabolic models are expanding every day [2], the need 
+% Since genome-scale metabolic models are expanding every day$$^2$, the need 
 % for comparison of them is also spreading. 
 % 
 % The elementary functions for the model manipulation, besides main actions, 
@@ -299,7 +302,7 @@ model = checkCobraModelUnique(model, false)
 %% Changing the model's objective
 % Simulating different conditions in the model is often necessary for a favor 
 % of performing calculations that investigate a specific objective. One of the 
-% elementary objectives is optimal growth [3]. The model can be modified to get 
+% elementary objectives is optimal growth$$^3$. The model can be modified to get 
 % different conditions with changing the model objective:
 
 modelNew = changeObjective(model, 'GLCt1r', 0.5);
@@ -347,7 +350,7 @@ model.rxnGeneMat = [];
 modelgrRule = model.grRules;
 for i = 1 : length(modelgrRule)
     if ~isempty(modelgrRule{i})
-        model = changeGeneAssociation(model,model.rxns{i},modelgrRule{i});
+        model = changeGeneAssociation(model, model.rxns{i}, modelgrRule{i});
     end
 end
 %% 
@@ -363,12 +366,12 @@ find(sum(model.rxnGeneMat)==0)
 GPRsReplace={'(126.1) or (137872.1) '	'126.1 or 137872.1'};
 GP = (model.grRules);
 a = 1;
-for  i = 1 : size(GPRsReplace,1)
+for  i = 1 : size(GPRsReplace, 1)
     tmp2=[];
     for j = 1 :length(GP)
-        tmp2 = strmatch(GPRsReplace{i,1},GP{j});
+        tmp2 = strmatch(GPRsReplace{i, 1}, GP{j});
         % replace old GPR by new
-        model.grRules{j} = GPRsReplace{i,2};
+        model.grRules{j} = GPRsReplace{i, 2};
     end
 end
 %% 
@@ -404,12 +407,12 @@ for i = 1 : length(model.grRules)
     end
 end
 %% REFERENCES
-% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
-% analysis? _Nat. Biotechnol., 28_(3), 245–248.
+% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? 
+% _Nat. Biotechnol. _28(23), 245–248 (2010).
 % 
-% [2] Feist, A. M., Palsson, B. (2008). The growing scope of applications 
-% of genome-scale metabolic reconstructions: the case of _E. coli_. _Nature Biotechnology, 
-% 26_(6), 659–667.
+% [2] Feist, A. M., Palsson, B. Ø. The growing scope of applications of genome-scale 
+% metabolic reconstructions: the case of _E. coli_. _Nature Biotechnology. _26(6), 
+% 659–667 (2008).
 % 
-% [3] Feist, A. M., Palsson, B. O. (2010). The Biomass Objective Function. 
-% _Current Opinion in Microbiology, 13_(3), 344–349.
+% [3] Feist, A. M., Palsson, B. Ø. The Biomass Objective Function. _Current 
+% Opinion in Microbiology. 13_(3), 344–349 (2010).

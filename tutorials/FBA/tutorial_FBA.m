@@ -5,7 +5,7 @@
 %% *Thomas Pfau, Systems Biology Group, LSRU, University of Luxembourg* 
 %% INTRODUCTION
 % Flux balance analysis (FBA), one of the most used modelling approaches for 
-% metabolic systems, evaluates the metabolic flux distribution [1]. 
+% metabolic systems, evaluates the metabolic flux distribution$$ ^1$. 
 % 
 % Applications of FBA for molecular systems biology include prediction of 
 % the growth rates, uptake rates, knockout lethality and product secretion. In 
@@ -47,13 +47,20 @@ initCobraToolbox
 % For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
 
-changeCobraSolver ('gurobi', 'all', 1);
+% solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
 %% 
-% The present tutorial can run with |'glpk'| package, which does not require 
-% additional installation and configuration. Although, for the analysis of large 
-% models is recommended to use the |'gurobi'| package. For detail information, 
-% refer to the solver installation guide: <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
-% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md>
+% The present tutorial can run with <https://opencobra.github.io/cobratoolbox/deprecated/docs/cobra/solvers/changeCobraSolver.html 
+% glpk package>, which does not require additional installation and configuration. 
+% Although, for the analysis of large models is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% GUROBI> package.
+% 
+% Setup the the approrpriate solver for the machine you are using by removing 
+% the "%" (comment) sign for only the desired solver.
+
+% changeCobraSolver('glpk','all');
+% changeCobraSolver('tomlab_cplex','all');
+% changeCobraASolver('ibm_cplex','all');
+changeCobraSolver ('gurobi', 'all', 1);
 %% PROCEDURE
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
@@ -65,9 +72,12 @@ model = modelRecon3model;
 clear modelRecon3model
 %% 
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D [2]. Therefore, we assume, that the cellular objectives 
+% metabolism, Recon 3D$$ ^2$. Therefore, we assume, that the cellular objectives 
 % include energy production or optimisation of uptake rates and by-product secretion 
 % for various physiological functions of the human body.
+% 
+% The metabolites structures and reactions are from the Virtual Metabolic 
+% Human database (VMH, <http://vmh.life http://vmh.life>).
 %% Standard FBA
 % Standard FBA allows prediction of a cellular objective for a given set of 
 % constraints. These constraints can include e.g. uptake and release limits, or 
@@ -85,8 +95,9 @@ clear modelRecon3model
 
 modelaerobic = model;
 %% 
-% The ATP demand reaction, i.e., |DM_atp_c_ |within the model is a reaction 
-% that involves hydrolysis of ATP to ADP, Pi and proton in the cytosol. 
+% The ATP demand reaction, i.e., <http://vmh.life/#human/all/DM_atp_c_ DM_atp_c_>| 
+% |within the model is a reaction that involves hydrolysis of ATP to ADP, Pi and 
+% proton in the cytosol. 
 
  printRxnFormula(model, 'DM_atp_c_');
 %% 
@@ -225,8 +236,8 @@ for i=1:length(vSparse)
 end
 %% Metabolite dilution flux balance analysis (mdFBA)
 % This is a variant of FBA for predicting metabolic flux distributions by accounting 
-% for growth-associated dilution of all metabolites in a context-dependent manner 
-% [3]. A solution from |mdFBA()| supports, that all metabolites used in any reaction 
+% for growth-associated dilution of all metabolites in a context-dependent manner$$^3$. 
+% A solution from |mdFBA()| supports, that all metabolites used in any reaction 
 % of the solution can either be produced by the network or taken up from the surrounding 
 % medium.
 %% TIMING
@@ -265,7 +276,7 @@ modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 % how it contributes to the optimal solution.
 %% Geometric FBA
 % The geometric FBA solves the smallest frame that contains all sets of optimal 
-% FBA solutions and posts a set of multiple linear programming problems [4].
+% FBA solutions and posts a set of multiple linear programming problems$$^4$.
 % 
 % This variant of the FBA with each applied iteration, reduce by the algorithm 
 % the permissible solution space. After a finite number of iterations resolves 
@@ -276,7 +287,8 @@ modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 %% TIMING
 % The time to determine a geometric FBA solution depends on the size of the 
 % genome-scale model and the number of iterations. For a model with more than 
-% 10,000 reactions and 3 iterations takes $$minutes.
+% 10,000 reactions and 3 iterations takes $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mo>&geq;</mo><mn>30</mn></mrow></math>$minutes.
 
 modelgeo = modelalter;
 modelgeo = changeRxnBounds(modelgeo, 'EX_glc_D[e]',-20,'l');
@@ -302,13 +314,13 @@ end
 % i.e. |flux = geometricFBA(model, 'epsilon', 1e-9)|
 %% Parsimonious enzyme usage Flux Balance Analysis (pFBA)
 % The pFBA method was developed to achieve higher flux levels when more enzymes 
-% are required [5]. 
+% are required$$^5$. 
 % 
 % After performing the FBA to find the optimal value for the objective function, 
 % pFBA gets the answer of an another linear program to determine the flux distribution 
 % that minimises the total flux through all metabolic reactions in the model.
 %% TIMING
-% The time to determine a pFBA solution depends on the size of the genome-scale 
+% The time to determine a |pFBA| solution depends on the size of the genome-scale 
 % model and is taking from $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo 
 % stretchy="false">&lt;</mo><mn>1</mn></mrow></math>$ minute for a 1,000 reaction 
 % model, to 5 minutes for a model with more than 10,000 reactions.
@@ -363,10 +375,10 @@ end
 % The dynamic FBA is an extension of standard FBA that accounts for cell culture 
 % dynamics, implementing both dynamic (nonlinear programming) and static (LP) 
 % optimisation of an objective function and applying constraints to the rates 
-% of change of flux in addition to the standard FBA constraints [6].
+% of change of flux in addition to the standard FBA constraints$$^6$.
 % 
 % The dynamic FBA method implemented in this function is essentially the 
-% same as the method described by Varma A. and B. O. Palsson [7].
+% same as the method described by Varma A. and B. O. Palsson$$^7$.
 
 modeldinamic = model;
 modeldinamic = changeRxnBounds (modeldinamic, 'EX_glc_D[e]', -20, 'b');
@@ -420,21 +432,21 @@ resultCell = FEA(modelfea, activeReactions, 'subSystems')
 % [1] Orth, J. D., Thiele I., and Palsson, B. Ø.  What is flux balance analysis? 
 % _Nat. Biotechnol., 28_(3), 245–248 (2010).
 % 
-% [2] Noronha A., et al. ReconMap: an interactive visualization of human 
-% metabolism. _Bioinformatics_., 33 (4): 605-607 (2017).
+% [2] Brunk, E. et al. Recon 3D: A Three-Dimensional View of Human Metabolism 
+% and Disease. Submited
 % 
-% [3] Benyamini T, et al. Flux balance analysis accounting for metabolite 
-% dilution._Genome Biology_., 11(4):R43 (2010).
+% [3] Benyamini, T, Folger, O., Ruppin, E., Schlomi, T. Flux balance analysis 
+% accounting for metabolite dilution._ Genome Biology_., 11(4):R43 (2010).
 % 
-% [4] Smallbone K., and Simeonidis E. Flux balance analysis: A geometric 
+% [4] Smallbone, K., and Simeonidis, E. Flux balance analysis: A geometric 
 % perspective. _J Theor Biol_., 258: 311-315 (2009).
 % 
-% [5] Lewis N.E, et al. Omic data from evolved E. coli are consistent with 
-% computed optimal growth from genome-scale models. 10.1038 (2010).
+% [5] Lewis, N.E., et al. Omic data from evolved E. coli are consistent with 
+% computed optimal growth from genome-scale models. _Mol Syst Biol_., 6:390 (2010).
 % 
-% [6] Mahadevan R., et al. Dynamic Flux Balance Analysis of Diauxic Growth 
-% in Escherichia coli. _Biophys J., _83(3):1331-40 (2002).
+% [6] Mahadevan, R., Edwards, J.S., Doyle, F.J. Dynamic Flux Balance Analysis 
+% of Diauxic Growth in Escherichia coli. _Biophys J., _83(3):1331-1340 (2002).
 % 
 % [7] Varma A. and Palsson, B. Ø. Stoichiometric flux balance models quantitatively 
 % predict growth and metabolic by-product secretion in wild-type Escherichia coli 
-% W3110. _App Environ Microbiol_., 60(10):3724-31 (1994).
+% W3110. _App Environ Microbiol_., 60(10):3724-3731 (1994).
