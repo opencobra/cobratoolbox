@@ -58,15 +58,14 @@ test/verifiedTests/analysis/testSampling/modelRedTmp.mat
 test/verifiedTests/analysis/testSampling/sampleCbModelTmp.mat
 test/verifiedTests/analysis/testSampling/sampleStructTmp.mat
 test/verifiedTests/analysis/testMultiSpeciesModelling/*.mat
-test/verifiedTests/testSBML/*.sbml.xml
-test/verifiedTests/testFastGapFill/KEGGMatrix.mat
+test/verifiedTests/base/testSBML/*.sbml.xml
+test/verifiedTests/reconstruction/testFastGapFill/*.mat
 test/verifiedTests/analysis/testTools/testPrintMatrix.txt
-test/verifiedTests/testMassChargeBalance/*.txt
-test/verifiedTests/testFastGapFill/*.mat
-test/verifiedTests/testTools/testData_printLabeledData.txt
-test/verifiedTests/testSolvers/MILPProblem.mat
-test/verifiedTests/testOutputNetworkCytoscape/data*
-test/verifiedTests/testPrint/printConstraints.txt
+test/verifiedTests/reconstruction/testMassChargeBalance/*.txt
+test/verifiedTests/base/testTools/testData_printLabeledData.txt
+test/verifiedTests/base/testSolvers/MILPProblem.mat
+test/verifiedTests/base/testOutputNetworkCytoscape/data*
+test/verifiedTests/analysis/testPrint/printConstraints.txt
 
 # shared libraries
 *.so
