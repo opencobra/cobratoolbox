@@ -1,5 +1,5 @@
 function LP = setCplexParam(LP, solverParams,verbFlag)
-% set the parameters of the CPLEX object according to the structure solverParams
+% set the parameters of the IBM ILOG CPLEX object according to the structure solverParams
 %
 % USAGE:
 %    LP = setCplexParam(LP, solverParams, verbFlag);
@@ -10,7 +10,8 @@ function LP = setCplexParam(LP, solverParams,verbFlag)
 %                     [solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display,...
 %                     solverParams.sifting.display, solverParams.conflict.display] = deal(0);
 %                     [solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9,1e-8);
-%    verbFlag:      true to show which parameter input is problematic if any (optional, default true)         
+%                     The full set of parameters can be obtained by calling 'Cplex().Param'
+%    verbFlag:      true to show which parameter input is problematic if any (optional, default true)
 if nargin < 3
     verbFlag = true;
 end

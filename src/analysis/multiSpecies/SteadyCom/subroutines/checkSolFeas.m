@@ -1,5 +1,5 @@
 function varargout = checkSolFeas(LP, sol, maxInfeas, tol, internal)
-% Return the feasibility of solutions given a COBRA model or LP structure, or a IBM-ILOG CPLEX class
+% Return the infeasibility of solutions given a COBRA model or LP structure, or a IBM-ILOG CPLEX class
 %
 % USAGE:
 %    [infeas, sol] = checkSolFeas(LP, sol, maxInfeas, tol)
@@ -17,8 +17,7 @@ function varargout = checkSolFeas(LP, sol, maxInfeas, tol, internal)
 %                    'ub'  for infeasibility of upper bounds
 %                    'ind' for infeasibility of indicator constraints. = -Inf if an indicator is not active. (CPLEX class only)
 %    tol:         feasibility tolerance (defaulted at the Cobra solver feasTol value). 
-%                 For determining if the input solution is indeed feasible.
-%                 Used only if the input solution is a structure.
+%                 For determining if the input solution is indeed feasible. Used only if the input solution is a structure.
 %
 % OUTPUT:
 %    infeas:      maximum infeasibility (maxInfeas = true) or struct of vectors of infeasibility (maxInfeas = false)

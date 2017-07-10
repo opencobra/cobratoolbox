@@ -1,20 +1,20 @@
 function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
-% Find the maximum community growth rate at community steady-state using SteadyCom. Call the CPLEX dynamic object directly.
+% Find the maximum community growth rate at community steady-state using the SteadyCom algorithm. Call the CPLEX dynamic object directly.
 %
 % USAGE:
 %    [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom,options, solverParams)
 %
 % INPUT
-%    modelCom   community COBRA model created with crateCommModel.m 
-%    (the following fields are required - others can be supplied)
+%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
+%    (the following fields are required)
 %      S            Stoichiometric matrix
 %      b            Right hand side
 %      c            Objective coefficients
 %      lb           Lower bounds
 %      ub           Upper bounds
-%    (at least one of the below two is needed)
-%      infoCom      structure containing community reaction info. Can be obtained using getMultiSpeciesModelId.m 
-%      indCom       the index structure corresponding to infoCom. Can be obtained using getMultiSpeciesModelId.m
+%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
+%      infoCom      structure containing community reaction info 
+%      indCom       the index structure corresponding to infoCom
 %
 % OPTIONAL INPUTS:
 %    options    struct with the following possible fields:

@@ -1,5 +1,5 @@
 function varargout = getSteadyComParams(param2get, options, modelCom)
-% get the required default parameters
+% get the required default parameters for SteadyCom functions
 %
 % USAGE:
 %    [param_1, ..., param_N] = getCobraComParams({'param_1',...,'param_N'}, options, modelCom)
@@ -25,22 +25,22 @@ paramNeedTransform = {'GRfx', 'BMlb', 'BMub', 'BMfx'};
 varargout = cell(numel(param2get), 1);
 for j = 1:numel(param2get)
     if any(strcmp(param2get{j}, paramNeedTransform))
-        %if need transformation
+        %  if need transformation
         varargout{j} = transformOptionInput(options, param2get{j}, numel(modelCom.infoCom.spAbbr));
     elseif isfield(options, param2get{j})
-        %if provided in the call
+        % if provided in the call
         varargout{j} = options.(param2get{j});
     else
-        %use default if default exist and not provided
-        %return empty if no default
+        % use default if default exist and not provided
+        % return empty if no default
         varargout{j} = paramDefault(param2get{j}, modelCom);
     end
-    %if calling for a directory, make sure to return a new directory
+    % if calling for a directory, make sure to return a new directory
     if strcmp(param2get{j}, 'directory')
         k = 0;
         while exist(varargout{j}, 'file')
             k = k + 1;
-            varargout{j} = [paramDefault.directory num2str(k)];
+            varargout{j} = [paramDefault.directory, num2str(k)];
         end
     end
 end
@@ -61,9 +61,6 @@ switch paramName
         [param.simplex.tolerances.optimality, param.simplex.tolerances.feasibility] = deal(1e-9,1e-8);
         param.read.scale = -1;
         
-    % parameters for createCommModel
-    case 'metExId',     param = '[e]';
-        
     % parameters for SteadyCom
     case 'GRguess',     param = 0.2;  % initial guess for growth rate
     case 'BMtol',       param = 0.8;  % tolerance for relative biomass amount (used only for feasCrit=3)
@@ -82,10 +79,30 @@ switch paramName
     case 'solveGR0',    param = false;  % true to solve the model at very low growth rate (GR0)
     case 'resultTmp',   param = struct('GRmax',[],'vBM',[],'BM',[],'Ut',[],...
                                 'Ex',[],'flux',[],'iter0',[],'iter',[],'stat','');  % result template
+                            
     % parameters for SteadyComFVA
     case 'optBMpercent',param = 99.99;
-    case 'rxnNameList', if isfield(modelCom.infoCom,'spBm'), param = modelCom.rxns(findRxnIDs(modelCom,modelCom.infoCom.spBm));else param = modelCom.rxns;end
-    case 'rxnFluxList', if isfield(modelCom.infoCom,'spBm'), param = modelCom.rxns(findRxnIDs(modelCom,modelCom.infoCom.spBm));else param = modelCom.rxns;end
+    case 'rxnNameList',  % targets for analysis
+        if isfield(modelCom, 'indCom') || isfield(modelCom, 'infoCom')
+            if isfield(modelCom, 'indCom')
+                nSp = max(modelCom.indCom.rxnSps);
+            elseif isfield(modelCom.infoCom, 'spAbbr')
+                nSp = numel(modelCom.infoCom.spAbbr);
+            else
+                nSp = numel(unique(modelCom.infoCom.rxnSps)) - 1;
+            end
+            param = strcat('X_', strtrim(cellstr(num2str((1:nSp)'))));
+        else
+            param = modelCom.rxns;
+        end
+    case 'rxnFluxList'
+        if isfield(modelCom, 'infoCom') && isfield(modelCom.infoCom, 'spBm')
+            param = modelCom.infoCom.spBm;
+        elseif isfield(modelCom, 'indCom') && isfield(modelCom.indCom, 'spBm')
+            param = modelCom.rxns(modelCom.indCom.spBm);
+        else
+            param = modelCom.rxns;
+        end
     case 'BMmaxLB',     param = 1;   % maximum biomass when it is unknown
     case 'BMmaxUB',     param = 1;   % maximum biomass when it is unknown
     case 'optGRpercent',param = 99.99;

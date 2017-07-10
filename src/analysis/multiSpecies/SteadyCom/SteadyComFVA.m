@@ -8,14 +8,14 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %    [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(modelCom, options, parameter, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom       A community COBRA model structure with the following extra fields:
-%    (the following fields are required - others can be supplied)
+%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
+%    (the following fields are required)
 %      S            Stoichiometric matrix
 %      b            Right hand side
 %      c            Objective coefficients
 %      lb           Lower bounds
 %      ub           Upper bounds
-%    (at least one of the below two is needed)
+%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
 %      infoCom      structure containing community reaction info 
 %      indCom       the index structure corresponding to infoCom
 %
@@ -39,7 +39,7 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %      saveFVA         If non-empty, become the filename to save the FVA results
 %                        (default empty, not saving)
 %      saveFre         save frequency. Save every (#rxns for FVA) * saveFre (default 0.1)
-%      threads         > 1 for explicitly stating the no. of threads used,
+%      threads         for parallelization: > 1 for explicitly stating the no. of threads used,
 %                        0 or -1 for using all available threads. Default 1.
 %                        (Require Matlab parallel toolbox)
 %      verbFlag        Verbose output. 1 to have waitbar, >1 to have stepwise output (default 3)

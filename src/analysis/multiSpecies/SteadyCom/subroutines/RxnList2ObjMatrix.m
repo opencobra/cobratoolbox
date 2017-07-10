@@ -1,5 +1,29 @@
 function objMatrix = RxnList2ObjMatrix(rxnList, varNameDisp, xName, n, nVar, callName)
-% subroutine to transform a list of K reactions or K linear combinations of reactions into a matrix (#rxns + #organisms)-by-K matrix
+% transform a list of K reactions or K linear combinations of reactions into a (#rxns + #organisms)-by-K matrix
+% as the objective vectors to be optimized in SteadyComFVA and SteadyComPOA
+% 
+% USAGE:
+%    objMatrix = RxnList2ObjMatrix(rxnList, varNameDisp, xName, n, nVar, callName)
+%
+% INPUTS:
+%    rxnNameList     list of K reactions or K linear combinations of reactions, in the format of either:
+%                      - cell array, each cell being a reaction ID or a cell array of reaction IDs. For the latter,
+%                        it is transformed as a column with 1 for each reaction (uniform sum)
+%                        E.g., {'rxn1'; 'X_1'; {'rxn2'; 'X_2'}} becomes 
+%                              [1 0 0; (rxn1)
+%                               0 0 1; (rxn2)
+%                               0 1 0; (X_1)
+%                               0 0 1] (X_2)
+%                               for a model with 2 reactions and 2 organisms
+%                      - a row vector of reaction index (#rxns + k for the biomass of the k-th organism)
+%                        E.g., [3, 4] becomes [0 0; 0 0; 1 0; 0 1].
+%                      - a direct (N_rxns + N_organism) x K matrix. 
+%    varNameDisp     cell array of rxn IDs + biomass variable IDs
+%    xName          alternative biomass variable IDs if organism abbreviations (modelCom.infoCom.spAbbr) are given
+%    n               number of reactions
+%    nVar            number of variables in the LP problem
+%    callName        name of the matrix to be transformed, for error message
+
 if ischar(rxnList)
     % if input is a string, make it a cell
     rxnList = {rxnList};

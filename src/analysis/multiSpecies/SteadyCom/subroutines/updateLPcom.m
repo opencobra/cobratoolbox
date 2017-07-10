@@ -3,8 +3,7 @@ function LPproblem = updateLPcom(modelCom, grCur, GRfx, BMcon, LPproblem, BMgdw)
 % constraints if LPproblem in the input does not contain the field 'A',
 % or is empty or is not given.
 % Otherwise, update LPproblem with the growth rate grCur. Only the
-% arguements 'modelCom', 'grCur', 'GRfx' and 'LPproblem' are used in this
-% case.
+% arguments 'modelCom', 'grCur', 'GRfx' and 'LPproblem' are used in this case.
 %
 % Usage:
 %   LPproblem = updateLPcom(modelCom, grCur, GRfx, BMcon, LPproblem, BMgdw)

@@ -10,27 +10,6 @@
 % choose tolerance according to the solver used
 global CBT_LP_SOLVER
 
-%%%%%% the section is only to avoid using ddqMinos. Should be deleted after it is fixed.
-global SOLVERS
-dqqMinosLP = strcmp(CBT_LP_SOLVER, 'dqqMinos');
-if dqqMinosLP
-    allSolvers = fieldnames(SOLVERS);
-    preferredSolvers = {'ibm_cplex'; 'gurobi'; 'glpk'; 'mosek'; 'quadMinos'; 'matlab'};
-    allSolvers = [preferredSolvers; allSolvers(~ismember(allSolvers, preferredSolvers))];
-    % change a different solver
-    for j = 1:numel(allSolvers)
-        if SOLVERS.(allSolvers{j}).installed
-            changeCobraSolver(allSolvers{j}, 'LP');
-            break
-        end
-    end
-    if strcmp(CBT_LP_SOLVER, 'dqqMinos')
-        %skip the test if dqqMinos is the only LP solver
-        return
-    end
-end
-%%%%%%
-
 % save the current path
 currentDir = pwd;
 
@@ -173,14 +152,6 @@ assert(devSt < tol)
 assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
 % delete created files
 rmdir([pwd filesep 'testSteadyComPOA'], 's')
-clear CBT_LP_SOLVER
-
-%%%%%% the section is only to avoid using ddqMinos. Should be deleted after it is fixed.
-if dqqMinosLP
-    changeCobraSolver('dqqMinos', 'LP');
-end
-clear SOLVERS
-%%%%%%
 
 % change the directory
 cd(currentDir)

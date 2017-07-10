@@ -1,18 +1,19 @@
 function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, varargin)
-% Pairwise POA for community model at community steady-state for a range of growth rates
+% Analyze pairwise relationship between reaction fluxes/biomass variables for a community model 
+% at community steady-state at a given growth rate. See tutorial_SteadyCom for more details.
 %
 % USAGE:
 %    [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom       A community COBRA model structure with the following fields:
+%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
 %    (the following fields are required)
 %      S            Stoichiometric matrix
 %      b            Right hand side
 %      c            Objective coefficients
 %      lb           Lower bounds
 %      ub           Upper bounds
-%    (at least one of the below two is needed)
+%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
 %      infoCom      structure containing community reaction info 
 %      indCom       the index structure corresponding to infoCom
 %
@@ -39,7 +40,7 @@ function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options,
 %      fluxRange       flux range for each entry in rxnNameList. K x 2 matrix. Defaulted to be found by SteadyComFVA.m
 %    (other parameters)
 %      savePOA         must be non-empty. The filename to save the POA results (default 'POAtmp/POA'). Always use relative path
-%      threads         > 1 for explicitly stating the no. of threads used,
+%      threads         for parallelization: > 1 for explicitly stating the no. of threads used,
 %                        0 or -1 for using all available threads. Default 1.
 %      verbFlag        verbose output. 0 or 1.
 %      loadModel       (ibm_cplex only) string of filename to be loaded. If non-empty, load the 
