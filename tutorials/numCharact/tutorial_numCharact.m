@@ -1,4 +1,4 @@
-%% *Numerical characteristics of a stoichiometric matrix*
+%% *Numerical properties of a reconstruction*
 % *Authors: Laurent Heirendt, Ronan M.T. Fleming, Luxembourg Centre for Systems 
 % Biomedicine*
 % 
