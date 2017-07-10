@@ -1,13 +1,13 @@
-function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, samples, corrThr, R)
+function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, sample, corrThr, R)
 % Identifies correlated reaction sets from sampling data
 %
 % USAGE:
 %
-%    [sets, setNumber, setSize] =  identifyCorrelSets(model, samples, corrThr, R)
+%    [sets, setNumber, setSize] =  identifyCorrelSets(model, sample, corrThr, R)
 %
 % INPUTS:
 %    model:        COBRA model structure
-%    samples:      Samples to be used to identify correlated sets
+%    sample:       Sample to be used to identify correlated sets
 %
 % OPTIONAL INPUTS:
 %    corrThr:      Minimum correlation (:math:`R^2`) threshold (Default = 1-1e-8)
@@ -21,15 +21,15 @@ function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, samples,
 %
 % .. Author: - Markus Herrgard 9/15/06
 
-if (nargin < 3)
-    corrThr = 1-1e-8;
+if nargin < 3
+    corrThr = 1 - 1e-8;
 end
 
 nRxns = length(model.rxns);
 
 % Calculate correlation coefficients
-if (nargin < 4)
-    R = corrcoef(samples');
+if nargin < 4
+    R = corrcoef(sample');
     R = R - eye(nRxns);
 end
 
@@ -39,16 +39,16 @@ adjMatrix = (abs(R) >= corrThr);
 % Only work with reactions that are correlated with others
 selCorrelRxns = any(adjMatrix)';
 rxnList = model.rxns(selCorrelRxns);
-adjMatrix = adjMatrix(selCorrelRxns,selCorrelRxns);
+adjMatrix = adjMatrix(selCorrelRxns, selCorrelRxns);
 
 % Construct set number index
 hasSet = false(size(rxnList));
 currSetNo = 0;
 setNoTmp = zeros(size(rxnList));
 for i = 1:length(rxnList)
-    if (~hasSet(i))
-        currSetNo = currSetNo+1;
-        setMembers = find(adjMatrix(i,:));
+    if ~hasSet(i)
+        currSetNo = currSetNo + 1;
+        setMembers = find(adjMatrix(i, :));
         hasSet(setMembers) = true;
         hasSet(i) = true;
         setNoTmp(setMembers) = currSetNo;
@@ -56,7 +56,7 @@ for i = 1:length(rxnList)
     end
 end
 setNo = zeros(size(model.rxns));
-[tmp,index1,index2] = intersect(model.rxns,rxnList);
+[tmp, index1, index2] = intersect(model.rxns, rxnList);
 setNo(index1) = setNoTmp(index2);
 
 % Construct list of sets
@@ -67,7 +67,7 @@ for i = 1:max(setNo)
 end
 
 % Sort everything
-[setSize,sortInd] = sort(setSize');
+[setSize, sortInd] = sort(setSize');
 sortInd = flipud(sortInd);
 setsSorted = sets(sortInd);
 setNoSorted = zeros(size(setNo));

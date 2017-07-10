@@ -36,31 +36,31 @@ for j = 1:nRxns
   currLB = 1e6;
   currUB = -1e6;
   for i = 1:length(models)
-    id = findRxnIDs(models{i},rxnNameList{j});
+    id = findRxnIDs(models{i}, rxnNameList{j});
     if (isempty(id))
-      id = findRxnIDs(models{i},[rxnNameList{j} '_r']);
+      id = findRxnIDs(models{i}, [rxnNameList{j} '_r']);
       if (isempty(id))
         error('Reaction does not exist');
       end
     end
-    currLB = min(currLB,min(samples{i}(id,:)'));
-    currUB = max(currUB,max(samples{i}(id,:)'));
+    currLB = min(currLB, min(samples{i}(id, :)'));
+    currUB = max(currUB, max(samples{i}(id, :)'));
   end
 
-  bins = linspace(currLB,currUB,nBins);
+  bins = linspace(currLB, currUB, nBins);
 
   for i = 1:length(models)
     sampleSign = 1;
-    id = findRxnIDs(models{i},rxnNameList{j});
+    id = findRxnIDs(models{i}, rxnNameList{j});
     if (isempty(id))
-      id = findRxnIDs(models{i},[rxnNameList{j} '_r']);
+      id = findRxnIDs(models{i}, [rxnNameList{j} '_r']);
       sampleSign = -1;
     end
-    traj(:,i) = sampleSign*samples{i}(id,:)';
+    traj(:,i) = sampleSign * samples{i}(id, :)';
   end
 
-  subplot(nY,nX,j);
-  plot(traj,'-');
+  subplot(nY, nX, j);
+  plot(traj, '-');
   axis([0 length(traj) currLB currUB]);
   %text((currUB+currLB)/2,max(max(counts))+20,rxnNameList{j});
 end
