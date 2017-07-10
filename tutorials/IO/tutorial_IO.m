@@ -1,6 +1,6 @@
 %% Input and output of reconstructions and mdoels 
-%% Author(s): Thomas Pfau, University of Luxembourg
-%% Reviewers: Catherine Clancy
+%% Author(s): Thomas Pfau, LCSB, University of Luxembourg.
+%% Reviewers: Catherine Clancy, LCSB, University of Luxembourg.
 %% INTRODUCTION
 % This tutorial aims at providing information on how to load models into The 
 % COBRA Toolbox and export them to other formats.
@@ -80,19 +80,22 @@
 % a tab separated file containing the reactions with their reaction formulas along 
 % with the associated GPRs, but no further information. This format only uses 
 % the required fields and will ignore any optional fields.
-%% MATERIALS
-% We will use two model files for this tutorial: a MAT-file formated model and 
-% an SBML formated model. First we must loads both files into the tutorial directory 
-% (cleaning any old copies).
+%% EQUIPMENT SETUP
+%% *Initialize the COBRA Toolbox.*
+% Initialize The Cobra Toolbox using the |initCobraToolbox| function.
+
+initCobraToolbox
+%% 
+% For this tutorial we will use a MAT-file formated model of the _E.coli 
+% core_ model [1]. First we will load the model into the tutorial directory (cleaning 
+% any old copies).
 
 cd(fileparts(which('tutorial_IO.mlx')));
 
-% Copies the two files required for this tutorial (if they are not yet present).
+% Cop the file required for this tutorial (if they are not yet present).
 try
     delete 'ecoli_core_model.mat';
-    delete 'Abiotrophia_defectiva_ATCC_49176.xml'  
     copyfile(which('ecoli_core_model.mat'), '.');
-    copyfile(which('Abiotrophia_defectiva_ATCC_49176.xml'), '.'); %TODO: The 'Abiotrophia_defectiva_ATCC_49176.xml' not found in corbatoolbox therefore cannot copy file. Also this file is not used in the tutorial. 
 end
 %% PROCEDURE
 % The time that it takes to load a model depends on the file format, the complexity 
@@ -109,8 +112,8 @@ model = readCbModel(fileName);
 % The |readCbModel |function has a second optional input that specifies 
 % the file type being loaded. In the above example the file type does not need 
 % to be specified since the input default is a 'Matlab' file type. To load file 
-% types other than a MAT-file, specificy the file type for input as: ?SBML?, ?SimPheny?, 
-% ?SimPhenyPlus?, ?SimPhenyText?, or 'Excel?. 
+% types other than a MAT-file, specificy the file type for input as: ‘SBML’, ‘SimPheny’, 
+% ‘SimPhenyPlus’, ‘SimPhenyText’, or 'Excel’. 
 % 
 % You can also call the |readCbModel |function without a fileName to get 
 % a dialog box, this is provided the Java feature is available. 
@@ -139,7 +142,7 @@ end
 % the file type in which the model should be written and saved. In the above example 
 % the file type was not specified and so the default file type to be saved was 
 % as a MAT-file. To use the function to write a file types other than a MAT-file, 
-% specificy the file type for input as: ?text?,?xls?, or ?sbml?. 
+% specificy the file type for input as: ‘text’,’xls’, or ‘sbml’. 
 
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model,'text')
@@ -160,7 +163,9 @@ cd(fileparts(which('tutorial_IO.mlx')));
 % Delete the files used in this tutorial (if they are present).
 try
     delete('ecoli_core_model.mat');
-    delete('Abiotrophia_defectiva_ATCC_49176.xml'); %TODO: The 'Abiotrophia_defectiva_ATCC_49176.xml' not found in corbatoolbox therefore cannot copy file. Also this file is not used in the tutorial. 
     delete('Acidaminococcus.xml');
 end
 cd(currentDir)
+%% REFERENCES
+% [1] Reconstruction and Use of Microbial Metabolic Networks: the Core Escherichia 
+% coli Metabolic Model as an Educational Guide by Orth, Fleming, and Palsson (2010)
