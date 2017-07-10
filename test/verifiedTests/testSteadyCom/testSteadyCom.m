@@ -18,8 +18,6 @@ fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
 
 % create a toy model
-model = createModel();
-mets = {'a[e]'; 'b[e]'; 'c[e]'; 'a[c]'; 'b[c]'; 'c[c]'};
 rxns = {'EX_a(e)'; 'EX_b(e)'; 'EX_c(e)'; 'TransA'; 'TransB'; 'TransC'; 'A2B'; 'A2C'; 'BIOMASS'};
 rxnNames = {'Exchange of a'; 'Exchange of b'; 'Exchange of c'; ...
     'Transport of a'; 'Transport of b'; 'Transport of c'; ...
@@ -27,16 +25,12 @@ rxnNames = {'Exchange of a'; 'Exchange of b'; 'Exchange of c'; ...
 rxnEqs = {'a[e] <=>'; 'b[e] <=>'; 'c[e] <=>'; ...
     'a[e] <=> a[c]'; 'b[e] <=> b[c]'; 'c[e] <=> c[c]'; ...
     'a[c] -> b[c]'; 'a[c] -> 0.5 c[c]'; '30 b[c] + 20 c[c] ->'};
-lb = [-1; 0; 0; -1000; -1000; -1000; 0; 0; 0];
-for j = 1:numel(mets)
-    model = addMetabolite(model, mets{j}, 'metName', mets{j});
-end
-for j = 1:numel(rxns)
-    model = addReaction(model, rxns{j}, 'reactionFormula', rxnEqs{j}, 'reactionName', rxnNames{j}, 'lowerBound', lb(j), 'subSystem', '');
-end
+model = createModel(rxns, rxnNames, rxnEqs, 'lowerBoundList', [-1; 0; 0; -1000; -1000; -1000; 0; 0; 0]);
+
 % two copies of the model, each with one intracellular reaction KO
 org1 = changeRxnBounds(model, 'A2B', 0);
 org2 = changeRxnBounds(model, 'A2C', 0);
+
 % construct a community model
 modelJoint = createMultipleSpeciesModel({org1; org2}, {'Org1'; 'Org2'});
 
@@ -91,10 +85,10 @@ delete('printUptakeBoundCom_wt_host.txt');  % remove the generated file
 modelJoint.infoCom.spBm = {'Org1BIOMASS'; 'Org2BIOMASS'};
 modelJoint.indCom.spBm = findRxnIDs(modelJoint, modelJoint.infoCom.spBm);
 
-% TEST infoCom2indCom.m
-indCom = infoCom2indCom(modelJoint);  % get indCom from infoCom
+% TEST SteadyComSubroutines('infoCom2indCom')
+indCom = SteadyComSubroutines('infoCom2indCom', modelJoint);  % get indCom from infoCom
 assert(isequal(indCom, modelJoint.indCom))
-infoCom = infoCom2indCom(modelJoint, modelJoint.indCom, true, {'Org1'; 'Org2'});  % get infoCom from indCom
+infoCom = SteadyComSubroutines('infoCom2indCom', modelJoint, modelJoint.indCom, true, {'Org1'; 'Org2'});  % get infoCom from indCom
 assert(isequal(infoCom, modelJoint.infoCom))
 
 switch CBT_LP_SOLVER
