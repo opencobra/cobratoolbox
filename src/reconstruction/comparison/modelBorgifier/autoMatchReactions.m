@@ -10,7 +10,7 @@ function [rxnList,metList] = autoMatchReactions(scoreTotal, rxnList, metList, va
 %    rxnList = autoMatchReactions(scoreTotal, rxnList, metList, [rxnHighCutoff, rxnMargin, rxnLowCutoff], [metHighCutoff, metMargin, metLowCutoff])
 %
 % INPUTS:
-%    scoreTotal:       Optimized score matrix between CMODEL and TMODEL reactions.
+%    scoreTotal:       Optimized score matrix between `CMODEL` and `TMODEL` reactions.
 %    rxnList:          Only undeclared reactions will be automatched.
 %    metList:          Comparison array for metabolites
 %
@@ -26,7 +26,7 @@ function [rxnList,metList] = autoMatchReactions(scoreTotal, rxnList, metList, va
 %
 % OUTPUTS:
 %    rxnList:          Array which correlates a reaction from CMODEL to the index
-%                      of the best match in TMODEL. Rxns with 0 designation are
+%                      of the best match in `TMODEL`. Rxns with 0 designation are
 %                      new, ones with a -1 need manual review.
 % Please cite:
 % `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale

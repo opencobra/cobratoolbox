@@ -13,7 +13,7 @@ function Model = buildTmodel(Model)
 %
 % OUTPUTS:
 %    Model:     Template model which to which another model can be
-%               compared. Known as Tmodel in other scripts
+%               compared. Known as `Tmodel` in other scripts
 %
 % Please cite:
 % `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale

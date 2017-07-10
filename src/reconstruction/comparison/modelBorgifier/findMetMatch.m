@@ -1,57 +1,48 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function [matchScores, matchIndex, varargout] = findMetMatch(cMet, varargin)
-% findMetMatch finds find possible matches for a given metabolite.
+% Finds find possible matches for a given metabolite.
+% Called by `metCompare`, `metCompareGUI`, calls `stringSimilarityForward`.
 %
 % USAGE:
-%    [matchScores, matchIndex[, hit]] = findMetMatch(cMet[, tRxn])
 %
+%    [matchScores, matchIndex, [hit]] = findMetMatch(cMet, [tRxn])
 %
 % INPUTS:
-%    cMet:      Metabolite number (relative to CMODEL) metabolite to be
-%               compared.
+%    cMet:           Metabolite number (relative to CMODEL) metabolite to be compared.
 %
 % OPTIONAL INPUTS:
-%    tRxn:      The reaction from TMODEL that this metabolite's reaction is
-%               matched.
-%
-% GLOBAL INPUTS:
-%    CMODEL
-%    TMODEL
+%    tRxn:           The reaction from `TMODEL` that this metabolite's reaction is matched.
+%    CMODEL:         global input
+%    TMODEL:         global input
 %
 % OUTPUTS:
-%    matchScores:  Array of sorted, normalized scores for each met in TMODEL.
-%    matchIndex:   Index of match in TMODEL.mets.
+%    matchScores:    Array of sorted, normalized scores for each met in `TMODEL`.
+%    matchIndex:     Index of match in `TMODEL.mets`.
 %
 % OPTIONAL OUTPUTS:
-%    hit:          Flag for if a match was found. 
+%    hit:            Flag for if a match was found.
 %
-% CALLS:
-%    stringSimilarityForward:   Subfunction.
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    metCompare
-%    metCompareGUI
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
 %
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Declare variables and scoring structure.
-global CMODEL TMODEL 
+global CMODEL TMODEL  % Declare variables and scoring structure.
 
 % Declare matched reaction, if any.
 if ~isempty(varargin)
@@ -75,9 +66,9 @@ ScoreVal = struct('ID', [1, -0.1], ...
 % Score array.
 metScores = zeros(1, length(TMODEL.mets));
 
-% Variable indicate if any significant matching information was found, 
+% Variable indicate if any significant matching information was found,
 % ie name, formula, ID. If not, this flag indicates a new met should be
-% declared. 
+% declared.
 hit = 0 ;
 
 % Compartments of every met in T, used later for comparison.
@@ -88,7 +79,7 @@ end
 
 %% Compare cMet to TMODEL
 % metsID Match. There is always one ID.
-% Match name, removing '[.]' and add regular expression info. 
+% Match name, removing '[.]' and add regular expression info.
 if ~isempty(regexp(CMODEL.mets{cMet}, '\[.\]', 'once'))
     name =  strcat('(\||\<)', CMODEL.mets{cMet}(1:end - 3), '(\>|\[|_|\|)') ;
 else
@@ -101,7 +92,7 @@ match = ~cellfun(@isempty, match) ;
 matchExact = regexpi(TMODEL.metID, [':' name '[']) ;
 matchExact = ~cellfun(@isempty, matchExact) ;
 % If at least one match was found, change flag and give scores.
-if ~isempty(find(match, 1)) 
+if ~isempty(find(match, 1))
     hit = 1 ;
     metScores(match) = metScores(match) + ScoreVal.ID(1) ;
     metScores(matchExact) = metScores(matchExact) + ScoreVal.ID(1) ;
@@ -159,9 +150,9 @@ if ~isempty(CMODEL.metKEGGID{cMet})
         name = fullname(pipePos(i) + 1:pipePos(i + 1) - 1) ;
         match = regexpi(TMODEL.metKEGGID, name) ;
         match = ~cellfun('isempty', match) ;
-        matchSum = matchSum + match ; 
+        matchSum = matchSum + match ;
     end
-    match = logical(matchSum) ; 
+    match = logical(matchSum) ;
     if ~isempty(find(match, 1))
         hit = 1 ;
         metScores(match) = metScores(match) + ScoreVal.KEGGID(1) ;
@@ -177,9 +168,9 @@ if ~isempty(CMODEL.metSEEDID{cMet})
         name = fullname(pipePos(i) + 1:pipePos(i + 1) - 1) ;
         match = regexpi(TMODEL.metSEEDID, name) ;
         match = ~cellfun('isempty', match) ;
-        matchSum = matchSum + match ; 
+        matchSum = matchSum + match ;
     end
-    match = logical(matchSum) ; 
+    match = logical(matchSum) ;
     if ~isempty(find(match, 1))
         hit = 1 ;
         metScores(match) = metScores(match) + ScoreVal.SEEDID(1) ;
@@ -226,7 +217,7 @@ end
 %% Output
 [matchScores, matchIndex] = sort(metScores, 'descend') ;
 
-varargout = cell(1) ; 
+varargout = cell(1) ;
 varargout{1} = hit ;
 
 function score = stringSimilarityForward(input1, input2, wordsize)
@@ -248,4 +239,3 @@ end
 score = mean(score ./ max(score)) ;
 
 score(isnan(score)) = 0 ;
-

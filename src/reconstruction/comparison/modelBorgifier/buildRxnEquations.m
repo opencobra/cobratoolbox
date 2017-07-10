@@ -8,7 +8,7 @@ function Model = buildRxnEquations(Model)
 %    Model = buildRxnEquations(Model)
 %
 % INPUTS:
-%    Model:     COBRA format model or Tmodel
+%    Model:     COBRA format model or `Tmodel`
 %
 % OUTPUTS:
 %    Model:     Model with corrected `rxnEquations` field.

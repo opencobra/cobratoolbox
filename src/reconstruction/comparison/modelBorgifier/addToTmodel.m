@@ -13,11 +13,11 @@ function [TmodelC, Cmodel] = addToTmodel(Cmodel, Tmodel, rxnList, metList, varar
 %                  and new reactions.
 %    rxnList:      Array the length of Cmodel.rxns with corresponding
 %                  matching reaction numbers from Tmodel. If a rxn is unique
-%                  in Cmodel, it has 0. rxnList is the output of
+%                  in Cmodel, it has 0. `rxnList` is the output of
 %                  reactionCompare GUI.
-%    metList:      Array the length of Cmodel.mets with corresponding
-%                  matching met indexes from Tmodel. New mets should already
-%                  have their correct index in Tmodel.
+%    metList:      Array the length of `Cmodel.mets` with corresponding
+%                  matching met indexes from `Tmodel`. New mets should already
+%                  have their correct index in `Tmodel`.
 %
 % OPTIONAL INPUTS:
 %    'NoClean':    Don't call cleanTmodel at the end of this function
