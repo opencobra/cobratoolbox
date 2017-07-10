@@ -197,7 +197,7 @@
 the difference between the flux vectors</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>sampleDiff = calcSampleDifference(sample1, sample2, nPts)</div></blockquote>
+<div>[sampleDiff, sampleRatio] = calcSampleDifference(sample1, sample2, nPts)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -205,8 +205,14 @@ the difference between the flux vectors</p>
 First flux sample</li>
 <li><strong>sample2</strong> &#8211;
 Second flux sample</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>nPts</strong> &#8211;
-Number of flux difference profiles desired</li>
+Number of flux difference profiles desired (default:
+10% of the samples)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -218,6 +224,13 @@ Difference between the flux vectors</li>
 Ratio of the flux vectors</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="mi">1</span><span class="p">:</span>
+<span class="p">[</span><span class="n">sampleDiff</span><span class="p">,</span> <span class="n">sampleRatio</span><span class="p">]</span> <span class="o">=</span> <span class="n">calcSampleDifference</span><span class="p">(</span><span class="n">sample1</span><span class="p">,</span> <span class="n">sample2</span><span class="p">)</span>
+<span class="n">example</span> <span class="mi">2</span><span class="p">:</span>
+<span class="p">[</span><span class="n">sampleDiff</span><span class="p">,</span> <span class="n">sampleRatio</span><span class="p">]</span> <span class="o">=</span> <span class="n">calcSampleDifference</span><span class="p">(</span><span class="n">sample1</span><span class="p">,</span> <span class="n">sample2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -249,6 +262,13 @@ Structure with the following fields:<ul>
 </li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="mi">1</span><span class="p">:</span>
+<span class="n">sampleStats</span> <span class="o">=</span> <span class="n">calcSampleStats</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">example</span> <span class="mi">2</span><span class="p">:</span>
+<span class="n">sampleStats</span> <span class="o">=</span> <span class="n">calcSampleStats</span><span class="p">({</span><span class="n">sample1</span><span class="p">,</span> <span class="n">sample2</span><span class="p">})</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -306,28 +326,37 @@ Samples to compare</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>stats</strong> &#8211;
-statistics</li>
+Struct array with statistics of the selected
+tests.</li>
 <li><strong>pVals</strong> &#8211;
-<cite>p</cite> values</li>
+Struct array with <cite>p</cite> values of the selected
+tests.</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="mi">1</span><span class="p">:</span>
+<span class="p">[</span><span class="n">stats</span><span class="p">,</span> <span class="n">pVals</span><span class="p">]</span> <span class="o">=</span> <span class="n">compareTwoSamplesStat</span><span class="p">(</span><span class="n">sample1</span><span class="p">,</span> <span class="n">sample2</span><span class="p">)</span>
+<span class="n">example</span> <span class="mi">2</span><span class="p">:</span>
+<span class="p">[</span><span class="n">stats</span><span class="p">,</span> <span class="n">pVals</span><span class="p">]</span> <span class="o">=</span> <span class="n">compareTwoSamplesStat</span><span class="p">(</span><span class="n">sample1</span><span class="p">,</span> <span class="n">sample2</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="s1">&#39;rankSum&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
 <p>Output will be in order that tests are inputed. i.e. {&#8216;ks&#8217;,&#8217;rankSum&#8217;}</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.sampling.identifyCorrelSets">
-<code class="descname">identifyCorrelSets</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>corrThr</em>, <em>R</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/identifyCorrelSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.identifyCorrelSets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">identifyCorrelSets</code><span class="sig-paren">(</span><em>model</em>, <em>sample</em>, <em>corrThr</em>, <em>R</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/identifyCorrelSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.identifyCorrelSets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies correlated reaction sets from sampling data</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[sets, setNumber, setSize] =  identifyCorrelSets(model, samples, corrThr, R)</div></blockquote>
+<div>[sets, setNumber, setSize] =  identifyCorrelSets(model, sample, corrThr, R)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
-<li><strong>samples</strong> &#8211;
-Samples to be used to identify correlated sets</li>
+<li><strong>sample</strong> &#8211;
+Sample to be used to identify correlated sets</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -391,34 +420,40 @@ Sample flux distributions</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.plotHistConv">
-<code class="descname">plotHistConv</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>rxnNames</em>, <em>nSubSamples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/plotHistConv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.plotHistConv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plotHistConv</code><span class="sig-paren">(</span><em>model</em>, <em>sample</em>, <em>rxnNames</em>, <em>nSubSamples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/plotHistConv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.plotHistConv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots convergence of sample histograms</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>plotHistConv(model, samples, rxnNames, nSubSamples)</div></blockquote>
+<div>plotHistConv(model, sample, rxnNames, nSubSamples)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
-<li><strong>samples</strong> &#8211;
-Sample fluxes</li>
+<li><strong>sample</strong> &#8211;
+Sampled fluxes</li>
 <li><strong>rxnNames</strong> &#8211;
 List of reactions to plot</li>
 <li><strong>nSubSamples</strong> &#8211;
 Number of sub samples</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="mi">1</span><span class="p">:</span>
+<span class="n">rxnNames</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;R1&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">}</span>
+<span class="n">plotHistConv</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">rxnNames</span><span class="p">,</span> <span class="n">nSubSamples</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.sampling.plotSampleHist">
-<code class="descname">plotSampleHist</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em>, <em>perScreen</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/plotSampleHist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.plotSampleHist" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plotSampleHist</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em>, <em>perScreen</em>, <em>modelNames</em>, <em>add2Plot</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/plotSampleHist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.plotSampleHist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares flux histograms for one or more samples
 for one or more reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>plotSampleHist(rxnNames, samples, models, nBins, perScreen)</div></blockquote>
+<div>plotSampleHist(rxnNames, samples, models, nBins, perScreen, modelNames, add2Plot)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -439,6 +474,13 @@ Number of bins to be used</li>
 <li><strong>perScreen</strong> &#8211;
 Number of reactions to show per screen.  Either a number or [nY, nX] vector.
 (press &#8216;enter&#8217; to advance screens)</li>
+<li><strong>modelNames</strong> &#8211;
+Cell array containing the name of the models (used for the
+plot&#8217;s legend).</li>
+<li><strong>add2Plot</strong> &#8211;
+Struct array with additional data to show more
+detaled information (real measuremets, FVA resuts, statistics
+results, etc).</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -460,7 +502,7 @@ To quit script type &#8216;q&#8217; and hit &#8216;enter/return&#8217;</p>
 
 <dl class="function">
 <dt id="src.analysis.sampling.printSampleStats">
-<code class="descname">printSampleStats</code><span class="sig-paren">(</span><em>samples</em>, <em>commonModel</em>, <em>sampleNames</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/printSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.printSampleStats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printSampleStats</code><span class="sig-paren">(</span><em>sampledModel</em>, <em>commonModel</em>, <em>sampleNames</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/sampling/printSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.printSampleStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out sample statistics for multiple samples</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -468,19 +510,20 @@ To quit script type &#8216;q&#8217; and hit &#8216;enter/return&#8217;</p>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>samples</strong> &#8211;
+<li><strong>sampledModel</strong> &#8211;
 Samples to plot</li>
 <li><strong>commonModel</strong> &#8211;
 COBRA model structure</li>
 <li><strong>sampleNames</strong> &#8211;
-Names of samples</li>
+Names of the models</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>fileName</strong> &#8211;
-Name of file to generate (Default = print to command window)</li>
+Name of tab delimited CSV file to generate
+(Default = print to command window)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -596,10 +639,10 @@ Optional second set of reaction names</li>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">Plots</span> <span class="n">the</span> <span class="n">scatterplots</span> <span class="n">only</span> <span class="n">between</span> <span class="n">the</span> <span class="n">three</span> <span class="n">reactions</span> <span class="n">listed</span> <span class="o">-</span>
 <span class="o">%</span><span class="n">histograms</span> <span class="k">for</span> <span class="n">each</span> <span class="n">reaction</span> <span class="n">will</span> <span class="n">be</span> <span class="n">on</span> <span class="n">the</span> <span class="n">diagonal</span>
-<span class="n">sampleScatterMatrix</span><span class="p">({</span><span class="s1">&#39;PFK&#39;</span><span class="p">,</span><span class="s1">&#39;PYK&#39;</span><span class="p">,</span><span class="s1">&#39;PGL&#39;</span><span class="p">},</span><span class="n">model</span><span class="p">,</span><span class="n">sample</span><span class="p">);</span>
+<span class="n">sampleScatterMatrix</span><span class="p">({</span><span class="s1">&#39;PFK&#39;</span><span class="p">,</span> <span class="s1">&#39;PYK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGL&#39;</span><span class="p">},</span> <span class="n">model</span><span class="p">,</span> <span class="n">sample</span><span class="p">);</span>
 <span class="o">%</span><span class="n">Plots</span> <span class="n">the</span> <span class="n">scatterplots</span> <span class="n">between</span> <span class="n">each</span> <span class="n">of</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">reactions</span> <span class="ow">and</span>
 <span class="o">%</span><span class="n">each</span> <span class="n">of</span> <span class="n">the</span> <span class="n">second</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">reactions</span><span class="o">.</span> <span class="n">No</span> <span class="n">histograms</span> <span class="n">will</span> <span class="n">be</span> <span class="n">shown</span><span class="o">.</span>
-<span class="n">sampleScatterMatrix</span><span class="p">({</span><span class="s1">&#39;PFK&#39;</span><span class="p">,</span><span class="s1">&#39;PYK&#39;</span><span class="p">,</span><span class="s1">&#39;PGL&#39;</span><span class="p">},</span><span class="n">model</span><span class="p">,</span><span class="n">sample</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">true</span><span class="p">,{</span><span class="s1">&#39;ENO&#39;</span><span class="p">,</span><span class="s1">&#39;TPI&#39;</span><span class="p">);</span>
+<span class="n">sampleScatterMatrix</span><span class="p">({</span><span class="s1">&#39;PFK&#39;</span><span class="p">,</span> <span class="s1">&#39;PYK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGL&#39;</span><span class="p">},</span> <span class="n">model</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ENO&#39;</span><span class="p">,</span><span class="s1">&#39;TPI&#39;</span><span class="p">});</span>
 </pre></div>
 </div>
 </dd></dl>
