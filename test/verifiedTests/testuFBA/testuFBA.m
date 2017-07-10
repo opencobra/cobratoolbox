@@ -25,7 +25,7 @@ cd(fileDir);
 %   model           modified iAB-RBC-283 COBRA model structure
 %   time            time points (in days)
 %   uFBAvariables   input for uFBA algorithm
-load([CBTDIR filesep 'tutorials' filesep 'uFBA' filesep 'sample_data.mat']);
+load([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'uFBA' filesep 'sample_data.mat']);
 
 % test that data is loaded correctly
 assert(size(met_data, 1) == 80 & size(met_data, 2) == 102, ...
