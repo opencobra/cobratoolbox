@@ -1,53 +1,50 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function Model = buildRxnEquationsFromName(Model)
-% buildRxnEquationsFromName Takes a COBRA model and creates reaction equations based
-% on the metabolite long names, S matrix and bound information. Returns the 
-% model with the additioanl field rxnEquations.
+% Takes a COBRA model and creates reaction equations based
+% on the metabolite long names, S matrix and bound information. Returns the
+% model with the additioanl field `rxnEquations`.
 %
 % USAGE:
+%
 %    Model = buildRxnEquations(Model)
 %
 % INPUTS:
 %    Model:     COBRA format model or Tmodel
 %
 % OUTPUTS:
-%    Model:     Model with corrected rxnEquations field.
+%    Model:     Model with corrected `rxnEquations` field.
 %
-% CALLS:
-%    None
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    None
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% If the function is fed Tmodel, use reaction bounds from first model.
-if isfield(Model,'Models')
+if isfield(Model,'Models') % If the function is fed Tmodel, use reaction bounds from first model.
     modelNames = fieldnames(Model.Models) ;
-    firstModel = modelNames{1} ; 
-    lb = Model.lb.(firstModel) ; 
-    ub = Model.ub.(firstModel) ; 
+    firstModel = modelNames{1} ;
+    lb = Model.lb.(firstModel) ;
+    ub = Model.ub.(firstModel) ;
 else
-    lb = Model.lb ; 
-    ub = Model.ub ; 
+    lb = Model.lb ;
+    ub = Model.ub ;
 end
 
-%% Make the equations. 
+%% Make the equations.
 for iRxn = 1:length(Model.rxns)
     rxnCode = [] ;
 
@@ -60,12 +57,12 @@ for iRxn = 1:length(Model.rxns)
     elseif lb(iRxn) < 0 && ub(iRxn) <= 0
         arrow = '<--' ;
         esave = educts ; products = educts ; educts = esave ; clear esave ;
-    elseif lb(iRxn) == 0 && ub(iRxn) == 0 
+    elseif lb(iRxn) == 0 && ub(iRxn) == 0
         arrow = '|||' ;
     else
         disp(['do not understand directionality of ' Model.rxns{iRxn}])
     end
-    
+
     if ~isempty(educts)
         for ie = 1:length(educts)
             if Model.S(educts(ie), iRxn) ~= -1
@@ -77,11 +74,11 @@ for iRxn = 1:length(Model.rxns)
             rxnCode = [rxnCode ' + '] ;
         end
         % Note how just 2 positions are substracted from the end, leaving a
-        % space. 
+        % space.
         rxnCode = [rxnCode(1:end - 2) arrow] ;
     end
     if ~isempty(products)
-        rxnCode = [rxnCode ' '] ; 
+        rxnCode = [rxnCode ' '] ;
         for ip = 1:length(products)
             if Model.S(products(ip), iRxn) ~= 1
                 rxnCode = [rxnCode '(' num2str(Model.S(products(ip), iRxn))...
@@ -93,7 +90,7 @@ for iRxn = 1:length(Model.rxns)
         end
         rxnCode = rxnCode(1:end - 3) ;
     end
-    
+
     Model.rxnEquations{iRxn, 1} = rxnCode ;
     clear educts ; clear products; clear ie ; clear ip ; clear rxcode ;
 end

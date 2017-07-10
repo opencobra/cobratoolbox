@@ -22,7 +22,7 @@ function [TmodelC, Cmodel] = addToTmodel(Cmodel, Tmodel, rxnList, metList, varar
 % OPTIONAL INPUTS:
 %    'NoClean':    Don't call cleanTmodel at the end of this function
 %    'Verbose':    Ask when performing certain operations. Carries into
-%                  cleanTmodel.
+%                  `cleanTmodel`.
 %
 % OUTPUTS:
 %    Tmodel:       The addended master reaction database.
