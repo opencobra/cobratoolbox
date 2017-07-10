@@ -2,29 +2,54 @@
 % *Authors: Laurent Heirendt, Ronan M.T. Fleming, Luxembourg Centre for Systems 
 % Biomedicine*
 % 
-% *Reviewers: Sylvain Arreckx, Thomas Pfau*
+% *Reviewers: Sylvain Arreckx, Thomas Pfau, and Catherine Fleming,  Luxembourg 
+% Centre for Systems Biomedicine*
 %% Introduction
 % During this tutorial, you will learn how to determine and explore the numerical 
 % properties of a stoichiometric matrix. The numerical properties are key to analyzing 
 % the metabolic reconstruction at hand, to select the appropriate solver, or to 
-% determine incoherences in the network. 
+% determine incoherencies in the network. 
 % 
 % You will also be able to learn more about the definitions of the various 
 % numerical characteristics. This tutorial is particularly useful when you have 
 % a multi-scale model and are facing numerical issues when performing flux balance 
-% analysis or any of its associated variants.
-%% MATERIALS - EQUIPMENT SETUP
-% Please ensure that The COBRA Toolbox has been properly installed and initialized. 
-% There are no specific solvers required to run this tutorial.
+% analysis or any other variants of FBA.
+%% EQUIPMENT SETUP
+%% *Initialize the COBRA Toolbox.*
+% Please ensure that The COBRA Toolbox has been properly installed, and initialized 
+% using the |initCobraToolbox| function.
+
+initCobraToolbox
+%% *Setting the *optimization* solver.*
+% This tutorial will be run with a |'glpk'| package, which is a linear programming 
+% ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
+% and configuration.
+
+solverName='glpk';
+solverType='LP'; 
+changeCobraSolver(solverName,solverType);
+%% 
+% There are no specific solvers essentail to running this tutorial. For 
+% the analysis of large models, such as Recon [1], it is not recommended to use 
+% the |'glpk'| package but rather an industrial strength solver, such as the |'gurobi'| 
+% package. For detailed information, refer to The Cobra Toolbox <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% solver instalation guide>. 
+% 
+% A solver package may offer different types of optimization programmes to 
+% solve a problem. The above example used a LP optimization, other types of optimization 
+% programmes include; mixed-integer linear programming ('|MILP|'), quadratic programming 
+% ('|QP|'), and mixed-integer quadratic programming ('|MIQP|').
+
+warning off MATLAB:subscripting:noSubscriptsSpecified
 %% PROCEDURE 
 % TIMING: 5 seconds - several hours (depending on the model size)
 % 
 % *Define the name of the model*
 % 
-% Throughout this tutorial, we will use the _E.coli core_ model [1]. It is 
-% generally good practice to define the name of the file that contains the model, 
-% the variable that contains the model structure, as well as the name of the stoichiometric 
-% matrix as separate variables. We here suppose that within the |modelFile|, there 
+% Throughout this tutorial, we will use the _E.coli core_ model [2]. It is 
+% generally good practice to define; the name of the file that contains the model, 
+% the name of the model structure, and the name of the stoichiometric matrix, 
+% as separate variables. Therefore, we propose that within the |modelFile|, there 
 % is a structure named |modelName| with a field |matrixName| that contains the 
 % stoichiometric matrix |S| (or |A|).
 
@@ -60,41 +85,43 @@ end
 % stoichiometric matrix (including zero elements). This number is equivalent to 
 % the product of the number of reactions and the number of metabolites.
 % 
-% The number of rows is equivalent to the *number of metabolites* in the 
-% metabolic network. The number of columns corresponds to the *number of biochemical 
-% reactions* in the network.
+% The number of rows represents the *number of metabolites* in the metabolic 
+% network. The number of columns corresponds to the *number of biochemical reactions* 
+% in the network.
 
-% determine the number of reactions and metabolites in A
+% determine the number of reactions and metabolites in S
 [nMets, nRxns] = size(S)
-% determine the number of elements in A
+% determine the number of elements in S
 nElem = numel(S)  % Nmets * Nrxns
 %% 
 % The total number of nonzero elements corresponds to the total number of 
 % nonzero entries in the stoichiometric matrix (excluding zero elements).
 
-% determine the number of nonzero elements in A
+% determine the number of nonzero elements in S
 nNz = nnz(S)
 %% 
 % *Sparsity and Density*
 % 
-% The *sparsity ratio* corresponds to the ratio of the number of zero elements 
+% The *sparsity ratio* corresponds to a ratio of the number of zero elements 
 % and the total number of elements. The sparser a stoichiometric matrix, the fewer 
 % metabolites participate in each reaction. The sparsity ratio is particularly 
 % useful to compare models by how many metabolites participate in each reaction.
-% 
-% Similarly, the *complementary sparsity ratio* is calculated as the difference 
-% of 100 and the sparsity ratio expressed in percent, and is the ratio of the 
-% number of nonzero elements and the total number of elements.
 
 % determine the sparsity ratio of S (in percent)
 sparsityRatio = (1 - nNz / nElem) * 100.0  % [%]
+%% 
+% Similarly, the *complementary sparsity ratio* is calculated as the difference 
+% of 100 and the sparsity ratio expressed in percent, and therefore, is a ratio 
+% of the number of nonzero elements and the total number of elements.
+
 % determine the complementary sparsity ratio (in percent)
 compSparsityRatio = 100.0 - sparsityRatio  % [%]
 %% 
-% The* average column density *corresponds to the ratio of the number of 
-% nonzero elements in each column and the total number of metabolites. The average 
-% column density corresponds to the arithmetic average of all the column densities 
-% (sum of all the column densities divided by the number of reactions).
+% The* average column density *corresponds to a ratio of the number of nonzero 
+% elements in each column (i.e. reaction) and the total number of metabolites. 
+% The average column density corresponds to the arithmetic average of all the 
+% column densities (sum of all the reaction densities divided by the number of 
+% reactions).
 
 % add the number of non-zeros in each column (reaction)
 colDensityAv = 0;
@@ -106,19 +133,19 @@ end
 colDensityAv = colDensityAv / nRxns   % [-]
 %% 
 % The average column density provides a measure of how many stoichiometric 
-% coefficients participate in each biochemical reaction in average.
+% coefficients participate in each biochemical reaction on average.
 % 
 % The *relative column density* corresponds to the ratio of the number of 
 % nonzero elements in each column and the total number of metabolites. The relative 
 % column density corresponds to the average column density divided by the total 
 % number of metabolites (expressed in percent). The relative column density may 
-% also be expressed as parts-per-million [ppm] for large-scale or huge-scale models.
+% also be expressed as parts-per-million [ppm] for large-scale or huge-scale models. 
 
 % determine the density proportional to the length of the column
 colDensityRel = colDensityAv / nMets * 100  % [%]
 %% 
 % The relative column density indicates how many metabolites are being used 
-% in average in each reaction relative to the total number of metabolites in the 
+% on average in each reaction relative to the total number of metabolites in the 
 % metabolic network.
 % 
 % *Sparsity Pattern (spy plot)*
@@ -134,7 +161,7 @@ spyc(S, colormap(advancedColormap('cobratoolbox')));
 % set the font size of the current figure axes
 set(gca, 'fontsize', 14);
 %% 
-% In the case of the _E.coli core_ model [1],  the biomass reaction is clearly 
+% In the case of the _E.coli core_ model [2],  the biomass reaction is clearly 
 % visible (reaction number 13) due to its large amount of metabolites (dots in 
 % the column) and large coefficients (size of the dots). Also, the metabolites 
 % with large stoichiometric coefficients can be easily determined based on their 
@@ -143,16 +170,20 @@ set(gca, 'fontsize', 14);
 % *Rank*
 % 
 % The *rank* of a stoichiometric matrix is the maximum number of linearly 
-% independent rows and is equivalent to the number of linearly independent columns. 
+% independent rows, and is equivalent to the number of linearly independent columns. 
 % The rank is a measurement of how many reactions and metabolites are linearly 
-% independent. The rank is preferably calculated using the LUSOL solver [3].
+% independent. 
 
 % determine the rank of the stoichiometric matrix
-rankS = getRankLUSOL(S)
+if ispc
+    rankS = rank(full(S))
+else
+    rankS = getRankLUSOL(S) % calculated using either the LUSOL solver [3]
+end
 %% 
 % The *rank deficiency* of the stoichiometric matrix is a measure of how 
 % many reactions and metabolites are not linearly dependent, and expressed as 
-% the ratio of the rank of the stoichiometric matrix to the theoretical full rank.
+% a ratio of the rank of the stoichiometric matrix to the theoretical full rank.
 
 % calculate the rank deficiency (in percent)
 rankDeficiencyS = (1 - rankS / min(nMets, nRxns)) * 100  % [%]
@@ -223,7 +254,7 @@ minSingVal = svVect(rankS) % smallest non-zero singular value
 maxSingValBuiltIn = svds(S, 1)
 minSingValBuiltIn = svds(S, 1, 'smallestnz')
 %% 
-% The *condition number* of the stoichiometric matrix is the ratio of the 
+% The *condition number* of the stoichiometric matrix is a ratio of the 
 % maximum and minimum singular values. The higher this ratio, the more ill-conditioned 
 % the stoichiometric matrix is (numerical issues) and, generally, the longer the 
 % simulation time is.
@@ -344,7 +375,7 @@ precisionEstimate
 
 solverRecommendation
 %% 
-% In order to see the effect of scaling, let us consider the ME model [2]:
+% In order to see the effect of scaling, let us consider the ME model [4]:
 
 % load the modelName structure from the modelFile
 load('ME_matrix_GlcAer_WT.mat', 'modelGlcOAer_WT');
@@ -388,13 +419,17 @@ solverRecommendation
 % In case the |'dqqMinos' |interface reports an error when trying to solve 
 % the linear program, there might be an issue with the model itself.
 %% References
-% [1] Reconstruction and Use of Microbial Metabolic Networks: the Core Escherichia 
+% [1] <http://www.nature.com/nbt/journal/v31/n5/full/nbt.2488.html Thiele et 
+% al., A community-driven global reconstruction of human metabolism, Nat Biotech, 
+% 2013.>
+% 
+% [2] Reconstruction and Use of Microbial Metabolic Networks: the Core Escherichia 
 % coli Metabolic Model as an Educational Guide by Orth, Fleming, and Palsson (2010)
 % 
-% [2] Multiscale modeling of metabolism and macromolecular synthesis inE. 
-% coli and its application to the evolution of codon usage, Thiele et al., PLoS 
-% One, 7(9):e45635 (2012)
-% 
-% [2] P. E. Gill, W. Murray, M. A. Saunders and M. H. Wright (1987). Maintaining 
+% [3] P. E. Gill, W. Murray, M. A. Saunders and M. H. Wright (1987). Maintaining 
 % LU factors of a general sparse matrix, Linear Algebra and its Applications 88/89, 
 % 239-270.
+% 
+% [4] Multiscale modeling of metabolism and macromolecular synthesis in E. 
+% coli and its application to the evolution of codon usage, Thiele et al., PLoS 
+% One, 7(9):e45635 (2012)
