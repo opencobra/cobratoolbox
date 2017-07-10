@@ -1,7 +1,8 @@
 %% Example use of functions listed in the Standard operating procedure for metabolic reconstruction.
 % *Author(s): Ines Thiele, LCSB, University of Luxembourg.*
 % 
-% *Reviewer(s): *Catherine Clancy, LCSB, University of Luxembourg.
+% *Reviewer(s): *Catherine Clancy, Stefania Magnusdottir, LCSB, University 
+% of Luxembourg.
 %% *INTRODUCTION*
 % This tutorial has been adapted and expanded from the protocol for generating 
 % metabolic network reconstruction [1].
@@ -14,8 +15,8 @@
 % functions applied in the steps 38 to 96 of the protocol workflow, using the 
 % E. coli core reconstruction [2] as the model of choice. _
 % 
-% _When Matlab/Toolbox commands are following by a ?;? the output is not 
-% printed. Omitting the ?;? invokes printing of the variable content. _
+% _When Matlab/Toolbox commands are following by a ‘;’ the output is not 
+% printed. Omitting the ‘;’ invokes printing of the variable content. _
 % 
 % __
 %% EQUIPMENT SETUP
@@ -81,9 +82,9 @@ modelEcore.rxns{1}
 
 modelEcore.S(8,1)
 %% 
-% * Print the reaction formula:
+% * Print the reaction formula of the 1st reaction in the model:
 
-printRxnFormula(modelEcore,modelEcore.rxns(1))
+printRxnFormula(modelEcore, modelEcore.rxns(1))
 %% 
 % * You want to change the lower bound (lb) of the 5th reaction to 10 mmol/gDW/h 
 % (without using any COBRA Toolbox functions):
@@ -94,7 +95,7 @@ modelEcore.lb(5) = 10
 % 
 %             A note: 
 
-modelEcore.newField = 'ABC ? a note'
+modelEcore.newField = 'ABC – a note'
 %% 
 %             An array B = [1 2 3]
 
@@ -113,15 +114,15 @@ ListNumbers = [1 2 3]
 
 ListTranspose = ListNumbers'
 %% 
-% * Find the index of a reaction, e.g., ?ATPM', in the model 
+% * Find the index of a reaction, e.g., ‘ATPM', in the model 
 
-rxnList='ATPM';
+rxnList = 'ATPM';
 rxnID = findRxnIDs(modelEcore, rxnList)
 %% 
 % 
 %% *Step 40.  Verify S matrix.*
 % Remember that in the S matrix the rows and the columns correspond to the metabolites 
-% and the reactions of the model, respectively. The number of non-zero entries 
+% and the reactions of the model, respectively. The number of non-zero (nz) entries 
 % in the S matrix is visualized graphically below using a spy image. 
 
 spy(modelEcore.S)
@@ -129,7 +130,7 @@ spy(modelEcore.S)
 % To put this number into perspective, we can calculate the percentage of 
 % non-zero entries of S.
 
-[a,b] = size(modelEcore.S);
+[a, b] = size(modelEcore.S);
 nz = nnz(modelEcore.S);
 Perc_nz = nz*100/(a*b)
 %% 
@@ -167,13 +168,13 @@ objectiveAbbr = checkObjective(modelEcore)
 
 minInf = -1000;
 maxInf = 1000;
-printConstraints(modelEcore, minInf,maxInf)
+printConstraints(modelEcore, minInf, maxInf)
 %% 
 % * As you can see, only three reactions are constrained in this model. The 
 % glucose exchange reaction (EX_glc(e)), the aconitase reaction (ACONTb) and the 
 % ATP non-growth associated maintenance reaction (ATPM). Note that in all three 
 % cases, a lower bound has been set only but no upper bound.
-% * The ?minInf? and ?maxInf? were set to -1000 and 1000, respectively, as these 
+% * The ‘minInf’ and ‘maxInf’ were set to -1000 and 1000, respectively, as these 
 % values represent the infinity of the E. coli core model. Other models may have 
 % different infinities.
 % * Note also that the |printConstraints| function returns only those constraints 
@@ -184,28 +185,28 @@ printConstraints(modelEcore, minInf,maxInf)
 
 printUptakeBound(modelEcore);
 %% 
-% * As you can see, the model is set to a minimal medium with the presence of 
-% oxygen.
+% * As you can see, the model is set to a minimal medium (EX_glc(e) set to -10 
+% mmol/gDW/h) with the presence of oxygen.
 % 
-% Let?s assume that you would like to set the lower bound of the ATP maintenance 
-% reaction (?ATPM?) to 8.39 mmol/gDW/h:
+% Let’s assume that you would like to set the lower bound of the ATP maintenance 
+% reaction (‘ATPM’) to 8.39 mmol/gDW/h:
 
-modelEcore = changeRxnBounds(modelEcore,'ATPM',8.39,'l');
+modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'l');
 %% 
-%             and the upper bound of the ?ATPM? reaction to 8.39 mmol/gDW/h: 
+%             and the upper bound of the ‘ATPM’ reaction to 8.39 mmol/gDW/h: 
 
-modelEcore = changeRxnBounds(modelEcore,'ATPM',8.39,'u');
+modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'u');
 %% 
 % To change both the lower and upper bound in the same command use: 
 
-modelEcore = changeRxnBounds(modelEcore,'ATPM',8.39,'b');
+modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'b');
 %% 
-% Let?s assume that you would like to set the lower bound of the ?ATPM? 
-% reaction to 8.39 mmol/gDW/h and the ATP synthetase (?ATPS4r?) to an upper bound 
+% Let’s assume that you would like to set the lower bound of the ‘ATPM’ 
+% reaction to 8.39 mmol/gDW/h and the ATP synthetase (‘ATPS4r’) to an upper bound 
 % of 100 mmol/gDW/h:
 
-modelEcore = changeRxnBounds(modelEcore,'ATPM' ,8.39,'l' );
-modelEcore = changeRxnBounds(modelEcore, 'ATPS4r',100, 'u');
+modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'l' );
+modelEcore = changeRxnBounds(modelEcore, 'ATPS4r', 100, 'u');
 %% 
 % The set constraints can be checked using the following function:
 
@@ -235,8 +236,8 @@ DeadEnds = modelEcore.mets(outputMets)
 % 
 % Let's have a look at the lower and upper bounds of these reactions:
 
-modelEcore.lb(find(ismember(modelEcore.rxns,rxnList)))
-modelEcore.ub(find(ismember(modelEcore.rxns,rxnList)))
+modelEcore.lb(find(ismember(modelEcore.rxns, rxnList)))
+modelEcore.ub(find(ismember(modelEcore.rxns, rxnList)))
 %% 
 % * In this particular case, these four metabolites are deadend metabolites 
 % as the associated exchange reactions are set to lb=0 (i.e., no uptake is permitted). 
@@ -246,8 +247,8 @@ modelEcore.ub(find(ismember(modelEcore.rxns,rxnList)))
 % 1000.
 
 modelEcore_New = modelEcore;
-modelEcore_New.lb(strmatch('EX_',modelEcore_New.rxns)) = -1000;
-modelEcore_New.ub(strmatch('EX_',modelEcore_New.rxns)) = 1000;
+modelEcore_New.lb(strmatch('EX_', modelEcore_New.rxns)) = -1000;
+modelEcore_New.ub(strmatch('EX_', modelEcore_New.rxns)) = 1000;
 %% 
 % Now we repeat the identification of deadend metabolites:
 
@@ -265,7 +266,7 @@ DeadEnds = modelEcore_New.mets(outputMets)
 % physiologically relevant conditions.
 %% Steps 46 - 49. Refer to 'gap analysis' tutorial.
 %% Step 50. Set exchange constraints for a simulation condition.
-% The Cobra Toolbox funtion, |changeRxnBounds,|is used to set constraints on 
+% The COBRA Toolbox function, |changeRxnBounds,|is used to set constraints on 
 % a reaction which is demonstrated in step 67 of this tutorial.  
 %% *Steps 51 - 59. Test for stoichiometrically balanced cycles (SBCs).*
 % SBCs or Type III pathways, are formed by internal network reactions and can 
@@ -273,10 +274,11 @@ DeadEnds = modelEcore_New.mets(outputMets)
 % the following |testForTypeIIIPathways| function: 
 % 
 % * The indices of the exchange reactions ('EX_') are input as a list. 
-% * The output filename can be specified with ?test?, it receives automatically 
-% the extension ?.expa?. The filename is optional, the default name is: 'ModelTestTypeIII'
+% * The output filename can be specified with ‘test’, it receives automatically 
+% the extension ‘.expa’. The filename is optional, the default name is: 'ModelTestTypeIII'
 
-listExch = strmatch('EX_', modelEcore.rxns);
+selExc = findExcRxns(modelEcore);
+listExch = find(selExc);
 try
     testForTypeIIIPathways(modelEcore, listExch, 'test');
 catch ME
@@ -290,13 +292,13 @@ end
 % 
 % *60.*  Obtain a list of biomass components:
 
-BiomassComponents = modelEcore.mets(find(modelEcore.S(:,strmatch('Biomass',modelEcore.rxns))))
+BiomassComponents = modelEcore.mets(find(modelEcore.S(:, strmatch('Biomass', modelEcore.rxns))))
 %% 
 % 
 % 
 % *61.*  Add a demand function for each biomass precursor:
 
-[modelEcore_NEW ,rxnNames] = addDemandReaction(modelEcore, BiomassComponents);
+[modelEcore_NEW, rxnNames] = addDemandReaction(modelEcore, BiomassComponents);
 %% 
 % * *
 % 
@@ -310,13 +312,13 @@ for i = 1 : length(BiomassComponents)
 %% 
 % 
 % 
-% *63.*  Maximize (?max?) for new objective function (Demand function)
+% *63.*  Maximize (‘max’) for new objective function (Demand function)
 
-    FBAsolution = optimizeCbModel (modelEcore_NEW,'max');
+    FBAsolution = optimizeCbModel(modelEcore_NEW, 'max');
 %% 
 % * FBAsolution is a structure containing the result of the optimization. FBAsolution.f 
 % gives the maximal value of the objective reaction (i.e., 'DM_pep[c]'), which 
-% is greater than 0 mmol/gDW/h. This means that our _E. coli_core model can produce 
+% is greater than 0 mmol/gDW/h. This means that our _E. coli _core model can produce 
 % pep[c]. 
 % * Store each solution in a vector:
 
@@ -337,7 +339,7 @@ printConstraints(modelEcore_NEW, -1000,1000)
 % than -1000 and smaller than 1000.
 % * Let's revisit how the biomass reaction is formulated in this model:
 
-modelEcore = changeObjective(modelEcore,modelEcore.rxns(strmatch('Biomass',modelEcore.rxns)));
+modelEcore = changeObjective(modelEcore, modelEcore.rxns(strmatch('Biomass', modelEcore.rxns)));
 [objectiveAbbr] = checkObjective(modelEcore)
 %% 
 % * As you can see, there are numerous metabolites that have a positive coefficient 
@@ -345,31 +347,37 @@ modelEcore = changeObjective(modelEcore,modelEcore.rxns(strmatch('Biomass',model
 % and thus we need to test whether these metabolites can be removed, rather than 
 % produced by the model. Hence, we need to add sink reactions (rather than demand 
 % reactions) and minimize them:
+% 
+% *64.*  Identify reactions that are mainly responsible for synthesizing 
+% the biomass component.
+% 
 % * Let's get all biomass components with a positive coefficient in the biomass 
 % reaction:
 
-BiomassComponentsPos = modelEcore.mets(find(modelEcore.S(:,strmatch('Biomass',modelEcore.rxns))>0))
-BiomassComponentsNeg = modelEcore.mets(find(modelEcore.S(:,strmatch('Biomass',modelEcore.rxns))<0))
+BiomassComponentsPos = modelEcore.mets(find(modelEcore.S(:, strmatch('Biomass', modelEcore.rxns)) > 0))
+BiomassComponentsNeg = modelEcore.mets(find(modelEcore.S(:, strmatch('Biomass', modelEcore.rxns)) < 0))
 %% 
-% 
+% *65.*  For each of these metabolites, we add sink reactions for components 
+% with a positive coefficient and demand reactions for components with a negative 
+% coefficient.
 
 [modelEcore_NEW] = addSinkReactions(modelEcore, BiomassComponentsPos);
-[modelEcore_NEW ,rxnNames] = addDemandReaction(modelEcore_NEW, BiomassComponentsNeg);
+[modelEcore_NEW, rxnNames] = addDemandReaction(modelEcore_NEW, BiomassComponentsNeg);
 %% 
 % * Note that we added both the sink and the demand reactions to the model simultanously. 
 % The reason for this is that metabolites such as coa and accoa, or nadh and nad, 
 % are not produced or consumed in this model but only recycled. Hence, for obtaining 
 % a non-zero flux for any of the associated sink or demand reactions one needs 
-% to add the reaction pair. In larger networks (than the E. coli core model) this 
-% will be less of a problem as they capture the biosynthetic pathways for these 
-% metabolites.
+% to add the reaction pair. In larger networks (than the _E. coli_ core model) 
+% this will be less of a problem as they capture the biosynthetic pathways for 
+% these metabolites.
 % 
 % Now lets repeat the analysis (note that we minimize the objective):
 
 for i = 1 : length(BiomassComponentsPos)
-    modelEcore_NEW = changeObjective(modelEcore_NEW, strcat('sink_',BiomassComponentsPos(i)));
-    FBAsolution = optimizeCbModel (modelEcore_NEW,'min');
-    BiomassComponentsValuePos(i,1) = FBAsolution.f;
+    modelEcore_NEW = changeObjective(modelEcore_NEW, strcat('sink_', BiomassComponentsPos(i)));
+    FBAsolution = optimizeCbModel(modelEcore_NEW, 'min');
+    BiomassComponentsValuePos(i, 1) = FBAsolution.f;
 end
 [BiomassComponentsPos  num2cell(BiomassComponentsValuePos)]
 %% 
@@ -379,22 +387,22 @@ end
 % Now lets repeat the analysis (note that we maximize the objective):
 
 for i = 1 : length(BiomassComponentsNeg)
-    modelEcore_NEW = changeObjective(modelEcore_NEW, strcat('DM_',BiomassComponentsNeg(i)));
-    FBAsolution = optimizeCbModel (modelEcore_NEW,'max');
-    BiomassComponentsValueNeg(i,1) = FBAsolution.f;
+    modelEcore_NEW = changeObjective(modelEcore_NEW, strcat('DM_', BiomassComponentsNeg(i)));
+    FBAsolution = optimizeCbModel(modelEcore_NEW, 'max');
+    BiomassComponentsValueNeg(i, 1) = FBAsolution.f;
 end
 [BiomassComponentsNeg  num2cell(BiomassComponentsValueNeg)]
 %% 
 % * All these biomass precursors can be produced by the model. Hence a non-zero, 
 % positive flux through the biomass reaction should be possible:
 
-FBAsolution = optimizeCbModel(modelEcore,'max');
+FBAsolution = optimizeCbModel(modelEcore, 'max');
 FBAsolution.f
 %% 
 % FBAsolution.x contains the flux value for each reaction in the network. 
 % To view the flux values use:
 
-printFluxVector(modelEcore,FBAsolution.x,'true')
+printFluxVector(modelEcore, FBAsolution.x, 'true')
 %% 
 % * To see which network reactions participate in the optimal solution. Keep 
 % in mind that there may be more than one optimal solution (so-called alternate 
@@ -406,11 +414,12 @@ printFluxVector(modelEcore,FBAsolution.x,'true')
 % and also that there may be alternative optimal solutions with equal numbers 
 % of active reactions.
 
-FBAsolution = optimizeCbModel(modelEcore,'max','zero');
+FBAsolution = optimizeCbModel(modelEcore, 'max', 'zero');
 FBAsolution.f
-printFluxVector(modelEcore,FBAsolution.x,'true')
+printFluxVector(modelEcore, FBAsolution.x, 'true')
 %% 
-% 
+% *66.*  To test whether the biomass precursors can be produced in other 
+% growth media, repeat steps 60-65.
 %% *Steps 67 - 70. Test if model can produce known secretion products.*
 % *67. *Collect a list of known secretion products and medium conditions.
 % 
@@ -418,12 +427,12 @@ printFluxVector(modelEcore,FBAsolution.x,'true')
 % that secretion flux is at least 2 mmol/gDW/h (i.e. the lower bound is constrained 
 % to 2).
 
-modelEcore_New = changeRxnBounds(modelEcore, 'EX_ac(e)',2,'l'); 
+modelEcore_New = changeRxnBounds(modelEcore, 'EX_ac(e)', 2, 'l'); 
 %% 
 % *68. * Set the constraints to the desired medium condition (e.g., minimal 
 % medium + carbon source). For changing the constraints use the following function:
 
-modelEcore_New = changeRxnBounds(modelEcore, {'EX_glc(e)' 'EX_o2(e)'},[-10 -18.5],'l');
+modelEcore_New = changeRxnBounds(modelEcore, {'EX_glc(e)' 'EX_o2(e)'}, [-10 -18.5], 'l');
 %% 
 % * If the model is required to grow in addition to producing the by-product, 
 % set the lower bound of the biomass reaction to the corresponding value required 
@@ -435,12 +444,12 @@ modelEcore_New = changeRxnBounds(modelEcore, {'EX_glc(e)' 'EX_o2(e)'},[-10 -18.5
 % 
 % * Optimize for growth:
 
-modelEcore_New = changeObjective(modelEcore_New,'Biomass_Ecoli_core_w_GAM');
-FBAsolution = optimizeCbModel(modelEcore_New,'max')
+modelEcore_New = changeObjective(modelEcore_New, 'Biomass_Ecoli_core_w_GAM');
+FBAsolution = optimizeCbModel(modelEcore_New, 'max')
 %% 
 % * Set the lower bound of the biomass reaction to the value of the FBA solution:
 
-modelEcore_New = changeRxnBounds(modelEcore_New, 'Biomass_Ecoli_core_w_GAM',0.64,'l');
+modelEcore_New = changeRxnBounds(modelEcore_New, 'Biomass_Ecoli_core_w_GAM', 0.64, 'l');
 %% 
 % * Note that the maximally possible biomass reaction flux decreased substantially, 
 % with these additional constraints.
@@ -450,12 +459,12 @@ modelEcore_New = changeRxnBounds(modelEcore_New, 'Biomass_Ecoli_core_w_GAM',0.64
 
 modelEcore_New = changeObjective(modelEcore_New, 'EX_ac(e)');
 %% 
-% *70.  *Maximize (?max?) for the new objective function (as a secretion 
+% *70.  *Maximize (‘max’) for the new objective function (as a secretion 
 % is expected to have a positive flux value, see Figure ):
 % 
 % 
 
-FBAsolution = optimizeCbModel (modelEcore_New,'max')
+FBAsolution = optimizeCbModel (modelEcore_New, 'max')
 %% 
 % * It seems that the model can produce 3.5x mmol/gDW/h of acetate with the 
 % following constraints:
@@ -473,21 +482,21 @@ printConstraints(modelEcore_New, -1000,1000)
 % *72. * Let's verify that both metabolites can be secreted independently. 
 % Repeat steps 69 and 70.
 
-modelEcoreAc = changeObjective(modelEcore,'EX_ac(e)');
-FBAsolution = optimizeCbModel(modelEcoreAc,'max')
-modelEcoreFor = changeObjective(modelEcore,'EX_for(e)');
-FBAsolution = optimizeCbModel(modelEcoreFor,'max')
+modelEcoreAc = changeObjective(modelEcore, 'EX_ac(e)');
+FBAsolution = optimizeCbModel(modelEcoreAc, 'max')
+modelEcoreFor = changeObjective(modelEcore, 'EX_for(e)');
+FBAsolution = optimizeCbModel(modelEcoreFor, 'max')
 %% 
 % *73.*  Add a row to the S matrix to couple the by-product secretion reactions:
 
-modelEcore_NEW = addRatioReaction(modelEcore, {'EX_ac(e)' 'EX_for(e)'},[1 1]);
+modelEcore_NEW = addRatioReaction(modelEcore, {'EX_ac(e)' 'EX_for(e)'}, [1 1]);
 %% 
 % * Acetate and Formate secretion are coupled to a ratio of 1:1.
 % 
 % Also, let's require that the acetate secretion flux is at least 1 mmol/gDW/h 
 % (i.e. the lower bound is constrained to 1).
 
-modelEcore_NEW = changeRxnBounds(modelEcore_NEW,'EX_ac(e)',1,'l');
+modelEcore_NEW = changeRxnBounds(modelEcore_NEW, 'EX_ac(e)', 1, 'l');
 %% 
 % **
 % 
@@ -497,19 +506,19 @@ modelEcore_NEW = changeRxnBounds(modelEcore_NEW,'EX_ac(e)',1,'l');
 % 
 % * Optimize for growth:
 
-modelEcore_NEW = changeObjective(modelEcore_NEW,'Biomass_Ecoli_core_w_GAM');
-FBAsolution = optimizeCbModel(modelEcore_NEW,'max')
+modelEcore_NEW = changeObjective(modelEcore_NEW, 'Biomass_Ecoli_core_w_GAM');
+FBAsolution = optimizeCbModel(modelEcore_NEW, 'max')
 %% 
 % * Note that the maximally possible biomass reaction flux decreased due to 
 % the additional constraints.
 % * Set the lower bound of the biomass reaction to the value of the FBA solution:
 
-modelEcore_NEW = changeRxnBounds(modelEcore_NEW, 'Biomass_Ecoli_core_w_GAM',0.63,'l');
+modelEcore_NEW = changeRxnBounds(modelEcore_NEW, 'Biomass_Ecoli_core_w_GAM', 0.63, 'l');
 %% 
 % What is the flux through the two secretion reactions:
 
-FBAsolution.x(find(ismember(modelEcore_NEW.rxns,'EX_for(e)')))
-FBAsolution.x(find(ismember(modelEcore_NEW.rxns,'EX_ac(e)')))
+FBAsolution.x(find(ismember(modelEcore_NEW.rxns, 'EX_for(e)')))
+FBAsolution.x(find(ismember(modelEcore_NEW.rxns, 'EX_ac(e)')))
 %% 
 % * Keep in mind that the |optimizeCbModel| only returns one of the possible 
 % flux distributions with maximal biomass yield.
@@ -522,11 +531,11 @@ modelEcore_NEW = changeObjective(modelEcore_NEW, 'EX_ac(e)');
 % *75.*  Maximize for the new objective function (as a secretion is expected 
 % to have a positive flux value):
 
-FBAsolution = optimizeCbModel (modelEcore_NEW,'max')
+FBAsolution = optimizeCbModel (modelEcore_NEW, 'max')
 %% 
 % * Check that the second secretion product can be produced in the defined ratio:
 
-FBAsolution.x(find(ismember(modelEcore_NEW.rxns,'EX_for(e)')))
+FBAsolution.x(find(ismember(modelEcore_NEW.rxns, 'EX_for(e)')))
 %% 
 % 
 %% Steps 76 - 77. Check for blocked reactions.
@@ -535,17 +544,18 @@ FBAsolution.x(find(ismember(modelEcore_NEW.rxns,'EX_for(e)')))
 % * Identify the exchange reactions and set the reaction values to ? infinity 
 % (e.g., ? 1,000) and + infinity (e.g., + 1,000):
 
-ExR = modelEcore.rxns(strmatch('EX_',modelEcore.rxns));
-modelEcore_Open =  changeRxnBounds(modelEcore, ExR , -1000,'l');
-modelEcore_Open =  changeRxnBounds(modelEcore_Open, ExR, 1000,'u');
+selExc = findExcRxns(modelEcore);
+ExR = modelEcore.rxns(selExc);
+modelEcore_Open =  changeRxnBounds(modelEcore, ExR, -1000, 'l');
+modelEcore_Open =  changeRxnBounds(modelEcore_Open, ExR, 1000, 'u');
 %% 
 % * Verify the constraints on the model:
 
-printConstraints(modelEcore_Open,-1000,1000)
+printConstraints(modelEcore_Open, -1000, 1000)
 printUptakeBound(modelEcore_Open);
 %% 
 % *77.*  Run analysis for blocked reactions. The |findBlockedReaction| function 
-% returns a list of blocked reactions (?BlockedReactions?).
+% returns a list of blocked reactions (‘BlockedReactions’).
 
 BlockedReactions = findBlockedReaction(modelEcore_Open)
 %% 
@@ -554,10 +564,10 @@ BlockedReactions = findBlockedReaction(modelEcore_Open)
 % * If the model contains blocked reactions, please refer to the tutorial for 
 % 'gap filling' on how to proceed.
 %% Steps 79 - 80. Compute single gene deletion phenotypes
-% *79.*  Use The Cobra Toolbox function, |singleGeneDeletion,|to simulate gene 
+% *79.*  Use The Cobra Toolbox function, |singleGeneDeletion, |to simulate gene 
 % deletion:
 
-[grRatio,grRateKO,grRateWT, hasEffect] = singleGeneDeletion (modelEcore);
+[grRatio, grRateKO, grRateWT, hasEffect] = singleGeneDeletion(modelEcore);
 %% 
 % * The variable 'hasEffect' is returned, and an entry of 1 in the vector indicate 
 % that a gene deletion had an affect on the objective function (here, growth rate). 
@@ -582,10 +592,10 @@ modelEcore.genes(find(hasEffect))
 %% 
 % Which gene deletions are lethal?
 % 
-% * We define all growth rates lower than 0.0001 1/hr as no growth. 
+% * We define all growth rates lower than 0.001 1/hr as no growth. 
 
 tol = 1e-3;
-LethalGenes = modelEcore.genes(find(grRateKO< tol))
+LethalGenes = modelEcore.genes(find(grRateKO < tol))
 length(LethalGenes)
 %% 
 % * Plot the effect of gene deletions on growth rate:
@@ -596,14 +606,60 @@ length(LethalGenes)
 
 grRateKO(isnan(grRateKO)) = 0;
 
-bar(sort(grRateKO,'descend'));
+bar(sort(grRateKO, 'descend'));
 xlabel('Model genes (rank ordered)');
 ylabel('Growth rate (1/hr)')
 %% 
 % *80. *Compare with experimental data.
 % 
 % * Are those genes known to be lethal in the organism (in vivo)?
-%% _*%TODO Steps 81 - 87 ? *_
+%% Steps 81-82. Test for known incapabilities of the organism.
+% *81.* Set simulation condition for comparisons with known incapabilities.
+% 
+% * Change the objective function. Test for incapability by maximizing for the 
+% objective function.
+% * If incapable, no solution or zero flux should be returned.
+
+modelIncapable = changeRxnBounds(modelEcore, 'EX_glc(e)', 0, 'l');
+modelIncapable = changeRxnBounds(modelIncapable, 'EX_ac(e)', -10, 'l');
+FBAsolution = optimizeCbModel(modelIncapable, 'max', false)
+%% 
+% * _E. coli_ cannot grow _in vitro_ on acetate as a sole carbon source, and 
+% the _in silco_ model is also incapable of that
+% 
+% *82.* If the _in silico_ model is capable of a function that the organism 
+% is incapable of _in vitro_, use single-reaction deletion to identify candidate 
+% reactions that enable the model’s capability despite known incapability (see 
+% step 79). 
+% 
+% * Such reactions need to be manually evaluated.
+%% Step 83. Compare predicted physiological properties with known properties.
+% Use previous steps of the tutorial and compare known physiological, phenotypic, 
+% or genetic properties with the model capabilities.
+%% Steps 84-87. Test if the model can grow fast enough.
+% *84.* Optimize for biomass reaction in different medium conditions and compare 
+% with experimental data.
+% 
+% * If the model does not grow, check boundary constraints, simulation conditions, 
+% and network completeness.
+% * If the model grows too slowly, there are multiple possible issues. Start 
+% by checking boundary constraints and reaction directionality.
+% 
+% *85.* Test if any of the medium components are growth limiting.
+% 
+% * If yes, increase uptake rate of one substrate at a time and maximize biomass 
+% (step 86).
+% 
+% *86.* Maximize for biomass.
+% 
+% * If the biomass flux is higher, the substrate is growth limiting. Such substrates 
+% can give information about possible gaps in the network.
+% 
+% *87.* Determine reduced costs when maximizing biomass (see steps 88-89).
+% 
+% * Find reactions with low reduced cost values.
+% * Increasing flux through identified reactions will lead to higher biomass 
+% flux.
 %% _*Steps 88 - 89. Test if the model grows too fast. *_
 % When optimization results for a biomass reaction in different medium conditions 
 % are compared with experimental data, one can evaluate if the model grows too 
@@ -613,7 +669,7 @@ ylabel('Growth rate (1/hr)')
 % *88.  *Determine the reduced cost associated with network reactions when 
 % optimizing for an objective function: 
 
-FBAsolution = optimizeCbModel(modelEcore,'max',false)
+FBAsolution = optimizeCbModel(modelEcore, 'max', false)
 %% 
 % * FBAsolution.y contains the shadow price for each metabolite and FBAsolution.w 
 % contains the reduced cost for each network reaction. 
@@ -630,7 +686,7 @@ FBAsolution = optimizeCbModel(modelEcore,'max',false)
 % 
 % Print those reactions that have the smallest reduced cost associated:
 
-[a,b] = sort(FBAsolution.w,'descend');
+[a,b] = sort(FBAsolution.w, 'descend');
 modelEcore.rxns(b(1:10))
 a(1:10)
 %% 
@@ -645,7 +701,7 @@ a(1:10)
 % 
 % *89.*  Beforehand we proceed, let's verify the constraints are set as intended:
 
-printConstraints(modelEcore,-1000,1000);
+printConstraints(modelEcore, -1000, 1000);
 printUptakeBound(modelEcore);
 %% 
 % 
@@ -653,15 +709,15 @@ printUptakeBound(modelEcore);
 % Increase the flux through EX_glc(e) by one unit (keep in mind that uptake 
 % is defined as a negative flux through exchange reactions):
 
-modelEcore_New = changeRxnBounds(modelEcore,'EX_glc(e)',-11,'l');
-FBAsolution = optimizeCbModel(modelEcore_New,'max',false)
+modelEcore_New = changeRxnBounds(modelEcore, 'EX_glc(e)', -11, 'l');
+FBAsolution = optimizeCbModel(modelEcore_New, 'max', false)
 %% 
 % * And indeed the biomass flux rate increased accordingly.
 % * For more systematic analysis of the effect of reduced costs and limiting 
 % variable, please also refer to the tutorial on robustness and phase plane analysis.
 %% *93.  *Use single-reaction deletion to identify single reactions that may enable the model to grow too fast.
 
-[grRatio,grRateKO,grRateWT] = singleRxnDeletion(modelEcore);
+[grRatio, grRateKO, grRateWT] = singleRxnDeletion(modelEcore);
 %% 
 % * Which gene deletion would lead to a lower growth rate?
 
@@ -679,12 +735,12 @@ if ~isfield(modelEcore, 'osense')
     modelEcore.osense = -1;
 end
 if ~isfield(modelEcore, 'csense')
-    modelEcore.csense(1:length(modelEcore.mets),1) = 'E';
+    modelEcore.csense(1:length(modelEcore.mets), 1) = 'E';
 end
 %% 
 % * Write a SBML file:
 
-writeCbModel(modelEcore,'sbml', 'EColiCore.xml')
+writeCbModel(modelEcore, 'sbml', 'EColiCore.xml')
 %% TIMING
 % The tutorial runs as given in a few seconds to minutes. However, if you use 
 % this tutorial for debugging and generating your own model, please consider the 
@@ -737,10 +793,16 @@ writeCbModel(modelEcore,'sbml', 'EColiCore.xml')
 % high-throughput data mapping (context for content), and a starting point for 
 % mathematical models. 
 %% References
-% [1] Thiele Nat Protoc
+% [1] Thiele I, Palsson BO: A protocol for generating a high-quality genome-scale 
+% metabolic reconstruction. Nat Protoc 2010, 5:93-121.
 % 
-% [2] EcoSal
+% [2] Orth JD, Fleming RM, Palsson BO: Reconstruction and Use of Microbial 
+% Metabolic Networks: the Core Escherichia coli Metabolic Model as an Educational 
+% Guide. EcoSal Plus 2010, 4.
 % 
-% [3] iAF1260
+% [3] Feist AM, Henry CS, Reed JL, Krummenacker M, Joyce AR, Karp PD, Broadbelt 
+% LJ, Hatzimanikatis V, Palsson BO: A genome-scale metabolic reconstruction for 
+% Escherichia coli K-12 MG1655 that accounts for 1260 ORFs and thermodynamic information. 
+% Molecular systems biology 2007, 3:121.
 % 
-% _Geobacter sulfurreducans [4]_
+% [4] _Geobacter sulfurreducans_
