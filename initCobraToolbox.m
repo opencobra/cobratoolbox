@@ -501,6 +501,9 @@ function initCobraToolbox()
         fprintf('\n');
     end
 
+    % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
+    changeCobraSolver('gurobi', 'ALL', 0);
+    
     % check if a new update exists
     if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         updateCobraToolbox(true); % only check
