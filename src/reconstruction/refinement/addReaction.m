@@ -25,7 +25,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                         * reversible - Reversibility flag (Default = true)
 %                         * lowerBound - Lower bound (Default = 0 or -vMax`)
 %                         * upperBound - Upper bound (Default = `vMax`)
-%                         * objCoeff - Objective coefficient (Default = 0)
+%                         * objectiveCoef - Objective coefficient (Default = 0)
 %                         * subSystem - Subsystem (Default = '')
 %                         * geneRule - Gene-reaction rule in boolean format (and/or allowed)
 %                           (Default = '');
@@ -65,7 +65,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 
 optionalParameters = {'reactionName','reactionFormula','metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
-    'objectiveCoef','subSystem','geneRule','checkDuplicate','printLevel','notes'}; % check for backward compatability
+    'objectiveCoef','subSystem','geneRule','geneNameList','systNameList','checkDuplicate','printLevel','notes'}; % check for backward compatability
 oldOptionalOrder = {'metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
     'objectiveCoef','subSystem','geneRule','geneNameList','systNameList','checkDuplicate','printLevel'};
