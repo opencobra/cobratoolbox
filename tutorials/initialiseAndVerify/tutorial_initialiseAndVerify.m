@@ -18,7 +18,9 @@ initCobraToolbox
 % add a line with |initCobraToolbox| so that The COBRA Toolbox is initialised 
 % each time that MATLAB is started. 					
 
-edit startup.m
+if usejava('desktop')  % This line of code is to avoid execution in non gui-environments    
+    edit startup.m
+end
 %% *ANTICIPATED RESULTS*
 % The initialisation step automatically checks the configuration of all of the 
 % required and some of the optional software dependencies. During initialisation, 
