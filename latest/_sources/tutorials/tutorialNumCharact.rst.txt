@@ -1,7 +1,7 @@
 .. _tutorialNumCharact:
 
-Numerical characteristics of a stoichiometric matrix
-====================================================
+Numerical properties of a reconstruction
+========================================
 
 .. raw:: html
 
