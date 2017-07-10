@@ -54,7 +54,7 @@ for i = 1:length(modelArr)
         [status_curl, result_curl] = system(['curl --max-time 15 -s -k -L --head ', modelArr{i, 2}]);
 
         % check if the URL exists
-        if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+        if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
             status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O -L ', modelArr{i, 2}]);
 
             if printLevel > 0 && status_curlDownload == 0
@@ -148,7 +148,7 @@ function downloadModelZipFile(filename, url, varargin)
         [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', url]);
 
         % check if the URL exists
-        if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+        if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
             status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', url]);
             [~, zipName, ext] = fileparts(url);
             zipName = [zipName, ext];
