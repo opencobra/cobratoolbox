@@ -1,9 +1,9 @@
 %% Computing  minimal cut sets
 %% Author: Susan Ghaderi, Luxembourg Centre for Systems Biomedicine 
-%% Reviewers:
+%% Reviewers: Marouen Ben Guebila
 %% INTRODUCTION
 % During this tutorial, you will learn how to compute  cutsets for paths/cycles/elementary 
-% modes with Berge algorithm [1].
+% modes with Berge algorithm [1-2].
 % 
 % 
 % 
@@ -14,12 +14,12 @@
 % the realization of a non-zero steady-state flux distribution (and therefore 
 % of a functionality) by means of the remaining reactions of the elementary mode. 
 % Now, assume that we want to prevent the production of metabolite X.  One strategy 
-% would be to inactivate (cut) one or several reactions in the network, e.g. by 
+% would be to inactivate (cut) one or several reactions in the network, e.g., by 
 % deleting the genes of certain enzymes or by other manipulations resulting in 
 % an inhibition of enzyme activity. This leads us to the definition of a cut set: 
-% a set of reactions a cut set (with respect to a defined objective reaction) 
-% if after the removal of these reactions from the network no feasible balanced 
-% flux. In other hands, a cut set for an objective reaction in a metabolic network 
+% a set of reactions is a cut set (with respect to a defined objective reaction) 
+% if after the removal of these reactions from the network no balanced 
+% flux is feasible. In other hands, a cut set for an objective reaction in a metabolic network 
 % is a set of reactions whose knockout disables flux through that reaction at 
 % steady state. Cut sets represent a particular type of failure mode of a metabolic 
 % network and may correspond to novel drug targets.
@@ -61,7 +61,7 @@
 % the following commands_
 
 % Add path to Cell Net Analyzer
-CNAPath = '~/CellNetAnalyzer';
+CNAPath = ['~ filesep CellNetAnalyzer'];
 addpath(genpath(CNAPath));
 startcna
 %% Computing minimal cut set
@@ -74,14 +74,14 @@ addpath([CBTDIR filesep 'tutorials' filesep 'minimalCutSets'])
 load('E.mat')% the set of elementary modes which we are going to compute its minimal cut set.
 output = minimalCutSets(E)
 %% INPUT
-% The neccesirelly input for computing minimal cut set of a set is |targets.|
+% The necessary input for computing minimal cut set of a set is |targets.|
 % 
 %   |targets|:     a binary matrix that row-wise contains the target paths/cycles/elementary 
 % modes; a '1' in the i-th row and j-th column in targets indicates participation 
 % of element (reaction) j in mode i;
 %% OPTIONAL INPUTS:
 % *    |mcsmax|:      maximal size of cutsets to be calculated; must be a value 
-% grater 0; Inf means no size limit (default: Inf)
+% greater than 0; Inf means no size limit (default: Inf)
 % 
 % 
 % 
@@ -97,9 +97,9 @@ output = minimalCutSets(E)
 % 
 %                  * sets2save(k).tabl2save = k-th matrix containing row-wise 
 % 'desired' sets (desired paths/cycles/ modes) that should not     be hit by the 
-% cut sets to be computed. be saved A '1' in the i-th row and j-th column of sets2save(k) 
+% cut sets to be computed and saved. A '1' in the i-th row and j-th column of sets2save(k) 
 % indicates participation of element j in mode i in set k of desired modes. These 
-% matrics must have the same number of columns (reactions) as 'targets'.
+% matrices must have the same number of columns (reactions) as 'targets'.
 % 
 % 
 % 
