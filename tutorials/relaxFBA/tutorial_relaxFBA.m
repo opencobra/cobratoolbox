@@ -1,7 +1,7 @@
 %% Relaxed Flux Balance Analysis
 % Author: Ronan Fleming, Systems Biochemistry Group, University of Luxembourg.
 % 
-% Reviewer:
+% Reviewer: Marouen Ben Guebila
 %% Introduction
 % We consider a biochemical network of  m  molecular species and  n  biochemical 
 % reactions. The biochemical network is mathematically represented by a stoichiometric 
