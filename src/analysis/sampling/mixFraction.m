@@ -11,31 +11,39 @@ function mix = mixFraction(sample1, sample2, fixed)
 %                         the same order otherwise it does not make sense.
 %
 % OPTIONAL INPUT:
-%    fixed:               The directions which are fixed and are not expected
-%                         to mix. They are ignored.
+%    fixed:               The indexes of sampled reactions which are fixed 
+%                         and are not expected to mix. They are ignored.
 %
 % OUTPUT:
 %    mix:                 The mix fraction. Goes from 0 to 1 with 1 being
 %                         completely unmixed and .5 being essentially
 %                         perfectly mixed.
+%
+% EXAMPLE:
+%
+%    example 1:
+%    mix = mixFraction(sample1, sample2)
+%    example 2:
+%    fixed = findRxnIDs({R1, R2, ..., Rx})
+%    mix = mixFraction(sample1, sample2, fixed)
 
-if nargin <3
+if nargin < 3
     fixed = [];
 end
 
 sample1 = full(sample1);
 sample2 = full(sample2);
 
-sample1(fixed, :) = zeros(length(fixed), size(sample1,2));
-sample2(fixed, :) = zeros(length(fixed), size(sample2,2));
+sample1(fixed, :) = zeros(length(fixed), size(sample1, 2));
+sample2(fixed, :) = zeros(length(fixed), size(sample2, 2));
 
 m1 = median(sample1, 2);
 LPproblem = median(sample2, 2);
 
-l1 = sample1 > m1*ones(1, size(sample1,2));
-eq1 = sample1 == m1*ones(1, size(sample1,2));
-l2 = sample2 > LPproblem*ones(1, size(sample1,2));
-eq2 = sample2 == LPproblem*ones(1, size(sample1,2));
+l1 = sample1 > m1 * ones(1, size(sample1, 2));
+eq1 = sample1 == m1 * ones(1, size(sample1, 2));
+l2 = sample2 > LPproblem * ones(1, size(sample1, 2));
+eq2 = sample2 == LPproblem * ones(1, size(sample1, 2));
 
 eqtotal = eq1 | eq2;
 

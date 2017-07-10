@@ -1,22 +1,28 @@
-function plotHistConv(model, samples, rxnNames, nSubSamples)
+function plotHistConv(model, sample, rxnNames, nSubSamples)
 % Plots convergence of sample histograms
 %
 % USAGE:
 %
-%    plotHistConv(model, samples, rxnNames, nSubSamples)
+%    plotHistConv(model, sample, rxnNames, nSubSamples)
 %
 % INPUTS: 
 %    model:          COBRA model structure
-%    samples:        Sample fluxes
+%    sample:         Sampled fluxes
 %    rxnNames:       List of reactions to plot
 %    nSubSamples:    Number of sub samples
+%
+% EXAMPLE:
+%
+%    example 1:
+%    rxnNames = {'R1', 'R2'}
+%    plotHistConv(model, sample, rxnNames, nSubSamples)
 %
 % .. Author: - Markus Herrgard 8/14/06
 
 nSkip = 10;
 nBin = 20;
 
-[nRxns,nSamples] = size(samples);
+[nRxns,nSamples] = size(sample);
 
 [isInModel,rxnInd] = ismember(rxnNames,model.rxns);
 rxnInd = rxnInd(isInModel);
@@ -37,8 +43,8 @@ for rxnID = 1:nPlotRxn
     minx = 1e9;
     maxy = 0;
     for subID = 1:nSubSamples
-        [n,x] = hist(samples(rxnInd(rxnID),1:nSkip:(subSampleSize*subID))',nBin);
-        plot(x,n/sum(n));
+        [n,x] = hist(sample(rxnInd(rxnID), 1:nSkip:(subSampleSize * subID))', nBin);
+        plot(x, n/sum(n));
         maxx = max([max(x) maxx]);
         minx = min([min(x) minx]);
         maxy = max([max(n/sum(n)) maxy]);
