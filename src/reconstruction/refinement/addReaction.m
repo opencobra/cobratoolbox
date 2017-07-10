@@ -12,7 +12,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 % OPTIONAL INPUTS:
 %    varargin:          Input of additional information as parameter/Value pairs
 %
-%                         * reactonName - a Descriptive name of the reaction
+%                         * reactionName - a Descriptive name of the reaction
 %                           (default ID)
 %                         * metaboliteList - Cell array of metabolite names. Either this
 %                           parameter or reactionFormula are required.
@@ -63,7 +63,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %       - Ines Thiele 08/03/2015, made rxnGeneMat optional
 %       - Thomas Pfau May 2017  Change To parameter Value pairs
 
-optionalParameters = {'reactionFormula','metaboliteList','stoichCoeffList',...
+optionalParameters = {'reactionName','reactionFormula','metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
     'objectiveCoef','subSystem','geneRule','checkDuplicate','printLevel','notes'}; % check for backward compatability
 oldOptionalOrder = {'metaboliteList','stoichCoeffList',...
