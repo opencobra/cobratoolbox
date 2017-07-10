@@ -200,6 +200,12 @@ for i = 1:length(modelNew.mets)
 
         % remove nameTag from metabolites
         MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
+        % add the metabolite in advance to avoid warning by addReaction and also give metNames and metFormulas to the metabolite to be added
+        if isfield(modelNew, 'metFormulas')
+            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i}, 'metFormula', modelNew.metFormulas{i});
+        else
+            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i});
+        end
         [modelNew, rxnIDexists] = addReaction(modelNew, ...
                                               strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
                                               -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
@@ -212,6 +218,12 @@ for i = 1:length(modelNew.mets)
 
         % remove nameTag from metabolites
         MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
+        % add the metabolite in advance to avoid warning by addReaction and also give metNames and metFormulas to the metabolite to be added
+        if isfield(modelNew, 'metFormulas')
+            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i}, 'metFormula', modelNew.metFormulas{i});
+        else
+            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i});
+        end
         [modelNew, rxnIDexists] = addReaction(modelNew,...
                                               strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
                                               -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
