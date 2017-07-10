@@ -12,6 +12,7 @@ Reconstruction
    growthExpMatch
    modelGeneration
    refinement
+   comparison
 
 .. automodule:: src.reconstruction
    :members:
