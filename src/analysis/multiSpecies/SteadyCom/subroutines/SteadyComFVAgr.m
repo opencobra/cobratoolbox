@@ -66,7 +66,7 @@ function [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom,options,L
 
 %% Initialization
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
-    xName, m, n, nSp, nRxnSp] = SteadyCom_init(modelCom, varargin{:});
+    xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 
 if nargin < 2 || isempty(options)
     options = struct();
@@ -74,7 +74,7 @@ end
 
 [GR, optBMpercent, rxnNameList, rxnFluxList, ...
     GRfx, BMmaxLB, BMmaxUB, ...
-    threads, verbFlag, loadModel, saveFVA, saveFre] = getSteadyComParams( ...
+    threads, verbFlag, loadModel, saveFVA, saveFre] = SteadyComSubroutines('getParams',  ...
     {'GR', 'optBMpercent', 'rxnNameList', 'rxnFluxList', ...
     'GRfx', 'BMmaxLB', 'BMmaxUB',...
     'threads', 'verbFlag', 'loadModel', 'saveFVA', 'saveFre'}, options, modelCom);
@@ -183,7 +183,7 @@ if ibm_cplex
     nVar = size(LP.Model.A, 2);  % number of variables
     BMmax0 = LP.Model.lhs(idRow);  % required biomass
     % update the LP to ensure the current growth rate is constrained
-    LP.Model.A = updateLPcom(modelCom, GR, GRfx, [], LP.Model.A, []);
+    LP.Model.A = SteadyComSubroutines('updateLPcom', modelCom, GR, GRfx, [], LP.Model.A, []);
     LP.Model.sense = 'minimize';
     LP.Model.obj(:) = 0;
     LP.solve();
@@ -192,7 +192,7 @@ else
     nVar = size(LP.A, 2);  % number of variables
     BMmax0 = LP.b(idRow);  % required biomass
     % update the LP to ensure the current growth rate is constrained
-    LP.A = updateLPcom(modelCom, GR, GRfx, [], LP.A, []);
+    LP.A = SteadyComSubroutines('updateLPcom', modelCom, GR, GRfx, [], LP.A, []);
     LP.c(:) = 0;
     LP.osense = 1;
     sol = solveCobraLP(LP, varargin{:});
@@ -250,7 +250,7 @@ if any(rxnFluxId) == 0
 end
 
 % reactions/linear combinations of reactions subject to FVA in matrix form
-objList = RxnList2ObjMatrix(rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
+objList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 
 % parallel computation
 p = gcp('nocreate');

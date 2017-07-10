@@ -109,7 +109,7 @@ if ~isfield(modelCom,'indCom')
         error('SteadyComCplex: *.infoCom or *.indCom must be provided.\n');
     end
     %get useful reaction indices
-    modelCom.indCom = infoCom2indCom(modelCom);
+    modelCom.indCom = SteadyComSubroutines('infoCom2indCom', modelCom);
 end
 
 %get paramters
@@ -118,15 +118,15 @@ if nargin < 2 || isempty(options)
 end
 if nargin < 3 || isempty(solverParams) || isempty(fieldnames(solverParams))
     %default Cplex parameters
-    solverParams = getSteadyComParams('CplexParam');
+    solverParams = SteadyComSubroutines('getParams', 'CplexParam');
 end
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
-% default value in getSteadyComParams.m if there is. Otherwise an empty matrix.
+% default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.
 [GRguess, GR0, GRfx, GRtol, solveGR0, ...
     BMweight, BMtol, BMtolAbs, BMgdw, ...
     feasCrit, maxIter, verbFlag, algorithm, minNorm, LPonly, saveModel] ...
-    = getSteadyComParams( ...
+    = SteadyComSubroutines('getParams',  ...
     {'GRguess', 'GR0', 'GRfx', 'GRtol', 'solveGR0',...  % growth rate related
     'BMweight', 'BMtol', 'BMtolAbs', 'BMgdw',...  % biomass related
     'feasCrit', 'maxIter', 'verbFlag', 'algorithm', 'minNorm', 'LPonly', 'saveModel'}, ...  % algorithm related
@@ -263,7 +263,7 @@ if nargin < 4
     % only if using the reference biomass at GR0 to define maximum growth rate
     if feasCrit == 2 || solveGR0
         %update the growth rate
-        LP.Model.A =updateLPcom(modelCom, GR0, GRfx, [], LP.Model.A, BMgdw);
+        LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, GR0, GRfx, [], LP.Model.A, BMgdw);
         feas = true;
         try
             LP.solve();
@@ -428,7 +428,7 @@ else
             t0 = t1;
         end
         %update growth rate
-        LP.Model.A = updateLPcom(modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
+        LP.Model.A = SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
         feas = true;
         try
             LP.solve();
@@ -560,7 +560,7 @@ else
             if algorithm ~= 1 && (grUB - grLB < GRtol)
                 %maximum growth rate found using an algorithm other than fzero
                 GRmax = grLB;
-                LP.Model.A =updateLPcom(modelCom, GRmax, GRfx, [], LP.Model.A, BMgdw);
+                LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.Model.A, BMgdw);
                 feas = true;
                 try
                     LP.solve();
@@ -635,7 +635,7 @@ kGRadjust = 0;
 while ~condition2(BMcur, GRmax) && GRmax > GRtol && kGRadjust <= 10
     kGRadjust = kGRadjust + 1;
     GRmax = GRmax - GRtol / 10;
-    LP.Model.A =updateLPcom(modelCom, GRmax, GRfx, [], LP.Model.A, BMgdw);
+    LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.Model.A, BMgdw);
     feas = true;
     try
         LP.solve();
@@ -830,7 +830,7 @@ end
 if nargin < 3 || isempty(solverParams)
     solverParams = struct();
 end
-[BMcon, BMrhs, BMcsense, BMobj, BMgdw, GRfx, verbFlag, saveModel] = getSteadyComParams( ...
+[BMcon, BMrhs, BMcsense, BMobj, BMgdw, GRfx, verbFlag, saveModel] = SteadyComSubroutines('getParams',  ...
     {'BMcon', 'BMrhs','BMcsense', 'BMobj', 'BMgdw', 'GRfx', 'verbFlag', 'saveModel'}, options, modelCom);
 
 [feasTol, optTol] = getCobraSolverParams('LP',{'feasTol'; 'optTol'}, solverParams);
@@ -874,7 +874,7 @@ obj = zeros(n + nSp, 1);
 %sum of biomass at default
 obj(n + 1: n + nSp) = BMobj;
 %constraint matrix
-A = updateLPcom(modelCom, 0, GRfx, BMcon, [], BMgdw);
+A = SteadyComSubroutines('updateLPcom', modelCom, 0, GRfx, BMcon, [], BMgdw);
 % species-specific fluxes bounded by biomass variable but not by constant
 lb = -inf(nRxnSp, 1);
 lb(modelCom.lb(1:nRxnSp)>=0) = 0;
@@ -1085,7 +1085,7 @@ end
 end
 
 function dBM = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw)
-    LP.Model.A =updateLPcom(modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
+    LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
     LP.solve();
     if LP.Solution.status == 11
         dBM = [];
@@ -1104,7 +1104,7 @@ function dBM = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw)
 end
 
 function dBM = LP4fzero2(grCur, LP, modelCom, GRfx, feasTol, BMequiv, GR0, BMgdw)
-    LP.Model.A =updateLPcom(modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
+    LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
     LP.solve();
     if LP.Solution.status == 11
         dBM = [];

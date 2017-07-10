@@ -103,7 +103,7 @@ function [sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, varargin)
 t = tic;
 t0 = 0;
 %% Initialization
-[modelCom, ibm_cplex, feasTol, solverParams] = SteadyCom_init(modelCom, varargin{:});
+[modelCom, ibm_cplex, feasTol, solverParams] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 if nargin < 2 || isempty(options)
     options = struct();
 end
@@ -113,11 +113,11 @@ if ibm_cplex
 end
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
-% default value in getSteadyComParams.m if there is. Otherwise an empty matrix.
+% default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.
 [GRguess, GR0, GRfx, GRtol, solveGR0, ...
     BMweight, BMtol, BMtolAbs, BMgdw, ...
     feasCrit, maxIter, verbFlag, algorithm, minNorm, LPonly] ...
-    = getSteadyComParams( ...
+    = SteadyComSubroutines('getParams',  ...
     {'GRguess', 'GR0', 'GRfx', 'GRtol', 'solveGR0', ...  % growth rate related
     'BMweight', 'BMtol', 'BMtolAbs', 'BMgdw', ...  % biomass related
     'feasCrit', 'maxIter', 'verbFlag', 'algorithm', 'minNorm', 'LPonly'}, ...  % algorithm related
@@ -211,7 +211,7 @@ end
 % only if using the reference biomass at GR0 to define maximum growth rate
 if feasCrit == 2 || solveGR0
     % update the growth rate as GR0 and solve
-    LP.A =updateLPcom(modelCom, GR0, GRfx, [], LP.A, BMgdw);
+    LP.A =SteadyComSubroutines('updateLPcom', modelCom, GR0, GRfx, [], LP.A, BMgdw);
     sol = solveCobraLP(LP, varargin{:});
     % check the feasibility of the solution manually
     dev = checkSolFeas(LP, sol);
@@ -340,7 +340,7 @@ else
             t0 = t1;
         end
         % update growth rate and solve
-        LP.A = updateLPcom(modelCom, grCur, GRfx, [], LP.A, BMgdw);
+        LP.A = SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.A, BMgdw);
         sol = solveCobraLP(LP, varargin{:});
         % check the feasibility of the solution manually
         dev = checkSolFeas(LP, sol);
@@ -647,7 +647,7 @@ function [LP,index] = constructLPcom(modelCom, options)
 if ~exist('options', 'var')
     options = struct();
 end
-[BMcon, BMrhs, BMcsense, BMobj, BMgdw, GRfx, verbFlag] = getSteadyComParams( ...
+[BMcon, BMrhs, BMcsense, BMobj, BMgdw, GRfx, verbFlag] = SteadyComSubroutines('getParams',  ...
     {'BMcon', 'BMrhs','BMcsense', 'BMobj', 'BMgdw', 'GRfx', 'verbFlag'}, options, modelCom);
 
 [m, n] = size(modelCom.S);
@@ -674,7 +674,7 @@ obj = zeros(n + nSp, 1);
 % sum of biomass at default
 obj(n + 1: n + nSp) = BMobj;
 %constraint matrix
-A = updateLPcom(modelCom, 0, GRfx, BMcon, [], BMgdw);
+A = SteadyComSubroutines('updateLPcom', modelCom, 0, GRfx, BMcon, [], BMgdw);
 % organism-specific fluxes bounded by biomass variable but not by constant
 lb = -inf(nRxnSp, 1);
 lb(modelCom.lb(1:nRxnSp)>=0) = 0;
@@ -881,7 +881,7 @@ end
 
 function [dBM, LP, BMcur, sol] = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw, varargin)
 % update growth rate and solve
-LP.A =updateLPcom(modelCom, grCur, GRfx, [], LP.A, BMgdw);
+LP.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.A, BMgdw);
 sol = solveCobraLP(LP, varargin{:});
 % check the feasibility of the solution manually
 dev = checkSolFeas(LP, sol);
@@ -896,7 +896,7 @@ end
 
 function [dBM, LP, BMcur, sol] = LP4fzero2(grCur, LP, modelCom, GRfx, feasTol, BMequiv, GR0, BMgdw, varargin)
 % update growth rate and solve
-LP.A =updateLPcom(modelCom, grCur, GRfx, [], LP.A, BMgdw);
+LP.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.A, BMgdw);
 sol = solveCobraLP(LP, varargin{:});
 % check the feasibility of the solution manually
 dev = checkSolFeas(LP, sol);

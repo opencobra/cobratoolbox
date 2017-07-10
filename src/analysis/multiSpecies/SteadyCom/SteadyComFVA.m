@@ -63,16 +63,16 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %    result        result structure from SteadyCom
 %    LP            LP problem structure (Cplex LP object for ibm_cplex)
 %% Initialization
-[modelCom, ibm_cplex, feasTol, solverParams, parameters] = SteadyCom_init(modelCom, varargin{:});
+[modelCom, ibm_cplex, feasTol, solverParams, parameters] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 if nargin < 2 || isempty(options)
     options = struct();
 end
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
-% default value in getSteadyComParams.m if there is. Otherwise an empty matrix.
+% default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.
 [GRmax, optGRpercent, rxnNameList, rxnFluxList, ...
     GRfx, BMmaxLB, BMmaxUB, ...
-    verbFlag, loadModel, saveFVA, threads] = getSteadyComParams( ...
+    verbFlag, loadModel, saveFVA, threads] = SteadyComSubroutines('getParams',  ...
     {'GRmax', 'optGRpercent', 'rxnNameList', 'rxnFluxList',...
     'GRfx','BMmaxLB','BMmaxUB', ...
     'verbFlag', 'loadModel','saveFVA','threads'}, ...
@@ -185,14 +185,14 @@ end
 if ibm_cplex  
     LP = setCplexParam(LP, solverParams);  % set Cplex parameters
     % update the LP to ensure the current growth rate is constrained
-    LP.Model.A = updateLPcom(modelCom, GRmax, GRfx, [], LP.Model.A, []);
+    LP.Model.A = SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.Model.A, []);
     LP.Model.sense = 'minimize';
     LP.Model.obj(:) = 0;
     LP.solve();
     dev = checkSolFeas(LP);
 else
     % update the LP to ensure the current growth rate is constrained
-    LP.A = updateLPcom(modelCom, GRmax, GRfx, [], LP.A, []);
+    LP.A = SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.A, []);
     LP.c(:) = 0;
     LP.osense = 1;
     sol = solveCobraLP(LP, varargin{:});

@@ -63,16 +63,16 @@ function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options,
 
 %% Initialization
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
-    xName, m, n, nSp, nRxnSp] = SteadyCom_init(modelCom, varargin{:});
+    xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 
 if nargin < 2 || isempty(options)
     options = struct();
 end
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
-% default value in getSteadyComParams.m if there is. Otherwise an empty matrix.
+% default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.
 [GRmax, optGRpercent, Nstep, GRfx, BMmaxLB, BMmaxUB, ...
-    rxnNameList, pairList, symmetric, verbFlag, savePOA, loadModel] = getSteadyComParams( ...
+    rxnNameList, pairList, symmetric, verbFlag, savePOA, loadModel] = SteadyComSubroutines('getParams',  ...
     {'GRmax', 'optGRpercent', 'Nstep', 'GRfx','BMmaxLB','BMmaxUB',...
     'rxnNameList', 'pairList', 'symmetric', 'verbFlag', 'savePOA','loadModel'}, options, modelCom);
          
@@ -212,14 +212,14 @@ if init
     if ibm_cplex
         LP = setCplexParam(LP, solverParams);  % set Cplex parameters
         % update the LP to ensure the current growth rate is constrained
-        LP.Model.A = updateLPcom(modelCom, GRmax, GRfx, [], LP.Model.A, []);
+        LP.Model.A = SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.Model.A, []);
         LP.Model.sense = 'minimize';
         LP.Model.obj(:) = 0;
         LP.solve();
         dev = checkSolFeas(LP);
     else
         % update the LP to ensure the current growth rate is constrained
-        LP.A = updateLPcom(modelCom, GRmax, GRfx, [], LP.A, []);
+        LP.A = SteadyComSubroutines('updateLPcom', modelCom, GRmax, GRfx, [], LP.A, []);
         LP.c(:) = 0;
         LP.osense = 1;
         sol = solveCobraLP(LP, varargin{:});
@@ -292,7 +292,7 @@ else
     nVar = size(LP.A, 2);
 end
 % reactions/linear combinations of reactions to be analyzed in matrix form
-rxnNameList = RxnList2ObjMatrix(rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
+rxnNameList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 options.rxnNameList = rxnNameList;
 % pairs to be analyzed in the correct format
 if isempty(pairList)
@@ -306,7 +306,7 @@ elseif size(pairList, 2) ~= 2
     error('pairList must be an N-by-2 array denoting the pairs (rxn names or indices in rxnNameList) to analyze!')
 elseif iscell(pairList)
     % transform pairList into matrix form and find the IDs
-    pairList = RxnList2ObjMatrix(pairList(:), varNameDisp, xName, n, nVar, 'pairList');
+    pairList = SteadyComSubroutines('rxnList2objMatrix', pairList(:), varNameDisp, xName, n, nVar, 'pairList');
     [yn, id] = ismember(pairList', rxnNameList', 'rows');
     if ~all(yn)
         error('Some entries in options.pairList are not in options.rxnNameList');

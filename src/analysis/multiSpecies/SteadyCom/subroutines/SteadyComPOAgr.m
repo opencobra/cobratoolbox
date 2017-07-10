@@ -62,7 +62,7 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 
 %% Initialization
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
-    xName, m, n, nSp, nRxnSp] = SteadyCom_init(modelCom, varargin{:});
+    xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 
 if nargin < 2 || isempty(options)
     options = struct();
@@ -70,7 +70,7 @@ end
 
 [GRfx, GR, BMmaxLB, BMmaxUB, optBMpercent, ...  % parameters for finding maximum growth rate
     symmetric, rxnNameList, pairList, fluxRange, Nstep, NstepScale, ...  % parameters for POA
-    verbFlag, threads, savePOA, loadModel] = getSteadyComParams( ...
+    verbFlag, threads, savePOA, loadModel] = SteadyComSubroutines('getParams',  ...
     {'GRfx', 'GR', 'BMmaxLB', 'BMmaxUB', 'optBMpercent',... 
     'symmetric', 'rxnNameList', 'pairList', 'fluxRange', 'Nstep', 'NstepScale',...
     'verbFlag', 'threads', 'savePOA', 'loadModel'}, options, modelCom);
@@ -216,7 +216,7 @@ if ibm_cplex
     nVar = size(LP.Model.A, 2);  % number of variables
     BMmax0 = LP.Model.lhs(idRow);  % required biomass
     % update the LP to ensure the current growth rate is constrained
-    LP.Model.A = updateLPcom(modelCom, GR, GRfx, [], LP.Model.A, []);
+    LP.Model.A = SteadyComSubroutines('updateLPcom', modelCom, GR, GRfx, [], LP.Model.A, []);
     LP.Model.sense = 'minimize';
     LP.Model.obj(:) = 0;
     LP.solve();
@@ -225,7 +225,7 @@ else
     nVar = size(LP.A, 2);  % number of variables
     BMmax0 = LP.b(idRow);  % required biomass
     % update the LP to ensure the current growth rate is constrained
-    LP.A = updateLPcom(modelCom, GR, GRfx, [], LP.A, []);
+    LP.A = SteadyComSubroutines('updateLPcom', modelCom, GR, GRfx, [], LP.A, []);
     LP.c(:) = 0;
     LP.osense = 1;
     sol = solveCobraLP(LP, varargin{:});
@@ -275,7 +275,7 @@ if (~isfield(options, 'rxnNameList') || isempty(options.rxnNameList)) && isfield
     rxnNameList = options.pairList(:);
 end 
 % objective matrix
-rxnNameList = RxnList2ObjMatrix(rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
+rxnNameList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 options.rxnNameList = rxnNameList;
 % handle pairList
 if isempty(pairList)
@@ -288,7 +288,7 @@ if isempty(pairList)
 elseif size(pairList, 2) ~= 2 
     error('pairList must be an N-by-2 array denoting the pairs (rxn names or indices in rxnNameList) to analyze!')
 elseif iscell(pairList) 
-    pairList = RxnList2ObjMatrix(pairList(:), varNameDisp, xName, n, nVar, 'pairList');
+    pairList = SteadyComSubroutines('rxnList2objMatrix', pairList(:), varNameDisp, xName, n, nVar, 'pairList');
     [yn, id] = ismember(pairList', rxnNameList', 'rows');
     if ~all(yn)
         error('Some entries in options.pairList are not in options.rxnNameList');
