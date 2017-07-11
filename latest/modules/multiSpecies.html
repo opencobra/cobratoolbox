@@ -40,7 +40,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Analysis" href="analysis.html"/>
-        <link rel="next" title="rFBA" href="rFBA.html"/>
+        <link rel="next" title="SteadyCom" href="SteadyCom.html"/>
         <link rel="prev" title="Exploration" href="exploration.html"/> 
 
   
@@ -101,7 +101,10 @@
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">MultiSpecies</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MultiSpecies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SteadyCom.html">SteadyCom</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
@@ -190,6 +193,11 @@
             
   <div class="section" id="multispecies">
 <span id="id1"></span><h1>MultiSpecies<a class="headerlink" href="#multispecies" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SteadyCom.html">SteadyCom</a></li>
+</ul>
+</div>
 <span class="target" id="module-src.analysis.multiSpecies"></span><dl class="function">
 <dt id="src.analysis.multiSpecies.analyzePairwiseInteractions">
 <code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/multiSpecies/analyzePairwiseInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
@@ -324,6 +332,97 @@ model structure for joint model</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.multiSpecies.getMultiSpeciesModelId">
+<code class="descname">getMultiSpeciesModelId</code><span class="sig-paren">(</span><em>modelJoint</em>, <em>nameTagsModels</em>, <em>nameTagHost</em>, <em>metTagRe</em>, <em>rxnTagRe</em>, <em>compCom</em>, <em>compHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/multiSpecies/getMultiSpeciesModelId.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.getMultiSpeciesModelId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get names and IDs for metabolites and exchange reactions in the [u] and [b] space</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[names,ids] = getMultiSpeciesModelId(modelJoint,nameTagsModels,nameTagHost,metTagRe,rxnTagRe,compCom,compHost)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelJoint</strong> &#8211;
+COBRA multi-organism model</li>
+<li><strong>nameTagsModels</strong> &#8211;
+cell array of tags for species to identify the respective
+reactions and metabolites from modelJoint.rxns and .mets</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>nameTagHost</strong> &#8211;
+string of tag for the host model if exist. Input [] if no host is present</li>
+<li><strong>metTagRe</strong> &#8211;
+a regular expression to identify the tag in nameTagsModels from modelJoint.mets.
+Use &#8216;%s&#8217; for the tag in nameTagsModels for each species.
+Default &#8216;^%s&#8217;, the beginning of the string. In this case, if the tag for species 1 is
+&#8216;SP1&#8217;, then mets with id &#8216;SP1glc-D[e]&#8217; will be identified as belonging to species 1.
+E.g., &#8216;met[compartment_SP1]&#8217; where &#8216;SP1&#8217; is the tag for species 1, input &#8216;[[^_]+_%s]$&#8217;.</li>
+<li><strong>rxnTagRe</strong> &#8211;
+a regular expression to idenify the tag in nameTagsModels from modelJoint.rxns.
+Default &#8216;^%s&#8217;, the beginning of the string</li>
+<li><strong>compCom</strong> &#8211;
+compartment Id for the community exchange compartment. Default &#8216;u&#8217;</li>
+<li><strong>compHost</strong> &#8211;
+compartment Id for the exchange compartment specific to the host. Default &#8216;b&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>names</strong> &#8211;
+structure of reaction/metabolite name (.rxns/.mets) with the following fields:
+spAbbr   species abbreviation (= nameTags). Host put at the end
+EXcom    #met[u]-by-1 cell. Exchange reactions for community metabolites met[u]
+EXhost   #met[b]-by-1 cell. Exchange reactions for host-specific exchange metabolites met[b]
+EXsp     #met[u]-by-#species cell. EXsp(i,j) is the species-community exchange reactions</p>
+<blockquote>
+<div><p>for the i-th met[u] and the j-th species</p>
+</div></blockquote>
+<p>Mcom     #met[u]-by-1 cell. All community metabolites met[u]
+Mhost    #met[u]-by-1 cell. Host-specific exchange metabolites met[b]
+Msp      #met[u]-by-#species cell. Msp(i,j) is the metabolite in met[e] of the j-th species</p>
+<blockquote>
+<div><p>participating in reaction EXsp(i,j)</p>
+</div></blockquote>
+<p>rxnSps   #rxns-by-1 cell. rxnSps(i) would be spAbbr(j) if the i-th reaction belongs to the j-th species
+metSps   #mets-by-1 cell. metSps(i) would be spAbbr(j) if the i-th metabolite belongs to the j-th species</p>
+</li>
+<li><p class="first"><strong>ids</strong> &#8211;
+structure of reaction/metabolite index with the same fields as names except without spAbbr</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.printUptakeBoundCom">
+<code class="descname">printUptakeBoundCom</code><span class="sig-paren">(</span><em>model</em>, <em>SpFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/multiSpecies/printUptakeBoundCom.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.printUptakeBoundCom" title="Permalink to this definition">¶</a></dt>
+<dd><p>print the uptake bounds of the whole community and individual species for a community COBRA model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>rxnIDs = printUptakeBoundCom(model, SpFlag, metFlag)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the community model with field .infoCom or .indCom indicating the indicies of
+community exchange reactions/metabolites. Can be obtained from getMultiSpeciesModelId.m</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>SpFlag</strong> &#8211;
+true to show individual uptake rates though community uptake is not allowed (default false)</li>
+<li><strong>metFlag</strong> &#8211;
+true to print with model.metNames (default false)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.multiSpecies.useDiet_AGORA_pairedModels">
 <code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/analysis/multiSpecies/useDiet_AGORA_pairedModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a diet for the 773 AGORA microbes</p>
@@ -362,7 +461,7 @@ model with applied constraints</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="rFBA.html" class="btn btn-neutral float-right" title="rFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="SteadyCom.html" class="btn btn-neutral float-right" title="SteadyCom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="exploration.html" class="btn btn-neutral" title="Exploration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

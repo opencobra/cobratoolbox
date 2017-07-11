@@ -669,6 +669,54 @@ solve problems of type &#8220;problemType&#8221;</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.checkSolFeas">
+<code class="descname">checkSolFeas</code><span class="sig-paren">(</span><em>LP</em>, <em>sol</em>, <em>maxInfeas</em>, <em>tol</em>, <em>internal</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/base/solvers/checkSolFeas.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkSolFeas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the infeasibility of solutions given a COBRA model or LP structure, or a IBM-ILOG CPLEX class</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[infeas, sol] = checkSolFeas(LP, sol, maxInfeas, tol)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LP</strong> &#8211;
+COBRA model or LP structure, or a IBM-ILOG CPLEX class</li>
+<li><strong>sol</strong> &#8211;
+solution structure or columns of solution vectors. If LP is a
+CPLEX class with .Solution property. sol can be omitted or empty.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>maxInfeas</strong> &#8211;
+if true (defaulted), infeas = maximum infeasiblity
+if false, infeas = struct of vectors of infeasibility with the following fields:</p>
+<blockquote>
+<div><p>&#8216;con&#8217; for infeasibility of constraints
+&#8216;lb&#8217;  for infeasibility of lower bounds
+&#8216;ub&#8217;  for infeasibility of upper bounds
+&#8216;ind&#8217; for infeasibility of indicator constraints. = -Inf if an indicator is not active. (CPLEX class only)</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>tol</strong> &#8211;
+feasibility tolerance (defaulted at the Cobra solver feasTol value).
+For determining if the input solution is indeed feasible. Used only if the input solution is a structure.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>infeas</strong> &#8211;
+maximum infeasibility (maxInfeas = true) or struct of vectors of infeasibility (maxInfeas = false)</li>
+<li><strong>sol</strong> &#8211;
+solution structure. Only available if the input solution is a structure.
+If infeas &lt;= tol, sol.stat = 1. Otherwise no change.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.configEnvVars">
 <code class="descname">configEnvVars</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/base/solvers/configEnvVars.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.configEnvVars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures the global variables based on the system&#8217;s configuration
@@ -1141,6 +1189,30 @@ reformulated problem.</li>
 <div><ul class="simple">
 <li><strong>LPproblem</strong> &#8211;
 Structure contain the reformulated LP to be solved.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.setCplexParam">
+<code class="descname">setCplexParam</code><span class="sig-paren">(</span><em>LP</em>, <em>solverParams</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/base/solvers/setCplexParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.setCplexParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the parameters of the IBM ILOG CPLEX object according to the structure solverParams</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>LP = setCplexParam(LP, solverParams, verbFlag);</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LP</strong> &#8211;
+IBM-ILOG Cplex object</li>
+<li><strong>solverParams</strong> &#8211;
+parameter structure for Cplex. Check LP.Param. For example,
+[solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display,...
+solverParams.sifting.display, solverParams.conflict.display] = deal(0);
+[solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9,1e-8);
+The full set of parameters can be obtained by calling &#8216;Cplex().Param&#8217;</li>
+<li><strong>verbFlag</strong> &#8211;
+true to show which parameter input is problematic if any (optional, default true)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
