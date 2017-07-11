@@ -15,19 +15,20 @@ function formulas = printRxnFormula(model, varargin)
 %    
 %    varargin:           Optional Inputs provided as 'ParameterName', Value
 %                        pairs. the following parameternames are available:
-%    
+%
+%                       * rxnAbbrList:       Cell array of rxnIDs to be printed (Default = print all reactions)
 %                       * printFlag:         Print formulas or just return them (Default = true)
 %                       * lineChangeFlag:    Append a line change at the end of each line
 %                                            (Default = true)
-%                       * metNameFlag:       print full met names instead of abbreviations
+%                       * metNameFlag:       Print full met names instead of abbreviations
 %                                            (Default = false)
 %                       * fid:               Optional file identifier for printing in files
 %                                            (default 1, i.e. stdout)
 %                       * directionFlag:     Checks directionality of reaction. See Note.
 %                                            (Default = false)
-%                       * gprFlag:           print gene protein reaction association
+%                       * gprFlag:           Print gene protein reaction association
 %                                            (Default = false)
-%                       * proteinFlag:       print the protein names associated with the genes in the 
+%                       * proteinFlag:       Print the protein names associated with the genes in the 
 %                                            GPRs associated with the reactions. (Default = false)
 %
 % OUTPUT:
