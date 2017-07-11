@@ -10,6 +10,6 @@ Documentation
    base
    dataIntegration
    design
-   modelAnalysis
+   analysis
    reconstruction
    visualization

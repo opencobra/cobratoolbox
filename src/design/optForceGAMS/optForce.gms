@@ -51,7 +51,6 @@ options
         reslim = 100000
         work = 50000000
         sysout = off
-        mip = gurobi
         solprint = on;
 
 sets

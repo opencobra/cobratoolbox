@@ -32,6 +32,7 @@ try
 
     % ensure that we ALWAYS call exit
     exit;
-catch
+catch ME
+    getReport(ME, 'extended')
     exit(1);
 end

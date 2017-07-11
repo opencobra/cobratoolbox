@@ -4,7 +4,7 @@ function retrieveModels(printLevel)
 % USAGE:
 %     retrieveModels(printLevel)
 %
-% INPUTS:
+% INPUT:
 %     printLevel:   verbose mode (0: mute, 1: default)
 %
 
@@ -25,7 +25,7 @@ end
 
 % define the array of models to be downloaded (name of the file and URL)
 modelArr = {
-    'AntCore.mat', 'https://cdn.rawgit.com/snmendoz/Models/master/AntCore.mat';
+    'AntCore.mat', 'https://raw.github.com/snmendoz/Models/master/AntCore.mat';
     'iIT341.xml', 'http://bigg.ucsd.edu/static/models/iIT341.xml';
     'Abiotrophia_defectiva_ATCC_49176.xml', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/sbml/Abiotrophia_defectiva_ATCC_49176.xml';
     'Sc_iND750_flux1.xml', 'http://gcrg.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/yeast/Sc_iND750_flux1.xml';
@@ -51,11 +51,11 @@ end
 for i = 1:length(modelArr)
     if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
         % check if the remote URL can be reached
-        [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', modelArr{i, 2}]);
+        [status_curl, result_curl] = system(['curl --max-time 15 -s -k -L --head ', modelArr{i, 2}]);
 
         % check if the URL exists
-        if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', modelArr{i, 2}]);
+        if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
+            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O -L ', modelArr{i, 2}]);
 
             if printLevel > 0 && status_curlDownload == 0
                 fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
@@ -71,83 +71,26 @@ for i = 1:length(modelArr)
 end
 
 % download Ec_iAF1260_flux1.xml
-if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
-    tmpURL = 'http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip';
-
-    % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
-
-    % check if the URL exists
-    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
-        unzip('msb4100155-s6.zip');
-        delete('Ec_iAF1260_flux2.txt');
-        delete('read_me.txt');
-        delete('msb4100155-s6.zip');
-        movefile 'Ec_iAF1260_flux1.txt' 'Ec_iAF1260_flux1.xml';
-
-        if printLevel > 0 && status_curlDownload == 0
-            fprintf(' + Downloaded:      %s\n', 'Ec_iAF1260_flux1.xml');
-        end
-    else
-        fprintf(' > The URL %s cannot be reached.\n', tmpURL);
-    end
-else
-    if printLevel > 0
-        fprintf(' > Already exists:  %s\n', 'Ec_iAF1260_flux1.xml');
-    end
-end
+downloadModelZipFile('Ec_iAF1260_flux1.xml', 'http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip', ...
+                     'fileToBeRenamed', 'Ec_iAF1260_flux1.txt', ...
+                     'deleteExtraFiles', {'Ec_iAF1260_flux2.txt', 'read_me.txt'}, ...
+                     'printLevel', printLevel)
 
 % download STM_v1.0.xml
-if exist('STM_v1.0.xml', 'file') ~= 2
-    tmpURL = 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP';
-
-    % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
-
-    % check if the URL exists
-    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
-        unzip('12918_2010_598_MOESM2_ESM.ZIP');
-        delete('12918_2010_598_MOESM2_ESM.ZIP');
-
-        if printLevel > 0 && status_curlDownload == 0
-            fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
-        end
-    else
-        fprintf(' > The URL %s cannot be reached.\n', tmpURL);
-    end
-else
-    if printLevel > 0
-        fprintf(' > Already exists:  %s\n', 'STM_v1.0.xml');
-    end
-end
+downloadModelZipFile('STM_v1.0.xml', 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', ...
+                     'printLevel', printLevel)
 
 % download GlcAer_WT.mat
-if exist('ME_matrix_GlcAer_WT.mat', 'file') ~= 2
+downloadModelZipFile('ME_matrix_GlcAer_WT.mat', 'https://wwwen.uni.lu/content/download/72953/917521/file/download.zip', ...
+                     'printLevel', printLevel)
 
-    tmpURL = 'https://wwwen.uni.lu/content/download/72953/917521/file/download.zip';
+% download Recon2.v04.mat
+downloadModelZipFile('Recon2.v04.mat', 'https://vmh.uni.lu/files/Recon2.v04.mat_.zip', ...
+                     'printLevel', printLevel)
 
-    % check if the remote URL can be reached
-    [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', tmpURL]);
-
-    % check if the URL exists
-    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
-        status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', tmpURL]);
-        unzip('download.zip');
-        delete('download.zip');
-
-        if printLevel > 0 && status_curlDownload == 0
-            fprintf(' + Downloaded:      %s\n', 'ME_matrix_GlcAer_WT.mat');
-        end
-    else
-        fprintf(' > The URL %s cannot be reached.\n', tmpURL);
-    end
-else
-    if printLevel > 0
-        fprintf(' > Already exists:  %s\n', 'ME_matrix_GlcAer_WT.mat');
-    end
-end
+% download Human cardiac myocyte mitochondrial metabolic reconstruction
+downloadModelZipFile('cardiac_mit_glcuptake_atpmax.mat', 'https://wwwen.uni.lu/content/download/72949/917505/file/Human%20cardiac%20myocyte%20mitochondrial%20metabolic%20reconstruction_cardiac_mit_glcuptake_atpmax.mat.zip', ...
+                     'printLevel', printLevel)
 
 % print sucess message
 if printLevel > 0
@@ -157,4 +100,87 @@ end
 % change back to the root directory
 cd(currentDir)
 
+end
+
+
+function downloadModelZipFile(filename, url, varargin)
+% Downloads model file stored inside a .zip file
+%
+% USAGE:
+%     downloadModelZipFile(filename, url)
+%
+% INPUTS:
+%     filename:          name of the .mat file contained in the .zip file.
+%     url:               url where to download the .zip file.
+%
+% OPTIONAL INPUTS:
+%     fileToBeRenamed:   name of the file in the .zip file to be renamed as `filename`.
+%     deleteExtraFiles:  filenames from the .zip file that need to be deleted after extraction.
+%     printLevel:        print level
+
+    fileToBeRenamed = [];
+    deleteExtraFiles = [];
+    printLevel = 0;
+
+    %% varargin checking
+    if numel(varargin) > 1
+        for i = 1:2:numel(varargin)
+            key = varargin{i};
+            value = varargin{i + 1};
+            switch key
+                case 'fileToBeRenamed'
+                    fileToBeRenamed = value;
+                case 'deleteExtraFiles'
+                    deleteExtraFiles = value;
+                case 'printLevel'
+                    printLevel = value;
+                otherwise
+                    msg = sprintf('Unexpected key %s', key)
+                    error(msg);
+            end
+        end
+    end
+
+    if exist([pwd filesep filename], 'file') ~= 2
+        % define silence level of curl
+        if printLevel == 0
+            curlSilence = '-s';
+        else
+            curlSilence = '';
+        end
+        % check if the remote URL can be reached
+        [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', url]);
+
+        % check if the URL exists
+        if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
+            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', url]);
+            [~, zipName, ext] = fileparts(url);
+            zipName = [zipName, ext];
+            unzip(zipName);
+            % delete extra files
+            for i = 1:length(deleteExtraFiles)
+                delete(deleteExtraFiles{i});
+            end
+
+            % rename unzipped file if necessary
+            if ~isempty(fileToBeRenamed)
+                movefile(fileToBeRenamed, filename);
+            end
+            delete(zipName);
+
+            if exist('__MACOSX', 'dir') == 7
+                rmdir('__MACOSX', 's');
+            end
+
+            if printLevel > 0 && status_curlDownload == 0
+                fprintf(' + Downloaded:      %s\n', filename);
+            end
+        else
+            fprintf(' > The URL %s cannot be reached.\n', url);
+        end
+    else
+        if printLevel > 0
+            fprintf(' > Already exists:  %s\n', filename);
+        end
+    end
 end

@@ -5,5 +5,5 @@
 Deletion
 --------
 
-.. automodule:: src.modelAnalysis.deletion
+.. automodule:: src.analysis.deletion
    :members:

@@ -18,43 +18,17 @@ function abcModel = alphabetizeModel(model)
 %       - Jeff Orth  11/21/07
 %       - Modified to work on basic COBRA model. Richard Que (2/1/10)
 
-abcModel = model;
+[~,iRxns] = sort(model.rxns);
+[~,iMets] = sort(model.mets);
+model = updateFieldOrderForType(model,'rxns',iRxns);
+model = updateFieldOrderForType(model,'mets',iMets);
 
-[abcModel.rxns,iRxns] = sort(abcModel.rxns);
-[abcModel.mets,iMets] = sort(abcModel.mets);
-S = abcModel.S(:,iRxns);
-abcModel.S = S(iMets,:);
-abcModel.lb = abcModel.lb(iRxns);
-abcModel.ub = abcModel.ub(iRxns);
-abcModel.c = abcModel.c(iRxns);
-abcModel.b = abcModel.b(iMets);
-
-if isfield(model,'metCharges'), abcModel.metCharges = abcModel.metCharges(iMets); end
-if isfield(model,'subSystems'), abcModel.subSystems = abcModel.subSystems(iRxns); end
-if isfield(model,'rxnNames'), abcModel.rxnNames = abcModel.rxnNames(iRxns); end
-if isfield(model,'metNames'), abcModel.metNames = abcModel.metNames(iMets); end
-if isfield(model,'metFormulas'), abcModel.metFormulas = abcModel.metFormulas(iMets); end
 if isfield(model,'genes')
-    [abcModel.genes,iGenes] = sort(abcModel.genes);
-    if isfield(model,'rxnGeneMat')
-        rxnGeneMat = abcModel.rxnGeneMat(:,iGenes);
-        abcModel.rxnGeneMat = rxnGeneMat(iRxns,:);
-    end
+    [~,iGenes] = sort(model.genes);
+    model = updateFieldOrderForType(model,'genes',iGenes);
 end
-if isfield(model,'grRules')
-    abcModel.grRules = abcModel.grRules(iRxns);
-    if isfield(model,'rules')
-        for i=1:length(model.grRules)
-            [genes, rules] = parseBoolean(abcModel.grRules{i});
-            [tmp geneInd] = ismember(genes,abcModel.genes);
-            if ~isempty(geneInd)
-                for j = 1:length(geneInd)
-                    rules = strrep(rules,['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) '_TMP_)']);
-                end
-                abcModel.rules{i} = strrep(rules,'_TMP_','');
-            else
-                abcModel.rules{i} = '';
-            end
-        end
-    end
+if isfield(model,'comps')
+    [~,iComps] = sort(model.comps);
+    model = updateFieldOrderForType(model,'comps',iComps);
 end
+abcModel = model;

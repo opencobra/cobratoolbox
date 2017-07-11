@@ -215,6 +215,6 @@ for i = 1:numel(metID)
     end
 end
 
-newmodel = updateRelevantModelFields(model,'mets');
+newmodel = extendModelFieldsForType(model,'mets');
 
 end

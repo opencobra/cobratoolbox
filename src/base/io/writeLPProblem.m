@@ -171,8 +171,8 @@ switch outputFormat
             MPSfilename = fileName;
         end
         % split A matrix for L and E csense
-        Ale = A((csense == 'L') | (csense == 'G'), :);
-        ble = b((csense == 'L') | (csense == 'G'));
+        Ale = [A(csense == 'L', :); -A(csense == 'G', :)];
+        ble = [b(csense == 'L'); -b(csense == 'G')];
         Aeq = A(csense == 'E', :);
         beq = b(csense == 'E');
 

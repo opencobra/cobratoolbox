@@ -5,5 +5,5 @@
 Rank
 ----
 
-.. automodule:: src.modelAnalysis.subspaces.rank
+.. automodule:: src.analysis.subspaces.rank
    :members:

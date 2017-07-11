@@ -5,5 +5,9 @@
 MultiSpecies
 ------------
 
-.. automodule:: src.modelAnalysis.multiSpecies
+.. toctree::
+
+   SteadyCom
+
+.. automodule:: src.analysis.multiSpecies
    :members:

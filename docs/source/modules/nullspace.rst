@@ -5,5 +5,5 @@
 Nullspace
 ---------
 
-.. automodule:: src.modelAnalysis.subspaces.nullspace
+.. automodule:: src.analysis.subspaces.nullspace
    :members:

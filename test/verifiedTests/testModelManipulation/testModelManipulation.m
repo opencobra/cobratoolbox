@@ -162,7 +162,7 @@ assert(isSameCobraModel(modelIrrevOrdered, testModelIrrev));
 
 %Test moveRxn
 model2 = moveRxn(model,10,20);
-fields = getRelevantModelFields(model,'rxns');
+fields = getModelFieldsForType(model,'rxns');
 rxnSize = numel(model.rxns);
 for i = 1:numel(fields)
     if size(model.(fields{i}),1) == rxnSize
@@ -173,6 +173,33 @@ for i = 1:numel(fields)
         val2 = model2.(fields{i})(:,20);    
     end
     assert(isequal(val1,val2));
+end
+
+% Test addReaction with name-value argument input
+fprintf('>> Testing addReaction with name-value argument input\n');
+% options available in the input:
+name = {'reactionName', 'reversible', ...
+    'lowerBound', 'upperBound', 'objectiveCoef', 'subSystem', 'geneRule', ...
+    'geneNameList', 'systNameList', 'checkDuplicate', 'printLevel'};
+value = {'TEST', true, ...
+    -1000, 1000, 0, '', '', ...
+    {}, '', true, 1};
+arg = [name; value];
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' ->'], arg{:});
+for k = 1:numel(name)
+    % test differet optional name-value argument as the first argument after rxnID
+    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'reactionFormula', [model.mets{1} ' <=>']);
+    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    
+    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
+    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    
+    % test differet optional name-value argument as argument after reactionFormula or stoichCoeffList
+    model2b = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], name{k}, value{k});
+    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    
+    model2b = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, name{k}, value{k});
+    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
 end
 
 % change the directory
