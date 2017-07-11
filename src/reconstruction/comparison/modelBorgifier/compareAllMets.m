@@ -1,45 +1,41 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function metScores = compareAllMets(Cmodel, Tmodel)
-% compareAllMets compares and scores similarity between all pairwise
+% Compares and scores similarity between all pairwise
 % combinations of metabolites between two models. It is not however used
-% by the main workflow. 
+% by the main workflow.
 %
 % USAGE:
+%
 %    metScores = compareAllMets(Cmodel,Tmodel
 %
 % INPUTS:
-%    Cmodel:    Comparison model. 
-%    Tmodel:    Template model. 
+%    Cmodel:      Comparison model.
+%    Tmodel:      Template model.
 %
 % OUTPUTS:
-%    metScore:  Matrix of scores of all pairwise comparisons. 
+%    metScore:    Matrix of scores of all pairwise comparisons.
 %
-% CALLS:
-%    None
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    None
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-
-%% Declare variables and scoring structure.
-nCmets = length(Cmodel.mets) ;
+nCmets = length(Cmodel.mets) ; % Declare variables and scoring structure.
 nTmets = length(Tmodel.mets) ;
 
 % Score values.
@@ -68,8 +64,8 @@ end
 h = waitbar(0, 'Comparing metabolites') ;
 for iMet = 1:nCmets
     % metsID Match. There is always one ID.
-    % Match name, removing '[.]' and add regular expression info. 
-    if ~isempty(regexp(Cmodel.mets{iMet}, '\[.\]', 'once')) 
+    % Match name, removing '[.]' and add regular expression info.
+    if ~isempty(regexp(Cmodel.mets{iMet}, '\[.\]', 'once'))
         name =  strcat('(\||\<)', Cmodel.mets{iMet}(1:end - 3), '(\>|\[|_|\|)') ;
     else
         name = strcat('(\||\<)', Cmodel.mets{iMet}, '(\>|\[|_|\|)') ;
@@ -129,9 +125,9 @@ for iMet = 1:nCmets
             name = fullname(pipePos(i) + 1:pipePos(i + 1) - 1) ;
             match = regexpi(Tmodel.metKEGGID, name) ;
             match = ~cellfun('isempty', match) ;
-            matchSum = matchSum + match ; 
+            matchSum = matchSum + match ;
         end
-        match = logical(matchSum) ; 
+        match = logical(matchSum) ;
         % Give scores.
         metScores(iMet, match) = metScores(iMet, match) + ScoreVal.KEGGID(1) ;
         metScores(iMet, ~match) = metScores(iMet, ~match) + ScoreVal.KEGGID(2) ;
@@ -146,15 +142,15 @@ for iMet = 1:nCmets
             name = fullname(pipePos(i) + 1:pipePos(i +1 ) - 1) ;
             match = regexpi(Tmodel.metSEEDID,name) ;
             match = ~cellfun('isempty', match) ;
-            matchSum = matchSum + match ; 
+            matchSum = matchSum + match ;
         end
-        match = logical(matchSum) ; 
+        match = logical(matchSum) ;
         % Give scores.
         metScores(iMet, match) = metScores(iMet, match) + ScoreVal.SEEDID(1) ;
         metScores(iMet, ~match) = metScores(iMet, ~match) + ScoreVal.SEEDID(2) ;
     end
     % Update waitbar.
-    waitbar(iMet / nCmets, h) 
+    waitbar(iMet / nCmets, h)
 end
 close(h)
 

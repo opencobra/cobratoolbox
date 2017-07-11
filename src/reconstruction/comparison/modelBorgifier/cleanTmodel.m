@@ -1,54 +1,42 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
-function Tmodel = cleanTmodel(Tmodel, varargin) 
-% cleanTmodel Reorganizes and checks Tmodel for completeness. To be used 
-% immediately after addToTmodel. 
+function Tmodel = cleanTmodel(Tmodel, varargin)
+% Reorganizes and checks Tmodel for completeness. To be used
+% immediately after `addToTmodel`. Called by `addToTmodel`, `mergeModels`, `mergeTrxns`, calls `TmodelFields`, `buildRxnEquations`, `removeDuplicateNames`, `makeNamesUnique`, `charpos`, `removeProblematicCharacters`.
 %
 % USAGE:
-%    Tmodel = cleanTmodel(Tmodel) 
+%
+%    Tmodel = cleanTmodel(Tmodel)
 %
 % INPUTS:
-%    Tmodel:    Template model. 
+%    Tmodel:       Template model.
 %
 % OPTIONAL INPUTS:
 %    'Verbose':    Ask when performing certain operations.
 %
 % OUTPUTS:
-%    Tmodel:    Cleaned template model
+%    Tmodel:       Cleaned template model
 %
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLS:
-%    TmodelFields
-%    buildRxnEquations
-%    removeDuplicateNames
-%    makeNamesUnique
-%    charpos
-%    removeProblematicCharacters
-% 
-% CALLED BY:
-%    addToTmodel
-%    mergeModels
-%    mergeTrxns
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
 %
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Declare variables.
-verbose = false ; 
+verbose = false ; % Declare variables.
 if ~isempty(varargin)
     if sum(strcmp('Verbose', varargin))
         verbose = true ;
@@ -56,16 +44,16 @@ if ~isempty(varargin)
 end
 
 % Grab fields names.
-fields = TmodelFields ; 
+fields = TmodelFields ;
 
 % Reaction related cell field names.
-rxnFields = fields{1} ; 
+rxnFields = fields{1} ;
 % Reaction related double Fields (which are kept model specific).
 rNumFields = fields{2} ;
-% Metabolite related cell field names. 
-metFields = fields{3} ; 
-% Metabolite related double field names. 
-mNumFields = fields{4} ; 
+% Metabolite related cell field names.
+metFields = fields{3} ;
+% Metabolite related double field names.
+mNumFields = fields{4} ;
 
 % Model names.
 moNames = fieldnames(Tmodel.Models) ;
@@ -76,28 +64,28 @@ nMets = length(Tmodel.mets) ;
 
 % Set flags for if Verbose mode is on
 if isempty(varargin)
-    mergeRxns = 'y' ; 
-    askeverytime = 0 ; 
+    mergeRxns = 'y' ;
+    askeverytime = 0 ;
     beautifynames = 'y' ;
-    askeverytimeb = 0 ;  
+    askeverytimeb = 0 ;
 else
     if verbose
         mergeRxns = input(['Should I try merging identical reactions? ' char(10) ...
                                'y...yes in all cases' char(10) ...
                                'a...ask me every time' char(10) ...
                                'n...no thanks (default)' char(10)], 's') ;
-        askeverytime = strcmpi(mergeRxns, 'a') ; 
-        
+        askeverytime = strcmpi(mergeRxns, 'a') ;
+
         beautifynames = input(['Should I try to replace cryptic names by nicer ones? ' char(10) ...
                            'y...yes in all cases' char(10) ...
                            'a...ask me every time' char(10) ...
                            'n...no thanks (default)' char(10)], 's') ;
-        askeverytimeb = strcmpi(beautifynames,'a') ;    
+        askeverytimeb = strcmpi(beautifynames,'a') ;
     else
-        mergeRxns = 'y' ; 
+        mergeRxns = 'y' ;
         askeverytime = 0 ;
         beautifynames = 'y' ;
-        askeverytimeb = 0 ; 
+        askeverytimeb = 0 ;
     end
 end
 
@@ -120,8 +108,8 @@ for iMo = 1:length(moNames)
         rxnsArray(end+1:nRxns) = 0 ;
     end
     Tmodel.Models.(moNames{iMo}).rxns = logical(rxnsArray) ;
-    
-    % Metabolites. 
+
+    % Metabolites.
     metsArray = Tmodel.Models.(moNames{iMo}).mets ;
     if length(metsArray) ~= nMets
         metsArray(end+1:nMets) = 0 ;
@@ -150,10 +138,10 @@ if ismember(mergeRxns, {'y', 'a', 'Y', 'A'})
         if ~ismember(i, a) % rxns that use the same metabolites
             eqset = find(b == b(i)) ;
             stoicheck = 1 ;
-            for ie = 2:length(eqset) 
+            for ie = 2:length(eqset)
                 rxnratio = unique(Tmodel.S(metpos{i}, eqset(1)) ./ Tmodel.S(metpos{i}, eqset(ie))) ;
                 if length(rxnratio) == 1 && ~isnan(rxnratio)  && ...
-                        sum(rxnNowPresent(eqset(1), :) .* rxnNowPresent(eqset(ie), :)) == 0 
+                        sum(rxnNowPresent(eqset(1), :) .* rxnNowPresent(eqset(ie), :)) == 0
                     if askeverytime
                     % if reactions have the same stoichiometry, maybe with a factor
                     disp([Tmodel.rxns{eqset(1)} '(' strjoin(modelnames(rxnNowPresent(eqset(1), :)), '|') ')' ' and ' ...
@@ -286,17 +274,17 @@ if ismember(beautifynames,{'y', 'a', 'Y', 'A'})
 end
 
 %% Make sure all names are unique before reorganizing.
-% Rebuild reaction equations so there is a hint for renaming rxns. 
-Tmodel = buildRxnEquations(Tmodel) ; 
-if verbose ; fprintf('Checking if reaction IDs (.rxns) are unique.\n') ; end 
+% Rebuild reaction equations so there is a hint for renaming rxns.
+Tmodel = buildRxnEquations(Tmodel) ;
+if verbose ; fprintf('Checking if reaction IDs (.rxns) are unique.\n') ; end
 Tmodel.rxns = makeNamesUnique(Tmodel.rxns, Tmodel.rxnEquations) ;
 if verbose ; fprintf('Checking if metabolite IDs (.mets) are unique.\n') ; end
-Tmodel.mets = makeNamesUnique(Tmodel.mets, Tmodel.metNames) ; 
+Tmodel.mets = makeNamesUnique(Tmodel.mets, Tmodel.metNames) ;
 
 % Remove duplicate met IDs.
-Tmodel.metID = removeDuplicateNames(Tmodel.metID) ; 
+Tmodel.metID = removeDuplicateNames(Tmodel.metID) ;
 
-% Rebuild reaction equations. 
+% Rebuild reaction equations.
 Tmodel = buildRxnEquations(Tmodel) ;
 
 %% Reorder reactions and metabolites alphabetically.
@@ -324,7 +312,7 @@ end
 
 % Reorder identity arrays.
 for iMo = 1:length(moNames)
-    Tmodel.Models.(moNames{iMo}).rxns = ... 
+    Tmodel.Models.(moNames{iMo}).rxns = ...
         Tmodel.Models.(moNames{iMo}).rxns(rxnI) ;
     Tmodel.Models.(moNames{iMo}).mets = ...
         Tmodel.Models.(moNames{iMo}).mets(metI) ;
@@ -338,7 +326,7 @@ Tmodel.S = Tmodel.S(metI, :) ;
 % Metabolite fields to share information between
 share = {'metNames' 'metFormulas' 'metKEGGID' 'metSEEDID' 'metChEBIID' ...
          'metPubChemID' 'metInChIString'} ;
-          
+
 metsNoComp = cell(nMets,1) ;
 for iMet = 1:nMets
     metsNoComp{iMet} = Tmodel.mets{iMet}(1:end - 3) ;
@@ -356,7 +344,7 @@ for iMet = 1:length(uniqMets)
       for iSis = 1:length(sMets)
         % If the field is not empty, break information into parts
         % (as seperated by pipes), and add that information in if
-        % it is not already present. 
+        % it is not already present.
         if ~isempty(Tmodel.(share{iF}){sMets(iSis)})
           pipePos = [0 ...
                      strfind(Tmodel.(share{iF}){sMets(iSis)}, '|') ...
@@ -366,7 +354,7 @@ for iMet = 1:length(uniqMets)
                       (pipePos(j) + 1:pipePos(j + 1) - 1) ;
             % If the info does not already exist.
             if isempty(strfind(info{1}, nowInfo))
-              % If it is the first piece of information or additional. 
+              % If it is the first piece of information or additional.
               if isempty(info{1})
                 info{1} = nowInfo ;
               else
@@ -384,17 +372,17 @@ for iMet = 1:length(uniqMets)
   end
 end
 
-% Now remove duplicate information which may have snuck in. 
+% Now remove duplicate information which may have snuck in.
 for iField = 1:length(share)
-    Tmodel.(share{iField}) = removeDuplicateNames(Tmodel.(share{iField})) ; 
+    Tmodel.(share{iField}) = removeDuplicateNames(Tmodel.(share{iField})) ;
 end
-  
+
 %% Remove duplicate reaction longnames and IDs
 Tmodel.rxnNames = removeDuplicateNames(Tmodel.rxnNames) ;
 Tmodel.rxnID = removeDuplicateNames(Tmodel.rxnID) ;
 
 %% Clear leftover fields from the matching process
-deleteFields = {'rxnNamesFix' 'rxnComp' 'metNums' 'rxnMetNames'} ; 
+deleteFields = {'rxnNamesFix' 'rxnComp' 'metNums' 'rxnMetNames'} ;
 existFields = isfield(Tmodel, deleteFields) ;
 for iF = 1:length(existFields)
     if existFields(iF)
