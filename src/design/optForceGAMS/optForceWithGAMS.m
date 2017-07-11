@@ -699,12 +699,22 @@ if loop % if k = kMin:k
                         if verbose; fprintf('No solution to optForce was found using k = %1.0f. Therefore, no plain text file was generated\n', currentK); end;
                     end
                 end
-
+                
                 if ~noSolution
                     %close file for saving report
                     if printReport; fclose(freport); end;
                     delete(optForceFunction);
                     cd(workingPath);
+                else
+                    currentK = currentK + 1;
+                    
+                    if currentK > k
+                        optForceSets = {};
+                        posOptForceSets = [];
+                        typeRegOptForceSets = {};
+                        fluxOptForceSets=[];
+                    end
+                    
                 end
 
             catch
