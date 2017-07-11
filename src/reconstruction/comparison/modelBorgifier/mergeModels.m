@@ -4,7 +4,7 @@ function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, rxnList, met
 % resolves these problems and merges the models, and confirms that Cmodel
 % is the same after being removed from the merged model. It also provides
 % some statistics on the merging process and resulting combined model.
-% called by `driveModelBorgifier`, calls `addToTmodel`, `compareMatricies`, `reactionCompare`, `cleanTmodel`, organizeModelCool`, `TmodelStats`, `readCbTmodel`.
+% Called by `driveModelBorgifier`, calls `addToTmodel`, `compareMatricies`, `reactionCompare`, `cleanTmodel`, organizeModelCool`, `TmodelStats`, `readCbTmodel`.
 %
 % USAGE:
 %

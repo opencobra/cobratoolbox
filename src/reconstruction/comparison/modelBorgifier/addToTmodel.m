@@ -11,16 +11,16 @@ function [TmodelC, Cmodel] = addToTmodel(Cmodel, Tmodel, rxnList, metList, varar
 %                  extended COBRA format.
 %    Tmodel:       Template database in which to add information
 %                  and new reactions.
-%    rxnList:      Array the length of Cmodel.rxns with corresponding
-%                  matching reaction numbers from Tmodel. If a rxn is unique
-%                  in Cmodel, it has 0. `rxnList` is the output of
-%                  reactionCompare GUI.
+%    rxnList:      Array the length of `Cmodel.rxns` with corresponding
+%                  matching reaction numbers from `Tmodel`. If a rxn is unique
+%                  in `Cmodel`, it has 0. `rxnList` is the output of
+%                  `reactionCompare` GUI.
 %    metList:      Array the length of `Cmodel.mets` with corresponding
 %                  matching met indexes from `Tmodel`. New mets should already
 %                  have their correct index in `Tmodel`.
 %
 % OPTIONAL INPUTS:
-%    'NoClean':    Don't call cleanTmodel at the end of this function
+%    'NoClean':    Don't call `cleanTmodel` at the end of this function
 %    'Verbose':    Ask when performing certain operations. Carries into
 %                  `cleanTmodel`.
 %

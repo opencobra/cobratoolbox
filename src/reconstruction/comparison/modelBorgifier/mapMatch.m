@@ -1,10 +1,10 @@
-function [rmatch, mmatch] = mapMatch(Cmodel,Tmodel,seedMets)
+function [rmatch, mmatch] = mapMatch(Cmodel, Tmodel, seedMets)
 % Compares the local network topology between the metabolites and
 % reactions of two models. Called by `compareCbModels`.
 %
 % USAGE:
 %
-%    [rmatch, mmatch] = mapMatch(Cmodel,Tmodel,seedMets)
+%    [rmatch, mmatch] = mapMatch(Cmodel, Tmodel, seedMets)
 %
 % INPUTS:
 %    Cmodel:      model to be compared

@@ -11,7 +11,7 @@ function out = removeProblematicCharacters(in, varargin)
 %    sub:    Character which to subtitute with. Default is '_'
 %
 % OUTPUTS:
-%    out:    Newly formateed string
+%    out:    Newly formatted string
 %
 % Please cite:
 % `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale

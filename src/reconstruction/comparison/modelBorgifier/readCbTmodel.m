@@ -5,7 +5,7 @@ function Model = readCbTmodel(modelName, Tmodel, varargin)
 %
 % USAGE:
 %
-%    Model = readCbTmodel(modelName,[Tmodel])
+%    Model = readCbTmodel(modelName, Tmodel)
 %
 % INPUTS:
 %    modelName:           Name of an available model (i.e. iAF1260). Available names
