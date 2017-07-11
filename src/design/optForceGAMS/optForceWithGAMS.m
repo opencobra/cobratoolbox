@@ -1,4 +1,4 @@
-function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model,...
+function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForceWithGAMS(model,...
     targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
     nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,...
     printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
@@ -604,6 +604,7 @@ if loop % if k = kMin:k
                     optForceSets = {};
                     posOptForceSets = [];
                     typeRegOptForceSets = {};
+                    fluxOptForceSets = {};
                 end
 
                 outputFolderK = [outputFolder '_k' num2str(currentK)];
@@ -949,6 +950,7 @@ else % if k = fixed number
                 optForceSets = {};
                 posOptForceSets = [];
                 typeRegOptForceSets = {};
+                fluxOptForceSets = {};
             end
 
             %remove or move additional files that were generated during running
