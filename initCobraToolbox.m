@@ -103,7 +103,7 @@ function initCobraToolbox()
     end
 
     % check if the directory is a git-tracked folder
-    if exist('.git', 'dir') ~= 7
+    if exist([CBTDIR filesep '.git'], 'dir') ~= 7
         % initialize the directory
         [status_gitInit, result_gitInit] = system('git init');
 
@@ -501,8 +501,11 @@ function initCobraToolbox()
         fprintf('\n');
     end
 
+    % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
+    changeCobraSolver('gurobi', 'ALL', 0);
+    
     % check if a new update exists
-    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         updateCobraToolbox(true); % only check
     end
 
@@ -590,7 +593,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
 
     % check if the URL exists
-    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+    if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
