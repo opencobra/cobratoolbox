@@ -8,6 +8,9 @@
 % of Luxembourg. *
 % 
 % *Catherine Clancy, Systems Biochemistry Group, LCSB, University of Luxembourg.*
+% 
+% *Stefania Magnusdottir, Molecular Systems Physiology Group, LCSB, University 
+% of Luxembourg.*
 %% INTRODUCTION
 % In this tutorial, we will do a manipulation with a simple model of the first 
 % few reactions of the glycolysis metabolic pathway as created in the "Model Creation" 
@@ -17,7 +20,7 @@
 % cytosol of the cell. First, we will use the beginning of that pathway to create 
 % a simple constraint-based metabolic network (Figure 1).
 % 
-% 
+%  
 % 
 %                                                                    Figure 
 % 1: A small metabolic network consisting of the seven reactions in the glycolysis 
@@ -38,11 +41,12 @@
 % * Adding exchange, sink and demand reactions;
 % * Altering reaction bounds;
 % * Altering reactions;
-% * Remove reactions and metabolites;
-% * Search for duplicates and comparison of two models;
+% * Removing reactions and metabolites;
+% * Searching for duplicates and comparison of two models;
 % * Changing the model objective;
 % * Changing the direction of reaction(s);
-% * Create gene-reaction-associations ('GPRs');
+% * Creating gene-reaction-associations ('GPRs');
+% * Extracting a subnetwork
 %% EQUIPMENT SETUP
 % Start CobraToolbox
 
@@ -50,7 +54,7 @@ initCobraToolbox;
 %% PROCEDURE
 %% Generate a network
 % A constraint-based metabolic model contains the stoichiometric matrix ($$S$) 
-% with reactions and metabolites$$^1$.
+% with reactions and metabolites [1].
 % 
 % $$S$ is a stoichiometric representation of metabolic networks corresponding 
 % to the reactions in the biochemical pathway. In each column of the $$S$ is a 
@@ -58,9 +62,9 @@ initCobraToolbox;
 % There is a stoichiometric coefficient of zero, which means that metabolite does 
 % not participate in that distinct reaction. The coefficient also can be positive 
 % when the appropriate metabolite is produced, or negative for every metabolite 
-% consumed$$^1$.
+% consumed [1].
 % 
-% 
+%  
 % 
 % Generate a model using the |createModel()|_ _function:
 
@@ -132,7 +136,7 @@ model = addReaction(model, 'PGM', 'reactionFormula', '3pg[c] <=> 2pg[c]' );
 
 full(model.S) 
 %% 
-% * one extra column is added (for added reaction) and 5 new rows(for nadh, 
+% * one extra column is added (for added reaction) and 5 new rows (for nadh, 
 % nad, 13bpg, 2pg and 3pg metabolites)
 % 
 % If you want to search for the indecies of reactions in the model, and change 
@@ -203,7 +207,7 @@ model = addSinkReactions(model, {'13bpg[c]', 'nad[c]'})
  model = addDemandReaction(model, {'dhap[c]', 'g3p[c]'})
 %% Setting a ratio between the reactions
 % It is important to emphasise that previous knowledge base information should 
-% be taken into account when generating a model. If this information is ommited, 
+% be taken into account when generating a model. If this information is omited, 
 % the analysis of a model could be adversely altered and consequent results not 
 % representative of the network. 
 % 
@@ -211,12 +215,8 @@ model = addSinkReactions(model, {'13bpg[c]', 'nad[c]'})
 % the flux of another reaction, it is recommended to 'couple' (i.e., set a ratio) 
 % the reactions in the model. 
 % 
-%  E.g. $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn><mtext> 
-% </mtext><mi mathvariant="italic">v</mi><mtext> </mtext><mi mathvariant="normal">EX</mi><mo 
-% stretchy="false">_</mo><mi mathvariant="normal">glc</mi><mo stretchy="false">_</mo><mi>D</mi><mo>[</mo><mi>c</mi><mo>]</mo><mo 
-% stretchy="false">=</mo><mn>2</mn><mtext> </mtext><mi mathvariant="italic">v</mi><mtext> 
-% </mtext><mi mathvariant="normal">EX</mi><mo stretchy="false">_</mo><mi mathvariant="normal">glc</mi><mo 
-% stretchy="false">_</mo><mi>D</mi><mo>[</mo><mi mathvariant="italic">e</mi><mo>]</mo></mrow></math>$
+%  E.g. $1\text{?}v\text{?}\text{EX}_\text{glc}_D\left\lbrack c\right\rbrack 
+% =2\text{?}v\text{?}\text{EX}_\text{glc}_D\left\lbrack e\right\rbrack$
 
 model = addRatioReaction (model, {'EX_glc_D[c]', 'EX_glc_D[e]'}, [1; 2])
 %% *Constraining the flux boundaries of a reaction*
@@ -278,10 +278,9 @@ printRxnFormula(model, 'gprFlag', true);
 % function can be used:
 
   model = removeTrivialStoichiometry(model)
-  model = removeRxns(model,{'GAPDH', 'PGK'});
 %% Search for duplicate reactions and comparison of two models
-% Since genome-scale metabolic models are expanding every day$$^2$, the need 
-% to compare models is also growing. The elementary functions in The Corba Toolbox 
+% Since genome-scale metabolic models are expanding every day [2], the need 
+% to compare models is also growing. The elementary functions in The Cobra Toolbox 
 % can support simultaneous structural analysis and comparison.
 % 
 % Checking for reaction duplicates with the |checkDuplicateRxn()| function 
@@ -309,13 +308,13 @@ method = 'S';
 % therefore will not be removed as the S method does not detect a reverse reactions.
 % * Reevaluate the reaction length to show this:
 
-assert(rxns_length + 1 == length(model.rxns));
+assert(rxns_length + 3 == length(model.rxns));
 %% 
 % Detecting duplicates using the FR method:
 
 method = 'FR';
 [model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, 1, 1)
-assert(rxns_length == length(model.rxns))
+assert(rxns_length + 2 == length(model.rxns))
 %% 
 % * The GLCt1r_duplicate_reverse reaction is detected as a duplicate reaction 
 % therefore will not be removed as the FR method does detect a reverse reactions.
@@ -378,77 +377,81 @@ modelRev = convertToReversible(modelIrrev);
 
 printRxnFormula(modelRev);
 %% Create gene-reaction-associations (GPRs) from scratch.
+% Assign the GPR '(G1) or (G2)' to the reaction HEX1
 
-model.genes = [];
-model.rxnGeneMat = [];
-modelgrRule = model.grRules;
-for i = 1 : length(modelgrRule)
-    if ~isempty(modelgrRule{i})
-        model = changeGeneAssociation(model,model.rxns{i},modelgrRule{i});
-    end
-end
-%% 
-% Check that there are no empy columns left.
-
-find(sum(model.rxnGeneMat)==0)
+model = changeGeneAssociation(model, 'HEX1', '(G1) or (G2)');
 %% Replace an existing GPRs with a new one. 
-% Here, we will search for all instances of the existing GPR and replace it 
-% with the new one.
+% Here, we will search for all instances of a specific GPR ('G1 and G2 ') and 
+% replace it with a new one ('G1 or G4').
 % 
-% Define the old and the new one. 
+% Define the old and the new GPRs. 
 
-GPRsReplace={'(126.1) or (137872.1) '	'126.1 or 137872.1'};
-GPRexist = (model.grRules)
-a = 1;
+GPRsReplace = {'G1 and G2'	'G1 or G4'};
 for  i = 1 : size(GPRsReplace, 1)
-    tmp2=[];
-    for j = 1 :length(GPRexist)
-        tmp2 = strmatch(GPRsReplace{i, 1},GPRexist{j});
-        % replace old GPR by new
-        model.grRules{j} = GPRsReplace{i, 2};
+    oldGPRrxns = find(strcmp(model.grRules, GPRsReplace{i, 1}));%Find all reactions that have the old GPR
+    for j = 1:length(oldGPRrxns)
+        model = changeGeneAssociation(model, model.rxns{oldGPRrxns(j)}, GPRsReplace{i, 2});
     end
 end
+%% Remove unused genes
+% Let us assume that the reaction PGK has to be removed from the model
 
-GPRnew = model.grRules
+model = removeRxns(model, 'PGK');
 %% 
-% Remove issues with hyphens in the GPR definitions.
+% The model now contains genes that do not participate in any GPR
 
-for i = 1 : length(model.grRules)
-    model.grRules{i} = strrep(model.grRules{i}, '''', '');
+find(sum(model.rxnGeneMat, 1) == 0)
+%% 
+% We remove unused genes by re-assigning the model's GPR rules, which updates 
+% the reaction-gene-matrix and gene list.
+% 
+% Store GPR list in a new variable
+
+storeGPR = model.grRules;
+%% 
+% Erase model's gene list and reaction-gene-matrix
+
+model.rxnGeneMat = [];
+model.genes = [];
+%% 
+% Re-assign GPR rules to model
+
+for i = 1 : length(model.rxns)
+    model = changeGeneAssociation(model, model.rxns{i}, storeGPR{i});
 end
+%% 
+% Check that there are no unused genes left in the model
+
+find(sum(model.rxnGeneMat, 1) == 0)
+%% Remove issues with GPR definitions and spaces in reaction abbreviations
+% Remove issues with quotation marks in the GPR definitions.
+
+model.grRules = strrep(model.grRules, '''', '');
 %% 
 % Remove spaces from reaction abbreviations.
 
-for i = 1 : length(model.rxns)
-    model.rxns{i} = strrep(model.rxns{i}, ' ', '');
-end
+model.rxns = strrep(model.rxns, ' ', '');
 %% 
 % Remove unneccessary brackets from the GPR associations. 
 
 for i = 1 : length(model.grRules)
-    model.grRules{i} = strrep(model.grRules{i}, '''', '');
-    % remove unnecessary brackets
-    if length(strfind(model.grRules{i}, 'and')) == 0 % no AND in gprs
-        model.grRules{i} = strrep(model.grRules{i}, '(', '');
-        model.grRules{i} = strrep(model.grRules{i}, ')', '');
-        
-    elseif length(strfind(model.grRules{i}, 'or')) == 0 % no OR in gprs
-        model.grRules{i} = strrep(model.grRules{i}, '(', '');
-        model.grRules{i} = strrep(model.grRules{i}, ')', '');
-    elseif length(strfind(model.grRules{i},'(')) == 1 && length(strfind...
-            (model.grRules{i}, 'or')) == 0 && length(strfind...
-            (model.grRules{i}, 'and')) == 0
-        model.grRules{i} = strrep(model.grRules{i}, '(', '');
-        model.grRules{i} = strrep(model.grRules{i}, ')', '');
+    if isempty(strfind(model.grRules{i}, 'and')) && isempty(strfind(model.grRules{i}, 'or'))% no AND or OR in GPR
+        model.grRules{i} = regexprep(model.grRules{i}, '[\(\)]', '');
     end
 end
+%% Extract subnetwork
+% Extract a subnetwork from the model consisting of the reactions HEX1, PGI, 
+% FBP, and FBA. The function will remove unused metabolites.
+
+rxnList = {'HEX1'; 'PGI'; 'FBP'; 'FBA'}
+subModel = extractSubNetwork(model, rxnList)
 %% REFERENCES
-% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? 
-% _Nat. Biotechnol., _28(3), 245–248 (2010).
+% [1] Orth, J. D., Thiele I., and Palsson, B. �. What is flux balance analysis? 
+% _Nat. Biotechnol., _28(3), 245-248 (2010).
 % 
-% [2] Feist, A. M., Palsson, B. Ø. The growing scope of applications of genome-scale 
+% [2] Feist, A. M., Palsson, B. �. The growing scope of applications of genome-scale 
 % metabolic reconstructions: the case of _E. coli_. _Nature Biotechnology, _26(6), 
-% 659–667 (2008).
+% 659-667 (2008).
 % 
-% [3] Feist, A. M., Palsson, B. Ø. The Biomass Objective Function. _Current 
-% Opinion in Microbiology, _13(3), 344–349 (2010).
+% [3] Feist, A. M., Palsson, B. �. The Biomass Objective Function. _Current 
+% Opinion in Microbiology, _13(3), 344-349 (2010).
