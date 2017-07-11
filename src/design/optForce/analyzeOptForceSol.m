@@ -1,4 +1,4 @@
-function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution, relax, tol)
+function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, biomassRxn, solution, relax, tol)
 % This function will calculate the minimum and maximum rates for target
 % production when applying a set of interventions (upregulations,
 % downregulations, knockouts) in the model. Flux for each intervened
@@ -57,7 +57,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if nargin <1 %input handling
+if nargin <1  % input handling
     error('OptForce: model must be specified when running analyzeOptForceSol');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end

@@ -190,7 +190,6 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
     && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
@@ -1076,7 +1075,7 @@ bilevelMILPproblem.x0 = [];
 % Maximize
 bilevelMILPproblem.osense = -1;
 
-% Set model for MILP problem
+% Set model for MILP problems
 bilevelMILPproblem.model = model;
 
 end
