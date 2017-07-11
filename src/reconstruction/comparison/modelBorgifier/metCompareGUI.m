@@ -1,50 +1,44 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function varargout = metCompareGUI(varargin)
-% metCompareGUI Creates a comparison GUI for deciding which metabolite are 
+% Creates a comparison GUI for deciding which metabolite are
 % in a new or existing reaction.
+% Called by `metCompare`, calls `findMetMatch`, `colText`, `addMetInfo`.
 %
 % USAGE:
+%
 %    [RxnInfo, stopFlag] = metCompareGUI(RxnInfo)
 %
 % INPUTS
-%    RxnInfo:   Structure containing relevent info. See metCompare function
-%               fillRxnInfo.
+%    RxnInfo:     Structure containing relevent info. See `metCompare` function
+%                 `fillRxnInfo`.
 %
 % OPTIONAL OUTPUTS:
-%    RxnInfo:   Update structure.
-%    stopFlag:  Indicates if more metabolites need to be reviewed
+%    RxnInfo:     Update structure.
+%    stopFlag:    Indicates if more metabolites need to be reviewed
+%    CMODEL:      global input
+%    TMODEL:      global input
 %
-% GLOBAL INPUTS:
-%    CMODEL
-%    TMODEL
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLS:
-%    findMetMatch
-%    colText
-%    addMetInfo
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
 %
-% CALLED BY:
-%    metCompare
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @metCompareGUI_OpeningFcn, ...
@@ -83,7 +77,7 @@ handles.RxnInfo = varargin{1};
 cModelName = CMODEL.description ;
 set(handles.staticCmodel, 'String', cModelName) ;
 Tmodels = fieldnames(TMODEL.Models) ;
-if length(Tmodels) == 1     
+if length(Tmodels) == 1
     set(handles.staticTmodel, 'String', Tmodels{1})
 end
 rxnNum = num2str(handles.RxnInfo.rxnIndex) ;
@@ -99,8 +93,8 @@ else
     set(handles.staticTRxnNum, 'String', 'Current match in T.') ;
     set(handles.staticNewRxnEquation, 'Visible', 'Off') ;
     set(handles.newRxnEquationField, 'Visible', 'Off') ;
-    % And disable the ability to skip checking the mets. 
-    set(handles.buttonSkip, 'Enable', 'off') ; 
+    % And disable the ability to skip checking the mets.
+    set(handles.buttonSkip, 'Enable', 'off') ;
 end
 rxnName = handles.RxnInfo.rxnName ;
 set(handles.rxnNameField, 'String', rxnName) ;
@@ -116,7 +110,7 @@ elseif ~rxnMatch && ~handles.RxnInfo.rxnIndex
     set(handles.TRxnNumField, 'String', 'N/A') ;
 else
     set(handles.TRxnNumField, 'String', num2str(rxnMatch)) ;
-    % You cannot choose new metabolite for reactions with matches. 
+    % You cannot choose new metabolite for reactions with matches.
     set(handles.chooseNew, 'Enable', 'off') ;
 end
 
@@ -161,11 +155,11 @@ uiwait(handles.figure1);
 end
 
 % --- Outputs from this function are returned to the command line.
-function varargout = metCompareGUI_OutputFcn(hObject, eventdata, handles) 
+function varargout = metCompareGUI_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 handles.output = handles.RxnInfo ;
 varargout{1} = handles.output ;
-varargout{2} = handles.stopFlag ; 
+varargout{2} = handles.stopFlag ;
 close
 end
 
@@ -187,19 +181,19 @@ switch choice
     case 'choose1'
         RxnInfo.matches(RxnInfo.nowMet) = matchIndex(1) ;
     case 'choose2'
-        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(2) ; 
+        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(2) ;
     case 'choose3'
-        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(3) ; 
+        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(3) ;
     case 'choose4'
-        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(4) ; 
+        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(4) ;
     case 'choose5'
-        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(5) ; 
+        RxnInfo.matches(RxnInfo.nowMet) = matchIndex(5) ;
     case 'chooseNew'
         % if metabolite has been declared new, ensure that all reactions it is
         % involved in are also declared new.
         nowRxnIndex = find(CMODEL.S(nowMetIndex,:) ~= 0) ;
         if sum(RxnInfo.rxnList(nowRxnIndex) > 0) > 0
-            
+
             set(handles.errorField, 'String',...
                 [CMODEL.mets{nowMetIndex} 'Cannot be new, it is in matched Rxns.' ...
                 num2str(nowRxnIndex(RxnInfo.rxnList(nowRxnIndex) > 0)) ])
@@ -221,17 +215,17 @@ end
 % Add data back to handle.
 RxnInfo.matches = RxnInfo.matches ;
 
-% Indicate the user has reviewed this match. 
+% Indicate the user has reviewed this match.
 RxnInfo.goodMatch(RxnInfo.nowMet) = 1 ;
 
 % Update metabolite as seen.
 RxnInfo.unseen(RxnInfo.nowMet) = 0 ;
 
 % Go to next metabolite in the list that has not been seen.
-val = find(RxnInfo.unseen == 1, 1) ; 
+val = find(RxnInfo.unseen == 1, 1) ;
 % If all matches are good then just go to the first metabolites.
 if isempty(val)
-    val = 1 ; 
+    val = 1 ;
 end
 set(handles.popup_met, 'Value', val) ;
 
@@ -239,8 +233,8 @@ set(handles.popup_met, 'Value', val) ;
 handles.RxnInfo = RxnInfo ;
 guidata(hObject, handles) ;
 
-% Update new reaction equation. This also checks if the decision was good. 
-handles = metMatchRxnEquation(hObject, handles) ; 
+% Update new reaction equation. This also checks if the decision was good.
+handles = metMatchRxnEquation(hObject, handles) ;
 
 % Go to next met.
 popup_met_Callback(handles.popup_met, eventdata, handles)
@@ -262,14 +256,14 @@ global TMODEL
 if ~isempty(eventdata.Indices)
     % Declare variables
     RxnInfo = handles.RxnInfo ; % For convenience.
-    RxnInfo.nowMet = get(handles.popup_met, 'Value') ; 
+    RxnInfo.nowMet = get(handles.popup_met, 'Value') ;
     nowMetIndex = RxnInfo.metIndex(RxnInfo.nowMet) ;
     matchScores = RxnInfo.matchScores{RxnInfo.nowMet} ;
     matchIndex  = RxnInfo.matchIndex{RxnInfo.nowMet} ;
 %     [matchScores,matchIndex] = findMetMatch(nowMetIndex,RxnInfo.rxnMatch) ;
-    
-    
-    % Set match reaction number based on column clicked. 
+
+
+    % Set match reaction number based on column clicked.
     set(handles.chooseOtherNo,'String', 'Met #')
     matchCol = eventdata.Indices(2) ;
     if matchCol == 1
@@ -286,17 +280,17 @@ if ~isempty(eventdata.Indices)
         set(handles.chooseMatch, 'SelectedObject', handles.chooseOther) ;
         set(handles.chooseOtherNo, 'String', num2str(matchIndex(matchCol)))
     end
-    
+
     % Opens up KEGG ID site if KEGGID is selected
-    matchRow = eventdata.Indices(1) ; 
+    matchRow = eventdata.Indices(1) ;
     % If we are in the right row
     if matchRow == 7
-       % Grab the ID. 
+       % Grab the ID.
        cID = TMODEL.metKEGGID{matchIndex(matchCol)} ;
        if ~isempty(cID)
-           % Enforce the cID is the right length. 
+           % Enforce the cID is the right length.
            cID = cID(1:6) ;
-           % Launch website. 
+           % Launch website.
            KEGGIDurl = ['http://www.genome.jp/dbget-bin/www_bget?' cID] ;
            web(KEGGIDurl, '-new', '-noaddressbox', '-notoolbar')
        end
@@ -307,17 +301,17 @@ end
 % --- Executes on selection of item in uitable_met
 function metTableCallback(hObject, eventdata, handles)
 if ~isempty(eventdata.Indices)
-    RxnInfo.nowMet = get(handles.popup_met, 'Value') ; 
+    RxnInfo.nowMet = get(handles.popup_met, 'Value') ;
     % Opens up KEGG ID site if KEGGID is selected
-    matchRow = eventdata.Indices(1) ; 
+    matchRow = eventdata.Indices(1) ;
     % If we are in the right row.
     if matchRow == 7
-       % Grab the ID. 
+       % Grab the ID.
        cID = handles.RxnInfo.metData{5, RxnInfo.nowMet} ;
        if ~isempty(cID)
-           % Enforce the cID is the right length. 
+           % Enforce the cID is the right length.
            cID = cID(1:6) ;
-           % Launch browser. 
+           % Launch browser.
            KEGGIDurl = ['http://www.genome.jp/dbget-bin/www_bget?' cID] ;
            web(KEGGIDurl, '-new', '-noaddressbox', '-notoolbar')
        end
@@ -328,7 +322,7 @@ end
 % --- Executes on button press in buttonAddMets.
 function buttonAddMets_Callback(hObject, eventdata, handles)
 % Do not stop the next iteration of calling metCompare.
-handles.stopFlag = 0 ; 
+handles.stopFlag = 0 ;
 guidata(hObject, handles) ;
 % Allows the wait command to be suspended, closing the GUI.
 uiresume(handles.figure1)
@@ -345,7 +339,7 @@ end
 
 % --- Executes when selected object is changed in chooseMatch. NOT USED.
 function chooseMatch_SelectionChangeFcn(hObject, eventdata, handles)
-% hObject    handle to the selected object in chooseMatch 
+% hObject    handle to the selected object in chooseMatch
 % eventdata  structure with the following fields (see UIBUTTONGROUP)
 %	EventName: string 'SelectionChanged' (read only)
 %	OldValue: handle of the previously selected object or empty if none was selected
@@ -386,7 +380,7 @@ rowHeader.setSize(newWidth,height);
 % format left
 rend = rowHeader.getCellRenderer(1, 0);
 rend.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-jscroll.repaint %apply changes 
+jscroll.repaint %apply changes
 
 nowMetIndex = RxnInfo.metIndex(RxnInfo.nowMet) ;
 metDataTable = RxnInfo.metData(:, RxnInfo.nowMet) ;
@@ -415,7 +409,7 @@ for iMatch = 1:nMatches
     metMatchTable{6, iMatch} = num2str(TMODEL.metCharge(matchIndex(iMatch))) ;
     metMatchTable{7, iMatch} = TMODEL.metKEGGID{matchIndex(iMatch)} ;
     metMatchTable{8, iMatch} = TMODEL.metSEEDID{matchIndex(iMatch)} ;
-    metMatchTable{9, iMatch} = TMODEL.metID{matchIndex(iMatch)} ; 
+    metMatchTable{9, iMatch} = TMODEL.metID{matchIndex(iMatch)} ;
 end
 
 % weed out accidently remaining cells in cells
@@ -431,8 +425,8 @@ for iac = 1:numel(metMatchTable)
 end
 
 % If compartment doesn't match or if score is below 0.3
-if ~strcmpi(metMatchTable{3, 1}, nowMetDataTable{3}) ... 
-        || str2double(metMatchTable{1, 1}) < 0.3 
+if ~strcmpi(metMatchTable{3, 1}, nowMetDataTable{3}) ...
+        || str2double(metMatchTable{1, 1}) < 0.3
     set(handles.chooseNew, 'Value', 1)
 else
     set(handles.choose1, 'Value', 1)
@@ -465,14 +459,14 @@ end
 % If we are just comparing metabolites, put in information about what
 % reactions that metabolite is involved in.
 if ~RxnInfo.rxnIndex
-    % Metabolite number in C. 
+    % Metabolite number in C.
     set(handles.CRxnNumField, 'String', nowMetIndex)
-    % Current match in T. 
+    % Current match in T.
     set(handles.TRxnNumField, 'String', RxnInfo.metList(nowMetIndex)) ;
-    % Reactions it is involved in C. 
+    % Reactions it is involved in C.
     involvedRxns = find(CMODEL.S(nowMetIndex, :)) ;
     set(handles.rxnNameField, 'String', involvedRxns)
-    % Reactions that it is matched to in T. 
+    % Reactions that it is matched to in T.
     set(handles.rxnEquationField, 'String', ...
         num2str(RxnInfo.rxnList(involvedRxns))) ;
 
@@ -487,9 +481,9 @@ if ~RxnInfo.rxnIndex
     else
         hintString = ...
             'Metabolite matched to a reaction in T. Best to keep match.' ;
-        set(handles.choose1, 'Value', 1) 
+        set(handles.choose1, 'Value', 1)
     end
-    set(handles.errorField, 'String', hintString) 
+    set(handles.errorField, 'String', hintString)
 end
 
 set(handles.uitable_matches, 'Data', metMatchTable, 'Fontsize', 10) ;
@@ -514,24 +508,24 @@ set(handles.unseenMetsField, 'String', unseenMets) ;
 end
 
 % Makes reaction equation based on current best matches and checks the
-% validity of the choices. 
+% validity of the choices.
 function handles = metMatchRxnEquation(hObject, handles)
 % Declare some variables just to not have to type handles so much.
 global CMODEL TMODEL
-RxnInfo = handles.RxnInfo ; 
+RxnInfo = handles.RxnInfo ;
 
 % If metabolites come from a reaction, make the new equation.
 % Disable choosing mets until checks have passed.
 set(handles.buttonAddMets, 'Enable', 'off') ;
-if RxnInfo.rxnIndex 
-    % Build the equation. 
+if RxnInfo.rxnIndex
+    % Build the equation.
     reactants = cell(1, 1) ;
     products = cell(1, 1) ;
     for iMet = 1:RxnInfo.nMets
         % Reactants
-        if RxnInfo.metStoichs(iMet) < 0 
+        if RxnInfo.metStoichs(iMet) < 0
             % First reactant.
-            if isempty(reactants{1}) 
+            if isempty(reactants{1})
                % Add Stoich
                reactants{1} = num2str(abs(RxnInfo.metStoichs(iMet))) ;
                % If a match has been found in TMODEL, choose that name.
@@ -575,7 +569,7 @@ if RxnInfo.rxnIndex
                    products{3} = [' ' ...
                              CMODEL.mets{RxnInfo.metIndex(iMet)} ' '] ;
                 end
-            else % nth product. 
+            else % nth product.
                 products{end + 1} = ' + ' ;
                 products{end + 1} = num2str(abs(RxnInfo.metStoichs(iMet))) ;
                 if RxnInfo.matches(iMet) ~= 0 && ...
@@ -590,8 +584,8 @@ if RxnInfo.rxnIndex
         end
     end
     % If there were no products, must be exchange reaction.
-    if isempty(products{1}) 
-        products{1} = '-->' ; 
+    if isempty(products{1})
+        products{1} = '-->' ;
     end
     % Combine both halves of the equation and print to field.
     matchRxnEquation = [reactants{1, :} products{1, :} ] ;
@@ -599,12 +593,12 @@ if RxnInfo.rxnIndex
     handles.RxnInfo.matchRxnEquation = matchRxnEquation ;
 
 
-    % NaN in metList create problem, so remove them (really, they shouldn't 
+    % NaN in metList create problem, so remove them (really, they shouldn't
     % be there in the first place)
     RxnInfo.metList(isnan(RxnInfo.metList)) = 0 ;
 
-    % Set addReaction button off, then check if all the mets in the 
-    % reaction have good matches, then allowing the user to add the 
+    % Set addReaction button off, then check if all the mets in the
+    % reaction have good matches, then allowing the user to add the
     % reaction. Also, check for errors.
     errorString = 'Review required.' ;
     bgcolor = [0.7 0.7 0.7] ;
@@ -642,7 +636,7 @@ if RxnInfo.rxnIndex
             end
         end
     end
-% Set the error bar color to indicate an error or not. 
+% Set the error bar color to indicate an error or not.
 set(handles.errorField, 'String', errorString, 'BackgroundColor', bgcolor) ;
 else
     if ~RxnInfo.unseen
@@ -661,7 +655,7 @@ rxnString = [num2str(length(find(RxnInfo.rxnList >= 0))) ' / ' ...
 metString = [num2str(length(find(RxnInfo.metList))) ' / ' ...
              num2str(length(RxnInfo.metList))] ;
 set(handles.text_metsDeclared, 'String', metString)
-set(handles.text_rxnsAdded, 'String', rxnString) 
+set(handles.text_rxnsAdded, 'String', rxnString)
 end
 
 %% Object Creation Functions
