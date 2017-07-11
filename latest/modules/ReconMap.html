@@ -182,14 +182,14 @@
 <span id="id1"></span><h1>ReconMaps<a class="headerlink" href="#reconmaps" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.visualization.maps.ReconMap"></span><dl class="function">
 <dt id="src.visualization.maps.ReconMap.buildFluxDistLayout">
-<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>fd</em>, <em>identifier</em>, <em>dic</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>rxnList</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a layout for MINERVA from a flux distribution. If a dictionary
 of identifiers is not provided it is assumed that the map and the COBRA
 model&#8217;s nomenclature is coherent. Sends the layout to the remote MINERVA
 instance</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[response] = buildFluxDistLayout( minerva, model, fd, identifier, dic)</div></blockquote>
+<div>[serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, rxnList)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -198,23 +198,30 @@ Struct with the information of minerva instance:
 address, login, password and model (map)</li>
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
-<li><strong>fd</strong> &#8211;
-Flux distribution from a COBRA simulation</li>
+<li><strong>solution.v</strong> &#8211;
+optimizeCb solution structure with a flux vector</li>
 <li><strong>identifier</strong> &#8211;
 Name for the layout in MINERVA</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>dic</strong> &#8211;
-The dictionary of ids</li>
+<div><ul>
+<li><p class="first"><strong>rxnList</strong> &#8211;
+cell array of reaction abbreviations to colour</p>
+</li>
+<li><p class="first"><strong>hexColour          colour of overlay (hex color format)</strong> &#8211;</p>
+<p>e.g. &#8216;#009933&#8217; corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a></p>
+</li>
+<li><p class="first"><strong>thickness</strong> &#8211;
+maximum thickness</p>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>response</strong> &#8211;
+<li><strong>serverResponse</strong> &#8211;
 Response of the MINERVA</li>
 </ul>
 </div></blockquote>

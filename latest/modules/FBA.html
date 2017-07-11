@@ -420,10 +420,10 @@ logarithmic function, SCAD function, L_p norm with p&lt;0, L_p norm with 0&lt;p&
 Note : capped-L1, exponential and logarithmic function often give
 the best result in term of sparsity.</p>
 <p>The remaining options work only with a valid QP solver:</p>
-<p>&gt; 0    Minimises the Euclidean Norm of internal fluxes.
+<p>&gt; 0    Minimises the squared Euclidean Norm of internal fluxes.
 Typically 1e-6 works well.</p>
 <div class="math">
-\[\begin{split}min  ~&amp; ||v|| \\
+\[\begin{split}min  ~&amp; 1/2 v'*v \\
 s.t. ~&amp; S v = dxdt \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
