@@ -48,9 +48,10 @@ failure=0
 # Set time format to seconds
 TIMEFORMAT=%R
 
+nTutorial=0
+nPassed=0
 for tutorial in "${tutorials[@]}"
 do
-
     msg="| Starting $tutorial |"
     chrlen=${#msg}
     underline=`printf '=%.0s' $(seq 1 $chrlen);`
@@ -76,16 +77,18 @@ do
 
     if [ $CODE -ne 0 ]; then
         report+=`printf "%-${longest}s                x      %7.1f"  "$tutorial" "$procTime"`
-        let "failure+=1"
     else
         report+=`printf "%-${longest}s     x                 %7.1f"  "$tutorial" "$procTime"`
+        let "nPassed+=1"
     fi
     report+="\n"
+    let "nTutorial+=1"
 done
 
+report+=`printf "\n  Passed:  %d/%d" "$nPassed" "$nTutorial"`
 report+="\n\n"
 printf "$report"
 
-if [ $failure -ne 0 ]; then
+if [ $nPassed -ne $nTutorial ]; then
     exit 1
 fi
