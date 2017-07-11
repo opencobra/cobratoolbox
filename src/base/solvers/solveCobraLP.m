@@ -1202,14 +1202,26 @@ switch solver
             % 6 Concurrent Dual, Barrier and Primal
             % Default: 0
 
-            % TODO assign all parameters
-            if isfield(solverParams,'lpmethod')
-                if isfield(solverParams.lpmethod,'Cur')
-                    ILOGcplex.Param.lpmethod.Cur=solverParams.lpmethod.Cur;
-                end
-            else
-                % automatically chooses algorithm
-                ILOGcplex.Param.lpmethod.Cur=0;
+            % Assign all parameters
+            % solverParams in this case can be e.g.:
+            % solverParams = struct();
+            % [solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display,...
+            %      solverParams.sifting.display, solverParams.conflict.display] = deal(0);
+            % [solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9);
+            % See Cplex().Param for all possible parameters
+            ILOGcplex = setCplexParam(ILOGcplex, solverParams, printLevel);
+            % use the feasTol and optTol from Cobra toolbox if exist
+            if exist('feasTol', 'var')
+                ILOGcplex.Param.simplex.tolerances.feasibility.Cur = feasTol;
+            end
+            if exist('optTol', 'var')
+                ILOGcplex.Param.simplex.tolerances.optimality.Cur = optTol;
+            end
+            
+            if ~isfield(solverParams, 'lpmethod')
+                % automatically chooses algorithm if not set in solverParams
+                % (should already be the default value in ILOGcplex.Param.lpmethod.Cur)
+                ILOGcplex.Param.lpmethod.Cur = 0;
             end
 
             % set the print level
