@@ -1,5 +1,6 @@
 %% Extraction of context-specific models
 %% Authors: Thomas Pfau, Systems Biochemistry Group, University of Luxembourg - Anne Richelle, Systems Biology and Cell Engineering, University of California San Diego
+%% Reviewer(s): *Almut Heinken, Molecular Systems Physiology Group, LCSB, University of Luxembourg*
 %% INTRODUCTION
 % Genome-scale reconstruction of metabolism (GEM) can illuminate the molecular 
 % basis of cell phenotypes exhibited by an organism. Since some enzymes are only 
@@ -54,20 +55,23 @@
 global TUTORIAL_INIT_CB;
 if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
     initCobraToolbox
-    changeCobraSolver('gurobi','all');
 end
+changeCobraSolver ('glpk', 'all');
 %% 
 % Load the model that will be used for the extraction. For this tutorial, 
-% we have choosen to use E. coli core model as example (downloaded from http://systemsbiology.ucsd.edu/Downloads/EcoliCore)
+% we have choosen to use E. coli core model as example. Please download the model 
+% from <http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/downloads/Ecoli_core/ecoli_core_model.mat 
+% http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/downloads/Ecoli_core/ecoli_core_model.mat> 
+% and save it in your preferred folder.
 
-model = readCbModel('ecoli_core_model.mat');
+load('ecoli_core_model.mat');
 %% 
 % Load the expression data that will be used for the extraction. For this 
 % tutorial, we have choosen to use E. coli Microarray-based gene expression data 
 % (downloaded from http://systemsbiology.ucsd.edu/InSilicoOrganisms/Ecoli/EcoliExpression2) 
 % related to a anaerobic growth on glucose of a wild-type E. coli strain.
 
-load('dataEcoli')
+load('dataEcoli');
 %% 
 % Depending on the method that will be used for the extraction, different 
 % options need to be provided that could depend on a preprocessing step of the 
@@ -97,8 +101,16 @@ load('dataEcoli')
 % confidence (default - no core reactions)                           
 % * *options.logfile** : name of the file to save the MILP log (defaut - 'MILPlog')
 % * *options.runtime** : maximum solve time for the MILP (default - 7200s)
-%%
-options = 'options_iMAT'
+
+options = 'options_iMAT';
+%% 
+% Now, load the preprocessed data 
+
+load(['options_methods' filesep options]);
+%% 
+% Call createTissueSpecificModel to extract your model
+
+iMAT_model = createTissueSpecificModel(model, options);
 %% 
 % For GIMME method, the available parameter options are (with all options 
 % marked with * being optional):
@@ -111,8 +123,12 @@ options = 'options_iMAT'
 % minimized
 % * *options.obj_frac** : minimum fraction of the model objective function that 
 % need to be maintained in the extracted model (default - 0.9)
-%%
-options = 'options_GIMME'
+% 
+% The code to create the tissue-specific model is as for iMAT.
+
+options = 'options_GIMME';
+load(['options_methods' filesep options]);
+GIMME_model = createTissueSpecificModel(model, options);
 %% 
 % For MBA  method, the available parameter options are (with all options 
 % marked with * being optional):
@@ -122,8 +138,10 @@ options = 'options_GIMME'
 % * *options.high_set* : list of reaction names with high confidence
 % * *options.tol** : minimum flux value for "expressed" reactions (default - 
 % 1e-8)
-%%
-options = 'options_MBA'
+
+options = 'options_MBA';
+load(['options_methods' filesep options]);
+MBA_model = createTissueSpecificModel(model, options);
 %% 
 % For FASTCORE  method, the available parameter options are (with all options 
 % marked with * being optional):
@@ -134,8 +152,10 @@ options = 'options_MBA'
 % * *options.epsilon** : smallest flux value that is considered nonzero (default 
 % - 1e-4)
 % * *options.printLevel** : 0 = silent, 1 = summary, 2 = debug (default - 0)
-%%
-options = 'options_fastCore'
+
+options = 'options_fastCore';
+load(['options_methods' filesep options]);
+FastCore_model = createTissueSpecificModel(model, options);
 %% 
 % For mCADRE method, the available parameter options are (with all options 
 % marked with * being optional):
@@ -155,8 +175,10 @@ options = 'options_fastCore'
 % (default - 1/3)
 % * *options.tol** : minimum flux value for "expressed" reactions (default - 
 % 1e-8)
-%%
-options = 'options_mCADRE'
+
+options = 'options_mCADRE';
+load(['options_methods' filesep options]);
+mCADRE_model = createTissueSpecificModel(model, options);
 %% 
 % For INIT method, the available parameter options are (with all options 
 % marked with * being optional):
@@ -168,16 +190,10 @@ options = 'options_mCADRE'
 % 1e-8)
 % * *options.logfile** : name of the file to save the MILP log (defaut - 'MILPlog')
 % * *options.runtime** : maximum solve time for the MILP (default - 7200s)
-%%
-options = 'options_INIT'
-%% 
-% Now, load the preprocessed data 
-%%
-load(['options_methods' filesep options]);
-%% 
-% Call createTissueSpecificModel to extract your model
 
-tissueModel = createTissueSpecificModel(model, options)
+options = 'options_INIT';
+load(['options_methods' filesep options]);
+INIT_model = createTissueSpecificModel(model, options);
 %% 
 % Note that additional options are available when extracting your model 
 % (|funcModel| and |exRxnRemove|). |funcModel| allows to define whether the extracted 
@@ -186,10 +202,10 @@ tissueModel = createTissueSpecificModel(model, options)
 % list of reactions that will be automatically removed in the extracted model. 
 % Example, if you want to extract a consistent model but you do not have any predefined 
 % list of reactions to remove, your call will be:
-%%
+
 funcModel=1;
 exRxnRemove={};
-tissueModel = createTissueSpecificModel(model, options,funcModel,exRxnRemove)
+tissueModel = createTissueSpecificModel(model, options,funcModel,exRxnRemove);
 %% 
 % CRITICAL STEP
 % 
@@ -218,9 +234,9 @@ tissueModel = createTissueSpecificModel(model, options,funcModel,exRxnRemove)
 % value associated to each reaction of the model based on the parsing of the GPR 
 % rules.
 
-load('ecoli_core_model.mat')
-load('dataEcoli')
-[expressionRxns parsedGPR] = mapExpressionToReactions(model, expression)
+load('ecoli_core_model.mat');
+load('dataEcoli');
+[expressionRxns parsedGPR] = mapExpressionToReactions(model, expression);
 %% TIMING
 % TIMING: 15 minutes to hours (computation) - days (interpretation)
 %% ANTICIPATED RESULTS
@@ -258,7 +274,7 @@ load('dataEcoli')
 % are consistent with experiments. PLoS Comput. Biol. 4, e1000082 (2008)._
 % 
 % _4. Zur, H., Ruppin, E., and Shlomi, T. iMAT: an integrative metabolic 
-% anal- ysis tool. Bioinformatics 26, 3140â€“3142 (2010)._
+% anal- ysis tool. Bioinformatics 26, 3140–3142 (2010)._
 % 
 % _5.Agren, R. et al. Reconstruction of genome-scale active metabolic networks 
 % for 69 human cell types and 16 cancer types using INIT. PLoS Comput. Biol. 8, 
@@ -272,7 +288,7 @@ load('dataEcoli')
 % metabolic models for 126 human tissues using mCADRE. BMC Syst. Biol. 6, 153 
 % (2012). _
 % 
-% _8. UhlÃ©n M, et al. Tissue-based map of the human proteome. Science, 347(6220):1260419  
+% _8. Uhlén M, et al. Tissue-based map of the human proteome. Science, 347(6220):1260419  
 % (2015). _
 % 
 % 
