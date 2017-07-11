@@ -11,8 +11,8 @@ function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, rxnList, met
 %    [TmodelC, Cspawn, Stats, CMODEL] = mergeModels(CmodelIn, TmodelIn, rxnList, metList, Stats, score)
 %
 % INPUTS:
-%    Cmodel:       Comparison model
-%    Tmodel:       Template model
+%    CmodelIn:     Comparison model
+%    TmodelIn:     Template model
 %    rxnList:      Array which designates matched and new reactions.
 %    metList:      Array which desginates matched and new metabolites.
 %    Stats:        Structure that comes from reactionCompare. Weighting
