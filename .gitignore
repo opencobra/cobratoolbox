@@ -29,6 +29,9 @@ octave-workspace
 coverage.json
 coverage_html
 
+# omit DB settings from rBionet
+src/reconstruction/rBioNet/rBioNetSettingsDB.mat
+
 # specific folders
 src/dataIntegration/fluxomics/c13solver/IsotopomerModel.txt
 src/dataIntegration/fluxomics/c13solver/convertCarbonInput.m
