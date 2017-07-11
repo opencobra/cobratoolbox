@@ -40,6 +40,7 @@ src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m
 # model files for testing
 test/models/*.xml
 test/models/*.mat
+!test/models/Recon2.0model.mat
 
 # tests
 test/testGrowthExpMatch/GEMLog.txt
