@@ -1,5 +1,5 @@
 %% OptForce Tutorial
-%% Author: Sebasti?n N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
 %% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group)*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
@@ -40,8 +40,6 @@
 % of the target of interest
 % 
 % Now, we will approach each step in detail.
-% 
-% 
 %% STEP 1: Maximize specific growth rate and product formation
 % First, we load the model. This model comprises only 90 reactions, which describe 
 % the central metabolism of E. coli [2].
@@ -50,18 +48,14 @@
 % also change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
 % sulfate, ammomium, citrate and glycerol.
 
-global TUTORIAL_INIT_CB;
-if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
-    initCobraToolbox
-    changeCobraSolver('gurobi','all');
-end
+changeCobraSolver('gurobi', 'ALL');
 
-pathTutorial = which('tutorial_OptForce.mlx');
+pathTutorial = which('tutorial_optForce.mlx');
 pathstr = fileparts(pathTutorial);
 cd(pathstr)
 
-load('AntCore');
-model.c(strcmp(model.rxns,'R75')) = 1;
+load('AntCore.mat');
+model.c(strcmp(model.rxns, 'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_so4', -100, 'l'); 
@@ -295,7 +289,6 @@ constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
 % We display the reactions found by |optForce|
 
 disp(optForceSets)
-
 %% 
 % The reaction found was "SUCt", i.e. a transporter for succinate (a very 
 % intuitive solution).
@@ -416,7 +409,7 @@ disp(optForceSets)
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. 
 % PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.
 % 
-% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna Gonz?lez-Lergier, 
+% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, 
 % Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary 
 % system: Fed-batch fermentation of a high yielding strain of E. coli producing 
 % 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, 
