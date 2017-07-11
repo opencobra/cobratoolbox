@@ -36,24 +36,15 @@
 % 
 % $$\text{(3)}\ Sv=\frac{dx}{dt}=\lambda x\\$$
 %% PROCEDURE
-% Unless already done, initialise and set up the COBRA Toolbox 
-
-global TUTORIAL_INIT_CB;
-if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
-    initCobraToolbox
-    changeCobraSolver('gurobi','all');
-end
-%% 
-% Unless the model is already loaded into the workspace, ReconX needs to 
-% be loaded. 
+% Unless the model is already loaded into the workspace, ReconX needs to be 
+% loaded. Here, we use Recon2.0 model for illustration, although any model can 
+% be used. 
 
 clear model
 if ~exist('modelOrig','var')
-    filename='ReconX';
-    directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/cobraTutorials';
-    model = loadIdentifiedModel(filename,directory);
+    load('Recon2.0model.mat');
+    model = Recon2model;
     model.csense(1:size(model.S,1),1)='E';
-    modelOrig = model;
 else
     model=modelOrig;
     model.csense(1:size(model.S,1),1)='E';
@@ -75,12 +66,12 @@ end
 % follows:
 
 modelConstrained = model;
-modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc_D[e]', -12, 'l');
+modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc(e)', -12, 'l');
 %% 
 % Optionally, to further constrain the model, an upper bound can also be 
 % imposed to force the model to take up between 11.58 and 12 units of glucose 
 
-modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc_D[e]', -11.58, 'u');
+modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc(e)', -11.58, 'u');
 %% *2. Internal enzymatic constraints *
 %  
 % 
@@ -360,24 +351,24 @@ originalTest = changeObjective(originalTest , 'DM_atp_c_');
 [vSparseOriginal, sparseRxnBoolOriginal, essentialRxnBoolOriginal]  = sparseFBA(originalTest);
 %% 
 % In the absence of constraints, the minimal set of reactions required to 
-% maximise the objective function is 15 essential reactions.
+% maximise the objective function is 129 essential reactions.
 
 constrainedTest = modelConstrainedAb; 
 constrainedTest = changeObjective(constrainedTest, 'DM_atp_c_');
 [vSparseConstrained, sparseRxnBoolConstrained, essentialRxnBoolConstrained]  = sparseFBA(constrainedTest);
 %% 
 % After the addition of constraints, the minimal set of reactions required 
-% is increased to 47 essential reactions. Therefore, it is useful to integrate 
+% is increased to 155 essential reactions. Therefore, it is useful to integrate 
 % cell-type specific constraints in order to restrict the solution space.
 %% REFERENCES
-% 1. Thiele, I.  and Palsson B.Ø. A protocol for generating a high-quality genome-scale 
-% metabolic reconstruction. Nat. Protocols. 5(1), 93–121(2010).
+% 1. Thiele, I.  and Palsson B.?. A protocol for generating a high-quality genome-scale 
+% metabolic reconstruction. Nat. Protocols. 5(1), 93?121(2010).
 % 
-% 2. Feist, A.M. and Palsson, B.Ø. The biomass objective function. Current 
-% Opinion in Microbiology. 13(3), 344–349 (2010).  
+% 2. Feist, A.M. and Palsson, B.?. The biomass objective function. Current 
+% Opinion in Microbiology. 13(3), 344?349 (2010).  
 % 
 % 3. Kuhar, M.J. On the use of protein turnover and half-lives. Neuropsychopharmacology. 
-% 34(5), 1172–1173 (2008). 
+% 34(5), 1172?1173 (2008). 
 % 
 % 4. Sokoloff, L. et al. The [14C]deoxyglucose method for the measurement 
 % of local cerebral  glucose utilization: theory, procedure, and normal values 
