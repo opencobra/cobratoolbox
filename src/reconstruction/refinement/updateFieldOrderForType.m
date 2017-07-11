@@ -38,8 +38,18 @@ for i = 1:numel(fields)
 end 
 
 if strcmp(type,'genes')
-    %hte gene positions changed, so we have to rebuild the rules field.
-    model = generateRules(model);
+    %the gene positions changed, so we have to rebuild the rules field.
+    
+    if isfield(model,'rules')        
+        for i = 1:numel(model.genes)       
+            if i ~= newOrder(i)
+                %replace by new with an indicator that this is new.
+                model.rules = strrep(model.rules,['x(' num2str(i) ')'],['x(' num2str(newOrder(i)) '$)']);
+            end
+        end
+        %remove the indicator.
+        model.rules = strrep(model.rules,'$','');
+    end
 end
 
     

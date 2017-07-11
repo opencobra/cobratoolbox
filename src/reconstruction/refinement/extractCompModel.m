@@ -1,4 +1,4 @@
-function compModel = extractCompModel(model, compSymbol, intOnlyFlag)
+function compModel = extractCompModel(model, compSymbol, intOnlyFlag, updateGenes)
 % Creates model for a cellular compartment
 %
 % USAGE:
@@ -11,6 +11,9 @@ function compModel = extractCompModel(model, compSymbol, intOnlyFlag)
 %
 % OPTIONAL INPUT:
 %    intOnlyFlag:    Include only non-transport reactions (Default = true)
+%    updateGenes:    Update the GPR rules removing all unassociated genes.
+%                    This can take some time on larger models.(default
+%                    false)
 %
 % OUTPUT:
 %    compModel:      COBRA model for a cellular compartment
@@ -19,6 +22,10 @@ function compModel = extractCompModel(model, compSymbol, intOnlyFlag)
 
 if (nargin < 3)
     intOnlyFlag = true;
+end
+
+if ~exist('updateGenes','var')
+    updateGenes = false;
 end
 
 [baseMetNames,compSymbols] = parseMetNames(model.mets);
@@ -46,7 +53,7 @@ else
 end
 
 % Extract subnetwork model
-compModel = extractSubNetwork(model,rxnList);
+compModel = extractSubNetwork(model,rxnList,{},updateGenes);
 
 if (isfield(compModel,'description'))
     compModel.description = [compModel.description ' Compartment:' compSymbol'];

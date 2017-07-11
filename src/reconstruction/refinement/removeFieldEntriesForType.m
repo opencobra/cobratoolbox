@@ -56,6 +56,67 @@ if isnumeric(indicesToRemove)
     indicesToRemove = res;
 end
 
+%We need a special treatment for genes, i.e. if we remove genes, we need to
+%update all rules/gprRules
+if strcmp(type,'genes')    
+    removeRulesField = false;
+    genePos = find(indicesToRemove);    
+    if ~ isfield(model,'rules') && isfield(model, 'grRules')% Only use grRules, if no rules field is present.        
+        %lets make this easy. we will simply create the rules field and
+        %Then work on the rules field (removing that field again in the
+        %end.        
+        model = generateRules(model);
+        removeRulesField = true;
+    end
+    %update the rules fields.
+    if isfield(model,'rules') %Rely on rules first  
+        %However, we first normalize the rules.
+        model = normalizeRules(model);
+        %First, eliminate all removed indices
+        for i = 1:numel(genePos)
+            %Replace either a trailing &, or a leading &
+            rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
+            matchingrules = find(~cellfun(@isempty, rules));
+            for elem = 1:numel(matchingrules)
+                cres = rules{matchingrules(elem)};                
+                for pos = 1:numel(cres)
+                    if isequal(cres(pos).pre,'&')
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)])'],'$1');
+                    elseif isequal(cres(pos).post,'&')
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[ \(] *x\(' num2str(genePos(i)) '\) *& *'],'$1');
+                    elseif isequal(cres(pos).post,'|')
+                        %Make sure its not preceded by a &
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['([^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
+                    elseif isequal(cres(pos).pre,'|')
+                        %Make sure its not followed by a &
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\) *([^&])'],' $1');
+                    else
+                        %This should only ever happen if there is only one gene.
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[\( ]*x\(' num2str(genePos(i)) '\)[\( ]*'],'');
+                    end
+                end
+            end
+        end
+        %Now, replace all remaining indices.
+        oldIndices = find(~indicesToRemove);
+        for i = 1:numel(oldIndices)
+            if i ~= oldIndices(i)
+                %replace by new with an indicator that this is new.
+                model.rules = strrep(model.rules,['x(' num2str(oldIndices(i)) ')'],['x(' num2str(i) '$)']);
+            end
+        end
+        %remove the indicator.
+        model.rules = strrep(model.rules,'$','');
+        if isfield(model, 'grRules')
+            model = creategrRulesField(model);
+        end
+    end
+    if removeRulesField
+        model = rmfield(model,'rules');
+    end
+end
+
+
 fields = getModelFieldsForType(model, type, fieldSize);
 
 fields = setdiff(fields,excludeFields);
@@ -70,5 +131,15 @@ for i = 1:numel(fields)
     end
 end
 
+
+
         
+function model = normalizeRules(model)
+origrules = model.rules;
+model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+while ~all(strcmp(origrules,model.rules))
+    origrules = model.rules;
+    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+end
+
         
