@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Atomically resolve a metabolic reconstruction</title><style type="text/css">
 * {margin: 0; padding: 0;}
-body {text-align: start; line-height: 17.234001159668px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
 h1, h2 {font-weight: normal;}
 .content { padding: 30px; }
 
@@ -14,18 +14,22 @@ h1, h2 {font-weight: normal;}
 .S6 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
 .S7 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
 .S8 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
-.S9 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
-.S10 { line-height: 15.5926675796509px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S11 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
-.S12 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
-.S13 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S14 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S15 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S16 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
-.S17 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S18 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
-.S19 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
-.S20 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S10 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S11 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S15 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S16 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S17 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S18 { font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S19 { font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S20 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S21 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S22 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S23 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S24 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
 
 .LineNodeBlock {margin: 10px 0 10px 0;}
 .LineNodeBlock+.paragraphNode {margin-top: 10px;}
@@ -33,7 +37,7 @@ h1, h2 {font-weight: normal;}
 .inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
 .inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
 .lineNode .textBox {white-space: pre;}
-</style></head><body><div class = "content"><div class = 'SectionBlock containment'><h1 class = "S1"><span class = "S2">Atomically resolve a metabolic reconstruction</span></h1><h2 class = "S3"><span class = "S2">Author(s): </span><span class = "S2">Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, </span><span class = "S2">Systems Biochemistry Group, University of Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">Reviewer(s): </span></h2><h2 class = "S3"><span class = "S2">INTRODUCTION</span></h2><p class = "S4"><span class = "S2">Genome-scale metabolic network reconstructions have become a relevant tool in modern biology to study the metabolic pathways of biological systems </span><span class = "S5">in silico</span><span class = "S2">. However, a more detailed representation at the underlying level of atom mappings opens the possibility for a broader range of biological, biomedical and biotechnological applications than with stoichiometry alone.</span><span class = "S2"> </span></p><p class = "S4"><span class = "S2">A set of atom mappings represents the mechanism of each chemical reaction in a metabolic network, each of which relates an atom in a substrate metabolite to an atom of the same element in a product metabolite.</span><span class = "S2"> To atom map reactions in a metabolic network reconstruction, one requires chemical structures in a data file format (SMILES, MDL MOL, InChIs), reaction stoichiometries, and an atom mapping algorithm.</span></p><p class = "S6"><img class="imageNode" width="585" height="178" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBMAAAE9CAYAAABZWCq8AABdDElEQVR42uzdB5wTZcLHcXaXDksT
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Atomically resolve a metabolic reconstruction</span></h1><h2 class = "S3"><span class = "S2">Author(s): </span><span class = "S2">Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, </span><span class = "S2">Systems Biochemistry Group, University of Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">Reviewer(s): Catherine Clancy, Molecular Systems Physiology Group, University of Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">INTRODUCTION</span></h2><p class = "S4"><span class = "S2">Genome-scale metabolic network reconstructions have become a relevant tool in modern biology to study the metabolic pathways of biological systems </span><span class = "S5">in silico</span><span class = "S2">. However, a more detailed representation at the underlying level of atom mappings opens the possibility for a broader range of biological, biomedical and biotechnological applications than with stoichiometry alone.</span><span class = "S2"> </span></p><p class = "S4"><span class = "S2">A set of atom mappings represents the mechanism of each chemical reaction in a metabolic network, each of which relates an atom in a substrate metabolite to an atom of the same element in a product metabolite (Figure 1).</span><span class = "S2"> To atom map reactions in a metabolic network reconstruction, one requires chemical structures in a data file format (SMILES, MDL MOL, InChIs), reaction stoichiometries, and an atom mapping algorithm.</span></p><p class = "S6"><img class="imageNode" width="585" height="178" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBMAAAE9CAYAAABZWCq8AABdDElEQVR42uzdB5wTZcLHcXaXDksT
 AQFBRESaiKAgiAUEORGxc/aC5SyvBe+QUxEQK56ip1hR7OghVVTqAlIE6XV36b33hWXZ9rx5BjKZ
 9JnMTDJJft/5PB8lU5JMZjPz/PPM85QQAAAAAAAABpRgFwAAAAAAACMIEwAAAAAAgCGECU78UEqU
 CFsAAAAAAIhZvZVdED+Ki4sJEwAAAAAAMUetNI507NhRCRIWLlzIzgAAAAAAxAxhQjx9WLRKAAAA
@@ -451,7 +455,7 @@ riL/2muvWf9hRClMcO/Xhg0bhtz+V199RZgAAAAAAIi/MEFrz549Ijs7W6xevVps375dqRAbraj3
 8BAmAAAAAEBSSoowwV3prV27dkK+v0B9S8gyfvx42/alb38LAAAAAIDkkZBhwtGjR8WBAweUkRZS
 U1MTulWC+/3KziF9y6RJkyx/rkDP06hRI/6SAAAAAIAwIb5169bN79dzOZyjXYqKisTKlSsjKgAA
 AAAAECY4wI033igqVKiglKZNm4YdCtIs2TLA6EgMid5aAgAAAABAmIAQTpw4IXr37h1RAQAAAAAg
-3hAm/H87diwAAAAAMMjfegz7CyMAAABgkQkAAADAEq7lK5J07kGJAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 1. Set of atom mappings for reaction L-Cysteine L-Homocysteine-Lyase (VMH ID: r0193).</span></p><p class = "S4"><span class = "S2">Metabolites chemical structures can be obtained by different approaches such as draw them based on the literature using chemoinformatic software, or obtain them from metabolic databases either manually or using a computational software as suggested in [1]. Here we recommend downloading the metabolites structures in MDL MOL format for the latest human metabolic reconstruction Recon 3 [2] via the Virtual Metabolic Human database (VMH, </span><a href = 'http://vmh.life/'><span class = "S0">http://vmh.life</span></a><span class = "S2">). Chemical structures and reaction stoichiometries from COBRA models are used to generate an MDL RXN file, which contains the information of a chemical reaction. Atom mapped reactions from Recon 3 can also be found in the VMH database in MDL RXN format. However, here we will atom map the chemical reactions using the Reaction Decoder Tool (RDT) algorithm [3], which was selected after comparing the performance of recently published algorithms [4]. However, despite its good performance (accuracy and availability) RDT algorithm does not atom map hydrogen atoms.</span></p><p class = "S4"><span class = "S2">In this tutorial, we will identify the conserved moieties using atom mapping data for the dopamine synthesis network (DAS) extracted from Recon 3 [2] (Figure 2). Section 1 covers the obtention of atom mapping data. Section 2 Covers the identification of conserved metabolic moieties.</span></p><p class = "S6"><img class="imageNode" width="651" height="658" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAQAAAQOCAYAAABM/OqJAACAAElEQVR42uydB1gUVxeGf2PvGls0
+3hAm/H87diwAAAAAMMjfegz7CyMAAABgkQkAAADAEq7lK5J07kGJAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 1. Set of atom mappings for reaction L-Cysteine L-Homocysteine-Lyase (VMH ID: r0193).</span></p><p class = "S4"><span class = "S2">Metabolites chemical structures can be obtained by different approaches such as draw them based on the literature using chemoinformatic software, or obtain them from metabolic databases either manually or using a computational software as suggested in [1]. Here we recommend downloading the metabolites structures in MDL MOL format for the latest human metabolic reconstruction Recon 3 [2] via the Virtual Metabolic Human database (VMH, </span><a href = 'http://vmh.life/'><span class = "S0">http://vmh.life</span></a><span class = "S2">). Chemical structures and reaction stoichiometries from COBRA models are used to generate an MDL RXN file, which contains the information of a chemical reaction. Atom mapped reactions from Recon 3 can also be found in the VMH database in MDL RXN format. However, here we will atom map the chemical reactions using the Reaction Decoder Tool (RDT) algorithm [3], which was selected after comparing the performance of recently published algorithms [4]. However, despite its good performance (accuracy and availability) RDT algorithm does not atom map hydrogen atoms.</span></p><p class = "S4"><span class = "S2">In this tutorial, we will identify the conserved moieties using atom mapping data for the dopamine synthesis network (DAS) extracted from Recon 3 [2] (Figure 2). Section 1 of the tutorial will cover obtaining and visualising an atom map of metabolic reactions, and section 2 of the tutorial covers the identification of conserved metabolic moieties.</span></p><p class = "S6"><img class="imageNode" width="651" height="658" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAQAAAQOCAYAAABM/OqJAACAAElEQVR42uydB1gUVxeGf2PvGls0
 xhhLNBo1ib33rlFjjYkl9sTeS4w9sceuwYIoFlRUUJBO7A27YkMs2OgiCAKC59/vbhYpC2yZ3Z1d
 zvc851F2Z2Zn7s7OzHnvKf8jC1D16tXpf//7H7FYLPPXmTNnxO95/vz5PBgsFovFYrFYemrcuHGU
 O3duevv2LQ8GK40swotmIMBiMRBgsVgsFovFYjEQYDEQYLFYDARYLBaLxWKxWAwEWAwEWCwWAwEW
@@ -3125,7 +3129,7 @@ I0d4VYFQPSEV+oCuxb7i4+M5MADKVOPGjT3ONQMGDGA1EwAAgUCoWbRokTRp0sT1B71Vq1a8okAI
 mzhxoseHdC0aCgBlbdu2bR7nmtmzZ0tubi4HBgBAIBBKdB7gI4884vqDPmPGDF5RIIRFR0e73s96
 BW/z5s0cFABlTpcddA8E5s+fz0EBABAIhKIhQ4a4/qADCG02m821esjUqVO5Ygeg3NSvX9+cawYN
 GmTCSAAACARC0GeffSYtW7YkEACqgJycHFmzZo15P7/66qscEADlJioqylWrBACA6ur/AY1tC4hi
-7VmXAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 2: DAS: a small metabolic network consisting of reactions in the human dopamine synthesis pathway [2]. Atoms belonging to the same conserved moiety have identically coloured backgrounds.</span></p><h2 class = "S3"><span class = "S2">MATERIALS</span></h2><p class = "S4"><span class = "S2">To atom map reactions it is required to have Java version 8. To standardise chemical reaction is needed to download JChem from ChemAxon with its respective license</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment active'><h2 class = "S8"><span class = "S2">Section 1 Reactions atom mappings</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">initCobraToolbox</span></p></div></div><p class = "S12"><span class = "S2">Atom mappings for the internal reactions of a metabolic network reconstruct</span><span class = "S2">ion are performed by the function </span><span class = "S13">obtainAtomMappingsRDT</span><span class = "S2">. The main inputs are a COBRA model structure and a directory containing the molecular structures in MDL MOL format. For this example, the atom mappings are generated based on the molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles (</span><span class = "S13">molFileDir</span><span class = "S2">), the reconstructed DAS network without hydrogen atoms (</span><span class = "S13">model</span><span class = "S2">) and using the RDT algorithm.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">load([</span><span class = "S15">'data' </span><span class = "S14">filesep </span><span class = "S15">'subDas.mat'</span><span class = "S14">]) </span><span class = "S16">% The subnetwork from the dopamine synthesis network</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">molFileDir = [</span><span class = "S15">'data' </span><span class = "S14">filesep </span><span class = "S15">'molFiles'</span><span class = "S14">]; </span><span class = "S16">% Metabolites chemical structures</span></p></div></div><p class = "S12"><span class = "S2">The function </span><span class = "S13">obtainAtomMappingsRDT </span><span class = "S2">generates 4 different directories containing the atom mapped reactions in MDL RXN format, images of the atom mapped reactions, additional data for the atom mapped reactions (SMILES,  and product and reactant indexes) and unmapped MDL RXN files.</span><span class = "S13"> </span><span class = "S2">Variable </span><span class = "S13">rxnDir </span><span class = "S2">indicates the directory where the folders will be generated (by default the function assigns the current directory).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">outputDir = [pwd filesep </span><span class = "S15">'output'</span><span class = "S11">];</span></p></div></div><p class = "S12"><span class = "S2">For some reactions, the RDT algorithm cannot compute the atom mappings (for a large reaction is generated an MDL RXN v3000 which is not compatible with the RDT algorithm). Therefore, is necessary to assign a maximum time of processing </span><span class = "S13">maxTime</span><span class = "S2"> (by default the function assign 30 minutes as a maximum time for computing an atom mapping for a reaction).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">maxTime = 1800;</span></p></div></div><p class = "S12"><span class = "S2">The function </span><span class = "S13">obtainAtomMappingsRDT</span><span class = "S2"> generates atom mapped reactions in a canonical format but it is </span><span class = "S17">REQUIRED</span><span class = "S2"> to have a Chemaxon license installed. However, the reactions can be atom mapped without being standardised. The variable </span><span class = "S13">isChemaxonInstalled</span><span class = "S2"> contains a logical value defined by the user if the license is installed or not.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">isChemaxonInstalled = false; </span><span class = "S16">% Change to "true" if Chemaxon is not installed</span></p></div></div><h2 class = "S3"><span class = "S2">TIM</span><span class = "S2">ING</span></h2><p class = "S4"><span class = "S2">The time to compute atom mappings for metabolic reactions depends on the size of the genome-sca</span><span class = "S2">le model and the size of the molecules in the reactions. This example may take ~1 min or less if </span><span class = "S13">isChemaxonInstalled = false.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">tic</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, </span><span class = "S18">...</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">                                         isChemaxonInstalled);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">toc</span></p></div></div><p class = "S12"><span class = "S2">As output, it is generated a list of atom mapped mass balanced reactions (</span><span class = "S13">standardisedRxns</span><span class = "S2">).</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Visualising results</span></h2><p class = "S4"><span class = "S2">The directory images contain a graphical representation of the atom mapped reactions. They show the bijection between atoms and each of the metabolite pools are coloured for an easy visualisation. Figure 3 shows the atom mapped reaction to produce dopamine and </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2"> from L-DOPA.</span></p><p class = "S6"><img class="imageNode" width="210" height="448" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWUAAAL8CAYAAAA4BKStAABxCklEQVR42uy9CZgU1bn/P89z79/n
+7VmXAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 2: DAS: a small metabolic network consisting of reactions in the human dopamine synthesis pathway [2]. Atoms belonging to the same conserved moiety have identically coloured backgrounds.</span></p><h2 class = "S3"><span class = "S2">MATERIALS</span></h2><p class = "S4"><span class = "S2">To atom map reactions it is required to have Java version 8 and Linux. The atom mapping does not run on windows at present. Also, to standardise the chemical reaction format it is required to have JChem downloaded from ChemAxon with its respective license.</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">SECTION 1 Atom mapping of reactions</span></h2><p class = "S4"><span class = "S2">Atom mappings for the internal reactions of a metabolic network reconstruct</span><span class = "S2">ion are performed by the function </span><span class = "S9">obtainAtomMappingsRDT</span><span class = "S2">. The main inputs are a COBRA model structure and a directory containing the molecular structures in MDL MOL format. For this tutorial, using the RDT algorithm, the atom mappings are generated based on the molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles (</span><span class = "S9">molFileDir</span><span class = "S2">) and the reconstructed DAS network without hydrogen atoms (</span><span class = "S9">model</span><span class = "S2">).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">load([</span><span class = "S13">'data' </span><span class = "S12">filesep </span><span class = "S13">'subDas.mat'</span><span class = "S12">]) </span><span class = "S14">% The subnetwork of the dopamine synthesis network</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">molFileDir = [</span><span class = "S13">'data' </span><span class = "S12">filesep </span><span class = "S13">'molFiles'</span><span class = "S12">]; </span><span class = "S14">% The chemical structures of metabolites</span></p></div></div><p class = "S15"><span class = "S2">The function </span><span class = "S9">obtainAtomMappingsRDT </span><span class = "S2">generates 4 different directories containing: </span></p><ul class = "S16"><li class = "S17"><span class = "S0">the atom mapped reactions in MDL RXN format (directory </span><span class = "S18">atomMapped</span><span class = "S0">), </span></li><li class = "S17"><span class = "S0">the images of the atom mapped reactions (directory </span><span class = "S18">images</span><span class = "S0">), </span></li><li class = "S17"><span class = "S0">additional data for the atom mapped reactions (SMILES,  and product and reactant indexes) (directory </span><span class = "S18">txtData</span><span class = "S0">), and </span></li><li class = "S17"><span class = "S0">the unmapped MDL RXN files (directory </span><span class = "S18">rxnFiles</span><span class = "S0">).</span><span class = "S19"> </span></li></ul><p class = "S4"><span class = "S2">The inoput variable </span><span class = "S9">outputDir </span><span class = "S2">indicates the directory where the folders will be generated (by default the function assigns the current directory).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">outputDir = [pwd filesep </span><span class = "S13">'output'</span><span class = "S20">];</span></p></div></div><p class = "S15"><span class = "S2">For some reactions, the RDT algorithm cannot compute the atom mappings (for a large reaction is generated an MDL RXN v3000 which is not compatible with the RDT algorithm). Therefore, is necessary to assign a maximum time of processing </span><span class = "S9">maxTime</span><span class = "S2"> (by default the function assign 30 minutes as a maximum time for computing an atom mapping for a reaction).</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">maxTime = 1800; </span><span class = "S14">% seconds</span></p></div></div><p class = "S15"><span class = "S2">The function </span><span class = "S9">obtainAtomMappingsRDT</span><span class = "S2"> generates atom mapped reactions in a standard canonical format but it is </span><span class = "S21">REQUIRED</span><span class = "S2"> to have a Chemaxon license installed. However, the reactions can be atom mapped without being standardised. The variable </span><span class = "S9">isChemaxonInstalled</span><span class = "S2"> contains a logical value defined by the user if the license is installed or not.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">isChemaxonInstalled = true; </span><span class = "S14">% Change varibale to "false" if Chemaxon is not installed</span></p></div></div><p class = "S15"><span class = "S2">Now, let's obtain the atom map using </span><span class = "S9">obtainAtomMappingsRDT</span><span class = "S2">: </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S22">if </span><span class = "S20">ispc</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">    error(</span><span class = "S13">'Error: atom mapping function should be run on Linux.'</span><span class = "S20">)</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S23">else</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    tic</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, </span><span class = "S23">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    isChemaxonInstalled);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    toc</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S23">end</span></p></div></div><p class = "S15"><span class = "S2">The output, </span><span class = "S9">standardisedRxns,</span><span class = "S2"> is a list of atom mapped mass balanced reactions.</span></p><p class = "S4"><span class = "S21">TIMING</span></p><p class = "S4"><span class = "S2">The time to compute atom mappings for metabolic reactions depends on the size of the genome-sca</span><span class = "S2">le model and the size of the molecules in the reactions. The above example may take ~1 min or less if </span><span class = "S9">isChemaxonInstalled = false.</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Visualising results</span></h2><p class = "S4"><span class = "S2">The </span><span class = "S5">images</span><span class = "S2"> directory contains a graphical representation of the atom mapped reactions. They show the bijection between atoms and each of the metabolite pools are coloured for an easy visualisation. Figure 3 shows the atom mapped reaction to produce dopamine and </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2"> from L-DOPA.</span></p><p class = "S6"><img class="imageNode" width="210" height="448" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWUAAAL8CAYAAAA4BKStAABxCklEQVR42uy9CZgU1bn/P89z79/n
 Z4DAQIABuQQRiIqKMogii1wWFWQTQWVARIK5KCK4h6gMBIyJ5hpUoia4oRgUlKByFYkMQUQWI5sC
 oygIiICAiISd4f3X97TVVNfUcqq6eqaX76ee88xMd3V1dc3Mp0+/5z3vyRNCCCFpQx4vASGEUMqE
 EEIoZRKGMmM7bGyHjA3fk0ROGNsRY8P1OWpshFDKJFJ+MLYvjW21sS0xtgXGVmLZPjS2lcaGfbBv
@@ -3633,7 +3637,519 @@ lB8/fpzpSLlQKHi37d+/30xMTHjzvpbmltNEmZEyQJSbmp1TPnXq1Jz70s4pa3mb7teqjqCoRX0t
 92OtXr26skriyZMn3m0aZQ8MDJh8Pp8qytevX6/cr5Ubd+7cqYy8r1y5MucXCVEGiHLdaZVEPdcp
 +183ap2y4hv2+gcOHEgVZWGdMkCUm5pGiZpysGfY6aNGvFHztnbErKkM/xl9+meNOKOiptf1n9Gn
 j2Fn9A0ODpr29nZvKkNn3nV0dJizZ89GRtL1jL6uri6Ty+W81+aMPoAot94Po05RY+8LAES5CaPM
-fsoAiHITRNluXGSPZns9AI3zL513CfQA5Rp1AAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 3: Reaction 3-hydroxy-L-tyrosine carboxy-lyase atom mapped (VMH ID: 3HLYCL) here represented as R3. Images ge</span><span class = "S2">nerated by RDT algorithm, also shows where a reaction centre occur.</span></p><p class = "S4"><span class = "S2">The directory rxnFiles contains for all atom mapped reactions a corresponding MDL RXN file. On them is contained the information of the chemical reaction. Line 2 contains the name of the reaction, the line 4 the chemical formula and line 5 the number of substrates and products. After the line 5, it is described the information of each of the molecules after the identifier $MOL. The header is in the first four lines where is found the name of the metabolite, its InChI key (if the metabolite does not contain an R group) and the number of atoms and bonds. In the atom block, is indicated the coordinates, element, charge and atom mapping number for each of the atoms and finally, the bond block connects all the atoms in the metabolite.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">regexp(fileread([outputDir filesep </span><span class = "S15">'atomMapped' </span><span class = "S14">filesep </span><span class = "S15">'R3.rxn'</span><span class = "S14">]), </span><span class = "S15">'\n'</span><span class = "S14">, </span><span class = "S15">'split'</span><span class = "S11">)'</span></p></div></div><p class = "S12"><span class = "S2">The last directory contains the TXT information of the reaction including the SMILES format which holds a canonical format of the reaction, the reactant input atom index and the product input atom index.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">regexp(fileread([outputDir filesep </span><span class = "S15">'txtData' </span><span class = "S14">filesep </span><span class = "S15">'R3.txt'</span><span class = "S14">]), </span><span class = "S15">'\n'</span><span class = "S14">, </span><span class = "S15">'split'</span><span class = "S11">)'</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Section 2 Identifying conserved metabolic moieties</span></h2><p class = "S4"><span class = "S2">    A conserved moiety is a group of atoms within molecules connected by reactions, that follow identical paths through a metabolic network and therefore, its amount remains constant (Figure 4). Representative examples from energy metabolism include the AMP and NAD moieties. With the set of atom mappings for a metabolic network the set of linearly independent conserved moieties for the metabolic network can be identified, each of which corresponds to a particular identifiable molecular substructure [5].</span></p><p class = "S6"><img class="imageNode" width="425" height="194" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAD1CAYAAAASwYxlAABSJ0lEQVR42u29B1hU1/aHnef7/vd+
+fsoAiHITRNluXGSPZns9AI3zL513CfQA5Rp1AAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 3: Reaction 3-hydroxy-L-tyrosine carboxy-lyase atom mapped (VMH ID: 3HLYCL) here represented as R3. Images ge</span><span class = "S2">nerated by RDT algorithm, also shows where a reaction centre occurs.</span></p><p class = "S4"><span class = "S2">The </span><span class = "S5">rxnFiles </span><span class = "S2">directory contains for all atom mapped reactions a corresponding MDL RXN file (Figure 4). Contained within these files are information of the chemical reaction, such as: </span></p><ul class = "S16"><li class = "S17"><span class = "S0">the name of the reaction (on line 2 of the file), </span></li><li class = "S17"><span class = "S0">the chemical formula (on line 4 of the file), </span></li><li class = "S17"><span class = "S0">the number of substrates and products (on line 5 of the file), and </span></li><li class = "S17"><span class = "S0">specific information for each of the molecules (from line 6 onwards, after the identifier $MOL). </span></li></ul><p class = "S6"><img class="imageNode" width="505" height="545" style="vertical-align: baseline" src="data:image/png;base64,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"></p><p class = "S4"><span class = "S2">Figure 4: A MDL RXN file stored in the </span><span class = "S5">rxnFiles </span><span class = "S2">directory.  </span></p><p class = "S4"><span class = "S2">Specific information for each of the molecules includes the name of the metabolite, it's InChI key (if the metabolite does not contain an R group) and the number of atoms and bonds. Following this is the atom block, which contains detailed information on the coordinates, element, charge and atom mapping number for each of the atoms, and then finally, the bond block connects all the atoms in the metabolite.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">regexp(fileread([outputDir filesep </span><span class = "S13">'atomMapped' </span><span class = "S12">filesep </span><span class = "S13">'R3.rxn'</span><span class = "S12">]), </span><span class = "S13">'\n'</span><span class = "S12">, </span><span class = "S13">'split'</span><span class = "S20">)'</span></p></div></div><p class = "S15"><span class = "S2">The </span><span class = "S5">txtData </span><span class = "S2">directory contains the TXT information of the reaction including the SMILES format, which holds the standard canonical format of the reaction, the reactant input atom index and the product input atom index.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">regexp(fileread([outputDir filesep </span><span class = "S13">'txtData' </span><span class = "S12">filesep </span><span class = "S13">'R3.txt'</span><span class = "S12">]), </span><span class = "S13">'\n'</span><span class = "S12">, </span><span class = "S13">'split'</span><span class = "S20">)'</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">SECTION 2 Identifying conserved metabolic moieties</span></h2><p class = "S4"><span class = "S2">A conserved moiety is a group of atoms within molecules connected by reactions, that follow identical paths through a metabolic network and therefore, its amount remains constant (Figure 5). Representative examples from energy metabolism include the AMP and NAD moieties. With the set of atom mappings for a metabolic network the set of linearly independent conserved moieties for the metabolic network can be identified, each of which corresponds to a particular identifiable molecular substructure [5].</span></p><p class = "S6"><img class="imageNode" width="425" height="194" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAD1CAYAAAASwYxlAABSJ0lEQVR42u29B1hU1/aHnef7/vd+
 93o1iYmFotJBRMTeE3vvvZdEjVFjbEmMPWpMbNHE2KKxd7H3inQUEKVZwQJ2rIg1Mb/vrK1nMhJA
 UMoM/t7n2c/AMMycOXPm7Pesvfba74AQQgghJJN5h7uAEEIIIRSMt4C//voLz549M9sm259Z+8G4
 pfQ6xo0QQggFg6TRqf7xxx949OgRkpKSUGvI72bb3kSu/vzzTzx9+hT3L15E3IIFONGtM8Ib1MHR
@@ -4002,7 +4518,7 @@ yU1I2FxfbEsSBmWGweEjwdi+fScWL1mG6dNnYNjgIejTq7eaFiuVRRs3bIxqVaopAalQrsLz6Eay
 ZptGs3kRDZHbJo2bwD8giB8EIYRQMMjbIB0yu+Dv2Qr3cfnSZUSfOAl//0Ac9DqEtevWY/nyFVi2
 bDkmfDce340dh/HjxmH0qFEY+MVA9O3zGT7/rG+K7Yv+X2DUiJHqf2b/OhsnT57iTieEEAoGedvl
 Q5/BoDfJ8dCb1NCQ5NJz5y/g/IWLKbZLmqw8X3L+D06TJIQQCgYhhBBCCAWDEEIIIRQMQgghhFAw
-CCGEEEIoGIQQQgihYBBCCCGEgkEIIYQQQsEghBBCSLbw/wMxZ/Ksk9Jp8gAAAABJRU5ErkJggg=="></p><p class = "S4"><span class = "S2">Figure 4: A graphical representation of a conserved moiety</span></p><p class = "S4"><span class = "S2">In this section, we will identify conserved moieties in a subnetwork of the dopamine synthesis network DAS (Figure 2) by graph theoretical analysis of its atom transition network. The method is described in [5]. This section consists of two parts. Part 1 covers basic usage of the code. Part 2 covers decomposition of a composite moiety resulting from variable atom mappings between the reoccurring metabolite pair </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAoCAYAAACWwljjAAAC8klEQVRYR+3XT6hVVRTH8Y8SJkrkIMSJpaX98U//oEgTMiFIEEOkBg5Sy6QCa9AkIqqJOHEgVkiUIkkDG6QhBQ00KSo1FQ0UJNMQKbFCJMHEpFiyr2zOO/eefR/3PZ7w9vDetdb+7rXW/u11Rhhia8QQ4zEM1FSR4QwNZIZuxWTchFG4gJ9wpmnTTv/3p2RP4n3c3ibwOryD8/0B6wZoAj7GE2mjd/EBfsV/eAxfpv/OYg5+7haqFGhmKkcr/uPYXbPZlAziBO7H391AlQA9iANZ0Eewt8Mmb6eShclKfNhLoPzEEfcFfNSwwcMZcGRpBi6WQnXK0Gh8g4dSsO8wF/82BL8Dx7NeuhvnegH0IjZkgWZhT0Hge3C010C34AjGp8Bf4ClcKQB6Gp/2GqiandCerwpgwmQJPukl0A3pSj/aj6AjsTP1WrhHU9+XVLzoPHVNPRGnMu/1eLUoGpNwMrMN8QzfEM6iVQdUveoLsaMoGsuxKbPtxveqWx1QriNhE2p7uAAoZCIE895km2vQNDybNOk3bMb3dTHrgEJrvs6MQ4f2FwDFLdye2S3GZ3gOG2v8a0W2qWTxSEaGfm8AGot9iEzE+hbzMA5/pIc2hPVGrMB7qI3dBBTBSzL0BlYnmHhM42ZFcy/DX5UejD23JV3rI7Z1QNWruzSNHe2SND8bOwImxo4Y1GLFqBLPz6WK8zPYWnfYdm/ZbESKY53GA/izhmhBdvpuZqCYCF5OTR4lvbY6Pa7PZy97bLYIBxEZvBOrUsNGsGja1wqnxNZt/BxvVQ/ZNA/FLLQla9aqf7xZa/FjwS1smYRWvdlOwZuAWkGm4rZ0Sy6nTPzSpoyd2GLyjFa4q93NLQXqIgFtTWMmD/mYno0nfYwHC2hMKmto0A8Viuipf1q/DQZQa3qIBt5VgXklycKhwQKKA8c33EtpaLs5AwopOYb4grk2+A10hl7Hmg4NGDoW02iRDvWikbuOMdAZGgbqOgNNDsMlu+4y9D+qUZQpq9hUQAAAAABJRU5ErkJggg==" width="18" height="20" /></span><span class = "S2"> and </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAAoCAYAAABEklK7AAAEuUlEQVRoQ+2YaajWRRTGf5a2aLSQRBB+yA9lG9kGmSUWJhKibUguWdkCSoZ+yZRwgcLED4JpoLgVFi1URkREFFJoSaUWlKlQGS6oSVZCriWPnIlzx5n/8vJeuXTf+XJ578ycmeecM895zr8LnWB06QQYaYH8v0S5FcnOEslzofDd/uEccTpwToFj/NpG/XcGcCnQCzgL0O/dwHfAXzmjRekqYz+V3KYv8K2tuRt4t2D91cD3DaI7G3gQWFSwfwKwGDgWr6nyJnsDHwP6q7EHGAJsSBwoe1OB593cWGAl8G+DAK8HPgQusv2TgbeBvUB3YBTwos1p3QjggD+rCkilxTfAlbZxJPB6wYXvB96y+S2AInikQYC68Bu2dztwG/BLwpbPoqXA496pVUBeAfzgoqgU3ZW5tOwtAJQ6GtOA2Q0CVHq+4gBeB/yWsXUa8BnQ3+ZvtMCc+FkF5MPActv8ASCvHc0cJqJSGofUvgX4ogGQ8ftuc+mMvfHASzY3F3g6rCsDqXml3n22YaJFKndveXu9i3of4PeaIGPCezZ64zlz3jHvA/cEEioDeQHwo3v0NwFfF1xaTphv868ZI/5TA2TsVJFcVUeJgF61swRSoE+cXQZS6bbGNqqc6H0eLniPnwIDbV5p/nINgFrqz9Pvsszx5hc6LqgF8pmIOB5N1SFjsjOB51zUFYHNNUDGUVRxFzP/WsGG9i4BxrlIVkrXbhZFpWjdoajrgn/X2HhxxNptolFip6cJjVBL25SROornZmBrIsVF36qDKtB3pNitItBBJjrCcpHdOxX33gWI+cN4wNXXwjcZF/WrCkqHBIPqVIi6FNFHFS8YlvnzlKrXAj9XsKFA6e2rrmqclOa5SMZFfRYws+BAvb9NNi9GjAWD1JLknVJ4J7ACWBvZ83VO6kZO/bMCyLjkVFY8Kuoq4kHKDQA+LzjQCwbpx2Eu6iIDHRwPSS+RRRie5OqUjheAKc7OZfas/vtXLpJxUZdXc5IqZsUnAdG5hghBQvpWIzEx8GMmKOKI+3SNHZXz7zXWZoX5pHDIgfSpIzE+OhTWxGmxYPASTBHeB4gpw9CZasmGA/2AL23Cg6wSya7AaqdXVc9FXgfjO6ZAii0/cUVdnk+lW7ClzkCko6G3pBQPDeydNncoOjh0F15BxWWgrP+c4XhCJesGYH8q5CmQ8UP2jXHKSRLvD9mEpNyYCr2jLqhORUCUzmFMAubZj2XAEwnxoQjqDUp4aCR7SH9RD1KfLy60Q6QDw1Ak1dP5RlRrzwfutW48rJVHBwM7Umlji1Ru1gHvAdMjrwmAwIVyoOZATfg2oIdFSw1yIEQ5Sl8LCvWxBxkX1DhqPqJ6T6tSqZFJW7/0EUAEoTrYpoN3i+Q8iYvcmGNtVRXJVyrQC85paEpsKIK4vKDxDob1kUoRu8QUlT6f6KOVsiXnnOSlyrqQhpBkNgVtqnIUvjQ0037W1qkCqQ9OX1mNjL8U6I2eRPvNRH8qQIZ6JpJRv+nHU1ZiNjYTVGyrvUHKvtSPxMWbwHnuAlJV6jdvz/SoTcPd3iDjpju++NCoRWoaMG+ovUG2y6XrGm2BrOuxjrq+FcmOGpm692pFsq7HOur64/ed/ylGMDaQAAAAAElFTkSuQmCC" width="28.5" height="20" /></span><span class = "S2">.</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Part 1: Identify conserved moieties in DAS</span></h2><p class = "S4"><span class = "S17">Step 1: Generate an atom transition network for DAS based on atom mappings for internal (mass and charge balanced) reactions.</span></p><p class = "S4"><span class = "S2">The atom transition network is generated based on the reconstructed DAS network (</span><span class = "S13">model</span><span class = "S2">) and atom mappings for internal reactions, obtained in the previous section (</span><span class = "S13">atomMappedDir</span><span class = "S2">) and predicted with the RDT algorithm [3].</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S20">if </span><span class = "S11">~isChemaxonInstalled</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">    copyfile(</span><span class = "S15">'data/atomMapped'</span><span class = "S14">,[outputDir filesep </span><span class = "S15">'atomMapped'</span><span class = "S11">])</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S20">end</span><span class = "S11">    </span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">atomMappedDir = [outputDir filesep </span><span class = "S15">'atomMapped'</span><span class = "S11">];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">ATN = buildAtomTransitionNetwork(model, atomMappedDir);</span></p></div></div><p class = "S12"><span class = "S2">The output variable (</span><span class = "S13">ATN</span><span class = "S2">) is a Matlab structure with several fields. </span><span class = "S13">ATN.A</span><span class = "S2"> is </span><span class = "S2">the incidence matrix of the directed graph representing the atom transition network. Each row represents a particular atom in one of the 11 DAS metabolites. </span><span class = "S13">ATN.mets</span><span class = "S2"> indicates which metabolite in DAS each atom belongs to. To find rows of </span><span class = "S13">ATN.A </span><span class = "S2">corresponding to atoms in </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2">, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">ico2 = find(ismember(ATN.mets, </span><span class = "S15">'co2[c]'</span><span class = "S11">))'</span></p></div></div><p class = "S12"><span class = "S2">The order of atoms in </span><span class = "S13">ATN.A</span><span class = "S2"> matches their order in MDL MOL files encoding metabolite structures (Figure 6), e.g., </span><span class = "S13">ATN.A</span><span class = "S2">(90,:) is the row corresponding to the second oxygen atom (number 3 in Figure 5).</span></p><p class = "S6"><img class="imageNode" width="120" height="29" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATUAAABKCAYAAADaHMOkAAAImklEQVR42u2db0hVdxjHDRGRkCGE
+CCGEEEIoGIQQQgihYBBCCCGEgkEIIYQQQsEghBBCSLbw/wMxZ/Ksk9Jp8gAAAABJRU5ErkJggg=="></p><p class = "S4"><span class = "S2">Figure 5: A graphical representation of a conserved moiety</span></p><p class = "S4"><span class = "S2">In this section, we will identify conserved moieties in a subnetwork of the DAS network (Figure 2) by graph theoretical analysis of its atom transition network. The method is described in [5]. This section consists of two parts: </span></p><p class = "S4"><span class = "S2">Part 1 covers basic usage of the code. </span></p><p class = "S4"><span class = "S2">Part 2 covers decomposition of a composite moiety resulting from variable atom mappings between the recurring metabolite pair </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAoCAYAAACb3CikAAAC7ElEQVRYR+3XS8iUdRQG8J8pUYqBiELSIlDxQioiuFDIBCFcCLrwUpmUCl5Q8AJq3rEoFSy07GIKEVm6KkhBRRcuXLpQiZQ2CkFgJkFIlpRy4IxM0zvvvPP5DXzC94fZzPvOOc85//M8z5k+esjp00Nw6AXSeBO9HentSCt2PrYzMhSzMQdTMRDXcBKHcRX3W1Vf9LxqR57GcmzFOezBJfyLF/AuXsRKfJ3ft4WnCpCoOhKvwE7sxZ8NWcbjGPrjNVxoCwUtlXVAJo5KP8da3ClIEgD2Yyk+wCb83Q6Yso7Es1fwKX7GAlwuCb4Nu3AWr+LX7gLyPL7KodycnfmnApCYnfk5xJWxlHVkSTLhR8zFDy2i1jrSrUAG4UjS9AusajIbNWx98TbeSjZ1W0cm4zs8mwMYoMpO/bCeTub8VvleSlgT7Hgfv2AWLrYIOgxH8RI+xnrcfVQgT2FfilNVBkzC99nBdUnhdnAU6sjgrO5lfJba0ShgjUmWJc3/wMzuErQRqZJR5fYcwrLqQvQ+whs4hddxq612NJmRUTiOCajS5on5/kiswYGMOxZvYjrinTDHYOAh3K6yGNUDWZjX1KzAoO0OhIaEv8T715M1n+TQhijeS7WNzgWQLfirPmiRoA1JB52BUNT3StpcM7vn0p2/yTUgjC8kYENdwjDPgxieoG60AvIkdueQlhnYM/gQi5KykbTIEGv5YpWIeOOqAokfxtITuvB7E9+IAY1uxSeuYCOCMWUnxPHLVN5KVxPBnki3jYrPp3T/lN/H4AWbpuCdpG0revfLeYnNLlgVsf5zWq0Bo1Pia5MfVcdQfpsWcLMCTWvrxGosRpjo/06VDa1CrqavRPwoIswwjDMoXHg6DWRarpex4RV2ooaqk0DGJPWjG6UgAkyngIQWhQvHnnum7i6CwjHoJxr9qBNAImYs0aGgRecK5uV/oIfPOwGkJlzhyEWncJXsBJAusawXSDvK2qUWd/VHPeZqHgAgPpYp4TiFtgAAAABJRU5ErkJggg==" width="17" height="20" /></span><span class = "S2"> and </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAAESUlEQVRoQ+3YeahtYxgG8N9FxpDM/lEiyfSHQua5JFOZZ5nnkCkzkZQps4wZMkVIIUOEQpKZSMkfZB4zDz369u07++619jr7nuNep7Nqd05rfev73ud93uF51wxT9JoxRXGZBvZ/Y3aasWnG5hIPTIfiXEJEZzOGMXYUTsKK1Y6vYH+8W91bCddjq+re1zgfl3e2ZvDChbAx9sJmxZbs/RRuxjP4tf/VYcCyfhM8W168Hcfi2wE2LI6rsTc+xT54ejZAxbbNcRHmx4V4FD9hmWLH6bgWp+CH+qwuwDbE8+WlGHtng7Hx7GU4DPfjYHw3IrB5CkPX4Dkkcj7u22sxXIn9cDIuxZ+9NV2AbY0n8AF2wRsNxi6BMLodzsQF+HsEYLFpT1yHj8r/ddjXWwbUbXixOGIm+C7Aji/eeLK8/EWDsSvjbqyDHfHwCKDyymq4BevhUNzY4qA6mjYt7P577DBgC+ISHImExYn4pcHgrsy24V2gMJ1z4phD8HnLC41pMgzYCiWnUo0OL5Wv6Zwes49hX3w5AmOr477CWnL0piF7jAwsYfUIlscYqvsOrAtHCsip+G2cwOLkOCcRkpzaFW8P2aMXJVk2prANY2z3kjezJGffgeNhtsnWFJ8wtDNuxdGltLdh6xWPrNkIL3SpivOWBnvaOD3fxmzbVnV0nFBaR9v62r5XsQc+7AIsDTcVKSX+3PJrKt9pyncMKrvjcEovOvJKF+fU9s3SN9tCsWv5rj2XPpZmOkYFdASX3nceXkdAvj/kvbWKEFhlUN9sA9a1fI+H2SZb67byeJFlXw0BdlCJqDhx2zq/hvWxro15VdyDtfsac5wW8ZxqFTWyfpFFD5T8+aQyfLxyrNalaQ+Rcd/UjmhirPbgsPLdxGyvxyQ/o+N+xBbFyy/3GVMDy5QQp/7cwtiWeLA8T898qH9tE7ClcVcZQ7o25n7JFWBREAmZnjd7+XgAtkeqWS9yzkZ+UfAxdgwDleG1+I0aigCO4h9zNQHr2pgXxhVFyQ+TXL2DUySO6AOWZzsUz7f1zNgbRXIDXsKBfXPhTHBNwBKzUddvYje81xAWyaEwuwHOKn2vLecXwVXI3/68SJQkDNOgB41HsTXPEtafFYBvNR02CNhyJQ+S8BkYd0JyYhDb6V8p8bkuRga/PxoO640j5xRPz1QJ1fpoxYBbqkzuqZC/I8rmmCLGk1tnoC4+A42rb6Y3pNGuWd3MjJP+kjG8d6W4xMCo/kWr+/cWKTRotEnTTdgeV03kg3ywZJnB4tB1y/6vldxL9X0Hf7WFRS9ph62ZiOdrlBKfbyCZiCf9GiaCJ8KADI4pLGG49+1kIvZt3WOygS1bwi8fXP4zUJMdimm6KSj5RlKP9/OVyfj7lg9Ds83oZDK2TRGpdXGpDe6i4EcGOJnAemq9ybgxg+HICFp6y0TvOVfsN5mMzVGA08DmqPtHOHzKMvYPTQ77KWZGae4AAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2">.</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Part 1: Identify conserved moieties in DAS</span></h2><p class = "S4"><span class = "S21">Step 1: Generate an atom transition network for DAS based on atom mappings for internal (mass and charge balanced) reactions.</span></p><p class = "S4"><span class = "S2">The atom transition network is generated based on the reconstructed DAS network (</span><span class = "S9">model</span><span class = "S2">) and atom mappings for internal reactions, obtained in the previous section and predicted with the RDT algorithm [3].</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S22">if </span><span class = "S20">~isChemaxonInstalled</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">    copyfile(</span><span class = "S13">'data/atomMapped'</span><span class = "S12">,[outputDir filesep </span><span class = "S13">'atomMapped'</span><span class = "S20">])</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S22">end</span><span class = "S20">    </span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">atomMappedDir = [outputDir filesep </span><span class = "S13">'atomMapped'</span><span class = "S20">];</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">ATN = buildAtomTransitionNetwork(model, atomMappedDir);</span></p></div></div><p class = "S15"><span class = "S2">The output variable (</span><span class = "S9">ATN</span><span class = "S2">) is a Matlab structure with several fields. </span><span class = "S9">ATN.A</span><span class = "S2"> is </span><span class = "S2">the incidence matrix of the directed graph representing the atom transition network. Each row represents a particular atom in one of the 11 DAS metabolites. </span><span class = "S9">ATN.mets</span><span class = "S2"> indicates which metabolite in DAS each atom belongs to. To find rows of </span><span class = "S9">ATN.A </span><span class = "S2">corresponding to atoms in </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2">, run:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">ico2 = find(ismember(ATN.mets, </span><span class = "S13">'co2[c]'</span><span class = "S20">))'</span></p></div></div><p class = "S15"><span class = "S2">The order of atoms in </span><span class = "S9">ATN.A</span><span class = "S2"> matches their order in MDL MOL files encoding metabolite structures (Figure 7), e.g., </span><span class = "S9">ATN.A</span><span class = "S2">(90,:) is the row corresponding to the second oxygen atom (number 3 in Figure 6).</span></p><p class = "S4"><span class = "S2"></span></p><p class = "S6"><img class="imageNode" width="141" height="41" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATUAAABKCAYAAADaHMOkAAAImklEQVR42u2db0hVdxjHDRGRkCGE
 uIiIQER8FRtjSEhIEBEREUJIhC8k8MWI4dsQkTGCvZCIiJjTcFLiZs7JqGY4J2ERMRfixDnX1qL/
 GM6as7h79nuOnLt7tOY999x7z/nZ5wMPWN5zbj3nPN/f/+fJEQCANUQOLgAARA0AAFEDAEDUAAAQ
 NQBA1AAAEDUAAEQN1hx37z6Tnp5fpaHhquzde1mKi7skP79d8vI+k/XrO+S9976SDz+8JpOTT3EW
@@ -4041,7 +4557,7 @@ HTKN4bSzVy3wlFgkVmW0hmCQ+oP3Uhh7M/xMS4k8d/hYX1+/QqD8WElJyap1Pxl+BqxREIW4ywLR
 Obh3+rS/StHaSpw4Eew7WShISzFjl9HRUamqqvIlZlqhvbm52RGs5EZPLBSkpZhxmHH3xoiaEjNd
 z4EBkSNHxPRTl86raZdXTavXaOugv9PPxGIC0WRmZsa89yecTbnasyooKHAETPe2aU9Qk0zqEHfA
 PMcYz5G4W9OiBgCAqAEAIGoAgKgBACBqAACIGgAAogYAgKgBAKIGAICoAQAgagAAiBoAIGoAAIga
-AACiBgCAqAEAIGoA8IbyLxHSLh67fg2TAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 5: Rows for </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2"> atoms in </span><span class = "S13">ATN.A</span><span class = "S2"> are ordered as shown.</span></p><p class = "S4"><span class = "S13">ATN.elements</span><span class = "S2"> contains the element symbols of atoms, e.g.,</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">ATN.elements{90}</span></p></div></div><p class = "S12"><span class = "S2">Each column of </span><span class = "S13">ATN.A</span><span class = "S2"> represents a particular atom transition in one of the four internal reactions in DAS. Reaction identifiers of atom transitions are given in </span><span class = "S13">ATN.rxns</span><span class = "S2">. To find all atom transitions that involve </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2"> atoms, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">tco2 = find(any(ATN.A(ico2,:), 1))</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">ATN.rxns(tco2)'</span></p></div></div><p class = "S12"><span class = "S2">i.e., three atom transitions in each of the reactions R3 and R4 involve atoms in </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2">. To find atoms connected to </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2"> atoms via these atom transitions, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">cco2 = find(any(ATN.A(:, tco2) &lt; 0,2));</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">ATN.mets(cco2)'</span></p></div></div><p class = "S12"><span class = "S2">i.e., </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAAoCAYAAACvpem4AAAEaklEQVRoQ+2Ya4hVVRTHf1NGpZgElX0RQ4qyl2nkA+1hT8MwIRQqK4sStZdfhJBUKFKMoBKrDz1IgsgCNSrEIomyNLWyD6kpJmioWGr0UMNM+cfaw5rtOXP2vneKuc3dMDD3nL32Xv/1/K/TQhdZLV0EJ02g/zdPNz3alT16HnAVcBHQA/gD2A9sBdYDm4G/gPFmpLfbMVY3YDAwCtC5p9veH4GVwMfAjo40dkro9geeB25IuPhrYBDwEPBCyf4bgTeAs+z9HuBN+32Hk1kAPAnofd2rCuj9wMvR5c8CP9izE4FzgaeA29y+B4EXI+1OAeYC05z3xgDfuH2nAfcCz7lniqLP6kVaBlTP5wHT3QW3AB+0c+FU58VJkYEUqkuB0Sa/zEL895LzrgY+ce9uAj6sB2wZUFn1tRouetS8McO8F47wRlA0XAb8VqH4WGCJC++LgZ9qBVsE9AzgO5dD8wEBSFkKz6+AbcCtwBHgbGCXE1aIL0447CTgc+AK2/sEMDtBrnBLEVDlkPIwLFlSwFPXFGCyFSUBnQlISS0VFlXtnxMPm2CFK8jW7NUYaPDIhaaILHqNtY1E3VBEqECtBpSbyrXhJvwWcCfwd+JhOmeL23sdsCJRts22GGgfYLvbUVQ9c+6JDZd7XofpEwONLZirWGyEcyxfw/Pc82SoL4FL683TKqDqo6/muDDaW6/hYqBqb6HIZan1bwO9ANhYRyrEQHNzvPXqKqC5oRZbWUxnFRCKW0wkqrwiTr3GydesT1Uxiht/lWLx++7AWqfo40YXU8+JQ38isNAJy4B3A2o7O4HXgS+KDq9qL2IxOuRgqmbRPp3/juPBue1KDMpzYf3+1u64r6R+PAC8EutbRBjU8D0h1yi1vEagErse+MjJK2+/Tzzvace3ZfQBgPixerXo4AhjTycDKpyaeERKZBDPxgq/GWk23OQooL8gRT8ZT6OaRrajwAnAp440pFK53sBud6Emnffst0J4r/utx7pX3FhVeZgRltJiFF6MA/zgrP/vAQ5VIJVlZwEPA31tMJfIQAMexK+0AbvsOCmtXLzLNqjaig6KUmppNpbx/owO0NC/yPjxOv+uvXlUFU6hEJamf10gbxetoZYzKhBFY5VGtPedYNnopQKmGTgM4Yqoy4FfEsJJpF+T0nGcuGrwvtY+a/g7VNnk4X1AT2MtMko/y4+bI+95WTEchZf2amkUfMlop3rmEDNu+PqgMJ9T4LkizKHnvmtR1WZPFVBtVs4q0VUYypYKgMDqksMVlld4326DfQAUi8iYz2ROTZqh1b5CwcoGGgRONU+Iv2oJ0K+AQlp/uUufYZTHZzrBA/ZRLCVM/X2XWPU9P662YVOKR3MB/Nf7w2CvOXdD2eWNDjQwL6WWqKZfytnWLtHIQMNQr3YWD+OPWPvR9+Z/VqMCld76biwWpw7Qy7lSPVvMa6Truw0L9LHoK2Ocmsd9mm1Uj2YXvCbQbJN1coGmRzu5g7LVa3o022SdXOAYMqPhKXlyZSAAAAAASUVORK5CYII=" width="29" height="20" /></span><span class = "S2"> atoms are connected to atoms in the metabolites L-DOPA (VMH ID: 34dhphe) and formate (VMH ID: for).</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S17">Step 2: Identify conserved moieties in DAS by graph theoretical analysis of the atom transition network generated in Step 1.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">tic</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">[L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = </span><span class = "S18">...</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">    identifyConservedMoieties(model, ATN);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">t = toc;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">fprintf(</span><span class = "S15">'Computation time: %.1e s\n\n'</span><span class = "S14">, t); </span><span class = "S16">% Print computation time</span></p></div></div><p class = "S12"><span class = "S2">This function outputs the moiety matrix (</span><span class = "S13">L</span><span class = "S2">), the moiety supergraph (</span><span class = "S13">Lambda</span><span class = "S2">), the chemical formulas of moieties (</span><span class = "S13">moietyFormulas</span><span class = "S2">), and three vectors that map between the various inputs and outputs. The 10×5 moiety matrix </span><span class = "S13">L</span><span class = "S2"> has a row for each metabolite and a column for each conserved moiety in DAS. Each column is a moiety vector, with elements corresponding to the number of instances of a conserved moiety in each metabolite. To find the number of instances of moiety 2 in L-DOPA, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">iLDOPA = find(ismember(model.mets, </span><span class = "S15">'34dhphe[c]'</span><span class = "S11">))</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">full(L(iLDOPA, 2))</span></p></div></div><p class = "S12"><span class = "S2">i.e., L-DOPA contains one instance of moiety 2.</span></p><p class = "S4"><span class = "S2">The 19×17 moiety supergraph (</span><span class = "S13">Lambda</span><span class = "S2">) contains the graphs of all seven conserved moieties in DAS (Figure 6).</span></p><p class = "S6"><img class="imageNode" width="517" height="285" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2oAAAHhCAYAAAAfw005AACAAElEQVR42uzdB3hURd8FcHxRsTes
+AACiBgCAqAEAIGoA8IbyLxHSLh67fg2TAAAAAElFTkSuQmCC"></p><p class = "S4"><span class = "S2">Figure 6: Rows for </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2"> atoms in </span><span class = "S9">ATN.A</span><span class = "S2"> are ordered as shown.</span></p><p class = "S4"><span class = "S9"></span></p><p class = "S4"><span class = "S9">ATN.elements</span><span class = "S2"> contains the element symbols of atoms, e.g.,</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">ATN.elements{90}</span></p></div></div><p class = "S15"><span class = "S2">Each column of </span><span class = "S9">ATN.A</span><span class = "S2"> represents a particular atom transition in one of the four internal reactions in DAS. Reaction identifiers of atom transitions are given in </span><span class = "S9">ATN.rxns</span><span class = "S2">. To find all atom transitions that involve </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2"> atoms, run:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">tco2 = find(any(ATN.A(ico2,:), 1))</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">ATN.rxns(tco2)'</span></p></div></div><p class = "S15"><span class = "S2">i.e., three atom transitions in each of the reactions R3 and R4 involve atoms in </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2">. To find atoms connected to </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2"> atoms via these atom transitions, run:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">cco2 = find(any(ATN.A(:, tco2) &lt; 0,2));</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">ATN.mets(cco2)'</span></p></div></div><p class = "S15"><span class = "S2">i.e., </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAoCAYAAAC1mQk2AAADvElEQVRoQ+3YZwh2cxgG8N9rJiGEb0YpI3uHUKQke8+UGckqe3wwUygkM3tmZJTIyAeS+CShKCUJIWQmdNX96DjOedZrvM/bc749zznnvu/rf6/rOgsspteCxRSXObBZy+w8Y/OMLSInMC/FRSQRY4cxbsbWxKHYHdtghfLwOt7Dc3gW3/R4jp/1cTj2xOaN91/AA2Xn97EjH/HgKGDL4SycjSdwGT7EEhVcfgdsrh3xaoe/HML5OAWX4258hqWxHS4oG1fhCnz3T4AbBmz5CuS0AhSnP7acboAHsWkPsNi4GifjGNyL31o21sAt2Ac31SF+v7Dg+oDl/+NwK17GUfikw1meOwPXdABbEmcWsHtwKr7tCThZf7RK/Ejc/28BWxv3YYcqxevQV/95Jv21R6sU18PDlc0D8PiQYFfGHdgP6bmj8enCgOvL2LG4vYzvhbemcHIibsbbOLiGQ5+ZxJFeu7R6rH1IE7vvApaBkQwlsJxeJtkXE1pu2sjEPAJfjrCxN56sZ1LCiWHqqwvYajV+d6umTg+1h8Yoh9PYyIR8vvosoM7FL6McDSuB9r1mb2RKZdz/NKGDpo1MvHEOZ5p3esPqyljTwcVV9xPiMk2Q07wzB5YTWGxLcV08hC0XYng0bYRthE6Nokrhko9gY0zbAn+WZlePZVkmmJDVcUd1u9abNsZdGTvhlTIUwp3lPriyPnYpWrYt1sKLRcGewq/tALqALYMQ0kyycZZrVwOHTmXZnjfBkh8s9HdxEN4pw4OduBlOxxtYqXhs6Ffo3mD/Dc1Ybu6Px+qpUXSoj1LtWoog7P6kKuu+KdZc6NcXEf65BSw7rknLNil++UzXzuujVKvjNoQNDCOwycwluKiDBK+IG4r3pVyOx+c9yLaqIHP7QLw5xn4ZDLmXJgEWuzuXdlqlTjzypE2Ec2oZNJEvXXos/9+J9EWYRFRAux+S0WtxyBA/XThTERGoJ0xSijGUbO6LKxGKFFF5F75G+jDNnP+2Lq99QnMLpLxSsqFKN+KjEqsb1QTcEBdWqbX1WheogYb7uMr2b5RvlIKO0VVxWIFsfhZ4Hx9U2bxWkqVPIEZwRiVElgym2lfIe09XP48iyQOAA/Ga31H2nT7HATZGuf9njyxb4jUZi8zpVdqzBGypIuT5sNSbqcERzwqwxJl22B7nDMvUrAHL4MmyzxJvfntZp76AZeL+pUdnIWPNfdjVzPmEkS9pPzRvzgKwptroAtYpZGcB2FQjdw5sqmP7H1+aZ+x/PPypXP8B2gfkKQw+ppkAAAAASUVORK5CYII=" width="27" height="20" /></span><span class = "S2"> atoms are connected to atoms in the metabolites L-DOPA (VMH ID: 34dhphe) and formate (VMH ID: for).</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S21">Step 2: Identify conserved moieties in DAS by graph theoretical analysis of the atom transition network generated in Step 1.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">tic</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">[L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = </span><span class = "S23">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    identifyConservedMoieties(model, ATN);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">t = toc;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">fprintf(</span><span class = "S13">'Computation time: %.1e s\n\n'</span><span class = "S12">, t); </span><span class = "S14">% Print computation time</span></p></div></div><p class = "S15"><span class = "S2">This function outputs the moiety matrix (</span><span class = "S9">L</span><span class = "S2">), the moiety supergraph (</span><span class = "S9">Lambda</span><span class = "S2">), the chemical formulas of moieties (</span><span class = "S9">moietyFormulas</span><span class = "S2">), and three vectors that map between the various inputs and outputs. The 10×5 moiety matrix </span><span class = "S9">L</span><span class = "S2"> has a row for each metabolite and a column for each conserved moiety in DAS. Each column is a moiety vector, with elements corresponding to the number of instances of a conserved moiety in each metabolite. To find the number of instances of moiety 2 in L-DOPA, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">iLDOPA = find(ismember(model.mets, </span><span class = "S13">'34dhphe[c]'</span><span class = "S20">))</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">full(L(iLDOPA, 2))</span></p></div></div><p class = "S15"><span class = "S2">i.e., L-DOPA contains one instance of moiety 2.</span></p><p class = "S4"><span class = "S2">The 19×17 moiety supergraph (</span><span class = "S9">Lambda</span><span class = "S2">) contains the graphs of all seven conserved moieties in DAS (Figure 7).</span></p><p class = "S6"><img class="imageNode" width="517" height="285" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2oAAAHhCAYAAAAfw005AACAAElEQVR42uzdB3hURd8FcHxRsTes
 vPaOgg0Lr6io2EGlKFZUlKKgICCggnQElCJNOtJ77y3UAIEkkFACCRAIEJJAQiCFdM63Z/bbGJJN
 2WRTdvf8nuc+QjZZ4uzdvXPuzPynHERERERERKRMKacmEBERERERUVATERERERERBTUREREREREF
 NREREREREVFQExERERERUVATERERERERBTUREREREREFNREREREREVFQExERERERUVATERERERER
@@ -4802,7 +5318,7 @@ QgghhBASakIIIYQQQgghJNSEEEIIIYQQQkJNCCGEEEIIIYSEmhBCCCGEEEJIqAkhhBBCCCGEkFAT
 QgghhBBCCAk1IYQQQgghhBASakIIIYQQQgghJNSEEEIIIYQQQkJNCCGEEEIIIYSEmhBCCCGEEEJI
 qAkhhBBCCCGEkFATQgghhBBCCAk1IYQQQgghhBASakIIIYQQQgghoSaEEEIIIYQQQkJNCCGEEEII
 IYSEmhBCCCGEEEJIqAkhhBBCCCGEkFATQgghhBBCCAk1IYQQQgghhBASakIIIYQQQgghoSaEEEII
-IYQQQkJNCCGEEEIIISTUhBBCCCGEEEJIqAkhhBBCCCGEsP8HQPqEJnvKOMwAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Figure 6: Graphs of the five conserved moieties in DAS. Each node represents an instance of a conserved moiety in a particular metabolite. Each directed edge represents conservation of a moiety between two metabolites. The chemical formula of each moiety is given below its graph.</span></p><p class = "S4"><span class = "S2">Each row of Lambda represents a single instance of a conserved moiety in a particular metabolite. The vector moieties2vectors maps between the rows of Lambda and the columns of L. To obtain the incidence matrix of a particular moiety graph, e.g., λ2 in Figure 6, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">i2 = find(moieties2vectors == 2);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">c2 = find(any(Lambda(i2, :)));</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">lambda2 = full(Lambda(i2, c2))</span></p></div></div><p class = "S12"><span class = "S2">The vector </span><span class = "S13">moieties2mets</span><span class = "S2"> maps the rows of Lambda to metabolite indices in the DAS reconstruction (</span><span class = "S13">model</span><span class = "S2">). To find metabolites containing instances of moiety 2, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">m2 = moieties2mets(i2);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">mets2 = model.mets(m2)'</span></p></div></div><p class = "S12"><span class = "S2">The chemical formula of moiety 2 is given by,</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">moietyFormulas{2}</span></p></div></div><p class = "S12"><span class = "S2">Finally, the vector atoms2moieties maps each atom in the atom transition network for DAS to a particular instance of a conserved moiety. To find atoms in L-DOPA that belong to moiety 2, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">find(ismember(atoms2moieties, i2) &amp; ismember(ATN.mets, </span><span class = "S15">'34dhphe[c]'</span><span class = "S11">))'</span></p></div></div><p class = "S12"><span class = "S17">Step 3: Classify moieties</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">types = classifyMoieties(L, model.S)</span></p></div></div><p class = "S12"><span class = "S2">The internal moiety (λ3 in Fig. 3) is conserved in both the open and closed DAS network, whereas the transitive and integrative moieties are only conserved in the closed network [6].</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Part 2: Effects of variable atom mappings between reoccurring metabolite pairs</span></h2><p class = "S4"><span class = "S2">Here, we will again identify conserved moieties in DAS but with a slightly different set of atom mappings (Figure 7). The different atom mappings give rise to a different atom transition network with a different set of conserved moieties. In particular, it contains a single composite moiety, λ8 in Figure 4, in place of the two moieties λ4 and λ5 in Figure 3. The composite moiety is the result of variable atom mappings between the reoccurring metabolite pair O2 and H2O in reactions R1 and R2.</span></p><p class = "S6"><img class="imageNode" width="549" height="260" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0gAAAGOCAYAAACtySNbAACAAElEQVR42uydB3hUxdfGVYqAgqBi
+IYQQQkJNCCGEEEIIISTUhBBCCCGEEEJIqAkhhBBCCCGEsP8HQPqEJnvKOMwAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Figure 7: Graphs of the five conserved moieties in DAS. Each node represents an instance of a conserved moiety in a particular metabolite. Each directed edge represents conservation of a moiety between two metabolites. The chemical formula of each moiety is given below its graph.</span></p><p class = "S4"><span class = "S2">Each row of Lambda represents a single instance of a conserved moiety in a particular metabolite. The vector moieties2vectors maps between the rows of Lambda and the columns of L. To obtain the incidence matrix of a particular moiety graph, e.g., λ2 in Figure 7, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">i2 = find(moieties2vectors == 2);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">c2 = find(any(Lambda(i2, :)));</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">lambda2 = full(Lambda(i2, c2))</span></p></div></div><p class = "S15"><span class = "S2">The vector </span><span class = "S9">moieties2mets</span><span class = "S2"> maps the rows of Lambda to metabolite indices in the DAS reconstruction (</span><span class = "S9">model</span><span class = "S2">). To find metabolites containing instances of moiety 2, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">m2 = moieties2mets(i2);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">mets2 = model.mets(m2)'</span></p></div></div><p class = "S15"><span class = "S2">The chemical formula of moiety 2 is given by,</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">moietyFormulas{2}</span></p></div></div><p class = "S15"><span class = "S2">Finally, the vector atoms2moieties maps each atom in the atom transition network for DAS to a particular instance of a conserved moiety. To find atoms in L-DOPA that belong to moiety 2, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">find(ismember(atoms2moieties, i2) &amp; ismember(ATN.mets, </span><span class = "S13">'34dhphe[c]'</span><span class = "S20">))'</span></p></div></div><p class = "S15"><span class = "S21">Step 3: Classify moieties</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">types = classifyMoieties(L, model.S)</span></p></div></div><p class = "S15"><span class = "S2">The internal moiety (λ3 in Figure 3) is conserved in both the open and closed DAS network, whereas the transitive and integrative moieties are only conserved in the closed network [6].</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S8"><span class = "S2">Part 2: Effects of variable atom mappings between recurring metabolite pairs</span></h2><p class = "S4"><span class = "S2">Here, we will again identify conserved moieties in DAS but with a slightly different set of atom mappings (Figure 8). The different atom mappings gives rise to a different atom transition network with a different set of conserved moieties. In particular, it contains a single composite moiety, λ8 in Figure 5, in place of the two moieties λ4 and λ5 in Figure 3. The composite moiety is the result of variable atom mappings between the recurring metabolite pair O2 and H2O in reactions R1 and R2.</span></p><p class = "S6"><img class="imageNode" width="549" height="260" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0gAAAGOCAYAAACtySNbAACAAElEQVR42uydB3hUxdfGVYqAgqBi
 7wULImKvfyzYQRFUFCs27CA2LCjSewu9hhZ67yUEQgkEAoROEkgICWmQ3tv55p2w+VK2t2yS9/c8
 8wT23r27O/fec887c+acC4QQQgghhBBCiOYCdgEhhBBCCCGEUCARQgghhBBCCAUSIYQQQgghhNgs
 kE6fPq1bQUGBQx+C90dGRkpUVBR7nBDiFE6cOCEpKSmlXktNTdWvZ2Vl2XSsM2fO6PcRQoizgB2C
@@ -5532,12 +6048,12 @@ ZM8eWara9M2bZaR6L1xrqOyhKMOb06dLwjmSxkaBRPwDpJdhT9Lzz2tBg7Q7HOSKw2TR8Ng4vBGn
 vVEy10MqLiHk/AKrv4FKrNT/5x8taJDihsILTceO1SIHq0t4Hq1G795aPHnL0DVrrHZRWryustVs
 wgR5Yvx4vf8JogjXGo8ZI5Pj4vifQYFETitLl4pUruzYcHhjaTYAqxtZV32yt4uUle3bOe6EEM9g
 EgWHRzvzUdOm+RrhWPyTM5tYNZo5k+NOCPFIt/Bwff6QfbusRw8JLUVq/j9KKGHlyd7udf36STQq
-CJMy5f8BMBG9N+vE8uMAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Figure 7: (a) Oxygen atom transitions used in Part 1. Oxygen atom 1 in O2 maps to the oxygen atom in H2O in both R1 and R2. These atom transitions contain two separate moieties, with two disconnected moiety graphs (λ4 and λ5 in Figure 6), and two linearly independent moiety vectors (L(:,4) and L(:,5)). (b) Oxygen atom transitions used in Part 2. A different oxygen atom maps from O2 to H2O in R1 than in R2. These atom transitions contain only one composite moiety. (c) The composite moiety graph arising from the oxygen atom transitions in (b).</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S17">Step 1: Identify conserved moieties with the alternative set of atom mappings.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S16">% Create an alternative MDL RXN file</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">R2rxn = regexp(fileread([outputDir filesep </span><span class = "S15">'atomMapped' </span><span class = "S14">filesep </span><span class = "S15">'R2.rxn'</span><span class = "S14">]), </span><span class = "S15">'\n'</span><span class = "S14">, </span><span class = "S15">'split'</span><span class = "S11">)';</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">R2rxn{2} = </span><span class = "S15">'alternativeR2'</span><span class = "S11">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">R2rxn{135}(62:63) = </span><span class = "S15">'18'</span><span class = "S11">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">R2rxn{151}(62:63) = </span><span class = "S15">'19'</span><span class = "S11">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">fid2 = fopen([outputDir filesep </span><span class = "S15">'atomMapped' </span><span class = "S14">filesep </span><span class = "S15">'alternativeR2.rxn'</span><span class = "S14">], </span><span class = "S15">'w'</span><span class = "S11">);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">fprintf(fid2, </span><span class = "S15">'%s\n'</span><span class = "S11">, R2rxn{:});</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">fclose(fid2);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11"></span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S16">% Create an alternative DAS model</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">alternativeModel = model;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">alternativeModel.rxns{2} = </span><span class = "S15">'alternativeR2'</span><span class = "S11">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11"></span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S16">% Identify conserved moieties</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">ATN = buildAtomTransitionNetwork(alternativeModel, atomMappedDir);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">[L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = </span><span class = "S18">...</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">    identifyConservedMoieties(alternativeModel, ATN);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S17">Step 2: Decompose the composite moiety vector</span></p><p class = "S4"><span class = "S2">First, extract the internal stoichiometric matrix for DAS, by running</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">rbool = ismember(alternativeModel.rxns, ATN.rxns);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">mbool = any(alternativeModel.S(:,rbool), 2);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">N = alternativeModel.S(mbool, rbool);</span></p></div></div><p class = "S12"><span class = "S2">To decompose the moiety matrix computed in Step 1, run</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">changeCobraSolver(</span><span class = "S15">'gurobi6'</span><span class = "S14">, </span><span class = "S15">'milp'</span><span class = "S11">);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">D = decomposeMoietyVectors(L, N);</span></p></div></div><p class = "S12"><span class = "S2">Note that you can use any MILP solver that is supported by the COBRA toolbox. The decomposed moiety matrix D is identical to the original moiety matrix computed in Part 1. Moiety vectors D(:,4) and D(:,5) are the linearly independent components of the composite moiety vector L(:,4) above.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">full(D(:,[4 5])')</span></p></div></div><p class = "S12"><span class = "S2">One disadvantage of decomposing moiety vectors is that it is difficult to keep track of which atoms belong to the decomposed moieties. We can, however, estimate the chemical formulas of the decomposed moieties using the elemental matrix for DAS. The elemental matrix is a numerical representation of the chemical formulas of metabolites in DAS.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S14">[E,elements] = constructElementalMatrix(alternativeModel.metFormulas,</span><span class = "S18">...</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">    alternativeModel.metCharges);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">decomposedMoietyFormulas = estimateMoietyFormulas(D, E, elements);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">decomposedMoietyFormulas([4 5])'</span></p></div></div><p class = "S12"><span class = "S2">i.e., each decomposed moiety contains an oxygen atom.</span></p><h2 class = "S3"><span class = "S2">References</span></h2><p class = "S4"><span class = "S2">[1] Haraldsdóttir, H.S., Thiele, I., Fleming, R.M.: Comparative evaluation of open source software for mapping between metabolite identifiers in metabolic network reconstructions: application to Recon 2. Journal of cheminformatics 6(1), 2 (2014).</span></p><p class = "S4"><span class = "S2">[2] Elizabeth Brunk, Swagatika Sahoo, Daniel C. Zielinski,</span><span class = "S2"> </span><span class = "S2">Ali Altunkaya,</span><span class = "S5"> </span><span class = "S2">Andreas Dräger, Nathan Mih, Andreas Prlić, Anand Sastry, German A. Preciat Gonzalez, Anna D. Danielsdottir, Alberto Noronha, Maike </span><span class = "S2">K.</span><span class = "S2"> </span><span class = "S2">Aurich, Peter W. Rose, Stephen K. Burley, Ronan M.T. Fleming, Jens Nielsen, Ines Thiele, Bernhard O. Palsson.</span><span class = "S2"> Recon 3D: A Three-Dimensional View of Human Metabolism and Disease. Submited</span></p><p class = "S4"><span class = "S2">[3] Rahman, S.A., Torrance, G., Baldacci, L., Cuesta, S.M., Fenninger, F., Gopal, N., Choudhary, S., May, J.W., Holliday, G.L., Steinbeck, C., Thornton, J.M.: Reaction Decoder Tool (RDT): extracting features from chemical reactions.  Bioinformatics 32(13), 2065–2066 (2016).</span></p><p class = "S4"><span class = "S2">[4] German A. Preciat Gonzalez, Lemmer El Assal, Alberto Noronha, Ines Thiele, Hulda S. Haraldsdóttir, Ronan M.T. Fleming. Comparative evaluation of atom mapping algorithms for balanced metabolic reactions: application to Recon 3D. J Cheminform. 2017.</span></p><p class = "S4"><span class = "S2">[5] Hulda S. Haraldsdóttir and Ronan M. T. Fleming. Identification of conserved moieties in metabolic networks by graph theoretical analysis of atom transition networks. PLOS Computational Biology, 12(11): e1004999, 2016.</span></p><p class = "S4"><span class = "S2">[6] Iman Famili and B. Ø. Palsson. The convex basis of the left null space of the stoichiometric matrix leads to the definition of metabolically meaningful pools. Biophysical Journal, 85(1):16–26, 2003.</span></p><p class = "S4"><span class = "S2"></span></p></div></div>
+CJMy5f8BMBG9N+vE8uMAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Figure 8: (a) Oxygen atom transitions used in Part 1. Oxygen atom 1 in O2 maps to the oxygen atom in H2O in both R1 and R2. These atom transitions contain two separate moieties, with two disconnected moiety graphs (λ4 and λ5 in Figure 7), and two linearly independent moiety vectors (L(:,4) and L(:,5)). (b) Oxygen atom transitions used in Part 2. A different oxygen atom maps from O2 to H2O in R1 than in R2. These atom transitions contain only one composite moiety. (c) The composite moiety graph arising from the oxygen atom transitions in (b).</span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S21">Step 1: Identify conserved moieties with the alternative set of atom mappings.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S14">% Create an alternative MDL RXN file</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">R2rxn = regexp(fileread([outputDir filesep </span><span class = "S13">'atomMapped' </span><span class = "S12">filesep </span><span class = "S13">'R2.rxn'</span><span class = "S12">]), </span><span class = "S13">'\n'</span><span class = "S12">, </span><span class = "S13">'split'</span><span class = "S20">)';</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">R2rxn{2} = </span><span class = "S13">'alternativeR2'</span><span class = "S20">;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">R2rxn{135}(62:63) = </span><span class = "S13">'18'</span><span class = "S20">;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">R2rxn{151}(62:63) = </span><span class = "S13">'19'</span><span class = "S20">;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">fid2 = fopen([outputDir filesep </span><span class = "S13">'atomMapped' </span><span class = "S12">filesep </span><span class = "S13">'alternativeR2.rxn'</span><span class = "S12">], </span><span class = "S13">'w'</span><span class = "S20">);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">fprintf(fid2, </span><span class = "S13">'%s\n'</span><span class = "S20">, R2rxn{:});</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">fclose(fid2);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20"></span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S14">% Create an alternative DAS model</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">alternativeModel = model;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">alternativeModel.rxns{2} = </span><span class = "S13">'alternativeR2'</span><span class = "S20">;</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20"></span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S14">% Identify conserved moieties</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">ATN = buildAtomTransitionNetwork(alternativeModel, atomMappedDir);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">[L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = </span><span class = "S23">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    identifyConservedMoieties(alternativeModel, ATN);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S21">Step 2: Decompose the composite moiety vector</span></p><p class = "S4"><span class = "S2">First, extract the internal stoichiometric matrix for DAS, by running:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">rbool = ismember(alternativeModel.rxns, ATN.rxns);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">mbool = any(alternativeModel.S(:,rbool), 2);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">N = alternativeModel.S(mbool, rbool);</span></p></div></div><p class = "S15"><span class = "S2">To decompose the moiety matrix computed in Step 1, run:</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">changeCobraSolver(</span><span class = "S13">'gurobi6'</span><span class = "S12">, </span><span class = "S13">'milp'</span><span class = "S20">);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">D = decomposeMoietyVectors(L, N);</span></p></div></div><p class = "S15"><span class = "S2">Note that you can use any Mixed Integer Linear Programme (MILP) solver that is supported by the COBRA toolbox. The decomposed moiety matrix D is identical to the original moiety matrix computed in Part 1. Moiety vectors D(:,4) and D(:,5) are the linearly independent components of the composite moiety vector L(:,4) above.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">full(D(:,[4 5])')</span></p></div></div><p class = "S15"><span class = "S2">One disadvantage of decomposing moiety vectors is that it is difficult to keep track of which atoms belong to the decomposed moieties. We can, however, estimate the chemical formulas of the decomposed moieties using the elemental matrix for DAS. The elemental matrix is a numerical representation of the chemical formulas of metabolites in DAS.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S12">[E,elements] = constructElementalMatrix(alternativeModel.metFormulas,</span><span class = "S23">...</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">    alternativeModel.metCharges);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">decomposedMoietyFormulas = estimateMoietyFormulas(D, E, elements);</span></p></div><div class = 'inlineWrapper'><p class = "S11 lineNode"><span class = "S20">decomposedMoietyFormulas([4 5])'</span></p></div></div><p class = "S15"><span class = "S2">i.e., each decomposed moiety contains an oxygen atom.</span></p><h2 class = "S3"><span class = "S2">References</span></h2><p class = "S4"><span class = "S2">[1] Haraldsdóttir, H.S., Thiele, I., Fleming, R.M.: Comparative evaluation of open source software for mapping between metabolite identifiers in metabolic network reconstructions: application to Recon 2. Journal of cheminformatics 6(1), 2 (2014).</span></p><p class = "S4"><span class = "S2">[2] Elizabeth Brunk, Swagatika Sahoo, Daniel C. Zielinski,</span><span class = "S2"> </span><span class = "S2">Ali Altunkaya,</span><span class = "S5"> </span><span class = "S2">Andreas Dräger, Nathan Mih, Andreas Prlić, Anand Sastry, German A. Preciat Gonzalez, Anna D. Danielsdottir, Alberto Noronha, Maike </span><span class = "S2">K.</span><span class = "S2"> </span><span class = "S2">Aurich, Peter W. Rose, Stephen K. Burley, Ronan M.T. Fleming, Jens Nielsen, Ines Thiele, Bernhard O. Palsson.</span><span class = "S2"> Recon 3D: A Three-Dimensional View of Human Metabolism and Disease. Submited</span></p><p class = "S4"><span class = "S2">[3] Rahman, S.A., Torrance, G., Baldacci, L., Cuesta, S.M., Fenninger, F., Gopal, N., Choudhary, S., May, J.W., Holliday, G.L., Steinbeck, C., Thornton, J.M.: Reaction Decoder Tool (RDT): extracting features from chemical reactions.  Bioinformatics 32(13), 2065–2066 (2016).</span></p><p class = "S4"><span class = "S2">[4] German A. Preciat Gonzalez, Lemmer El Assal, Alberto Noronha, Ines Thiele, Hulda S. Haraldsdóttir, Ronan M.T. Fleming. Comparative evaluation of atom mapping algorithms for balanced metabolic reactions: application to Recon 3D. J Cheminform. 2017.</span></p><p class = "S4"><span class = "S2">[5] Hulda S. Haraldsdóttir and Ronan M. T. Fleming. Identification of conserved moieties in metabolic networks by graph theoretical analysis of atom transition networks. PLOS Computational Biology, 12(11): e1004999, 2016.</span></p><p class = "S4"><span class = "S2">[6] Iman Famili and B. Ø. Palsson. The convex basis of the left null space of the stoichiometric matrix leads to the definition of metabolically meaningful pools. Biophysical Journal, 85(1):16–26, 2003.</span></p></div></div>
 <!-- 
 ##### SOURCE BEGIN #####
 %% Atomically resolve a metabolic reconstruction
 %% Author(s): *Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
-%% Reviewer(s): 
+%% Reviewer(s): Catherine Clancy, Molecular Systems Physiology Group, University of Luxembourg.
 %% INTRODUCTION
 % Genome-scale metabolic network reconstructions have become a relevant tool 
 % in modern biology to study the metabolic pathways of biological systems _in 
@@ -5547,10 +6063,10 @@ CJMy5f8BMBG9N+vE8uMAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Fig
 % 
 % A set of atom mappings represents the mechanism of each chemical reaction 
 % in a metabolic network, each of which relates an atom in a substrate metabolite 
-% to an atom of the same element in a product metabolite. To atom map reactions 
-% in a metabolic network reconstruction, one requires chemical structures in a 
-% data file format (SMILES, MDL MOL, InChIs), reaction stoichiometries, and an 
-% atom mapping algorithm.
+% to an atom of the same element in a product metabolite (Figure 1). To atom map 
+% reactions in a metabolic network reconstruction, one requires chemical structures 
+% in a data file format (SMILES, MDL MOL, InChIs), reaction stoichiometries, and 
+% an atom mapping algorithm.
 % 
 % 
 % 
@@ -5574,8 +6090,9 @@ CJMy5f8BMBG9N+vE8uMAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Fig
 % 
 % In this tutorial, we will identify the conserved moieties using atom mapping 
 % data for the dopamine synthesis network (DAS) extracted from Recon 3 [2] (Figure 
-% 2). Section 1 covers the obtention of atom mapping data. Section 2 Covers the 
-% identification of conserved metabolic moieties.
+% 2). Section 1 of the tutorial will cover obtaining and visualising an atom map 
+% of metabolic reactions, and section 2 of the tutorial covers the identification 
+% of conserved metabolic moieties.
 % 
 % 
 % 
@@ -5583,30 +6100,32 @@ CJMy5f8BMBG9N+vE8uMAAAAASUVORK5CYII="></p><p class = "S4"><span class = "S2">Fig
 % human dopamine synthesis pathway [2]. Atoms belonging to the same conserved 
 % moiety have identically coloured backgrounds.
 %% MATERIALS
-% To atom map reactions it is required to have Java version 8. To standardise 
-% chemical reaction is needed to download JChem from ChemAxon with its respective 
-% license
-%% Section 1 Reactions atom mappings
-
-initCobraToolbox
-%% 
+% To atom map reactions it is required to have Java version 8 and Linux. The 
+% atom mapping does not run on windows at present. Also, to standardise the chemical 
+% reaction format it is required to have JChem downloaded from ChemAxon with its 
+% respective license.
+%% SECTION 1 Atom mapping of reactions
 % Atom mappings for the internal reactions of a metabolic network reconstruction 
 % are performed by the function |obtainAtomMappingsRDT|. The main inputs are a 
 % COBRA model structure and a directory containing the molecular structures in 
-% MDL MOL format. For this example, the atom mappings are generated based on the 
-% molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles 
-% (|molFileDir|), the reconstructed DAS network without hydrogen atoms (|model|) 
-% and using the RDT algorithm.
+% MDL MOL format. For this tutorial, using the RDT algorithm, the atom mappings 
+% are generated based on the molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles 
+% (|molFileDir|) and the reconstructed DAS network without hydrogen atoms (|model|).
 
-load(['data' filesep 'subDas.mat']) % The subnetwork from the dopamine synthesis network
-molFileDir = ['data' filesep 'molFiles']; % Metabolites chemical structures
+load(['data' filesep 'subDas.mat']) % The subnetwork of the dopamine synthesis network
+molFileDir = ['data' filesep 'molFiles']; % The chemical structures of metabolites
 %% 
 % The function |obtainAtomMappingsRDT |generates 4 different directories 
-% containing the atom mapped reactions in MDL RXN format, images of the atom mapped 
-% reactions, additional data for the atom mapped reactions (SMILES,  and product 
-% and reactant indexes) and unmapped MDL RXN files.| |Variable |rxnDir |indicates 
-% the directory where the folders will be generated (by default the function assigns 
-% the current directory).
+% containing: 
+% 
+% * the atom mapped reactions in MDL RXN format (directory _atomMapped_), 
+% * the images of the atom mapped reactions (directory _images_), 
+% * additional data for the atom mapped reactions (SMILES,  and product and 
+% reactant indexes) (directory _txtData_), and 
+% * the unmapped MDL RXN files (directory _rxnFiles_).| |
+% 
+% The inoput variable |outputDir |indicates the directory where the folders 
+% will be generated (by default the function assigns the current directory).
 
 outputDir = [pwd filesep 'output'];
 %% 
@@ -5616,29 +6135,37 @@ outputDir = [pwd filesep 'output'];
 % processing |maxTime| (by default the function assign 30 minutes as a maximum 
 % time for computing an atom mapping for a reaction).
 
-maxTime = 1800;
+maxTime = 1800; % seconds
 %% 
 % The function |obtainAtomMappingsRDT| generates atom mapped reactions in 
-% a canonical format but it is *REQUIRED* to have a Chemaxon license installed. 
-% However, the reactions can be atom mapped without being standardised. The variable 
-% |isChemaxonInstalled| contains a logical value defined by the user if the license 
-% is installed or not.
+% a standard canonical format but it is *REQUIRED* to have a Chemaxon license 
+% installed. However, the reactions can be atom mapped without being standardised. 
+% The variable |isChemaxonInstalled| contains a logical value defined by the user 
+% if the license is installed or not.
 
-isChemaxonInstalled = false; % Change to "true" if Chemaxon is not installed
-%% TIMING
-% The time to compute atom mappings for metabolic reactions depends on the size 
-% of the genome-scale model and the size of the molecules in the reactions. This 
-% example may take ~1 min or less if |isChemaxonInstalled = false.|
-
-tic
-standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, ...
-                                         isChemaxonInstalled);
-toc
+isChemaxonInstalled = true; % Change varibale to "false" if Chemaxon is not installed
 %% 
-% As output, it is generated a list of atom mapped mass balanced reactions 
-% (|standardisedRxns|).
+% Now, let's obtain the atom map using |obtainAtomMappingsRDT|: 
+
+if ispc
+    error('Error: atom mapping function should be run on Linux.')
+else
+    tic
+    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, ...
+    isChemaxonInstalled);
+    toc
+end
+%% 
+% The output, |standardisedRxns,| is a list of atom mapped mass balanced 
+% reactions.
+% 
+% *TIMING*
+% 
+% The time to compute atom mappings for metabolic reactions depends on the 
+% size of the genome-scale model and the size of the molecules in the reactions. 
+% The above example may take ~1 min or less if |isChemaxonInstalled = false.|
 %% Visualising results
-% The directory images contain a graphical representation of the atom mapped 
+% The _images_ directory contains a graphical representation of the atom mapped 
 % reactions. They show the bijection between atoms and each of the metabolite 
 % pools are coloured for an easy visualisation. Figure 3 shows the atom mapped 
 % reaction to produce dopamine and $<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi 
@@ -5649,30 +6176,40 @@ toc
 % 
 % Figure 3: Reaction 3-hydroxy-L-tyrosine carboxy-lyase atom mapped (VMH 
 % ID: 3HLYCL) here represented as R3. Images generated by RDT algorithm, also 
-% shows where a reaction centre occur.
+% shows where a reaction centre occurs.
 % 
-% The directory rxnFiles contains for all atom mapped reactions a corresponding 
-% MDL RXN file. On them is contained the information of the chemical reaction. 
-% Line 2 contains the name of the reaction, the line 4 the chemical formula and 
-% line 5 the number of substrates and products. After the line 5, it is described 
-% the information of each of the molecules after the identifier $MOL. The header 
-% is in the first four lines where is found the name of the metabolite, its InChI 
-% key (if the metabolite does not contain an R group) and the number of atoms 
-% and bonds. In the atom block, is indicated the coordinates, element, charge 
-% and atom mapping number for each of the atoms and finally, the bond block connects 
-% all the atoms in the metabolite.
+% The _rxnFiles _directory contains for all atom mapped reactions a corresponding 
+% MDL RXN file (Figure 4). Contained within these files are information of the 
+% chemical reaction, such as: 
+% 
+% * the name of the reaction (on line 2 of the file), 
+% * the chemical formula (on line 4 of the file), 
+% * the number of substrates and products (on line 5 of the file), and 
+% * specific information for each of the molecules (from line 6 onwards, after 
+% the identifier $MOL). 
+% 
+% 
+% 
+% Figure 4: A MDL RXN file stored in the _rxnFiles _directory.  
+% 
+% Specific information for each of the molecules includes the name of the 
+% metabolite, it's InChI key (if the metabolite does not contain an R group) and 
+% the number of atoms and bonds. Following this is the atom block, which contains 
+% detailed information on the coordinates, element, charge and atom mapping number 
+% for each of the atoms, and then finally, the bond block connects all the atoms 
+% in the metabolite.
 
 regexp(fileread([outputDir filesep 'atomMapped' filesep 'R3.rxn']), '\n', 'split')'
 %% 
-% The last directory contains the TXT information of the reaction including 
-% the SMILES format which holds a canonical format of the reaction, the reactant 
-% input atom index and the product input atom index.
+% The _txtData _directory contains the TXT information of the reaction including 
+% the SMILES format, which holds the standard canonical format of the reaction, 
+% the reactant input atom index and the product input atom index.
 
 regexp(fileread([outputDir filesep 'txtData' filesep 'R3.txt']), '\n', 'split')'
-%% Section 2 Identifying conserved metabolic moieties
-%     A conserved moiety is a group of atoms within molecules connected by reactions, 
+%% SECTION 2 Identifying conserved metabolic moieties
+% A conserved moiety is a group of atoms within molecules connected by reactions, 
 % that follow identical paths through a metabolic network and therefore, its amount 
-% remains constant (Figure 4). Representative examples from energy metabolism 
+% remains constant (Figure 5). Representative examples from energy metabolism 
 % include the AMP and NAD moieties. With the set of atom mappings for a metabolic 
 % network the set of linearly independent conserved moieties for the metabolic 
 % network can be identified, each of which corresponds to a particular identifiable 
@@ -5680,14 +6217,16 @@ regexp(fileread([outputDir filesep 'txtData' filesep 'R3.txt']), '\n', 'split')'
 % 
 % 
 % 
-% Figure 4: A graphical representation of a conserved moiety
+% Figure 5: A graphical representation of a conserved moiety
 % 
 % In this section, we will identify conserved moieties in a subnetwork of 
-% the dopamine synthesis network DAS (Figure 2) by graph theoretical analysis 
-% of its atom transition network. The method is described in [5]. This section 
-% consists of two parts. Part 1 covers basic usage of the code. Part 2 covers 
-% decomposition of a composite moiety resulting from variable atom mappings between 
-% the reoccurring metabolite pair $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% the DAS network (Figure 2) by graph theoretical analysis of its atom transition 
+% network. The method is described in [5]. This section consists of two parts: 
+% 
+% Part 1 covers basic usage of the code. 
+% 
+% Part 2 covers decomposition of a composite moiety resulting from variable 
+% atom mappings between the recurring metabolite pair $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><msub><mrow><mi mathvariant="italic">O</mi></mrow><mrow><mn>2</mn></mrow></msub></mrow></math>$ 
 % and $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mrow><mi 
 % mathvariant="italic">H</mi></mrow><mrow><mn>2</mn></mrow></msub><mi mathvariant="italic">O</mi></mrow></math>$.
@@ -5697,7 +6236,7 @@ regexp(fileread([outputDir filesep 'txtData' filesep 'R3.txt']), '\n', 'split')'
 % 
 % The atom transition network is generated based on the reconstructed DAS 
 % network (|model|) and atom mappings for internal reactions, obtained in the 
-% previous section (|atomMappedDir|) and predicted with the RDT algorithm [3].
+% previous section and predicted with the RDT algorithm [3].
 
 if ~isChemaxonInstalled
     copyfile('data/atomMapped',[outputDir filesep 'atomMapped'])
@@ -5711,19 +6250,23 @@ ATN = buildAtomTransitionNetwork(model, atomMappedDir);
 % metabolites. |ATN.mets| indicates which metabolite in DAS each atom belongs 
 % to. To find rows of |ATN.A |corresponding to atoms in $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><msub><mrow><mi mathvariant="normal">CO</mi></mrow><mrow><mn>2</mn></mrow></msub></mrow></math>$, 
-% run
+% run:
 
 ico2 = find(ismember(ATN.mets, 'co2[c]'))'
 %% 
 % The order of atoms in |ATN.A| matches their order in MDL MOL files encoding 
-% metabolite structures (Figure 6), e.g., |ATN.A|(90,:) is the row corresponding 
-% to the second oxygen atom (number 3 in Figure 5).
+% metabolite structures (Figure 7), e.g., |ATN.A|(90,:) is the row corresponding 
+% to the second oxygen atom (number 3 in Figure 6).
 % 
 % 
 % 
-% Figure 5: Rows for $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mrow><mi 
+% 
+% 
+% Figure 6: Rows for $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mrow><mi 
 % mathvariant="normal">CO</mi></mrow><mrow><mn>2</mn></mrow></msub></mrow></math>$ 
 % atoms in |ATN.A| are ordered as shown.
+% 
+% ||
 % 
 % |ATN.elements| contains the element symbols of atoms, e.g.,
 
@@ -5733,7 +6276,7 @@ ATN.elements{90}
 % of the four internal reactions in DAS. Reaction identifiers of atom transitions 
 % are given in |ATN.rxns|. To find all atom transitions that involve $<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi 
 % mathvariant="normal">CO</mi></mrow><mrow><mn>2</mn></mrow></msub></math>$ atoms, 
-% run
+% run:
 
 tco2 = find(any(ATN.A(ico2,:), 1))
 ATN.rxns(tco2)'
@@ -5742,7 +6285,7 @@ ATN.rxns(tco2)'
 % atoms in $<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi mathvariant="normal">CO</mi></mrow><mrow><mn>2</mn></mrow></msub></math>$. 
 % To find atoms connected to $<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi 
 % mathvariant="normal">CO</mi></mrow><mrow><mn>2</mn></mrow></msub></math>$ atoms 
-% via these atom transitions, run
+% via these atom transitions, run:
 
 cco2 = find(any(ATN.A(:, tco2) < 0,2));
 ATN.mets(cco2)'
@@ -5775,11 +6318,11 @@ full(L(iLDOPA, 2))
 % i.e., L-DOPA contains one instance of moiety 2.
 % 
 % The 19×17 moiety supergraph (|Lambda|) contains the graphs of all seven 
-% conserved moieties in DAS (Figure 6).
+% conserved moieties in DAS (Figure 7).
 % 
 % 
 % 
-% Figure 6: Graphs of the five conserved moieties in DAS. Each node represents 
+% Figure 7: Graphs of the five conserved moieties in DAS. Each node represents 
 % an instance of a conserved moiety in a particular metabolite. Each directed 
 % edge represents conservation of a moiety between two metabolites. The chemical 
 % formula of each moiety is given below its graph.
@@ -5787,7 +6330,7 @@ full(L(iLDOPA, 2))
 % Each row of Lambda represents a single instance of a conserved moiety in 
 % a particular metabolite. The vector moieties2vectors maps between the rows of 
 % Lambda and the columns of L. To obtain the incidence matrix of a particular 
-% moiety graph, e.g., λ2 in Figure 6, run
+% moiety graph, e.g., λ2 in Figure 7, run
 
 i2 = find(moieties2vectors == 2);
 c2 = find(any(Lambda(i2, :)));
@@ -5814,24 +6357,24 @@ find(ismember(atoms2moieties, i2) & ismember(ATN.mets, '34dhphe[c]'))'
 
 types = classifyMoieties(L, model.S)
 %% 
-% The internal moiety (λ3 in Fig. 3) is conserved in both the open and closed 
-% DAS network, whereas the transitive and integrative moieties are only conserved 
-% in the closed network [6].
-%% Part 2: Effects of variable atom mappings between reoccurring metabolite pairs
+% The internal moiety (λ3 in Figure 3) is conserved in both the open and 
+% closed DAS network, whereas the transitive and integrative moieties are only 
+% conserved in the closed network [6].
+%% Part 2: Effects of variable atom mappings between recurring metabolite pairs
 % Here, we will again identify conserved moieties in DAS but with a slightly 
-% different set of atom mappings (Figure 7). The different atom mappings give 
+% different set of atom mappings (Figure 8). The different atom mappings gives 
 % rise to a different atom transition network with a different set of conserved 
 % moieties. In particular, it contains a single composite moiety, λ8 in Figure 
-% 4, in place of the two moieties λ4 and λ5 in Figure 3. The composite moiety 
-% is the result of variable atom mappings between the reoccurring metabolite pair 
+% 5, in place of the two moieties λ4 and λ5 in Figure 3. The composite moiety 
+% is the result of variable atom mappings between the recurring metabolite pair 
 % O2 and H2O in reactions R1 and R2.
 % 
 % 
 % 
-% Figure 7: (a) Oxygen atom transitions used in Part 1. Oxygen atom 1 in 
+% Figure 8: (a) Oxygen atom transitions used in Part 1. Oxygen atom 1 in 
 % O2 maps to the oxygen atom in H2O in both R1 and R2. These atom transitions 
 % contain two separate moieties, with two disconnected moiety graphs (λ4 and λ5 
-% in Figure 6), and two linearly independent moiety vectors (L(:,4) and L(:,5)). 
+% in Figure 7), and two linearly independent moiety vectors (L(:,4) and L(:,5)). 
 % (b) Oxygen atom transitions used in Part 2. A different oxygen atom maps from 
 % O2 to H2O in R1 than in R2. These atom transitions contain only one composite 
 % moiety. (c) The composite moiety graph arising from the oxygen atom transitions 
@@ -5859,21 +6402,22 @@ ATN = buildAtomTransitionNetwork(alternativeModel, atomMappedDir);
 %% 
 % *Step 2: Decompose the composite moiety vector*
 % 
-% First, extract the internal stoichiometric matrix for DAS, by running
+% First, extract the internal stoichiometric matrix for DAS, by running:
 
 rbool = ismember(alternativeModel.rxns, ATN.rxns);
 mbool = any(alternativeModel.S(:,rbool), 2);
 N = alternativeModel.S(mbool, rbool);
 %% 
-% To decompose the moiety matrix computed in Step 1, run
+% To decompose the moiety matrix computed in Step 1, run:
 
 changeCobraSolver('gurobi6', 'milp');
 D = decomposeMoietyVectors(L, N);
 %% 
-% Note that you can use any MILP solver that is supported by the COBRA toolbox. 
-% The decomposed moiety matrix D is identical to the original moiety matrix computed 
-% in Part 1. Moiety vectors D(:,4) and D(:,5) are the linearly independent components 
-% of the composite moiety vector L(:,4) above.
+% Note that you can use any Mixed Integer Linear Programme (MILP) solver 
+% that is supported by the COBRA toolbox. The decomposed moiety matrix D is identical 
+% to the original moiety matrix computed in Part 1. Moiety vectors D(:,4) and 
+% D(:,5) are the linearly independent components of the composite moiety vector 
+% L(:,4) above.
 
 full(D(:,[4 5])')
 %% 
@@ -5919,7 +6463,5 @@ decomposedMoietyFormulas([4 5])'
 % [6] Iman Famili and B. Ø. Palsson. The convex basis of the left null space 
 % of the stoichiometric matrix leads to the definition of metabolically meaningful 
 % pools. Biophysical Journal, 85(1):16–26, 2003.
-% 
-%
 ##### SOURCE END #####
 --></body></html>
