@@ -361,14 +361,14 @@ constrainedTest = changeObjective(constrainedTest, 'DM_atp_c_');
 % is increased to 155 essential reactions. Therefore, it is useful to integrate 
 % cell-type specific constraints in order to restrict the solution space.
 %% REFERENCES
-% 1. Thiele, I.  and Palsson B.?. A protocol for generating a high-quality genome-scale 
-% metabolic reconstruction. Nat. Protocols. 5(1), 93?121(2010).
+% 1. Thiele, I.  and Palsson B.O. A protocol for generating a high-quality genome-scale 
+% metabolic reconstruction. Nat. Protocols. 5(1), 93-121(2010).
 % 
-% 2. Feist, A.M. and Palsson, B.?. The biomass objective function. Current 
-% Opinion in Microbiology. 13(3), 344?349 (2010).  
+% 2. Feist, A.M. and Palsson, B.O. The biomass objective function. Current 
+% Opinion in Microbiology. 13(3), 344-349 (2010).  
 % 
 % 3. Kuhar, M.J. On the use of protein turnover and half-lives. Neuropsychopharmacology. 
-% 34(5), 1172?1173 (2008). 
+% 34(5), 1172-1173 (2008). 
 % 
 % 4. Sokoloff, L. et al. The [14C]deoxyglucose method for the measurement 
 % of local cerebral  glucose utilization: theory, procedure, and normal values 
