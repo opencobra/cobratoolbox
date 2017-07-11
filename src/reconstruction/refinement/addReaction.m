@@ -94,7 +94,7 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
         end
         %convert the input into the new format.
         for i = start:numel(varargin)
-            if~isempty(varargin{i})
+            if ~isempty(varargin{i})
                 %Since we look for non empty, we should not have empty
                 %elements.
                 tempargin{end+1} = oldOptionalOrder{i};
