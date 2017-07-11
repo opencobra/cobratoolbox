@@ -36,13 +36,13 @@ changeCobraSolver(solverName,solverType);
 warning off MATLAB:subscripting:noSubscriptsSpecified
 %% COBRA model. 
 % In this tutorial, the model used is the generic reconstruction of human metabolism, 
-% the Recon 2.04 [1]. Download the Recon 2.04 model from the <https://vmh.uni.lu/#downloadview 
-% Virtual Metabolic Human> webpage and save to your prefered directory. Before 
-% proceeding with the simulations, the path for the model needs to be set up:
+% the Recon 2.04 [1], which is provided in the COBRA Toolbox. The Recon 2.04 model* 
+% *can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
+% Human> webpage. Before proceeding with the simulations, the path to the model 
+% needs to be set up and the model loaded:
 
-pathModel = '....';  % Add your path to the Recon 2.04 model, e.g., 'C:\Users\MyUserName\MyModels\'  
-filename = 'Recon2.v04.mat';
-load([pathModel, filename])
+global CBTDIR
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);
 model = modelR204;
 clear modelR204;
 %% PROCEDURE
