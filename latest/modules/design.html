@@ -354,7 +354,7 @@ irreversible reactions. If you wish to constrain a reaction, use
 <dt id="src.design.analyzeGCdesign">
 <code class="descname">analyzeGCdesign</code><span class="sig-paren">(</span><em>modelRed</em>, <em>selectedRxns</em>, <em>target</em>, <em>deletions</em>, <em>maxKOs</em>, <em>objFunction</em>, <em>delPenalty</em>, <em>intermediateSlns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/design/analyzeGCdesign.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.analyzeGCdesign" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzes results with replacement knockouts
-should get closer to local maxima.  must have num <cite>KOs</cite> &gt; 1</p>
+should get closer to local maxima.  Must have num <cite>KOs</cite> &gt; 1.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns)</div></blockquote>
@@ -368,7 +368,7 @@ selected reaction list from the reduced model</li>
 <li><strong>target</strong> &#8211;
 exchange <cite>rxn</cite> to optimize</li>
 <li><strong>deletions</strong> &#8211;
-initial set of <cite>KO</cite> <cite>rxns</cite> (must have at least 1 rxn)</li>
+initial set of <cite>KO</cite> <cite>rxns</cite> (must have at least 1 <cite>rxn</cite>)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -466,9 +466,9 @@ when a specified product is produced</p>
 <li><strong>product</strong> &#8211;
 the product to investigate</li>
 <li><strong>listProducts</strong> &#8211;
-the list of all products produced in a RandKnock</li>
+the list of all products produced in a <cite>RandKnock</cite></li>
 <li><strong>listRxns</strong> &#8211;
-the list of all rxns knocked out in a RandKnock</li>
+the list of all rxns knocked out in a <cite>RandKnock</cite></li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -521,9 +521,9 @@ reaction that carries the augmented value</li>
 <blockquote>
 <div><ol class="arabic simple">
 <li>the model must have an extracellular compartment and a periplasm (e.g. <cite>iAF1260</cite>)</li>
+<li>there should not be an extracellular reaction acting on the metabolite
+besides the exchange reaction and the OM transport reaction</li>
 </ol>
-<p>2. there should not be an extracellular reaction acting on the metabolite
-besides the exchange reaction and the OM transport reaction</p>
 </div></blockquote>
 </dd></dl>
 
@@ -746,7 +746,7 @@ be maximized</li>
 <li><strong>substrateRxn</strong> &#8211;
 (char) Substrate reactions</li>
 <li><strong>generxnList</strong> &#8211;
-(cell array)List of genes or <cite>rxns</cite> which
+(cell array) List of genes or <cite>rxns</cite> which
 can be knocked out.  The program will guess
 which of the two it is, based on the content
 in model.</li>
@@ -812,7 +812,7 @@ you left off.</li>
 <li><strong>scores</strong> &#8211;
 An array of scores</li>
 <li><strong>optGeneSol</strong> &#8211;
-`        optGene` solution strcture</li>
+<cite>optGene</cite> solution strcture</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -1011,18 +1011,17 @@ Deletion strain results</li>
 <dl class="function">
 <dt id="src.design.singleProductionEnvelope">
 <code class="descname">singleProductionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>product</em>, <em>biomassRxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/design/singleProductionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.singleProductionEnvelope" title="Permalink to this definition">¶</a></dt>
-<dd><p>singleProductionEnvelope plots maximum growth rate as a function of the
+<dd><p>Plots maximum growth rate as a function of the
 output of one specified products</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)</div></blockquote>
-<p><strong>Input</strong></p>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>model</strong> &#8211;
-(struct) a metabolic model with at least</p>
-<blockquote>
-<div><p>the following fields:</p>
+(struct) a metabolic model with at least
+the following fields:</p>
 <blockquote>
 <div><ul class="simple">
 <li>.rxns - Reaction IDs in the model</li>
@@ -1034,14 +1033,16 @@ output of one specified products</p>
 <li>.ub -   Upper bounds for fluxes</li>
 </ul>
 </div></blockquote>
-</div></blockquote>
-<dl class="docutils">
-<dt>deletions:       (cell array) the reactions or genes to knockout of</dt>
-<dd><p class="first last">the model</p>
-</dd>
-</dl>
-<p>product:         (char) the product to investigate
-biomassRxn:      (char) the biomass objective function</p>
+</li>
+<li><p class="first"><strong>deletions</strong> &#8211;
+(cell array) the reactions or genes to knockout of
+the model</p>
+</li>
+<li><p class="first"><strong>product</strong> &#8211;
+(char) the product to investigate</p>
+</li>
+<li><p class="first"><strong>biomassRxn</strong> &#8211;
+(char) the biomass objective function</p>
 </li>
 </ul>
 </div></blockquote>
@@ -1091,7 +1092,7 @@ Target reaction (e.g. &#8216;EX_etoh(e)&#8217;)</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>deletions</strong> &#8211;
-Set of reaction deletions (e.g. {&#8216;PGI&#8217;,&#8217;TPI&#8217;})
+Set of reaction deletions (e.g. {&#8216;PGI&#8217;, &#8216;TPI&#8217;})
 (Default = [])</li>
 </ul>
 </div></blockquote>
