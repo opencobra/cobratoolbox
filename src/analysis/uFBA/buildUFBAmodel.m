@@ -189,16 +189,23 @@ model = removeRxns(model, model.rxns(exRxns));
 if ~isempty(neededSinks)
     model = addSinkReactions(model, neededSinks, -1000 * ones(length(neededSinks), 1), 1000 * ones(length(neededSinks), 1));
 end
-model.csense = '';
-model.csense(1:length(model.mets)) = 'E';
+if ~isfield(model, 'csense')
+    model.csense = repmat('E', length(model.mets),1);
+end
 
 % build UFBAmodel
 uFBAmodel = model;
-uFBAmodel.S = [model.S; model.S];
-uFBAmodel.b = [model.b; model.b];
-uFBAmodel.mets = [strcat(model.mets, '_G'); strcat(model.mets, '_L')];
-uFBAmodel.metNames = [model.metNames; model.metNames];
-uFBAmodel.csense = [model.csense, model.csense];
+
+[metFields,dimension] = getModelFieldsForType(uFBAmodel,'mets');
+metFields = setdiff(metFields,'mets'); % mets is special.
+uFBAmodel.mets = [strcat(uFBAmodel.mets, '_G'); strcat(uFBAmodel.mets, '_L')];
+for field = 1:numel(metFields)
+    if dimension(field) == 1
+        uFBAmodel.(metFields{field}) = [uFBAmodel.(metFields{field});uFBAmodel.(metFields{field})];
+    elseif dimension(field) == 2
+        uFBAmodel.(metFields{field}) = [uFBAmodel.(metFields{field}),uFBAmodel.(metFields{field})];
+    end
+end
 
 % Filter out non-quantified metabolites
 toRemove = find(changeIntervals == 0);
