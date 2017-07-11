@@ -420,11 +420,13 @@ rxnList = {'HEX1'; 'PGI'; 'FBP'; 'FBA'}
 subModel = extractSubNetwork(model, rxnList)
 %% REFERENCES
 % [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
-% analysis? _Nat. Biotechnol., 28_(3), 245–248.
+% analysis? _Nat. Biotechnol., 28_(3), 245-248.
 % 
 % [2] Feist, A. M., Palsson, B. (2008). The growing scope of applications 
 % of genome-scale metabolic reconstructions: the case of _E. coli_. _Nature Biotechnology, 
-% 26_(6), 659–667.
+% 26_(6), 659-667.
 % 
 % [3] Feist, A. M., Palsson, B. O. (2010). The Biomass Objective Function. 
-% _Current Opinion in Microbiology, 13_(3), 344–349.
+% _Current Opinion in Microbiology, 13_(3), 344-349.
+% 
+%
