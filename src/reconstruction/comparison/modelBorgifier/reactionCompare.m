@@ -1,67 +1,60 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
-function [rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, ...
-                                                     scoreIn, varargin) 
-% reactionCompare is the function front end for autoMatchReactions and 
-% the reactionCompareGUI. Loads CMODEL, TMODEL, Score and ScoreTotal from
-% globals if they are not provided. If rxnList is not provided then it is
-% generated with autoMatchReactions. If you are continuing comparison, 
-% include the optional inputs. 
+function [rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, scoreIn, varargin)
+% This is the function front end for `autoMatchReactions` and
+% the `reactionCompareGUI`. Loads `CMODEL`, `TMODEL`, `Score` and `ScoreTotal` from
+% globals if they are not provided. If `rxnList` is not provided then it is
+% generated with `autoMatchReactions`. If you are continuing comparison,
+% include the optional inputs.
+% Called by `optimalScores`, `autoMatchReactions`, `reactionCompareGUI`, calls `mergeModels`, `driveModelBorgifier`.
 %
 % USAGE:
-%    [rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, scoreIn, ...
-%                                                [rxnList, metList, Stats])
+%
+%    [rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, scoreIn, [rxnList, metList, Stats])
 %
 % INPUTS:
-%    CmodelIn
-%    TmodelIn
-%    scoreIn
+%    CmodelIn:    Comparison model
+%    TmodelIn:    Template model
+%    scoreIn:     Score
 %
 % OPTIONAL INPUTS:
-%    rxnList:    Array pairs reactions in CMODEL with matches from TMODEL or
-%                declares them as new.
-%    metList:    Array pairs metabolites in CMODEL with matches from TMODEL,
-%                new metabolites are given their new met number in TMODEL.
-%    Stats:      Stats array that contains weighting information from previous
-%                scoring work. 
+%    rxnList:     Array pairs reactions in `CMODEL` with matches from `TMODEL` or
+%                 declares them as new.
+%    metList:     Array pairs metabolites in `CMODEL` with matches from `TMODEL`,
+%                 new metabolites are given their new met number in `TMODEL`.
+%    Stats:       Stats array that contains weighting information from previous
+%                 scoring work.
 %
 % OUTPUTS:
-%    rxnList
-%    metList
-%    Stats
+%    rxnList:     reactions' list
+%    metList:     metabolites' list
+%    Stats:       Structure of information regarding the merging and also stats
+%                 on the combined model.
 %
-% CALLS:
-%    optimalScores
-%    autoMatchReactions
-%    reactionCompareGUI
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    mergeModels
-%    driveModelBorgifier
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-
-%% Declare variables
+global CMODEL TMODEL SCORE % Declare variables
 % Make the inputs variables so they can be easily accessed by downstream
-% scripts. None of these variables are edited by any of these scripts. 
-global CMODEL TMODEL SCORE
+% scripts. None of these variables are edited by any of these scripts.
 CMODEL = CmodelIn ;
-TMODEL = TmodelIn ; 
+TMODEL = TmodelIn ;
 SCORE = scoreIn ;
 
 % Need scoreTotal now to create rxnList if Stats is not provided.
@@ -90,12 +83,10 @@ end
 
 % Create information structure to pass to reactionCompareGUI
 InfoBall.rxnList = rxnList ;
-InfoBall.metList = metList ; 
+InfoBall.metList = metList ;
 InfoBall.CmodelName = CMODEL.description ;
 InfoBall.Stats = Stats ;
 InfoBall.S = CMODEL.S ;
 
 % Launch GUI.
-[rxnList, metList, Stats] = reactionCompareGUI(InfoBall) ; 
-
-
+[rxnList, metList, Stats] = reactionCompareGUI(InfoBall) ;

@@ -1,46 +1,43 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
-function [rmatch, mmatch] = mapMatch(Cmodel,Tmodel,seedMets)
-% mapMatch compares the local network topology between the metabolites and
-% reactions of two models
+function [rmatch, mmatch] = mapMatch(Cmodel, Tmodel, seedMets)
+% Compares the local network topology between the metabolites and
+% reactions of two models. Called by `compareCbModels`.
 %
 % USAGE:
 %
+%    [rmatch, mmatch] = mapMatch(Cmodel, Tmodel, seedMets)
+%
 % INPUTS:
-%     Cmodel:    model to be compared
-%     Tmodel:    reference model
-%     seedMats:  two column cell array with pairs of metabolite names in the
-%                two models that are the same
+%    Cmodel:      model to be compared
+%    Tmodel:      reference model
+%    seedMats:    two column cell array with pairs of metabolite names in the
+%                 two models that are the same
 %
 % OUTPUTS:
-%     rmatch:    pairwise match score between reactions
-%     mmatch:    pairwise match score between metabolites
+%    rmatch:      pairwise match score between reactions
+%    mmatch:      pairwise match score between metabolites
 %
-% CALLS:
-%     None
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%     compareCbModels
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
 %
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-% preallocate matching
-mmatch = zeros(length(Cmodel.mets), length(Tmodel.mets)) ;
+mmatch = zeros(length(Cmodel.mets), length(Tmodel.mets)) ; % preallocate matching
 rmatch = zeros(length(Cmodel.rxns), length(Tmodel.rxns)) ;
 mcnt = zeros(length(Cmodel.mets), length(Tmodel.mets)) ;
 rcnt = zeros(length(Cmodel.rxns), length(Tmodel.rxns)) ;
@@ -68,20 +65,20 @@ if ischar(seedMets)
         for im = 2:length(tmodelnames)
             metInModelSum = metInModelSum + Tmodel.Models.(tmodelnames{im}).mets ;
         end
-        
+
         % difference in number of reactions that each metabolite is involved in
         diffNumRxns = abs(repmat((Trxnwithmet ./ metInModelSum)', length(Cmodel.mets), 1) - ...
                           repmat(Crxnwithmet, 1, length(Tmodel.mets))) ;
         % difference in number of metabolites that are involved in each reaction
         diffNumMets = abs(repmat(Tmetinrxn', length(Cmodel.rxns), 1) - ...
                           repmat(Cmetinrxn, 1, length(Tmodel.rxns))) ;
-        
+
         for ir1 = 1:length(Cmodel.rxns)
             for ir2 = 1:length(Tmodel.rxns)
                 % for each pair of reactions, get the corresponding sets of
                 % metabolites and for those get the average of the minimum
                 % difference in numbers of reactions that they are involved in
-                rmatch(ir1, ir2) = mean(min(diffNumRxns(s1(:, ir1), s2(:, ir2)))) ;  
+                rmatch(ir1, ir2) = mean(min(diffNumRxns(s1(:, ir1), s2(:, ir2)))) ;
             end
         end
         % multiply the average difference in number of reactions of the
@@ -89,31 +86,31 @@ if ischar(seedMets)
         % of each pair of reactions
         rmatch = rmatch .* diffNumMets ;
         % convert to distance
-        rmatch = 1 ./ (rmatch +1) ;   
-    end   
+        rmatch = 1 ./ (rmatch +1) ;
+    end
 else
-    
+
     % seed the matching process with pre-matched metabolites
     for ism = 1:size(seedMets, 1)
         mmatch(strcmp(Cmodel.mets, seedMets{ism, 1}), strcmp(Tmodel.mets, seedMets{ism, 2})) = inf ;
         mcnt(  strcmp(Cmodel.mets, seedMets{ism, 1}), strcmp(Tmodel.mets, seedMets{ism, 2})) = 1 ;
     end
-    
+
     Cmodeltodo = 1:length(Crxnwithmet) ;
     r1todo = 1:length(Cmetinrxn) ;
-    
+
     % take out too highly connected metabolites
     Cmodeltodo(Crxnwithmet > 60) = [] ;
-    
+
     h = waitbar(1) ;
-    
+
     while length(Cmodeltodo) >= 1
         % find best matching metabolite and the reactions it is involved in
         mmatchnorm = mmatch ./ (mcnt + 1) ;
         maxMmatch = max(mmatchnorm(Cmodeltodo, :), [], 2) ;
         if max(maxMmatch) > 0
             nowmpos = Cmodeltodo(maxMmatch == max(maxMmatch)) ;
-            
+
             for im = 1:length(nowmpos)
                 nowmpos1 = nowmpos(im) ;
                 if  max(mmatch(nowmpos1, :)) > 0
@@ -138,13 +135,13 @@ else
             % only non-connected metabolites left
             Cmodeltodo = [] ;
         end
-        
+
         % find best matching reaction and the metabolites it involves
         rmatchnorm = rmatch ./ (rcnt + 1) ;
         maxRmatch = max(rmatchnorm(r1todo, :), [], 2) ;
         if max(maxRmatch) > 0
             nowrpos = r1todo(maxRmatch == max(maxRmatch)) ;
-            
+
             for ir = 1:length(nowrpos)
                 nowrpos1 = nowrpos(ir) ;
                 if  max(rmatch(nowrpos1, :)) > 0
@@ -168,6 +165,6 @@ else
         end
         waitbar(length(Cmodeltodo) / length(Cmodel.mets))
     end
-    
+
     close(h)
 end
