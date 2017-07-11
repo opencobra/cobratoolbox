@@ -1,50 +1,45 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function nameList = makeNamesUnique(nameList, varargin)
-% makeNamesUnique identifies duplicate names in a list of names (cell array)
-% and prompts the user to input new names. 
+% Identifies duplicate names in a list of names (cell array)
+% and prompts the user to input new names.
+% Called by `cleanTmodel`, `verifyModel`, `addSEEDInfo`, calls `countUnique`.
 %
 % USAGE:
+%
 %    nameList = makeNamesUnique(nameList, [nameInfo])
 %
 % INPUTS:
-%    nameList:   Cell array of entires that contains duplicates.
+%    nameList:    Cell array of entires that contains duplicates.
 %
 % OPTIONAL INPUTS:
-%    nameInfo:   Cell array the same length as nameList that contains
-%                information pertaining to the matching entry in nameList. This
-%                array can help the renaming process.
+%    nameInfo:    Cell array the same length as nameList that contains
+%                 information pertaining to the matching entry in `nameList`. This
+%                 array can help the renaming process.
 %
-% OUPUTS:
-%    nameList:   Version of nameList with all unique entires.
+% OUTPUTS:
+%    nameList:    Version of nameList with all unique entires.
 %
-% CALLS:
-%    countUnique
-% 
-% CALLED BY:
-%    cleanTmodel
-%    verifyModel
-%    addSEEDInfo
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Declare variables.
-if (nargin > 1)
+if (nargin > 1) % Declare variables.
     nameInfo = varargin{1} ;
 end
 
@@ -55,7 +50,7 @@ uniqList = unique(nameList) ;
 [names, cnt] = countUnique(nameList);
 nameInd = find(cnt > 1);
 if ~isempty(nameInd)
-    
+
     fprintf('%d non-unique names. ', length(nameInd))
     renameFlag = input(['Rename automatically?\n' ...
                      'Otherwise manual renaming will proceed. (y/n): '],...
@@ -78,26 +73,26 @@ if ~isempty(nameInd)
                end
                fprintf('%s\t', nameList{IDs(j)}) ;
            end
-           fprintf('\n') 
+           fprintf('\n')
         end
     end
 end
 
-%% Find duplicate names. 
+%% Find duplicate names.
 for iName = 1:length(uniqList)
     dupPos = find(strcmp(uniqList{iName}, nameList)) ;
     % If there are duplicates.
     if length(dupPos) > 1
-        dupNo = length(dupPos) ; 
+        dupNo = length(dupPos) ;
         % Duplicate name
         dupName = uniqList{iName} ;
-        fprintf('%s has duplicates:\n', dupName) 
+        fprintf('%s has duplicates:\n', dupName)
         % Go through each duplicate and print info.
         for iDup = 1:dupNo
             if exist('nameInfo','var')
                 string = [num2str(dupPos(iDup)), '\t', ...
                           nameInfo{dupPos(iDup)}, '\n'] ;
-                fprintf(string) 
+                fprintf(string)
             else
                 fprintf('%d\n', num2str(dupPos(iDup)))
             end
@@ -130,6 +125,5 @@ end
 
 %% Check to make sure it worked.
 if length(unique(nameList)) ~= length(nameList)
-    fprintf('ERROR: Duplicate names still exist!\n') 
+    fprintf('ERROR: Duplicate names still exist!\n')
 end
-

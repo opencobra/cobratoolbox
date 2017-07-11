@@ -1,73 +1,63 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
-function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, ...
-                                            rxnList, metList, Stats, varargin)
-% mergeModels checks Tmodel for duplicate reactions and other mistakes,
+function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, rxnList, metList, Stats, varargin)
+% Checks Tmodel for duplicate reactions and other mistakes,
 % that may have occured during reaction and metabolite matching. It
 % resolves these problems and merges the models, and confirms that Cmodel
 % is the same after being removed from the merged model. It also provides
 % some statistics on the merging process and resulting combined model.
+% called by `driveModelBorgifier`, calls `addToTmodel`, `compareMatricies`, `reactionCompare`, `cleanTmodel`, organizeModelCool`, `TmodelStats`, `readCbTmodel`.
 %
 % USAGE:
-%    [TmodelC, Cspawn, Stats, CMODEL] = mergeModels(CmodelIn, TmodelIn, ...
-%                                           rxnList, metList, Stats, score)
+%
+%    [TmodelC, Cspawn, Stats, CMODEL] = mergeModels(CmodelIn, TmodelIn, rxnList, metList, Stats, score)
 %
 % INPUTS:
-%    Cmodel:     Comparison model
-%    Tmodel:     Template model
-%    rxnList:    Array which designates matched and new reactions. 
-%    metList:    Array which desginates matched and new metabolites. 
-%    Stats:      Structure that comes from reactionCompare. Weighting
-%                information can be used and additional information addended.
-%    score:      The original scoring matrix, which may be used to correct
-%                problematic reaction upon recomparison.
+%    Cmodel:       Comparison model
+%    Tmodel:       Template model
+%    rxnList:      Array which designates matched and new reactions.
+%    metList:      Array which desginates matched and new metabolites.
+%    Stats:        Structure that comes from reactionCompare. Weighting
+%                  information can be used and additional information addended.
+%    score:        The original scoring matrix, which may be used to correct
+%                  problematic reaction upon recomparison.
 %
 % OPTIONAL INPUTS:
-%    'Verbose':  Print statements on progress.
+%    'Verbose':    Print statements on progress.
 %
 % OUTPUTS:
-%    TmodelC:    Combined C and Tmodel.
-%    Cspawn:     Cmodel after it has been removed from the TmodelC
-%    Stats:      Structure of information regarding the merging and also stats
-%                on the combined model.
+%    TmodelC:      Combined `C` and `Tmodel`.
+%    Cspawn:       Cmodel after it has been removed from the `TmodelC`
+%    Stats:        Structure of information regarding the merging and also stats
+%                  on the combined model.
 %
-% CALLS:
-%    addToTmodel
-%    compareMatricies
-%    reactionCompare
-%    cleanTmodel
-%    organizeModelCool
-%    TmodelStats
-%    readCbTmodel
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    driveModelBorgifier
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Declare variables.
-global SCORE CMODEL TMODEL
+global SCORE CMODEL TMODEL % Declare variables.
 CMODEL = CmodelIn ;
 TMODEL = TmodelIn ;
-% SCORE = score ; 
+% SCORE = score ;
 TmodelC = [] ;
 Cspawn = [] ;
 
-verbose = false ; 
+verbose = false ;
 if ~isempty(varargin)
     if sum(strcmp('Verbose', varargin))
         verbose = true ;
@@ -84,7 +74,7 @@ reviewMets = 1 ;
 while reviewMets
     % Find mets that have not been declared.
     reviewMets = find(metList == 0) ;
-    
+
     % Find mets in C that have been matched to the same metabolite in T.
     uniqMetIndex = unique(metList) ;
     count = histc(metList, uniqMetIndex) ;
@@ -93,7 +83,7 @@ while reviewMets
         metIndex = find(metList == dups(iDup)) ;
         reviewMets(end + 1:length(reviewMets) + length(metIndex)) = metIndex ;
     end
-    
+
     % Review all above mets with GUI.
     if ~isempty(reviewMets)
         fprintf('Problems within metList, resolve with GUI.\n')
@@ -122,7 +112,7 @@ while checkSimilarity
     if verbose
         [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean', 'Verbose') ;
     else
-        [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ; 
+        [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
     end
 
     % Create Cmodel again from the combined model.
@@ -131,10 +121,10 @@ while checkSimilarity
     else
         Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
     end
-    
+
     FluxCompare = compareMatricies(CMODELoriginal, Cspawn) ;
-    
-    % compare bounds --> this is not a useful manner of checking. 
+
+    % compare bounds --> this is not a useful manner of checking.
     boundDiff = [] ;
 %     for ir = 1:length(CMODEL.rxns)
 %         relativeDirection = FluxCompare.CmodelS(:, ir) ./ FluxCompare.CspawnS(:, ir) ;
@@ -163,7 +153,7 @@ while checkSimilarity
 %         fprintf('Bounds not conserved after merging\n' )
 %         rxnList(boundDiff) = -1 ;
 %     end
-    
+
     % If there are differences pause and let the user know what is up.
     if sum(sum(FluxCompare.diffS)) || ~isempty(boundDiff) || (sum(rxnList == -1) > 0)
         % Plots the differences between the S matricies.
@@ -177,13 +167,13 @@ while checkSimilarity
         subplot(2, 1, 2)
         spy(FluxCompare.diffS)
         title('Difference.')
-        
+
         % Pause and tell the users what is happening.
         fprintf('Difference between the matricies. Reactions from C\n')
         fprintf('that do not have the same stoich before and after\n')
         fprintf('merging need to be reviewed again.\n')
         fprintf('Press the any key to continue.\n')
-        
+
         % Find the wrong reactions and metabolies,
         % mark them as undeclared, call GUI, and loop.
         diffmets = logical(sum(abs(FluxCompare.diffS), 2)) ;
@@ -196,9 +186,9 @@ while checkSimilarity
             diffrxns = logical(sum(abs(FluxCompare.diffS), 1)) ;
         end
         rxnList(FluxCompare.CrxnsSorti(diffrxns)) = -1 ;
-        
+
         [rxnList, metList, Stats] = reactionCompare(CMODEL, TMODEL, SCORE, rxnList, metList, Stats) ;
-        
+
     else
         % Set the flag to not check for differences again.
         fprintf('Matricies are now equal before and after merging.\n')
@@ -209,14 +199,14 @@ while checkSimilarity
     % Add rxn and metList to Stats.
     Stats.rxnList = rxnList ;
     Stats.metList = metList ;
-    
+
 end
 catch % return safely if re-matching is aborted by user
     return
 end
 
 %% Organize and Get stats on combined Tmodel.
-if verbose 
+if verbose
     TmodelC = cleanTmodel(TmodelC, 'Verbose') ;
 else
     TmodelC = cleanTmodel(TmodelC) ;
