@@ -88,6 +88,10 @@ downloadModelZipFile('ME_matrix_GlcAer_WT.mat', 'https://wwwen.uni.lu/content/do
 downloadModelZipFile('Recon2.v04.mat', 'https://vmh.uni.lu/files/Recon2.v04.mat_.zip', ...
                      'printLevel', printLevel)
 
+% download Human cardiac myocyte mitochondrial metabolic reconstruction
+downloadModelZipFile('cardiac_mit_glcuptake_atpmax.mat', 'https://wwwen.uni.lu/content/download/72949/917505/file/Human%20cardiac%20myocyte%20mitochondrial%20metabolic%20reconstruction_cardiac_mit_glcuptake_atpmax.mat.zip', ...
+                     'printLevel', printLevel)
+
 % print sucess message
 if printLevel > 0
     fprintf(['   Done downloading models.\n']);
