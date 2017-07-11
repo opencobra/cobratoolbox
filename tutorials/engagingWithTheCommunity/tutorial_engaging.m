@@ -1,12 +1,12 @@
-%% Engaging with the COBRA Toolbox community
+%% Engaging with The COBRA Toolbox community
 % *Authors: Sylvain Arreckx, Luxembourg Centre for Systems Biomedicine*
 % 
-% *Reviewers: *
+% *Reviewers: Catherine Clancy, Luxembourg Centre for Systems Biomedicine*
 %% Search for existing solutions to problems 
 % * The Frequently Asked Questions (FAQ) section of the documentation (<https://opencobra.github.io/cobratoolbox/docs/FAQ.html 
 % https://opencobra.github.io/cobratoolbox/docs/FAQ.html>) is a good starting 
 % point to find answers to questions you may have or issues you may face.
-% * The public forum associated with The COBRA toolbox, available at <https://groups.google.com/forum/#!forum/cobra- 
+% * The public forum associated with The COBRA Toolbox, available at <https://groups.google.com/forum/#!forum/cobra- 
 % toolbox https://groups.google.com/forum/#!forum/cobra- toolbox>, is a great 
 % way to search for solutions to previously recognised problems that are similar 
 % to problems novel to the user. This is especially so with respect to recent 
@@ -19,8 +19,8 @@
 %% Facing an issue?
 % Post your question online to the COBRA Toolbox forum at <https://groups.google.com/forum/#!forum/cobra- 
 % toolbox https://groups.google.com/forum/#!forum/cobra- toolbox>. Questions posted 
-% to the forum are welcome provided that some simple guidelines are followed to 
-% encourage a rapid and effective response from the community. 
+% to the forum are welcome, provided that some simple guidelines are followed 
+% to encourage a rapid and effective response from the community. 
 % 
 % # Make the question as detailed as possible to increase the probability of 
 % a rapid and helpful reply.
@@ -33,6 +33,10 @@ generateSystemConfigReport
 % Generally, responses to questions can be expected within 1-2 days of posting, 
 % provided that posting guidelines are followed. 
 %% Suggest new solutions to problems 
-% Reply to a question online COBRA toolbox forum. Community contributions are 
-% welcomed to help users overcome any issues they face and are noticed by existing 
-% COBRA community members.
+% If you think you have a novel solution to a question posted on the online 
+% forum of The COBRA Toolbox, get involved and reply to questions on the forum. 
+% The COBRA Toolbox welcomes community contributions to help users overcome any 
+% issues they face, and your contribution will be noticed by existing COBRA community 
+% members. 	
+% 
+%
