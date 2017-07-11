@@ -137,7 +137,7 @@ function downloadModelZipFile(filename, url, varargin)
         end
     end
 
-    if exist(filename, 'file') ~= 2
+    if exist([pwd filesep filename], 'file') ~= 2
         % define silence level of curl
         if printLevel == 0
             curlSilence = '-s';
