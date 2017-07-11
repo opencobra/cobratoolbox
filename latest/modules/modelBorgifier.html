@@ -186,7 +186,7 @@
 <span id="modelborgifier"></span><h1>modelBorgifier<a class="headerlink" href="#module-src.reconstruction.comparison.modelBorgifier" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.addMetInfo">
-<code class="descname">addMetInfo</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/addMetInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addMetInfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addMetInfo</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/addMetInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addMetInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows for the addition of information to metabolites during matching. Is called by <cite>metCompareGUI</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -206,7 +206,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.addToTmodel">
-<code class="descname">addToTmodel</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em>, <em>rxnList</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/addToTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addToTmodel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addToTmodel</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em>, <em>rxnList</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/addToTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addToTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds reactions and info from a comparison model into the
 master template database, <cite>Tmodel</cite>. Called by <cite>mergeModels</cite>, calls <cite>cleanTmodel</cite></p>
 <p><strong>Usage</strong></p>
@@ -257,7 +257,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.autoMatchReactions">
-<code class="descname">autoMatchReactions</code><span class="sig-paren">(</span><em>scoreTotal</em>, <em>rxnList</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/autoMatchReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.autoMatchReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">autoMatchReactions</code><span class="sig-paren">(</span><em>scoreTotal</em>, <em>rxnList</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/autoMatchReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.autoMatchReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds confident matches from CMODEL to TMODEL.
 reactions which can not be confidently assigned are reviewed with
 <cite>reactionCompare</cite>. To make a confident assignment a matched reaction must
@@ -313,7 +313,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.buildRxnEquations">
-<code class="descname">buildRxnEquations</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/buildRxnEquations.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquations" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildRxnEquations</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/buildRxnEquations.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a COBRA model and creates reaction equations based
 on the metabolites list, <cite>S</cite> matrix and bound information. Returns the
 model with the additinal field <cite>rxnEquations</cite>. Is called by <cite>cleanTmodel</cite>, <cite>compareCbModels</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
@@ -342,7 +342,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.buildRxnEquationsFromName">
-<code class="descname">buildRxnEquationsFromName</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquationsFromName" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildRxnEquationsFromName</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquationsFromName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a COBRA model and creates reaction equations based
 on the metabolite long names, S matrix and bound information. Returns the
 model with the additioanl field <cite>rxnEquations</cite>.</p>
@@ -371,7 +371,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.buildTmodel">
-<code class="descname">buildTmodel</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/buildTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildTmodel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildTmodel</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/buildTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates the template model (Tmodel). It adds model
 designations before some of the cell arrays add creates indenty arrays
 that indicate which reactions and metabolties are contained in which
@@ -402,7 +402,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.charpos">
-<code class="descname">charpos</code><span class="sig-paren">(</span><em>instr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/charpos.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.charpos" title="Permalink to this definition">¶</a></dt>
+<code class="descname">charpos</code><span class="sig-paren">(</span><em>instr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/charpos.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.charpos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the letter characters (as opposed to numeric characters) in a string
 and returns a logical array. Called by <cite>cleanTmodel</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -430,7 +430,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.cleanTmodel">
-<code class="descname">cleanTmodel</code><span class="sig-paren">(</span><em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/cleanTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.cleanTmodel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cleanTmodel</code><span class="sig-paren">(</span><em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/cleanTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.cleanTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reorganizes and checks Tmodel for completeness. To be used
 immediately after <cite>addToTmodel</cite>. Called by <cite>addToTmodel</cite>, <cite>mergeModels</cite>, <cite>mergeTrxns</cite>, calls <cite>TmodelFields</cite>, <cite>buildRxnEquations</cite>, <cite>removeDuplicateNames</cite>, <cite>makeNamesUnique</cite>, <cite>charpos</cite>, <cite>removeProblematicCharacters</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -465,7 +465,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.colText">
-<code class="descname">colText</code><span class="sig-paren">(</span><em>inText</em>, <em>inColor</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/colText.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.colText" title="Permalink to this definition">¶</a></dt>
+<code class="descname">colText</code><span class="sig-paren">(</span><em>inText</em>, <em>inColor</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/colText.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.colText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a HTML string with colored font. Used for GUIs.
 Called by <cite>metCompareGUI</cite>, <cite>reactionCompareGUI</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -494,7 +494,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.columnvector">
-<code class="descname">columnvector</code><span class="sig-paren">(</span><em>in</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/columnvector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.columnvector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">columnvector</code><span class="sig-paren">(</span><em>in</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/columnvector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.columnvector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transposes the input vector to a column vector if it is not
 already a column vector.</p>
 <p><strong>Usage</strong></p>
@@ -522,7 +522,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.compareAllMets">
-<code class="descname">compareAllMets</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/compareAllMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareAllMets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareAllMets</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/compareAllMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareAllMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares and scores similarity between all pairwise
 combinations of metabolites between two models. It is not however used
 by the main workflow.</p>
@@ -553,7 +553,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.compareCbModels">
-<code class="descname">compareCbModels</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/compareCbModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareCbModels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareCbModels</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/compareCbModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareCbModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate similarity of two Cb models. These models must
 be in a COBRA-like format. Called by <cite>driveModelBorgifier</cite>, calls <cite>addComparisonInfo</cite>, <cite>compareMetInfo</cite>, <cite>optimalScores</cite>, <cite>mapMatch</cite>, <cite>buildRxnEquations</cite>, <cite>fixNames</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -611,7 +611,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.compareMatricies">
-<code class="descname">compareMatricies</code><span class="sig-paren">(</span><em>CMODEL</em>, <em>Cspawn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/compareMatricies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareMatricies" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareMatricies</code><span class="sig-paren">(</span><em>CMODEL</em>, <em>Cspawn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/compareMatricies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareMatricies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a structure with the matrices before and after merging. Useful
 for comparing how successful merging was.  Called by <cite>mergeModels</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -641,7 +641,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.countC">
-<code class="descname">countC</code><span class="sig-paren">(</span><em>nowFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/countC.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.countC" title="Permalink to this definition">¶</a></dt>
+<code class="descname">countC</code><span class="sig-paren">(</span><em>nowFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/countC.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.countC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds number of carbons in a formula, if any.
 Called by <cite>reactionCompareGUI</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -669,7 +669,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 
 <dl class="function">
 <dt id="src.reconstruction.comparison.modelBorgifier.findMetMatch">
-<code class="descname">findMetMatch</code><span class="sig-paren">(</span><em>cMet</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/comparison/modelBorgifier/findMetMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.findMetMatch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMetMatch</code><span class="sig-paren">(</span><em>cMet</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bff8bfe470db0f103b9eb439fd6c6af3745dea2b/src/reconstruction/comparison/modelBorgifier/findMetMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.findMetMatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds find possible matches for a given metabolite.
 Called by <cite>metCompare</cite>, <cite>metCompareGUI</cite>, calls <cite>stringSimilarityForward</cite>.</p>
 <p><strong>Usage</strong></p>
