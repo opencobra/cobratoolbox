@@ -233,5 +233,5 @@ for i = 1:numel(modelFields)
     end
 end
 
-newmodel = updateRelevantModelFields(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
-newmodel = updateRelevantModelFields(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));
+newmodel = extendModelFieldsForType(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
+newmodel = extendModelFieldsForType(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));

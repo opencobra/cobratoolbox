@@ -1,146 +1,134 @@
 function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a first order
-% MustU set. 
+% MustU set.
 %
-% USAGE: 
+% USAGE:
 %
 %    [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
 %
 % INPUTS:
-%    model:                    Type: structure (COBRA model)
-%                              Description: a metabolic model with at least
-%                              the following fields:
+%    model:                      (structure) a metabolic model with at
+%                                least the following fields:
 %
-%                                   * .rxns -           Reaction IDs in the model
-%                                   * .mets -           Metabolite IDs in the model
-%                                   * .S -              Stoichiometric matrix (sparse)
-%                                   * .b -              RHS of Sv = b (usually zeros)
-%                                   * .c -              Objective coefficients
-%                                   * .lb -             Lower bounds for fluxes
-%                                   * .ub -             Upper bounds for fluxes
-%    minFluxesW:               Type: double array of size n_rxns x1
-%                              Description: Minimum fluxes for each
-%                              reaction in the model for wild-type strain.
-%                              This can be obtained by running the function
-%                              FVA_optForce e.g.: minFluxesW=[-90; -56];
-%    maxFluxesW:               Type: double array of size n_rxns x1
-%                              Description: Maximum fluxes for each
-%                              reaction in the model for wild-type strain.
-%                              This can be obtained by running the function
-%                              FVA_optForce e.g.: maxFluxesW=[90; 56];
+%                                     * .rxns -           Reaction IDs in the model
+%                                     * .mets -           Metabolite IDs in the model
+%                                     * .S -              Stoichiometric matrix (sparse)
+%                                     * .b -              RHS of Sv = b (usually zeros)
+%                                     * .c -              Objective coefficients
+%                                     * .lb -             Lower bounds for fluxes
+%                                     * .ub -             Upper bounds for fluxes
+%    minFluxesW:                 (double array of size n_rxns x 1) minimum
+%                                fluxes for each reaction in the model for
+%                                wild-type strain. This can be obtained by
+%                                running the function FVAOptForce e.g.:
+%                                minFluxesW=[-90; -56];
+%    maxFluxesW:                 (double array of size n_rxns x 1) maximum
+%                                fluxes for each reaction in the model for
+%                                wild-type strain. This can be obtained by
+%                                running the function FVAOptForce e.g.:
+%                                maxFluxesW=[90; 56];
 %
 % OPTIONAL INPUTS:
-%    constrOpt:                Type: Structure
-%                              Description: structure containing additional
-%                              contraints. Include here only reactions
-%                              whose flux is fixed, i.e., reactions whose
-%                              lower and upper bounds have the same value.
-%                              Do not include here reactions whose lower
-%                              and upper bounds have different values. Such
-%                              contraints should be defined in the lower
-%                              and upper bounds of the model. The structure
-%                              has the following fields:
-%                                   * .rxnList -        Reaction list (cell array)
-%                                   * .values -         Values for constrained reactions (double array)
-%                                     e.g.: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]'); 
-%    solverName:               Type: string
-%                              Description: Name of the solver used in GAMS
-%                              Default: 'cplex'
-%    runID:                    Type: string
-%                              Description: ID for identifying this run
-%    outputFolder:             Type: string
-%                              Description: name for folder in which
-%                              results will be stored
-%    outputFileName:           Type: string
-%                              Description: name for files in which results
-%                              will be stored
-%    printExcel:               Type: double
-%                              Description: boolean to describe wheter data
-%                              must be printed in an excel file or not
-%    printText:                Type: double
-%                              Description: boolean to describe wheter data
-%                              must be printed in an plaint text file or
-%                              not
-%    printReport:              Type: double
-%                              Description: 1 to generate a report in a
-%                              plain text file. 0 otherwise.
-%    keepInputs:               Type: double
-%                              Description: 1 to mantain folder with inputs
-%                              to run findMustUU.gms. 0 otherwise.
-%    keepGamsOutputs:          Type: double
-%                              Description: 1 to mantain files returned by
-%                              findMustUU.gms. 0 otherwise.
-%    verbose:                  Type: double
-%                              Description: 1 to print results in console.
-%                              0 otherwise.
-% OUTPUTS:
-%    mustUSet:                 Type: cell array
-%                              Size: number of reactions found X 1
-%                              Description: Cell array containing the
-%                              reactions ID which belong to the Must_U Set
-%    posMustU:                 Type: double array
-%                              Size: number of reactions found X 1
-%                              Description: double array containing the
-%                              positions of reactions in the model.
-%    outputFileName.xls        Type: file.
-%                              Description: File containing one column array
-%                              with identifiers for reactions in MustU. This
-%                              file will only be generated if the user entered
-%                              printExcel = 1. Note that the user can choose
-%                              the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName.txt        Type: file.
-%                              Description: File containing one column array
-%                              with identifiers for reactions in MustU. This
-%                              file will only be generated if the user entered
-%                              printText = 1. Note that the user can choose
-%                              the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.xls   Type: file.
-%                              Description: File containing five column
-%                              arrays. 
-%                              C1: identifiers for reactions in MustU
-%                              C2: min fluxes for reactions according to FVA
-%                              C3: max fluxes for reactions according to FVA
-%                              C4: min fluxes achieved for reactions, 
-%                                  according to findMustU.gms
-%                              C5: max fluxes achieved for reactions, 
-%                                  according to findMustU.gms
-%                              This file will only be generated if the user
-%                              entered printExcel = 1. Note that the user can
-%                              choose the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    outputFileName_Info.txt   Type: file.
-%                              Description: File containing five column
-%                              arrays. 
-%                              C1: identifiers for reactions in MustU
-%                              C2: min fluxes for reactions according to FVA
-%                              C3: max fluxes for reactions according to FVA
-%                              C4: min fluxes achieved for reactions, 
-%                                  according to findMustU.gms
-%                              C5: max fluxes achieved for reactions, 
-%                                  according to findMustU.gms
-%                              This file will only be generated if the user
-%                              entered printText = 1. Note that the user can
-%                              choose the name of this file entering the input
-%                              outputFileName = 'PutYourOwnFileNameHere';
-%    findMustU.lst             Type: file. 
-%                              Description: file autogenerated by GAMS. It
-%                              contains information about equations,
-%                              variables, parameters as well as information
-%                              about the running (values at each iteration).
-%                              This file only will be saved in the output
-%                              folder is the user entered keepGamsOutputs = 1
-%    GtoMU.gdx                 Type: file
-%                              Description: file containing values for 
-%                              variables, parameters, etc. which were found by
-%                              GAMS when solving findMustU.gms. 
-%                              This file only will be saved in the output
-%                              folder is the user entered keepInputs = 1
+%    constrOpt:                  (Structure) structure containing
+%                                additional contraints. Include here only
+%                                reactions whose flux is fixed, i.e.,
+%                                reactions whose lower and upper bounds
+%                                have the same value. Do not include here
+%                                reactions whose lower and upper bounds
+%                                have different values. Such contraints
+%                                should be defined in the lower and upper
+%                                bounds of the model. The structure has the
+%                                following fields:
 %
-% NOTE: 
+%                                     * .rxnList -        Reaction list (cell array)
+%                                     * .values -         Values for constrained reactions (double array)
+%                                       e.g.: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]');
+%    solverName:                 (string) Name of the solver used in GAMS
+%                                Default = 'cplex'
+%    runID:                      (string) ID for identifying this run
+%    outputFolder:               (string) name for folder in which
+%                                results will be stored
+%    outputFileName:             (string) name for files in which results
+%                                will be stored
+%    printExcel:                 (double) boolean to describe wheter data
+%                                must be printed in an excel file or not
+%    printText:                  (double) boolean to describe wheter data
+%                                must be printed in an plaint text file or
+%                                not
+%    printReport:                (double) 1 to generate a report in a
+%                                plain text file. 0 otherwise.
+%    keepInputs:                 (double) 1 to mantain folder with inputs
+%                                to run findMustUU.gms. 0 otherwise.
+%    keepGamsOutputs:            (double) 1 to mantain files returned by
+%                                findMustUU.gms. 0 otherwise.
+%    verbose:                    (double) 1 to print results in console.
+%                                0 otherwise.
+% OUTPUTS:
+%    mustUSet:                   (cell array of size number of reactions
+%                                found X 1) Cell array containing the
+%                                reactions ID which belong to the Must_U
+%                                Set
+%    posMustU:                   (double array of size number of reactions
+%                                found X 1)  double array containing the
+%                                positions of reactions in the model.
+%    outputFileName.xls:         (file) File containing one column array
+%                                with identifiers for reactions in MustU.
+%                                This file will only be generated if the
+%                                user entered printExcel = 1. Note that the
+%                                user can choose the name of this file
+%                                entering the input outputFileName =
+%                                'PutYourOwnFileNameHere';
+%    outputFileName.txt:         (file) File containing one column array
+%                                with identifiers for reactions in MustU.
+%                                This file will only be generated if the
+%                                user entered printText = 1. Note that the
+%                                user can choose the name of this file
+%                                entering the input outputFileName =
+%                                'PutYourOwnFileNameHere';
+%    outputFileName_Info.xls:    (file) File containing five column
+%                                arrays.
+%                                C1: identifiers for reactions in MustU
+%                                C2: min fluxes for reactions according to FVA
+%                                C3: max fluxes for reactions according to FVA
+%                                C4: min fluxes achieved for reactions,
+%                                    according to findMustU.gms
+%                                C5: max fluxes achieved for reactions,
+%                                    according to findMustU.gms
+%                                This file will only be generated if the
+%                                user entered printExcel = 1. Note that the
+%                                user can choose the name of this file
+%                                entering the input outputFileName =
+%                                'PutYourOwnFileNameHere';
+%    outputFileName_Info.txt:    (file) File containing five column
+%                                arrays.
+%                                C1: identifiers for reactions in MustU
+%                                C2: min fluxes for reactions according to FVA
+%                                C3: max fluxes for reactions according to FVA
+%                                C4: min fluxes achieved for reactions,
+%                                    according to findMustU.gms
+%                                C5: max fluxes achieved for reactions,
+%                                    according to findMustU.gms
+%                                This file will only be generated if the
+%                                user entered printText = 1. Note that the
+%                                user can choose the name of this file
+%                                entering the input outputFileName =
+%                                'PutYourOwnFileNameHere';
+%    findMustU.lst:              (file) file autogenerated by GAMS. It
+%                                contains information about equations,
+%                                variables, parameters as well as
+%                                information about the running (values at
+%                                each iteration). This file only will be
+%                                saved in the output folder is the user
+%                                entered keepGamsOutputs = 1
+%    GtoMU.gdx:                  (file) file containing values for
+%                                variables, parameters, etc. which were
+%                                found by GAMS when solving findMustU.gms.
+%                                This file only will be saved in the output
+%                                folder is the user entered keepInputs = 1
+%
+% NOTE:
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
 %    Maranas. For a detailed description of the optForce procedure, please
@@ -149,21 +137,21 @@ function [mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW,
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
 %    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'solverName', 'runID', 'outputFolder', 'outputFileName',  ...
     'printExcel', 'printText', 'printReport', 'keepInputs', 'keepGamsOutputs', 'verbose'};
 
-if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
-      
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+
     tempargin = cell(1,2*(numel(varargin)));
     for i = 1:numel(varargin)
-        
+
         tempargin{2*(i-1)+1} = optionalParameters{i};
         tempargin{2*(i-1)+2} = varargin{i};
     end
     varargin = tempargin;
-    
+
 end
 
 parser = inputParser();
@@ -176,7 +164,7 @@ parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []), @(x) iss
     && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
 solvers = checkGAMSSolvers('MIP');
 if isempty(solvers)
-    error('there is no GAMS solvers available to solver Mixed Integer Programming problems') ; 
+    error('there is no GAMS solvers available to solver Mixed Integer Programming problems') ;
 else
     if ismember('cplex', lower(solvers))
         defaultSolverName = 'cplex';
@@ -201,7 +189,7 @@ model = parser.Results.model;
 minFluxesW = parser.Results.minFluxesW;
 maxFluxesW = parser.Results.maxFluxesW;
 constrOpt= parser.Results.constrOpt;
-solverName = parser.Results.solverName; 
+solverName = parser.Results.solverName;
 runID = parser.Results.runID;
 outputFolder = parser.Results.outputFolder;
 outputFileName = parser.Results.outputFileName;
@@ -309,7 +297,7 @@ if run == 0
     if verbose; fprintf('GAMS was executed correctly\nSummary of information exported by GAMS:\n'); end;
     %show GAMS report in MATLAB console
     if verbose; gdxWhos GtoMU; end;
-    
+
     %if the problem was solved correctly, a variable named findMustU should be
     %inside of GtoMU. Otherwise, the wrong file is being read.
     try

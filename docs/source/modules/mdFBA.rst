@@ -5,5 +5,5 @@
 mdFBA
 -----
 
-.. automodule:: src.modelAnalysis.mdFBA
+.. automodule:: src.analysis.mdFBA
    :members:

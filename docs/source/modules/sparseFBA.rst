@@ -5,5 +5,5 @@
 sparseFBA
 ---------
 
-.. automodule:: src.modelAnalysis.sparseFBA
+.. automodule:: src.analysis.sparseFBA
    :members:

@@ -5,5 +5,5 @@
 FBA
 ---
 
-.. automodule:: src.modelAnalysis.FBA
+.. automodule:: src.analysis.FBA
    :members:

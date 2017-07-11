@@ -68,7 +68,7 @@ for i = 1:numel(reactionbasenames)
 end
 
 %Remove the surplus model fields (they should be the same anyways)
-modelRev = removeRelevantModelFields(model,reactionsToRemove,'rxns',nRxns);
+modelRev = removeFieldEntriesForType(model,reactionsToRemove,'rxns',nRxns);
 
 %and remove a potential "match field
 if isfield(modelRev, 'match')

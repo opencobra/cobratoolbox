@@ -81,9 +81,9 @@ if mergeGenes
         end
         showprogress(0.1, 'Rules updated ...');
         %now, get the remaining gene associated fields.
-        fields1 = getRelevantModelFields(model1,'genes');
+        fields1 = getModelFieldsForType(model1,'genes');
         fields1 = setdiff(fields1,{'S','rxnGeneMat'}); % we have to handle these sepaerately
-        fields2 = getRelevantModelFields(model2,'genes');
+        fields2 = getModelFieldsForType(model2,'genes');
         fields2 = setdiff(fields2,{'S','rxnGeneMat'});
         commonfields = intersect(fields1,fields2);
         [model2genePresence,model2genePos] = ismember(genes,setdiff(model2.genes,model1.genes));
@@ -164,7 +164,7 @@ S_add = model2.S(~metpres2,:);
 modelNew.S = [modelNew.S ;sparse(size(S_add,1),numel(model1.rxns)),S_add];
 %now, reduce model2s met fields to those not mapping(i.e. remove those
 %mapping
-model2red = removeRelevantModelFields(model2,metpres2,'mets', numel(model2.mets));
+model2red = removeFieldEntriesForType(model2,metpres2,'mets', numel(model2.mets));
 modelNew = mergeFields(modelNew,model1,model2red,'mets');
 
 showprogress(0.9, 'Finishing touches...');
@@ -191,7 +191,7 @@ if(isfield(modelNew, 'comps'))
     [ucomps,ia,ic] = unique(modelNew.comps);
     toKeep = true(size(modelNew.comps));
     toKeep(ia) = false;
-    modelNew = removeRelevantModelFields(modelNew,~toKeep,'comps',numel(toKeep));
+    modelNew = removeFieldEntriesForType(modelNew,~toKeep,'comps',numel(toKeep));
 end
 
 
@@ -218,9 +218,9 @@ function modelNew = mergeFields(modelNew,model1,model2,type)
 % .. Authors:
 %                   - Thomas Pfau June 2017
 
-fields1 = getRelevantModelFields(model1,type);
+fields1 = getModelFieldsForType(model1,type);
 fields1 = setdiff(fields1,{'S','rxnGeneMat'}); % we have to handle these sepaerately
-fields2 = getRelevantModelFields(model2,type);
+fields2 = getModelFieldsForType(model2,type);
 fields2 = setdiff(fields2,{'S','rxnGeneMat'}); % we have to handle these sepaerately
 commonfields = intersect(fields1,fields2);
 nType1 = numel(model1.(type));
@@ -236,14 +236,14 @@ fields1 = setdiff(fields1,commonfields);
 for i = 1:numel(fields1)
     modelNew.(fields1{i}) = [model1.(fields1{i})];
 end
-modelNew = updateRelevantModelFields(modelNew,type,'originalSize',nType1,'targetSize',nType1+nType2);
+modelNew = extendModelFieldsForType(modelNew,type,'originalSize',nType1,'targetSize',nType1+nType2);
 %Now, we will add all the data from model2, and save the default value (in the end.
 fields2 = setdiff(fields2,commonfields);
 for i = 1:numel(fields2)
     modelNew.(fields2{i}) = model2.(fields2{i});
 end
 %We assume, that we only have column vectors here...
-modelNew = updateRelevantModelFields(modelNew,type,'originalSize',nType2,'targetSize',nType1+nType2);
+modelNew = extendModelFieldsForType(modelNew,type,'originalSize',nType2,'targetSize',nType1+nType2);
 for i = 1:numel(fields2)
     default = modelNew.(fields2{i})(end);
     modelNew.(fields2{i})(nType1+1:end) = model2.(fields2{i});

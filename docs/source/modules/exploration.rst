@@ -5,5 +5,5 @@
 Exploration
 -----------
 
-.. automodule:: src.modelAnalysis.exploration
+.. automodule:: src.analysis.exploration
    :members:

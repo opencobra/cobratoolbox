@@ -24,6 +24,12 @@ rules(1:n,1) = {''};
 for i = 1:n
     if length(grRules{i}) > 0
         tmp = grRules{i};
+        %The function assumes that there are no spaces between parenthesis
+        %and formulas, or it creates "empty" gene associations. so we
+        %replace all spaces trailing or preceding parenthesis.
+        tmp = regexprep(tmp,'\( *','('); %replace all spaces after opening parenthesis
+        tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
+        tmp = regexprep(tmp,' * (and|AND|or|OR|And|Or)  *',' $1 '); %replace all surplus spaces around logical operators
 
         tmp = splitString(tmp,' ');
         tmp = strrep(tmp,' ','');

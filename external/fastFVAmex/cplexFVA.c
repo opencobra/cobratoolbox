@@ -90,10 +90,11 @@ enum {F_IN_POS,
       CPLEX_PARAMS,
       VALUES_CPLEX_PARAMS,
       RXNS_OPTMODE_IN,
+      LOGFILE_DIR_IN,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        13
+#define MIN_NUM_IN_ARG        14
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -140,7 +141,6 @@ enum {MINFLUX_OUT_POS,
 #define OPT_PERCENTAGE        90 /* confidence threshold if not specified */
 
 #define PRINT_WARNING         "Warning:"
-#define LOGFILE_DIR            "src/modelAnalysis/FVA/fastFVA/logFiles/cplexint_logfile_"
 
 #if !defined(MAX)
 #define MAX(A, B)   ((A) > (B) ? (A) : (B))
@@ -179,8 +179,19 @@ int get_vector_full(const mxArray *IN, double **outval)
   return(m);
 }
 
+/* lenate 2 strings */
+const char* concat2(const char *s1, const char *s2)
+{
+    size_t len1 = strlen(s1);
+    size_t len2 = strlen(s2);
+    char *result = malloc(len1+len2+1);
+    memcpy(result, s1, len1);
+    memcpy(result+len1, s2, len2+1);
+    return result;
+}
+
 /* Concatenate 3 strings */
-const char* concat(const char *s1, const char *s2, const char *s3)
+const char* concat3(const char *s1, const char *s2, const char *s3)
 {
     size_t len1 = strlen(s1);
     size_t len2 = strlen(s2);
@@ -258,7 +269,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           /* Retrieve the name of the parameter as specified in the external parameter file */
           nameParam = mxGetFieldNameByNumber(namesCPLEXparams, j);
-          nameParam = concat("CPX_PARAM_",nameParam,"");
+          nameParam = concat2("CPX_PARAM_", nameParam);
 
           /* Retrieve the numeric identifier of the CPLEX parameter */
           numStatus     = CPXgetparamnum (env, nameParam, &numParam);
@@ -847,6 +858,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             numThread = 0;
     char            numThreadstr[MAX_STR_LENGTH];
 
+    char           *logFileDir = NULL;
+    const char     *logFileName = NULL;
+
     /* CPLEX variables */
     char            probname[] = "cplexint_problem\0";
     extern          CPXENVptr env;
@@ -1038,6 +1052,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     /* Retrieve the number of the thread */
     numThread     = mxGetScalar(NUM_THREAD_IN);
 
+    /* Retrieve the location of log files */
+    logFileDir = mxArrayToString(prhs[LOGFILE_DIR_IN]);
+    mexPrintf(" >> Log files will be stored at %s\n", logFileDir);
+    logFileName = concat2(logFileDir, "/cplexint_logfile_");
+
     /* Register safe exit. */
     #ifdef RELEASE_CPLEX_LIC
       mexAtExit(freelicence);
@@ -1103,12 +1122,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         /* Convert numThreads to a string */
         sprintf(numThreadstr, "%d", numThread);
 
-        mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat("cplexint_logfile_", numThreadstr,".log"));
+        mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
 
-        LogFile = CPXfopen(concat(LOGFILE_DIR, numThreadstr,".log"), "w");
+        LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
 
        if (LogFile == NULL) {
-            TROUBLE_mexErrMsgTxt(concat("Could not open the log file ",LOGFILE_DIR,".log.\n"));
+            TROUBLE_mexErrMsgTxt(concat3("Could not open the log file ",logFileName,".log.\n"));
         }
         status = CPXsetlogfile(env, LogFile);
         if (status) {

@@ -13,6 +13,6 @@ Topology
    FR
    graphHypergraphConversion 
 
-.. automodule:: src.modelAnalysis.topology
+.. automodule:: src.analysis.topology
    :members:
 
