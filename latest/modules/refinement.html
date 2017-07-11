@@ -919,7 +919,7 @@ ignored.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.extractCompModel">
-<code class="descname">extractCompModel</code><span class="sig-paren">(</span><em>model</em>, <em>compSymbol</em>, <em>intOnlyFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extractCompModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractCompModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extractCompModel</code><span class="sig-paren">(</span><em>model</em>, <em>compSymbol</em>, <em>intOnlyFlag</em>, <em>updateGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extractCompModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractCompModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates model for a cellular compartment</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -933,11 +933,15 @@ COBRA model structure</li>
 Compartment symbol</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>intOnlyFlag</strong> &#8211;
 Include only non-transport reactions (Default = true)</li>
+<li><strong>updateGenes</strong> &#8211;
+Update the GPR rules removing all unassociated genes.
+This can take some time on larger models.(default
+false)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -987,7 +991,7 @@ COBRA model around one or more metabolites</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.extractSubNetwork">
-<code class="descname">extractSubNetwork</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extractSubNetwork.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubNetwork" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extractSubNetwork</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>metList</em>, <em>updateGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ca8a995e5224f908851f4acf3771908f02954670/src/reconstruction/refinement/extractSubNetwork.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract subnetwork model
 <strong>Usage</strong></p>
 <blockquote>
@@ -1001,11 +1005,14 @@ COBRA model structure</li>
 Reaction list for the subnetwork to be extracted</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>metNames</strong> &#8211;
 Metabolite list for the subnetwork to be extracted</li>
+<li><strong>updateGenes</strong> &#8211;
+Also remove unused genes (can take some time on large
+networks)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
