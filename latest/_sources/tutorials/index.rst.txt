@@ -10,13 +10,37 @@ Tutorials
 
 .. toctree::
 
+   tutorialAtomicallyResolveReconstruction
+   tutorialConstrainingModels
+   tutorialEngaging
+   tutorialExtraction_transcriptomic
+   tutorialFBA
+   tutorialFidelityTesting
+   tutorialFVA
+   tutorialInitialiseAndVerify
+   tutorialIO
+   tutorialMinimalCutSets
+   tutorialMinSpan
+   tutorialModelATPYield
+   tutorialModelBorgifier
    tutorialModelCreation
    tutorialModelManipulation
-   tutorialAtomicallyResolveReconstruction
+   tutorialModelProperties
    tutorialNumCharact
-   tutorialUniformSampling
-   tutorialPathVectors_minimalCutSets
-   tutorialMinSpan
-   tutorialMetabotoolsI
-   tutorialMetabotoolsII
+   tutorialOptForce
+   tutorialOptForceGAMS
+   tutorialOptGene
+   tutorialOptKnock
+   tutorialPaint4net
+   tutorialPathVectors
+   tutorialPFBA
+   tutorialRBioNet
+   tutorialRelaxedFBA
+   tutorialRemoteVisualisation
+   tutorialRobustness_PhPP
+   tutorialSOP
+   tutorialSparseFBA_freeATPtest
+   tutorialSparseFBA
+   tutorialSparseLP
    tutorialUFBA
+   tutorialUniformSampling
