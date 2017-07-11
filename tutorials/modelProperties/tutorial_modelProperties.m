@@ -40,7 +40,7 @@ warning off MATLAB:subscripting:noSubscriptsSpecified
 % Virtual Metabolic Human> webpage and save to your prefered directory. Before 
 % proceeding with the simulations, the path for the model needs to be set up:
 
-pathModel = 'C:\Users\stefania.magnusdotti\Downloads\';  % Add your path to the Recon 2.04 model, e.g., 'C:\Users\MyUserName\MyModels\'  
+pathModel = '....';  % Add your path to the Recon 2.04 model, e.g., 'C:\Users\MyUserName\MyModels\'  
 filename = 'Recon2.v04.mat';
 load([pathModel, filename])
 model = modelR204;
