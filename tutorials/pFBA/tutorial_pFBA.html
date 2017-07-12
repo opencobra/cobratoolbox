@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>A step-by-step guide to parsimoneous enzyme usage Flux Balance Analysis - pFBA</title><style type="text/css">
 * {margin: 0; padding: 0;}
-body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+body {text-align: start; line-height: 17.234001159668px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
 h1, h2 {font-weight: normal;}
 .content { padding: 30px; }
 
@@ -34,9 +34,9 @@ h1, h2 {font-weight: normal;}
 .S26 { margin-left: 3px; margin-top: 4px; margin-bottom: 4px; margin-right: 3px;  }
 .S27 { text-decoration: underline; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
 
-.LineNodeBlock {margin: 10px 0 10px 0;}
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
 .LineNodeBlock+.paragraphNode {margin-top: 10px;}
-.lineNode {padding-left: 10px; background-color: #F7F7F7; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
 .inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
 .inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
 .lineNode .textBox {white-space: pre;}
@@ -48,7 +48,7 @@ h1, h2 {font-weight: normal;}
 .inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
 .embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
 .embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
-.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {margin-left: 5px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
 .embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
 .embeddedOutputsSymbolicElement { overflow: initial !important;}
 .embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
@@ -64,7 +64,6 @@ h1, h2 {font-weight: normal;}
 .veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
 .veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
 .veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
-.veVariableValueSummary {display: inline-block;}
 .veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
 .veMetaSummary {font-style: italic;}
 .veSpecifier .veTable .scroller {overflow: hidden;}
@@ -89,6 +88,7 @@ h1, h2 {font-weight: normal;}
 .variableElement {}
 .embeddedOutputsVariableElement.inlineElement {}
 .inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
 .variableValue { width: 100% !important; }
 .embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
 .embeddedOutputsMatrixElement .matrixElement{position: relative;}
@@ -96,10 +96,9 @@ h1, h2 {font-weight: normal;}
 .embeddedOutputsMatrixElement.inlineElement {}
 .embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
 .embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
-.embeddedOutputsMatrixElement.inlineElement .veVariableName {padding-top: 0;}
 .inlineElement .matrixElement {max-height: 300px;}
-.embeddedOutputsMatrixElement .matrixElement .valueContainer {white-space: nowrap; padding-top: 10px; margin-bottom: 3px;}
-.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
 .embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
 .matrixElement { max-height: none !important; }
 .dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
