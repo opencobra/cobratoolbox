@@ -60,8 +60,8 @@
 % (|molFileDir|) and the reconstructed DAS network without hydrogen atoms (|model|).
 
 global CBTDIR
-load([CBTDIR filesep 'data' filesep 'subDas.mat']) % The subnetwork of the dopamine synthesis network
-molFileDir = ['data' filesep 'molFiles']; % The chemical structures of metabolites
+load([CBTDIR filesep 'data' filesep 'subDas.mat'], 'model') % The subnetwork of the dopamine synthesis network
+molFileDir = [CBTDIR filesep 'data' filesep 'molFiles']; % The chemical structures of metabolites
 %% 
 % The function |obtainAtomMappingsRDT |generates 4 different directories 
 % containing: 
@@ -91,7 +91,7 @@ maxTime = 1800; % seconds
 % The variable |isChemaxonInstalled| contains a logical value defined by the user 
 % if the license is installed or not.
 
-isChemaxonInstalled = false; % Change varibale to "true" if ChemAxon is installed
+isChemaxonInstalled = true; % Change varibale to "true" if ChemAxon is installed
 %% 
 % Now, let's obtain the atom map using |obtainAtomMappingsRDT|: 
 
