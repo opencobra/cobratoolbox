@@ -2,93 +2,134 @@
 % *Author(s): Francisco José Pardo Palacios, Ines Thiele, LCSB, University of 
 % Luxembourg.*
 % 
-% *Reviewer(s): Sebastián Mendoza (Center for Mathematical Modeling)*
-% 
-% **
+% *Reviewer(s): Sebastián Mendoza, Center for Mathematical Modeling, University 
+% of Chile. Catherine Clancy, LCSB, University of Luxembourg.*
 %% INTRODUCTION
-% In this tutorial, we show how the calculations described in Lewis et al. (2010) 
-% [1] have been implemented in Matlab ('pFBA.m'), which is available in the COBRA 
-% toolbox.
+% This tutorial shows how the parsimoneous enzyme usage Flux Balance Analysis 
+% (pFBA), as described in Lewis et al. [1], has been implemented in The COBRA 
+% Toolbox as the function |pFBA|.
 % 
-% The main idea of this tutorial is to explain how the calculations are done 
-% in order to understand the pFBA analysis and be able to classify, under certain 
-% conditions, the genes of a modelEcore as: essential, pFBA optima, Enzymatically 
-% Less Efficient (ELE), Metabolically Less Efficient (MLE) or pFBA no-flux genes. 
+% The main aim of the tutorial is to explain how the calculations are carried 
+% out in order to understand the pFBA analysis, and to be able to classify, under 
+% certain conditions, the genes of a model as: essential, pFBA optima, Enzymatically 
+% Less Efficient (ELE), Metabolically Less Efficient (MLE) or pFBA no-flux genes 
+% (Figure 1). 
 % 
-%  
+% # _*Essential genes:_* metabolic genes necessary for growth in the given media.
+% # _*pFBA optima: _*non-essential genes contributing to the optimal growth 
+% rate and minimum gene-associated flux.
+% # _*Enzymatically less efficient (ELE): _*genes requiring more flux through 
+% enzymatic steps than alternative pathways that meet the same predicted growth 
+% rate.
+% # _*Metabolically less efficient (MLE):_* genes requiring a growth rate reduction 
+% if used.
+% # _*pFBA no-flux:_* genes that are unable to carry flux in the experimental 
+% conditions.
 % 
-%                                        Figure: Gene/enzyme classification 
+% 
+% 
+%                                        Figure 1: Gene/enzyme classification 
 % scheme used by pFBA
 % 
-% The results obtained could then be compared to data from evolved E. coli 
-% and observe if the modelEcore can predict that evolution.
-% 
-% In order to do it, all the steps described in the pFBA flowchart were implemented 
-% and explained in this tutorial. 
-% 
-%  
-% 
-%                                                              Figure: pFBA 
-% flowchart
+% This tutorial will use the_ E. coli core _reconstruction [2] as the model 
+% of choice, and will be called herein as modelEcore. The results obtained could 
+% then be compared to data from evolved E. coli and observe if the modelEcore 
+% can predict its evolution. In order to investigate this, all the steps described 
+% in the pFBA flowchart (Figure 2) should be followed, and are demonstrated in 
+% this tutorial. 
 % 
 % 
+% 
+%                                                              Figure 2: 
+% pFBA flowchart
 %% EQUIPMENT SETUP
-% First of all, the modelEcore needs be loaded, the COBRA solver set and define 
-% the uptake of nutrients by the modelEcore. In this case, the modelEcore used 
-% will be the E. coli core modelEcore and the substrate used will be glucose, 
-% limiting its uptake up to 18 mmol/(gDW·h).
+%% *Initialize the COBRA Toolbox.*
+% If necessary, initialize The Cobra Toolbox using the |initCobraToolbox| function.
+
+%initCobraToolbox
+%% *Setting the *optimization* solver.*
+% This tutorial will be run with a |'glpk'| package, which is a linear programming 
+% ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
+% and configuration.
+
+solverName='glpk';
+solverType='LP'; 
+changeCobraSolver(solverName,solverType);
+%% 
+% However, for the analysis of larger models, such as Recon 2.04 [3], it 
+% is not recommended to use the |'glpk'| package but rather an industrial strength 
+% solver, such as the |'gurobi'| package. For detailed information, refer to The 
+% Cobra Toolbox <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% solver instalation guide>. 
+% 
+% A solver package may offer different types of optimization programmes to 
+% solve a problem. The above example used a LP optimization, other types of optimization 
+% programmes include; mixed-integer linear programming ('|MILP|'), quadratic programming 
+% ('|QP|'), and mixed-integer quadratic programming ('|MIQP|').
+
+warning off MATLAB:subscripting:noSubscriptsSpecified
+%% *Model setup.*
+% Load the modelEcore, and define the uptake of nutrients by the modelEcore. 
+% The substrate used is glucose, and for this tutorial limit its uptake up to 
+% 18 mmol/(gDW·h).
 
 modelEcoreFile='Ecoli_core_model.mat';
 load(modelEcoreFile);
-changeCobraSolver('glpk');
-modelEcore=changeRxnBounds(model,'EX_glc(e)',-18,'l');
-%% 
-% 
+modelEcore=model;
+modelEcore=changeRxnBounds(modelEcore,'EX_glc(e)',-18,'l');
 %% PROCEDURE
-% The Gene Deletion Analysis is performed. If the modelEcore is not able to 
-% predict growth when certain gene is knocked-out,the name of that gene will be 
-% saved as essential gene. In order to detect essential genes even if Matlab calculate 
-% very small growth,it will be considered as not growing when the growth predict 
-% is lower than 0.00001. The rest of the genes will be stored in a non_EG vector.
+%% Identify essentail reactions: perform a gene knocked-out analysis. 
+% If the modelEcore is not able to grow when a certain gene is knocked-out, 
+% the name of that gene will be saved as an essential gene. Even if a very small 
+% growth is calculated, the model will be considered as not growing and the gene 
+% will be recorded in an 'essential_genes' vector. Here no growth is defined as 
+% growth lower than 0.000001. The remaining non-essentail genes will be stored 
+% in a 'non_EG' vector.
 
 for i=modelEcore.genes(:,:)
     [grRatio,grRateKO,grRateWT,delRxns,hasEffect]=singleGeneDeletion(modelEcore,'FBA',i);
 end
-
 essential_genes=[];
 non_EG=[];
+tol = 1e-6;
 for n=1:length(grRateKO)
-    if (grRateKO(n)<0.00001)|(isnan(grRateKO(n))==1)
+    if (grRateKO(n)<tol)|(isnan(grRateKO(n))==1)
         essential_genes=[essential_genes;modelEcore.genes(n)];
     else
         non_EG=[non_EG; n];
     end
 end
-%% 
-% After this, a Flux Variability Analysis (FVA) is performed without any 
-% biomass constraint. For that, the percentage of optimal solution should be set 
-% to 0. The reactions that do not carry any flux will be stored in a vector called 
-% pFBAnoFluxRxn and the rest in the one called pFBAfluxRxn.
+
+% find essential reactions
+RxnRatio = singleRxnDeletion(model);
+RxnRatio(isnan(RxnRatio))=0;
+pFBAEssentialRxns = model.rxns(RxnRatio<tol);
+%% Identify non-essentail reactions that can or cannot carry flux:
+% A FVA is performed without any biomass constraint. Therefore, for the |fluxVariability| 
+% function set the percentage of optimal solution to zero %. The reactions that 
+% do not carry flux will be stored in a vector called |pFBAnoFluxRxn| and the 
+% reaction that do carry flux in another vector called |pFBAfluxRxn|.
 
 [minFluxglc maxFluxglc]=fluxVariability(modelEcore,0);
-
 pFBAnoFluxRxn=[];
 pFBAfluxRxn=[];
 for i=1:length(modelEcore.rxns)
-    if (minFluxglc(i)>-0.00001)&(maxFluxglc(i)<0.00001)    
+    if (abs(minFluxglc(i))<tol)&(abs(maxFluxglc(i))<tol)  
         pFBAnoFluxRxn=[pFBAnoFluxRxn i];
     else
         pFBAfluxRxn=[pFBAfluxRxn i];
     end
 end
+pFBAfluxRxn=pFBAfluxRxn';
+ZeroFluxRxns=modelEcore.rxns(pFBAnoFluxRxn) 
 %% 
 % Now, it is necessary to know which genes are associated to the reactions 
-% not carrying any flux. The information that relates is stored in the rxnGeneMat 
-% of the modelEcore. To extract information from it, first it must be converted 
-% into a matrix of 0s and 1s. Then, finding that reaction-gene relationships, 
-% it is possible to get the names of the genes related with the pFBAnoFluxRxn 
-% and create a new vector containing the non essential genes that can actually 
-% carry flux (pFBAfluxGenes).
+% not carrying any flux. The |rxnGeneMat| filed in modelEcore stores information 
+% that connects genes to reactions. To extract information from |rxnGeneMat|, 
+% first converted it into a binary matrix of zeros and ones, afterwhich, use this 
+% matrix to get the names of the genes related with the pFBAnoFluxRxn. Then create 
+% a new vector, pFBAfluxGenes, of non essential genes that can carry flux and 
+% another vector, pFBAnofluxGenes, of non-essential genes that cannot carry flux.
 
 RxnGMat=full(modelEcore.rxnGeneMat);
 pFBAfluxGenes=non_EG;
@@ -107,87 +148,81 @@ end
 
 pFBAnoFluxGenes=unique(pFBAnoFluxGenes);
 pFBAfluxGenes(pFBAfluxGenes==0)=[];
+%% Identify MLE reactions:
+% As suggested by Lewis et al. [1], calculate a FBA and set the FBA solution 
+% (i.e. optimal growth rate) as the lower bound of the objective function (in 
+% this case biomass production). The FBA is run with a maxmial optimization of 
+% biomass production. Then set the optimal solution (|FBAsolution.f|) as the lower 
+% bound in the modelEcore using the |changeRxnBounds |function.
+
+FBAsolution=optimizeCbModel(modelEcore,'max'); 
+modelEcore=changeRxnBounds(modelEcore,'Biomass_Ecoli_core_w_GAM',FBAsolution.f,'l');
 %% 
-% As it is suggested by Lewis et al. (2010), a Flux Balance Analysis (FBA) 
-% should be calculated and set the optimal growth rate as the lower bound of the 
-% biomass production, and then run another FVA. In order to accelerate this process, 
-% FVA was directly run, but the percentage of optimal solution was set up to 95%. 
-% This means that the minimum and maximum fluxes recorded will be the one that 
-% allow at least a 95% of the optimal solution for the objective solution, in 
-% this case Biomass production.
-% 
-% The list of reactions carying flux will be scanned and the ones that are 
-% "turned off" when the system is forced to achieve certain biomass production 
-% will be stored as Metabolically Less Efficient reactions (RxnMLE) and the rest 
-% will be saved in a new vector.
+% Then a FVA was run, but the percentage of optimal solution was set up 
+% to 95%. This simulation provides a minimum and a maximum flux balance solution 
+% that allows at least a 95% of the optimal solution for the objective function.
 
 [minFlux2 maxFlux2]=fluxVariability(modelEcore,95);
+%% 
+% The list of reactions carying flux will be scanned, and the ones that 
+% are "turned off" when the system is forced to achieve certain biomass production 
+% are MLE reactions. MLE reations will be stored in the vector, |RxnMLE|, and 
+% the remaining reactions will be stored in the vector, |restRxn|.
 
 RxnMLE=[];
 restRxn=[];
 for i=1:length(pFBAfluxRxn)
-    if (minFlux2(pFBAfluxRxn(i))>-0.00001)&(maxFlux2(pFBAfluxRxn(i))<0.00001)    
+    if (abs(minFlux2(pFBAfluxRxn(i)))<tol)&(abs(maxFlux2(pFBAfluxRxn(i)))<tol);    
         RxnMLE=[RxnMLE pFBAfluxRxn(i)];
     else
         restRxn=[restRxn pFBAfluxRxn(i)];
     end
 end
-%% 
-% The next step is to run an FBA, calculate the optimal solution for the 
-% biomass production and set it as the lower bound in the modelEcore. Actually, 
-% it was set a 95% of the optimal solution because to rigid conditions may not 
-% be the best option in some cases.
-% 
-% After that, it was calculated the minimal total flux through the gene associated 
-% reactions and those minimal fluxes were set as upper bounds.
-% 
-% 
 
-FBAsolution=optimizeCbModel(modelEcore,'max');
-lowerN=FBAsolution.f*0.95;
-modelEcore=changeRxnBounds(modelEcore,'Biomass_Ecoli_core_w_GAM',lowerN,'l');
-    
+RxnMLEname = model.rxns(RxnMLE)
+%% Identify Optimal and ELE reactions:
+% Next run an FBA, calculating a minimal optimization of biomass production. 
+% Then set the bounds of all reactions to it respective minimal flux balance solution 
+% (|FBAsolution.x|) using the |changeRxnBounds |function. 
+
 FBAsolution=optimizeCbModel(modelEcore,'min','one');
-modelEcore=changeRxnBounds(modelEcore, modelEcore.rxns,FBAsolution.x,'u');
+modelEcore=changeRxnBounds(modelEcore,modelEcore.rxns,FBAsolution.x,'b');
 %% 
-% One last FVA was run. The remaining reactions in the restRxn variable 
-% are then clasified in Enzymatially Less Eficient Reactions (RxnELE)- if the 
-% reactions cannot carry any flux- or Optimal Reactions (RxnOptima)- if they can 
-% carry flux.
+% Finally, run one last FVA for 100% of the optimal solution. The remaining 
+% reactions in the |restRxn| variable were then clasified as Enzymatially Less 
+% Eficient Reactions (RxnELE), if the reactions cannot carry any flux, or as Optimal 
+% Reactions (RxnOptima), if they can carry flux.
 
 [minFlux3 maxFlux3]=fluxVariability(modelEcore,100);
-tol = 1e-5;
-RxnELE=[];
-RxnOptima=[];
-for i=1:length(restRxn)
-    if (minFlux3(restRxn(i))>-tol)&(maxFlux3(restRxn(i))<tol)    
-        RxnELE=[RxnELE i];
-    else
-        RxnOptima=[RxnOptima restRxn(i)];
-    end
-end
-RxnOptima = RxnOptima';
-restRxn = restRxn';
-%% 
-% The last step is to find again the genes that are related with each reaction. 
-% The main point of this is to classify the genes in 5 different grups and store 
-% them in different vectors:
+
+pFBAopt_Rxns = modelEcore.rxns((abs(minFlux3)+abs(maxFlux3))>=tol);
+pFBAopt_Rxns = unique(regexprep(pFBAopt_Rxns,'_[f|b]$',''));
+pFBAopt_Rxns = setdiff(pFBAopt_Rxns,pFBAEssentialRxns)
+ELE_Rxns = modelEcore.rxns((abs(minFlux3)+abs(maxFlux3))<=tol);
+ELE_Rxns = setdiff(ELE_Rxns,RxnMLEname);
+ELE_Rxns = setdiff(ELE_Rxns,ZeroFluxRxns)
+RxnELE=findRxnIDs(modelEcore,ELE_Rxns);
+RxnOptima=findRxnIDs(modelEcore,pFBAopt_Rxns);
+%% Classify the genes:
+% The last step is to associate the genes that are related with each reaction. 
+% The main point of this is to classify the genes into the 5 different groups 
+% (Figure 3) and store them into different vectors:
 % 
-% _*Essential genes:_* metabolic genes necessary for growth in the given 
-% media ('essential_genes').
-% 
-% _*pFBA optima: _*non-essential genes contributing to the optimal growth 
+% # _*Essential genes:_* metabolic genes necessary for growth in the given media 
+% ('essential_genes').
+% # _*pFBA optima: _*non-essential genes contributing to the optimal growth 
 % rate and minimum gene-associated flux ('OptimaGenes').
-% 
-% _*Enzymatically less efficient (ELE): _*genes requiring more flux through 
+% # _*Enzymatically less efficient (ELE): _*genes requiring more flux through 
 % enzymatic steps than alternative pathways that meet the same predicted growth 
 % rate ('ELEGenes').
-% 
-% _*Metabolically less efficient (MLE):_* genes requiring a growth rate reduction 
+% # _*Metabolically less efficient (MLE):_* genes requiring a growth rate reduction 
 % if used ('MLEGenes').
-% 
-% _*pFBA no-flux:_* genes that are unable to carry flux in the experimental 
+% # _*pFBA no-flux:_* genes that are unable to carry flux in the experimental 
 % conditions ('pFBAnoFluxGenes').
+% 
+% 
+% 
+% Figure 3: Gene classes retrieved through pFBA.
 % 
 % Some genes may not fit in any of this 5 categories. These genes will be 
 % saved in a vetor called 'remainingGenes'.
@@ -220,7 +255,6 @@ for i=1:length(RxnELE)
     end
 end
 ELEGenes=unique(ELEGenes);
-ELEGenes = ELEGenes';
 restGenes2(restGenes2==0)=[];
 
 MLEGenes=[];
@@ -242,21 +276,25 @@ remainingGenes=[];
 for n=1:length(finalRemainingGenes)
         remainingGenes=[remainingGenes ; modelEcore.genes(finalRemainingGenes(n))];
 end
+%% *Print results:*
 
-%% 
-% * Print results:
-% 
-%  
-
-essential_genes'
-OptimaGenes'
+essential_genes
+OptimaGenes
 ELEGenes
-MLEGenes'
-pFBAnoFluxGenes'
-%% 
-% 
+MLEGenes
+pFBAnoFluxGenes
 %% TIMING
 % The tutorial runs in a few minutes.
 %% References
-% [1] Lewis et al. "Omic Data from Evolved Strains are Consistent with Computed 
-% Optimal Growth States", Mol Syst Biol, 2010.
+% [1] Lewis et al. "Omic data from evolved E. coli are consistent with computed 
+% optimal growth from genome-scale models.", Mol Syst Biol, 2010.
+% 
+% [2] Orth J, Fleming R, Palsson B. "Reconstruction and Use of Microbial 
+% Metabolic Networks: the Core Escherichia coli Metabolic Model as an Educational 
+% Guide", EcoSal Plus 2010.
+% 
+% [3] <http://www.nature.com/nbt/journal/v31/n5/full/nbt.2488.html Thiele 
+% et al., A community-driven global reconstruction of human metabolism, Nat Biotech, 
+% 2013.>
+% 
+%
