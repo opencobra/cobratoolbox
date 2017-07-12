@@ -40,67 +40,71 @@ function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solve
 %                      * MCrhs - RHS of the constraints (default all zeros if .MC is given)
 %                      * MClhs - LHS of the constraints (default -inf if .MC is given)
 %                        (parameters in the iterative algorithm, [default value])
-%       GRguess [0.2]   Initial guess of the growth rate.
-%       feasCrit [1]    Criteria for feasibility, 1 or 2:
-%                       The algorithm tests iteratively at a given growth rate
-%                       whether a feasible solution can be found.
-%                       1: Use a threshold total biomass BMweight (see below).
-%                          i.e. sum(X) >= BMweight
-%                          (use it if the total biomass is known, the most common usage)
-%                       2: Use a threshold on minimum biomass production
-%                          (=specific growth rate x sum(biomass), which is roughly
-%                          constant over a range of growth rate if the sum of biomass
-%                          is not bounded above)
-%                          i.e. sum(X) * gr >= BMtol * BMref * GR0
-%                          where BMref is the maximum biomass at a small growth rate GR0
-%                          and BMtol is a fraction ranging from 0 to 1
-%       algorithm [1]   Algorithm to find the maximum growth rate
-%                       1. Fzero after finding grLB and grUB with simple guessing [gr' = gr * sum(X)/sum(X')]
-%                       2. Simple guessing with minimum one percent step size
-%                       3. Bisection method
-%       BMweight [1]    Minimum total biomass for feasibility. Used only if feasCrit = 1.
-%                       Set BMweight to a close-to-zero value to compute the wash-out dilution rate.
-%       GR0 [0.001]     A small growth rate to obtain a reference value for maximum total biomass production.
-%                       Used only if feasCrit = 2 or solveGR0 = true
-%       BMtol [0.8]     Fractional tolerance for biomass production to check
-%                       feasibility. Used only if feasCrit = 2
-%       solveGR0[false] true to solve the model at a low growth rate GR0 first to test feasibility
-%       GRtol [1e-6]    Precision for the growth rate found (grUB - grLB < GRtol)
-%       BMtolAbs [1e-5] Absolute tolerance for positivity of biomass
-%       maxIter (1e3)   maximum nummber of iteration
-%     (parameters in the optimization model, [default value])
-%       minNorm [0]     0: No minNorm. 1: min sum of absolution flux of the final solution.
-%       BMgdw [all 1s]  The gram dry weight per mmol of the biomass reaction of
-%                       each organism. Maybe used to scale the biomass reactions between organisms.
-%       BMobj [all 1s]  Objective coefficient for the biomass of each organism
-%                       when doing the maximization at each step.
-%     (other parameters)
-%       verbFlag  [3]   Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
-%       LPonly [false]  Return the initial LP at zero growth rate only. Calculate nothing.
-%       saveModel ['']  String, if non-empty, save the cplex model, basis and parameters.
+%                      * GRguess [0.2] - Initial guess of the growth rate.
+%                      * feasCrit [1] - Criteria for feasibility, 1 or 2:
+%                        The algorithm tests iteratively at a given growth rate
+%                        whether a feasible solution can be found.
 %
-%    solverParams       Cplex parameter structure. E.g., struct('simplex',struct('tolerances',struct('feasibility',1e-8)))
+%                          1. Use a threshold total biomass `BMweight` (see below).
+%                             i.e. :math:`\sum X \geq BMweight`
+%                             (use it if the total biomass is known, the most common usage)
+%                          2. Use a threshold on minimum biomass production
+%                             (=specific growth rate x :math:`\sum biomass`, which is roughly
+%                             constant over a range of growth rate if the sum of biomass
+%                             is not bounded above)
+%                             i.e. :math:`\sum X * gr \geq BMtol * BMref * GR0`
+%                             where `BMref` is the maximum biomass at a small growth rate `GR0`
+%                             and `BMtol` is a fraction ranging from 0 to 1
+%                      * algorithm [1] - Algorithm to find the maximum growth rate
+%
+%                          1. `Fzero` after finding `grLB` and `grUB` with simple guessing [:math:`gr^T = gr * \sum X / \sum X^T`]
+%                          2. Simple guessing with minimum one percent step size
+%                          3. Bisection method
+%                      * BMweight [1] - Minimum total biomass for feasibility. Used only if `feasCrit = 1`.
+%                        Set BMweight to a close-to-zero value to compute the wash-out dilution rate.
+%                      * GR0 [0.001] - A small growth rate to obtain a reference value for maximum total biomass production.
+%                        Used only if `feasCrit = 2` or `solveGR0 = true`
+%                      * BMtol [0.8] - Fractional tolerance for biomass production to check
+%                        feasibility. Used only if `feasCrit = 2`
+%                      * solveGR0[false] - true to solve the model at a low growth rate `GR0` first to test feasibility
+%                      * GRtol [1e-6] - Precision for the growth rate found (:math:`grUB - grLB < GRtol`)
+%                      * BMtolAbs [1e-5] - Absolute tolerance for positivity of biomass
+%                      * maxIter (1e3) - maximum nummber of iteration
+%                        (parameters in the optimization model, [default value])
+%                      * minNorm [0] - 0: No `minNorm`. 1: min sum of absolution flux of the final solution.
+%                      * BMgdw [all 1s] - The gram dry weight per mmol of the biomass reaction of
+%                        each organism. Maybe used to scale the biomass reactions between organisms.
+%                      * BMobj [all 1s] - Objective coefficient for the biomass of each organism
+%                        when doing the maximization at each step.
+%                        (other parameters)
+%                      * verbFlag  [3]  - Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
+%                      * LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.
+%                      * saveModel ['']  String, if non-empty, save the `cplex` model, basis and parameters.
+%
+%    solverParams:   Cplex parameter structure. E.g. `struct('simplex', struct('tolerances', struct('feasibility', 1e-8)))`
 %
 % OUTPUTS:
-%    sol: cplex solution structure
-%    result: structure with the following fields:
-%        GRmax:          maximum specific growth rate found (/h)
-%        vBM:            biomass formation rate (gdw/h)
-%        BM:             Biomass vector at GRmax (gdw)
-%        Ut:             uptake fluxes (mmol/h)
-%        Ex:             export fluxes (mmol/h)
-%        flux:           flux distribution for the original model
-%      (the following 'iter' fields are status in each iteration:)
-%      [GR | biomass X | biomass flux (GR * X) | max. infeas. of solution])
-%        iter0:          stationary, no growth, gr = 0
-%        iter1:          small growth rate, gr = GR0
-%        iterPre:        iterations for finding upper and lower bounds
-%        iter:           iterations for finding max gr using bisectional method
-%        stat:           status at the termination of the algorithm
-%                        infeasible: infeasible model, even with maintenance
-%                                    requirement only
-%                        maintenance:feasible at maintenance, but cannot grow
-%                        optimal:    optimal growth rate found
+%    sol:            cplex solution structure
+%    result:         structure with the following fields:
+%
+%                      * GRmax: maximum specific growth rate found (/h)
+%                      * vBM: biomass formation rate (gdw/h)
+%                      * BM: Biomass vector at GRmax (gdw)
+%                      * Ut: uptake fluxes (mmol/h)
+%                      * Ex: export fluxes (mmol/h)
+%                      * flux: flux distribution for the original model
+%                        (the following 'iter' fields are status in each iteration:)
+%                        [GR | biomass X | biomass flux (`GR * X`) | max. infeas. of solution])
+%                      * iter0: stationary, no growth, `gr = 0`
+%                      * iter1: small growth rate, `gr = GR0`
+%                      * iterPre: iterations for finding upper and lower bounds
+%                      * iter: iterations for finding max gr using bisectional method
+%                      * stat: status at the termination of the algorithm:
+%
+%                        * infeasible: infeasible model, even with maintenance requirement only
+%                        * maintenance: feasible at maintenance, but cannot grow
+%                        * optimal: optimal growth rate found
+%
 t = tic;
 t0 = 0;
 %% Initialization

@@ -1,23 +1,24 @@
-function [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom,options,LP, varargin)
-% Flux variability analysis for community model at community steady-state at a given growth rate. Called by SteadyComFVA 
-% The function is capable of saving intermediate results and continuing from previous results 
-% if the file path is given in options.saveFVA. It also allows switch from single thread to parallel 
+function [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, options, LP, varargin)
+% Flux variability analysis for community model at community steady-state at a given growth rate. Called by `SteadyComFVA`
+% The function is capable of saving intermediate results and continuing from previous results
+% if the file path is given in `options.saveFVA`. It also allows switch from single thread to parallel
 % computation from intermediate results (but not the other way round).
 %
 % USAGE:
-%    [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom, options, LP, parameter, 'param1', value1, 'param2', value2, ...)
 %
-% INPUT:
-%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
-%    (the following fields are required)
-%      S            Stoichiometric matrix
-%      b            Right hand side
-%      c            Objective coefficients
-%      lb           Lower bounds
-%      ub           Upper bounds
-%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
-%      infoCom      structure containing community reaction info 
-%      indCom       the index structure corresponding to infoCom
+%    [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, options, LP, parameter, 'param1', value1, 'param2', value2, ...)
+%
+% INPUT
+%    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+%
+%                      * S - Stoichiometric matrix
+%                      * b - Right hand side
+%                      * c - Objective coefficients
+%                      * lb - Lower bounds
+%                      * ub - Upper bounds
+%                      * infoCom - structure containing community reaction info
+%                      * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options    struct with the following possible fields:
@@ -28,10 +29,10 @@ function [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom,options,L
 %                        (Default = biomass reaction of each species)
 %                        Or a (N_rxns + N_organism) x K matrix for FVA of K linear combinations of fluxes and/or abundances
 %                        e.g., [1; -2; 0] for finding the max/min of 1 v_1 - 2 v_2 + 0 v_3
-%      rxnFluxList     List of reactions (index vector or subset of *.rxns) whose fluxes are 
+%      rxnFluxList     List of reactions (index vector or subset of *.rxns) whose fluxes are
 %                        also returned along with the FVA result of each entry in rxnNameList
 %                        (Default = biomass reaction of each species)
-%    (the two parameters below are usually determined by solving the problem during the program. 
+%    (the two parameters below are usually determined by solving the problem during the program.
 %         Provide them only if you want to constrain the total biomass to a particular value)
 %      BMmaxLB         lower bound for the total biomass (default 1)
 %      BMmaxUB         upper bound for the total biomass
@@ -47,7 +48,7 @@ function [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom,options,L
 %                        model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
 %    (May add also other parameters in SteadyCom for calculating the maximum growth rate.)
 %
-%    LP                LP problem structure (Cplex object for ibm_cplex) from calling SteadyComFVA. 
+%    LP                LP problem structure (Cplex object for ibm_cplex) from calling SteadyComFVA.
 %                      Leave empty if calling this function alone.
 %    parameter               structure for solver-specific parameters.
 %    'param1', value1, ...   name-value pairs for solveCobraLP parameters. See solveCobraLP for details
@@ -57,9 +58,9 @@ function [minFlux,maxFlux,minFD,maxFD,LP,GR] = SteadyComFVAgr(modelCom,options,L
 %    maxFlux       Maximum flux for each reaction
 %
 % OPTIONAL OUTPUTS:
-%    minFD         #rxnFluxList x #rxnNameList matrix containing the fluxes in options.rxnFluxList 
+%    minFD         #rxnFluxList x #rxnNameList matrix containing the fluxes in options.rxnFluxList
 %                    corresponding to minimizing each reaction in options.rxnNameList
-%    maxFD         #rxnFluxList x #rxnNameList matrix containing the fluxes in options.rxnFluxList 
+%    maxFD         #rxnFluxList x #rxnNameList matrix containing the fluxes in options.rxnFluxList
 %                    corresponding to maximizing each reaction in options.rxnNameList
 %    LP            LP problem structure (Cplex LP object for ibm_cplex)
 %    GR            the growth rate at which FVA is performed
@@ -135,7 +136,7 @@ if checkBMrow
     if ~addRow
         idRow = idRow(end);
         idRow = m + 2 * nRxnSp + nSp + idRow;
-    end 
+    end
 end
 % add a row for constraining the sum of biomass if not exist
 if addRow
@@ -168,7 +169,7 @@ else
         end
     end
     % not allow the max. biomass to exceed the one at max growth rate,
-    % can happen if optBMpercent < 100. May dismiss this constraint or 
+    % can happen if optBMpercent < 100. May dismiss this constraint or
     % manually supply BMmaxUB in the options if sum of biomass should be variable
     if ibm_cplex
         LP.Model.lhs(idRow) = BMmaxLB * optBMpercent / 100;
@@ -279,7 +280,7 @@ if verbFlag
 end
 
 %% main loop of FVA
-if threads == 1 
+if threads == 1
     % single-thread FVA
     if (verbFlag == 1)  % in a fashion similar to fluxVariability.m
         h = waitbar(0, 'Flux variability analysis in progress ...');
@@ -330,14 +331,14 @@ if threads == 1
             [LP, minFlux, minFD] = FVAopt(LP, minFlux, minFD, i, 'min', feasTol, BMmax0, idRow, rxnFluxId, varargin{:});
             LP.b(idRow) = BMmax0;  % restore the original BMmax0
         end
-        
+
         if verbFlag == 1
             waitbar(i/length(rxnNameList),h);
         elseif verbFlag > 1
             rxnNameDisp = strjoin(varNameDisp(objList(:, i) ~= 0, :), ' + ');
             fprintf('%4d\t%4.0f\t%10s\t%9.6f\t%9.6f\n', i, 100 * i / nRxnFVA, rxnNameDisp, minFlux(i), maxFlux(i));
         end
-        if mod(i, saveFreAbs) == 0 
+        if mod(i, saveFreAbs) == 0
             if ~isempty(saveFVA)
                 %save intermediate results
                 i0 = i;
@@ -373,7 +374,7 @@ else
             end
         end
     end
-    
+
     p = gcp;
     numPool = p.NumWorkers;
     %assign reactions to each thread, from reaction i0P to nRxnFVA
@@ -396,7 +397,7 @@ else
     if ~isempty(saveFVA)
         save([saveFVA '_parInfo.mat'], 'options', 'rxnRange', 'numPool');
     end
-    
+
     [maxFluxCell, minFluxCell, minFDCell, maxFDCell] = deal(cell(numPool,1));
     fprintf('%s\n',saveFVA);
     parfor jP = 1:numPool
@@ -444,7 +445,7 @@ else
                     LPp.b(idRow) = BMmax0;  % restore the original BMmax0
                 end
 
-                if mod(iCount, saveFreAbs) == 0 
+                if mod(iCount, saveFreAbs) == 0
                     if (verbFlag)
                         fprintf('Thread %d:\t%.2f%% finished. %04d-%02d-%02d %02d:%02d:%02.0f\n',...
                             jP, iCount / numel(rxnRange{jP}) * 100, clock);
@@ -469,7 +470,7 @@ else
     [minFlux, maxFlux, minFD, maxFD] = deal([]);
     % include previously saved results
     if exist([saveFVA '.mat'], 'file')
-        load([saveFVA '.mat'], 'minFlux', 'maxFlux', 'minFD', 'maxFD'); 
+        load([saveFVA '.mat'], 'minFlux', 'maxFlux', 'minFD', 'maxFD');
     end
     minFlux = [minFlux; zeros(nRxnFVA - numel(minFlux), 1)];
     maxFlux = [maxFlux; zeros(nRxnFVA - numel(maxFlux), 1)];
@@ -487,7 +488,7 @@ else
         save([saveFVA '.mat'], 'i0', 'minFlux', 'maxFlux', 'minFD', 'maxFD');
     end
 end
-  
+
 end
 
 function [LP, flux, FD] = FVAoptCplex(LP, flux, FD, i, sense, feasTol, BMmax0, idRow, rxnFluxId)
