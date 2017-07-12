@@ -1,135 +1,331 @@
-% Example of using sparseLP solver
-% Find the minimal set of reactions subject to a LP objective
-% min ||v||_0
-% s.t   Sv = b
-%       c'v = f (optimal value of objective)
-%       l <= v <= u
-% Hoai Minh Le	07/01/2016
-%
+%% Sparse Flux Balance Analysis 
+%% Author: Ronan Fleming, Hoai Minh Le, Systems Biochemistry Group, University of Luxembourg.
+%% Reviewer: Stefania Magnusdottir, Molecular Systems Physiology Group, University of Luxembourg.
+%% INTRODUCTION
+% We consider a biochemical network of  m  molecular species and  n  biochemical 
+% reactions. The biochemical network is mathematically represented by a stoichiometric 
+% matrix $S\in\mathcal{Z}^{m\times n}$. In standard notation, flux balance analysis 
+% (FBA) is the linear optimisation problem
+% 
+% $$\begin{array}{ll}\min\limits _{v} & \rho(v)\equiv c^{T}v\\\text{s.t.} 
+% & Sv=b,\\ & l\leq v\leq u,\end{array}$$
+% 
+% where $$c\in\Re^{n}$$ is a parameter vector that linearly combines one 
+% or more reaction fluxes to form what is termed the objective function,  and 
+% where a $$b_{i}<0$$, or  $$b_{i}>0$$, represents some fixed output, or input, 
+% of the ith molecular species. A typical application of flux balance analysis 
+% is to predict an optimal non-equilibrium steady-state flux vector that optimises 
+% a linear objective function, such biomass production rate, subject to bounds 
+% on certain reaction rates. Herein we use sparse flux balance analysis to predict 
+% a minimal number of active reactions [1], consistent with an optimal objective 
+% derived from the result of a standard flux balance analysis problem. In this 
+% context _sparse flux balance analysis _requires a solution to the following 
+% problem
+% 
+% $$\begin{array}{ll}\min\limits _{v} & \Vert v\Vert_{0}\\\text{s.t.} & Sv=b\\ 
+% & l\leq v\leq u\\ & c^{T}v=\rho^{\star}\end{array}$$
+% 
+% where the last constraint is represents the requirement to satisfy an optimal 
+% objective value $\rho^{\star}$  derived from any solution to a flux balance 
+% analysis (FBA) problem.
+%% EQUIPMENT SETUP
+%% *Initialize the COBRA Toolbox.*
+% If necessary, initialize The Cobra Toolbox using the |initCobraToolbox| function.
 
-% Solver is chosen in demoSparseLP.m;
-% if standalone: changeCobraSolver('gurobi6','all');
+initCobraToolbox
+%% COBRA model. 
+% In this tutorial, the model used is the generic reconstruction of human metabolism, 
+% the Recon 2.04 [2], which is provided in the COBRA Toolbox. The Recon 2.04 model 
+% can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
+% Human> webpage. Before proceeding with the simulations, the path for the model 
+% needs to be set up:      
 
-epsilon = 1e-6; % Tolerance for non-zero flux
+global CBTDIR            
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
+model = modelR204;            
+clear modelR204;
+%% 
+% Recon 2.04 is written in the "old style" COBRA format, and we thus use 
+% the function |convertOldStyleModel| to convert it to the new COBRA Toolbox format.
 
-%% Load a COBRA model
-load('iLC915.mat');
+model = convertOldStyleModel(model);
+%% PROCEDURE
+% Set the tolerance to distinguish between zero and non-zero flux, based on 
+% the numerical tolerance of the currently installed optimisation solver.
 
-%% Solve FBA
-% max c'v
-% s.t   Sv = b
-%       l <= v <= u
+feasTol = getCobraSolverParams('LP', 'feasTol');
+%% 
+% Display the constraints
 
-% Define the LP structure
-[c,S,b,lb,ub] = deal(model.c,model.S,model.b,model.lb,model.ub);
+minInf = -1000;
+maxInf = 1000;
+printConstraints(model, minInf, maxInf);
+%% 
+% Select the biomass reaction to optimise
+
+model.biomassBool = strcmp(model.rxns, 'biomass_reaction');
+model.c(model.biomassBool) = 1;
+%% 
+% Display the biomass reaction
+
+rxnAbbrList={'biomass_reaction'};
+printFlag = 1;
+formulas = printRxnFormula(model, rxnAbbrList, printFlag);        
+%%  Sparse flux balance analysis
+% We provide two options to run sparse flux balance analysis. A: directly in 
+% one step, no quality control, and B: two steps, all approximations, with a heuristic 
+% sparsity test*.*
+%% TIMING
+% The time to compute a sparse flux balance analysis solution depends on the 
+% size of the genome-scale model and the option chosen to run sparse flux balance 
+% analysis.  Option A: directly in one step, no quality control, can take anything 
+% from <0.1 seconds for a 1,000 reaction model, to 1,000 seconds for a model with 
+% 20,000 reactions. Option B: two steps, all approximations, with a sparsity test 
+% could take hours for a model with >10,000 reactions because the length of time 
+% for the heuristic sparsity test is proportional to the number of active reactions 
+% in an approximate sparse solution.
+%% *A. Sparse flux balance analysis (directly in one step, no quality control)*
+% This approach computes a sparse flux balance analysis solution, satisfing 
+% the FBA objection, with the default approach to approximate the solution to 
+% the cardinality minimisation problem [3] underling sparse FBA. This approach 
+% does not check the quality of the solution, i.e., whether indeed it is the sparsest 
+% flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
+% 
+% First choose whether to maximize ('max') or minimize ('min') the FBA objective. 
+% Here we choose maximise
+
+osenseStr='max';
+%% 
+% Choose to minimize the zero norm of the optimal flux vector
+
+minNorm='zero';
+%% 
+% Run sparse flux balance analysis
+
+sparseFBAsolution = optimizeCbModel(model, osenseStr, minNorm);
+%% 
+% Obtain the vector of reaction rates from the solution structure
+
+v = sparseFBAsolution.v;
+%% 
+% Display the sparse flux solution, but only the non-zero fluxes
+
+nonZeroFlag = 1;
+printFluxVector(model, v, nonZeroFlag);
+%% 
+% Display the number of active reactions
+
+fprintf('%u%s\n',nnz(v),' active reactions in the sparse flux balance analysis solution.');
+%% ANTICIPATED RESULTS
+% Typically, a sparse flux balance analysis solution will have a small fraction 
+% of the number of the number of reactions active than in a flux balance analysis 
+% solution, e.g., Recon 2.04 model has 7,440 reactions. When maximising biomass 
+% production, a typical flux balance analysis solution might have approximately 
+% 2,000 active reactions (this is LP solver dependent) whereas for the same problem 
+% there are 247 active reactions in the sparse flux balance analysis solution 
+% from optimizeCbModel (using the default capped L1 norm approximate step function, 
+% see below).
+%% *B. Sparse flux balance analysis (two steps, all approximations,* *with a sparsity test)*
+% This approach computes a sparse flux balance analysis solution, satisfing 
+% the FBA objection, with the default approach to approximate the solution to 
+% the cardinality minimisation problem [3] underling sparse FBA. This approach 
+% does not check the quality of the solution, i.e., whether indeed it is the sparsest 
+% flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
+%% Solve a flux balance analysis problem
+% Build a linear programming problem structure (LPproblem) that is compatible 
+% with the interfacefunction (solveCobraLP) to any installed linear optimisation 
+% solver.
+
+[c,S,b,lb,ub,csense] = deal(model.c,model.S,model.b,model.lb,model.ub,model.csense);
 [m,n] = size(S);
-if ~isfield(model,'csense')
-    csense = repmat('E',m,1);
-end
 
-LPproblem = struct('c',-c,'osense',1,'A',S,'csense',csense,'b',b,'lb',lb,'ub',ub);
+LPproblem = struct('c',c,'osense',-1,'A',S,'csense',csense,'b',b,'lb',lb,'ub',ub);
+%% 
+% Now solve the flux balance analysis problem
 
-% Call solveCobraLP to solve the FBA problem
 LPsolution = solveCobraLP(LPproblem);
 if LPsolution.stat == 1
-        vFBA = LPsolution.full(1:n);
+    vFBA = LPsolution.full(1:n);
 else
-        vFBA = [];
-        error('FBA problem error!')
+    vFBA = [];
+    error('FBA problem error!')
 end
-display('---FBA')
-display(strcat('|vFBA|_0 = ',num2str(length(find(abs(vFBA)>0)))));
+%% 
+% Display the number of active reactions
 
-%% Minimise the number of reactions by keeping same max objective found previously
-% One adds the constraint : c'v = c'vFBA
-% min ||v||_0
-% s.t   Sv = b
-%       c'v = fFBA
-%       l <= v <= u
+fprintf('%u%s\n',nnz(vFBA),' active reactions in the flux balance analysis solution.');
+%% Approimations underlying sparse flux balance analysis
+% Due to its combinatorial nature, minimising the zero norm explicitly is an 
+% NP-hard problem. Therefore we approximately solve the problem. The approach 
+% is to replace the zero norm with a separable sum of step functions, which are 
+% each approximated by anther function. Consider the step function ?(t): R  ?  
+% R where ? (t)=1 if t ? 0 and     ? (t)=0 otherwise, illustrated in the Figure 
+% below:
+% 
+% 
+% 
+% There are then many different approximate step functions that can be minimised. 
+% The figure below illustrates the many different approximate step functions that 
+% can be chosen to be minimised instead of an explicit step function.
+% 
+% 
+% 
+% Depending on the application, and the biochemical network, one or other 
+% approximation may outperform the rest, therefore a pragmatic strategy is to 
+% try each and select the most sparse flux vector. The step set of function approximations 
+% [4] available are
+% 
+%  * 'cappedL1' : Capped-L1 norm
+% 
+%  * 'exp'      : Exponential function
+% 
+%  * 'log'      : Logarithmic function
+% 
+%  * 'SCAD'     : SCAD function
+% 
+%  * 'lp-'      : L_p norm with p<0
+% 
+%  * 'lp+'      : L_p norm with 0<p<1
+% 
+% Here we prepare a cell array of strings which indicate the set of step 
+% function approximations we wish to compare.
+
+approximations = {'cappedL1','exp','log','SCAD','lp-','lp+'};
+%% Run the sparse linear optimisation solver
+% First we must build a problem structure to pass to the sparse solver, by adding 
+% an additional constraint requiring that the sparse flux solution also statisfy 
+% the optimal objective value from flux balance analysis
 
 constraint.A = [S ; c'];
 constraint.b = [b ; c'*vFBA];
 constraint.csense = [csense;'E'];
 constraint.lb = lb;
 constraint.ub = ub;
+%% 
+% Now we call the sparse linear step function approximations  
 
-% Call sparseLP solver
-% Try all non-convex approximations of zero norm and take the best result
-approximations = {'cappedL1','exp','log','SCAD','lp-','lp+'};
 bestResult = n;
 bestAprox = '';
 for i=1:length(approximations)
     solution = sparseLP(char(approximations(i)),constraint);
-
     if solution.stat == 1
-        if bestResult > length(find(abs(solution.x)>epsilon))
-            bestResult=length(find(abs(solution.x)>epsilon));
+        nnzSol=nnz(abs(solution.x)>feasTol);
+        fprintf('%u%s%s',nnzSol,' active reactions in the sparseFBA solution with ', char(approximations(i)));
+        if bestResult > nnzSol
+            bestResult=nnzSol;
             bestAprox = char(approximations(i));
             solutionL0 = solution;
         end
     end
 end
+%% 
+% Select the most sparse flux vector, unless there is a numerical problem.
 
 if ~isequal(bestAprox,'')
-        v = solutionL0.x;
+    vBest = solutionL0.x;
 else
-        v = [];
-        error('Min L0 problem error !!!!')
+    vBest = [];
+    error('Min L0 problem error !!!!')
 end
+%% 
+% Report the best approximation
 
+display(strcat('Best step function approximation: ',bestAprox));
+%% 
+% Report the number of active reactions in the most sparse flux vector
 
-display('---Non-convex approximation')
-display(strcat('Best approximation:',bestAprox));
-display(strcat('|vL0|_0 = ',num2str(length(find(abs(solutionL0.x)>eps)))));
-display(strcat('Feasibily error =',num2str(norm(constraint.A * solutionL0.x - constraint.b,2))));
+fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparse flux balance analysis solution.');
+%% 
+% Warn if there might be a numerical issue with the solution
 
-
+feasError=norm(constraint.A * solutionL0.x - constraint.b,2);
+if feasError>feasTol
+    fprintf('%g\t%s\n',feasError, ' feasibily error.')
+    warning('Numerical issue with the sparseLP solution')
+end
 %% Heuristically check if the selected set of reactions is minimal
-reducedModel = model;
-%Set of predicted active reactions
-index_ActiveRxns = find(abs(solutionL0.x)>epsilon);
-nb_ActiveRnxs = length(index_ActiveRxns);
+% Each step function approximation minimises a different problem than minimising 
+% the zero norm explicitly. Therefore it is wise to test, at least heuristically, 
+% if the most sparse approximate solution to minimising the zero norm is at least 
+% locally optimal, in the sense that the set of preicted reactions cannot be reduced 
+% by omitting, one by one, an active reaction. If it is locally optimal in this 
+% sense, one can be more confident that the  most sparse approximate solution 
+% is the most sparse solution, but still there is no global guarantee, as it is 
+% a combinatorial issue.
+% 
+% Identify the set of predicted active reactions
+
+activeRxnBool = abs(vBest)>feasTol;
+nActiveRnxs = nnz(activeRxnBool);
 activeRxns = false(n,1);
-activeRxns(index_ActiveRxns) = true;
-isInMinnimalSet = true(nb_ActiveRnxs,1);
+activeRxns(activeRxnBool) = true;
+minimalActiveRxns=activeRxns;
 
-%Close all predicted non-active reactions by setting their lb = ub = 0
-reducedModel.lb(~activeRxns) = 0;
-reducedModel.ub(~activeRxns) = 0;
+%% 
+% Close all predicted non-active reactions by setting their lb = ub = 0
 
-%Remove one by one the predicted active reaction and verify if whether
-%or not the optimal objective value can be achieved
+lbSub = model.lb;
+ubSub = model.ub;
+lbSub(~activeRxns) = 0;
+lbSub(~activeRxns) = 0;
+%% 
+% Generate an LP problem  to be reduced
 
-A = reducedModel.S;
-b = reducedModel.b;
+% Check if one still can achieve the same objective
+LPproblem = struct('c',-c,'osense',-1,'A',S,'csense',csense,'b',b,'lb',lbSub,'ub',ubSub);
+%% 
+% For each active reaction in the most sparse approximate flux vector, one 
+% by one, set the reaction bounds to zero, then test if the optimal flux balance 
+% analysis objective value is still attained. If it is, then that reaction is 
+% not part of the minimal set. If it is not, then it is probably part of the minimal 
+% set.
 
-for i=1:nb_ActiveRnxs
-    % Close the reaction
-    ubSub = reducedModel.ub;
-    lbSub = reducedModel.lb;
-    ubSub(index_ActiveRxns(i)) = 0;
-    lbSub(index_ActiveRxns(i)) = 0;
-
-    % Check if one still can achieve the same objective
-    LPproblem = struct('c',-reducedModel.c,'osense',1,'A',A,'csense',csense,'b',b,'lb',lbSub,'ub',ubSub);
-    LPsolution = solveCobraLP(LPproblem);
-
-    if LPsolution.stat == 1 && abs(LPsolution.obj - -c'*vFBA)<1e-8
-        isInMinnimalSet(i) = false;
-        reducedModel.ub(i) = 0;
-        reducedModel.lb(i) = 0;
-        v = LPsolution.full(1:n);
+for i=1:n
+    if activeRxnBool(i)
+        LPproblem.lb = model.lb;
+        LPproblem.ub = model.ub;
+        %close bounds on this reaction
+        LPproblem.lb(i) = 0;% Close the reaction
+        LPproblem.ub(i) = 0;% Close the reaction
+        %solve the LP problem
+        LPsolution = solveCobraLP(LPproblem);
+        %check if the optimal FBA objective is attained
+        if LPsolution.stat == 1 && abs(LPsolution.obj + c'*vFBA)<1e-8
+            minimalActiveRxns(i) = 0;
+            vBestTested = LPsolution.full(1:n);
+        else
+            %relax those bounds if reaction appears to be part of the minimal set
+            LPproblem.lb(i) = model.lb(i);
+            LPproblem.ub(i) = model.ub(i);
+        end
     end
 end
+%% 
+% Report the number of active reactions in the approximately most sparse 
+% flux vector, or the reduced approximately most sparse flux vector, if it is 
+% more sparse.
 
-
-display('---Non-convex approximation')
-display(strcat('Best approximation:',bestAprox));
-display(strcat('|vL0|_0 = ',num2str(length(find(abs(v)>epsilon)))));
-display(strcat('Feasibily error =',num2str(norm(constraint.A * v - constraint.b,2))));
-display(strcat('Nb of rxns that one can still remove = ',num2str(nb_ActiveRnxs - length(find(isInMinnimalSet==true)))));
-if nb_ActiveRnxs - length(find(isInMinnimalSet==true))~=0
-    if isfield(reducedModel,'rxns')
-        display(reducedModel.rxns(~isInMinnimalSet))
-    end
+if nnz(minimalActiveRxns)<nnz(activeRxns)
+    fprintf('%u%s',nnz(abs(vBestTested)>feasTol),' active reactions in the best sparseFBA solution (tested).');
+    nonZeroFlag = 1;
+    printFluxVector(model, vBestTested, nonZeroFlag);
+else
+    fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparseFBA solution (tested).');
 end
+%% REFERENCES
+% [1] Meléndez-Hevia, E., Isidoro, A. (1085). The game of the pentose phosphate 
+% cycle. Journal of Theoretical Biology 117, 251-263.
+% 
+% [2] Thiele, I., Swainston, N., Fleming, R.M., Hoppe, A., Sahoo, S., Aurich, 
+% M.K., Haraldsdottir, H., Mo, M.L., Rolfsson, O., Stobbe, M.D., et al. (2013). 
+% A community-driven global reconstruction of human metabolism. Nat Biotechnol 
+% 31, 419-425.
+% 
+% [3] Fleming, R.M.T., et al. (_submitted_, 2017). Cardinality optimisation 
+% in constraint-based modelling: illustration with Recon 3D.
+% 
+% [4] Le Thi, H.A., Pham Dinh, T., Le, H.M., and Vo, X.T. (2015). DC approximation 
+% approaches for sparse optimization. European Journal of Operational Research 
+% 244, 26-46.
+% 
+%
