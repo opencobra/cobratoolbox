@@ -6,7 +6,7 @@
 % 
 % *Ines Thiele, Systems Biochemistry Group, LCSB, University of Luxembourg*
 % 
-% **
+% 
 % 
 % In this tutorial, we show how computations are performed by varying one 
 % or two parameters over a fixed range of numerical values.
@@ -15,30 +15,49 @@
 
 initCobraToolbox;
 %% 
-% For solving linear programming problems in the analysis, certain solvers 
+% For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
 
-changeCobraSolver ('gurobi', 'all', 1);
+% solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
 %% 
-% The present tutorial can run with |'glpk'| package, which does not require 
-% additional installation and configuration. Although, for the analysis of large 
-% models is recommended to use the |'gurobi'| package. For detail information, 
-% refer to the solver installation guide: <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
-% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md>
+% The present tutorial can run with <https://opencobra.github.io/cobratoolbox/deprecated/docs/cobra/solvers/changeCobraSolver.html 
+% glpk package>, which does not require additional installation and configuration. 
+% Although, for the analysis of large models is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% GUROBI> package.
+% 
+% Setup the appropriate solver for the machine you are using by removing 
+% the "%" (comment) sign for only the desired solver.
+
+% changeCobraSolver('glpk','all');
+% changeCobraSolver('tomlab_cplex','all');
+% changeCobraASolver('ibm_cplex','all');
+ changeCobraSolver ('gurobi', 'all');
 %% PROCEDURE
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
 
-pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
-filename = '2017_04_28_Recon3d.mat';
-load([pathModel, filename])
-model = modelRecon3model;
-clear modelRecon3model
+% check if Recon3 exists:
+% pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
+% filename = '2017_04_28_Recon3d.mat';
+% load([pathModel, filename])
+% model = modelRecon3model;
+% clear modelRecon3model
+% and if not
+% select your own model, or use Recon2.0model instead filename='Recon3.0model';
+global CBTDIR
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
+model = Recon2model;
+model.rxns = strrep(model.rxns, '(', '[');
+model.rxns = strrep(model.rxns, ')', ']');
+clear Recon2model
 %% 
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D [1]. Therefore, we assume, that the cellular objectives 
+% metabolism, Recon 3D$$^1$. Therefore, we assume, that the cellular objectives 
 % include energy production or optimisation of uptake rates and by-product secretion 
 % for various physiological functions of the human body.
+% 
+% The metabolites structures and reactions are from the Virtual Metabolic 
+% Human database (VMH, <http://vmh.life http://vmh.life>).
 %% TROUBLESHOOTING
 % If there are multiple energy sources available in the model; Specifying more 
 % constraints is necessary. If we do not do that, we will have additional carbon 
@@ -47,7 +66,7 @@ clear modelRecon3model
 % To avoid this issue, all external carbon sources need to be closed.
 
 %Closing the uptake of all energy and oxygen sources
-idx=strmatch('Exchange/demand reaction', model.subSystems);
+idx=strmatch('Exchange/demand reaction',model.subSystems);
 c=0;
 for i=1:length(idx)
     if model.lb(idx(i))~=0
@@ -55,26 +74,49 @@ for i=1:length(idx)
         uptakes{c}=model.rxns{idx(i)};
     end
 end
-
-modelalter = model;
-modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
+% If you use Recon3.0 model, than:
+% modelalter = model;
+% modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
+% modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
 
 % The alternative way to do that, in case you were using another large model, 
 % that does not contain defined Subsystem is
 % to find uptake exchange reactions with following codes:
 % [selExc, selUpt] = findExcRxns(model);
 % uptakes = model.rxns(selUpt);
+
 % Selecting from the exchange uptake reactions those 
 % which contain at least 1 carbon in the metabolites included in the reaction:
-% subuptakeModel = extractSubNetwork(model, uptakes);
-% hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
+ subuptakeModel = extractSubNetwork(model, uptakes);
+ hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
 % Closing the uptake of all the carbon sources
-% modelalter = model;
-% modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'l');
+ modelalter = model;
+ modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'b');
+% Closing other oxygen and energy sources
+ exoxygen = {'EX_adp'
+    'EX_amp[e]'
+    'EX_atp[e]'
+    'EX_co2[e]'
+    'EX_coa[e]'
+    'EX_fad[e]'
+    'EX_fe2[e]'
+    'EX_fe3[e]'
+    'EX_gdp[e]'
+    'EX_gmp[e]'
+    'EX_gtp[e]'
+    'EX_h[e]'
+    'EX_h2o[e]'
+    'EX_h2o2[e]'
+    'EX_nad[e]'
+    'EX_nadp[e]'
+    'EX_no[e]'
+    'EX_no2[e]'
+    'EX_o2s[e]'};
+modelalter = changeRxnBounds (modelalter, exoxygen, 0, 'l');
 %% Robustness analysis
 % Robustness analysis is applied to estimate and visualise how changes in the 
 % concentration of an environmental parameter (exchange rate) or internal reaction 
-% effect on the objective [2]. If we are interested in varying $$v_{j}$ between 
+% effect on the objective$$^2$. If we are interested in varying $$v_{j}$ between 
 % two values, i.e., $$v_{j,min}$ and $$v_{j,max}$, we can solve $$l$ optimisation 
 % problems:
 % 
@@ -111,20 +153,21 @@ modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
 %               reaction flux value
 %% 
 % Here, we will investigate how robust the maximal ATP production of the 
-% network (i.e., the maximal flux through '|DM_atp_c_'|) is with respect to varying 
-% glucose uptake rates and fixed oxygen uptake. 
+% network (i.e., the maximal flux through '|<http://vmh.life/#human/all/DM_atp_c_ 
+% DM_atp_c_>'|) is with respect to varying glucose uptake rates and fixed oxygen 
+% uptake. 
 
 modelrobust = modelalter;
 modelrobust = changeRxnBounds(modelrobust, 'EX_o2[e]', -17, 'b');
 AtpRates = zeros(21, 1);
 for i = 0:20
-    modelrobust = changeRxnBounds(modelrobust, 'EX_glc_D[e]', -i, 'b');
+    modelrobust = changeRxnBounds(modelrobust, 'EX_glc[e]', -i, 'b');
     modelrobust = changeObjective(modelrobust, 'DM_atp_c_');
     FBArobust = optimizeCbModel(modelrobust, 'max');
     AtpRates(i+1) = FBArobust.f;
 end
 plot (1:21, AtpRates)
-xlabel('Flux through EX-glc-D[e]')
+xlabel('Flux through EX__glc[e]')
 ylabel('Objective function')
 %% 
 % We can also investigate the robustness of the maximal ATP production when 
@@ -132,7 +175,7 @@ ylabel('Objective function')
 % available.
 
 modelrobustoxy = modelalter;
-modelrobustoxy = changeRxnBounds(modelrobustoxy, 'EX_glc_D[e]', -20, 'b');
+modelrobustoxy = changeRxnBounds(modelrobustoxy, 'EX_glc[e]', -20, 'b');
 AtpRatesoxy = zeros(21, 1);
 for i = 0:20
     modelrobustoxy = changeRxnBounds(modelrobustoxy, 'EX_o2[e]', -i, 'b');
@@ -141,7 +184,7 @@ for i = 0:20
     AtpRatesoxy(i+1) = FBArobustoxy.f;
 end
 plot (1:21, AtpRatesoxy)
-xlabel('Flux through EX-o2[e]')
+xlabel('Flux through EX__o2[e]')
 ylabel('Objective function')
 %% 
 % *    *    Double robust analysis*
@@ -172,13 +215,13 @@ ylabel('Objective function')
 % 
 
 modeldrobustoxy = modelalter;
-modeldrobustoxy = changeRxnBounds(modeldrobustoxy, 'EX_glc_D[e]', -20, 'l');
+modeldrobustoxy = changeRxnBounds(modeldrobustoxy, 'EX_glc[e]', -20, 'l');
 modeldrobustoxy = changeRxnBounds(modeldrobustoxy, 'EX_o2[e]', -17, 'l');
 [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(modeldrobustoxy,...
-    'EX_glc_D[e]', 'EX_o2[e]', 10, 1, 'DM_atp_c_', 'max')
+    'EX_glc[e]', 'EX_o2[e]', 10, 1, 'DM_atp_c_', 'max')
 %% *Phenotypic phase plane analysis (PhPP)*
 % The PhPP is a method for describing in two or three dimensions, how the objective 
-% function would change if additional metabolites were given to the model [3]. 
+% function would change if additional metabolites were given to the model$$^3$. 
 % 
 % Essentially PhPP performs a |doubleRobustnessAnalysis()|, with the difference 
 % that shadow prices are retained. The code is as follows-
@@ -187,7 +230,7 @@ modelphpp = modelalter;
 ATPphppRates = zeros(21);
 for i = 0:10
     for j = 0:20
-        modelphpp = changeRxnBounds(modelphpp, 'EX_glc_D[e]', -i, 'b');
+        modelphpp = changeRxnBounds(modelphpp, 'EX_glc[e]', -i, 'b');
         modelphpp = changeRxnBounds(modelphpp, 'EX_o2[e]', -j, 'b');
         modelphpp = changeObjective(modelphpp, 'DM_atp_c_');
         FBAphpp = optimizeCbModel(modelphpp, 'max');
@@ -196,30 +239,31 @@ for i = 0:10
 end
 
 surfl(ATPphppRates) % 3d plot
-xlabel('Flux through EX-glc-D[e]')
-ylabel('Flux through EX-o2[e]')
+xlabel('Flux through EX__glc[e]')
+ylabel('Flux through EX__o2[e]')
 zlabel('Objective function')
 %% 
 % To generate a 2D plot: |pcolor(ATPphppRates)|
 % 
 % Alternatively, use the function |phenotypePhasePlane()|. This function 
 % also draws the line of optimality, as well as the shadow prices of the metabolites 
-% from the two control reactions. In this case, control reactions are '|EX_glc_D[e]|' 
-% and '|EX_o2[e]|'. The line of optimality signifies the state wherein, the objective 
-% function is optimal. In this case it is '|DM_atp_c_|'.
+% from the two control reactions. In this case, control reactions are |'<https://vmh.life/#reaction/EX_glc(e) 
+% EX_glc[e]>'| and '|<https://vmh.life/#reaction/EX_o2(e) EX_o2[e]>|'. The line 
+% of optimality signifies the state wherein, the objective function is optimal. 
+% In this case it is '|<http://vmh.life/#human/all/DM_atp_c_ DM_atp_c_>|'.
 
 modelphpp = changeObjective (modelphpp, 'DM_atp_c_');
 [growthRates, shadowPrices1, shadowPrices2] = phenotypePhasePlane(modelphpp,...
-    'EX_glc_D[e]', 'EX_o2[e]');
+    'EX_glc[e]', 'EX_o2[e]');
 %% 
 % 
 %% REFERENCES 
-% [1] Noronha A., et al. (2017). ReconMap: an interactive visualization of human 
-% metabolism. _Bioinformatics_., 33 (4): 605-607.
+% [1] Thiele, I., et al. A community-driven global reconstruction of human metabolism. 
+% _Nat. Biotechnol., _31(5), 419â€“425 (2013).
 % 
-% [2] Edwards, J.S. and and Palsson, B. Ø. (2000). Robustness analysis of 
-% the Escherichia coli metabolic network. _Biotechnology Progress, _16(6):927-39.
+% [2] Edwards, J.S., Palsson, B. Ã˜. Robustness analysis of the Escherichia 
+% coli metabolic network. _Biotechnology Progress, _16(6):927-939 (2000).
 % 
-% [3] Edwards, J.S., Ramakrishna, R. and and Palsson, B. Ø. (2002). Characterizing 
-% the metabolic phenotype: A phenotype phase plane analysis. _Biothechnology and 
-% Bioengineering_, 77:27-36.
+% [3] Edwards, J.S., Ramakrishna, R., Palsson, B. Ã˜. Characterizing the metabolic 
+% phenotype: A phenotype phase plane analysis. _Biothechnology and Bioengineering_, 
+% 77:27-36 (2002).
