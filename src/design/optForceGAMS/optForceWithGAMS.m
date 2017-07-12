@@ -1,4 +1,4 @@
-function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model,...
+function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForceWithGAMS(model,...
     targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
     nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,...
     printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
@@ -604,6 +604,7 @@ if loop % if k = kMin:k
                     optForceSets = {};
                     posOptForceSets = [];
                     typeRegOptForceSets = {};
+                    fluxOptForceSets = {};
                 end
 
                 outputFolderK = [outputFolder '_k' num2str(currentK)];
@@ -698,12 +699,22 @@ if loop % if k = kMin:k
                         if verbose; fprintf('No solution to optForce was found using k = %1.0f. Therefore, no plain text file was generated\n', currentK); end;
                     end
                 end
-
+                
                 if ~noSolution
                     %close file for saving report
                     if printReport; fclose(freport); end;
                     delete(optForceFunction);
                     cd(workingPath);
+                else
+                    currentK = currentK + 1;
+                    
+                    if currentK > k
+                        optForceSets = {};
+                        posOptForceSets = [];
+                        typeRegOptForceSets = {};
+                        fluxOptForceSets=[];
+                    end
+                    
                 end
 
             catch
@@ -949,6 +960,7 @@ else % if k = fixed number
                 optForceSets = {};
                 posOptForceSets = [];
                 typeRegOptForceSets = {};
+                fluxOptForceSets = {};
             end
 
             %remove or move additional files that were generated during running
