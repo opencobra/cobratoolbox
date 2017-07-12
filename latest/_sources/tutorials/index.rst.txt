@@ -12,6 +12,7 @@ Tutorials
 
    tutorialAtomicallyResolveReconstruction
    tutorialConstrainingModels
+   createSuNetworkRecon
    tutorialEngaging
    tutorialExtraction_transcriptomic
    tutorialFBA
@@ -35,13 +36,14 @@ Tutorials
    tutorialPathVectors
    tutorialPFBA
    tutorialRBioNet
+   tutorialReconstructionSOP
    tutorialRelaxedFBA
    tutorialRemoteVisualisation
    tutorialRobustness_PhPP
-   tutorialSOP
    tutorialSparseFBA_freeATPtest
    tutorialSparseFBA
    tutorialSparseLP
    tutorialSteadyCom
    tutorialUFBA
    tutorialUniformSampling
+   tutorialVariationalKinetics
