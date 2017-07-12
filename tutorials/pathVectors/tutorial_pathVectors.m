@@ -177,6 +177,19 @@ id
 % That means reactions 2, 3, 4 ,5 and 6 participate in the elementary modes. 
 % For example, reactions 2, 3 and 6 are made elementary mode one in |E(1), |which 
 % in every elementary mode two of reaction use reversible reactions.
+% 
+% These two elementary modes are shown in figuers 1 and 2 respectively as 
+% following
+% 
+% 
+% 
+%                                                                                                                                     
+% Figuer 1: elementary 1 which is involves reactions 1, 2 and 5.
+% 
+% 
+% 
+%                                                                                                                                     
+% Figuer 2: elementary 2 which is involves reactions 3, 4 and 5.
 %% TIMING
 % Running, the codes are dependent on the size of models may take long from 
 % 30 seconds to few hours. But in addition to the time of running you should allow 
