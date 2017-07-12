@@ -1,6 +1,6 @@
 %% OptKnock Tutorial
 %% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
-%% *Reviewer(s): Thomas Pfau, Sylvian Arreckx, Laurent Heirendt & Ronan Fleming*
+%% *Reviewer(s): Thomas Pfau, Sylvian Arreckx, Laurent Heirendt, Ronan Fleming, John Sauls*
 %% *INTRODUCTION:*
 % In this tutorial we will run optKnock. For a detailed description of the procedure, 
 % please see [1]. Briefly, the problem is to find a set of reactions of size "numDel" 
@@ -21,16 +21,18 @@
 %% PROCEDURE
 % The proceduce consists on the following steps
 % 
-% 1) Define contraints
+% 1) Define contraints.
 % 
 % 2) Define a set of reactions to search knockouts. Only reactions in this 
 % set will be deleted. 
 % 
-% 3) Define the number of reactions to be deleter, the target reaction and 
-% some constraints to be accomplish
+% 3) Define the number of reactions to be deleted, the target reaction and 
+% some constraints to be accomplish.
 % 
-% 4) Run optKnock. *TIMING: *This task should take from a few seconds to 
-% a few hours depending on the size of your reconstruction
+% 4) Run optKnock. 
+% 
+% *TIMING: *This task should take from a few seconds to a few hours depending 
+% on the size of your reconstruction.
 % 
 % We verify that cobratoolbox has been initialized and that the solver has 
 % been set.
@@ -38,16 +40,16 @@
 global TUTORIAL_INIT_CB;
 if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
     initCobraToolbox
-    changeCobraSolver('gurobi','all');
 end
 
-fullPath = which('optKnockTutorial');
+changeCobraSolver('gurobi','all');
+fullPath = which('tutorial_optKnock');
 folder = fileparts(fullPath);
 currectDirectory = pwd;
 cd(folder);
 
 %% 
-% We load the model of E. coli [2]
+% We load the model of E. coli [2].
 
 model = readCbModel('iJO1366.mat')
 biomass = 'BIOMASS_Ec_iJO1366_core_53p95M';
@@ -59,11 +61,14 @@ threshold = 5;
 % First, we define the set for reactions which could be deleted from the 
 % network. Reactions not in this list are not going to be deleted.
 
-selectedRxnList = {'GLCabcpp'; 'GLCptspp'; 'HEX1'; 'PGI'; 'PFK'; 'FBA'; 'TPI'; 'GAPD'; 'PGK'; 'PGM'; 'ENO'; 'PYK'; 'LDH_D'; 'PFL'; 'ALCD2x'; 'PTAr'; 'ACKr'; 'G6PDH2r'; 'PGL'; 'GND'; 'RPI'; 'RPE'; 'TKT1'; 'TALA'; 'TKT2'; 'FUM'; 'FRD2'; 'SUCOAS'; 'AKGDH'; 'ACONTa'; 'ACONTb'; 'ICDHyr'; 'CS'; 'MDH'; 'MDH2'; 'MDH3'; 'ACALD'};
+selectedRxnList = {'GLCabcpp'; 'GLCptspp'; 'HEX1'; 'PGI'; 'PFK'; 'FBA'; 'TPI'; 'GAPD'; ...
+                   'PGK'; 'PGM'; 'ENO'; 'PYK'; 'LDH_D'; 'PFL'; 'ALCD2x'; 'PTAr'; 'ACKr'; ...
+                   'G6PDH2r'; 'PGL'; 'GND'; 'RPI'; 'RPE'; 'TKT1'; 'TALA'; 'TKT2'; 'FUM'; ...
+                   'FRD2'; 'SUCOAS'; 'AKGDH'; 'ACONTa'; 'ACONTb'; 'ICDHyr'; 'CS'; 'MDH'; ...
+                   'MDH2'; 'MDH3'; 'ACALD'};
 
 %% 
 % Then, we define some constraints
-
 
 % prespecified amount of glucose uptake 10 mmol/grDW*hr
 model = changeRxnBounds(model, 'EX_glc__D_e', -10, 'b');
@@ -92,7 +97,7 @@ model = changeRxnBounds(model, 'EX_for_e', 1000, 'u');
 model = changeRxnBounds(model, 'EX_lac__D_e', 1000, 'u');
 model = changeRxnBounds(model, 'EX_succ_e', 1000, 'u');
 %% 
-% Then, we calculates the production of metabolites before running optKnock
+% Then, we calculates the production of metabolites before running optKnock.
 
 % determine succinate production and growth rate before optimizacion
 fbaWT = optimizeCbModel(model);
@@ -104,14 +109,16 @@ acetFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_ac_e'));
 growthRateWT = fbaWT.f;
 fprintf('The production of succinate before optimization is %.1f \n', succFluxWT);
 fprintf('The growth rate before optimization is %.1f \n', growthRateWT);
-fprintf('The production of other products such as ethanol, formate, lactate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxWT, formFluxWT, lactFluxWT, acetFluxWT);
+fprintf(['The production of other products such as ethanol, formate, lactate and'...
+         'acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n'], ...
+        etohFluxWT, formFluxWT, lactFluxWT, acetFluxWT);
 %% 
 % *I) SUCCINATE OVERPRODUCTION*
 % 
-% *EXAMPLE 1:* *finding optKnock reactions sets of large 2 for increasing 
+% *EXAMPLE 1:* *finding optKnock reactions sets of size 2 for increasing 
 % production of succinate*
 
-fprintf('\n...EXAMPLE 1: Finding optKnock sets of large 2 or less...\n\n')
+fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 2 or less...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
 options = struct('targetRxn', 'EX_succ_e', 'numDel', 2);
@@ -155,14 +162,17 @@ while nIter < threshold
         fprintf('\n');
         fprintf('The production of succinate after optimization is %.2f \n', succFluxM1);
         fprintf('The growth rate after optimization is %.2f \n', growthRateM1);
-        fprintf('The production of other products such as ethanol, formate, lactate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxM1, formFluxM1, lactFluxM1, acetFluxM1);
+        fprintf(['The production of other products such as ethanol, formate, lactate and acetate are' ...
+                 '%.1f, %.1f, %.1f and %.1f, respectively. \n'], etohFluxM1, formFluxM1, lactFluxM1, acetFluxM1);
         fprintf('...Performing coupling analysis...\n');
         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, setM1, 'EX_succ_e');
         fprintf('The solution is of type: %s\n', type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
-        fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n', minProd, maxProd);
+        fprintf(['The maximun and minimun production of succinate given the optKnock set is ' ...
+                 '%.2f and %.2f, respectively \n\n'], minProd, maxProd);
         if strcmp(type, 'growth coupled')
-            singleProductionEnvelope(model, setM1, 'EX_succ_e', biomass, 'savePlot', 1, 'showPlot', 1, 'fileName', ['succ_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
+            singleProductionEnvelope(model, setM1, 'EX_succ_e', biomass, 'savePlot', 1, 'showPlot', 1, ...
+                                     'fileName', ['succ_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
         end,
     else
         if nIter == 1
@@ -184,10 +194,10 @@ end
 % *TROUBLESHOOTING 3*:  "The algorithm found a solution that is not useful 
 % for me"
 % 
-% *EXAMPLE 2:* *finding optKnock reactions sets of large 3 for increasing 
+% *EXAMPLE 2:* *finding optKnock reactions sets of size 3 for increasing 
 % production of succinate*
 
-
+fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
 options = struct('targetRxn', 'EX_succ_e', 'numDel', 3);
@@ -229,14 +239,17 @@ while nIter < threshold
         fprintf('\n');
         fprintf('The production of succinate after optimization is %.2f \n', succFluxM1);
         fprintf('The growth rate after optimization is %.2f \n', growthRateM1);
-        fprintf('The production of other products such as ethanol, formate, lactate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxM1, formFluxM1, lactFluxM1, acetFluxM1);
+        fprintf(['The production of other products such as ethanol, formate, lactate and acetate are ' ...
+                 '%.1f, %.1f, %.1f and %.1f, respectively. \n'], etohFluxM1, formFluxM1, lactFluxM1, acetFluxM1);
         fprintf('...Performing coupling analysis...\n');
         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, setM1, 'EX_succ_e');
         fprintf('The solution is of type: %s\n', type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
-        fprintf('The maximun and minimun production of succinate given the optKnock set is %.2f and %.2f, respectively \n\n', minProd, maxProd);
+        fprintf(['The maximun and minimun production of succinate given the optKnock set is ' ...
+                 '%.2f and %.2f, respectively \n\n'], minProd, maxProd);
         if strcmp(type,'growth coupled')
-            singleProductionEnvelope(model, setM1, 'EX_succ_e', biomass, 'savePlot', 1, 'showPlot', 1, 'fileName', ['succ_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
+            singleProductionEnvelope(model, setM1, 'EX_succ_e', biomass, 'savePlot', 1, 'showPlot', 1, ...
+                                     'fileName', ['succ_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
         end
     else
         if nIter == 1
@@ -252,10 +265,10 @@ end
 %% 
 % *II) LACTATE OVERPRODUCTION*
 % 
-% *EXAMPLE 1: finding optKnock reactions sets of large 3 for increasing production 
+% *EXAMPLE 1: finding optKnock reactions sets of size 3 for increasing production 
 % of lactate*
 
-fprintf('\n...EXAMPLE 1: Finding optKnock sets of large 3...\n\n')
+fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
 options = struct('targetRxn', 'EX_lac__D_e', 'numDel', 3);
@@ -299,13 +312,16 @@ while nIter < threshold
         fprintf('\n');
         fprintf('The production of lactate after optimization is %.2f \n', lactFluxM1);
         fprintf('The growth rate after optimization is %.2f \n', growthRateM1);
-        fprintf('The production of other products such as ethanol, formate, succinate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxM1, formFluxM1, succFluxM1, acetFluxM1);
+        fprintf(['The production of other products such as ethanol, formate, succinate and acetate are ' ...
+                 '%.1f, %.1f, %.1f and %.1f, respectively. \n'], etohFluxM1, formFluxM1, succFluxM1, acetFluxM1);
         fprintf('...Performing coupling analysis...\n');
         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, setM1, 'EX_lac__D_e');
         fprintf('The solution is of type: %s\n', type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
-        fprintf('The maximun and minimun production of lactate given the optKnock set is %.2f and %.2f, respectively \n\n', minProd, maxProd);
-        singleProductionEnvelope(model, setM1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'showPlot', 1, 'fileName', ['lact_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
+        fprintf(['The maximun and minimun production of lactate given the optKnock set is ' ...
+                 '%.2f and %.2f, respectively \n\n'], minProd, maxProd);
+        singleProductionEnvelope(model, setM1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'showPlot', 1, ...
+                                 'fileName', ['lact_ex1_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
     else
         if nIter == 1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -320,10 +336,10 @@ end
 %% 
 % 
 % 
-% *EXAMPLE 2: finding optKnock reactions sets of large 6 for increasing production 
+% *EXAMPLE 2: finding optKnock reactions sets of size 6 for increasing production 
 % of lactate*
 
-fprintf('...EXAMPLE 3: Finding optKnock sets of large 6...\n')
+fprintf('...EXAMPLE 3: Finding optKnock sets of size 6...\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
 options = struct('targetRxn', 'EX_lac__D_e', 'numDel', 6);
@@ -365,13 +381,16 @@ while nIter < threshold
         fprintf('\n');
         fprintf('The production of lactate after optimization is %.2f \n', lactFluxM1);
         fprintf('The growth rate after optimization is %.2f \n', growthRateM1);
-        fprintf('The production of other products such as ethanol, formate, succinate and acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n', etohFluxM1, formFluxM1, succFluxM1, acetFluxM1);
+        fprintf(['The production of other products such as ethanol, formate, succinate and acetate are ' ...
+                 '%.1f, %.1f, %.1f and %.1f, respectively. \n'], etohFluxM1, formFluxM1, succFluxM1, acetFluxM1);
         fprintf('...Performing coupling analysis...\n');
         [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, setM1, 'EX_lac__D_e');
         fprintf('The solution is of type: %s\n', type);
         fprintf('The maximun growth rate given the optKnock set is %.2f\n', maxGrowth);
-        fprintf('The maximun and minimun production of lactate given the optKnock set is %.2f and %.2f, respectively \n\n', minProd, maxProd);
-        singleProductionEnvelope(model, setM1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'showPlot', 1, 'fileName', ['lact_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
+        fprintf(['The maximun and minimun production of lactate given the optKnock set is ' ...
+                 '%.2f and %.2f, respectively \n\n'], minProd, maxProd);
+        singleProductionEnvelope(model, setM1, 'EX_lac__D_e', biomass, 'savePlot', 1, 'showPlot', 1, ...
+                                 'fileName', ['lact_ex2_' num2str(nIter)], 'outputFolder', 'OptKnockResults');
     else
         if nIter == 1
             fprintf('optKnock was not able to found an optKnock set\n');
@@ -388,17 +407,17 @@ cd(currectDirectory);
 % # Example 1 ~ 1-2 minutes
 % # Example 2 ~ 1-2 minutes
 % # Example 3 ~ 1-2 minutes
-% # Example 3 ~ 1-2 minutes
+% # Example 4 ~ 1-2 minutes
 % # Example 5 ~ 1-2 minutes
 % # Example 6 ~ 1-2 minutes
 %% TROUBLESHOOTING
 % 1) If the algorithm takes a long time to find a solution, it is possible that 
-% the seach space is too long. You can reduce the seach space using a smaller 
-% set of reactions in the input variable "selectedRxnList" 
+% the seach space is too large. You can reduce the search space using a smaller 
+% set of reactions in the input variable "selectedRxnList." 
 % 
 % 2) The default number of deletions used by optKnock is 5. If the algorithm 
 % is returning more deletions than what you want, you can change the number of 
-% deletions using the input variable "numDel"
+% deletions using the input variable "numDel."
 % 
 % 3) optKnock could find a solution that it is not useful for you. For example, 
 % you may think that a solution is very obvious or that it breaks some important 
@@ -419,8 +438,8 @@ cd(currectDirectory);
 %% References
 % [1] Burgard, A. P., Pharkya, P. & Maranas, C. D. (2003). OptKnock: A Bilevel 
 % Programming Framework for Identifying Gene Knockout Strategies for Microbial 
-% Strain Optimization. Biotechnology and Bioengineering, 84(6), 647–657. http://doi.org/10.1002/bit.10803.
+% Strain Optimization. Biotechnology and Bioengineering, 84(6), 647?657. http://doi.org/10.1002/bit.10803.
 % 
 % [2] Orth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, 
 % A. M., & Palsson, B. Ø. (2011). A comprehensive genome?scale reconstruction 
-% of Escherichia coli metabolism—2011. _Molecular systems biology_, _7_(1), 535.
+% of Escherichia coli metabolism?2011. _Molecular systems biology_, _7_(1), 535.
