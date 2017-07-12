@@ -1,6 +1,6 @@
 %% OptForce Tutorial
 %% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
-%% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group)*
+%% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group), John Sauls*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
 % please see [1]. Briefly, the problem is to find a set of interventions of size 
