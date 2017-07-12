@@ -1,4 +1,4 @@
-function model = setupThermoModel(model)
+function model = setupThermoModel(model,confidenceLevel)
 % Estimates standard transformed reaction Gibbs energy and directionality
 % at in vivo conditions in multicompartmental metabolic reconstructions.
 % Has external dependencies on the COBRA toolbox, the component
@@ -18,43 +18,35 @@ function model = setupThermoModel(model)
 %                   protons should be H, and formulas for water should be
 %                   H2O.
 % .metCharges       m x 1 numerical array of metabolite charges.
+% .T                Temperature in Kelvin. 
+% .compartments     c x 1 array of compartment identifiers. Should match
+%                   the compartment identifiers in model.metCompartments.
+% .ph                c x 1 array of compartment specific pH values in the
+%                   range 4.7 to 9.3.
+% .is                c x 1 array of compartment specific ionic strength
+%                   values in the range 0 to 0.35 mol/L.
+% .chi               c x 1 array of compartment specific electrical
+%                   potential values in mV. Electrical potential in cytosol
+%                   is assumed to be 0 mV. Electrical potential in all
+%                   other compartments are relative to that in cytosol.
+% .concMin          m x 1 array of lower bounds on metabolite
+%                   concentrations in mol/L.
+% .concMax          m x 1 array of upper bounds on metabolite
+%                   concentrations in mol/L.
 % 
-% CONDITIONALLY OPTIONAL INPUTS
+% confidenceLevel   {0.50, 0.70, (0.95), 0.99}. Confidence level for
+%                   standard transformed reaction Gibbs energies used to
+%                   quantitatively assign reaction directionality. Default
+%                   is 0.95, corresponding to a confidence interval of +/-
+%                   1.96 * ur.
+%
+% OPTIONAL INPUTS
 % molfiledir                Path to a directory containing molfiles for the
 %                           major tautomer of the major microspecies of
 %                           each metabolite at pH 7. Molfiles should be
 %                           named with the metabolite identifiers in
 %                           model.mets (without compartment assignments).
 %                           Not required if cid are specified.
-% cid                       m x 1 cell array of KEGG Compound identifiers.
-%                           Not required if molfiledir is specified.
-% model.metCompartments     m x 1 array of metabolite compartment
-%                           assignments. Not required if metabolite
-%                           identifiers are strings of the format ID[*]
-%                           where * is the appropriate compartment
-%                           identifier.
-% 
-% OPTIONAL INPUTS
-% T                 Temperature in Kelvin. 
-% compartments  c x 1 array of compartment identifiers. Should match
-%                   the compartment identifiers in model.metCompartments.
-% ph                c x 1 array of compartment specific pH values in the
-%                   range 4.7 to 9.3.
-% is                c x 1 array of compartment specific ionic strength
-%                   values in the range 0 to 0.35 mol/L.
-% chi               c x 1 array of compartment specific electrical
-%                   potential values in mV. Electrical potential in cytosol
-%                   is assumed to be 0 mV. Electrical potential in all
-%                   other compartments are relative to that in cytosol.
-% concMin              m x 1 array of lower bounds on metabolite
-%                   concentrations in mol/L.
-% concMax              m x 1 array of upper bounds on metabolite
-%                   concentrations in mol/L.
-% confidenceLevel   {0.50, 0.70, (0.95), 0.99}. Confidence level for
-%                   standard transformed reaction Gibbs energies used to
-%                   quantitatively assign reaction directionality. Default
-%                   is 0.95, corresponding to a confidence interval of +/-
-%                   1.96 * ur.
 % 
 % OUTPUTS
 % model                 Model structure with following additional fields:
@@ -95,11 +87,6 @@ function model = setupThermoModel(model)
 %                       transformed reaction Gibbs energies.
 % .DrGtMax              n x 1 array of estimated upper bounds on
 %                       transformed reaction Gibbs energies.
-% .quantDir             n x 1 array indicating quantitatively assigned
-%                       reaction directionality. 1 for reactions that are
-%                       irreversible in the forward direction, -1 for
-%                       reactions that are irreversible in the reverse
-%                       direction, and 0 for reversible reactions.
 % 
 % WRITTEN OUTPUTS
 % MetStructures.sdf     An SDF containing all structures input to the
@@ -109,8 +96,7 @@ function model = setupThermoModel(model)
 % DEPENDENCIES
 % see initVonBertylanffy
 % 
-% Ronan M. T. Fleming, Sept. 2012   Version 1.0
-% Hulda S. H., Dec. 2012            Version 2.0
+% Ronan M. T. Fleming, Hulda S. H.,
 
 %stupid to have R as gas constant when it could be used for a matrix
 if isfield(model,'R')
@@ -126,12 +112,12 @@ end
 
 %% Estimate standard transformed Gibbs energies of formation
 fprintf('\nEstimating standard transformed Gibbs energies of formation.\n');
-model = estimateDfGt0(model,model.confidenceLevel);
+model = estimateDfGt0(model,confidenceLevel);
 
 
 %% Estimate standard transformed reaction Gibbs energies
 fprintf('\nEstimating bounds on transformed Gibbs energies.\n');
-model = estimateDrGt0(model,model.confidenceLevel);
+model = estimateDrGt0(model,confidenceLevel);
 
 
 

@@ -11,11 +11,22 @@ function [model,params] = componentContribution(model,trainingData)
 %
 % OUTPUTS
 % model             structure with the following fields
-% .DfG0 
-% .covf 
-% .DfG0_Uncertainty
-% .DrG0_Uncertainty
+% .DfG0                 m x 1 array of component contribution estimated
+%                       standard Gibbs energies of formation.
+% .covf                 m x m estimated covariance matrix for standard
+%                       Gibbs energies of formation.
+% .DfG0_Uncertainty     m x 1 array of uncertainty in estimated standard
+%                       Gibbs energies of formation. Will be large for
+%                       metabolites that are not covered by component
+%                       contributions.
+% .DrG0_Uncertainty     n x 1 array of uncertainty in standard reaction
+%                       Gibbs energy estimates.  Will be large for
+%                       reactions that are not covered by component
+%                       contributions.
 
+if ~isfield(model,'SIntRxnBool')
+    model = findSExRxnInd(model);
+end
 
 fprintf('Running Component Contribution method\n');
 [S,G,dG0,weights]=deal(trainingData.S, trainingData.G, trainingData.dG0, trainingData.weights);

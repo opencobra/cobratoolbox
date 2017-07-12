@@ -97,6 +97,7 @@ MILPparams.DisplayInterval = 10;
 
 if ~exist('vectors', 'var')
     if strcmp('params.nullAlg','lusol')
+        error('nearly but not quite implemented yet')
         [vectors, ~] = getNullSpace(model.S, 0);
     else
         vectors = null(full(model.S));

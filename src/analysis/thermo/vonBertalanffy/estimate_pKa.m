@@ -139,7 +139,9 @@ end
 % end
 
 % Delete temporary file
-delete(inchiFileName);
+if exist(inchiFileName,'file') || 0 %TODO warning file not found or access denied
+    delete(inchiFileName);
+end
 
 % Create unique pKa structure
 upKa.success = true;
@@ -162,6 +164,14 @@ errorMets = {};
 for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
+    if 1
+        disp(n)
+        disp(umets{n})
+        if n==433
+            pause(0.1)
+        end
+    end
+
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
     
     pkalist = regexp(result{n},'\t','split');
