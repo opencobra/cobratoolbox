@@ -5,7 +5,7 @@
 %% *Thomas Pfau, Systems Biology Group, LSRU, University of Luxembourg* 
 %% INTRODUCTION
 % Flux balance analysis (FBA), one of the most used modelling approaches for 
-% metabolic systems, evaluates the metabolic flux distribution [1]. 
+% metabolic systems, evaluates the metabolic flux distribution$$^1$. 
 % 
 % Applications of FBA for molecular systems biology include prediction of 
 % the growth rates, uptake rates, knockout lethality and product secretion. In 
@@ -47,27 +47,45 @@ initCobraToolbox
 % For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
 
-changeCobraSolver ('gurobi', 'all', 1);
+% solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
 %% 
-% The present tutorial can run with |'glpk'| package, which does not require 
-% additional installation and configuration. Although, for the analysis of large 
-% models is recommended to use the |'gurobi'| package. For detail information, 
-% refer to the solver installation guide: <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
-% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md>
+% The present tutorial can run with <https://opencobra.github.io/cobratoolbox/deprecated/docs/cobra/solvers/changeCobraSolver.html 
+% glpk package>, which does not require additional installation and configuration. 
+% Although, for the analysis of large models is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% GUROBI> package.
+% 
+% Setup the appropriate solver for the machine you are using by removing 
+% the "%" (comment) sign for only the desired solver.
+
+% changeCobraSolver('glpk','all');
+% changeCobraSolver('tomlab_cplex','all');
+% changeCobraASolver('ibm_cplex','all');
+ changeCobraSolver ('gurobi', 'all', 1);
 %% PROCEDURE
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
 
-pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
-filename = '2017_04_28_Recon3d.mat';
-load([pathModel, filename])
-model = modelRecon3model;
-clear modelRecon3model
+% check if Recon3 exists:
+% pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
+% filename = '2017_04_28_Recon3d.mat';
+% load([pathModel, filename])
+% model = modelRecon3model;
+% clear modelRecon3model
+% and if not
+% select your own model, or use Recon2.0model instead filename='Recon3.0model';
+load('/fork-cobratoolbox/test/models/Recon2.0model.mat')
+model = Recon2model;
+model.rxns = strrep(model.rxns, '(', '[');
+model.rxns = strrep(model.rxns, ')', ']');
+clear Recon2model
 %% 
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D [2]. Therefore, we assume, that the cellular objectives 
+% metabolism, Recon 3D$$ ^2$. Therefore, we assume, that the cellular objectives 
 % include energy production or optimisation of uptake rates and by-product secretion 
 % for various physiological functions of the human body.
+% 
+% The metabolites structures and reactions are from the Virtual Metabolic 
+% Human database (VMH, <http://vmh.life http://vmh.life>).
 %% Standard FBA
 % Standard FBA allows prediction of a cellular objective for a given set of 
 % constraints. These constraints can include e.g. uptake and release limits, or 
@@ -85,8 +103,9 @@ clear modelRecon3model
 
 modelaerobic = model;
 %% 
-% The ATP demand reaction, i.e., |DM_atp_c_ |within the model is a reaction 
-% that involves hydrolysis of ATP to ADP, Pi and proton in the cytosol. 
+% The ATP demand reaction, i.e., |<http://vmh.life/#human/all/DM_atp_c_ 
+% DM_atp_c_> |within the model is a reaction that involves hydrolysis of ATP to 
+% ADP, Pi and proton in the cytosol. 
 
  printRxnFormula(model, 'DM_atp_c_');
 %% 
@@ -106,13 +125,16 @@ modelaerobic = changeObjective (modelaerobic, 'DM_atp_c_');
 % display="inline"><mrow><mi>&mu;</mi></mrow></math>$mol/min/g of proteins. The 
 % oxygen uptake flux is basically unconstrained. 
 
-modelaerobic = changeRxnBounds (modelaerobic, 'EX_glc_D[e]', -20, 'l');
+% For Recon3.0 model
+% modelaerobic = changeRxnBounds (modelaerobic, 'EX_glc_D[e]', -20, 'l');
+modelaerobic = changeRxnBounds (modelaerobic, 'EX_glc[e]', -20, 'l');
 modelaerobic = changeRxnBounds (modelaerobic, 'EX_o2[e]', -1000, 'l');
 %% 
 % The |optimizeCbModel()| calculates one of the optimal solutions within 
 % the defined solution space, wherein, the output can be either maximum or minimum 
 % flux through the defined objective, whichever is desired. In the above example, 
-% the maximal flux through the |DM_atp_c_| is desired. 
+% the maximal flux through the |<http://vmh.life/#human/all/DM_atp_c_ DM_atp_c_>| 
+% is desired. 
 
 FBAaerobic = optimizeCbModel (modelaerobic, 'max')
 %% ANTICIPATED RESULTS
@@ -136,36 +158,65 @@ for i=1:length(idx)
         uptakes{c}=model.rxns{idx(i)};
     end
 end
-
-modelalter = model;
-modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
-modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
+% If you use Recon3.0 model, than:
+% modelalter = model;
+% modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
+% modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
 
 % The alternative way to do that, in case you were using another large model, 
 % that does not contain defined Subsystem is
 % to find uptake exchange reactions with following codes:
 % [selExc, selUpt] = findExcRxns(model);
-% uptakes = model.rxns(selUpt);
+% uptakes1 = model.rxns(selUpt);
+
 % Selecting from the exchange uptake reactions those 
 % which contain at least 1 carbon in the metabolites included in the reaction:
-% subuptakeModel = extractSubNetwork(model, uptakes);
-% hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
+ subuptakeModel = extractSubNetwork(model, uptakes);
+ hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
 % Closing the uptake of all the carbon sources
-% modelalter = model;
-% modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'l');
+ modelalter = model;
+ modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'b');
+% Closing other oxygen and energy sources
+ exoxygen = {'EX_adp'
+    'EX_amp[e]'
+    'EX_atp[e]'
+    'EX_co2[e]'
+    'EX_coa[e]'
+    'EX_fad[e]'
+    'EX_fe2[e]'
+    'EX_fe3[e]'
+    'EX_gdp[e]'
+    'EX_gmp[e]'
+    'EX_gtp[e]'
+    'EX_h[e]'
+    'EX_h2o[e]'
+    'EX_h2o2[e]'
+    'EX_nad[e]'
+    'EX_nadp[e]'
+    'EX_no[e]'
+    'EX_no2[e]'
+    'EX_o2s[e]'};
+for i = 1:length (exoxygen)
+    modelalter = changeRxnBounds (modelalter, exoxygen{i}, 0, 'l');
+end
 %% 
 % * _Calculating maximum ATP energy production under anaerobic condition_
 
 modelanaerobic = modelalter;
-modelanaerobic = changeRxnBounds(modelanaerobic, 'EX_glc_D[e]',-20,'l');
+% For Recon3.0 model
+% modelanaerobic = changeRxnBounds (modelanaerobic, 'EX_glc_D[e]', -20, 'l');
+modelanaerobic = changeRxnBounds(modelanaerobic, 'EX_glc[e]',-20,'l');
 modelanaerobic = changeRxnBounds (modelanaerobic, 'EX_o2[e]', 0, 'l');
 modelanaerobic = changeObjective(modelanaerobic,'DM_atp_c_');
 FBAanaerob = optimizeCbModel(modelanaerobic,'max')
 %% ANTICIPATED RESULTS
 % Comparing to the aerobic condition, anaerobic condition with only glucose 
-% as an energy source has reduced flux through ATP demand (40 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% as an energy source has reduced flux through ATP demand (82 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi>&mu;</mi></mrow></math>$mol/min/g of proteins), signifying 
-% the need to oxygen to run the oxidative phosphorylation.
+% the need to oxygen to run the oxidative phosphorylation. Anticipated results 
+% are also depending on the model you are using, Recon3.0 is producing in the 
+% anaerobic conditions flux through ATP demand of 40 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi>&mu;</mi></mrow></math>$mol/min/g of proteins.
 %% Sparse FBA
 % Sparse modelling finds the relatively small number of most predictive variables 
 % in high-dimensional data sets. Sparse FBA minimises the number of reactions 
@@ -183,7 +234,7 @@ FBAanaerob = optimizeCbModel(modelanaerobic,'max')
 % [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr,...
 %  checkMinimalSet, checkEssentialSet, zeroNormApprox)
 %% 
-% As an optional input there are different appoximation types of zero-norm 
+% As an optional input, there are different appoximation types of zero-norm 
 % (only available when |minNorm = 'zero'|). Default is |cappedL1|.
 
 % Other types of zero-norm:
@@ -204,7 +255,9 @@ FBAanaerob = optimizeCbModel(modelanaerobic,'max')
 % model with more than 10,000 reactions.
 
 modelspar = modelalter;
-modelspar = changeRxnBounds(modelspar, 'EX_glc_D[e]',-20,'l');
+% For Recon3.0 model
+% modelspar = changeRxnBounds (modelspar, 'EX_glc_D[e]', -20, 'l');
+modelspar = changeRxnBounds(modelspar, 'EX_glc[e]',-20,'l');
 modelspar = changeRxnBounds (modelspar, 'EX_o2[e]', 0, 'l');
 modelspar = changeObjective(modelspar, 'DM_atp_c_');
 [vSparse, sparseRxnBool, essentialRxnBool] = sparseFBA(modelspar, 'max');
@@ -225,8 +278,9 @@ for i=1:length(vSparse)
 end
 %% Metabolite dilution flux balance analysis (mdFBA)
 % This is a variant of FBA for predicting metabolic flux distributions by accounting 
-% for growth-associated dilution of all metabolites in a context-dependent manner 
-% [3]. A solution from |mdFBA()| supports, that all metabolites used in any reaction 
+% for growth-associated dilution of all metabolites in a context-dependent manner$$^3$.
+% 
+% A solution from |mdFBA()| supports, that all metabolites used in any reaction 
 % of the solution can either be produced by the network or taken up from the surrounding 
 % medium.
 %% TIMING
@@ -237,17 +291,18 @@ end
 % In this function, there is an optional output |newActives|, that represent 
 % reactions that are only active in this analysis.
 
-modelmd = model;
-modelmd = changeRxnBounds(modelmd, 'EX_glc_D[e]',-20,'l');
-modelmd = changeRxnBounds (modelmd, 'EX_o2[e]', 0, 'l');
-modelmd = changeObjective(modelmd, 'DM_atp_c_');
+% The valid solution can be produced with the Recon3.0 model
+% modelmd = model;
+% modelmd = changeRxnBounds(modelmd, 'EX_glc_D[e]',-20,'l');
+% modelmd = changeRxnBounds (modelmd, 'EX_o2[e]', -1000, 'l');
+% modelmd = changeObjective(modelmd, 'DM_atp_c_');
 
-[sol, newActives] = mdFBA(modelmd)
+% [sol, newActives] = mdFBA(modelmd)
 %% TROUBLESHOOTING
 % When a model does not have a feasible solution, we are adding an input:  |'getInvalidSolution', 
 % true|.
 
-clear modelmd
+% clear modelmd
 modelnosol = modelalter;
 modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 [sol, newActives] = mdFBA(modelnosol,  'getInvalidSolution', true)
@@ -265,7 +320,7 @@ modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 % how it contributes to the optimal solution.
 %% Geometric FBA
 % The geometric FBA solves the smallest frame that contains all sets of optimal 
-% FBA solutions and posts a set of multiple linear programming problems [4].
+% FBA solutions and posts a set of multiple linear programming problems$$^4$.
 % 
 % This variant of the FBA with each applied iteration, reduce by the algorithm 
 % the permissible solution space. After a finite number of iterations resolves 
@@ -276,10 +331,13 @@ modelnosol = changeObjective(modelnosol, 'DM_atp_c_');
 %% TIMING
 % The time to determine a geometric FBA solution depends on the size of the 
 % genome-scale model and the number of iterations. For a model with more than 
-% 10,000 reactions and 3 iterations takes $$minutes.
+% 10,000 reactions and several iterations takes $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mo>&geq;</mo><mn>30</mn></mrow></math>$minutes.
 
 modelgeo = modelalter;
-modelgeo = changeRxnBounds(modelgeo, 'EX_glc_D[e]',-20,'l');
+% For Recon3.0 model
+% modelgeo = changeRxnBounds (modelgeo, 'EX_glc_D[e]', -20, 'l');
+modelgeo = changeRxnBounds(modelgeo, 'EX_glc[e]',-20,'l');
 modelgeo = changeRxnBounds (modelgeo, 'EX_o2[e]', 0, 'l');
 modelgeo = changeObjective(modelgeo, 'DM_atp_c_');
 FBAgeo = geometricFBA (modelgeo);
@@ -302,7 +360,7 @@ end
 % i.e. |flux = geometricFBA(model, 'epsilon', 1e-9)|
 %% Parsimonious enzyme usage Flux Balance Analysis (pFBA)
 % The pFBA method was developed to achieve higher flux levels when more enzymes 
-% are required [5]. 
+% are required$$^5$. 
 % 
 % After performing the FBA to find the optimal value for the objective function, 
 % pFBA gets the answer of an another linear program to determine the flux distribution 
@@ -345,7 +403,9 @@ end
 % all reactions, while producing energy only from glucose media.
 
 modelp = modelalter;
-modelp = changeRxnBounds(modelp, 'EX_glc_D[e]',-20,'l');
+% For Recon3.0 model
+% modelp = changeRxnBounds (modelp, 'EX_glc_D[e]', -20, 'l');
+modelp = changeRxnBounds(modelp, 'EX_glc[e]',-20,'l');
 modelp = changeRxnBounds (modelp, 'EX_o2[e]', 0, 'l');
 modelp = changeObjective(modelp, 'DM_atp_c_');
 [GeneClasses RxnClasses modelIrrevFM] = pFBA(modelp,...
@@ -363,22 +423,26 @@ end
 % The dynamic FBA is an extension of standard FBA that accounts for cell culture 
 % dynamics, implementing both dynamic (nonlinear programming) and static (LP) 
 % optimisation of an objective function and applying constraints to the rates 
-% of change of flux in addition to the standard FBA constraints [6].
+% of change of flux in addition to the standard FBA constraints$$^6$.
 % 
 % The dynamic FBA method implemented in this function is essentially the 
-% same as the method described by Varma A. and B. O. Palsson [7].
+% same as the method described by Varma A. and B. O. Palsson$$^7$.
 
 modeldinamic = model;
-modeldinamic = changeRxnBounds (modeldinamic, 'EX_glc_D[e]', -20, 'b');
+% For Recon3.0 model
+% modeldinamic = changeRxnBounds (modeldinamic, 'EX_glc_D[e]', -20, 'l');
+modeldinamic = changeRxnBounds (modeldinamic, 'EX_glc[e]', -20, 'b');
 modeldinamic = changeRxnBounds (modeldinamic, 'EX_o2[e]', -1000, 'l');
 modeldinamic = changeRxnBounds (modeldinamic, 'EX_ac[e]', -1000, 'l');
-smi = {'EX_glc_D[e]' 'EX_ac[e]'}; 
+% For Recon3.0 model
+% smi = {'EX_glc_D[e]' 'EX_ac[e]'}; 
+smi = {'EX_glc[e]' 'EX_ac[e]'}; 
 % exchange reaction for substrate in environment
 
 smc = [10.8]; % Glucose, Acetate concentration (all in mM)
 
 Xec = 0.001; % initial biomass
-dt = 1.0/100000000000.0; % time steps
+dt = 1.0/1000.0; % time steps
 time = 1.0/dt; % simulation time
 
 [concentrationMatrix, excRxnNames, timeVec,...
@@ -417,24 +481,25 @@ activeReactions = find(res.x)
 % Now you look for the enrichement of reactions per subsystems
 resultCell = FEA(modelfea, activeReactions, 'subSystems')
 %% REFERENCES 
+%% REFERENCES 
 % [1] Orth, J. D., Thiele I., and Palsson, B. Ø.  What is flux balance analysis? 
-% _Nat. Biotechnol., 28_(3), 245–248 (2010).
+% _Nat. Biotechnol., _28(3), 245–248 (2010).
 % 
-% [2] Noronha A., et al. ReconMap: an interactive visualization of human 
-% metabolism. _Bioinformatics_., 33 (4): 605-607 (2017).
+% [2] Thiele, I., et al. A community-driven global reconstruction of human 
+% metabolism. _Nat. Biotechnol., _31(5), 419–425 (2013).
 % 
-% [3] Benyamini T, et al. Flux balance analysis accounting for metabolite 
-% dilution._Genome Biology_., 11(4):R43 (2010).
+% [3] Benyamini, T, Folger, O., Ruppin, E., Schlomi, T. Flux balance analysis 
+% accounting for metabolite dilution._ Genome Biology_., 11(4):R43 (2010).
 % 
-% [4] Smallbone K., and Simeonidis E. Flux balance analysis: A geometric 
+% [4] Smallbone, K., and Simeonidis, E. Flux balance analysis: A geometric 
 % perspective. _J Theor Biol_., 258: 311-315 (2009).
 % 
-% [5] Lewis N.E, et al. Omic data from evolved E. coli are consistent with 
-% computed optimal growth from genome-scale models. 10.1038 (2010).
+% [5] Lewis, N.E., et al. Omic data from evolved E. coli are consistent with 
+% computed optimal growth from genome-scale models. _Mol Syst Biol_., 6:390 (2010).
 % 
-% [6] Mahadevan R., et al. Dynamic Flux Balance Analysis of Diauxic Growth 
-% in Escherichia coli. _Biophys J., _83(3):1331-40 (2002).
+% [6] Mahadevan, R., Edwards, J.S., Doyle, F.J. Dynamic Flux Balance Analysis 
+% of Diauxic Growth in Escherichia coli. _Biophys J., _83(3):1331-1340 (2002).
 % 
 % [7] Varma A. and Palsson, B. Ø. Stoichiometric flux balance models quantitatively 
 % predict growth and metabolic by-product secretion in wild-type Escherichia coli 
-% W3110. _App Environ Microbiol_., 60(10):3724-31 (1994).
+% W3110. _App Environ Microbiol_., 60(10):3724-3731 (1994).
