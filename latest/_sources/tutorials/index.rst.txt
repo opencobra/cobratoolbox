@@ -42,5 +42,6 @@ Tutorials
    tutorialSparseFBA_freeATPtest
    tutorialSparseFBA
    tutorialSparseLP
+   tutorialSteadyCom
    tutorialUFBA
    tutorialUniformSampling
