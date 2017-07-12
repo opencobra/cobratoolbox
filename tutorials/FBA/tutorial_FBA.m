@@ -60,7 +60,7 @@ initCobraToolbox
 % changeCobraSolver('glpk','all');
 % changeCobraSolver('tomlab_cplex','all');
 % changeCobraASolver('ibm_cplex','all');
- changeCobraSolver ('gurobi', 'all', 1);
+ changeCobraSolver ('gurobi', 'all');
 %% PROCEDURE
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
@@ -197,9 +197,7 @@ end
     'EX_no[e]'
     'EX_no2[e]'
     'EX_o2s[e]'};
-for i = 1:length (exoxygen)
-    modelalter = changeRxnBounds (modelalter, exoxygen{i}, 0, 'l');
-end
+modelalter = changeRxnBounds (modelalter, exoxygen, 0, 'l');
 %% 
 % * _Calculating maximum ATP energy production under anaerobic condition_
 
