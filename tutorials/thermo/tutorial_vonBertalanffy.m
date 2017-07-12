@@ -1,4 +1,4 @@
-%% Quantitatively assign reaction directionality with von Bertalanffy 1.9
+%% Thermodynamically constrain a metabololic model
 %% *Author: Ronan Fleming, University of Luxembourg*
 %% *Reviewers: *
 %% INTRODUCTION
