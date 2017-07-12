@@ -64,7 +64,7 @@ model = changeRxnBounds(model, 'EX_cit', -100, 'l');
 model = changeRxnBounds(model, 'EX_glyc', -100, 'l'); 
 %% 
 % Then, we calculate the maximum specific growth rate and the maximum production 
-% rate for succinate
+% rate for succinate.
 
 growthRate = optimizeCbModel(model); 
 fprintf('The maximum growth rate is %1.2f', growthRate.f);
@@ -74,12 +74,12 @@ maxSucc = optimizeCbModel(model);
 fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
 %% 
 % *TIP: *The biomass reaction is usually set to 1%-10% of maximum theoretical 
-% biomass yield when running the following steps, to prevent solutions with not 
-% biomass formation
+% biomass yield when running the following steps, to prevent solutions without 
+% biomass formation.
 % 
-% # maximizing product formation
-% # finding MUST sets of second order
-% # finding FORCE sets
+% # Maximizing product formation
+% # Finding MUST sets of second order
+% # Finding FORCE sets
 %% STEP 2: Define constraints for both wild-type and mutant strain
 % *TIMING*: This step should take a few days or weeks, depending on the information 
 % available for your species. 
@@ -90,24 +90,24 @@ fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
 % faster but make sure to have two strains different enough, because you should 
 % be able to find differences in reactions ranges. 
 % 
-% First, we load the model. This model comprises only 90 reactions, which 
-% describe the central metabolism of E. coli [2].
+% We define constraints for each strain as follows: 
 % 
-% Then, we change the objective function to maximize biomass ("R75"). We 
-% also change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
-% sulfate, ammomium, citrate and glycerol. 
-% 
-% We define constraints for each strain
+% # The WT strain's biomass function ("R75") is constrained to near the maximum 
+% growth rate. 
+% # The mutant strain's biomass function is set to zero. Succinate export ('EX_suc') 
+% is forced to be the maximum as calculated previously.
 
 constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b');
-constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxnBoundType', 'bb');
+constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], ...
+                  'rxnBoundType', 'b');
 %% Step 3: Flux Variability Analysis
 % *TIMING*: This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
 % 
 % We  run the FVA analysis for both strains
 
-[minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ~, ~] = FVAOptForce(model, constrWT, constrMT);
+[minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ~, ~] = FVAOptForce(model, ...
+                                                         constrWT, constrMT);
 disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 %% 
 % Now, the run the next step of OptForce.
@@ -117,7 +117,7 @@ disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 % 
 % First, we define an ID for this run. Each time you run the functions associated 
 % to the optForce procedure, some folders can be generated to store inputs used 
-% in that run. Outputs are stored as well. These folder will be located inside 
+% in that run. Outputs are stored as well. These folders will be located inside 
 % the folder defined by your run ID. Thus, if your runID is ''TestOptForce", the 
 % structure of the folders will be the following:
 % 
@@ -137,17 +137,17 @@ disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 % each time you run the functions, so you will be able to see the report (inputs 
 % used, outputs generated, errors in the run) for each run.
 % 
-% We define then our |runID|
+% We define then our |runID|.
 
 runID = 'TestOptForceM';
 %% 
 % Fow now, only functions to find first and second order must sets are supported 
 % in this third step. As depicted in *Figure 1*, the first order must sets are 
-% MUSTU and MUSTL; and second order must sets are MUSTUU, MUSTLL and MUSTUL
+% MUSTU and MUSTL; and second order must sets are MUSTUU, MUSTLL and MUSTUL.
 % 
 % *A) Finding first order must sets*
 % 
-% We define constraints
+% We define constraints.
 
 constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');
 %% 
@@ -170,35 +170,35 @@ constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0
 % The name of the report will be in this format "report-Day-Month-Year-Hour-Minutes". 
 % So, you can mantain a chronological order of your experiments. 
 % 
-% We display the reactions that belongs to the |mustL| set
+% We display the reactions that belongs to the |mustL| set.
 
 disp(mustLSet)
 %% 
 % *ii) MustU set: *
 
 [mustUSet, pos_mustU] = findMustU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
-                                  'runID', runID, 'outputFolder', 'OutputsFindMustU', 'outputFileName', ...
-                                  'MustU' , 'printExcel', 1, 'printText', 1, ...
+                                  'runID', runID, 'outputFolder', 'OutputsFindMustU', ...
+                                  'outputFileName', 'MustU' , 'printExcel', 1, 'printText', 1, ...
                                   'printReport', 1, 'keepInputs', 1, 'verbose', 0);
 %% 
 % Note that the folders "InputsMustU" and "OutputsFindMustU" were created. 
 % These folders contain the inputs and outputs of |findMustU|, respectively. 
 % 
-% We display the reactions that belongs to the |mustU| set
+% We display the reactions that belongs to the |mustU| set.
 
 disp(mustUSet)
 %% 
 % *B) Finding second order must sets *
 % 
 % First, we define the reactions that will be excluded from the analysis. 
-% It it suggested to include in this list the reactions found in the previous 
-% step as well as exchange reactions
+% It is suggested to include in this list the reactions found in the previous 
+% step as well as exchange reactions.
 
 constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');
 exchangeRxns = model.rxns(cellfun(@isempty, strfind(model.rxns, 'EX_')) == 0);
 excludedRxns = unique([mustUSet; mustLSet; exchangeRxns]);
 %% 
-% Now, we run the functions for finding second order must sets
+% Now, we run the functions for finding second order must sets.
 % 
 % *i) MustUU: *
 
@@ -276,12 +276,13 @@ k = 1;
 nSets = 1;
 constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
 
-[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
-                                                                                   minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
-                                                                                   'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
-                                                                                   'runID', runID, 'outputFolder', 'OutputsOptForce', ...
-                                                                                   'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
-                                                                                   'printReport', 1, 'keepInputs', 1, 'verbose', 1);
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
+    optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
+             minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
+             'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+             'runID', runID, 'outputFolder', 'OutputsOptForce', ...
+             'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
+             'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 %% 
 % Note that the folders "InputsOptForce" and "OutputsOptForce" were created. 
 % These folders contain the inputs and outputs of |optForce|, respectively.
@@ -294,12 +295,12 @@ disp(optForceSets)
 % intuitive solution).
 % 
 % Next, we will increase |k| and we will exclude "SUCt" from upregulations 
-% to found non-intuitive solutions. 
+% to find non-intuitive solutions. 
 % 
 % *TIP: *Sometimes the product is at the end of a long linear pathway. In 
 % that case, the recomendation is to also exclude most reactions on the linear 
-% pathway. Essential reactions and reactions not associated with any gene should 
-% also be excluded. 
+% pathway. Essential reactions and reactions not associated with any gene (i.e. 
+% spontaneous reacitons) should also be excluded. 
 % 
 % We will only search for the 20 best solutions, but you can try with a higher 
 % number.
@@ -334,21 +335,21 @@ disp(optForceSets)
 % # STEP 3: ~ 10-20 seconds
 % # STEP 4: ~ 10-20 seconds
 %% TROUBLESHOOTING
-% 1) problem: "I didn't find any reaction in my must sets"
+% 1) Problem: "I didn't find any reaction in my must sets"
 % 
-% possible reason: the wild-type or mutant strain is not constrained enough. 
+% Possible reason: the wild-type or mutant strain is not constrained enough. 
 % 
-% solution: add more constraints to your strains until you find differences 
+% Solution: add more constraints to your strains until you find differences 
 % in your reaction ranges. If you don't find any differences, it is better to 
 % change the approach and use another algorithm. 
 % 
 % 
 % 
-% 2) problem: "I got an error when running the |findMust| functions"
+% 2) Problem: "I got an error when running the |findMust| functions"
 % 
-% possible reason: inputs are not defined well or solver is not defined
+% Possible reason: inputs are not defined well or solver is not defined.
 % 
-% solution: verify your inputs, use |changeCobraSolver|, verify that the 
+% Solution: verify your inputs, use |changeCobraSolver|, verify that the 
 % global variable |CBT_MILP_SOLVER| is not empty. It should containg the identifier 
 % for a MILP solver.
 %% ANTICIPATED RESULTS
@@ -395,7 +396,7 @@ disp(optForceSets)
 % The optForce algorithm will find sets of reactions that should increase 
 % the production of your target. The first sets found should be the best ones 
 % because the production rate will be the highest. The last ones should be the 
-% worse because the production rete will be slower. Be aware that some sets could 
+% worse because the production rete will be lower. Be aware that some sets could 
 % not guarante a minimum production rate for your target, so you always have to 
 % check the minimum production rate. You can do this using the function testOptForceSol.m. 
 % Some sets could allow a higher growth rate than others, so keep in mind this 
