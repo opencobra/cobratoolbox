@@ -2,7 +2,9 @@
 % *Author(s): Francisco José Pardo Palacios, Ines Thiele, LCSB, University of 
 % Luxembourg.*
 % 
-% *Reviewer(s): Sebastián Mendoza (Center for Mathematical Modeling)*
+% *Reviewer(s): Sebastián Mendoza (Center for Mathematical Modeling), Lin 
+% Wang (Costas D. Maranas Lab), Joshua Chan (Costas D. Maranas Lab), Chiam Yu 
+% Ng (Costas D. Maranas Lab)*
 % 
 % **
 %% INTRODUCTION
@@ -15,7 +17,7 @@
 % conditions, the genes of a modelEcore as: essential, pFBA optima, Enzymatically 
 % Less Efficient (ELE), Metabolically Less Efficient (MLE) or pFBA no-flux genes. 
 % 
-%  
+% 
 % 
 %                                        Figure: Gene/enzyme classification 
 % scheme used by pFBA
@@ -26,7 +28,7 @@
 % In order to do it, all the steps described in the pFBA flowchart were implemented 
 % and explained in this tutorial. 
 % 
-%  
+% 
 % 
 %                                                              Figure: pFBA 
 % flowchart
@@ -37,11 +39,11 @@
 % the uptake of nutrients by the modelEcore. In this case, the modelEcore used 
 % will be the E. coli core modelEcore and the substrate used will be glucose, 
 % limiting its uptake up to 18 mmol/(gDW·h).
-
+%%
 modelEcoreFile='Ecoli_core_model.mat';
 load(modelEcoreFile);
-changeCobraSolver('glpk');
-modelEcore=changeRxnBounds(model,'EX_glc(e)',-18,'l');
+changeCobraSolver('ibm_cplex');
+modelEcore=changeRxnBounds(modelEcore,'EX_glc(e)',-18,'l');
 %% 
 % 
 %% PROCEDURE
@@ -50,16 +52,15 @@ modelEcore=changeRxnBounds(model,'EX_glc(e)',-18,'l');
 % saved as essential gene. In order to detect essential genes even if Matlab calculate 
 % very small growth,it will be considered as not growing when the growth predict 
 % is lower than 0.00001. The rest of the genes will be stored in a non_EG vector.
+%%
+[grRatio,grRateKO,grRateWT,delRxns,hasEffect]=singleGeneDeletion(modelEcore,'FBA',modelEcore.genes);
 
-for i=modelEcore.genes(:,:)
-    [grRatio,grRateKO,grRateWT,delRxns,hasEffect]=singleGeneDeletion(modelEcore,'FBA',i);
-end
 
 essential_genes=[];
 non_EG=[];
 for n=1:length(grRateKO)
-    if (grRateKO(n)<0.00001)|(isnan(grRateKO(n))==1)
-        essential_genes=[essential_genes;modelEcore.genes(n)];
+    if (grRateKO(n)<0.00001) || (isnan(grRateKO(n))==1)
+        essential_genes = [essential_genes;modelEcore.genes(n)];
     else
         non_EG=[non_EG; n];
     end
@@ -70,12 +71,12 @@ end
 % to 0. The reactions that do not carry any flux will be stored in a vector called 
 % pFBAnoFluxRxn and the rest in the one called pFBAfluxRxn.
 
-[minFluxglc maxFluxglc]=fluxVariability(modelEcore,0);
+[minFluxglc, maxFluxglc]=fluxVariability(modelEcore,0);
 
 pFBAnoFluxRxn=[];
 pFBAfluxRxn=[];
 for i=1:length(modelEcore.rxns)
-    if (minFluxglc(i)>-0.00001)&(maxFluxglc(i)<0.00001)    
+    if (minFluxglc(i)>-0.00001)&&(maxFluxglc(i)<0.00001)    
         pFBAnoFluxRxn=[pFBAnoFluxRxn i];
     else
         pFBAfluxRxn=[pFBAfluxRxn i];
@@ -121,12 +122,12 @@ pFBAfluxGenes(pFBAfluxGenes==0)=[];
 % will be stored as Metabolically Less Efficient reactions (RxnMLE) and the rest 
 % will be saved in a new vector.
 
-[minFlux2 maxFlux2]=fluxVariability(modelEcore,95);
+[minFlux2, maxFlux2]=fluxVariability(modelEcore,95);
 
 RxnMLE=[];
 restRxn=[];
 for i=1:length(pFBAfluxRxn)
-    if (minFlux2(pFBAfluxRxn(i))>-0.00001)&(maxFlux2(pFBAfluxRxn(i))<0.00001)    
+    if (minFlux2(pFBAfluxRxn(i))>-0.00001)&&(maxFlux2(pFBAfluxRxn(i))<0.00001)    
         RxnMLE=[RxnMLE pFBAfluxRxn(i)];
     else
         restRxn=[restRxn pFBAfluxRxn(i)];
@@ -142,7 +143,7 @@ end
 % reactions and those minimal fluxes were set as upper bounds.
 % 
 % 
-
+%%
 FBAsolution=optimizeCbModel(modelEcore,'max');
 lowerN=FBAsolution.f*0.95;
 modelEcore=changeRxnBounds(modelEcore,'Biomass_Ecoli_core_w_GAM',lowerN,'l');
@@ -155,12 +156,12 @@ modelEcore=changeRxnBounds(modelEcore, modelEcore.rxns,FBAsolution.x,'u');
 % reactions cannot carry any flux- or Optimal Reactions (RxnOptima)- if they can 
 % carry flux.
 
-[minFlux3 maxFlux3]=fluxVariability(modelEcore,100);
+[minFlux3, maxFlux3]=fluxVariability(modelEcore,100);
 tol = 1e-5;
 RxnELE=[];
 RxnOptima=[];
 for i=1:length(restRxn)
-    if (minFlux3(restRxn(i))>-tol)&(maxFlux3(restRxn(i))<tol)    
+    if (minFlux3(restRxn(i))>-tol)&&(maxFlux3(restRxn(i))<tol)    
         RxnELE=[RxnELE i];
     else
         RxnOptima=[RxnOptima restRxn(i)];
@@ -220,7 +221,6 @@ for i=1:length(RxnELE)
     end
 end
 ELEGenes=unique(ELEGenes);
-ELEGenes = ELEGenes';
 restGenes2(restGenes2==0)=[];
 
 MLEGenes=[];
@@ -246,13 +246,13 @@ end
 %% 
 % * Print results:
 % 
-%  
+% 
 
-essential_genes'
-OptimaGenes'
-ELEGenes
-MLEGenes'
-pFBAnoFluxGenes'
+essential_genes = essential_genes'
+OptimaGenes = OptimaGenes'
+ELEGenes = ELEGenes'
+MLEGenes = MLEGenes'
+pFBAnoFluxGenes = pFBAnoFluxGenes'
 %% 
 % 
 %% TIMING
