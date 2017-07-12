@@ -292,7 +292,7 @@ function initCobraToolbox()
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
-    % supported solvers
+    % active support - supported solvers
     SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.dqqMinos.type = {'LP'};
     SOLVERS.glpk.type = {'LP', 'MILP'};
@@ -304,7 +304,7 @@ function initCobraToolbox()
     SOLVERS.quadMinos.type = {'LP', 'NLP'};
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
-    % experimental solver interfaces
+    % passive support - solver interfaces
     SOLVERS.qpng.type = {'QP'};
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
@@ -315,21 +315,21 @@ function initCobraToolbox()
     SOLVERS.lp_solve.type = {'LP'};
     SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
-    % definition of category of solvers with full support
-    SOLVERS.cplex_direct.categ = 'full';
-    SOLVERS.dqqMinos.categ = 'full';
-    SOLVERS.glpk.categ = 'full';
-    SOLVERS.gurobi.categ = 'full';
-    SOLVERS.ibm_cplex.categ = 'full';
-    SOLVERS.matlab.categ = 'full';
-    SOLVERS.mosek.categ = 'full';
-    SOLVERS.pdco.categ = 'full';
-    SOLVERS.quadMinos.categ = 'full';
-    SOLVERS.tomlab_cplex.categ = 'full';
+    % definition of category of solvers with active support
+    SOLVERS.cplex_direct.categ = 'active';
+    SOLVERS.dqqMinos.categ = 'active';
+    SOLVERS.glpk.categ = 'active';
+    SOLVERS.gurobi.categ = 'active';
+    SOLVERS.ibm_cplex.categ = 'active';
+    SOLVERS.matlab.categ = 'active';
+    SOLVERS.mosek.categ = 'active';
+    SOLVERS.pdco.categ = 'active';
+    SOLVERS.quadMinos.categ = 'active';
+    SOLVERS.tomlab_cplex.categ = 'active';
 
-    % definition of category of solvers with experimental support
-    SOLVERS.qpng.categ = 'experimental';
-    SOLVERS.tomlab_snopt.categ = 'experimental';
+    % definition of category of solvers with passive support
+    SOLVERS.qpng.categ = 'passive';
+    SOLVERS.tomlab_snopt.categ = 'passive';
 
     % definition of category of solvers with legacy support
     SOLVERS.gurobi_mex.categ = 'legacy';
@@ -503,7 +503,7 @@ function initCobraToolbox()
 
     % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
     changeCobraSolver('gurobi', 'ALL', 0);
-    
+
     % check if a new update exists
     if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         updateCobraToolbox(true); % only check
