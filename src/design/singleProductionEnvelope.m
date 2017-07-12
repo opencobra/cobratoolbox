@@ -123,7 +123,7 @@ plot(max, target, 'Marker', 'o', 'Color', [0 0 0], 'MarkerEdgeColor', [0 0 0], '
 
 if savePlot
     %directory change
-    fullPath = which('optKnockTutorial');
+    fullPath = which('tutorial_optKnock');
     folder = fileparts(fullPath);
     currectDirectory = pwd;
     cd(folder);
