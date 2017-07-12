@@ -1,6 +1,6 @@
 %% Computing  minimal cut sets
 %% Author: Susan Ghaderi, Luxembourg Centre for Systems Biomedicine 
-%% Reviewers:
+%% Reviewers: Sylvain Arreckx, Laurent Heirendt
 %% INTRODUCTION
 % During this tutorial, you will learn how to compute  cutsets for paths/cycles/elementary 
 % modes with Berge algorithm [1].
@@ -26,9 +26,9 @@
 % 
 %   The set of all feasible fluxes
 % 
-% $$K=\{ v\in R^n \mid Sv=0,v \geq 0, v\in Irr \}$$
+% $$K=\{ v\in  {R} ^n \mid Sv=0,v \geq 0, v\in Irr \}$$
 % 
-% is a polyhedral cone in $R^n$where $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% is a polyhedral cone in $R^n$ where $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="normal">Irr</mi></mrow></math>$ is a 
 % set of irreversible reaction. A set of reactions $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$ subset 
@@ -39,13 +39,11 @@
 % $$v_c=0 ~leads~to ~v_j=0~\forall~r \in K.$$
 % 
 % We introduce an interface to software that enables the computation of the 
-% elementary modes/extreme pathways in each network related to user-defined objective 
-% models and reactions.
+% cut set for paths, cycles and elementary modes.
 %% MATERIALS
-% * _Please ensure that the COBRA Toolbox has been properly installed and initialised. 
-% _
-% * _Also, you should install CNA (CellNetAnalyzer) software and initialise 
-% it. CNA web site (with manual): _<https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html 
+% *  Please ensure that the COBRA Toolbox has been properly installed.
+% * _You should install CNA (CellNetAnalyzer) software and initialise it. CNA 
+% web site (with manual): _<https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html 
 % https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html>_ _
 %% EQUIPMENT SETUP
 % Requirements for using CellNetAnalyzer are:
@@ -65,14 +63,18 @@ CNAPath = '~/CellNetAnalyzer';
 addpath(genpath(CNAPath));
 startcna
 %% Computing minimal cut set
-% The mandatory input in minimal cut set code is a set |E| such as paths/cycles/elementary-modes 
-% that you are going to compute its minimal cut set. 
+% The mandatory input in minimal cut set code is a set |E| that can be paths, 
+% cycles or elementary-modes that you are going to compute its minimal cut set. 
 
 % define the model
 global CBTDIR
 addpath([CBTDIR filesep 'tutorials' filesep 'minimalCutSets'])
-load('E.mat')% the set of elementary modes which we are going to compute its minimal cut set.
-output = minimalCutSets(E)
+load('E.mat')% the set of two elementary modes (E(1,:) and E(2,:)) which we are going to compute its minimal cut set.
+C = minimalCutSets(E(1,:))
+%% 
+% The set of cut sets for elementary mode 2 is
+
+C = minimalCutSets(E(2,:))
 %% INPUT
 % The neccesirelly input for computing minimal cut set of a set is |targets.|
 % 
@@ -115,13 +117,15 @@ output = minimalCutSets(E)
 %%  OUTPUT:
 %    |C|:     matrix that contains the (constrained) cutsets row-wise; a '1' 
 % means that the reaction/interaction  is part of the cutset, 0 means the element/reaction/interaction 
-% is not involved. Each cutset hits all modes stored in "targets" while it does 
-% not hit at least
+% is not involved. Each cutset hits all modes stored in "targets" but if sets2save 
+% not be empty (sets2save contains the modes that we do not want to be hit by 
+% cutset) then it does not hit at least "sets2save(k).min2save" many modes in 
+% "sets2save(k).tabl2save".
 % 
-%   "sets2save(k).min2save" many modes in "sets2save(k).tabl2save".
+% 
 %% TIMING
 % The running time of this code is dependent on the size of the model and may 
-% take long (from 30 seconds to few hours). In addition to the running time you 
+% take long (from 10 seconds to few hours). In addition to the running time you 
 % should consider between 60 seconds for start-up CellNetAnalyzer software.
 %% ANTICIPATED RESULTS
 % The anticipated results is minimal cut set of every set which is as an input.
