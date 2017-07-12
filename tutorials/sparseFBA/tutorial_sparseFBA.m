@@ -17,7 +17,7 @@
 % is to predict an optimal non-equilibrium steady-state flux vector that optimises 
 % a linear objective function, such biomass production rate, subject to bounds 
 % on certain reaction rates. Herein we use sparse flux balance analysis to predict 
-% a minimal number of active reactions [1], consistent with an optimal objective 
+% a minimal number of active reactions$^1$, consistent with an optimal objective 
 % derived from the result of a standard flux balance analysis problem. In this 
 % context _sparse flux balance analysis _requires a solution to the following 
 % problem
@@ -35,20 +35,32 @@
 initCobraToolbox
 %% COBRA model. 
 % In this tutorial, the model used is the generic reconstruction of human metabolism, 
-% the Recon 2.04 [2], which is provided in the COBRA Toolbox. The Recon 2.04 model 
+% the Recon 2.04$^2$, which is provided in the COBRA Toolbox. The Recon 2.04 model 
 % can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
-% Human> webpage. Before proceeding with the simulations, the path for the model 
-% needs to be set up:      
+% Human> webpage. You can also select your own model to work with. Before proceeding 
+% with the simulations, the path for the model needs to be set up:      
 
-global CBTDIR            
-load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
-model = modelR204;            
-clear modelR204;
+if 0
+    % Using own model, change "if 0" to "if 1" and change the filename and directory
+    filename = 'Recon3.0model';
+    directory = '~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
+    model = loadIdentifiedModel(filename, directory);
+    % model = convertOldStyleModel(model);%convert to new COBRA format style if needed.
+else
+    % Default use of Recon 2.04
+    global CBTDIR            
+    load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
+    model = modelR204;            
+    clear modelR204;
 %% 
 % Recon 2.04 is written in the "old style" COBRA format, and we thus use 
 % the function |convertOldStyleModel| to convert it to the new COBRA Toolbox format.
 
-model = convertOldStyleModel(model);
+    model = convertOldStyleModel(model);
+end
+%% 
+% *NOTE: The following text, code, and results are shown for the Recon 2.04 
+% model*
 %% PROCEDURE
 % Set the tolerance to distinguish between zero and non-zero flux, based on 
 % the numerical tolerance of the currently installed optimisation solver.
@@ -87,7 +99,7 @@ formulas = printRxnFormula(model, rxnAbbrList, printFlag);
 %% *A. Sparse flux balance analysis (directly in one step, no quality control)*
 % This approach computes a sparse flux balance analysis solution, satisfing 
 % the FBA objection, with the default approach to approximate the solution to 
-% the cardinality minimisation problem [3] underling sparse FBA. This approach 
+% the cardinality minimisation problem$^3$ underling sparse FBA. This approach 
 % does not check the quality of the solution, i.e., whether indeed it is the sparsest 
 % flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
 % 
@@ -128,7 +140,7 @@ fprintf('%u%s\n',nnz(v),' active reactions in the sparse flux balance analysis s
 %% *B. Sparse flux balance analysis (two steps, all approximations,* *with a sparsity test)*
 % This approach computes a sparse flux balance analysis solution, satisfing 
 % the FBA objection, with the default approach to approximate the solution to 
-% the cardinality minimisation problem [3] underling sparse FBA. This approach 
+% the cardinality minimisation problem$^3$ underling sparse FBA. This approach 
 % does not check the quality of the solution, i.e., whether indeed it is the sparsest 
 % flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
 %% Solve a flux balance analysis problem
@@ -172,8 +184,8 @@ fprintf('%u%s\n',nnz(vFBA),' active reactions in the flux balance analysis solut
 % 
 % Depending on the application, and the biochemical network, one or other 
 % approximation may outperform the rest, therefore a pragmatic strategy is to 
-% try each and select the most sparse flux vector. The step set of function approximations 
-% [4] available are
+% try each and select the most sparse flux vector. The step set of function approximations$^4$ 
+% available are
 % 
 %  * 'cappedL1' : Capped-L1 norm
 % 

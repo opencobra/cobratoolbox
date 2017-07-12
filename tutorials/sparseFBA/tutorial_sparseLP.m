@@ -11,10 +11,10 @@
 % It has been proved that zero-norm is a non-convex function and the minimisation 
 % of zero-norm is a NP-hard problem. Non-convex approximations of zero-norm extensively 
 % developed. For a complete study of non-convex approximations of zero-norm, the 
-% reader is referred to [1].
+% reader is referred to Le Thie et al. (2015)$^1$.
 % 
-% The method is described in [1]. The sparse LP solver contains one convex 
-% (one-norm) and 6 non-convex approximation of zero-norms
+% The method is described in Le Thie et al. (2015)$^1$. The sparse LP solver 
+% contains one convex (one-norm) and 6 non-convex approximation of zero-norms
 % 
 % * Capped-L1 norm
 % * Exponential function
@@ -34,20 +34,32 @@
 initCobraToolbox
 %% COBRA model. 
 % In this tutorial, the model used is the generic reconstruction of human metabolism, 
-% the Recon 2.04 [2], which is provided in the COBRA Toolbox. The Recon 2.04 model 
+% the Recon 2.04$^2$, which is provided in the COBRA Toolbox. The Recon 2.04 model 
 % can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
-% Human> webpage. Before proceeding with the simulations, the path for the model 
-% needs to be set up:      
+% Human> webpage. You can also select your own model to work with. Before proceeding 
+% with the simulations, the path for the model needs to be set up:      
 
-global CBTDIR            
-load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
-model = modelR204;            
-clear modelR204;
+if 0
+    % Using own model, change "if 0" to "if 1" and change the filename and directory
+    filename = 'Recon3.0model';
+    directory = '~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
+    model = loadIdentifiedModel(filename, directory);
+    % model = convertOldStyleModel(model);%convert to new COBRA format style if needed.
+else
+    % Default use of Recon 2.04
+    global CBTDIR            
+    load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
+    model = modelR204;            
+    clear modelR204;
 %% 
 % Recon 2.04 is written in the "old style" COBRA format, and we thus use 
 % the function |convertOldStyleModel| to convert it to the new COBRA Toolbox format.
 
-model = convertOldStyleModel(model);
+    model = convertOldStyleModel(model);
+end
+%% 
+% *NOTE: The following text, code, and results are shown for the Recon 2.04 
+% model*
 %% PROCEDURE
 %% Example of using sparseLP solver on randomly generated data
 % One randomly generates a matrix $A\in\mathcal{R}^{^{m\times n}}$   and a vector 
