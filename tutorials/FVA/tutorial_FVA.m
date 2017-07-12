@@ -185,8 +185,6 @@ rxnsList = {'DM_atp_c_'
 % Run FVA analysis for the model with the constraints that simulates aerobic 
 % conditions:
 
-[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1);
-[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva2);
 [minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1, [], [], rxnsList)
 %% 
 % Run FVA analysis for the model with the constraints that simulates anaerobic 
