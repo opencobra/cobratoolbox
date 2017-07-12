@@ -135,7 +135,11 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 [~, xj] = sort(J);
 
 f1 = figure;
-errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
+if strcmp(version('-release'), '2016b')
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
+else
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2);
+end
 set(gca, 'xlim', [0, length(Y) + 1])
 legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', ...
        'orientation', 'horizontal')
@@ -262,7 +266,7 @@ for i = rxnsIdx
     ylabel('# samples')
     title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
     
-    if find(ridx==i)==2
+    if find(rxnsIdx==i)==2
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
