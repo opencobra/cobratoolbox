@@ -1,7 +1,7 @@
 %% *Flux Variability analysis (FVA)*
 % Flux variability analysis (FVA) is a widely used computational tool for evaluating 
 % the minimum and maximum range of each reaction flux that can still satisfy the 
-% constraints using two optimisation problems for each reaction of interest [1]. 
+% constraints using two optimisation problems for each reaction of interest $$^1$. 
 % 
 % 
 % 
@@ -12,14 +12,14 @@
 % typically an infinite set of steady state flux vectors exist can satisfy the 
 % same requirement for an optimal objective $$ c_{T}v* = c_{T}v$. As well as for 
 % the flux balance analysis (FBA), there are also many possible variations on 
-% flux variability analysis (FVA) [2].
+% flux variability analysis (FVA) $$^2$.
 % 
 % Depending on the size of the model you are using for the analysis, use:
 % 
 % * |fluxVariability()| function - for the low dimensional FVA;
 % * |fastFVA()| function - for the models with more than 1,000 reactions;
 % * <https://github.com/opencobra/COBRA.jl distributedFBA.jl> - for high dimensional 
-% FVA,* *models larger than 10,000 reactions [2];
+% FVA,* *models larger than 10,000 reactions $$^2$;
 %% EQUIPMENT SETUP
 % If necessary, initialize the cobra toolbox:
 
@@ -38,18 +38,30 @@ initCobraToolbox
 changeCobraSolver ('gurobi', 'all', 1);
 %% PROCEDURE
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D [3]. Therefore, we assume, that the cellular objectives 
+% metabolism, Recon 3D $$^3$. Therefore, we assume, that the cellular objectives 
 % include energy production or optimisation of uptake rates and by-product secretion 
 % for various physiological functions of the human body.
 % 
 % Before proceeding with the simulations, the path for the model needs to 
 % be set up:
 
-pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
-filename = '2017_04_28_Recon3d.mat';
-load([pathModel, filename])
-model = modelRecon3model;
-clear modelRecon3model
+% check if Recon3 exists:
+% pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
+% filename = '2017_04_28_Recon3d.mat';
+% load([pathModel, filename])
+% model = modelRecon3model;
+% clear modelRecon3model
+% and if not
+% select your own model, or use Recon2.0model instead filename='Recon3.0model';
+global CBTDIR
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
+model = Recon2model;
+model.rxns = strrep(model.rxns, '(', '[');
+model.rxns = strrep(model.rxns, ')', ']');
+clear Recon2model
+%% 
+% The metabolites structures and reactions are from the Virtual Metabolic 
+% Human database (VMH, <http://vmh.life http://vmh.life>).
 %% TROUBLESHOOTING
 % If there are multiple energy sources available in the model, specify more 
 % constraints.
@@ -59,7 +71,7 @@ clear modelRecon3model
 % 
 % To avoid this issue, all external carbon sources need to be closed.
 
-% Closing the uptake of all energy and oxygen sources
+%Closing the uptake of all energy and oxygen sources
 idx=strmatch('Exchange/demand reaction',model.subSystems);
 c=0;
 for i=1:length(idx)
@@ -68,23 +80,47 @@ for i=1:length(idx)
         uptakes{c}=model.rxns{idx(i)};
     end
 end
-
-modelalter = model;
-modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
-modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
+% If you use Recon3.0 model, than:
+% modelalter = model;
+% modelalter = changeRxnBounds(modelalter, uptakes, 0, 'b');
+% modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
 
 % The alternative way to do that, in case you were using another large model, 
 % that does not contain defined Subsystem is
 % to find uptake exchange reactions with following codes:
 % [selExc, selUpt] = findExcRxns(model);
 % uptakes = model.rxns(selUpt);
+
 % Selecting from the exchange uptake reactions those 
 % which contain at least 1 carbon in the metabolites included in the reaction:
-% subuptakeModel = extractSubNetwork(model, uptakes);
-% hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
+ subuptakeModel = extractSubNetwork(model, uptakes);
+ hiCarbonRxns = findCarbonRxns(subuptakeModel,1);
 % Closing the uptake of all the carbon sources
-% modelalter = model;
-% modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'l');
+ modelalter = model;
+ modelalter = changeRxnBounds(modelalter, hiCarbonRxns, 0, 'b');
+% Closing other oxygen and energy sources
+ exoxygen = {'EX_adp'
+    'EX_amp[e]'
+    'EX_atp[e]'
+    'EX_co2[e]'
+    'EX_coa[e]'
+    'EX_fad[e]'
+    'EX_fe2[e]'
+    'EX_fe3[e]'
+    'EX_gdp[e]'
+    'EX_gmp[e]'
+    'EX_gtp[e]'
+    'EX_h[e]'
+    'EX_h2o[e]'
+    'EX_h2o2[e]'
+    'EX_nad[e]'
+    'EX_nadp[e]'
+    'EX_no[e]'
+    'EX_no2[e]'
+    'EX_o2s[e]'};
+for i = 1:length (exoxygen)
+    modelalter = changeRxnBounds (modelalter, exoxygen{i}, 0, 'l');
+end
 %% 
 % In this example, we are analysing the variability of several reactions 
 % from the human cellular metabolism in the aerobic and anaerobic state. 
@@ -96,7 +132,9 @@ modelalter = changeRxnBounds(modelalter, 'EX_HC00250[e]', -1000, 'l');
 
 % modelfva1 represents aerobic condition
 modelfva1 = modelalter;
-modelfva1 = changeRxnBounds (modelfva1, 'EX_glc_D[e]', -20, 'l');
+% For Recon3.0 model
+% modelfva1 = changeRxnBounds (modelfva1, 'EX_glc_D[e]', -20, 'l');
+modelfva1 = changeRxnBounds (modelfva1, 'EX_glc[e]', -20, 'l');
 modelfva1 = changeRxnBounds (modelfva1, 'EX_o2[e]', -1000, 'l');
 % modelfva2 represents anaerobic condition
 modelfva2 = modelfva1;
@@ -123,15 +161,12 @@ modelfva2 = changeRxnBounds (modelfva2, 'EX_o2[e]', 0, 'l');
 rxnsList = {'DM_atp_c_'
     'ACOAHi'
     'ALCD21_D'
-    'HMR_2087'
     'LALDO'
-    'LCADim'
     'ME2m'
     'AKGDm'
     'PGI'
     'PGM'
-    'r0062'
-    'HMR_2088'};
+    'r0062'};
 %% 
 % The |verbFlag| input determines how much output to print. 
 % 
@@ -150,6 +185,8 @@ rxnsList = {'DM_atp_c_'
 % Run FVA analysis for the model with the constraints that simulates aerobic 
 % conditions:
 
+[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1);
+[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva2);
 [minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1, [], [], rxnsList)
 %% 
 % Run FVA analysis for the model with the constraints that simulates anaerobic 
@@ -177,8 +214,8 @@ plot1 = bar(cell2mat(maxfxs(1:end,:)));
 hold on
 plot2 = bar(cell2mat(minfxs(1:end,:)));
 
-xticklabels({'DM_atp_c_', 'ACOAHi', 'ALCD21__D', 'HMR__2087',...
-    'LALDO', 'LCADim', 'ME2m', 'AKGDm', 'PGI', 'PGM', 'r0062', 'HMR__2088'})
+xticklabels({'DM_atp_c_', 'ACOAHi', 'ALCD21__D', 'LALDO',...
+    'ME2m', 'AKGDm', 'PGI', 'PGM', 'r0062'})
 set(gca, 'XTickLabelRotation',-80);
 yticks([-1000 -800 -600 -400 -200 0 200 400 600 800 1000])
 xlabel('Reactions from the models')
@@ -242,13 +279,13 @@ ylabel('Fluxes')
 legend({'Aerobic', 'Anaerobic'})
 title('Variations in fluxes in the aerobic and anaerobic conditions')
 %% REFERENCES 
-% [1] Gudmundsson S., Ines Thiele; Computationally efficient flux variability 
+% [1] Gudmundsson, S., Thiele, I. Computationally efficient flux variability 
 % analysis. _BMC Bioinformatics. _11, 489 (2010).
 % 
-% [2] Laurent Heirendt, Ines Thiele, Ronan M. T. Fleming; DistributedFBA.jl:  
-% high-level, high-performance flux balance analysis in Julia. _Bioinformatics._ 
-% 33 (9), 1421-1423 (2017).
+% [2] Heirendt, L., Thiele, I., Fleming, R.M. DistributedFBA.jl: high-level, 
+% high-performance flux balance analysis in Julia. _Bioinformatics._ 33 (9), 1421-1423 
+% (2017).
 % 
-% [3] Ines Thiele, Nathan D. Price, Thuy D. Vo, Bernhard O. Palsson; Candidate 
-% Metabolic Network States in Human Mitochondria. Impact of diabetes, ischemia 
-% and diet. _J Bio Chem. _280 (12), 11683–11695 (2005).
+% [3] Thiele, I., Price, N.D., Vo, T.D., Palsson B. Ø. Candidate Metabolic 
+% Network States in Human Mitochondria. Impact of diabetes, ischemia and diet. 
+% _J Bio Chem. _280 (12), 11683–11695 (2005).
