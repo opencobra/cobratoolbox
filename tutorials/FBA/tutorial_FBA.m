@@ -73,7 +73,8 @@ initCobraToolbox
 % clear modelRecon3model
 % and if not
 % select your own model, or use Recon2.0model instead filename='Recon3.0model';
-load('/fork-cobratoolbox/test/models/Recon2.0model.mat')
+global CBTDIR
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
 model = Recon2model;
 model.rxns = strrep(model.rxns, '(', '[');
 model.rxns = strrep(model.rxns, ')', ']');
