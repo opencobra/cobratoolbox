@@ -42,7 +42,7 @@
 %% EQUIPMENT SETUP
 % If necessary, initialise the cobra toolbox:
 
-initCobraToolbox
+% initCobraToolbox
 %% 
 % For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
@@ -339,16 +339,17 @@ modelgeo = modelalter;
 modelgeo = changeRxnBounds(modelgeo, 'EX_glc[e]',-20,'l');
 modelgeo = changeRxnBounds (modelgeo, 'EX_o2[e]', 0, 'l');
 modelgeo = changeObjective(modelgeo, 'DM_atp_c_');
-FBAgeo = geometricFBA (modelgeo);
+% WARNING: Depending on the size of the model running this function might take very long; 
+% FBAgeo = geometricFBA (modelgeo, 'flexRel', 1e-3);
 %% 
 % Display the unique fluxes from reactions, that are non-zero in the geometric 
 % FBA solution.
 
-for i=1:length(FBAgeo)
-    if FBAgeo(i)~=0
-        fprintf('%10d \t %s\n', FBAgeo(i), modelgeo.rxns{i})
-    end
-end
+% for i=1:length(FBAgeo)
+%     if FBAgeo(i)~=0
+%         fprintf('%10d \t %s\n', FBAgeo(i), modelgeo.rxns{i})
+%     end
+% end
 %% TROUBLESHOOTING
 %  When the algorithm has convergence problems, change one of the optional inputs, 
 % |flexRel|, into e.g. |1e-3|. The default is 0 when there is flexibility to flux 
