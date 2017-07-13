@@ -20,6 +20,7 @@ Tutorials
    tutorialFVA
    tutorialInitialiseAndVerify
    tutorialIO
+   tutorialLeakSiphonModes
    tutorialMinimalCutSets
    tutorialMinSpan
    tutorialModelATPYield
@@ -36,6 +37,7 @@ Tutorials
    tutorialPathVectors
    tutorialPFBA
    tutorialRBioNet
+   tutorialReconToFBAmodel
    tutorialReconstructionSOP
    tutorialRelaxedFBA
    tutorialRemoteVisualisation
@@ -44,6 +46,7 @@ Tutorials
    tutorialSparseFBA
    tutorialSparseLP
    tutorialSteadyCom
+   tutorialVonBertalanffy
    tutorialUFBA
    tutorialUniformSampling
    tutorialVariationalKinetics
