@@ -3,19 +3,20 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 % at community steady-state at a given growth rate. Called by `SteadyComPOA`. See `tutorial_SteadyCom` for more details.
 %
 % USAGE:
+%
 %    [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, options, LP)
 %
-% INPUT
-%    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
-%                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+% INPUT:
+%    modelCom:     A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%                  (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                      * S - Stoichiometric matrix
-%                      * b - Right hand side
-%                      * c - Objective coefficients
-%                      * lb - Lower bounds
-%                      * ub - Upper bounds
-%                      * infoCom - structure containing community reaction info
-%                      * indCom - the index structure corresponding to `infoCom`
+%                    * S - Stoichiometric matrix
+%                    * b - Right hand side
+%                    * c - Objective coefficients
+%                    * lb - Lower bounds
+%                    * ub - Upper bounds
+%                    * infoCom - structure containing community reaction info
+%                    * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:    option structure with the following fields:
@@ -50,19 +51,19 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 %                    cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
 %                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
 %
-%    parameter:    structure for solver-specific parameters.
+%    parameter:  structure for solver-specific parameters.
 %                  'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See solveCobraLP for details
 %
 % OUTPUTS:
-%    POAtable:     `K x K` cells. `(i,i)` -cell contains the flux range of `rxnNameList{i}`.
-%                  `(i,j)`-cell contains a `Nstep x 2` matrix, with `(k,1)` -entry being the min of `rxnNameList{j}`
-%                  when `rxnNameList{i}` is fixed at the `k`-th value, `(k,2)` -entry being the max.
-%    fluxRange:    `K x 2` matrix of flux range for each entry in `rxnNameList`
-%    Stat :        `K x K` structure array with fields:
+%    POAtable:   `K x K` cells. `(i, i)` -cell contains the flux range of `rxnNameList{i}`.
+%                `(i,j)`-cell contains a `Nstep x 2` matrix, with `(k, 1)` -entry being the min of `rxnNameList{j}`
+%                when `rxnNameList{i}` is fixed at the `k`-th value, `(k, 2)` -entry being the max.
+%    fluxRange:  `K x 2` matrix of flux range for each entry in `rxnNameList`
+%    Stat :      `K x K` structure array with fields:
 %
-%                    * -'cor': the slope from linear regression between the fluxes of a pair
-%                    * -'r2':  the corresponding coefficient of determination (R-square)
-%    pairList:     `pairList` after transformation from various input formats
+%                  * -'cor': the slope from linear regression between the fluxes of a pair
+%                  * -'r2':  the corresponding coefficient of determination (R-square)
+%    pairList:   `pairList` after transformation from various input formats
 
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
     xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});

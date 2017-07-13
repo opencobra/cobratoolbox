@@ -4,7 +4,7 @@ function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solve
 % USAGE:
 %    [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
 %
-% INPUT
+% INPUT:
 %    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 %                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
@@ -104,7 +104,7 @@ function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solve
 %                        * infeasible: infeasible model, even with maintenance requirement only
 %                        * maintenance: feasible at maintenance, but cannot grow
 %                        * optimal: optimal growth rate found
-%
+
 t = tic;
 t0 = 0;
 %% Initialization

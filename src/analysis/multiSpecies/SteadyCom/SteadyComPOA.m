@@ -1,70 +1,71 @@
 function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, varargin)
-% Analyze pairwise relationship between reaction fluxes/biomass variables for a community model 
+% Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
 % at community steady-state at a given growth rate. See tutorial_SteadyCom for more details.
 %
 % USAGE:
 %    [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
-%    (the following fields are required)
-%      S            Stoichiometric matrix
-%      b            Right hand side
-%      c            Objective coefficients
-%      lb           Lower bounds
-%      ub           Upper bounds
-%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
-%      infoCom      structure containing community reaction info 
-%      indCom       the index structure corresponding to infoCom
+%    modelCom:  A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%               (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+%
+%                 * S - Stoichiometric matrix
+%                 * b - Right hand side
+%                 * c - Objective coefficients
+%                 * lb - Lower bounds
+%                 * ub - Upper bounds
+%                 * infoCom - structure containing community reaction info
+%                 * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
-%    options        option structure with the following fields:
-%      GRmax           maximum growth rate of the model (default to be found SteadyCom.m)
-%      optGRpercent    a vector of percentages. Perform POA at these percents of max. growth rate respectively (Default = 99.99)
-%      optBMpercent    only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%      rxnNameList     list of reactions (IDs or .rxns) to be analyzed. Use a (N_rxns + N_organism) x K matrix for POA of K
-%                        linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism, 
-%                        or reactions listed in pairList [see beleow] if pairList is given)
-%      pairList        pairs in rxnNameList to be analyzed. N_pair by 2 array of:
-%                        - indices referring to the rxns in rxnNameList, e.g., [1 2] to analyze rxnNameList{1} vs rxnNameList{2}
-%                        - rxn names which are members of rxnNameList, e.g., {'EX_glc-D(e)', 'EX_ac(e)'; 'HEX1', 'MDH'}
-%                        If not supplied, analyze all K(K-1) pairs from the K targets in rxnNameList.
-%      symmetric       true to avoid running symmetric pairs (e.g. analyze pair (j,k) only if j > k, total K(K-1)/2 pairs). 
-%                        Used only when pairList is not supplied. 
-%      Nstep           number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
-%                        Can also be a vector indicating the fraction of intermediate value to be analyzed,
-%                        e.g. [0 0.5 1] means computing at minFlux, 0.5(minFlux + maxFlux) and maxFlux
-%      NstepScale      used only when Nstep is a single number. 
-%                        -'lin' for a linear (uniform) scale of step size 
-%                        -'log' for a log scaling of the step sizes
-%      fluxRange       flux range for each entry in rxnNameList. K x 2 matrix. Defaulted to be found by SteadyComFVA.m
-%    (other parameters)
-%      savePOA         must be non-empty. The filename to save the POA results (default 'POAtmp/POA'). Always use relative path
-%      threads         for parallelization: > 1 for explicitly stating the no. of threads used,
-%                        0 or -1 for using all available threads. Default 1.
-%      verbFlag        verbose output. 0 or 1.
-%      loadModel       (ibm_cplex only) string of filename to be loaded. If non-empty, load the 
-%                        cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
-%   (May add also other parameters in SteadyCom for calculating the maximum growth rate.)
+%    options:    option structure with the following fields:
 %
-%    parameter:              structure for solver-specific parameters.
-%    'param1', value1, ...:  name-value pairs for solveCobraLP parameters. See solveCobraLP for details
+%                  * GRmax - maximum growth rate of the model (default to be found SteadyCom.m)
+%                  * optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])
+%                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
+%                  * rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) x K` matrix for POA of `K`
+%                    linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,
+%                  * pairList - pairs in `rxnNameList` to be analyzed. `N_pair` by 2 array of:
+%
+%                    * - indices referring to the rxns in `rxnNameList`, e.g., `[1 2]` to analyze `rxnNameList{1}` vs `rxnNameList{2}`
+%                    * - rxn names which are members of `rxnNameList`, e.g., `{'EX_glc-D(e)', 'EX_ac(e)'}`
+%                    If not supplied, analyze all `K(K-1)` pairs from the K targets in `rxnNameList`.
+%                  * symmetric - true to avoid running symmetric pairs (e.g. analyze pair `(j,k)` only if :math:`j > k`, total :math:` K(K-1)/2 pairs)`.
+%                    Used only when `pairList` is not supplied.
+%                  * Nstep - number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
+%                    Can also be a vector indicating the fraction of intermediate value to be analyzed,
+%                    e.g. `[0 0.5 1]` means computing at `minFlux`, `0.5(minFlux + maxFlux)` and `maxFlux`
+%                  * NstepScale - used only when Nstep is a single number.
+%
+%                    * -'lin' for a linear (uniform) scale of step size
+%                    * -'log' for a log scaling of the step sizes
+%                  * fluxRange - flux range for each entry in `rxnNameList`. `K x 2` matrix. Defaulted to be found by `SteadyComFVA.m`
+%                    (other parameters)
+%                  * savePOA - filename to save the POA results (default 'POAtmp/POA'). Must be non-empty. New folder is recommended
+%                  * threads - for parallelization: > 1 for explicitly stating the no. of threads used,
+%                    0 or -1 for using all available threads. Default 1.
+%                  * verbFlag - verbose output. 0 or 1.
+%                  * loadModel - (`ibm_cplex` only) string of filename to be loaded. If non-empty, load the
+%                    cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
+%                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
+%
+%    parameter:  structure for solver-specific parameters.
+%                  'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See solveCobraLP for details
 %
 % OUTPUTS:
-%    [N_gr = numel(options.optGRpercent)]
-%    POAtable      K x K cells. Each (i,i)-cell contains a Nstep x 1 x N_gr matrix of the fluxes at which rxnNameList{i} is fixed.
-%                    Each (i,j)-cell contains a Nstep x 2 x N_gr matrix, the (p,:,q)-entry being the range of rxnNameList{j} 
-%                    when rxnNameList{i} is fixed at POAtable{i,i}(p,1,q) at growth rate = GRvector(q)
-%    fluxRange     K x 2 x N_gr matrix of flux range for each entry in rxnNameList 
-%    Stat          K x K x N_gr structure array with fields:
-%                    -'cor': the slope from linear regression between the fluxes of a pair
-%                    -'r2':  the corresponding coefficient of determination (R-square)
-%    GRvector      vector of growth rates being analyzed
+%    POAtable:    `K x K` cells. Each `(i, i)` -cell contains a `Nstep x 1 x N_gr` matrix of the fluxes at which `rxnNameList{i}` is fixed.
+%                  Each `(i, j)` -cell contains a `Nstep x 2 x N_gr` matrix, the `(p,:,q)` -entry being the range of `rxnNameList{j}`
+%                  when `rxnNameList{i}` is fixed at `POAtable{i, i}(p, 1, q)` at growth rate = GRvector(q)
+%    fluxRange:   `K x 2 x N_gr` matrix of flux range for each entry in `rxnNameList`
+%    Stat:        `K x K x N_gr` structure array with fields:
+%
+%                   * -'cor': the slope from linear regression between the fluxes of a pair
+%                   * -'r2':  the corresponding coefficient of determination (R-square)
+%    GRvector:    vector of growth rates being analyzed
 
-%% Initialization
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
     xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
-
+% Initialization above
 if nargin < 2 || isempty(options)
     options = struct();
 end
@@ -75,7 +76,7 @@ end
     rxnNameList, pairList, symmetric, verbFlag, savePOA, loadModel] = SteadyComSubroutines('getParams',  ...
     {'GRmax', 'optGRpercent', 'Nstep', 'GRfx','BMmaxLB','BMmaxUB',...
     'rxnNameList', 'pairList', 'symmetric', 'verbFlag', 'savePOA','loadModel'}, options, modelCom);
-         
+
 if isempty(savePOA)
     error('A non-empty file name must be provided to save the POA results.');
 end
@@ -112,7 +113,7 @@ end
 if (~isfield(options, 'rxnNameList') || isempty(options.rxnNameList)) && isfield(options, 'pairList') && iscell(options.pairList)
     % get rxnNameList from pairList if only pairList given
     rxnNameList = options.pairList(:);
-end 
+end
 if ischar(rxnNameList)
     rxnNameList = {rxnNameList};
 end
@@ -132,7 +133,7 @@ if init
             warning('Model is infeasible.');
             POAtable = cell(nRxnPOA);
             GRvector = NaN(numel(optGRpercent), 1);
-            fluxRange = NaN(nRxnPOA, 2, numel(GRvector)); 
+            fluxRange = NaN(nRxnPOA, 2, numel(GRvector));
             Stat = repmat(struct('cor', [], 'r2', []), nRxnPOA, nRxnPOA, numel(GRvector));
             return
         end
@@ -163,7 +164,7 @@ if init
                 addRow = ~ynRow;
             end
         else
-            %get LP using SteadyCom if only growth rate is given 
+            %get LP using SteadyCom if only growth rate is given
             options2 = options;
             options2.LPonly = true;
             [~, ~, LP] = SteadyCom(modelCom, options2, varargin{:});
@@ -199,7 +200,7 @@ if init
             end
         end
         % not allow the max. biomass to exceed the one at max growth rate,
-        % can happen if optBMpercent < 100. May dismiss this constraint or 
+        % can happen if optBMpercent < 100. May dismiss this constraint or
         % manually supply BMmaxUB in the options if sum of biomass should be variable
         if ibm_cplex
             LP.Model.lhs(idRow) = BMmaxLB;
@@ -298,11 +299,11 @@ options.rxnNameList = rxnNameList;
 if isempty(pairList)
     % if pairList not given, run for all pairs
     pairList = [reshape(repmat(1:nRxnPOA, nRxnPOA, 1),nRxnPOA ^ 2, 1), repmat((1:nRxnPOA)', nRxnPOA, 1)];
-    if symmetric 
+    if symmetric
         % the option 'symmetric' is only used here when pairList is not supplied to avoid running symmetric pairs (e.g. j vs k and k vs j)
         pairList(pairList(:, 1) > pairList(:, 2), :) = [];
     end
-elseif size(pairList, 2) ~= 2 
+elseif size(pairList, 2) ~= 2
     error('pairList must be an N-by-2 array denoting the pairs (rxn names or indices in rxnNameList) to analyze!')
 elseif iscell(pairList)
     % transform pairList into matrix form and find the IDs
@@ -336,7 +337,7 @@ end
 for j = 1:numel(GRvector)
     optionsJ = options;
     optionsJ.GR = GRvector(j);
-    optionsJ.savePOA = sprintf(['%s_GR%.' num2str(kDisp) 'f'], savePOA, GRvector(j));  
+    optionsJ.savePOA = sprintf(['%s_GR%.' num2str(kDisp) 'f'], savePOA, GRvector(j));
     if j > 1  % reset the model to ensure feasibility
         if ibm_cplex
             load([savePOA '_MasterModel.mat'], 'LPstart', 'LPmodel');

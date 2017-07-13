@@ -8,17 +8,17 @@ function [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, opt
 %
 %    [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, options, LP, parameter, 'param1', value1, 'param2', value2, ...)
 %
-% INPUT
-%    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
-%                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+% INPUT:
+%    modelCom:   A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%                (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                      * S - Stoichiometric matrix
-%                      * b - Right hand side
-%                      * c - Objective coefficients
-%                      * lb - Lower bounds
-%                      * ub - Upper bounds
-%                      * infoCom - structure containing community reaction info
-%                      * indCom - the index structure corresponding to `infoCom`
+%                  * S - Stoichiometric matrix
+%                  * b - Right hand side
+%                  * c - Objective coefficients
+%                  * lb - Lower bounds
+%                  * ub - Upper bounds
+%                  * infoCom - structure containing community reaction info
+%                  * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:    struct with the following possible fields:
