@@ -52,10 +52,10 @@ end
 
 % Check required fields in model
 if any(cellfun('isempty',model.metFormulas))
-    error(['Formulas missing for metabolites:\n' sprintf('%s\n',model.mets{cellfun('isempty',model.metFormulas)}) 'Enter R in model.metFormulas for metabolites with unknown formulas.']);
+    error(['Formulas missing for metabolites:' sprintf('%s\n',model.mets{cellfun('isempty',model.metFormulas)}) 'Enter R in model.metFormulas for metabolites with unknown formulas. \n']);
 end
 if any(isnan(model.metCharges))
-    error(['Charges missing for metabolites:\n' sprintf('%s\n',model.mets{isnan(model.metCharges)}) 'Set model.metCharges to 0 for metabolites with unknown charges.']);
+    error(['Charges missing for metabolites:' sprintf('%s\n',model.mets{isnan(model.metCharges)}) 'Set model.metCharges to 0 for metabolites with unknown charges. \n']);
 end
 
 % Check for model.metCompartments

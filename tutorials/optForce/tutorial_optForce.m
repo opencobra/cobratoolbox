@@ -97,9 +97,9 @@ fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
 % # The mutant strain's biomass function is set to zero. Succinate export ('EX_suc') 
 % is forced to be the maximum as calculated previously.
 
-constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b');
+constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b')
 constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], ...
-                  'rxnBoundType', 'b');
+                  'rxnBoundType', 'b')
 %% Step 3: Flux Variability Analysis
 % *TIMING*: This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
@@ -107,7 +107,7 @@ constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], ...
 % We  run the FVA analysis for both strains
 
 [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ~, ~] = FVAOptForce(model, ...
-                                                         constrWT, constrMT);
+                                                                     constrWT, constrMT);
 disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 %% 
 % Now, the run the next step of OptForce.

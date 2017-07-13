@@ -1,4 +1,4 @@
-function directionalityStatsFigures(directions,resultsBaseFileName)
+function directionalityStatsFigures(directions,resultsBaseFileName,saveFigures)
 %creates pie charts of directionality stats
 %
 %INPUT
@@ -46,6 +46,9 @@ function directionalityStatsFigures(directions,resultsBaseFileName)
 
 % Ronan M.T. Fleming
 
+if ~exist('saveFigures','var')
+    saveFigures=0;
+end
 
 figure('units','normalized','outerposition',[0 0 1 1]);
 data=[nnz(directions.forwardRecon) nnz(directions.reverseRecon) nnz(directions.reversibleRecon) nnz(directions.equilibriumRecon)];
@@ -125,7 +128,9 @@ textObjs = findobj(ph,'Type','text');
 set(textObjs,'FontSize',16);
 title({'Forward -> Reversible (by \Delta_{f}G^{\primem}_0)';...
     ['(' int2str((sum(data)/length(directions.forwardThermo)*100)) ' % of all reactions)']},'FontSize',16);
+if saveFigures
 saveas(figure1,[resultsBaseFileName,'_fwdReversible_byDrG0_pieChart'],'fig');
+end
 end
 
 figure1=figure('units','normalized','outerposition',[0 0 1 1]);
@@ -145,6 +150,7 @@ textObjs = findobj(ph,'Type','text');
 set(textObjs,'FontSize',16);
 title({'Forward -> Reversible (by reactant concentration)';...
     ['(' int2str((sum(data)/length(directions.forwardThermo)*100)) ' % of all reactions)']},'FontSize',16);
+if saveFigures
 saveas(figure1,[resultsBaseFileName,'_fwdReversible_byconc_pieChart'],'fig');
-
+end
 

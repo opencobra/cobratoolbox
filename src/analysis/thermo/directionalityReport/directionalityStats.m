@@ -1,11 +1,11 @@
-function model=directionalityStats(model,cumNormProbCutoff,printLevel)
+function [model,directions]=directionalityStats(model, directions,cumNormProbCutoff,printLevel)
 % Build Boolean vectors with reaction directionality statistics
 %
-%INPUT
+% INPUT
 % model.directions    a structue of boolean vectors with different directionality
 %                     assignments where some vectors contain subsets of others
 %
-% .model.directions.forwardProbability
+% directions.forwardProbability
 %
 % qualitatively assigned internal reaction direactions
 % .forwardRecon
@@ -21,53 +21,45 @@ function model=directionalityStats(model,cumNormProbCutoff,printLevel)
 % .uncertainThermo
 % .equilibriumThermo
 %
+% OPTIONAL INPUT
 % cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
 %                       reversible within this cutoff of 0.5
-% thorStandard          {0,(1)} use new standard reactant concentration
-%                       at geometric mean between upper and lower concentration
-%                       bounds
 % printLevel            -1  print out to file
 %                       0   silent
 %                       1   print out to command window
 %
 %OUTPUT
-% model.directions    a structue of boolean vectors with different directionality
+% directions    a structue of boolean vectors with different directionality
 %               assignments where some vectors contain subsets of others
 %
 % qualtiative -> quantiative changed reaction directions
-%   .directions.forward2Forward
-%   .directions.forward2Reverse
-%   .directions.forward2Reversible
-%   .directions.forward2Uncertain
-%   .directions.reversible2Forward
-%   .directions.reversible2Reverse
-%   .directions.reversible2Reversible
-%   .directions.reversible2Uncertain
-%   .directions.reverse2Forward
-%   .directions.reverse2Reverse
-%   .directions.reverse2Reversible
-%   .directions.reverse2Uncertain
-%   .directions.tightened
+%   .forward2Forward
+%   .forward2Reverse
+%   .forward2Reversible
+%   .forward2Uncertain
+%   .reversible2Forward
+%   .reversible2Reverse
+%   .reversible2Reversible
+%   .reversible2Uncertain
+%   .reverse2Forward
+%   .reverse2Reverse
+%   .reverse2Reversible
+%   .reverse2Uncertain
+%   .tightened
 %
 % subsets of qualtiatively forward  -> quantiatively reversible 
-%   .directions.forward2Reversible_bydGt0
-%   .directions.forward2Reversible_bydGt0LHS
-%   .directions.forward2Reversible_bydGt0Mid
-%   .directions.forward2Reversible_bydGt0RHS
+%   .forward2Reversible_bydGt0
+%   .forward2Reversible_bydGt0LHS
+%   .forward2Reversible_bydGt0Mid
+%   .forward2Reversible_bydGt0RHS
 % 
-%   .directions.forward2Reversible_byConc_zero_fixed_DrG0
-%   .directions.forward2Reversible_byConc_negative_fixed_DrG0
-%   .directions.forward2Reversible_byConc_positive_fixed_DrG0
-%   .directions.forward2Reversible_byConc_negative_uncertain_DrG0
-%   .directions.forward2Reversible_byConc_positive_uncertain_DrG0
+%   .forward2Reversible_byConc_zero_fixed_DrG0
+%   .forward2Reversible_byConc_negative_fixed_DrG0
+%   .forward2Reversible_byConc_positive_fixed_DrG0
+%   .forward2Reversible_byConc_negative_uncertain_DrG0
+%   .forward2Reversible_byConc_positive_uncertain_DrG0
 
 % Ronan M.T. Fleming
-
-if ~isfield(model,'directions')
-    error('No thermodynamic model directions')
-else
-    directions=model.directions;
-end
 
 if ~exist('cumNormProbCutoff','var')
     directions.cumNormProbCutoff=0.2;
@@ -109,14 +101,14 @@ end
 [~,nRxn]=size(model.S);
     
 % qualitatively assigned directions
-forwardRecon=model.directions.forwardRecon;
-reverseRecon=model.directions.reverseRecon;
-reversibleRecon=model.directions.reversibleRecon;
+forwardRecon=directions.forwardRecon;
+reverseRecon=directions.reverseRecon;
+reversibleRecon=directions.reversibleRecon;
 % quantitatively assigned directions
-forwardThermo=model.directions.forwardThermo;
-reverseThermo=model.directions.reverseThermo;
-reversibleThermo=model.directions.reversibleThermo;
-uncertainThermo=model.directions.uncertainThermo;
+forwardThermo=directions.forwardThermo;
+reverseThermo=directions.reverseThermo;
+reversibleThermo=directions.reversibleThermo;
+uncertainThermo=directions.uncertainThermo;
 
 %%%%%%CHANGES IN REACTION DIRECTIONS%%%%%%%%%%%
 %thermodynamic constraints tightened
@@ -148,9 +140,9 @@ forward2Reversible_bydGt0=forwardRecon & reversibleThermo & model.DrGtMin<0 & mo
 forward2Reversible_byConc_negative_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==model.DrGt0Max & model.DrGtMax<=0; %dGfGCforward2ReversibleBool_byConc_No_dGt0ErrorLHS
 forward2Reversible_byConc_positive_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==model.DrGt0Max & model.DrGtMin>0; %dGfGCforward2ReversibleBool_byConc_No_dGt0ErrorRHS
 
-forward2Reversible_bydGt0LHS=forward2Reversible_bydGt0 & model.directions.forwardProbability>cumNormProbFwdUpper; %dGfGCforward2ReversibleBool_bydGt0LHS
-forward2Reversible_bydGt0Mid=forward2Reversible_bydGt0 & model.directions.forwardProbability>=cumNormProbFwdLower & model.directions.forwardProbability<=cumNormProbFwdUpper;%dGfGCforward2ReversibleBool_bydGt0Mid
-forward2Reversible_bydGt0RHS=forward2Reversible_bydGt0 & model.directions.forwardProbability<cumNormProbFwdLower; %dGfGCforward2ReversibleBool_bydGt0RHS
+forward2Reversible_bydGt0LHS=forward2Reversible_bydGt0 & directions.forwardProbability>cumNormProbFwdUpper; %dGfGCforward2ReversibleBool_bydGt0LHS
+forward2Reversible_bydGt0Mid=forward2Reversible_bydGt0 & directions.forwardProbability>=cumNormProbFwdLower & directions.forwardProbability<=cumNormProbFwdUpper;%dGfGCforward2ReversibleBool_bydGt0Mid
+forward2Reversible_bydGt0RHS=forward2Reversible_bydGt0 & directions.forwardProbability<cumNormProbFwdLower; %dGfGCforward2ReversibleBool_bydGt0RHS
 
 forward2Reversible_byConc_negative_uncertain_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min~=model.DrGt0Max & model.DrGt0Max<0; %dGfGCforward2ReversibleBool_byConcLHS
 forward2Reversible_byConc_positive_uncertain_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min~=model.DrGt0Max & model.DrGt0Min>0; %dGfGCforward2ReversibleBool_byConcRHS
@@ -256,5 +248,3 @@ directions.forward2Reversible_byConc_negative_fixed_DrG0=forward2Reversible_byCo
 directions.forward2Reversible_byConc_positive_fixed_DrG0=forward2Reversible_byConc_positive_fixed_DrG0;
 directions.forward2Reversible_byConc_negative_uncertain_DrG0=forward2Reversible_byConc_negative_uncertain_DrG0;
 directions.forward2Reversible_byConc_positive_uncertain_DrG0=forward2Reversible_byConc_positive_uncertain_DrG0;
-
-model.directions=directions;

@@ -1,46 +1,47 @@
 %% *Flux Variability analysis (FVA)*
 % Flux variability analysis (FVA) is a widely used computational tool for evaluating 
 % the minimum and maximum range of each reaction flux that can still satisfy the 
-% constraints using two optimisation problems for each reaction of interest $$^1$. 
+% constraints using two optimisation problems for each reaction of interest$$^1$. 
 % 
 % 
 % 
 % $$\begin{array}{lll}\max\limits _{v}/\min\limits _{v} & v_{j} \\\text{s.t.} 
-% & Sv=0,\\ & l\leq v\leq u,\\& c_{T}v = c_{T}v*\end{array}$$
+% & Sv=0,\\ & l\leq v\leq u,\\& c_{T}v = c_{T}v^*\end{array}$$
 % 
 % where $v \in R^{n}$ represents the rate of each biochemical reaction, but 
 % typically an infinite set of steady state flux vectors exist can satisfy the 
-% same requirement for an optimal objective $$ c_{T}v* = c_{T}v$. As well as for 
-% the flux balance analysis (FBA), there are also many possible variations on 
-% flux variability analysis (FVA) $$^2$.
+% same requirement for an optimal objective $$ c_{T}v^* = c_{T}v$. As well as 
+% for the flux balance analysis (FBA), there are also many possible variations 
+% on flux variability analysis (FVA)$$^2$.
 % 
 % Depending on the size of the model you are using for the analysis, use:
 % 
 % * |fluxVariability()| function - for the low dimensional FVA;
 % * |fastFVA()| function - for the models with more than 1,000 reactions;
 % * <https://github.com/opencobra/COBRA.jl distributedFBA.jl> - for high dimensional 
-% FVA,* *models larger than 10,000 reactions $$^2$;
+% FVA,* *models larger than 10,000 reactions$$^2$;
 %% EQUIPMENT SETUP
-% If necessary, initialize the cobra toolbox:
+% If necessary, initialize the cobra toolbox with
 
-initCobraToolbox
+% initCobraToolbox
+warning('off', 'MATLAB:subscripting:noSubscriptsSpecified');
 %% 
 % For solving linear programming problems in FBA and FVA analysis, certain 
 % solvers are required:
 
-% solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
+% solverOK = changeCobraSolver(solverName, solverType)
 %% 
 % The present tutorial can run with <https://opencobra.github.io/cobratoolbox/deprecated/docs/cobra/solvers/changeCobraSolver.html 
 % glpk package>, which does not require additional installation and configuration. 
 % Although, for the analysis of large models is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
 % GUROBI> package.
 
-changeCobraSolver ('gurobi', 'all', 1);
+changeCobraSolver ('gurobi', 'all');
 %% PROCEDURE
 % In this tutorial, the provided model is a generic model of the human cellular 
-% metabolism, Recon 3D $$^3$. Therefore, we assume, that the cellular objectives 
-% include energy production or optimisation of uptake rates and by-product secretion 
-% for various physiological functions of the human body.
+% metabolism, Recon 3D$$^3$ or Recon2.0. Therefore, we assume, that the cellular 
+% objectives include energy production or optimisation of uptake rates and by-product 
+% secretion for various physiological functions of the human body.
 % 
 % Before proceeding with the simulations, the path for the model needs to 
 % be set up:
@@ -71,13 +72,13 @@ clear Recon2model
 % 
 % To avoid this issue, all external carbon sources need to be closed.
 
-%Closing the uptake of all energy and oxygen sources
-idx=strmatch('Exchange/demand reaction',model.subSystems);
-c=0;
-for i=1:length(idx)
-    if model.lb(idx(i))~=0
-        c=c+1;
-        uptakes{c}=model.rxns{idx(i)};
+% Closing the uptake of all energy and oxygen sources
+idx = strmatch('Exchange/demand reaction', model.subSystems);
+c = 0;
+for i = 1:length(idx)
+    if model.lb(idx(i)) ~= 0
+        c = c + 1;
+        uptakes{c} = model.rxns{idx(i)};
     end
 end
 % If you use Recon3.0 model, than:
@@ -118,9 +119,7 @@ end
     'EX_no[e]'
     'EX_no2[e]'
     'EX_o2s[e]'};
-for i = 1:length (exoxygen)
-    modelalter = changeRxnBounds (modelalter, exoxygen{i}, 0, 'l');
-end
+modelalter = changeRxnBounds (modelalter, exoxygen, 0, 'l');
 %% 
 % In this example, we are analysing the variability of several reactions 
 % from the human cellular metabolism in the aerobic and anaerobic state. 
@@ -134,11 +133,11 @@ end
 modelfva1 = modelalter;
 % For Recon3.0 model
 % modelfva1 = changeRxnBounds (modelfva1, 'EX_glc_D[e]', -20, 'l');
-modelfva1 = changeRxnBounds (modelfva1, 'EX_glc[e]', -20, 'l');
-modelfva1 = changeRxnBounds (modelfva1, 'EX_o2[e]', -1000, 'l');
+modelfva1 = changeRxnBounds(modelfva1, 'EX_glc[e]', -20, 'l');
+modelfva1 = changeRxnBounds(modelfva1, 'EX_o2[e]', -1000, 'l');
 % modelfva2 represents anaerobic condition
 modelfva2 = modelfva1;
-modelfva2 = changeRxnBounds (modelfva2, 'EX_o2[e]', 0, 'l');
+modelfva2 = changeRxnBounds(modelfva2, 'EX_o2[e]',  0, 'l');
 %% Standard FVA
 % The full spectrum of flux variability analysis options can be accessed using 
 % the command:
@@ -192,8 +191,8 @@ rxnsList = {'DM_atp_c_'
 
 [minFlux2, maxFlux2, Vmin2, Vmax2] = fluxVariability(modelfva2, [], [], rxnsList) 
 %% 
-% The additional |n × k| output matrices |Vmin| and |Vmax| return the flux 
-% vector for each of the |k ≤ n| fluxes selected for flux variability.
+% The additional |n � k| output matrices |Vmin| and |Vmax| return the flux 
+% vector for each of the |k ? n| fluxes selected for flux variability.
 % 
 % Further, plot and compare the FVA results from the both models:
 
@@ -202,19 +201,19 @@ ymin1 = minFlux1;
 ymax2 = maxFlux2;
 ymin2 = minFlux2;
 
-maxf =table(ymax1, ymax2)
-minf =table(ymin1, ymin2)
+maxf = table(ymax1, ymax2)
+minf = table(ymin1, ymin2)
 maxfxs = table2cell(maxf);
 minfxs = table2cell(minf);
 
 figure
-plot1 = bar(cell2mat(maxfxs(1:end,:)));
+plot1 = bar(cell2mat(maxfxs(1:end, :)));
 hold on
-plot2 = bar(cell2mat(minfxs(1:end,:)));
-
+plot2 = bar(cell2mat(minfxs(1:end, :)));
+hold off
 xticklabels({'DM_atp_c_', 'ACOAHi', 'ALCD21__D', 'LALDO',...
-    'ME2m', 'AKGDm', 'PGI', 'PGM', 'r0062'})
-set(gca, 'XTickLabelRotation',-80);
+             'ME2m', 'AKGDm', 'PGI', 'PGM', 'r0062'})
+set(gca, 'XTickLabelRotation', -80);
 yticks([-1000 -800 -600 -400 -200 0 200 400 600 800 1000])
 xlabel('Reactions from the models')
 ylabel('Fluxes')
@@ -242,7 +241,7 @@ changeCobraSolver ('ibm_cplex', 'all', 1);
 % Run fast FVA analysis for the whole model with the constraints that simulates 
 % aerobic conditions:
 
-[minFluxF1, maxFluxF1, optsol, ret, fbasol, fvamin,fvamax,...
+[minFluxF1, maxFluxF1, optsol, ret, fbasol, fvamin, fvamax,...
     statussolmin, statussolmax] = fastFVA(modelfva1);
 %% 
 % Run fast FVA analysis for the whole model with the constraints that simulates 
@@ -259,17 +258,17 @@ yminf1 = minFluxF1;
 ymaxf2 = maxFluxF2;
 yminf2 = minFluxF2;
 
-maxf =table(ymaxf1,ymaxf2);
-minf =table(yminf1,yminf2);
+maxf =table(ymaxf1, ymaxf2);
+minf =table(yminf1, yminf2);
 
 maxf = table2cell(maxf);
 minf = table2cell(minf);
 
 figure
-plot3 = bar(cell2mat(maxf(1:end,:)));
+plot3 = bar(cell2mat(maxf(1:end, :)));
 hold on
-plot4 = bar(cell2mat(minf(1:end,:)));
-
+plot4 = bar(cell2mat(minf(1:end, :)));
+hold off
 xticks([0 2000 4000 6000 8000 10600])
 yticks([-1000 -800 -600 -400 -200 0 200 400 600 800 1000])
 xlabel('All reactions in the model')
@@ -284,6 +283,6 @@ title('Variations in fluxes in the aerobic and anaerobic conditions')
 % high-performance flux balance analysis in Julia. _Bioinformatics._ 33 (9), 1421-1423 
 % (2017).
 % 
-% [3] Thiele, I., Price, N.D., Vo, T.D., Palsson B. Ø. Candidate Metabolic 
+% [3] Thiele, I., Price, N.D., Vo, T.D., Palsson B. �. Candidate Metabolic 
 % Network States in Human Mitochondria. Impact of diabetes, ischemia and diet. 
-% _J Bio Chem. _280 (12), 11683–11695 (2005).
+% _J Bio Chem. _280 (12), 11683?11695 (2005).

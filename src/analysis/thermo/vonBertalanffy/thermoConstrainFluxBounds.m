@@ -1,4 +1,4 @@
-function model = thermoConstrainFluxBounds(model,confidenceLevel,DrGt0_Uncertainty_Cutoff,printLevel)
+function [modelThermo, directions] = thermoConstrainFluxBounds(model,confidenceLevel,DrGt0_Uncertainty_Cutoff,printLevel)
 % Thermodynamically constrain reaction bounds.
 % 
 % INPUT
@@ -7,13 +7,22 @@ function model = thermoConstrainFluxBounds(model,confidenceLevel,DrGt0_Uncertain
 %                       transformed reaction Gibbs energies.
 % .DrGtMax              n x 1 array of estimated upper bounds on
 %                       transformed reaction Gibbs energies.
-% DrGt0_Uncertainty_Cutoff
+% DrGt0_Uncertainty_Cutoff  Thermodynamic data not used if uncertainty is
+%                           high in estimates
+%
+% OPTIONAL INPUT
 % printLevel            -1  print out to file
 %                       0   silent
 %                       1   print out to command window
 %
 % OUTPUT
-% model.directions    a structue of boolean vectors with different directionality
+% modelThermo                     Model structure with following additional fields:
+% modelThermo.lb_reconThermo      lower bound based on thermodynamic estimates,
+%                                  where uncertainty is below a threshold
+% modelThermo.ub_reconThermo      upper bound based on thermodynamic estimates,
+%                                 where uncertainty is below a threshold
+%
+% directions    a structue of boolean vectors with different directionality
 %                     assignments where some vectors contain subsets of others
 %
 % qualitatively assigned directions
@@ -135,6 +144,8 @@ model.ub_reconThermo(reverseThermo)=0;
 model.lb_reconThermo(reversibleThermo)=-maxFlux;
 model.ub_reconThermo(reversibleThermo)=maxFlux;
 
+modelThermo=model;
+
 forwardProbability=NaN*ones(nRxn,1);
 for n=1:nRxn
     if model.SIntRxnBool(n)
@@ -175,8 +186,5 @@ directions.reverseThermo=reverseThermo;
 directions.reversibleThermo=reversibleThermo;
 directions.uncertainThermo=uncertainThermo;
 directions.equilibriumThermo=equilibriumThermo;
-
-model.directions=directions;
-
 end
 

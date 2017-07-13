@@ -1,4 +1,4 @@
-function directionalityChangeReport(model,cumNormProbCutoff,printLevel,resultsBaseFileName)
+function directionalityChangeReport(model,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
 %Check for changes to reconstruction reaction direction to
 %thermodynamically constrained model direction 
 %
@@ -12,50 +12,44 @@ function directionalityChangeReport(model,cumNormProbCutoff,printLevel,resultsBa
 %in that reaction.
 %
 %INPUT
-% model.directions    a structue of boolean vectors with different directionality
+% model
+% directions    a structue of boolean vectors with different directionality
 %               assignments where some vectors contain subsets of others
 %
 % qualtiative -> quantiative changed reaction directions
-%   .directions.forward2Forward
-%   .directions.forward2Reverse
-%   .directions.forward2Reversible
-%   .directions.forward2Uncertain
-%   .directions.reversible2Forward
-%   .directions.reversible2Reverse
-%   .directions.reversible2Reversible
-%   .directions.reversible2Uncertain
-%   .directions.reverse2Forward
-%   .directions.reverse2Reverse
-%   .directions.reverse2Reversible
-%   .directions.reverse2Uncertain
-%   .directions.tightened
+%   .forward2Forward
+%   .forward2Reverse
+%   .forward2Reversible
+%   .forward2Uncertain
+%   .reversible2Forward
+%   .reversible2Reverse
+%   .reversible2Reversible
+%   .reversible2Uncertain
+%   .reverse2Forward
+%   .reverse2Reverse
+%   .reverse2Reversible
+%   .reverse2Uncertain
+%   .tightened
 %
 % subsets of qualtiatively forward  -> quantiatively reversible 
-%   .directions.forward2Reversible_bydGt0
-%   .directions.forward2Reversible_bydGt0LHS
-%   .directions.forward2Reversible_bydGt0Mid
-%   .directions.forward2Reversible_bydGt0RHS
+%   .forward2Reversible_bydGt0
+%   .forward2Reversible_bydGt0LHS
+%   .forward2Reversible_bydGt0Mid
+%   .forward2Reversible_bydGt0RHS
 % 
-%   .directions.forward2Reversible_byConc_zero_fixed_DrG0
-%   .directions.forward2Reversible_byConc_negative_fixed_DrG0
-%   .directions.forward2Reversible_byConc_positive_fixed_DrG0
-%   .directions.forward2Reversible_byConc_negative_uncertain_DrG0
-%   .directions.forward2Reversible_byConc_positive_uncertain_DrG0
-% 
-% directions.cumNormProbCutoff
+%   .forward2Reversible_byConc_zero_fixed_DrG0
+%   .forward2Reversible_byConc_negative_fixed_DrG0
+%   .forward2Reversible_byConc_positive_fixed_DrG0
+%   .forward2Reversible_byConc_negative_uncertain_DrG0
+%   .forward2Reversible_byConc_positive_uncertain_DrG0
 %
-% printToFile         1=print to a structured file not the command line,
-%                       this is most useful for debugging reaction
-%                       directionality
-%
-% printToTable        1=print out a tab delimited tables of reaction directionality, and reactions
-%                       that change their directionality assignment along with another
-%                       table of metabolites involved in either relaxation of constraints,
-%                       or tightening of constraints.
-%
+% cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
+%                       reversible within this cutoff of 0.5
+% printLevel
+% resultsBaseFileName
+
 %Ronan M.T. Fleming
 
-directions=model.directions;
 
 if ~exist('printLevel','var')
     printLevel=1;
@@ -89,11 +83,11 @@ fileNameString{g}='qualitatively_forward_to_quantiatively_reverse';
 g=g+1;
 GB(g,:)=directions.forward2Reversible;
 changeString{g}='qualitatively forward -> quantiatively reversible  (DrGt0 from component contribution).';
-fileNameString{g}='forward_to_reversible_DrGt0_from_CC';
+fileNameString{g}='forward_to_reversible_DrGt0';
 g=g+1;
 GB(g,:)=directions.forward2Uncertain;
 changeString{g}='qualitatively forward -> quantiatively uncertain  (DrGt0 from component contribution).';
-fileNameString{g}='forward_to_uncertain_DrGt0_from_CC';
+fileNameString{g}='forward_to_uncertain_DrGt0';
 g=g+1;
 GB(g,:)=directions.reversible2Reversible;
 changeString{g}='qualitatively reversible -> quantiatively reversible';
@@ -114,19 +108,19 @@ g=g+1;
 
 GB(g,:)=directions.forward2Reversible_bydGt0;
 changeString{g}=['qualitatively  forward -> quantiatively reversible (DrG0t span the zero line; Between ' num2str(cumNormProbFwdLower) ' and ' num2str(cumNormProbFwdUpper) 'probability of being forward'];
-fileNameString{g}='forward_to_reversible_DrG0t_from_GC_spans_zero_possibly_reversible';
+fileNameString{g}='forward_to_reversible_DrG0t_spans_zero_possibly_reversible';
 g=g+1;
 GB(g,:)=directions.forward2Reversible_bydGt0LHS;
 changeString{g}=['qualitatively  forward -> quantiatively reversible (DrG0t span the zero line). Forward with probability less than ' num2str(cumNormProbFwdLower) '. (Lower cutoff for probability of a reaction to be forward)'];
-fileNameString{g}='forward_to_reversible_DrG0t_from_GC_spans_zero_probably_forward';
+fileNameString{g}='forward_to_reversible_DrG0t_spans_zero_probably_forward';
 g=g+1;
 GB(g,:)=directions.forward2Reversible_bydGt0Mid;
 changeString{g}=['qualitatively  forward -> quantiatively reversible (DrG0t span the zero line; Between ' num2str(cumNormProbFwdUpper) ' and ' num2str(cumNormProbFwdLower) 'probability of being forward.'];
-fileNameString{g}='forward_to_reversible_DrG0t_from_GC_spans_zero_possibly_reversible';
+fileNameString{g}='forward_to_reversible_DrG0t_spans_zero_possibly_reversible';
 g=g+1;
 GB(g,:)=directions.forward2Reversible_bydGt0RHS;
 changeString{g}=['qualitatively  forward -> quantiatively reversible (DrG0t span the zero line). Forward with probability greater than ' num2str(cumNormProbFwdUpper) '.'];
-fileNameString{g}='forward_to_reversible_DrG0t_from_GC_spans_zero_probably_reverse';
+fileNameString{g}='forward_to_reversible_DrG0t_spans_zero_probably_reverse';
 g=g+1;
 
 GB(g,:)=directions.forward2Reversible_byConc_zero_fixed_DrG0;
