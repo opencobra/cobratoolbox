@@ -31,16 +31,16 @@ assert(m == 72 & n == 94, 'Unable to setup input for MinSpan determination');
 params.saveIntV = 0; % Do not save intermediate output
 
 % Test detMinSpan with GLPK. It should fail!
-changeCobraSolver('glpk', 'MILP');
+changeCobraSolver('glpk', 'MILP', 0);
 try
     minSpanVectors = detMinSpan(model, params);
 catch ME
     assert(~isempty(ME.message))
 end
 
-changeCobraSolver('gurobi', 'all');
+changeCobraSolver('gurobi', 'all', 0);
 
-if changeCobraSolver('gurobi', 'MILP');
+if changeCobraSolver('gurobi', 'MILP', 0)
     % create a parallel pool
     poolobj = gcp('nocreate');  % if no pool, do not create new one.
     if isempty(poolobj)

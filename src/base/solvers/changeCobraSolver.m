@@ -237,7 +237,7 @@ if ~ENV_VARS.STATUS
                 tmpVar = 'MOSEK_PATH';
         end
         if printLevel > 0 && (strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'ibm_cplex') || strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct') || strcmpi(solverName, 'mosek'))
-            error(['The global variable `', tmpVar, '` is not set. Please follow ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'these instructions', 'the instructions on '), ' to set the environment variables properly.']);
+            error(['The global variable `', tmpVar, '` is not set. Please follow the instructions on https://opencobra.github.io/cobratoolbox/docs/solvers.html in order to set the environment variables properly.']);
         end
     end
 end
@@ -264,8 +264,8 @@ if ~any(strcmp(supportedSolversNames, solverName))
 end
 
 % Attempt to set the user provided solver for all optimization problem types
-if strcmpi(solverType, 'all')    
-    solvedProblems = SOLVERS.(solverName).type;    
+if strcmpi(solverType, 'all')
+    solvedProblems = SOLVERS.(solverName).type;
     for i = 1:length(solvedProblems)
         changeCobraSolver(solverName, solvedProblems{i}, printLevel);
         if printLevel > 0
@@ -281,7 +281,7 @@ if strcmpi(solverType, 'all')
             infoString = sprintf('Currently used: %s',solverUsed);
         end
         if printLevel > 0
-            fprintf(' > Solver %s not supported for problems of type %s. %s \n', solverName, notsupportedProblems{i},infoString); 
+            fprintf(' > Solver %s not supported for problems of type %s. %s \n', solverName, notsupportedProblems{i},infoString);
         end
     end
     return
