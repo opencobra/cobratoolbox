@@ -1,30 +1,27 @@
 %% OptKnock Tutorial
-%% Author: Sebasti�n N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
-%% *Reviewer(s): Thomas Pfau, Sylvian Arreckx, Laurent Heirendt, Ronan Fleming, John Sauls*
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% *Reviewer(s): Thomas Pfau, Sylvian Arreckx, Laurent Heirendt, Ronan Fleming, John Sauls, Anne Richelle*
 %% *INTRODUCTION:*
-% In this tutorial we will run optKnock. For a detailed description of the procedure, 
-% please see [1]. Briefly, the problem is to find a set of reactions of size "numDel" 
-% such that when these reactions are deleted from the network, the mutant created 
-% will produce a particular target of interest in a higher rate than the wild-type 
-% strain. 
+% OptKnock is an algorithm suggesting the genetic manipulation that lead to 
+% the overproduction of a specified metabolite [1]. Opknock pinpoints which set 
+% of reactions to to remove (i.e. delettion of the genes associated to these reactions) 
+% from a metabolic network to obtain a mutant that will produce a particular target 
+% of interest at a higher rate than the wild-type strain. 
 % 
 % For example, imagine that we would like to increase the production of succinate 
-% or lactate in Escherichia coli. Which are the knock-outs needed to increase 
+% or lactate in_ Escherichia coli_. Which are the knock-outs needed to increase 
 % the production of these products? We will approach these problems in this tutorial.
-%% MATERIALS
-%% EQUIPMENT
+%% MATERIALS & EQUIPMENT
 % # MATLAB
-% # A solver for Mixed Integer Linear Programming (MILP) problems. For example, 
-% Gurobi.
-%% *EQUIPMENT SETUP*
-% Use changeCobraSolver to choose the solver for MILP problems. 
+% # A solver for Mixed Integer Linear Programming (MILP) problems.Use changeCobraSolver 
+% to choose the solver for MILP problems (e.g., Gurobi).
 %% PROCEDURE
-% The proceduce consists on the following steps
+% The proceduce consists on the following steps: 
 % 
-% 1) Define contraints.
+% 1) Constrain the model.
 % 
-% 2) Define a set of reactions to search knockouts. Only reactions in this 
-% set will be deleted. 
+% 2) Define the set of reactions that will be used to search knockouts. Note 
+% : only reactions in this set will be deleted. 
 % 
 % 3) Define the number of reactions to be deleted, the target reaction and 
 % some constraints to be accomplish.
@@ -34,9 +31,9 @@
 % *TIMING: *This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction.
 % 
-% We verify that cobratoolbox has been initialized and that the solver has 
-% been set.
-
+% Verify that cobratoolbox has been initialized and that the solver has been 
+% set.
+%%
 global TUTORIAL_INIT_CB;
 if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
     initCobraToolbox
@@ -49,17 +46,18 @@ currectDirectory = pwd;
 cd(folder);
 
 %% 
-% We load the model of E. coli [2].
-
-model = readCbModel('iJO1366.mat')
+% Load the model of E. coli [2].
+%%
+load('iJO1366.mat')
 biomass = 'BIOMASS_Ec_iJO1366_core_53p95M';
 %% 
-% We define the maximum number of solutions to find
+% Define the maximum number of solutions to find (i.e., maximum number of 
+% remvable reactions that lead to the overproduction of the metabolite of interest)
 
 threshold = 5;
 %% 
-% First, we define the set for reactions which could be deleted from the 
-% network. Reactions not in this list are not going to be deleted.
+% Define the set of reactions that will be used to search knockouts. Note 
+% : only reactions in this set will be deleted
 
 selectedRxnList = {'GLCabcpp'; 'GLCptspp'; 'HEX1'; 'PGI'; 'PFK'; 'FBA'; 'TPI'; 'GAPD'; ...
                    'PGK'; 'PGM'; 'ENO'; 'PYK'; 'LDH_D'; 'PFL'; 'ALCD2x'; 'PTAr'; 'ACKr'; ...
@@ -68,38 +66,34 @@ selectedRxnList = {'GLCabcpp'; 'GLCptspp'; 'HEX1'; 'PGI'; 'PFK'; 'FBA'; 'TPI'; '
                    'MDH2'; 'MDH3'; 'ACALD'};
 
 %% 
-% Then, we define some constraints
+% Constraint the model with biological assumptions
 
 % prespecified amount of glucose uptake 10 mmol/grDW*hr
 model = changeRxnBounds(model, 'EX_glc__D_e', -10, 'b');
 
 % Unconstrained uptake routes for inorganic phosphate, sulfate and
 % ammonia
-model = changeRxnBounds(model, 'EX_o2_e', 0, 'l');
-model = changeRxnBounds(model, 'EX_pi_e', -1000, 'l');
-model = changeRxnBounds(model, 'EX_so4_e', -1000, 'l');
-model = changeRxnBounds(model, 'EX_nh4_e', -1000, 'l');
+Exchange={'EX_o2_e';'EX_pi_e';'EX_so4_e'; 'EX_nh4_e'};
+Bounds=[0;-1000;-1000;-1000];
+model = changeRxnBounds(model, Exchange, Bounds, 'l');
 
-% The optimization step could opt for or against the phosphotransferase
-% system, glucokinase, or both mechanisms for the uptake of glucose
+% Enable secretion routes  for acetate, carbon dioxide, ethanol, formate, lactate
+% and succinate
+Exchange={'EX_ac_e';'EX_co2_e';'EX_etoh_e';'EX_for_e';'EX_lac__D_e';'EX_succ_e'};
+Bounds=[1000;1000;1000;1000;1000;1000];
+model = changeRxnBounds(model, Exchange, Bounds, 'u');
+
+% Constrain the phosphotransferase system
 model = changeRxnBounds(model, 'GLCabcpp', -1000, 'l');
 model = changeRxnBounds(model, 'GLCptspp', -1000, 'l');
 model = changeRxnBounds(model, 'GLCabcpp', 1000, 'u');
 model = changeRxnBounds(model, 'GLCptspp', 1000, 'u');
 model = changeRxnBounds(model, 'GLCt2pp', 0, 'b');
 
-% Secretion routes  for acetate, carbon dioxide, ethanol, formate, lactate
-% and succinate are enabled
-model = changeRxnBounds(model, 'EX_ac_e', 1000, 'u');
-model = changeRxnBounds(model, 'EX_co2_e', 1000, 'u');
-model = changeRxnBounds(model, 'EX_etoh_e', 1000, 'u');
-model = changeRxnBounds(model, 'EX_for_e', 1000, 'u');
-model = changeRxnBounds(model, 'EX_lac__D_e', 1000, 'u');
-model = changeRxnBounds(model, 'EX_succ_e', 1000, 'u');
 %% 
-% Then, we calculates the production of metabolites before running optKnock.
+% Then, calculates the production of metabolites before running optKnock.
 
-% determine succinate production and growth rate before optimizacion
+% determine succinate production and growth rate
 fbaWT = optimizeCbModel(model);
 succFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_succ_e'));
 etohFluxWT = fbaWT.x(strcmp(model.rxns, 'EX_etoh_e'));
@@ -113,11 +107,11 @@ fprintf(['The production of other products such as ethanol, formate, lactate and
          'acetate are %.1f, %.1f, %.1f and %.1f, respectively. \n'], ...
         etohFluxWT, formFluxWT, lactFluxWT, acetFluxWT);
 %% 
-% *I) SUCCINATE OVERPRODUCTION*
+% *I) EXAMPLE 1 : SUCCINATE OVERPRODUCTION*
 % 
-% *EXAMPLE 1:* *finding optKnock reactions sets of size 2 for increasing 
-% production of succinate*
-
+% *Aim:* *finding optKnock reactions sets of size 2 for increasing production 
+% of succinate*
+%%
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 2 or less...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
@@ -136,7 +130,7 @@ while nIter < threshold
         optKnockSol = OptKnock(model, selectedRxnList, options, constrOpt, previousSolutions, 1);
     end
     
-    % determine succinate production and growth rate after optimizacion
+    % determine succinate production and growth rate after optimization
     succFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_succ_e'));
     growthRateM1 = optKnockSol.fluxes(strcmp(model.rxns, biomass));
     etohFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_etoh_e'));
@@ -184,19 +178,12 @@ while nIter < threshold
     end
     nIter = nIter + 1;
 end
-
-
 %% 
-% *TROUBLESHOOTING 1*:  "The algorithm takes a long time to find a solution"
+% *II) EXAMPLE 2: SUCCINATE OVERPRODUCTION*
 % 
-% *TROUBLESHOOTING 2*:  "The algorithm finds a set of knockouts too big"
-% 
-% *TROUBLESHOOTING 3*:  "The algorithm found a solution that is not useful 
-% for me"
-% 
-% *EXAMPLE 2:* *finding optKnock reactions sets of size 3 for increasing 
-% production of succinate*
-
+% *Aim : finding optKnock reactions sets of size 3 for increasing production 
+% of succinate*
+%%
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
@@ -213,7 +200,7 @@ while nIter < threshold
         optKnockSol = OptKnock(model, selectedRxnList, options, constrOpt, previousSolutions);
     end
     
-    % determine succinate production and growth rate after optimizacion
+    % determine succinate production and growth rate after optimization
     succFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_succ_e'));
     growthRateM1 = optKnockSol.fluxes(strcmp(model.rxns, biomass));
     etohFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_etoh_e'));
@@ -261,13 +248,12 @@ while nIter < threshold
     end
     nIter = nIter + 1;
 end
-
 %% 
-% *II) LACTATE OVERPRODUCTION*
+% *III) EXAMPLE 3 : LACTATE OVERPRODUCTION*
 % 
-% *EXAMPLE 1: finding optKnock reactions sets of size 3 for increasing production 
+% *Aim: finding optKnock reactions sets of size 3 for increasing production 
 % of lactate*
-
+%%
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
@@ -286,7 +272,7 @@ while nIter < threshold
         optKnockSol = OptKnock(model, selectedRxnList, options, constrOpt, previousSolutions);
     end
     
-    % determine lactate production and growth rate after optimizacion
+    % determine lactate production and growth rate after optimization
     lactFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_lac__D_e'));
     growthRateM1 = optKnockSol.fluxes(strcmp(model.rxns, biomass));
     etohFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_etoh_e'));
@@ -332,13 +318,12 @@ while nIter < threshold
     end
     nIter = nIter + 1;
 end
-
 %% 
+% *IV) EXAMPLE 4 : LACTATE OVERPRODUCTION*
 % 
-% 
-% *EXAMPLE 2: finding optKnock reactions sets of size 6 for increasing production 
+% *Aim: finding optKnock reactions sets of size 6 for increasing production 
 % of lactate*
-
+%%
 fprintf('...EXAMPLE 3: Finding optKnock sets of size 6...\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
@@ -355,7 +340,7 @@ while nIter < threshold
         optKnockSol = OptKnock(model, selectedRxnList, options, constrOpt, previousSolutions);
     end
     
-    % determine lactate production and growth rate after optimizacion
+    % determine lactate production and growth rate after optimization
     lactFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_lac__D_e'));
     growthRateM1 = optKnockSol.fluxes(strcmp(model.rxns,biomass));
     etohFluxM1 = optKnockSol.fluxes(strcmp(model.rxns, 'EX_etoh_e'));
@@ -401,45 +386,42 @@ while nIter < threshold
     end
     nIter = nIter + 1;
 end
-
 cd(currectDirectory);
 %% TIMING
 % # Example 1 ~ 1-2 minutes
 % # Example 2 ~ 1-2 minutes
 % # Example 3 ~ 1-2 minutes
 % # Example 4 ~ 1-2 minutes
-% # Example 5 ~ 1-2 minutes
-% # Example 6 ~ 1-2 minutes
 %% TROUBLESHOOTING
 % 1) If the algorithm takes a long time to find a solution, it is possible that 
-% the seach space is too large. You can reduce the search space using a smaller 
-% set of reactions in the input variable "selectedRxnList." 
+% the search space is too large. You can reduce the search space using a smaller 
+% set of reactions in the input variable "_selectedRxnList_". 
 % 
 % 2) The default number of deletions used by optKnock is 5. If the algorithm 
 % is returning more deletions than what you want, you can change the number of 
-% deletions using the input variable "numDel."
+% deletions using the input variable "_numDel_".
 % 
 % 3) optKnock could find a solution that it is not useful for you. For example, 
 % you may think that a solution is very obvious or that it breaks some important 
 % biological contraints. If optKnock found a solution that you don't want to find, 
-% use the input variable "prevSolutions" to prevent that solution to be found. 
+% use the input variable "_prevSolutions_" to prevent that solution to be found. 
 %% ANTICIPATED RESULTS
 % The optKnock algorithm will find sets of reactions that, when removed from 
-% the model, will improve the production of succinate and lactate respectively. 
-% In this tutorial, once optKnock finds a solution, then the type of solution 
-% is determined (if the product is coupled with biomass formation or not). Some 
-% of the sets will generate a coupled solution, i.e., the production rate will 
-% increase as biomass formation increases. For these kind of reactions a plot 
-% will be generated using the function singleProductionEnvelope and will be saved 
-% in the folder tutoriales/optKnock/optKnockResults
+% the model, will improve the production of the metabolite of interest (e.g., 
+% succinate and lactate). In this tutorial, once optKnock finds a solution, then 
+% the type of solution is determined (if the product is coupled with biomass formation 
+% or not). Some of the sets will generate a coupled solution, i.e., the production 
+% rate will increase as biomass formation increases. For these kind of reactions 
+% a plot will be generated using the function _singleProductionEnvelope_ and will 
+% be saved in the folder _tutorials/optKnock/optKnockResults_.
 % 
 % When you find a solution with OptKnock, you should always verify the minumum 
-% and maximum production rate using the function analizeOptKnock. 
+% and maximum production rate using the function _analizeOptKnock_. 
 %% References
 % [1] Burgard, A. P., Pharkya, P. & Maranas, C. D. (2003). OptKnock: A Bilevel 
 % Programming Framework for Identifying Gene Knockout Strategies for Microbial 
-% Strain Optimization. Biotechnology and Bioengineering, 84(6), 647?657. http://doi.org/10.1002/bit.10803.
+% Strain Optimization. Biotechnology and Bioengineering, 84(6), 647–657. http://doi.org/10.1002/bit.10803.
 % 
 % [2] Orth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, 
-% A. M., & Palsson, B. �. (2011). A comprehensive genome?scale reconstruction 
-% of Escherichia coli metabolism?2011. _Molecular systems biology_, _7_(1), 535.
+% A. M., & Palsson, B. Ø. (2011). A comprehensive genome‐scale reconstruction 
+% of Escherichia coli metabolism—2011. _Molecular systems biology_, _7_(1), 535.
