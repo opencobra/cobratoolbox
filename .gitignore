@@ -110,3 +110,4 @@ docs/source/tutorials/tutorial*.rst
 
 # temporary folder
 .tmp/
+output/
