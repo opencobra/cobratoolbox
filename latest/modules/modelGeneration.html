@@ -202,7 +202,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.modelGeneration"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkCobraModelUnique">
-<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
 <dd><p>checkCobraModelUnique Check uniqueness of reaction and metabolite names</p>
 <blockquote>
 <div>model = checkCobraModelUnique(model,renameFlag)</div></blockquote>
@@ -237,7 +237,7 @@ even if more are found in model.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
-<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks model for duplicate reactions and removes them
 By default, it detects the columns of S that are identical upto scalar
 multiplication</p>
@@ -268,7 +268,7 @@ FR      &#8211;&gt; checks F + R matrix, where S:=-F+R, which ignores</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkObjective">
-<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
 <dd><p>checkObjective print out the Stoichiometric Coefficients for each
 Metabolite, with the name of the objective</p>
 <p>objectiveAbbr = checkObjective(model)</p>
@@ -292,7 +292,7 @@ Laurent Heirendt March 2017 - Compatibility with large models and conversion to 
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.detectDeadEnds">
-<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>DETECTDEADENDS returns a list of indices of metabolites which either participate in only
 one reaction or can only be produced or consumed (i.e. all reactions involving
 the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds).</p>
@@ -333,7 +333,7 @@ Unknown</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.removeDeadEnds">
-<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>removeDeadEnds Remove all dead end metabolites and reactions from the
 model</p>
 <blockquote>
@@ -362,7 +362,7 @@ model</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.setConstraintsIrrevModel">
-<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/eb86f4a1685a0cc8addb70b745f627f580972ea1/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1a7d53e67cd003bcbfdde77cb685d71411d606ad/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets constraints for a subset of <cite>rxns</cite> while
 converting reversible to irreversible reaction names and handling the
 constraint directions correctly</p>
