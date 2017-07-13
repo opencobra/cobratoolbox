@@ -1,2 +1,3 @@
 *.html  linguist-documentation=true
 *.html  linguist-vendored=true
+*.gms   linguist-vendored=true
