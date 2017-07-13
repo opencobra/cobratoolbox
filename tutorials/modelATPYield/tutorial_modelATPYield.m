@@ -9,9 +9,9 @@
 % Recon 3 derived condition- and cell-type specific models to test whether these 
 % models are still able to produce physiologically relevant ATP yields.
 %% EQUIPMENT SETUP
-% If necessary, initialize the cobra toolbox:
+% If necessary, initialize the cobra toolbox with
 
-initCobraToolbox
+% initCobraToolbox
 %% 
 % For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
@@ -29,18 +29,20 @@ changeCobraSolver ('glpk', 'all', 1);
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
 
-% pathModel = '/Users/ines.thiele/Documents/MATLAB/files/';
+% pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
 % filename = '2017_04_28_Recon3d.mat';
-pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
-filename = '2017_04_28_Recon3d.mat';
-load([pathModel, filename])
-model = modelRecon3model;
-modelName = filename;
-clear modelRecon3model Table_csources
+% load([pathModel, filename])
+% model = modelRecon3model;
+% modelName = filename;
+% clear modelRecon3model Table_csources
+global CBTDIR
+load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
+model = Recon2model;
+clear Recon2model
 tol = 1e-6;
 %% 
 % In this tutorial, the used model is the generic model of human metabolism, 
-% the Recon 3$$^1$.
+% Recon 3$$^1$ or  Recon2.0 model.
 % 
 % The metabolites structures and reactions are from the Virtual Metabolic 
 % Human database (VMH, <http://vmh.life/ http://vmh.life>).
@@ -70,8 +72,8 @@ end
 % reaction abbreviation to ensure that the tutorial works correctly.
 
 [model, rxnIDexists] = addReaction(model, 'DM_atp_c_', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
-if length(rxnIDexists)>0
-    model.rxns{rxnIDexists} = 'DM_atp_c_'; % rename reaction in case that it exists already
+if length(rxnIDexists) > 0
+    model.rxns{rxnIDexists} = 'DM_atp_c_';  % rename reaction in case that it exists already
 end
 %% Close model
 % Now, we will set the lower bound ('|model.lb|') of all exchange and sink (|siphon|) 
@@ -166,7 +168,7 @@ Table_csources{4, k} = '31';
 % are non-zero in the sparse flux distribution and thus contribute to the maximale 
 % ATP yield.
 
-ReactionsInSparseSolution = modelClosed.rxns(find(FBA.x))
+ReactionsInSparseSolution = modelClosed.rxns(find(FBA.x));
 %% 
 % We now initiate the next test and delete the variable 'FBA'.
 
