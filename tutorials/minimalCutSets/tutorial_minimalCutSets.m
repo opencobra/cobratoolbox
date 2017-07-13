@@ -5,26 +5,15 @@
 % During this tutorial, you will learn how to compute  cutsets for paths/cycles/elementary 
 % modes with Berge algorithm [1].
 % 
-% 
-% 
-% Elementary modes describe a feasible and balanced (steady state) flux distribution 
-% through the network, which is minimal with respect to utilized reactions (enzymes). 
-% The condition of being ?minimal? (elementary, non-decomposable, irreducible) 
-% is fundamental and means that removing any reaction in an elementary mode impedes 
-% the realization of a non-zero steady-state flux distribution (and therefore 
-% of a functionality) by means of the remaining reactions of the elementary mode. 
-% Now, assume that we want to prevent the production of metabolite X.  One strategy 
-% would be to inactivate (cut) one or several reactions in the network, e.g. by 
-% deleting the genes of certain enzymes or by other manipulations resulting in 
-% an inhibition of enzyme activity. This leads us to the definition of a cut set: 
-% a set of reactions a cut set (with respect to a defined objective reaction) 
-% if after the removal of these reactions from the network no feasible balanced 
-% flux. In other hands, a cut set for an objective reaction in a metabolic network 
-% is a set of reactions whose knockout disables flux through that reaction at 
-% steady state. Cut sets represent a particular type of failure mode of a metabolic 
-% network and may correspond to novel drug targets.
-% 
-%   The set of all feasible fluxes
+% Biologically, a cut set,    $$,    is a set of reactions that removing 
+% them from a biochemical networks lead to failure in a special network target. 
+% For instance, if a target is producing a special metabolite  $$ , then the cut 
+% set will be the set of reactions that should be cut from the network in order 
+% to prevent the production of the metabolite  x . As a consequence, there is 
+% no feasible flux balance distribution to produce the metabolite  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">x</mi></mrow></math>$. In general, 
+% the target can be a set of reactions that make an elementary mode, a path, or 
+% a cycle. Mathematically, the set of all feasible fluxes   $$   defined in
 % 
 % $$K=\{ v\in  {R} ^n \mid Sv=0,v \geq 0, v\in Irr \}$$
 % 
@@ -36,7 +25,14 @@
 % display="inline"><mrow><mi mathvariant="italic">j</mi><mtext>??</mtext></mrow></math>$among 
 % reactions, if 
 % 
-% $$v_c=0 ~leads~to ~v_j=0~\forall~r \in K.$$
+% $$v_c=0 ~leads~to ~v_j=0~\forall~v\in K.$$
+% 
+%  Consequently, a cut set  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$ is _minimal_ 
+% with respect to the target reaction   $j \in Irr$  if no proper subset of  $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$  
+% is a cut set, which is a set with minimal number of reactions that can be removed 
+% with the assertion $v\in Irr ~\text{for all} ~v \in K$.
 % 
 % We introduce an interface to software that enables the computation of the 
 % cut set for paths, cycles and elementary modes.
