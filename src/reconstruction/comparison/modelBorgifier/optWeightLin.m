@@ -1,27 +1,11 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function obj = optWeightLin(weight, highscoreVectors, lowscoreVectors)
-% This is the objective function for the linear optimization of the weighting of 
-% the individual scores. It maximizes the difference between the weighted sum of 
-% scores of the correctly assigned reactions and the incorrect matches in the 
-% training data set.
+% This is the objective function for the linear optimization of the weighting of
+% the individual scores. It maximizes the difference between the weighted sum of
+% scores of the correctly assigned reactions and the incorrect matches in the
+% training data set. Called by `optimalScores`.
+%
 % USAGE:
+%
 %    obj = optWeightLin(weight, highscoreVectors, lowscoreVectors)
 %
 % INPUTS:
@@ -32,11 +16,26 @@ function obj = optWeightLin(weight, highscoreVectors, lowscoreVectors)
 % OUTPUTS:
 %    obj:                   New weights
 %
-% CALLS:
-%    None
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    OptimalScore
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
 obj = 1/(abs(mean(highscoreVectors'*weight) - ...
              mean(lowscoreVectors'*weight))+1) ;

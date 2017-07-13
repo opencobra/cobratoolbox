@@ -1,6 +1,6 @@
 %% Sparse Linear Optimisation
 %% Author: Ronan Fleming, Hoai Minh Le, Systems Biochemistry Group, University of Luxembourg.
-%% Reviewer:
+%% Reviewer: Stefania Magnusdottir, Molecular Systems Physiology Group, University of Luxembourg.
 %% INTRODUCTION
 % In this tutorial, we will show how to use the sparse LP solver. This solver 
 % aims to solve the following optimisation problem
@@ -11,10 +11,10 @@
 % It has been proved that zero-norm is a non-convex function and the minimisation 
 % of zero-norm is a NP-hard problem. Non-convex approximations of zero-norm extensively 
 % developed. For a complete study of non-convex approximations of zero-norm, the 
-% reader is referred to [<#LyXCite-sparsePaper sparsePaper>].
+% reader is referred to Le Thie et al. (2015)$^1$.
 % 
-% The method is described in [<#LyXCite-sparsePaper sparsePaper>]. The sparse 
-% LP solver contains one convex (one-norm) and 6 non-convex approximation of zero-norms
+% The method is described in Le Thie et al. (2015)$^1$. The sparse LP solver 
+% contains one convex (one-norm) and 6 non-convex approximation of zero-norms
 % 
 % * Capped-L1 norm
 % * Exponential function
@@ -27,14 +27,40 @@
 % In part 2 provides an application of the code for finding the minimal set of 
 % reactions subject to a LP objective. Ready-made scripts are provided for both 
 % parts.
-%% PROCEDURE
-% _Only if necessary, initialise The COBRA Toolbox._
+%% EQUIPMENT SETUP
+%% *Initialize the COBRA Toolbox.*
+% If necessary, initialize The Cobra Toolbox using the |initCobraToolbox| function.
 
-global TUTORIAL_INIT_CB;
-if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
-    initCobraToolbox
-    changeCobraSolver('gurobi','all');
+initCobraToolbox
+%% COBRA model. 
+% In this tutorial, the model used is the generic reconstruction of human metabolism, 
+% the Recon 2.04$^2$, which is provided in the COBRA Toolbox. The Recon 2.04 model 
+% can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
+% Human> webpage. You can also select your own model to work with. Before proceeding 
+% with the simulations, the path for the model needs to be set up:      
+
+if 0
+    % Using own model, change "if 0" to "if 1" and change the filename and directory
+    filename = 'Recon3.0model';
+    directory = '~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
+    model = loadIdentifiedModel(filename, directory);
+    % model = convertOldStyleModel(model);%convert to new COBRA format style if needed.
+else
+    % Default use of Recon 2.04
+    global CBTDIR            
+    load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
+    model = modelR204;            
+    clear modelR204;
+%% 
+% Recon 2.04 is written in the "old style" COBRA format, and we thus use 
+% the function |convertOldStyleModel| to convert it to the new COBRA Toolbox format.
+
+    model = convertOldStyleModel(model);
 end
+%% 
+% *NOTE: The following text, code, and results are shown for the Recon 2.04 
+% model*
+%% PROCEDURE
 %% Example of using sparseLP solver on randomly generated data
 % One randomly generates a matrix $A\in\mathcal{R}^{^{m\times n}}$   and a vector 
 % $x_{0}\in\mathcal{R}^{^{n}}$ . The right hand side vector $b=A\cdot x_{0}$. 
@@ -53,8 +79,8 @@ constraint.csense = repmat('E', m, 1);
 % (_epsilon_) are stopping criterion conditions. _theta_ is the parameter of zero-norm 
 % approximation. The greater the value of _theta_, the better the approximation 
 % of the zero-norm. However, the greater the value of _theta_, the more local 
-% solutions the problem <#eq_mainPrb eq:mainPrb> has. If the value of _theta _is 
-% not given then the algorithm will use a default value and update it gradually.
+% solutions the problem has. If the value of _theta _is not given then the algorithm 
+% will use a default value and update it gradually.
 
 params.nbMaxIteration = 100;    % stopping criteria
 params.epsilon = 1e-6; 		% stopping criteria
@@ -72,19 +98,6 @@ solution = sparseLP('cappedL1',constraint,params);
 % the numerical tolerance of the currently installed optimisation solver.
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-%% 
-% Load Recon3.0model, unless it is already loaded into the workspace.
-
-clear model relaxOption
-if ~exist('modelOrig','var')
-    filename='Recon3.0model';
-    directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-    model = loadIdentifiedModel(filename,directory);
-    model.csense(1:size(model.S,1),1)='E';
-    modelOrig = model;
-else
-    model=modelOrig;
-end
 %% 
 % Select the biomass reaction to optimise
 
@@ -143,7 +156,7 @@ for i=1:length(approximations)
     solution = sparseLP(char(approximations(i)),constraint);
     if solution.stat == 1
         nnzSol=nnz(abs(solution.x)>feasTol);
-        fprintf('%u%s%s',nnzSol,' active reactions in the sparseFBA solution with ', char(approximations(i)));
+        fprintf('%u%s%s',nnzSol,' active reactions in the sparseFBA solution with ', char(approximations(i)))
         if bestResult > nnzSol
             bestResult=nnzSol;
             bestAprox = char(approximations(i));
@@ -163,11 +176,11 @@ end
 %% 
 % Report the best approximation
 
-display(strcat('Best step function approximation: ',bestAprox));
+display(strcat('Best step function approximation: ',bestAprox))
 %% 
 % Report the number of active reactions in the most sparse flux vector
 
-fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparse flux balance analysis solution.');
+fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparse flux balance analysis solution.')
 %% 
 % Warn if there might be a numerical issue with the solution
 
@@ -177,6 +190,11 @@ if feasError>feasTol
     warning('Numerical issue with the sparseLP solution')
 end
 %% REFERENCES
-% _ _[<#LyXCite-sparsePaper sparsePaper>] Le Thi, H.A., Pham Dinh, T., Le, H.M., 
-% and Vo, X.T. (2015). DC approximation approaches for sparse optimization. European 
-% Journal of Operational Research 244, 26â€“46.
+% _ _[1] Le Thi, H.A., Pham Dinh, T., Le, H.M., and Vo, X.T. (2015). DC approximation 
+% approaches for sparse optimization. European Journal of Operational Research 
+% 244, 26–46.
+% 
+% [2] Thiele, I., Swainston, N., Fleming, R.M., Hoppe, A., Sahoo, S., Aurich, 
+% M.K., Haraldsdottir, H., Mo, M.L., Rolfsson, O., Stobbe, M.D., et al. (2013). 
+% A community-driven global reconstruction of human metabolism. Nat Biotechnol 
+% 31, 419-425.

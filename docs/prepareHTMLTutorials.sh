@@ -1,19 +1,26 @@
 #!/bin/bash
-declare -a tutorials=("modelCreation/tutorial_modelCreation.html"
-                      "modelManipulation/tutorial_modelManipulation.html"
-		              "atomicallyResolveMetabolicReconstruction/tutorial_atomicallyResolveReconstruction.html"
-                      "numCharact/tutorial_numCharact.html"
-                      "sampling/tutorial_uniformSampling.html"
-                      "pathVectorsAndMinimalCutSets/tutorial_pathVectors_minimalCutSets.html"
-		              "minSpan/tutorial_minSpan.html"
-		              "metabotools/tutorial_I/tutorial_metabotoolsI.html"
-		              "metabotools/tutorial_II/tutorial_metabotoolsII.html"
-		              "uFBA/tutorial_uFBA.html")
 
 tutorialPath="../tutorials"
 tutorialDestination="source/_static/tutorials"
 rstDestination="source/tutorials"
 mkdir -p "$tutorialDestination"
+
+declare -a tutorials
+
+nTutorial=0
+for path in $tutorialPath/*
+do
+    if ! [[ -d "${path}" ]]; then
+        continue  # if not a directory, skip
+    fi
+    for tutorial in ${path}/*.html; do
+        if ! [[ -f "$tutorial" ]]; then
+            break
+        fi
+        let "nTutorial+=1"
+        tutorials[$nTutorial]="$tutorial"
+    done
+done
 
 # clean destination folder
 echo "Cleaning destination folders for html and rst files"
@@ -51,3 +58,25 @@ do
 
     echo "   $tutorialLongTitle" >> $rstDestination/index.rst
 done
+
+if [[ ${HOME} = *"jenkins"* ]]; then
+    # Removing files on develop branch
+    echo "Removing html tutorial files"
+    nRemovedFiles=0
+    for tutorial in "${tutorials[@]}"
+    do
+        tutorialDir=${tutorial%/*}
+        tutorialName=${tutorial##*/}
+        tutorialName="${tutorialName%.*}"
+        if [[ -f "$tutorialPath/$tutorialDir/$tutorialName.html" ]]; then
+            git rm "$tutorialPath/$tutorialDir/$tutorialName.html"
+            let "nRemovedFiles+=1"
+        fi
+    done
+
+    if [ $nRemovedFiles -ne 0 ]; then
+        git commit -m "removing html files from tutorial folder."
+    fi
+else
+    echo "skipping cleaning of the html files on the tutorial folder."
+fi

@@ -10,7 +10,7 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    targetRxn:                (char) String name of reaction which is to
 %                              be maximized
 %    substrateRxn:             (char) Substrate reactions
-%    generxnList:              (cell array)List of genes or `rxns` which
+%    generxnList:              (cell array) List of genes or `rxns` which
 %                              can be knocked out.  The program will guess
 %                              which of the two it is, based on the content
 %                              in model.
@@ -42,7 +42,7 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    MigrationInterval:        (double). how often individuals migrate from
 %                              one population to another.
 %    saveFile:                 (double or boolean) saving a file with
-%                              inputs and outputs. Default = false; 
+%                              inputs and outputs. Default = false;
 %    outputFolder:             (char) name of folder where
 %                              files will be generated
 %
@@ -52,7 +52,7 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %                              into optgene to continue simulating where
 %                              you left off.
 %    scores:                   An array of scores
-%    optGeneSol:      `        optGene` solution strcture    
+%    optGeneSol:               `optGene` solution strcture
 %
 % .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
 %             - Modified by Sebastian Mendoza 18/06/17. Improving handling
@@ -86,8 +86,8 @@ parser.addParameter('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall tim
 parser.addParameter('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate after this many generations of not finding an improvement
 parser.addParameter('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
 parser.addParameter('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
-parser.addParameter('saveFile', 0, @(x) isnumeric(x) || islogical(x)); 
-parser.addParameter('outputFolder', 'optGeneResults', @(x) ischar(x)); 
+parser.addParameter('saveFile', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('outputFolder', 'optGeneResults', @(x) ischar(x));
 
 parser.parse(model, targetRxn, substrateRxn, generxnList, varargin{:});
 model = parser.Results.model;
@@ -97,11 +97,11 @@ generxnList = parser.Results.generxnList;
 MaxKOs = parser.Results.MaxKOs;
 population = parser.Results.population;
 mutationRate = parser.Results.mutationRate;
-crossovermutationRate = parser.Results.crossovermutationRate; 
+crossovermutationRate = parser.Results.crossovermutationRate;
 CrossoverFraction = parser.Results.CrossoverFraction;
-PopulationSize = parser.Results.PopulationSize; 
+PopulationSize = parser.Results.PopulationSize;
 PopulationSize = [PopulationSize PopulationSize PopulationSize PopulationSize];
-Generations = parser.Results.Generations; 
+Generations = parser.Results.Generations;
 TimeLimit = parser.Results.TimeLimit;
 StallTimeLimit = parser.Results.StallTimeLimit;
 StallGenLimit = parser.Results.StallGenLimit;

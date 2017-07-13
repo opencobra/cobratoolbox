@@ -1,48 +1,41 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function nameList = fixNames(nameList)
-% fixNames standardizes names, ie, met, rxn and long names for them as well.
-% fixNames makes the names lowercase, removes obtuse characters and
+% Standardizes names, ie, met, rxn and long names for them as well.
+% `fixNames` makes the names lowercase, removes obtuse characters and
 % whitespace and replaces them with underscores, and then removes starting
-% and trailing underscores.
+% and trailing underscores. Called by `compareCbModels`, `verifyModel`, `addSEEDInfo`.
 %
 % USAGE:
+%
 %    nameList = fixNames(nameList)
 %
 % INPUTS:
 %    nameList:      Cell array of names.
 %
 % OUTPUTS:
-%    nameList:      Same cell array but with fixed names. 
+%    nameList:      Same cell array but with fixed names.
 %
-% CALLS:
-%    None
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
-% CALLED BY:
-%    compareCbModels
-%    verifyModel
-%    addSEEDInfo
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
 %
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Fix those names!
-% Make everything lowercase. 
-nameList = lower(nameList) ;
+nameList = lower(nameList) ; % Fix those names! Make everything lowercase. 
 
 % Remove wierd characters.
 nameList = regexprep(nameList, ' |-(?!($|\||\[))|,|:|\(|\)', '_') ;
@@ -57,6 +50,5 @@ nameList = regexprep(nameList, '\[(?!.\]$)', '_') ;
 % Consolodate resulting underscores.
 nameList = regexprep(nameList, '_____|____|___|__', '_') ;
 
-% Delete ones at beginning and end of names. 
+% Delete ones at beginning and end of names.
 nameList = regexprep(nameList, '^_|\|_|_\||_$|_(?=\[\w\]$)', '') ;
-

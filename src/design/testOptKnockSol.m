@@ -10,7 +10,7 @@ function [growthRate, minProd, maxProd] = testOptKnockSol(model, targetRxn, dele
 %    targetRxn:     Target reaction (e.g. 'EX_etoh(e)')
 %
 % OPTIONAL INPUT:
-%    deletions:     Set of reaction deletions (e.g. {'PGI','TPI'})
+%    deletions:     Set of reaction deletions (e.g. {'PGI', 'TPI'})
 %                   (Default = [])
 %
 % OUTPUTS:

@@ -1,14 +1,14 @@
 function singleProductionEnvelope(model, deletions, product, biomassRxn, varargin)
-% singleProductionEnvelope plots maximum growth rate as a function of the
+% Plots maximum growth rate as a function of the
 % output of one specified products
 %
 % USAGE:
 %    singleProductionEnvelope(model, deletions, product, biomassRxn, geneDelFlag, nPts)
 %
 % INPUTS:
-%   model:            (struct) a metabolic model with at least
+%    model:           (struct) a metabolic model with at least
 %                     the following fields:
-% 
+%
 %                       * .rxns - Reaction IDs in the model
 %                       * .mets - Metabolite IDs in the model
 %                       * .S -    Stoichiometric matrix (sparse)
@@ -123,7 +123,7 @@ plot(max, target, 'Marker', 'o', 'Color', [0 0 0], 'MarkerEdgeColor', [0 0 0], '
 
 if savePlot
     %directory change
-    fullPath = which('optKnockTutorial');
+    fullPath = which('tutorial_optKnock');
     folder = fileparts(fullPath);
     currectDirectory = pwd;
     cd(folder);
@@ -132,7 +132,7 @@ if savePlot
         mkdir(NewDirectory)
     end
     cd(NewDirectory)
-    
+
     set(gcf, 'PaperUnits', 'centimeters');
     set(gcf, 'PaperPosition', [0 0 20 10]);
     saveas(gcf,[fileName '.png'])
@@ -143,7 +143,7 @@ if savePlot
         close(f);
     end
     cd(currectDirectory)
-    
+
 end
 
 end

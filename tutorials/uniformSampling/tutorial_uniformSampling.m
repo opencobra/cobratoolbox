@@ -1,5 +1,5 @@
 %% Uniform sampling
-%% Author(s): *Hulda S. Haraldsd�ttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
+%% Author(s): *Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
 %% Reviewer(s): 
 %% INTRODUCTION
 % The flux space $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
@@ -15,7 +15,9 @@
 % are lower and upper bounds on fluxes. These criteria still allow a wide range 
 % of admissible flux distributions which, in FBA are commonly further restricted 
 % by introducing an objective to optimise, transforming the question of admissible 
-% fluxes into an FBA problem of the form
+% fluxes into an FBA problem$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>1</mn></mrow></msup></mrow></math>$ 
+% of the form
 % 
 % $$\begin{array}{ll}\min\limits _{v} & c^{T}v\\\text{s.t.} & Sv=b,\\ & l\leq 
 % v\leq u,\end{array}$$
@@ -39,21 +41,25 @@
 % 
 % In COBRA v3 there are three different sampling algorithms: coordinate hit-and-run 
 % with rounding (CHRR), artificial centring hit-and-run (ACHR) and the minimum 
-% free energy (MFE). In this tutorial, we will use the CHRR algorithm [1] to uniformly 
-% sample a high dimensionally constraint-based model of the differentiation of 
-% induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm 
-% consists of rounding the anisotropic flux space  ? using a maximum volume ellipsoid 
-% algorithm [4] and then performs a uniform sampling based on the provably efficient 
-% hit-and-run random walk [5]. Below is a high-level illustration of the process 
-% to uniformly sample a random metabolic flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">v</mi></mrow></math>$ from the 
-% set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
-% of all feasible metabolic fluxes (grey). *1)* Apply a rounding transformation 
+% free energy (MFE). In this tutorial, we will use the CHRR algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% to uniformly sample a high dimensionally constraint-based model of the differentiation 
+% of induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm 
+% consists of rounding the anisotropic flux space  Ω using a maximum volume ellipsoid 
+% algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>3</mn></mrow></msup></mrow></math>$ and then performs 
+% a uniform sampling based on the provably efficient hit-and-run random walk$<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>4</mn></mrow></msup></mrow></math>$. Below is a high-level 
+% illustration of the process to uniformly sample a random metabolic flux vector 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="italic">T</mi></mrow></math>$ to $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. The transformed set $<math 
-% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
-% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext>?</mtext></mrow></math>$ is 
+% mathvariant="italic">v</mi></mrow></math>$ from the set $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ of all feasible metabolic 
+% fluxes (grey). *1)* Apply a rounding transformation $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">T</mi></mrow></math>$ to $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. 
+% The transformed set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
+% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext> </mtext></mrow></math>$ is 
 % such that its maximal inscribed ellipsoid (blue) approximates a unit ball. *2)* 
 % Take $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">q</mi></mrow></math>$ steps of coordinate hit-and-run. 
@@ -76,20 +82,30 @@
 % mathvariant="italic">v</mi><msub><mrow><mo>&prime;</mo></mrow><mrow><mi mathvariant="italic">k</mi></mrow></msub></mrow></math>$.
 % 
 % 
+% 
+% In this tutorial we will use CHRR$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% to uniformly sample a constraint-based model of a model of differentiation of 
+% induced pluripotent stem cells (iPSC) into dopaminergic neurons$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>5</mn></mrow></msup></mrow></math>$. 
+% The CHRR algorithm is an useful tool to sample high dimentional models (bigger 
+% than 10,000 reactions). 
 %% Equipment setup
 
  changeCobraSolver('gurobi');
 %% Modelling
 % We will investigate ATP energy production with limited and unlimited oxygen 
 % uptake, following closely the flux balance analysis (FBA) tutorial published 
-% with [3].
+% with$$.
 % 
 % We start by loading the model with its flux bounds and the objective function 
 % (ATP demand reaction). We set the maximum glucose uptake rate to 18.5 mmol/gDW/hr. 
 % To explore the entire space of feasible steady state fluxes we also remove the 
 % cellular objective.
 
-load('data/iPSC_DA.mat','modelUptClosed') % Load the model
+global CBTDIR
+load([CBTDIR filesep 'tutorials' filesep 'uniformSampling' filesep 'data' filesep 'iPSC_DA.mat'...
+    ], 'modelUptClosed') % Load the model
 model = modelUptClosed;
 model = changeRxnBounds(model, 'EX_glc(e)', -18.5, 'l');
 model.c = 0 * model.c; % clear the objective
@@ -122,7 +138,7 @@ fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n', 
 % 1 indicates completely overlapping flux ranges. The mean Jaccard index gives 
 % an indication of the overall similarity between the models.
 
-J = fvaJaccardIndex([minUn, minLim],[maxUn, maxLim]);
+J = fvaJaccardIndex([minUn, minLim], [maxUn, maxLim]);
 fprintf('Mean Jaccard index = %.4f.\n', mean(J));
 %% 
 % To visualise the FVA results, we plot the flux ranges as errorbars, with 
@@ -135,7 +151,11 @@ X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
 [~, xj] = sort(J);
 
 f1 = figure;
-errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
+if strcmp(version('-release'), '2016b')
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
+else
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2);
+end
 set(gca, 'xlim', [0, length(Y) + 1])
 legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', ...
        'orientation', 'horizontal')
@@ -152,7 +172,7 @@ ylabel('Jaccard index')
 % two parameters are important: the sampling density (|nStepsPerPoint)| and the 
 % number of samples (|nPointsReturned). |The total length of the random walk is 
 % |nStepsPerPoint*nPointsReturned|. The time it takes to run the sampler depends 
-% on the total length of the random walk and the size of the model [1]. However, 
+% on the total length of the random walk and the size of the model$$. However, 
 % using sampling parameters that are too small will lead to invalid sampling distributions, 
 % e.g.,
 
@@ -189,12 +209,12 @@ xlabel('Flux (mmol/gDW/h)')
 ylabel('# samples')
 %% 
 % Undersampling results from selecting too small sampling parameters. The 
-% appropriate parameter values depend on the dimension of the polytope ?? defined 
+% appropriate parameter values depend on the dimension of the polytope Ω  defined 
 % by the model constraints (see intro). One rule of thumb says to set  $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
 % mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
 % to ensure the statistical independence of samples. The random walk should be 
-% long enough to ensure convergence to a stationary sampling distribution [1].
+% long enough to ensure convergence to a stationary sampling distribution$$.
 
 options.nStepsPerPoint = 8 * size(P_lim.A, 2);
 options.nPointsReturned = 1000;
@@ -262,7 +282,7 @@ for i = rxnsIdx
     ylabel('# samples')
     title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
     
-    if find(ridx==i)==2
+    if find(rxnsIdx==i)==2
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
     end
     
@@ -276,20 +296,21 @@ for i = rxnsIdx
     hold off
 end
 %% References
-% [1] Haraldsd�ttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
-% S. (2016). CHRR: coordinate hit-and-run with rounding for uniform sampling of 
-% constraint-based metabolic models. Submitted.
+% 1. Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? 
+% _Nat. Biotechnol._ 28(3), 245-248 (2010).
 % 
-% [2] Liliana...
+% 2. Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and 
+% Vempala, S. CHRR: coordinate hit-and-run with rounding for uniform sampling 
+% of constraint-based metabolic models. _Bioinformatics_. 33(11), 1741-1743 (2016).
 % 
-% [3] Orth, J. D., Thiele I., and Palsson, B. �. (2010). What is flux balance 
-% analysis? Nat. Biotechnol., 28(3), 245-248.
+% 3. Zhang, Y. and Gao, L. On Numerical Solution of the Maximum Volume Ellipsoid 
+% Problem. _SIAM J. Optimiz_. 14(1), 53-76 (2001).
 % 
-% [4]  Zhang, Y. and Gao, L. (2001). On Numerical Solution of the Maximum 
-% Volume Ellipsoid Problem. SIAM J. Optimiz., 14(1), 53-76.
+% 4. Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, 
+% C. L., Smith, R. L., Telgen, J. Hit-and-run algorithms for the identification 
+% of nonredundant linear inequalities. _Math. Programming_, 37(2), 184-207 (1987).
 % 
-% [5] Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, 
-% C. L., Smith, R. L., Telgen, J. (1987). Hit-and-run algorithms for the identification 
-% of nonredundant linear inequalities. Math. Programming, 37(2), 184-207.
+% 5. Monteiro et al. Metabolic requirements of induced pluripotent stem cell 
+% derived dopaminergic neurons. _Technical report_.
 % 
 %

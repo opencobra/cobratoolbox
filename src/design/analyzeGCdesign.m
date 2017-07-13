@@ -1,6 +1,6 @@
 function [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns)
 % Analyzes results with replacement knockouts
-% should get closer to local maxima.  must have num `KOs` > 1
+% should get closer to local maxima.  Must have num `KOs` > 1.
 %
 % USAGE:
 %
@@ -10,7 +10,7 @@ function [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRx
 %    modelRed:          reduced model
 %    selectedRxns:      selected reaction list from the reduced model
 %    target:            exchange `rxn` to optimize
-%    deletions:         initial set of `KO` `rxns` (must have at least 1 rxn)
+%    deletions:         initial set of `KO` `rxns` (must have at least 1 `rxn`)
 %
 % OPTIONAL INPUTS:
 %    maxKOs:            maximum number of `rxn` `KOs` to allow (Default = 10)

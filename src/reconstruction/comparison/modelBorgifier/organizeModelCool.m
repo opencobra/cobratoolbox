@@ -1,50 +1,44 @@
-% This file is published under Creative Commons BY-NC-SA.
-%
-% Please cite:
-% Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale 
-% metabolic reconstructions with modelBorgifier. Bioinformatics 
-% (Oxford, England), 30(7), 1036?8. http://doi.org/10.1093/bioinformatics/btt747
-%
-% Correspondance:
-% johntsauls@gmail.com
-%
-% Developed at:
-% BRAIN Aktiengesellschaft
-% Microbial Production Technologies Unit
-% Quantitative Biology and Sequencing Platform
-% Darmstaeter Str. 34-36
-% 64673 Zwingenberg, Germany
-% www.brain-biotech.de
-%
 function Model = organizeModelCool(Model)
-% organizeModelCool reorders a COBRA model such that the most promiscuous
+% Reorders a COBRA model such that the most promiscuous
 % mets are listed first, with sister mets grouped together. Reactions are
-% then organized so that the S matrix appoximates a rank order matrix, with
-% exchange reactions at the end. 
-% 
+% then organized so that the `S` matrix appoximates a rank order matrix, with
+% exchange reactions at the end.
+% Called by `mergeModels`, `readCbTmodel`, `readCbTModel`, `verifyModel`, calls `TmodelFields`.
+%
 % USAGE:
+%
 %    Model = organizeModelCool(Model)
 %
 % INPUTS:
-%    Model:     Model in COBRA format. Also accept a Tmodel.
+%    Model:     Model in COBRA format. Also accept a `Tmodel`.
 %
 % OUTPUTS:
 %    Model:     Organized model.
-% 
-% CALLS:
-%    TmodelFields
 %
-% CALLED BY:
-%    mergeModels
-%    readCbTmodel
-%    verifyModel
-%    readCbTmodel
+% Please cite:
+% `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
+% metabolic reconstructions with modelBorgifier. Bioinformatics
+% (Oxford, England), 30(7), 1036?8`. http://doi.org/10.1093/bioinformatics/btt747
 %
+% ..
+%    Edit the above text to modify the response to help addMetInfo
+%    Last Modified by GUIDE v2.5 06-Dec-2013 14:19:28
+%    This file is published under Creative Commons BY-NC-SA.
+%
+%    Correspondance:
+%    johntsauls@gmail.com
+%
+%    Developed at:
+%    BRAIN Aktiengesellschaft
+%    Microbial Production Technologies Unit
+%    Quantitative Biology and Sequencing Platform
+%    Darmstaeter Str. 34-36
+%    64673 Zwingenberg, Germany
+%    www.brain-biotech.de
 
-%% Declare variables for met.
-nMets = length(Model.mets) ;
-metIndex = zeros(nMets, 1) ; 
-metPos = 1 ; 
+nMets = length(Model.mets) ; % Declare variables for met.
+metIndex = zeros(nMets, 1) ;
+metPos = 1 ;
 
 % Unique metabolites sans compartment, used to find sisters.
 metsNoComp = cell(nMets, 1) ;
@@ -69,21 +63,21 @@ while metPos <= nMets
 
     % Add mets to future index.
     for iMet = 1:length(noCompIndex)
-        metIndex(metPos) = noCompIndex(iMet) ; 
+        metIndex(metPos) = noCompIndex(iMet) ;
         metPos = metPos + 1 ;
-        % Take those mets out of the running. 
-        rxnCount(noCompIndex(iMet)) = -1 ; 
+        % Take those mets out of the running.
+        rxnCount(noCompIndex(iMet)) = -1 ;
     end
 end
 
-%% Order reactions. 
+%% Order reactions.
 nRxns = length(Model.rxns) ;
-rxnIndex = zeros(nRxns, 1) ; 
+rxnIndex = zeros(nRxns, 1) ;
 % Index and number of exchange reactions.
 exIndexes = false(nRxns, 1) ;
 exIndexes(sum(logical(abs(full(Model.S))), 1) == 1) = true ;
 nExRxns = sum(exIndexes) ;
-exRxnPos = nRxns ; 
+exRxnPos = nRxns ;
 rxnPos = nRxns - nExRxns ;
 % S matix used to find involved reactions.
 SearchS = Model.S ;
@@ -96,7 +90,7 @@ for iMet = nMets:-1:1
         if exIndexes(involvedRxns(iRxn))
             rxnIndex(exRxnPos) = involvedRxns(iRxn) ;
             exRxnPos = exRxnPos - 1 ;
-        else % Otherwise put it here. 
+        else % Otherwise put it here.
             rxnIndex(rxnPos) = involvedRxns(iRxn) ;
             rxnPos = rxnPos - 1 ;
         end
@@ -109,16 +103,16 @@ rxnIndex(rxnIndex == 0) = setdiff(1:nRxns, rxnIndex) ;
 
 %% Reorder everything.
 % Grab fields names.
-fields = TmodelFields ; 
+fields = TmodelFields ;
 
 % Reaction related cell field names.
-rxnFields = fields{1} ; 
+rxnFields = fields{1} ;
 % Reaction related double Fields (which are kept model specific).
 rNumFields = fields{2} ;
-% Metabolite related cell field names. 
-metFields = fields{3} ; 
-% Metabolite related double field names. 
-mNumFields = fields{4} ; 
+% Metabolite related cell field names.
+metFields = fields{3} ;
+% Metabolite related double field names.
+mNumFields = fields{4} ;
 
 % Reorder reaction related lists.
 for iField = 1:length(rxnFields)
@@ -147,12 +141,12 @@ if isfield(Model,'Models')
 
     % Reorder identity arrays.
     for iMo = 1:length(moNames)
-        Model.Models.(moNames{iMo}).rxns = ... 
+        Model.Models.(moNames{iMo}).rxns = ...
             Model.Models.(moNames{iMo}).rxns(rxnIndex) ;
         Model.Models.(moNames{iMo}).mets = ...
             Model.Models.(moNames{iMo}).mets(metIndex) ;
     end
-    
+
     for iField = 1:length(rNumFields)
         for iMo = 1:length(moNames)
             Model.(rNumFields{iField}).(moNames{iMo}) = ...
@@ -163,7 +157,7 @@ else
     for iField = 1:length(rNumFields)
         Model.(rNumFields{iField}) = ...
             Model.(rNumFields{iField})(rxnIndex) ;
-    end    
+    end
 end
 
 % Reorder S matrix.

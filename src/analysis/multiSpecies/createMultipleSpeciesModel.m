@@ -79,6 +79,7 @@ fprintf('The following fields are missing in several models, they will not be me
 disp(missingFields);
 models = restrictModelsToFields(models,presentinallModels);
 
+modelStorage = cell(modelNumber, 1);
 for i = 1:modelNumber
     % a new model each turn
     model = models{i, 1};
@@ -87,7 +88,7 @@ for i = 1:modelNumber
     %remove all previously defined exchange reactions
     model = removeRxns(model, exmod);
     % make sure the exchange reactions and changed model are saved under correct name
-    modelStorage(i, 1) = model;
+    modelStorage{i, 1} = model;
 end
 
 if nargin >= 3
@@ -120,18 +121,18 @@ if nargin >= 3
     %% create intercellular space
     % will need to find all extracellular metabolites and duplicate reactions
     % if a host model was input, create the shared compartment for the microbes
-    model = modelStorage(1, 1);
+    model = modelStorage{1, 1};
     nameTag = nameTagsModels{1, 1};
     [modelJoint, MexGJoint] = createInterSpace(model, nameTag, eTag, exTag);
 
     % if more than one microbe was input
     if modelNumber > 1
         for i = 1:modelNumber
-            model = modelStorage(i, 1);
+            model = modelStorage{i, 1};
             nameTag = nameTagsModels{i, 1};
             [model, MexG] = createInterSpace(model, nameTag, eTag, exTag);
             % make sure the changed model is saved under correct name
-            modelStorage(i, 1) = model;
+            modelStorage{i, 1} = model;
             MexGJoint = union(MexG, MexGJoint);
         end
      end
@@ -143,7 +144,7 @@ if nargin >= 3
     % if more than one microbe was input
     if modelNumber > 1
         for i = 2:modelNumber
-            model = modelStorage(i, 1);
+            model = modelStorage{i, 1};
             [modelJoint] = mergeTwoModels(modelJoint, model, 1);
         end
     end
@@ -154,22 +155,22 @@ if nargin >= 3
 else
     %% without a host
      % create the shared compartment for the microbes
-    model = modelStorage(1, 1);
+    model = modelStorage{1, 1};
     nameTag = nameTagsModels{1, 1};
     [modelJoint, MexGJoint] = createInterSpace(model, nameTag, eTag, exTag);
      if modelNumber > 1
         for i = 2:modelNumber
-            model = modelStorage(i, 1);
+            model = modelStorage{i, 1};
             nameTag = nameTagsModels{i, 1};
             [model, MexG] = createInterSpace(model, nameTag, eTag, exTag);
-            modelStorage(i, 1)=model;
+            modelStorage{i, 1}=model;
             MexGJoint = union(MexG, MexGJoint);
         end
      end
 
      if modelNumber > 1
         for i = 2:modelNumber
-            model = modelStorage(i, 1);
+            model = modelStorage{i, 1};
             [modelJoint] = mergeTwoModels(modelJoint, model, 1);
         end
      end
