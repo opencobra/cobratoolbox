@@ -1,12 +1,10 @@
-function tmp = generateThermodynamicTables(model,resultsBaseFileName)
+function generateThermodynamicTables(model,resultsBaseFileName)
 %Generate tab delimited tables detailing the thermodynamic estimates
 %generated for a model
 
 if ~exist('resultsBaseFileName','var')
     resultsBaseFileName='out';
 end
-
-tmp=[];
 
 %% Print results to tables
 % Generate file names

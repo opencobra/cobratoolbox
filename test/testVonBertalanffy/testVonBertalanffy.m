@@ -11,7 +11,7 @@ global CBTDIR
 pth=which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 
-cd([CBTDIR filesep 'testing' filesep 'testVonBertalanffy'])
+cd([CBTDIR filesep 'test' filesep 'testVonBertalanffy'])
 
 %% Configure inputs
 load iAF1260
