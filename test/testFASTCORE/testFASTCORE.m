@@ -7,7 +7,6 @@ function x=testFASTCORE()
 
 
 try
-    ILOGcplex = Cplex('fba');% Initialize the CPLEX object
     ibm = changeCobraSolver('ibm_cplex','LP');
 catch
     ibm=0;
@@ -36,10 +35,10 @@ model=ConsistentRecon2;
 %randomly pick some reactions
 epsilon=1e-4;
 printLevel=0;
-A = fastcore(coreInd, model, epsilon, printLevel);
+A = fastcore(model, coreInd, epsilon, printLevel);
 
 %test, whether all of the core fluxes can carry flux
-reducedmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
+reducedmodel = removeRxns(model,setdiff(model.rxns,A.rxns));
 corereacs = intersect(reducedmodel.rxns,model.rxns(coreInd));
 reducedmodel.csense(1:numel(reducedmodel.mets)) = 'E';
 reducedmodel.c(:) = 0;

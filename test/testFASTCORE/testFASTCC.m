@@ -6,7 +6,6 @@ function x=testFASTCC()
 
 
 try
-    ILOGcplex = Cplex('fba');% Initialize the CPLEX object
     ibm = changeCobraSolver('ibm_cplex','LP');
 catch
     ibm=0;
