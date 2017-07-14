@@ -70,20 +70,45 @@ function rBioNetSettings_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for rBioNetSettings
 handles.output = hObject;
 
-a=exist('rBioNetSettingsDB.mat','file');
+% Get path to rBioNetSettings.m
+rBioNet_path = which('rBioNetSettings.m');
+
+% Check if rBioNetSettingsDB.mat exists
+a = exist([rBioNet_path filesep 'rBioNetSettingsDB.mat'], 'file');
 
 if a == 2 %file exist and is one of the paths
     load 'rBioNetSettingsDB.mat';
     fileID = fopen('rBioNetSettingsDB.mat');
     handles.path = fopen(fileID);
-else %File not found and has to be located.
-    [input_file,pathname] = uigetfile( ...
-        {'*.mat', 'Mat files (*.mat)';...
-        '*.*','All Files (*.*)'},...
-        'Locate Settings file.',...
-        'MultiSelect','off');
-    if pathname == 0
-        return
+else %File not found and has to be manually located or created
+    choice = questdlg('rBioNetSettingsDB file not found. Would you like to ', ...
+	'Warning: rBioNetSettingsDB.mat file not found', ...
+	'Manually locate file', 'Create new file', 'Create new file');
+    % Handle response
+    switch choice
+        case 'Manually locate file'
+            create_rBioNetFile = 0;
+        case 'Create new file'
+            create_rBioNetFile = 1;
+    end
+    
+    if create_rBioNetFile % create file
+        rxn_path = '';
+        met_path = '';
+        comp_path = '';
+        pathname = strrep(rBioNet_path, '\rBioNetSettings.m', '');
+        input_file = 'rBioNetSettingsDB.mat';
+        save([pathname filesep input_file],...
+            'rxn_path', 'met_path', 'comp_path');
+    else
+        [input_file,pathname] = uigetfile( ...
+            {'*.mat', 'Mat files (*.mat)';...
+            '*.*','All Files (*.*)'},...
+            'Locate Settings file.',...
+            'MultiSelect','off');
+        if pathname == 0 % return if no file chosen
+            return
+        end
     end
     handles.path = fullfile(pathname,input_file);
     load(handles.path)
