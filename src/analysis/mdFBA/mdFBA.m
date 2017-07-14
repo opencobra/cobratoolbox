@@ -67,7 +67,7 @@ ignoredMets = parser.Results.ignoredMets;
 minprod = parser.Results.minProd;
 getInvalidSolution = parser.Results.getInvalidSolution;
 
-if ~isempty(ressol) && getInvalidSolution
+if ~isempty(ressol) || getInvalidSolution
     sol = ressol;
     newActives = {};
     return
@@ -77,7 +77,7 @@ mdfbamodel = buildMDFBAProblem(model,'ignoredMets',ignoredMets,'minProd',minprod
 %solve the problem
 sol = solveCobraMILP(mdfbamodel);
 
-if sol.stat == 1
+if sol.stat == 1 || getInvalidSolution
     sol.full = sol.full(1:numel(model.rxns));
     sol = rmfield(sol,'cont');
     sol = rmfield(sol,'int');

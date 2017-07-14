@@ -25,13 +25,13 @@
 % $$\begin{array}{ll}\min\limits _{v} & \Vert v\Vert_{0}\\\text{s.t.} & Sv=b\\ 
 % & l\leq v\leq u\\ & c^{T}v=\rho^{\star}\end{array}$$
 % 
-% where the last constraint is represents the requirement to satisfy an optimal 
+% where the last constraint represents the requirement to satisfy an optimal 
 % objective value $\rho^{\star}$  derived from any solution to a flux balance 
 % analysis (FBA) problem.
 %% EQUIPMENT SETUP
 %% *Initialize the COBRA Toolbox.*
 % If necessary, initialize The Cobra Toolbox using the |initCobraToolbox| function.
-
+%%
 initCobraToolbox
 %% COBRA model. 
 % In this tutorial, the model used is the generic reconstruction of human metabolism, 
@@ -39,7 +39,7 @@ initCobraToolbox
 % can also be downloaded from the <https://vmh.uni.lu/#downloadview Virtual Metabolic 
 % Human> webpage. You can also select your own model to work with. Before proceeding 
 % with the simulations, the path for the model needs to be set up:      
-
+%%
 if 0
     % Using own model, change "if 0" to "if 1" and change the filename and directory
     filename = 'Recon3.0model';
@@ -64,7 +64,7 @@ end
 %% PROCEDURE
 % Set the tolerance to distinguish between zero and non-zero flux, based on 
 % the numerical tolerance of the currently installed optimisation solver.
-
+%%
 feasTol = getCobraSolverParams('LP', 'feasTol');
 %% 
 % Display the constraints
@@ -97,7 +97,7 @@ formulas = printRxnFormula(model, rxnAbbrList, printFlag);
 % for the heuristic sparsity test is proportional to the number of active reactions 
 % in an approximate sparse solution.
 %% *A. Sparse flux balance analysis (directly in one step, no quality control)*
-% This approach computes a sparse flux balance analysis solution, satisfing 
+% This approach computes a sparse flux balance analysis solution, satisfying 
 % the FBA objection, with the default approach to approximate the solution to 
 % the cardinality minimisation problem$^3$ underling sparse FBA. This approach 
 % does not check the quality of the solution, i.e., whether indeed it is the sparsest 
@@ -105,7 +105,7 @@ formulas = printRxnFormula(model, rxnAbbrList, printFlag);
 % 
 % First choose whether to maximize ('max') or minimize ('min') the FBA objective. 
 % Here we choose maximise
-
+%%
 osenseStr='max';
 %% 
 % Choose to minimize the zero norm of the optimal flux vector
@@ -130,24 +130,23 @@ printFluxVector(model, v, nonZeroFlag);
 fprintf('%u%s\n',nnz(v),' active reactions in the sparse flux balance analysis solution.');
 %% ANTICIPATED RESULTS
 % Typically, a sparse flux balance analysis solution will have a small fraction 
-% of the number of the number of reactions active than in a flux balance analysis 
-% solution, e.g., Recon 2.04 model has 7,440 reactions. When maximising biomass 
-% production, a typical flux balance analysis solution might have approximately 
-% 2,000 active reactions (this is LP solver dependent) whereas for the same problem 
-% there are 247 active reactions in the sparse flux balance analysis solution 
-% from optimizeCbModel (using the default capped L1 norm approximate step function, 
-% see below).
+% of the number of reactions active than in a flux balance analysis solution, 
+% e.g., Recon 2.04 model has 7,440 reactions. When maximising biomass production, 
+% a typical flux balance analysis solution might have approximately 2,000 active 
+% reactions (this is LP solver dependent) whereas for the same problem there are 
+% 247 active reactions in the sparse flux balance analysis solution from optimizeCbModel 
+% (using the default capped L1 norm approximate step function, see below).
 %% *B. Sparse flux balance analysis (two steps, all approximations,* *with a sparsity test)*
-% This approach computes a sparse flux balance analysis solution, satisfing 
+% This approach computes a sparse flux balance analysis solution, satisfying 
 % the FBA objection, with the default approach to approximate the solution to 
-% the cardinality minimisation problem$^3$ underling sparse FBA. This approach 
+% the cardinality minimisation problem$^3$ underlying sparse FBA. This approach 
 % does not check the quality of the solution, i.e., whether indeed it is the sparsest 
 % flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
 %% Solve a flux balance analysis problem
 % Build a linear programming problem structure (LPproblem) that is compatible 
-% with the interfacefunction (solveCobraLP) to any installed linear optimisation 
+% with the interface function (solveCobraLP) to any installed linear optimisation 
 % solver.
-
+%%
 [c,S,b,lb,ub,csense] = deal(model.c,model.S,model.b,model.lb,model.ub,model.csense);
 [m,n] = size(S);
 
@@ -170,8 +169,8 @@ fprintf('%u%s\n',nnz(vFBA),' active reactions in the flux balance analysis solut
 % Due to its combinatorial nature, minimising the zero norm explicitly is an 
 % NP-hard problem. Therefore we approximately solve the problem. The approach 
 % is to replace the zero norm with a separable sum of step functions, which are 
-% each approximated by anther function. Consider the step function ?(t): R  ?  
-% R where ? (t)=1 if t ? 0 and     ? (t)=0 otherwise, illustrated in the Figure 
+% each approximated by anther function. Consider the step function ς(t): R  →  
+% R where ς (t)=1 if t ≠ 0 and     ς (t)=0 otherwise, illustrated in the Figure 
 % below:
 % 
 % 
@@ -201,11 +200,11 @@ fprintf('%u%s\n',nnz(vFBA),' active reactions in the flux balance analysis solut
 % 
 % Here we prepare a cell array of strings which indicate the set of step 
 % function approximations we wish to compare.
-
+%%
 approximations = {'cappedL1','exp','log','SCAD','lp-','lp+'};
 %% Run the sparse linear optimisation solver
 % First we must build a problem structure to pass to the sparse solver, by adding 
-% an additional constraint requiring that the sparse flux solution also statisfy 
+% an additional constraint requiring that the sparse flux solution also satisfies 
 % the optimal objective value from flux balance analysis
 
 constraint.A = [S ; c'];
@@ -259,14 +258,14 @@ end
 % Each step function approximation minimises a different problem than minimising 
 % the zero norm explicitly. Therefore it is wise to test, at least heuristically, 
 % if the most sparse approximate solution to minimising the zero norm is at least 
-% locally optimal, in the sense that the set of preicted reactions cannot be reduced 
-% by omitting, one by one, an active reaction. If it is locally optimal in this 
-% sense, one can be more confident that the  most sparse approximate solution 
+% locally optimal, in the sense that the set of predicted reactions cannot be 
+% reduced by omitting, one by one, an active reaction. If it is locally optimal 
+% in this sense, one can be more confident that the  most sparse approximate solution 
 % is the most sparse solution, but still there is no global guarantee, as it is 
 % a combinatorial issue.
 % 
 % Identify the set of predicted active reactions
-
+%%
 activeRxnBool = abs(vBest)>feasTol;
 nActiveRnxs = nnz(activeRxnBool);
 activeRxns = false(n,1);
@@ -325,7 +324,7 @@ else
     fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparseFBA solution (tested).');
 end
 %% REFERENCES
-% [1] Mel�ndez-Hevia, E., Isidoro, A. (1085). The game of the pentose phosphate 
+% [1] Meléndez-Hevia, E., Isidoro, A. (1085). The game of the pentose phosphate 
 % cycle. Journal of Theoretical Biology 117, 251-263.
 % 
 % [2] Thiele, I., Swainston, N., Fleming, R.M., Hoppe, A., Sahoo, S., Aurich, 

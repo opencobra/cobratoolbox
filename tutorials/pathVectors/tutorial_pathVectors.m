@@ -2,24 +2,10 @@
 %% Author: Susan Ghaderi, Systems Biochemistry Group, Luxembourg Centre for Systems Biomedicine 
 %% Reviewers: Sylvain Arreckx, Laurent Heirendt
 %% INTRODUCTION
+%% [<#LyXCite-klamt_elementary_2017 klamt_elementary_2017>].
 % During this tutorial, you will learn how to compute elementary (flux) modes 
 % / elementary (flux) vectors and a minimal generating set (convex basis) of flux 
 % cones or flux polyhedra associated with mass-flow networks [1].
-% 
-%  To compute elementary modes and convex bases, two different scenarios 
-% can be considered: homogeneous and inhomogeneous constraints cases.
-% 
-% #  In homogeneous constraints case, elementary modes are flux vectors with 
-% minimal support of the polyhedral cone defined by the steady state assumptions 
-% and reversibility constraints. Also, a convex basis is a minimal set of vectors 
-% sufficient to generate all flux vectors within the flux cone by non-negative 
-% linear combinations of convex basis vectors, which are always a subset of the 
-% elementary modes.
-% # In the other hand in inhomogeneous constraints, elementary modes are a generalization 
-% of elementary modes which are all extreme rays, extreme points and representatives 
-% of all support-minimal flux patterns or only a minimal set of unbounded (basis 
-% of lineality space + extreme rays) and bounded (extreme points) generators spanning 
-% the resulting general flux polyhedron [2].
 % 
 % Let $S\in R^{m\times n}$ be a stoichiometric matrix of a metabolic network 
 % with $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
@@ -33,15 +19,13 @@
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">v</mi></mrow></math>$ is the $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">n</mi></mrow></math>$-dimensional 
-% vector of net reaction rates. Each flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% vector of net reaction rates.  Therefore, each flux vector $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">v</mi></mrow></math>$ satisfying 
 % equation (1) is in the nullspace of $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">S</mi></mrow></math>$, having 
-% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="normal">n-rank(</mi><mi mathvariant="italic">S</mi><mi mathvariant="normal">)</mi></mrow></math>$.  
-% Irreversible reactions, contained in the set $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi>&Delta;</mi></mrow></math>$, have sign restrictions 
-% on their rates which can be expressed by the inequalities
+% display="inline"><mrow><mi mathvariant="italic">S</mi></mrow></math>$.  Let  
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&Delta;</mi></mrow></math>$ 
+% be the set of all Irreversible reactions of the aforementioned biochemical network, 
+% i.e., 
 % 
 % $$v_i\geq0~\forall i \in \Delta~~~(2)$$
 % 
@@ -54,11 +38,19 @@
 % 
 % is a subset of the nullspace of $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">S</mi></mrow></math>$, which 
-% is called convex polyhedral cone or flux cone. Elementary modes are defined 
-% as the nonzero, support-minimal vectors of the flux cone. If every reaction 
-% is irreversible then elementary modes are called extreme pathways. In general 
-% extreme pathways are a subset of elementary modes. In graphical point of view, 
-% elementary modes and extreme pathways are continuous paths. 
+% is called convex polyhedral cone or flux cone. _Elementary modes_ are defined 
+% as the nonzero vectors of the flux cone $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi>&Phi;</mi></mrow></math>$  with minimal support. 
+% Extreme pathways are a set of convex basis vector for stoichiometric matrix  
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">S</mi></mrow></math>$ [2]. From a geometrical point of 
+% view, extreme pathways are generator vectors (edges) of the cone $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi>&Phi;</mi></mrow></math>$. As opposed to the computation 
+% of elementary modes, one needs to decouple reversible reactions into two irreversible 
+% reactions for computing extreme pathways. Thus, extreme pathways are a subset 
+% of elementary modes.
+% 
+%  
 % 
 % We introduce an interface to software that enables the computation of the 
 % elementary modes, or extreme pathways, given a network and user-defined reaction 
@@ -223,6 +215,10 @@ id
 % in large biochemical reaction networks. IEE Proc. Syst. Biol., 152, 249?255 
 % (2005).
 % 
-% [2] Kamp. A. and Klamt S. Enumeration of smallest intervention strategies 
+% [2] Klamt, S. et al.  From elementary flux modes to elementary flux vectors: 
+% Metabolite pathway analysis with arbitary linear flux constraints. PLOS Computational 
+% Biology, 13(4):e1005409, April 2017. 00002.
+% 
+% [3] Kamp. A. and Klamt S. Enumeration of smallest intervention strategies 
 % in genome-scale metabolic networks. PLoS Computational Biology, 10:e1003378. 
 % (2014).

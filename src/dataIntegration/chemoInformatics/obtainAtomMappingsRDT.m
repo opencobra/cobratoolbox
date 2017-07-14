@@ -14,6 +14,9 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %                       * .mets - An m x 1 array of metabolite identifiers.
 %                                 Should match metabolite identifiers in
 %                                 RXN.
+%                       * .metFormulas - An m x 1 array of metabolite
+%                                 identifiers. Should match metabolite
+%                                 identifiers in RXN.
 %                       * .rxns - An n x 1 array of reaction identifiers.
 %                                 Should match rxnfile names in rxnFileDir.
 %    molFileDir:    Path to the directory containing MOL files for
@@ -76,15 +79,16 @@ end
 % Delete the protons (hydrogens) for the metabolic network
 % From metabolites
 S = full(model.S);
-hToDelete = ismember(model.metFormulas, 'H');
-S(hToDelete, :) = [];
-model.mets(hToDelete) = [];
-% From reactions
-hydrogenCols = all(S == 0, 1);
-S(:, hydrogenCols) = [];
-model.rxns(hydrogenCols) = [];
-
-model.S = S;
+if isfield(model,'metFormulas')
+    hToDelete = ismember(model.metFormulas, 'H');
+    S(hToDelete, :) = [];
+    model.mets(hToDelete) = [];
+    % From reactions
+    hydrogenCols = all(S == 0, 1);
+    S(:, hydrogenCols) = [];
+    model.rxns(hydrogenCols) = [];
+    model.S = S;
+end
 
 
 % Format inputs
@@ -116,7 +120,7 @@ for i=1:length(rxns)
     a = ismember(regexprep(mets(find(S(:,i))), '(\[\w\])', ''), aMets);
     s = S(find(S(:, i)), i);
     if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s) - s) < (1e-2))
-    	writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [outputDir...
+        writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [outputDir...
             filesep 'rxnFiles' filesep])
     end
 end
@@ -141,7 +145,7 @@ for i=1:length(fnames)
         fprintf(result);
         error('Command %s could not be run.\n', command);
     end
-
+    
     mNames = dir('ECBLAST_*');
     if length(mNames) == 3
         name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
@@ -156,23 +160,23 @@ for i=1:length(fnames)
     end
 end
 
- % Standarize reactions
- if standariseRxn == true
-     fnames = dir([outputDir filesep 'atomMapped' filesep '*.rxn']);
-     for i = 1:length(fnames)
-         standardised = canonicalRxn(fnames(i).name, [outputDir...
-             'atomMapped'], [outputDir 'rxnFiles']);
-         if standardised
-             counterBalanced = counterBalanced + 1;
-             standardisedRxns{counterBalanced} = regexprep(fnames(i).name, '.rxn', '');
-         else
-             counterUnbalanced = counterUnbalanced + 1;
-         end
-     end
- else
-     standardisedRxns = [];
-     counterUnbalanced = length(dir([outputDir 'atomMapped' filesep '*.rxn']));
- end
+% Standarize reactions
+if standariseRxn == true
+    fnames = dir([outputDir filesep 'atomMapped' filesep '*.rxn']);
+    for i = 1:length(fnames)
+        standardised = canonicalRxn(fnames(i).name, [outputDir...
+            'atomMapped'], [outputDir 'rxnFiles']);
+        if standardised
+            counterBalanced = counterBalanced + 1;
+            standardisedRxns{counterBalanced} = regexprep(fnames(i).name, '.rxn', '');
+        else
+            counterUnbalanced = counterUnbalanced + 1;
+        end
+    end
+else
+    standardisedRxns = [];
+    counterUnbalanced = length(dir([outputDir 'atomMapped' filesep '*.rxn']));
+end
 
 fprintf('\n%d reactions were atom mapped\n', length(dir([outputDir 'atomMapped' filesep '*.rxn'])));
 fprintf('%d reactions are not standardised\n', counterUnbalanced);

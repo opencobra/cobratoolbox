@@ -27,7 +27,7 @@ solverName = 'ibm_cplex';
 % load the E.coli model
 load('ecoli_core_model.mat', 'model');
 
-if changeCobraSolver(solverName, 'LP')
+if changeCobraSolver(solverName, 'LP', 0)
     [minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
     % Start a parpool environment in MATLAB

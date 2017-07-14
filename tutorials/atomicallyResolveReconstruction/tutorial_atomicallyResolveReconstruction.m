@@ -57,9 +57,26 @@
 % Atoms belonging to the same conserved moiety have identically coloured backgrounds.
 %% MATERIALS
 % To atom map reactions it is required to have Java version 8 and Linux. The 
-% atom mapping does not run on windows at present. Also, to standardise the chemical 
-% reaction format it is required to have JChem downloaded from ChemAxon with its 
-% respective license.
+% atom mapping does not run on Windows at present. 
+% 
+% On _macOS_, please make sure that you run the following commands in the 
+% Terminal before continuing with this tutorial:
+% 
+% |$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"|
+% 
+% |$ brew install coreutils|
+% 
+% |On _Linux_,|please make sure that Java and ChemAxon directories are included. 
+% To do this, run the following commands:
+% 
+% |$ export PATH=$PATH:/opt/opt/chemaxon/jchemsuite/bin/ |(default location 
+% of JChem)
+% 
+% |$ export PATH=$PATH:/usr/java/jre1.8.0_131/bin/ |(default installation 
+% of Java)
+% 
+% Also, in order to standardise the chemical reaction format it is required 
+% to have JChem downloaded from ChemAxon with its respective license.
 %% SECTION 1 Atom mapping of reactions
 % Atom mappings for the internal reactions of a metabolic network reconstruction 
 % are performed by the function |obtainAtomMappingsRDT|. The main inputs are a 
@@ -67,7 +84,7 @@
 % MDL MOL format. For this tutorial, using the RDT algorithm, the atom mappings 
 % are generated based on the molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles 
 % (|molFileDir|) and the reconstructed DAS network without hydrogen atoms (|model|).
-
+%%
 global CBTDIR
 load([CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep...
     'data' filesep 'subDas.mat'], 'model') % The subnetwork of the dopamine synthesis network
@@ -83,15 +100,15 @@ molFileDir = [CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstructio
 % reactant indexes) (directory _txtData_), and 
 % * the unmapped MDL RXN files (directory _rxnFiles_).| |
 % 
-% The inoput variable |outputDir |indicates the directory where the folders 
+% The input variable |outputDir |indicates the directory where the folders 
 % will be generated (by default the function assigns the current directory).
 
 outputDir = [pwd filesep 'output'];
 %% 
 % For some reactions, the RDT algorithm cannot compute the atom mappings 
 % (for a large reaction is generated an MDL RXN v3000 which is not compatible 
-% with the RDT algorithm). Therefore, is necessary to assign a maximum time of 
-% processing |maxTime| (by default the function assign 30 minutes as a maximum 
+% with the RDT algorithm). Therefore, it is necessary to assign a maximum time 
+% of processing |maxTime| (by default the function assign 30 minutes as a maximum 
 % time for computing an atom mapping for a reaction).
 
 maxTime = 1800; % seconds
@@ -102,7 +119,7 @@ maxTime = 1800; % seconds
 % The variable |isChemaxonInstalled| contains a logical value defined by the user 
 % if the license is installed or not.
 
-isChemaxonInstalled = true; % Change varibale to "true" if ChemAxon is installed
+isChemaxonInstalled = false; % Change varibale to "true" if ChemAxon is installed
 %% 
 % Now, let's obtain the atom map using |obtainAtomMappingsRDT|: 
 
@@ -110,8 +127,9 @@ if ispc
     error('Error: atom mapping function should be run on Linux or MAC.')
 else
     tic
-    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, ...
-    isChemaxonInstalled);
+    try
+        standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, isChemaxonInstalled);
+    end
     toc
 end
 %% 
@@ -157,7 +175,7 @@ end
 % detailed information on the coordinates, element, charge and atom mapping number 
 % for each of the atoms, and then finally, the bond block connects all the atoms 
 % in the metabolite.
-
+%%
 regexp(fileread([outputDir filesep 'atomMapped' filesep 'R3.rxn']), '\n', 'split')'
 %% 
 % The _txtData _directory contains the TXT information of the reaction including 
@@ -200,7 +218,7 @@ regexp(fileread([outputDir filesep 'txtData' filesep 'R3.txt']), '\n', 'split')'
 % network (|model|) and atom mappings for internal reactions, obtained in the 
 % previous section and predicted with the RDT algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>3</mn></mrow></msup></mrow></math>$.
-
+%%
 if ~isChemaxonInstalled
     copyfile([CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep...
         'data' filesep 'atomMapped'],[outputDir filesep 'atomMapped'])
@@ -261,7 +279,7 @@ ATN.mets(cco2)'
 % 
 % *Step 2: Identify conserved moieties in DAS by graph theoretical analysis 
 % of the atom transition network generated in Step 1.*
-
+%%
 tic
 [L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = ...
     identifyConservedMoieties(model, ATN);
@@ -346,7 +364,7 @@ types = classifyMoieties(L, model.S)
 % in (b).
 % 
 % *Step 1: Identify conserved moieties with the alternative set of atom mappings.*
-
+%%
 % Create an alternative MDL RXN file
 R2rxn = regexp(fileread([outputDir filesep 'atomMapped' filesep 'R2.rxn']), '\n', 'split')';
 R2rxn{2} = 'alternativeR2';
@@ -368,14 +386,16 @@ ATN = buildAtomTransitionNetwork(alternativeModel, atomMappedDir);
 % *Step 2: Decompose the composite moiety vector*
 % 
 % First, extract the internal stoichiometric matrix for DAS, by running:
-
+%%
 rbool = ismember(alternativeModel.rxns, ATN.rxns);
 mbool = any(alternativeModel.S(:,rbool), 2);
 N = alternativeModel.S(mbool, rbool);
 %% 
 % To decompose the moiety matrix computed in Step 1, run:
 
-changeCobraSolver('gurobi6', 'milp');
+try
+    changeCobraSolver('gurobi6', 'milp');
+end
 D = decomposeMoietyVectors(L, N);
 %% 
 % Note that you can use any Mixed Integer Linear Programme (MILP) solver 

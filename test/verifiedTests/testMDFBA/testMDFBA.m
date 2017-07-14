@@ -19,7 +19,7 @@ cd(fileDir);
 % convert the model
 model = createToyModelForMDFBA;
 
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk', 'ibm_cplex'};
+solverPkgs = {'gurobi', 'tomlab_cplex', 'ibm_cplex'};
 tolerance = 1e-6;
 for k = 1:length(solverPkgs)
 
@@ -31,6 +31,7 @@ for k = 1:length(solverPkgs)
         fprintf('   Testing MDFBA using %s ...\n ', solverPkgs{k});
     
         res = mdFBA(model);
+ 
         %Check that metabolites are excreted.
         assert(all(abs(model.S*res.full - (max([abs(model.lb);model.ub])/10000)) < tolerance ))
         
