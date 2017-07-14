@@ -1,4 +1,4 @@
-function [solution] = relaxFBA(model, relaxOption)
+function [solution] = relaxedFBA(model, relaxOption)
 %
 % Finds the mimimal set of relaxations on bounds and steady state
 % constraints to make the FBA problem feasible
