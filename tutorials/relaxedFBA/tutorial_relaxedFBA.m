@@ -83,8 +83,8 @@ if ~exist('modelOrig','var')
         directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
         model = loadIdentifiedModel(filename,directory);
     else
-        filename2='Recon2.0model';
-        if exist('Recon2.0model.mat','file')==2
+        filename2='Recon20model';
+        if exist('Recon20model.mat','file')==2
             model = readCbModel(filename2);
         end
     end
@@ -306,7 +306,7 @@ end
 %relaxOption.excludedReactions(strcmp(model.rxns,'myReaction'))=1;
 %% 
 %  To specifically disallow relaxation of the steady state constraint on 
-% a molecualr species with model.mets abbreviation 'myMetabolite', then use:
+% a molecular species with model.mets abbreviation 'myMetabolite', then use:
 
 %relaxOption.excludedMetabolite=false(m,1);
 %relaxOption.excludedMetabolite(strcmp(model.mets,'myMetabolite'))=1;
