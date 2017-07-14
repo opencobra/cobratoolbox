@@ -22,7 +22,7 @@ function [P,C,vP,vC] = computeFluxSplits(model,mets,V)
 %
 % .. Author: - Hulda S. Haraldsdottir, December 2, 2016
 
-s = sum([model.S(ismember(model.mets,mets),:); sparse(1,size(model.S,2))],1)'; % net stoichiometry. Zero if model.mets does not contain mets.
+s = sign(sum([model.S(ismember(model.mets,mets),:); sparse(1,size(model.S,2))],1))'; % net stoichiometry. Zero if model.mets does not contain mets.
 W = diag(s)*V; % stoichiometrically weighted flux
 vP = max(W,0); % net production
 vC = -min(W,0); % net consumption
