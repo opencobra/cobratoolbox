@@ -71,7 +71,7 @@
 %% *Initialize the COBRA Toolbox.*
 % Initialize The Cobra Toolbox using the |initCobraToolbox| function.
 
-%initCobraToolbox
+initCobraToolbox
 %% *Setting the *optimization* solver.*
 % This tutorial will be run with a |'glpk'| package, which is a linear programming 
 % ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
@@ -106,23 +106,29 @@ if usejava('desktop') % This line of code is to avoid execution of this turorial
 % *0.* Open MATLAB
 % 
 % *1.* Add The CobraToolbox provided to you in your path:
-% 
-% In MATLAB window go to _file-> setpath-> add with subfolders-> cobra toolbox 
-% folder -> save & close_
+
+global CBTDIR
+addpath(genpath([CBTDIR filesep 'src']))
+%% 
+% Or, manually in MATLAB window go to _file-> setpath-> add with subfolders-> 
+% cobra toolbox folder -> save & close_
 % 
 %  *2.* Initiate rBioNet by linking the database files.
 % 
+% * For the tutorial, we will create a file "rBioNetSettingsDB.mat" that contains 
+% the paths to the tutorial reaction, metabolite, and compartment database files.
+
+comp_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_compartments.mat'];
+met_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_metabolites.mat'];
+rxn_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_reactions.mat'];
+save([CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'rBioNetSettingsDB.mat'],...
+    'comp_path', 'met_path', 'rxn_path')
+%% 
 % * Note there are three .mat files, corresponding to the reaction database, 
 % metabolite database, and the compartment database.
 
 rBioNetSettings
 %% 
-% *  This window below appears:
-% 
-%  
-% 
-%  
-% 
 % Click on the change tab for reactions and locate to the tutorial_reactions.mat 
 % file, which is provided to you in the rBioNet tutorial folder.
 % 
@@ -335,7 +341,11 @@ ReconstructionTool
 % 
 % *Make sure that you never make errors while filling in the information 
 % in the database.* 
+%% Clean-up
+% Remove "rBioNetSettingsDB.mat" file from the tutorial directory.
 
+fclose all;% close all open windows
+delete([CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'rBioNetSettingsDB.mat'])
 end
 %% Reference
 % [1] Thorleifsson SG, Thiele I. Bioinformatics. 2011 Jul 15;27(14):2009-10. 
