@@ -1,6 +1,7 @@
-%% Input and output of reconstructions and mdoels 
+%% Input and output of reconstructions and models 
 %% Author(s): Thomas Pfau, LCSB, University of Luxembourg.
 %% Reviewers: Catherine Clancy, LCSB, University of Luxembourg.
+%% Francisco J. Planes, Department of Biomedical Engineering and Sciences, Tecnun, University of Navarra.
 %% INTRODUCTION
 % This tutorial aims at providing information on how to load models into The 
 % COBRA Toolbox and export them to other formats.
@@ -83,7 +84,7 @@
 %% EQUIPMENT SETUP
 %% *Initialize the COBRA Toolbox.*
 % Initialize The Cobra Toolbox using the |initCobraToolbox| function.
-
+%%
 initCobraToolbox
 %% 
 % For this tutorial we will use a MAT-file formated model of the _E.coli 
@@ -92,7 +93,7 @@ initCobraToolbox
 
 cd(fileparts(which('tutorial_IO.mlx')));
 
-% Cop the file required for this tutorial (if they are not yet present).
+% Copy the file required for this tutorial (if they are not yet present).
 try
     delete 'ecoli_core_model.mat';
     copyfile(which('ecoli_core_model.mat'), '.');
@@ -105,26 +106,26 @@ end
 % The most direct way to load a model into The COBRA Toolbox is to use the |readCbModel| 
 % function. For example, to load a model from a MAT-file, you can simply use the 
 % filename (with or without file extension). 
-
+%%
 fileName = 'ecoli_core_model.mat';
 model = readCbModel(fileName);
 %% 
 % The |readCbModel |function has a second optional input that specifies 
 % the file type being loaded. In the above example the file type does not need 
 % to be specified since the input default is a 'Matlab' file type. To load file 
-% types other than a MAT-file, specificy the file type for input as: ‘SBML’, ‘SimPheny’, 
-% ‘SimPhenyPlus’, ‘SimPhenyText’, or 'Excel’. 
+% types other than a MAT-file, specificy the file type for input as: â€˜SBMLâ€™, â€˜SimPhenyâ€™, 
+% â€˜SimPhenyPlusâ€™, â€˜SimPhenyTextâ€™, or 'Excelâ€™. 
 % 
 % You can also call the |readCbModel |function without a fileName to get 
-% a dialog box, this is provided the Java feature is available. 
-
+% a dialog box. This is provided when the Java feature is available. 
+%%
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
     model = readCbModel();
 end
 %% 
 % Once the model is loaded it can be used directly with The COBRA Toolbox 
 % functions. To view the data stored in the model use the following command.
-
+%%
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
     open model
 end
@@ -133,7 +134,7 @@ end
 % select or enter the filename and the file format. The output is then generated 
 % and saved to the directory indicated in the diaglog box. A summary of the fields 
 % present in the model will also appear in the command window. 
-
+%%
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model)
 end
@@ -142,21 +143,21 @@ end
 % the file type in which the model should be written and saved. In the above example 
 % the file type was not specified and so the default file type to be saved was 
 % as a MAT-file. To use the function to write a file types other than a MAT-file, 
-% specificy the file type for input as: ‘text’,’xls’, or ‘sbml’. 
-
+% specificy the file type for input as: â€˜textâ€™,â€™xlsâ€™, or â€˜sbmlâ€™. 
+%%
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model,'text')
 end
 %% 
 % It is also possible to specify the file type and file name explicitly. 
 % The following example writes a model directly to the file name 'Acidaminococcus.xml'.
-
+%%
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model, 'SBML', 'Acidaminococcus.xml')
 end
 %% CLEAN UP
 % Clean up of materials used in the tutorial.  
-
+%%
 currentDir = pwd;
 cd(fileparts(which('tutorial_IO.mlx')));
 
