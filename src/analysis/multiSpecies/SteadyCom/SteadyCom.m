@@ -82,7 +82,7 @@ function [sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, varargin)
 %                      * saveModel ['']  String, if non-empty, save the `cplex` model, basis and parameters.
 %
 %    parameter:      structure for solver-specific parameters.
-%                    'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See solveCobraLP for details
+%                    'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See `solveCobraLP` for details
 %
 % OUTPUTS:
 %    sol:            cplex solution structure

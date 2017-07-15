@@ -8,7 +8,7 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %    [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(modelCom, options, parameter, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom:     A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%    modelCom:     A community COBRA model structure with the following fields (created using `createMultipleSpeciesModel`)
 %                  (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
 %                    * S - Stoichiometric matrix

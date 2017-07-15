@@ -1,12 +1,12 @@
 function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, varargin)
 % Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
-% at community steady-state at a given growth rate. See tutorial_SteadyCom for more details.
+% at community steady-state at a given growth rate. See `tutorial_SteadyCom` for more details.
 %
 % USAGE:
 %    [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom:  A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%    modelCom:  A community COBRA model structure with the following fields (created using `createMultipleSpeciesModel`)
 %               (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
 %                 * S - Stoichiometric matrix
@@ -29,8 +29,8 @@ function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options,
 %
 %                    * - indices referring to the rxns in `rxnNameList`, e.g., `[1 2]` to analyze `rxnNameList{1}` vs `rxnNameList{2}`
 %                    * - rxn names which are members of `rxnNameList`, e.g., `{'EX_glc-D(e)', 'EX_ac(e)'}`
-%                    If not supplied, analyze all `K(K-1)` pairs from the K targets in `rxnNameList`.
-%                  * symmetric - true to avoid running symmetric pairs (e.g. analyze pair `(j,k)` only if :math:`j > k`, total :math:` K(K-1)/2 pairs)`.
+%                    If not supplied, analyze all `K(K-1)` pairs from the `K` targets in `rxnNameList`.
+%                  * symmetric - true to avoid running symmetric pairs (e.g. analyze pair `(j,k)` only if :math:`j > k`, total :math:`K(K-1)/2 pairs)`.
 %                    Used only when `pairList` is not supplied.
 %                  * Nstep - number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
 %                    Can also be a vector indicating the fraction of intermediate value to be analyzed,

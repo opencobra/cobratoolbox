@@ -1,16 +1,17 @@
 function printUptakeBoundCom(model, SpFlag, metFlag)
-% print the uptake bounds of the whole community and individual species for a community COBRA model
+% Prints the uptake bounds of the whole community and individual species for a community COBRA model
 %
 % USAGE:
+%
 %    rxnIDs = printUptakeBoundCom(model, SpFlag, metFlag)
 %
 % INPUT:
-%    model:    the community model with field .infoCom or .indCom indicating the indicies of 
-%                community exchange reactions/metabolites. Can be obtained from getMultiSpeciesModelId.m
+%    model:    the community model with field `.infoCom` or `.indCom` indicating the indicies of
+%              community exchange reactions/metabolites. Can be obtained from `getMultiSpeciesModelId.m`
 %
 % OPTIONAL INPUTS:
 %    SpFlag:   true to show individual uptake rates though community uptake is not allowed (default false)
-%    metFlag:  true to print with model.metNames (default false) 
+%    metFlag:  true to print with `model.metNames` (default false) 
 
 if nargin < 2 || isempty(SpFlag)
     SpFlag = false;
@@ -96,4 +97,3 @@ end
 
 
 end
-

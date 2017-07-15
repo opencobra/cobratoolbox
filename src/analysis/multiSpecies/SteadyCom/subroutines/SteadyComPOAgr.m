@@ -24,7 +24,7 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 %                  * GR - The growth rate at which POA is performed. If not
 %                    given, find the maximum growth rate by `SteadyCom.m`
 %                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%                  * rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) x K` matrix for POA of `K`
+%                  * rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) * K` matrix for POA of `K`
 %                    linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,
 %                    or reactions listed in `pairList` [see below] if `pairList` is given)
 %                  * pairList - pairs in `rxnNameList` to be analyzed. `N_pair` by 2 array of:
