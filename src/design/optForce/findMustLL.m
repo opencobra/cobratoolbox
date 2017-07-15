@@ -44,9 +44,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                  * .rxnList - Reaction list (cell array)
 %                                  * .values -  Values for constrained
 %                                    reactions (double array)
-%                                    E.g.: `struct('rxnList', ...
-%                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]');`
+%                                    E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    excludedRxns:               (cell array) Reactions to be excluded to
 %                                the `MustLL` set. This could be used to avoid
 %                                finding transporters or exchange reactions
@@ -70,7 +68,7 @@ function [mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(mode
 %                                text file. 0 otherwise.
 %                                Default: 1
 %    keepInputs:                 (double) 1 to save inputs to run
-%                                findMustLL.m 0 otherwise.
+%                                `findMustLL.m`, 0 otherwise.
 %                                Default: 1
 %    verbose:                    (double) 1 to print results in console.
 %                                0 otherwise.

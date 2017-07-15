@@ -45,9 +45,7 @@ function [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW, varargi
 %                                 * .rxnList - Reaction list (cell array)
 %                                 * .values -  Values for constrained
 %                                   reactions (double array)
-%                                   E.g.: `struct('rxnList', ...
-%                                   {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                   'values', [-100, 0, 155.5]');`
+%                                   E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    runID:                     (string) ID for identifying this run.
 %                               Default: ['run' date hour].
 %    outputFolder:              (string) name for folder in which results

@@ -1,5 +1,5 @@
 function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin)
-% This function runs the third step of optForce that is to solve a
+% This function runs the third step of `optForce` that is to solve a
 % bilevel mixed integer linear programming problem to find sets of
 % interventions that lead to an increased production of a particular target
 %
@@ -15,7 +15,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                              * .rxns - Reaction IDs in the model
 %                              * .mets - Metabolite IDs in the model
 %                              * .S -    Stoichiometric matrix (sparse)
-%                              * .b -    RHS of Sv = b (usually zeros)
+%                              * .b -    RHS of `Sv = b` (usually zeros)
 %                              * .c -    Objective coefficients
 %                              * .lb -   Lower bounds for fluxes
 %                              * .ub -   Upper bounds for fluxes
@@ -23,44 +23,44 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            reaction whose flux is intented to be increased.
 %                            For E.g., if the production of succionate is
 %                            desired to be increased, 'EX_suc' should be
-%                            chosen as the target reaction
-%                            E.g.: targetRxn='EX_suc';
-%    mustU:                  (cell array) List of reactions in the MustU set
+%                            chosen as the target reaction.
+%                            E.g.: `targetRxn = 'EX_suc';`
+%    mustU:                  (cell array) List of reactions in the `MustU` set
 %                            This input can be obtained by running the
-%                            script findMustU.m
-%                            E.g. mustU={'R21_f';'R22_f'};
-%    mustL:                  (cell array) List of reactions in the MustL set
+%                            script `findMustU.m`.
+%                            E.g. `mustU = {'R21_f';'R22_f'};`
+%    mustL:                  (cell array) List of reactions in the `MustL` set
 %                            This input can be obtained by running the
-%                            script findMustL.m
-%                            E.g. first usage: mustL={'R11_f';'R26_f'};
-%    minFluxesW:             (double array) of size n_rxns x1. Minimum fluxes for each
+%                            script `findMustL.m`.
+%                            E.g. first usage: `mustL = {'R11_f';'R26_f'};`
+%    minFluxesW:             (double array) of size `n_rxns x 1`. Minimum fluxes for each
 %                            reaction in the model for wild-type strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
-%                            E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:             (double array) of size n_rxns x1. Maximum fluxes for each
+%                            function `FVAOptForce`.
+%                            E.g.: `minFluxesW = [-90; -56];`
+%    maxFluxesW:             (double array) of size `n_rxns x 1`. Maximum fluxes for each
 %                            reaction in the model for wild-type strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
-%                            E.g.: maxFluxesW = [90; 56];
-%    minFluxesM:             (double array) of size n_rxns x1. Minimum fluxes for each
+%                            function `FVAOptForce`.
+%                            E.g.: `maxFluxesW = [90; 56];`
+%    minFluxesM:             (double array) of size `n_rxns x 1`. Minimum fluxes for each
 %                            reaction in the model for mutant strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
-%                            E.g.: minFluxesM = [-90; -56];
+%                            function `FVAOptForce`.
+%                            E.g.: `minFluxesM = [-90; -56];`
 %    maxFluxesM:             (double array) of size n_rxns x1. Maximum fluxes for each
 %                            reaction in the model for mutant strain.
 %                            This can be obtained by running the
-%                            function FVAOptForce.
-%                            E.g.: maxFluxesM = [90; 56];
+%                            function `FVAOptForce`.
+%                            E.g.: `maxFluxesM = [90; 56];`
 %
 % OPTIONAL INPUTS:
 %    k:                      (double) number of intervations to be found
-%                            Default k=1;
+%                            Default `k = 1`;
 %
 %    nSets:                  (double) maximum number of force sets
-%                            returned by optForce.
-%                            Default nSets=1;
+%                            returned by `optForce`.
+%                            Default `nSets = 1`;
 %
 %    constrOpt:              (structure) structure containing
 %                            additional contraints. Include here only
@@ -76,9 +76,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                              * .rxnList - Reaction list (cell array)
 %                              * .values -  Values for constrained
 %                                reactions (double array)
-%                                E.g.: struct('rxnList', ...
-%                                {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                'values', [-100, 0, 155.5]');
+%                                E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    excludedRxns:           (structure) Reactions to be excluded. This
 %                            structure has the following fields:
 %
@@ -88,10 +86,9 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                                upregulared reactions, D: set of
 %                                downregulared reations, K: set of knockout
 %                                reactions)
-%                            E.g.: excludedRxns = struct('rxnList',...
-%                            {{'SUCt', 'R68_b'}}, 'typeReg', 'UD')
-%                            In this E.g. SUCt is prevented to appear in
-%                            the set of upregulated reactions and R68_b is
+%                            E.g.: `excludedRxns = struct('rxnList', {{'SUCt', 'R68_b'}}, 'typeReg', 'UD')`
+%                            In this E.g. 'SUCt' is prevented to appear in
+%                            the set of upregulated reactions and 'R68_b' is
 %                            prevented to appear in the downregulated set of
 %                            reactions.
 %                            Default: empty.
@@ -101,7 +98,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            results will be stored.
 %                            Default: 'OutputsFindMustLL'.
 %    outputFileName:         (string) name for files in which
-%                            results. will be stored
+%                            results. will be stored.
 %                            Default: 'MustLLSet'.
 %    printExcel:             (double) boolean to describe wheter
 %                            data must be printed in an excel file or not.
@@ -113,80 +110,89 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            plain text file. 0 otherwise.
 %                            Default: 1
 %    keepInputs:             (double) 1 to mantain folder with
-%                            inputs to run findMustLL.gms. 0 otherwise.
+%                            inputs to run `findMustLL.gms`. 0 otherwise.
 %                            Default: 1
 %    verbose:                (double) 1 to print results in console.
 %                            0 otherwise.
 %                            Default: 0
 %
 % OUTPUTS:
-%    optForceSets:           (cell array) cell array of size  n x m, where
-%                            n = number of sets found and m = size of sets
-%                            found (k) Element in position i,j is reaction
-%                            j in set i.
+%    optForceSets:           (cell array) cell array of size  `n x m`, where
+%                            `n` = number of sets found and `m` = size of sets
+%                            found (`k`) Element in position `i`, `j` is reaction
+%                            `j` in set `i`.
 %                            E.g.:
-%                                    rxn1  rxn2
-%                                      __    __
-%                            set 1   | R4    R2
-%                            set 2   | R3    R1
 %
-%    posOptForceSets:        (double array) double array of size  n x m, where
-%                            n = number of sets found and m = size of sets
-%                            found (k) Element in position i,j is the
-%                            position of reaction in optForceSets(i,j) in
-%                            model.rxns
+%                            =====    ====    ====
+%                            \        rxn1    rxn2
+%                            set 1    R4      R2
+%                            set 2    R3      R1
+%                            =====    ====    ====
+%
+%    posOptForceSets:        (double array) double array of size  `n x m`, where
+%                            `n` = number of sets found and `m` = size of sets
+%                            found (`k`) Element in position `i`, `j` is the
+%                            position of reaction in `optForceSets(i,j)` in
+%                            `model.rxns`
 %                            E.g.:
-%                                    rxn1  rxn2
-%                                     __   __
-%                            set 1   | 4    2
-%                            set 2   | 3    1
 %
-%    typeRegOptForceSets:    (cell array) cell array of size  n x m, where
-%                            n = number of sets found and m = size of sets
-%                            found (k) Element in position i,j is the kind
+%                            =====    ====    ====
+%                            \        rxn1    rxn2
+%                            set 1    4       2
+%                            set 2    3       1
+%                            =====    ====    ====
+%
+%    typeRegOptForceSets:    (cell array) cell array of size  `n x m`, where
+%                            `n` = number of sets found and `m` = size of sets
+%                            found (`k`) Element in position `i`, `j` is the kind
 %                            of intervention for reaction in
-%                            optForceSets(i,j)
+%                            `optForceSets(i,j)`
 %                            E.g.:
-%                                         rxn1            rxn2
-%                                      ____________    ______________
-%                            set 1   | upregulation    downregulation
-%                            set 2   | upregulation    knockout
-%    fluxOptForceSets:       (double) matrix Matrix of size n +m, where
-%                            n = number of sets found and m = size of sets
-%                            found (k) The number in (i,j) is the flux
-%                            achieved for the reaction in optForceSets(i,j)
+%
+%                            =====    ============    ==============
+%                            \        rxn1            rxn2
+%                            set 1    upregulation    downregulation
+%                            set 2    upregulation    knockout
+%                            =====    ============    ==============
+%
+%    fluxOptForceSets:       (double) matrix Matrix of size `n + m`, where
+%                            `n` = number of sets found and `m` = size of sets
+%                            found (`k`) The number in `(i,j)` is the flux
+%                            achieved for the reaction in `optForceSets(i,j)`
 %    outputFileName.xls:     file containing 11 columns.
-%                            C1: Number of invervetions (k)
-%                            C2: Set Number
-%                            C3: Identifiers for reactions in the force set
-%                            C4: Type of regulations for each reaction in
-%                            the force set
-%                            C5: min flux of each reaction in force set,
-%                            according to FVA
-%                            C6: max flux of each reaction in force set,
-%                            according to FVA
-%                            C7: achieved flux of each of the reactions in
-%                            the force set after applying the inverventions
-%                            C8: objetive function achieved by OptForce.gms
-%                            C9: Minimum flux fot target when applying the
-%                            interventions
-%                            C10: Maximum flux fot target when applying the
-%                            interventions
-%                            C11: Maximum growth rate when applying the
-%                            interventions.
-%                            In the rows, the user can see each of the
-%                            optForce sets found.
+%
+%                              * C1: Number of interventions (`k`)
+%                              * C2: Set Number
+%                              * C3: Identifiers for reactions in the force set
+%                              * C4: Type of regulations for each reaction in
+%                                the force set
+%                              * C5: min flux of each reaction in force set,
+%                                according to FVA
+%                              * C6: max flux of each reaction in force set,
+%                                according to FVA
+%                              * C7: achieved flux of each of the reactions in
+%                                the force set after applying the inverventions
+%                              * C8: objetive function achieved by `OptForce.gms`
+%                              * C9: Minimum flux fot target when applying the
+%                                interventions
+%                              * C10: Maximum flux fot target when applying the
+%                                interventions
+%                              * C11: Maximum growth rate when applying the
+%                                interventions.
+%                              * In the rows, the user can see each of the
+%                                `optForce` sets found.
 %    outputFileName.txt:     Same as outputFileName.xls but in a .txt file,
 %                            separated by tabs.
 %
 % NOTE:
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
-%    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    Maranas. For a detailed description of the `optForce` procedure, please
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
@@ -347,33 +353,33 @@ end
 if loop % if k = kMin:k
     % if the user wants to generate a report, print results.
     if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
-    
+
     noSolution = 1;
     currentK = kMin;
-    
+
     while noSolution && currentK <= k
-        
+
         if keepInputs
             %save inputs
             inputFolder = [runID filesep 'InputsOptForce_k' num2str(currentK)];
             saveInputsOptForce(model, {targetRxn}, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets,...
                 constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder);
         end
-        
+
         n_int=length(model.rxns);
         nSolsFound=0;
         solutions=cell(nSets,1);
-        
+
         %initialize empty array for saving info related to optForce
         %sets
         optForceSets = cell(nSolsFound, k);
         posOptForceSets = zeros(size(optForceSets));
         fluxOptForceSets = zeros(size(optForceSets));
         typeRegOptForceSets = cell(nSolsFound, k);
-        
-        
+
+
         while nSolsFound < nSets
-            
+
             bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
             % Solve problem
             Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
@@ -405,7 +411,7 @@ if loop % if k = kMin:k
                         type{i} = 'knockout';
                     end
                 end
-                
+
                 solution.reactions = prev;
                 solution.type = type;
                 solution.pos = pos;
@@ -421,14 +427,14 @@ if loop % if k = kMin:k
                 break;
             end
         end
-        
+
         if nSolsFound > 0
             % a solution was found so this ends the loop
             noSolution = 0;
-            
+
             if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
             if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
-            
+
             for i = 1:nSolsFound
                 %incorporte info of set i into general matrices.
                 optForceSets(i,:) = solutions{i}.reactions;
@@ -436,13 +442,13 @@ if loop % if k = kMin:k
                 typeRegOptForceSets(i,:) = solutions{i}.type;
                 fluxOptForceSets(i,:) = solutions{i}.flux;
             end
-            
+
             outputFolderK = [outputFolder '_k' num2str(currentK)];
             outputFileNameK = [outputFileName '_k' num2str(currentK)];
-            
+
             % print info into an excel file if required by the user
             if printExcel && ~isunix
-                
+
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
                 Info = cell( 2 * nSolsFound + 1, 13);
@@ -463,7 +469,7 @@ if loop % if k = kMin:k
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
                 if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
             end
-            
+
             if printText
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
@@ -502,11 +508,11 @@ if loop % if k = kMin:k
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
                 if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
             end
-            
+
             %close file for saving report
             if printReport; fclose(freport); end;
             cd(workingPath);
-            
+
         else
             %in case that none set was found, initialize empty arrays
             if printReport
@@ -521,7 +527,7 @@ if loop % if k = kMin:k
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
                 end
             end
-            
+
             currentK = currentK + 1;
             if currentK > k
                 optForceSets = {};
@@ -529,19 +535,19 @@ if loop % if k = kMin:k
                 typeRegOptForceSets = {};
                 fluxOptForceSets=[];
             end
-            
+
         end
-        
+
     end
-    
+
     if noSolution
         %close file for saving report
         if printReport; fclose(freport); end;
         cd(workingPath);
     end
-    
+
 else
-    
+
     if keepInputs
         %save inputs
         inputFolder = [runID filesep 'InputsOptForce'];
@@ -550,18 +556,18 @@ else
     end
     % if the user wants to generate a report, print results.
     if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
-    
+
     n_int=length(model.rxns);
     nSolsFound=0;
     solutions=cell(nSets,1);
-    
+
     %initialize empty array for saving info related to optForce
     %sets
     optForceSets = cell(nSolsFound, k);
     posOptForceSets = zeros(size(optForceSets));
     fluxOptForceSets = zeros(size(optForceSets));
     typeRegOptForceSets = cell(nSolsFound, k);
-        
+
     while nSolsFound < nSets
 
         bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
@@ -611,7 +617,7 @@ else
             break;
         end
     end
-    
+
     if nSolsFound > 0
         if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
         if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
@@ -633,19 +639,19 @@ else
         fluxOptForceSets=[];
 
     end
-    
+
     %initialize name for files in which information will be printed
     hour = clock;
     if isempty(outputFileName);
         outputFileName = ['optForceSolution-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
     end
-    
+
     % print info into an excel file if required by the user
     if printExcel && ~isunix
         if nSolsFound > 0
             if ~isdir(outputFolder); mkdir(outputFolder); end;
             cd(outputFolder);
-            Info = cell( 2 * nSolsFound + 1, 13);  
+            Info = cell( 2 * nSolsFound + 1, 13);
             Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'},...
                 {'Min flux in Wild Type (mmol/gDW hr)'}, {'Max flux in Wild Type (mmol/gDW hr)'}, ...
                 {'Min flux in Mutant (mmol/gDW hr)'}, {'Max flux in Mutant (mmol/gDW hr)'},{'Achieved flux (mmol/gDW hr)'},...
@@ -667,7 +673,7 @@ else
             if verbose; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
         end
     end
-    
+
     % print info into a plain text file if required by the user
     if printText
         if nSolsFound > 0
@@ -712,11 +718,11 @@ else
             if verbose; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
         end
     end
-    
+
     %close file for saving report
     if printReport; fclose(freport); end;
     if printReport; movefile(reportFileName, outputFolder); end;
-    
+
     cd(workingPath);
 end
 
