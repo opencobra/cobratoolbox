@@ -1,105 +1,111 @@
 function [sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, varargin)
-% Find the maximum community growth rate at community steady-state using the SteadyCom algorithm
+% Find the maximum community growth rate at community steady-state using the `SteadyCom` algorithm
 %
 % USAGE:
 %    [sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, parameter, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
-%    (the following fields are required)
-%      S            Stoichiometric matrix
-%      b            Right hand side
-%      c            Objective coefficients
-%      lb           Lower bounds
-%      ub           Upper bounds
-%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
-%      infoCom      structure containing community reaction info 
-%      indCom       the index structure corresponding to infoCom
+%    modelCom:       A community COBRA model structure with the following fields (created using `createMultipleSpeciesModel`)
+%                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+%
+%                      * S - Stoichiometric matrix
+%                      * b - Right hand side
+%                      * c - Objective coefficients
+%                      * lb - Lower bounds
+%                      * ub - Upper bounds
+%                      * infoCom - structure containing community reaction info
+%                      * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
-%    options    struct with the following possible fields:
-%     (for constraining individual growth rates and biomass amounts, default [])
-%       GRfx        Fixed growth rate for organisms apart from the community
-%                   (N_organisms x 1 vector, NaN for unfixed growth rate,
-%                    or [#organisms | value]) e.g. to fix organisms 2, 3 
-%                   at growth rate 0.1, GRfx = [2, 0.1; 3, 0.1];
-%       BMcon       Biomass constraint matrix (sum(a_ij * X_j) </=/> b_i)
-%                   (given as K x N_organisms matrix for K constraints)
-%                   e.g. [0 1 1 0] for X_2 + X_3 in a 4-organisms model
-%       BMrhs       RHS for BMcon, K x 1 vector for K constraints
-%       BMcsense    Sense of the constraint, 'L', 'E', 'G' for <=, =, >=
-%     (for general constraints on e.g. total carbon uptake, molecular crowding, default [])
-%       MC          K x (N_rxns+N_organisms) coefficient matrix, for K additional constraints
-%       MCmode      K x (N_rxns+N_organisms) matrix , with number 0 ~ 3
-%                   0: original variable
-%                   1: positive part of the variable
-%                   2: negative part of the variable
-%                   3: absolute value of the variable
-%       MCrhs       RHS of the constraints (default all zeros if .MC is given)
-%       MClhs       LHS of the constraints (default -inf if .MC is given)
-%     (parameters in the iterative algorithm, [default value])
-%       GRguess [0.2]   Initial guess of the growth rate.
-%       feasCrit [1]    Criteria for feasibility, 1 or 2:
-%                       The algorithm tests iteratively at a given growth rate
-%                       whether a feasible solution can be found.
-%                       1: Use a threshold total biomass BMweight (see below).
-%                          i.e. sum(X) >= BMweight
-%                          (use it if the total biomass is known, the most common usage)
-%                       2: Use a threshold on minimum biomass production
-%                          (=specific growth rate x sum(biomass), which is roughly 
-%                          constant over a range of growth rate if the sum of biomass 
-%                          is not bounded above) 
-%                          i.e. sum(X) * gr >= BMtol * BMref * GR0
-%                          where BMref is the maximum biomass at a small growth rate GR0
-%                          and BMtol is a fraction ranging from 0 to 1
-%       algorithm [1]   Algorithm to find the maximum growth rate
-%                       1. Fzero after finding grLB and grUB with simple guessing [gr' = gr * sum(X)/sum(X')]
-%                       2. Simple guessing with minimum one percent step size
-%                       3. Bisection method
-%       BMweight [1]    Minimum total biomass for feasibility. Used only if feasCrit = 1.
-%                       Set BMweight to a close-to-zero value to compute the wash-out dilution rate.
-%       GR0 [0.001]     A small growth rate to obtain a reference value for maximum total biomass production. 
-%                       Used only if feasCrit = 2 or solveGR0 = true
-%       BMtol [0.8]     Fractional tolerance for biomass production to check
-%                       feasibility. Used only if feasCrit = 2
-%       solveGR0[false] true to solve the model at a low growth rate GR0 first to test feasibility 
-%       GRtol [1e-6]    Precision for the growth rate found (grUB - grLB < GRtol)
-%       BMtolAbs [1e-5] Absolute tolerance for positivity of biomass
-%       maxIter (1e3)   maximum nummber of iteration
-%     (parameters in the optimization model, [default value])
-%       minNorm [0]     0: No minNorm. 1: min sum of absolution flux of the final solution.
-%       BMgdw [all 1s]  The gram dry weight per mmol of the biomass reaction of
-%                       each organism. Maybe used to scale the biomass reactions between organisms.
-%       BMobj [all 1s]  Objective coefficient for the biomass of each organism
-%                       when doing the maximization at each step.
-%     (other parameters)
-%       verbFlag  [3]   Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
-%       LPonly [false]  Return the initial LP at zero growth rate only. Calculate nothing.
-%       saveModel ['']  (ibm_cplex only) String, if non-empty, save the cplex model, basis and parameters.
-% 
-%    parameter:              structure for solver-specific parameters.
-%    'param1', value1, ...:  name-value pairs for solveCobraLP parameters. See solveCobraLP for details
+%    options:        struct with the following possible fields:
+%                    (for constraining individual growth rates and biomass amounts, default []):
 %
-% OUTPUT
-%    sol: COBRA Toolbox solution structure returned by solveCobraLP 
-%    result: structure with the following fields:
-%        GRmax:          maximum specific growth rate found (/h)
-%        vBM:            biomass formation rate (gdw/h)
-%        BM:             Biomass vector at GRmax (gdw)
-%        Ut:             uptake fluxes (mmol/h)
-%        Ex:             export fluxes (mmol/h)
-%        flux:           flux distribution for the original model
-%      (the following 'iter' fields are status in each iteration with the columns being
-%      [GR | biomass X | biomass flux (GR * X) | max. infeas. of solution | method for next guess])
-%        iter0:          stationary, no growth, gr = 0
-%        iter1:          small growth rate, gr = GR0
-%        iterPre:        iterations for finding upper and lower bounds
-%        iter:           iterations for finding max gr using bisectional method
-%        stat:           status at the termination of the algorithm:
-%                        infeasible: infeasible model, even with maintenance
-%                                    requirement only
-%                        maintenance:feasible at maintenance, but cannot grow
-%                        optimal:    optimal growth rate found
+%                      * GRfx - Fixed growth rate for organisms apart from the community
+%                        (:math:`N_{organisms} * 1` vector, NaN for unfixed growth rate,
+%                        or [#organisms | value]) e.g. to fix organisms 2, 3
+%                        at growth rate 0.1, `GRfx = [2, 0.1; 3, 0.1];`
+%                      * BMcon - Biomass constraint matrix :math:`(\sum (a_{ij} * X_j) </=/> b_i)`
+%                        (given as :math:`K * N_{organisms}` matrix for `K` constraints)
+%                        e.g. [0 1 1 0] for :math:`X_2 + X_3` in a 4-organisms model
+%                      * BMrhs - RHS for BMcon, `K x 1` vector for `K` constraints
+%                      * BMcsense - Sense of the constraint, 'L', 'E', 'G' for <=, =, >=
+%                        (for general constraints on e.g. total carbon uptake, molecular crowding, default [])
+%                      * MC - :math:`K * (N_{rxns}+N_{organisms})` coefficient matrix, for `K` additional constraints
+%                      * MCmode - :math:`K * (N_{rxns}+N_{organisms})` matrix , with number 0 ~ 3
+%
+%                        * 0: original variable
+%                        * 1: positive part of the variable
+%                        * 2: negative part of the variable
+%                        * 3: absolute value of the variable
+%                      * MCrhs - RHS of the constraints (default all zeros if .MC is given)
+%                      * MClhs - LHS of the constraints (default -inf if .MC is given)
+%                        (parameters in the iterative algorithm, [default value])
+%                      * GRguess [0.2] - Initial guess of the growth rate.
+%                      * feasCrit [1] - Criteria for feasibility, 1 or 2:
+%                        The algorithm tests iteratively at a given growth rate
+%                        whether a feasible solution can be found.
+%
+%                          1. Use a threshold total biomass `BMweight` (see below).
+%                             i.e. :math:`\sum X \geq BMweight`
+%                             (use it if the total biomass is known, the most common usage)
+%                          2. Use a threshold on minimum biomass production
+%                             (=specific growth rate x :math:`\sum biomass`, which is roughly
+%                             constant over a range of growth rate if the sum of biomass
+%                             is not bounded above)
+%                             i.e. :math:`\sum X * gr \geq BMtol * BMref * GR0`
+%                             where `BMref` is the maximum biomass at a small growth rate `GR0`
+%                             and `BMtol` is a fraction ranging from 0 to 1
+%                      * algorithm [1] - Algorithm to find the maximum growth rate
+%
+%                          1. `Fzero` after finding `grLB` and `grUB` with simple guessing [:math:`gr^T = gr * \sum X / \sum X^T`]
+%                          2. Simple guessing with minimum one percent step size
+%                          3. Bisection method
+%                      * BMweight [1] - Minimum total biomass for feasibility. Used only if `feasCrit = 1`.
+%                        Set BMweight to a close-to-zero value to compute the wash-out dilution rate.
+%                      * GR0 [0.001] - A small growth rate to obtain a reference value for maximum total biomass production.
+%                        Used only if `feasCrit = 2` or `solveGR0 = true`
+%                      * BMtol [0.8] - Fractional tolerance for biomass production to check
+%                        feasibility. Used only if `feasCrit = 2`
+%                      * solveGR0[false] - true to solve the model at a low growth rate `GR0` first to test feasibility
+%                      * GRtol [1e-6] - Precision for the growth rate found (:math:`grUB - grLB < GRtol`)
+%                      * BMtolAbs [1e-5] - Absolute tolerance for positivity of biomass
+%                      * maxIter (1e3) - maximum nummber of iteration
+%                        (parameters in the optimization model, [default value])
+%                      * minNorm [0] - 0: No `minNorm`. 1: min sum of absolution flux of the final solution.
+%                      * BMgdw [all 1s] - The gram dry weight per mmol of the biomass reaction of
+%                        each organism. Maybe used to scale the biomass reactions between organisms.
+%                      * BMobj [all 1s] - Objective coefficient for the biomass of each organism
+%                        when doing the maximization at each step.
+%                        (other parameters)
+%                      * verbFlag  [3]  - Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
+%                      * LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.
+%                      * saveModel ['']  String, if non-empty, save the `cplex` model, basis and parameters.
+%
+%    parameter:      structure for solver-specific parameters.
+%                    'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See `solveCobraLP` for details
+%
+% OUTPUTS:
+%    sol:            cplex solution structure
+%    result:         structure with the following fields:
+%
+%                      * GRmax: maximum specific growth rate found (/h)
+%                      * vBM: biomass formation rate (gdw/h)
+%                      * BM: Biomass vector at GRmax (gdw)
+%                      * Ut: uptake fluxes (mmol/h)
+%                      * Ex: export fluxes (mmol/h)
+%                      * flux: flux distribution for the original model
+%                        (the following 'iter' fields are status in each iteration:)
+%                        [GR | biomass X | biomass flux (`GR * X`) | max. infeas. of solution])
+%                      * iter0: stationary, no growth, `gr = 0`
+%                      * iter1: small growth rate, `gr = GR0`
+%                      * iterPre: iterations for finding upper and lower bounds
+%                      * iter: iterations for finding max gr using bisectional method
+%                      * stat: status at the termination of the algorithm:
+%
+%                        * infeasible: infeasible model, even with maintenance requirement only
+%                        * maintenance: feasible at maintenance, but cannot grow
+%                        * optimal: optimal growth rate found
+
 t = tic;
 t0 = 0;
 %% Initialization
@@ -134,7 +140,7 @@ nSp = numel(modelCom.indCom.spBm);  % number of organism
 if verbFlag && ~LPonly
     fprintf('Find maximum community growth rate..\n');
 end
-%% Construct LP 
+%% Construct LP
 [LP, indLP] = constructLPcom(modelCom, options);
 LP2 = [];
 % terminate if only the LP structure is called as output
@@ -149,7 +155,7 @@ end
 % number of iteration
 k = 0;
 % solution record: [#iter, growth rate, biomass, growth rate * biomass, infeasibility, method for next guess];
-iter = [];  
+iter = [];
 
 %% Test the ability of the model to stay at maintenance only.
 
@@ -310,7 +316,7 @@ optionsf0.MaxIter = maxIter;  % max. number of iteration
 optionsf0.TolX = GRtol;  % tolerance for the root found
 
 % find an interval for the max. growth rate using the naive guess growth rate x max(biomass) = constant
-% which gives better guess than matlab fzero. Then initiate fzero or continue using simple guess or bisection 
+% which gives better guess than matlab fzero. Then initiate fzero or continue using simple guess or bisection
 col1disp = num2str(max([log10(maxIter)+1,4]));  % number of characters for column 1
 if pL
     fprintf(['%' col1disp 's  %8s  %8s  %8s  Time elapsed (iteration/total)\n'],...
@@ -323,7 +329,7 @@ else
     k1LB = false;  % if lower bound found at k = 1
     % If an LB is found at k = 1, kLU counts the number of LBs found.
     % If an UB is found at k = 1, kLU counts the number of UBs found.
-    kLU = 0; 
+    kLU = 0;
     while true
         % solve for initial guess
         k = k + 1;
@@ -364,7 +370,7 @@ else
                 if k == 1
                     k1LB = false;  % if LB is not found at step 1
                 end
-                kLU = kLU + ~k1LB; 
+                kLU = kLU + ~k1LB;
             end
             if isfield(sol, 'basis')
                 LP.basis = sol.basis;  % reuse basis
@@ -379,8 +385,8 @@ else
             kLU = kLU + ~k1LB;
         end
         % record results for the current iteration
-        iter = [iter; k, grCur, BMcur, grCur * BMcur, dev, guessMethod];    
-        
+        iter = [iter; k, grCur, BMcur, grCur * BMcur, dev, guessMethod];
+
         % condition for switching to fzero or concluding GRmax = 0:
         %   kLU >= 2 to ensure neither of the bounds is the initial guess.
         % Algorithm:
@@ -431,14 +437,14 @@ else
                 % normal situation
                 % got interval, use fzero, LP will also be dynamically updated
                 % (Users may create a modified version of fzero on their own
-                % to supply function values [dBMneg, dBMpos] for the initial 
+                % to supply function values [dBMneg, dBMpos] for the initial
                 % points to save the time for evaluting the initial points)
                 GRmax = fzero(@(x) LP4fzero(x, LP), [grLB, grUB], optionsf0);
                 % the final LP may not be at GRmax
                 [~, LP, BMcur, sol] = LP4fzero(GRmax, LP);
                 break
             end
-            
+
         elseif grUB <= GRtol  % zero growth rate
             GRmax = 0;
             break
@@ -451,7 +457,7 @@ else
             end
             % new guess for the growth rate using simple guess or bisection
             grNext = updateGRguess(BMcur, grCur);  % simple guess
-            if grNext >= grUB * 0.99 || algorithm == 3 
+            if grNext >= grUB * 0.99 || algorithm == 3
                 % bisection if designated or the guess is too close to the upper bound
                 if isinf(grUB)
                     grCur = grLB * 2;
@@ -501,10 +507,10 @@ while ~condition2(BMcur, GRmax) && GRmax > GRtol && kGRadjust <= 10
 end
 % corrected solution still not feasible
 numInstab2 = ~condition2(BMcur, GRmax) && GRmax > GRtol;
-result.GRmax = GRmax;    
+result.GRmax = GRmax;
 solOut = sol;  % the current solution as the output solution
 flux = sol.full;
-%add maximum biomass as a constraint to ensure 
+%add maximum biomass as a constraint to ensure
 %that the model is feasible for further analysis (e.g. FVA)
 LP.A = [LP.A; sparse([ones(nSp, 1); 2 * ones(nSp, 1)], repmat((n + 1):(n + nSp), 1, 2),...
     ones(nSp * 2, 1), 2, size(LP.A, 2))];
@@ -522,7 +528,7 @@ if isfield(sol, 'basis')
 end
 dev = checkSolFeas(LP, sol);
 
-% the infeasibility may increase after adding the biomass constraint (Cplex issue), 
+% the infeasibility may increase after adding the biomass constraint (Cplex issue),
 % adjust the minimum biomass slightly until feasible
 kBMadjust = 0;
 BMmaxLB = LP.b(end);
@@ -626,7 +632,7 @@ end
 function [LP,index] = constructLPcom(modelCom, options)
 % Construct an LP structure for solveCobraLP for solving SteadyCom.
 % The problem matrix is structured as follows:
-%   Variables (column): 
+%   Variables (column):
 %     [flux (organism-specific rxn) | flux (community exchange) | biomass | absolute flux for MC]
 %   Constraint (row):
 %   [mass balance; (Sv = 0)
@@ -642,7 +648,7 @@ function [LP,index] = constructLPcom(modelCom, options)
 %    modelCom:   community model. See doc for the main function
 %    options:    option structure. See doc for the main function
 
-%% Initialization 
+%% Initialization
 % get paramters
 if ~exist('options', 'var')
     options = struct();
@@ -690,7 +696,7 @@ nVar = nVar + n + nSp;
 %handle constraint sense
 if ~isfield(modelCom, 'csense')
     cs = char(['E' * ones(1, m) 'L' * ones(1, 2 * nRxnSp) 'E' * ones(1, nSp) BMcsense(:)']);
-else 
+else
     cs = [modelCom.csense(:)' char(['L' * ones(1, 2 * nRxnSp) 'E' * ones(1, nSp) BMcsense(:)'])];
 end
 %LHS, RHS for constraints
@@ -727,7 +733,7 @@ if isfield(options, 'MC') && ~isempty(options.MC)
     MCcont = true;
     %Check sizes
     if isfield(options,'MCmode')
-        %MC and MCmode must have the same size of n+nSp x no. of constraints 
+        %MC and MCmode must have the same size of n+nSp x no. of constraints
         if ~isequal(size(options.MC),size(options.MCmode))
             if ~isequal(size(options.MC),size(options.MCmode'))
                 warning('Size of MCmode does not match that of MC. Ignore.')
@@ -773,13 +779,13 @@ if isfield(options, 'MC') && ~isempty(options.MC)
         warning('size of MClhs not equal to size(options.MC,2). Ignore.')
         MCcont = false;
     end
-    
+
     if MCcont
         if verbFlag
             fprintf('User-supplied constraints imposed.\n');
         end
         %list of fluxes requiring decomposition variables (non-zero MCmode and
-        %non-zero MC) 
+        %non-zero MC)
         %first filter by lb and ub to reduce variables to be added
         for j = 1:size(MCmode,2)
             %Ignore variables with non-negative lb but designated to use
@@ -908,4 +914,3 @@ if dev <= feasTol
 end
 dBM = (BMequiv * GR0 / grCur) - BMcur;
 end
-

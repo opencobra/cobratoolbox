@@ -1,13 +1,14 @@
 function varargout = SteadyComSubroutines(purpose, varargin)
-% call different subroutines for SteadyCom functions
-% 
+% Calls different subroutines for `SteadyCom` functions
+%
 % USAGE:
+%
 %    varargout = SteadyComSubroutines(purpose, varargin)
-% 
+%
 % INPUT:
-%    purpose:   'initialize' / 'infoCom2indCom' / 'rxnList2objMatrix' / 'updateLPcom' / 'getParams'
-%               See the respective local functions for their documentations
-%    varargin:  various input for different subroutines
+%    purpose:     'initialize' / 'infoCom2indCom' / 'rxnList2objMatrix' / 'updateLPcom' / 'getParams'
+%                 See the respective local functions for their documentations
+%    varargin:    various input for different subroutines
 
 switch purpose
     case 'initialize'
@@ -30,7 +31,7 @@ function [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, x
 % initialization step for all SteadyCom functions
 %
 % USAGE:
-%    [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, xName, m, n, nSp, nRxnSp] 
+%    [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, xName, m, n, nSp, nRxnSp]
 %        = initialize(modelCom, parameter, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
@@ -42,7 +43,7 @@ function [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, x
 %      lb             lower bounds
 %      ub             upper bounds
 %    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
-%      infoCom        structure containing community reaction info 
+%      infoCom        structure containing community reaction info
 %      indCom         the index structure corresponding to infoCom
 %
 % OPTIONAL INPUTS:
@@ -110,7 +111,7 @@ if ibm_cplex  % specific setting for ibm_cplex
         % override the feasTol in CobraSolverParam if given in solverParams
         feasTol = solverParams.simplex.tolerances.feasibility;
     end
-    % make sure Cplex use the same feasTol as this script 
+    % make sure Cplex use the same feasTol as this script
     solverParams.simplex.tolerances.feasibility = feasTol;
 end
 if isfield(modelCom, 'infoCom')
@@ -170,7 +171,7 @@ if ~revFlag
     indCom.EXsp = zeros(size(infoCom.EXsp));
     SpCom = ~cellfun(@isempty, infoCom.EXsp);
     indCom.EXsp(SpCom) = findRxnIDs(modelCom, infoCom.EXsp(SpCom));
-    if isfield(infoCom, 'EXhost') 
+    if isfield(infoCom, 'EXhost')
         if ~isempty(infoCom.EXhost)
             indCom.EXhost = findRxnIDs(modelCom, infoCom.EXhost);
         else
@@ -179,12 +180,12 @@ if ~revFlag
     end
     indCom.Mcom = findMetIDs(modelCom, infoCom.Mcom);
     indCom.Msp = zeros(size(infoCom.Msp));
-    if isfield(infoCom, 'Mhost') 
+    if isfield(infoCom, 'Mhost')
         if ~isempty(infoCom.Mhost)
             indCom.Mhost = findMetIDs(modelCom, infoCom.Mhost);
         else
             indCom.Mhost = zeros(0, 1);
-        end 
+        end
     end
     SpCom = ~cellfun(@isempty, infoCom.Msp);
     indCom.Msp(SpCom) = findMetIDs(modelCom, infoCom.Msp(SpCom));
@@ -212,7 +213,7 @@ else
     indCom.EXsp = repmat({''}, size(infoCom.EXsp, 1), size(infoCom.EXsp, 2));
     SpCom = infoCom.EXsp ~= 0;
     indCom.EXsp(SpCom) = modelCom.rxns(infoCom.EXsp(SpCom));
-    if isfield(infoCom, 'EXhost') 
+    if isfield(infoCom, 'EXhost')
         if ~isempty(infoCom.EXhost)
             indCom.EXhost = modelCom.rxns(infoCom.EXhost);
         else
@@ -223,7 +224,7 @@ else
     indCom.Msp = repmat({''},size(infoCom.Msp,1), size(infoCom.Msp,2));
     SpCom = infoCom.Msp ~= 0;
     indCom.Msp(SpCom) = modelCom.mets(infoCom.Msp(SpCom));
-    if isfield(infoCom, 'Mhost') 
+    if isfield(infoCom, 'Mhost')
         if ~isempty(infoCom.Mhost)
             indCom.Mhost = modelCom.mets(infoCom.Mhost);
         else
@@ -242,7 +243,7 @@ end
 function objMatrix = rxnList2objMatrix(rxnList, varNameDisp, xName, n, nVar, callName)
 % transform a list of K reactions or K linear combinations of reactions into a (#rxns + #organisms)-by-K matrix
 % as the objective vectors to be optimized in SteadyComFVA and SteadyComPOA
-% 
+%
 % USAGE:
 %    objMatrix = rxnList2objMatrix(rxnList, varNameDisp, xName, n, nVar, callName)
 %
@@ -250,7 +251,7 @@ function objMatrix = rxnList2objMatrix(rxnList, varNameDisp, xName, n, nVar, cal
 %    rxnNameList     list of K reactions or K linear combinations of reactions, in the format of either:
 %                      - cell array, each cell being a reaction ID or a cell array of reaction IDs. For the latter,
 %                        it is transformed as a column with 1 for each reaction (uniform sum)
-%                        E.g., {'rxn1'; 'X_1'; {'rxn2'; 'X_2'}} becomes 
+%                        E.g., {'rxn1'; 'X_1'; {'rxn2'; 'X_2'}} becomes
 %                              [1 0 0; (rxn1)
 %                               0 0 1; (rxn2)
 %                               0 1 0; (X_1)
@@ -258,7 +259,7 @@ function objMatrix = rxnList2objMatrix(rxnList, varNameDisp, xName, n, nVar, cal
 %                               for a model with 2 reactions and 2 organisms
 %                      - a row vector of reaction index (#rxns + k for the biomass of the k-th organism)
 %                        E.g., [3, 4] becomes [0 0; 0 0; 1 0; 0 1].
-%                      - a direct (N_rxns + N_organism) x K matrix. 
+%                      - a direct (N_rxns + N_organism) x K matrix.
 %    varNameDisp     cell array of rxn IDs + biomass variable IDs
 %    xName          alternative biomass variable IDs if organism abbreviations (modelCom.infoCom.spAbbr) are given
 %    n               number of reactions
@@ -273,7 +274,7 @@ if isnumeric(rxnList)  % if the input is numeric
     if size(rxnList,1) >= n && size(rxnList,1) <= nVar
         % it is a matrix of objective vectors
         objMatrix = [sparse(rxnList); sparse(nVar - size(rxnList,1), size(rxnList,2))];
-    elseif size(rxnList, 1) == 1 || size(rxnList, 2) == 1 
+    elseif size(rxnList, 1) == 1 || size(rxnList, 2) == 1
         % reaction index (better in row to distinguish from matrix input)
         objMatrix = sparse(rxnList, 1:numel(rxnList), ones(numel(rxnList),1),...
             nVar, max(size(rxnList)));
@@ -285,7 +286,7 @@ if isnumeric(rxnList)  % if the input is numeric
 elseif iscell(rxnList)  % if the input is a cell array
     [row, col] = deal([]);
     for jRxnName = 1:numel(rxnList)
-        % Each rxnNameList{jRxnName} can be a cell array of reactions. 
+        % Each rxnNameList{jRxnName} can be a cell array of reactions.
         % In this case, treat as the unweighted sum of the reactions
         [~, rJ] = ismember(rxnList{jRxnName}, varNameDisp);
         % check if names for biomass variables exist
@@ -429,7 +430,7 @@ function paramCell = getParams(param2get, options, modelCom)
 %
 % INPUTS:
 %    'param_1',...,'param_N': parameter names
-%    options:   option structure. If the required parameter is a field in options, 
+%    options:   option structure. If the required parameter is a field in options,
 %               take from options. Otherwise, return the default value.
 %    modelCom:  the community model for which parameters are constructed.
 if nargin < 3
@@ -444,7 +445,7 @@ if ischar(param2get)
     param2get = {param2get};
 end
 paramNeedTransform = {'GRfx'};
-    
+
 paramCell = cell(numel(param2get), 1);
 for j = 1:numel(param2get)
     if any(strcmp(param2get{j}, paramNeedTransform))
@@ -463,7 +464,7 @@ end
 
     function param = paramDefault(paramName)
         % get the default parameters. Called by getParams
-        
+
         % Default parameters
         switch paramName
             % general parameters
@@ -475,7 +476,7 @@ end
                     param.sifting.display, param.conflict.display] = deal(0);
                 [param.simplex.tolerances.optimality, param.simplex.tolerances.feasibility] = deal(1e-9,1e-8);
                 param.read.scale = -1;
-                
+
                 % parameters for SteadyCom
             case 'GRguess',     param = 0.2;  % initial guess for growth rate
             case 'BMtol',       param = 0.8;  % tolerance for relative biomass amount (used only for feasCrit=3)
@@ -494,7 +495,7 @@ end
             case 'solveGR0',    param = false;  % true to solve the model at very low growth rate (GR0)
             case 'resultTmp',   param = struct('GRmax',[],'vBM',[],'BM',[],'Ut',[],...
                     'Ex',[],'flux',[],'iter0',[],'iter',[],'stat','');  % result template
-                
+
                 % parameters for SteadyComFVA
             case 'optBMpercent',param = 99.99;
             case 'rxnNameList',  % targets for analysis
@@ -523,20 +524,20 @@ end
             case 'optGRpercent',param = 99.99;
             case 'saveFVA',     param = '';
             case 'saveFre',     param = 0.1;  % save frequency. Save every #rxns x saveFraction
-                
+
                 % parameters for SteadyComPOA
             case 'Nstep',       param = 10;
             case 'NstepScale',  param = 'lin';
             case 'symmetric',   param = true;   % treat it as symmetric, optimize for only j > k
             case 'savePOA',     param = 'POAtmp/POA';
-                
+
             otherwise,          param = [];
         end
     end
 
     function x = transformOptionInput(options, field, nSp)
         % transform input parameters. Called by getParams
-        
+
         if isfield(options, field)
             if size(options.(field), 2) == 2
                 x = NaN(nSp, 1);
@@ -547,11 +548,6 @@ end
         else
             x = NaN(nSp, 1);
         end
-        
+
     end
 end
-
-
-
-
-
