@@ -1,17 +1,19 @@
 function LP = setCplexParam(LP, solverParams,verbFlag)
-% set the parameters of the IBM ILOG CPLEX object according to the structure solverParams
+% Sets the parameters of the IBM ILOG CPLEX object according to the structure `solverParams`
 %
 % USAGE:
+%
 %    LP = setCplexParam(LP, solverParams, verbFlag);
-% 
+%
 % INPUTS:
-%    LP:            IBM-ILOG Cplex object
-%    solverParams:  parameter structure for Cplex. Check LP.Param. For example,
-%                     [solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display,...
-%                     solverParams.sifting.display, solverParams.conflict.display] = deal(0);
-%                     [solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9,1e-8);
+%    LP:              IBM-ILOG Cplex object
+%    solverParams:    parameter structure for Cplex. Check `LP.Param`. For example,
+%                     `[solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display, solverParams.sifting.display, solverParams.conflict.display] = deal(0);`
+%                     `[solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9,1e-8);`
+%
 %                     The full set of parameters can be obtained by calling 'Cplex().Param'
-%    verbFlag:      true to show which parameter input is problematic if any (optional, default true)
+%    verbFlag:        true to show which parameter input is problematic if any (optional, default true)
+
 if nargin < 3
     verbFlag = true;
 end
@@ -65,7 +67,7 @@ end
 
 function [paramList, paramPath, addCur] = getParamList(param, bottomFlag)
 % Get all the end parameters and their paths for matching CPLEX parameters appropriately
-% (e.g., if param.simplex.display is a parameter, then we will have 'display' 
+% (e.g., if param.simplex.display is a parameter, then we will have 'display'
 % in paramList and 'param.simplex' in paramPath)
 structCur = param;  % current structure
 lv = 1;  % current level of the structure
@@ -85,7 +87,7 @@ while lv > 0
             structCur = structCur.(lvField{lv}{lvFieldN(lv)});
             lv = lv + 1;  % level + 1
             % start checking from the first field in the next level of structure
-            lvFieldN(lv) = 1;  
+            lvFieldN(lv) = 1;
             % get all fields for the next structure
             lvField{lv} = fieldnames(structCur);
         else
@@ -109,12 +111,12 @@ while lv > 0
     else
         addCurLv = false;
         if ~bottomFlag || strcmpi(lvField{lv}{lvFieldN(lv)}, 'Cur')
-            % if the current level is not a structure, with the bottomFlag off 
-            % (not going to the bottom level, for LP.Param), or if the current level 
+            % if the current level is not a structure, with the bottomFlag off
+            % (not going to the bottom level, for LP.Param), or if the current level
             % is named 'Cur' (may happen in the user-supplied parameter structure),
-            % decrease one level since the bottom level of all parameters is either 
-            % 'Min', 'Max', 'Cur', 'Def', 'Name', 'Help' containing the information 
-            % for the parameter, which is the name for the structure immediately on 
+            % decrease one level since the bottom level of all parameters is either
+            % 'Min', 'Max', 'Cur', 'Def', 'Name', 'Help' containing the information
+            % for the parameter, which is the name for the structure immediately on
             % top of the current level
             lv = lv - 1;
             if bottomFlag  % 'Cur' at the bottom level in the user-supplied parameters
@@ -152,7 +154,7 @@ while lv > 0
                 end
             end
         else
-            % if lv = 0 because of bottomFlag, continue at lv = 1 
+            % if lv = 0 because of bottomFlag, continue at lv = 1
             lv = 1;
             if lvFieldN(lv) == numel(lvField{lv})
                 break
