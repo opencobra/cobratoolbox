@@ -54,7 +54,7 @@ end
 if nargin < 4 || isempty(metTagRe)
     metTagRe = '^%s';
 end
-metCompartment = getCompartment(modelJoint.mets);
+metCompartment = getCompartment(modelJoint.mets); 
 % mets in the common exchange space ([u])
 metCom = strcmp(metCompartment, compCom);
 % mets in exchange space accessible only by the host ([b])

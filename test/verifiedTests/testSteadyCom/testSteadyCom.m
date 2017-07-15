@@ -60,7 +60,7 @@ text2 = importdata('refData_printUptakeBoundCom.txt');
 assert(isequal(text1, text2));
 delete('printUptakeBoundCom.txt');  % remove the generated file
 
-% TEST printUptakeBoundCom with a model with host organism
+% TEST createMultipleSpeciesModel and printUptakeBoundCom with a model with host organism
 % build a model with host
 modelWtHost = createMultipleSpeciesModel({org1; org2}, {'Org1'; 'Org2'}, org1, 'Org3');
 % get IDs
@@ -71,15 +71,31 @@ modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXcom(bCom | cCom
 modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXsp(bCom | cCom, :), -5, 'l');
 modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXhost(bCom | cCom, :), -5, 'l');
 modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXhost(aCom, :), 0, 'l');
-
+% print uptake bounds and compare
 diary('printUptakeBoundCom_wt_host.txt');
 printUptakeBoundCom(modelWtHost, 1);
 diary off;
-
 text1 = importdata('printUptakeBoundCom_wt_host.txt');
 text2 = importdata('refData_printUptakeBoundCom_wt_host.txt');
 assert(isequal(text1, text2));
 delete('printUptakeBoundCom_wt_host.txt');  % remove the generated file
+
+%TEST createMultipleSpeciesModel and getMultiSpeciesModelId with a model with
+%the 'biomass[c]' metabolite (special treatment by createMultipleSpeciesModel)
+[metBm, rxnExBm, nameTags] = deal('biomass[c]', 'EX_biomass(c)', {'Org1'; 'Org2'});
+rxnEqs{end} = ['30 b[c] + 20 c[c] -> ' metBm];
+model = createModel([rxns; {'EX_biomass(c)'}], [rxnNames; {'biomass export'}], [rxnEqs; {[metBm ' ->']}], ...
+    'lowerBoundList', [-1; 0; 0; -1000; -1000; -1000; 0; 0; 0; 0]);
+modelWtBiomass = createMultipleSpeciesModel({model; model}, nameTags);
+[modelWtBiomass.infoCom, modelWtBiomass.indCom] = getMultiSpeciesModelId(modelWtBiomass, nameTags);
+% biomass community exchange reaction and metabolite Ids unchanged
+bmCom = strcmp(modelWtBiomass.infoCom.EXcom, regexprep(rxnExBm, '\(([^\)]+)\)', '\[$1\]'));
+assert(sum(bmCom) == 1 & isequal(bmCom, strcmp(modelWtBiomass.infoCom.Mcom, metBm)))
+% the orders of organism biomass export reactions and metabolites preserve
+for jSp = 1:numel(nameTags)
+    assert(isequal(bmCom, strcmp(modelWtBiomass.infoCom.EXsp(:,jSp), [nameTags{jSp}, 'I' regexprep(rxnExBm, '\(([^\)]+)\)', '\[$1\]tr')])))
+    assert(isequal(bmCom, strcmp(modelWtBiomass.infoCom.Msp(:,jSp), [nameTags{jSp}, metBm])))
+end
 
 % specify biomass reactions
 modelJoint.infoCom.spBm = {'Org1BIOMASS'; 'Org2BIOMASS'};
