@@ -21,8 +21,7 @@ function [] = exportSetToGAMS(set, fileName)
 % EXAMPLE:
 %
 %    exportSetToGAMS(model.rxns, 'Reactions.txt')
-%    This, will export the list of elements in model.rxns to a file called
-%    Reactions.txt
+%    %This, will export the list of elements in model.rxns to a file called Reactions.txt
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
