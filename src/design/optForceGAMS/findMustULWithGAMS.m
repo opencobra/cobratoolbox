@@ -1,7 +1,5 @@
-function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWithGAMS(model, minFluxesW, ...
-    maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder,...
-    outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
-% This function runs the second step of optForce, that is to solve a
+function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWithGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder, outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
+% This function runs the second step of `optForce`, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
 % MustUL set.
 %
@@ -15,21 +13,21 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %
 %                                  * .rxns - Reaction IDs in the model
 %                                  * .mets - Metabolite IDs in the model
-%                                  * .S -    Stoichiometric matrix (sparse)
-%                                  * .b -    RHS of Sv = b (usually zeros)
-%                                  * .c -    Objective coefficients
-%                                  * .lb -   Lower bounds for fluxes
-%                                  * .ub -   Upper bounds for fluxes
-%    minFluxesW:                 (double array of size n_rxns x 1) minimum
+%                                  * .S - Stoichiometric matrix (sparse)
+%                                  * .b - RHS of `Sv = b` (usually zeros)
+%                                  * .c - Objective coefficients
+%                                  * .lb - Lower bounds for fluxes
+%                                  * .ub - Upper bounds for fluxes
+%    minFluxesW:                 (double array of size `n_rxns x 1`) minimum
 %                                fluxes for each reaction in the model for
 %                                wild-type strain. This can be obtained by
-%                                running the function FVAOptForce. E.g.:
-%                                minFluxesW = [-90; -56];
+%                                running the function `FVAOptForce`. E.g.:
+%                                `minFluxesW = [-90; -56];`
 %    maxFluxesW:                 (double array of size n_rxns x 1) maximum
 %                                fluxes for each reaction in the model for
 %                                wild-type strain. This can be obtained by
-%                                running the function FVAOptForce. E.g.:
-%                                maxFluxesW = [90; 56];
+%                                running the function `FVAOptForce`. E.g.:
+%                                `maxFluxesW = [90; 56];`
 %
 % OPTIONAL INPUTS:
 %    constrOpt:                  (Structure) structure containing
@@ -46,15 +44,13 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                  * .rxnList - Reaction list (cell array)
 %                                  * .values -  Values for constrained
 %                                    reactions (double array)
-%                                    E.g.: struct('rxnList', ...
-%                                    {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                                    'values', [-100, 0, 155.5]');
+%                                    E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    excludedRxns:               (cell array) Reactions to be excluded to
-%                                the MustUL set. This could be used to
+%                                the `MustUL` set. This could be used to
 %                                avoid finding transporters or exchange
 %                                reactions in the set. Default = empty.
 %    mustSetFirstOrder:          (cell array) Reactions that belong to
-%                                MustU and MustL (first order sets).
+%                                `MustU` and `MustL` (first order sets).
 %                                Default = empty.
 %    solverName:                 (string) Name of the solver used in
 %                                GAMS. Default = 'cplex'.
@@ -75,84 +71,83 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %    printReport:                (double) 1 to generate a report in a
 %                                plain text file. 0 otherwise. Default = 1
 %    keepInputs:                 (double) 1 to mantain folder with
-%                                inputs to run findMustUL.gms. 0 otherwise.
+%                                inputs to run `findMustUL.gms`. 0 otherwise.
 %                                Default = 1
 %    keepGamsOutputs:            (double) 1 to mantain files returned by
-%                                findMustUL.gms. 0 otherwise. Default = 1
+%                                `findMustUL.gms`. 0 otherwise. Default = 1
 %    verbose:                    (double) 1 to print results in console.
 %                                0 otherwise. Default = 0
 %
 % OUTPUTS:
 %    mustUL:                     (cell array of size number of sets found X
 %                                2) Cell array containing the reactions IDs
-%                                which belong to the MustUL set. Each row
+%                                which belong to the `MustUL` set. Each row
 %                                contain a couple of reactions that must
 %                                decrease their flux.
 %    pos_mustUL:                 (double array of size number of sets found
 %                                X 2) double array containing the positions
-%                                of each reaction in mustUL with regard to
+%                                of each reaction in `mustUL` with regard to
 %                                model.rxns
 %    mustUL_linear:              (cell array of size number of unique
 %                                reactions found X 1) Cell array containing
 %                                the unique reactions ID which belong to
-%                                the MustUL Set
+%                                the `MustUL` Set
 %    pos_mustUL_linear:          (double array of size number of unique
 %                                reactions found X 1) double array
 %                                containing positions for reactions in
-%                                mustUL_linear. with regard to model.rxns
+%                                mustUL_linear. with regard to `model.rxns`
 %    outputFileName.xls:         (file) File containing one column
 %                                array with identifiers for reactions in
 %                                MustUL. This file will only be generated
-%                                if the user entered printExcel = 1. Note
+%                                if the user entered `printExcel = 1`. Note
 %                                that the user can choose the name of this
-%                                file entering the input outputFileName =
-%                                'PutYourOwnFileNameHere';
+%                                file entering the input `outputFileName = 'PutYourOwnFileNameHere';`
 %    outputFileName.txt:         (file) File containing one column
 %                                array with identifiers for reactions in
 %                                MustUL. This file will only be generated
-%                                if the user entered printText = 1. Note
+%                                if the user entered `printText = 1`. Note
 %                                that the user can choose the name of this
-%                                file entering the input outputFileName =
-%                                'PutYourOwnFileNameHere';
+%                                file entering the input `outputFileName = 'PutYourOwnFileNameHere';`
 %    outputFileName_Info.xls:    (file) File containing one column
 %                                array. In each row the user will find a
 %                                couple of reactions. Each couple of
 %                                reaction was found in one iteration of
-%                                FindMustUL.gms. This file will only be
-%                                generated if the user entered printExcel =
-%                                1. Note that the user can choose the name
+%                                `FindMustUL.gms`. This file will only be
+%                                generated if the user entered `printExcel = 1`.
+%                                Note that the user can choose the name
 %                                of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName = 'PutYourOwnFileNameHere';`
 %    outputFileName_Info.txt:    (file) File containing one column
 %                                array. In each row the user will find a
 %                                couple of reactions. Each couple of
 %                                reaction was found in one iteration of
 %                                FindMustUL.gms. This file will only be
-%                                generated if the user entered printText =
-%                                1. Note that the user can choose the name
+%                                generated if the user entered `printText = 1`.
+%                                Note that the user can choose the name
 %                                of this file entering the input
-%                                outputFileName = 'PutYourOwnFileNameHere';
+%                                `outputFileName = 'PutYourOwnFileNameHere';`
 %    findMustUL.lst:             (file) file autogenerated by GAMS. It
 %                                contains information about equations,
 %                                variables, parameters as well as
 %                                information about the running (values at
 %                                each iteration). This file only will be
 %                                saved in the output folder is the user
-%                                entered keepGamsOutputs = 1
+%                                entered `keepGamsOutputs = 1`
 %    GtoMUL.gdx:                 (file) file containing values for
 %                                variables, parameters, etc. which were
-%                                found by GAMS when solving findMustUL.gms.
+%                                found by GAMS when solving `findMustUL.gms`.
 %                                This file only will be saved in the output
-%                                folder is the user entered keepInputs = 1
+%                                folder is the user entered `keepInputs = 1`
 %
 % NOTE:
+%
 %    This function is based in the GAMS files written by Sridhar
 %    Ranganathan which were provided by the research group of Costas D.
-%    Maranas. For a detailed description of the optForce procedure, please
-%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    Maranas. For a detailed description of the `optForce` procedure, please
+%    see: `Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 %    Optimization Procedure for Identifying All Genetic Manipulations
 %    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
+%    e1000744`. https://doi.org/10.1371/journal.pcbi.1000744
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
