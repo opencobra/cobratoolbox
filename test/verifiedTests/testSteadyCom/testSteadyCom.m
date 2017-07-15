@@ -9,6 +9,7 @@
 
 % choose tolerance according to the solver used
 global CBT_LP_SOLVER
+global SOLVERS
 
 % save the current path
 currentDir = pwd;
@@ -107,61 +108,98 @@ assert(isequal(indCom, modelJoint.indCom))
 infoCom = SteadyComSubroutines('infoCom2indCom', modelJoint, modelJoint.indCom, true, {'Org1'; 'Org2'});  % get infoCom from indCom
 assert(isequal(infoCom, modelJoint.infoCom))
 
-switch CBT_LP_SOLVER
-    case {'gurobi', 'ibm_cplex', 'glpk', 'dqqMinos', 'quadMinos'}
-        feasTol = 1e-8;  % feasibility tolerance
-        tol = 1e-3;  % tolerance for comparing results
-    case {'mosek', 'matlab'}
-        feasTol = 1e-6;  % feasibility tolerance
-        tol = 1e-3;  % tolerance for comparing results
-    otherwise
-        feasTol = 1e-4;  % feasibility tolerance
-        tol = 1e-2;  % tolerance for comparing results
-end
+origSolver = CBT_LP_SOLVER;  %original solver
 
-% TEST SteadyCom
-options.algorithm = 2;
-options.GRtol = 1e-6;  % tolerance for max. growth rate gap
-[~, result] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
-data = load('refData_SteadyCom', 'result');
-% only the maximum growth rate must be equal. Others may differ.
-assert(abs(result.GRmax - data.result.GRmax) < tol)
-
-% TEST SteadyComFVA
-options.optGRpercent = [100 90 80];
-options.rxnNameList = {'X_Org1'; 'X_Org2'};
-[minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
-data = load('refData_SteadyComFVA', 'minFlux', 'maxFlux', 'GRvector');
-
-% Different solvers may give slightly different results. Give a percentage tolerance
-assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
-assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
-assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-
-% TEST SteadyComPOA
-options.savePOA = ['testSteadyComPOA' filesep 'test'];
-% look at the relationship between the abundance of Org1 and its exchange of b and c
-options.rxnNameList = [{'X_Org1'}; modelJoint.infoCom.EXsp(bCom | cCom, 1)];
-options.Nstep = 25;
-[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelJoint, options, 'feasTol', feasTol);
-data = load('refData_SteadyComPOA', 'POAtable', 'fluxRange', 'Stat', 'GRvector');
-devPOA = 0;  % percentage deviation
-devSt = 0;  % absolute deviation of the correlation statistics (since zeros may appear here)
-for i = 1:size(POAtable, 1)
-    for j = 1:size(POAtable, 2)
-        if ~isempty(POAtable{i, j})
-            devPOA = max(devPOA, max(max(max(abs(POAtable{i, j} - data.POAtable{i, j}) ./ abs(data.POAtable{i, j})))));
-            devSt = max(devSt, max(abs(Stat(i, j).cor - data.Stat(i, j).cor)));
-            devSt = max(devSt, max(abs(Stat(i, j).r2 - data.Stat(i, j).r2)));
+for jTest = 1:2
+    cont = true;
+    if jTest == 1  % test the ibm_cplex solver if installed (with specialised SteadyCom scripts)
+        cont = 0;
+        try
+            cont = changeCobraSolver('ibm_cplex', 'LP');
+        end
+    else  % test any one of the other LP solvers
+        solverName = fieldnames(SOLVERS.name);
+        solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'}; 
+        solverName = [solverPrefer(ismember(solverPrefer, solverName)); setdiff(solverName, [solverPrefer; {'ibm_cplex'}])];
+        jSolver = 1;
+        cont = 0;
+        while jSolver <= numel(solverName)
+            if SOLVERS.(solverName{jSolver}).installed
+                try
+                    cont = changeCobraSolver(solverName{jSolver}, 'LP');
+                end
+            end
+            if cont
+                break
+            end
+            jSolver = jSolver + 1;
         end
     end
+
+    if cont
+        switch CBT_LP_SOLVER
+            case {'gurobi', 'ibm_cplex', 'tomlab_cplex', 'cplex_direct', 'glpk', 'dqqMinos', 'quadMinos'}
+                feasTol = 1e-8;  % feasibility tolerance
+                tol = 1e-3;  % tolerance for comparing results
+            case {'mosek', 'matlab'}
+                feasTol = 1e-6;  % feasibility tolerance
+                tol = 1e-3;  % tolerance for comparing results
+            otherwise
+                feasTol = 1e-4;  % feasibility tolerance
+                tol = 1e-2;  % tolerance for comparing results
+        end
+
+        options = struct();
+        % TEST SteadyCom
+        for jAlg = 3:-1:1
+            options.algorithm = jAlg;
+            if jAlg == 1
+                options = rmfield(options, 'algorithm');
+                options.GRtol = 1e-6;
+            end
+            [~, result(jAlg)] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
+        end
+        data = load('refData_SteadyCom', 'result');
+        % only the maximum growth rate must be equal. Others may differ.
+        assert(abs(result(1).GRmax - data.result.GRmax) < tol)
+
+        % TEST SteadyComFVA
+        options.optGRpercent = [100 90 80];
+        options.rxnNameList = {'X_Org1'; 'X_Org2'};
+        [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
+        data = load('refData_SteadyComFVA', 'minFlux', 'maxFlux', 'GRvector');
+
+        % Different solvers may give slightly different results. Give a percentage tolerance
+        assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
+        assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
+        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
+
+        % TEST SteadyComPOA
+        options.savePOA = ['testSteadyComPOA' filesep 'test'];
+        % look at the relationship between the abundance of Org1 and its exchange of b and c
+        options.rxnNameList = [{'X_Org1'}; modelJoint.infoCom.EXsp(bCom | cCom, 1)];
+        options.Nstep = 25;
+        [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelJoint, options, 'feasTol', feasTol);
+        data = load('refData_SteadyComPOA', 'POAtable', 'fluxRange', 'Stat', 'GRvector');
+        devPOA = 0;  % percentage deviation
+        devSt = 0;  % absolute deviation of the correlation statistics (since zeros may appear here)
+        for i = 1:size(POAtable, 1)
+            for j = 1:size(POAtable, 2)
+                if ~isempty(POAtable{i, j})
+                    devPOA = max(devPOA, max(max(max(abs(POAtable{i, j} - data.POAtable{i, j}) ./ abs(data.POAtable{i, j})))));
+                    devSt = max(devSt, max(abs(Stat(i, j).cor - data.Stat(i, j).cor)));
+                    devSt = max(devSt, max(abs(Stat(i, j).r2 - data.Stat(i, j).r2)));
+                end
+            end
+        end
+        assert(devPOA < tol)
+        assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
+        assert(devSt < tol)
+        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
+        % delete created files
+        rmdir([pwd filesep 'testSteadyComPOA'], 's')
+    end
 end
-assert(devPOA < tol)
-assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
-assert(devSt < tol)
-assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-% delete created files
-rmdir([pwd filesep 'testSteadyComPOA'], 's')
 
 % change the directory
 cd(currentDir)
