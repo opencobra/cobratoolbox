@@ -1,7 +1,7 @@
 .. _tutorialMinimalCutSets:
 
-Computing  minimal cut sets
-===========================
+Computing minimal cut sets
+==========================
 
 .. raw:: html
 

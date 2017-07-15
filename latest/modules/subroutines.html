@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SteadyCom &mdash; The COBRA Toolbox</title>
+  <title>Subroutines &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="MultiSpecies" href="multiSpecies.html"/>
-        <link rel="next" title="Subroutines" href="subroutines.html"/>
-        <link rel="prev" title="MultiSpecies" href="multiSpecies.html"/> 
+        <link rel="up" title="SteadyCom" href="SteadyCom.html"/>
+        <link rel="next" title="rFBA" href="rFBA.html"/>
+        <link rel="prev" title="SteadyCom" href="SteadyCom.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -102,8 +102,8 @@
 <li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">SteadyCom</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="subroutines.html">Subroutines</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="SteadyCom.html">SteadyCom</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Subroutines</a></li>
 </ul>
 </li>
 </ul>
@@ -179,7 +179,9 @@
         
           <li><a href="multiSpecies.html">MultiSpecies</a> &raquo;</li>
         
-      <li>SteadyCom</li>
+          <li><a href="SteadyCom.html">SteadyCom</a> &raquo;</li>
+        
+      <li>Subroutines</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -196,25 +198,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="steadycom">
-<span id="id1"></span><h1>SteadyCom<a class="headerlink" href="#steadycom" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="subroutines.html">Subroutines</a></li>
-</ul>
-</div>
-<span class="target" id="module-src.analysis.multiSpecies.SteadyCom"></span><dl class="function">
-<dt id="src.analysis.multiSpecies.SteadyCom.SteadyCom">
-<code class="descname">SteadyCom</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/SteadyCom.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyCom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm</p>
+  <div class="section" id="subroutines">
+<span id="id1"></span><h1>Subroutines<a class="headerlink" href="#subroutines" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.multiSpecies.SteadyCom.subroutines"></span><dl class="function">
+<dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex">
+<code class="descname">SteadyComCplex</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>solverParams</em>, <em>LP</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm. Call the CPLEX dynamic object directly.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
+<div>[sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
+A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 (the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
 <blockquote>
 <div><ul class="simple">
@@ -332,9 +329,8 @@ when doing the maximization at each step.
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>parameter</strong> &#8211;
-structure for solver-specific parameters.
-&#8216;param1&#8217;, value1, ...:  name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</p>
+<li><p class="first"><strong>solverParams</strong> &#8211;
+Cplex parameter structure. E.g. <cite>struct(&#8216;simplex&#8217;, struct(&#8216;tolerances&#8217;, struct(&#8216;feasibility&#8217;, 1e-8)))</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -370,20 +366,20 @@ structure with the following fields:<ul>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.multiSpecies.SteadyCom.SteadyComFVA">
-<code class="descname">SteadyComFVA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComFVA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Flux variability analysis for community model at community steady-state for a range of growth rates.
+<dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr">
+<code class="descname">SteadyComFVAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flux variability analysis for community model at community steady-state at a given growth rate. Called by <cite>SteadyComFVA</cite>
 The function is capable of saving intermediate results and continuing from previous results
 if the file path is given in <cite>options.saveFVA</cite>. It also allows switch from single thread to parallel
 computation from intermediate results (but not the other way round).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
+<div>[minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, options, LP, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
+A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 (the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
 <blockquote>
 <div><ul class="simple">
@@ -404,7 +400,8 @@ A community COBRA model structure with the following fields (created using <cite
 <div><ul class="simple">
 <li><strong>options</strong> &#8211;
 struct with the following possible fields:<ul>
-<li>optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])</li>
+<li>GR - The growth rate at which FVA is performed. If not
+given, find the maximum growth rate by <cite>SteadyComCplex.m</cite></li>
 <li>optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)</li>
 <li>rxnNameList - List of reactions (index row vector or subset of <a href="#id2"><span class="problematic" id="id3">*</span></a>.rxns) for which FVA is performed.
 (Default = biomass reaction of each species)
@@ -412,8 +409,7 @@ Or a <span class="math">\((N_{rxns} + N_{organism}) x K\)</span> matrix for FVA 
 e.g., <cite>[1; -2; 0]</cite> for finding the max/min of <span class="math">\(1 v_1 - 2 v_2 + 0 v_3\)</span></li>
 <li>rxnFluxList - List of reactions (index vector or subset of <a href="#id4"><span class="problematic" id="id5">*</span></a>.rxns) whose fluxes are
 also returned along with the FVA result of each entry in <cite>rxnNameList</cite>
-(Default = biomass reaction of each species)</li>
-<li>GRmax - maximum growth rate of the model (default to be found <cite>SteadyCom.m</cite>)
+(Default = biomass reaction of each species)
 (the two parameters below are usually determined by solving the problem during the program.
 Provide them only if you want to constrain the total biomass to a particular value)</li>
 <li>BMmaxLB - lower bound for the total biomass (default 1)</li>
@@ -430,6 +426,9 @@ model (&#8216;loadModel.mps&#8217;), basis (&#8216;loadModel.bas&#8217;) and par
 (May add also other parameters in <cite>SteadyCom</cite> for calculating the maximum growth rate.)</li>
 </ul>
 </li>
+<li><strong>LP</strong> &#8211;
+LP problem structure (Cplex object for <cite>ibm_cplex</cite>) from calling <cite>SteadyComFVA</cite>.
+Leave empty if calling this function alone.</li>
 <li><strong>parameter</strong> &#8211;
 structure for solver-specific parameters.
 &#8216;param1&#8217;, value1, ...   name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</li>
@@ -453,29 +452,27 @@ corresponding to minimizing each reaction in <cite>options.rxnNameList</cite></l
 <li><strong>maxFD</strong> &#8211;
 <span class="math">\(rxnFluxList * rxnNameList\)</span> matrix containing the fluxes in <cite>options.rxnFluxList</cite>
 corresponding to maximizing each reaction in <cite>options.rxnNameList</cite></li>
-<li><strong>GRvector</strong> &#8211;
-a vector of growth rates at which FVA has been performed</li>
-<li><strong>result</strong> &#8211;
-result structure from <cite>SteadyCom</cite></li>
 <li><strong>LP</strong> &#8211;
 <cite>LP</cite> problem structure (<cite>Cplex LP</cite> object for <cite>ibm_cplex</cite>)</li>
+<li><strong>GR</strong> &#8211;
+the growth rate at which FVA is performed</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.multiSpecies.SteadyCom.SteadyComPOA">
-<code class="descname">SteadyComPOA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComPOA" title="Permalink to this definition">¶</a></dt>
+<dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr">
+<code class="descname">SteadyComPOAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
-at community steady-state at a given growth rate. See <cite>tutorial_SteadyCom</cite> for more details.</p>
+at community steady-state at a given growth rate. Called by <cite>SteadyComPOA</cite>. See <cite>tutorial_SteadyCom</cite> for more details.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
+<div>[POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, options, LP)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
+A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 (the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
 <blockquote>
 <div><ul class="simple">
@@ -497,14 +494,14 @@ A community COBRA model structure with the following fields (created using <cite
 <li><p class="first"><strong>options</strong> &#8211;
 option structure with the following fields:</p>
 <ul>
-<li><p class="first">GRmax - maximum growth rate of the model (default to be found SteadyCom.m)</p>
-</li>
-<li><p class="first">optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])</p>
+<li><p class="first">GR - The growth rate at which POA is performed. If not
+given, find the maximum growth rate by <cite>SteadyCom.m</cite></p>
 </li>
 <li><p class="first">optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)</p>
 </li>
-<li><p class="first">rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a <span class="math">\((N_{rxns} + N_{organism}) x K\)</span> matrix for POA of <cite>K</cite>
-linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,</p>
+<li><p class="first">rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a <span class="math">\((N_{rxns} + N_{organism}) * K\)</span> matrix for POA of <cite>K</cite>
+linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,
+or reactions listed in <cite>pairList</cite> [see below] if <cite>pairList</cite> is given)</p>
 </li>
 <li><p class="first">pairList - pairs in <cite>rxnNameList</cite> to be analyzed. <cite>N_pair</cite> by 2 array of:</p>
 <ul class="simple">
@@ -517,9 +514,9 @@ linear combinations of fluxes and/or abundances (Default = biomass reaction of e
 </ul>
 </li>
 </ul>
-<p>If not supplied, analyze all <cite>K(K-1)</cite> pairs from the <cite>K</cite> targets in <cite>rxnNameList</cite>.</p>
+<p>If not supplied, analyze all <cite>K(K-1)</cite> pairs from the K targets in <cite>rxnNameList</cite>.</p>
 </li>
-<li><p class="first">symmetric - true to avoid running symmetric pairs (e.g. analyze pair <cite>(j,k)</cite> only if <span class="math">\(j &gt; k\)</span>, total <span class="math">\(K(K-1)/2 pairs)\)</span>.
+<li><p class="first">symmetric - true to avoid running symmetric pairs (e.g. analyze pair <cite>(j,k)</cite> only if <span class="math">\(j &gt; k\)</span>, total :math:` K(K-1)/2 pairs)`.
 Used only when <cite>pairList</cite> is not supplied.</p>
 </li>
 <li><p class="first">Nstep - number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
@@ -558,19 +555,38 @@ structure for solver-specific parameters.
 <blockquote>
 <div><ul class="simple">
 <li><strong>POAtable</strong> &#8211;
-<cite>K x K</cite> cells. Each <cite>(i, i)</cite> -cell contains a <cite>Nstep x 1 x N_gr</cite> matrix of the fluxes at which <cite>rxnNameList{i}</cite> is fixed.
-Each <cite>(i, j)</cite> -cell contains a <cite>Nstep x 2 x N_gr</cite> matrix, the <cite>(p,:,q)</cite> -entry being the range of <cite>rxnNameList{j}</cite>
-when <cite>rxnNameList{i}</cite> is fixed at <cite>POAtable{i, i}(p, 1, q)</cite> at growth rate = GRvector(q)</li>
+<cite>K x K</cite> cells. <cite>(i, i)</cite> -cell contains the flux range of <cite>rxnNameList{i}</cite>.
+<cite>(i,j)</cite>-cell contains a <cite>Nstep x 2</cite> matrix, with <cite>(k, 1)</cite> -entry being the min of <cite>rxnNameList{j}</cite>
+when <cite>rxnNameList{i}</cite> is fixed at the <cite>k</cite>-th value, <cite>(k, 2)</cite> -entry being the max.</li>
 <li><strong>fluxRange</strong> &#8211;
-<cite>K x 2 x N_gr</cite> matrix of flux range for each entry in <cite>rxnNameList</cite></li>
+<cite>K x 2</cite> matrix of flux range for each entry in <cite>rxnNameList</cite></li>
 <li><strong>Stat</strong> &#8211;
-<cite>K x K x N_gr</cite> structure array with fields:<ul>
+<cite>K x K</cite> structure array with fields:<ul>
 <li>-&#8216;cor&#8217;: the slope from linear regression between the fluxes of a pair</li>
 <li>-&#8216;r2&#8217;:  the corresponding coefficient of determination (R-square)</li>
 </ul>
 </li>
-<li><strong>GRvector</strong> &#8211;
-vector of growth rates being analyzed</li>
+<li><strong>pairList</strong> &#8211;
+<cite>pairList</cite> after transformation from various input formats</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines">
+<code class="descname">SteadyComSubroutines</code><span class="sig-paren">(</span><em>purpose</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls different subroutines for <cite>SteadyCom</cite> functions</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>varargout = SteadyComSubroutines(purpose, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>purpose</strong> &#8211;
+&#8216;initialize&#8217; / &#8216;infoCom2indCom&#8217; / &#8216;rxnList2objMatrix&#8217; / &#8216;updateLPcom&#8217; / &#8216;getParams&#8217;
+See the respective local functions for their documentations</li>
+<li><strong>varargin</strong> &#8211;
+various input for different subroutines</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -587,10 +603,10 @@ vector of growth rates being analyzed</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="subroutines.html" class="btn btn-neutral float-right" title="Subroutines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="rFBA.html" class="btn btn-neutral float-right" title="rFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="multiSpecies.html" class="btn btn-neutral" title="MultiSpecies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="SteadyCom.html" class="btn btn-neutral" title="SteadyCom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

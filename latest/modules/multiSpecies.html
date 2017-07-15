@@ -195,7 +195,10 @@
 <span id="id1"></span><h1>MultiSpecies<a class="headerlink" href="#multispecies" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="SteadyCom.html">SteadyCom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SteadyCom.html">SteadyCom</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="subroutines.html">Subroutines</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <span class="target" id="module-src.analysis.multiSpecies"></span><dl class="function">
@@ -337,7 +340,7 @@ model structure for joint model</li>
 <dd><p>Get names and IDs for metabolites and exchange reactions in the [u] and [b] space</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[names,ids] = getMultiSpeciesModelId(modelJoint,nameTagsModels,nameTagHost,metTagRe,rxnTagRe,compCom,compHost)</div></blockquote>
+<div>[names, ids] = getMultiSpeciesModelId(modelJoint, nameTagsModels, nameTagHost, metTagRe, rxnTagRe, compCom, compHost)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -345,7 +348,7 @@ model structure for joint model</li>
 COBRA multi-organism model</li>
 <li><strong>nameTagsModels</strong> &#8211;
 cell array of tags for species to identify the respective
-reactions and metabolites from modelJoint.rxns and .mets</li>
+reactions and metabolites from <cite>modelJoint.rxns</cite> and <cite>.mets</cite></li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -354,13 +357,13 @@ reactions and metabolites from modelJoint.rxns and .mets</li>
 <li><strong>nameTagHost</strong> &#8211;
 string of tag for the host model if exist. Input [] if no host is present</li>
 <li><strong>metTagRe</strong> &#8211;
-a regular expression to identify the tag in nameTagsModels from modelJoint.mets.
-Use &#8216;%s&#8217; for the tag in nameTagsModels for each species.
+a regular expression to identify the tag in nameTagsModels from <cite>modelJoint.mets</cite>.
+Use &#8216;%s&#8217; for the tag in <cite>nameTagsModels</cite> for each species.
 Default &#8216;^%s&#8217;, the beginning of the string. In this case, if the tag for species 1 is
 &#8216;SP1&#8217;, then mets with id &#8216;SP1glc-D[e]&#8217; will be identified as belonging to species 1.
 E.g., &#8216;met[compartment_SP1]&#8217; where &#8216;SP1&#8217; is the tag for species 1, input &#8216;[[^_]+_%s]$&#8217;.</li>
 <li><strong>rxnTagRe</strong> &#8211;
-a regular expression to idenify the tag in nameTagsModels from modelJoint.rxns.
+a regular expression to idenify the tag in <cite>nameTagsModels</cite> from <cite>modelJoint.rxns</cite>.
 Default &#8216;^%s&#8217;, the beginning of the string</li>
 <li><strong>compCom</strong> &#8211;
 compartment Id for the community exchange compartment. Default &#8216;u&#8217;</li>
@@ -370,28 +373,24 @@ compartment Id for the exchange compartment specific to the host. Default &#8216
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>names</strong> &#8211;
-structure of reaction/metabolite name (.rxns/.mets) with the following fields:
-spAbbr   species abbreviation (= nameTags). Host put at the end
-EXcom    #met[u]-by-1 cell. Exchange reactions for community metabolites met[u]
-EXhost   #met[b]-by-1 cell. Exchange reactions for host-specific exchange metabolites met[b]
-EXsp     #met[u]-by-#species cell. EXsp(i,j) is the species-community exchange reactions</p>
-<blockquote>
-<div><p>for the i-th met[u] and the j-th species</p>
-</div></blockquote>
-<p>Mcom     #met[u]-by-1 cell. All community metabolites met[u]
-Mhost    #met[u]-by-1 cell. Host-specific exchange metabolites met[b]
-Msp      #met[u]-by-#species cell. Msp(i,j) is the metabolite in met[e] of the j-th species</p>
-<blockquote>
-<div><p>participating in reaction EXsp(i,j)</p>
-</div></blockquote>
-<p>rxnSps   #rxns-by-1 cell. rxnSps(i) would be spAbbr(j) if the i-th reaction belongs to the j-th species
-metSps   #mets-by-1 cell. metSps(i) would be spAbbr(j) if the i-th metabolite belongs to the j-th species</p>
+<div><ul class="simple">
+<li><strong>names</strong> &#8211;
+structure of reaction/metabolite name (.rxns/.mets) with the following fields:<ul>
+<li>spAbbr - species abbreviation (= <cite>nameTags</cite>). Host put at the end</li>
+<li>EXcom - #met[u]-by-1 cell. Exchange reactions for community metabolites <cite>met[u]</cite></li>
+<li>EXhost - #met[b]-by-1 cell. Exchange reactions for host-specific exchange metabolites <cite>met[b]</cite></li>
+<li>EXsp - #met[u]-by-#species cell. <cite>EXsp(i,j)</cite> is the species-community exchange reactions
+for the i-th met[u] and the j-th species</li>
+<li>Mcom - #met[u]-by-1 cell. All community metabolites <cite>met[u]</cite></li>
+<li>Mhost - #met[u]-by-1 cell. Host-specific exchange metabolites <cite>met[b]</cite></li>
+<li>Msp - #met[u]-by-#species cell. <cite>Msp(i,j)</cite> is the metabolite in <cite>met[e]</cite> of the <cite>j</cite>-th species
+participating in reaction <cite>EXsp(i,j)</cite></li>
+<li>rxnSps - #rxns-by-1 cell. <cite>rxnSps(i)</cite> would be <cite>spAbbr(j)</cite> if the <cite>i</cite>-th reaction belongs to the <cite>j</cite>-th species</li>
+<li>metSps - #mets-by-1 cell. <cite>metSps(i)</cite> would be <cite>spAbbr(j)</cite> if the i-th metabolite belongs to the <cite>j</cite>-th species</li>
+</ul>
 </li>
-<li><p class="first"><strong>ids</strong> &#8211;
-structure of reaction/metabolite index with the same fields as names except without spAbbr</p>
-</li>
+<li><strong>ids</strong> &#8211;
+structure of reaction/metabolite index with the same fields as names except without <cite>spAbbr</cite></li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -399,7 +398,7 @@ structure of reaction/metabolite index with the same fields as names except with
 <dl class="function">
 <dt id="src.analysis.multiSpecies.printUptakeBoundCom">
 <code class="descname">printUptakeBoundCom</code><span class="sig-paren">(</span><em>model</em>, <em>SpFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/analysis/multiSpecies/printUptakeBoundCom.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.printUptakeBoundCom" title="Permalink to this definition">¶</a></dt>
-<dd><p>print the uptake bounds of the whole community and individual species for a community COBRA model</p>
+<dd><p>Prints the uptake bounds of the whole community and individual species for a community COBRA model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>rxnIDs = printUptakeBoundCom(model, SpFlag, metFlag)</div></blockquote>
@@ -407,8 +406,8 @@ structure of reaction/metabolite index with the same fields as names except with
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-the community model with field .infoCom or .indCom indicating the indicies of
-community exchange reactions/metabolites. Can be obtained from getMultiSpeciesModelId.m</li>
+the community model with field <cite>.infoCom</cite> or <cite>.indCom</cite> indicating the indicies of
+community exchange reactions/metabolites. Can be obtained from <cite>getMultiSpeciesModelId.m</cite></li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -417,7 +416,7 @@ community exchange reactions/metabolites. Can be obtained from getMultiSpeciesMo
 <li><strong>SpFlag</strong> &#8211;
 true to show individual uptake rates though community uptake is not allowed (default false)</li>
 <li><strong>metFlag</strong> &#8211;
-true to print with model.metNames (default false)</li>
+true to print with <cite>model.metNames</cite> (default false)</li>
 </ul>
 </div></blockquote>
 </dd></dl>

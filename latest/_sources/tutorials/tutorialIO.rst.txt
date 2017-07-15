@@ -1,6 +1,6 @@
 .. _tutorialIO:
 
-Input and output of reconstructions and mdoels 
+Input and output of reconstructions and models 
 ===============================================
 
 .. raw:: html
