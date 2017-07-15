@@ -121,7 +121,7 @@ function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWith
 %                                array. In each row the user will find a
 %                                couple of reactions. Each couple of
 %                                reaction was found in one iteration of
-%                                FindMustUL.gms. This file will only be
+%                                `FindMustUL.gms`. This file will only be
 %                                generated if the user entered `printText = 1`.
 %                                Note that the user can choose the name
 %                                of this file entering the input

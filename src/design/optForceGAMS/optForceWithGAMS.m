@@ -116,34 +116,43 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            found (`k`). Element in position `i`, `j` is reaction
 %                            `j` in set `i`.
 %                            E.g.
-%                                    rxn1  rxn2
-%                                      __    __
-%                            set 1   | R4    R2
-%                            set 2   | R3    R1
+%
+%                            =====    ====    ====
+%                            \        rxn1    rxn2
+%                            set 1    R4      R2
+%                            set 2    R3      R1
+%                            =====    ====    ====
+%
 %    posOptForceSets:        (double array) double array of size  `n x m`,
 %                            where `n` = number of sets found and `m` = size of
 %                            sets found (`k`). Element in position `i`, `j` is the
-%                            position of reaction in `optForceSets(i,j)` in
+%                            position of reaction in `optForceSets(i, j)` in
 %                            `model.rxns`
 %                            E.g.
-%                                    rxn1  rxn2
-%                                     __   __
-%                            set 1   | 4    2
-%                            set 2   | 3    1
+%
+%                            =====    ====    ====
+%                            \        rxn1    rxn2
+%                            set 1    4       2
+%                            set 2    3       1
+%                            =====    ====    ====
+%
 %    typeRegOptForceSets:    (cell array) cell array of size `n x m`, where
 %                            `n` = number of sets found and `m` = size of sets
 %                            found (`k`). Element in position `i`, `j` is the kind
 %                            of intervention for reaction in
 %                            `optForceSets(i,j)`
 %                            E.g.
-%                                         rxn1            rxn2
-%                                      ____________    ______________
-%                            set 1   | upregulation    downregulation
-%                            set 2   | upregulation    knockout
+%
+%                            =====    ============    ==============
+%                            \        rxn1            rxn2
+%                            set 1    upregulation    downregulation
+%                            set 2    upregulation    knockout
+%                            =====    ============    ==============
+%
 %    fluxOptForceSets:       (double matrix) Matrix of size `n + m`, where
 %                            `n` = number of sets found and `m` = size of sets
 %                            found (`k`). The number in `(i,j)` is the flux
-%                            achieved for the reaction in `optForceSets(i,j)`
+%                            achieved for the reaction in `optForceSets(i, j)`
 %    outputFileName.xls:     (file) file containing 11 columns.
 %
 %                              * C1: Number of invervetions (`k`)
