@@ -183,8 +183,9 @@ end
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
-%                      * lamda - trade-off parameter of relaxation on steady state constraint
-%                      * alpha - trade-off parameter of relaxation on bounds
+%                      * lamda - weighting on relaxation of relaxation on steady state constraints S*v = b
+%                      * alpha - weighting on relaxation of reaction bounds
+%                      * gamma - weighting on zero norm of fluxes
 %
 % Note, excludedReactions and excludedMetabolites override all other relaxation options.
 %% 
@@ -205,8 +206,8 @@ relaxOption.steadyStateRelax = 0;
 feasTol = getCobraSolverParams('LP', 'feasTol');
 relaxOption.epsilon = feasTol/100;%*100;
 %% 
-% Set the trade-off parameter for relaxation of bounds (advanced user). 
-% A larger value of gamma will
+% Set the trade-off parameter for zero norm of flux (advanced user). A larger 
+% value of gamma will
 
 relaxOption.gamma  = 10;  
 %% 
