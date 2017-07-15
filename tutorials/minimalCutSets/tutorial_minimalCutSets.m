@@ -1,41 +1,47 @@
-%% Computing  minimal cut sets
+%% Computing minimal cut sets
 %% Author: Susan Ghaderi, Luxembourg Centre for Systems Biomedicine 
 %% Reviewers: Sylvain Arreckx, Laurent Heirendt
+%% Francisco J. Planes, Department of Biomedical Engineering and Sciences, Tecnun, University of Navarra
 %% INTRODUCTION
-% During this tutorial, you will learn how to compute  cutsets for paths/cycles/elementary 
+% During this tutorial, you will learn how to compute cut sets for paths/cycles/elementary 
 % modes with Berge algorithm [1].
 % 
-% Biologically, a cut set,    $$,    is a set of reactions that removing 
-% them from a biochemical networks lead to failure in a special network target. 
-% For instance, if a target is producing a special metabolite  $$ , then the cut 
-% set will be the set of reactions that should be cut from the network in order 
-% to prevent the production of the metabolite  x . As a consequence, there is 
-% no feasible flux balance distribution to produce the metabolite  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% Biologically, a cut set,    $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$,    is 
+% a set of reactions whose removal from a biochemical network leads to failure 
+% in a special network target. For instance, if a target is producing a special 
+% metabolite  $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">x</mi></mrow></math>$ , then the cut set will be the set 
+% of reactions that should be cut from the network in order to prevent the production 
+% of the metabolite  x . As a consequence, there is no feasible flux balance distribution 
+% to produce the metabolite  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">x</mi></mrow></math>$. In general, 
 % the target can be a set of reactions that make an elementary mode, a path, or 
-% a cycle. Mathematically, the set of all feasible fluxes   $$   defined in
+% a cycle. Mathematically, the set of all feasible fluxes   $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">K</mi></mrow></math>$   defined 
+% in
 % 
 % $$K=\{ v\in  {R} ^n \mid Sv=0,v \geq 0, v\in Irr \}$$
 % 
 % is a polyhedral cone in $R^n$ where $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="normal">Irr</mi></mrow></math>$ is a 
 % set of irreversible reaction. A set of reactions $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$ subset 
-% of reactions, is a cut set for an objective $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="italic">j</mi><mtext>??</mtext></mrow></math>$among 
-% reactions, if 
+% display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$ is a cut 
+% set for an objective $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">j</mi><mtext>  </mtext></mrow></math>$among reactions, 
+% if 
 % 
 % $$v_c=0 ~leads~to ~v_j=0~\forall~v\in K.$$
 % 
-%  Consequently, a cut set  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% Consequently, a cut set  $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$ is _minimal_ 
 % with respect to the target reaction   $j \in Irr$  if no proper subset of  $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="italic">C</mi></mrow></math>$  
 % is a cut set, which is a set with minimal number of reactions that can be removed 
 % with the assertion $v\in Irr ~\text{for all} ~v \in K$.
 % 
-% We introduce an interface to software that enables the computation of the 
-% cut set for paths, cycles and elementary modes.
+% We introduce an interface to the software that enables the computation 
+% of the cut set for paths, cycles and elementary modes.
 %% MATERIALS
 % *  Please ensure that the COBRA Toolbox has been properly installed.
 % * _You should install CNA (CellNetAnalyzer) software and initialise it. CNA 
@@ -51,17 +57,18 @@
 % https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html> where also a how-to 
 % tutorial on CellNetAnalyzer is provided.
 %% PROCEDURE 
-% _Before you start with these codes, you should initialise CNA software by 
-% the following commands_
-
+% _Before you start with these codes, you should place the CellNetAnalyzer folder 
+% in the directory where you are working and initialise CNA software by the following 
+% commands_
+%%
 % Add path to Cell Net Analyzer
-CNAPath = '~/CellNetAnalyzer';
+CNAPath = 'CellNetAnalyzer';
 addpath(genpath(CNAPath));
 startcna
 %% Computing minimal cut set
 % The mandatory input in minimal cut set code is a set |E| that can be paths, 
 % cycles or elementary-modes that you are going to compute its minimal cut set. 
-
+%%
 % define the model
 global CBTDIR
 addpath([CBTDIR filesep 'tutorials' filesep 'minimalCutSets'])
@@ -127,7 +134,7 @@ C = minimalCutSets(E(2,:))
 % The anticipated results is minimal cut set of every set which is as an input.
 %% REFERENCES
 % [1] Klamt. S. and Gilles ED. Minimal cut sets in biochemical reaction networks. 
-% Bioinformatics. 20, 226?234 (2004).
+% Bioinformatics. 20, 226–234 (2004).
 % 
 % [2] Berge. C.  Hypergraphs, ser.North holland Mathematical Library. Elsiver 
 % Science Publishers B. V. 45, (1989).
