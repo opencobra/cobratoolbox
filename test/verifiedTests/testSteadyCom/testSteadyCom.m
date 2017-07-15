@@ -118,7 +118,7 @@ for jTest = 1:2
             cont = changeCobraSolver('ibm_cplex', 'LP');
         end
     else  % test any one of the other LP solvers
-        solverName = fieldnames(SOLVERS.name);
+        solverName = fieldnames(SOLVERS);
         solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'}; 
         solverName = [solverPrefer(ismember(solverPrefer, solverName)); setdiff(solverName, [solverPrefer; {'ibm_cplex'}])];
         jSolver = 1;
