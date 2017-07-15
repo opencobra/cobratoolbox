@@ -1,6 +1,7 @@
 %% Atomically resolve a metabolic reconstruction
 %% Author(s): *Hulda S. Haraldsdóttir and German A. Preciat Gonzalez, *Systems Biochemistry Group, University of Luxembourg.
 %% Reviewer(s): Catherine Clancy, Molecular Systems Physiology Group, University of Luxembourg.
+%% Francisco J. Planes, Department of Biomedical Engineering and Sciences, Tecnun, University of Navarra.
 %% INTRODUCTION
 % Genome-scale metabolic network reconstructions have become a relevant tool 
 % in modern biology to study the metabolic pathways of biological systems _in 
@@ -82,7 +83,7 @@
 % are performed by the function |obtainAtomMappingsRDT|. The main inputs are a 
 % COBRA model structure and a directory containing the molecular structures in 
 % MDL MOL format. For this tutorial, using the RDT algorithm, the atom mappings 
-% are generated based on the molecular structures contained in cobratoolbox/tutorials/moieties/data/molFiles 
+% are generated based on the molecular structures contained in cobratoolbox/tutorials/atomicallyResolveReconstruction/data/molFiles 
 % (|molFileDir|) and the reconstructed DAS network without hydrogen atoms (|model|).
 %%
 global CBTDIR
