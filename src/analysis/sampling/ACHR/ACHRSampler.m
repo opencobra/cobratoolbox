@@ -1,4 +1,4 @@
-function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)
+function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime, printLevel)
 % Artificial Centering Hit-and-Run sampler
 %
 % USAGE:
@@ -12,6 +12,7 @@ function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, steps
 %    nFiles:           Number of files created
 %    pointsPerFile:    Number of points per file saved
 %    stepsPerPoint:    Number of sampler steps per point saved
+%    printLevel:       0 silent / 1 active
 %
 % OPTIONAL INPUTS:
 %    initPoint:        Initial point (Default = centerPoint)
@@ -33,7 +34,9 @@ end
 if (nargin < 9) || isempty(maxTime)
     maxTime = 10*3600;
 end
-
+if nargin<10
+   printLevel=1; 
+end
 N = null(full(model.S));
 
 % Minimum allowed distance to the closest constraint
@@ -144,7 +147,9 @@ for i = 1:nFiles
             % Print step information
             if (mod(totalStepCount,5000)==0)
               timePerStep = timeElapsed/totalStepCount;
-              fprintf('%d\t%d\t%d\t%8.2f\t%8.2f\n',i,pointCount,totalStepCount,timeElapsed/60,(totalCount-totalStepCount)*timePerStep/60);
+              if printLevel
+                fprintf('%d\t%d\t%d\t%8.2f\t%8.2f\n',i,pointCount,totalStepCount,timeElapsed/60,(totalCount-totalStepCount)*timePerStep/60);
+              end
             end
 
             overInd = find(curPoint > model.ub);
@@ -158,7 +163,9 @@ for i = 1:nFiles
             end
 
             if (mod(totalStepCount,2000)==0)
-              fprintf(fidErr,'%10.8f\n',full(max(max(abs(model.S*curPoint)))));
+              if printLevel
+                fprintf(fidErr,'%10.8f\n',full(max(max(abs(model.S*curPoint)))));
+              end
             end
 
             prevPoint = curPoint;
@@ -166,9 +173,11 @@ for i = 1:nFiles
 
             % Count the total number of steps
             totalStepCount = totalStepCount + 1;
-
-            showprogress(totalStepCount/totalCount);
-
+            
+            if printLevel
+                showprogress(totalStepCount/totalCount);
+            end
+            
             %recalculate the center point
             centerPoint = ((nWrmup+totalStepCount)*centerPoint + curPoint)/(nWrmup+totalStepCount+1);
 
