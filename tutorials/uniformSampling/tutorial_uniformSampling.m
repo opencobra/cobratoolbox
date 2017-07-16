@@ -91,12 +91,17 @@
 % The CHRR algorithm is an useful tool to sample high dimentional models (bigger 
 % than 10,000 reactions). 
 %% Equipment setup
+% To perform FVA using the function |fastFVA| it is necessary to have CPLEX 
+% solver installed. In this tutorial, we will use the function |fluxVariability|. 
+% Change the variable |options.useFastFVA = 1 |to use |fastFVA|.
 
- changeCobraSolver('gurobi');
+options.useFastFVA = 0;
+changeCobraSolver('gurobi');
 %% Modelling
 % We will investigate ATP energy production with limited and unlimited oxygen 
 % uptake, following closely the flux balance analysis (FBA) tutorial published 
-% with$$.
+% with$<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>1</mn></mrow></msup></mrow></math>$.
 % 
 % We start by loading the model with its flux bounds and the objective function 
 % (ATP demand reaction). We set the maximum glucose uptake rate to 18.5 mmol/gDW/hr. 
@@ -105,7 +110,7 @@
 
 global CBTDIR
 load([CBTDIR filesep 'tutorials' filesep 'uniformSampling' filesep 'data' filesep 'iPSC_DA.mat'...
-    ], 'modelUptClosed') % Load the model
+     ], 'modelUptClosed') % Load the model
 model = modelUptClosed;
 model = changeRxnBounds(model, 'EX_glc(e)', -18.5, 'l');
 model.c = 0 * model.c; % clear the objective
@@ -119,8 +124,13 @@ limitedOx = changeRxnBounds(model, 'EX_o2(e)', -4, 'l');
 % Flux variability analysis (FVA) returns the minimum and maximum possible flux 
 % through every reaction in a model.
 
-[minUn, maxUn] = fastFVA(unlimitedOx, 100);
-[minLim, maxLim] = fastFVA(limitedOx, 100);
+if options.useFastFVA
+    [minUn, maxUn] = fastFVA(unlimitedOx, 100);
+    [minLim, maxLim] = fastFVA(limitedOx, 100);
+else
+    [minUn, maxUn] = fluxVariability(unlimitedOx);
+    [minLim, maxLim] = fluxVariability(limitedOx);
+end
 %% 
 % FVA predicts faster maximal ATP production with unlimited and limited 
 % oxygen uptake conditions.
@@ -158,7 +168,7 @@ else
 end
 set(gca, 'xlim', [0, length(Y) + 1])
 legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', ...
-       'orientation', 'horizontal')
+    'orientation', 'horizontal')
 xlabel('Reaction')
 ylabel('Flux range (mmol/gDW/h)')
 
@@ -172,12 +182,13 @@ ylabel('Jaccard index')
 % two parameters are important: the sampling density (|nStepsPerPoint)| and the 
 % number of samples (|nPointsReturned). |The total length of the random walk is 
 % |nStepsPerPoint*nPointsReturned|. The time it takes to run the sampler depends 
-% on the total length of the random walk and the size of the model$$. However, 
-% using sampling parameters that are too small will lead to invalid sampling distributions, 
-% e.g.,
+% on the total length of the random walk and the size of the model$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$. 
+% However, using sampling parameters that are too small will lead to invalid sampling 
+% distributions, e.g.,
 
 options.nStepsPerPoint = 1;
-options.nPointsReturned = 100;
+options.nPointsReturned = 500;
 %% 
 % An additional on/off parameter (|toRound|) controls whether or not the 
 % polytope is rounded. Rounding large models can be slow but is strongly recommended 
@@ -214,7 +225,9 @@ ylabel('# samples')
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
 % mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
 % to ensure the statistical independence of samples. The random walk should be 
-% long enough to ensure convergence to a stationary sampling distribution$$.
+% long enough to ensure convergence to a stationary sampling distribution$<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$.
 
 options.nStepsPerPoint = 8 * size(P_lim.A, 2);
 options.nPointsReturned = 1000;

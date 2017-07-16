@@ -1,10 +1,10 @@
-function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux)
+function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux, useFastFVA)
 % Generate uniform random flux samples with CHRR
 % Coordinate Hit-and-Run with Rounding
 %
 % USAGE:
 %
-%    [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux);
+%    [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux, useFastFVA);
 %
 % INPUTS:
 %    model:               COBRA model structure with fields:
@@ -63,20 +63,24 @@ if nargin < 6 || isempty(minFlux)
 else
     toGetWidths = 0;
 end
+
+if nargin<8 || isempty(useFastFVA)
+    useFastFVA=0;
+end 
 % End of define defaults
 % Preprocess model
 if toPreprocess
-
+    
     % parse the model to get the meat
     P = chrrParseModel(model);
-
+    
     %check for width 0 facets to make sure we are full dimensional
     %also check for feasibility
     fprintf('Checking for width 0 facets...\n');
-
+    
     if toGetWidths
         % check if we can use fastFVA
-        if SOLVERS.ibm_cplex.installed
+        if useFastFVA && SOLVERS.ibm_cplex.installed
             % check if we can do parallel for fastFVA
             v=ver;
             PCT='Parallel Computing Toolbox';
@@ -85,45 +89,47 @@ if toPreprocess
                 setWorkerCount(p.NumWorkers);
             end
             [minFlux, maxFlux] = fastFVA(model,100);
-        else
+        elseif useFastFVA && ~SOLVERS.ibm_cplex.installed
             fprintf('IBM CPLEX is not installed, so `fastFVA` cannot be run. Using `fluxVariability` instead\n');
+            [minFlux, maxFlux] = fluxVariability(model);
+        else
             [minFlux, maxFlux] = fluxVariability(model);
         end
     end
-
+    
     eps_cutoff = 1e-7;
-
+    
     isEq = (maxFlux - minFlux) < eps_cutoff;
     eq_constraints = sparse(sum(isEq),size(P.A_eq,2));
     eq_constraints(:,isEq) = speye(sum(isEq));
-
+    
     P.A_eq = [P.A_eq; eq_constraints];
     P.b_eq = [P.b_eq; minFlux(isEq)];
-
+    
     %check to make sure P.A and P.b are defined, and appropriately sized
     if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
         %either P.A or P.b do not exist
         error('You need to define both P.A and P.b for a polytope {x | P.A*x <= P.b}.');
     end
-
+    
     [num_constraints,dim] = size(P.A);
-
+    
     if exist('numSkip')~=1 || isempty(numSkip)
         numSkip=8*dim^2;
     end
-
+    
     fprintf('Currently (P.A, P.b) are in %d dimensions\n', dim);
-
+    
     if size(P.b,2)~= 1 || num_constraints ~= size(P.b,1)
         error('Dimensions of P.b do not align with P.A.\nP.b should be a %d x 1 vector.',num_constraints);
     end
-
+    
     if (isfield(P,'A_eq')==0 || isempty(P.A_eq)) && ...
             (isfield(P,'b_eq')==0 || isempty(P.b_eq))
         P.A_eq = [];
         P.b_eq = [];
     end
-
+    
     %preprocess the polytope of feasible solutions
     %restict to null space
     %round via maximum volume ellipsoid
