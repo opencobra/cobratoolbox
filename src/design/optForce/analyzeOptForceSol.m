@@ -16,16 +16,16 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of Sv = b (usually zeros)
+%                         * .b -    RHS of `Sv = b` (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
 %
 %    targetRxn:          (string) Reaction identifier for target reaction
-%                        E.g.: targetRxn='EX_suc'
+%                        E.g.: `targetRxn = 'EX_suc'`
 %    solution:           (structure) Structure containing information about the inverventions.
-%                        E.g.: solution = struct('reactions', ...
-%                        {{'R21'; 'R24'}}, 'flux', [10; 0])
+%                        E.g.: `solution = struct('reactions', ...
+%                        {{'R21'; 'R24'}}, 'flux', [10; 0])`
 %                        In this example, the reaction R21 will be
 %                        regulated at 10 (mmol/gDW h) (upregulation or
 %                        downregulation depending on the value for the
@@ -40,19 +40,19 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %
 % OPTIONAL INPUTS:
 %    relax:             (double) Boolean to describe if constraints
-%                       should be apply in an rounded way (relax = 1 )
-%                       or in an exactly way (relax = 0)
-%                       Default: relax = 1
-%     tol:              (double) range for tolerance when relaxing
+%                       should be apply in an rounded way (`relax = 1`)
+%                       or in an exactly way (`relax = 0`)
+%                       Default: `relax = 1`
+%    tol:               (double) range for tolerance when relaxing
 %                       contraints.
-%                       Default: tol = 1e-7
+%                       Default: `tol = 1e-7`
 %
 % OUTPUTS:
-%     maxGrowthRate:    (double) Maximum growth rate of mutant strain
+%    maxGrowthRate:     (double) Maximum growth rate of mutant strain
 %                       (after applying the inverventions)
-%     minTarget:        (double) Minimum production rate of target at
+%    minTarget:         (double) Minimum production rate of target at
 %                       max growth rate
-%     maxTarget:        (double) Maximum production rate of target at
+%    maxTarget:         (double) Maximum production rate of target at
 %                       max growth rate
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl

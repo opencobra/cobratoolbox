@@ -1,11 +1,11 @@
 function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt, inputFolder)
 % This function saves all the inputs needed to run functions to find first
-% order Must Sets (MustU, Must L) The inputs will be stored in
+% order Must Sets (`MustU, `MustL`) The inputs will be stored in
 % inputFolder.
 %
 % USAGE:
 %
-%         saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
+%    saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constrOpt,inputFolder)
 %
 % INPUTS:
 %    model:             (structure) COBRA metabolic model with at least
@@ -14,22 +14,22 @@ function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constr
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of Sv = b (usually zeros)
+%                         * .b -    RHS of `Sv = b` (usually zeros)
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
-%    minFluxesW:        (double array) of size n_rxns x1
+%    minFluxesW:        (double array) of size `n_rxns x 1`.
 %                       Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%                       E.g.: minFluxesW = [-90; -56];
-%    maxFluxesW:        (double array) of size n_rxns x1
+%                       function `FVAOptForce`.
+%                       E.g.: `minFluxesW = [-90; -56];`
+%    maxFluxesW:        (double array) of size `n_rxns x 1`
 %                       Maximum fluxes for each
 %                       reaction in the model for wild-type strain.
 %                       This can be obtained by running the
-%                       function FVAOptForce.
-%                       E.g.: maxFluxesW = [90; 56];
+%                       function `FVAOptForce`.
+%                       E.g.: `maxFluxesW = [90; 56];`
 %    constrOpt:         (structure) structure containing
 %                       additional contraints. Include here only
 %                       reactions whose flux is fixed, i.e.,
@@ -44,9 +44,7 @@ function [] = saveInputsMustSetsFirstOrder(model, minFluxesW, maxFluxesW, constr
 %                         * .rxnList - Reaction list (cell array)
 %                         * .values -  Values for constrained
 %                           reactions (double array)
-%                           E.g.: struct('rxnList', ...
-%                           {{'EX_gluc', 'R75', 'EX_suc'}}, ...
-%                           'values', [-100, 0, 155.5]');
+%                           E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    inputFolder:       (string) Folder where inputs for GAMS
 %                       function will be stored
 %
