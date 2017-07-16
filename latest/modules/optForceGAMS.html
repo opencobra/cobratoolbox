@@ -179,7 +179,7 @@
 <dt id="src.design.optForceGAMS.exportInputsMustOrder2ToGAMS">
 <code class="descname">exportInputsMustOrder2ToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustOrder2ToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function exports all the inputs needed to run the GAMS functions to
-find second order Must Sets (MustUU, Must LL, Must UL). The inputs will
+find second order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite>, <cite>MustUL</cite>). The inputs will
 be stored in inputFolder. Some inputs will be exported using GDXMRW and
 others will be exported as simple .txt files.</p>
 <p><strong>Usage</strong></p>
@@ -196,7 +196,7 @@ the following fields:</p>
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
 <li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</li>
 <li>.c -    Objective coefficients</li>
 <li>.lb -   Lower bounds for fluxes</li>
 <li>.ub -   Upper bounds for fluxes</li>
@@ -204,18 +204,18 @@ the following fields:</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-minFluxesW=[-90; -56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-maxFluxesW=[90; 56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 <li><p class="first"><strong>constrOpt</strong> &#8211;
 (structure) Structure containing additional
@@ -231,22 +231,19 @@ has the following fields:</p>
 <div><ul class="simple">
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained reactions
-(double array). E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, ...
-[-100, 0, 155.5]&#8217;);</li>
+(double array). E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>excludedRxns</strong> &#8211;
 (cell array) Reactions to be excluded to the
-MustUL set. This could be used to avoid
+<cite>MustUL</cite> set. This could be used to avoid
 finding transporters or exchange reactions
-in the set Default: empty.</p>
+in the set. Default: empty.</p>
 </li>
 <li><p class="first"><strong>mustSetFirstOrder</strong> &#8211;
-(cell array) Reactions that belong to MustU
-and MustL (first order sets) Default:
-empty.</p>
+(cell array) Reactions that belong to <cite>MustU</cite>
+and <cite>MustL</cite> (first order sets). Default: empty.</p>
 </li>
 <li><p class="first"><strong>inputFolder</strong> &#8211;
 (string) Folder where inputs for GAMS
@@ -256,7 +253,6 @@ function will be stored</p>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><blockquote>
 <div><ul class="simple">
 <li><strong>Reactions.txt</strong> &#8211;
 (file) File containing the
@@ -271,21 +267,20 @@ identifiers for constrained reactions</li>
 (file) File containing the
 identifiers for excluded reactions. These
 reactions will not be considered in when
-running findMustXX.gms (XX=UU or LL or UL
+running <cite>findMustXX.gms</cite> (<cite>XX = UU</cite> or <cite>LL</cite> or <cite>UL</cite>
 depending on the case)</li>
-</ul>
-</div></blockquote>
-<dl class="docutils">
-<dt>MustSetFirstOrder.txt:    (file) File containing the</dt>
-<dd>identifiers for reactions in MustL and
-MustU</dd>
-<dt>MtoG.gdx:                 (file) File containing the</dt>
-<dd>parameters which will be read by GAMS
+<li><strong>MustSetFirstOrder.txt</strong> &#8211;
+(file) File containing the
+identifiers for reactions in <cite>MustL</cite> and
+<cite>MustU</cite></li>
+<li><strong>MtoG.gdx</strong> &#8211;
+(file) File containing the
+parameters which will be read by GAMS
 (lower bounds, upper bounds, stoichiometrix
-matrix S, minimum and maximun fluxes for
+matrix <cite>S</cite>, minimum and maximun fluxes for
 each reaction in the previous step of FVA,
-and the values for contrained reactions)</dd>
-</dl>
+and the values for contrained reactions)</li>
+</ul>
 </div></blockquote>
 </dd></dl>
 
@@ -293,7 +288,7 @@ and the values for contrained reactions)</dd>
 <dt id="src.design.optForceGAMS.exportInputsMustToGAMS">
 <code class="descname">exportInputsMustToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/exportInputsMustToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function export all the inputs needed to run the GAMS functions to
-find first order Must Sets (MustU, Must L). The inputs will
+find first order Must Sets (<cite>MustU</cite>, <cite>MustL</cite>). The inputs will
 be stored in inputFolder. Some inputs will be exported using GDXMRW and
 others will be exported as simple .txt files.</p>
 <p><strong>Usage</strong></p>
@@ -310,7 +305,7 @@ following fields:</p>
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
 <li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</li>
 <li>.c -    Objective coefficients</li>
 <li>.lb -   Lower bounds for fluxes</li>
 <li>.ub -   Upper bounds for fluxes</li>
@@ -318,17 +313,16 @@ following fields:</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum fluxes
+(double array of size <cite>n_rxns x 1</cite>) minimum fluxes
 for each reaction in the model for wild-type
 strain. This can be obtained by running the
-function FVAOptForce. E.g.: minFluxesW = [-90;
--56];</p>
+function <cite>FVAOptForce</cite>. E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum fluxes
+(double array of size <cite>n_rxns x 1</cite>) maximum fluxes
 for each reaction in the model for wild-type
 strain. This can be obtained by running the
-function FVAOptForce. E.g.: maxFluxesW = [90; 56];</p>
+function <cite>FVAOptForce</cite>. E.g.: <cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 <li><p class="first"><strong>constrOpt</strong> &#8211;
 (structure) structure containing additional
@@ -343,9 +337,7 @@ structure has the following fields:</p>
 <div><ul class="simple">
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained reactions
-(double array). E.g.: struct(&#8216;rxnList&#8217;,...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, ...
-[-100, 0, 155.5]&#8217;);</li>
+(double array). E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
@@ -357,22 +349,22 @@ will be stored</p>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>Reactions.txt      (file) File containing the identifiers for</strong> &#8211;</p>
-<p>reactions</p>
-</li>
-<li><p class="first"><strong>Metabolites.txt    (file) File containing the identifiers for</strong> &#8211;</p>
-<p>metabolites</p>
-</li>
-<li><p class="first"><strong>Constrains.txt     (file) File containing the identifiers for</strong> &#8211;</p>
-<p>constrained reactions</p>
-</li>
-<li><p class="first"><strong>MtoG.gdx           (file) File containing the parameters which</strong> &#8211;</p>
-<p>will be read by GAMS (lower bounds, upper bounds,
-stoichiometrix matrix S, minimum and maximun fluxes
+<div><ul class="simple">
+<li><strong>Reactions.txt</strong> &#8211;
+(file) File containing the identifiers for
+reactions</li>
+<li><strong>Metabolites.txt</strong> &#8211;
+(file) File containing the identifiers for
+metabolites</li>
+<li><strong>Constrains.txt</strong> &#8211;
+(file) File containing the identifiers for
+constrained reactions</li>
+<li><strong>MtoG.gdx</strong> &#8211;
+(file) File containing the parameters which
+will be read by GAMS (lower bounds, upper bounds,
+stoichiometrix matrix <cite>S</cite>, minimum and maximun fluxes
 for each reaction in the previous step of FVA, and
-the values for contrained reactions)</p>
-</li>
+the values for contrained reactions)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -380,7 +372,7 @@ the values for contrained reactions)</p>
 <dl class="function">
 <dt id="src.design.optForceGAMS.exportInputsOptForceToGAMS">
 <code class="descname">exportInputsOptForceToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>n_sets</em>, <em>constrOpt</em>, <em>excludedURxns</em>, <em>excludedLRxns</em>, <em>excludedKRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/exportInputsOptForceToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsOptForceToGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function export the inputs required by GAMS to run optForce. Some
+<dd><p>This function export the inputs required by GAMS to run <cite>optForce</cite>. Some
 inputs will be exported to plain text (.txt files) and others will be
 exported using GDXMRW. Inputs will be stored in inputFolder</p>
 <p><strong>Usage</strong></p>
@@ -397,7 +389,7 @@ following fields:</p>
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
 <li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</li>
 <li>.c -    Objective coefficients</li>
 <li>.lb -   Lower bounds for fluxes</li>
 <li>.ub -   Upper bounds for fluxes</li>
@@ -409,48 +401,48 @@ following fields:</p>
 reaction whose flux is intented to be increased.
 For example, if the production of succionate is
 desired to be increased, &#8216;EX_suc&#8217; should be
-chosen as the target reaction
-E.g.: targetRxn=&#8217;EX_suc&#8217;;</p>
+chosen as the target reaction.
+E.g.: <cite>targetRxn = &#8216;EX_suc&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>mustU</strong> &#8211;
-(cell array) List of reactions in the MustU set
+(cell array) List of reactions in the <cite>MustU</cite> set
 This input can be obtained by running the
-script findMustU.m
-E.g.: mustU={&#8216;R21_f&#8217;;&#8217;R22_f&#8217;};</p>
+script <cite>findMustU.m</cite>.
+E.g.: <cite>mustU = {&#8216;R21_f&#8217;;&#8217;R22_f&#8217;};</cite></p>
 </li>
 <li><p class="first"><strong>mustL</strong> &#8211;
-(cell array) List of reactions in the MustL set
+(cell array) List of reactions in the <cite>MustL</cite> set
 This input can be obtained by running the
-script findMustL.m
-E.g.: mustL={&#8216;R11_f&#8217;;&#8217;R26_f&#8217;};</p>
+script <cite>findMustL.m</cite>.
+E.g.: <cite>mustL = {&#8216;R11_f&#8217;;&#8217;R26_f&#8217;};</cite></p>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum fluxes
-for each reaction in the model for wild-type strain
-E.g.: minFluxesW=[-90; -56];</p>
+(double array of size <cite>n_rxns x 1</cite>) minimum fluxes
+for each reaction in the model for wild-type strain.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum fluxes
-for each reaction in the model for wild-type strain
-E.g.: maxFluxesW=[92; -86];</p>
+(double array of size <cite>n_rxns x 1</cite>) maximum fluxes
+for each reaction in the model for wild-type strain.
+E.g.: <cite>maxFluxesW = [92; -86];</cite></p>
 </li>
 <li><p class="first"><strong>minFluxesM</strong> &#8211;
-(double array of size n_rxns x 1)
+(double array of size <cite>n_rxns x 1</cite>)
 Description: Minimum fluxes for each reaction in
-the model for mutant strain E.g.: minFluxesW=[-90;
--56];</p>
+the model for mutant strain E.g.: <cite>minFluxesW = [-90;
+-56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesM</strong> &#8211;
-(double array of size n_rxns x 1) maximum fluxes
+(double array of size <cite>n_rxns x 1</cite>) maximum fluxes
 for each reaction in the model for mutant strain.
-E.g.: maxFluxesW=[92; -86];</p>
+E.g.: <cite>maxFluxesW = [92; -86];</cite></p>
 </li>
 <li><p class="first"><strong>k</strong> &#8211;
 (double) number of intervations to be found</p>
 </li>
 <li><p class="first"><strong>nSets</strong> &#8211;
 (double) maximum number of force sets returned
-by optForce.</p>
+by <cite>optForce</cite>.</p>
 </li>
 <li><p class="first"><strong>constrOpt</strong> &#8211;
 (Structure) structure containing additional
@@ -465,9 +457,7 @@ structure has the following fields:</p>
 <div><ul class="simple">
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained reactions
-(double array). E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, ...
-[-100, 0, 155.5]&#8217;);</li>
+(double array). E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
@@ -491,44 +481,44 @@ Just the name of the folder, not the full path.</p>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>Reactions.txt      (file) File containing the identifiers for</strong> &#8211;</p>
-<p>reactions</p>
-</li>
-<li><p class="first"><strong>Metabolites.txt    (file) File containing the identifiers for</strong> &#8211;</p>
-<p>metabolites</p>
-</li>
-<li><p class="first"><strong>Constrains.txt     (file) File containing the identifiers for</strong> &#8211;</p>
-<p>constrained reactions</p>
-</li>
-<li><p class="first"><strong>Excluded_U.txt     (file) File containing the identifiers for</strong> &#8211;</p>
-<p>excluded reactions. These reactions will not be
+<div><ul class="simple">
+<li><strong>Reactions.txt</strong> &#8211;
+(file) File containing the identifiers for
+reactions</li>
+<li><strong>Metabolites.txt</strong> &#8211;
+(file) File containing the identifiers for
+metabolites</li>
+<li><strong>Constrains.txt</strong> &#8211;
+(file) File containing the identifiers for
+constrained reactions</li>
+<li><strong>Excluded_U.txt</strong> &#8211;
+(file) File containing the identifiers for
+excluded reactions. These reactions will not be
 considered for upregulations when running
-optForcE.gms</p>
-</li>
-<li><p class="first"><strong>Excluded_L.txt     (file) File containing the identifiers for</strong> &#8211;</p>
-<p>excluded reactions. These reactions will not be
+<cite>optForce.gms</cite></li>
+<li><strong>Excluded_L.txt</strong> &#8211;
+(file) File containing the identifiers for
+excluded reactions. These reactions will not be
 considered for downregulations when running
-optForcE.gms</p>
-</li>
-<li><p class="first"><strong>Excluded_K.txt     (file) File containing the identifiers for</strong> &#8211;</p>
-<p>excluded reactions. These reactions will not be
-considered for knowckouts when running optForcE.gms</p>
-</li>
-<li><p class="first"><strong>MustU.txt          (file) File containing the identifiers for</strong> &#8211;</p>
-<p>upregulated reactions find in MustU, MustUU and
-MustUL</p>
-</li>
-<li><p class="first"><strong>MustU.txt          (file) File containing the identifiers for</strong> &#8211;</p>
-<p>downregulated reactions find in MustL, MustLL and
-MustUL</p>
-</li>
-<li><p class="first"><strong>MtoG.gdx           (file) File containing the parameters which</strong> &#8211;</p>
-<p>will be read by GAMS (lower bounds, upper bounds,
-stoichiometrix matrix S, minimum and maximun fluxes
+<cite>optForce.gms</cite></li>
+<li><strong>Excluded_K.txt</strong> &#8211;
+(file) File containing the identifiers for
+excluded reactions. These reactions will not be
+considered for knowckouts when running <cite>optForce.gms</cite></li>
+<li><strong>MustU.txt</strong> &#8211;
+(file) File containing the identifiers for
+upregulated reactions find in <cite>MustU</cite>, <cite>MustUU</cite> and
+<cite>MustUL</cite></li>
+<li><strong>MustU.txt</strong> &#8211;
+(file) File containing the identifiers for
+downregulated reactions find in <cite>MustL</cite>, <cite>MustLL</cite> and
+<cite>MustUL</cite></li>
+<li><strong>MtoG.gdx</strong> &#8211;
+(file) File containing the parameters which
+will be read by GAMS (lower bounds, upper bounds,
+stoichiometrix matrix <cite>S</cite>, minimum and maximun fluxes
 for each reaction in the previous step of FVA, and
-the values for contrained reactions)</p>
-</li>
+the values for contrained reactions)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -564,8 +554,7 @@ the set of elements, one for row.</li>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">exportSetToGAMS</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rxns</span><span class="p">,</span> <span class="s1">&#39;Reactions.txt&#39;</span><span class="p">)</span>
-<span class="n">This</span><span class="p">,</span> <span class="n">will</span> <span class="n">export</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">elements</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="n">called</span>
-<span class="n">Reactions</span><span class="o">.</span><span class="n">txt</span>
+<span class="o">%</span><span class="n">This</span><span class="p">,</span> <span class="n">will</span> <span class="n">export</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">elements</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="n">called</span> <span class="n">Reactions</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -573,9 +562,9 @@ the set of elements, one for row.</li>
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustLLWithGAMS">
 <code class="descname">findMustLLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/findMustLLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLLWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the second step of optForce, that is to solve a
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming problem to find a second order
-MustLL set.</p>
+<cite>MustLL</cite> set.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)</div></blockquote>
@@ -590,7 +579,7 @@ the following fields:</p>
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
 <li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</li>
 <li>.c -    Objective coefficients</li>
 <li>.lb -   Lower bounds for fluxes</li>
 <li>.ub -   Upper bounds for fluxes</li>
@@ -598,18 +587,18 @@ the following fields:</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce. E.g.:
-minFluxesW = [-90; -56];</p>
+running the function <cite>FVAOptForce</cite>. E.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVA_optForce. E.g.:
-maxFluxesW = [90; 56];</p>
+running the function <cite>FVA_optForce</cite>. E.g.:
+<cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -632,22 +621,19 @@ fields:</p>
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained
 reactions (double array)
-E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, ...
-&#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</li>
+E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>excludedRxns</strong> &#8211;
 (cell array) Reactions to be excluded to
-the MustLL set. This could be used to avoid
+the <cite>MustLL</cite> set. This could be used to avoid
 finding transporters or exchange reactions
 in the set. Default = empty.</p>
 </li>
 <li><p class="first"><strong>mustSetFirstOrder</strong> &#8211;
-(cell array) Reactions that belong to MustU
-and MustL (first order sets). Default =
-empty.</p>
+(cell array) Reactions that belong to <cite>MustU</cite>
+and <cite>MustL</cite> (first order sets). Default = empty.</p>
 </li>
 <li><p class="first"><strong>solverName</strong> &#8211;
 (string) Name of the solver used in
@@ -683,12 +669,12 @@ plain text file. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with
-inputs to run findMustLL.gms. 0 otherwise.
+inputs to run <cite>findMustLL.gms</cite>. 0 otherwise.
 Default = 1</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustLL.gms. 0 otherwise. Default = 1</p>
+<cite>findMustLL.gms</cite>. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -698,102 +684,98 @@ findMustLL.gms. 0 otherwise. Default = 1</p>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>mustLL</strong> &#8211;
+<div><ul class="simple">
+<li><strong>mustLL</strong> &#8211;
 (cell array of size number of sets found X
 2). Cell array containing the reactions IDs
-which belong to the MustLL set. Each row
+which belong to the <cite>MustLL</cite> set. Each row
 contain a couple of reactions that must
-decrease their flux.</p>
-</li>
-<li><p class="first"><strong>pos_mustLL</strong> &#8211;
+decrease their flux.</li>
+<li><strong>pos_mustLL</strong> &#8211;
 (double array of size number of sets found
 X 2). Double array containing the positions
-of each reaction in mustLL with regard to
-model.rxns</p>
-</li>
-<li><p class="first"><strong>mustLL_linear</strong> &#8211;
+of each reaction in <cite>mustLL</cite> with regard to
+<cite>model.rxns</cite></li>
+<li><strong>mustLL_linear</strong> &#8211;
 (cell array of size number of unique
 reactions found X 1) Cell array containing
 the unique reactions ID which belong to the
-MustLL Set</p>
-</li>
-<li><p class="first"><strong>pos_mustLL_linear</strong> &#8211;
+<cite>MustLL</cite> Set</li>
+<li><strong>pos_mustLL_linear</strong> &#8211;
 (double array of size number of unique
 reactions found X 1) double array
 containing positions for reactions in
-mustLL_linear. with regard to model.rxns</p>
-</li>
-<li><p class="first"><strong>outputFileName.xls         (file) File containing one column</strong> &#8211;</p>
-<p>array with identifiers for reactions in
-MustLL. This file will only be generated if
-the user entered printExcel = 1. Note that
+<cite>mustLL_linear</cite>. with regard to <cite>model.rxns</cite></li>
+<li><strong>outputFileName.xls</strong> &#8211;
+(file) File containing one column
+array with identifiers for reactions in
+<cite>MustLL</cite>. This file will only be generated if
+the user entered <cite>printExcel = 1</cite>. Note that
 the user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
-</li>
-<li><p class="first"><strong>outputFileName.txt         (file) File containing one column</strong> &#8211;</p>
-<p>array with identifiers for reactions in
-MustLL. This file will only be generated if
-the user entered printText = 1. Note that
+entering the input <cite>outputFileName =
+&#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
+<li><strong>outputFileName.txt</strong> &#8211;
+(file) File containing one column
+array with identifiers for reactions in
+<cite>MustLL</cite>. This file will only be generated if
+the user entered <cite>printText = 1</cite>. Note that
 the user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
-</li>
-<li><p class="first"><strong>outputFileName_Info.xls    (file) File containing one column</strong> &#8211;</p>
-<p>array. In each row the user will find a
+entering the input <cite>outputFileName =
+&#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
+<li><strong>outputFileName_Info.xls</strong> &#8211;
+(file) File containing one column
+array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustLL.gms. This file will only be
-generated if the user entered printExcel =
-1. Note that the user can choose the name
+<cite>FindMustLL.gms</cite>. This file will only be
+generated if the user entered <cite>printExcel = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</p>
-</li>
-<li><p class="first"><strong>outputFileName_Info.txt    (file) File containing one column</strong> &#8211;</p>
-<p>array. In each row the user will find a
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
+<li><strong>outputFileName_Info.txt</strong> &#8211;
+(file) File containing one column
+array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustLL.gms. This file will only be
-generated if the user entered printText =
-1. Note that the user can choose the name
+<cite>FindMustLL.gms</cite>. This file will only be
+generated if the user entered <cite>printText = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</p>
-</li>
-<li><p class="first"><strong>findMustLL.lst             (file) file autogenerated by GAMS. It</strong> &#8211;</p>
-<p>contains information about equations,
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
+<li><strong>findMustLL.lst</strong> &#8211;
+(file) file autogenerated by GAMS. It
+contains information about equations,
 variables, parameters as well as
 information about the running (values at
 each iteration). This file only will be
 saved in the output folder if the user
-entered keepGamsOutputs = 1</p>
-</li>
-<li><p class="first"><strong>GtoMLL.gdx                 (file) file containing values for</strong> &#8211;</p>
-<p>variables, parameters, etc. which were
-found by GAMS when solving findMustLL.gms.
+entered <cite>keepGamsOutputs = 1</cite></li>
+<li><strong>GtoMLL.gdx</strong> &#8211;
+(file) file containing values for
+variables, parameters, etc. which were
+found by GAMS when solving <cite>findMustLL.gms</cite>.
 This file only will be saved in the output
-folder if the user entered keepInputs = 1</p>
-</li>
+folder if the user entered <cite>keepInputs = 1</cite></li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustLWithGAMS">
 <code class="descname">findMustLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/findMustLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the second step of optForce, that is to solve a
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
-MustL set.</p>
+<cite>MustL</cite> set.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[mustLSet, posMustL] = findMustLWithGAMS(model, minFluxesW, maxFluxesW, varargin)</div></blockquote>
@@ -805,29 +787,29 @@ MustL set.</p>
 the following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li>.rxns -           Reaction IDs in the model</li>
-<li>.mets -           Metabolite IDs in the model</li>
-<li>.S -              Stoichiometric matrix (sparse)</li>
-<li>.b -              RHS of Sv = b (usually zeros)</li>
-<li>.c -              Objective coefficients</li>
-<li>.lb -             Lower bounds for fluxes</li>
-<li>.ub -             Upper bounds for fluxes</li>
+<li>.rxns - Reaction IDs in the model</li>
+<li>.mets - Metabolite IDs in the model</li>
+<li>.S - Stoichiometric matrix (sparse)</li>
+<li>.b - RHS of <cite>Sv = b</cite> (usually zeros)</li>
+<li>.c - Objective coefficients</li>
+<li>.lb - Lower bounds for fluxes</li>
+<li>.ub - Upper bounds for fluxes</li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-minFluxesW=[-90; -56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-maxFluxesW=[90; 56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>maxFluxesW=[90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -846,14 +828,14 @@ and upper bounds of the model. The structure
 has the following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li>.rxnList -        Reaction list (cell array)</li>
-<li>.values -         Values for constrained reactions (double array)
-e.g.: struct(&#8216;rxnList&#8217;,{{&#8216;EX_gluc&#8217;,&#8217;R75&#8217;,&#8217;EX_suc&#8217;}},&#8217;values&#8217;,[-100,0,155.5]&#8217;);</li>
+<li>.rxnList - Reaction list (cell array)</li>
+<li>.values - Values for constrained reactions (double array)
+e.g.: <cite>struct(&#8216;rxnList&#8217;,{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100,0,155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>solverName</strong> &#8211;
-(string) Name of the solver used in GAMS
+(string) Name of the solver used in GAMS.
 Default = &#8216;cplex&#8217;</p>
 </li>
 <li><p class="first"><strong>runID</strong> &#8211;
@@ -882,11 +864,11 @@ plain text file. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with inputs
-to run findMustUU.gms. 0 otherwise.</p>
+to run <cite>findMustUU.gms</cite>. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustUU.gms. 0 otherwise.</p>
+<cite>findMustUU.gms</cite>. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -900,7 +882,7 @@ findMustUU.gms. 0 otherwise.</p>
 <li><p class="first"><strong>mustLSet</strong> &#8211;
 (cell array of size number of reactions
 found X 1) Cell array containing the
-reactions ID which belong to the Must_U Set</p>
+reactions ID which belong to the <cite>Must_U</cite> Set</p>
 </li>
 <li><p class="first"><strong>posMustL</strong> &#8211;
 (double array of size number of reactions
@@ -911,61 +893,56 @@ positions of reactions in the model.</p>
 (file) File containing one column array
 with identifiers for reactions in MustL.
 This file will only be generated if the user
-entered printExcel = 1. Note that the user
+entered <cite>printExcel = 1</cite>. Note that the user
 can choose the name of this file entering
-the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+the input <cite>outputFileName =
+&#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName.txt</strong> &#8211;
 (file) File containing one column array
 with identifiers for reactions in MustL.
 This file will only be generated if the user
-entered printText = 1. Note that the user
+entered <cite>printText = 1</cite>. Note that the user
 can choose the name of this file entering
-the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName_Info.xls</strong> &#8211;
 (file) File containing five column
-arrays.
-C1: identifiers for reactions in MustL
-C2: min fluxes for reactions according to FVA
-C3: max fluxes for reactions according to FVA
-C4: min fluxes achieved for reactions,</p>
+arrays.</p>
 <blockquote>
-<div><p>according to findMustL.gms</p>
+<div><ul class="simple">
+<li>C1: identifiers for reactions in <cite>MustL</cite></li>
+<li>C2: min fluxes for reactions according to FVA</li>
+<li>C3: max fluxes for reactions according to FVA</li>
+<li>C4: min fluxes achieved for reactions,
+according to <cite>findMustL.gms</cite></li>
+<li>C5: max fluxes achieved for reactions,
+according to <cite>findMustL.gms</cite></li>
+</ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>C5: max fluxes achieved for reactions,</dt>
-<dd><p class="first last">according to findMustL.gms</p>
-</dd>
-</dl>
 <p>This file will only be generated if the user
-entered printExcel = 1. Note that the user
+entered <cite>printExcel = 1</cite>. Note that the user
 can choose the name of this file entering
-the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName_Info.txt</strong> &#8211;
 (file) File containing five column
-arrays.
-C1: identifiers for reactions in MustL
-C2: min fluxes for reactions according to FVA
-C3: max fluxes for reactions according to FVA
-C4: min fluxes achieved for reactions,</p>
+arrays.</p>
 <blockquote>
-<div><p>according to findMustL.gms</p>
+<div><ul class="simple">
+<li>C1: identifiers for reactions in <cite>MustL</cite></li>
+<li>C2: min fluxes for reactions according to FVA</li>
+<li>C3: max fluxes for reactions according to FVA</li>
+<li>C4: min fluxes achieved for reactions,
+according to <cite>findMustL.gms</cite></li>
+<li>C5: max fluxes achieved for reactions,
+according to <cite>findMustL.gms</cite></li>
+</ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>C5: max fluxes achieved for reactions,</dt>
-<dd><p class="first last">according to findMustL.gms</p>
-</dd>
-</dl>
 <p>This file will only be generated if the user
-entered printText = 1. Note that the user
+entered <cite>printText = 1</cite>. Note that the user
 can choose the name of this file entering
-the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>findMustL.lst</strong> &#8211;
 (file) file autogenerated by GAMS. It
@@ -974,14 +951,14 @@ variables, parameters as well as information
 about the running (values at each
 iteration). This file only will be saved in
 the output folder is the user entered
-keepGamsOutputs = 1</p>
+<cite>keepGamsOutputs = 1</cite></p>
 </li>
 <li><p class="first"><strong>GtoML.gdx</strong> &#8211;
 (file) file containing values for
 variables, parameters, etc. which were found
-by GAMS when solving findMustL.gms. This
+by GAMS when solving <cite>findMustL.gms</cite>. This
 file only will be saved in the output folder
-is the user entered keepInputs = 1</p>
+is the user entered <cite>keepInputs = 1</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -989,18 +966,18 @@ is the user entered keepInputs = 1</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustULWithGAMS">
 <code class="descname">findMustULWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/findMustULWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustULWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the second step of optForce, that is to solve a
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 MustUL set.</p>
 <p><strong>Usage</strong></p>
@@ -1016,27 +993,27 @@ least the following fields:</p>
 <div><ul class="simple">
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
-<li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
-<li>.c -    Objective coefficients</li>
-<li>.lb -   Lower bounds for fluxes</li>
-<li>.ub -   Upper bounds for fluxes</li>
+<li>.S - Stoichiometric matrix (sparse)</li>
+<li>.b - RHS of <cite>Sv = b</cite> (usually zeros)</li>
+<li>.c - Objective coefficients</li>
+<li>.lb - Lower bounds for fluxes</li>
+<li>.ub - Upper bounds for fluxes</li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce. E.g.:
-minFluxesW = [-90; -56];</p>
+running the function <cite>FVAOptForce</cite>. E.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
 (double array of size n_rxns x 1) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce. E.g.:
-maxFluxesW = [90; 56];</p>
+running the function <cite>FVAOptForce</cite>. E.g.:
+<cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -1059,21 +1036,19 @@ following fields:</p>
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained
 reactions (double array)
-E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, ...
-&#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</li>
+E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>excludedRxns</strong> &#8211;
 (cell array) Reactions to be excluded to
-the MustUL set. This could be used to
+the <cite>MustUL</cite> set. This could be used to
 avoid finding transporters or exchange
 reactions in the set. Default = empty.</p>
 </li>
 <li><p class="first"><strong>mustSetFirstOrder</strong> &#8211;
 (cell array) Reactions that belong to
-MustU and MustL (first order sets).
+<cite>MustU</cite> and <cite>MustL</cite> (first order sets).
 Default = empty.</p>
 </li>
 <li><p class="first"><strong>solverName</strong> &#8211;
@@ -1110,12 +1085,12 @@ plain text file. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with
-inputs to run findMustUL.gms. 0 otherwise.
+inputs to run <cite>findMustUL.gms</cite>. 0 otherwise.
 Default = 1</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustUL.gms. 0 otherwise. Default = 1</p>
+<cite>findMustUL.gms</cite>. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -1129,60 +1104,58 @@ findMustUL.gms. 0 otherwise. Default = 1</p>
 <li><strong>mustUL</strong> &#8211;
 (cell array of size number of sets found X
 2) Cell array containing the reactions IDs
-which belong to the MustUL set. Each row
+which belong to the <cite>MustUL</cite> set. Each row
 contain a couple of reactions that must
 decrease their flux.</li>
 <li><strong>pos_mustUL</strong> &#8211;
 (double array of size number of sets found
 X 2) double array containing the positions
-of each reaction in mustUL with regard to
+of each reaction in <cite>mustUL</cite> with regard to
 model.rxns</li>
 <li><strong>mustUL_linear</strong> &#8211;
 (cell array of size number of unique
 reactions found X 1) Cell array containing
 the unique reactions ID which belong to
-the MustUL Set</li>
+the <cite>MustUL</cite> Set</li>
 <li><strong>pos_mustUL_linear</strong> &#8211;
 (double array of size number of unique
 reactions found X 1) double array
 containing positions for reactions in
-mustUL_linear. with regard to model.rxns</li>
+mustUL_linear. with regard to <cite>model.rxns</cite></li>
 <li><strong>outputFileName.xls</strong> &#8211;
 (file) File containing one column
 array with identifiers for reactions in
 MustUL. This file will only be generated
-if the user entered printExcel = 1. Note
+if the user entered <cite>printExcel = 1</cite>. Note
 that the user can choose the name of this
-file entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</li>
+file entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName.txt</strong> &#8211;
 (file) File containing one column
 array with identifiers for reactions in
 MustUL. This file will only be generated
-if the user entered printText = 1. Note
+if the user entered <cite>printText = 1</cite>. Note
 that the user can choose the name of this
-file entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</li>
+file entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName_Info.xls</strong> &#8211;
 (file) File containing one column
 array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustUL.gms. This file will only be
-generated if the user entered printExcel =
-1. Note that the user can choose the name
+<cite>FindMustUL.gms</cite>. This file will only be
+generated if the user entered <cite>printExcel = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</li>
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName_Info.txt</strong> &#8211;
 (file) File containing one column
 array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustUL.gms. This file will only be
-generated if the user entered printText =
-1. Note that the user can choose the name
+<cite>FindMustUL.gms</cite>. This file will only be
+generated if the user entered <cite>printText = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</li>
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>findMustUL.lst</strong> &#8211;
 (file) file autogenerated by GAMS. It
 contains information about equations,
@@ -1190,33 +1163,33 @@ variables, parameters as well as
 information about the running (values at
 each iteration). This file only will be
 saved in the output folder is the user
-entered keepGamsOutputs = 1</li>
+entered <cite>keepGamsOutputs = 1</cite></li>
 <li><strong>GtoMUL.gdx</strong> &#8211;
 (file) file containing values for
 variables, parameters, etc. which were
-found by GAMS when solving findMustUL.gms.
+found by GAMS when solving <cite>findMustUL.gms</cite>.
 This file only will be saved in the output
-folder is the user entered keepInputs = 1</li>
+folder is the user entered <cite>keepInputs = 1</cite></li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustUUWithGAMS">
 <code class="descname">findMustUUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/findMustUUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUUWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the second step of optForce, that is to solve a
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
-MustUU set.</p>
+<cite>MustUU</cite> set.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWithGAMS(model, minFluxesW, maxFluxesW, varargin)</div></blockquote>
@@ -1231,7 +1204,7 @@ least the following fields:</p>
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
 <li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
+<li>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</li>
 <li>.c -    Objective coefficients</li>
 <li>.lb -   Lower bounds for fluxes</li>
 <li>.ub -   Upper bounds for fluxes</li>
@@ -1239,18 +1212,18 @@ least the following fields:</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce. E.g.:
-minFluxesW = [-90; -56];</p>
+running the function <cite>FVAOptForce</cite>. E.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce. E.g.:
-maxFluxesW = [90; 56];</p>
+running the function <cite>FVAOptForce</cite>. E.g.:
+<cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -1273,21 +1246,19 @@ following fields:</p>
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained
 reactions (double array)
-E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, ...
-&#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</li>
+E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>excludedRxns</strong> &#8211;
 (cell array) Reactions to be excluded to
-the MustUU set. This could be used to
+the <cite>MustUU</cite> set. This could be used to
 avoid finding transporters or exchange
 reactions in the set. Default = empty.</p>
 </li>
 <li><p class="first"><strong>mustSetFirstOrder</strong> &#8211;
 (cell array) Reactions that belong to
-MustU and MustL (first order sets).
+<cite>MustU</cite> and <cite>MustL</cite> (first order sets).
 Default = empty.</p>
 </li>
 <li><p class="first"><strong>solverName</strong> &#8211;
@@ -1324,12 +1295,12 @@ plain text file. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with
-inputs to run findMustUU.gms. 0 otherwise.
+inputs to run <cite>findMustUU.gms</cite>. 0 otherwise.
 Default = 1</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustUU.gms. 0 otherwise. Default = 1</p>
+<cite>findMustUU.gms</cite>. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -1343,60 +1314,58 @@ findMustUU.gms. 0 otherwise. Default = 1</p>
 <li><strong>mustUU</strong> &#8211;
 (cell array of size number of sets found X
 2) Cell array containing the reactions IDs
-which belong to the MustUU set. Each row
+which belong to the <cite>MustUU</cite> set. Each row
 contain a couple of reactions that must
 decrease their flux.</li>
 <li><strong>pos_mustUU</strong> &#8211;
 (double array of size number of sets found
 X 2) double array containing the positions
-of each reaction in mustUU with regard to
-model.rxns</li>
+of each reaction in <cite>mustUU</cite> with regard to
+<cite>model.rxns</cite></li>
 <li><strong>mustUU_linear</strong> &#8211;
 (cell array of size number of unique
 reactions found X 1) Cell array containing
 the unique reactions ID which belong to
-the MustUU Set</li>
+the <cite>MustUU</cite> Set</li>
 <li><strong>pos_mustUU_linear</strong> &#8211;
 (double array of size number of unique
 reactions found X 1) double array
 containing positions for reactions in
-mustUU_linear. with regard to model.rxns</li>
+<cite>mustUU_linear</cite>. with regard to <cite>model.rxns</cite></li>
 <li><strong>outputFileName.xls</strong> &#8211;
 (file) File containing one column
 array with identifiers for reactions in
 MustUU. This file will only be generated
-if the user entered printExcel = 1. Note
+if the user entered <cite>printExcel = 1</cite>. Note
 that the user can choose the name of this
-file entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</li>
+file entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName.txt</strong> &#8211;
 (file) File containing one column
 array with identifiers for reactions in
 MustUU. This file will only be generated
-if the user entered printText = 1. Note
+if the user entered <cite>printText = 1</cite>. Note
 that the user can choose the name of this
-file entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</li>
+file entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName_Info.xls</strong> &#8211;
 (file) File containing one column
 array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustUU.gms. This file will only be
-generated if the user entered printExcel =
-1. Note that the user can choose the name
+<cite>FindMustUU.gms</cite>. This file will only be
+generated if the user entered <cite>printExcel = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</li>
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>outputFileName_Info.txt</strong> &#8211;
 (file) File containing one column
 array. In each row the user will find a
 couple of reactions. Each couple of
 reaction was found in one iteration of
-FindMustUU.gms. This file will only be
-generated if the user entered printText =
-1. Note that the user can choose the name
+<cite>FindMustUU.gms</cite>. This file will only be
+generated if the user entered <cite>printText = 1</cite>.
+Note that the user can choose the name
 of this file entering the input
-outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</li>
+<cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></li>
 <li><strong>findMustUU.lst</strong> &#8211;
 (file) file autogenerated by GAMS. It
 contains information about equations,
@@ -1404,33 +1373,33 @@ variables, parameters as well as
 information about the running (values at
 each iteration). This file only will be
 saved in the output folder is the user
-entered keepGamsOutputs = 1</li>
+entered <cite>keepGamsOutputs = 1</cite></li>
 <li><strong>GtoMUU.gdx</strong> &#8211;
 (file) file containing values for
 variables, parameters, etc. which were
-found by GAMS when solving findMustUU.gms.
+found by GAMS when solving <cite>findMustUU.gms</cite>.
 This file only will be saved in the output
-folder is the user entered keepInputs = 1</li>
+folder is the user entered <cite>keepInputs = 1</cite></li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustUWithGAMS">
 <code class="descname">findMustUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/findMustUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the second step of optForce, that is to solve a
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
-MustU set.</p>
+<cite>MustU</cite> set.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[mustUSet, posMustU] = findMustUWithGAMS(model, minFluxesW, maxFluxesW, varargin)</div></blockquote>
@@ -1442,29 +1411,29 @@ MustU set.</p>
 least the following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li>.rxns -           Reaction IDs in the model</li>
-<li>.mets -           Metabolite IDs in the model</li>
-<li>.S -              Stoichiometric matrix (sparse)</li>
-<li>.b -              RHS of Sv = b (usually zeros)</li>
-<li>.c -              Objective coefficients</li>
-<li>.lb -             Lower bounds for fluxes</li>
-<li>.ub -             Upper bounds for fluxes</li>
+<li>.rxns - Reaction IDs in the model</li>
+<li>.mets - Metabolite IDs in the model</li>
+<li>.S - Stoichiometric matrix (sparse)</li>
+<li>.b - RHS of <cite>Sv = b</cite> (usually zeros)</li>
+<li>.c - Objective coefficients</li>
+<li>.lb - Lower bounds for fluxes</li>
+<li>.ub - Upper bounds for fluxes</li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-minFluxesW=[-90; -56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce e.g.:
-maxFluxesW=[90; 56];</p>
+running the function <cite>FVAOptForce</cite> e.g.:
+<cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -1484,14 +1453,14 @@ bounds of the model. The structure has the
 following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li>.rxnList -        Reaction list (cell array)</li>
-<li>.values -         Values for constrained reactions (double array)
-e.g.: struct(&#8216;rxnList&#8217;,{{&#8216;EX_gluc&#8217;,&#8217;R75&#8217;,&#8217;EX_suc&#8217;}},&#8217;values&#8217;,[-100,0,155.5]&#8217;);</li>
+<li>.rxnList - Reaction list (cell array)</li>
+<li>.values - Values for constrained reactions (double array)
+e.g.: <cite>struct(&#8216;rxnList&#8217;,{{&#8216;EX_gluc&#8217;,&#8217;R75&#8217;,&#8217;EX_suc&#8217;}},&#8217;values&#8217;,[-100,0,155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>solverName</strong> &#8211;
-(string) Name of the solver used in GAMS
+(string) Name of the solver used in GAMS.
 Default = &#8216;cplex&#8217;</p>
 </li>
 <li><p class="first"><strong>runID</strong> &#8211;
@@ -1520,11 +1489,11 @@ plain text file. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with inputs
-to run findMustUU.gms. 0 otherwise.</p>
+to run <cite>findMustUU.gms</cite>. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustUU.gms. 0 otherwise.</p>
+<cite>findMustUU.gms</cite>. 0 otherwise.</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -1538,7 +1507,7 @@ findMustUU.gms. 0 otherwise.</p>
 <li><p class="first"><strong>mustUSet</strong> &#8211;
 (cell array of size number of reactions
 found X 1) Cell array containing the
-reactions ID which belong to the Must_U
+reactions ID which belong to the <cite>Must_U</cite>
 Set</p>
 </li>
 <li><p class="first"><strong>posMustU</strong> &#8211;
@@ -1550,61 +1519,55 @@ positions of reactions in the model.</p>
 (file) File containing one column array
 with identifiers for reactions in MustU.
 This file will only be generated if the
-user entered printExcel = 1. Note that the
+user entered <cite>printExcel = 1</cite>. Note that the
 user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName.txt</strong> &#8211;
 (file) File containing one column array
 with identifiers for reactions in MustU.
 This file will only be generated if the
-user entered printText = 1. Note that the
+user entered <cite>printText = 1</cite>. Note that the
 user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName_Info.xls</strong> &#8211;
 (file) File containing five column
-arrays.
-C1: identifiers for reactions in MustU
-C2: min fluxes for reactions according to FVA
-C3: max fluxes for reactions according to FVA
-C4: min fluxes achieved for reactions,</p>
+arrays.</p>
 <blockquote>
-<div><p>according to findMustU.gms</p>
+<div><ul class="simple">
+<li>C1: identifiers for reactions in <cite>MustU</cite></li>
+<li>C2: min fluxes for reactions according to FVA</li>
+<li>C3: max fluxes for reactions according to FVA</li>
+<li>C4: min fluxes achieved for reactions,
+according to <cite>findMustU.gms</cite></li>
+<li>C5: max fluxes achieved for reactions,
+according to <cite>findMustU.gms</cite></li>
+</ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>C5: max fluxes achieved for reactions,</dt>
-<dd><p class="first last">according to findMustU.gms</p>
-</dd>
-</dl>
 <p>This file will only be generated if the
-user entered printExcel = 1. Note that the
+user entered <cite>printExcel = 1</cite>. Note that the
 user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName_Info.txt</strong> &#8211;
 (file) File containing five column
-arrays.
-C1: identifiers for reactions in MustU
-C2: min fluxes for reactions according to FVA
-C3: max fluxes for reactions according to FVA
-C4: min fluxes achieved for reactions,</p>
+arrays.</p>
 <blockquote>
-<div><p>according to findMustU.gms</p>
+<div><ul class="simple">
+<li>C1: identifiers for reactions in MustU</li>
+<li>C2: min fluxes for reactions according to FVA</li>
+<li>C3: max fluxes for reactions according to FVA</li>
+<li>C4: min fluxes achieved for reactions,
+according to <cite>findMustU.gms</cite></li>
+<li>C5: max fluxes achieved for reactions,
+according to <cite>findMustU.gms</cite></li>
+</ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>C5: max fluxes achieved for reactions,</dt>
-<dd><p class="first last">according to findMustU.gms</p>
-</dd>
-</dl>
 <p>This file will only be generated if the
-user entered printText = 1. Note that the
+user entered <cite>printText = 1</cite>. Note that the
 user can choose the name of this file
-entering the input outputFileName =
-&#8216;PutYourOwnFileNameHere&#8217;;</p>
+entering the input <cite>outputFileName = &#8216;PutYourOwnFileNameHere&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>findMustU.lst</strong> &#8211;
 (file) file autogenerated by GAMS. It
@@ -1613,14 +1576,14 @@ variables, parameters as well as
 information about the running (values at
 each iteration). This file only will be
 saved in the output folder is the user
-entered keepGamsOutputs = 1</p>
+entered <cite>keepGamsOutputs = 1</cite></p>
 </li>
 <li><p class="first"><strong>GtoMU.gdx</strong> &#8211;
 (file) file containing values for
 variables, parameters, etc. which were
-found by GAMS when solving findMustU.gms.
+found by GAMS when solving <cite>findMustU.gms</cite>.
 This file only will be saved in the output
-folder is the user entered keepInputs = 1</p>
+folder is the user entered <cite>keepInputs = 1</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -1628,18 +1591,18 @@ folder is the user entered keepInputs = 1</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.optForceWithGAMS">
 <code class="descname">optForceWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>nSets</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>solverName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/design/optForceGAMS/optForceWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.optForceWithGAMS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function runs the third step of optForce that is to solve a
+<dd><p>This function runs the third step of <cite>optForce</cite> that is to solve a
 bilevel mixed integer linear programming problem to find sets of
 interventions that lead to an increased production of a particular target</p>
 <p><strong>Usage</strong></p>
@@ -1655,11 +1618,11 @@ the following fields:</p>
 <div><ul class="simple">
 <li>.rxns - Reaction IDs in the model</li>
 <li>.mets - Metabolite IDs in the model</li>
-<li>.S -    Stoichiometric matrix (sparse)</li>
-<li>.b -    RHS of Sv = b (usually zeros)</li>
-<li>.c -    Objective coefficients</li>
-<li>.lb -   Lower bounds for fluxes</li>
-<li>.ub -   Upper bounds for fluxes</li>
+<li>.S - Stoichiometric matrix (sparse)</li>
+<li>.b - RHS of <cite>Sv = b</cite> (usually zeros)</li>
+<li>.c - Objective coefficients</li>
+<li>.lb - Lower bounds for fluxes</li>
+<li>.ub - Upper bounds for fluxes</li>
 </ul>
 </div></blockquote>
 </li>
@@ -1669,47 +1632,46 @@ reaction whose flux is intented to be
 increased. For E.g., if the production of
 succionate is desired to be increased,
 &#8216;EX_suc&#8217; should be chosen as the target
-reaction E.g.: targetRxn=&#8217;EX_suc&#8217;;</p>
+reaction E.g.: <cite>targetRxn = &#8216;EX_suc&#8217;;</cite></p>
 </li>
 <li><p class="first"><strong>mustU</strong> &#8211;
-(cell array) List of reactions in the MustU
-set This input can be obtained by running the
-script findMustU.m E.g.
-mustU={&#8216;R21_f&#8217;;&#8217;R22_f&#8217;};</p>
+(cell array) List of reactions in the <cite>MustU</cite>
+set. This input can be obtained by running the
+script <cite>findMustU.m</cite> E.g.
+<cite>mustU = {&#8216;R21_f&#8217;;&#8217;R22_f&#8217;};</cite></p>
 </li>
 <li><p class="first"><strong>mustL</strong> &#8211;
-(cell array) List of reactions in the MustL
-set This input can be obtained by running the
-script findMustL.m E.g.
-mustL={&#8216;R11_f&#8217;;&#8217;R26_f&#8217;};</p>
+(cell array) List of reactions in the <cite>MustL</cite>
+set. This input can be obtained by running the
+script <cite>findMustL.m</cite> E.g.
+<cite>mustL = {&#8216;R11_f&#8217;;&#8217;R26_f&#8217;};</cite></p>
 </li>
 <li><p class="first"><strong>minFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce.
-E.g.: minFluxesW = [-90; -56];</p>
+running the function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesW</strong> &#8211;
-(double array of size n_rxns x 1) maximum
+(double array of size <cite>n_rxns x 1</cite>) maximum
 fluxes for each reaction in the model for
 wild-type strain. This can be obtained by
-running the function FVAOptForce.
-E.g.: maxFluxesW = [90; 56];</p>
+running the function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesW = [90; 56];</cite></p>
 </li>
 <li><p class="first"><strong>minFluxesM</strong> &#8211;
-(double array of size n_rxns x 1) minimum
+(double array of size <cite>n_rxns x 1</cite>) minimum
 fluxes for each reaction in the model for
 mutant strain. This can be obtained by running
-the function FVAOptForce. E.g.: minFluxesM =
-[-90; -56];</p>
+the function <cite>FVAOptForce</cite>. E.g.: <cite>minFluxesM = [-90; -56];</cite></p>
 </li>
 <li><p class="first"><strong>maxFluxesM</strong> &#8211;
-(double array of size n_rxns x 1)
+(double array of size <cite>n_rxns x 1</cite>)
 Description: Maximum fluxes for each reaction
 in the model for mutant strain. This can be
-obtained by running the function FVAOptForce.
-E.g.: maxFluxesM = [90; 56];</p>
+obtained by running the function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesM = [90; 56];</cite></p>
 </li>
 </ul>
 </div></blockquote>
@@ -1718,11 +1680,11 @@ E.g.: maxFluxesM = [90; 56];</p>
 <div><ul>
 <li><p class="first"><strong>k</strong> &#8211;
 (double) number of intervations to be
-found. Default k = 1;</p>
+found. Default <cite>k = 1</cite>;</p>
 </li>
 <li><p class="first"><strong>nSets</strong> &#8211;
 (double) maximum number of force sets
-returned by optForce. Default nSets = 1;</p>
+returned by optForce. Default <cite>nSets = 1</cite>;</p>
 </li>
 <li><p class="first"><strong>constrOpt</strong> &#8211;
 (Structure) structure containing
@@ -1739,9 +1701,7 @@ has the following fields:</p>
 <li>.rxnList - Reaction list (cell array)</li>
 <li>.values -  Values for constrained
 reactions (double array)
-E.g.: struct(&#8216;rxnList&#8217;, ...
-{{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, ...
-&#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</li>
+E.g.: <cite>struct(&#8216;rxnList&#8217;, {{&#8216;EX_gluc&#8217;, &#8216;R75&#8217;, &#8216;EX_suc&#8217;}}, &#8216;values&#8217;, [-100, 0, 155.5]&#8217;);</cite></li>
 </ul>
 </div></blockquote>
 </li>
@@ -1758,10 +1718,9 @@ downregulared reations, K: set of knockout
 reactions)</li>
 </ul>
 </div></blockquote>
-<p>E.g.: excludedRxns = struct(&#8216;rxnList&#8217;,...
-{{&#8216;SUCt&#8217;, &#8216;R68_b&#8217;}}, &#8216;typeReg&#8217;, &#8216;UD&#8217;) In this
-E.g. SUCt is prevented to appear in the set of
-upregulated reactions and R68_b is prevented
+<p>E.g.: <cite>excludedRxns = struct(&#8216;rxnList&#8217;, {{&#8216;SUCt&#8217;, &#8216;R68_b&#8217;}}, &#8216;typeReg&#8217;, &#8216;UD&#8217;)</cite> In this
+E.g. &#8216;SUCt&#8217; is prevented to appear in the set of
+upregulated reactions and &#8216;R68_b&#8217; is prevented
 to appear in the downregulated set of
 reactions. Default = empty.</p>
 </li>
@@ -1798,12 +1757,12 @@ plain text file. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>keepInputs</strong> &#8211;
 (double) 1 to mantain folder with
-inputs to run findMustLL.gms. 0 otherwise.
+inputs to run <cite>findMustLL.gms</cite>. 0 otherwise.
 Default = 1</p>
 </li>
 <li><p class="first"><strong>keepGamsOutputs</strong> &#8211;
 (double) 1 to mantain files returned by
-findMustLL.gms. 0 otherwise. Default = 1</p>
+<cite>findMustLL.gms</cite>. 0 otherwise. Default = 1</p>
 </li>
 <li><p class="first"><strong>verbose</strong> &#8211;
 (double) 1 to print results in console.
@@ -1815,80 +1774,123 @@ findMustLL.gms. 0 otherwise. Default = 1</p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>optForceSets</strong> &#8211;
-(cell array) cell array of size  n x m, where
-n = number of sets found and m = size of sets
-found (k). Element in position i,j is reaction
-j in set i.
+(cell array) cell array of size  <cite>n x m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>). Element in position <cite>i</cite>, <cite>j</cite> is reaction
+<cite>j</cite> in set <cite>i</cite>.
 E.g.</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>rxn1  rxn2</dt>
-<dd></dd>
-</dl>
-</div></blockquote>
-<p>set 1   | R4    R2
-set 2   | R3    R1</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="31%" />
+<col width="31%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td></td>
+<td>rxn1</td>
+<td>rxn2</td>
+</tr>
+<tr class="row-even"><td>set 1</td>
+<td>R4</td>
+<td>R2</td>
+</tr>
+<tr class="row-odd"><td>set 2</td>
+<td>R3</td>
+<td>R1</td>
+</tr>
+</tbody>
+</table>
 </li>
 <li><p class="first"><strong>posOptForceSets</strong> &#8211;
-(double array) double array of size  n x m,
-where n = number of sets found and m = size of
-sets found (k). Element in position i,j is the
-position of reaction in optForceSets(i,j) in
-model.rxns
+(double array) double array of size  <cite>n x m</cite>,
+where <cite>n</cite> = number of sets found and <cite>m</cite> = size of
+sets found (<cite>k</cite>). Element in position <cite>i</cite>, <cite>j</cite> is the
+position of reaction in <cite>optForceSets(i, j)</cite> in
+<cite>model.rxns</cite>
 E.g.</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>rxn1  rxn2</dt>
-<dd></dd>
-</dl>
-</div></blockquote>
-<p>set 1   | 4    2
-set 2   | 3    1</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="31%" />
+<col width="31%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td></td>
+<td>rxn1</td>
+<td>rxn2</td>
+</tr>
+<tr class="row-even"><td>set 1</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>set 2</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
 </li>
 <li><p class="first"><strong>typeRegOptForceSets</strong> &#8211;
-(cell array) cell array of size  n x m, where
-n = number of sets found and m = size of sets
-found (k). Element in position i,j is the kind
+(cell array) cell array of size <cite>n x m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>). Element in position <cite>i</cite>, <cite>j</cite> is the kind
 of intervention for reaction in
-optForceSets(i,j)
+<cite>optForceSets(i,j)</cite>
 E.g.</p>
-<blockquote>
-<div><blockquote>
-<div><p>rxn1            rxn2</p>
-</div></blockquote>
-<p>____________    ______________</p>
-</div></blockquote>
-<p>set 1   | upregulation    downregulation
-set 2   | upregulation    knockout</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="39%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td></td>
+<td>rxn1</td>
+<td>rxn2</td>
+</tr>
+<tr class="row-even"><td>set 1</td>
+<td>upregulation</td>
+<td>downregulation</td>
+</tr>
+<tr class="row-odd"><td>set 2</td>
+<td>upregulation</td>
+<td>knockout</td>
+</tr>
+</tbody>
+</table>
 </li>
 <li><p class="first"><strong>fluxOptForceSets</strong> &#8211;
-(double matrix) Matrix of size n +m, where
-n = number of sets found and m = size of sets
-found (k). The number in (i,j) is the flux
-achieved for the reaction in optForceSets(i,j)</p>
+(double matrix) Matrix of size <cite>n + m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>). The number in <cite>(i,j)</cite> is the flux
+achieved for the reaction in <cite>optForceSets(i, j)</cite></p>
 </li>
 <li><p class="first"><strong>outputFileName.xls</strong> &#8211;
-(file) file containing 11 columns.
-C1: Number of invervetions (k)
-C2: Set Number
-C3: Identifiers for reactions in the force set
-C4: Type of regulations for each reaction in
-the force set
-C5: min flux of each reaction in force set,
-according to FVA
-C6: max flux of each reaction in force set,
-according to FVA
-C7: achieved flux of each of the reactions in
-the force set after applying the inverventions
-C8: objetive function achieved by OptForce.gms
-C9: Minimum flux fot target when applying the
-interventions
-C10: Maximum flux fot target when applying the
-interventions
-C11: Maximum growth rate when applying the
-interventions.
-In the rows, the user can see each of the
-optForce sets found.</p>
+(file) file containing 11 columns.</p>
+<blockquote>
+<div><ul class="simple">
+<li>C1: Number of invervetions (<cite>k</cite>)</li>
+<li>C2: Set Number</li>
+<li>C3: Identifiers for reactions in the force set</li>
+<li>C4: Type of regulations for each reaction in
+the force set</li>
+<li>C5: min flux of each reaction in force set,
+according to FVA</li>
+<li>C6: max flux of each reaction in force set,
+according to FVA</li>
+<li>C7: achieved flux of each of the reactions in
+the force set after applying the inverventions</li>
+<li>C8: objetive function achieved by <cite>OptForce.gms</cite></li>
+<li>C9: Minimum flux fot target when applying the
+interventions</li>
+<li>C10: Maximum flux fot target when applying the
+interventions</li>
+<li>C11: Maximum growth rate when applying the
+interventions.</li>
+</ul>
+</div></blockquote>
+<p>In the rows, the user can see each of the
+<cite>optForce</cite> sets found.</p>
 </li>
 <li><p class="first"><strong>outputFileName.txt</strong> &#8211;
 Same as outputFileName.xls but in a .txt file,
@@ -1896,13 +1898,13 @@ separated by tabs.</p>
 </li>
 <li><p class="first"><strong>optForce.lst</strong> &#8211;
 (file) file generated automatically by
-GAMS when running optForce. Contains
+GAMS when running <cite>optForce</cite>. Contains
 information about the running.</p>
 </li>
 <li><p class="first"><strong>GtoMOF.gdx</strong> &#8211;
 (file) file generated by GAMS containing
 variables, parameters and equations of the
-optForce problem.</p>
+<cite>optForce</cite> problem.</p>
 </li>
 </ul>
 </div></blockquote>
@@ -1910,11 +1912,11 @@ optForce problem.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This function is based in the GAMS files written by Sridhar
 Ranganathan which were provided by the research group of Costas D.
-Maranas. For a detailed description of the optForce procedure, please
-see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
 Optimization Procedure for Identifying All Genetic Manipulations
 Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
-e1000744. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
 </div>
 </dd></dl>
 

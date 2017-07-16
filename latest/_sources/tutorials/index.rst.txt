@@ -11,6 +11,7 @@ Tutorials
 .. toctree::
 
    tutorialAtomicallyResolveReconstruction
+   tutorialBrowseNetwork
    tutorialConstrainingModels
    createSuNetworkRecon
    tutorialEngaging
