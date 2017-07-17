@@ -71,6 +71,8 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 [GRfx, GR, BMmaxLB, BMmaxUB, optBMpercent, ...  % parameters for finding maximum growth rate
     symmetric, rxnNameList, pairList, fluxRange, Nstep, NstepScale, ...  % parameters for POA
@@ -108,14 +110,22 @@ if ~isempty(savePOA)
     end
 end
 
-%parallel computation
-if isempty(gcp('nocreate'))
-    if threads > 1
-        %given explicit no. of threads
-        parpool(ceil(threads));
-    elseif threads ~= 1
-        %default max no. of threads (input 0 or -1 etc)
-        parpool;
+% parallel computation
+if threads ~= 1 && isempty(gcp('nocreate'))
+    try
+        if threads > 1
+            %given explicit no. of threads
+            parpool(ceil(threads));
+        else
+            %default max no. of threads (input 0 or -1 etc)
+            parpool;
+        end
+        % add explicitly the solver name to avoid error in parallel computation
+        if ~isfield(parameters, 'solver')
+            varargin = [varargin(:); {'solver'; CBT_LP_SOLVER}];
+        end
+    catch
+        threads = 1;
     end
 end
 

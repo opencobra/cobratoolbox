@@ -69,6 +69,8 @@ function [POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options,
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
 % default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.

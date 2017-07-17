@@ -14,6 +14,8 @@ switch purpose
     case 'initialize'
         [varargout{1}, varargout{2}, varargout{3}, varargout{4}, varargout{5}, varargout{6}, ...
             varargout{7}, varargout{8}, varargout{9}, varargout{10}, varargout{11}] = initialize(varargin{:});
+    case 'solveCobraLP_arg'
+        [varargout{1}, varargout{2}] = solveCobraLP_arg(varargin{:});
     case 'infoCom2indCom'
         varargout{1} = infoCom2indCom(varargin{:});
     case 'rxnList2objMatrix'
@@ -125,6 +127,38 @@ else
     xName = {};
 end
 
+end
+
+function [options, arg] = solveCobraLP_arg(options, parameters, arg)
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+%
+% USAGE:
+%    [options, arg] = solveCobraLP_arg(options, parameters, arg)
+%
+% INPUTS:
+%    options:       option structure
+%    parameters:    name-value parameter structure
+%    arg:           varargin for SteadyCom functions
+%
+% OUTPUTS:
+%    options:       updated option structure
+%    arg:           updated varargin
+
+if isfield(parameters, 'printLevel')
+    options.verbFlag = parameters.printLevel;
+end
+if isfield(parameters, 'minNorm')
+    options.minNorm = ~isequal(parameters.minNorm, 0);
+    f = find(cellfun(@(x) isequal(x, 'minNorm'), arg));
+    arg{f + 1} = 0;
+end
+if isfield(parameters, 'saveInput')
+    options.saveModel = parameters.saveInput;
+    f = find(cellfun(@(x) isequal(x, 'saveInput'), arg));
+    arg(f : (f + 1)) = [];
+    options.saveFVA = [parameters.saveInput, '_fva'];
+    options.savePOA = [parameters.saveInput, '_poa'];
+end
 end
 
 function indCom = infoCom2indCom(modelCom, infoCom, revFlag, spAbbr, spName)

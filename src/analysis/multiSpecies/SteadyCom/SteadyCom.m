@@ -114,19 +114,9 @@ t0 = 0;
 if nargin < 2 || isempty(options)
     options = struct();
 end
-if isfield(parameters, 'printLevel')
-    options.verbFlag = parameters.printLevel;
-end
-if isfield(parameters, 'minNorm')
-    options.minNorm = ~isequal(parameters.minNorm, 0);
-    f = find(cellfun(@(x) isequal(x, 'minNorm'),varargin));
-    varargin{f + 1} = 0;
-end
-if isfield(parameters, 'saveInput')
-    options.saveModel = parameters.saveInput;
-    f = find(cellfun(@(x) isequal(x, 'saveInput'),varargin));
-    varargin(f : (f + 1)) = [];
-end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
+
 if ibm_cplex
     [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options, solverParams);
     return
