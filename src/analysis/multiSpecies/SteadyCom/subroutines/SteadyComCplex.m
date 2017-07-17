@@ -907,8 +907,8 @@ end
 [rhsAdd, lhsAdd] = deal(zeros(size(A, 1), 1));
 rhsAdd(cs == 'G') = inf;
 lhsAdd(cs == 'L') = -inf;
-rhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs] + rhsAdd;
-lhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs] + lhsAdd;
+rhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs(:)] + rhsAdd;
+lhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs(:)] + lhsAdd;
 %constraints' names
 rowname = [modelCom.mets; strcat(modelCom.rxns(modelCom.indCom.rxnSps > 0), '_ub');...
     strcat(modelCom.rxns(modelCom.indCom.rxnSps > 0), '_lb'); ...

@@ -703,8 +703,8 @@ end
 [rhsAdd, lhsAdd] = deal(zeros(size(A, 1), 1));
 rhsAdd(cs == 'G') = inf;
 lhsAdd(cs == 'L') = -inf;
-rhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs] + rhsAdd;
-lhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs] + lhsAdd;
+rhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs(:)] + rhsAdd;
+lhs = [modelCom.b; zeros(2 * nRxnSp + nSp, 1); BMrhs(:)] + lhsAdd;
 
 index.con.mb = nCon + 1 : nCon + m;
 nCon = nCon + m;
