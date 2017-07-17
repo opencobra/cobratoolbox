@@ -29,6 +29,7 @@ Tutorials
    tutorialModelCreation
    tutorialModelManipulation
    tutorialModelProperties
+   modelSanTyChecks
    tutorialNumCharact
    tutorialOptForce
    tutorialOptForceGAMS

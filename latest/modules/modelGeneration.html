@@ -332,6 +332,28 @@ Unknown</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.modelGeneration.fastLeakTest">
+<code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>[LeakMets,modelClosed,FluxExV] = fastLeakTest(model, testRxns,test)
+Tests if any metabolites in a model are leaking. A metabolite is leaking
+if the exchange reaction can carry secretion flux in the closed model (no
+uptake flux through any exchange reactions is permitted).
+INPUT
+model             Model structure
+testRxns          List of exchange reactions to be testetd for leaks
+demandTest        Optional: if &#8216;true&#8217; is entered, demand reactions</p>
+<blockquote>
+<div>for all metabolites in the model are created</div></blockquote>
+<p>OUTPUT
+LeakMets          List of exchange reactions for leaking metabolites
+modelClosed       Model strucutre that has been tested for leaks
+FluxExV           Flux vector for computed exchange reactions in the
+closed model</p>
+<p>IT Jan 2015
+description added by AH July 2017</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.modelGeneration.removeDeadEnds">
 <code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>removeDeadEnds Remove all dead end metabolites and reactions from the
