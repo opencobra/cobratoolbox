@@ -27,7 +27,7 @@
 % feasible. The cardinality optimisation problem, termed _relaxed flux balance 
 % analysis, _is
 % 
-% $$\begin{array}{ll}\min\limits _{v,r,p,q} & \lambda\Vert r\Vert_{0}+\alpha\Vert 
+% $$\begin{array}{ll}\min\limits _{v,r,p,q} & c^{T}v+\lambda\Vert r\Vert_{0}+\alpha\Vert 
 % p\Vert_{0}+\alpha\Vert q\Vert_{0}\\\text{s.t.} & Sv+r=b\\ & l-p\leq v\leq u+q\\ 
 % & p,q,r\geq0\end{array}$$
 % 
