@@ -78,6 +78,11 @@ function [solution] = relaxedFBA(model, relaxOption)
 
 [m,n] = size(model.S); %Check inputs
 
+%check if model is feasible
+sol = optimizeCbModel(model);
+if sol.stat
+    error('The model is feasible');
+end
 
 if isfield(model,'SIntRxnBool')
     intRxnBool = model.SIntRxnBool;
