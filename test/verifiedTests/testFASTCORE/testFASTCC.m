@@ -1,47 +1,54 @@
-function x=testFASTCC()
-%test FASTCC algorithm and returns 1 for correct, else 0
+% The COBRAToolbox: testFASTCC.m
+%
+% Purpose:
+%     - test FASTCC algorithm
+%
+% Authors:
+%     - Original file: Thomas Pfau, May 2016
+%     - Fix by @fplanes July 2017
+%     - CI integration: Laurent Heirendt July 2017
 %
 
-% Thomas Pfau, May 2016
+% save the current path
+currentDir = pwd;
 
-
-try
-    ibm = changeCobraSolver('ibm_cplex','LP');
-catch
-    ibm=0;
-end
-if ~ibm
-    if exist('gurobi','file')
-        gurobi = changeCobraSolver('gurobi6','LP');
-    else
-        gurobi=0;
-    end
-    if ~gurobi
-        tomlab = changeCobraSolver('tomlab_cplex','LP');
-        if ~tomlab
-            %Those are the allowed solvers for FASTCORE. Others can be
-            %used, but likely lead to numeric issues.
-            x = 0;
-            return
-        end    
-    end
-end
+% initialize the test
+fileDir = fileparts(which('testFASTCC'));
+cd(fileDir);
 
 %load a model
 load('FastCoreTest.mat')
 model=modelR204;
 
 %randomly pick some reactions
-epsilon=1e-4;
-printLevel=2;
-modeFlag=0;
+epsilon = 1e-4;
+printLevel = 2;
+modeFlag = 0;
 
-A = fastcc(model, epsilon, printLevel,modeFlag);
 
-if numel(A)==5317
-    %|J|=0  |A|=6975
-    %CBT_LP_SOLVER = quadMinos
-    x=1;
-else
-    x=0;
+% define the solver packages to be used to run this test
+solverPkgs = {'ibm_cplex', 'gurobi', 'tomlab_cplex'};
+
+k = 1;
+while k < length(solverPkgs)+1 % note: only run with 1 solver, not with all 3
+
+    % change the COBRA solver (LP)
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    if solverOK == 1
+        fprintf('   Testing FASTCC using %s ... \n', solverPkgs{k});
+
+        A = fastcc(model, epsilon, printLevel,modeFlag);
+
+        assert(numel(A) == 5317)
+
+        % end the loop
+        k = length(solverPkgs);
+    end
+    k = k + 1;
+
+    % output a success message
+    fprintf('Done.\n');
 end
+
+% change the directory
+cd(currentDir)
