@@ -118,21 +118,20 @@ for jTest = 1:2
             cont = changeCobraSolver('ibm_cplex', 'LP');
         end
     else  % test any one of the other LP solvers
-        solverName = fieldnames(SOLVERS);
         solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'}; 
-        solverName = [solverPrefer(ismember(solverPrefer, solverName)); setdiff(solverName, [solverPrefer; {'ibm_cplex'}])];
         jSolver = 1;
         cont = 0;
-        while jSolver <= numel(solverName)
-            if SOLVERS.(solverName{jSolver}).installed
-                try
-                    cont = changeCobraSolver(solverName{jSolver}, 'LP');
-                end
+        while jSolver <= numel(solverPrefer)
+            if SOLVERS.(solverPrefer{jSolver}).installed
+                cont = changeCobraSolver(solverPrefer{jSolver}, 'LP');
             end
             if cont
                 break
             end
             jSolver = jSolver + 1;
+        end
+        if ~cont
+            cont = changeCobraSolver(origSolver, 'LP');
         end
     end
 
@@ -149,20 +148,81 @@ for jTest = 1:2
                 tol = 1e-2;  % tolerance for comparing results
         end
 
-        options = struct();
         % TEST SteadyCom
-        for jAlg = 3:-1:1
-            options.algorithm = jAlg;
+        % test different algoirthms
+        data = load('refData_SteadyCom', 'result');
+        for jAlg = 1:3
+            options = struct();
             if jAlg == 1
-                options = rmfield(options, 'algorithm');
                 options.GRtol = 1e-6;
+            else
+                options.algorithm = jAlg;
             end
             [~, result(jAlg)] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
+            % only the maximum growth rate must be equal. Others may differ.
+            assert(abs(result(jAlg).GRmax - data.result.GRmax) < tol)
         end
-        data = load('refData_SteadyCom', 'result');
-        % only the maximum growth rate must be equal. Others may differ.
-        assert(abs(result(1).GRmax - data.result.GRmax) < tol)
 
+        % test additional constraints
+        optionsAddConstr = struct();
+        optionsAddConstr.GRfx = [2 0.1];  % fix organism 2's growth rate at 0.1
+        % biomass constraint: X_Org1 >= 0.2, X_Org2 <= 0.3
+        [optionsAddConstr.BMcon, optionsAddConstr.BMrhs, optionsAddConstr.BMcsense] = deal([1 0; 0 1], [0.2; 0.3], 'GL');
+        [~, resultAddConstr] = SteadyCom(modelJoint, optionsAddConstr, 'feasTol', feasTol);
+        % check that biomass variables are really constrained.
+        assert(resultAddConstr.BM(1) >= 0.2 - feasTol & resultAddConstr.BM(2) <= 0.3 + feasTol)
+        % check the maximum growth rate
+        assert(abs(resultAddConstr.GRmax - 0.071427) < 1e-4)
+        % check that organism 2's growth rate really fixed at 0.1    
+        assert(abs(resultAddConstr.vBM(2) / resultAddConstr.BM(2) - 0.1) < 1e-5)
+        % general constraint: 
+        optionsAddConstr = struct();
+        [optionsAddConstr.MC, optionsAddConstr.MCmode] = deal(zeros(size(modelJoint.S, 2) + 2, 1));
+        % system exchange of A >= -0.8, constraint on the original variable
+        optionsAddConstr.MC(modelJoint.indCom.EXcom(aCom)) = -1;
+        optionsAddConstr.MCrhs = 0.8;
+        [~, resultAddConstr] = SteadyCom(modelJoint, optionsAddConstr, 'feasTol', feasTol);
+        assert(resultAddConstr.Ut(aCom) <= 0.8 + feasTol & abs(resultAddConstr.GRmax - 0.0114286) < 1e-4)
+        % total organism-specific export  <= 1
+        optionsAddConstr.MC(:) = 0;
+        optionsAddConstr.MC(modelJoint.indCom.EXsp(:)) = 1;
+        % constrain only the positive parts of the variables to avoid counteracted by negative fluxes
+        optionsAddConstr.MCmode(modelJoint.indCom.EXsp(:)) = 1;  
+        optionsAddConstr.MCrhs = 1;
+        [~, resultAddConstr] = SteadyCom(modelJoint, optionsAddConstr, 'feasTol', feasTol);
+        osExport = resultAddConstr.flux(modelJoint.indCom.EXsp(:));
+        osExport(osExport < 0) = 0;  % only look at export reactions
+        assert(sum(osExport) <= 1 + feasTol & abs(resultAddConstr.GRmax - 0.046362) < 1e-4)
+        % total organism-specific uptake  >= -1
+        % constrain only the negative parts of the variables to avoid counteracted by postive fluxes
+        % flux V is decomposed as V^pos - V^neg, the latter is the negative
+        % part, therefore the constraint becomes sum(V^neg_ex) <= 1
+        optionsAddConstr.MCmode(modelJoint.indCom.EXsp(:)) = 2;
+        [optionsAddConstr.MCrhs, optionsAddConstr.MClhs] = deal(1, -inf);
+        [~, resultAddConstr] = SteadyCom(modelJoint, optionsAddConstr, 'feasTol', feasTol);
+        osExport = resultAddConstr.flux(modelJoint.indCom.EXsp(:));
+        osExport(osExport > 0) = 0;  % only look at export reactions
+        assert(sum(osExport) >= -1 - feasTol & abs(resultAddConstr.GRmax - 0.011059) < 1e-4)
+        % total intracellular specific activity for each organism <= 5
+        [optionsAddConstr.MC, optionsAddConstr.MCmode] = deal(zeros(size(modelJoint.S, 2) + 2, 2));
+        for jSp = 1:2
+            % sum of all absolute fluxes of the intracellular reactions <= 5 X (flux / X = specific activity or specific rate)
+            optionsAddConstr.MC(modelJoint.indCom.rxnSps == jSp, jSp) = 1;  % all reactions belonging to organism jSp
+            optionsAddConstr.MC(modelJoint.indCom.EXsp(:), jSp) = 0;  % exclude organism-community exchange reactions
+            optionsAddConstr.MCmode(optionsAddConstr.MC ~= 0) = 3;  % for constraints on the absolute value
+            optionsAddConstr.MC(numel(modelJoint.rxns) + jSp, jSp) = -5;  % for -5 X
+            [optionsAddConstr.MCrhs, optionsAddConstr.MClhs] = deal(0, -inf);
+        end
+        [~, resultAddConstr] = SteadyCom(modelJoint, optionsAddConstr, 'feasTol', feasTol);
+        for jSp = 1:2
+            assert(resultAddConstr.flux' * optionsAddConstr.MC(1:numel(modelJoint.rxns), jSp) <= 5 * resultAddConstr.BM(jSp) + feasTol)
+        end
+        assert(abs(resultAddConstr.GRmax - 0.026035) < 1e-4)
+        
+        % test another feasibility criteria implemented
+        optionsFC = struct('feasCrit', 2, 'solveGR0', true, 'BMtol', 1);
+        [~, resultFC] = SteadyCom(modelJoint, optionsFC, 'feasTol', feasTol);
+        
         % TEST SteadyComFVA
         options.optGRpercent = [100 90 80];
         options.rxnNameList = {'X_Org1'; 'X_Org2'};
@@ -199,6 +259,10 @@ for jTest = 1:2
         % delete created files
         rmdir([pwd filesep 'testSteadyComPOA'], 's')
     end
+end
+% change back to the original solver
+if ~strcmp(CBT_LP_SOLVER, origSolver)
+    changeCobraSolver(origSolver, 'LP');
 end
 
 % change the directory
