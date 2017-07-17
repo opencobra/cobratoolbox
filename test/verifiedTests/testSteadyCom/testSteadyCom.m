@@ -228,7 +228,7 @@ for jTest = 1:2
         
         % test another feasibility criteria implemented 
         % (total biomass production rate instead of total biomass amount)
-        options = struct('feasCrit', 2, 'solveGR0', true, 'algorithm', 2);
+        options = struct('feasCrit', 2, 'solveGR0', true);
         [~, resultFC] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
         assert(abs(resultFC.GRmax - 0.166663) < tol);
         
@@ -253,13 +253,6 @@ for jTest = 1:2
             delete('testSteadyComSaveModel.mat')
         end
         
-        % test an infeasible model
-        % require export of B by organism 1 and export of C by organism 2
-        modelTest = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom, 1), 0.1, 'l');
-        modelTest = changeRxnBounds(modelTest, modelTest.infoCom.EXsp(cCom, 2), 0.1, 'l');
-        [~, resultInfeas] = SteadyCom(modelTest, options);
-        assert(strcmp(resultInfeas.stat, 'infeasible'))
-        
         % test a model unable to growth but still feasible for maintenance (i.e., zero growth rate)
         % require export of C by organism 1 and export of B by organism 2
         % but knockout the biomass reaction of organism 1
@@ -273,6 +266,13 @@ for jTest = 1:2
             & all(resultMaintenance.vBM <= 1e-5) & abs(resultMaintenance.BM(1) - 1) < tol ...
             & abs(resultMaintenance.BM(2) - 98) < tol)
         
+        % test an infeasible model
+        % require export of B by organism 1 and export of C by organism 2
+        modelTest = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom, 1), 0.1, 'l');
+        modelTest = changeRxnBounds(modelTest, modelTest.infoCom.EXsp(cCom, 2), 0.1, 'l');
+        [~, resultInfeas] = SteadyCom(modelTest, options);
+        assert(strcmp(resultInfeas.stat, 'infeasible'))
+        
         % TEST SteadyComFVA
         options = struct('GRtol', 1e-6);
         options.optGRpercent = [100 90 80];
@@ -284,8 +284,85 @@ for jTest = 1:2
         assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
         assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-
+        
+        % test an infeasible model
+        [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelTest);
+        assert(all(isnan(minFlux)) & all(isnan(maxFlux)) & isnan(GRvector));
+        
+        % test given growth rate
+        options = struct('GRtol', 1e-6, 'GRmax', 0.1);
+        [minFlux, maxFlux, ~, ~, GRvector, resultFVA] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
+        minFluxRef = [0.2856653; 0.3749391];
+        maxFluxRef = [0.6250234; 0.7143061];
+        assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tol)
+        
+        % test sub-function without given growth rate
+        [minFlux, maxFlux, ~, ~, ~, gr] = SteadyComFVAgr(modelJoint, struct('GRtol', 1e-6), [], 'feasTol', feasTol);
+        assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
+        assert(abs(gr - 0.142857) < tol)
+        
+        % test saving results
+        options = struct('GRtol', 1e-6);
+        options.rxnNameList = modelJoint.rxns;
+        options.optGRpercent = [100; 90];
+        options.saveFVA = ['testSteadyComFVAsave' filesep 'test'];
+        SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
+        % check existence of saved files
+        assert(exist([options.saveFVA, '_model.mat'], 'file') & ... 
+            exist([options.saveFVA, '_GR0.14.mat'], 'file') & exist([options.saveFVA, '_GR0.13.mat'], 'file'))
+        % check values
+        refDataSaveFVA = load('refData_SteadyComFVAsave.mat');
+        for j1 = {'13', '14'}
+            dataSaveFVA = load([options.saveFVA, '_GR0.', j1{:}, '.mat']);
+            for j2 = {'min', 'max'}
+                vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
+                v = dataSaveFVA.([j2{:}, 'Flux']);
+                for j3 = 1:numel(vRef)
+                    if abs(vRef(j3)) < 1e-5
+                        assert(abs(vRef(j3) - v(j3)) < 1e-5)
+                    else
+                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                    end
+                end
+            end
+        end
+        rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
+        
+        % test parallel computation
+        if isempty(gcp('nocreate'))
+            parpool(2);
+        end
+        options.threads = 2;
+        SteadyComFVA(modelJoint, options, 'feasTol', feasTol, 'solver', 'gurobi');
+        % check existence of saved files
+        assert(exist([options.saveFVA, '_model.mat'], 'file') > 0)
+        suffix = {''; '_parInfo'; '_thread1'; '_thread2'};
+        filenames = strcat(options.saveFVA, '_GR0.13', suffix, '.mat');
+        filenames = [filenames; strrep(filenames, 'GR0.13', 'GR0.14')];
+        for jFile = 1:numel(filenames)
+            assert(exist(filenames{jFile}, 'file') > 0)
+        end
+        % check values
+        for j1 = {'13', '14'}
+            dataSaveFVA = load([options.saveFVA, '_GR0.', j1{:}, '.mat']);
+            for j2 = {'min', 'max'}
+                vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
+                v = dataSaveFVA.([j2{:}, 'Flux']);
+                for j3 = 1:numel(vRef)
+                    if abs(vRef(j3)) < 1e-5
+                        assert(abs(vRef(j3) - v(j3)) < 1e-5)
+                    else
+                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                    end
+                end
+            end
+        end
+        rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
+        
         % TEST SteadyComPOA
+        options = struct('GRtol', 1e-6);
+        options.optGRpercent = [100 90 80];
+        options.rxnNameList = {'X_Org1'; 'X_Org2'};
         options.savePOA = ['testSteadyComPOA' filesep 'test'];
         % look at the relationship between the abundance of Org1 and its exchange of b and c
         options.rxnNameList = [{'X_Org1'}; modelJoint.infoCom.EXsp(bCom | cCom, 1)];
