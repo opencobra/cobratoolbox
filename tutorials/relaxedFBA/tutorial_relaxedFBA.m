@@ -83,9 +83,10 @@ if ~exist('modelOrig','var')
         directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
         model = loadIdentifiedModel(filename,directory);
     else
-        filename2='Recon20model';
-        if exist('Recon20model.mat','file')==2
-            model = readCbModel(filename2);
+        filename2='Recon2.0model';
+        if exist('Recon2.0model.mat','file')==2
+            load('Recon2.0model.mat');
+            model = Recon2model;
         end
     end
     model.csense(1:size(model.S,1),1)='E';
