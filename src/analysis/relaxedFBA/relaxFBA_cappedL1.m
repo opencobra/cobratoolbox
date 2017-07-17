@@ -319,7 +319,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,rel
     ub2(~excludedReactions) = maxUB;
 
     maxRelaxR = 100;
-    l = [lb2; -maxRelaxR*ones(m,1); zeros(n,1); zeros(n,1); ones(n,1); zeros(m,1)];
+    l = [lb2; -maxRelaxR*ones(m,1); zeros(n,1); zeros(n,1); zeros(n,1); zeros(m,1)];
     u = [ub2; maxRelaxR*ones(m,1); -minLB*ones(n,1)+lb; maxUB*ones(n,1)-ub; max(abs(lb2),abs(ub2)); maxRelaxR*ones(m,1)];
 
     %Exlude metabolites from relaxation (set the upper and lower bound of the relaxation to 0)
@@ -328,7 +328,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,rel
     l(n+indexExcluded) = 0;
     u(n+indexExcluded) = 0;
 
-    %Exlude reactions from relaxation (set the upper and lower bound of the relaxation to 0)
+    %Exclude reactions from relaxation (set the upper and lower bound of the relaxation to 0)
     indexExcluded = find(excludedReactions);
 
     l(n+m+indexExcluded) = 0;
