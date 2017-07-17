@@ -1,8 +1,8 @@
-function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
+function [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
 % Find the maximum community growth rate at community steady-state using the `SteadyCom` algorithm. Call the CPLEX dynamic object directly.
 %
 % USAGE:
-%    [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
+%    [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)
 %
 % INPUT:
 %    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
@@ -96,14 +96,15 @@ function [sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solve
 %                        (the following 'iter' fields are status in each iteration:)
 %                        [GR | biomass X | biomass flux (`GR * X`) | max. infeas. of solution])
 %                      * iter0: stationary, no growth, `gr = 0`
-%                      * iter1: small growth rate, `gr = GR0`
-%                      * iterPre: iterations for finding upper and lower bounds
-%                      * iter: iterations for finding max gr using bisectional method
+%                      * iter: iterations for finding max gr
 %                      * stat: status at the termination of the algorithm:
 %
-%                        * infeasible: infeasible model, even with maintenance requirement only
-%                        * maintenance: feasible at maintenance, but cannot grow
 %                        * optimal: optimal growth rate found
+%                        * maintenance: feasible at maintenance, but cannot grow
+%                        * minimal growth: feasible at a minimal growth rate (possible only if options.solveGR0 = true)
+%                        * infeasible: infeasible model, even with maintenance requirement only
+%                        * LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)
+%                        * xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. 'xxx' is one of the status above.
 
 t = tic;
 t0 = 0;
@@ -168,7 +169,7 @@ end
 % Make sure the feasibility tolerance used in CPLEX and in the main loop
 % are the same ('constructLPcom' has already reconciled the two tolerances)
 feasTol = LP.Param.simplex.tolerances.feasibility.Cur;
-LP2 = [];
+LPminNorm = [];
 % terminate if only the LP structure is called as output
 if LPonly
     result = struct();
@@ -231,7 +232,7 @@ if nargin < 4
         end
         sol = [];
         result.stat = 'infeasible';
-        LP2 = [];
+        LPminNorm = [];
         return
     else
         %record the current result if feasible
@@ -285,7 +286,7 @@ if nargin < 4
         if feas && LP.Solution.status == 11
             result.stat = 'time limit exceeded';
             sol = [];
-            LP2 = [];
+            LPminNorm = [];
             return
         end
         % check the feasibility of the solution manually
@@ -450,7 +451,7 @@ else
         if feas && LP.Solution.status == 11
             result.stat = 'time limit exceeded';
             sol = [];
-            LP2 = [];
+            LPminNorm = [];
             return
         end
         % check the feasibility of the solution manually
@@ -501,11 +502,11 @@ else
         if (grLB > 0 && grUB < Inf && kLU >= 2 && algorithm == 1)
             %switch to fzero
             dBMneg = LP4fzero(grLB, LP);%expected to be -ve
-            dBMpos = LP4fzero(grUB, LP);%expected to be +ve
+            [dBMpos, BMcur] = LP4fzero(grUB, LP);%expected to be +ve
             if isempty(dBMneg) || isempty(dBMpos)
                 result.stat = 'time limit exceeded';
                 sol = [];
-                LP2 = [];
+                LPminNorm = [];
                 return
             end
             %Check for numerical instability.
@@ -517,8 +518,8 @@ else
             % Should consider adjust the BMweight to a higher level. Or scan the whole
             % range of growth rate to see how it changes. (To be implemented)
             if dBMneg > 0 %the lower bound is indeed infeasible
-                dBMneg = LP4fzero(grLBrecord(end - 1), LP);
-                dBMpos = LP4fzero(grLB, LP);
+                LP4fzero(grLBrecord(end - 1), LP);
+                [dBMpos, BMcur] = LP4fzero(grLB, LP);
                 grUnstable = [grUnstable; grLB];
                 numInstab = true; %unstable
                 %reset the bounds
@@ -534,7 +535,6 @@ else
                     GRmax = grLB;
                     grUBrecord(end) = grUB;
                     grLBrecord(end) = grLB;
-                    BMcur = BMequiv - dBMpos;
                     break
                 end
             elseif dBMpos < 0 %the upper bound is indeed feasible
@@ -543,7 +543,6 @@ else
                 grUB = inf;
                 grUBrecord(end) = grUB;
                 grLBrecord(end) = grLB;
-                BMcur = BMequiv - dBMpos;
                 numInstab = true; %unstable
                 break
             else
@@ -554,13 +553,14 @@ else
                 % points to save the time for evaluting the initial points)
                 GRmax = fzero(@(x) LP4fzero(x, LP), [grLB, grUB], optionsf0);
                 %the final LP may not be at GRmax
-                dBM = LP4fzero(GRmax, LP);
-                BMcur = BMequiv - dBM;
+                [~, BMcur] = LP4fzero(GRmax, LP);
                 break
             end
 
         elseif grUB <= GRtol %zero growth rate
             GRmax = 0;
+            % update the LP for zero growth rate
+            [~, BMcur] = LP4fzero(GRmax, LP);
             break
         else
             if algorithm ~= 1 && (grUB - grLB < GRtol)
@@ -582,7 +582,7 @@ else
                 if feas && LP.Solution.status == 11
                     result.stat = 'time limit exceeded';
                     sol = [];
-                    LP2 = [];
+                    LPminNorm = [];
                     return
                 end
                 BMcur = 0;
@@ -657,12 +657,12 @@ while ~condition2(BMcur, GRmax) && GRmax > GRtol && kGRadjust <= 10
     if feas && LP.Solution.status == 11
         result.stat = 'time limit exceeded';
         sol = [];
-        LP2 = [];
+        LPminNorm = [];
         return
     end
     % check the feasibility of the solution manually
     dev = checkSolFeas(LP);
-    %biomass of the current iteration
+    % biomass of the current iteration
     BMcur = 0;
     if feas && isfield(LP.Solution, 'objval') && dev <= feasTol
         BMcur = LP.Solution.objval;
@@ -671,22 +671,19 @@ while ~condition2(BMcur, GRmax) && GRmax > GRtol && kGRadjust <= 10
         fprintf('GRmax adjusment: %d\n',kGRadjust);
     end
 end
-%corrected solution not feasible
+% corrected solution not feasible
 numInstab2 = ~condition2(BMcur, GRmax) && GRmax > GRtol;
-%confirm the maximum growth rate
 result.GRmax = GRmax;
 if ~feas
     result.stat = 'infeasible';
     sol = [];
-    LP2 = [];
+    LPminNorm = [];
     return
 end
-%take this as the solution as it contains useful information on dual values and
-%reduced cost (e.g. to find out limiting substrate)
+% take this as the solution as it contains useful information on dual values and
+% reduced cost (e.g. to find out limiting substrate)
 sol = LP.Solution;
-
-%add maximum biomass as a constraint to ensure
-%that the model is feasible for further analysis (e.g. FVA)
+% add maximum biomass as a constraint to ensure that the model is feasible for further analysis (e.g. FVA)
 LP.addRows(BMcur * (1 - feasTol * 100),...
     sparse(ones(nSp,1), (n+1):(n+nSp), ones(nSp,1), 1, size(LP.Model.A,2)),...
     BMcur,'UnityBiomass');
@@ -707,13 +704,13 @@ end
 if feas && LP.Solution.status == 11
     result.stat = 'time limit exceeded';
     sol = [];
-    LP2 = [];
+    LPminNorm = [];
     return
 end
 dev = checkSolFeas(LP);
 
-%the infeasibility may increase after adding the biomass constraint (Cplex issue),
-%adjust the minimum biomass slightly until feasible
+% the infeasibility may increase after adding the biomass constraint (Cplex issue),
+% adjust the minimum biomass slightly until feasible
 kBMadjust = 0;
 BMmaxLB = LP.Model.lhs(end);
 while (~isfield(LP.Solution, 'x') || dev > feasTol) && kBMadjust < 10
@@ -723,7 +720,7 @@ while (~isfield(LP.Solution, 'x') || dev > feasTol) && kBMadjust < 10
     if LP.Solution.status == 11
         result.stat = 'time limit exceeded';
         sol = [];
-        LP2 = [];
+        LPminNorm = [];
         return
     end
     dev = checkSolFeas(LP);
@@ -731,54 +728,9 @@ while (~isfield(LP.Solution, 'x') || dev > feasTol) && kBMadjust < 10
         fprintf('BMmax adjusment: %d\n',kBMadjust);
     end
 end
-%solution after adding the biomass constraint becomes infeasible
+% solution after adding the biomass constraint becomes infeasible
 numInstab3 = ~isfield(LP.Solution, 'x') || dev > feasTol;
-
-LP2 = [];
-flux = LP.Solution.x;
-if numel(minNorm) == 1
-    if minNorm == 1
-        if verbFlag
-            fprintf('Minimizing L1-norm...\n');
-        end
-        LP2 = Cplex('minSumFlux');
-        LP2.DisplayFunc = [];
-        LP2.Model = LP.Model;
-        LP2 = setCplexParam(LP2,solverParams);
-        LP2.Start = LP.Start;
-        LP2.Model.obj(:) = 0;
-        LP2.addCols(ones(n,1), sparse(size(LP2.Model.A,1),n), zeros(n,1), inf(n,1));
-        n2 = size(LP2.Model.A,2);
-        indLP.var.vAbs = (n2-n+1):n2;
-        LP2.addRows(-inf(n,1), sparse([1:n, 1:n], [1:n, (n2-n+1):n2], ...
-            [ones(n,1); -ones(n,1)], n, n2), zeros(n,1), char(strcat(modelCom.rxns,'_MinSumAbs1')));
-        indLP.con.vAbs1 = (size(LP2.Model.A,1)-n+1):size(LP2.Model.A,1);
-        LP2.addRows(-inf(n,1), sparse([1:n, 1:n], [1:n, (n2-n+1):n2], ...
-            [-ones(n,1); -ones(n,1)], n, n2), zeros(n,1), char(strcat(modelCom.rxns,'_MinSumAbs2')));
-        indLP.con.vAbs2 = (size(LP2.Model.A,1)-n+1):size(LP2.Model.A,1);
-        LP2.solve();
-        flux = LP2.Solution.x;
-        sol = LP2.Solution;
-    end
-end
-
-result.vBM = flux(modelCom.indCom.spBm);
-result.BM = flux(n + 1 : n + nSp);
-% result.BM(abs(result.BM) < 1e-8) = 0;
-% two different types of indexing
-if size(modelCom.indCom.EXcom, 2) == 2
-    % uptake and excretion reactions separated
-    result.Ut = LP.Solution.x(modelCom.indCom.EXcom(:,1));
-    result.Ex = LP.Solution.x(modelCom.indCom.EXcom(:,2));
-else
-    % uptake and excretion in one exchange reaction
-    [result.Ut, result.Ex] = deal(LP.Solution.x(modelCom.indCom.EXcom(:,1)));
-    result.Ut(result.Ut > 0) = 0;
-    result.Ut = -result.Ut;
-    result.Ex(result.Ex < 0) = 0;
-end
-result.flux = flux(1:n);
-result.iter = iter;
+% result status
 if result.GRmax > GRtol
     if numInstab
         result.stat = 'Numerical instability (feasibility)';
@@ -787,10 +739,60 @@ if result.GRmax > GRtol
     elseif numInstab3
         result.stat = 'Numerical instability (biomass constraint)';
     else
-        %otherwise 'maintenance' set at the very beginning
+        % otherwise 'maintenance' set at the very beginning
         result.stat = 'optimal';
     end
 end
+% minimize L1-norm if required
+LPminNorm = [];
+flux = LP.Solution.x;
+if numel(minNorm) == 1
+    if minNorm == 1
+        if verbFlag
+            fprintf('Minimizing L1-norm...\n');
+        end
+        LPminNorm = Cplex('minSumFlux');
+        LPminNorm.DisplayFunc = [];
+        LPminNorm.Model = LP.Model;
+        LPminNorm = setCplexParam(LPminNorm, solverParams);
+        LPminNorm.Start = LP.Start;
+        LPminNorm.Model.obj(:) = 0;
+        LPminNorm.Model.sense = 'minimize';
+        LPminNorm.addCols(ones(n, 1), sparse(size(LPminNorm.Model.A, 1), n), zeros(n, 1), inf(n, 1));
+        n2 = size(LPminNorm.Model.A, 2);
+        indLP.var.vAbs = (n2 - n + 1) : n2;
+        LPminNorm.addRows(-inf(n, 1), sparse([1:n, 1:n], [1:n, (n2 - n + 1) : n2], ...
+            [ones(n, 1); -ones(n, 1)], n, n2), zeros(n, 1), char(strcat(modelCom.rxns, '_MinSumAbs1')));
+        indLP.con.vAbs1 = (size(LPminNorm.Model.A, 1) - n + 1) : size(LPminNorm.Model.A, 1);
+        LPminNorm.addRows(-inf(n, 1), sparse([1:n, 1:n], [1:n, (n2 - n + 1) : n2], ...
+            [-ones(n, 1); -ones(n, 1)], n, n2), zeros(n, 1), char(strcat(modelCom.rxns, '_MinSumAbs2')));
+        indLP.con.vAbs2 = (size(LPminNorm.Model.A, 1) - n + 1) : size(LPminNorm.Model.A, 1);
+        LPminNorm.solve();
+        if checkSolFeas(LPminNorm) <= feasTol
+            flux = LPminNorm.Solution.x;
+            result.stat = [result.stat ' (min L1-norm)'];
+        end
+    end
+end
+if GRmax > 0
+    result.vBM = flux(modelCom.indCom.spBm);
+    result.BM = flux(n + 1 : n + nSp);
+    % result.BM(abs(result.BM) < 1e-8) = 0;
+    % two different types of indexing
+    if size(modelCom.indCom.EXcom, 2) == 2
+        % uptake and excretion reactions separated
+        result.Ut = LP.Solution.x(modelCom.indCom.EXcom(:, 1));
+        result.Ex = LP.Solution.x(modelCom.indCom.EXcom(:, 2));
+    else
+        % uptake and excretion in one exchange reaction
+        [result.Ut, result.Ex] = deal(LP.Solution.x(modelCom.indCom.EXcom(:, 1)));
+        result.Ut(result.Ut > 0) = 0;
+        result.Ut = -result.Ut;
+        result.Ex(result.Ex < 0) = 0;
+    end
+    result.flux = flux(1:n);
+end
+result.iter = iter;
 if pL
     if numInstab
         fprintf('Numerical instability for feasibility during the iterations.\n');
@@ -809,7 +811,7 @@ end
 
 end
 
-function [LP,index] = constructLPcom(modelCom, options, solverParams)
+function [LP, index] = constructLPcom(modelCom, options, solverParams)
 % Construct the model using IBM-ILOG Cplex classLP for solving SteadyCom.
 % The problem matrix is structured as follows:
 %   Variables (column):
@@ -822,7 +824,7 @@ function [LP,index] = constructLPcom(modelCom, options, solverParams)
 %    LHS <= sum(coeff_j * flux_j) + sum(coeff_k * X_k) <= RHS (user-supplied constraints);]
 %
 % USAGE:
-%    [LP,index] = constructLPcom(modelCom, options)
+%    [LP, index] = constructLPcom(modelCom, options)
 %
 % INPUTS:
 %    modelCom:   community model. See doc for the main function
@@ -1090,7 +1092,7 @@ end
 
 end
 
-function dBM = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw)
+function [dBM, BMcur] = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw)
     LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
     LP.solve();
     if LP.Solution.status == 11
@@ -1109,7 +1111,7 @@ function dBM = LP4fzero1(grCur, LP, modelCom, GRfx, feasTol, BMequiv,BMgdw)
     dBM = BMequiv - BMcur;
 end
 
-function dBM = LP4fzero2(grCur, LP, modelCom, GRfx, feasTol, BMequiv, GR0, BMgdw)
+function [dBM, BMcur] = LP4fzero2(grCur, LP, modelCom, GRfx, feasTol, BMequiv, GR0, BMgdw)
     LP.Model.A =SteadyComSubroutines('updateLPcom', modelCom, grCur, GRfx, [], LP.Model.A, BMgdw);
     LP.solve();
     if LP.Solution.status == 11
