@@ -126,9 +126,11 @@ model = removeRxns(model,{'biomass_maintenance','biomass_maintenance_noTrTr'});
 fprintf('%6s\t%6s\n','#mets','#rxns'); fprintf('%6u\t%6u\t%s\n',m,n,' totals.')
 
 %% 
-% First close all exchange reactions, except the biomass reaction
+% First close all exchange reactions, and label the biomass reaction as 
+% an internal reaction (otherwise the algorithm would relax the biomass towards 
+% negative values)
 
-model.SIntRxnBool(strcmp(model.rxns,'biomass_reaction'))=0;
+model.SIntRxnBool(strcmp(model.rxns,'biomass_reaction'))=1;
 model.lb(~model.SIntRxnBool)=0;
 model.ub(~model.SIntRxnBool)=0;
 %% 
@@ -284,7 +286,7 @@ end
 % 
 % the _relaxed flux balance analysis _problem 
 % 
-% $$\begin{array}{ll}\min\limits _{v,r,p,q} & \lambda\Vert r\Vert_{0}+\gamma\Vert 
+% $$\begin{array}{ll}\min\limits _{v,r,p,q} & c^{T}+\lambda\Vert r\Vert_{0}+\gamma\Vert 
 % p\Vert_{0}+\gamma\Vert q\Vert_{0}\\\text{s.t.} & Sv+r=b\\ & l-p\leq v\leq u+q\\ 
 % & p,q,r\geq0\end{array}$$
 % 
@@ -417,3 +419,6 @@ end
 % 
 % Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view 
 % of gene variation in human metabolism. (submitted) 2017.
+% 
+% Thiele, I. et al. A community-driven global reconstruction of human metabolism. 
+% Nat Biotech, 2013.
