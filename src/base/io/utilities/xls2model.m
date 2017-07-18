@@ -169,39 +169,54 @@ if isunix
     end
 end
 
+% initialization with default values
+lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
+
 if ~isempty(strmatch('Lower bound',rxnHeaders,'exact'))
     tmp = rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact'));
     for i = 1:length(tmp)
-        lowerBoundList(i) = str2num(tmp{i});
+        if isnumeric(tmp{i})
+            lowerBoundList(i) = tmp{i};
+        else
+            lowerBoundList(i) = str2num(tmp{i});
+        end
     end
     lowerBoundList = columnVector(lowerBoundList); %Default -1000
     lowerBoundList(isnan(lowerBoundList)) = -defaultbound;
-else
-    lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
 end
+
+% initialization with default values
+upperBoundList = defaultbound*ones(length(rxnAbrList),1);
 
 if ~isempty(strmatch('Upper bound',rxnHeaders,'exact'))
     tmp = rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact'));
     for i = 1:length(tmp)
-        upperBoundList(i) = str2num(tmp{i});
+        if isnumeric(tmp{i})
+            upperBoundList(i) = tmp{i};
+        else
+            upperBoundList(i) = str2num(tmp{i});
+        end
     end
     upperBoundList = columnVector(upperBoundList); %Default 1000;
     upperBoundList(isnan(upperBoundList)) = defaultbound;
-else
-    upperBoundList = defaultbound*ones(length(rxnAbrList),1);
 end
 
 revFlagList = lowerBoundList<0;
 
+% initialization with default values
+Objective = zeros(length(rxnAbrList),1);
+
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
     tmp = rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'));
     for i = 1:length(tmp)
-        Objective(i) = str2num(tmp{i});
+        if isnumeric(tmp{i})
+            Objective(i) = tmp{i};
+        else
+            Objective(i) = str2num(tmp{i});
+        end
     end
     Objective = columnVector(Objective);
     Objective(isnan(Objective)) = 0;
-else
-    Objective = zeros(length(rxnAbrList),1);
 end
 
 model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList);
