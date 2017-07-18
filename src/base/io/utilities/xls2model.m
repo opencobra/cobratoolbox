@@ -94,29 +94,17 @@ if ~exist('defaultbound','var')
     defaultbound = 1000;
 end
 
-if isunix
-    %assumes that one has an xls file with two tabs
+%assumes that one has an xls file with two tabs
+[~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:65536');
+[~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:65536');
 
-    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:65536');
-    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:65536');
-    %trim empty row from Numbers and MetNumbers
-    rxnInfo = rxnInfo(1:size(Strings,1),:)
-    metInfo = metInfo(1:size(MetStrings,1),:)
+%trim empty row from Numbers and MetNumbers
+rxnInfo = rxnInfo(1:size(Strings,1),:)
+metInfo = metInfo(1:size(MetStrings,1),:)
 
-    if isempty(MetStrings)
-        error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
-    end
-
-else
-    %assumes that one has an xls file with two tabs
-    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
-    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
-
-    rxnInfo = rxnInfo(1:size(Strings,1),:);
-    metInfo = metInfo(1:size(MetStrings,1),:);
-
+if isunix && isempty(MetStrings)
+    error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
 end
-
 
 requiredRxnHeaders = {'Abbreviation','Reaction'};
 requiredMetHeaders = {'Abbreviation'};
