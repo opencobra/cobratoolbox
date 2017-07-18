@@ -62,8 +62,7 @@ end
 optionalParameters = {'revFlagList',...
     'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList','systNameList'};
 oldOptionalOrder = {'revFlagList',...
-    'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList',...
-    'systNameList'};
+    'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList','systNameList'};
 if (numel(varargin) > 3 && (~ischar(varargin{4}) || ~any(ismember(varargin{4},optionalParameters))))
     %We have an old style thing....
     %Now, we need to check, whether this is a formula, or a complex setup
@@ -117,9 +116,6 @@ upperBoundList = parser.Results.upperBoundList;
 subSystemList = parser.Results.subSystemList;
 
 for i = 1 : nRxns
-    if i==nRxns
-        %pause(eps)
-    end
     if ~isempty(grRuleList{i})
         if ~isempty(strfind(grRuleList{i},','))
           grRuleList{i}= (regexprep(grRuleList{i},',',' or '));
@@ -139,7 +135,9 @@ for i = 1 : nRxns
             revFlagList(i) = revFlag_i;
         end
         %update the lower bound implied by revFlag
-        lowerBoundList(i) = revFlagList(i) * lowerBoundList(i);
+        if lowerBoundList(i) < 0
+            lowerBoundList(i) = revFlagList(i) * lowerBoundList(i);
+        end
     end
     for q=1:length(metaboliteList)
         if length(metaboliteList{q})<=3 || ~strcmp(metaboliteList{q}(end-2),'[')
