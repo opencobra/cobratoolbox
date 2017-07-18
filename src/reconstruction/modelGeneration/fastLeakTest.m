@@ -1,21 +1,26 @@
-function [LeakMets,modelClosed,FluxExV] = fastLeakTest(model, testRxns,demandTest)
-% [LeakMets,modelClosed,FluxExV] = fastLeakTest(model, testRxns,test)
-% Tests if any metabolites in a model are leaking. A metabolite is leaking 
+function [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demandTest)
+% Tests if any metabolites in a model are leaking. A metabolite is leaking
 % if the exchange reaction can carry secretion flux in the closed model (no
 % uptake flux through any exchange reactions is permitted).
-% INPUT 
-% model             Model structure
-% testRxns          List of exchange reactions to be testetd for leaks
-% demandTest        Optional: if 'true' is entered, demand reactions
-%                   for all metabolites in the model are created
-% OUTPUT
-% LeakMets          List of exchange reactions for leaking metabolites 
-% modelClosed       Model strucutre that has been tested for leaks
-% FluxExV           Flux vector for computed exchange reactions in the
-% closed model
-%%
-% IT Jan 2015
-% description added by AH July 2017
+%
+% USAGE:
+%
+%    [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demandTest)
+%
+% INPUTS:
+%    model:          Model structure
+%    testRxns:       List of exchange reactions to be testetd for leaks
+%    demandTest:     Optional: if 'true' is entered, demand reactions
+%                    for all metabolites in the model are created
+% OUTPUTS:
+%    LeakMets:       List of exchange reactions for leaking metabolites
+%    modelClosed:    Model strucutre that has been tested for leaks
+%    FluxExV:        Flux vector for computed exchange reactions in the closed model
+%
+% .. Authors:
+%       - IT Jan 2015
+%       - description added by AH July 2017
+%
 if nargin<3
     demandTest = 'true';
 end

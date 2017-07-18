@@ -1,22 +1,23 @@
-function model = checkCobraModelUnique(model,renameFlag)
-%checkCobraModelUnique Check uniqueness of reaction and metabolite names
+function model = checkCobraModelUnique(model, renameFlag)
+% Checks uniqueness of reaction and metabolite names
 %
-% model = checkCobraModelUnique(model,renameFlag)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    model = checkCobraModelUnique(model, renameFlag)
 %
-%OPTIONAL INPUT
-% renameFlag    Renames non-unique reaction names and metabolites
-%               (Default = false)
+% INPUT:
+%    model:         COBRA model structure
 %
-%OUTPUT
-% model         COBRA model structure
+% OPTIONAL INPUT:
+%    renameFlag:    Renames non-unique reaction names and metabolites
+%                   (Default = false)
 %
-% Markus Herrgard 10/17/07
-% Stefania Magnusdottir 07/02/17    Replace use of findRxnIDs and
-%                                   findMetIDs, both only return one index
-%                                   even if more are found in model.
+% OUTPUT:
+%    model:         COBRA model structure
+%
+% .. Authors:
+%       - Markus Herrgard 10/17/07
+%       - Stefania Magnusdottir 07/02/17 - Replace use of findRxnIDs and findMetIDs, both only return one index even if more are found in model.
 
 if nargin < 2
     renameFlag = false;
