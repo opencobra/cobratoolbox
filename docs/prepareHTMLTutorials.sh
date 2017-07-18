@@ -58,25 +58,3 @@ do
 
     echo "   $tutorialLongTitle" >> $rstDestination/index.rst
 done
-
-if [[ ${HOME} = *"jenkins"* ]]; then
-    # Removing files on develop branch
-    echo "Removing html tutorial files"
-    nRemovedFiles=0
-    for tutorial in "${tutorials[@]}"
-    do
-        tutorialDir=${tutorial%/*}
-        tutorialName=${tutorial##*/}
-        tutorialName="${tutorialName%.*}"
-        if [[ -f "$tutorialPath/$tutorialDir/$tutorialName.html" ]]; then
-            git rm "$tutorialPath/$tutorialDir/$tutorialName.html"
-            let "nRemovedFiles+=1"
-        fi
-    done
-
-    if [ $nRemovedFiles -ne 0 ]; then
-        git commit -m "removing html files from tutorial folder."
-    fi
-else
-    echo "skipping cleaning of the html files on the tutorial folder."
-fi
