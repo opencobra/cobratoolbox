@@ -249,7 +249,7 @@ if init
             end
         end
         if verbFlag
-            fprintf('BMmax adjusment: %d\n',kBMadjust);
+            fprintf('BMmax adjustment: %d\n',kBMadjust);
         end
     end
     if ~(dev <= feasTol)   % dev can be NaN, which still means infeasibility. So use ~(dev <= feasTol) instead of dev > feasTol

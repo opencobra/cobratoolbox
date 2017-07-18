@@ -668,7 +668,7 @@ while ~condition2(BMcur, GRmax) && GRmax > GRtol && kGRadjust <= 10
         BMcur = LP.Solution.objval;
     end
     if verbFlag
-        fprintf('GRmax adjusment: %d\n',kGRadjust);
+        fprintf('GRmax adjustment: %d\n',kGRadjust);
     end
 end
 % corrected solution not feasible
@@ -725,7 +725,7 @@ while (~isfield(LP.Solution, 'x') || dev > feasTol) && kBMadjust < 10
     end
     dev = checkSolFeas(LP);
     if verbFlag
-        fprintf('BMmax adjusment: %d\n',kBMadjust);
+        fprintf('BMmax adjustment: %d\n',kBMadjust);
     end
 end
 % solution after adding the biomass constraint becomes infeasible
