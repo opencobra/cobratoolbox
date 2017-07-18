@@ -1,5 +1,6 @@
 %% How to use modelBorgifier
 %% Author: John T. Sauls, UCSD
+%% Reviewer: Almut Heinken, Luxembourg Centre for Systems Biomedicine
 %% INTRODUCTION
 % modelBorgifier is a package that allows users to compare and combine COBRA 
 % Toolbox ("Toolbox") style metabolic reconstructions ("models"). It is explicity 
@@ -14,7 +15,7 @@
 % 
 % Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale metabolic 
 % reconstructions with modelBorgifier. _Bioinformatics_ (Oxford, England), 30(7), 
-% 1036?8. http://doi.org/10.1093/bioinformatics/btt747
+% 1036–8. http://doi.org/10.1093/bioinformatics/btt747
 % 
 % Correspondance: johntsauls@gmail.com
 % 
@@ -31,7 +32,7 @@
 % Assuming you have succsessfully installed and tested the COBRA Toolbox 
 % for Matlab no additional configuration should be necessary. 
 % 
-% 2. Load and verify the comparision model (Cmodel)
+% 2. Load and verify the comparison model (Cmodel)
 % 
 % The comparison model (Cmodel) is any model that can be read into the COBRA 
 % Toolbox. Cmodel is "compared to" the template model (see next step). Our Cmodel 
@@ -104,11 +105,11 @@ Cmodel = verifyModelMB(Cmodel, 'keepName', 'Verbose');
 % 
 % Explain the point of loading the Tmodel
 % 
-% i. Load the model iIT384
+% i. Load the model iIT341
 % 
 % We will be using the _Heliobacter pylori_ model packaged with the Toobox 
 % as our template model. Load it the same way as any model. If you had previous 
-% combined two models using modelBorgifie, you could simply load that composite 
+% combined two models using modelBorgifier, you could simply load that composite 
 % model as your Tmodel. 
 
 global CBTDIR
@@ -129,7 +130,7 @@ Tmodel = buildTmodel(Tmodel);
 %% 
 % *4. Compare models*
 % 
-% comparCbModels scores all reactions in Cmodel against all reactions in 
+% compareCbModels scores all reactions in Cmodel against all reactions in 
 % Tmodel. It returns Score, a 3D matrix with size (# of reactions in Cmodel, # 
 % of reactions in Tmodel, # of scoring parameters per reaction). There are 40 
 % scoring parameters, such as name, E.C. number, metabolite similiarity, and network 
@@ -153,7 +154,7 @@ Tmodel = buildTmodel(Tmodel);
 % NOTE: You must run reactionCompare in the Command Window, as GUIs are not 
 % proprely rendered within the Matlab Live script. 
 
-if ~exist('rxnsList', 'var') || ~exist('metList', 'var') || ~exist('Stats', 'var')
+if ~exist('rxnList', 'var') || ~exist('metList', 'var') || ~exist('Stats', 'var')
     rxnList = [];
     metList = [];
     Stats = [];
@@ -197,7 +198,7 @@ end
 % 
 % 
 % 
-% iv. Finish/pause comparison. You can quit comparision and save your work 
+% iv. Finish/pause comparison. You can quit comparison and save your work 
 % at any time by pressing "Finish Comparison" in the red box labeled 1. The number 
 % of reactions which have been reviewed, matched, or declared new is located is 
 % presented in blue box labeled 2. Finishing comparision produces two arrays, 
@@ -253,14 +254,14 @@ end
 % from TmodelC (see next step).
 %% Merge models and test results.
 
-if ~isempty(rxnsList) && ~isempty(metList) && ~isempty(Stats)
+if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
     [TmodelC, Cspawn, Stats] = mergeModels(Cmodel, Tmodel, rxnList, metList, Stats, 'Verbose');
 end
 %% 
-% The structure Stats contains informationa about the number of unique and 
+% The structure Stats contains information about the number of unique and 
 % shared metabolites between the models, as well as the completeness of annotations. 
 
-if ~isempty(rxnsList) && ~isempty(metList) && ~isempty(Stats)
+if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
     % Shared reaction between the models. Values along the diagonal how many reactions in the model are unique. 
     Stats.sharedRxns
     % Shared metabolites between models, 
@@ -277,7 +278,7 @@ end
 % contains KEGG IDs for its metabolites. 
 
 %% Extract both models 
-if ~isempty(rxnsList) && ~isempty(metList) && ~isempty(Stats)
+if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
     Ecoli_core = readCbTmodel('Ecoli_core', TmodelC, 'Verbose');
     iIT341 = readCbTmodel('iIT341', TmodelC, 'Verbose');
 end
@@ -291,10 +292,10 @@ end
 %% REFERENCES
 % # Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale metabolic 
 % reconstructions with modelBorgifier. _Bioinformatics_ (Oxford, England), 30(7), 
-% 1036?8. <http://doi.org/10.1093/bioinformatics/btt747 http://doi.org/10.1093/bioinformatics/btt747>
-% # Thiele, I., Vo, T. D., Price, N. D., & Palsson, B. ?. (2005). Expanded metabolic 
+% 1036–8. <http://doi.org/10.1093/bioinformatics/btt747 http://doi.org/10.1093/bioinformatics/btt747>
+% # Thiele, I., Vo, T. D., Price, N. D., & Palsson, B. Ø. (2005). Expanded metabolic 
 % reconstruction of _Helicobacter pylori_ (_i_IT341 GSM/GPR): an _in silico_ genome-scale 
 % characterization of single- and double-deletion mutants. _Journal of Bacteriology_, 
-% _187_(16), 5818?5830. http://doi.org/10.1128/JB.187.16.5818
+% _187_(16), 5818–5830. http://doi.org/10.1128/JB.187.16.5818
 % 
 % __
