@@ -96,14 +96,12 @@ end
 
 if isunix
     %assumes that one has an xls file with two tabs
-    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
-    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
-    %trim empty row from Numbers and MetNumbers
-    %     Numbers = Numbers(2:end,:);
-    %     MetNumbers = MetNumbers(2:end,:);
 
-    rxnInfo = rxnInfo(1:size(Strings,1),:);
-    metInfo = metInfo(1:size(MetStrings,1),:);
+    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:65536');
+    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:65536');
+    %trim empty row from Numbers and MetNumbers
+    rxnInfo = rxnInfo(1:size(Strings,1),:)
+    metInfo = metInfo(1:size(MetStrings,1),:)
 
     if isempty(MetStrings)
         error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
@@ -127,14 +125,14 @@ if ~all(ismember(requiredRxnHeaders,Strings(1,:)))
     error(['Required Headers not present in the "Reaction List" sheet of the provided xls file.', sprintf('\n'),...
            'Note, that headers are case sesnitive!', sprintf('\n'),...
            'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
-           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
+           'Please have a look at the specification at https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html for the current specifications.']);
 end
 
 if ~all(ismember(requiredMetHeaders,MetStrings(1,:)))
     error(['Required Headers not present in the "Metabolite List" sheet of the provided xls file.', sprintf('\n'), ...
            'Note, that headers are case sesnitive!', sprintf('\n'),...
            'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
-           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
+           'Please have a look at the specification at https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html for the current specifications.']);
 end
 
 rxnHeaders = rxnInfo(1,:);
@@ -144,7 +142,6 @@ for n = 1:length(rxnHeaders)
         rxnHeaders{n} = '';
     end
 end
-
 
 % Assuming first row is header row
 rxnAbrList = Strings(2:end,strmatch('Abbreviation',rxnHeaders,'exact'));
@@ -185,16 +182,22 @@ if isunix
 end
 
 if ~isempty(strmatch('Lower bound',rxnHeaders,'exact'))
-    lowerBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact'))));
-    %Default -1000
+    tmp = rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact'));
+    for i = 1:length(tmp)
+        lowerBoundList(i) = str2num(tmp{i});
+    end
+    lowerBoundList = columnVector(lowerBoundList); %Default -1000
     lowerBoundList(isnan(lowerBoundList)) = -defaultbound;
 else
     lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
 end
 
 if ~isempty(strmatch('Upper bound',rxnHeaders,'exact'))
-    upperBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact'))));
-    %Default 1000;
+    tmp = rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact'));
+    for i = 1:length(tmp)
+        upperBoundList(i) = str2num(tmp{i});
+    end
+    upperBoundList = columnVector(upperBoundList); %Default 1000;
     upperBoundList(isnan(upperBoundList)) = defaultbound;
 else
     upperBoundList = defaultbound*ones(length(rxnAbrList),1);
@@ -203,7 +206,11 @@ end
 revFlagList = lowerBoundList<0;
 
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
-    Objective = columnVector(cell2mat(rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'))));
+    tmp = rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'));
+    for i = 1:length(tmp)
+        Objective(i) = str2num(tmp{i});
+    end
+    Objective = columnVector(Objective);
     Objective(isnan(Objective)) = 0;
 else
     Objective = zeros(length(rxnAbrList),1);
@@ -232,7 +239,7 @@ end
 
 %fill in opt info for metabolites
 if ~isempty(Objective) && length(Objective) == length(model.rxns)
-    model.c = (Objective);
+    model.c = Objective * model.osense;
 end
 
 metHeaders = metInfo(1,:);
