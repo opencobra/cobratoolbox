@@ -203,34 +203,30 @@
 <span class="target" id="module-src.reconstruction.modelGeneration"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkCobraModelUnique">
 <code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
-<dd><p>checkCobraModelUnique Check uniqueness of reaction and metabolite names</p>
+<dd><p>Checks uniqueness of reaction and metabolite names</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>model = checkCobraModelUnique(model,renameFlag)</div></blockquote>
+<div>model = checkCobraModelUnique(model, renameFlag)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model         COBRA model structure</strong></li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>renameFlag    Renames non-unique reaction names and metabolites</strong> &#8211;</p>
-<p>(Default = false)</p>
-</li>
+<div><ul class="simple">
+<li><strong>renameFlag</strong> &#8211;
+Renames non-unique reaction names and metabolites
+(Default = false)</li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model         COBRA model structure</strong></p>
-</li>
-<li><p class="first"><strong>Markus Herrgard 10/17/07</strong></p>
-</li>
-<li><p class="first"><strong>Stefania Magnusdottir 07/02/17    Replace use of findRxnIDs and</strong> &#8211;</p>
-<p>findMetIDs, both only return one index
-even if more are found in model.</p>
-</li>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -238,9 +234,12 @@ even if more are found in model.</p>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
 <code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks model for duplicate reactions and removes them
-By default, it detects the columns of S that are identical upto scalar
+<dd><p>Checks model for duplicate reactions and removes them.
+By default, it detects the columns of <cite>S</cite> that are identical upto scalar
 multiplication</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel, boundsFlag)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -248,20 +247,25 @@ multiplication</p>
 Cobra model structure</li>
 </ul>
 </div></blockquote>
-<p>OPTIONAL INPUTS:
-method        S       &#8211;&gt; checks rxn S matrix (default)</p>
+<p><strong>Optional input</strong></p>
 <blockquote>
-<div><p>rxnAbbr &#8211;&gt; checks rxn abbreviations
-FR      &#8211;&gt; checks F + R matrix, where S:=-F+R, which ignores</p>
-<blockquote>
-<div>reaction direction</div></blockquote>
+<div><ul class="simple">
+<li><strong>method</strong> &#8211;
+S &#8211;&gt; checks rxn <cite>S</cite> matrix (default),
+rxnAbbr &#8211;&gt; checks rxn abbreviations,
+FR &#8211;&gt; checks <cite>F + R</cite> matrix, where <span class="math">\(S:=-F + R\)</span>, which ignores
+reaction direction</li>
+</ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelOut          COBRA model structure without (with) duplicate reactions</strong></li>
-<li><strong>removedRxnInd     Reaction numbers in model that were (should be) removed</strong></li>
-<li><strong>keptRxnInd        Reaction numbers in model that were (should be) kept</strong></li>
+<li><strong>modelOut</strong> &#8211;
+COBRA model structure without (with) duplicate reactions</li>
+<li><strong>removedRxnInd</strong> &#8211;
+Reaction numbers in model that were (should be) removed</li>
+<li><strong>keptRxnInd</strong> &#8211;
+Reaction numbers in model that were (should be) kept</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -269,9 +273,11 @@ FR      &#8211;&gt; checks F + R matrix, where S:=-F+R, which ignores</p>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkObjective">
 <code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
-<dd><p>checkObjective print out the Stoichiometric Coefficients for each
+<dd><p>Prints out the Stoichiometric Coefficients for each
 Metabolite, with the name of the objective</p>
-<p>objectiveAbbr = checkObjective(model)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>objectiveAbbr = checkObjective(model)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -282,51 +288,43 @@ COBRA model structure</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>objectiveAbbr     Objective reaction abbreviation</strong></li>
+<li><strong>objectiveAbbr</strong> &#8211;
+Objective reaction abbreviation</li>
 </ul>
 </div></blockquote>
-<p>Ronan Fleming 22/10/2008
-Thomas Pfau 15/12/2015 - Made the function compatible with sparse S matrices
-Laurent Heirendt March 2017 - Compatibility with large models and conversion to table</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.detectDeadEnds">
 <code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
-<dd><p>DETECTDEADENDS returns a list of indices of metabolites which either participate in only
+<dd><p>Returns a list of indices of metabolites which either participate in only
 one reaction or can only be produced or consumed (i.e. all reactions involving
 the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds).</p>
+<p><strong>Usage</strong></p>
 <blockquote>
 <div>outputMets = detectDeadEnds(model, removeExternalMets)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model                 COBRA model structure</strong></li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>removeExternalMets    Dont return metabolites that participate in reactions of</strong> &#8211;</p>
-<p>the following type:
+<div><ul class="simple">
+<li><strong>removeExternalMets</strong> &#8211;
+Dont return metabolites that participate in reactions of the following type:
 &#8220;A &lt;=&gt;/-&gt; &#8221; or &#8221; &lt;=&gt;/-&gt; A&#8221; or exclusively present in
-inconsistent reactions as defined in Gevorgyan et
-al, Bioinformatics, 2008</p>
-</li>
+inconsistent reactions as defined in <cite>Gevorgyan et al, Bioinformatics, 2008</cite></li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>outputMets            List of indicies of metabolites which can ether</strong> &#8211;</p>
-<p>only be produced or consumed.</p>
-</li>
-<li><p class="first"><strong>Original</strong> &#8211;
-Unknown</p>
-</li>
-<li><p class="first"><strong>April 2017 - Thomas Pfau - massive Speed up and clarification of the</strong> &#8211;</p>
-<p>removeExternalMets option</p>
-</li>
+<div><ul class="simple">
+<li><strong>outputMets</strong> &#8211;
+List of indicies of metabolites which can ether
+only be produced or consumed.</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -334,50 +332,62 @@ Unknown</p>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.fastLeakTest">
 <code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>[LeakMets,modelClosed,FluxExV] = fastLeakTest(model, testRxns,test)
-Tests if any metabolites in a model are leaking. A metabolite is leaking
+<dd><p>Tests if any metabolites in a model are leaking. A metabolite is leaking
 if the exchange reaction can carry secretion flux in the closed model (no
-uptake flux through any exchange reactions is permitted).
-INPUT
-model             Model structure
-testRxns          List of exchange reactions to be testetd for leaks
-demandTest        Optional: if &#8216;true&#8217; is entered, demand reactions</p>
+uptake flux through any exchange reactions is permitted).</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>for all metabolites in the model are created</div></blockquote>
-<p>OUTPUT
-LeakMets          List of exchange reactions for leaking metabolites
-modelClosed       Model strucutre that has been tested for leaks
-FluxExV           Flux vector for computed exchange reactions in the
-closed model</p>
-<p>IT Jan 2015
-description added by AH July 2017</p>
+<div>[LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demandTest)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Model structure</li>
+<li><strong>testRxns</strong> &#8211;
+List of exchange reactions to be testetd for leaks</li>
+<li><strong>demandTest</strong> &#8211;
+Optional: if &#8216;true&#8217; is entered, demand reactions
+for all metabolites in the model are created</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LeakMets</strong> &#8211;
+List of exchange reactions for leaking metabolites</li>
+<li><strong>modelClosed</strong> &#8211;
+Model strucutre that has been tested for leaks</li>
+<li><strong>FluxExV</strong> &#8211;
+Flux vector for computed exchange reactions in the closed model</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.removeDeadEnds">
 <code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/95d61a2309b2a798a39d690e5fb681e921a3ee63/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
-<dd><p>removeDeadEnds Remove all dead end metabolites and reactions from the
+<dd><p>Removes all dead end metabolites and reactions from the
 model</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>[model,removedMets,removedRxns] = removeDeadEnds(model)</div></blockquote>
+<div>[model, removedMets, removedRxns] = removeDeadEnds(model)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model         COBRA model structure</strong></li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model         COBRA model structure w/o dead end metabolites and</strong> &#8211;</p>
-<p>reactions</p>
-</li>
-<li><p class="first"><strong>removedMets   List of removed metabolites</strong></p>
-</li>
-<li><p class="first"><strong>removedRxns   List of removed reactions</strong></p>
-</li>
-<li><p class="first"><strong>Markus Herrgard 8/29/06</strong></p>
-</li>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure w/o dead end metabolites and
+reactions</li>
+<li><strong>removedMets</strong> &#8211;
+List of removed metabolites</li>
+<li><strong>removedRxns</strong> &#8211;
+List of removed reactions</li>
 </ul>
 </div></blockquote>
 </dd></dl>
