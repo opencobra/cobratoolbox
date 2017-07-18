@@ -1,18 +1,21 @@
 function objectiveAbbr = checkObjective(model)
-% checkObjective print out the Stoichiometric Coefficients for each
+% Prints out the Stoichiometric Coefficients for each
 % Metabolite, with the name of the objective
 %
-% objectiveAbbr = checkObjective(model)
+% USAGE:
+%
+%    objectiveAbbr = checkObjective(model)
 %
 % INPUT:
-%  model:             COBRA model structure
+%    model:            COBRA model structure
 %
 % OUTPUT:
-%  objectiveAbbr     Objective reaction abbreviation
+%    objectiveAbbr:    Objective reaction abbreviation
 %
-% Ronan Fleming 22/10/2008
-% Thomas Pfau 15/12/2015 - Made the function compatible with sparse S matrices
-% Laurent Heirendt March 2017 - Compatibility with large models and conversion to table
+% .. Authors:
+%       - Ronan Fleming 22/10/2008
+%       - Thomas Pfau 15/12/2015 - Made the function compatible with sparse S matrices
+%       - Laurent Heirendt March 2017 - Compatibility with large models and conversion to table
 
 objRxnInd = find(model.c ~= 0);
 objectiveAbbr = model.rxns(objRxnInd);
