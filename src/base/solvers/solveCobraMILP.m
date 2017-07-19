@@ -397,8 +397,9 @@ switch solver
         % Strict numerical tolerances
         cplexlp.Param.emphasis.numerical.Cur = solverParams.NUMERICALEMPHASIS;
         
-        % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
+        % Remove all Cobra solve parameters in solverParams which are not IBM Cplex parameters
         solverParams = rmfield(solverParams, optParamNames([1:5, 7:12]));
+        % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
         cplexlp = setCplexParam(cplexlp, solverParams, printLevel);
         
         save('MILPProblem','cplexlp')

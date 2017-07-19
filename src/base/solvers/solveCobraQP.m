@@ -178,7 +178,7 @@ switch solver
         CplexQPProblem.Model.Q = F;
 
         %optional parameters
-        if printLevel == 0
+        if printLevel == 0  % set display function as empty
             CplexQPProblem.DisplayFunc=[];
         end
         CplexQPProblem.Param.output.writelevel.Cur = printLevel;
