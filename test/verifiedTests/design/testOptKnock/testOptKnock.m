@@ -66,9 +66,10 @@ solverPkgs = {'gurobi6', 'tomlab_cplex'};
 for k = 1:length(solverPkgs)
 
     % change the COBRA solver
-    solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
+    solverOKLP = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverOKMILP = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
-    if solverOK == 1
+    if solverOKLP && solverOKMILP
 
         fprintf('   Testing optKnock using %s ... ', solverPkgs{k});
 

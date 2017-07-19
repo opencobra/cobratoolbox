@@ -8,6 +8,8 @@
 %     - Vmin, Vmax test: Marouen Ben Guebila 24/02/17
 %
 
+global CBTDIR
+
 % save the userpath
 originalUserPath = path;
 
@@ -25,7 +27,7 @@ nworkers = 2;
 solverName = 'ibm_cplex';
 
 % load the E.coli model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 if changeCobraSolver(solverName, 'LP', 0)
     [minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
@@ -85,7 +87,7 @@ if changeCobraSolver(solverName, 'LP', 0)
     assert(optsol == referenceToyResults.optsol);
 
     % load the E.coli model
-    load('ecoli_core_model.mat', 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
     optPercentage = 90;  % FVA based on maximum growth
 
@@ -95,6 +97,7 @@ if changeCobraSolver(solverName, 'LP', 0)
     % calculate the reference values using fluxVariability
     solverOK = changeCobraSolver(solverName);
     if solverOK
+
         [minFluxTref, maxFluxTref, Vminref, Vmaxref] = fluxVariability(model, optPercentage, objective, model.rxns, true, true, 'FBA');
 
         % check if the objective values are the same
