@@ -77,15 +77,13 @@ for k = 1:length(solverPkgs)
             assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
             assert(abs(MILPsolution.obj - 554) < tol)
             
-            % compare the log file to see whether the parametr changes are implemented
+            % compare the log files to see whether the parameter changes are implemented
             testLog = {''; ''};
             paramsInLog = cell(2, 1);
-            % text that should be found in the first test
-            paramsInLog{1} = {'balance optimality and feasibility'; ...
-                'dynamic search'};
-            % text that should be found in the second test
-            paramsInLog{2} = {'integer feasibility'; ...
-                'branch-and-cut'};
+            % text that should be found during the first test
+            paramsInLog{1} = {'balance optimality and feasibility'; 'dynamic search'};
+            % text that should be found during the second test
+            paramsInLog{2} = {'integer feasibility'; 'branch-and-cut'};
             for jTest = 1:2
                 % read the log files
                 f = fopen(['testIBMcplexMILPparam' num2str(jTest) '.log'], 'r');
