@@ -68,6 +68,8 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 % get SteadyCom paramters. If a required parameter is in options, get its value, else equal to the
 % default value in SteadyComSubroutines('getParams') if there is. Otherwise an empty matrix.
@@ -221,7 +223,7 @@ while ~(dev <= feasTol) && kBMadjust < 10
         end
     end
     if verbFlag
-        fprintf('BMmax adjusment: %d\n', kBMadjust);
+        fprintf('BMmax adjustment: %d\n', kBMadjust);
     end
 end
 if ~(dev <= feasTol)  % dev can be NaN, which still means infeasibility. So use ~(dev <= feasTol) instead of dev > feasTol

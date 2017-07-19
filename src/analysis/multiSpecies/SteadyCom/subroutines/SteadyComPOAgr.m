@@ -65,12 +65,16 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 %                  * -'r2':  the corresponding coefficient of determination (R-square)
 %    pairList:   `pairList` after transformation from various input formats
 
+global CBT_LP_SOLVER
+
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
     xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 % Initialization above
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 [GRfx, GR, BMmaxLB, BMmaxUB, optBMpercent, ...  % parameters for finding maximum growth rate
     symmetric, rxnNameList, pairList, fluxRange, Nstep, NstepScale, ...  % parameters for POA
@@ -108,15 +112,23 @@ if ~isempty(savePOA)
     end
 end
 
-%parallel computation
-if isempty(gcp('nocreate'))
-    if threads > 1
-        %given explicit no. of threads
-        parpool(ceil(threads));
-    elseif threads ~= 1
-        %default max no. of threads (input 0 or -1 etc)
-        parpool;
+% parallel computation
+if threads ~= 1 && isempty(gcp('nocreate'))
+    try
+        if threads > 1
+            %given explicit no. of threads
+            parpool(ceil(threads));
+        else
+            %default max no. of threads (input 0 or -1 etc)
+            parpool;
+        end
+    catch
+        threads = 1;
     end
+end
+if threads ~= 1 && ~isfield(parameters, 'solver')
+    % add explicitly the solver name to avoid error in parallel computation
+    varargin = [varargin(:); {'solver'; CBT_LP_SOLVER}];
 end
 
 %% handle LP structure
@@ -133,7 +145,7 @@ if isempty(GR)
         idRow = size(LP.A, 1);  % row that constrains the total biomass
     end
     addRow = false;
-elseif nargin < 3 || isempty(LP) || ~isstruct(LP) || isempty(fieldnames(LP))
+elseif nargin < 3 || isempty(LP) || (~isstruct(LP) && ~isobject(LP)) || isempty(fieldnames(LP))
     % only the growth rate given but not the LP structure
     if ibm_cplex && ~isempty(loadModel)
         % load Cplex model if loadModel is given
@@ -255,7 +267,7 @@ while ~(dev <= feasTol) && kBMadjust < 10
         end
     end
     if verbFlag
-        fprintf('BMmax adjusment: %d\n',kBMadjust);
+        fprintf('BMmax adjustment: %d\n',kBMadjust);
     end
 end
 % number of target reactions/linear combinations of reactions to be analyzed

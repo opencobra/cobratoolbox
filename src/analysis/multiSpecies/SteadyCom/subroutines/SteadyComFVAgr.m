@@ -65,12 +65,16 @@ function [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, opt
 %    LP:         `LP` problem structure (`Cplex LP` object for `ibm_cplex`)
 %    GR:         the growth rate at which FVA is performed
 
+global CBT_LP_SOLVER
+
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
     xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
 % Initialization above
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 [GR, optBMpercent, rxnNameList, rxnFluxList, ...
     GRfx, BMmaxLB, BMmaxUB, ...
@@ -96,7 +100,7 @@ if isempty(GR)
         idRow = size(LP.A, 1);  % row that constrains the total biomass
     end
     addRow = false;
-elseif nargin < 3 || isempty(LP) || ~isstruct(LP) || isempty(fieldnames(LP))
+elseif nargin < 3 || isempty(LP) || (~isstruct(LP) && ~isobject(LP)) || isempty(fieldnames(LP))
     % only the growth rate given but not the LP structure
     if ibm_cplex && ~isempty(loadModel)
         % load Cplex model if loadModel is given
@@ -218,7 +222,7 @@ while ~(dev <= feasTol) && kBMadjust < 10
         end
     end
     if verbFlag
-        fprintf('BMmax adjusment: %d\n',kBMadjust);
+        fprintf('BMmax adjustment: %d\n',kBMadjust);
     end
 end
 % number of target reactions/linear combinations of reactions to be analyzed
@@ -253,16 +257,24 @@ end
 objList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 
 % parallel computation
-p = gcp('nocreate');
-if isempty(p)
-    if threads > 1
-        % explicit no. of threads
-        parpool(ceil(threads));
-    elseif threads ~= 1
-        % default max no. of threads (input 0 or -1 etc)
-        parpool;
+if threads ~= 1 && isempty(gcp('nocreate'))
+    try
+        if threads > 1
+            %given explicit no. of threads
+            parpool(ceil(threads));
+        else
+            %default max no. of threads (input 0 or -1 etc)
+            parpool;
+        end
+    catch
+        threads = 1;
     end
 end
+if threads ~= 1 && ~isfield(parameters, 'solver')
+    % add explicitly the solver name to avoid error in parallel computation
+    varargin = [varargin(:); {'solver'; CBT_LP_SOLVER}];
+end
+% check save directory
 if ~isempty(saveFVA)
     directory = strsplit(saveFVA,filesep);
     if numel(directory) > 1
