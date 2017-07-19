@@ -45,9 +45,14 @@ FluxCompare.CmodelS = CMODEL.S(FluxCompare.CmetsSorti, ...
 FluxCompare.CspawnS = Cspawn.S(FluxCompare.SmetsSorti, ...
     FluxCompare.SrxnsSorti) ;
 
-% Find the differences between the matricies.
-FluxCompare.diffS = abs(FluxCompare.CmodelS) - ...
-    abs(FluxCompare.CspawnS) ;
+try
+    % Find the differences between the matricies.
+    FluxCompare.diffS = abs(FluxCompare.CmodelS) - ...
+        abs(FluxCompare.CspawnS) ;
+catch
+    % matricies are likely different sizes
+    return
+end    
 
 % find protons and water
 CMODELprotonpos = logical(strncmpi(FluxCompare.CmetsSort, 'h[', 2) + ...
