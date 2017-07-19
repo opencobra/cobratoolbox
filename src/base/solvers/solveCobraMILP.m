@@ -396,6 +396,11 @@ switch solver
         cplexlp.Param.simplex.tolerances.feasibility.Cur = solverParams.feasTol;
         % Strict numerical tolerances
         cplexlp.Param.emphasis.numerical.Cur = solverParams.NUMERICALEMPHASIS;
+        
+        % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
+        solverParams = rmfield(solverParams, optParamNames([1:5, 7:12]));
+        cplexlp = setCplexParam(cplexlp, solverParams, printLevel);
+        
         save('MILPProblem','cplexlp')
 
         % Set up callback to print out intermediate solutions
@@ -404,7 +409,10 @@ switch solver
 
         % Solve problem
         Result = cplexlp.solve();
-
+        
+        % Close the output file
+        fclose(outputfile);
+        
         % Get results
         x = Result.x;
         f = osense*Result.objval;
@@ -420,7 +428,7 @@ switch solver
         else
             solStat = 3; % Other problem, but integer solution exists
         end
- 	if exist([pwd filesep 'clone1.log'],'file')
+        if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
 

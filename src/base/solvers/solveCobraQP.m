@@ -178,10 +178,16 @@ switch solver
         CplexQPProblem.Model.Q = F;
 
         %optional parameters
+        if printLevel == 0
+            CplexQPProblem.DisplayFunc=[];
+        end
         CplexQPProblem.Param.output.writelevel.Cur = printLevel;
         CplexQPProblem.Param.qpmethod.Cur = 1;
 
-
+        % Set IBM-Cplex-specific parameters
+        parameters = rmfield(parameters, intersect(fieldnames(parameters), optParamNames));
+        CplexQPProblem = setCplexParam(CplexQPProblem, parameters, printLevel);
+        
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = saveInput;
@@ -193,8 +199,12 @@ switch solver
         end
 
         Result = CplexQPProblem.solve();
-        x = Result.x;
-        f = osense*Result.objval;
+        if isfield(Result,'x')  % Cplex solution may not have x
+            x = Result.x;
+        end
+        if isfield(Result,'objval')  % Cplex solution may not have objval
+            f = osense*Result.objval;
+        end
         origStat = Result.status;
         if (origStat == 1 || origStat == 101)
             stat = 1; % Optimal
