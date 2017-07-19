@@ -48,21 +48,21 @@ optionalInputs = {'compSymbols', 'compNames', 'sbmlLevel', 'sbmlVersion'};  % Fo
 
 % We can assume, that the old syntax is only used if varargin does not start
 % with a optional argument.
-if numel(varargin) > 2
+if numel(varargin) > 3
     % This is only relevant, if we have more than 2 non Required input
     % variables.
     % if this is apparent, we need to check the following:
     % 1. is the 3rd vararginargument a cell array and is the second argument
     % NOT compSymbols or compNames, if the second argument is NOT a char,
-    if ~ischar(varargin{3}) || ~any(ismember(varargin{3}, optionalInputs))
+    if ~ischar(varargin{4}) || ~any(ismember(varargin{4}, optionalInputs))
         % We assume the old version to be used
-        tempargin = varargin(1:2);
+        tempargin = varargin(1:3);
         % just replace the input by the options and replace varargin
         % accordingly
-        for i = 3:numel(varargin)            
+        for i = 4:numel(varargin)
             if ~isempty(varargin{i})
                 tempargin(end+1) = optionalInputs(i-2);
-                tempargin(end+1) = varargin(i);                                
+                tempargin(end+1) = varargin(i);
             end
         end
         varargin = tempargin;
@@ -78,6 +78,11 @@ if isfield(model, 'compNames')
     compNames = model.compNames;
 end
 
+% convert model if certain fields are missing
+results = verifyModel(model);
+if length(results) > 0
+    model = convertOldStyleModel(model);
+end
 
 parser = inputParser();
 
@@ -129,9 +134,7 @@ if (isempty(fileName))
         switch extension
             case '.MPS'
                 format = 'mps';
-            case '.xls'
-                format = 'xls';
-            case '.xlsx'
+            case {'.xls', '.xlsx'}
                 format = 'xls';
             case '.txt'
                 format = 'text';
@@ -155,7 +158,7 @@ switch format
         formulas = printRxnFormula(model, 'printFlag', 0);
         fprintf(fid, 'Rxn name\t');
         fprintf(fid, 'Formula\t');
-        if (isfield(model, 'rules'))
+        if isfield(model, 'rules')
             model = creategrRulesField(model);
             fprintf(fid, 'Gene-reaction association\t');
         end
@@ -170,8 +173,8 @@ switch format
         end
         fclose(fid);
         %% Excel file
-    case 'xls'
-        outmodel = model2xls(model, fileName, input.compSymbols, input.compNames);
+    case {'xls', 'xlsx'}
+        model2xls(model, fileName, input.compSymbols, input.compNames);
         %% SBML
     case 'sbml'
         outmodel = writeSBML(model, fileName, input.compSymbols, input.compNames);

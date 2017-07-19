@@ -1,6 +1,6 @@
 function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, inputFolder)
 % This function exports all the inputs needed to run the GAMS functions to
-% find second order Must Sets (MustUU, Must LL, Must UL). The inputs will
+% find second order Must Sets (`MustUU`, `MustLL`, `MustUL`). The inputs will
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
 % others will be exported as simple .txt files.
 %
@@ -15,20 +15,20 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 %                               * .rxns - Reaction IDs in the model
 %                               * .mets - Metabolite IDs in the model
 %                               * .S -    Stoichiometric matrix (sparse)
-%                               * .b -    RHS of Sv = b (usually zeros)
+%                               * .b -    RHS of `Sv = b` (usually zeros)
 %                               * .c -    Objective coefficients
 %                               * .lb -   Lower bounds for fluxes
 %                               * .ub -   Upper bounds for fluxes
-%    minFluxesW:              (double array of size n_rxns x 1) minimum
+%    minFluxesW:              (double array of size `n_rxns x 1`) minimum
 %                             fluxes for each reaction in the model for
 %                             wild-type strain. This can be obtained by
-%                             running the function FVAOptForce e.g.:
-%                             minFluxesW=[-90; -56];
-%    maxFluxesW:              (double array of size n_rxns x 1) maximum
+%                             running the function `FVAOptForce` e.g.:
+%                             `minFluxesW = [-90; -56];`
+%    maxFluxesW:              (double array of size `n_rxns x 1`) maximum
 %                             fluxes for each reaction in the model for
 %                             wild-type strain. This can be obtained by
-%                             running the function FVAOptForce e.g.:
-%                             maxFluxesW=[90; 56];
+%                             running the function `FVAOptForce` e.g.:
+%                             `maxFluxesW = [90; 56];`
 %    constrOpt:               (structure) Structure containing additional
 %                             contraints. Include here only reactions
 %                             whose flux is fixed, i.e., reactions whose
@@ -41,16 +41,13 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 %
 %                               * .rxnList - Reaction list (cell array)
 %                               * .values -  Values for constrained reactions
-%                                 (double array). E.g.: struct('rxnList', ...
-%                                 {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', ...
-%                                 [-100, 0, 155.5]');
+%                                 (double array). E.g.: `struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');`
 %    excludedRxns:            (cell array) Reactions to be excluded to the
-%                             MustUL set. This could be used to avoid
+%                             `MustUL` set. This could be used to avoid
 %                             finding transporters or exchange reactions
-%                             in the set Default: empty.
-%    mustSetFirstOrder:       (cell array) Reactions that belong to MustU
-%                             and MustL (first order sets) Default:
-%                             empty.
+%                             in the set. Default: empty.
+%    mustSetFirstOrder:       (cell array) Reactions that belong to `MustU`
+%                             and `MustL` (first order sets). Default: empty.
 %    inputFolder:             (string) Folder where inputs for GAMS
 %                             function will be stored
 %
@@ -64,15 +61,15 @@ function [] = exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constr
 %    Excluded.txt:            (file) File containing the
 %                             identifiers for excluded reactions. These
 %                             reactions will not be considered in when
-%                             running findMustXX.gms (XX=UU or LL or UL
+%                             running `findMustXX.gms` (`XX = UU` or `LL` or `UL`
 %                             depending on the case)
-%   MustSetFirstOrder.txt:    (file) File containing the
-%                             identifiers for reactions in MustL and
-%                             MustU
-%   MtoG.gdx:                 (file) File containing the
+%    MustSetFirstOrder.txt:   (file) File containing the
+%                             identifiers for reactions in `MustL` and
+%                             `MustU`
+%    MtoG.gdx:                (file) File containing the
 %                             parameters which will be read by GAMS
 %                             (lower bounds, upper bounds, stoichiometrix
-%                             matrix S, minimum and maximun fluxes for
+%                             matrix `S`, minimum and maximun fluxes for
 %                             each reaction in the previous step of FVA,
 %                             and the values for contrained reactions)
 %

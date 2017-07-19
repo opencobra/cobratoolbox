@@ -1,0 +1,423 @@
+NAME          CobraLPP
+ROWS
+ N  COST
+ E  13dpg[c]
+ E  2pg[c]
+ E  3pg[c]
+ E  6pgc[c]
+ E  6pgl[c]
+ E  ac[c]
+ E  ac[e]
+ E  acald[c]
+ E  acald[e]
+ E  accoa[c]
+ E  acon-C[c
+ E  actp[c]
+ E  adp[c]
+ E  akg[c]
+ E  akg[e]
+ E  amp[c]
+ E  atp[c]
+ E  cit[c]
+ E  co2[c]
+ E  co2[e]
+ E  coa[c]
+ E  dhap[c]
+ E  e4p[c]
+ E  etoh[c]
+ E  etoh[e]
+ E  f6p[c]
+ E  fdp[c]
+ E  for[c]
+ E  for[e]
+ E  fru[e]
+ E  fum[c]
+ E  fum[e]
+ E  g3p[c]
+ E  g6p[c]
+ E  glc-D[e]
+ E  gln-L[c]
+ E  gln-L[e]
+ E  glu-L[c]
+ E  glu-L[e]
+ E  glx[c]
+ E  h2o[c]
+ E  h2o[e]
+ E  h[c]
+ E  h[e]
+ E  icit[c]
+ E  lac-D[c]
+ E  lac-D[e]
+ E  mal-L[c]
+ E  mal-L[e]
+ E  nad[c]
+ E  nadh[c]
+ E  nadp[c]
+ E  nadph[c]
+ E  nh4[c]
+ E  nh4[e]
+ E  o2[c]
+ E  o2[e]
+ E  oaa[c]
+ E  pep[c]
+ E  pi[c]
+ E  pi[e]
+ E  pyr[c]
+ E  pyr[e]
+ E  q8[c]
+ E  q8h2[c]
+ E  r5p[c]
+ E  ru5p-D[c
+ E  s7p[c]
+ E  succ[c]
+ E  succ[e]
+ E  succoa[c
+ E  xu5p-D[c
+COLUMNS
+    ACALD     acald[c]  -1             accoa[c]  1
+    ACALD     coa[c]    -1             h[c]      1
+    ACALD     nad[c]    -1             nadh[c]   1
+    ACALDt    acald[c]  1              acald[e]  -1
+    ACKr      ac[c]     -1             actp[c]   1
+    ACKr      adp[c]    1              atp[c]    -1
+    ACONTa    acon-C[c  1              cit[c]    -1
+    ACONTa    h2o[c]    1
+    ACONTb    acon-C[c  -1             h2o[c]    -1
+    ACONTb    icit[c]   1
+    ACt2r     ac[c]     1              ac[e]     -1
+    ACt2r     h[c]      1              h[e]      -1
+    ADK1      adp[c]    2              amp[c]    -1
+    ADK1      atp[c]    -1
+    AKGDH     akg[c]    -1             co2[c]    1
+    AKGDH     coa[c]    -1             nad[c]    -1
+    AKGDH     nadh[c]   1              succoa[c  1
+    AKGt2r    akg[c]    1              akg[e]    -1
+    AKGt2r    h[c]      1              h[e]      -1
+    ALCD2x    acald[c]  1              etoh[c]   -1
+    ALCD2x    h[c]      1              nad[c]    -1
+    ALCD2x    nadh[c]   1
+    ATPM      adp[c]    1              atp[c]    -1
+    ATPM      h2o[c]    -1             h[c]      1
+    ATPM      pi[c]     1
+    ATPS4r    adp[c]    -1             atp[c]    1
+    ATPS4r    h2o[c]    1              h[c]      3
+    ATPS4r    h[e]      -4             pi[c]     -1
+    Biomass_  COST      -1             3pg[c]    -1.496
+    Biomass_  accoa[c]  -3.7478        adp[c]    59.81
+    Biomass_  akg[c]    4.1182         atp[c]    -59.81
+    Biomass_  coa[c]    3.7478         e4p[c]    -0.361
+    Biomass_  f6p[c]    -0.0709        g3p[c]    -0.129
+    Biomass_  g6p[c]    -0.205         gln-L[c]  -0.2557
+    Biomass_  glu-L[c]  -4.9414        h2o[c]    -59.81
+    Biomass_  h[c]      59.81          nad[c]    -3.547
+    Biomass_  nadh[c]   3.547          nadp[c]   13.0279
+    Biomass_  nadph[c]  -13.0279       oaa[c]    -1.7867
+    Biomass_  pep[c]    -0.5191        pi[c]     59.81
+    Biomass_  pyr[c]    -2.8328        r5p[c]    -0.8977
+    CO2t      co2[c]    1              co2[e]    -1
+    CS        accoa[c]  -1             cit[c]    1
+    CS        coa[c]    1              h2o[c]    -1
+    CS        h[c]      1              oaa[c]    -1
+    CYTBD     h2o[c]    1              h[c]      -2
+    CYTBD     h[e]      2              o2[c]     -0.5
+    CYTBD     q8[c]     1              q8h2[c]   -1
+    D_LACt2   h[c]      1              h[e]      -1
+    D_LACt2   lac-D[c]  1              lac-D[e]  -1
+    ENO       2pg[c]    -1             h2o[c]    1
+    ENO       pep[c]    1
+    ETOHt2r   etoh[c]   1              etoh[e]   -1
+    ETOHt2r   h[c]      1              h[e]      -1
+    EX_ac(e)  ac[e]     -1
+    EX_acald  acald[e]  -1
+    EX_akg(e  akg[e]    -1
+    EX_co2(e  co2[e]    -1
+    EX_etoh(  etoh[e]   -1
+    EX_for(e  for[e]    -1
+    EX_fru(e  fru[e]    -1
+    EX_fum(e  fum[e]    -1
+    EX_glc(e  glc-D[e]  -1
+    EX_gln_L  gln-L[e]  -1
+    EX_glu_L  glu-L[e]  -1
+    EX_h(e)   h[e]      -1
+    EX_h2o(e  h2o[e]    -1
+    EX_lac_D  lac-D[e]  -1
+    EX_mal_L  mal-L[e]  -1
+    EX_nh4(e  nh4[e]    -1
+    EX_o2(e)  o2[e]     -1
+    EX_pi(e)  pi[e]     -1
+    EX_pyr(e  pyr[e]    -1
+    EX_succ(  succ[e]   -1
+    FBA       dhap[c]   1              fdp[c]    -1
+    FBA       g3p[c]    1
+    FBP       f6p[c]    1              fdp[c]    -1
+    FBP       h2o[c]    -1             pi[c]     1
+    FORt2     for[c]    1              for[e]    -1
+    FORt2     h[c]      1              h[e]      -1
+    FORti     for[c]    -1             for[e]    1
+    FRD7      fum[c]    -1             q8[c]     1
+    FRD7      q8h2[c]   -1             succ[c]   1
+    FRUpts2   f6p[c]    1              fru[e]    -1
+    FRUpts2   pep[c]    -1             pyr[c]    1
+    FUM       fum[c]    -1             h2o[c]    -1
+    FUM       mal-L[c]  1
+    FUMt2_2   fum[c]    1              fum[e]    -1
+    FUMt2_2   h[c]      2              h[e]      -2
+    G6PDH2r   6pgl[c]   1              g6p[c]    -1
+    G6PDH2r   h[c]      1              nadp[c]   -1
+    G6PDH2r   nadph[c]  1
+    GAPD      13dpg[c]  1              g3p[c]    -1
+    GAPD      h[c]      1              nad[c]    -1
+    GAPD      nadh[c]   1              pi[c]     -1
+    GLCpts    g6p[c]    1              glc-D[e]  -1
+    GLCpts    pep[c]    -1             pyr[c]    1
+    GLNS      adp[c]    1              atp[c]    -1
+    GLNS      gln-L[c]  1              glu-L[c]  -1
+    GLNS      h[c]      1              nh4[c]    -1
+    GLNS      pi[c]     1
+    GLNabc    adp[c]    1              atp[c]    -1
+    GLNabc    gln-L[c]  1              gln-L[e]  -1
+    GLNabc    h2o[c]    -1             h[c]      1
+    GLNabc    pi[c]     1
+    GLUDy     akg[c]    1              glu-L[c]  -1
+    GLUDy     h2o[c]    -1             h[c]      1
+    GLUDy     nadp[c]   -1             nadph[c]  1
+    GLUDy     nh4[c]    1
+    GLUN      gln-L[c]  -1             glu-L[c]  1
+    GLUN      h2o[c]    -1             nh4[c]    1
+    GLUSy     akg[c]    -1             gln-L[c]  -1
+    GLUSy     glu-L[c]  2              h[c]      -1
+    GLUSy     nadp[c]   1              nadph[c]  -1
+    GLUt2r    glu-L[c]  1              glu-L[e]  -1
+    GLUt2r    h[c]      1              h[e]      -1
+    GND       6pgc[c]   -1             co2[c]    1
+    GND       nadp[c]   -1             nadph[c]  1
+    GND       ru5p-D[c  1
+    H2Ot      h2o[c]    1              h2o[e]    -1
+    ICDHyr    akg[c]    1              co2[c]    1
+    ICDHyr    icit[c]   -1             nadp[c]   -1
+    ICDHyr    nadph[c]  1
+    ICL       glx[c]    1              icit[c]   -1
+    ICL       succ[c]   1
+    LDH_D     h[c]      1              lac-D[c]  -1
+    LDH_D     nad[c]    -1             nadh[c]   1
+    LDH_D     pyr[c]    1
+    MALS      accoa[c]  -1             coa[c]    1
+    MALS      glx[c]    -1             h2o[c]    -1
+    MALS      h[c]      1              mal-L[c]  1
+    MALt2_2   h[c]      2              h[e]      -2
+    MALt2_2   mal-L[c]  1              mal-L[e]  -1
+    MDH       h[c]      1              mal-L[c]  -1
+    MDH       nad[c]    -1             nadh[c]   1
+    MDH       oaa[c]    1
+    ME1       co2[c]    1              mal-L[c]  -1
+    ME1       nad[c]    -1             nadh[c]   1
+    ME1       pyr[c]    1
+    ME2       co2[c]    1              mal-L[c]  -1
+    ME2       nadp[c]   -1             nadph[c]  1
+    ME2       pyr[c]    1
+    NADH16    h[c]      -4             h[e]      3
+    NADH16    nad[c]    1              nadh[c]   -1
+    NADH16    q8[c]     -1             q8h2[c]   1
+    NADTRHD   nad[c]    -1             nadh[c]   1
+    NADTRHD   nadp[c]   1              nadph[c]  -1
+    NH4t      nh4[c]    1              nh4[e]    -1
+    O2t       o2[c]     1              o2[e]     -1
+    PDH       accoa[c]  1              co2[c]    1
+    PDH       coa[c]    -1             nad[c]    -1
+    PDH       nadh[c]   1              pyr[c]    -1
+    PFK       adp[c]    1              atp[c]    -1
+    PFK       f6p[c]    -1             fdp[c]    1
+    PFK       h[c]      1
+    PFL       accoa[c]  1              coa[c]    -1
+    PFL       for[c]    1              pyr[c]    -1
+    PGI       f6p[c]    1              g6p[c]    -1
+    PGK       13dpg[c]  1              3pg[c]    -1
+    PGK       adp[c]    1              atp[c]    -1
+    PGL       6pgc[c]   1              6pgl[c]   -1
+    PGL       h2o[c]    -1             h[c]      1
+    PGM       2pg[c]    -1             3pg[c]    1
+    PIt2r     h[c]      1              h[e]      -1
+    PIt2r     pi[c]     1              pi[e]     -1
+    PPC       co2[c]    -1             h2o[c]    -1
+    PPC       h[c]      1              oaa[c]    1
+    PPC       pep[c]    -1             pi[c]     1
+    PPCK      adp[c]    1              atp[c]    -1
+    PPCK      co2[c]    1              oaa[c]    -1
+    PPCK      pep[c]    1
+    PPS       amp[c]    1              atp[c]    -1
+    PPS       h2o[c]    -1             h[c]      2
+    PPS       pep[c]    1              pi[c]     1
+    PPS       pyr[c]    -1
+    PTAr      accoa[c]  -1             actp[c]   1
+    PTAr      coa[c]    1              pi[c]     -1
+    PYK       adp[c]    -1             atp[c]    1
+    PYK       h[c]      -1             pep[c]    -1
+    PYK       pyr[c]    1
+    PYRt2r    h[c]      1              h[e]      -1
+    PYRt2r    pyr[c]    1              pyr[e]    -1
+    RPE       ru5p-D[c  -1             xu5p-D[c  1
+    RPI       r5p[c]    -1             ru5p-D[c  1
+    SUCCt2_2  h[c]      2              h[e]      -2
+    SUCCt2_2  succ[c]   1              succ[e]   -1
+    SUCCt3    h[c]      1              h[e]      -1
+    SUCCt3    succ[c]   -1             succ[e]   1
+    SUCDi     fum[c]    1              q8[c]     -1
+    SUCDi     q8h2[c]   1              succ[c]   -1
+    SUCOAS    adp[c]    1              atp[c]    -1
+    SUCOAS    coa[c]    -1             pi[c]     1
+    SUCOAS    succ[c]   -1             succoa[c  1
+    TALA      e4p[c]    1              f6p[c]    1
+    TALA      g3p[c]    -1             s7p[c]    -1
+    THD2      h[c]      2              h[e]      -2
+    THD2      nad[c]    1              nadh[c]   -1
+    THD2      nadp[c]   -1             nadph[c]  1
+    TKT1      g3p[c]    1              r5p[c]    -1
+    TKT1      s7p[c]    1              xu5p-D[c  -1
+    TKT2      e4p[c]    -1             f6p[c]    1
+    TKT2      g3p[c]    1              xu5p-D[c  -1
+    TPI       dhap[c]   -1             g3p[c]    1
+RHS
+BOUNDS
+ LO BND1      ACALD     -1000
+ UP BND1      ACALD     1000
+ LO BND1      ACALDt    -1000
+ UP BND1      ACALDt    1000
+ LO BND1      ACKr      -1000
+ UP BND1      ACKr      1000
+ LO BND1      ACONTa    -1000
+ UP BND1      ACONTa    1000
+ LO BND1      ACONTb    -1000
+ UP BND1      ACONTb    1000
+ LO BND1      ACt2r     -1000
+ UP BND1      ACt2r     1000
+ LO BND1      ADK1      -1000
+ UP BND1      ADK1      1000
+ UP BND1      AKGDH     1000
+ LO BND1      AKGt2r    -1000
+ UP BND1      AKGt2r    1000
+ LO BND1      ALCD2x    -1000
+ UP BND1      ALCD2x    1000
+ LO BND1      ATPM      8.39
+ UP BND1      ATPM      1000
+ LO BND1      ATPS4r    -1000
+ UP BND1      ATPS4r    1000
+ UP BND1      Biomass_  1000
+ LO BND1      CO2t      -1000
+ UP BND1      CO2t      1000
+ UP BND1      CS        1000
+ UP BND1      CYTBD     1000
+ LO BND1      D_LACt2   -1000
+ UP BND1      D_LACt2   1000
+ LO BND1      ENO       -1000
+ UP BND1      ENO       1000
+ LO BND1      ETOHt2r   -1000
+ UP BND1      ETOHt2r   1000
+ UP BND1      EX_ac(e)  1000
+ UP BND1      EX_acald  1000
+ UP BND1      EX_akg(e  1000
+ LO BND1      EX_co2(e  -1000
+ UP BND1      EX_co2(e  1000
+ UP BND1      EX_etoh(  1000
+ UP BND1      EX_for(e  1000
+ UP BND1      EX_fru(e  1000
+ UP BND1      EX_fum(e  1000
+ LO BND1      EX_glc(e  -10
+ UP BND1      EX_glc(e  1000
+ UP BND1      EX_gln_L  1000
+ UP BND1      EX_glu_L  1000
+ LO BND1      EX_h(e)   -1000
+ UP BND1      EX_h(e)   1000
+ LO BND1      EX_h2o(e  -1000
+ UP BND1      EX_h2o(e  1000
+ UP BND1      EX_lac_D  1000
+ UP BND1      EX_mal_L  1000
+ LO BND1      EX_nh4(e  -1000
+ UP BND1      EX_nh4(e  1000
+ LO BND1      EX_o2(e)  -1000
+ UP BND1      EX_o2(e)  1000
+ LO BND1      EX_pi(e)  -1000
+ UP BND1      EX_pi(e)  1000
+ UP BND1      EX_pyr(e  1000
+ UP BND1      EX_succ(  1000
+ LO BND1      FBA       -1000
+ UP BND1      FBA       1000
+ UP BND1      FBP       1000
+ UP BND1      FORt2     1000
+ UP BND1      FORti     1000
+ UP BND1      FRD7      1000
+ UP BND1      FRUpts2   1000
+ LO BND1      FUM       -1000
+ UP BND1      FUM       1000
+ UP BND1      FUMt2_2   1000
+ LO BND1      G6PDH2r   -1000
+ UP BND1      G6PDH2r   1000
+ LO BND1      GAPD      -1000
+ UP BND1      GAPD      1000
+ UP BND1      GLCpts    1000
+ UP BND1      GLNS      1000
+ UP BND1      GLNabc    1000
+ LO BND1      GLUDy     -1000
+ UP BND1      GLUDy     1000
+ UP BND1      GLUN      1000
+ UP BND1      GLUSy     1000
+ LO BND1      GLUt2r    -1000
+ UP BND1      GLUt2r    1000
+ UP BND1      GND       1000
+ LO BND1      H2Ot      -1000
+ UP BND1      H2Ot      1000
+ LO BND1      ICDHyr    -1000
+ UP BND1      ICDHyr    1000
+ UP BND1      ICL       1000
+ LO BND1      LDH_D     -1000
+ UP BND1      LDH_D     1000
+ UP BND1      MALS      1000
+ UP BND1      MALt2_2   1000
+ LO BND1      MDH       -1000
+ UP BND1      MDH       1000
+ UP BND1      ME1       1000
+ UP BND1      ME2       1000
+ UP BND1      NADH16    1000
+ UP BND1      NADTRHD   1000
+ LO BND1      NH4t      -1000
+ UP BND1      NH4t      1000
+ LO BND1      O2t       -1000
+ UP BND1      O2t       1000
+ UP BND1      PDH       1000
+ UP BND1      PFK       1000
+ UP BND1      PFL       1000
+ LO BND1      PGI       -1000
+ UP BND1      PGI       1000
+ LO BND1      PGK       -1000
+ UP BND1      PGK       1000
+ UP BND1      PGL       1000
+ LO BND1      PGM       -1000
+ UP BND1      PGM       1000
+ LO BND1      PIt2r     -1000
+ UP BND1      PIt2r     1000
+ UP BND1      PPC       1000
+ UP BND1      PPCK      1000
+ UP BND1      PPS       1000
+ LO BND1      PTAr      -1000
+ UP BND1      PTAr      1000
+ UP BND1      PYK       1000
+ LO BND1      PYRt2r    -1000
+ UP BND1      PYRt2r    1000
+ LO BND1      RPE       -1000
+ UP BND1      RPE       1000
+ LO BND1      RPI       -1000
+ UP BND1      RPI       1000
+ UP BND1      SUCCt2_2  1000
+ UP BND1      SUCCt3    1000
+ UP BND1      SUCDi     1000
+ LO BND1      SUCOAS    -1000
+ UP BND1      SUCOAS    1000
+ LO BND1      TALA      -1000
+ UP BND1      TALA      1000
+ UP BND1      THD2      1000
+ LO BND1      TKT1      -1000
+ UP BND1      TKT1      1000
+ LO BND1      TKT2      -1000
+ UP BND1      TKT2      1000
+ LO BND1      TPI       -1000
+ UP BND1      TPI       1000
+ENDATA

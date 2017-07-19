@@ -1,77 +1,85 @@
 function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, options, LP, varargin)
-% Analyze pairwise relationship between reaction fluxes/biomass variables for a community model 
-% at community steady-state at a given growth rate. Called by SteadyComPOA. See tutorial_SteadyCom for more details.
+% Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
+% at community steady-state at a given growth rate. Called by `SteadyComPOA`. See `tutorial_SteadyCom` for more details.
 %
 % USAGE:
-%    [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom,options,solverParams,LP)
+%
+%    [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, options, LP)
 %
 % INPUT:
-%    modelCom       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel):
-%    (the following fields are required)
-%      S            Stoichiometric matrix
-%      b            Right hand side
-%      c            Objective coefficients
-%      lb           Lower bounds
-%      ub           Upper bounds
-%    (at least one of the below two is needed. Can be obtained using getMultiSpecisModelId)
-%      infoCom      structure containing community reaction info 
-%      indCom       the index structure corresponding to infoCom
+%    modelCom:     A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%                  (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
+%
+%                    * S - Stoichiometric matrix
+%                    * b - Right hand side
+%                    * c - Objective coefficients
+%                    * lb - Lower bounds
+%                    * ub - Upper bounds
+%                    * infoCom - structure containing community reaction info
+%                    * indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
-%    options        option structure with the following fields:
-%      GR              the growth rate at which POA is performed. If not given, 
-%                        use the maximum growth rate found by SteadyCom.m.
-%      optBMpercent    only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%      rxnNameList     list of reactions (IDs or .rxns) to be analyzed. Use a (N_rxns + N_organism) x K matrix for POA of K
-%                        linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism, 
-%                        or reactions listed in pairList [see beleow] if pairList is given)
-%      pairList        pairs in rxnNameList to be analyzed. N_pair by 2 array of:
-%                        - indices referring to the rxns in rxnNameList, e.g., [1 2] to analyze rxnNameList{1} vs rxnNameList{2}
-%                        - rxn names which are members of rxnNameList, e.g., {'EX_glc-D(e)', 'EX_ac(e)'}
-%                        If not supplied, analyze all K(K-1) pairs from the K targets in rxnNameList.
-%      symmetric       true to avoid running symmetric pairs (e.g. analyze pair (j,k) only if j > k, total K(K-1)/2 pairs). 
-%                        Used only when pairList is not supplied. 
-%      Nstep           number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
-%                        Can also be a vector indicating the fraction of intermediate value to be analyzed,
-%                        e.g. [0 0.5 1] means computing at minFlux, 0.5(minFlux + maxFlux) and maxFlux
-%      NstepScale      used only when Nstep is a single number. 
-%                        -'lin' for a linear (uniform) scale of step size 
-%                        -'log' for a log scaling of the step sizes
-%      fluxRange       flux range for each entry in rxnNameList. K x 2 matrix. Defaulted to be found by SteadyComFVA.m
-%    (other parameters)
-%      savePOA         filename to save the POA results (default 'POAtmp/POA'). Must be non-empty. New folder is recommended
-%      threads         for parallelization: > 1 for explicitly stating the no. of threads used,
-%                        0 or -1 for using all available threads. Default 1.
-%      verbFlag        verbose output. 0 or 1.
-%      loadModel       (ibm_cplex only) string of filename to be loaded. If non-empty, load the 
-%                        cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
-%   (May add also other parameters in SteadyCom for calculating the maximum growth rate.)
+%    options:    option structure with the following fields:
 %
-%    parameter:              structure for solver-specific parameters.
-%    'param1', value1, ...:  name-value pairs for solveCobraLP parameters. See solveCobraLP for details
+%                  * GR - The growth rate at which POA is performed. If not
+%                    given, find the maximum growth rate by `SteadyCom.m`
+%                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
+%                  * rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) * K` matrix for POA of `K`
+%                    linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,
+%                    or reactions listed in `pairList` [see below] if `pairList` is given)
+%                  * pairList - pairs in `rxnNameList` to be analyzed. `N_pair` by 2 array of:
+%
+%                    * - indices referring to the rxns in `rxnNameList`, e.g., `[1 2]` to analyze `rxnNameList{1}` vs `rxnNameList{2}`
+%                    * - rxn names which are members of `rxnNameList`, e.g., `{'EX_glc-D(e)', 'EX_ac(e)'}`
+%                    If not supplied, analyze all `K(K-1)` pairs from the K targets in `rxnNameList`.
+%                  * symmetric - true to avoid running symmetric pairs (e.g. analyze pair `(j,k)` only if :math:`j > k`, total :math:` K(K-1)/2 pairs)`.
+%                    Used only when `pairList` is not supplied.
+%                  * Nstep - number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
+%                    Can also be a vector indicating the fraction of intermediate value to be analyzed,
+%                    e.g. `[0 0.5 1]` means computing at `minFlux`, `0.5(minFlux + maxFlux)` and `maxFlux`
+%                  * NstepScale - used only when Nstep is a single number.
+%
+%                    * -'lin' for a linear (uniform) scale of step size
+%                    * -'log' for a log scaling of the step sizes
+%                  * fluxRange - flux range for each entry in `rxnNameList`. `K x 2` matrix. Defaulted to be found by `SteadyComFVA.m`
+%                    (other parameters)
+%                  * savePOA - filename to save the POA results (default 'POAtmp/POA'). Must be non-empty. New folder is recommended
+%                  * threads - for parallelization: > 1 for explicitly stating the no. of threads used,
+%                    0 or -1 for using all available threads. Default 1.
+%                  * verbFlag - verbose output. 0 or 1.
+%                  * loadModel - (`ibm_cplex` only) string of filename to be loaded. If non-empty, load the
+%                    cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
+%                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
+%
+%    parameter:  structure for solver-specific parameters.
+%                  'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See solveCobraLP for details
 %
 % OUTPUTS:
-%    POAtable          K x K cells. (i,i)-cell contains the flux range of rxnNameList{i}.
-%                        (i,j)-cell contains a Nstep x 2 matrix, with (k,1)-entry being the min of rxnNameList{j} 
-%                        when rxnNameList{i} is fixed at the k-th value, (k,2)-entry being the max.
-%    fluxRange         K x 2 matrix of flux range for each entry in rxnNameList 
-%    Stat              K x K structure array with fields:
-%                        -'cor': the slope from linear regression between the fluxes of a pair
-%                        -'r2':  the corresponding coefficient of determination (R-square)
-%    pairList          pairList after transformation from various input formats
+%    POAtable:   `K x K` cells. `(i, i)` -cell contains the flux range of `rxnNameList{i}`.
+%                `(i,j)`-cell contains a `Nstep x 2` matrix, with `(k, 1)` -entry being the min of `rxnNameList{j}`
+%                when `rxnNameList{i}` is fixed at the `k`-th value, `(k, 2)` -entry being the max.
+%    fluxRange:  `K x 2` matrix of flux range for each entry in `rxnNameList`
+%    Stat :      `K x K` structure array with fields:
+%
+%                  * -'cor': the slope from linear regression between the fluxes of a pair
+%                  * -'r2':  the corresponding coefficient of determination (R-square)
+%    pairList:   `pairList` after transformation from various input formats
 
-%% Initialization
+global CBT_LP_SOLVER
+
 [modelCom, ibm_cplex, feasTol, solverParams, parameters, varNameDisp, ...
     xName, m, n, nSp, nRxnSp] = SteadyComSubroutines('initialize', modelCom, varargin{:});
-
+% Initialization above
 if nargin < 2 || isempty(options)
     options = struct();
 end
+% handle solveCobraLP name-value arguments that are specially treated in SteadyCom functions
+[options, varargin] = SteadyComSubroutines('solveCobraLP_arg', options, parameters, varargin);
 
 [GRfx, GR, BMmaxLB, BMmaxUB, optBMpercent, ...  % parameters for finding maximum growth rate
     symmetric, rxnNameList, pairList, fluxRange, Nstep, NstepScale, ...  % parameters for POA
     verbFlag, threads, savePOA, loadModel] = SteadyComSubroutines('getParams',  ...
-    {'GRfx', 'GR', 'BMmaxLB', 'BMmaxUB', 'optBMpercent',... 
+    {'GRfx', 'GR', 'BMmaxLB', 'BMmaxUB', 'optBMpercent',...
     'symmetric', 'rxnNameList', 'pairList', 'fluxRange', 'Nstep', 'NstepScale',...
     'verbFlag', 'threads', 'savePOA', 'loadModel'}, options, modelCom);
 
@@ -104,15 +112,23 @@ if ~isempty(savePOA)
     end
 end
 
-%parallel computation
-if isempty(gcp('nocreate'))
-    if threads > 1
-        %given explicit no. of threads
-        parpool(ceil(threads));
-    elseif threads ~= 1
-        %default max no. of threads (input 0 or -1 etc)
-        parpool;
+% parallel computation
+if threads ~= 1 && isempty(gcp('nocreate'))
+    try
+        if threads > 1
+            %given explicit no. of threads
+            parpool(ceil(threads));
+        else
+            %default max no. of threads (input 0 or -1 etc)
+            parpool;
+        end
+    catch
+        threads = 1;
     end
+end
+if threads ~= 1 && ~isfield(parameters, 'solver')
+    % add explicitly the solver name to avoid error in parallel computation
+    varargin = [varargin(:); {'solver'; CBT_LP_SOLVER}];
 end
 
 %% handle LP structure
@@ -129,7 +145,7 @@ if isempty(GR)
         idRow = size(LP.A, 1);  % row that constrains the total biomass
     end
     addRow = false;
-elseif nargin < 3 || isempty(LP) || ~isstruct(LP) || isempty(fieldnames(LP))
+elseif nargin < 3 || isempty(LP) || (~isstruct(LP) && ~isobject(LP)) || isempty(fieldnames(LP))
     % only the growth rate given but not the LP structure
     if ibm_cplex && ~isempty(loadModel)
         % load Cplex model if loadModel is given
@@ -168,7 +184,7 @@ if checkBMrow
     if ~addRow
         idRow = idRow(end);
         idRow = m + 2 * nRxnSp + nSp + idRow;
-    end 
+    end
 end
 % add a row for constraining the sum of biomass if not exist
 if addRow
@@ -201,7 +217,7 @@ else
         end
     end
     % not allow the max. biomass to exceed the one at max growth rate,
-    % can happen if optBMpercent < 100. May dismiss this constraint or 
+    % can happen if optBMpercent < 100. May dismiss this constraint or
     % manually supply BMmaxUB in the options if sum of biomass should be variable
     if ibm_cplex
         LP.Model.lhs(idRow) = BMmaxLB * optBMpercent / 100;
@@ -251,7 +267,7 @@ while ~(dev <= feasTol) && kBMadjust < 10
         end
     end
     if verbFlag
-        fprintf('BMmax adjusment: %d\n',kBMadjust);
+        fprintf('BMmax adjustment: %d\n',kBMadjust);
     end
 end
 % number of target reactions/linear combinations of reactions to be analyzed
@@ -273,7 +289,7 @@ if (~isfield(options, 'rxnNameList') || isempty(options.rxnNameList)) && isfield
         && iscell(options.pairList)
     % get rxnNameList from pairList if only pairList given
     rxnNameList = options.pairList(:);
-end 
+end
 % objective matrix
 rxnNameList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 options.rxnNameList = rxnNameList;
@@ -281,13 +297,13 @@ options.rxnNameList = rxnNameList;
 if isempty(pairList)
     % if pairList not given, run for all pairs
     pairList = [reshape(repmat(1:nRxnPOA, nRxnPOA, 1), nRxnPOA ^ 2, 1), repmat((1:nRxnPOA)', nRxnPOA, 1)];
-    if symmetric 
+    if symmetric
         % the option 'symmetric' is only used here when pairList is not supplied to avoid running symmetric pairs (e.g. j vs k and k vs j)
         pairList(pairList(:, 1) >= pairList(:, 2), :) = [];
     end
-elseif size(pairList, 2) ~= 2 
+elseif size(pairList, 2) ~= 2
     error('pairList must be an N-by-2 array denoting the pairs (rxn names or indices in rxnNameList) to analyze!')
-elseif iscell(pairList) 
+elseif iscell(pairList)
     pairList = SteadyComSubroutines('rxnList2objMatrix', pairList(:), varNameDisp, xName, n, nVar, 'pairList');
     [yn, id] = ismember(pairList', rxnNameList', 'rows');
     if ~all(yn)
@@ -380,10 +396,10 @@ if any(undone)
     if (~isfield(modelCom, 'b'))
         modelCom.b = zeros(size(modelCom.S,1),1);
     end
-    
+
     Npair =sum(undone);  % update number of pairs to be analyzed
     undoneId = find(undone);  % and their IDs
-    
+
     if verbFlag  % print starting pair
         fprintf('\nPOA for %d pairs of reactions at growth rate %.6f\n', ...
             Npair - sum(pairList(undoneId, 1) == pairList(undoneId, 2)), GR);
@@ -496,7 +512,7 @@ if any(undone)
                     else
                         fluxPOAvalue(p, 2) = NaN; % shoud not happen
                     end
-                    
+
                 end
                 POAtableJK = fluxPOAvalue;
                 % simple linear regression to check correlations
@@ -524,7 +540,7 @@ if any(undone)
             LPmodel = LP.Model;
             LPstart = LP.Start;
         end
-        % parallelization using spmd to allow redistribution of jobs upon 
+        % parallelization using spmd to allow redistribution of jobs upon
         % completion of any of the workers to avoid being idle
         numPool = gcp;
         numPool = numPool.NumWorkers;
@@ -604,7 +620,7 @@ if any(undone)
                         else
                             rxnNameId = rxnNameList(:,j) ~= 0;
                         end
-                        
+
                         fluxPOAvalue = zeros(NstepJ, 2);
                         for p = 1:NstepJ
                             % minimize flux of the k-th reaction
@@ -660,7 +676,7 @@ if any(undone)
                             end
                             fluxPOAvalue(p,:) = [minf maxf];
                         end
-                        
+
                         POAtableJK = fluxPOAvalue;
                         %simple linear regression to check correlations
                         notNan = ~isnan(fluxPOAvalue(:, 1));

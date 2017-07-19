@@ -14,7 +14,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                     * .rxns - Reaction IDs in the model
 %                     * .mets - Metabolite IDs in the model
 %                     * .S -    Stoichiometric matrix (sparse)
-%                     * .b -    RHS of Sv = b (usually zeros)
+%                     * .b -    RHS of `Sv = b` (usually zeros)
 %                     * .c -    Objective coefficients
 %                     * .lb -   Lower bounds for fluxes
 %                     * .ub -   Upper bounds for fluxes
@@ -23,23 +23,20 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                   the following fields:
 %
 %                     * .rxnList - Reaction list (cell array)
-%                     * .values -  Values for constrained reactions (double
-%                       array)
+%                     * .values - Values for constrained reactions (double array)
 %                     * .rxnBoundType - Type of bound (char array)
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
-%                       E.g.: constrW=struct('rxnList', {{'R75'; 'EX_suc'}}, ...
-%                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
+%                       E.g.: `constrW = struct('rxnList', {{'R75'; 'EX_suc'}}, 'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);`
 %    constrM:       (structure) structure containing contraints
 %                   for the mutant strain. The structure has the following:
 %                   fields:
 %
-%                     * .rxnList -      Reaction list (cell array)
-%                     * .values -       Values for constrained reactions
+%                     * .rxnList - Reaction list (cell array)
+%                     * .values - Values for constrained reactions
 %                       (double array)
 %                     * .rxnBoundType - Type of bound (char array)
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
-%                       E.g.: constrW=struct('rxnList', {{'R75'; 'EX_suc'}}, ...
-%                       'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);
+%                       E.g.: `constrW = struct('rxnList', {{'R75'; 'EX_suc'}}, 'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);`
 %
 % OUTPUTS:
 %    minFluxesW:    (double array) minimum values for reactions in
