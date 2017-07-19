@@ -58,6 +58,50 @@ for k = 1:length(solverPkgs)
         % check results with expected answer.
         assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
         assert(abs(MILPsolution.obj - 554) < tol)
+        
+        if strcmp(solverPkgs{k}, 'ibm_cplex')
+            % test IBM-Cplex-specific parameters. Solve with the below parameters changed
+            cplexParams = struct();
+            cplexParams.emphasis.mip = 0;  % MIP emphasis: balance optimality and integer feasibility
+            cplexParams.mip.strategy.search = 2;  % MIP search method: dynamic search
+            MILPsolution = solveCobraMILP(MILPproblem, cplexParams, 'logFile', 'testIBMcplexMILPparam1.log');
+            % check expected answer
+            assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
+            assert(abs(MILPsolution.obj - 554) < tol)
+            
+            % solve with the parameters changed to other values
+            cplexParams.emphasis.mip = 1;  % MIP emphasis: integer feasibility.
+            cplexParams.mip.strategy.search = 1;  % MIP search method: traditional branch-and-cut search
+            MILPsolution = solveCobraMILP(MILPproblem, cplexParams, 'logFile', 'testIBMcplexMILPparam2.log');
+            % check expected answer
+            assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
+            assert(abs(MILPsolution.obj - 554) < tol)
+            
+            % compare the log files to see whether the parameter changes are implemented
+            testLog = {''; ''};
+            paramsInLog = cell(2, 1);
+            % text that should be found during the first test
+            paramsInLog{1} = {'balance optimality and feasibility'; 'dynamic search'};
+            % text that should be found during the second test
+            paramsInLog{2} = {'integer feasibility'; 'branch-and-cut'};
+            for jTest = 1:2
+                % read the log files
+                f = fopen(['testIBMcplexMILPparam' num2str(jTest) '.log'], 'r');
+                l = fgets(f);
+                while ~isequal(l, -1)
+                    testLog{jTest} = [testLog{jTest}, l];
+                    l = fgets(f);
+                end
+                fclose(f);
+                % check that the expected parameter values are set, and the unexpected are not set.
+                for p = 1:2
+                    assert(~isempty(strfind(testLog{jTest}, paramsInLog{jTest}{p})));
+                    assert(isempty(strfind(testLog{jTest}, paramsInLog{setdiff(1:2, jTest)}{p})));
+                end
+                % delete the log files
+                delete(['testIBMcplexMILPparam' num2str(jTest) '.log']);
+            end
+        end
     end
 
     % output a success message
