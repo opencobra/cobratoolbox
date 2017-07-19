@@ -15,7 +15,7 @@
 % 
 % Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale metabolic 
 % reconstructions with modelBorgifier. _Bioinformatics_ (Oxford, England), 30(7), 
-% 1036–8. http://doi.org/10.1093/bioinformatics/btt747
+% 1036?8. http://doi.org/10.1093/bioinformatics/btt747
 % 
 % Correspondance: johntsauls@gmail.com
 % 
@@ -76,12 +76,16 @@
 % 
 % *2. Load and verify the comparision model (Cmodel)*
 % 
-% Put longer description here
+% We first load the model we wish to compare, "Cmodel." modelBorgifier requires 
+% this model to be in a format readable by COBRA Toolbox. The verification step 
+% is specific to this package to ensure that the model has all necessary information 
+% arrays for comparison. 
 % 
 % i. Load the E. coli core model
 % 
 % We are going to use the E. coli core model located in the test/models/ 
-% directory of the Toolbox. 
+% directory of the Toolbox. We use this model for the tutorial because it is small 
+% and will require less time to match. 
 
 % Load the model using the Toolbox function
 Cmodel = readCbModel('ecoli_core_model.mat', ...
@@ -96,14 +100,20 @@ Cmodel = readCbModel('ecoli_core_model.mat', ...
 % tutorial. 
 % 
 % Note that this verify function (verifyModelMB) is different from the Toolbox 
-% function verifyModel
+% function verifyModel.
 
 % Verify model has the necessary fields required for later processing
 Cmodel = verifyModelMB(Cmodel, 'keepName', 'Verbose');
 %% 
 % *3. Load and verify the template model (Tmodel)*
 % 
-% Explain the point of loading the Tmodel
+% We now load the template model ("Tmodel"), to which Cmodel will be compared. 
+% If you are simply comparing two models, it is arbitrary which model is the Cmodel 
+% and which is the Tmodel. However, after comparison, the two models can be merged 
+% into a composite model (from which either of the original modelds can be retrieved). 
+% This composite model can be used as the Tmodel for future comparisons. This 
+% will make future comparisons easier, as their will be more annotations information 
+% available, and allows for mutli-way model comparisons. 
 % 
 % i. Load the model iIT341
 % 
@@ -113,6 +123,8 @@ Cmodel = verifyModelMB(Cmodel, 'keepName', 'Verbose');
 % model as your Tmodel. 
 
 global CBTDIR
+pth=which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'iIT341.xml'], ...
                      'modelDescription', 'iIT341')
 %% 
@@ -132,7 +144,7 @@ Tmodel = buildTmodel(Tmodel);
 % 
 % compareCbModels scores all reactions in Cmodel against all reactions in 
 % Tmodel. It returns Score, a 3D matrix with size (# of reactions in Cmodel, # 
-% of reactions in Tmodel, # of scoring parameters per reaction). There are 40 
+% of reactions in Tmodel, # of scoring parameters per reaction). There are ~40 
 % scoring parameters, such as name, E.C. number, metabolite similiarity, and network 
 % topology. The returned Cmodel and Tmodel have some appendend information, but 
 % are functionally the same as the inputs. The structure Stats contains information 
@@ -151,7 +163,7 @@ Tmodel = buildTmodel(Tmodel);
 % a GUI that facilitates reaction-by-reaction comparision between Cmodel and Tmodel. 
 % This section will outline the different functions of the GUI. 
 % 
-% NOTE: You must run reactionCompare in the Command Window, as GUIs are not 
+% Note you must run reactionCompare in the Command Window, as GUIs are not 
 % proprely rendered within the Matlab Live script. 
 
 if ~exist('rxnList', 'var') || ~exist('metList', 'var') || ~exist('Stats', 'var')
@@ -248,10 +260,10 @@ end
 % 
 % *6. Merge models*
 % 
-% mergeModels will combine Cmodel into Tmodel and return it as TmodelC. It 
-% will iteratively check the fidelity of the merging and will prompt the user 
-% if errors are found. It will also produce a copy of Cmodel which has been extracted 
-% from TmodelC (see next step).
+% mergeModels will combine Cmodel into Tmodel and into a composite model 
+% and return it as TmodelC. It will iteratively check the fidelity of the merging 
+% and will prompt the user if errors are found. It will also produce a copy of 
+% Cmodel which has been extracted from TmodelC (see next step).
 %% Merge models and test results.
 
 if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
@@ -267,6 +279,25 @@ if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
     % Shared metabolites between models, 
     Stats.sharedMets
     Stats.sharedMetsNoComp % does not consider differences in compartment. 
+    
+    modelNames = fieldnames(TmodelC.Models) ; 
+    for iM = 2:length(modelNames)+1
+        fprintf([modelNames{iM-1}, ' has ', num2str(Stats.sharedRxns{iM,iM}(1)), ' unique reactions.', ...
+                       ' (', num2str(Stats.sharedRxns{iM,iM}(2)), ' percent of ', ...
+                       num2str(sum(TmodelC.Models.(modelNames{iM-1}).rxns)), ' reactions).\n'])
+       fprintf([modelNames{iM-1}, ' has ', num2str(Stats.sharedMets{iM,iM}(1)), ' unique metabolites.', ...
+           ' (', num2str(Stats.sharedMets{iM,iM}(2)), ' percent of ', ...
+           num2str(sum(TmodelC.Models.(modelNames{iM-1}).mets)), ' metabolites).\n'])
+       fprintf([modelNames{iM-1}, ' has ', num2str(Stats.sharedMetsNoComp{iM,iM}(1)), ...
+               ' unique metabolites when not considering compartment.\n'])
+    end
+    fprintf([modelNames{1}, ' shares ', num2str(Stats.sharedRxns{2, 3}(1)), ' reactions with ', ...
+            modelNames{2}, '.\n'])
+    fprintf([modelNames{1}, ' shares ', num2str(Stats.sharedMets{2, 3}(1)), ' metabolites with ', ...
+        modelNames{2}, '.\n'])
+    fprintf([modelNames{1}, ' shares ', num2str(Stats.sharedMetsNoComp{2, 3}(1)), ' metabolites with ', ...
+            modelNames{2}, ' when not considering compartment.\n'])
+    
 end
 %% 
 % *7. Extract a model*
@@ -292,10 +323,10 @@ end
 %% REFERENCES
 % # Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale metabolic 
 % reconstructions with modelBorgifier. _Bioinformatics_ (Oxford, England), 30(7), 
-% 1036–8. <http://doi.org/10.1093/bioinformatics/btt747 http://doi.org/10.1093/bioinformatics/btt747>
+% 1036?8. <http://doi.org/10.1093/bioinformatics/btt747 http://doi.org/10.1093/bioinformatics/btt747>
 % # Thiele, I., Vo, T. D., Price, N. D., & Palsson, B. Ø. (2005). Expanded metabolic 
 % reconstruction of _Helicobacter pylori_ (_i_IT341 GSM/GPR): an _in silico_ genome-scale 
 % characterization of single- and double-deletion mutants. _Journal of Bacteriology_, 
-% _187_(16), 5818–5830. http://doi.org/10.1128/JB.187.16.5818
+% _187_(16), 5818?5830. http://doi.org/10.1128/JB.187.16.5818
 % 
 % __
