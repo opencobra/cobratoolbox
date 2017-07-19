@@ -209,7 +209,7 @@
 <dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[sol, result, LP, LP2, indLP] = SteadyCom(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
+<div>[sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul>
@@ -327,7 +327,7 @@ when doing the maximization at each step.
 </li>
 <li><p class="first">LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.</p>
 </li>
-<li><p class="first">saveModel [&#8216;&#8217;]  String, if non-empty, save the <cite>cplex</cite> model, basis and parameters.</p>
+<li><p class="first">saveModel [&#8216;&#8217;]  String, if non-empty, save the LP structure.</p>
 </li>
 </ul>
 </div></blockquote>
@@ -342,7 +342,7 @@ structure for solver-specific parameters.
 <blockquote>
 <div><ul class="simple">
 <li><strong>sol</strong> &#8211;
-cplex solution structure</li>
+COBRA solution structure (Cplex structure if using ibm_cplex)</li>
 <li><strong>result</strong> &#8211;
 structure with the following fields:<ul>
 <li>GRmax: maximum specific growth rate found (/h)</li>
@@ -354,13 +354,14 @@ structure with the following fields:<ul>
 (the following &#8216;iter&#8217; fields are status in each iteration:)
 [GR | biomass X | biomass flux (<cite>GR * X</cite>) | max. infeas. of solution])</li>
 <li>iter0: stationary, no growth, <cite>gr = 0</cite></li>
-<li>iter1: small growth rate, <cite>gr = GR0</cite></li>
-<li>iterPre: iterations for finding upper and lower bounds</li>
-<li>iter: iterations for finding max gr using bisectional method</li>
+<li>iter: iterations for finding max gr</li>
 <li>stat: status at the termination of the algorithm:<ul>
-<li>infeasible: infeasible model, even with maintenance requirement only</li>
-<li>maintenance: feasible at maintenance, but cannot grow</li>
 <li>optimal: optimal growth rate found</li>
+<li>maintenance: feasible at maintenance, but cannot grow</li>
+<li>minimal growth: feasible at a minimal growth rate (possible only if options.solveGR0 = true)</li>
+<li>infeasible: infeasible model, even with maintenance requirement only</li>
+<li>LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)</li>
+<li>xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. &#8216;xxx&#8217; is one of the status above.</li>
 </ul>
 </li>
 </ul>

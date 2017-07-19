@@ -206,7 +206,7 @@
 <dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm. Call the CPLEX dynamic object directly.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[sol, result, LP, LP2, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)</div></blockquote>
+<div>[sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options, solverParams, LP)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul>
@@ -350,13 +350,14 @@ structure with the following fields:<ul>
 (the following &#8216;iter&#8217; fields are status in each iteration:)
 [GR | biomass X | biomass flux (<cite>GR * X</cite>) | max. infeas. of solution])</li>
 <li>iter0: stationary, no growth, <cite>gr = 0</cite></li>
-<li>iter1: small growth rate, <cite>gr = GR0</cite></li>
-<li>iterPre: iterations for finding upper and lower bounds</li>
-<li>iter: iterations for finding max gr using bisectional method</li>
+<li>iter: iterations for finding max gr</li>
 <li>stat: status at the termination of the algorithm:<ul>
-<li>infeasible: infeasible model, even with maintenance requirement only</li>
-<li>maintenance: feasible at maintenance, but cannot grow</li>
 <li>optimal: optimal growth rate found</li>
+<li>maintenance: feasible at maintenance, but cannot grow</li>
+<li>minimal growth: feasible at a minimal growth rate (possible only if options.solveGR0 = true)</li>
+<li>infeasible: infeasible model, even with maintenance requirement only</li>
+<li>LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)</li>
+<li>xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. &#8216;xxx&#8217; is one of the status above.</li>
 </ul>
 </li>
 </ul>
