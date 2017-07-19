@@ -161,9 +161,13 @@ if ~isfield(relaxOption,'lambda')
     relaxOption.lambda = 10;    
 end
 if ~isfield(relaxOption,'gamma')
-    relaxOption.gamma = 10;   
+	if n<20%empirically derived parameters
+    	relaxOption.gamma = 1.2;
+	else
+		relaxOption.gamma = 10;
+	end   
 end
-
+relaxOption
 %set local paramters on zero norm for capped L1
 if ~isfield(relaxOption,'alpha0')
     relaxOption.alpha0 = relaxOption.alpha; 
