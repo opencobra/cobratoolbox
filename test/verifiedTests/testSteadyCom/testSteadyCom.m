@@ -129,7 +129,7 @@ for jTest = 1:2
             end
             jSolver = jSolver + 1;
         end
-        if ~cont
+        if ~cont && ~isempty(origSolver)
             cont = changeCobraSolver(origSolver, 'LP');
         end
     end
@@ -284,18 +284,18 @@ for jTest = 1:2
         assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
         
-        % test an infeasible model
+        % test with an infeasible model
         [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelTest);
         assert(all(isnan(minFlux)) & all(isnan(maxFlux)) & isnan(GRvector));
         
-        % test given growth rate
+        % test with given growth rate
         options = struct('GRtol', 1e-6, 'GRmax', 0.1);
         [minFlux, maxFlux] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
         minFluxRef = [0.2856653; 0.3749391];
         maxFluxRef = [0.6250234; 0.7143061];
         assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tol)
         
-        % test sub-function without given growth rate
+        % test the sub-function without given growth rate
         [minFlux, maxFlux, ~, ~, ~, gr] = SteadyComFVAgr(modelJoint, struct('GRtol', 1e-6), [], 'feasTol', feasTol);
         assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
         assert(abs(gr - 0.142857) < tol)
@@ -359,7 +359,7 @@ for jTest = 1:2
                 end
             end
         end
-        % test already finished and saved computation
+        % test with already finished and saved results
         diary('SteadyComFVA_saveResults.txt');
         [minFlux2, maxFlux2] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
         diary off;
@@ -525,7 +525,7 @@ for jTest = 1:2
             delete('testSteadyComSaveModel.bas', 'testSteadyComSaveModel.mps', 'testSteadyComSaveModel.prm') 
         end
         
-        % test an infeasible model
+        % test with an infeasible model
         optionsInfeas = struct();
         optionsInfeas.rxnNameList = options.rxnNameList;
         [POAtable, fluxRange, ~, GRvector] = SteadyComPOA(modelTest, optionsInfeas);
@@ -576,8 +576,8 @@ for jTest = 1:2
         rmdir([pwd filesep 'testSteadyComPOA'], 's')
     end
 end
-% change back to the original solver
-if ~strcmp(CBT_LP_SOLVER, origSolver)
+% change back to the original solver if any
+if ~isempty(origSolver) && ~strcmp(CBT_LP_SOLVER, origSolver)
     changeCobraSolver(origSolver, 'LP');
 end
 
