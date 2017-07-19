@@ -97,12 +97,17 @@ tmpData(1,:) = ExcelFields;
 for i = 1:numel(ExcelFields)
     modelField = model.(modelFields{i});
     if isnumeric(modelField)
-        tmpData(2:end,i) = num2cell(modelField);
+
+        for j = 2:length(modelField)+1
+            tmpData{j,i} = num2str(modelField(j-1));
+        end
+        %tmpData(2:end,i) = mat2str(modelField);
     else
         modelField = cellfun(@chopForExcel, modelField,'UniformOutput',0);
         tmpData(2:end,i) = modelField;
     end
 end
+
 xlwrite(fileName,tmpData,'Reaction List');
 
 MetaboliteXlsFields = {'Abbreviation','Description','Charged formula','Charge','Compartment','KEGG ID',...
