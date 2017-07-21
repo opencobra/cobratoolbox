@@ -65,7 +65,7 @@ else
 end
 
 if nargin<8 || isempty(useFastFVA)
-    useFastFVA=0;
+    useFastFVA = false;
 end 
 % End of define defaults
 % Preprocess model
