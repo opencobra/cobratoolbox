@@ -62,10 +62,10 @@ initCobraToolbox
 changeCobraSolver('ibm_cplex', 'LP');
 %% PROCEDURE
 %% Model Construction
-% Load the _E. coli_ iAF1260 model in the COBRA toolbox. Please set the path 
-% to the model:
+% Load the _E. coli_ iAF1260 model in the COBRA toolbox.
 
-load('YOUR_PATH_TO_COBRA/cobratoolbox/test/models/iAF1260.mat', 'iAF1260');
+global CBTDIR
+iAF1260 = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'iAF1260.mat']);
 %% 
 % Polish the model a little bit:
 
