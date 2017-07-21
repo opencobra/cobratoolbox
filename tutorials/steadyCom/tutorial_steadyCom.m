@@ -1,6 +1,6 @@
 %% Analyze Steady-State Community COBRA Models at  Using SteadyCom
 %% Author(s): Siu Hung Joshua Chan, Department of Chemical Engineering, The Pennsylvania State University
-%% Reviewer(s): 
+%% Reviewer(s): Almut Heinken, Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 % __
 %% INTRODUCTION
 % This tutorial demonstrates the use of SteadyCom to analyze a multi-organism 
@@ -52,16 +52,20 @@ initCobraToolbox
 % Any solvers supported by the COBRA toolbox will work. But SteadyCom contains 
 % specialized codes for IBM ILOG Cplex which was tested to run significantly faster 
 % for SteadyComFVA and SteadyComPOA for larger problems through calling the Cplex 
-% object in Matlab directly.
+% object in Matlab directly. For a guide how to install solvers, please refer 
+% to the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
+% opencobra documentation>.
+% 
+% Please note that parallelization requires a working installation of the 
+% Parallel Computing Toolbox.
 
 changeCobraSolver('ibm_cplex', 'LP');
-%% 
-% 
 %% PROCEDURE
 %% Model Construction
-% Load the _E. coli_ iAF1260 model in the COBRA toolbox:
+% Load the _E. coli_ iAF1260 model in the COBRA toolbox. Please set the path 
+% to the model:
 
-load('iAF1260.mat', 'iAF1260');
+load('YOUR_PATH_TO_COBRA/cobratoolbox/test/models/iAF1260.mat', 'iAF1260');
 %% 
 % Polish the model a little bit:
 
