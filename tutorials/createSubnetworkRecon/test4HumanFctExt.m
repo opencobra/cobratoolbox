@@ -1,4 +1,4 @@
-function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = Test4HumanFctExt(model,test,optionSinks)
+function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)
 %% function [TestSolution,TestSolutionName] = Test4HumanFct(model,test)
 % test for the ~288 human functions -  I removed duplicates
 %
@@ -231,7 +231,7 @@ k = 1;
 RPMI_composition={'EX_ala_L(e)','EX_arg-L(e)','EX_asn_L(e)','EX_asp_L(e)','EX_cys-L(e)','EX_gln-L(e)','EX_glu-L(e)','EX_gly(e)','EX_his-L(e)','EX_ile_L(e)','EX_leu_L(e)','EX_lys-L(e)','EX_met_L(e)','EX_phe_L(e)','EX_4HPRO','EX_pro-L(e)','EX_ser_L(e)','EX_thr_L(e)','EX_trp_L(e)','EX_tyr_L(e)','EX_val_L(e)','EX_ascb_L(e)','EX_btn(e)','EX_chol(e)','EX_pnto_R(e)','EX_fol(e)','EX_ncam(e)','EX_pydxn(e)','EX_ribflv(e)','EX_thm(e)','EX_cbl1(e)','EX_inost(e)','EX_ca2(e)','EX_fe3(e)','EX_k(e)','EX_hco3(e)','EX_na1(e)','EX_pi(e)','EX_glc(e)','EX_hxan(e)','EX_lnlc(e)','EX_lipoate(e)','EX_ptrc(e)','EX_pyr(e)','EX_thymd(e)','EX_etha(e)','EX_gthrd(e)'};
 
 if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
-    
+
     % %      %% "Human Recon 1 test mouse biomass"
     % %     model = modelOri;
     % %     model.c(find(model.c)) = 0;
@@ -282,7 +282,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
         mediumCompounds = {'EX_co2(e)', 'EX_h(e)', 'EX_h2o(e)', 'EX_hco3(e)', 'EX_nh4(e)', 'EX_o2(e)', 'EX_pi(e)', 'EX_so4(e)'};
         ions={'EX_ca2(e)', 'EX_cl(e)', 'EX_co(e)', 'EX_fe2(e)', 'EX_fe3(e)', 'EX_k(e)', 'EX_na1(e)', 'EX_i(e)', 'EX_sel(e)'};
         I = strmatch('EX_', modelOri.rxns);
-        
+
         for i=1:length(I);
             Ex= I(i);
             modelOri.lb(Ex,1) = 0;
@@ -454,7 +454,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
             end
         end
     end
-    
+
     %% gthrd reduces h2o2
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -468,7 +468,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'gthrd reduces h2o2, GTHP (c) ';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model = modelOri;
     model.lb(ismember(model.rxns,'EX_gthrd(e)'))=-1;model.ub(ismember(model.rxns,'gthox(e)'))=1;
     model.c(find(model.c)) = 0;
@@ -481,7 +481,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'gthrd reduces h2o2, GTHP (e) ';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model = modelOri;
     model.c(find(model.c)) = 0;
     model.lb(ismember(model.rxns,'EX_gthrd(e)'))=-1;
@@ -508,7 +508,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'gly -> co2 + nh4';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% 12ppd-S -> mthgxl
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -768,7 +768,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'akg(c) -> glu-L(c) (ALATA_L)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% akg[c] -> glu-L[c]
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -783,7 +783,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'akg(c) -> glu-L(c) (ASPTA)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% akg[m[ -> oaa[m]
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -822,7 +822,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'akg(m) -> glu-L(m) (ASPTAm)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% ala-B -> msa
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -1133,7 +1133,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'dcamp(c) -> fum(c), asp-L -> fum (via dcamp), 3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% asp-L -> oaa
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -1390,11 +1390,11 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     %% dmpp -> ggdp
     model = modelOri;
     model.c(find(model.c)) = 0;
-    
+
     for i = 1 : length(RPMI_composition)
         model = changeRxnBounds(model,RPMI_composition{i},-1,'l');
     end
-    
+
     [model] = addSinkReactions(model,{'dmpp(c)','ggdp(c)'},[-1 -1; 0 100]);
     model.c(ismember(model.rxns,'sink_ggdp(c)'))=1;
     if find(model.c)>0
@@ -1947,7 +1947,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     %% fuc -> gdpfuc
     model = modelOri;
     model.c(find(model.c)) = 0;
-    
+
     for i = 1 : length(RPMI_composition)
         model = changeRxnBounds(model,RPMI_composition{i},-1,'l');
     end
@@ -2979,7 +2979,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'man6p(c) -> kdn(c) - via ACNAM9PL2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% mescon[m] -> pyr[m] %changing lb has no effect
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -3147,7 +3147,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
     model = modelOri;
     model.c(find(model.c)) = 0;
-    
+
     model.lb(ismember(model.rxns,'EX_h2o(e)'))=0;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=0;
     [model] = addSinkReactions(model,{'h2o2(c)','o2(c)','h2o(c)'},[-1 -1; -1 -1; 0.1 100]);
@@ -3634,7 +3634,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Ser/Thr[g] + udpacgal[g] -> Tn_antigen[g] - via GALNTg (with RPMI medium)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Ser/Thr[g] + udpacgal[g] -> sTn_antigen[g] %changing lb has no effect
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -3882,7 +3882,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'strch1(e) -> glc-D(e) via AMY1e';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% succoa[m] -> oaa[m]
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -4300,7 +4300,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} =  'uacgamv(c) + udpglcur(c) -> ha[e] - via HAS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% uacgam -> m8masn[r]
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -4413,7 +4413,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glucose to lactate conversion';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 2); glutamine to glucose conversion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -4443,7 +4443,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to glucose conversion - G6PPer';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 3); glutamine to proline conversion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4461,7 +4461,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to proline conversion - P5CRxm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 4); glutamine to ornithine conversion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4473,7 +4473,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to ornithine conversion - ORNTArm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 5); glutamine to citrulline converion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4484,7 +4484,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to citrulline converion - OCBTm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 6); glutamine to lactate
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4500,7 +4500,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to lactate - LDH_L';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 7); glutamine to aspartate
     model=modelOri;
     model=changeRxnBounds(model,'EX_glc_D(u)',0,'b');
@@ -4515,7 +4515,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to aspartate - ASPTA';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 8); glutamine to co2
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4531,7 +4531,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to co2 - AKGDm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 9); glutamine to ammonia
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -4543,7 +4543,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'glutamine to ammonia - GLUNm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 10); putriscine to methionine (depends on oxygen uptake);
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4558,7 +4558,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'putriscine to methionine (depends on oxygen uptake) - UNK2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 11); basolateral secretion of alanine
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4571,7 +4571,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'basolateral secretion of alanine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 12); basolateral secretion of lactate
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',0,'b');
@@ -4582,7 +4582,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'basolateral secretion of lactate';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 13);synthesis of arginine from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_ARG-L(u)',0,'b');
@@ -4593,7 +4593,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of arginine from glutamine - ARGSL';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 14);synthesis of proline from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_PRO-L(u)',0,'b');
@@ -4616,7 +4616,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of proline from glutamine - P5CRxm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 15); synthesis of alanine from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4633,7 +4633,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of alanine from glutamine - ALATA_L';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 16); basolateral secretion of proline
     model=modelOri;
     model=changeRxnBounds(model,'EX_PRO-L(u)',0,'b');
@@ -4643,7 +4643,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'basolateral secretion of proline';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 17); basolateral secretion of arginine
     model=modelOri;
     model=changeRxnBounds(model,'EX_ARG-L(u)',0,'b');
@@ -4653,7 +4653,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'basolateral secretion of arginine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 18); basolateral secretion of ornithine
     model=modelOri;
     model=changeRxnBounds(model,'EX_ORN(U)',0,'b');
@@ -4663,7 +4663,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'basolateral secretion of ornithine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 19); synthesis of spermine from ornithine
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4673,7 +4673,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of spermine from ornithine - SPRMS';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 20);synthesis of spermidine from ornithine
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4683,7 +4683,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of spermidine from ornithine - SPMS';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 21); synthesis of nitric oxide from arginine
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4693,7 +4693,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of nitric oxide from arginine - NOS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 22); synthesis of cholesterol
     model=modelOri;
     model=changeRxnBounds(model,'EX_chsterol(u)',0,'b');
@@ -4704,7 +4704,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of cholesterol - DSREDUCr';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 23); denovo purine synthesis
     model=modelOri;
     model=changeObjective(model,'ADSL1');
@@ -4720,7 +4720,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'de novo purine synthesis - GMPS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 24); salvage of purine bases
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4742,7 +4742,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'salvage of purine bases - HXPRT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 25); purine catabolism
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4752,7 +4752,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'purine catabolism - XAOx';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 26); pyrimidine synthesis (check for both with and without bicarbonate uptake);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4769,7 +4769,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'pyrimidine synthesis (with hco3 uptake) - CTPS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 27); pyrimidine catabolism
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4785,7 +4785,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'pyrimidine catabolism - BUP2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 28); fructose to glucose conversion
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4800,7 +4800,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'fructose to glucose conversion - TRIOK';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 29); uptake and secretion of cholic acid
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4817,7 +4817,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'uptake and secretion of cholic acid - CHOLATEt3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 30); Uptake and secretion of glycocholate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4834,7 +4834,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'uptake and secretion of cholic glycocholate - GCHOLAt3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 31); Uptake and secretion of tauro-cholate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4851,7 +4851,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'uptake and secretion of tauro-cholate - TCHOLAt3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 32); Synthesis of fructose-6-phosphate from erythrose-4-phosphate (HMP shunt);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4861,7 +4861,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Synthesis of fructose-6-phosphate from erythrose-4-phosphate (HMP shunt) - TKT2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 33); Malate to pyruvate (malic enzyme);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4877,7 +4877,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Malate to pyruvate (malic enzyme) - ME2m';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 34); Synthesis of urea (urea cycle);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4888,7 +4888,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Synthesis of urea (urea cycle) - ARGN';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 35); Cysteine to pyruvate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4904,7 +4904,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Cysteine to pyruvate - 3SPYRSP';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 36); Methionine to cysteine  (check for dependancy over pe_hs);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4916,7 +4916,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Methionine to cysteine - CYSTGL';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 37); Synthesis of triacylglycerol (TAG reformation); (check for dependancy over dag_hs and RTOTAL3);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4929,7 +4929,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Synthesis of triacylglycerol (TAG reformation) - DGAT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 38); Phosphatidylcholine synthesis (check for dependancy over pe_hs);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4941,7 +4941,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Phosphatidylcholine synthesis - PETOHMm_hs';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 39); Synthesis of FMN from riboflavin
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4952,7 +4952,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Synthesis of FMN from riboflavin - RBFK';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 40); synthesis of FAD from riboflavin
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4963,7 +4963,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'synthesis of FAD from riboflavin - FMNAT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 41); Synthesis of 5-methyl-tetrahydrofolate from folic acid
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4974,7 +4974,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Synthesis of 5-methyl-tetrahydrofolate from folic acid - MTHFR3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 42); Putriscine to GABA
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4985,7 +4985,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Putriscine to GABA - ABUTD';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 43); Superoxide dismutase
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -4995,7 +4995,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Superoxide dismutase - SPODMm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 44); Availability of bicarbonate from Carbonic anhydrase reaction
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5005,7 +5005,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Availability of bicarbonate from Carbonic anhydrase reaction - H2CO3Dm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 45); Regeneration of citrate (TCA cycle);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5015,14 +5015,14 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Regeneration of citrate (TCA cycle) - CSm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 46); Histidine to FIGLU
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
     model=changeObjective(model,'IZPN');
     FBA=optimizeCbModel(model,'min');
     FBA=optimizeCbModel(model,'max');
-    
+
     % 47); binding of guar gum fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_GUM(u)',-1,'l');
@@ -5047,7 +5047,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'binding of guar gum fiber to bile acids - GUMDCHAe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 48); binding of psyllium fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_PSYL(u)',-1,'l');
@@ -5072,7 +5072,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'binding of psyllium fiber to bile acids - PSYTDECHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 49);binding to beta glucan fibers to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_BGLC(u)',-1,'l');
@@ -5097,7 +5097,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'binding to beta glucan fibers to bile acids - BGLUTDECHOe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 50); binding of pectin fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_PECT(u)',-1,'l');
@@ -5122,7 +5122,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'binding of pectin fiber to bile acids - PECDCHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 52); heme synthesis
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5132,7 +5132,7 @@ if strcmp(test,'IECOri')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'heme synthesis - FCLTm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     % 53); heme degradation
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5160,7 +5160,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glucose to lactate conversion';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %%  glutamine to glucose conversion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5169,7 +5169,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     model=changeRxnBounds(model,'EX_strch1(e)',0,'b');
     model=changeRxnBounds(model,'EX_strch2(e)',0,'b');
     model=changeRxnBounds(model,'EX_sucr(e)',0,'b');
-    
+
     if ~isempty(strmatch('GLUNm',model.rxns,'exact'))
         model=changeObjective(model,'GLUNm',1);
         %FBA=optimizeCbModel(model,'min');
@@ -5180,7 +5180,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to glucose conversion - GLUNm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% glutamine to glucose conversion - ASPTAm
     if ~isempty(strmatch('ASPTAm',model.rxns,'exact'))
         model=changeObjective(model,'ASPTAm',1);
@@ -5191,7 +5191,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to glucose conversion - ASPTAm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% 'glutamine to glucose conversion - FUM'
     if ~isempty(strmatch('FUM',model.rxns,'exact'))
         model=changeObjective(model,'FUM',1);
@@ -5228,7 +5228,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
     model=changeRxnBounds(model,'EX_glc(e)',0,'b');
     model=changeRxnBounds(model,'EX_pro-L(e)',0,'b');
-    
+
     if ~isempty(strmatch('P5CRm',model.rxns,'exact'))
         model=changeObjective(model,'P5CRm',1);
         FBA = optimizeCbModel(model,'max','zero');
@@ -5243,7 +5243,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
     model=changeRxnBounds(model,'EX_glc(e)',0,'b');
     model=changeRxnBounds(model,'EX_pro-L(e)',0,'b');
-    
+
     if ~isempty(strmatch('P5CRxm',model.rxns,'exact'))
         model=changeObjective(model,'P5CRxm',1);
         FBA = optimizeCbModel(model,'max','zero');
@@ -5253,11 +5253,11 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to proline conversion - P5CRxm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% glutamine to ornithine conversion
     model=modelOri;
-    
+
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'l');
     if ~isempty(strmatch('ORNTArm',model.rxns,'exact'))
         model=changeObjective(model,'ORNTArm',1);
@@ -5268,7 +5268,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to ornithine conversion - ORNTArm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% glutamine to citrulline converion
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5281,7 +5281,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to citrulline converion - OCBTm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% glutamine to lactate
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5294,7 +5294,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to lactate - LDH_L';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% glutamine to aspartate
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5307,7 +5307,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to aspartate - ASPTA';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% glutamine to co2
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5332,7 +5332,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'glutamine to ammonia - GLUNm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% putriscine to methionine (depends on oxygen uptake);
     model=modelOri;
     model=changeRxnBounds(model,'EX_ptrc(e)',-1,'b');
@@ -5346,10 +5346,10 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'putriscine to methionine (depends on oxygen uptake) - UNK2';
     if ~isnan(TestSolution(k,1)); if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ; end ;k = k +1;clear FBA
-    
+
     %%  secretion of alanine
     model=modelOri;
-    
+
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=-1;
     if ~isempty(strmatch('EX_ala_L(e)',model.rxns,'exact'))
@@ -5362,7 +5362,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'secretion of alanine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %%  secretion of lactate
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5376,7 +5376,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'secretion of lactate';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% synthesis of arginine from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5390,8 +5390,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of arginine from glutamine - ARGSL';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% synthesis of proline from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5418,7 +5418,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of proline from glutamine - P5CRm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% synthesis of proline from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_gln-L(e)',-1,'b');
@@ -5432,7 +5432,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of proline from glutamine - P5CRxm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% synthesis of alanine from glutamine
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5446,7 +5446,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of alanine from glutamine - ALATA_L';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% basolateral secretion of proline
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5460,8 +5460,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'secretion of proline';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% basolateral secretion of arginine
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5475,7 +5475,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'secretion of arginine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% basolateral secretion of ornithine
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5489,8 +5489,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'secretion of ornithine';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% synthesis of spermine from ornithine
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_orn(e)'))=-1;model.ub(ismember(model.rxns,'EX_orn(e)'))=-1;
@@ -5504,8 +5504,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of spermine from ornithine - SPRMS';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% synthesis of spermidine from ornithine
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_orn(e)'))=-1;model.ub(ismember(model.rxns,'EX_orn(e)'))=-1;
@@ -5520,7 +5520,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of spermidine from ornithine - SPMS';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% synthesis of nitric oxide from arginine
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_arg-L(e)'))=-1;model.ub(ismember(model.rxns,'EX_arg-L(e)'))=-1;
@@ -5535,7 +5535,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of nitric oxide from arginine - NOS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %%  synthesis of cholesterol
     model=modelOri;
     for i = 1 : length(RPMI_composition)
@@ -5551,7 +5551,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of cholesterol - DSREDUCr (with RPMI medium)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% denovo purine synthesis
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5565,7 +5565,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'de novo purine synthesis - ADSL1';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% de novo purine synthesis - GMPS2
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5579,7 +5579,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'de novo purine synthesis - GMPS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% salvage of purine bases
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5593,7 +5593,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'salvage of purine bases - ADPT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% salvage of purine bases - GUAPRT
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5607,7 +5607,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'salvage of purine bases - GUAPRT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% salvage of purine bases - HXPRT
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5622,7 +5622,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'salvage of purine bases - HXPRT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% purine catabolism
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5636,7 +5636,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'purine catabolism - XAOx';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% pyrimidine synthesis (with hco3 uptake) - TMDS
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5651,7 +5651,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'pyrimidine synthesis (with hco3 uptake) - TMDS';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% pyrimidine synthesis (with hco3 uptake) - CTPS2
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5666,7 +5666,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'pyrimidine synthesis (with hco3 uptake) - CTPS2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% pyrimidine catabolism
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5681,7 +5681,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'pyrimidine catabolism - UPPN';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% 'pyrimidine catabolism - BUP2
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5696,11 +5696,11 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'pyrimidine catabolism - BUP2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% fructose to glucose conversion
     model=modelOri;
-    
+
     model.lb(ismember(model.rxns,'EX_fru(e)'))=-1;model.ub(ismember(model.rxns,'EX_fru(e)'))=-1;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=-1;
     if ~isempty(strmatch('TRIOK',model.rxns,'exact'))
@@ -5712,8 +5712,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'fructose to glucose conversion - TRIOK';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% uptake and secretion of cholic acid
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5734,7 +5734,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
         TestSolution(k,1) = NaN;
     end
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %     if ~isempty(strmatch('CHOLATEt3',model.rxns,'exact'))
     %         FBA=optimizeCbModel(model,'min');
     %         TestSolution(k,1) = FBA.f;
@@ -5743,7 +5743,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %     end
     %     TestSolutionName{k,1} = 'secretion of cholic acid - CHOLATEt3';
     %  if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Uptake and secretion of glycocholate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5765,7 +5765,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'uptake of cholic glycocholate - GCHOLAt3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %     if ~isempty(strmatch('GCHOLAt3',model.rxns,'exact'))
     %         FBA=optimizeCbModel(model,'min');
     %         TestSolution(k,1) = FBA.f;
@@ -5774,7 +5774,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %     end
     %     TestSolutionName{k,1} = 'secretion of cholic glycocholate - GCHOLAt3';
     %  if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Uptake and secretion of tauro-cholate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5804,7 +5804,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %     end
     %     TestSolutionName{k,1} = 'secretion of tauro-cholate - TCHOLAt3';
     %  if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Synthesis of fructose-6-phosphate from erythrose-4-phosphate (HMP shunt);
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5818,7 +5818,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Synthesis of fructose-6-phosphate from erythrose-4-phosphate (HMP shunt) - TKT2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Malate to pyruvate (malic enzyme);
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5832,7 +5832,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Malate to pyruvate (malic enzyme) - ME2';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Malate to pyruvate (malic enzyme);
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5846,8 +5846,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Malate to pyruvate (malic enzyme) - ME2m';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Synthesis of urea (urea cycle);
     model=modelOri;
     for i = 1 : length(RPMI_composition)
@@ -5863,7 +5863,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Synthesis of urea (urea cycle) - ARGN (with RPMI medium)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Cysteine to pyruvate
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5877,8 +5877,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Cysteine to pyruvate - 3SPYRSP';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Methionine to cysteine  (check for dependancy over pe_hs);
     model=modelOri;
     model=changeRxnBounds(model,'EX_met_L(e)',-1,'b');
@@ -5893,7 +5893,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Methionine to cysteine - CYSTGL';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Synthesis of triacylglycerol (TAG reformation); (check for dependancy over dag_hs and RTOTAL3);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5908,7 +5908,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Synthesis of triacylglycerol (TAG reformation) - DGAT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Phosphatidylcholine synthesis (check for dependancy over pe_hs);
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5922,8 +5922,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Phosphatidylcholine synthesis - PETOHMm_hs';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Synthesis of FMN from riboflavin
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5938,7 +5938,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Synthesis of FMN from riboflavin - RBFK';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% synthesis of FAD from riboflavin
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5953,8 +5953,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'synthesis of FAD from riboflavin - FMNAT';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Synthesis of 5-methyl-tetrahydrofolate from folic acid
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5968,8 +5968,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Synthesis of 5-methyl-tetrahydrofolate from folic acid - MTHFR3';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Putriscine to GABA
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
@@ -5983,7 +5983,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Putriscine to GABA - ABUTD';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Superoxide dismutase
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -5997,7 +5997,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Superoxide dismutase - SPODMm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Availability of bicarbonate from Carbonic anhydrase reaction
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -6011,7 +6011,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Availability of bicarbonate from Carbonic anhydrase reaction - H2CO3Dm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% Regeneration of citrate (TCA cycle);
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -6025,8 +6025,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Regeneration of citrate (TCA cycle) - CSm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% Histidine to FIGLU
     model=modelOri;
     model.lb(find(ismember(model.rxns,'EX_his-L(e)')))=-1;
@@ -6042,8 +6042,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'Histidine to FIGLU - IZPN';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     %% binding of guar gum fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_gum(e)',-1,'l');
@@ -6057,11 +6057,11 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of guar gum fiber to bile acids - EX_gumgchol(e)';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     model=changeRxnBounds(model,'EX_tchola(e)',-1,'l');
     model=changeRxnBounds(model,'EX_gum(e)',-1,'l');
-    
+
     if ~isempty(strmatch('GUMTCHOLe',model.rxns,'exact'))
         model=changeObjective(model,'GUMTCHOLe',1);
         FBA = optimizeCbModel(model,'max','zero');
@@ -6071,7 +6071,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of guar gum fiber to bile acids - GUMTCHOLe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     if ~isempty(strmatch('GUMDCHAe',model.rxns,'exact'))
         model=changeRxnBounds(model,'EX_dchac(e)',-1,'l');
@@ -6084,7 +6084,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of guar gum fiber to bile acids - GUMDCHAe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% binding of psyllium fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_psyl(e)',-1,'l');
@@ -6098,8 +6098,8 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of psyllium fiber to bile acids - PSYGCHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
-    
+
+
     model=modelOri;
     model=changeRxnBounds(model,'EX_psyl(e)',-1,'l');
     model=changeRxnBounds(model,'EX_tchola(e)',-1,'l');
@@ -6112,7 +6112,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of psyllium fiber to bile acids - PSYTCHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     if ~isempty(strmatch('PSYTDECHe',model.rxns,'exact'))
         model=changeRxnBounds(model,'EX_tdechola(e)',-1,'l');
@@ -6125,7 +6125,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of psyllium fiber to bile acids - PSYTDECHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% binding to beta glucan fibers to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_bglc(e)',-1,'l');
@@ -6141,7 +6141,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding to beta glucan fibers to bile acids - BGLUGCHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     model=changeRxnBounds(model,'EX_bglc(e)',-1,'l');
     model=changeRxnBounds(model,'EX_tchola(e)',-1,'l');
@@ -6155,7 +6155,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding to beta glucan fibers to bile acids - BGLUTCHLe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     model=changeRxnBounds(model,'EX_bglc(e)',-1,'l');
     model=changeRxnBounds(model,'EX_tdechola(e)',-1,'l');
@@ -6169,7 +6169,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding to beta glucan fibers to bile acids - BGLUTDECHOe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% binding of pectin fiber to bile acids
     model=modelOri;
     model=changeRxnBounds(model,'EX_pect(e)',-1,'l');
@@ -6184,7 +6184,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of pectin fiber to bile acids - PECGCHLe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=-1;
     model=changeRxnBounds(model,'EX_pect(e)',-1,'l');
@@ -6198,7 +6198,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of pectin fiber to bile acids - PECTCHLe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model=modelOri;
     if ~isempty(strmatch('PECDCHe',model.rxns,'exact'))
         model=changeRxnBounds(model,'EX_dchac(e)',-1,'l');
@@ -6212,7 +6212,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'binding of pectin fiber to bile acids - PECDCHe';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% heme synthesis
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=0;
@@ -6226,7 +6226,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'heme synthesis - FCLTm';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% heme degradation
     model=modelOri;
     model.lb(ismember(model.rxns,'EX_pheme(e)'))=-1;model.ub(ismember(model.rxns,'EX_pheme(e)'))=-1;
@@ -6241,13 +6241,13 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'heme degradation - HOXG';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
 end
 
 %% these functions are new based on muscle and kidney work of SS
 
 if strcmp(test,'all')|| strcmp(test,'Harvey')
-    
+
     %% Muscle objectives: valine -> pyruvate
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -7238,7 +7238,7 @@ if strcmp(test,'all')|| strcmp(test,'Harvey')
     model.c(find(model.c)) = 0;
     model.lb(ismember(model.rxns,'EX_pyr(e)'))=-1;model.ub(ismember(model.rxns,'EX_pyr(e)'))=-1;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=-1;
-    
+
     if ~isempty(strmatch('DM_atp(c)',model.rxns,'exact'))
         model.c(ismember(model.rxns,'DM_atp(c)'))=1;
         FBA = optimizeCbModel(model,'max','zero');
@@ -7413,7 +7413,7 @@ if strcmp(test,'all')|| strcmp(test,'Harvey')
     end
     TestSolutionName{k,1} = 'caro(c) -> retinal(c)/ vitamin A synthesis';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% missing part starts
     %% synthesis of glutamate from ornithine
     model = modelOri;
@@ -7630,7 +7630,7 @@ if strcmp(test,'all')|| strcmp(test,'Harvey')
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
     %% arachd(c) -> leuktrE4(c)/ leukotriene synthesis
     % requires multiple medium compounds --> RPMI
-    
+
     model = modelOri;
     for i = 1 : length(RPMI_composition)
         model = changeRxnBounds(model,RPMI_composition{i},-1,'l');
@@ -7675,7 +7675,7 @@ if strcmp(test,'all')|| strcmp(test,'Harvey')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'sbt_D(c) -> fru(c)/sorbitol pathway';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     %% new addition 26.04.2017
     model = modelOri;
     model.c(find(model.c)) = 0;
@@ -7689,7 +7689,7 @@ if strcmp(test,'all')|| strcmp(test,'Harvey')
     TestSolution(k,1) = FBA.f;
     TestSolutionName{k,1} = 'Mitochondrial accoa de novo synthesis from glc';
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(find(abs(FBA.x)>tol))]; end ;k = k +1;clear FBA
-    
+
     model = modelOri;
     model.c(find(model.c)) = 0;
     model.lb(ismember(model.rxns,'EX_glc(e)'))=-1;model.ub(ismember(model.rxns,'EX_glc(e)'))=-1;
