@@ -52,7 +52,7 @@ cd(fileparts(which('tutorial_ecoliCoreModel.mlx')));
 % be done by selecting the approrpriate solver for the machine you are using by 
 % removing the "%" (comment) sign for only the desired solver. _[Timing: Seconds]_
 
-changeCobraSolver('gurobi6','all');
+changeCobraSolver('gurobi','all');
 %% PROCEDURE
 %% 1. Constraint-based modeling
 % Both genome-scale metabolic network reconstructions [4] and constraint-based 
@@ -139,8 +139,8 @@ changeCobraSolver('gurobi6','all');
 % for glucose is "EX_glc(e)."
 % 
 % The COBRA models also include Boolean rules for each reaction describing 
-% the gene-reaction relationship. For example, ‘gene1 and gene2’ indicate that 
-% the two gene products are part of an enzyme whereas ‘gene1 or gene2’ indicate 
+% the gene-reaction relationship. For example, �gene1 and gene2� indicate that 
+% the two gene products are part of an enzyme whereas �gene1 or gene2� indicate 
 % that the two gene products are isozymes that catalyze the same reaction.The 
 % gene-protein-reaction associations (GPRA) for a few reactions are shown in Figure 
 % 2. Each GPRA is composed of a gene locus, a translated peptide (mRNA), and functional 
@@ -175,7 +175,8 @@ changeCobraSolver('gurobi6','all');
 % of the model (.mat) into Matlab. This model is available in the downloaded COBRA 
 % toolbox software. _[Timing: Seconds]_
 
-load('ecoli_core_model.mat', 'model');
+global CBTDIR
+readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
 e_coli_core = model; % Save the original model for later use
 %% 
 % After you load the _E.coli_ core model into the Matlab, you should be 
@@ -382,41 +383,41 @@ model.grRules(rxnIDs)
 % constraint settings for the _E.coli_ core model. In this model all reversible 
 % reactions in the cytoplasm are initally set so that their lower bound is -1000 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$with 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$with 
 % an upper bound of +1000 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % On the other hand, irreversible reactions, except ATPM, are set with a lower 
 % bound of 0 and an upper bound of +1000 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % The ATP maintenance reaction (ATPM) is set with a lower bound of 0 and an upper 
 % bound of +8.39 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$(this 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$(this 
 % will be discussed later). All the exchange reactions, except EX_glc(e), are 
 % set to allow secretion but not uptake, thus a lower bound of 0 and an upper 
 % bound of +1000 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % To avoid confusion, it should be understood that all exchange reactions, which 
 % are reactions that interface between the extracellular and cytoplasmic space, 
 % assume that secretion is positive while uptake is labeled negative.  Finally, 
 % the glucose exchange reaction, EX_glc(e), is set with a lower bound of -10 $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
 % and an upper bound of +1000 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$.
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$.
 % 
 % To see the constraints for the reactions that are not set at the minimum/maximum 
 % (-100\100) values, then "lb" and "ub" can be adjusted. _[Timing: Seconds]_
@@ -425,9 +426,9 @@ printConstraints(model,-100, +100)
 %% 
 % Note that the exchange reaction that controls the uptake of glucose, 'EX_glc(e) 
 % is automatically set to -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % 
 % The results of the upper or lower bounds for a particular reaction can 
 % be found by using the COBRA model structure, "model.lb" for the lower bound 
@@ -441,9 +442,9 @@ model.ub(rxnIDs)
 % = changeRxnBounds(model,rxnNameList,value,boundType)" function. For this function 
 % the second parameter is the reaction(s) that need to be constrained, the third 
 % parameter is the desired flux rate in $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$, 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$, 
 % and the fourth parameter can be 'u' - upper limit, 'l' - lower limit, or 'b' 
 % - both (Default = 'b'). _[Timing: Seconds]_
 
@@ -452,9 +453,9 @@ printConstraints(model,-100, +100); % Showing the result of the change
 %% 
 % You can now see that the lower bound for glucose has been changed to -5 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
 % .
 % 
 % *2.F. Objective Functions*
@@ -463,7 +464,7 @@ printConstraints(model,-100, +100); % Showing the result of the change
 % objective or objective function. For the case of predicting growth, the biological 
 % objective is the biomass production or the rate at which metabolic compounds 
 % are converted into biomass constituents. This biomass production is mathematically 
-% represented by the addition to the model of an artificial ‘biomass reaction’ 
+% represented by the addition to the model of an artificial �biomass reaction� 
 % (Biomass_Ecoli_core_w_GAM) which consumes precursor metabolites at stoichiometries 
 % that simulate biomass production. The precursors for the _E.coli _core model 
 % are shown in Figure 6. 
@@ -477,7 +478,7 @@ printConstraints(model,-100, +100); % Showing the result of the change
 % nadh[c], nadph[c], and pi[c])  that are required for cell growth and operation. 
 % The biomass reaction is based on experimental measurements of biomass components 
 % allowing the reaction to be scaled so that its flux is equal to the exponential 
-% growth-rate (μ) of the organism. With the biomass now represented in the model, 
+% growth-rate (?) of the organism. With the biomass now represented in the model, 
 % the maximum growth rate can be predicted by calculating the conditions that 
 % maximize the flux through the biomass reaction.  
 % 
@@ -524,14 +525,14 @@ model = changeRxnBounds(model,'EX_o2(e)',-30,'l'); % Set maximum oxygen uptake
 model = changeObjective(model,'Biomass_Ecoli_core_w_GAM'); % Set the objective function
 FBAsolution = optimizeCbModel(model,'max') % FBA analysis
 %% 
-% “FBAsolution” is a Matlab structure that contains the following outputs.  
-% “FBAsolution.f “ is the value of objective function as calculated by FBA, thus 
-% if the biomass reaction is the objective function then “FBAsolution.f" corresponds 
+% �FBAsolution� is a Matlab structure that contains the following outputs.  
+% �FBAsolution.f � is the value of objective function as calculated by FBA, thus 
+% if the biomass reaction is the objective function then �FBAsolution.f" corresponds 
 % to the growth-rate of the cell. In the example above, it can be seen that the 
 % growth-rate "FBAsolution.f" is listed as 0.8739 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><msup><mrow><mi mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$. 
-% “FBAsolution.x” is a vector listing the calculated fluxes flowing through the 
-% network. “FBAsolution.y” and “FBAsolution.w” contain vectors representing the 
+% display="inline"><mrow><msup><mrow><mi mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$. 
+% �FBAsolution.x� is a vector listing the calculated fluxes flowing through the 
+% network. �FBAsolution.y� and �FBAsolution.w� contain vectors representing the 
 % shadow prices and reduced costs for each metabolite or reaction, respectively.
 % 
 % The flux values found in the structure "FBAsolution.x"  can be printed 
@@ -561,25 +562,25 @@ drawFlux(map, model, FBAsolution.x, options); % Draw the flux values on the map 
 % 
 % *                        Figure 7.* Screenshot of the network map of the 
 % _E.coli_ core model with EX_glc(e) $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mo>≥</mo></mrow></math>$ -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
-% and EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>≥</mo></math>$ 
+% display="inline"><mrow><mo>?</mo></mrow></math>$ -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
+% and EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>?</mo></math>$ 
 % -30 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$.
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$.
 % 
 % As a cautionary note, the default condition for the_ E.coli _core model 
 % sets the carbon source as glucose with an uptake rate of -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$, 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$, 
 % the oxygen uptake is -1000 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
 % which implies an aerobic environment with the objectve function defined as 'Biomass_Ecoli_core_w_GAM'. 
 % It is a good practice to define the conditions of your simulation explicity 
 % to avoid unexpected results and long troubleshooting times.
@@ -662,16 +663,16 @@ drawFlux(map, model, FBAsolution.x, options); % Draw the flux values on the map 
 % 
 % Finally, the ATP maintenance function (ATPM), which is set at 8.39 $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
 % accounts for the energy (in form of atp[c]) necessary to replicate a cell, including 
 % for macromolecular synthesis (e.g., proteins, DNA, and RNA). Thus, for growth 
 % to occur in the _E.coli_ model, the flux rate through ATPM must be greater than 
 % 8.39 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % If the model detects that ATPM has not reached its minimum value it will not 
 % produce FBA results.
 % 
@@ -684,7 +685,7 @@ drawFlux(map, model, FBAsolution.x, options); % Draw the flux values on the map 
 % Anabolism, on the other hand, is the set of metabolic pathways that construct 
 % molecules from smaller units. These anabolic reactions are endergonic and therefore 
 % require an input of energy. In this case, NADPH (nadph[c]) is the reducing power 
-% required for biosynthesis using the cell’s precursor metabolites. 
+% required for biosynthesis using the cell�s precursor metabolites. 
 % 
 % Maintaining the proper balance between anabolic reduction charge, nadph[c]/ 
 % nadp[c], and catabolic reduction charge, nadh[c]/ nad[c], is achieved by reactions 
@@ -723,13 +724,13 @@ T = table(reactionNames,reactionFormulas,'RowNames',energyReactions)
 % 
 % Now lets explore the flux through these reactions in aerobic conditons 
 % with the glucose uptake set at -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$ 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$ 
 % and the oxygen uptake at -30 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % _[Timing: Seconds]_
 
 model = changeRxnBounds(model,'EX_glc(e)',-10,'l'); % Set maximum glucose uptake
@@ -772,13 +773,13 @@ surfNet(model, 'atp[c]', 0,FBAsolution.x,1,1)
 % the consumers to be GLNS, PFK, ATPM and the biomass function. As we will see 
 % later, the atp[c] associated with PFK is required by the glycolysis pathway. 
 % The atp[c] used by ATPM must be greater than or equal to 8.39 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">gDW</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$ 
+% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">gDW</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$ 
 % to allow the cell to grow. Finally the biomass function shows that 52.27 $<math 
-% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">gDW</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$(0.873922 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">gDW</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$(0.873922 
 % x 59.81) is used for the cell's biosynthesis needs. 
 % 
 % One of the important concepts associated with these constraint-based steady 
@@ -812,9 +813,9 @@ ylabel('Growth-rate (1/hr)');
 %% 
 % This graph shows the entire capability of ATPS4r when the carbon source 
 % glucose has a maximum uptake rate greater than or equal to  -10 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">gDW</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$. 
+% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">gDW</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$. 
 % If we start at the left of this of this figure, it can be seen that ATPS4r takes 
 % on negative values which implies that instead of producing atp[c] through the 
 % proton-motive force, it has become an energy-dependent proton pump removing 
@@ -825,17 +826,17 @@ ylabel('Growth-rate (1/hr)');
 % operation there is a nice linear relationship between the produced atp[c] and 
 % the growth-rate. Eventually the growth-rate reaches a maximum of 0.8738 $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$ 
+% mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$ 
 % when the ATPS4r flux level reaches 45.54 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % After the maximum growth-rate has been achieved the cell then needs to find 
 % ways to recycle the extra ATP. This can be seen below by fixing the flux through 
 % ATPS4r to a value greater than 45.54 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % _[Timing: Seconds]_
 
 model = e_coli_core; % Starting the original model
@@ -861,9 +862,9 @@ drawFlux(map, model, FBAsolution.x, options); % Draw the flux values on the map 
 % 
 % *                                                                                
 % Figure 11. *A screenshot of the core map with ATPS4r fixed at 60$<math xmlns="http://www.w3.org/1998/Math/MathML"><mi 
-% mathvariant="normal">mmol</mi><mo stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% mathvariant="normal">mmol</mi><mo stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % 
 % _*NADH Production*_
 % 
@@ -886,9 +887,9 @@ surfNet(model,'nadh[c]',0,FBAsolution.x,1,1)
 % model. The flux supplied through the biomass function is calculated by multiplying 
 % the total biomass flux (0.873922) times the nadh[c] biomass function coefficient 
 % (3.547) to yielding a total nadh[c] biomass flux of 3.0998 $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">gDW</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$. 
+% display="inline"><mrow><mi mathvariant="normal">mmol</mi><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">gDW</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup><mo>?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$. 
 % This can also be calculated using the COBRA Toolbox function "computeFluxSplits" 
 % as follows. _[Timing: Seconds]_
 
@@ -948,16 +949,16 @@ drawFlux(map, model, FBAsolution.x, options); % Draw the flux values on the map 
 % 
 % 
 % *Figure 12.* Network map of the _E.coli_ core model with glucose as the 
-% carbon source (EX_glc(e) $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>≥</mo></mrow></math>$ 
+% carbon source (EX_glc(e) $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>?</mo></mrow></math>$ 
 % -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$) 
-% in an anaerobic environment (EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>≥</mo></math>$ 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$) 
+% in an anaerobic environment (EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>?</mo></math>$ 
 % 0 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$).
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$).
 % 
 % Note that for anaerobic operation the flux through oxidative phosphorylation 
 % pathways (electron transport chain) is zero. Let's look at the nonzero fluxes 
@@ -1082,16 +1083,16 @@ drawFlux(map, model, FBAsolution.x, options);
 % 
 % 
 % *Figure 15.* Network map of the _E.coli_ core model using fructose as the 
-% carbon source (EX_fru(e) $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>≥</mo></mrow></math>$ 
+% carbon source (EX_fru(e) $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>?</mo></mrow></math>$ 
 % -10 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$) 
-% in an anaerobic environment (EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>≥</mo></math>$ 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$) 
+% in an anaerobic environment (EX_o2(e) $<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>?</mo></math>$ 
 % 0 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$).
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$).
 % 
 % Note that the fructose enters the network on the top left of the map. The 
 % detailed flux values for all the active reactions are shown below. _[Timing: 
@@ -1778,16 +1779,16 @@ surfNet(model,'nadh[c]',0,FBAsolution.x,1,1)
 % # Find the maximum atp[c], nadh[c], and nadph[c] that can be produced by the 
 % _E.coli _core model in an aerobic environment assuming a fixed glucose uptake 
 % rate of -1 $<math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">mmol</mi><mo 
-% stretchy="false">⋅</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
-% stretchy="false">−</mo><mn>1</mn></mrow></msup><mo stretchy="false">⋅</mo><msup><mrow><mi 
-% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">−</mo><mn>1</mn></mrow></msup></math>$. 
+% stretchy="false">?</mo><msup><mrow><mi mathvariant="normal">gDW</mi></mrow><mrow><mo 
+% stretchy="false">?</mo><mn>1</mn></mrow></msup><mo stretchy="false">?</mo><msup><mrow><mi 
+% mathvariant="normal">hr</mi></mrow><mrow><mo stretchy="false">?</mo><mn>1</mn></mrow></msup></math>$. 
 % Hint: For atp[c] you can set ATPM as the objective function but for nadh[c] 
 % and nadph[c] you will need to create separate demand functions. See Chapter 
 % 19 of Palsson's book [1].
 % # Compare the difference in the aerobic vs anaerobic flux rate through the 
 % glycolysis pathway by setting biomass function to a fixed rate of 0.8739 $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mi 
-% mathvariant="italic">h</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>$. 
+% mathvariant="italic">h</mi></mrow><mrow><mo>?</mo><mn>1</mn></mrow></msup></mrow></math>$. 
 % Why is the anaerobic flux so much higher than the aerobic flux? Hint: Set the 
 % objective function to the glucose exchange reaction.
 %% References
