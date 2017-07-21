@@ -1,3 +1,7 @@
 *.html  linguist-documentation=true
 *.html  linguist-vendored=true
 *.gms   linguist-vendored=true
+
+*.mat -crlf -diff -merge
+*.mlx -crlf -diff -merge
+*.xlsx -crlf -diff -merge
