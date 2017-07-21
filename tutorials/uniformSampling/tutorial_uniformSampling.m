@@ -95,7 +95,7 @@
 % solver installed. In this tutorial, we will use the function |fluxVariability|. 
 % Change the variable |options.useFastFVA = 1 |to use |fastFVA|.
 
-options.useFastFVA = 0;
+options.useFastFVA = false;
 changeCobraSolver('gurobi');
 %% Modelling
 % We will investigate ATP energy production with limited and unlimited oxygen 
