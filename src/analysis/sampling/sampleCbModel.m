@@ -59,7 +59,7 @@ nPointsReturned = 2000;
 nFilesSkipped = 2;
 maxTime = 10 * 3600;
 toRound = 1;
-useFastFVA = 0;
+useFastFVA = false;
 % Default options above
 if ~exist('sampleFile','var')
     samplerName = 'sampleFile.mat';
