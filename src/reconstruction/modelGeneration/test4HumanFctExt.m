@@ -1,30 +1,30 @@
 function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)
-%% function [TestSolution,TestSolutionName] = Test4HumanFct(model,test)
-% test for the ~288 human functions -  I removed duplicates
+% test for the ~288 human functions
 %
-% INPUT
-% model             model structure (Recon1, with desired in silico
-%                   condition)
-% test              possible statements: Recon1, IECori, IEC, all (default)
-%                   (choose IECori if you intend to test the IEC model OR a model that
-%                   contains lumen ('u') as compartment otw choose IEC);
-%                   all check for Recon1 and IEC
-% option            if true = set sink reactions to 0 (default, leave unchanged).
-%                   Note that all lb's of exchanges and demands will be set to 0
-% OUTPUT
-% TestSolution      array containing the optimal value for the different
-%                   tests
-% TestSolutionName  array containing the names  for the different tests
+% USAGE:
+%     [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)
 %
-% Ines Thiele, 09/05/09
-% MKA, 03/04/12 some of the reaction names have changed in newer versions of Recon1
-% and Recon2. Comment setup til line 146 if using an old version.
-% MKA, 24/05/12 finds correct EX_reactions and changes these to zero
-% IT, 07/20/12 added tests for sIEC model
-% AH, 07/12/17 minor changes to constraints that were resulting in infeasible
-% models
+% INPUT:
+%    model:             model structure (Recon1, with desired in silico condition)
+%    test:              possible statements: Recon1, IECori, IEC, all (default)
+%                       (choose IECori if you intend to test the IEC model OR a model that
+%                       contains lumen ('u') as compartment otw choose IEC);
+%                       all check for Recon1 and IEC
+%    option:            if true = set sink reactions to 0 (default, leave unchanged).
+%                       Note that all lb's of exchanges and demands will be set to 0
+%
+% OUTPUT:
+%    TestSolution:      array containing the optimal value for the different tests
+%    TestSolutionName:  array containing the names  for the different tests
+%
+% .. Authors:
+%       - Ines Thiele, 09/05/09
+%       - MKA, 03/04/12 some of the reaction names have changed in newer versions of Recon1
+%         and Recon2. Comment setup til line 146 if using an old version.
+%       - MKA, 24/05/12 finds correct EX_reactions and changes these to zero
+%       - IT, 07/20/12 added tests for sIEC model
+%       - AH, 07/12/17 minor changes to constraints that were resulting in infeasible models
 
-%%
 if nargin<2
     test = 'all';
 end

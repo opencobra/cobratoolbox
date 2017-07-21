@@ -1,22 +1,26 @@
 function [Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName)
-% [Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName)
 % computes the ATP yield from various carbon sources in Recon2 or Recon3.
-% INPUT
-% model            model structure
-% modelName        name of the model structure, by default Recon3
-% OUTPUT
-% Table_csources   table listing ATP yield computed for the carbon sources
-% TestedRxns       list of reactions that are contributing to ATP
-%                  production from carbon sources
-% PercTestedRxns   Fraction that tested reactions make up compared with all
-%                  reactions in model
+%
+% USAGE:
+%     [Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName)
+%
+% INPUT:
+%    model:            model structure
+%    modelName         name of the model structure, by default Recon3
+%
+% OUTPUT:
+%    Table_csources:   table listing ATP yield computed for the carbon sources
+%    TestedRxns:       list of reactions that are contributing to ATP production from carbon sources
+%    PercTestedRxns:   Fraction that tested reactions make up compared with all reactions in model
+%
+% .. Authors:
+%    - IT 2017
+%    - AH, July 2017 - Description added
 
-% IT 2017
-% Description added by AH, July 2017
-%%
 if ~exist('modelName','var')
     modelName = 'Recon3';
 end
+
 %% check for the metabolites
 modelClosed = model;
 % prepare models for test - these changes are needed for the different
