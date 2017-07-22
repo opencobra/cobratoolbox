@@ -108,7 +108,7 @@ if nargin < 2
     relaxOption.excludedMetabolites     = false(m,1);
 end
 
-if nargin < 3
+if nargin < 4
     if isfield(relaxOption,'internalRelax') == 0
         relaxOption.internalRelax = 2;
     else
@@ -220,7 +220,7 @@ relaxOption.excludedMetabolites = relaxOption.excludedMetabolites | excludedMeta
 if isequal(how,'cappedl1')
     solution = relaxFBA_cappedL1(model,relaxOption);
 elseif isequal(how,'l1')
-    solution = relaxFBAL1(model,relaxOption);
+    solution = relaxedFBAL1(model,relaxOption);
 end
 
 % Attempt to handle numerical issues with small perturbations, less than
