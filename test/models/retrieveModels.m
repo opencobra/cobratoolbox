@@ -38,6 +38,8 @@ modelArr = {
     'Acidaminococcus_intestini_RyC_MR95.mat', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/mat/Acidaminococcus_intestini_RyC_MR95.mat';
     'Acidaminococcus_sp_D21.mat', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/mat/Acidaminococcus_sp_D21.mat';
     'Acinetobacter_calcoaceticus_PHEA_2.mat', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/mat/Acinetobacter_calcoaceticus_PHEA_2.mat';
+    'Recon1.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon1.0model.mat';
+    'Recon2.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon2.0model.mat';
     };
 
 % define silence level of curl

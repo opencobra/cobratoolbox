@@ -1,8 +1,8 @@
 %% Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis
 %% Authors: Ronan Fleming, Ines Thiele, University of Luxembourg.
-%% Reviewer: Francisco J. Planes, TECNUN, University of Navarra
+%% Reviewer: Francisco J. Planes, TECNUN, University of Navarra, Laurent Heirendt, University of Luxembourg.
 %% INTRODUCTION
-% We consider a biochemical network of  m  molecular species and  n  biochemical 
+% We consider a biochemical network of  |m |molecular species and  |n|  biochemical 
 % reactions. The biochemical network is mathematically represented by a stoichiometric 
 % matrix $S\in\mathcal{Z}^{m\times n}$. In standard notation, flux balance analysis 
 % (FBA) is the linear optimisation problem
@@ -49,48 +49,38 @@
 % In a flux balance model, a maintenance requirement for synthesis of adenosine 
 % triphosphate can be represented with a lower bound on reaction <#eq_ATPhydrolysis 
 % (1)> or inclusion of reaction <#eq_ATPhydrolysis (1)> within a composite biomass 
-% reaction, when cellular growth is being modelled [<#LyXCite-feist_biomass_2010 
-% feist_biomass_2010>]. In order for either of these approaches to result in a 
-% constraint on energy metabolism within the model, no stoichiometrically balanced 
-% set of internal reactions that include reaction <#eq_ATPhydrolysis (1)> should 
-% admit isolated hydrolysis of ATP, given the reaction bounds supplied with the 
-% model. If such a set exists, sparse flux balance analysis can be used to find 
-% one such minimal cardinality set. 
+% reaction, when cellular growth is being modelled [1]. In order for either of 
+% these approaches to result in a constraint on energy metabolism within the model, 
+% no stoichiometrically balanced set of internal reactions that include reaction 
+% <#eq_ATPhydrolysis (1)> should admit isolated hydrolysis of ATP, given the reaction 
+% bounds supplied with the model. If such a set exists, sparse flux balance analysis 
+% can be used to find one such minimal cardinality set [4, 5]. 
 %% TIMING
 % A minimal solution to sparse flux balance analysis problem can be obtained 
 % in < 10 seconds. The time consuming part is comparing the predictions with the 
 % biochemical literature to assess whether the predictions are consistent with 
 % biochemical network function or not, as such, the process of refining a model 
 % to increase its biochemical fidelity can take days or weeks.
+%% EQUIPMENT SETUP
+% Make sure to initialise the COBRA Toolbox.
+
+% initCobraToolbox
 %% PROCEDURE
 %% Setting the numerical tolerance
 % Implementation of sparse flux balance analysis with any numerical optimisation 
-% solver, requires a tolerance to be set that distinguished between zero and non-zero 
+% solver requires a tolerance to be set that distinguished between zero and non-zero 
 % flux, based on the numerical tolerance of the currently installed optimisation 
 % solver. Typically 1e-6 will suffice, except for multiscale models.
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-%% Loading and examining the properties of Recon3.0model
-% We are going to focus here on testing the biochemical fidelity of Recon3.0 
-% model, so load it, unless it is already loaded into the workspace
+%% Loading and examining the properties of a model
+% We are going to focus here on testing the biochemical fidelity of Recon3.0model 
+% [3]. As an example, Recon 1.0 may also be used [6].
 
-clear %model
-if ~exist('modelOrig','var')
-    filename='Recon1.0';
-    %filename='Recon2.0';
-    %filename='Recon2.0model';
-    %filename='Recon2.04model';
-    %filename='HMR2.0'
-    %filename='Recon2.2model';
-    %filename='Recon3.0';
-    %filename='Recon3.0model';
-    directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-    model = loadIdentifiedModel(filename,directory);
-    model.csense(1:size(model.S,1),1)='E';
-    modelOrig = model;
-else
-    model=modelOrig;
-end
+global CBTDIR
+filename = 'Recon1.0model.mat'; % amend fileName for Recon 3
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep filename]);
+model.csense(1:size(model.S,1),1) = 'E';
 %% Testing for production of ATP with all external reactions blocked, but all internal reaction bounds unchanged
 % There are two options: A: sparse flux balance analysis using zero norm minimisation, 
 % and B: one norm minimisation.
@@ -114,7 +104,7 @@ end
 % Display the size of the  model
 
 [nMet,nRxn] = size(model.S);
-fprintf('%6s\t%6s\n','#mets','#rxns'); fprintf('%6u\t%6u\t%s%s\n',nMet,nRxn,' totals in ', model.modelID)
+fprintf('%6s\t%6s\n','#mets','#rxns'); fprintf('%6u\t%6u\t%s%s\n',nMet,nRxn,' totals in ', filename)
 %% 
 % Display the constraints
 
@@ -123,24 +113,24 @@ maxInf =  1000;
 printConstraints(model, minInf, maxInf);
 %% 
 % Identify the exchange reactions(s) heuristically
-%%
+
 if ~isfield(model,'SIntRxnBool')
     model = findSExRxnInd(model,size(model.S,1),1);
 end
 %% 
 % Maximise the atp maintenance reaction
 
-model.c(:)=0;
-model.c(atpMaintenanceBool)=1;
-osenseStr='max';
+model.c(:) = 0;
+model.c(atpMaintenanceBool) = 1;
+osenseStr = 'max';
 %% 
 % Choose to minimize the zero norm of the optimal flux vector
 
-minNorm='zero';
+minNorm = 'zero';
 %% 
 % Allow thermodynamically infeasible fluxes
 
-allowLoops=1;
+allowLoops = 1;
 %% 
 % Select the approximate step functions when minimising the zero norm of 
 % the flux vector
@@ -155,8 +145,8 @@ zeroNormApprox='all';% test all approximations avialable and return the best one
 %% 
 % Close all external reactions
 
-model.lb(~model.SIntRxnBool)=0;
-model.ub(~model.SIntRxnBool)=0;
+model.lb(~model.SIntRxnBool) = 0;
+model.ub(~model.SIntRxnBool) = 0;
 %% 
 % Run sparse flux balance analysis on the model with all exchanges closed
 
@@ -178,23 +168,22 @@ for n=1:nRxn
         fprintf('%10g%15s\t%-60s\n',sparseFBAsolutionBounded.v(n),model.rxns{n}, formula{1});
     end
 end
-
 %% ANTICIPATED RESULTS
 % When all external reactions are blocked (bounds are set to zero), then the 
 % only net flux admissible is within a stoichiometrically balanced cycle, if and 
 % only if, the bounds on each reaction in the stoichiometrically balanced cycle 
 % simultaneously admit net flux in one direction around the cycle. Net flux around 
-% a stoichiometrically balanced cycle is thermodynamically infeasible [<#LyXCite-fleming_variational_2012 
-% fleming_variational_2012>], but steady state mass balance constraints do not 
-% enforce thermodynamic constraints. In lieu of such constraints, the bounds on 
-% reactions can be set based on the biochemical literature to eliminate net flux 
-% around a stoichiometrically balanced cycle. In Recon3.0, with all external reactions 
-% blocked, maximising reaction <#eq_ATPhydrolysis (1)> while minimising the cardinality 
-% of all internal reactions, using sparse flux balance analysis was used to find 
-% one such minimal cycle. The optimal solution involves reaction <#eq_ATPhydrolysis 
-% (1)> in a set of nine stoichiometrically balanced reactions, with bounds that 
-% admit an arbitrary amount of isolated ATP hydrolysis. Recon3.0model contains 
-% no set of reactions that admit an arbitrary amount of isolated ATP hydrolysis.
+% a stoichiometrically balanced cycle is thermodynamically infeasible [2], but 
+% steady state mass balance constraints do not enforce thermodynamic constraints. 
+% In lieu of such constraints, the bounds on reactions can be set based on the 
+% biochemical literature to eliminate net flux around a stoichiometrically balanced 
+% cycle. In Recon3.0, with all external reactions blocked, maximising reaction 
+% <#eq_ATPhydrolysis (1)> while minimising the cardinality of all internal reactions, 
+% using sparse flux balance analysis was used to find one such minimal cycle. 
+% The optimal solution involves reaction <#eq_ATPhydrolysis (1)> in a set of nine 
+% stoichiometrically balanced reactions, with bounds that admit an arbitrary amount 
+% of isolated ATP hydrolysis. Recon3.0model contains no set of reactions that 
+% admit an arbitrary amount of isolated ATP hydrolysis.
 %% TROUBLESHOOTING
 % By further constraining the bounds to convert one reversible reaction in each 
 % such stoichiometrically balanced cycle to an irreversible reaction, isolated 
@@ -205,7 +194,7 @@ end
 % Run flux balance analysis on the same model and minimise the total sum of 
 % all reaction rates (minimum one norm)
 
-minMorm='one';
+minNorm = 'one';
 oneNormFBASolutionBounded = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox);
 %% 
 % Display the one norm flux balance analysis solution, but only the non-zero 
@@ -213,7 +202,7 @@ oneNormFBASolutionBounded = optimizeCbModel(model, osenseStr, minNorm, allowLoop
 
 for n=1:nRxn
     if abs(oneNormFBASolutionBounded.v(n))>cutoff
-        formula=printRxnFormula(model, model.rxns{n}, 0);
+        formula = printRxnFormula(model, model.rxns{n}, 0);
         fprintf('%10g%15s\t%-60s\n',oneNormFBASolutionBounded.v(n),model.rxns{n}, formula{1});
     end
 end
@@ -227,9 +216,8 @@ end
 %% A: Sparse flux balance analysis test for production of ATP with all external reactions blocked and all internal reactions reversible
 % Fully open all internal reactions
 
-model.lb(model.SIntRxnBool)=-1000;
-model.ub(model.SIntRxnBool)=1000;
-
+model.lb(model.SIntRxnBool) = -1000;
+model.ub(model.SIntRxnBool) = 1000;
 %% 
 % Run sparse flux balance analysis on the model with all exchanges closed 
 % and all internal reactions reversible
@@ -238,7 +226,7 @@ sparseFBAsolutionUnBounded = optimizeCbModel(model, osenseStr, minNorm, allowLoo
 %% 
 % Check to see if there is a non-zero flux through the ATP maintenance reaction
 
-fprintf('%g%s\n',sparseFBAsolutionUnBounded.v(atpMaintenanceBool),' flux through the ATP maintenance reaction')
+fprintf('%g%s\n',sparseFBAsolutionUnBounded.v(atpMaintenanceBool),' flux through the ATP maintenance reaction');
 %% 
 % Display the sparse flux solution, but only the non-zero fluxes, above 
 % a specified cutoff.
@@ -260,7 +248,7 @@ end
 % Run flux balance analysis on the samemodel and minimise the sum total of all 
 % reaction rates (minimium one norm)
 
-minMorm='one';
+minNorm = 'one';
 oneNormFBASolutionUnBounded = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox);
 %% 
 % Display the one norm flux balance analysis solution, but only the non-zero 
@@ -268,7 +256,7 @@ oneNormFBASolutionUnBounded = optimizeCbModel(model, osenseStr, minNorm, allowLo
 
 for n=1:nRxn
     if abs(oneNormFBASolutionUnBounded.v(n))>cutoff
-        formula=printRxnFormula(model, model.rxns{n}, 0);
+        formula = printRxnFormula(model, model.rxns{n}, 0);
         fprintf('%10g%15s\t%-60s\n',oneNormFBASolutionUnBounded.v(n),model.rxns{n}, formula{1});
     end
 end
@@ -279,11 +267,34 @@ end
 % these cycles are latent in the network and could become active with inadvertent 
 % relaxation of model bounds.
 %% REFERENCES
-% [fleming_cardinality_nodate] Fleming, R.M.T., et al., Cardinality optimisation 
-% in constraint-based modelling: illustration with Recon 3D (submitted), 2017.
+% [1] Feist, Adam M, and Bernhard O Palsson. ?The Biomass Objective Function.? 
+% _Current Opinion in Microbiology_, Ecology and industrial microbiology ? Special 
+% section: Systems biology, 13, no. 3 (June 2010): 344?49. doi:10.1016/j.mib.2010.03.003.
 % 
-% _ _[<#LyXCite-sparsePaper sparsePaper>] Le Thi, H.A., Pham Dinh, T., Le, 
-% H.M., and Vo, X.T. (2015). DC approximation approaches for sparse optimization. 
-% European Journal of Operational Research 244, 26–46.
+% [2] Fleming, R. M. T., C. M. Maes, M. A. Saunders, Y. Ye, and B. ?. Palsson. 
+% ?A Variational Principle for Computing Nonequilibrium Fluxes and Potentials 
+% in Genome-Scale Biochemical Networks.? _Journal of Theoretical Biology_ 292 
+% (January 7, 2012): 71?77. doi:10.1016/j.jtbi.2011.09.029.
+% 
+% [3] Brunk, Elizabeth, Swagatika Sahoo, Daniel C Zielinski, Ali Altunkaya, 
+% Maike Aurich, Nathan Mih, German Andres Preciat Gonzalez, et al. ?Recon 3D: 
+% A Resource Enabling a Three-Dimensional View of Gene Variation in Human Metabolism.? 
+% _(Submitted)_ 1 (2017).
+% 
+% [4] Fleming, R.M.T., et al., Cardinality optimisation in constraint-based 
+% modelling: illustration with Recon 3D (submitted), 2017.
+% 
+% [5] Le Thi, H.A., Pham Dinh, T., Le, H.M., and Vo, X.T. (2015). DC approximation 
+% approaches for sparse optimization. European Journal of Operational Research 
+% 244, 26?46.
+% 
+% [6] Duarte, N. C., S. A. Becker, N. Jamshidi, I. Thiele, M. L. Mo, T. D. 
+% Vo, R. Srivas, and B. ?. Palsson. ?Global Reconstruction of the Human Metabolic 
+% Network Based on Genomic and Bibliomic Data.? _Proceedings of the National Academy 
+% of Sciences of the United States of America_ 104, no. 6 (2007): 1777?82. doi:10.1073/pnas.0610772104.
+% 
+%   
+% 
+% 
 % 
 % __
