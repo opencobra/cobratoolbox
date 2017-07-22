@@ -81,7 +81,7 @@ sol1.full = cell2mat(cellfun(@(x) sum([1 -1*(length(x)==2)]*sol1.full(x)),...
     rev2irrev,'UniformOutput',false));
 
 %ceil to eliminate numerical infeasiblities
-sol1.full=ceil(sol1.full/feasTol)*feasTol;
+sol1.full(n+1:end)=ceil(sol1.full(n+1:end)/feasTol)*feasTol;
 
 %report results
 if sol1.stat == 1
