@@ -436,6 +436,67 @@ Constraint options in irrev model<ul>
 </div></blockquote>
 </dd></dl>
 
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.test4HumanFctExt">
+<code class="descname">test4HumanFctExt</code><span class="sig-paren">(</span><em>model</em>, <em>test</em>, <em>optionSinks</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/97ac4690f68eaf4847e42927795a01d24cbc550f/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
+<dd><p>test for the ~288 human functions</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure (Recon1, with desired in silico condition)</li>
+<li><strong>test</strong> &#8211;
+possible statements: Recon1, IECori, IEC, all (default)
+(choose IECori if you intend to test the IEC model OR a model that
+contains lumen (&#8216;u&#8217;) as compartment otw choose IEC);
+all check for Recon1 and IEC</li>
+<li><strong>option</strong> &#8211;
+if true = set sink reactions to 0 (default, leave unchanged).
+Note that all lb&#8217;s of exchanges and demands will be set to 0</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>TestSolution</strong> &#8211;
+array containing the optimal value for the different tests</li>
+<li><strong>TestSolutionName</strong> &#8211;
+array containing the names  for the different tests</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.testATPYieldFromCsources">
+<code class="descname">testATPYieldFromCsources</code><span class="sig-paren">(</span><em>model</em>, <em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/97ac4690f68eaf4847e42927795a01d24cbc550f/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the ATP yield from various carbon sources in Recon2 or Recon3.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>modelName         name of the model structure, by default Recon3</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Table_csources</strong> &#8211;
+table listing ATP yield computed for the carbon sources</li>
+<li><strong>TestedRxns</strong> &#8211;
+list of reactions that are contributing to ATP production from carbon sources</li>
+<li><strong>PercTestedRxns</strong> &#8211;
+Fraction that tested reactions make up compared with all reactions in model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 

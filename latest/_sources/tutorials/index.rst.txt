@@ -13,8 +13,10 @@ Tutorials
    tutorialAtomicallyResolveReconstruction
    tutorialBrowseNetwork
    tutorialConstrainingModels
-   createSuNetworkRecon
-   tutorialEcoliCoreModel
+   tutorialCreateSubnetworkRecon
+   tutorialEcoliCoreModel_part1
+   tutorialEcoliCoreModel_part2
+   tutorialEcoliCoreModel_part3
    tutorialEngaging
    tutorialExtraction_transcriptomic
    tutorialFBA
