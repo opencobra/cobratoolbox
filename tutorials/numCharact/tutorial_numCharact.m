@@ -19,35 +19,14 @@
 % Please ensure that The COBRA Toolbox has been properly installed, and initialized 
 % using the |initCobraToolbox| function.
 
-initCobraToolbox
-%% *Setting the *optimization* solver.*
-% This tutorial will be run with a |'glpk'| package, which is a linear programming 
-% ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
-% and configuration.
-
-solverName='glpk';
-solverType='LP'; 
-changeCobraSolver(solverName,solverType);
-%% 
-% There are no specific solvers essentail to running this tutorial. For 
-% the analysis of large models, such as Recon [1], it is not recommended to use 
-% the |'glpk'| package but rather an industrial strength solver, such as the |'gurobi'| 
-% package. For detailed information, refer to The Cobra Toolbox <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
-% solver instalation guide>. 
-% 
-% A solver package may offer different types of optimization programmes to 
-% solve a problem. The above example used a LP optimization, other types of optimization 
-% programmes include; mixed-integer linear programming ('|MILP|'), quadratic programming 
-% ('|QP|'), and mixed-integer quadratic programming ('|MIQP|').
-
-warning off MATLAB:subscripting:noSubscriptsSpecified
+% initCobraToolbox
 %% PROCEDURE 
 % TIMING: 5 seconds - several hours (depending on the model size)
 % 
 % *Define the name of the model*
 % 
 % Throughout this tutorial, we will use the _E.coli core_ model [2]. It is 
-% generally good practice to define; the name of the file that contains the model, 
+% generally good practice to define the name of the file that contains the model, 
 % the name of the model structure, and the name of the stoichiometric matrix, 
 % as separate variables. Therefore, we propose that within the |modelFile|, there 
 % is a structure named |modelName| with a field |matrixName| that contains the 
@@ -125,8 +104,8 @@ compSparsityRatio = 100.0 - sparsityRatio  % [%]
 
 % add the number of non-zeros in each column (reaction)
 colDensityAv = 0;
-for i = 1:nRxns
-    colDensityAv = colDensityAv + nnz(S(:, i));
+for j = 1:nRxns
+    colDensityAv = colDensityAv + nnz(S(:, j));
 end
 
 % calculate the arithmetic average number of non-zeros in each column
@@ -195,7 +174,7 @@ rankDeficiencyS = (1 - rankS / min(nMets, nRxns)) * 100  % [%]
 % display="inline"><mrow><mi mathvariant="italic">U</mi></mrow></math>$ (of dimension 
 % |nMets| by |nMets|) and $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">V</mi></mrow></math>$ (of dimension |nRxns| by |nRxns|), 
-% and a matrix with diagonal elements $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% and a matrix with nonnegative diagonal elements $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi mathvariant="italic">D</mi></mrow></math>$ such that 
 % $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="normal">S = UD</mi><msup><mrow><mi mathvariant="italic">V</mi></mrow><mrow><mi 
@@ -388,9 +367,10 @@ load('ME_matrix_GlcAer_WT.mat', 'modelGlcOAer_WT');
 
 solverRecommendation
 %% 
-% The solver then can be set as as suggested to use the quad-precision solver:
+% The solver then can be set as suggested to use the quad-precision solver 
+% [5]:
 
-% changeCobraSolver(solverRecommendation{1});
+% changeCobraSolver('dqqMinos');
 %% 
 % Note that the timing for obtaining a solution using a quad-precision solver 
 % is very different than obtaining the solution using a double-precision solver. 
@@ -432,4 +412,9 @@ solverRecommendation
 % 
 % [4] Multiscale modeling of metabolism and macromolecular synthesis in E. 
 % coli and its application to the evolution of codon usage, Thiele et al., PLoS 
-% One, 7(9):e45635 (2012)
+% One, 7(9):e45635 (2012).
+% 
+% [5] D. Ma, L. Yang, R. M. T. Fleming, I. Thiele, B. O. Palsson and M. A. 
+% Saunders, Reliable and efficient solution of genome-scale models of Metabolism 
+% and macromolecular Expression, Scientific Reports 7, 40863; doi: \url{10.1038/srep40863} 
+% (2017). <http://rdcu.be/oCpn http://rdcu.be/oCpn>.
