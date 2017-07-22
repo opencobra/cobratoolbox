@@ -75,26 +75,56 @@ surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], {{}, {'lb'}});
 diary off;
 
 % load the text files
-textSurfNet = struct('surfNet', '', 'refData_surfNet', '');
-for j = {'surfNet', 'refData_surfNet'}
-    f = fopen(strcat(j{:}, '.txt'), 'r');
+[text1, text2] = deal('');
+f = fopen('refData_surfNet.txt', 'r');
+l = fgets(f);
+while ~isequal(l, -1)
+    text1 = [text1, l];
     l = fgets(f);
-    while ~isequal(l, -1)
-        textSurfNet.(j{:}) = [textSurfNet.(j{:}), l];
-        l = fgets(f);
-    end
-    fclose(f);
-    % the locations of linebreaks not constant, depending on the width of the command window 
-    % replace all linebreaks and consecutive spaces with a single space
-    textSurfNet.(j{:}) = regexprep(textSurfNet.(j{:}), '\n', '');
-    textSurfNet.(j{:}) = regexprep(textSurfNet.(j{:}), '\\n', '');
-    textSurfNet.(j{:}) = regexprep(textSurfNet.(j{:}), '\s*', ' ');
 end
+fclose(f);
+
+f = fopen('surfNet.txt', 'r');
+l = fgets(f);
+while ~isequal(l, -1)
+    text2 = [text2, l];
+    l = fgets(f);
+end
+fclose(f);
+% locations of linebreaks not constant. Replace linebreaks and consecutive spaces with single space
+text1 = regexprep(text1, '\s*', ' ');
+text2 = regexprep(text2, '\s*', ' ');
+
 % remove the generated file
 delete('surfNet.txt');
 
-assert(isequal(textSurfNet.surfNet, textSurfNet.refData_surfNet));
-fprintf('\nFinish testing normal functionalities of surfNet.\n')
+% compare the similarity of text using a simple scheme 
+% (no need to solve a DP here, the two strings are supposed to be highly similar)
+[j1, j2, match] = deal(1, 1, 0);
+while j1 <= numel(text1) && j2 <= numel(text2)
+    if ~strcmp(text1(j1), text2(j2))
+        % find the next closest identical character
+        [j1skip, j2skip] = deal(1);
+        while j2 + j2skip <= numel(text2) && ~strcmp(text1(j1), text2(j2 + j2skip))
+            j2skip = j2skip + 1;
+        end
+        while j1 + j1skip <= numel(text1) && ~strcmp(text1(j1 + j1skip), text2(j2))
+            j1skip = j1skip + 1;
+        end
+        % take the closer identical character from the two strings
+        [j1, j2] = deal(j1 + (j1skip <= j2skip) * j1skip, j2 + (j1skip > j2skip) * j2skip);
+    end
+    match = match + 1;
+    [j1, j2] = deal(j1 + 1, j2 + 1);
+end
+% subtract the last false match if the comparison is terminated due to the
+% end of the strings rather than match found
+match = match - (j1 == numel(text1) + 2 | j2 == numel(text2) + 2);
+score = ((match / numel(text1)) * (match / numel(text2))) ^ 0.5;
+
+fprintf('Compare the printed with the expected results ...\n')
+assert(score > 1 - 1e-3);  % some mismatches due to linebreaks and space
+fprintf('\nSuccess. Finish testing normal functionalities of surfNet.\n')
 
 % check warnings 
 diary('surfNet.txt');
@@ -120,17 +150,20 @@ fclose(f);
 % remove the generated file
 delete('surfNet.txt');
 
+fprintf('Compare the printed warnings with the expected results ...\n')
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.')))
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.')))
 assert(~isempty(strfind(textSurfNet, 'Warning: The 2nd input is neither a metabolite nor reaction of the model.'))) 
-fprintf('\nFinish testing warning output of surfNet.\n')
+fprintf('\nSuccess. Finish testing warning output of surfNet.\n')
 
 % print a random reaction when the 2nd input 'metrxn' is not given and 
 % no objective reactions exist.
+fprintf('Test printing random reactions ...\n')
 model2.c(:) = 0;
 surfNet(model2)
 surfNet(model2, [], [], fluxMatrix);
 
+fprintf('Test error messages ...\n')
 % error messages
 % no initialized model exists
 clear surfNet
@@ -174,7 +207,10 @@ for j = 1:numel(incorrectFieldInput)
     end
 end
 
-fprintf('\nFinish testing error messages of surfNet.\n')
+fprintf('\nSuccess. Finish testing error messages of surfNet.\n')
 
 % change the directory
 cd(currentDir)
+
+function a = testFunc(b)
+end
