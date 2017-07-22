@@ -79,17 +79,9 @@ function [solution] = relaxedFBA(model, relaxOption, how)
 
 [m,n] = size(model.S); %Check inputs
 
-%check if model is feasible
-sol = optimizeCbModel(model);
-if sol.stat
-    error('The model is feasible');
-end
-
 %Method
 if nargin<3
    how='cappedl1'; 
-else
-   how='l1';
 end
 
 if isfield(model,'SIntRxnBool')
@@ -175,7 +167,7 @@ if ~isfield(relaxOption,'gamma')
 		relaxOption.gamma = 10;
 	end   
 end
-relaxOption
+
 %set local paramters on zero norm for capped L1
 if ~isfield(relaxOption,'alpha0')
     relaxOption.alpha0 = relaxOption.alpha; 
