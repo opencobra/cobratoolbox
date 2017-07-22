@@ -102,6 +102,8 @@ E.mat
 tutorials/ecoliCoreModel/*.svg
 tutorials/ecoliCoreModel/*.xls
 tutorials/steadyCom/POA/*.mat
+SubNetworkRecon.mat
+Test4Functions_diary.txt
 
 # generated tutorial documentation
 docs/source/_static/tutorials/*.html
