@@ -101,6 +101,7 @@ PPP120.mat
 E.mat
 tutorials/ecoliCoreModel/*.svg
 tutorials/ecoliCoreModel/*.xls
+tutorials/steadyCom/POA/*.mat
 SubNetworkRecon.mat
 Test4Functions_diary.txt
 
