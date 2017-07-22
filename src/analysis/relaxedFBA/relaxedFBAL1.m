@@ -12,6 +12,9 @@ end
 if nargin <2
     relaxOption.options=0;
 end
+%set the tolerance to eliminate nuemrical inconsistencies
+feasTol = getCobraSolverParams('LP', 'feasTol')*100;
+
 [S,lb,ub,b,csense]=deal(model.S,model.lb,model.ub,model.b,model.csense);
 
 %Variables v,p,q,r
@@ -76,6 +79,9 @@ sol1 = solveCobraLP(modelIrrev);
 %aggregate results
 sol1.full = cell2mat(cellfun(@(x) sum([1 -1*(length(x)==2)]*sol1.full(x)),...
     rev2irrev,'UniformOutput',false));
+
+%ceil to eliminate numerical infeasiblities
+sol1.full=ceil(sol1.full/feasTol)*feasTol;
 
 %report results
 if sol1.stat == 1
