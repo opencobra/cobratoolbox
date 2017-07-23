@@ -211,6 +211,3 @@ fprintf('\nSuccess. Finish testing error messages of surfNet.\n')
 
 % change the directory
 cd(currentDir)
-
-function a = testFunc(b)
-end
