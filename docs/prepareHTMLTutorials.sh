@@ -34,11 +34,12 @@ echo >> $rstDestination/index.rst
 echo ".. toctree::" >> $rstDestination/index.rst
 echo >> $rstDestination/index.rst
 
-for tutorial in "${tutorials[@]}"
+for tutorial in "${tutorials[1]}"
 do
     tutorialDir=${tutorial%/*}
     tutorialName=${tutorial##*/}
     tutorialName="${tutorialName%.*}"
+    tutorialFolder=${tutorialDir:13}
     tutorialTitle=`awk '/<title>/ { show=1 } show; /<\/title>/ { show=0 }'  $tutorialPath/$tutorialDir/$tutorialName.html | sed -e 's#.*<title>\(.*\)</title>.*#\1#'`
 
     echo "  - $tutorialTitle"
@@ -54,6 +55,7 @@ do
     sed -i.bak "s/#tutorialTitle#/$tutorialTitle/" "$rstDestination/$tutorialLongTitle.rst"
     sed -i.bak "s/#underline#/$underline/" "$rstDestination/$tutorialLongTitle.rst"
     sed -i.bak "s/#tutorialName#/$tutorialName.html/" "$rstDestination/$tutorialLongTitle.rst"
+    sed -i.bak "s/#tutorialPath#/$tutorialFolder\/$tutorialName/" "$rstDestination/$tutorialLongTitle.rst"
     rm "$rstDestination/$tutorialLongTitle.rst.bak"
 
     echo "   $tutorialLongTitle" >> $rstDestination/index.rst
