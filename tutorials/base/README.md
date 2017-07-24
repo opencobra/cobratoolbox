@@ -1,3 +1,6 @@
-# Tutorials - base
+# <img src="../../docs/source/_static/images/icon_base.png" height="22px">&nbsp;&nbsp;Tutorials - base
 
-- [IO](IO)
+- [Input and output of reconstructions and models (IO)](IO)
+- [Engaging with the COBRA Toolbox Forum (engagingWithTheCommunity)](engagingWithTheCommunity)
+- [Initialise and verify The COBRA Toolbox (initializeAndVerify)](initializeAndVerify)
+- [Variational kinetic modelling (variationalKinetics)](variationalKinetics)
