@@ -3,4 +3,3 @@
 - [Input and output of reconstructions and models (IO)](IO)
 - [Engaging with the COBRA Toolbox Forum (engagingWithTheCommunity)](engagingWithTheCommunity)
 - [Initialise and verify The COBRA Toolbox (initializeAndVerify)](initializeAndVerify)
-- [Variational kinetic modelling (variationalKinetics)](variationalKinetics)
