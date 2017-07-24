@@ -9,6 +9,7 @@ Thermo
 
    componentContribution
    directionalityReport
+   experimentalDesign
 
 .. automodule:: src.analysis.thermo
    :members:
