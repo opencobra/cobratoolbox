@@ -1,4 +1,4 @@
-function [solution] = relaxFBA(model, relaxOption)
+function [solution] = relaxedFBA(model, relaxOption, how)
 %
 % Finds the mimimal set of relaxations on bounds and steady state
 % constraints to make the FBA problem feasible
@@ -19,6 +19,7 @@ function [solution] = relaxFBA(model, relaxOption)
 %
 % INPUTS:
 %    model:          COBRA model structure
+%    how:            'cappedl1' (default) / 'l1'
 %    relaxOption:    Structure containing the relaxation options:
 %
 %                      * internalRelax:
@@ -78,6 +79,10 @@ function [solution] = relaxFBA(model, relaxOption)
 
 [m,n] = size(model.S); %Check inputs
 
+%Method
+if nargin<3
+   how='cappedl1'; 
+end
 
 if isfield(model,'SIntRxnBool')
     intRxnBool = model.SIntRxnBool;
@@ -103,7 +108,7 @@ if nargin < 2
     relaxOption.excludedMetabolites     = false(m,1);
 end
 
-if nargin < 3
+if nargin < 4
     if isfield(relaxOption,'internalRelax') == 0
         relaxOption.internalRelax = 2;
     else
@@ -156,7 +161,11 @@ if ~isfield(relaxOption,'lambda')
     relaxOption.lambda = 10;    
 end
 if ~isfield(relaxOption,'gamma')
-    relaxOption.gamma = 10;   
+	if n<20%empirically derived parameters
+    	relaxOption.gamma = 1.2;
+	else
+		relaxOption.gamma = 10;
+	end   
 end
 
 %set local paramters on zero norm for capped L1
@@ -208,7 +217,11 @@ end
 relaxOption.excludedMetabolites = relaxOption.excludedMetabolites | excludedMetabolitesTmp;
 
 % Call the solver
-solution = relaxFBA_cappedL1(model,relaxOption);
+if isequal(how,'cappedl1')
+    solution = relaxFBA_cappedL1(model,relaxOption);
+elseif isequal(how,'l1')
+    solution = relaxedFBAL1(model,relaxOption);
+end
 
 % Attempt to handle numerical issues with small perturbations, less than
 % feasibility tolerance, that cause relaxed problem to be slightly
