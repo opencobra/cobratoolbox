@@ -8,6 +8,7 @@ Analysis
    FBA
    FVA
    MOMA
+   coupling
    deletion
    exploration
    multiSpecies
