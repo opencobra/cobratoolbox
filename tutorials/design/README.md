@@ -1,6 +1,3 @@
-# Tutorials - dataIntegration
+# <img src="../../docs/source/_static/images/icon_design.png" height="22px">&nbsp;&nbsp;Tutorials - dataIntegration
 
-- [optForce](optForce)
-- [optForceGAMS](optForceGAMS)
-- [optGene](optGene)
-- [optKnock](optKnock)
+- [Strain design: optForce (optForce)](optForce)
