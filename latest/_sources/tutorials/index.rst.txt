@@ -19,6 +19,7 @@ Tutorials
    tutorialEcoliCoreModel_part3
    tutorialEngaging
    tutorialExtraction_transcriptomic
+   fastGapFLl
    tutorialFBA
    tutorialFidelityTesting
    tutorialFVA
