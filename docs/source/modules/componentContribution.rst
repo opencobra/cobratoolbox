@@ -1,5 +1,5 @@
 
-.. componentContribution:
+.. _componentContribution:
 
 
 componentContribution

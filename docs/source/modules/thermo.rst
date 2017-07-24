@@ -1,5 +1,5 @@
 
-.. thermo:
+.. _thermo:
 
 
 Thermo
@@ -8,6 +8,7 @@ Thermo
 .. toctree::
 
    componentContribution
+   directionalityReport
 
 .. automodule:: src.analysis.thermo
    :members:

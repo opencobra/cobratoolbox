@@ -1,7 +1,20 @@
-function [nKeq,nGC,nNone]=standardGibbsFormationEnergyStats(modelT,figures)
-%Generate the stats +/- pie chart on the provinence of the metabolite standard Gibbs energies.
+function [nKeq, nGC, nNone] = standardGibbsFormationEnergyStats(modelT, figures)
+% Generate the stats +/- pie chart on the provinence of the metabolite standard Gibbs energies.
 %
-% Ronan M.T. Fleming
+% USAGE:
+%
+%    [nKeq, nGC, nNone] = standardGibbsFormationEnergyStats(modelT, figures)
+%
+% INPUTS:
+%    modelT:
+%    figures:
+%
+% OUTPUTS:
+%    nKeq:
+%    nGC:
+%    nNone:
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(modelT.S);
 
@@ -36,7 +49,7 @@ if figures
     set(textObjs,'FontSize',16);
     title('Provinence of reactant \Delta_{f}G^{\o} data','FontSize',16);
     saveas(figure1,'dfG0provinencePieChart','fig');
-    
+
 end
 
 fprintf('%s\n',['Number of unique reactants without dGf0: ' int2str(length(unique(noneAbbr))) ]);

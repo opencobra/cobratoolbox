@@ -1,16 +1,21 @@
-function writeReactionListThermo(model,FileName,start,stop)
-% exports a list of reactions and bounds to a text file
+function writeReactionListThermo(model, FileName, start, stop)
+% Exports a list of reactions and bounds to a text file
 %
-% INPUT
-% model
-% FileName  Name of output file
+% USAGE:
 %
-% OPTIONAL INPUT
-% start     integer index of first reaction index to write out
-% stop      integer index of last reaction index to write out
+%    writeReactionListThermo(model, FileName, start, stop)
 %
-% Ines Thiele 07/12/07
-% Ronan Fleming - slight adaption for thermodynamic model
+% INPUT:
+%    model:       model structure
+%    FileName:    Name of output file
+%
+% OPTIONAL INPUTS:
+%    start:       integer index of first reaction index to write out
+%    stop:        integer index of last reaction index to write out
+%
+% .. Authors:
+%       - Ines Thiele 07/12/07
+%       - Ronan Fleming - slight adaption for thermodynamic model
 
 if nargin < 4
     stop = length(model.rxns);

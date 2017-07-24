@@ -1,50 +1,59 @@
-function directionalityStatsFigures(directions,resultsBaseFileName,saveFigures)
-%creates pie charts of directionality stats
+function directionalityStatsFigures(directions, resultsBaseFileName, saveFigures)
+% Creates pie charts of directionality stats
 %
-%INPUT
-% directions    a structue of boolean vectors with different directionality
-%               assignments where some vectors contain subsets of others
+% USAGE:
 %
-% qualitatively assigned directions
-%   directions.forwardRecon
-%   directions.reverseRecon
-%   directions.reversibleRecon
+%    directionalityStatsFigures(directions, resultsBaseFileName, saveFigures)
 %
-% qualitatively assigned directions using thermo in preference to
-% qualitative assignments but using qualitative assignments where
-% thermodynamic data is lacking
-%   directions.forwardThermo
-%   directions.reverseThermo
-%   directions.reversibleThermo
-%   directions.uncertainThermo
+% INPUT:
+%    directions:    a structue of boolean vectors with different directionality
+%                   assignments where some vectors contain subsets of others
 %
-% qualtiative -> quantiative changed reaction directions
-%   directions.forward2Forward
-%   directions.forward2Reverse
-%   directions.forward2Reversible
-%   directions.forward2Uncertain
-%   directions.reversible2Forward
-%   directions.reversible2Reverse
-%   directions.reversible2Reversible
-%   directions.reversible2Uncertain
-%   directions.reverse2Forward
-%   directions.reverse2Reverse
-%   directions.reverse2Reversible
-%   directions.reverse2Uncertain
+%                   qualitatively assigned directions:
 %
-% subsets of forward qualtiative -> reversible quantiative change
-%   directions.forward2Reversible_bydGt0
-%   directions.forward2Reversible_bydGt0LHS
-%   directions.forward2Reversible_bydGt0Mid
-%   directions.forward2Reversible_bydGt0RHS
-% 
-%   directions.forward2Reversible_byConc_zero_fixed_DrG0
-%   directions.forward2Reversible_byConc_negative_fixed_DrG0
-%   directions.forward2Reversible_byConc_positive_fixed_DrG0
-%   directions.forward2Reversible_byConc_negative_uncertain_DrG0
-%   directions.forward2Reversible_byConc_positive_uncertain_DrG0
-
-% Ronan M.T. Fleming
+%                     * directions.forwardRecon
+%                     * directions.reverseRecon
+%                     * directions.reversibleRecon
+%
+%                   qualitatively assigned directions using thermo in preference to
+%                   qualitative assignments but using qualitative assignments where
+%                   thermodynamic data is lacking
+%
+%                     * directions.forwardThermo
+%                     * directions.reverseThermo
+%                     * directions.reversibleThermo
+%                     * directions.uncertainThermo
+%
+%                   qualtiative -> quantiative changed reaction directions
+%
+%                     * directions.forward2Forward
+%                     * directions.forward2Reverse
+%                     * directions.forward2Reversible
+%                     * directions.forward2Uncertain
+%                     * directions.reversible2Forward
+%                     * directions.reversible2Reverse
+%                     * directions.reversible2Reversible
+%                     * directions.reversible2Uncertain
+%                     * directions.reverse2Forward
+%                     * directions.reverse2Reverse
+%                     * directions.reverse2Reversible
+%                     *  directions.reverse2Uncertain
+%
+%                   subsets of forward qualtiative -> reversible quantiative change
+%
+%                     * directions.forward2Reversible_bydGt0
+%                     * directions.forward2Reversible_bydGt0LHS
+%                     * directions.forward2Reversible_bydGt0Mid
+%                     * directions.forward2Reversible_bydGt0RHS
+%                     * directions.forward2Reversible_byConc_zero_fixed_DrG0
+%                     * directions.forward2Reversible_byConc_negative_fixed_DrG0
+%                     * directions.forward2Reversible_byConc_positive_fixed_DrG0
+%                     * directions.forward2Reversible_byConc_negative_uncertain_DrG0
+%                     * directions.forward2Reversible_byConc_positive_uncertain_DrG0
+%    resultsBaseFileName:
+%    saveFigures:
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('saveFigures','var')
     saveFigures=0;
@@ -153,4 +162,3 @@ title({'Forward -> Reversible (by reactant concentration)';...
 if saveFigures
 saveas(figure1,[resultsBaseFileName,'_fwdReversible_byconc_pieChart'],'fig');
 end
-

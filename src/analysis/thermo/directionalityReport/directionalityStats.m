@@ -1,65 +1,76 @@
-function [model,directions]=directionalityStats(model, directions,cumNormProbCutoff,printLevel)
+function [model, directions] = directionalityStats(model, directions, cumNormProbCutoff, printLevel)
 % Build Boolean vectors with reaction directionality statistics
 %
-% INPUT
-% model.directions    a structue of boolean vectors with different directionality
-%                     assignments where some vectors contain subsets of others
+% USAGE:
 %
-% directions.forwardProbability
+%    [model, directions] = directionalityStats(model, directions, cumNormProbCutoff, printLevel)
 %
-% qualitatively assigned internal reaction direactions
-% .forwardRecon
-% .reverseRecon
-% .reversibleRecon
-% .equilibriumRecon
+% INPUTS:
+%    model:                 a structue of boolean vectors with different directionality
+%                           assignments where some vectors contain subsets of others with field:
 %
-% quantitatively assigned internal reaction direactions
-% thermodynamic data is lacking
-% .forwardThermo
-% .reverseThermo
-% .reversibleThermo
-% .uncertainThermo
-% .equilibriumThermo
+%                             * .directions
+%
+%    directions:            structure with field:
+%
+%                             * .forwardProbability
+%
+%                           qualitatively assigned internal reaction direactions
+%
+%                             * .forwardRecon
+%                             * .reverseRecon
+%                             * .reversibleRecon
+%                             * .equilibriumRecon
+%
+%                           quantitatively assigned internal reaction direactions
+%                           thermodynamic data is lacking
+%
+%                             * .forwardThermo
+%                             * .reverseThermo
+%                             * .reversibleThermo
+%                             * .uncertainThermo
+%                             * .equilibriumThermo
 %
 % OPTIONAL INPUT
-% cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
-%                       reversible within this cutoff of 0.5
-% printLevel            -1  print out to file
-%                       0   silent
-%                       1   print out to command window
+%    cumNormProbCutoff:     {0.2} cutoff for probablity that reaction is
+%                           reversible within this cutoff of 0.5
+%    printLevel:            -1 to print out to file,
+%                           0 to silent,
+%                           1 to print out to command window
 %
-%OUTPUT
-% directions    a structue of boolean vectors with different directionality
-%               assignments where some vectors contain subsets of others
+% OUTPUT:
+%    directions:            a structue of boolean vectors with different directionality
+%                           assignments where some vectors contain subsets of others
 %
-% qualtiative -> quantiative changed reaction directions
-%   .forward2Forward
-%   .forward2Reverse
-%   .forward2Reversible
-%   .forward2Uncertain
-%   .reversible2Forward
-%   .reversible2Reverse
-%   .reversible2Reversible
-%   .reversible2Uncertain
-%   .reverse2Forward
-%   .reverse2Reverse
-%   .reverse2Reversible
-%   .reverse2Uncertain
-%   .tightened
+%                           qualtiative -> quantiative changed reaction directions
 %
-% subsets of qualtiatively forward  -> quantiatively reversible 
-%   .forward2Reversible_bydGt0
-%   .forward2Reversible_bydGt0LHS
-%   .forward2Reversible_bydGt0Mid
-%   .forward2Reversible_bydGt0RHS
-% 
-%   .forward2Reversible_byConc_zero_fixed_DrG0
-%   .forward2Reversible_byConc_negative_fixed_DrG0
-%   .forward2Reversible_byConc_positive_fixed_DrG0
-%   .forward2Reversible_byConc_negative_uncertain_DrG0
-%   .forward2Reversible_byConc_positive_uncertain_DrG0
-
-% Ronan M.T. Fleming
+%                             * .forward2Forward
+%                             * .forward2Reverse
+%                             * .forward2Reversible
+%                             * .forward2Uncertain
+%                             * .reversible2Forward
+%                             * .reversible2Reverse
+%                             * .reversible2Reversible
+%                             * .reversible2Uncertain
+%                             * .reverse2Forward
+%                             * .reverse2Reverse
+%                             * .reverse2Reversible
+%                             * .reverse2Uncertain
+%                             * .tightened
+%
+%                           subsets of qualtiatively forward  -> quantiatively reversible
+%
+%                             * .forward2Reversible_bydGt0
+%                             * .forward2Reversible_bydGt0LHS
+%                             * .forward2Reversible_bydGt0Mid
+%                             * .forward2Reversible_bydGt0RHS
+%                             * .forward2Reversible_byConc_zero_fixed_DrG0
+%                             * .forward2Reversible_byConc_negative_fixed_DrG0
+%                             * .forward2Reversible_byConc_positive_fixed_DrG0
+%                             * .forward2Reversible_byConc_negative_uncertain_DrG0
+%                             * .forward2Reversible_byConc_positive_uncertain_DrG0
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('cumNormProbCutoff','var')
     directions.cumNormProbCutoff=0.2;
@@ -99,7 +110,7 @@ if any(nZeroDrGt)
 end
 
 [~,nRxn]=size(model.S);
-    
+
 % qualitatively assigned directions
 forwardRecon=directions.forwardRecon;
 reverseRecon=directions.reverseRecon;
@@ -134,7 +145,7 @@ reverse2Uncertain  =  reverseRecon & uncertainThermo;
 % model.DrGtMin = model.DrGt0Min + gasConstant*T*(R'*log(model.concMin) - F'*log(model.concMax));
 % model.DrGtMaxMeanConc = model.DrGt0Max + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
 % model.DrGtMinMeanConc = model.DrGt0Min + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
-    
+
 forward2Reversible_bydGt0=forwardRecon & reversibleThermo & model.DrGtMin<0 & model.DrGtMax>0; % dGfGCforward2ReversibleBool_bydGt0
 
 forward2Reversible_byConc_negative_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==model.DrGt0Max & model.DrGtMax<=0; %dGfGCforward2ReversibleBool_byConc_No_dGt0ErrorLHS
@@ -162,7 +173,7 @@ if printLevel~=0
     fprintf(fid,'%10s\t%s\n',int2str(nnz(reverseRecon)), ' reverse reconstruction assignment.');
     fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleRecon)), ' reversible reconstruction assignment.');
     fprintf(fid,'\n');
-       
+
     fprintf(fid,'%s\n','Quantitative internal reaction directionality:');
     fprintf(fid,'%10s\t%s\n',int2str(nnz(model.SIntRxnBool)),' internal reconstruction reaction directions.');
     fprintf(fid,'%10s\t%s\n',int2str(nnz(forwardThermo)+nnz(reverseThermo)+nnz(reversibleThermo)),  ' of which have a thermodynamic assignment.');
@@ -171,7 +182,7 @@ if printLevel~=0
     fprintf(fid,'%10s\t%s\n',int2str(nnz(reverseThermo)), ' reverse thermodynamic only assignment.');
     fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleThermo)), ' reversible thermodynamic only assignment.');
     fprintf(fid,'\n');
-    
+
     fprintf(fid,'%s\n','Qualitiative vs Quantitative:');
     fprintf(fid,'%10i\t%s\n',nnz(reversible2Reversible),' Reversible -> Reversible');
     fprintf(fid,'%10i\t%s\n',nnz(reversible2Forward),' Reversible -> Forward');
@@ -186,7 +197,7 @@ if printLevel~=0
     fprintf(fid,'%10i\t%s\n',nnz(reverse2Reversible),' Reverse -> Reversible');
     fprintf(fid,'%10i\t%s\n',nnz(reverse2Uncertain),' Reversible -> Uncertain');
     fprintf(fid,'\n');
-    
+
     fprintf(fid,'%s\n','Breakdown of relaxation of reaction directionality, Qualitiative vs Quantitative:');
     %total number of qualitatively forward reactions that are
     %quantitatively reversible
