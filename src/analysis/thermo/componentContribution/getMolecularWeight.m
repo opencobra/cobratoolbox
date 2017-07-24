@@ -1,26 +1,26 @@
 function [MW, Ematrix] = getMolecularWeight(inchis, warnings)
-%computeMW Compute molecular weight and elemental matrix of compounds
+% Computes molecular weight and elemental matrix of compounds
 %
 % [MW, Ematrix] = computeMW(model, metList, warnings)
 %
-%INPUT
-% model             COBRA model structure 
-%                   (must define .mets and .metFormulas)
+% INPUTS:
+%    model:       COBRA model structure
+%                 (must define .mets and .metFormulas)
 %
-%OPTIONAL INPUTS
-% metList           Cell array of which metabolites to search for.
-%                   (Default = all metabolites in model)
-% warnings          Display warnings if there are errors with the
-%                   formula.  (Default = true)
+% OPTIONAL INPUTS:
+%    metList:     Cell array of which metabolites to search for.
+%                 (Default = all metabolites in model)
+%    warnings:    Display warnings if there are errors with the
+%                 formula. (Default = true)
 %
-%OUTPUT
-% MW                Vector of molecular weights
-% Ematrix           m x 8 matrix of order [H, C, N, O, P, S, e-]
-%                   Note that the number of electrons (e-) is counted only for these 6 
-%                   common elements (i.e. we assume all other elements are not involved 
-%                   in redox reactions anyway).
-
-% Jan Schellenberger (Nov. 5, 2008)
+% OUTPUTS:
+%    MW:          Vector of molecular weights
+%    Ematrix:     `m x 8` matrix of order [H, C, N, O, P, S, e-]
+%                 Note that the number of electrons (e-) is counted only for these 6
+%                 common elements (i.e. we assume all other elements are not involved
+%                 in redox reactions anyway).
+%
+% .. Author: - Jan Schellenberger (Nov. 5, 2008)
 
 if nargin < 2
     warnings = true;
@@ -37,7 +37,7 @@ for n = 1:length(inchis)
 		Ematrix(n, :) = NaN;
         if warnings
             fprintf('Warning: InChI no. %d is empty', n);
-        end		
+        end
         continue;
     end
     [formula, nH, charge] = getFormulaAndChargeFromInChI(inchis{n});

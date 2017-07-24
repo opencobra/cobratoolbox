@@ -17,7 +17,7 @@ Analysis
    sampling
    sparseFBA
    subspaces
-   #thermo
+   thermo
    topology
    transport
    rumba
