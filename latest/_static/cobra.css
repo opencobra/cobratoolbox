@@ -1,9 +1,18 @@
 @import url("https://cdn.rawgit.com/vtimbuc/metro-mega-menu/master/menu/css/metro.css");
 
-ul.metro li.color_class1 a.tile { background-color: #C64127; border-radius: 50%; width: 120px; height: 120px;} /*#E07152*/
-ul.metro li.color_class2 a.tile { background-color: #2B5E89; border-radius: 50%; width: 120px; height: 120px;} /*#B5C172*/
-ul.metro li.color_class3 a.tile { background-color: #E28525; border-radius: 50%; width: 120px; height: 120px;} /*#78A6C1*/
-ul.metro li.color_class4 a.tile { background-color: #829E3C; border-radius: 50%; width: 120px; height: 120px;} /*#E5BD51*/
+ul.metro li.color_class1 a.tile { background-color: #C64127; border-radius: 50%; width: 110px; height: 110px;} /*#E07152*/
+ul.metro li.color_class2 a.tile { background-color: #2B5E89; border-radius: 50%; width: 110px; height: 110px;} /*#B5C172*/
+ul.metro li.color_class3 a.tile { background-color: #E28525; border-radius: 50%; width: 110px; height: 110px;} /*#78A6C1*/
+ul.metro li.color_class4 a.tile { background-color: #829E3C; border-radius: 50%; width: 110px; height: 110px;} /*#E5BD51*/
+ul.metro li.color_class5 a.tile { background-color: #36A2D1; border-radius: 50%; width: 110px; height: 110px;} /*#36A2D1*/
+ul.metro li.color_class6 a.tile { background-color: #EC4A75; border-radius: 50%; width: 110px; height: 110px;} /*#EC4A75*/
+ul.metro li.color_class7 a.tile { background-color: #EBAE20; border-radius: 50%; width: 110px; height: 110px;} /*#EBAE20*/
+
+ul.metro li.nocolor_class a.tile { background-color: #FFFFFF; border-radius: 50%; width: 110px; height: 110px;}
+ul.metro:before, ul.metro:after {content: none !important;}
+
+ul.metro li {list-style: none !important;}
+ul.metro li a.tile {padding:0;}
 
 .wrapper {
     text-align: center;
