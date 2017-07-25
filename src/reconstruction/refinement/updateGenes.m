@@ -23,7 +23,9 @@ for i = 1:n
     if ~isempty(grRules{i})
         tmp = grRules{i};
         tmp = strrep(tmp,'and','');
+        tmp = strrep(tmp, 'AND', '');
         tmp = strrep(tmp,'or','');
+        tmp = strrep(tmp, 'OR', '');
         tmp = strrep(tmp,'(','');
         tmp = strrep(tmp,')','');
         tmp = splitString(tmp,' ');
@@ -32,6 +34,3 @@ for i = 1:n
 end
 genes = unique(genes(cellfun('isclass',genes,'char')));
 modelNew.genes = genes(~cellfun('isempty',genes)); % Not sure this is necessary anymore, but it won't hurt.
-
-
-
