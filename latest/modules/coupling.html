@@ -40,8 +40,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Analysis" href="analysis.html"/>
-        <link rel="next" title="mdFBA" href="mdFBA.html"/>
-        <link rel="prev" title="rumba" href="rumba.html"/> 
+        <link rel="next" title="Deletion" href="deletion.html"/>
+        <link rel="prev" title="MOMA" href="MOMA.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -99,6 +99,7 @@
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
@@ -107,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
@@ -243,9 +245,9 @@ cell array of reaction names</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>c</strong> &#8211;
-<cite>k x n</cite> matrix in <cite>c*v &gt;=d</cite></li>
+<cite>k x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
 <li><strong>d</strong> &#8211;
-<cite>n x 1</cite> vector <cite>c*v &gt;= d</cite></li>
+<cite>n x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
 <li><strong>ineqSense</strong> &#8211;
 <cite>k x 1</cite> inequality sense {&#8216;L&#8217;,&#8217;G&#8217;}</li>
 </ul>
@@ -254,12 +256,14 @@ cell array of reaction names</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>modelConstrained</strong> &#8211;
-constrained model
-* S - Stoichiometric matrix
-* b - Right hand side = dx/dt
-* C - Inequality constraint matrix
-* d - Inequality constraint right hand side
-[S;C]*v {=,&lt;=,&gt;=} [dxdt,d]</li>
+constrained model:<ul>
+<li>S - Stoichiometric matrix</li>
+<li>b - Right hand side = dx/dt</li>
+<li>C - Inequality constraint matrix</li>
+<li>d - Inequality constraint right hand side
+<span class="math">\([S; C] * v {=, \leq, \geq } [dxdt, d]\)</span></li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -327,10 +331,10 @@ coupled model</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mdFBA.html" class="btn btn-neutral float-right" title="mdFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="deletion.html" class="btn btn-neutral float-right" title="Deletion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rumba.html" class="btn btn-neutral" title="rumba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="MOMA.html" class="btn btn-neutral" title="MOMA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
