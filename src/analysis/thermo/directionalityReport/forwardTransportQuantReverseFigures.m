@@ -1,19 +1,23 @@
 function forwardTransportQuantReverseFigures(model)
-% figure of the qualitatively forward transport reactions that are quantitatively reversible
+% Figure of the qualitatively forward transport reactions that are quantitatively reversible.
+% Creates a vertical errorbar figure of the qualitatively forward transport reactions
+% that are quantitatively reversible, whether from group contribution or
+% Keq, that then need to be assigned to be forward, to limit the growth rate
+% i.e. abc transporters or reactions involving protons.
 %
-%create a vertical errorbar figure of the qualitatively forward transport reactions
-%that are quantitatively reversible, whether from group contribution or
-%Keq, that then need to be assigned to be forward, to limit the growth rate
-% i.e. abc transporters or reactions involving protons
+% USAGE:
 %
-% INPUT
-% model.transportRxnBool
-% model.dGt0Min
-% model.dGt0Max
-% model.directions.forwardReversible
-% thorStandard
+%    forwardTransportQuantReverseFigures(model)
 %
-% Ronan M.T. Fleming
+% INPUT:
+%    model:    structure with fields:
+%
+%                * .transportRxnBool
+%                * .dGt0Min
+%                * .dGt0Max
+%                * .directions.forwardReversible
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 
@@ -49,7 +53,7 @@ else
     Y0=model.DrGt0Mean;
     L0=model.DrGt0Mean-model.DrGt0Min;
     U0=model.DrGt0Max-model.DrGt0Mean;
-    
+
     Y=model.DrGtMean;
     L=model.DrGtMean-model.DrGtMin;
     U=model.DrGtMax-model.DrGtMean;

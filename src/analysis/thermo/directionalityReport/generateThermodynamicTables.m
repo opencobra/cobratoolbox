@@ -1,6 +1,14 @@
-function generateThermodynamicTables(model,resultsBaseFileName)
-%Generate tab delimited tables detailing the thermodynamic estimates
-%generated for a model
+function generateThermodynamicTables(model, resultsBaseFileName)
+% Generate tab delimited tables detailing the thermodynamic estimates
+% generated for a model
+%
+% USAGE:
+%
+%    generateThermodynamicTables(model, resultsBaseFileName)
+%
+% INPUTS:
+%    model:                  structure
+%    resultsBaseFileName:    default = 'out'
 
 if ~exist('resultsBaseFileName','var')
     resultsBaseFileName='out';
@@ -93,7 +101,7 @@ end
 %         fprintf(fid,'\n');
 %     end
 %     fclose(fid);
-%     
+%
 %     %print out each reaction in turn and its directionality
 %     fid=fopen('ReactionsTab.txt','w');
 %     fprintf(fid,'%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n',...
@@ -130,8 +138,7 @@ end
 %                 NaN,...
 %                 model.rxn(n).dGtMin,...
 %                 model.rxn(n).dGtMax);
-%             
+%
 %         end
 %     end
 %     fclose(fid);
-    

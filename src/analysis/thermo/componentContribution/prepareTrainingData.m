@@ -1,27 +1,31 @@
-function training_data = prepareTrainingData(model,printLevel,params)
-% given a standard COBRA model, add thermodynamic data to it using
+function training_data = prepareTrainingData(model, printLevel, params)
+% Given a standard COBRA model, adds thermodynamic data to it using
 % the Component Contribution method
 %
-% INPUTS
-% model
-% 
-% 
-% OPTIONAL INPUTS
-% params.use_cached_kegg_inchis
-% params.use_model_pKas_by_default
-% params.uf                          maximum uncertainty
+% USAGE:
 %
-% 
+%    training_data = prepareTrainingData(model, printLevel, params)
+%
+% INPUT:
+%    model:                            COBRA structure
+%
+% OPTIONAL INPUTS:
+%    printLevel:                       verbose level, default = 0
+%    params.use_cached_kegg_inchis:
+%    params.use_model_pKas_by_default:
+%    params.uf:                        maximum uncertainty
+%
+%
 % OUTPUTS:
-% model 
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
+%    training_data:                    strucutre with fields
+%
+%                                        * .DfG0 - `m x 1` array of component contribution estimated
+%                                          standard Gibbs energies of formation.
+%                                        * .covf - `m x m` estimated covariance matrix for standard
+%                                          Gibbs energies of formation.
+%                                        * .uf - `m x 1` array of uncertainty in estimated standard
+%                                          Gibbs energies of formation. uf will be large for
+%                                          metabolites that are not covered by component contributions.
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -69,4 +73,3 @@ training_data = createGroupIncidenceMatrix(model, training_data);
 % apply the reverse Legendre transform for the relevant training observations (typically
 % apparent reaction Keq from TECRDB)
 training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default);
-

@@ -1,15 +1,19 @@
 function group_def = getGroupVectorFromInchi(inchi, silent)
+% USAGE:
 %
-% INPUTS
-% inchi             inchi key
-% 
-% OUTPUTS
-% group_def     
-% 
-% DEPENDENCIES
-% inchi2gc.py
- 
- 
+%    group_def = getGroupVectorFromInchi(inchi, silent)
+%
+% INPUT:
+%    inchi:             inchi key
+%
+% OPTIONAL INPUT:
+%    silent:            default = true
+%
+% OUTPUT:
+%    group_def:
+%
+% .. DEPENDENCIES inchi2gc.py
+
 if nargin < 2
     silent = true;
 end
@@ -48,4 +52,3 @@ else
     fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
     group_def = [];
 end
-

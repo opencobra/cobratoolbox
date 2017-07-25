@@ -1,14 +1,19 @@
 function training_data = createGroupIncidenceMatrix(model, training_data)
-% Initialize G matrix, and then use the python script "inchi2gv.py" to decompose each of the 
-% compounds that has an InChI and save the decomposition as a row in the G matrix.
+% Initialize `G` matrix, and then use the python script "inchi2gv.py" to decompose each of the
+% compounds that has an 'InChI' and save the decomposition as a row in the `G` matrix.
 %
-% INPUTS
+% USAGE:
 %
-% OUTPUTS
+%    training_data = createGroupIncidenceMatrix(model, training_data)
 %
+% INPUTS:
+%   model:
+%   training_data:
+%
+% OUTPUT:
+%    training_data:
 
-% get the scores for the mappings of compounds (reflecting the certainty in the mapping)
-mappingScore = getMappingScores(model, training_data);
+mappingScore = getMappingScores(model, training_data); % get the scores for the mappings of compounds (reflecting the certainty in the mapping)
 
 fprintf('Creating group incidence matrix\n');
 
@@ -39,7 +44,7 @@ for i = 1:length(training_data.cids)
         training_data.G(:, end+1) = 0; % add a unique 1 in a new column for this undecomposable compound
         training_data.G(i, end) = 1;
         training_data.has_gv(i) = false;
-    else            
+    else
         group_def = getGroupVectorFromInchi(inchi);
         if length(group_def) == length(training_data.groups)
             training_data.G(i, 1:length(group_def)) = group_def;
@@ -77,7 +82,7 @@ for n = 1:length(model.mets)
         training_data.S(trainingRow, :) = 0; % Add an empty row to S
 
         % Add a row in G for this compound, either with its group vector,
-        % or with a unique 1 in a new column dedicate to this compound        
+        % or with a unique 1 in a new column dedicate to this compound
         training_data.G(trainingRow, :) = 0;
         group_def = getGroupVectorFromInchi(inchi);
         if length(group_def) == length(training_data.groups)

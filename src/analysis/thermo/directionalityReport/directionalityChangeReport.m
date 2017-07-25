@@ -1,59 +1,63 @@
-function directionalityChangeReport(model,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
-%Check for changes to reconstruction reaction direction to
-%thermodynamically constrained model direction 
+function directionalityChangeReport(model, directions, cumNormProbCutoff, printLevel, resultsBaseFileName)
+% Checks for changes to reconstruction reaction direction to
+% thermodynamically constrained model direction .
 %
-%TODO: identify metabolites involved in reactions with changed directions
+% .. TODO: identify metabolites involved in reactions with changed directions
 %
-%Check to see which metabolites are involved in reactions that change the
-%reconstruction directionality then print out the reactions that these
-%metabolites are involved in.
-%Does not include reactions that cannot be assigned reaction directionality
-%due to missing thermodynamic data for certain metabolites involved
-%in that reaction.
+% Checks to see which metabolites are involved in reactions that change the
+% reconstruction directionality then print out the reactions that these
+% metabolites are involved in.
+% Does not include reactions that cannot be assigned reaction directionality
+% due to missing thermodynamic data for certain metabolites involved
+% in that reaction.
 %
-%INPUT
-% model
-% directions    a structue of boolean vectors with different directionality
-%               assignments where some vectors contain subsets of others
+% USAGE:
 %
-% qualtiative -> quantiative changed reaction directions
-%   .forward2Forward
-%   .forward2Reverse
-%   .forward2Reversible
-%   .forward2Uncertain
-%   .reversible2Forward
-%   .reversible2Reverse
-%   .reversible2Reversible
-%   .reversible2Uncertain
-%   .reverse2Forward
-%   .reverse2Reverse
-%   .reverse2Reversible
-%   .reverse2Uncertain
-%   .tightened
+%    directionalityChangeReport(model, directions, cumNormProbCutoff, printLevel, resultsBaseFileName)
 %
-% subsets of qualtiatively forward  -> quantiatively reversible 
-%   .forward2Reversible_bydGt0
-%   .forward2Reversible_bydGt0LHS
-%   .forward2Reversible_bydGt0Mid
-%   .forward2Reversible_bydGt0RHS
-% 
-%   .forward2Reversible_byConc_zero_fixed_DrG0
-%   .forward2Reversible_byConc_negative_fixed_DrG0
-%   .forward2Reversible_byConc_positive_fixed_DrG0
-%   .forward2Reversible_byConc_negative_uncertain_DrG0
-%   .forward2Reversible_byConc_positive_uncertain_DrG0
+% INPUTS:
+%    model:                  COBRA structure
+%    directions:             a structue of boolean vectors with different directionality
+%                            assignments where some vectors contain subsets of others
 %
-% cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
-%                       reversible within this cutoff of 0.5
-% printLevel
-% resultsBaseFileName
-
-%Ronan M.T. Fleming
+%                            qualtiative -> quantiative changed reaction directions
+%
+%                              * .forward2Forward
+%                              * .forward2Reverse
+%                              * .forward2Reversible
+%                              * .forward2Uncertain
+%                              * .reversible2Forward
+%                              * .reversible2Reverse
+%                              * .reversible2Reversible
+%                              * .reversible2Uncertain
+%                              * .reverse2Forward
+%                              * .reverse2Reverse
+%                              * .reverse2Reversible
+%                              * .reverse2Uncertain
+%                              * .tightened
+%                            subsets of qualtiatively forward  -> quantiatively reversible
+%
+%                              * .forward2Reversible_bydGt0
+%                              * .forward2Reversible_bydGt0LHS
+%                              * .forward2Reversible_bydGt0Mid
+%                              * .forward2Reversible_bydGt0RHS
+%                              * .forward2Reversible_byConc_zero_fixed_DrG0
+%                              * .forward2Reversible_byConc_negative_fixed_DrG0
+%                              * .forward2Reversible_byConc_positive_fixed_DrG0
+%                              * .forward2Reversible_byConc_negative_uncertain_DrG0
+%                              * .forward2Reversible_byConc_positive_uncertain_DrG0
+%
+%    cumNormProbCutoff:      {0.2} cutoff for probablity that reaction is
+%                            reversible within this cutoff of 0.5
+%    printLevel:             verbose level
+%    resultsBaseFileName:
+%
+% .. Author: - Ronan M.T. Fleming
 
 
 if ~exist('printLevel','var')
     printLevel=1;
-else 
+else
     if printLevel<0
         if ~exist('resultsBaseFileName','var')
             resultsBaseFileName='';
@@ -153,7 +157,7 @@ if printLevel<0
     end
     %gas constant times temperature
     rt=model.gasConstant*model.T;
-   
+
     for g=1:size(GB,1)
         if separateFiles==1
             fid=fopen([resultsBaseFileName, fileNameString{g} '_StructuredView.txt'],'w');
@@ -162,7 +166,7 @@ if printLevel<0
                 fprintf(fid,'\n');
             end
         end
-            
+
         %find the metabolites causing forward reactions to go in reverse
         if any(GB(g,:))
             Stmp=model.S(:,GB(g,:));
@@ -181,7 +185,7 @@ if printLevel<0
             end
             fprintf(fid,'\n');
             fprintf(fid,'\n');
-            
+
             %print out for each problematic reaction
             for n=1:nRxn
                 if GB(g,n)==1
@@ -213,11 +217,11 @@ end
 %types of changes
 separateFiles=1;
 if printLevel<1
-    
+
     if separateFiles==0
         fid=fopen([resultsBaseFileName '_reactionDirectionalityChangesTab.txt'],'w');
     end
-    
+
     for g=1:size(GB,1)
         if separateFiles==1
             fid=fopen([resultsBaseFileName fileNameString{g} '.txt'],'w');
@@ -226,7 +230,7 @@ if printLevel<1
                 fprintf(fid,'\n');
             end
         end
-                
+
         %reactions
         for n=1:nRxn
             if GB(g,n)==1
@@ -235,7 +239,7 @@ if printLevel<1
             end
         end
         fprintf(fid,'\n');
-        
+
         %metabolites
         fprintf(fid,'%s\n','Cytoplasmic metabolites only:');
         allMetSum=full(sum(abs(model.S(:,GB(g,:))),2));
@@ -245,7 +249,7 @@ if printLevel<1
                 fprintf(fid,'%d\t%s\t%s\t%.1f\t%.1f\t\n',allMetSum(m),model.mets{m}(1:end-3),model.mets{m},model.DfGt0(m),model.DfG0_Uncertainty(m));
             end
         end
-        
+
         if separateFiles==1
             fclose(fid);
         end

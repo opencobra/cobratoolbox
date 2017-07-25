@@ -1,52 +1,13 @@
 function plotFeasibleReactionEnergyRanges(modelT)
-% Plot feasible dGr0' and dGr' for all reactions with quantitatively
+% Plots feasible dGr0' and dGr' for all reactions with quantitatively
 % determined reaction energies
-
-% modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
-% OUTPUTS
-% model                 Model structure with following additional fields:
-% .inchi                Structure containing four m x 1 cell array's of
-%                       IUPAC InChI strings for metabolites, with varying
-%                       levels of structural detail.
-% .pKa                  m x 1 structure containing metabolite pKa values
-%                       estimated with ChemAxon's Calculator Plugins.
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
-% .DrG0                 n x 1 array of component contribution estimated
-%                       standard reaction Gibbs energies.
-% .ur                   n x 1 array of uncertainty in standard reaction
-%                       Gibbs energy estimates.  ur will be large for
-%                       reactions that are not covered by component
-%                       contributions.
-% .DfG0_pseudoisomers   p x 4 matrix with the following columns:
-%                       1. Metabolite index.
-%                       2. Estimated pseudoisomer standard Gibbs energy.
-%                       3. Number of hydrogen atoms in pseudoisomer
-%                       chemical formula.
-%                       4. Charge on pseudoisomer.
-% .DfGt0                m x 1 array of estimated standard transformed Gibbs
-%                       energies of formation.
-% .DrGt0                n x 1 array of estimated standard transformed
-%                       reaction Gibbs energies.
-% .DfGtMin              m x 1 array of estimated lower bounds on
-%                       transformed Gibbs energies of formation.
-% .DfGtMax              m x 1 array of estimated upper bounds on
-%                       transformed Gibbs energies of formation.
-% .DrGtMin              n x 1 array of estimated lower bounds on
-%                       transformed reaction Gibbs energies.
-% .DrGtMax              n x 1 array of estimated upper bounds on
-%                       transformed reaction Gibbs energies.
-% .quantDir             n x 1 array indicating quantitatively assigned
-%                       reaction directionality. 1 for reactions that are
-%                       irreversible in the forward direction, -1 for
-%                       reactions that are irreversible in the reverse
-%                       direction, and 0 for reversible reactions.
+%
+% USAGE:
+%
+%    plotFeasibleReactionEnergyRanges(modelT)
+%
+% INPUT:
+%    modelT:
 
 nRxn = size(modelT.rxns,2);
 
@@ -73,7 +34,7 @@ figure1 = figure('PaperType','<custom>','PaperOrientation','landscape');
 % Divide plot area into irreversible/reversible with colored bars in background
 % X2 = [find(sorted(:,1) == -1); find(sorted(:,1) == 1)];
 % bar1 = bar(X2,1000*ones(length(X2),1),1,'BaseValue',-1000,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-% 
+%
 % hold on
 
 % Create multiple error bars using matrix input to errorbar
@@ -134,4 +95,3 @@ set(h(3), 'Marker', 's', 'MarkerEdgeColor', [0.3412 0.7961 0.1922], 'MarkerFaceC
 l = legend(h, '\Delta_{r}G_{k}^{\prime}', '\Delta_{r}G_{k}^{\prime0} \pm u_{r}', '\Delta_{r}G_{k}^{\prime0}', 'Location', 'south', 'Orientation', 'horizontal');
 legend(gca, 'boxoff')
 set(l,'FontSize', 16, 'fontname', 'Arial')
-

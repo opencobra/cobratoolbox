@@ -1,21 +1,25 @@
-function forwardProbablyReverseFigures(model,miliMolarStandard)
-% figure of qualitatively forward reactions that are probably quantiatively reverse
+function forwardProbablyReverseFigures(model, miliMolarStandard)
+% Figure of qualitatively forward reactions that are probably quantiatively reverse.
+% creates a vertical errorbar figure of the qualitatively forward reactions
+% that end up being probably quantiatively reverse by at least one metabolite
+% group contribution estimate
 %
-%create a vertical errorbar figure of the qualitatively forward reactions
-%that end up being probably quantiatively reverse by at least one metabolite
-%group contribution estimate
+% USAGE:
 %
-%INPUT
-% model.directions 
-%  (subsets of forward qualtiative -> probably quantiative reverse)
-%  .forwardReversible_bydGt0RHS
-%  .forwardReversible_byConc_positive_fixed_DrG0
-%  .forwardReversible_byConc_positive_uncertain_DrG0
+%    forwardProbablyReverseFigures(model,m iliMolarStandard)
+% INPUTS:
+%    model:    structure with field:
+%
+%                * .directions (subsets of forward qualtiative -> probably quantiative reverse):
+%
+%                  * .forwardReversible_bydGt0RHS
+%                  * .forwardReversible_byConc_positive_fixed_DrG0
+%                  * .forwardReversible_byConc_positive_uncertain_DrG0
+%    miliMolarStandard:
+%
+% .. Author: - Ronan M.T. Fleming
 
-% Ronan M.T. Fleming
-
-%%%%%%%%%vertical%%%%%%%%%%%%%
-directions=model.directions;
+directions=model.directions; %%%%%%%%%vertical%%%%%%%%%%%%%
 
 [~,nRxn]=size(model.S);
 
@@ -42,7 +46,7 @@ else
     Y0=model.DrGt0Mean;
     L0=model.DrGt0Mean-model.DrGt0Min;
     U0=model.DrGt0Max-model.DrGt0Mean;
-    
+
     Y=model.DrGtMean;
     L=model.DrGtMean-model.DrGtMin;
     U=model.DrGtMax-model.DrGtMean;
@@ -154,8 +158,8 @@ for n=1:length(xip)
     YTickLabel{n}=[model.rxn(xip(n)).officialName ' ' model.rxn(xip(n)).equation];
     %get rid of the cytoplasmic compartment abbreviations
     YTickLabel{n} = strrep(YTickLabel{n}, '[c]', '');
-    
-   % no idea why this does not work 
+
+   % no idea why this does not work
    %     fprintf('%s\n',[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation]);
 end
 set(AX(2),'YTickLabel',YTickLabel,'FontSize',16);
@@ -186,7 +190,7 @@ if horizontal
     fwdProbReverse=directions.forwardReversible_byConc_positive_uncertain_DrG0 | ...
         directions.forwardReversible_bydGt0RHS | ...
         directions.forwardReversible_byConc_positive_fixed_DrG0;
-    
+
     %plot regions 5,6,7, with region 6 shaded
     X1=1:nRxn;
     %dGrt0
@@ -214,7 +218,7 @@ if horizontal
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpRHS=nnz(directions.forwardReversible_byConc_positive_fixed_DrG0);
     if nNaNpRHS~=nnz(isnan((P(fwdProbReverse))))
@@ -226,7 +230,7 @@ if horizontal
     [tmp,xipNaNPInd]=sort(Y0(NaNPInd));
     %new ordering with NaNs sorted to right
     xip=[xip(nNaNpRHS+1:end); NaNPInd(xipNaNPInd(1:nNaNpRHS))];
-    
+
     figure1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape');
     % Create axes
     axes1 = axes('Parent',figure1,'Color',[0.702 0.7804 1]);
@@ -239,7 +243,7 @@ if horizontal
     %bar for 6
     PreversibleBar_byConcRHS(directions.forwardReversible_byConc_positive_uncertain_DrG0 & directions.forwardReversible_bydGt0RHS)=maxY;
     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-    
+
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');
     % adjust error bar width
@@ -260,7 +264,7 @@ if horizontal
     errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
     errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
     set(hE_c(2), 'XData', errorbarXData);
-    
+
     %mean dGrt0
     plot(X1,Y0(xip),'.','LineStyle','none','Color',[0.3412 0.7961 0.1922]);
     %zero line
@@ -284,7 +288,7 @@ if horizontal
     set(get(AX(2),'Ylabel'),'FontSize',16)
     xlabel('Reactions, sorted by P(\Delta_{r}G^{\primem}<0) (blue)');
     saveas(figure1 ,'GCfwdProbFwd','fig');
-    
+
     %change back
     if miliMolarStandard
         model.dGt0Min=dGt0Min;

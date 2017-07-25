@@ -11,17 +11,18 @@ function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ine
 %    rxnList:             cell array of reaction names
 %
 % OPTIONAL INPUTS:
-%    c:                   `k x n` matrix in `c*v >=d`
-%    d:                   `n x 1` vector `c*v >= d`
+%    c:                   `k x 1` vector :math:`c*v \geq d`
+%    d:                   `n x 1` vector :math:`c*v \geq d`
 %    ineqSense:           `k x 1` inequality sense {'L','G'}
 %
 % OUTPUT:
-%    modelConstrained:    constrained model
+%    modelConstrained:    constrained model:
+%
 %                           * S - Stoichiometric matrix
 %                           * b - Right hand side = dx/dt
 %                           * C - Inequality constraint matrix
 %                           * d - Inequality constraint right hand side
-%                           [S;C]*v {=,<=,>=} [dxdt,d]   
+%                             :math:`[S; C] * v {=, \leq, \geq } [dxdt, d]`  
 
 % EXAMPLE:
 %
@@ -78,4 +79,3 @@ end
 
 %append the inequality sense to the end of the csense
 modelConstrained.csense(nCsense+1,1)=ineqSense;
-

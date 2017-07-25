@@ -2,9 +2,16 @@ function training_data = loadTrainingData(formation_weight)
 % Generates the structure that contains all the training data needed for
 % Component Contribution.
 %
-% Input:
-%   formation_weight - the relative weight to give the formation energies (Alberty's data)
-%                      compared to the reaction measurements (TECRDB)
+% USAGE:
+%
+%    training_data = loadTrainingData(formation_weight)
+%
+% INPUT:
+%    formation_weight:    the relative weight to give the formation energies (Alberty's data)
+%                         compared to the reaction measurements (TECRDB)
+%
+% OUTPUT:
+%    training_data:       structure with data for Component Contribution
 
 if nargin < 1
     formation_weight = 1;
@@ -85,7 +92,7 @@ fprintf('Successfully added %d formation energies\n', length(res{1}));
 % Read the Reduction potential data.
 fid = fopen(REDOX_TSV_FNAME, 'r');
 fgetl(fid); % skip the first header line
-% fields are: name, CID_ox, nH_ox, charge_ox, CID_red, nH_red, 
+% fields are: name, CID_ox, nH_ox, charge_ox, CID_red, nH_red,
 %             charge_red, E'0, pH, I, pMg, T, ref
 res = textscan(fid, '%s%f%f%f%f%f%f%f%f%f%f%f%s', 'delimiter', '\t');
 fclose(fid);
@@ -115,7 +122,7 @@ for i = 1:length(reactions)
     r = reactions{i};
     S(ismember(cids, find(r)), i) = r(r ~= 0);
 end
-    
+
 training_data.cids = cids;
 training_data.cids_that_dont_decompose = cids_that_dont_decompose;
 
