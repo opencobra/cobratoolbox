@@ -1,7 +1,9 @@
 %% *Flux Variability analysis (FVA)*
-% *Authors :*
+% *Authors :  Vanja Vlasov, Systems Biochemistry Group, LCSB, University of 
+% Luxembourg.*
 % 
-% *Reviewers : Anne Richelle*
+% *Reviewers : Anne Richelle, Lewis Lab at University of California, San 
+% Diego.*
 % 
 % Flux variability analysis (FVA) is a widely used computational tool for 
 % evaluating the minimum and maximum range of each reaction flux that can still 
@@ -20,10 +22,12 @@
 % Depending on the size of the model you are using for the analysis, use:
 % 
 % * |fluxVariability()| function - for the low dimensional FVA;
-% * |fastFVA()| function - for the models with more than 1,000 reactions.
+% * |fastFVA()| function - for the models with more than 1,000 reactions;
+% * <https://github.com/opencobra/COBRA.jl distributedFBA.jl> - for high dimensional 
+% FVA,* *models larger than 10,000 reactions $$^2$.
 %% EQUIPMENT SETUP
 % If necessary, initialize the cobra toolbox
-%%
+
 initCobraToolbox
 %% 
 % For solving linear programming problems in FBA and FVA analysis, certain 
@@ -35,8 +39,8 @@ initCobraToolbox
 changeCobraSolver ('gurobi', 'all');
 %% PROCEDURE
 % In this tutorial, we will use the generic model of the human cellular metabolism, 
-% Recon2.0. Load the model
-%%
+% Recon2.0 $$^3$. Load the model
+
 global CBTDIR
 load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
 model = Recon2model;
@@ -44,12 +48,12 @@ model.rxns = strrep(model.rxns, '(', '[');
 model.rxns = strrep(model.rxns, ')', ']');
 clear Recon2model
 %% 
-% The metabolites structures and reactions od Recon2.) can be founded in 
+% The metabolites structures and reactions od Recon2.0 can be founded in 
 % the Virtual Metabolic Human database (VMH, <http://vmh.life http://vmh.life>).
 % 
 % Constrain the model to limit the availability of carbon and oxygen energy 
 % sources. Find the uptake exchange reactions using _findExcRxns_
-%%
+
 [selExc, selUpt] = findExcRxns(model);
 uptakes = model.rxns(selUpt);
 %% 
@@ -64,9 +68,10 @@ modelalter = changeRxnBounds(model, hiCarbonRxns, 0, 'b');
 % Also close the other reaction related to the exchange of oxygen and energy 
 % sources:
 
-energySources = {'EX_adp';'EX_amp[e]';'EX_atp[e]';'EX_co2[e]';'EX_coa[e]';'EX_fad[e]';'EX_fe2[e]';...
-    'EX_fe3[e]';'EX_gdp[e]';'EX_gmp[e]';'EX_gtp[e]';'EX_h[e]';'EX_h2o[e]';'EX_h2o2[e]';'EX_nad[e]';...
-    'EX_nadp[e]';'EX_no[e]';'EX_no2[e]';'EX_o2s[e]'};
+energySources = {'EX_adp'; 'EX_amp[e]'; 'EX_atp[e]'; 'EX_co2[e]';...
+    'EX_coa[e]'; 'EX_fad[e]'; 'EX_fe2[e]'; 'EX_fe3[e]'; 'EX_gdp[e]';...
+    'EX_gmp[e]'; 'EX_gtp[e]'; 'EX_h[e]'; 'EX_h2o[e]'; 'EX_h2o2[e]';...
+    'EX_nad[e]'; 'EX_nadp[e]'; 'EX_no[e]'; 'EX_no2[e]'; 'EX_o2s[e]'};
 modelalter = changeRxnBounds (modelalter, energySources, 0, 'l');
 %% 
 % For this tutorial, we will analyse the variability of several reactions 
@@ -88,8 +93,9 @@ modelfva2 = changeRxnBounds(modelfva2, 'EX_o2[e]',  0, 'l');
 %% 1) Standard FVA
 % The full spectrum of flux variability analysis options can be accessed using 
 % the command:
-%%
-[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage,osenseStr, rxnNameList, verbFlag, allowLoops, method);
+
+% [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model,...
+% optPercentage,osenseStr, rxnNameList, verbFlag, allowLoops, method);
 %% 
 % The |optPercentage| parameter allows one to choose whether to consider 
 % solutions that give at least a certain percentage of the optimal solution (default 
@@ -101,7 +107,8 @@ modelfva2 = changeRxnBounds(modelfva2, 'EX_o2[e]',  0, 'l');
 % flux variability for all reactions can be time consuming:
 
 % Selecting several reactions of the model that we want to analyse with FVA
-rxnsList = {'DM_atp_c_';'ACOAHi';'ALCD21_D';'LALDO';'ME2m';'AKGDm';'PGI';'PGM';'r0062'};
+rxnsList = {'DM_atp_c_'; 'ACOAHi'; 'ALCD21_D'; 'LALDO'; 'ME2m';...
+    'AKGDm'; 'PGI'; 'PGM'; 'r0062'};
 %% 
 % The |verbFlag| input determines the verbose output (default - false). 
 % |allowLoops |input determines whether loops are allowed in the solution (default 
@@ -115,13 +122,14 @@ rxnsList = {'DM_atp_c_';'ACOAHi';'ALCD21_D';'LALDO';'ME2m';'AKGDm';'PGI';'PGM';'
 % Run |fluxVariability()| on both models (|modelfva1|, |modelfva2|) to generate 
 % the minimum and maximum flux values of selected reactions (_rxnsList_) in the 
 % model.
-%%
-%Run FVA analysis for the model with the constraints that simulates aerobic conditions:
-[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1,100,'max', rxnsList)
+
+% Run FVA analysis for the model with the constraints that simulates aerobic conditions:
+[minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1, 100, 'max', rxnsList)
 %% 
 % 
 
-%Run FVA analysis for the model with the constraints that simulates anaerobic conditions:
+% Run FVA analysis for the model with the constraints that 
+% simulates anaerobic conditions:
 [minFlux2, maxFlux2, Vmin2, Vmax2] = fluxVariability(modelfva2, [], [], rxnsList) 
 %% 
 % The additional |n × k| output matrices |Vmin| and |Vmax| return the flux 
@@ -129,7 +137,7 @@ rxnsList = {'DM_atp_c_';'ACOAHi';'ALCD21_D';'LALDO';'ME2m';'AKGDm';'PGI';'PGM';'
 % 
 % You can further plot and compare the FVA results for the selected reaction 
 % from both models:
-%%
+
 ymax1 = maxFlux1;
 ymin1 = minFlux1;
 ymax2 = maxFlux2;
@@ -161,7 +169,7 @@ title('Variations in fluxes in the aerobic and anaerobic conditions')
 % The |fastFVA()| function only supports the <https://opencobra.github.io/cobratoolbox/docs/solvers.html  
 % CPLX> solver. For detail information, refer to the solver <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
 % installation guide>.
-%%
+
 changeCobraSolver ('ibm_cplex', 'all', 1);
 %% 
 % Run fastFVA analysis for the whole model (i.e. flux varaibility analysis 
@@ -173,13 +181,13 @@ changeCobraSolver ('ibm_cplex', 'all', 1);
 %% 
 % Run fast FVA analysis for the whole model with the constraints that simulates 
 % anaerobic conditions:
-%%
+
 [minFluxF2, maxFluxF2, optsol2, ret2, fbasol2, fvamin2, fvamax2,...
     statussolmin2, statussolmax2] = fastFVA(modelfva2);
 %% 
 % Plot the results of the fast FVA and compare them between the aerobic 
 % and anaerobic models:
-%%
+
 ymaxf1 = maxFluxF1;
 yminf1 = minFluxF1;
 ymaxf2 = maxFluxF2;
@@ -205,3 +213,10 @@ title('Variations in fluxes in the aerobic and anaerobic conditions')
 %% REFERENCES 
 % [1] Gudmundsson, S., Thiele, I. Computationally efficient flux variability 
 % analysis. _BMC Bioinformatics. _11, 489 (2010).
+% 
+% [2] Heirendt, L., Thiele, I., Fleming, R.M. DistributedFBA.jl: high-level, 
+% high-performance flux balance analysis in Julia. _Bioinformatics._ 33 (9), 1421-1423 
+% (2017).
+% 
+% [3] Thiele, I., et al. A community-driven global reconstruction of human 
+% metabolism. _Nat. Biotechnol., _31(5), 419–425 (2013).
