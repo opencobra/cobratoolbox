@@ -67,10 +67,14 @@ end
 % Allow pausing for some of the UI.
 % pause on
 
+% set flags for the two checks. 
+reviewMets = 1 ;
+checkSimilarity = 1 ;
+
 %% Check that metList is okay.
 % Make sure all mets have been declared and that 2 mets from C aren't
 % matched to the same met in T. Continue until everything is a-okay.
-reviewMets = 1 ;
+
 while reviewMets
     % Find mets that have not been declared.
     reviewMets = find(metList == 0) ;
@@ -94,6 +98,10 @@ while reviewMets
             RxnInfo.metList = metList ;
             RxnInfo.metIndex = reviewMets ;
             metList = metCompare(RxnInfo) ;
+        else
+            reviewMets = 0 ; % just go on without dealing with problem.
+            checkSimilarity = 0 ; % matricies will be messed up, so do not do checking below
+            fprintf('Skipped resolving, will not check fidelity of matricies.\n') ; 
         end
     end
 end
@@ -102,60 +110,30 @@ end
 TmetNum = length(TMODEL.mets) ;
 metList(metList > TmetNum) = TmetNum+(1:sum(metList > TmetNum)) ;
 
-%% Reconsider reactions that don't have the same stoich between Cmodel and Cspawn
+% merge and extract C model
 CMODELoriginal = CMODEL ;
+if verbose
+    [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean', 'Verbose') ;
+else
+    [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
+end
+
+% Create Cmodel again from the combined model.
+if verbose
+    Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y', 'Verbose') ;
+else
+    Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
+end
+
+%% Reconsider reactions that don't have the same stoich between Cmodel and Cspawn
 try
-checkSimilarity = 1 ;
 while checkSimilarity
     % Combine models and create spawn of Cmodel.
-    % Combine the models.
-    if verbose
-        [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean', 'Verbose') ;
-    else
-        [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
-    end
-
-    % Create Cmodel again from the combined model.
-    if verbose
-        Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y', 'Verbose') ;
-    else
-        Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
-    end
-
+    % Combine the models. Problematic mets must have been resolved
     FluxCompare = compareMatricies(CMODELoriginal, Cspawn) ;
-
-    % compare bounds --> this is not a useful manner of checking.
-    boundDiff = [] ;
-%     for ir = 1:length(CMODEL.rxns)
-%         relativeDirection = FluxCompare.CmodelS(:, ir) ./ FluxCompare.CspawnS(:, ir) ;
-%         nowmets = setdiff(find(FluxCompare.CmodelS(:, ir)) ,...
-%             find(strncmp( Cspawn.mets(FluxCompare.SmetsSorti), 'h[', 2)) ); % ignore protons
-%         relativeDirection = relativeDirection(nowmets)  ;
-%         relativeDirection = relativeDirection(logical(~isinf(relativeDirection) .* ~isnan(relativeDirection))) ;
-%         if ~isempty(nowmets)
-%             if mean(relativeDirection) == 1
-%                 if ~CMODEL.lb(FluxCompare.CrxnsSorti(ir)) == Cspawn.lb(FluxCompare.SrxnsSorti(ir)) || ...
-%                         ~CMODEL.ub(FluxCompare.CrxnsSorti(ir)) == Cspawn.ub(FluxCompare.SrxnsSorti(ir))
-%                     boundDiff(end + 1) = ir ;
-%                 end
-%             elseif mean(relativeDirection) == -1
-%                 if ~CMODEL.lb(FluxCompare.CrxnsSorti(ir)) == -Cspawn.ub(FluxCompare.SrxnsSorti(ir)) || ...
-%                         ~CMODEL.ub(FluxCompare.CrxnsSorti(ir)) == -Cspawn.lb(FluxCompare.SrxnsSorti(ir))
-%                     boundDiff(end + 1) = ir ;
-%                 end
-%             else
-%                 rxnList(ir) = -1 ;
-%                 metList(nowmets(abs(relativeDirection) ~= 1)) = 0 ;
-%             end
-%         end
-%     end
-%     if ~isempty(boundDiff)
-%         fprintf('Bounds not conserved after merging\n' )
-%         rxnList(boundDiff) = -1 ;
-%     end
-
+    
     % If there are differences pause and let the user know what is up.
-    if sum(sum(FluxCompare.diffS)) || ~isempty(boundDiff) || (sum(rxnList == -1) > 0)
+    if sum(sum(FluxCompare.diffS)) || (sum(rxnList == -1) > 0)
         % Plots the differences between the S matricies.
         figure
         subplot(2, 2, 1)
@@ -188,6 +166,10 @@ while checkSimilarity
         rxnList(FluxCompare.CrxnsSorti(diffrxns)) = -1 ;
 
         [rxnList, metList, Stats] = reactionCompare(CMODEL, TMODEL, SCORE, rxnList, metList, Stats) ;
+        
+        % remerge and extract C model for second round of checking.
+        [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
+        Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
 
     else
         % Set the flag to not check for differences again.
@@ -196,14 +178,14 @@ while checkSimilarity
         checkSimilarity = 0 ;
         break
     end
-    % Add rxn and metList to Stats.
-    Stats.rxnList = rxnList ;
-    Stats.metList = metList ;
-
 end
 catch % return safely if re-matching is aborted by user
     return
 end
+
+% Add final rxn and metList to Stats.
+Stats.rxnList = rxnList ;
+Stats.metList = metList ;
 
 %% Organize and Get stats on combined Tmodel.
 if verbose

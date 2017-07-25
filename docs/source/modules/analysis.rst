@@ -8,6 +8,7 @@ Analysis
    FBA
    FVA
    MOMA
+   coupling
    deletion
    exploration
    multiSpecies
@@ -16,7 +17,7 @@ Analysis
    sampling
    sparseFBA
    subspaces
-   #thermo
+   thermo
    topology
    transport
    rumba

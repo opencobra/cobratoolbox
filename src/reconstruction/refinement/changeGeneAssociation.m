@@ -55,11 +55,6 @@ model.rules{rxnID} = '';
 if addRxnGeneMat ==1 
     model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
 end
-% Remove extra white space
-grRule = regexprep(grRule,'\s{2,}',' ');
-grRule = regexprep(grRule,'( ','(');
-grRule = regexprep(grRule,' )',')');
-
 
 if (~isempty(grRule))
     % Ronan & Stefan 13/9/2011 - moved this inside check if empty

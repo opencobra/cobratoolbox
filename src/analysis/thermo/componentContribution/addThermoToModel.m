@@ -1,27 +1,31 @@
-function model = addThermoToModel(model,params,printLevel)
-% given a standard COBRA model, add thermodynamic data to it using
+function model = addThermoToModel(model, params, printLevel)
+% Given a standard COBRA model, add thermodynamic data to it using
 % the Component Contribution method
 %
-% INPUTS
-% model
-% 
-% 
-% OPTIONAL INPUTS
-% params.use_cached_kegg_inchis
-% params.use_model_pKas_by_default
-% params.uf                          maximum uncertainty
+% USAGE:
 %
-% 
+%    model = addThermoToModel(model, params, printLevel)
+%
+% INPUTS:
+%    model:                               COBRA model structure
+%
+%
+% OPTIONAL INPUTS:
+%    params.use_cached_kegg_inchis:
+%    params.use_model_pKas_by_default:
+%    params.uf:                           maximum uncertainty
+%
+%
 % OUTPUTS:
-% model 
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
+%    model:                               COBRA model structure with fields:
+%
+%                                           * .DfG0 - `m x 1` array of component contribution estimated
+%                                             standard Gibbs energies of formation.
+%                                           * .covf - `m x m` estimated covariance matrix for standard
+%                                             Gibbs energies of formation.
+%                                           * .uf - `m x 1` array of uncertainty in estimated standard
+%                                             Gibbs energies of formation. uf will be large for
+%                                             metabolites that are not covered by component contributions.
 
 if ~isfield(params,'use_cached_kegg_inchis')
     use_cached_kegg_inchis = true;
@@ -97,4 +101,3 @@ end
 % model.G = training_data.G(training_data.Model2TrainingMap,:);
 % model.groups = training_data.groups;
 % model.has_gv = training_data.has_gv(training_data.Model2TrainingMap);
-

@@ -118,7 +118,12 @@ for i = 1:length(mergerxns)
 
     % Other rxn fields
     for ir = 1:length(rxnfields)
-        Tmodel.(rxnfields{ir}){mergerxns{i}(1)} = strjoin(Tmodel.(rxnfields{ir})(mergerxns{i}), '|') ;
+        if strcmp(rxnfields{ir}, 'rxnMetNames')
+            % skip this, which is not a string based attribute
+            continue
+        else
+            Tmodel.(rxnfields{ir}){mergerxns{i}(1)} = strjoin(Tmodel.(rxnfields{ir})(mergerxns{i}), '|') ;
+        end
     end
 end
 

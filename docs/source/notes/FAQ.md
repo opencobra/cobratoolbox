@@ -47,3 +47,26 @@ end
 ```
 By requesting the current global variable before the parfor loop and assigning it to a local variable, that variable is passed on to the workers,
 which can then use it to set up the correct solver (or other variable).
+
+## (Windows) MATLAB R2016b crashes with CPLEX 12.7.1
+
+When you experience an unexpected crash of MATLAB `R2016b` when running:
+```MATLAB
+>> changeCobraSolver('ibm_cplex')
+```
+or
+```MATLAB
+>> initCobraToolbox
+```
+after having installed `CPLEX 12.7.1`, the solver might not be correctly installed (see [this issue](https://github.com/opencobra/cobratoolbox/issues/802)).
+
+In order to fix this issue, follow these steps:
+
+- Uninstall all older versions of CPLEX (e.g., `12.6.3`)
+- Uninstall CPLEX `12.7.1`
+- Restart your computer
+- Install CPLEX `12.7.1`. You will be prompted to install `Microsoft Visual C++ 2013`
+- Download [this software package](https://www.microsoft.com/en-us/download/details.aspx?id=40784) and install `Microsoft Visual C++ 2013 (x64)`
+- Finish the installation of CPLEX `12.7.1`
+- Restart your computer
+- Start MATLAB and the above commands again

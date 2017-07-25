@@ -38,19 +38,25 @@ fluxTol = 1e-8;  % tolerance for non-zero fluxes
 [digitUB, digitLB] = deal(7, 5);  % largest digit and decimal places displayed for numbers (except stoich)
 stoichDigit = 6;  % at most print six decimal places for stoichiometric coefficients
 
+%% Handle input arguments
 % define persistent variables for iterative calling
 persistent pathLocal  % function output
 persistent modelLocal  % local model for next iteration
-% empty model input uses previous modelLocal
-checkModel = false;
-if ~isempty(model)
-    % non-empty model input resets modelLocal
-    modelLocal = model;
-    pathLocal = {};
-    checkModel = true;
+persistent rxnFields  % rxn fields to be printed
+persistent metFields  % met fields to be printed
+persistent fluxLocal  % flux matrix
+
+checkFields = false;
+if nargin >= 1 && ~isempty(model)
+    % empty model input uses previous modelLocal (mouse clicking)
+    % non-empty model input resets modelLocal, pathLocal and fluxLocal (initial function call)
+    [modelLocal, pathLocal, fluxLocal] = deal(model, {}, []);
+    checkFields = true;  % check model's fields to be printed 
 elseif isempty(modelLocal)
-    error('The persistent variables in surfNet have been cleared. Please re-call the function.');
+    error('The persistent variable modelLocal in surfNet has been cleared. Please re-call the function.');
 end
+
+% options for showing previous steps
 showPrev = false;
 printShowPrev = true;
 if nargin == 9
@@ -61,6 +67,7 @@ if nargin == 9
         printShowPrev = iterOptions.printShowPrev;
     end
 end
+
 % nCharBreak is the maximum number of characters per line when printing equations
 if nargin < 8 || isempty(nCharBreak) || nCharBreak == 0
     nCharBreak = 0;
@@ -69,166 +76,23 @@ if nargin < 8 || isempty(nCharBreak) || nCharBreak == 0
 else
     nCharBreakReal = nCharBreak;
 end
-if checkModel && (nargin < 7  || isempty(field2print))
-    field2print = {{'metNames', 'metFormulas'}, {'rxnNames', 'lb', 'ub'}};
-end
-persistent rxnFields
-persistent metFields
-persistent showLB
-persistent showUB
 
-% check model's fields to be printed and their sizes
-if checkModel 
-    if ischar(field2print)
-        field2print = {field2print};
-    end
-    if ~(numel(field2print) == 2 && all(cellfun(@iscellstr,field2print))) && ~iscellstr(field2print)
-        % error if not 2 cells input, first contains field names for mets, second for rxns
-        error(['Incorrect input for field2print. Must be (1) a cell array of two cells, '...
-            '1st cell being a character array for met fields and 2nd for rxn fields, ' ...
-            'or (2) a character array of field names recognizable from the field names or the sizes.']);
-    else
-        % check the existence of the fields
-        rGMwarn = false;
-        if iscellstr(field2print)
-            field2print(strcmp(field2print, 'S')) = [];
-            if any(strcmp(field2print, 'rxnGeneMat'))
-                field2print(strcmp(field2print, 'rxnGeneMat')) = [];
-                rGMwarn = true;
-            end
-            field2check = field2print;
-        else
-            for k = 1:2
-                field2print{k}(strcmp(field2print{k}, 'S')) = [];
-                if any(strcmp(field2print{k}, 'rxnGeneMat'))
-                    field2print{k}(strcmp(field2print{k}, 'rxnGeneMat')) = [];
-                    rGMwarn = true;
-                end
-            end
-            field2check = [field2print{1}(:);field2print{2}(:)];
-        end
-        if rGMwarn
-            warning('surfNet does not support showing rxnGeneMat. Ignore it.')
-        end
-        ynF = ismember(field2check,fieldnames(modelLocal));
-        if ~all(ynF)
-            error(['The following field(s) is(are) not in the model:' ...
-                strjoin(repmat({' %s'}, 1, sum(~ynF)), ',')], field2check{~ynF})
-        end
-    end
-    [nM, nR] = size(modelLocal.S);
-    if iscellstr(field2print)
-        ynF = ismember(field2print, {'rxns', 'mets'});
-        field2print(ynF) = [];
-        field2print = field2print(:);
-        metF = strncmpi('met', field2print, 3);
-        rxnF = strncmpi('rxn', field2print, 3);
-        if all(metF | rxnF) 
-            metFields = field2print(metF);
-            rxnFields = field2print(rxnF);
-        else
-            if nM == nR
-                warning('Same number of mets and rxns. Some met fields may be displayed as rxn fields.');
-            end
-            [metFields, rxnFields] = deal({});
-            notMetRxnField = false(numel(field2print), 1);
-            % do this to preserve the order in field2print
-            for jF = 1:numel(field2print)
-                if metF(jF)
-                    metFields(end+1) = field2print(jF);
-                elseif rxnF(jF)
-                    rxnFields(end+1) = field2print(jF);
-                else
-                    % check sizes
-                    if any(size(modelLocal.(field2print{jF})) == nR)
-                        rxnFields(end+1) = field2print(jF);
-                    elseif any(size(modelLocal.(field2print{jF})) == nM)
-                        metFields(end+1) = field2print(jF);
-                    else
-                        notMetRxnField(jF) = true;
-                    end
-                end
-            end
-            if any(notMetRxnField)
-                field2print = field2print(notMetRxnField);
-                error(['The following field(s) cannot be recognized as met or rxn fields:' ...
-                    strjoin(repmat({' %s'}, 1, numel(field2print)), ',')], field2print{:});
-            end
-        end
-        field2print = {metFields, rxnFields}; 
-    end
-    metFields = field2print{1}(:);
-    rxnFields = field2print{2}(:);
-    % check datatype and if the sizes are equal to #mets 
-    [badsizeM, notCellNumM] = deal(false(numel(metFields), 1));
-    for jF = 1:numel(metFields)
-        if size(modelLocal.(metFields{jF}), 1) ~= nM
-            if size(modelLocal.(metFields{jF}), 2) == nM
-                modelLocal.(metFields{jF}) = modelLocal.(metFields{jF})';
-            else
-                badsizeM(jF) = true;
-            end
-        end
-        if ischar(modelLocal.(metFields{jF})) && ~badsizeM(jF)
-            % also allow character arrays. Convert them into cell strings
-            modelLocal.(metFields{jF}) = cellstr(modelLocal.(metFields{jF}));
-        end
-        notCellNumM(jF) = ~iscellstr(modelLocal.(metFields{jF})) & ~isnumeric(modelLocal.(metFields{jF}));
-    end
-    % check datatype and if the sizes are equal to #rxns 
-    [badsizeR, notCellNumR] = deal(false(numel(rxnFields), 1));
-    for jF = 1:numel(rxnFields)
-        if size(modelLocal.(rxnFields{jF}), 1) ~= nR
-            if size(modelLocal.(rxnFields{jF}), 2) == nR
-                modelLocal.(rxnFields{jF}) = modelLocal.(rxnFields{jF})';
-            else
-                badsizeR(jF) = true;
-            end
-        end
-        if ischar(modelLocal.(rxnFields{jF})) && ~badsizeR(jF)
-            % also allow character arrays. Convert them into cell strings
-            modelLocal.(rxnFields{jF}) = cellstr(modelLocal.(rxnFields{jF}));
-        end
-        notCellNumR(jF) = ~iscellstr(modelLocal.(rxnFields{jF})) & ~isnumeric(modelLocal.(rxnFields{jF}));
-    end
-    if any(badsizeM) || any(badsizeR) || any(notCellNumM) || any(notCellNumR)
-        str = '';
-        if any(badsizeM)
-            p = metFields(badsizeM);
-            str = [str sprintf(['Incorrect size of the following met field(s):', ...
-                strjoin(repmat({' %s'}, 1, sum(badsizeM)), ','), '.'], p{:})];
-        end
-        if any(badsizeR)
-            p = rxnFields(badsizeR);
-            str = [str sprintf(['\nIncorrect size of the following rxn field(s):', ...
-                strjoin(repmat({' %s'}, 1, sum(badsizeR)), ','), '.'], p{:})];
-        end
-        if any(notCellNumM)
-            p = metFields(notCellNumM);
-            str = [str sprintf(['\nThe following met field(s) is(are) neither numeric nor cell array of characters:', ...
-                strjoin(repmat({' %s'}, 1, sum(notCellNumM)), ','), '.'], p{:})];
-        end
-        if any(notCellNumR)
-            p = rxnFields(notCellNumR);
-            str = [str sprintf(['\nThe following rxn field(s) is(are) neither numeric nor cell array of characters::', ...
-                strjoin(repmat({' %s'}, 1, sum(notCellNumR)), ','), '.'], p{:})];
-        end
-        error('%s', str)
-    end
-    showLB = any(strcmp(rxnFields, 'lb'));
-    showUB = any(strcmp(rxnFields, 'ub'));
-    ynF = ismember(rxnFields, {'lb', 'ub'});
-    rxnFields(ynF) = [];
+% defaulted fields to be printed
+if checkFields && (nargin < 7  || isempty(field2print))
+    field2print = {{'metNames', 'metFormulas'}, {'rxnNames', 'lb', 'ub'}};
+    % remove fields that are not in the model
+    field2print = cellfun(@(x) x(ismember(x, fieldnames(modelLocal))), field2print, 'UniformOutput', false);
 end
+
 if nargin < 6 || isempty(showMets)
     showMets = true;
 end
+
 if nargin < 5 || isempty(nonzeroFluxFlag)
     nonzeroFluxFlag = true;
 end
-% string indicating non-zero fluxes or not for printing
-nzFluxPrint = '';
-persistent fluxLocal  % local flux vector for next iteration
+
+fluxInputErr = false;
 if nargin < 4
     % calling with no flux arguement empties fluxLocal
     fluxLocal = [];
@@ -239,33 +103,158 @@ else
         fluxLocal = [];
     elseif ~isempty(flux)
         % calling with non-empty flux arguement resets fluxLocal
-        if size(flux, 2) == numel(model.rxns)
+        if size(flux, 2) == numel(modelLocal.rxns)
             flux = flux';
-        elseif size(flux, 1) ~= numel(model.rxns)
-            error('Input flux vector has incorrect dimension.')
+        elseif size(flux, 1) ~= numel(modelLocal.rxns)
+            fluxInputErr = true;
         end
         fluxLocal = flux;        
     end
 end
-if ~isempty(fluxLocal)
-    % reaction direction for determining consumption or production if flux is given
-    direction = ones(1, size(modelLocal.S, 2));
-    if nonzeroFluxFlag
-        nzFluxPrint = ' with non-zero fluxes ';
-        direction(fluxLocal(:, 1) <= -fluxTol) = -1;
-        direction(all(abs(fluxLocal) < fluxTol, 2)) = 0;
-    else
-        direction(fluxLocal(:, 1) < 0) = -1;
-    end
-else
-    direction = 1;
+
+% default print metabolite abbreviation instead of full name
+if nargin < 3 || isempty(metNameFlag)
+    metNameFlag = false;
 end
 
-% show previous steps. Should be called by mouse clicking only
+% if a reaction or metabolite is not given
+if ~showPrev && (nargin < 2 || isempty(metrxn))
+    if any(modelLocal.c) && (isempty(fluxLocal) || any(abs(fluxLocal(modelLocal.c ~= 0, 1)) > fluxTol))
+        % print objective function if no flux vector is given or the objective function value in the flux vector is nonzero 
+        metrxn = modelLocal.rxns(modelLocal.c ~= 0);
+    else
+        % pick a random reaction otherwise
+        if ~isempty(fluxLocal)
+            metrxn = modelLocal.rxns{randsample(find(abs(fluxLocal(:, 1)) > fluxTol), 1)};
+        else
+            metrxn = modelLocal.rxns{randsample(numel(modelLocal.rxns), 1)};
+        end
+    end
+end
+
+%% Check model's fields to be printed
+if checkFields 
+    if ischar(field2print)
+        field2print = {field2print};
+    end
+    if ~iscellstr(field2print) && ~(numel(field2print) == 2 && all(cellfun(@iscellstr,field2print)))
+        % error if not cellstr of field names nor 2 cells input, first contains field names for mets, second for rxns
+        error(['Incorrect input for field2print. Must be (1) a cell array of two cells, '...
+            '1st cell being a character array for met fields and 2nd for rxn fields, ' ...
+            'or (2) a character array of field names recognizable from the field names or the sizes.']);
+    else
+        % unsupported fields
+        uspField = {'S', 'rxnGeneMat'};
+        % find unsupported fields in the input
+        if iscellstr(field2print)
+            uspFieldInput = ismember(field2print, uspField);
+            uspField = field2print(uspFieldInput);
+            field2print(uspFieldInput) = [];
+            field2check = field2print;
+        else
+            uspFieldInput = cellfun(@(x) ismember(x(:), uspField), field2print, 'UniformOutput', false);
+            uspField = [columnVector(field2print{1}(uspFieldInput{1})); columnVector(field2print{2}(uspFieldInput{2}))];
+            for k = 1:2
+                field2print{k}(uspFieldInput{k}) = [];
+            end
+            field2check = [field2print{1}(:); field2print{2}(:)];
+        end
+        if ~isempty(uspField)
+            warning('surfNet does not support showing %s. Ignore.', strjoin(uspField, ', '));
+        end
+        
+        % check the existence of the fields
+        ynF = ismember(field2check,fieldnames(modelLocal));
+        if ~all(ynF)
+            error(['The following field(s) is(are) not in the model:' ...
+                strjoin(repmat({' %s'}, 1, sum(~ynF)), ',')], field2check{~ynF})
+        end
+    end
+    
+    % identify fields for metabolites and reactions
+    nS = size(modelLocal.S);
+    if iscellstr(field2print)
+        ynF = ismember(field2print, {'rxns', 'mets'});
+        field2print = columnVector(field2print(~ynF));
+        % fields starting with 'rxn' or 'met' or other standard fields
+        rxnF = strncmpi('rxn', field2print, 3) | ismember(field2print, {'rev'; 'lb'; 'ub'; 'c'; 'rules'; 'grRules'; 'subSystems'});
+        metF = strncmpi('met', field2print, 3) | ismember(field2print, {'b'; 'csense'});
+        % assign fields as rxn or met fields by their sizes
+        [metF(cellfun(@(x) any(size(modelLocal.(x)) == nS(1)), field2print) & ~rxnF), ...
+            rxnF(cellfun(@(x) any(size(modelLocal.(x)) == nS(2)), field2print) & ~metF)] = deal(true);
+        if any(metF & rxnF)
+            warning('Same number of mets and rxns. The following field(s) is(are) displayed as rxn field(s): %s.', ...
+                strjoin(field2print(metF & rxnF), ', '));
+        end
+        if any(~metF & ~rxnF)
+            error('The following field(s) cannot be recognized as met or rxn field(s): %s', ...
+                strjoin(field2print(~metF & ~rxnF), ', '));
+        end
+        field2print = {field2print(metF & ~rxnF), field2print(rxnF)}; 
+    end
+    
+    % check data type and if the sizes are equal to #mets or #rxns
+    [badsize, notCellNum, MetOrRxn, errMsg] = deal(cell(2, 1), cell(2, 1), {'met'; 'rxn'}, '');
+    for i = 1:2
+        [badsize{i}, notCellNum{i}] = deal(false(numel(field2print{i}), 1));
+        % loop over met and rxn fields respectively
+        for jF = 1:numel(field2print{i})
+            % check sizes
+            if size(modelLocal.(field2print{i}{jF}), 1) ~= nS(i)
+                if size(modelLocal.(field2print{i}{jF}), 2) == nS(i)
+                    modelLocal.(field2print{i}{jF}) = modelLocal.(field2print{i}{jF})';
+                else
+                    badsize{i}(jF) = true;
+                end
+            end
+            % check data type
+            if ischar(modelLocal.(field2print{i}{jF})) && ~badsize{i}(jF)
+                % allow character arrays. Convert them into cell strings
+                modelLocal.(field2print{i}{jF}) = cellstr(modelLocal.(field2print{i}{jF}));
+            elseif iscell(modelLocal.(field2print{i}{jF})) && ~badsize{i}(jF)
+                % make sure all empty cell has '' as content instead of []
+                modelLocal.(field2print{i}{jF})(cellfun(@isempty, modelLocal.(field2print{i}{jF}))) = {''};
+            end
+            % unsupported data type
+            notCellNum{i}(jF) = ~isnumeric(modelLocal.(field2print{i}{jF})) & (~iscell(modelLocal.(field2print{i}{jF})) ...
+                || ~all(cellfun(@(x) ischar(x) || iscellstr(x), modelLocal.(field2print{i}{jF}))));
+        end
+        % error message for incorrect sizes or unsupported datatypes
+        if any(badsize{i})
+            errMsg = [errMsg, sprintf('Incorrect size of the following %s field(s): %s\n', ...
+                MetOrRxn{i}, strjoin(field2print{i}(badsize{i}), ', '))]; 
+        end
+        if any(notCellNum{i})
+            errMsg = [errMsg, sprintf('The following %s field(s) is(are) neither numeric nor cell array of characters: %s\n', ...
+                MetOrRxn{i}, strjoin(field2print{i}(notCellNum{i}), ', '))]; 
+        end
+    end
+    
+    % error message
+    if ~isempty(errMsg)
+        error('%s', strtrim(errMsg))
+    end
+    
+    % define metFields and rxnFields
+    metFields = field2print{1}(:);
+    rxnFields = field2print{2}(:);    
+end
+
+% raise error after checking model to avoid errors in iterative calls
+if fluxInputErr
+    error('Input flux vector has incorrect dimension.')
+end
+
+% print lb, ub or not
+[showLB, showUB] = deal(any(strcmp(rxnFields, 'lb')), any(strcmp(rxnFields, 'ub')));
+rxnFieldsForInfo = rxnFields(~ismember(rxnFields, {'lb', 'ub'}));
+
+
+%% Show previous steps (called by mouse clicking only)
 if showPrev
     fprintf('\n');
     nChar = 0;
-    for jPast = 1:size(pathLocal)
+    for jPast = 1:size(pathLocal, 1)
         % print each of the previous metabolites navigated
         if ~isempty(pathLocal{jPast, 1})
             if metNameFlag
@@ -300,46 +289,7 @@ if showPrev
     return
 end
 
-% if a reaction or metabolite is not given
-if nargin < 2 || isempty(metrxn)
-    if any(model.c) && (isempty(fluxLocal) || any(abs(fluxLocal(model.c~=0, 1)) > fluxTol))
-        % print objective function if no flux vector is given or the objective function value in the flux vector is nonzero 
-        metrxn = model.rxns(model.c~=0);
-    else
-        % pick a random reaction otherwise
-        if ~isempty(fluxLocal)
-            metrxn = model.rxns{randsample(find(abs(fluxLocal) > fluxTol), 1)};
-        else
-            metrxn = model.rxns{randsample(numel(model.rxns), 1)};
-        end
-    end
-end
-% default print metabolite abbreviation instead of full name
-if nargin < 3 || isempty(metNameFlag)
-    metNameFlag = false;
-end
-% check modelLocal's fields to ensure no error
-if checkModel
-    if ~isfield(modelLocal, 'metNames')
-        modelLocal.metNames = modelLocal.mets;
-    else
-        noName = cellfun(@isempty, modelLocal.metNames);
-        modelLocal.metNames(noName) = modelLocal.mets(noName);
-    end
-    if ~isfield(modelLocal, 'metFormulas')
-        modelLocal.metFormulas = repmat({''}, numel(modelLocal.mets), 1);
-    else
-        modelLocal.metFormulas(cellfun(@isempty, modelLocal.metFormulas)) = {''};
-    end
-    if ~isfield(modelLocal, 'rxnNames')
-        modelLocal.rxnNames = modelLocal.rxns;
-    else
-        noName = cellfun(@isempty, modelLocal.rxnNames);
-        modelLocal.rxnNames(noName) = modelLocal.rxns(noName);
-    end
-end
-
-% iteractive calling if the input is a list of reactions and metabolites
+%% iteractive calling if the input is a list of reactions and metabolites
 if iscell(metrxn)
     iterOptionsCell.printShowPrev = false;
     for jMR = 1:numel(metrxn)
@@ -356,51 +306,46 @@ if iscell(metrxn)
 end
 
 %% input is a reaction
+% string indicating non-zero fluxes or not for printing
+nzFluxPrint = '';
+if ~isempty(fluxLocal)
+    % reaction direction for determining consumption or production if flux is given
+    direction = ones(1, size(modelLocal.S, 2));
+    if nonzeroFluxFlag
+        nzFluxPrint = ' with non-zero fluxes ';
+        direction(fluxLocal(:, 1) <= -fluxTol) = -1;
+        direction(all(abs(fluxLocal) < fluxTol, 2)) = 0;
+    else
+        direction(fluxLocal(:, 1) < 0) = -1;
+    end
+else
+    direction = 1;
+end
+
 id = findRxnIDs(modelLocal, metrxn);
 if id ~= 0
     if isempty(pathLocal)
-        pathLocal{1, 1} = ''; 
+        pathLocal = {'', ''}; 
+    end
+    if ~isempty(pathLocal{end, 2})
+        pathLocal(end + 1, :) = {'', ''}; 
     end
     pathLocal{end, 2} = metrxn;
-    % handle reaction flux
-    fluxPrint = '';
-    if ~isempty(fluxLocal)
-        fluxPrint = ' (';
-        for nFlux = 1:size(fluxLocal, 2)
-            if nFlux < size(fluxLocal, 2)
-                fluxPrint = [fluxPrint, digit2disp(fluxLocal(id, nFlux)), ', '];
-            else
-                fluxPrint = [fluxPrint, digit2disp(fluxLocal(id, nFlux)), ')'];
-            end
-        end
-    end
-    fprintf('\nRxn #%d  %s%s', id, metrxn, fluxPrint);
+    
+    % print reaction flux
+    fprintf('\nRxn #%d  %s%s', id, metrxn, printFlux(id));
+    
     % print bounds
-    if showLB && showUB
-        fprintf(', Bd: %s / %s', digit2disp(modelLocal.lb(id)), digit2disp(modelLocal.ub(id)));
-    elseif showLB
-        fprintf(', LB: %s', digit2disp(modelLocal.lb(id)));
-    elseif showUB
-        fprintf(', UB: %s', digit2disp(modelLocal.ub(id)));
-    end
+    printBounds(id);
+    
     % print rxn info
-    for jF = 1:numel(rxnFields)
-        fprintf(', ');
-        if ~strcmp(rxnFields{jF}, 'rxnNames')
-            fprintf('%s: ', rxnFields{jF});
-        end
-        if iscell(modelLocal.(rxnFields{jF}))
-            fprintf('%s', modelLocal.(rxnFields{jF}){id});
-        else
-            fprintf('%s', digit2disp(modelLocal.(rxnFields{jF})(id)));
-        end
-    end
-    fprintf('\n');
-    % print equation
+    printMetRxnInfo(id, rxnFieldsForInfo, 1, true, 'rxnNames');
+    
+    % print reaction formula
     p = printRxnFormula(modelLocal, metrxn, 0, 1, 0);
-    dirRxn = 1;
+    dirRxn = 1;  % direction of the reaction
     if ~isempty(fluxLocal)
-        % direction of the reaction. If flux is given, non-negative flux treated as forward direction and -ve flux as reverse direction
+        % If flux is given, non-negative flux treated as forward direction and -ve flux as reverse direction
         dirRxn = sign(direction(id) + 0.1);
     end
     % all the metabolite involved
@@ -412,43 +357,8 @@ if id ~= 0
     end
     % get each part of the reaction formula and add hyperlink
     formPart = strsplit(p{1});
-    nChar = 0;  % number of characters per line
-    lineBreak = false;
-    for jPart = 1:numel(formPart)
-        metEqPrint = '';
-        f = strcmp(dict(:, 1), formPart{jPart});
-        % if the current part is a metabolite
-        if any(f)
-            metEqPrint = dict{f, 1 + metNameFlag}; 
-        end
-        nChar = nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) + 1;  % +1 for the space
-        if isempty(metEqPrint) 
-            % not a metabolite name (stoich/'+'/'->'/'<=>'): check if a new line is needed
-            if nChar > 0  % nChar > 0 implies something has been printed on the line
-                if isnan(str2double(formPart{jPart})) || jPart == numel(formPart)
-                    % not a stoich ('+'/'->'/'<=>'): new line if current nChar exceeds the limit
-                    if nChar -1 > nCharBreakReal
-                        lineBreak = true;
-                    end
-                else
-                    % stoich coeff: new line if together with the coming metID, #characters exceeds the limit
-                    if nChar + length(formPart{jPart + 1}) > nCharBreakReal
-                        lineBreak = true;
-                    end
-                end
-            end
-            if lineBreak
-                fprintf('\n  '); 
-                nChar = length(formPart{jPart}) + 3;  % 2 spaces before + 1 space after
-                lineBreak = false; 
-            end
-            fprintf('%s ', formPart{jPart});
-        else
-            % print hyperlink if it is a metabolite name
-            printFcn(formPart{jPart}, metEqPrint, 0);
-            fprintf(' ');
-        end
-    end
+    printFormulae(formPart, dict);
+
     % print reactants and products in detail
     if showMets
         % max. met's length
@@ -495,25 +405,8 @@ if id ~= 0
                 printFcn(modelLocal.mets{m{jRP}(j)}, modelLocal.mets{m{jRP}(j)}, dispLen1);
                 % print stoichiometric coefficients and other called fields
                 fprintf(['  ' stForm '  '], full(modelLocal.S(m{jRP}(j), id)));
-                for jF = 1:numel(metFields)
-                    if jF > 1
-                        fprintf(', ');
-                    end
-                    if iscell(modelLocal.(metFields{jF}))
-                        % if it is a cell array
-                        if iscell(modelLocal.(metFields{jF}){m{jRP}(j)})
-                            % concatenate if the cell content is a cell array of strings
-                            ToPrint = strjoin(modelLocal.(metFields{jF}){m{jRP}(j)}, '|');
-                        else
-                            ToPrint = modelLocal.(metFields{jF}){m{jRP}(j)};
-                        end
-                    else
-                        % if it is a value, format it properly
-                        ToPrint = digit2disp(modelLocal.(metFields{jF})(m{jRP}(j)));
-                    end
-                    fprintf('%s', ToPrint);
-                end
-                fprintf('\n');
+                % print met fields
+                printMetRxnInfo(m{jRP}(j), metFields, 2, false, '');
             end
         end
     else
@@ -528,26 +421,11 @@ else
     end
     pathLocal(end + 1, :) = {metrxn, ''};
     fprintf('\nMet #%d  %s', id, modelLocal.mets{id});
-    for jF = 1:numel(metFields)
-        fprintf(', ');
-        if ~any(strcmp(metFields{jF}, {'metFormulas';'metNames'}))
-            fprintf('%s: ', metFields{jF});
-        end
-        if iscell(modelLocal.(metFields{jF}))
-            % if it is a cell array
-            if iscell(modelLocal.(metFields{jF}){id})
-                % concatenate if the cell content is a cell array of strings
-                ToPrint = strjoin(modelLocal.(metFields{jF}){id}, '|');
-            else
-                ToPrint = modelLocal.(metFields{jF}){id};
-            end
-        else
-            % if it is a value, format it properly
-            ToPrint = digit2disp(modelLocal.(metFields{jF})(id));
-        end
-        fprintf('%s', ToPrint);
-    end
+
+    % print met fields
+    printMetRxnInfo(id, metFields, 1, true, {'metNames'; 'metFormulas'});
     fprintf('\n');
+    
     for jCP = 1:2
         if jCP == 1
             % print consuming reactions (taking into account of flux direction if given)
@@ -561,48 +439,24 @@ else
         if isempty(r)
             fprintf(' none\n');
         else
-            % print rxn formulas
+            % print all connected reactions
             fprintf('\n');
             p = printRxnFormula(modelLocal, modelLocal.rxns(r), 0, 1, 0);            
             for j = 1:numel(r)
-                % print at most six decimal places of reaction fluxes
-                fluxPrint = '';
-                if ~isempty(fluxLocal)
-                    fluxPrint = ' (';
-                    for nFlux = 1:size(fluxLocal, 2)
-                        if nFlux < size(fluxLocal, 2)
-                            fluxPrint = [fluxPrint, digit2disp(fluxLocal(r(j), nFlux)), ', '];
-                        else
-                            fluxPrint = [fluxPrint, digit2disp(fluxLocal(r(j), nFlux)), ')'];
-                        end
-                    end
-                end
                 % print reaction info
                 fprintf('  #%d  ', r(j));
                 printFcn(modelLocal.rxns{r(j)}, modelLocal.rxns{r(j)}, 0);
-                fprintf('%s', fluxPrint);
+                
+                % print flux
+                fprintf('%s', printFlux(r(j)));
+                
                 % print bounds
-                if showLB && showUB
-                    fprintf(', Bd: %s / %s', digit2disp(modelLocal.lb(r(j))), digit2disp(modelLocal.ub(r(j))));
-                elseif showLB
-                    fprintf(', LB: %s', digit2disp(modelLocal.lb(r(j))));
-                elseif showUB
-                    fprintf(', UB: %s', digit2disp(modelLocal.ub(r(j))));
-                end
+                printBounds(r(j));
+
                 % print rxn info
-                for jF = 1:numel(rxnFields)
-                    fprintf(', ');
-                    if ~strcmp(rxnFields{jF}, 'rxnNames')
-                        fprintf('%s: ', rxnFields{jF});
-                    end
-                    if iscell(modelLocal.(rxnFields{jF}))
-                        fprintf('%s', modelLocal.(rxnFields{jF}){r(j)});
-                    else
-                        fprintf('%s', digit2disp(modelLocal.(rxnFields{jF})(r(j))));
-                    end
-                end
-                fprintf('\n  ');
-                % print equation
+                printMetRxnInfo(r(j), rxnFieldsForInfo, 1, true, 'rxnNames');
+
+                % print reaction formula
                 m = find(modelLocal.S(:, r(j)));
                 % dictionary for printing mets or metNames in equation
                 dict = modelLocal.mets(m);
@@ -611,43 +465,7 @@ else
                 end
                 % similarly get each part of the formula
                 formPart = strsplit(p{j});
-                nChar = 0;
-                lineBreak = false;
-                for jPart = 1:numel(formPart)
-                    metEqPrint = '';
-                    f = strcmp(dict(:, 1), formPart{jPart});
-                    % if the current part is a metabolite
-                    if any(f)
-                        metEqPrint = dict{f, 1 + metNameFlag};
-                    end
-                    nChar = nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) + 1;  % +1 for the space
-                    if isempty(metEqPrint)
-                        % not a metabolite name (stoich/'+'/'->'/'<=>'). Check if a new line is needed
-                        if nChar > 0  % nChar > 0 implies something has been printed on the line
-                            if isnan(str2double(formPart{jPart})) || jPart == numel(formPart)
-                                % not a stoich ('+'/'->'/'<=>'): new line if current nChar exceeds the limit
-                                if nChar -1 > nCharBreakReal
-                                    lineBreak = true;
-                                end
-                            else
-                                % stoich coeff: new line if together with the coming metID, #characters exceeds the limit
-                                if nChar + length(formPart{jPart + 1}) > nCharBreakReal
-                                    lineBreak = true;
-                                end
-                            end
-                        end
-                        if lineBreak
-                            fprintf('\n  ');
-                            nChar = length(formPart{jPart}) + 3;  % 2 spaces before + 1 space after
-                            lineBreak = false;
-                        end
-                        fprintf('%s ', formPart{jPart});
-                    else
-                        % print hyperlink if it is a metabolite name
-                        printFcn(formPart{jPart}, metEqPrint, 0);
-                        fprintf(' ');
-                    end
-                end
+                printFormulae(formPart, dict);
                 fprintf('\n');
             end
         end
@@ -664,6 +482,7 @@ if printShowPrev
             metNameFlag, showMets, nCharBreak, 'Show previous steps...');
     end
 end
+
 % nested print function for printing strings on command window with interactive calling
     function printFcn(abb, name, digit)
         if ~isempty(fluxLocal)
@@ -674,6 +493,7 @@ end
             fprintf(sPrint, abb, metNameFlag, showMets, nCharBreak, name);
         end 
     end
+
 % nested function for determining the number of digits to be printed
     function s = digit2disp(f)
         if abs(f) >= 1e-12 && (abs(f) >= 10^digitUB || abs(f) <= 10^(-digitLB))
@@ -691,6 +511,106 @@ end
                 s = regexprep(s, '(\.\d*[1-9])0+$', '$1');
             else
                 s = num2str(f); %convert to string directly for non-floating values (integer)
+            end
+        end
+    end
+
+% nested function for formating fluxes to be printed
+    function fluxStr = printFlux(rxnId)
+        fluxStr = '';
+        if ~isempty(fluxLocal)
+            fluxStr = ' (';
+            for kF = 1:size(fluxLocal, 2)
+                % format numbers into string using digit2disp
+                if kF < size(fluxLocal, 2)
+                    fluxStr = [fluxStr, digit2disp(fluxLocal(rxnId, kF)), ', '];
+                else
+                    fluxStr = [fluxStr, digit2disp(fluxLocal(rxnId, kF)), ')'];
+                end
+            end
+        end
+    end
+
+% nested function for printing flux bounds
+    function printBounds(rxnId)
+        if showLB && showUB
+            fprintf(', Bd: %s / %s', digit2disp(modelLocal.lb(rxnId)), digit2disp(modelLocal.ub(rxnId)));
+        elseif showLB
+            fprintf(', LB: %s', digit2disp(modelLocal.lb(rxnId)));
+        elseif showUB
+            fprintf(', UB: %s', digit2disp(modelLocal.ub(rxnId)));
+        end
+    end
+
+% nested function for printing rxn/met info
+    function printMetRxnInfo(metrxnId, fields, firstFieldWtComma, printFieldName, fieldNameNotPrinted)
+        for kF = 1:numel(fields)
+            if kF >= firstFieldWtComma
+                fprintf(', ');
+            end
+            if printFieldName && ~any(strcmp(fields{kF}, fieldNameNotPrinted))
+                fprintf('%s: ', fields{kF});
+            end
+            if iscell(modelLocal.(fields{kF}))
+                % if it is a cell array
+                if iscell(modelLocal.(fields{kF}){metrxnId})
+                    % concatenate if the cell content is a cell array of strings
+                    ToPrint = strjoin(modelLocal.(fields{kF}){metrxnId}, '|');
+                    %fprintf('%s', modelLocal.(fields{kF}){metrxnId});
+                else
+                    % cell array of strings
+                    ToPrint = modelLocal.(fields{kF}){metrxnId};
+                end
+            else
+                % if it is a value, format it properly
+                ToPrint = digit2disp(modelLocal.(fields{kF})(metrxnId));
+                %fprintf('%s', digit2disp(modelLocal.(fields{kF})(metrxnId)));
+            end
+            fprintf('%s', ToPrint);
+        end
+        fprintf('\n');
+    end
+
+% nested function for printing formulae
+    function printFormulae(formulaeParts, dict)
+        nChar2 = 0;  % number of characters per line
+        lineBreak = false;
+        
+        for jPart = 1:numel(formulaeParts)
+            
+            metEqPrint = '';
+            f = strcmp(dict(:, 1), formulaeParts{jPart});
+            % if the current part is a metabolite
+            if any(f)
+                metEqPrint = dict{f, 1 + metNameFlag};
+            end
+            nChar2 = nChar2 + length(metEqPrint) + isempty(metEqPrint) * length(formulaeParts{jPart}) + 1;  % +1 for the space
+            
+            if isempty(metEqPrint)
+                % not a metabolite name (stoich/'+'/'->'/'<=>'): check if a new line is needed
+                if nChar2 > 0  % nChar2 > 0 implies something has been printed on the line
+                    if isnan(str2double(formulaeParts{jPart})) || jPart == numel(formulaeParts)
+                        % not a stoich ('+'/'->'/'<=>'): new line if current nChar2 exceeds the limit
+                        if nChar2 -1 > nCharBreakReal
+                            lineBreak = true;
+                        end
+                    else
+                        % stoich coeff: new line if together with the coming metID, #characters exceeds the limit
+                        if nChar2 + length(formulaeParts{jPart + 1}) > nCharBreakReal
+                            lineBreak = true;
+                        end
+                    end
+                end
+                if lineBreak && jPart > 1
+                    fprintf('\n  ');
+                    nChar2 = length(formulaeParts{jPart}) + 3;  % 2 spaces before + 1 space after
+                    lineBreak = false;
+                end
+                fprintf('%s ', formulaeParts{jPart});
+            else
+                % print hyperlink if it is a metabolite name
+                printFcn(formulaeParts{jPart}, metEqPrint, 0);
+                fprintf(' ');
             end
         end
     end

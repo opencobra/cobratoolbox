@@ -43,7 +43,6 @@ src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m
 # model files for testing
 test/models/*.xml
 test/models/*.mat
-!test/models/Recon2.0model.mat
 
 # tests
 test/additionalTests/testGrowthExpMatch/GEMLog.txt
@@ -101,6 +100,9 @@ PPP120.mat
 E.mat
 tutorials/ecoliCoreModel/*.svg
 tutorials/ecoliCoreModel/*.xls
+tutorials/steadyCom/POA/*.mat
+SubNetworkRecon.mat
+Test4Functions_diary.txt
 
 # generated tutorial documentation
 docs/source/_static/tutorials/*.html

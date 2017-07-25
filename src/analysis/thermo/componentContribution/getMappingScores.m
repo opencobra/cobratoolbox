@@ -1,9 +1,17 @@
 function mappingScore = getMappingScores(model, training_data)
-% finds the best mapping between the model compounds and the training data (KEGG) compounds
-% INPUTS
+% Finds the best mapping between the model compounds and the training data (KEGG) compounds
 %
-% OUTPUTS
+% USAGE:
 %
+%    mappingScore = getMappingScores(model, training_data)
+%
+% INPUTS:
+%    model:            COBRA structure
+%    training_data:    training data
+%
+% OUTPUT:
+%    mappingScore:     best mapping
+
 FIXED_MAPPING_TSV_FNAME = 'data/fixed_mappings.tsv';
 if ~exist(FIXED_MAPPING_TSV_FNAME, 'file')
     error(['file not found: ', FIXED_MAPPING_TSV_FNAME]);

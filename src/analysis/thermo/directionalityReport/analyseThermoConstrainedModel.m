@@ -1,23 +1,34 @@
-function [out]=analyseThermoConstrainedModel(model,cumNormProbCutoff,printLevel,resultsBaseFileName)
-
-%INPUT
-% .DfGt0                m x 1 array of estimated standard transformed Gibbs
-%                       energies of formation.
-% .DrGt0                n x 1 array of estimated standard transformed
-%                       reaction Gibbs energies.
-% .DfGtMin              m x 1 array of estimated lower bounds on
-%                       transformed Gibbs energies of formation.
-% .DfGtMax              m x 1 array of estimated upper bounds on
-%                       transformed Gibbs energies of formation.
-% .DrGtMin              n x 1 array of estimated lower bounds on
-%                       transformed reaction Gibbs energies.
-% .DrGtMax              n x 1 array of estimated upper bounds on
-%                       transformed reaction Gibbs energies.
-% .quantDir             n x 1 array indicating quantitatively assigned
-%                       reaction directionality. 1 for reactions that are
-%                       irreversible in the forward direction, -1 for
-%                       reactions that are irreversible in the reverse
-%                       direction, and 0 for reversible reactions.
+function [out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLevel, resultsBaseFileName)
+% USAGE:
+%
+%    [out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLevel, resultsBaseFileName)
+%
+% INPUTS:
+%    model:                  structure with fields:
+%
+%                              * .DfGt0 - `m x 1` array of estimated standard transformed Gibbs
+%                                energies of formation.
+%                              * .DrGt0 - `n x 1` array of estimated standard transformed
+%                                reaction Gibbs energies.
+%                              * .DfGtMin - `m x 1` array of estimated lower bounds on
+%                                transformed Gibbs energies of formation.
+%                              * .DfGtMax - `m x 1` array of estimated upper bounds on
+%                                transformed Gibbs energies of formation.
+%                              * .DrGtMin - `n x 1` array of estimated lower bounds on
+%                                transformed reaction Gibbs energies.
+%                              * .DrGtMax - `n x 1` array of estimated upper bounds on
+%                                transformed reaction Gibbs energies.
+%                              * .quantDir - `n x 1` array indicating quantitatively assigned
+%                                reaction directionality. 1 for reactions that are
+%                                irreversible in the forward direction, -1 for
+%                                reactions that are irreversible in the reverse
+%                                direction, and 0 for reversible reactions.
+%    cumNormProbCutoff:      default = 0.2
+%    printLevel:             verbose level, default = 1
+%    resultsBaseFileName:
+%
+% OUTPUT:
+%    out:
 
 out=[];
 
@@ -50,12 +61,12 @@ end
 %   .directions.reversibleReversible
 %   .directions.tightened
 %
-% subsets of qualtiatively forward  -> quantiatively reversible 
+% subsets of qualtiatively forward  -> quantiatively reversible
 %   .directions.forwardReversible_bydGt0
 %   .directions.forwardReversible_bydGt0LHS
 %   .directions.forwardReversible_bydGt0Mid
 %   .directions.forwardReversible_bydGt0RHS
-% 
+%
 %   .directions.forwardReversible_byConc_zero_fixed_DrG0
 %   .directions.forwardReversible_byConc_negative_fixed_DrG0
 %   .directions.forwardReversible_byConc_positive_fixed_DrG0
@@ -113,4 +124,3 @@ fwdProbReverse=model.directions.forwardReversible_bydGt0RHS | ...
 if any(fwdProbReverse) && 0
     forwardProbablyReverseFigures(model,directions)
 end
-

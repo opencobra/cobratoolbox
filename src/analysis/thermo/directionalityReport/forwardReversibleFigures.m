@@ -1,26 +1,33 @@
-function forwardReversibleFigures(model,directions,confidenceLevel)
+function forwardReversibleFigures(model, directions, confidenceLevel)
 % Figures of different classes of reactions: qualitatively forward -> quantitatively reversible
 %
-%INPUT
-% model.S
-% model.DrGt0
+% USAGE:
 %
-% directions        subsets of qualtiatively forward  -> quantiatively reversible 
-%   .forwardReversible
-%   .forwardReversible_bydGt0
-%   .forwardReversible_bydGt0LHS
-%   .forwardReversible_bydGt0Mid
-%   .forwardReversible_bydGt0RHS
-%   .forwardReversible_byConc_zero_fixed_DrG0
-%   .forwardReversible_byConc_negative_fixed_DrG0
-%   .forwardReversible_byConc_positive_fixed_DrG0
-%   .forwardReversible_byConc_negative_uncertain_DrG0
-%   .forwardReversible_byConc_positive_uncertain_DrG0
+%    forwardReversibleFigures(model, directions, confidenceLevel)
+%
+% INPUTS:
+%    model:              structure with fields:
+%
+%                          * .S
+%                          * .DrGt0
+%
+%    directions:         subsets of qualtiatively forward -> quantiatively reversible
+%
+%                          * .forwardReversible
+%                          * .forwardReversible_bydGt0
+%                          * .forwardReversible_bydGt0LHS
+%                          * .forwardReversible_bydGt0Mid
+%                          * .forwardReversible_bydGt0RHS
+%                          * .forwardReversible_byConc_zero_fixed_DrG0
+%                          * .forwardReversible_byConc_negative_fixed_DrG0
+%                          * .forwardReversible_byConc_positive_fixed_DrG0
+%                          * .forwardReversible_byConc_negative_uncertain_DrG0
+%                          * .forwardReversible_byConc_positive_uncertain_DrG0
+%    confidenceLevel:    default = 0.95
+%
+% .. Author: - Ronan M.T. Fleming
 
-% Ronan M.T. Fleming
-
-% close all
-figureMaster=1;
+figureMaster=1; % close all
 figure1=1;
 figure2=1;
 figure345=1;
@@ -63,7 +70,7 @@ if thorStandard
     Y=model.DrGtMean;
     L=Y-model.DrGtMin;
     U=model.DrGtMax-Y;
-    
+
     forwardProbability=NaN*ones(nRxn,1);
     for n=1:nRxn
         if model.SIntRxnBool(n)
@@ -93,7 +100,7 @@ end
 if 0
     figure
     plot(model.DrGt0_Uncertainty,model.directions.forwardProbability,'*')
-    
+
     figure
     hist(forwardProbability(model.SIntRxnBool),100)
 end
@@ -102,7 +109,7 @@ end
 if figureMaster
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(forwardProbability,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending forwardProbability
     xip2=zeros(nnz(forward2Reversible),1);
@@ -115,13 +122,13 @@ if figureMaster
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
     if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((forwardProbability(forward2Reversible))))
         warning('A:B','Extra category of NaN P(\Delta_{r}G^{\primem}<0) not taken into account');
-        
+
         %nans are first in the ordering of indexes
         NaNPInd=xip(1:nNaNpLHS+nNaNpRHS);
         %sorts indices of the zero std dev met by their mean dG0t
@@ -129,9 +136,9 @@ if figureMaster
         %new ordering
         xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     end
-    
+
     %fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape');
-    fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]); 
+    fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]);
     % Create axes
     axes1 = axes('Parent',fig1,'Color',[0.702 0.7804 1]);
     hold on;
@@ -150,12 +157,12 @@ if figureMaster
     bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     bar_handle4=bar(X1,PreversibleBar_bydGt0(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-    
+
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',length(xip)/1000,'DisplayName','fwdRev by DrGt','Color','r');
     %dGrt0 errorbar on top and inside dGrt
     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',length(xip)/1000,'DisplayName','fwdRev by DrGt0','Color','b');
-   
+
     %mean dGrt0
     plot(X1,Y0(xip),'.','LineStyle','none','Color',[0.3412 0.7961 0.1922]);
     %zero line
@@ -193,7 +200,7 @@ end
 if figure1 && any(forward2Reversible_byConc_negative_fixed_DrG0)
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(P,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible),1);
@@ -206,7 +213,7 @@ if figure1 && any(forward2Reversible_byConc_negative_fixed_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
@@ -220,11 +227,11 @@ if figure1 && any(forward2Reversible_byConc_negative_fixed_DrG0)
     %new ordering
     xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     %     xip=xip(nNaNpLHS+nNaNpRHS+1:end);
-    
+
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
     %     forward2Reversible_bydGt0Mid=P<0.6 & P>0.4 & forward2Reversible;
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible_byConc_negative_fixed_DrG0),1);
@@ -237,7 +244,7 @@ if figure1 && any(forward2Reversible_byConc_negative_fixed_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]);
     % Create axes
     axes1 = axes('Parent',fig1,'Color',[0.702 0.7804 1]);
@@ -252,12 +259,12 @@ if figure1 && any(forward2Reversible_byConc_negative_fixed_DrG0)
     %bar for 2 & 6
     PreversibleBar_byConcLHS(forward2Reversible_byConc_negative_uncertain_DrG0)=maxY;
     bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-    
+
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','r');
     %dGrt0 errorbar on top and inside dGrt
     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','b');
-    
+
     %mean dGrt0
     plot(X1,Y0(xip),'.','MarkerSize',20,'LineStyle','none','Color',[0.3412 0.7961 0.1922]);
     %zero line
@@ -290,7 +297,7 @@ end
 if figure7 && any(forward2Reversible_byConc_positive_fixed_DrG0)
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(forwardProbability,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible),1);
@@ -303,7 +310,7 @@ if figure7 && any(forward2Reversible_byConc_positive_fixed_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
@@ -317,11 +324,11 @@ if figure7 && any(forward2Reversible_byConc_positive_fixed_DrG0)
     %new ordering
     xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     %     xip=xip(nNaNpLHS+nNaNpRHS+1:end);
-    
+
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
     %     forward2Reversible_bydGt0Mid=P<0.6 & P>0.4 & forward2Reversible;
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible_byConc_positive_fixed_DrG0),1);
@@ -334,7 +341,7 @@ if figure7 && any(forward2Reversible_byConc_positive_fixed_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]);
     % Create axes
     axes1 = axes('Parent',fig1,'Color',[0.702 0.7804 1]);
@@ -349,13 +356,13 @@ if figure7 && any(forward2Reversible_byConc_positive_fixed_DrG0)
     %bar for 2 & 6
     PreversibleBar_byConcLHS(forward2Reversible_byConc_negative_uncertain_DrG0)=maxY;
     bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-    
+
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','r');
 
     %dGrt0 errorbar on top and inside dGrt
     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','b');
-    
+
     %mean dGrt0
     plot(X1,Y0(xip),'.','MarkerSize',24,'LineStyle','none','Color',[0.3412 0.7961 0.1922]);
     %zero line
@@ -388,7 +395,7 @@ end
 if figure2 && any(forward2Reversible_byConc_negative_uncertain_DrG0)
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(forwardProbability,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible),1);
@@ -401,7 +408,7 @@ if figure2 && any(forward2Reversible_byConc_negative_uncertain_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
@@ -415,11 +422,11 @@ if figure2 && any(forward2Reversible_byConc_negative_uncertain_DrG0)
     %new ordering
     xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     %     xip=xip(nNaNpLHS+nNaNpRHS+1:end);
-    
+
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
     %     forward2Reversible_bydGt0Mid=P<0.6 & P>0.4 & forward2Reversible;
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible_byConc_negative_uncertain_DrG0),1);
@@ -432,7 +439,7 @@ if figure2 && any(forward2Reversible_byConc_negative_uncertain_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]);
     % Create axes
     axes1 = axes('Parent',fig1,'Color',[0.702 0.7804 1]);
@@ -457,7 +464,7 @@ if figure2 && any(forward2Reversible_byConc_negative_uncertain_DrG0)
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','r');
     %dGrt0 errorbar on top and inside dGrt
     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','b');
-    
+
     %mean dGrt0
     plot(X1,Y0(xip),'.','MarkerSize',9,'LineStyle','none','Color',[0.3412 0.7961 0.1922]);
     %zero line
@@ -498,7 +505,7 @@ end
 if figure6 && any(forward2Reversible_byConc_positive_uncertain_DrG0)
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(forwardProbability,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
     xip2=zeros(nnz(forward2Reversible),1);
@@ -511,7 +518,7 @@ if figure6 && any(forward2Reversible_byConc_positive_uncertain_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
@@ -525,11 +532,11 @@ if figure6 && any(forward2Reversible_byConc_positive_uncertain_DrG0)
     %new ordering
     xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     %     xip=xip(nNaNpLHS+nNaNpRHS+1:end);
-    
+
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
     %     forward2Reversible_bydGt0Mid=forwardProbability<0.6 & forwardProbability>0.4 & forward2Reversible;
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending forwardProbability
     xip2=zeros(nnz(forward2Reversible_byConc_positive_uncertain_DrG0),1);
@@ -542,7 +549,7 @@ if figure6 && any(forward2Reversible_byConc_positive_uncertain_DrG0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     fig1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape','units','normalized','outerposition',[0 0 1 1]);
     % Create axes
     axes1 = axes('Parent',fig1,'Color',[0.702 0.7804 1]);
@@ -600,7 +607,7 @@ end
 if figure345 && any(forward2Reversible_bydGt0)
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(forwardProbability,'descend');
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending forwardProbability
     xip2=zeros(nnz(forward2Reversible),1);
@@ -613,13 +620,13 @@ if figure345 && any(forward2Reversible_bydGt0)
     end
     xip=xip2;
     X1=1:length(xip);
-    
+
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(forward2Reversible_byConc_negative_fixed_DrG0);
     nNaNpRHS=nnz(forward2Reversible_byConc_positive_fixed_DrG0);
     if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((forwardProbability(forward2Reversible))))
         warning('A:B','Extra category of NaN P(\Delta_{r}G^{\primem}<0) not taken into account');
-        
+
         %nans are first in the ordering of indexes
         NaNPInd=xip(1:nNaNpLHS+nNaNpRHS);
         %sorts indices of the zero std dev met by their mean dG0t
@@ -627,11 +634,11 @@ if figure345 && any(forward2Reversible_bydGt0)
         %new ordering
         xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     end
-    
+
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
     %     forward2Reversible_bydGt0Mid=forwardProbability<0.6 & forwardProbability>0.4 & forward2Reversible;
-    
+
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending forwardProbability
     xip2=zeros(nnz(forward2Reversible_bydGt0),1);% forward2Reversible_byConc_positive_uncertain_DrG0),1);
@@ -652,7 +659,7 @@ if figure345 && any(forward2Reversible_bydGt0)
     %upper and lower Y
     minY=min(model.DrGtMin(forward2Reversible_bydGt0));
     maxY=max(model.DrGtMax(forward2Reversible_bydGt0));
-    
+
     %baselines
     PreversibleBar_byConcLHS=ones(1,nRxn)*minY;
     PreversibleBar_byConcRHS=ones(1,nRxn)*minY;
@@ -665,7 +672,7 @@ if figure345 && any(forward2Reversible_bydGt0)
     bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none'); %TODO - problem here with zeros at end of xip
     bar_handle4=bar(X1,PreversibleBar_bydGt0(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
-    
+
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',length(xip)/400,'DisplayName','forward2Reversible','Color','r');
     %dGrt0 errorbar on top and inside dGrt
@@ -701,7 +708,3 @@ if figure345 && any(forward2Reversible_bydGt0)
     set(get(AX(2),'Ylabel'),'FontSize',16)
     xlabel('Reactions, sorted by P(\Delta_{r}G^{\primem}<0)');
 end
-
-
-
-
