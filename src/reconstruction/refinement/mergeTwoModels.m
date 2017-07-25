@@ -98,13 +98,13 @@ if mergeGenes
         fields1 = setdiff(fields1,commonfields);
         for i = 1:numel(fields1)
             if iscell(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices);
+                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
                 modelNew.(fields1{i})(newadditionalindices) = {''};
             elseif isnumeric(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices);
+                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
                 modelNew.(fields1{i})(newadditionalindices) = NaN;
             elseif islogical(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices);
+                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
                 modelNew.(fields1{i})(newadditionalindices) = false;
             end
         end
