@@ -59,7 +59,7 @@ startcna
 
 % define the model
 global CBTDIR
-addpath([CBTDIR filesep 'tutorials' filesep 'minimalCutSets'])
+addpath([CBTDIR filesep 'tutorials' filesep 'additionalTutorials' filesep 'minimalCutSets'])
 load('E.mat')% the set of two elementary modes (E(1,:) and E(2,:)) which we are going to compute its minimal cut set.
 C = minimalCutSets(E(1,:))
 %% 
@@ -111,7 +111,7 @@ C = minimalCutSets(E(2,:))
 % is not involved. Each cutset hits all modes stored in "targets" but if sets2save 
 % not be empty (sets2save contains the modes that we do not want to be hit by 
 % cutset) then it does not hit at least a number of modes equal to "sets2save(k).min2save" 
-% in teh matrix "sets2save(k).tabl2save".
+% in the matrix "sets2save(k).tabl2save".
 % 
 % 
 %% TIMING
