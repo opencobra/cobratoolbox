@@ -161,7 +161,7 @@ parser.addParameter('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric
 parser.addParameter('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
 parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x));
 parser.addParameter('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
-parser.addParameter('checkDuplicate',1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printLevel',1, @(x) isnumeric(x) );
 parser.addParameter('notes','', @ischar );
 parser.addParameter('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
