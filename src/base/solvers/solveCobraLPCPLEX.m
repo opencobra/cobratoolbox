@@ -129,7 +129,7 @@ if basisReuse
         %use advanced starting information when optimization is initiated.
         if isequal(interface,'tomlab_cplex')
             cpxControl.advance=1;
-        elseif isequal(interafce,'ILOGcomplex')
+        elseif isequal(interface,'ILOGcomplex')
             cpxControl.ADVIND=1;
         end
     else
