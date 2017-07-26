@@ -1,8 +1,18 @@
-function adjustedAlberty2006 = adjustBaselinesInAlberty2006(Alberty2006,computedSpeciesData)
-
+function adjustedAlberty2006 = adjustBaselinesInAlberty2006(Alberty2006, computedSpeciesData)
 % Adjust baseline for metabolites in Alberty's tables whose standard
 % formation energies were not determined relative to the elements in their
-% standard states. Set baseline to group contribution estimate
+% standard states. Set baseline to group contribution estimate.
+%
+% USAGE:
+%
+%    adjustedAlberty2006 = adjustBaselinesInAlberty2006(Alberty2006, computedSpeciesData)
+%
+% INPUTS:
+%    Alberty2006:
+%    computedSpeciesData:
+%
+% OUTPUT:
+%     adjustedAlberty2006:
 
 includedMets = cell(length(computedSpeciesData),1);
 for n = 1:length(computedSpeciesData)
@@ -29,17 +39,17 @@ for n = 1:length(adjustedAlberty2006)
         gcBasicSpecies = coaGCbasicdata((coaGCbasicdata(:,3) == -5),1);
         nHAdjustment = coaGCbasicdata((coaGCbasicdata(:,3) == -5),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
         zAdjustment = coaGCbasicdata((coaGCbasicdata(:,3) == -5),3) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3);
-        
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
             adjustedAlberty2006(1,n).basicData(m,3) = adjustedAlberty2006(1,n).basicData(m,3) + zAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(coas)
@@ -50,13 +60,13 @@ for n = 2:length(coas)
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
                 adjustedAlberty2006(1,m).basicData(k,3) = adjustedAlberty2006(1,m).basicData(k,3) + zAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -68,16 +78,16 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = fadGCbasicdata((fadGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = fadGCbasicdata((fadGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(fads)
@@ -87,13 +97,13 @@ for n = 2:length(fads)
                 adjustedAlberty2006(1,m).basicData(k,1) = adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -105,17 +115,17 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = fmnGCbasicdata((fmnGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = fmnGCbasicdata((fmnGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
-        
+
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(fmns)
@@ -125,13 +135,13 @@ for n = 2:length(fmns)
                 adjustedAlberty2006(1,m).basicData(k,1) = adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -143,17 +153,17 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = gthdGCbasicdata((gthdGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = gthdGCbasicdata((gthdGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
-        
+
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(gthds)
@@ -163,13 +173,13 @@ for n = 2:length(gthds)
                 adjustedAlberty2006(1,m).basicData(k,1) = (adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies)/2;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -181,16 +191,16 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = nadGCbasicdata((nadGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = nadGCbasicdata((nadGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(nads)
@@ -200,13 +210,13 @@ for n = 2:length(nads)
                 adjustedAlberty2006(1,m).basicData(k,1) = adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -218,16 +228,16 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = retGCbasicdata((retGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = retGCbasicdata((retGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(rets)
@@ -237,13 +247,13 @@ for n = 2:length(rets)
                 adjustedAlberty2006(1,m).basicData(k,1) = adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 
@@ -255,16 +265,16 @@ for n = 1:length(adjustedAlberty2006)
         albertyBasicSpeciesRow = find(adjustedAlberty2006(1,n).basicData(:,1) == 0);
         gcBasicSpecies = qGCbasicdata((qGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),1);
         nHAdjustment = qGCbasicdata((qGCbasicdata(:,3) == adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,3)),4) - adjustedAlberty2006(1,n).basicData(albertyBasicSpeciesRow,4);
-        
+
         for m = 1:size(adjustedAlberty2006(1,n).basicData,1)
             adjustedAlberty2006(1,n).basicData(m,1) = adjustedAlberty2006(1,n).basicData(m,1) + gcBasicSpecies;
             adjustedAlberty2006(1,n).basicData(m,2) = nan;
             adjustedAlberty2006(1,n).basicData(m,4) = adjustedAlberty2006(1,n).basicData(m,4) + nHAdjustment;
-            
+
         end
-        
+
     end
-    
+
 end
 
 for n = 2:length(qs)
@@ -274,13 +284,13 @@ for n = 2:length(qs)
                 adjustedAlberty2006(1,m).basicData(k,1) = adjustedAlberty2006(1,m).basicData(k,1) + gcBasicSpecies;
                 adjustedAlberty2006(1,m).basicData(k,2) = nan;
                 adjustedAlberty2006(1,m).basicData(k,4) = adjustedAlberty2006(1,m).basicData(k,4) + nHAdjustment;
-                
+
             end
-            
+
         end
-        
+
     end
-    
+
 end
 
 end
