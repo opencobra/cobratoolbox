@@ -305,7 +305,7 @@ duplicatePos = [];
 Stmp = model.S;
 if ~((nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1)))
     if (checkDuplicate)
-        duplicatePos = find(all(Stmp == Scolumn(:, ones(1, size(Stmp, 2))), 1)); % Much faster and fucntionally equivalent to find(ismember(Stmp',Scolumn','rows'));
+        duplicatePos = find(all(Stmp == Scolumn(:, ones(1, size(Stmp, 2))), 1)); % Fucntionally equivalent to, but faster than find(ismember(Stmp',Scolumn','rows'));
         rxnIDexists = duplicatePos(~ismember(duplicatePos,rxnPos));
         if numel(rxnIDexists) > 1
             rxnIDexists = rxnIDexists(1);
