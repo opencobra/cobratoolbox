@@ -17,26 +17,19 @@ mkdir -p "$tutorialDestination"
 declare -a tutorials
 
 nTutorial=0
-for path in $tutorialPath/*
+for d in $(find $tutorialPath -maxdepth 7 -type d)
 do
-    if ! [[ -d "${path}" ]]; then
+    if [[ "${d}" == *additionalTutorials* ]]; then
         continue  # if not a directory, skip
     fi
-    for section in ${path}/*; do
-        if ! [[ -d "${section}" ]]; then
-            continue  # if not a directory, skip
+    for tutorial in ${d}/*.html; do
+        if ! [[ -f "$tutorial" ]]; then
+            break
         fi
-        if [[ "${section}" == *additionalTutorials* ]]; then
-            continue  # if not a directory, skip
-        fi
-        for tutorial in ${section}/*.html; do
-            if ! [[ -f "$tutorial" ]]; then
-                break
-            fi
-            let "nTutorial+=1"
-            tutorials[$nTutorial]="$tutorial"
-        done
+        let "nTutorial+=1"
+        tutorials[$nTutorial]="$tutorial"
     done
+
 done
 
 # clean destination folder
