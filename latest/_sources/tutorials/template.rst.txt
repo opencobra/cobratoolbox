@@ -3,6 +3,43 @@
 #tutorialTitle#
 #underline#
 
+
+.. raw:: html
+
+    <div class="wrapper">
+        <ul class="metro">
+            <li class="small-tile-text color_class5 scale-10">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.pdf">
+                    <img src="../_static/images/icon5.png" height="90px">
+                </a>
+                <div>Download PDF</div>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <li class="small-tile-text color_class6 scale-10">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.mlx">
+                <img src="../_static/images/icon6.png" height="90px">
+                </a>
+                  <div>Download live Script</div>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <li class="small-tile-text color_class7 scale-10">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.m">
+                <img src="../_static/images/icon7.png" height="90px">
+                </a>
+                  <div>Download m file</div>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <li class="small-tile-text color_class2 scale-10">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html">
+                <img src="../_static/images/icon2.png" height="90px">
+                </a>
+                  <div>Tutorials</div>
+            </li>
+        </ul>
+    </div>
+    <br>
+
+
 .. raw:: html
 
     <style>

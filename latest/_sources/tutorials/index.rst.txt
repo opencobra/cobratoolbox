@@ -3,10 +3,39 @@
 Tutorials
 =========
 
-.. note::
-    All tutorials are included in the folder `tutorials <https://github.com/opencobra/cobratoolbox/tree/master/tutorials>`_. More tutorials are currently being prepared.
-
-
 
 .. toctree::
 
+   tutorialReconToFBAmodel
+   tutorialFastGapFill
+   tutorialNumCharact
+   tutorialRBioNet
+   tutorialReconstructionSOP
+   tutorialCreateSubnetworkRecon
+   tutorialModelSanityChecks
+   tutorialModelManipulation
+   tutorialFidelityTesting
+   tutorialModelATPYield
+   tutorialOptForce
+   tutorialExtraction_transcriptomic
+   tutorialUFBA
+   tutorialMetabotoolsII
+   tutorialMetabotoolsI
+   tutorialIO
+   tutorialInitializeAndVerify
+   tutorialEngaging
+   tutorialRemoteVisualisation
+   tutorialPaint4net
+   tutorialMinSpan
+   tutorialUniformSampling
+   tutorialAtomicallyResolveReconstruction
+   tutorialRelaxedFBABounds
+   tutorialRelaxedFBA
+   tutorialVonBertalanffy
+   tutorialVariationalKinetics
+   tutorialSparseFBA_freeATPtest
+   tutorialSparseFBA
+   tutorialSparseFBA_protonShuttle
+   tutorialSparseLP
+   tutorialFVA
+   tutorialFBA
