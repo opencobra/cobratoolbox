@@ -245,7 +245,7 @@ elseif isequal(solver,'ILOGcomplex')
     [paramList, paramPath] = getParamList(ILOGcplex, 0);
     paramPath(1) = '';%take out model field
     for i=1:length(paramPath)
-        eval([paramPath{i} '=ILOGcplex.' paramPath{i} '.Def']);
+        eval([paramPath{i} '=ILOGcplex.' paramPath{i} '.Def;']);
     end
     cpxControl=Param;
 end
