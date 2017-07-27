@@ -161,7 +161,7 @@ parser.addParameter('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric
 parser.addParameter('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
 parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x));
 parser.addParameter('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
-parser.addParameter('checkDuplicate',1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printLevel',1, @(x) isnumeric(x) );
 parser.addParameter('notes','', @ischar );
 parser.addParameter('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
@@ -305,7 +305,7 @@ duplicatePos = [];
 Stmp = model.S;
 if ~((nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1)))
     if (checkDuplicate)
-        duplicatePos = find(ismember(Stmp',Scolumn','rows'));
+        duplicatePos = find(all(Stmp == Scolumn(:, ones(1, size(Stmp, 2))), 1)); % Fucntionally equivalent to, but faster than find(ismember(Stmp',Scolumn','rows'));
         rxnIDexists = duplicatePos(~ismember(duplicatePos,rxnPos));
         if numel(rxnIDexists) > 1
             rxnIDexists = rxnIDexists(1);
