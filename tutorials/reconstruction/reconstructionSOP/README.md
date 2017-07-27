@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_reconstructionSOP.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/reconstruction/reconstructionSOP/README.md"><img src="tutorial_reconstructionSOP.png" width="100%"/></a>
 </p>

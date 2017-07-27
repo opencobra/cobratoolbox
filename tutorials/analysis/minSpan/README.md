@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_minSpan.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/analysis/minSpan/README.md"><img src="tutorial_minSpan.png" width="100%"/></a>
 </p>

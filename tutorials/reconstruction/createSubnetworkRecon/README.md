@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_createSubnetworkRecon.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/reconstruction/createSubnetworkRecon/README.md"><img src="tutorial_createSubnetworkRecon.png" width="100%"/></a>
 </p>

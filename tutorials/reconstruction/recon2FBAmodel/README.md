@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_reconToFBAmodel.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/reconstruction/recon2FBAmodel/README.md"><img src="tutorial_reconToFBAmodel.png" width="100%"/></a>
 </p>

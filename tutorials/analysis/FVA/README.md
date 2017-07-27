@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_FVA.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/analysis/FVA/README.md"><img src="tutorial_FVA.png" width="100%"/></a>
 </p>

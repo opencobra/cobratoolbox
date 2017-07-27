@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_sparseLP.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/analysis/sparseFBA/README.md"><img src="tutorial_sparseLP.png" width="100%"/></a>
 </p>

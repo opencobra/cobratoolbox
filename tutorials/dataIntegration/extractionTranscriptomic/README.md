@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_extraction_transcriptomic.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/dataIntegration/extractionTranscriptomic/README.md"><img src="tutorial_extraction_transcriptomic.png" width="100%"/></a>
 </p>

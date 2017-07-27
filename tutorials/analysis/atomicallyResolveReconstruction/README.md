@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_atomicallyResolveReconstruction.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/analysis/atomicallyResolveReconstruction/README.md"><img src="tutorial_atomicallyResolveReconstruction.png" width="100%"/></a>
 </p>

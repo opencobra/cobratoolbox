@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_engaging.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/base/engagingWithTheCommunity/README.md"><img src="tutorial_engaging.png" width="100%"/></a>
 </p>

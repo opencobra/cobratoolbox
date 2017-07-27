@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_uFBA.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/dataIntegration/uFBA/README.md"><img src="tutorial_uFBA.png" width="100%"/></a>
 </p>

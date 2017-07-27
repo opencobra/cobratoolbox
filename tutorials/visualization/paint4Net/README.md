@@ -3,5 +3,5 @@
 <br><br>
 </p>
 <p align="center">
-  <img src="tutorial_paint4net.png" width="100%"/>
+  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/visualization/paint4Net/README.md"><img src="tutorial_paint4net.png" width="100%"/></a>
 </p>
