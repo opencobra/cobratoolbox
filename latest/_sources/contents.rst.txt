@@ -10,6 +10,7 @@ The COBRA Toolbox
    tutorials/index
    contributing
    contributors
-   faq
    funding
-
+   cite
+   support
+   faq
