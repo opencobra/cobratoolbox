@@ -35,7 +35,7 @@ Binaries and Compatibility
 
 .. raw:: html
 
-   <p>For convenience, we provide the <a href="http://sbml.org/Software/SBMLToolbox"><code>SBMLToolbox 4.1.0</code></a>, and <a href="https://github.com/blegat/glpkmex"><code>glpk_mex</code></a> in <code>external/toolboxes</code>, <a href="http://sbml.org/Software/libSBML"><code>libSBML-5.13.0-matlab</code></a> in <code>src/io/utilities</code>.</p>
-   <p><a href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).<br>
+   <p>For convenience, we provide <a href="https://github.com/blegat/glpkmex"><code>glpk_mex</code></a> and <a href="http://sbml.org/Software/libSBML"><code>libSBML-5.15+</code></a> in <code>/external</code>.</p>
+   <p><a href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+ (64-bit).<br>
    For unsupported OS, please refer to their respective building instructions (<a href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source"><code>glpk_mex</code></a>, <a href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html"><code>libSBML</code></a>).</p>
    <p>Read more on the compatibility with SBML-FBCv2 <a href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p>
