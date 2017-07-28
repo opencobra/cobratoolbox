@@ -9,8 +9,8 @@ The COBRA Toolbox
    modules/index
    tutorials/index
    contributing
-   contributors
-   funding
    cite
    support
    faq
+   contributors
+   funding

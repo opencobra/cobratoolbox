@@ -1,5 +1,5 @@
-How to cite the COBRA Toolbox
-=============================
+How to cite
+===========
 
 .. raw:: html
 
@@ -16,7 +16,7 @@ How to cite the COBRA Toolbox
 .. raw:: html
 
     <br>
-    
+
 When citing the COBRA Toolbox, it is important to cite the original paper where an algorithm was first reported, as well as its implementation in the COBRA Toolbox. This is important, because the objective of the COBRA Toolbox is to amalgamate and integrate the functionality of a wide range of COBRA algorithms and this will be undermined if contributors of new algorithms do not get their fair share of citations. The following is one example how to approach this within the methods section of a paper (**not** the supplemental material please):
 
 *To generate a context-specific model the FASTCORE algorithm [3], implemented in The COBRA Toolbox v3.0 [1], was employed.*
