@@ -1,8 +1,8 @@
 .. _modules_functions:
 
 
-Documentation
--------------
+Functions
+---------
 
 .. toctree::
    :maxdepth: 5

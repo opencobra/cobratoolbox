@@ -39,7 +39,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Documentation" href="index.html"/>
+        <link rel="up" title="Functions" href="index.html"/>
         <link rel="next" title="rBioNet" href="rBioNet.html"/>
         <link rel="prev" title="uFBA" href="uFBA.html"/> 
 
@@ -91,7 +91,7 @@
               </ul>
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
@@ -158,7 +158,7 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Documentation</a> &raquo;</li>
+          <li><a href="index.html">Functions</a> &raquo;</li>
         
       <li>Reconstruction</li>
     
@@ -210,7 +210,7 @@
 </div>
 <span class="target" id="module-src.reconstruction"></span><dl class="function">
 <dt id="src.reconstruction.gapFind">
-<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/124e3f088678893387c7f44a2e8a85570759b71e/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies all blocked metabolites (anything downstream of a gap)
 in a model.  MILP algorithm that finds gaps that may be missed by simple
 inspection of the S matrix. To find every gap in a model, change the rxn
@@ -251,7 +251,7 @@ all downstream gaps</li>
 
 <dl class="function">
 <dt id="src.reconstruction.testPathway">
-<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/124e3f088678893387c7f44a2e8a85570759b71e/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
+<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows the user to see if given one metabolite <cite>A</cite>,
 downstream metabolite <cite>B</cite> can be made made. Additional sinks can be added
 for co-factors if needed

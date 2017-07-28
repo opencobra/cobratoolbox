@@ -91,7 +91,7 @@
               </ul>
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
@@ -182,7 +182,7 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Documentation</a> &raquo;</li>
+          <li><a href="index.html">Functions</a> &raquo;</li>
         
           <li><a href="analysis.html">Analysis</a> &raquo;</li>
         
@@ -211,7 +211,7 @@
 <span id="id1"></span><h1>optimalRays<a class="headerlink" href="#optimalrays" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.topology.extremeRays.optimalRays"></span><dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.findExtremePathway">
-<code class="descname">findExtremePathway</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/124e3f088678893387c7f44a2e8a85570759b71e/src/analysis/topology/extremeRays/optimalRays/findExtremePathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePathway" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findExtremePathway</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/topology/extremeRays/optimalRays/findExtremePathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePathway" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds an extreme ray</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -243,7 +243,7 @@ vector from <cite>result</cite>, where <cite>result</cite> is an output of <cite
 
 <dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.findExtremePool">
-<code class="descname">findExtremePool</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/124e3f088678893387c7f44a2e8a85570759b71e/src/analysis/topology/extremeRays/optimalRays/findExtremePool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findExtremePool</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/topology/extremeRays/optimalRays/findExtremePool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds an extreme ray in the left nullspace of the stoichiometric matrix</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -277,7 +277,7 @@ argument for <cite>solveCobraLP</cite> function, default = 0</li>
 
 <dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis">
-<code class="descname">greedyExtremePoolBasis</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/124e3f088678893387c7f44a2e8a85570759b71e/src/analysis/topology/extremeRays/optimalRays/greedyExtremePoolBasis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">greedyExtremePoolBasis</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/topology/extremeRays/optimalRays/greedyExtremePoolBasis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a non-negative basis for the left nullspace of the stoichiometric
 matrix using optimization to pick random extreme rays, then test a
 posteriori if each is linearly independent from the existing stored
