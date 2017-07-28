@@ -25,7 +25,7 @@ Funding
             <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="_static/images/logos/eu.svg" alt="" width="80%"></a></div>
        </td>
        <td class="noBorder" width="40%">
-       This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 668738.
+       European Union’s Horizon 2020 research and innovation programme under grant agreement No 668738.
        </td>
        </tr>
     </table>
@@ -39,7 +39,7 @@ Funding
             <div style="align-center;"><a href="http://www.ncer-pd.lu/index.php/en/"><img src="_static/images/logos/fnr.png" alt="" width="80%"></a></div>
        </td>
        <td class="noBorder" width="40%">
-       This study was funded by the National Centre of Excellence in Research (NCER) on Parkinson’s disease.
+       National Centre of Excellence in Research (NCER) on Parkinson’s disease.
        </td>
        </tr>
     </table>
@@ -50,7 +50,7 @@ Funding
             <div style="align-center;"><a href="https://energy.gov"><img src="_static/images/logos/doe.png" alt="" width="80%"></a></div>
         </td>
         <td class="noBorder" width="40%">
-        This study was funded by the U.S. Department of Energy, Offices of Advanced Scientific Computing Research and the Biological and Environmental Research as part of the Scientific Discovery Through Advanced Computing program, grant no. DE-SC0010429
+        U.S. Department of Energy, Offices of Advanced Scientific Computing Research and the Biological and Environmental Research as part of the Scientific Discovery Through Advanced Computing program, grant no. DE-SC0010429
         </td>
         </tr>
     </table>
@@ -58,7 +58,7 @@ Funding
     <br>
     <p>
     <div style="text-align: justify;">
-    This project has also received funding from the Fonds National de la Recherche grant O16/11402054 and the Luxembourg National Research Fund (FNR) ATTRACT program grant (FNR/A12/01).
+    Fonds National de la Recherche grant O16/11402054 and the Luxembourg National Research Fund (FNR) ATTRACT program grant (FNR/A12/01).
     </div>
     <br>
     <div style="text-align: justify;">
