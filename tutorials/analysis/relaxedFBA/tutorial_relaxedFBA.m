@@ -1,7 +1,6 @@
-%% Relaxed Flux Balance Analysis
-% Author: Ronan Fleming, Systems Biochemistry Group, University of Luxembourg.
-% 
-% Reviewer:
+%% Relaxed Flux Balance Analysis: Recon 3
+%% Author: Ronan Fleming, Systems Biochemistry Group, University of Luxembourg.
+%% Reviewer:
 %% Introduction
 % We consider a biochemical network of  m  molecular species and  n  biochemical 
 % reactions. The biochemical network is mathematically represented by a stoichiometric 
@@ -14,21 +13,22 @@
 % where $$c\in\Re^{n}$$ is a parameter vector that linearly combines one 
 % or more reaction fluxes to form what is termed the objective function,  and 
 % where a $$b_{i}<0$$, or  $$b_{i}>0$$, represents some fixed output, or input, 
-% of the ith molecular species. Every FBA solution must satisfy the constraints, 
-% independent of any objective chosen to optimise over the set of constraints. 
+% of the ith molecular species. 
 % 
-% It may occur that the constraints on the FBA problem are not all simultaneously 
-% feasible, i.e., the system of inequalities is infeasible. This situation might 
-% be caused by an incorrectly specified reaction bound or the absence of a reaction 
-% from the stoichiometric matrix, such that a nonzero $b\notin\mathcal{R}(S)$. 
-% To resolve the infeasiblility, we consider a cardinality optimisation problem 
-% that seeks to minimise the number of bounds to relax, the number of fixed outputs 
-% to relax, the number of fixed inputs to relax, or a combination of all three, 
-% in order to render the problem feasible. The cardinality optimisation problem, 
-% termed _relaxed flux balance analysis, _is
+% Every FBA solution must satisfy the constraints, independent of any objective 
+% chosen to optimise over the set of constraints. It may occur that the constraints 
+% on the FBA problem are not all simultaneously feasible, i.e., the system of 
+% inequalities is infeasible. This situation might be caused by an incorrectly 
+% specified reaction bound or the absence of a reaction from the stoichiometric 
+% matrix, such that a nonzero $b\notin\mathcal{R}(S)$. To resolve the infeasiblility, 
+% we consider a cardinality optimisation problem that seeks to minimise the number 
+% of bounds to relax, the number of fixed outputs to relax, the number of fixed 
+% inputs to relax, or a combination of all three, in order to render the problem 
+% feasible. The cardinality optimisation problem, termed _relaxed flux balance 
+% analysis, _is
 % 
-% $$\begin{array}{ll}\min\limits _{v,r,p,q} & \lambda\Vert r\Vert_{0}+\gamma\Vert 
-% p\Vert_{0}+\gamma\Vert q\Vert_{0}\\\text{s.t.} & Sv+r=b\\ & l-p\leq v\leq u+q\\ 
+% $$\begin{array}{ll}\min\limits _{v,r,p,q} & \lambda\Vert r\Vert_{0}+\alpha\Vert 
+% p\Vert_{0}+\alpha\Vert q\Vert_{0}\\\text{s.t.} & Sv+r=b\\ & l-p\leq v\leq u+q\\ 
 % & p,q,r\geq0\end{array}$$
 % 
 % 
@@ -36,20 +36,22 @@
 %  where $$p,q\in\mathcal{R}^{n}$$ denote the relaxations of the lower and 
 % upper bounds on reaction rates of the reaction rates vector  v, and where $$r\in\mathcal{R}^{m}$$ 
 % denotes a relaxation of the mass balance constraint. Non-negative scalar parameters   
-% λ   and   γ   can be used to trade off between relaxation of mass balance or 
-% bound constraints. A non-negative vector parameter   λ   can be used to prioritise 
-% relaxation of one mass balance constraint over another, e.g, to avoid relaxation 
-% of a mass balance constraint on a metabolite that is not desired to be exchanged 
-% across the boundary of the system. A non-negative vector parameter   γ   may 
-% be used to prioritise relaxation of bounds on some reactions rather than others, 
-% e.g., relaxation of bounds on exchange reactions rather than internal reactions. 
-% The optimal choice of parameters depends heavily on the biochemical context. 
-% A relaxation of the minimum number of constraints is desirable because ideally 
-% one should be able to justify the choice of bounds or choice of metabolites 
-% to be exchanged across the boundary of the system by recourse to experimental 
-% literature. This task is magnified by the number of constraints proposed to 
-% be relaxed.
-%% PROCEDURE: RelaxFBA applied to Recon 3.0
+% ?   and   $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext>?
+% </mtext></mrow></math>$ can be used to trade off between relaxation of mass 
+% balance or bound constraints. A non-negative vector parameter   ?   can be used 
+% to prioritise relaxation of one mass balance constraint over another, e.g, to 
+% avoid relaxation of a mass balance constraint on a metabolite that is not desired 
+% to be exchanged across the boundary of the system. A non-negative vector parameter   
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext>?
+% </mtext></mrow></math>$  may be used to prioritise relaxation of bounds on some 
+% reactions rather than others, e.g., relaxation of bounds on exchange reactions 
+% rather than internal reactions. The optimal choice of parameters depends heavily 
+% on the biochemical context. A relaxation of the minimum number of constraints 
+% is desirable because ideally one should be able to justify the choice of bounds 
+% or choice of metabolites to be exchanged across the boundary of the system by 
+% recourse to experimental literature. This task is magnified by the number of 
+% constraints proposed to be relaxed.
+%% PROCEDURE: RelaxedFBA applied to Recon 3.0
 % TIMING: 20 seconds (computation), minutes - days (interpretation)
 % 
 % Recon 3D [<#LyXCite-brunk_recon_nodate brunk_recon_nodate>] is the latest, 
@@ -73,21 +75,21 @@
 % set of external reaction bounds that are required to be relaxed in order to 
 % make biomass synthesis feasible.
 % 
-% If necessary, initialise the cobra toolbox
-
-global TUTORIAL_INIT_CB;
-if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
-    initCobraToolbox
-    changeCobraSolver('gurobi','all');
-end
-%% 
-% Load Recon3.0model, unless it is allready loaded into the workspace.
+% Load Recon3.0model, unless it is already loaded into the workspace.
 
 clear model relaxOption
 if ~exist('modelOrig','var')
-    filename='Recon3.0model';
-    directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-    model = loadIdentifiedModel(filename,directory);
+    %select your own model, or use Recon2.0model instead
+    if 0
+        filename='Recon3.0model';
+        directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
+        model = loadIdentifiedModel(filename,directory);
+    else
+        filename2='Recon2.0model';
+        if exist('Recon2.0model.mat','file')==2
+            model = readCbModel(fileName);
+        end
+    end
     model.csense(1:size(model.S,1),1)='E';
     modelOrig = model;
 else
@@ -147,22 +149,21 @@ else
     disp('Model is infeasible');
 end
 %% 
-% Relaxed flux balance analysis is implemented with the function relaxFBA
+% Relaxed flux balance analysis is implemented with the function relaxedFBA
 
-%    [solution] = relaxFBA(model, relaxOption)
+%    [solution] = relaxedFBA(model, relaxOption)
 %% 
 % The inputs are a COBRA model and an optional parameter vector
 
 % INPUTS:
 %    model:          COBRA model structure
 %    relaxOption:    Structure containing the relaxation options:
+% * internalRelax:
+%  * 0 = do not allow to relax bounds on internal reactions
+%  * 1 = do not allow to relax bounds on internal reactions with finite bounds
+%  * 2 = allow to relax bounds on all internal reactions
 %
-%                      * internalRelax:
-%                        * 0 = do not allow to relax bounds on internal reactions
-%                        * 1 = do not allow to relax bounds on internal reactions with finite bounds
-%                        * 2 = allow to relax bounds on all internal reactions
-%
-%                      * exchangeRelax:
+% * exchangeRelax:
 %                        * 0 = do not allow to relax bounds on exchange reactions
 %                        * 1 = do not allow to relax bounds on exchange reactions of the type [0,0]
 %                        * 2 = allow to relax bounds on all exchange reactions
@@ -185,7 +186,7 @@ end
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
 %                      * lamda - trade-off parameter of relaxation on steady state constraint
-%                      * gamma - trade-off parameter of relaxation on bounds
+%                      * alpha - trade-off parameter of relaxation on bounds
 %
 % Note, excludedReactions and excludedMetabolites override all other relaxation options.
 %% 
@@ -216,11 +217,11 @@ relaxOption.gamma  = 10;
 
 relaxOption.lambda = 10;   
 %% 
-% Call the relaxFBA function, deal the solution, and set small values to 
-% zero
+% Call the relaxedFBA function, deal the solution, and set small values 
+% to zero
 
 tic;
-solution = relaxFBA(model,relaxOption);
+solution = relaxedFBA(model,relaxOption);
 timeTaken=toc;
 [v,r,p,q] = deal(solution.v,solution.r,solution.p,solution.q);
 if 0
@@ -254,10 +255,15 @@ if solution.stat == 1
     
     fprintf('%u%s\n',nnz(r),' steady state constraints relaxed');
      
-    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & model.SIntRxnBool),' internal lower bounds relaxed');
-    fprintf('%u%s\n',nnz(abs(q)>dispCutoff & model.SIntRxnBool),' internal upper bounds relaxed');
-    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & ~model.SIntRxnBool),' external lower bounds relaxed');
-    fprintf('%u%s\n',nnz(abs(q)>dispCutoff & ~model.SIntRxnBool),' external upper bounds relaxed');
+    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & ~abs(q)>dispCutoff & model.SIntRxnBool),' internal only lower bounds relaxed');
+    fprintf('%u%s\n',nnz(abs(q)>dispCutoff & ~abs(p)>dispCutoff & model.SIntRxnBool),' internal only upper bounds relaxed');
+    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & abs(q)>dispCutoff & model.SIntRxnBool),' internal lower and upper bounds relaxed');
+
+    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & ~abs(q)>dispCutoff & ~model.SIntRxnBool),' external only lower bounds relaxed');
+    fprintf('%u%s\n',nnz(abs(q)>dispCutoff & ~abs(p)>dispCutoff & ~model.SIntRxnBool),' external only upper bounds relaxed');
+    fprintf('%u%s\n',nnz(abs(p)>dispCutoff & abs(q)>dispCutoff & ~model.SIntRxnBool),' external lower and upper bounds relaxed');
+    
+    fprintf('%u%s\n',nnz(abs(p)>dispCutoff | abs(q)>dispCutoff & ~model.SIntRxnBool),' external lower or upper bounds relaxed');
     
     maxUB = max(max(model.ub),-min(model.lb));
     minLB = min(-max(model.ub),min(model.lb));
@@ -270,7 +276,7 @@ if solution.stat == 1
     fprintf('%u%s\n',nnz(abs(q)>dispCutoff & exRxn00),' upper bounds relaxed on fixed reactions (lb=ub=0)');
     
 else
-    disp('relaxFBA problem infeasible, check relaxOption fields');
+    disp('relaxedFBA problem infeasible, check relaxOption fields');
 end
 %% TROUBLESHOOTING
 % Given an infeasible problem, 
@@ -283,17 +289,17 @@ end
 % p\Vert_{0}+\gamma\Vert q\Vert_{0}\\\text{s.t.} & Sv+r=b\\ & l-p\leq v\leq u+q\\ 
 % & p,q,r\geq0\end{array}$$
 % 
-% will always find a solution. However, relaxFBA offers the user the option 
+% will always find a solution. However, relaxedFBA offers the user the option 
 % to disallow relaxation of some of the constraints. If too many constraints are 
-% not allowed to be relaxed, then relaxFBA will report an infeasible problem. 
+% not allowed to be relaxed, then relaxedFBA will report an infeasible problem. 
 % The fields of relaxOption should be reviewed. For example, if relaxation of 
 % steady state constraints is not alllowed, yet b is nonzero and not in the range 
-% of the stoichiometric matrix, then the relaxFBA problem will be infeasible. 
+% of the stoichiometric matrix, then the relaxedFBA problem will be infeasible. 
 % To allow the relaxation of the steady state constraint, S*v = b, then use
 
 %relaxOption.steadyStateRelax = 1;
 %% 
-%  If relaxFBA does return a solution, but it is not biochemcially realistic, 
+%  If relaxedFBA does return a solution, but it is not biochemcially realistic, 
 % then again review the fields of relaxOption, to allow or disallow relaxation 
 % of certain constraints. For example, to specifically disallow relaxation of 
 % the bounds on reaction with model.rxns abbreviation 'myReaction', use
@@ -310,7 +316,7 @@ end
 % Even if the set of relaxations are properly set, in a boolean sense, tweaking 
 % of the DCA card trade off parameters can help narrow down to a biochemically 
 % realistic solution, by iterating between the biochemical literature and the 
-% numerical results from relaxFBA after tweaking the parameters. This flexibility 
+% numerical results from relaxedFBA after tweaking the parameters. This flexibility 
 % is provided for the expert user. See relaxFBA_cappedL1.m. A standard set of 
 % advanced parameters are:
 
@@ -323,7 +329,7 @@ end
 %relaxOption.alpha1  = 0;     %trade-off parameter of l1 part of p and q
 %relaxOption.theta   = 2;    %parameter of capped l1 approximation
 %% ANTICIPATED RESULTS
-% relaxFBA will return a set of steady state constraints, lower bounds, and 
+% relaxedFBA will return a set of steady state constraints, lower bounds, and 
 % upper bounds, that are required to be relaxed to ensure that the FBA problem 
 % is feasible. It is necessary to analyse the solution biochemically, to see if 
 % it makes sense to relax the suggested constraints. The following code will report 
@@ -332,10 +338,11 @@ end
 if solution.stat == 1
     printFlag=0;
     lineChangeFlag=0;
-    if 0
+    if 1
         dispCutoffLower=relaxOption.epsilon;
         dispCutoffUpper=inf;
     else
+        %useful for numerical debugging
         dispCutoffLower=-10;
         dispCutoffUpper=10;
     end
@@ -390,19 +397,24 @@ if solution.stat == 1
         disp('Relaxed model is feasible');
     else
         disp('Relaxed model is infeasible');
-        solutionRelaxed = relaxFBA(modelRelaxed,relaxOption);
+        solutionRelaxed = relaxedFBA(modelRelaxed,relaxOption);
     end
 end
-
 %% EXPECTED RESULTS
 % The relaxed model should be feasible. Indicated by 'Relaxed model is feasible'
 %% TROUBLESHOOTING
 % If the relaxed model is not feasible. If not, there could be a numerical issue 
 % due to the numerical tolerance of the linear optimisation solutions or due to 
-% the numerical tolerance on the relaxFBA algorithm, both of which are by default 
+% the numerical tolerance on the relaxedFBA algorithm, both of which are by default 
 % set to the feasibility tolerance for the currently installed solver (typically 
 % 1e-6 for a double precision solver like Gurobi). If problems persist, examine 
 % the numerical properties of the constraints, esp wrt scaling, or try the dqqMinos 
 % solver.
 
 %changeCobraSolver('dqqMinos','LP')
+%% REFERENCES
+% Fleming, R.M.T., et al., Cardinality optimisation in constraint-based modelling: 
+% Application to Recon 3D (submitted), 2017.
+% 
+% Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view 
+% of gene variation in human metabolism. (submitted) 2017.
