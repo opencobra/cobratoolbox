@@ -36,7 +36,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %     matlab          MATLAB's linprog function
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
-%     quadMinos       quad LP solver
+%     quadMinos       quad solver
 %     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
 %     ============    ============================================================
 %
@@ -137,6 +137,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %
 %     ============    ============================================================
 %     matlab          MATLAB's fmincon.m
+%     quadMinos       quad solver
 %     ============    ============================================================
 %
 %   * experimental support:

@@ -2,4 +2,4 @@
 
 - [Integration of transcriptomic and proteomic data (extractionTranscriptomic)](extractionTranscriptomic)
 - [Integration of exometabolomic data (metabotools)](metabotools)
-- [Integration of endometabolomic data (uFBA)](uFBA)
+- [unsteady-state Flux Balance Analysis (uFBA)](uFBA)

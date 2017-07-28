@@ -14,12 +14,3 @@ How to contribute
    <li>A guide for reporting an <strong>issue</strong> or submitting a <strong>pull request (PR)</strong> is <a href="https://opencobra.github.io/cobratoolbox/docs/issueGuide.html">here</a>.</li>
    </ul>
    <p>If you want to use <code>git</code> via the command line interface and need help, these <a href="https://uni-lu.github.io/slides/">training slides</a> will get you started. This <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github">guide</a> or the official <a href="https://help.github.com/articles/creating-a-pull-request/">GitHub guide</a> also come in handy.</p>
-   <h2>How to cite <code>The COBRA Toolbox</code></h2>
-   <p>When citing <code>The COBRA Toolbox</code>, it is important to cite the original paper where an algorithm was first reported, as well as its implementation in <code>The COBRA Toolbox</code>. This is important, because the objective of <code>The COBRA Toolbox</code> is to amalgamate and integrate the functionality of a wide range of COBRA algorithms and this will be undermined if contributors of new algorithms do not get their fair share of citations. The following is one example how to approach this within the methods section of a paper (<strong>not</strong> the supplemental material please):</p>
-   <p><em>To generate a context-specific model the FASTCORE algorithm [1], implemented in The COBRA Toolbox [2], was employed.</em></p>
-   <blockquote>
-   <p>[1] = Vlassis N, Pacheco MP, Sauter T (2014) Fast Reconstruction of Compact Context-Specific Metabolic Network Models. PLoS Comput Biol 10(1): e1003424.</p>
-   </blockquote>
-   <blockquote>
-   <p>[2] = Schellenberger J, Que R, Fleming RMT, Thiele I, Orth JD, Feist AM, Zielinski DC, Bordbar A, Lewis NE, Rahmanian S, Kang J, Hyduke DR, Palsson BØ. 2011 Quantitative prediction of cellular metabolism with constraint-based models: The COBRA Toolbox v2.0. Nature Protocols 6:1290-1307.</p>
-   </blockquote>
