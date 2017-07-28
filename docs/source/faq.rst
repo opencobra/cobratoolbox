@@ -1,6 +1,7 @@
 Support
 =======
 
-Answers to Frequently Asked Questions (**FAQ**) are `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`_.
+.. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
+.. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
 
-If you need support, please feel free to post your question in our `forum <https://groups.google.com/forum/#!forum/cobra-toolbox>`_.
+If you need support, please feel free to post your question in our |ImageLink|_.
