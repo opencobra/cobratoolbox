@@ -1,4 +1,4 @@
-%% Relaxed Flux Balance Analysis
+%% Relaxed Flux Balance Analysis: Toy model
 %% Author: Ronan Fleming, Systems Biochemistry Group, University of Luxembourg.
 %% Reviewer:
 %% Introduction

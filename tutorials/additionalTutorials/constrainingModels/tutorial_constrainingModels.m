@@ -3,6 +3,9 @@
 %% Reviewers: 
 % Anne Richelle, Systems Biology and Cell engineering, University of California 
 % San Diego
+% 
+% Almut Heinken, Molecular Systems Physiology Group, LCSB, University of 
+% Luxembourg
 %% INTRODUCTION
 % A metabolic model can be converted into a condition-specific model based on 
 % the imposition of experimentally derived constraints. Constraints can be defined, 
@@ -16,7 +19,7 @@
 % is only required to turn over its biomass components. This tutorial is particularly 
 % relevant for such cases. Turnover rates are commonly expressed as half-lives 
 % (${t_{1/2}$) and represent the time required for half of the biomass precursor 
-% to be replaced [3]. 
+% to be replaced [2]. 
 % 
 % Using the experimental literature, metabolite ${t_{1/2}$ were collected 
 % and converted into turnover rates ($\lambda$):
@@ -36,9 +39,16 @@
 % 
 % $$\text{(3)}\ Sv=\frac{dx}{dt}=\lambda x\\$$
 %% PROCEDURE
-% Unless the model is already loaded into the workspace, ReconX needs to be 
-% loaded. Here, we use Recon2.0 model for illustration, although any model can 
-% be used. 
+% Initialize the Cobra Toolbox using the |initCobraToolbox| function.
+
+initCobraToolbox
+%% *Setting the *optimization* solver*
+
+changeCobraSolver('gurobi','LP');
+%% 
+% Unless the model is already loaded into the workspace, ReconX needs to 
+% be loaded. Here, we use Recon2.0 model for illustration, although any model 
+% can be used. 
 
 clear model
 if ~exist('modelOrig','var')
@@ -50,13 +60,13 @@ else
     model.csense(1:size(model.S,1),1)='E';
 end
 %% *1. Environmental constraints*
-%  
+% 
 % 
 % Environmental constraints are typically related to nutrient availability 
 % (e.g., glucose and oxygen). They can be defined using the function _changeRxnBounds_ 
 % to set the minimal and maximal uptake and/or secretion rates possible in a specific 
 % condition. For example, in the caudate-putamen of the conscious rat, glucose 
-% consumption rate was found to range between -12.00 and -11.58  $\mu mol/gDW/hr$[4]. 
+% consumption rate was found to range between -12.00 and -11.58  $\mu mol/gDW/hr$[3]. 
 % Therefore, the lower bound of the glucose exchange reaction (<http://vmh.uni.lu/#reaction/EX_glc(e) 
 % EX_glc(e)>) can be set as follows:
 
@@ -69,11 +79,11 @@ modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc(e)', -12, 'l');
 
 modelConstrained = changeRxnBounds(modelConstrained, 'EX_glc(e)', -11.58, 'u');
 %% *2. Internal enzymatic constraints *
-%  
+% 
 % 
 % By convention, the bounds set on reaction rates in a metabolic model range 
 % from -1000 to 1000 and from 0 to 1000 for reversible and irreversible reactions, 
-% respectively [2]. Actually, the rate of a reaction is related to the activity 
+% respectively [4]. Actually, the rate of a reaction is related to the activity 
 % of the enzyme catalyzing this reaction.  Therefore, internal enzymatic constraints 
 % can be used to define the maximum capacity of a specified enzyme to catalyze 
 % a reaction (_Vmax_). For example, assuming that the reaction catalyzed by fructose-bisphosphate 
@@ -86,7 +96,7 @@ modelConstrained = changeRxnBounds(modelConstrained, 'FBA', 128, 'u');
 % Optionally, if the reaction is reversible, the same constraint can be 
 % set as the lower bound, but with opposite signs.
 % 
-%  
+% 
 
 modelConstrained = changeRxnBounds(modelConstrained, 'FBA', -128, 'l');
 %% 
@@ -127,13 +137,13 @@ modelConstrained = addReaction(modelConstrained, 'biomasReactionLipids',  '20.65
 % matter and must therefore be imposed as a lower bound on the corresponding degradation 
 % reaction(s) of the different lipids, amino acids, and nucleic acids. 
 % 
-%  < >
+% < >
 % 
 % *Table 1: The minimum metabolic maintenance requirement for neurons.* This 
 % is a coarse-grained approximation of neuronal lipid, amino acid, and nucleic 
 % acid maintenance requirements converted into $\mu mol/gDW/hr$.  
 % 
-%  
+% 
 % 
 % **cardiolipin is also known as diphosphatidylglycerol
 % 
@@ -270,7 +280,7 @@ ind = findRxnIDs(modelIrrev, splitRxns);
 
 expError = 0.25;
 modelConstrained = modelIrrev;
-for i = 1:length(splitRxns);
+for i = 1:length(splitRxns)
     modelConstrained = changeRxnBounds(modelConstrained, splitRxns{i,1},...
         constraints(i,1)-constraints(i,1)*expError, 'l');
 end
@@ -370,31 +380,54 @@ originalTest = model;
 originalTest = changeObjective(originalTest , 'DM_atp_c_');
 [vSparseOriginal, sparseRxnBoolOriginal, essentialRxnBoolOriginal]  = sparseFBA(originalTest);
 %% 
+% Display the number of essential reactions thata re required to carry flux 
+% to fulfill the objective function:
+
+cnt=0;
+for n=1:length(originalTest.rxns)
+    if essentialRxnBoolOriginal(n,1)==true
+        cnt=cnt+1;
+    end
+end
+ fprintf('%g%s\n',cnt,' reactions essential to fulfill the objective function DM_atp_c_')
+%% 
 % In the absence of constraints, the minimal set of reactions required to 
-% maximise the objective function is 129 essential reactions.
+% maximise the objective function is 111 essential reactions.
 
 constrainedTest = modelConstrainedAb; 
 constrainedTest = changeObjective(constrainedTest, 'DM_atp_c_');
 [vSparseConstrained, sparseRxnBoolConstrained, essentialRxnBoolConstrained]  = sparseFBA(constrainedTest);
 %% 
+% Display the number of essential reactions thata re required to carry flux 
+% to fulfill the objective function:
+
+cnt=0;
+for n=1:length(constrainedTest.rxns)
+    if essentialRxnBoolConstrained(n,1)==true
+        cnt=cnt+1;
+    end
+end
+ fprintf('%g%s\n',cnt,' reactions essential to fulfill the objective function DM_atp_c_')
+%% 
 % After the addition of constraints, the minimal set of reactions required 
 % is increased to 172 essential reactions. Therefore, in this example, it is useful 
-% to integrate cell-type specific constraints to further refine the minimal set 
-% of essential reactions. In most cases, constraints also allow us to restrict 
-% the feasible solution space. 
+% to integrate cell-type specific constraints to further define the minimal set 
+% of essential reactions. In most cases, constraints also allow us to alter the 
+% feasible solution space to obtain fluxes that better agree with the known physiology 
+% of the cell type. 
 %% REFERENCES
-% 1. Feist, A.M. and Palsson, B.O. The biomass objective function. Current Opinion 
-% in Microbiology. 13(3), 344-349 (2010).  
+% 1. Feist, A.M. and Palsson, B.Ø. The biomass objective function. Current Opinion 
+% in Microbiology. 13(3), 344–349 (2010).  
 % 
-% 2. Thiele, I.  and Palsson B.O. A protocol for generating a high-quality 
-% genome-scale metabolic reconstruction. Nat. Protocols. 5(1), 93-121(2010).
+% 2. Kuhar, M.J. On the use of protein turnover and half-lives. Neuropsychopharmacology. 
+% 34(5), 1172–1173 (2008). 
 % 
-% 3. Kuhar, M.J. On the use of protein turnover and half-lives. Neuropsychopharmacology. 
-% 34(5), 1172-1173 (2008). 
-% 
-% 4. Sokoloff, L. et al. The [14C]deoxyglucose method for the measurement 
+% 3. Sokoloff, L. et al. The [14C]deoxyglucose method for the measurement 
 % of local cerebral  glucose utilization: theory, procedure, and normal values 
 % in the  conscious and anesthetized albino rat. J Neurochem. 28(5):897-916 (1977).
+% 
+% 4. Thiele, I.  and Palsson B.Ø. A protocol for generating a high-quality 
+% genome-scale metabolic reconstruction. Nat. Protocols. 5(1), 93–121(2010).
 % 
 % 5. Zhang, J. and Liu, Q. Cholesterol metabolism and homeostasis in the 
 % brain. Protein Cell. 6(4), 254-64 (2015). 

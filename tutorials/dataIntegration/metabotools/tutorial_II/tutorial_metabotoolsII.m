@@ -1,6 +1,6 @@
 %% Metabotools tutorial II - Integration of quantitative metabolomic data
-%% Authors: Maike Aurich
-%% *Reviewer(s): Anne Richelle*
+%% Authors: Maike K. Aurich, Sylvain Arreckx, *Systems Biochemistry Group, LCSB, University of Luxembourg.*
+%% *Reviewer(s): Anne Richelle, Lewis Lab at University of California, San Diego.*
 % *INTRODUCTION*
 % 
 % In this tutorial, we  generate a contextualized model by integrating quantitative 
@@ -14,11 +14,11 @@
 % *PROCEDURE*
 % 
 % Clear workspace and initialize the COBRA Toolbox
-%%
+
 clear
 initCobraToolbox
 %% Step *0* - Define the output location and set the LP solver
-%%
+
 global CBTDIR % set path to cobratoolbox (pathToCOBRA)
 outputPath = pwd;% ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'
 solver = 'gurobi';  % can be gurobi or 'ibm_cplex'
@@ -57,7 +57,7 @@ end
 % Constrain the model using the data related to medium composition. To this 
 % end, define the set of exchange reactions for which exometabolomic data are 
 % available. In this example, no data are available
-%%
+
 medium_composition = {};
 met_Conc_mM = [];
 %% 
@@ -105,7 +105,7 @@ clearvars -EXCEPT modelMedium tol solver outputPath tutorialPath solverQuant
 % or degradation pathways, or blocked reactions. If only secretion is not possible, 
 % only secretion is eliminated from the sample profile whereas uptake will still 
 % be mapped.
-%%
+
 load([tutorialPath filesep 'tutorial_II_data.mat']);
 model = modelMedium;
 test_max = 500;
@@ -117,7 +117,7 @@ clearvars -EXCEPT modelMedium samples tol solver outputPath tutorialPath solverQ
 %% 
 % Use _checkExchangeProfiles_  generate a summary of the number of uptake 
 % and secretion exchanges per samples.
-%%
+
 nmets = 70;
 [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, outputPath, nmets);
 clearvars -EXCEPT modelMedium samples tol solver mapped_exchanges  outputPath tutorialPath solverQuant
@@ -130,7 +130,7 @@ save([outputPath filesep 'Result_checkExchangeProfiles']);
 % function allows the definition of metabolites that should not be consumed (_no 
 % uptake_) or not secreted (_no secretion_). Note that the solver =’ibm_cplex’ 
 % is required for this step. 
-%%
+
 solverQuant = 'ibm_cplex';
 changeCobraSolver(solverQuant, 'LP');
 
@@ -154,7 +154,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol so
 % exchange reactions that were added to the models. The function _mkTableOfAddedExchanges_ 
 % generates a table that summarizes the reactions added to individual models (*Added 
 % all*). 
-%%
+
 changeCobraSolver(solver, 'LP');
 
 [Ex_added_all_unique] = statisticsAddedExchanges(ResultsAllCellLines, samples);
@@ -167,7 +167,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol so
 %% Step 5 : Analyze the sets of essential genes
 % Use the function _analyzeSingleGeneDeletion_ to predict and analyze the sets 
 % of essential genes across a set of models. 
-%%
+
 cutoff = 0.05;
 [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, outputPath, samples, cutoff, OverViewResults);
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes tol solver mapped_exchanges outputPath tutorialPath
@@ -182,7 +182,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_add
 % Use the function checkEffectRxnKO to investigate which individual gene-associated 
 % reaction makes the model infeasible (i.e., reactions associated with a gene 
 % need to carry flux). 
-%%
+
 samples_to_test = samples; %(sub-)set of models
 fill = 'NAN'; %Define a placeholder for an empty cell
 genes_to_test = {'55293.1'}; %set of genes
@@ -195,7 +195,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_add
 % an intersect model (_intersectModel_). Additionally, it writes out the set of 
 % reactions (_diffRxns_) and exchange reactions (_diffExRxns_) that distinguish 
 % the union and the intersect model for further analysis. 
-%%
+
 mk_union = 1;
 mk_intersect = 1;
 mk_reactionDiff = 1;
@@ -218,14 +218,14 @@ save([outputPath filesep 'summary']);
 % carrying highest flux for production/consumption of the metabolite of interest 
 % (_maximum contributing rxn, maximum contributing flux_).This analysis requires 
 % a quadratic programming (_QP_) solver. 
-%%
+
 changeCobraSolver(solver, 'QP');
 obj = 'DM_atp_c_';
 carbon_source = {'EX_glc(e)'};
 samples = samples(1:4, 1);
 dir = 1;
 %% Example A - ATP production
-%%
+
 % exclude transport reactions from flux split analysis
 transportRxns = {'ATPtm'; 'ATPtn'; 'ATPtx'; 'ATP1ter'; 'ATP2ter'; 'EX_atp(e)'; 'DNDPt13m';...
                  'DNDPt2m'; 'DNDPt31m'; 'DNDPt56m'; 'DNDPt32m'; 'DNDPt57m'; 'DNDPt20m';...
@@ -240,7 +240,7 @@ PHs = [samples maximum_contributing_rxn(:, 1)];
 maximum_contributing_flux_ATP = maximum_contributing_flux;
 clear ATPprod transportRxns met2test maximum_contributing_rxn
 %%  Example B - NADH production
-%%
+
 met2test = {'nadh[c]', 'nadh[m]', 'nadh[n]', 'nadh[x]', 'nadh[r]'};
 transportRxns = {'NADHtpu'; 'NADHtru'; 'NADtpu'};
 
@@ -250,7 +250,7 @@ transportRxns = {'NADHtpu'; 'NADHtru'; 'NADtpu'};
 PHs = [PHs maximum_contributing_rxn(:, 1)];
 clear transportRxns met2test maximum_contributing_rxn
 %% Example C - FADH2 production
-%%
+
 transportRxns = {'FADH2tru'; 'FADH2tx'};
 met2test = {'fadh2[c]', 'fadh2[m]', 'fadh2[n]', 'fadh2[x]', 'fadh2[r]'};
 
@@ -259,7 +259,7 @@ met2test = {'fadh2[c]', 'fadh2[m]', 'fadh2[n]', 'fadh2[x]', 'fadh2[r]'};
 PHs = [PHs maximum_contributing_rxn(:, 1)];
 clear transportRxns met2test
 %% Example D - NADPH production
-%%
+
 transportRxns = {'NADPHtru'; 'NADPHtxu'};
 met2test = {'nadph[c]', 'nadph[m]', 'nadph[n]', 'nadph[x]', 'nadph[r]'};
 
@@ -272,7 +272,7 @@ save([outputPath filesep 'fluxSplits']);
 %%  Step 9 - Illustrate the phenotypes (PHs) on 3Dplot
 % The function make3Dplot allows illustration of the results of the previous 
 % analysis. The colors specify different phenotypes. 	 
-%%
+
 diff_view = 1;
 fonts = 18;
 
@@ -285,7 +285,7 @@ make3Dplot(PHs, maximum_contributing_flux_ATP, fonts, outputPath, diff_view);
 % _mets_). The range of flux values to be tested is defined by the number of steps 
 % and step size (_step num_ and _step size_). The direction of exchange is defined 
 % individually for each exchange (_direct_). 
-%%
+
 mets = {'EX_glc(e)', 'EX_o2(e)'; 'EX_gln_L(e)', 'EX_o2(e)'; 'EX_lac_L(e)', 'EX_o2(e)'};
 step_size = [40, 40; 20, 40; 40, 40];
 step_num = [28, 26; 21, 26; 42, 26];
