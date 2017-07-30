@@ -1,48 +1,47 @@
-function metGroupCont=createGroupContributionStruct(primaryFile,pH,secondaryFile)
+function metGroupCont = createGroupContributionStruct(primaryFile, pH, secondaryFile)
 % Generates a matlab structure out of the tab delimited group contribuion data
 %
 % The matlab structure with the group contibution data for each
-% metabolite uses the primaryFile file in preference to the secondaryFile file but
+% metabolite uses the `primaryFile` file in preference to the `secondaryFile` file but
 % these can be any first and second preference files as long as they are
-% in the correct format see webCGMtoTabDelimitedFile.m
+% in the correct format see `webCGMtoTabDelimitedFile.m`
 %
-%INPUT
-% primaryFile    tab delimited text file with group contribution data 
-%                (Janowski et al Biophysical Journal 95:1487-1499 (2008))
-%                i.e. output such as webCGM.txt from
-%                webCGMtoTabDelimitedFile.m
+% USAGE:
 %
-%OPTIONAL INPUT
-% pH             ph at which group contribution data given for, default=7
+%    metGroupCont = createGroupContributionStruct(primaryFile, pH, secondaryFile)
 %
-% secondaryFile  tab delimited text file with group contribution data 
-%                (Janowski et al Biophysical Journal 95:1487-1499 (2008))
-%                i.e. output such as webCGM.txt from
-%                webCGMtoTabDelimitedFile.m
-%                If the same metabolite abbreviation occurs in both files,
-%                then the data in the primary file takes precedence.
+% INPUT:
+%    primaryFile:     tab delimited text file with group contribution data
+%                     (`Janowski et al Biophysical Journal 95:1487-1499 (2008)`)
+%                     i.e. output such as `webCGM.txt` from `webCGMtoTabDelimitedFile.m`
+%
+% OPTIONAL INPUTS:
+%    pH:              ph at which group contribution data given for, `default = 7`
+%
+%    secondaryFile:    tab delimited text file with group contribution data
+%                     (`Janowski et al Biophysical Journal 95:1487-1499 (2008)`)
+%                     i.e. output such as `webCGM.txt` from `webCGMtoTabDelimitedFile.m`
+%                     If the same metabolite abbreviation occurs in both files,
+%                     then the data in the primary file takes precedence.
 %
 %
-%INPUT FILE FORMAT
-% the first two text columns in both files should correspond to:
-% abbreviation   
-% formulaMarvin
-%
+% Comment on input file format - the first two text columns in both files should correspond to:
+% `abbreviation`, `formulaMarvin`,
 % the next three columns in both files should correspond to:
-% delta_G_formation
-% delta_G_formation_Uncertainty
-% chargeMarvin
+% `delta_G_formation`, `delta_G_formation_Uncertainty`, `chargeMarvin`
 %
-%OUTPUT
-% metGroupCont(m).abbreviation                      metabolite abbreviation
-% metGroupCont(m).formulaMarvin                     metabolite formula (Marvin)
-% metGroupCont(m).delta_G_formation                     
-% metGroupCont(m).delta_G_formation_uncertainty
-% metGroupCont(m).chargeMarvin                      metabolite charge (Marvin)
-% metGroupCont(m).pH
-% metGroupCont(m).file                              file data came from
+% OUTPUTS:
+%    metGroupCont:    structure with fields:
 %
-% Ronan M. T. Fleming 9 July 2009
+%                       * metGroupCont(m).abbreviation - metabolite abbreviation
+%                       * metGroupCont(m).formulaMarvin - metabolite formula (Marvin)
+%                       * metGroupCont(m).delta_G_formation
+%                       * metGroupCont(m).delta_G_formation_uncertainty
+%                       * metGroupCont(m).chargeMarvin - metabolite charge (Marvin)
+%                       * metGroupCont(m).pH
+%                       * metGroupCont(m).file - file data came from
+%
+% .. Author: - Ronan M. T. Fleming 9 July 2009
 
 if ~exist('pH','var')
     pH=7;
@@ -103,10 +102,3 @@ if exist('secondaryFile','var')
         end
     end
 end
-
-
-
-
-
-
-

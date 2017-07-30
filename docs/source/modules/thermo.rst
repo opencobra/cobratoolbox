@@ -11,6 +11,7 @@ Thermo
    directionalityReport
    experimentalDesign
    experimentalData
+   groupContribution
 
 .. automodule:: src.analysis.thermo
    :members:

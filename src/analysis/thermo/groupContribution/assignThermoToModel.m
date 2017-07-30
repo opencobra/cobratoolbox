@@ -1,4 +1,4 @@
-function [model,computedSpeciesData]=assignThermoToModel(model,Alberty2006,Legendre,LegendreCHI,useKeqData,printToFile,GCpriorityMetList,metGroupCont,metSpeciespKa)
+function [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, Legendre, LegendreCHI, useKeqData, printToFile, GCpriorityMetList, metGroupCont, metSpeciespKa)
 % Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.
 %
 % Physicochemically, this is the most important function for setting up a
@@ -6,74 +6,72 @@ function [model,computedSpeciesData]=assignThermoToModel(model,Alberty2006,Legen
 % metabolite species and uses this data to create a standard transformed
 % Gibbs energy for each reactant. It uses the metabolite species standard
 % Gibbs energies of formation backcalculated from equilibrium constants, in
-% preference to the group contribution estimates
+% preference to the group contribution estimates.
 %
-%INPUT
-% model
-% Alberty2006       Alberty's data
-% model.T           temperature 298.15 K to 313.15 K
-% model.ph(p)       real pH in compartment defined by letter p
-% model.is(p)       ionic strength (0 - 0.35M) in compartment defined by letter p 
-% model.chi(p)      electrical potential (mV) in compartment defined by letter p 
-% model.cellCompartments(p) 1 x # cell array of distinct compartment letters
-
-    % compartments      2 x # cell array of distinct compartment letters and
-    %                   compartment names (deprecated)
-% model.NaNdfG0GCMetBool(m)  m x 1 boolean vector with 1 when no group contribution
-%                   data is available for a metabolite
-    % Update: No longer needed, since it's generated in
-    % dGfzeroGroupContToBiochemical, which is called in this function
-
+% USAGE:
 %
-%OPTIONAL INPUT
-% Legendre          {(1),0} Legendre Transformation for specifc real pH?
-% LegendreCHI       {(1),0} Legendre Transformation for specifc electrical potential?
-% useKeqData        {(1),0} Use dGf0 back calculated from Keq?
-% printToFile       {(0),1} 1 = print out repetitive material to log file
-% metGroupCont      Structure containing output from Jankowski et al.'s
-%                   2008 implementation of the group contribution method (GCM).
-%                   Contains the following fields for each metabolite:
-%                   .abbreviation: Metabolite ID
-%                   .formulaMarvin: Metabolite formula output by GCM
-%                   .delta_G_formation: Estimated standard Gibbs energy of
-%                   formation
-%                   .delta_G_formation_uncertainty: Uncertainty in
-%                   estimated delta_G_formation
-%                   .chargeMarvin: Metabolite charge output by GCM
-% metSpeciespKa     Structure containing pKa for acid-base equilibria between
-%                   metabolite species. pKa are estimated with ChemAxon's
-%                   pKa calculator plugin (see function
-%                   "assignpKasToSpecies").
+%    [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, Legendre, LegendreCHI, useKeqData, printToFile, GCpriorityMetList, metGroupCont, metSpeciespKa)
 %
-%OUTPUT
-% model.dfG0(m)            standard Gibbs energy of formation
-% model.dfG(m)             Gibbs energy of formation
-% model.dfGt0(m)           standard transformed Gibbs energy of formation
-% model.dHzerot(m)         standard transformed enthalpy of formation
-% model.dfGt0Source(m)     origin of data, Keq or groupContFileName.txt
-% model.dfGt0Keq(m)
-% model.dfGt0GroupCont(m)
-% model.dfHt0Keq(m)
-% model.mf(m)               mole fraction of each species within a pseudoisomer group
-% model.aveZi(m)            average charge
-% model.chi              electrical potential
-% model.aveHbound(m)        average number of protons bound to a reactant
-    % modelT.gasConstant            Gas Constant (deprecated)
-% model.faradayConstant        Faraday Constant
-    % modelT.temp                   Temperature (deprecated)
-% model.ph(p)           real pH in compartment defined by letter p
-% model.is(p)           ionic strength (0 - 0.35M) in compartment defined by letter p 
-% model.chi(p)          electrical potential (mV) in compartment defined by letter p
+% INPUTS:
+%    model:            structure with fields:
 %
-% Ronan M. T. Fleming
-% Hulda SH, Dec 2010    Added computedSpeciesData as input. Coded the
-%                       transformation of species standard Gibbs energies of formation in
-%                       computedSpeciesData to reactant standard Gibbs energies of formation at
-%                       in vivo conditions.
-% Hulda SH, Nov 2011    computedSpeciesData now created within this
-%                       function using metGroupCont and metSpeciespKa.
-% Lemmer El Assal, 2016/10/14
-% Adaptation to old COBRA model structure
+%                        * model.T - temperature 298.15 K to 313.15 K
+%                        * model.ph(p) - real pH in compartment defined by letter p
+%                        * model.is(p) - ionic strength (0 - 0.35M) in compartment defined by letter p
+%                        * model.chi(p) - electrical potential (mV) in compartment defined by letter p
+%                        * model.cellCompartments(p) - `1 x #` cell array of distinct compartment letters
+%                        * model.NaNdfG0GCMetBool(m) - `m x 1` boolean vector with 1 when no group contribution
+%                          data is available for a metabolite
+%    Alberty2006:      Alberty's data
+%
+% OPTIONAL INPUTS:
+%    Legendre:         {(1), 0} Legendre Transformation for specifc real pH?
+%    LegendreCHI:      {(1), 0} Legendre Transformation for specifc electrical potential?
+%    useKeqData:       {(1), 0} Use `dGf0` back calculated from `Keq`?
+%    printToFile:      {(0), 1} 1 = print out repetitive material to log file
+%    metGroupCont:     Structure containing output from `Jankowski et al.'s
+%                      2008 implementation of the group contribution method (GCM).`
+%                      Contains the following fields for each metabolite:
+%
+%                        * .abbreviation: Metabolite ID
+%                        * .formulaMarvin: Metabolite formula output by GCM
+%                        * .delta_G_formation: Estimated standard Gibbs energy of formation
+%                        * .delta_G_formation_uncertainty: Uncertainty in
+%                          estimated delta_G_formation
+%                        * .chargeMarvin: Metabolite charge output by GCM
+%    metSpeciespKa:    Structure containing `pKa` for acid-base equilibria between
+%                      metabolite species. `pKa` are estimated with ChemAxon's
+%                      pKa calculator plugin (see function
+%                      `assignpKasToSpecies`).
+%
+% OUTPUTS:
+%    model:            structure with fields:
+%
+%                        * model.dfG0(m) - standard Gibbs energy of formation
+%                        * model.dfG(m) - Gibbs energy of formation
+%                        * model.dfGt0(m) - standard transformed Gibbs energy of formation
+%                        * model.dHzerot(m) - standard transformed enthalpy of formation
+%                        * model.dfGt0Source(m) - origin of data, Keq or groupContFileName.txt
+%                        * model.dfGt0Keq(m)
+%                        * model.dfGt0GroupCont(m)
+%                        * model.dfHt0Keq(m)
+%                        * model.mf(m) - mole fraction of each species within a pseudoisomer group
+%                        * model.aveZi(m) - average charge
+%                        * model.chi - electrical potential
+%                        * model.aveHbound(m) - average number of protons bound to a reactant
+%                        * modelT.gasConstant - Gas Constant (deprecated)
+%                        * model.faradayConstant - Faraday Constant
+%                        * modelT.temp - Temperature (deprecated)
+%                        * model.ph(p) - real pH in compartment defined by letter p
+%                        * model.is(p) - ionic strength (0 - 0.35M) in compartment defined by letter p
+%                        * model.chi(p) - electrical potential (mV) in compartment defined by letter p
+%
+% .. Authors:
+%       - Ronan M. T. Fleming
+%       - Hulda SH, Dec 2010, Added computedSpeciesData as input. Coded the transformation of species standard Gibbs energies of formation in
+%         computedSpeciesData to reactant standard Gibbs energies of formation at in vivo conditions.
+%       - Hulda SH, Nov 2011, computedSpeciesData now created within this function using metGroupCont and metSpeciespKa.
+%       - Lemmer El Assal, 2016/10/14 Adaptation to old COBRA model structure
 
 for p=1:length(model.cellCompartments)
     %if isfield(PHR,compartments{p,1})
@@ -153,7 +151,7 @@ if ~isempty(computedSpeciesData)
         metAbbr = model.mets(m);
         metAbbr = metAbbr{1};
         metcompartment = find(model.cellCompartments==model.metCompartments{m});
-        
+
         if strcmp('succ[e]',model.mets{m})
             pause(eps)
         end
@@ -173,15 +171,15 @@ if ~isempty(computedSpeciesData)
         pHr=model.ph(metcompartment); %PHR.(model.met(m).abbreviation(end-1));
         is=model.is(metcompartment); %IS.(model.met(m).abbreviation(end-1));
         chi=model.chi(metcompartment); %CHI.(model.met(m).abbreviation(end-1));
-        
+
         %         if strcmp(model.met(m).abbreviation(end-1),'c')
         %             if chi~=0
         %                 error('We assume that the electrical potential of the cytoplasm is zero');
         %             end
         %         end
-        
+
         nCSD=size(computedSpeciesData,2);
-        
+
         for n=1:nCSD
             if strcmp(metAbbr(1:(end-2)),[computedSpeciesData(n).abbreviation, '['])
                 % find the number of species within pseudoisomer group
@@ -220,7 +218,7 @@ for m=1:nMet
     metAbbr = model.mets(m);
     metAbbr = metAbbr{1};
     metcompartment = find(model.cellCompartments==model.metCompartments{m});
-    
+
     albertyMatch=0;
     if ~any(strcmp(metAbbr(1:end-3),exceptions))
         if strcmp('succ[e]',model.mets{m})
@@ -242,16 +240,16 @@ for m=1:nMet
         pHr=model.ph(metcompartment); %PHR.(model.met(m).abbreviation(end-1));
         is=model.is(metcompartment); %IS.(model.met(m).abbreviation(end-1));
         chi=model.chi(metcompartment); %CHI.(model.met(m).abbreviation(end-1));
-        
+
         %     if strcmp(model.met(m).abbreviation(end-1),'c')
         %         if chi~=0
         %             error('We assume that the electrical potential of the cytoplasm is zero');
         %         end
         %     end
-        
+
         nAlb=size(Alberty2006,2);
-        
-        
+
+
         for n=1:nAlb
             if strcmp(metAbbr,Alberty2006(n).abbreviation)
                 albertyMatch=1;
@@ -291,16 +289,16 @@ for m=1:nMet
                 break;
             end
         end
-        
-        
-        
+
+
+
     end
-    
+
     %setting albertyMatch to zero bypasses all use of Albertys Data
     if useKeqData==0
         albertyMatch=0;
     end
-    
+
     %if no data from equilibrium constants, use group contribution
     %estimates if available
     if albertyMatch
@@ -318,7 +316,7 @@ for m=1:nMet
         model.dfGt0Keq(m)=NaN;
         model.dfHt0(m)=NaN;
         model.dfHt0Keq(m)=NaN;
-        
+
         if model.NaNdfG0GCMetBool(m)
             %dummy values if no group contribution data
             model.dfGt0(m)=NaN;
@@ -342,7 +340,7 @@ for m=1:nMet
             model.dfGt0(m)=model.dfGt0GroupCont(m);
             % model.mf(m)=1; Commented out. - Hulda
             model.dfGt0Source{m}='GC';
-            
+
             %print out the reason for doing so
             %metAbbr=model.mets(m);
             if any(strcmp(metAbbr(1:end-3),GCpriorityMetList))
@@ -366,7 +364,7 @@ for m=1:nMet
             end
         end
     end
-    
+
 
     if length(metAbbr)==4 && strcmp(metAbbr(1),'h')
         if Legendre
@@ -379,9 +377,9 @@ for m=1:nMet
             electricalTerm=(faradayConstant*(chi/1000))*zi;
             %pH
             %Eq 4.4-9 p67 Alberty 2003
-            
+
             pHterm = model.gasConstant*model.T*log(10^-model.ph(metcompartment));
-            
+
             %transformed thermodynamic properties
             if LegendreCHI
                 %Legendre transformation for hydrogen ion chemical
@@ -394,7 +392,7 @@ for m=1:nMet
             end
             model.dfGt(m)  = 0;
             model.dfGt0Source{m}='Keq';
-            
+
             if LegendreCHI
                 %untransformed chemical potential
                 model.dfG0(m) = - isTerm;
@@ -417,7 +415,7 @@ for m=1:nMet
             model.dfGt0(m)=pHTerm + isTerm + electricalTerm;
             model.dfGt0Source{m}='GC';
         end
-        
+
     end
 end
 
