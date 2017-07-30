@@ -1,7 +1,7 @@
 function adjustedAlberty2006 = adjustBaselinesInAlberty2006(Alberty2006, computedSpeciesData)
-% Adjust baseline for metabolites in Alberty's tables whose standard
+% Adjusts baseline for metabolites in Alberty's tables whose standard
 % formation energies were not determined relative to the elements in their
-% standard states. Set baseline to group contribution estimate.
+% standard states. Sets baseline to group contribution estimate.
 %
 % USAGE:
 %

@@ -10,30 +10,34 @@ function model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, co
 %    model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, concMinDefault, concMaxDefault, metBoundsFile, rxnBoundsFile, printLevel)
 %
 % INPUTS:
-% model.mets
-% model.rxns
-% setDefaultConc            1 = sets default bounds on conc
-% setDefaultFlux            1 = sets all reactions reversible [-1000,1000]
-% concMaxDefault            Default upper bound on metabolite
-%                           concentrations in M
-% concMinDefault            Default lower bound on metabolite
-%                           concentrations in M
+%    model:             structure with fields:
+%
+%                         * model.mets
+%                         * model.rxns
+%    setDefaultConc:    1 = sets default bounds on conc
+%    setDefaultFlux:    1 = sets all reactions reversible [-1000, 1000]
+%    concMaxDefault:    Default upper bound on metabolite
+%                       concentrations in `M`
+%    concMinDefault:    Default lower bound on metabolite
+%                       concentrations in `M`
 %
 % OPTIONAL INPUTS:
-% metBoundsFile   name of tab delimited file with metabolite bounds
-%                 format: '%s %f %f'
-%                         i.e. abbreviation lowerBound upperBound
-% rxnBoundsFile   name of tab delimited file with reaction bounds
-%                 format: '%s %f %f'
-%                         i.e. abbreviation lowerBound upperBound
+%    metBoundsFile:    name of tab delimited file with metabolite bounds
+%                      format: '%s %f %f'
+%                      i.e. abbreviation lowerBound upperBound
+%    rxnBoundsFile:    name of tab delimited file with reaction bounds
+%                      format: '%s %f %f'
+%                      i.e. abbreviation lowerBound upperBound
 %
 % OUTPUT:
-% model.concMin(j)
-% model.concMax(j)
-% model.lb
-% model.ub
+%    model:            structure with fileds:
 %
-% Ronan M.T. Fleming
+%                        * model.concMin(j)
+%                        * model.concMax(j)
+%                        * model.lb
+%                        * model.ub
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('metBoundsFile','var')
     metBoundsFile=[];
