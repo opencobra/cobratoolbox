@@ -1,50 +1,56 @@
-function [modelD,solutionThermoRecon,solutionRecon,model1]=setThermoReactionDirectionalityiAF1260(model,maxFlux,hardCoupleOxPhos)
-%Second pass assignment of reaction directionality (E. coli specific)
+function [modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactionDirectionalityiAF1260(model, maxFlux, hardCoupleOxPhos)
+% Second pass assignment of reaction directionality (E. coli specific)
 %
-%Set the upper and lower bounds for each internal flux based on
-%thermodynamic data where available. The remainder of the reactions without
-%thermodynamic data stay as they were in the reconstruction
-%To apply this script to a particular stoichiometric model, one would have
-%to modify it manually. At the moment, it is specfic to E. coli. The same
-%manual adjustment of reaction directionality made here to get the model to
-%grow, and grow at the rate seen in vivo, may not work for other organisms.
-%Nevertheless, this script outlines the steps needed to identify what needs
-%to be changed to get a model to grow and then to get it to grow at the
-%correct rate. There is currently no automatic substitution for manual
-%curation.
+% Set the upper and lower bounds for each internal flux based on
+% thermodynamic data where available. The remainder of the reactions without
+% thermodynamic data stay as they were in the reconstruction
+% To apply this script to a particular stoichiometric model, one would have
+% to modify it manually. At the moment, it is specfic to E. coli. The same
+% manual adjustment of reaction directionality made here to get the model to
+% grow, and grow at the rate seen in vivo, may not work for other organisms.
+% Nevertheless, this script outlines the steps needed to identify what needs
+% to be changed to get a model to grow and then to get it to grow at the
+% correct rate. There is currently no automatic substitution for manual curation.
 %
-%INPUT
-% model.NaNdG0RxnBool               reactions with NaN Gibbs Energy
-% model.transportRxnBool            transport reactions
-% model.directions:
+% USAGE:
 %
-% reactions that are qualitatively assigned by thermodynamics
-% directions.fwdThermoOnlyBool
-% directions.revThermoOnlyBool
-% directions.reversibleThermoOnlyBool
+%     [modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactionDirectionalityiAF1260(model, maxFlux, hardCoupleOxPhos)
 %
-% subsets of forward qualtiative -> reversible quantiative change
-% directions.ChangeForwardReversible_dGfKeq
-% directions.ChangeForwardReversibleBool_dGfGC
-% directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
-% directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
-% directions.ChangeForwardReversibleBool_dGfGC_bydGt0
-% directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
-% directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
-% directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
-% directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
-% directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+% INPUT:
+%    model:                  structure with fields:
 %
-%OUTPUT
-% amalgamation of reconstruction and thermodynamic assignment directions
-% model.lb_reconThermo      lower bound
-% model.ub_reconThermo      upper bound
-% solutionThermoRecon       FBA with thermodynamic in preference to
-%                           reconstruction directions, with exceptions
-%                           specific to E. coli given below
-% solutionRecon             FBA with reconstruction direction
+%                              * model.NaNdG0RxnBool - reactions with NaN Gibbs Energy
+%                              * model.transportRxnBool - transport reactions
+%                              * model.directions: Reactions that are qualitatively assigned by thermodynamics:
 %
-% Ronan M. T. Fleming
+%                                * directions.fwdThermoOnlyBool
+%                                * directions.revThermoOnlyBool
+%                                * directions.reversibleThermoOnlyBool
+%
+%                                subsets of forward qualtiative -> reversible quantiative change:
+%
+%                                * directions.ChangeForwardReversible_dGfKeq
+%                                * directions.ChangeForwardReversibleBool_dGfGC
+%                                * directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
+%                                * directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
+%                                * directions.ChangeForwardReversibleBool_dGfGC_bydGt0
+%                                * directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
+%                                * directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
+%                                * directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
+%                                * directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
+%                                * directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+%
+% OUTPUTS:
+%    model:                  structure with fields:
+%
+%                              * model.lb_reconThermo - lower bound
+%                              * model.ub_reconThermo - upper bound
+%    solutionThermoRecon:    FBA with thermodynamic in preference to
+%                            reconstruction directions, with exceptions
+%                            specific to E. coli given below
+%    solutionRecon:          FBA with reconstruction direction
+%
+% .. Author: - Ronan M. T. Fleming
 
 if ~exist('maxFlux','var')
     maxFlux=1000;
@@ -349,11 +355,11 @@ if abs(solution.f)<abs(solutionRecon.f/10) || solution.origStat~=1
                     minNorm=1e-6;
                     [solution,modelD]=solveCobraLPCPLEX(modelD,printLevel,basisReuse,conflictResolve,contFunctName,minNorm);
                 else
-                
-                    
-                    
+
+
+
                     solution = optimzeCbModel(modelD);
-                    
+
                 end
                 fprintf('%s%70s%s%g\n','Changed ' , modelD.rxn(n).officialName,'. Growth: ',solution.f);
             end
@@ -383,9 +389,9 @@ if abs(solution.f)<abs(solutionRecon.f/10) || solution.origStat~=1
                     minNorm=1e-6;
                     [solution,modelD]=solveCobraLPCPLEX(modelD,printLevel,basisReuse,conflictResolve,contFunctName,minNorm);
                 else
-                
-                    
-                    
+
+
+
                     solution = optimzeCbModel(modelD);
                     modelD=rmfield(modelD,'A');model=rmfield(modelD,'osense');
                 end
@@ -460,13 +466,13 @@ if abs(solution.f)<abs(solutionRecon.f/10) || solution.origStat~=1
     modelD.lb(strcmp(modelD.rxns,'PIt2rpp'))=0;
     modelD.ub(strcmp(modelD.rxns,'PIt2rpp'))=maxFlux;
 
-    
+
     if 1 %2011
         %   officialName: 'FMN adenylyltransferase'
         modelD.lb(strcmp(modelD.rxns,'FMNAT'))=0;
         modelD.ub(strcmp(modelD.rxns,'FMNAT'))=maxFlux;
     end
-    
+
     %     for n=1:nRxn
     %         if strcmp(modelD.rxn(n).regulationStatus,'Off')
     %             modelD.lb(n)=0;
@@ -587,7 +593,7 @@ for n=1:nRxn
                 modelD.rxn(n).directionalityThermo='forward';
             end
             end
-            
+
             %coa
             if modelD.S(strcmp('coa[c]',modelD.mets),n)>0 && modelD.S(strcmp('h2o[c]',modelD.mets),n)<0
                 modelD.lb(n)=0;
@@ -741,7 +747,7 @@ for n=1:nRxn
     %     end
     %model.transportRxnBool is a boolean vector which is an output
     %from deltaG0concFluxConstraintBounds
-    if model.transportRxnBool(n) 
+    if model.transportRxnBool(n)
         %         if strcmp(modelD.rxn(n).directionality,'forward')
         %             %recon direction applied to all
         %             %remaining transport reactions
@@ -807,7 +813,7 @@ for n=1:nRxn
         %                     modelD.ub(n)=maxFlux;
         % %                     fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');
         %                 end
-%     else 
+%     else
         %doesnt seem to be any need to set these forward either
         %                 if ~isempty(strfind(model.rxns{n},'pp')) && ~isempty(strfind(model.subSystems{n},'Transport'))
         % %                     error('There should be no other transport reactions than model.transportRxnBool')
@@ -862,7 +868,7 @@ if hardCoupleOxPhos
     %S.v=b
     modelD.b=[modelD.b;sparse(length(pair),1)];
     modelD.csense(nMet+1:nMet+length(pair))='E';
-    
+
     %test if modelD can grow
     if strcmp(CBTLPSOLVER,'cplex_direct')
         basisReuse=0;
@@ -875,7 +881,7 @@ if hardCoupleOxPhos
     end
     fprintf('\n%s%g\n','Certain transport reactions set to irreversible * hard coupling ox phos. Growth: ',solution.f);
     fprintf('\n')
-    
+
     %print out reactions going against reconstruction directions
     fprintf('\n%s\n','Reactions still going against qualitative directions')
     fprintf('%15s\t%6s%6s\t%65s\t%s\n','Abbr','iAF  ','AllTransportRecon','Equation','Reaction');
@@ -913,30 +919,30 @@ otherRxn={[]};
 
 %creating nad by going in reverse
 % otherRxn{end+1}='GLYCL'; %gly[c] + nad[c] + thf[c]  -> co2[c] + mlthf[c] + nadh[c] + nh4[c]  Glycine Cleavage System
-% otherRxn{end+1}='ME1'; %mal-L[c] + nad[c]  -> co2[c] + nadh[c] + pyr[c]  malic enzyme NAD 
+% otherRxn{end+1}='ME1'; %mal-L[c] + nad[c]  -> co2[c] + nadh[c] + pyr[c]  malic enzyme NAD
 % otherRxn{end+1}='THRD'; %nad[c] + thr-L[c]  -> 2aobut[c] + h[c] + nadh[c]  L threonine dehydrogenase
 % otherRxn{end+1}='GLYCDx'; %glyc[c] + nad[c]  -> dha[c] + h[c] + nadh[c] 	Glycerol dehydrogenase
-% % 
+% %
 %creating nadh by going in reverse
 
 %creating nadp by going in reverse
-% otherRxn{end+1}='ALDD2y'; %acald[c] + h2o[c] + nadp[c]  -> ac[c] + 2 h[c] + nadph[c]  aldehyde dehydrogenase acetaldehyde NADP 
+% otherRxn{end+1}='ALDD2y'; %acald[c] + h2o[c] + nadp[c]  -> ac[c] + 2 h[c] + nadph[c]  aldehyde dehydrogenase acetaldehyde NADP
 % otherRxn{end+1}='GND'; %6pgc[c] + nadp[c]  -> co2[c] + nadph[c] + ru5p-D[c]  phosphogluconate dehydrogenase
-% otherRxn{end+1}='ME2'; %mal-L[c] + nadp[c]  -> co2[c] + nadph[c] + pyr[c]  malic enzyme NADP 
+% otherRxn{end+1}='ME2'; %mal-L[c] + nadp[c]  -> co2[c] + nadph[c] + pyr[c]  malic enzyme NADP
 
 %seems to want to go in reverse
-%otherRxn{end+1}='ACALD'; %acald[c] + coa[c] + nad[c]  <=> accoa[c] + h[c] + nadh[c]  acetaldehyde dehydrogenase acetylating 
- 
+%otherRxn{end+1}='ACALD'; %acald[c] + coa[c] + nad[c]  <=> accoa[c] + h[c] + nadh[c]  acetaldehyde dehydrogenase acetylating
+
 %creating nadph by going in reverse
-% otherRxn{end+1}='HPYRRy'; %h[c] + hpyr[c] + nadph[c]  -> glyc-R[c] + nadp[c]  Hydroxypyruvate reductase NADPH 
-% otherRxn{end+1}='2DGLCNRy'; %2dhglcn[c] + h[c] + nadph[c]  -> glcn[c] + nadp[c]  2 dehydro D gluconate reductase NADPH 
+% otherRxn{end+1}='HPYRRy'; %h[c] + hpyr[c] + nadph[c]  -> glyc-R[c] + nadp[c]  Hydroxypyruvate reductase NADPH
+% otherRxn{end+1}='2DGLCNRy'; %2dhglcn[c] + h[c] + nadph[c]  -> glcn[c] + nadp[c]  2 dehydro D gluconate reductase NADPH
 % otherRxn{end+1}='FMNRx2'; %fmn[c] + h[c] + nadph[c]  -> fmnh2[c] + nadp[c]  FMN reductase
 % otherRxn{end+1}='FLVR'; %h[c] + nadph[c] + ribflv[c]  -> nadp[c] + rbflvrd[c]  flavin reductase
-% otherRxn{end+1}='DKGLCNR2y'; %25dkglcn[c] + h[c] + nadph[c]  -> 5dglcn[c] + nadp[c]  2 5 diketo D gluconate reductase NADPH 
-% otherRxn{end+1}='IDOND2'; %5dglcn[c] + h[c] + nadph[c]  -> idon-L[c] + nadp[c]  L indonate 5 dehydrogenase NADP 
-% otherRxn{end+1}='GLUSy'; %akg[c] + gln-L[c] + h[c] + nadph[c]  -> 2 glu-L[c] + nadp[c]  glutamate synthase NADPH 
+% otherRxn{end+1}='DKGLCNR2y'; %25dkglcn[c] + h[c] + nadph[c]  -> 5dglcn[c] + nadp[c]  2 5 diketo D gluconate reductase NADPH
+% otherRxn{end+1}='IDOND2'; %5dglcn[c] + h[c] + nadph[c]  -> idon-L[c] + nadp[c]  L indonate 5 dehydrogenase NADP
+% otherRxn{end+1}='GLUSy'; %akg[c] + gln-L[c] + h[c] + nadph[c]  -> 2 glu-L[c] + nadp[c]  glutamate synthase NADPH
 % otherRxn{end+1}='GMPR'; %gmp[c] + 2 h[c] + nadph[c]  -> imp[c] + nadp[c] + nh4[c]  GMP reductase
-% otherRxn{end+1}='2DGULRy'; %2dhguln[c] + h[c] + nadph[c]  -> idon-L[c] + nadp[c]  2 dehydro L gulonate reductase NADPH 
+% otherRxn{end+1}='2DGULRy'; %2dhguln[c] + h[c] + nadph[c]  -> idon-L[c] + nadp[c]  2 dehydro L gulonate reductase NADPH
 
 %ines debuggin --> fix
 % otherRxn{end+1}='ACKr';
@@ -962,7 +968,7 @@ if 0
     otherRxn{end+1}='ALAALAD';
     otherRxn{end+1}='NADTRHD';
     otherRxn{end+1}='FRD3';
-    
+
     bool=strcmp(modelD.rxns,'FEROpp');
     modelD.lb(bool)=0;
     %modelD.ub(bool)=0;
@@ -982,7 +988,7 @@ end
 
 for x=1:length(otherRxn)
     bool=strcmp(otherRxn{x},modelD.rxns);
-    if any(bool) 
+    if any(bool)
 %         if strcmp(modelD.rxn(bool).directionality,'forward')
             modelD.lb(bool)=0;
             modelD.ub(bool)=maxFlux;
@@ -997,14 +1003,14 @@ for x=1:length(otherRxn)
        end
     end
 end
-          
+
 if 0
 %relaxed reactions
 otherRelaxedRxn{1}=[];
 otherRelaxedRxn{end+1}='PPKr';
 for x=1:length(otherRelaxedRxn)
      bool=strcmp(otherRelaxedRxn{x},modelD.rxns);
-    if any(bool) 
+    if any(bool)
            modelD.lb(bool)=-maxFlux;
             modelD.ub(bool)=maxFlux;
             modelD.rxn(bool).directionalityThermo='reversible';
@@ -1106,10 +1112,3 @@ modelD.ub_reconThermo=modelD.ub;
 %restore reconstruction reaction directionality
 modelD.lb=model.lb;
 modelD.ub=model.ub;
-
-
-
-
-
-
-

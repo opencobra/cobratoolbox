@@ -1,17 +1,31 @@
-function  [model,solutionThermoRecon,solutionRecon,model1]=secondPassDirectionalityAssignment(model)
-%Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model). 
+function [model, solutionThermoRecon, solutionRecon, model1] = secondPassDirectionalityAssignment(model)
+% Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).
 %
 % The second pass directionality assignment needs careful manual curation
-% since the adjustments necessary to get one organism to grow will not 
+% since the adjustments necessary to get one organism to grow will not
 % necessarily be the same as the ones which will get another
-% organism to grow. There's no avioding manual debugging at this stage. 
+% organism to grow. There's no avioding manual debugging at this stage.
 %
+% USAGE:
 %
-% Below is the code I used for a number of organisms in order to point out
-% the kind of issues that arise. This is NOT supposed to work in the 
-% general case.
+%    [model, solutionThermoRecon, solutionRecon, model1] = secondPassDirectionalityAssignment(model)
 %
-% Ronan M. T. Fleming
+% INPUTS:
+%    model:
+%
+% OUTPUTS:
+%    model:
+%    solutionThermoRecon:
+%    solutionRecon:
+%    model1:
+%
+% NOTE:
+%
+%    This is the code  used for a number of organisms in order to point out
+%    the kind of issues that arise. This is NOT supposed to work in the
+%    general case.
+%
+% .. Author: - Ronan M. T. Fleming
 
 global CBTLPSOLVER
 switch model.description
@@ -33,6 +47,3 @@ switch model.description
     otherwise
         fprintf('No manually generated .m file second pass directionality assignment is available for this model.')
 end
-    
-    
-    

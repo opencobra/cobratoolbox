@@ -9,8 +9,8 @@ function computedSpeciesData = createComputedSpeciesData(metSpeciespKa, metGroup
 %    computedSpeciesData = createComputedSpeciesData(metSpeciespKa, metGroupCont)
 %
 % INPUTS:
-%    metSpeciespKa:          Structure containing pKa for acid-base equilibria between
-%                            metabolite species. pKa are estimated with ChemAxon's
+%    metSpeciespKa:          Structure containing `pKa` for acid-base equilibria between
+%                            metabolite species. `pKa` are estimated with ChemAxon's
 %                            pKa calculator plugin (see function "assignpKasToSpecies")
 %    metGroupCont:           Structure array with group contribution method output
 %                            mapped to BiGG metabolites.
