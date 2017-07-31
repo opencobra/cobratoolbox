@@ -1,10 +1,14 @@
 function boundsToFiles(model)
-%print out the model bounds as a tab delimited text file
+% Prints out the model bounds as a tab delimited text file
 %
-% IMPUT
-% model
+% USAGE:
 %
-% Ronan M.T. Fleming
+%    boundsToFiles(model)
+%
+% INPUT:
+%    model:
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 

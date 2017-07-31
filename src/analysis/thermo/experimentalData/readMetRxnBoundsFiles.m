@@ -1,34 +1,43 @@
-function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel)
-%Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.
+function model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, concMinDefault, concMaxDefault, metBoundsFile, rxnBoundsFile, printLevel)
+% Sets default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.
 %
-%Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
-%mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.
+% Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
+% mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.
 %
-%INPUT
-% model.mets
-% model.rxns
-% setDefaultConc            1 = sets default bounds on conc    
-% setDefaultFlux            1 = sets all reactions reversible [-1000,1000]
-% concMaxDefault            Default upper bound on metabolite
-%                           concentrations in M
-% concMinDefault            Default lower bound on metabolite
-%                           concentrations in M
-% 
-%OPTIONAL INPUT
-% metBoundsFile   name of tab delimited file with metabolite bounds
-%                 format: '%s %f %f' 
-%                         i.e. abbreviation lowerBound upperBound       
-% rxnBoundsFile   name of tab delimited file with reaction bounds
-%                 format: '%s %f %f' 
-%                         i.e. abbreviation lowerBound upperBound  
 %
-%OUTPUT
-% model.concMin(j)
-% model.concMax(j)
-% model.lb
-% model.ub
+% USAGE:
 %
-% Ronan M.T. Fleming
+%    model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, concMinDefault, concMaxDefault, metBoundsFile, rxnBoundsFile, printLevel)
+%
+% INPUTS:
+%    model:             structure with fields:
+%
+%                         * model.mets
+%                         * model.rxns
+%    setDefaultConc:    1 = sets default bounds on conc
+%    setDefaultFlux:    1 = sets all reactions reversible [-1000, 1000]
+%    concMaxDefault:    Default upper bound on metabolite
+%                       concentrations in `M`
+%    concMinDefault:    Default lower bound on metabolite
+%                       concentrations in `M`
+%
+% OPTIONAL INPUTS:
+%    metBoundsFile:    name of tab delimited file with metabolite bounds
+%                      format: '%s %f %f'
+%                      i.e. abbreviation lowerBound upperBound
+%    rxnBoundsFile:    name of tab delimited file with reaction bounds
+%                      format: '%s %f %f'
+%                      i.e. abbreviation lowerBound upperBound
+%
+% OUTPUT:
+%    model:            structure with fileds:
+%
+%                        * model.concMin(j)
+%                        * model.concMax(j)
+%                        * model.lb
+%                        * model.ub
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('metBoundsFile','var')
     metBoundsFile=[];
@@ -45,7 +54,7 @@ if setDefaultConc
         model.concMax(m)=concMaxDefault;
     end
 end
-if setDefaultFlux    
+if setDefaultFlux
     %default flux
     vMax=1000;
     %first set all reactions reversible
@@ -54,7 +63,7 @@ if setDefaultFlux
         model.ub(n)=vMax;
     end
 end
-        
+
 if ~isempty(metBoundsFile)
     fid=fopen(metBoundsFile,'r');
     if fid==-1
@@ -132,4 +141,3 @@ for n=1:nRxn
         error([model.rxns{n} ' :Maximum flux bound is not finite'])
     end
 end
-

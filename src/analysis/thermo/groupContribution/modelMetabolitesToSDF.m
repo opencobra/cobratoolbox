@@ -1,21 +1,27 @@
-function model=modelMetabolitesToSDF(model,InChI)
-% write out an SDF which is effectively a set of mol files concatenated 
+function model = modelMetabolitesToSDF(model, InChI)
+% Write out an SDF which is effectively a set of mol files concatenated
 % in a flat file with extra data headers
 %
 % SDF format spec http://www.symyx.com/downloads/public/ctfile/ctfile.jsp
 %
-% INPUT
-% model     model structure
+% USAGE:
+%    model = modelMetabolitesToSDF(model, InChI)
 %
-% OPTIONAL INPUT
-% InChI     m x 2 cell array of InChI strings for each metabolite 
-%           InChI{i,1} is a metabolite abbreviation (no compartment)
-%           InChi{i,2} is a metabolite InChI string
+% INPUT:
+%    model:    model structure
 %
-% OPTIONAL OUTPUT
-% model.mets(m).InChI           InChI mapped to model if provided as imput
-% model.met(m).formulaInChI     Chemical formula as given in InChI
-% Ronan M.T. Fleming
+% OPTIONAL INPUT:
+%    InChI:    `m x 2` cell array of InChI strings for each metabolite,
+%              `InChI{i, 1}` is a metabolite abbreviation (no compartment),
+%              `InChi{i, 2}` is a metabolite `InChI` string
+%
+% OPTIONAL OUTPUT:
+%    model:    structure with fields:
+%
+%                * model.mets(m).InChI - `InChI` mapped to model if provided as input
+%                * model.met(m).formulaInChI - Chemical formula as given in `InChI`
+%
+% .. Author: - Ronan M.T. Fleming
 
 compartments=[];
 biomassRxnAbbr=[];
@@ -24,7 +30,7 @@ model=convertToCobraV2(model,compartments,biomassRxnAbbr,thermoAdjustmentToS);
 
 if exist('InChI')
     [nInChI,nlt]=size(InChI);
-    
+
     %may have to parse InChI if it is not a proper cell array.
     if nlt==1
         %This is a temporary workaround to deal with data from spreadsheet
@@ -41,12 +47,12 @@ if exist('InChI')
             %metAbbr=[metAbbr(3:end-2) '[' compart ']'];
             metAbbr=metAbbr(3:end-2);
             InChICell{x,1} = metAbbr;
-            
+
             % InChI
             metInChI=tmp{4};
             metInChI=metInChI{1};
             InChICell{x,2} = metInChI;
-            
+
             % extract formula from InChI
             InChICell{x,3}=getFormulaFromInChI(InChICell{x,2});
         end
@@ -56,7 +62,7 @@ if exist('InChI')
             InChICell{x,1}=InChI{x,1};
             InChICell{x,1}=InChI{x,2};
             InChICell{x,3}=getFormulaFromInChI(InChICell{x,2});
-        end     
+        end
     end
     %map the InChI to the model
     [nMet,nRxn]=size(model.S);
@@ -125,7 +131,7 @@ for m=1:nMet
             if checkFormulaValidty(model.met(m).formula)
                 %store this metbolite abbreivation so its not printed twice
                 printedMetAbbr{m,1}=metAbbr;
-                
+
                 %use water as the mol file
                 %append mol to existing sdf
                 sysCall2=['cat water.mol >> ' sdfFilename];
@@ -156,7 +162,7 @@ for m=1:nMet
                 charge = model.met(m).charge;
                 %use mass for neutral metabolite
                 M = M - charge*HexactMass;
-                
+
                 fprintf(fid,'%10.7f\n\n',M);
                 fprintf(fid,'%s\n','> <FORMULA>');
                 fprintf(fid,'%s\n\n',model.met(m).formula);
@@ -172,7 +178,7 @@ for m=1:nMet
         if ~any(strcmp(metAbbr,printedMetAbbr))
             %store this metbolite abbreivation so its not printed twice
             printedMetAbbr{m,1}=metAbbr;
-            
+
             %create the mol file from the inchi string
             fid2=fopen('tmp.inchi','w');
             fprintf(fid2,'%s\n',model.met(m).InChI);
@@ -180,7 +186,7 @@ for m=1:nMet
             %better to use mol output since no $$$$ at the end
             sysCall1=['babel --title ' metAbbr ' -iinchi tmp.inchi -omol ' metAbbr '.mol'];
             [status, result] = system(sysCall1);
-            
+
             %check size of mol file, leave it out if zero bytes
             data=dir([metAbbr '.mol']);
             if data.bytes >= 1
@@ -209,12 +215,12 @@ for m=1:nMet
                 fprintf(fid,'%s\n','> <SUB_CLASS>');
                 fprintf(fid,'%s\n\n','dummy');
                 fprintf(fid,'%s\n','> <EXACT_MASS>');
-                
+
                 M = getMolecularMass(model.met(m).formulaInChI,1);
                 charge = getChargeFromInChI(model.met(m).InChI);
                 %use mass for neutral metabolite
                 M = M - charge*HexactMass;
-                
+
                 fprintf(fid,'%10.7f\n\n',M);
                 fprintf(fid,'%s\n','> <FORMULA>');
                 fprintf(fid,'%s\n\n',model.met(m).formulaInChI);
@@ -226,11 +232,11 @@ for m=1:nMet
                 fclose(fid);
             else
                 fprintf('%s\n',[model.metNames{m} '  :InChI to mol conversion by Babel produced no output.']);
-                
+
                 fidBabel=fopen('InChI_Babel_NoMol.txt','a');
                 fprintf(fidBabel,'%s\n',model.met(m).InChI);
                 fclose(fidBabel);
-                
+
                 %use water as the mol file
                 %append mol to existing sdf
                 sysCall2=['cat water.mol >> ' sdfFilename];
@@ -256,12 +262,12 @@ for m=1:nMet
                 fprintf(fid,'%s\n','> <SUB_CLASS>');
                 fprintf(fid,'%s\n\n','dummy');
                 fprintf(fid,'%s\n','> <EXACT_MASS>');
-                
+
                 M = getMolecularMass(model.met(m).formulaInChI,1);
                 charge = getChargeFromInChI(model.met(m).InChI);
                 %use mass for neutral metabolite
                 M = M - charge*HexactMass;
-                
+
                 fprintf(fid,'%10.7f\n\n',M);
                 fprintf(fid,'%s\n','> <FORMULA>');
                 fprintf(fid,'%s\n\n',model.met(m).formulaInChI);
@@ -278,8 +284,3 @@ for m=1:nMet
         disp(m);
     end
 end
-
-        
-        
-        
-       

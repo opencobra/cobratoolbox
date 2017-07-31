@@ -1,18 +1,22 @@
-function bool=checkFormulae(formulaA,formulaB,exceptions)
-%compare two formulae for the number of elements for all optionally except the
-%elements listed in exceptions
+function bool = checkFormulae(formulaA, formulaB, exceptions)
+% Compares two formulae for the number of elements for all optionally except the
+% elements listed in exceptions
 %
-%INPUT
-% formulaA
-% formulaB
+% USAGE:
 %
-%OPTIONAL INPUT
-% exceptions     String array of metabolite abbreviation exceptions e.g. {'H'}
+%    bool = checkFormulae(formulaA, formulaB, exceptions)
 %
-%OUTPUT
-% bool           Boolean where 1 means the formulae match and 0 otherwise
+% INPUT:
+%    formulaA:
+%    formulaB:
 %
-%Ronan M. T. Fleming 20 July 2009
+% OPTIONAL INPUT:
+%    exceptions:    String array of metabolite abbreviation exceptions e.g. {'H'}
+%
+% OUTPUT:
+%    bool:          Boolean where 1 means the formulae match and 0 otherwise
+%
+% .. Author: - Ronan M. T. Fleming 20 July 2009
 
 if ~exist('exceptions','var')
     exceptions={};

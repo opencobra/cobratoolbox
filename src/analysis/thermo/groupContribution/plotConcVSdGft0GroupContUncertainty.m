@@ -1,13 +1,22 @@
-function [D,DGC]=plotConcVSdGft0GroupContUncertainty(modelT)
-% compare the difference between minimum & maximum concentration, on a
+function [D, DGC] = plotConcVSdGft0GroupContUncertainty(modelT)
+% Compares the difference between minimum & maximum concentration, on a
 % logarithmic scale, and the group contribution uncertainty for each
-% metabolite
+% metabolite.
 %
-%INPUT
-% modelT.concMax
-% modelT.concMin
-% modelT.dfGt0GroupContUncertainty
+% USAGE:
 %
+%    [D, DGC] = plotConcVSdGft0GroupContUncertainty(modelT)
+%
+% INPUT:
+%    modelT:    structure with fields:
+%
+%                 * modelT.concMax
+%                 * modelT.concMin
+%                 * modelT.dfGt0GroupContUncertainty
+%
+% OUTPUTS:
+%    D:
+%    DGC:
 
 [nMet,nRxn]=size(modelT.mets);
 
@@ -27,7 +36,7 @@ for m=1:nMet
     else
         D(m)=d;
         DGC(m)=dgc;
-        if dgc>(d/2) 
+        if dgc>(d/2)
             q=q+1;
         end
         if dgc>(d)

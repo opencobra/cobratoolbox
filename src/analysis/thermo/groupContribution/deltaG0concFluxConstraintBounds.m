@@ -1,74 +1,75 @@
-function model=deltaG0concFluxConstraintBounds(model,Legendre,LegendreCHI,gcmOutputFile,gcmMetList,jankowskiGroupData,figures,nStdDevGroupCont)
-%set reaction directionality bounds from thermodynamic data
+function model = deltaG0concFluxConstraintBounds(model, Legendre, LegendreCHI, gcmOutputFile, gcmMetList, jankowskiGroupData, figures, nStdDevGroupCont)
+% Sets reaction directionality bounds from thermodynamic data
+% first pass assignment of reaction directionality based on standard
+% transformed Gibbs energy and concentration bounds.
 %
-%first pass assignment of reaction directionality based on standard
-%transformed Gibbs energy and concentration bounds
+% USAGE:
 %
-%INPUT
-% model.S
-% model.SintRxnBool             Boolean indicating internal reactions
-% model.gasConstant             gas constant
-% model.T                       temperature
-% model.boundryConc             bounds on concentration of boundary metabolites
-% model.dfGt0(m)                standard transformed Gibbs energy of formation(kJ/mol)
-% model.dfG0GroupContUncertainty(m)  group. cont. uncertainty in estimate of standard Gibbs energy of formation (kJ/mol)
-% model.xmin(m)          lower bound on metabolite concentration
-% model.xmax(m)          upper bound on metabolite concentration
-% model.metCharges(m)           reconstruction metabolite charge
-% model.lb                      reconstruction reaction lower bounds
-% model.ub                      reconstruction reaction upper bounds
-% model.chi(p)                  electrical potential (mV) in compartment defined by letter *
-% Legendre                      {(1),0} Legendre Transformation for specifc pHr?
-% LegendreCHI                   {(1),0} Legendre Transformation for specifc electrical potential?
-% gcmOutputFile                 Path to output file from Jankowski et al.'s 2008
-%                               implementation of the group contribution method.
-% gcmMetList                    Cell array with metabolite ID for metabolites in
-%                               gcmOutputFile. Metabolite order must be the same in
-%                               gcmOutputFile and gcmMetList.
-% jankowskiGroupData            Data on groups included in Jankowski et al.'s 2008
-%                               implementation of the group contribution method.
-%                               Included with von Bertalanffy 1.1. Location:
-%                               ...\vonBertalanffy\setupThermoModel\experimentalDat
-%                               a\groupContribution\jankowskiGroupData.mat.
+%    model = deltaG0concFluxConstraintBounds(model, Legendre, LegendreCHI, gcmOutputFile, gcmMetList, jankowskiGroupData, figures, nStdDevGroupCont)
 %
-%OPTIONAL INPUT
-% figures           {1,(0)} 1=create figures
-% nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution
-%                   uncertainty, 1 means uncertainty given by group contribution
-%                   method (one standard deviation)
+% INPUTS:
+%    model:                 structure with fields:
 %
-%OUTPUT
-% nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution
-%                   uncertainty, 1 means uncertainty given by group contribution
-%                   method (one standard deviation)
+%                             * model.S
+%                             * model.SintRxnBool - Boolean indicating internal reactions
+%                             * model.gasConstant - gas constant
+%                             * model.T - temperature
+%                             * model.boundryConc - bounds on concentration of boundary metabolites
+%                             * model.dfGt0(m) - standard transformed Gibbs energy of formation(kJ/mol)
+%                             * model.dfG0GroupContUncertainty(m) - group. cont. uncertainty in estimate of standard Gibbs energy of formation (kJ/mol)
+%                             * model.xmin(m) - lower bound on metabolite concentration
+%                             * model.xmax(m) - upper bound on metabolite concentration
+%                             * model.metCharges(m) - reconstruction metabolite charge
+%                             * model.lb - reconstruction reaction lower bounds
+%                             * model.ub - reconstruction reaction upper bounds
+%                             * model.chi(p) - electrical potential (mV) in compartment defined by letter
+%    Legendre:              {(1), 0} Legendre Transformation for specifc pHr?
+%    LegendreCHI:           {(1), 0} Legendre Transformation for specifc electrical potential?
+%    gcmOutputFile:         Path to output file from `Jankowski et al.'s 2008
+%                           implementation of the group contribution method.`
+%    gcmMetList:            Cell array with metabolite ID for metabolites in
+%                           `gcmOutputFile`. Metabolite order must be the same in
+%                           `gcmOutputFile` and `gcmMetList`.
+%    jankowskiGroupData:    Data on groups included in `Jankowski et al.'s 2008
+%                           implementation of the group contribution method.`
+%                           Included with von Bertalanffy 1.1. Location:
+%                           `...\vonBertalanffy\setupThermoModel\experimentalData\groupContribution\jankowskiGroupData.mat.`
 %
-% For each metabolite:
-% model.xMin
-% model.xMax
-% model.dfGt0Min
-% model.dfGt0Max
-% model.dfGtMin
-% model.dfGtMax
-% model.NaNdfG0MetBool              metabolites without Gibbs Energy
+% OPTIONAL INPUTS:
+%    figures:               {1, (0)} 1 = create figures
+%    nStdDevGroupCont:      {real, (1)} number of standard deviations of group contribution
+%                           uncertainty, 1 means uncertainty given by group contribution method (one standard deviation)
 %
-% For each reaction:
-% model.dGt0Max(n)              molar standard
-% model.dGt0Min(n)              molar standard
-% model.dGtMax(n)
-% model.dGtMin(n)
-% model.dGtmMMin(n)             mili molar standard
-% model.dGtmMMax(n)             mili molar standard
-% model.directionalityThermo(n)
-% model.lb_reconThermo              lower bounds from dGtMin/dGtMax and recon
-%                                   directions if thermo data missing
-% model.ub_reconThermo              upper bounds from dGtMin/dGtMax and recon
-%                                   directions if thermo data missing
-% model.NaNdG0RxnBool               reactions with NaN Gibbs Energy
-% model.transportRxnBool            transport reactions
+% OUTPUT:
+%    nStdDevGroupCont:      {real, (1)} number of standard deviations of group contribution
+%                           uncertainty, 1 means uncertainty given by group contribution method (one standard deviation)
 %
-% Ronan M. T. Fleming
-
-%model.S = jankowskiGroupData.S;
+%    model:                 structure with fields:
+%                           For each metabolite:
+%
+%                             * model.xMin
+%                             * model.xMax
+%                             * model.dfGt0Min
+%                             * model.dfGt0Max
+%                             * model.dfGtMin
+%                             * model.dfGtMax
+%                             * model.NaNdfG0MetBool - metabolites without Gibbs Energy
+%
+%                           For each reaction:
+%
+%                             * model.dGt0Max(n) - molar standard
+%                             * model.dGt0Min(n) - molar standard
+%                             * model.dGtMax(n)
+%                             * model.dGtMin(n)
+%                             * model.dGtmMMin(n) - mili molar standard
+%                             * model.dGtmMMax(n) - mili molar standard
+%                             * model.directionalityThermo(n)
+%                             * model.lb_reconThermo - lower bounds from dGtMin/dGtMax and recon directions if thermo data missing
+%                             * model.ub_reconThermo - upper bounds from dGtMin/dGtMax and recon directions if thermo data missing
+%                             * model.NaNdG0RxnBool - reactions with NaN Gibbs Energy
+%                             * model.transportRxnBool - transport reactions
+%
+% .. Author: - Ronan M. T. Fleming
 
 [nMet,nRxn]=size(model.S);
 %OPTIONS
@@ -106,8 +107,8 @@ for m=1:nMet
     %concMax(1,m)=model.met(m).concMax;
     concMin(1,m)=model.concMin(m);
     concMax(1,m)=model.concMax(m);
-    
-    
+
+
     %add the errors to the min and max standard transformed chemical
     %potentials
     %if ~isnan(model.met(m).dfGt0)
@@ -327,7 +328,7 @@ dGtmMMin=(dfGtmMMax*Sneg+dfGtmMMin*Spos);
 %         %be careful of transport reactions since group contribution uncertainty
 %         %should not come into it for certain metabolites, if the same metabolite
 %         %appears on both sides of the reaction
-% 
+%
 %         fix=0;
 %         dfGt0MinTemp=dfGt0Min;
 %         dfGt0MaxTemp=dfGt0Max;
@@ -335,13 +336,13 @@ dGtmMMin=(dfGtmMMax*Sneg+dfGtmMMin*Spos);
 %         dfGtmMMaxTemp=dfGtmMMax;
 %         dfGtMinTemp=dfGtMin;
 %         dfGtMaxTemp=dfGtMax;
-% 
+%
 %         metAbbrAll=model.mets(model.S(:,n)~=0);
 %         metAbbrAllShort=cell(length(metAbbrAll),1);
 %         for p=1:length(metAbbrAllShort) % Added this for loop - Hulda
 %             metAbbrAllShort{p}=metAbbrAll{p}(1:(end-2));
 %         end % - Hulda
-% 
+%
 %         for p=1:length(metAbbrAllShort)
 %             metBool=strcmp(metAbbrAll{p},model.mets);
 %             %find the duplicated metabolite
@@ -350,7 +351,7 @@ dGtmMMin=(dfGtmMMax*Sneg+dfGtmMMin*Spos);
 %                 %we assume here that there is no uncertainty in the
 %                 %data from Alberty.
 %                 fix=1;
-% 
+%
 %                 %if isnan then approximate with zero, this will ignore
 %                 %ionic strength effects between compartments
 %                 if isnan(model.met(metBool).dfGt0)
@@ -386,7 +387,7 @@ dGtmMMin=(dfGtmMMax*Sneg+dfGtmMMin*Spos);
 %         end
 %    end
 % end
-% 
+%
 % - Hulda
 
 %number of hydrogen in each metabolite species as per reconstruction
@@ -435,8 +436,8 @@ CHIcompartment=zeros(nUniqueMetCompartments,1);
 for p=1:nUniqueMetCompartments
     %dfGHcompartment(p)=model.met(strcmp(model.mets,['h[' uniqueMetCompartments{p} ']'])).dfG;
     dfGHcompartment(p)=model.DfG0(strcmp(model.mets,['h[' uniqueMetCompartments{p} ']']));
-    
-    
+
+
     %chi=model.CHI.(uniqueMetCompartments{p});
     chi=model.chi(p);
     %Electrical Potential conversion from mV to kJ with Faraday constant
@@ -446,7 +447,7 @@ end
 
 if Legendre
     fprintf('%s\n','Additional effect due to possible change in chemical potential of Hydrogen ions for transport reactions.')
-    
+
     if isfield(model,'gcmS')
         %use reaction stoichiometry for species returned by group
         %contribution method
@@ -460,7 +461,7 @@ if Legendre
     end
     %ignore exchange reactions
     delta(~model.SIntRxnBool)=0;
-    
+
     %adjust the change in chemical potential due to difference in hydrogen ion
     %chemical potential between compartments
     dGt0Min  = dGt0Min'  - delta';
@@ -475,7 +476,7 @@ end
 %TODO - compartment matrix to streamline code
 if LegendreCHI
     fprintf('%s\n','Additional effect due to possible change in electrical potential for transport reactions.')
-    
+
     if isfield(model,'gcmS')
         %use reaction stoichiometry for species returned by group
         %contribution method
@@ -489,7 +490,7 @@ if LegendreCHI
     end
     %ignore exchange reactions
     deltaCHI(~model.SIntRxnBool)=0;
-    
+
     %adjust the change in chemical potential due to difference in hydrogen ion
     %chemical potential between compartments
     dGt0Min  = dGt0Min  - deltaCHI';
@@ -548,7 +549,7 @@ if figures==1
     xlabel('Reactions, sorted by \Delta_{r}G^{\primeo}','FontSize',16);
     ylabel('\Delta_{r}G^{\primeo} (kJ)','FontSize',16);
     hold off;
-    
+
     dGt0Mean=(dGt0Min+dGt0Max)/2;
     [s,sInd]=sort(dGt0Mean);
     figure; hold on;
@@ -576,7 +577,7 @@ if figures==1
     xlabel('All reactions, sorted by \Delta_{r}G^{\prime}','FontSize',16);
     ylabel('\Delta_{r}G^{\prime} (kJ/RT)','FontSize',16);
     hold off;
-    
+
     dmuMean=(dGtMin+dGtMax)/2;
     [s,sInd]=sort(dmuMean);
     figure; hold on;

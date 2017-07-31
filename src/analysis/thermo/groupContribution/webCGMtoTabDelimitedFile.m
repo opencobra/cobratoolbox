@@ -1,42 +1,40 @@
-function webCGMtoTabDelimitedFile(model,webCGMoutputFile,gcmMetList)
-%parse a webCGM output file and prepare a tab delimited file with group
-%contribution data mapped to the metabolite abbreviations in the given
-%model. 
+function webCGMtoTabDelimitedFile(model, webCGMoutputFile, gcmMetList)
+% Parses a webCGM output file and prepare a tab delimited file with group
+% contribution data mapped to the metabolite abbreviations in the given
+% model.
 %
-% NOTE: By default, any group contribution data for metabolites with
-% underdefined formulae ( e.g. R group), are ignored, even if there is group
-% contribution data available for this metabolite
+% Parses webCGM output file and creates an input file for
+% `createGroupContributionStruct.m`
 %
-%parses webCGM output file and creates an input file for
-%createGroupContributionStruct.m
-% 
-% webCGMtoTabDelimitedFile(model,webCGMoutputFile,gcmMetList)
+% USAGE:
 %
-%INPUT
-% model.S               m x n, stoichiometric matrix
-% model.mets            m x 1, cell array of metabolite abbreviations
-% model.metFormulas     m x 1, cell array of metabolite formulae
-% webCGMoutputFile      filename of output from webCG server
-% metList               m x 1, cell array of metabolite ID for metabolites
-%                       in webCGMoutputFile. Metabolite order must be the
-%                       same in metList and webGCMoutputFile.
+%    webCGMtoTabDelimitedFile(model, webCGMoutputFile, gcmMetList)
 %
-%OUTPUT
-% gc_data_webCGM.txt     tab delimited text file with group contribution data for
-%                        createGroupContributionStruct.m
+% INPUTS:
+%    model:                 structure with fields:
 %
-%OUTPUT FILE FORMAT
-% the first two text columns in both files should correspond to:
-% abbreviation
-% formulaMarvin
+%                             * model.S - `m x n`, stoichiometric matrix
+%                             * model.mets - `m x 1`, cell array of metabolite abbreviations
+%                             * model.metFormulas - `m x 1`, cell array of metabolite formulae
+%    webCGMoutputFile:      filename of output from webCG server
+%    metList:               `m x 1`, cell array of metabolite ID for metabolites
+%                           in `webCGMoutputFile`. Metabolite order must be the
+%                           same in `metList` and `webGCMoutputFile`.
 %
-% the next three columns in both files should correspond to:
-% delta_G_formation
-% delta_G_formation_Uncertainty
-% chargeMarvin
+% OUTPUT:
+%    gc_data_webCGM.txt:    tab delimited text file with group contribution data for
+%                           `createGroupContributionStruct.m`. The first two text columns in both files should correspond to: `abbreviation`, `formulaMarvin`,
+%                           the next three columns in both files should correspond to: `delta_G_formation`, `delta_G_formation_Uncertainty`, `chargeMarvin`.
 %
-% Ronan M. T. Fleming 8 July 2009
-% Ronan M. T. Fleming 10 July 2009 - fixed bug for reactants with no GC data
+% NOTE:
+%
+%    By default, any group contribution data for metabolites with
+%    underdefined formulae ( e.g. R group), are ignored, even if there is group
+%    contribution data available for this metabolite.
+%
+% .. Authors:
+%       - Ronan M. T. Fleming 8 July 2009
+%       - Ronan M. T. Fleming 10 July 2009 - fixed bug for reactants with no GC data
 
 [nMet,nRxn]=size(model.S);
 
@@ -58,7 +56,7 @@ hasMolCount=1;
 for m=1:nMet
     %initialise
     underDefinedMetBool=0;
-    
+
     %       metAbbr=model.mets{m};
     %       metAbbr=metAbbr(1:end-3);
     %       if strcmp(metAbbr,'protrna')
@@ -83,11 +81,11 @@ for m=1:nMet
 
         %parse each line of the webCGMoutputFile
         [delta_G_formation,remain]= strtok(tline, ';');
-        
+
         %if first token is NONE then theres no GC data for this reactant
         noGCDataForReactant=strcmp(delta_G_formation,'NONE');
         firstRemain=remain;
-        
+
         delta_G_formation=str2num(delta_G_formation);
         [delta_G_formation_Uncertainty,remain]= strtok(remain, ';');
         delta_G_formation_Uncertainty=str2num(delta_G_formation_Uncertainty);
@@ -123,7 +121,7 @@ for m=1:nMet
                 break;
             end
         end
-    
+
         if ~underDefinedMetBool
 %             model.metFormulas{m}
 %             formulaMarvin

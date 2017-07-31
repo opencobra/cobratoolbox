@@ -1,16 +1,18 @@
 function group_def = getGroupVectorFromInchi(inchi, silent, debug)
-% poor programming not to explain what this function does
-% INPUTS
+% USAGE:
 %
-
-% debug             0: No verbose output
-%                   1: Progress information only (no warnings)
-%                   2: Progress and warnings
-
-% OUTPUTS
+%    group_def = getGroupVectorFromInchi(inchi, silent, debug)
 %
-% DEPENDENCIES
- 
+% INPUTS:
+%    inchi:
+%    silent:
+%    debug:     0: No verbose output,
+%               1: Progress information only (no warnings),
+%               2: Progress and warnings
+%
+% OUTPUT:
+%    group_def:
+
 if nargin < 2
     silent = true;
 end
@@ -51,4 +53,3 @@ else
     end
     group_def = [];
 end
-
