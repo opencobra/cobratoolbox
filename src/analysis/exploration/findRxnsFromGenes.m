@@ -36,96 +36,83 @@ if nargin< 3
 end
 
 if ~iscell(genes)
-    gene = genes;
-    clear genes
-    genes{1} = gene;
-    clear gene
-end
-if iscell(genes{1})
+    genes = {genes};
+else %check if any nested cells in array
     for i = 1:length(genes)
-        gene(i) = genes{i};
+        if iscell(genes{i})
+            if length(genes{i}) == 1
+                genes(i) = genes{i};
+            else %more than one gene listed in nested cell
+                addGenes = genes{i};
+                delGenes = i;
+            end
+        end
     end
-    clear genes
-    genes = gene;
-    clear gene
+    if ~isempty(addGenes)
+        genes(delGenes) = []; %delete nested cell
+        genes = union(genes, addGenes); %add genes from nested cell to list
+    end
 end
-model.genes = regexprep(model.genes,'-','_DASH_');
-model.genes = regexprep(model.genes,'\.','_POINT_');
+
+if isfield(model, 'geneNames')
+    model.geneNames = regexprep(model.geneNames,'-','_DASH_');
+    model.geneNames = regexprep(model.geneNames,'\.','_POINT_');
+else%to stay compatible with old style models
+    model.geneNames = regexprep(model.genes,'-','_DASH_');
+    model.geneNames = regexprep(model.geneNames,'\.','_POINT_');
+end
 genes = regexprep(genes,'-','_DASH_');
 genes = regexprep(genes,'\.','_POINT_');
 
-%find where the genes are located in the rxnGeneMat
-GeneID(1) = 0;
-for j = 1:length(genes)
-    Ind = find(~cellfun('isempty', regexp(model.genes,cat(2,'^',genes{j},'$'))));
+%find where the genes are located in the geneNames
+GeneID = zeros(size(genes));
+[~, geneIndModel, inModel] = intersect(model.geneNames, genes);
+GeneID(inModel) = geneIndModel;%set location of genes in model
 
-            if ~isempty(Ind)
-                GeneID(j) = Ind;
-            end
-
-end
-if min(GeneID) == 0
-    warning('A gene was not found in the model!')
-    results = struct([]);
-    if max(GeneID) ==0,results = struct([]);ListResults = {};
-    return
-    end
-    Ind = find(GeneID==0);
-    GeneID(Ind) = [];
-    genes(Ind) = [];
-end
-results = struct([]);
-for i = 1:length(GeneID)
-
-    k=1;
-    Ind_rxns = find(model.rxnGeneMat(:,GeneID(i))==1);
-    for j=1:length(Ind_rxns)
-%         if model.rxnGeneMat(j,GeneID(i))==1
-            if isempty(results)
-                results = struct;
-            end
-			%Ensures that geneids can become field names for structures
-            if regexp(genes{i},'[^a-zA-Z0-9_]')
-				tempGene = regexprep(genes{i},'[^a-zA-Z0-9_]','_');
-            else tempGene = genes{i};
-            end
-
-			%If gene starts with a digit it cannot be a field name, prepend gene_ to correct
-			if regexp(tempGene,'^\d')
-				tempGene = cat(2,'gene_',tempGene);
-			end
-
-            results.(tempGene){k,1} = model.rxns(Ind_rxns(j));
-            results.(tempGene)(k,2) = printRxnFormula(model,model.rxns(Ind_rxns(j)),0);
-            if isfield(model,'subSystems')
-                results.(tempGene)(k,3) = model.subSystems(Ind_rxns(j));
-            end
-            if isfield(model,'rxnNames')
-            results.(tempGene){k,4} = model.rxnNames{Ind_rxns(j)};
-            end
-            k=k+1;
-%         end
-    end
-end
+results = struct();
 ListResults = {};
+if any(GeneID == 0)
+    warning('A gene was not found in the model!')
+    if any(GeneID > 0)
+        Ind = find(GeneID == 0);
+        GeneID(Ind) = [];
+        genes(Ind) = [];
+    else
+        return
+    end
+end
+
+for i = 1:length(GeneID)
+    %Ensures that geneids can become field names for structures
+    tempGene = regexprep(genes{i}, '[^a-zA-Z0-9_]', '_');
+    
+    %If gene starts with a digit it cannot be a field name, prepend gene_ to correct
+    tempGene = cat(2, 'gene_', tempGene);
+    
+    %Reaction locations in model using rules field
+    Ind_rxns = find(~cellfun(@isempty, strfind(model.rules, ...
+        ['x(', num2str(GeneID(i)), ')'])));
+    
+    %Create gene field in results structure
+    results.(tempGene) = cell(length(Ind_rxns), 4);
+    
+    %Fill in results
+    results.(tempGene)(:, 1) = model.rxns(Ind_rxns);
+    results.(tempGene)(:, 2) = printRxnFormula(model, model.rxns(Ind_rxns), 0);
+    if isfield(model,'subSystems')
+        results.(tempGene)(:, 3) = model.subSystems(Ind_rxns);
+    end
+    if isfield(model,'rxnNames')
+        results.(tempGene)(:, 4) = model.rxnNames(Ind_rxns);
+    end
+    
+    if ListResultsFlag
+        LR_RowCnt = size(ListResults, 1);
+        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 1:4) = results.(tempGene);
+        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 5) = {tempGene};
+    end
+end
+
 if isempty(results)
     warning('Your gene was not associated with any reactions!')
-    ListResults = {};
-else
-    if ListResultsFlag ==1
-    tmp = fieldnames(results);
-
-    for i = 1:length(tmp)
-        tmp2 = results.(tmp{i});
-        ListResults(end+1:end+length(tmp2(:,1)),1:4) = tmp2;
-        ListResults(end-length(tmp2(:,1))+1:end,5) = tmp(i);
-    end
-
-
-    for j = 1:length(ListResults(:,1))
-        ListResults(j,1) = ListResults{j,1};
-    end
-
-    end
-
 end
