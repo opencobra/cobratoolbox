@@ -48,18 +48,22 @@ function installGit()
             % if a version already exists, get the latest
             [status, response] = system('curl https://api.github.com/repos/git-for-windows/git/releases/latest');
 
-            % find the index of occurrence
-            index1 = strfind(response, 'git/releases/tag/v');
-            index2 = strfind(response, '.windows.1');
-            catchLength = length('git/releases/tag/v');
-            index1 = index1 + catchLength;
             latestVersion = [];
-            if  ~isempty(index2) && ~isempty(index1)
-                if index2(1) > index1(1)
-                    latestVersion = response(index1(1):index2(1) - 1);
+            
+            % find the index of occurrence
+            if status == 0 && ~isempty(response)
+                index1 = strfind(response, 'git/releases/tag/v');
+                index2 = strfind(response, '.windows.1');
+                catchLength = length('git/releases/tag/v');
+                index1 = index1 + catchLength;
+
+                if  ~isempty(index2) && ~isempty(index1)
+                    if index2(1) > index1(1)
+                        latestVersion = response(index1(1):index2(1) - 1);
+                    end
                 end
             end
-
+            
             % if the latest version cannot be retrieved, set the latest version to the base version
             if isempty(latestVersion)
                 latestVersion = baseVersion;
