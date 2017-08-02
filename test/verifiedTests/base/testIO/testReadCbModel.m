@@ -30,8 +30,8 @@ modelXML.rxns = strrep(modelXML.rxns, '_LSQBKT_', '[');
 modelXML.rxns = strrep(modelXML.rxns, '_RSQBKT_', ']');
 
 % load mat model version
-load(['..' filesep '..' filesep '..' filesep ...
-    'models' filesep 'Abiotrophia_defectiva_ATCC_49176.mat']);
+load([CBTDIR filesep 'test' filesep 'models' filesep ...
+    'Abiotrophia_defectiva_ATCC_49176.mat']);
 modelMAT = model;
 
 % convert to old style model
