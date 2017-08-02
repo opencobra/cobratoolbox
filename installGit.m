@@ -11,11 +11,14 @@ installedVersionNum = 0;
 archstr = computer('arch');
 archBit = archstr(end-1:end);
 
+% define the name of the temporary folder
+tmpFolder = '.tmp';  
+    
 % determine the installed version
 pathVersion = getsysenvironvar('Path');
-index1 = strfind(pathVersion, ['.tmp' filesep 'PortableGit-']);
+index1 = strfind(pathVersion, [tmpFolder filesep 'PortableGit-']);
 index2 = strfind(pathVersion, [filesep 'mingw' archBit filesep 'bin']);
-catchLength = length(['.tmp' filesep 'PortableGit-']);
+catchLength = length([tmpFolder filesep 'PortableGit-']);
 index1 = index1 + catchLength;
 if  ~isempty(index2) && ~isempty(index1)
     if index2(end) > index1(end)
@@ -30,7 +33,7 @@ if isempty(installedVersion)
 end
 
 % define the path to portable gitBash
-pathPortableGit = [CBTDIR filesep '.tmp' filesep 'PortableGit-' installedVersion];
+pathPortableGit = [CBTDIR filesep tmpFolder filesep 'PortableGit-' installedVersion];
     
 % check if mingw64 is already in the path
 if ~isempty(installedVersion) && exist(pathPortableGit, 'dir') == 7

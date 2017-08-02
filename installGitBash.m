@@ -10,6 +10,9 @@ function installGitBash(gitBashVersion, removeFlag)
         removeFlag = 0;
     end
     
+    % define the name of the temporary folder
+    tmpFolder = '.tmp';
+    
     % determine architecture
     archstr = computer('arch');
     archBit = archstr(end-1:end);
@@ -18,10 +21,10 @@ function installGitBash(gitBashVersion, removeFlag)
     currentDir = pwd;
 
     % change to temporary directory
-    cd([CBTDIR filesep '.tmp']);
+    cd([CBTDIR filesep tmpFolder]);
     
     % define the path to portable gitBash
-    pathPortableGit = [CBTDIR filesep '.tmp' filesep 'PortableGit-' gitBashVersion];
+    pathPortableGit = [CBTDIR filesep tmpFolder filesep 'PortableGit-' gitBashVersion];
 
     % define the system path
     pathPortableGitFragments = {};
@@ -53,6 +56,7 @@ function installGitBash(gitBashVersion, removeFlag)
         if exist(pathPortableGit, 'dir') == 7
 
             try
+                % remove the path from the MATLAB path
                 rmpath(genpath(pathPortableGit));
                 
                 % remove all subfolders
@@ -94,8 +98,9 @@ function installGitBash(gitBashVersion, removeFlag)
             % rename the folder
             if removeFlag > 0
                 try
-                rmdir(pathPortableGit, 's'); %remove if empty
+                    rmdir(pathPortableGit, 's'); %remove if empty
                 catch
+                    fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed before moving.\n']);
                 end
             end
             movefile('PortableGit', ['PortableGit-' gitBashVersion])
