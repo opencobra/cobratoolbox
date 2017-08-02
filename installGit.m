@@ -67,7 +67,7 @@ if ~isempty(installedVersion) && exist(pathPortableGit, 'dir') == 7
         fprintf([' > gitBash is not up-to-date. Updating to version ', latestVersion, ' ...\n']);
         
         % retrieve and install the portable git bash and associated tools
-        installGitBash(latestVersion, 1);
+        portableGitSetup(latestVersion, 1);
         fprintf('Done.\n');
     else
         fprintf(' > gitBash is up-to-date.\n\n');
@@ -75,7 +75,7 @@ if ~isempty(installedVersion) && exist(pathPortableGit, 'dir') == 7
 elseif exist(pathPortableGit, 'dir') ~= 7
     % retrieve and install the portable git bash and associated tools
     fprintf(' > gitBash is not yet installed. Installing ...\n');
-    installGitBash(installedVersion, 0);
+    portableGitSetup(installedVersion, 0);
     fprintf('Done.\n');
 else
     fprintf(' > gitBash is installed and up-to-date.\n\n');

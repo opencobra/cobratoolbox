@@ -1,4 +1,4 @@
-function installGitBash(gitBashVersion, removeFlag)
+function portableGitSetup(gitBashVersion, removeFlag)
 % removeFlag:
 % 0: install, don't remove anything
 % 1: install, remove every old version
