@@ -10,12 +10,15 @@
 % save the current path
 currentDir = pwd;
 
+initCobraToolbox;
+global CBTDIR
+
 % initialize the test
 fileDir = fileparts(which('testFindRxnsFromGenes'));
 cd(fileDir);
 
 % load model
-load('Test_EcoliCoreModel.mat')
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'])
 
 % convert to new style model
 model = convertOldStyleModel(model);
