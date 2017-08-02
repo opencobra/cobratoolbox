@@ -68,7 +68,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
 
                 fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') removed.\n']);
             catch
-                fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed.\n']);
+               % fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed.\n']);
             end
         end
 
