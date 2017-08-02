@@ -96,12 +96,6 @@ function installGit()
 
         % set the path if already installed
         setenv('Path', [getenv('Path') ';' getsysenvironvar('Path')]);
-
-        % test if curl and git exist
-        system('curl --version');
-
-        % test if curl and git exist
-        system('git --version');
     else
         error('gitBash can only be installed on Windows.');
     end
