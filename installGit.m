@@ -8,12 +8,14 @@ addpath(genpath(CBTDIR))
 baseVersion = '2.13.3';
 installedVersion = [];
 installedVersionNum = 0;
+archstr = computer('arch');
+archBit = archstr(end-1:end);
 
 % determine the installed version
 pathVersion = getsysenvironvar('Path');
-index1 = strfind(pathVersion, '.tmp\PortableGit-');
-index2 = strfind(pathVersion, '\mingw64\bin');
-catchLength = length('.tmp\PortableGit-');
+index1 = strfind(pathVersion, ['.tmp' filesep 'PortableGit-']);
+index2 = strfind(pathVersion, [filesep 'mingw' archBit filesep 'bin']);
+catchLength = length(['.tmp' filesep 'PortableGit-']);
 index1 = index1 + catchLength;
 if  ~isempty(index2) && ~isempty(index1)
     if index2(end) > index1(end)

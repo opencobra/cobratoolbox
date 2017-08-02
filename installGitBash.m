@@ -10,6 +10,10 @@ function installGitBash(gitBashVersion, removeFlag)
         removeFlag = 0;
     end
     
+    % determine architecture
+    archstr = computer('arch');
+    archBit = archstr(end-1:end);
+
     % save the current directory
     currentDir = pwd;
 
@@ -21,13 +25,13 @@ function installGitBash(gitBashVersion, removeFlag)
 
     % define the system path
     pathPortableGitFragments = {};
-    pathPortableGitFragments{1} = [pathPortableGit filesep 'mingw64' filesep 'bin'];
+    pathPortableGitFragments{1} = [pathPortableGit filesep 'mingw' archBit filesep 'bin'];
     pathPortableGitFragments{2} = [pathPortableGit filesep 'cmd'];
     pathPortableGitFragments{3} = [pathPortableGit filesep 'bin'];
     pathPortableGitFragments{4} = [pathPortableGit filesep 'usr' filesep 'bin'];
 
     % define URL of PortableGit
-    urlPortableGit = ['https://github.com/git-for-windows/git/releases/download/v' gitBashVersion '.windows.1/PortableGit-' gitBashVersion '-64-bit.7z.exe'];
+    urlPortableGit = ['https://github.com/git-for-windows/git/releases/download/v' gitBashVersion '.windows.1/PortableGit-' gitBashVersion '-' archBit '-bit.7z.exe'];
     fileNamePortableGit = ['PortableGit-' gitBashVersion '.exe'];
     fileNamePortableGitwoVersion = 'PortableGit.exe';
 
@@ -77,51 +81,51 @@ function installGitBash(gitBashVersion, removeFlag)
             setenv('Path', newSessionPath);
         end
     end
-   
-    if removeFlag < 2
+
     % extract the archive and set the paths
-    if exist(fileNamePortableGit, 'file') == 2 
+    if removeFlag < 2
+        if exist(fileNamePortableGit, 'file') == 2 
 
-        % extract the archive
-        fprintf(' > Extracting the gitBash archive (this may take a while) ...');
-        system([fileNamePortableGit ' -y']);
-        fprintf(' > Done.\n');
+            % extract the archive
+            fprintf(' > Extracting the gitBash archive (this may take a while) ...');
+            system([fileNamePortableGit ' -y']);
+            fprintf(' > Done.\n');
 
-        % rename the folder
-        if removeFlag > 0
+            % rename the folder
+            if removeFlag > 0
+                try
+                rmdir(pathPortableGit, 's'); %remove if empty
+                catch
+                end
+            end
+            movefile('PortableGit', ['PortableGit-' gitBashVersion])
+
+            % remove the downloaded file
             try
-            rmdir(pathPortableGit, 's'); %remove if empty
+                delete(fileNamePortableGit);
+                fprintf([' > gitBash archive (', fileNamePortableGit, ') removed.\n']);
             catch
+                fprintf([' > gitBash archive (', fileNamePortableGit, ') could not be removed.\n']);
             end
-        end
-        movefile('PortableGit', ['PortableGit-' gitBashVersion])
 
-        % remove the downloaded file
-        try
-            delete(fileNamePortableGit);
-            fprintf([' > gitBash archive (', fileNamePortableGit, ') removed.\n']);
-        catch
-            fprintf([' > gitBash archive (', fileNamePortableGit, ') could not be removed.\n']);
-        end
-        
-        % set the path machine wide
-        for i = 1:length(pathPortableGitFragments)
-            if isempty(strfind(getsysenvironvar('Path'), pathPortableGitFragments{i}))
-                setsysenvironvar('Path', [pathPortableGitFragments{i} ';' getsysenvironvar('Path')]);
+            % set the path machine wide
+            for i = 1:length(pathPortableGitFragments)
+                if isempty(strfind(getsysenvironvar('Path'), pathPortableGitFragments{i}))
+                    setsysenvironvar('Path', [pathPortableGitFragments{i} ';' getsysenvironvar('Path')]);
+                end
+                if isempty(strfind(getenv('Path'), pathPortableGitFragments{i}))
+                    setenv('Path', [pathPortableGitFragments{i} ';' getenv('Path') ]);
+                end
             end
-            if isempty(strfind(getenv('Path'), pathPortableGitFragments{i}))
-                setenv('Path', [pathPortableGitFragments{i} ';' getenv('Path') ]);
-            end
+
+            % add the path to the MATLABPATH
+            addpath(genpath(pathPortableGit));
+
+            % print a success message
+            fprintf(' > All paths set.\n');
+        else
+            error('Portable gitBash cannot be downloaded. Check your internet connection.');
         end
-
-        % add the path to the MATLABPATH
-        addpath(genpath(pathPortableGit));
-
-        % print a success message
-        fprintf(' > All paths set.\n');
-    else
-        error('Portable gitBash cannot be downloaded. Check your internet connection.');
-    end
     end
 
     % jump back to the old directory
