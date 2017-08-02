@@ -19,7 +19,12 @@ function installGit()
 
         % define the name of the temporary folder
         tmpFolder = '.tmp';  
-
+        
+        % create .tmp if not already present
+        if ~exist(tmpFolder, 'dir')
+            mkdir(tmpFolder);
+        end
+        
         % determine the installed version
         pathVersion = getsysenvironvar('Path');
         index1 = strfind(pathVersion, [tmpFolder filesep 'PortableGit-']);
@@ -119,6 +124,11 @@ function portableGitSetup(gitBashVersion, removeFlag)
     if ispc
         % define the name of the temporary folder
         tmpFolder = '.tmp';
+
+        % create .tmp if not already present
+        if ~exist(tmpFolder, 'dir')
+            mkdir(tmpFolder);
+        end
 
         % determine architecture
         archstr = computer('arch');
