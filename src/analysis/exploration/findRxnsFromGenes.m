@@ -38,12 +38,13 @@ end
 if ~iscell(genes)
     genes = {genes};
 else %check if any nested cells in array
+    addGenes = {}; %fill if nested cells in array
     for i = 1:length(genes)
         if iscell(genes{i})
             if length(genes{i}) == 1
                 genes(i) = genes{i};
             else %more than one gene listed in nested cell
-                addGenes = genes{i};
+                addGenes = union(addGenes, genes{i});
                 delGenes = i;
             end
         end
