@@ -84,14 +84,14 @@ function installGit()
                 % retrieve and install the portable git bash and associated tools
                 portableGitSetup(latestVersion, 1);
             else
-                fprintf(' > gitBash is up-to-date.\n\n');
+                fprintf(' > gitBash is up-to-date.\n');
             end
         elseif exist(pathPortableGit, 'dir') ~= 7
             % retrieve and install the portable git bash and associated tools
             fprintf(' > gitBash is not yet installed.\n');
             portableGitSetup(installedVersion, 0);
         else
-            fprintf(' > gitBash is installed and up-to-date.\n\n');
+            fprintf(' > gitBash is installed and up-to-date.\n');
         end
 
         % set the path if already installed
