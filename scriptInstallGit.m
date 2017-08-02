@@ -79,19 +79,17 @@ function installGit()
 
             % test here if the latest version is up-to-date
             if latestVersionNum > installedVersionNum
-                fprintf([' > gitBash is not up-to-date. Updating to version ', latestVersion, ' ...\n']);
+                fprintf([' > gitBash is not up-to-date. Updating to version ', latestVersion, '.\n']);
 
                 % retrieve and install the portable git bash and associated tools
                 portableGitSetup(latestVersion, 1);
-                fprintf('Done.\n');
             else
                 fprintf(' > gitBash is up-to-date.\n\n');
             end
         elseif exist(pathPortableGit, 'dir') ~= 7
             % retrieve and install the portable git bash and associated tools
-            fprintf(' > gitBash is not yet installed. Installing ...\n');
+            fprintf(' > gitBash is not yet installed.\n');
             portableGitSetup(installedVersion, 0);
-            fprintf('Done.\n');
         else
             fprintf(' > gitBash is installed and up-to-date.\n\n');
         end
