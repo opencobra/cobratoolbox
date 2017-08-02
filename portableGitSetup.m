@@ -93,7 +93,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
             % extract the archive
             fprintf(' > Extracting the gitBash archive (this may take a while) ...');
             system([fileNamePortableGit ' -y']);
-            fprintf(' > Done.\n');
+            fprintf(' Done.\n');
 
             % rename the folder
             if removeFlag > 0
@@ -127,7 +127,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
             addpath(genpath(pathPortableGit));
 
             % print a success message
-            fprintf(' > All paths set.\n');
+            fprintf(' > gitBash successfully installed.\n');
         else
             error('Portable gitBash cannot be downloaded. Check your internet connection.');
         end
