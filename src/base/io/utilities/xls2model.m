@@ -95,8 +95,8 @@ if ~exist('defaultbound','var')
 end
 
 %assumes that one has an xls file with two tabs
-[~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:65536');
-[~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:65536');
+[~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
+[~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
 
 %trim empty row from Numbers and MetNumbers
 rxnInfo = rxnInfo(1:size(Strings,1),:)

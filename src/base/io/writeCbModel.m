@@ -174,7 +174,7 @@ switch format
         fclose(fid);
         %% Excel file
     case {'xls', 'xlsx'}
-        model2xls(model, fileName, input.compSymbols, input.compNames);
+        model2xls(model, strcat(fileName, '.', format), input.compSymbols, input.compNames);
         %% SBML
     case 'sbml'
         outmodel = writeSBML(model, fileName, input.compSymbols, input.compNames);
