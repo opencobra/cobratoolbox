@@ -91,6 +91,9 @@ function initCobraToolbox()
     % define the root path of The COBRA Toolbox
     CBTDIR = fileparts(which('initCobraToolbox'));
 
+    % add the external folder first
+    addpath(genpath([CBTDIR, filesep, 'external']));
+    
     % check if git is installed
     checkGit();
 
@@ -201,9 +204,6 @@ function initCobraToolbox()
 
     % add the root folder
     addpath(CBTDIR);
-
-    % add the external folder first
-    addpath(genpath([CBTDIR, filesep, 'external']));
 
     % remove the SBML Toolbox
     rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
@@ -540,10 +540,10 @@ function checkGit()
             fprintf(' Done.\n');
         end
     else
-        fprintf(result_gitVersion);
         if ispc
             installGit();
         else
+            fprintf(result_gitVersion);
             fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
             error(' > git is not installed.');
         end
