@@ -700,7 +700,7 @@ function installGit()
             end
         elseif exist(pathPortableGit, 'dir') ~= 7
             % retrieve and install the portable git bash and associated tools
-            fprintf(' > gitBash is not yet installed.\n');
+            fprintf('(not installed).\n');
             portableGitSetup(installedVersion, 0);
         else
             fprintf(' > gitBash is installed and up-to-date.\n');
