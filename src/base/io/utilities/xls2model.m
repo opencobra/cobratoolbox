@@ -95,8 +95,33 @@ if ~exist('defaultbound','var')
 end
 
 %assumes that one has an xls file with two tabs
-[~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
-[~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
+if isunix
+    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:20000');
+    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:20000');
+    warning on
+    if size(rxnInfo, 1) == 20000%limit set to 20,000 to prevent out-of-memory issues
+        warning('XLS is not recommended for large models.')
+        warning('Maximum number of reactions reached. Model reaction list truncated at 19,999 reactions.')
+    end
+    if  size(metInfo, 1) == 20000
+        warning('XLS is not recommended for large models.')
+        warning('Maximum number of metabolites reached. Model metabolite list truncated at 19,999 metabolites.')
+    end
+    warning off
+else
+    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
+    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
+    warning on
+    if size(rxnInfo, 1) == 65536
+        warning('XLS is not recommended for large models.')
+        warning('Maximum number of reactions reached. Model reaction list truncated at 65,535 reactions.')
+    end
+    if  size(metInfo, 1) == 65536
+        warning('XLS is not recommended for large models.')
+        warning('Maximum number of metabolites reached. Model metabolite list truncated at 65,535 metabolites.')
+    end
+    warning off
+end
 
 %trim empty row from Numbers and MetNumbers
 rxnInfo = rxnInfo(1:size(Strings,1),:)
