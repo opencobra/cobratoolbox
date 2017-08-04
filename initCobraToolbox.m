@@ -42,7 +42,7 @@ function [] = initCobraToolbox()
     global gitBashVersion;
     
     % define a base version of gitBash that is tested
-    gitBashVersion = '2.12.2';
+    gitBashVersion = '2.13.3';
     
     % default waitbar is of type text
     if isempty(WAITBAR_TYPE)
