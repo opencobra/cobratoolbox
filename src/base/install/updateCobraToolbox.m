@@ -3,10 +3,10 @@ function [] = updateCobraToolbox(fetchAndCheckOnly)
 % and asks the user to update The COBRA Toolbox (updates the develop and master branches)
 %
 % USAGE:
-%     updateCobraToolbox();
+%     updateCobraToolbox()
 %
 % INPUT:
-%     fetchAndCheckOnly: if set to true, the repository is not updated (default: false)
+%     fetchAndCheckOnly: if set to true, the repository is not updated but only new commits are fetched (default: false)
 %
 
     if nargin < 1

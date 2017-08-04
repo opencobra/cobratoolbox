@@ -1,6 +1,6 @@
 function [] = installGitBash()
-% Wraps the installer for PortableGit and checks for available updates
-% THis function can only be run on Windows, and throws an error when run on a UNIX system.
+% This function wraps the installer for PortableGit and checks for available updates.
+% This function can only be run on Windows, and throws an error when run on a UNIX system.
 %
 % USAGE:
 %     installGitBash()

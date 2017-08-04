@@ -1,8 +1,12 @@
 function [] = updateGitBash(fetchAndCheckOnly)
-% On windows, update the version of gitBash. On UNIX, this function throws an error
+% On windows, this function updates the already existing version of gitBash. 
+% This function can only be run on Windows, and throws an error when run on a UNIX system.
+%
+% USAGE:
+%     updateGitBash(fetchAndCheckOnly)
 %
 % INPUT:
-%     fetchAndCheckOnly: if set to true, gitBash is not updated (default: false)
+%     fetchAndCheckOnly: if set to `true`, gitBash is not updated, but only a check is made (default: `false`)
 %
 
     global CBTDIR

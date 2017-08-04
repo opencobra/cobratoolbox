@@ -1,9 +1,13 @@
 function [installedVersion, installedVersionNum] = getGitBashVersion()
-% determine the version of gitBash. This function can only be run on Windows,
-% and throws an error when run on a UNIX system.
+% On Windows, this function determines the version of gitBash.
+% This function can only be run on Windows, and throws an error when run on a UNIX system.
 %
 % USAGE:
-%     installGitBash()
+%     [installedVersion, installedVersionNum] = getGitBashVersion()
+%
+% OUTPUT:
+%    installedVersion:      String of installed version of gitBash in the form `2.13.2`
+%    installedVersionNum:   Integer of `installedVersion`, e.g. `2132`
 %
 
     global CBTDIR
