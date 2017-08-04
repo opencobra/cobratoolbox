@@ -111,13 +111,13 @@ function [] = portableGitSetup(gitBashVersion, removeFlag)
                 fprintf(' Done.\n');
 
                 % rename the folder
-                if removeFlag > 0
-                    try
-                        rmdir(pathPortableGit, 's'); %remove if empty
-                    catch
-                        fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed before moving.\n']);
-                    end
-                end
+%                 if removeFlag > 0
+%                     try
+%                         rmdir(pathPortableGit, 's'); %remove if empty
+%                     catch
+%                         fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed before moving.\n']);
+%                     end
+%                 end
                 
                 try
                     movefile('PortableGit', ['PortableGit-' gitBashVersion], 'f')

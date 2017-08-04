@@ -51,10 +51,11 @@ function updateGitBash(fetchAndCheckOnly)
 
         % test here if the latest version is up-to-date
         if latestVersionNum > installedVersionNum
-            fprintf([' > gitBash is not up-to-date (version: ', installedVersion, '). Updating to version ', latestVersion, '.\n']);
+            fprintf([' > gitBash is not up-to-date (version: ', installedVersion, '). Version ', latestVersion, ' is available.\n']);
 
             % retrieve and install the portable git bash and associated tools
             if ~fetchAndCheckOnly
+                fprintf([' > Updating to version ', latestVersion, '.\n']);
                 portableGitSetup(latestVersion, 1);
             end
         else
