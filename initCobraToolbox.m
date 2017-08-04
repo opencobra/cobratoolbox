@@ -1,4 +1,4 @@
-function initCobraToolbox()
+function [] = initCobraToolbox()
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
 %     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
@@ -22,7 +22,7 @@ function initCobraToolbox()
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-% Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
+%     Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
 
     % define GLOBAL variables
     global CBTDIR;
@@ -93,7 +93,7 @@ function initCobraToolbox()
 
     % add the external folder first
     addpath(genpath([CBTDIR, filesep, 'external']));
-    
+
     % check if git is installed
     checkGit();
 
@@ -538,7 +538,7 @@ function checkGit()
         end
     else
         if ispc
-            installGit();
+            installGitBash();
         else
             fprintf(result_gitVersion);
             fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
@@ -577,7 +577,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     else
         if throwError
             if ispc
-                installGit();
+                installGitBash();
             else
                 fprintf(result_curl);
                 fprintf(' > Please follow the guidelines on how to install curl: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
@@ -614,7 +614,13 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     end
 end
 
-function installGit()
+function [] = installGitBash()
+% Wraps the installer for PortableGit and checks for available updates
+% THis function can only be run on Windows, and throws an error when run on a UNIX system.
+%
+% USAGE:
+%     installGitBash()
+%
 
     global CBTDIR
 
@@ -627,13 +633,13 @@ function installGit()
         archBit = archstr(end-1:end);
 
         % define the name of the temporary folder
-        tmpFolder = '.tmp';  
-        
+        tmpFolder = '.tmp';
+
         % create .tmp if not already present
         if ~exist(tmpFolder, 'dir')
             mkdir(tmpFolder);
         end
-        
+
         % determine the installed version
         pathVersion = getsysenvironvar('Path');
         index1 = strfind(pathVersion, [tmpFolder filesep 'PortableGit-']);
@@ -663,7 +669,7 @@ function installGit()
             [status, response] = system('curl https://api.github.com/repos/git-for-windows/git/releases/latest');
 
             latestVersion = [];
-            
+
             % find the index of occurrence
             if status == 0 && ~isempty(response)
                 index1 = strfind(response, 'git/releases/tag/v');
@@ -677,7 +683,7 @@ function installGit()
                     end
                 end
             end
-            
+
             % if the latest version cannot be retrieved, set the latest version to the base version
             if isempty(latestVersion)
                 latestVersion = baseVersion;
@@ -710,19 +716,27 @@ function installGit()
     end
 end
 
-function portableGitSetup(gitBashVersion, removeFlag)
-% removeFlag:
-% 0: install, don't remove anything
-% 1: install, remove every old version
-% 2: don't install, remove every old version (folders)
-% 3: don't install, remove folders and .exe files
+function [] = portableGitSetup(gitBashVersion, removeFlag)
+% Downloads the latest version of PortableGit on Windows (archive), extracts the folder
+% and moves them to the hidden .tmp folder. This function only runs on Windows, and throws
+% an error when run on a UNIX system.
+%
+% USAGE:
+%     portableGitSetup(gitBashVersion, removeFlag)
+%
+% INPUT:
+%     removeFlag:       - 0: install, don't remove anything
+%                       - 1: install, remove every old version
+%                       - 2: don't install, remove every old version (folders)
+%                       - 3: don't install, remove folders and .exe files
+%
 
     global CBTDIR
-    
+
     if nargin < 2
         removeFlag = 0;
     end
-    
+
     if ispc
         % define the name of the temporary folder
         tmpFolder = '.tmp';
@@ -792,7 +806,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
             end
 
             % unset the paths
-            for i = 1:length(pathPortableGitFragments)   
+            for i = 1:length(pathPortableGitFragments)
                 % global machine path
                 oldMachinePath = getsysenvironvar('Path');
                 newMachinePath = strrep(oldMachinePath, [pathPortableGitFragments{i} ';'], '');
@@ -807,7 +821,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
 
         % extract the archive and set the paths
         if removeFlag < 2
-            if exist(fileNamePortableGit, 'file') == 2 
+            if exist(fileNamePortableGit, 'file') == 2
 
                 % extract the archive
                 fprintf(' > Extracting the gitBash archive (this may take a while) ...');
