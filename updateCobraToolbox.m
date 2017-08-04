@@ -175,3 +175,6 @@ function currentBranch = getCurrentBranchName()
         currentBranch = 'detached HEAD';
     end
 end
+
+
+
