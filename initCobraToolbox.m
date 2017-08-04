@@ -95,9 +95,12 @@ function [] = initCobraToolbox()
     % define the root path of The COBRA Toolbox
     CBTDIR = fileparts(which('initCobraToolbox'));
 
-    % add the external folder first
-    addpath(genpath([CBTDIR, filesep, 'external']));
+    % add the external folder
+    addpath(genpath([CBTDIR filesep 'external']));
 
+    % add the install folder
+    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
+    
     % check if git is installed
     checkGit();
 
