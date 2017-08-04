@@ -40,10 +40,10 @@ function [] = initCobraToolbox()
     global WAITBAR_TYPE;
     global ENV_VARS;
     global gitBashVersion;
-    
+
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
-    
+
     % default waitbar is of type text
     if isempty(WAITBAR_TYPE)
         WAITBAR_TYPE = 1;
@@ -100,7 +100,7 @@ function [] = initCobraToolbox()
 
     % add the install folder
     addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
-    
+
     % check if git is installed
     checkGit();
 
@@ -622,6 +622,3 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         end
     end
 end
-
-
-

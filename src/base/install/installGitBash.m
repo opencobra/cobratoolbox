@@ -8,7 +8,7 @@ function [] = installGitBash()
 
     global CBTDIR
     global gitBashVersion
-    
+
     if ispc
         % initialize variables
         archstr = computer('arch');

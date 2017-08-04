@@ -11,7 +11,6 @@ function [] = portableGitSetup(gitBashVersion, removeFlag)
 %                       - 1: install, remove every old version
 %                       - 2: don't install, remove every old version (folders)
 %                       - 3: don't install, remove folders and .exe files
-%
 
     global CBTDIR
 
@@ -67,26 +66,6 @@ function [] = portableGitSetup(gitBashVersion, removeFlag)
 
         % remove a previous version
         if removeFlag > 0
-            % remove the folder of PortableGit
-%             if exist(pathPortableGit, 'dir') == 7
-% 
-%                 try
-%                     % remove the path from the MATLAB path
-%                     rmpath(genpath(pathPortableGit));
-% 
-%                     % remove all subfolders
-%                     rmdir(pathPortableGit, 's');
-% 
-%                     % remove root directory
-%                     rmdir(pathPortableGit);
-%                     rmdir(['PortableGit-' gitBashVersion]);
-% 
-%                     fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') removed.\n']);
-%                 catch
-%                    % fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed.\n']);
-%                 end
-%             end
-
             % unset the paths
             for i = 1:length(pathPortableGitFragments)
                 % global machine path
@@ -110,15 +89,6 @@ function [] = portableGitSetup(gitBashVersion, removeFlag)
                 system([fileNamePortableGit ' -y']);
                 fprintf(' Done.\n');
 
-                % rename the folder
-%                 if removeFlag > 0
-%                     try
-%                         rmdir(pathPortableGit, 's'); %remove if empty
-%                     catch
-%                         fprintf([' > gitBash folder (', strrep(pathPortableGit, '\', '\\'), ') could not be removed before moving.\n']);
-%                     end
-%                 end
-                
                 try
                     movefile('PortableGit', ['PortableGit-' gitBashVersion], 'f')
                 catch
