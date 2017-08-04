@@ -1,4 +1,4 @@
-function [installedVersion, installedVersionNum] = determineGitBashVersion()
+function [installedVersion, installedVersionNum] = getGitBashVersion()
 % determine the version of gitBash. This function can only be run on Windows,
 % and throws an error when run on a UNIX system.
 %

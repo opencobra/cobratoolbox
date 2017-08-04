@@ -16,7 +16,7 @@ function [] = updateGitBash(fetchAndCheckOnly)
         % define the name of the temporary folder
         tmpFolder = '.tmp';
 
-        [installedVersion, installedVersionNum] = determineGitBashVersion();
+        [installedVersion, installedVersionNum] = getGitBashVersion();
 
         % define the path to portable gitBash
         pathPortableGit = [CBTDIR filesep tmpFolder filesep 'PortableGit-' installedVersion];
