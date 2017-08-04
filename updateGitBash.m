@@ -1,7 +1,14 @@
-function updateGitBash()
+function updateGitBash(fetchAndCheckOnly)
+% INPUT:
+%     fetchAndCheckOnly: if set to true, gitBash is not updated (default: false)
+%
 
     global CBTDIR;
     global gitBashVersion;
+    
+    if nargin < 1
+        fetchAndCheckOnly = false;
+    end
     
     % define the name of the temporary folder
     tmpFolder = '.tmp';
@@ -13,7 +20,7 @@ function updateGitBash()
 
     % check if mingw64 is already in the path
     if ~isempty(installedVersion) && exist(pathPortableGit, 'dir') == 7
-        fprintf(' > gitBash is installed.\n');
+        fprintf([' > gitBash is installed (version: ', installedVersion, ').\n']);
 
         % if a version already exists, get the latest
         [status, response] = system('curl https://api.github.com/repos/git-for-windows/git/releases/latest');
@@ -44,15 +51,19 @@ function updateGitBash()
 
         % test here if the latest version is up-to-date
         if latestVersionNum > installedVersionNum
-            fprintf([' > gitBash is not up-to-date (verion ', installedVersion, '). Updating to version ', latestVersion, '.\n']);
+            fprintf([' > gitBash is not up-to-date (version: ', installedVersion, '). Updating to version ', latestVersion, '.\n']);
 
             % retrieve and install the portable git bash and associated tools
-            portableGitSetup(latestVersion, 1);
+            if ~fetchAndCheckOnly
+                portableGitSetup(latestVersion, 1);
+            end
         else
-            fprintf(' > gitBash is up-to-date.\n');
+            fprintf([' > gitBash is up-to-date (version: ', installedVersion, ').\n']);
         end
     else % gitBash is not installed or the path is not properly set
         fprintf(' > gitBash is not installed.\n');
-        installGitBash();
+        if ~fetchAndCheckOnly
+            installGitBash();
+        end
     end
 end

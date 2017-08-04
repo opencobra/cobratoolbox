@@ -14,6 +14,11 @@ function updateCobraToolbox(fetchAndCheckOnly)
     end
 
     fprintf(' > Checking for available updates ...\n');
+    
+    % check if there is a new version of gitBash
+    if ispc
+        updateGitBash(fetchAndCheckOnly);
+    end
 
     % print out the last commit
     [status_gitLastCommit, result_gitLastCommit] = system('git rev-list --max-count=1 HEAD');

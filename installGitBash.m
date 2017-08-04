@@ -22,7 +22,7 @@ function [] = installGitBash()
             mkdir(tmpFolder);
         end
 
-        [installedVersion, installedVersionNum] = determineGitBashVersion();
+        [installedVersion, ~] = determineGitBashVersion();
 
         % define the path to portable gitBash
         pathPortableGit = [CBTDIR filesep tmpFolder filesep 'PortableGit-' installedVersion];
@@ -32,7 +32,7 @@ function [] = installGitBash()
             fprintf(' > gitBash is installed.\n');
         else
             % retrieve and install the portable git bash and associated tools
-            fprintf('(not installed).\n');
+
             portableGitSetup(gitBashVersion, 0);
 
             % set the path if already installed
