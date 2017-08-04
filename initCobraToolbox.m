@@ -205,9 +205,6 @@ function initCobraToolbox()
     % add the root folder
     addpath(CBTDIR);
 
-    % remove the SBML Toolbox
-    rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
-
     % add specific subfolders
     for k = 1:length(folders)
         tmpDir = [CBTDIR, filesep, folders{k}];
@@ -717,7 +714,8 @@ function portableGitSetup(gitBashVersion, removeFlag)
 % removeFlag:
 % 0: install, don't remove anything
 % 1: install, remove every old version
-% 2: don't install, remove every old version
+% 2: don't install, remove every old version (folders)
+% 3: don't install, remove folders and .exe files
 
     global CBTDIR
     
@@ -827,11 +825,13 @@ function portableGitSetup(gitBashVersion, removeFlag)
                 movefile('PortableGit', ['PortableGit-' gitBashVersion])
 
                 % remove the downloaded file
-                try
-                    delete(fileNamePortableGit);
-                    fprintf([' > gitBash archive (', fileNamePortableGit, ') removed.\n']);
-                catch
-                    fprintf([' > gitBash archive (', fileNamePortableGit, ') could not be removed.\n']);
+                if removeFlag == 3
+                    try
+                        delete(fileNamePortableGit);
+                        fprintf([' > gitBash archive (', fileNamePortableGit, ') removed.\n']);
+                    catch
+                        fprintf([' > gitBash archive (', fileNamePortableGit, ') could not be removed.\n']);
+                    end
                 end
 
                 % set the path machine wide
