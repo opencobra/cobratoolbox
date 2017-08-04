@@ -108,7 +108,7 @@ for i = 1:numel(ExcelFields)
     end
 end
 
-xlswrite(fileName,tmpData,'Reaction List');
+xlwrite(fileName,tmpData,'Reaction List');
 
 MetaboliteXlsFields = {'Abbreviation','Description','Charged formula','Charge','Compartment','KEGG ID',...
     'PubChem ID','ChEBI ID','InChi string','SMILES','HMDB ID'};
@@ -155,7 +155,7 @@ for i = 1:numel(ExcelFields)
         tmpData(2:end,i) = modelField;
     end
 end
-xlswrite(fileName,tmpData,'Metabolite List');
+xlwrite(fileName,tmpData,'Metabolite List');
 
 end
 
