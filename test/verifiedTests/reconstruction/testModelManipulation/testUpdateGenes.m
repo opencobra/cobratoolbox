@@ -6,15 +6,15 @@
 % Authors:
 %     - Uri David Akavia August 2017
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 fileDir = fileparts(which('testUpdateGenes'));
 cd(fileDir);
 
-modelDirectory = strcat('..', filesep, '..', filesep, '..', filesep, 'models', filesep);
-
-model = readCbModel(strcat(modelDirectory, 'Recon2.v04.mat'));
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);
 
 % Check that updateGenes doesn't change the model
 model2 = updateGenes(model);
