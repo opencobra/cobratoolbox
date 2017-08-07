@@ -1,14 +1,14 @@
-function configEnvVars(printLevel)
+function [] = configEnvVars(printLevel)
 % Configures the global variables based on the system's configuration
 % First, all environment variables for each solver are defined together
 % with all eventual solver paths.
 % Then, there will be 4 methods marked that can be used to define the global
 % variables:
 %
-%   * 1: solver is on the path and at a standard location (*---)
-%   * 2: solver is on path but at a non-standard location (-*--)
-%   * 3: solver path is defined through environment variables (--*-)
-%   * 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (---*)
+%   - 1: solver is on the path and at a standard location (*---)
+%   - 2: solver is on path but at a non-standard location (-*--)
+%   - 3: solver path is defined through environment variables (--*-)
+%   - 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (---*)
 %
 % If none of these 4 methods applies, the global solver path variable is not set and an appropriate message is returned
 %
@@ -20,17 +20,18 @@ function configEnvVars(printLevel)
 %    printLevel:    default = 0, verbose level
 %
 
-    global ENV_VARS;
+    global ENV_VARS
+    global GUROBI_PATH
+    global ILOG_CPLEX_PATH
+    global TOMLAB_PATH
+    global MOSEK_PATH
 
     if nargin < 1
         printLevel = 0;
     end
 
     if exist('ENV_VARS.STATUS', 'var') == 1 || ENV_VARS.STATUS == 0
-        global GUROBI_PATH;
-        global ILOG_CPLEX_PATH;
-        global TOMLAB_PATH;
-        global MOSEK_PATH;
+
         GUROBI_PATH = []; ILOG_CPLEX_PATH = []; TOMLAB_PATH = []; MOSEK_PATH = [];
 
         solverPaths = {};
@@ -39,20 +40,40 @@ function configEnvVars(printLevel)
         solverPaths{1, 3} = 'CPLEX_Studio'; % alias
         solverPaths{1, 4} = {'/Applications/IBM/ILOG/', ...
                              '~/Applications/IBM/ILOG/', ...
-                             '/opt/ibm/ILOG/' ...
-                             'C:\Program Files\IBM\ILOG\'};
+                             '/opt/ibm/ILOG/', ...
+                             'C:\IBM\ILOG\', ...
+                             'C:\Program Files\IBM\ILOG\', ...
+                             'C:\Program Files (x86)\IBM\ILOG\'};
         solverPaths{2, 1} = {'GUROBI_PATH', 'GUROBI_HOME'};
         solverPaths{2, 2} = {};
         solverPaths{2, 3} = 'gurobi'; % alias
         solverPaths{2, 4} = {'/Library/', ...
                              '~/Library/', ...
                              '/opt/', ...
-                             'C:\'};
+                             'C:\', ...
+                             'C:\Program Files\', ...
+                             'C:\Program Files (x86)\'};
         solverPaths{3, 1} = {'TOMLAB_PATH'};
-        solverPaths{3, 2} = {'/opt/tomlab', 'C:\tomlab', 'C:\Program Files\tomlab', 'C:\Program Files (x86)\tomlab', '/Applications/tomlab'};
+        solverPaths{3, 2} = {'/Applications/tomlab', ...
+                             '~/Applications/tomlab', ...
+                             '/opt/tomlab', ...
+                             'C:\tomlab', ...
+                             'C:\Program Files\tomlab', ...
+                             'C:\Program Files (x86)\tomlab'
+                             };
         solverPaths{3, 3} = 'tomlab'; % alias
         solverPaths{4, 1} = {'MOSEK_PATH'};
-        solverPaths{4, 2} = {'/opt/mosek/8', '/opt/mosek/7', '/Applications/mosek/8', '/Applications/mosek/7', 'C:\Program Files\Mosek\8', 'C:\Program Files\Mosek\7'};
+        solverPaths{4, 2} = {'/Applications/mosek/8', ...
+                             '/Applications/mosek/7', ...
+                             '~/Applications/mosek/8', ...
+                             '~/Applications/mosek/7', ...
+                             '/opt/mosek/8', ...
+                             '/opt/mosek/7', ...
+                             'C:\Program Files\Mosek\8', ...
+                             'C:\Program Files\Mosek\7', ...
+                             'C:\Program Files (x86)\Mosek\8', ...
+                             'C:\Program Files (x86)\Mosek\7'
+                             };
         solverPaths{4, 3} = 'mosek'; % alias
 
         isOnPath = false;
@@ -72,11 +93,12 @@ function configEnvVars(printLevel)
 
                 % loop through the list of possible directories
                 possibleDir = '';
-                tmpSolverPath = solverPaths{k, 2};
 
                 % list here the contents of the possible directory and find a regular expression
-                folderNameVect = solverPaths{k, 4};
                 folderPattern = solverPaths{k, 3};
+                folderNameVect = solverPaths{k, 4};
+
+                % loop through all possible locations
                 for jj = 1:length(folderNameVect)
                     folderName = folderNameVect(jj);
                     folderName = folderName{1};
