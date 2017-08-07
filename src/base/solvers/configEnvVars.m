@@ -32,54 +32,57 @@ function [] = configEnvVars(printLevel)
 
     if exist('ENV_VARS.STATUS', 'var') == 1 || ENV_VARS.STATUS == 0
 
+        % initialize global variables
         GUROBI_PATH = []; ILOG_CPLEX_PATH = []; TOMLAB_PATH = []; MOSEK_PATH = [];
 
+        % define default locations of the root installation folder
+        defaultLocations = {'/Applications/', ...
+                            '~/Applications/', ...
+                            '/opt/', ...
+                            '/', ...
+                            '~/', ...
+                            '/Library/', ...
+                            '~/Library/', ...
+                            'C:\', ...
+                            'C:\Program Files\', ...
+                            'C:\Program Files (x86)\'
+                            };
+
+        % structure for storing solver information
+        % {*, 1}: environment variable of solver installation folder location
+        % {*, 2}: array of possible arrays based on alias and version number
+        % {*, 3}: alias or pattern
+        % {*, 4}: locations of the root installation folder
         solverPaths = {};
+
+        % IBM ILOG CPLEX (k = 1)
         solverPaths{1, 1} = {'ILOG_CPLEX_PATH'};
         solverPaths{1, 2} = {};
         solverPaths{1, 3} = 'CPLEX_Studio'; % alias
-        solverPaths{1, 4} = {'/Applications/IBM/ILOG/', ...
-                             '~/Applications/IBM/ILOG/', ...
-                             '/opt/ibm/ILOG/', ...
-                             'C:\IBM\ILOG\', ...
-                             'C:\Program Files\IBM\ILOG\', ...
-                             'C:\Program Files (x86)\IBM\ILOG\'};
+        solverPaths{1, 4} = defaultLocations;
+
+        % GUROBI (k = 2)
         solverPaths{2, 1} = {'GUROBI_PATH', 'GUROBI_HOME'};
         solverPaths{2, 2} = {};
         solverPaths{2, 3} = 'gurobi'; % alias
-        solverPaths{2, 4} = {'/Library/', ...
-                             '~/Library/', ...
-                             '/opt/', ...
-                             'C:\', ...
-                             'C:\Program Files\', ...
-                             'C:\Program Files (x86)\'};
+        solverPaths{2, 4} = defaultLocations;
+
+        % TOMLAB (k = 3)
         solverPaths{3, 1} = {'TOMLAB_PATH'};
-        solverPaths{3, 2} = {'/Applications/tomlab', ...
-                             '~/Applications/tomlab', ...
-                             '/opt/tomlab', ...
-                             'C:\tomlab', ...
-                             'C:\Program Files\tomlab', ...
-                             'C:\Program Files (x86)\tomlab'
-                             };
+        solverPaths{3, 2} = {};
         solverPaths{3, 3} = 'tomlab'; % alias
+        solverPaths{3, 4} = defaultLocations;
+
+        % MOSEK (k = 4)
         solverPaths{4, 1} = {'MOSEK_PATH'};
-        solverPaths{4, 2} = {'/Applications/mosek/8', ...
-                             '/Applications/mosek/7', ...
-                             '~/Applications/mosek/8', ...
-                             '~/Applications/mosek/7', ...
-                             '/opt/mosek/8', ...
-                             '/opt/mosek/7', ...
-                             'C:\Program Files\Mosek\8', ...
-                             'C:\Program Files\Mosek\7', ...
-                             'C:\Program Files (x86)\Mosek\8', ...
-                             'C:\Program Files (x86)\Mosek\7'
-                             };
+        solverPaths{4, 2} = {};
         solverPaths{4, 3} = 'mosek'; % alias
+        solverPaths{4, 4} = defaultLocations;
 
-        isOnPath = false;
-
+        % loop through the solvers
         for k = 1:length(solverPaths)
 
+            % define the method identification label
             method = '----';
 
             for j = 1:length(solverPaths{k, 1})
@@ -102,8 +105,20 @@ function [] = configEnvVars(printLevel)
                 for jj = 1:length(folderNameVect)
                     folderName = folderNameVect(jj);
                     folderName = folderName{1};
+
+                    % define additional subfolders
+                    if k == 1 % IBM ILOG CPLEX
+                        folderName = [folderName 'ibm' filesep 'ilog' filesep];
+                    elseif k == 4 % mosek
+                        folderName = [folderName 'mosek' filesep];
+                        folderPattern = '';
+                    end
+
+                    % read the directory at the specified default location
                     tempD = dir(folderName);
                     tmpFileNameVect = {tempD.name};
+
+                    % loop through all the folders
                     for ii = 1:length(tmpFileNameVect)
                         % save a temporary directory name
                         tmpFileName = tmpFileNameVect(ii);
@@ -111,8 +126,8 @@ function [] = configEnvVars(printLevel)
                         % define all folders that match folderPattern1234
                         idCell = regexp(tmpFileName, ['(', folderPattern, ')[0-9]+']);
 
-                        for jj = 1:length(idCell)
-                            if ~isempty(idCell{jj})
+                        for kk = 1:length(idCell)
+                            if ~isempty(idCell{kk})
                                 tmpFolderName = [folderName, tmpFileName{1}];
                                 solverPaths{k, 2} = [solverPaths{k, 2}; tmpFolderName];
                             end
@@ -120,11 +135,16 @@ function [] = configEnvVars(printLevel)
                     end
                 end
 
+                % store the array of possible solver paths
                 tmpSolverPath = solverPaths{k, 2};
 
-                for i = length(solverPaths{k, 2}):-1:1 % start from the last one - most recent version
+                % loop through the possible directories of installed solvers
+                % start from the last one with the highest version number (most recent version)
+                for i = length(solverPaths{k, 2}):-1:1
                     if exist(tmpSolverPath{i}, 'dir') == 7
                         subDir = filesep;
+
+                        % generate solver sub-directories for IBM ILOG CPLEX and gurobi
                         if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
                         end
