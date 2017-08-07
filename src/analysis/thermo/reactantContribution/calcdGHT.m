@@ -5,50 +5,57 @@ function [dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, d
 % gives the standard transformed Gibbs energy of formation of a reactant
 % (sum of species) and the standard transformed enthalpy of a reactant.
 %
-% INPUTS:
 % Assuming p pseudoisomer species corresponding to one reactant
-%    dGzero      p x 1 standard Gibbs energy of formation at 298.15 K
-%  zi          p x 1 electric charge
-%  nH          p x 1 number of hydrogen atoms in each species
 %
-%  pHr         real pH of 5 to 9 (see realpH.m)
-%  is          ionic strength 0 to 0.35 M
-%  temp        temperature 273.15 K to 313.15 K
+% Optional output dependent on multiple precision toolbox
 %
-%OPTIONAL INPUT
-% dHzero      p x 1 standard enthalpy of formation at 298.15 K
-% chi         electrical potential
-% Legendre    {(1),0} Legendre Transformation for specifc pHr?
-% LegendreCHI {(1),0} Legendre Transformation for specifc electrical potential?
+% USAGE:
 %
-%OUTPUT
-% dGf0        reactant standard transformed Gibbs energy of formation
-% dHf0        reactant standard transformed enthalpy of formation
-% mf          mole fraction of each species within a pseudoisomer group
-% aveHbound   average number of protons bound to a reactant
-% aveZi       average charge of a reactant
-% lambda      activity coefficient for each metabolite species
-% gpfnsp      metabolite species standard transformed Gibbs energy of formation
+%    [dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)
 %
-%OPTIONAL OUTPUT (dependency on multiple precision toolbox)
-% dHf0        standard transformed enthalpy of formation
+% INPUTS:
+%    dGzero:         `p x 1` standard Gibbs energy of formation at 298.15 K
+%    zi:             `p x 1` electric charge
+%    nH:             `p x 1` number of hydrogen atoms in each species
+%    pHr:            real pH of 5 to 9 (see realpH.m)
+%    is:             ionic strength 0 to 0.35 M
+%    temp:           temperature 273.15 K to 313.15 K
 %
-%The values of the standard transformed Gibbs energy of formation
-%and the standard transformed enthalpy of formation can be calculated
-%temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.
-%pHr in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)
-%ionic strength in the range 0 to 0.35 M
-%See Mathematica program calcdGHT p289 Alberty 2003
+% OPTIONAL INPUT:
+%    dHzero:         `p x 1` standard enthalpy of formation at 298.15 K
+%    chi:            electrical potential
+%    Legendre:       {(1), 0} Legendre Transformation for specifc pHr?
+%    LegendreCHI:    {(1), 0} Legendre Transformation for specifc electrical potential?
 %
-%The changes in the values of standard transformed Gibbs energy of formation
-%and the standard transformed enthalpy of formation might be improved if
-%knowlegde of standard molar heat capacity was available for each species
-%See p41 Alberty 2003
+% OUTPUT:
+%    dGf0:           reactant standard transformed Gibbs energy of formation
+%    dHf0:           reactant standard transformed enthalpy of formation
+%    mf:             mole fraction of each species within a pseudoisomer group
+%    aveHbound:      average number of protons bound to a reactant
+%    aveZi:          average charge of a reactant
+%    lambda:         activity coefficient for each metabolite species
+%    gpfnsp:         metabolite species standard transformed Gibbs energy of formation
+%
+% OPTIONAL OUTPUT:
+%
+%    dHf0:           standard transformed enthalpy of formation
+%
+% The values of the standard transformed Gibbs energy of formation
+% and the standard transformed enthalpy of formation can be calculated
+% temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.
+% `pHr` in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)
+% ionic strength in the range 0 to 0.35 M.
+% See Mathematica program `calcdGHT p289 Alberty 2003`
+%
+% The changes in the values of standard transformed Gibbs energy of formation
+% and the standard transformed enthalpy of formation might be improved if
+% knowlegde of standard molar heat capacity was available for each species
+% See `p41 Alberty 2003`
 %
 % Multiple Precision Toolbox for MATLAB by Ben Barrowes (mptoolbox_1.1)
 % http://www.mathworks.com/matlabcentral/fileexchange/6446
 %
-% Ronan M.T. Fleming
+% .. Author: -Ronan M.T. Fleming
 
 if ~exist('printLevel','var')
     printLevel=0;

@@ -14,17 +14,17 @@ function model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetL
 % INPUT:
 %    model:              Thermodynamic model:
 %
-%                          * modelT.met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)
-%                          * modelT.met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)
-%                          * modelT.met(m).dGft0Source - origin of data, `Keq` or `groupContFileName.txt`
-%                          * modelT.met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)
+%                          * .met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)
+%                          * .met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)
+%                          * .met(m).dGft0Source - origin of data, `Keq` or `groupContFileName.txt`
+%                          * .met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)
 %
 % OPTIONAL INPUT:
 %    adjustedMetList:
 % OUTPUT:
 %    model:              structure with field:
 %
-%                          * model.met(m).dGft0 - Standard transformed Gibbs energies of reactants
+%                          * .met(m).dGft0 - Standard transformed Gibbs energies of reactants
 %                            with the baseline adjusted for certain paired
 %                            cofactors e.g. `fad` & `fadh2`, such that the
 %                            difference between the two is the same as in
