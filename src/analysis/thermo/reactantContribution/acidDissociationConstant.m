@@ -1,26 +1,30 @@
-function [Ka,pKa]=acidDissociationConstant(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,is,chi)
-%acid dissociation constant for the different metabolite species that make up a reactant
+function [Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, is, chi)
+% Acid dissociation constant for the different metabolite species that make up a reactant
 %
-%INPUT
-% metAbbr               reconstruction reactant abbreviation
-% Alberty2006           Basic data on the metabolite species that make
-%                       up a reactant, compiled by Robert A. Alberty,
-%                       Massachusetts Institute of Technology.
-%                       In Print: Robert A. Alberty, Biochemical Thermodynamics: 
-%                       Applications of Mathematica. John Wiley & Sons, 2006. p391-395
-%                       Online: BasicBioChemData3.nb
-%                       http://library.wolfram.com/infocenter/MathSource/5704/ 
-% metAbbrAlbertyAbbr    mapping from model metabolite primary key to
-%                       primary key of reactants in Alberty2006
+% USAGE:
+%
+%    [Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, is, chi)
+%
+% INPUTS:
+%    metAbbr:               reconstruction reactant abbreviation
+%    Alberty2006:           Basic data on the metabolite species that make
+%                           up a reactant, compiled by Robert A. Alberty,
+%                           Massachusetts Institute of Technology.
+%                           In Print: `Robert A. Alberty, Biochemical Thermodynamics:
+%                           Applications of Mathematica. John Wiley & Sons, 2006. p391-395`
+%                           Online: BasicBioChemData3.nb
+%                           http://library.wolfram.com/infocenter/MathSource/5704/
+%    metAbbrAlbertyAbbr:    mapping from model metabolite primary key to
+%                           primary key of reactants in `Alberty2006`
 %
 % OPTIONAL INPUT
-% temp                  temperature (default 298.15 K)
-% is                    ionic strength (default 0 M)
-% chi                   electrical potential (default 0)
+%    temp:                  temperature (default 298.15 K)
+%    is:                    ionic strength (default 0 M)
+%    chi:                   electrical potential (default 0)
 %
-%OUTPUT
-% Ka          apparent equilibrium constants
-% pKa         -log10(Ka)
+% OUTPUTS:
+%    Ka:                    apparent equilibrium constants
+%    pKa:                   :math:`-log_{10}(Ka)`
 
 if ~exist('temp','var')
     temp=298.15;
@@ -47,7 +51,7 @@ n=find(strcmp(albertyAbbr,allAlbertyAbbr));
 
 %find the number of species within pseudoisomer group
 p=max(find(~isnan(Alberty2006(n).basicData(:,1))));
-            
+
 %no Legendre transformation for pH or electrical potential
 Legendre     = 0;
 LegendreCHI  = 0;
@@ -71,7 +75,7 @@ zi=1;
 hydrogenIonistermG = -(gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5);
 
 for x=1:p-1
-    
+
     Ka(x)  =  exp((gpfnsp(x+1,1)-gpfnsp(x,1)-hydrogenIonistermG)/(gasConstant*temp));
     if 1
         pKa(x) =  -(gpfnsp(x+1,1)-gpfnsp(x,1)-hydrogenIonistermG)/(gasConstant*temp*log(10));
