@@ -49,6 +49,8 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %
 % .. Author: - Markus Herrgard 8/14/06
 
+global SOLVERS
+
 nWarmupPoints = 5000;
 nFiles = 10;
 nPointsPerFile = 1000;
@@ -57,6 +59,7 @@ nPointsReturned = 2000;
 nFilesSkipped = 2;
 maxTime = 10 * 3600;
 toRound = 1;
+useFastFVA = false;
 % Default options above
 if ~exist('sampleFile','var')
     samplerName = 'sampleFile.mat';
@@ -98,23 +101,26 @@ if exist('options','var')
     if (isfield(options,'toRound'))
         toRound = double(options.toRound);
     end
+    if (isfield(options,'useFastFVA'))
+        useFastFVA = options.useFastFVA;
+    end
 end
 
 switch samplerName
     case 'ACHR'
         fprintf('Prepare model for sampling\n');
         % Prepare model for sampling by reducing bounds
-        [nMet,nRxn] = size(model.S);
-        fprintf('Original model: %d rxns %d metabolites\n',nRxn,nMet);
+        [nMet, nRxn] = size(model.S);
+        fprintf('Original model: %d rxns %d metabolites\n', nRxn, nMet);
 
         % Reduce model
         fprintf('Reduce model\n');
-        model.rxns = regexprep(model.rxns,'(_r)$','_bladibla'); % Workaround to avoid renaming reactions that end in '_r'
+        model.rxns = regexprep(model.rxns,'(_r)$', '_bladibla'); % Workaround to avoid renaming reactions that end in '_r'
         if isempty(modelSampling)
-            modelRed = reduceModel(model, 1e-6, false,false,true);
-            modelRed.rxns = regexprep(modelRed.rxns,'(_bladibla)$','_r'); % Replace '_r' ending
+            modelRed = reduceModel(model, 1e-6, false, false, true);
+            modelRed.rxns = regexprep(modelRed.rxns, '(_bladibla)$', '_r'); % Replace '_r' ending
             [nMet,nRxn] = size(modelRed.S);
-            fprintf('Reduced model: %d rxns %d metabolites\n',nRxn,nMet);
+            fprintf('Reduced model: %d rxns %d metabolites\n', nRxn, nMet);
         else
             modelRed = modelSampling;
         end
@@ -126,29 +132,29 @@ switch samplerName
 
         fprintf('Create warmup points\n');
         % Create warmup points for sampler
-        warmupPts= createHRWarmup(modelSampling,nWarmupPoints);
+        warmupPts= createHRWarmup(modelSampling, nWarmupPoints);
 
         save sampleCbModelTmp modelSampling warmupPts
 
-        fprintf('Run sampler for a total of %d steps\n',nFiles*nPointsPerFile*nStepsPerPoint);
+        fprintf('Run sampler for a total of %d steps\n', nFiles*nPointsPerFile*nStepsPerPoint);
         % Sample model
-        ACHRSampler(modelSampling,warmupPts,sampleFile,nFiles,nPointsPerFile,nStepsPerPoint,[],[],maxTime);
+        ACHRSampler(modelSampling, warmupPts, sampleFile, nFiles, nPointsPerFile, nStepsPerPoint, [], [], maxTime);
 
         fprintf('Load samples\n');
         % Load samples
-        nPointsPerFileLoaded = ceil(nPointsReturned/(nFiles-nFilesSkipped));
+        nPointsPerFileLoaded = ceil(nPointsReturned / (nFiles - nFilesSkipped));
         if (nPointsPerFileLoaded > nPointsPerFile)
             error('Attempted to return more points than were saved');
         end
-        samples = loadSamples(sampleFile,nFiles,nPointsPerFileLoaded,nFilesSkipped);
-        samples = samples(:,round(linspace(1,size(samples,2),min([nPointsReturned,size(samples,2)]))));
+        samples = loadSamples(sampleFile, nFiles, nPointsPerFileLoaded, nFilesSkipped);
+        samples = samples(:, round(linspace(1, size(samples, 2), min([nPointsReturned, size(samples, 2)]))));
         % Fix reaction directions
-        [modelSampling,samples] = convRevSamples(modelSampling,samples);
+        [modelSampling, samples] = convRevSamples(modelSampling, samples);
 
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
-    case 'CHRR'
-        [samples,modelSampling] = chrrSampler(model,nStepsPerPoint,nPointsReturned,toRound,modelSampling);
+    case 'CHRR'        
+        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, [], [], useFastFVA);
 
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
@@ -202,7 +208,7 @@ switch samplerName
         p=FBAsolution.x;
         %[volume,T,steps,r_steps] = Volume(P,E,eps,p,flags);
         %[volume,T,steps,r_steps] = Volume(P,E,eps,p);
-        [volume,T,steps,r_steps] = Volume(P,E,eps);
+        [volume, T, steps, r_steps] = Volume(P,E,eps);
 
         modelSampling=[];
         samples=[];
