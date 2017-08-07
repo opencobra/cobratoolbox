@@ -1,28 +1,24 @@
-function successbool = inchi2mol(inchis,filenames,outputdir,overwrite)
-
-% successbool = inchi2mol(inchis,filenames,outputdir,overwrite)
-% 
+function successbool = inchi2mol(inchis, filenames, outputdir, overwrite)
 % Convert InChI strings to mol files using OpenBabel. Compatible with
 % Windows and Unix.
 %
-% INPUTS
-% inchis        nx1 Cell array of InChI strings
-% filenames     nx1 Cell array of mol file names without file extension.
-%               Default is {'1';'2';...}
-% outputdir     Directory for mol files. Default is
-%               'CurrentDirectory\molfiles'.
-% overwrite     0, [1]. Specify whether to overwrite existing mol files
-%               in outputdir.
+% USAGE:
 %
-% OUTPUTS
-% successbool   nx1 logical vector with 1 at indices corresponding to
-%               inchis that were successfully converted to mol files and 0
-%               elsewhere.
-% 
-% Hulda SH  Feb. 2011
+%    successbool = inchi2mol(inchis, filenames, outputdir, overwrite)
+%
+% INPUTS:
+%    inchis:         `n x 1` Cell array of InChI strings
+%    filenames:      `n x 1` Cell array of mol file names without file extension. Default is {'1' ;'2' ;...}
+%    outputdir:      Directory for mol files. Default is 'CurrentDirectory\molfiles'.
+%    overwrite:      0, [1]. Specify whether to overwrite existing mol files in outputdir.
+%
+% OUTPUTS:
+%    successbool:    `n x 1` logical vector with 1 at indices corresponding to
+%                    inchis that were successfully converted to mol files and 0 elsewhere.
+%
+% .. Author: - Hulda SH  Feb. 2011
 
-% Format input and set defaults
-if ~iscell(inchis) && size(inchis,1) == 1 % If a single InChI is input as string
+if ~iscell(inchis) && size(inchis,1) == 1 % Format input and set defaults, If a single InChI is input as string
     inchis = {inchis};
 end
 
@@ -75,7 +71,7 @@ for n = 1:nInchis
         if isempty(strfind(existingMolFiles,['.mol' filenames{n} '.mol'])) || overwrite == 1 % If mol file of same name does not already exist or if it should be overwritten
             system(['echo ' inchis{n} ' > inchi.inchi']); % Temporary place holder for inchi. Overwritten in each loop.
             system(['babel inchi.inchi ' filenames{n} '.mol']); % Convert InChI to mol file
-            
+
             f = dir([outputdir '\' filenames{n} '.mol']);
             if f.bytes > eps % If mol file is empty the conversion failed
                 successbool(n) = true;

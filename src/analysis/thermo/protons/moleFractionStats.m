@@ -1,18 +1,24 @@
 function moleFractionStats(modelT)
-%Plots of mole fraction statistics.
+% Plots of mole fraction statistics.
 %
-%plot a histogram of the number of metabolite species relevant between pH 5
-%and 9, and a stacked bar chart of the mole fractions of reactants with
-%significant (<0.99) distributions over more than one metabolite species.
+% Plot a histogram of the number of metabolite species relevant between pH 5
+% and 9, and a stacked bar chart of the mole fractions of reactants with
+% significant (<0.99) distributions over more than one metabolite species.
 %
-%INPUT
-% modelT.S
-% modelT.officialName
-% modelT.mf
+% USAGE:
 %
-% Ronan M.T. Fleming
-% Hulda SH Jul 7 2011 Enabled inclusion of up to 10 microspecies in bar
-%                     graph
+%    moleFractionStats(modelT)
+%
+% INPUT:
+%    modelT:    structure with fields:
+%
+%                 * modelT.S
+%                 * modelT.officialName
+%                 * modelT.mf
+%
+% .. Authors:
+%       - Ronan M.T. Fleming
+%       - Hulda SH Jul 7 2011 Enabled inclusion of up to 10 microspecies in bar graph
 
 [nMets,nRxn]=size(modelT.S);
 
@@ -91,7 +97,7 @@ for m=1:nMets
         metNames(p)=modelT.metNames(ix(m));
         p=p+1;
     end
-    
+
 end
 
 figure;
@@ -124,9 +130,3 @@ xlabel('Connectivity','FontSize',14);
 set(gca,'FontSize',9);
 title('Mole fraction statistics: connectivity')
 saveas(gcf,'moleFraction95connectivity','fig');
-
-
-
-
-
-

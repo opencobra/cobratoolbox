@@ -1,15 +1,26 @@
-function [n,edges,lambda]=plotActivityCoefficients(modelT)
-%Plots statistics on activity coefficients.
+function [n, edges, lambda] = plotActivityCoefficients(modelT)
+% Plots statistics on activity coefficients.
 %
-%plot a histogram of the distribution of activity coefficients
-%also a curve of  activity coefficients for different charges at a range of
-%ionic strengths 
+% Plots a histogram of the distribution of activity coefficients
+% also a curve of  activity coefficients for different charges at a range of
+% ionic strengths
 %
-%INPUT
-% model.met(i).lambda   activity coefficient
-% model.temp            temperature
-% 
-% Ronan M. T. Fleming
+% USAGE:
+%
+%    [n, edges, lambda] = plotActivityCoefficients(modelT)
+%
+% INPUT:
+%    modelT:    structure with fields:
+%
+%                 * model.met(i).lambda - activity coefficient
+%                 * model.temp - temperature
+%
+% OUTPUTS:
+%    n:
+%    edges:
+%    lambda:
+%
+% .. Author: - Ronan M. T. Fleming
 
 [nMet,nRxn]=size(modelT.S);
 p=1;
@@ -37,13 +48,13 @@ ylabel('# Metabolite Species','FontSize',16)
 % figure
 % hist(chargeMag)
 
-temp=modelT.temp; 
+temp=modelT.temp;
 gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
 gasConstant=modelT.gasConstant;
 isAll=zeros(1000,1);
 for x=1:1000
     is=isAll(x);
-    for zi=1:4 
+    for zi=1:4
         lambda(zi,x)=exp(-(gibbscoeff/(gasConstant*temp))*(((zi.^2)*is^0.5)/(1 + 1.6*is^0.5)));
     end
     isAll(x+1)=isAll(x)+(0.25/1000);

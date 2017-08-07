@@ -1,31 +1,34 @@
-function plotMoleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,PHmin,PHmax,ISmin,ISmax,CHImin,CHImax,TEMPmin,TEMPmax,N)
+function plotMoleFraction(metAbbr, Alberty2006, metAbbrAlbertyAbbr, PHmin, PHmax, ISmin, ISmax, CHImin, CHImax, TEMPmin, TEMPmax, N)
 %Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.
 %
-% INPUT
-% metAbbr               reconstruction reactant abbreviation
-% Alberty2006           Basic data on the metabolite species that make
-%                       up a reactant, compiled by Robert A. Alberty,
-%                       Massachusetts Institute of Technology.
-%                       In Print: Robert A. Alberty, Biochemical Thermodynamics: 
-%                       Applications of Mathematica. John Wiley & Sons, 2006. p391-395
-%                       Online: BasicBioChemData3.nb
-%                       http://library.wolfram.com/infocenter/MathSource/5704/ 
-% metAbbrAlbertyAbbr    mapping from model metabolite primary key to
-%                       primary key of reactants in Alberty2006
+% USAGE:
 %
-% PHmin     Minimum glass electrode pH
-% PHmax     Maximum glass electrode pH
-% ISmin     Ionic strength minimum
-% ISmax     Ionic strength maximum
-% CHImin    Electrical potential minimum
-% CHImax    Electrical potential maximum
-% TEMPmin   temperature minimum
-% TEMPmax   temperature maximum
+%    plotMoleFraction(metAbbr, Alberty2006, metAbbrAlbertyAbbr, PHmin, PHmax, ISmin, ISmax, CHImin, CHImax, TEMPmin, TEMPmax, N)
 %
-% Ronan M. T. Fleming
+% INPUTS:
+%    metAbbr:               reconstruction reactant abbreviation
+%    Alberty2006:           Basic data on the metabolite species that make
+%                           up a reactant, compiled by Robert A. Alberty,
+%                           Massachusetts Institute of Technology.
+%                           In Print: `Robert A. Alberty, Biochemical Thermodynamics:
+%                           Applications of Mathematica. John Wiley & Sons, 2006. p391-395`
+%                           Online: BasicBioChemData3.nb
+%                           http://library.wolfram.com/infocenter/MathSource/5704/
+%    metAbbrAlbertyAbbr:    mapping from model metabolite primary key to
+%                           primary key of reactants in `Alberty2006`
+%    PHmin:                 Minimum glass electrode pH
+%    PHmax:                 Maximum glass electrode pH
+%    ISmin:                 Ionic strength minimum
+%    ISmax:                 Ionic strength maximum
+%    CHImin:                Electrical potential minimum
+%    CHImax:                Electrical potential maximum
+%    TEMPmin:               temperature minimum
+%    TEMPmax:               temperature maximum
+%    N:
+%
+% .. Author: - Ronan M. T. Fleming
 
-%find the alberty abbreviation for this metabolite Abbreviation
-albertyAbbr=metAbbrAlbertyAbbr(strcmp(metAbbr,metAbbrAlbertyAbbr(:,2)),3);
+albertyAbbr=metAbbrAlbertyAbbr(strcmp(metAbbr,metAbbrAlbertyAbbr(:,2)),3); % find the alberty abbreviation for this metabolite Abbreviation
 
 %make a list of alberty abbreviations
 klt=size(Alberty2006,2);
@@ -60,7 +63,7 @@ pHVec  = linspace(PHmin,PHmax,Ni);
 isVec  = linspace(ISmin,ISmax,Nj);
 chiVec = linspace(CHImin,CHImax,Nk);
 tempVec = linspace(TEMPmin,TEMPmax,Np);
-    
+
 MF=zeros(nSpecies,Ni,Nj,Nk,Np);
 
 %initialise temp and is
@@ -75,14 +78,14 @@ for i=1:Ni
     else
         pHr=pHa;
     end
-    
+
     for j=1:Nj
         is=isVec(j);
         for k=1:Nk
             chi=chiVec(k);
             for p=1:Np
                 temp=tempVec(p);
-                
+
                 MF(:,i,j,j,p)=moleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,pHa,is,chi);
             end
         end
@@ -101,6 +104,3 @@ if 1
     xlabel('pH')
     ylabel('mole fraction')
 end
-        
-                
-            
