@@ -5,7 +5,7 @@ function [pHr, pHAdjustment] = realpH(pHa, temp, is)
 % the pH to be used for thermodynamic calculations, `pHc = -log10[H+]`,
 % by subtracting the effect of the ion atmosphere around H+ which
 % reduces its activity coefficient below unity.
-% See p49 Alberty 2003.
+% See `p49 Alberty 2003`.
 %
 % USAGE:
 %

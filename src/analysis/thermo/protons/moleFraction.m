@@ -18,7 +18,7 @@ function mf = moleFraction(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, pHa, 
 %                           primary key of reactants in `Alberty2006`
 %
 % OPTIONAL INPUTS:
-%   temp:
+%    temp:
 %    pHa:
 %    is:
 %    temp:

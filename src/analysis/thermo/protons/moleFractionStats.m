@@ -12,9 +12,9 @@ function moleFractionStats(modelT)
 % INPUT:
 %    modelT:    structure with fields:
 %
-%                 * modelT.S
-%                 * modelT.officialName
-%                 * modelT.mf
+%                 * .S
+%                 * .officialName
+%                 * .mf
 %
 % .. Authors:
 %       - Ronan M.T. Fleming
