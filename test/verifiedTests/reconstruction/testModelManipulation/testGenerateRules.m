@@ -25,6 +25,6 @@ for i=1:length(modelsToTry)
     model.rules = strrep(model.rules, '  ', ' ');
     model.rules = strrep(model.rules, ' )', ')');
     model.rules = strrep(model.rules, '( ', '(');
-    assert(all(strcmp(model.rules, model2.rules2)));
+    assert(all(strcmp(model.rules, model2.rules)));
     fprintf('Succesfully completed model %s\n', fileList(i).name);
 end
