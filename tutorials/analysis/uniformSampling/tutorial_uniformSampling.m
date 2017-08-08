@@ -105,7 +105,7 @@
 % To explore the entire space of feasible steady state fluxes we also remove the 
 % cellular objective.
 
-options.useFastFVA = 0; % to use fluxVariability
+options.useFastFVA = false; % to use fluxVariability
 global CBTDIR
 load([CBTDIR filesep 'tutorials' filesep  'analysis' filesep 'uniformSampling'...
     filesep 'data' filesep 'iPSC_DA.mat'], 'modelUptClosed') % Load the model
