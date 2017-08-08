@@ -95,8 +95,8 @@ function [] = initCobraToolbox()
     % define the root path of The COBRA Toolbox
     CBTDIR = fileparts(which('initCobraToolbox'));
 
-    % add the external folder
-    addpath(genpath([CBTDIR filesep 'external']));
+    % add the external install folder
+    addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
 
     % add the install folder
     addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
@@ -211,6 +211,9 @@ function [] = initCobraToolbox()
 
     % add the root folder
     addpath(CBTDIR);
+
+    % add the external folder
+    addpath(genpath([CBTDIR filesep 'external']));
 
     % add specific subfolders
     for k = 1:length(folders)
