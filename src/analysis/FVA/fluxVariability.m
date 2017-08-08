@@ -133,7 +133,11 @@ rxnListFull = model.rxns;
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
-LPproblem.csense(1:nMets) = 'E';
+if ~isfield(model,'csense')
+    LPproblem.csense(1:nMets) = 'E';
+else
+    LPproblem.csense = model.csense;
+end
 LPproblem.csense = LPproblem.csense';
 if hasObjective
     LPproblem.A = [model.S;columnVector(model.c)'];
@@ -151,7 +155,11 @@ end
 LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
 %solve to generate initial basis
-LPproblem.osense = -1;
+if ~isfield(model,'osense')
+    LPproblem.osense = -1;
+else
+    LPproblem.osense = model.osense;
+end
 tempSolution = solveCobraLP(LPproblem);
 if ~(tempSolution.stat == 1)
     error('The fva could not be run because the model is infeasible or unbounded')
@@ -187,7 +195,7 @@ else
 end
 
 if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
-    
+
     for i = 1:length(rxnNameList)
         if minNorm
             [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm);
@@ -196,7 +204,7 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         end
     end
 else % parallel job.  pretty much does the same thing.
-    
+
     global CBT_LP_SOLVER;
     global CBT_QP_SOLVER;
     lpsolver = CBT_LP_SOLVER;
