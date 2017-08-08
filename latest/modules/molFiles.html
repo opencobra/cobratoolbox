@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>experimentalDesign &mdash; The COBRA Toolbox</title>
+  <title>molFiles &mdash; The COBRA Toolbox</title>
   
 
   
@@ -40,8 +40,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Thermo" href="thermo.html"/>
-        <link rel="next" title="experimentalData" href="experimentalData.html"/>
-        <link rel="prev" title="directionalityReport" href="directionalityReport.html"/> 
+        <link rel="next" title="protons" href="protons.html"/>
+        <link rel="prev" title="inchi" href="inchi.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -111,11 +111,11 @@
 <li class="toctree-l3 current"><a class="reference internal" href="thermo.html">Thermo</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
 <li class="toctree-l4"><a class="reference internal" href="experimentalData.html">experimentalData</a></li>
 <li class="toctree-l4"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="inchi.html">inchi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="molFiles.html">molFiles</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">molFiles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="protons.html">protons</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
 </ul>
@@ -188,7 +188,7 @@
         
           <li><a href="thermo.html">Thermo</a> &raquo;</li>
         
-      <li>experimentalDesign</li>
+      <li>molFiles</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -205,48 +205,89 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-src.analysis.thermo.experimentalDesign">
-<span id="experimentaldesign"></span><h1>experimentalDesign<a class="headerlink" href="#module-src.analysis.thermo.experimentalDesign" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="src.analysis.thermo.experimentalDesign.priorityKeqMeasurement">
-<code class="descname">priorityKeqMeasurement</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalDesign.priorityKeqMeasurement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optimal order of Keq measurement.</p>
-<p>Finds the optimal order of Keq measurement to completely define all
-standard Gibbs energies of formation for all metabolites. If the end of
-the loop is all reactions with two metabolites each then the loop is
-terminated</p>
+  <div class="section" id="molfiles">
+<span id="id1"></span><h1>molFiles<a class="headerlink" href="#molfiles" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.molFiles"></span><dl class="function">
+<dt id="src.analysis.thermo.molFiles.kegg2mol">
+<code class="descname">kegg2mol</code><span class="sig-paren">(</span><em>cid</em>, <em>molfileDir</em>, <em>mets</em>, <em>takeMajorMS</em>, <em>pH</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/molFiles/kegg2mol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.molFiles.kegg2mol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve molfiles from the KEGG Compound database.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[priorityKeq, numNonKeqMet] = priorityKeqMeasurement(modelT)</div></blockquote>
+<div>kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelT</strong> &#8211;
-structure with fields:<ul>
-<li>.S</li>
-<li>.met(m).dGft0Source</li>
+<li><strong>cid</strong> &#8211;
+<cite>m x 1</cite> array of KEGG Compound identifiers.</li>
 </ul>
-</li>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>molfileDir</strong> &#8211;
+Path to directory where molfiles will be saved. Default
+is <cite>molfilesFromKegg</cite>.</li>
+<li><strong>mets</strong> &#8211;
+<cite>m x 1</cite> array of metabolite identifiers. Used to name
+molfiles. KEGG Compound ID will be used if mets is omitted.</li>
+<li><strong>takeMajorMS</strong> &#8211;
+{(0), 1}. If 0 (default), molfiles will be downloaded
+directly from KEGG. If 1, they will save as the major
+microspecies at the pH specified in input variable pH.
+Computing major microspecies requires ChemAxon&#8217;s
+calculator plugins (cxcalc).</li>
+<li><strong>pH</strong> &#8211;
+pH for computing major microspecies.</li>
+<li><strong>takeMajorTaut</strong> &#8211;
+{0, (1)}. If 1 (default), molfiles will be saved as the
+major tautomers of the major microspecies at the specified pH.</li>
+</ul>
+</div></blockquote>
+<p>Written output - One molfile for each metabolite with a KEGG Compound ID.</p>
+<p>If takeMajorMS = 1 - approximately 2 seconds per kegg id.
+If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.molFiles.mol2sdf">
+<code class="descname">mol2sdf</code><span class="sig-paren">(</span><em>mets</em>, <em>molfileDir</em>, <em>sdfFileName</em>, <em>includeRs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/molFiles/mol2sdf.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.molFiles.mol2sdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates molfiles in <cite>molfileDir</cite> into one SDF file.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includeRs)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mets</strong> &#8211;
+<cite>m x 1</cite> cell array of metabolite identifiers (e.g., BiGG
+abbreviations)</li>
+<li><strong>molfileDir</strong> &#8211;
+Path to directory containing molfiles for metabolites
+in mets. Molfile names should match the metabolite
+identifiers in mets without compartment assignments.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sdfFileName</strong> &#8211;
+Name of SDF file. Default is <cite>MetStructures.sdf</cite>.</li>
+<li><strong>includeRs</strong> &#8211;
+{0, (1)}. If 0, variable structures such as R groups and
+repeat units will not be included in SDF.</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>priorityKeq</strong> &#8211;
-structure indicating which reactions to measure Keq:<ul>
-<li>priorityKeq{p, 1} - rxn abbr</li>
-<li>priorityKeq{p, 2} - rxn name</li>
-<li>priorityKeq{p, 3} - met abbr</li>
-<li>priorityKeq{p, 4} - rxn name</li>
-<li>priorityKeq{p, 5} - met name</li>
-<li>priorityKeq{p, 5} - number of reactions the same metabolite appears in
-this give options for which reaction to measure</li>
-</ul>
-</li>
-<li><strong>numNonKeqMet</strong> &#8211;
-number of metabolites without data at each iteration</li>
+<li><strong>metList</strong> &#8211;
+Cell array listing metabolites in SDF.</li>
+<li><strong>noMolMetList</strong> &#8211;
+Cell array listing metabolites without mol file.</li>
 </ul>
 </div></blockquote>
+<p>Written output is <cite>sdfFileName.sdf</cite> - SDF with metabolite structures in same order as in
+metList. Metabolite identifiers in the SDF are the same as in <cite>MetList</cite>.</p>
 </dd></dl>
 
 </div>
@@ -261,10 +302,10 @@ number of metabolites without data at each iteration</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="experimentalData.html" class="btn btn-neutral float-right" title="experimentalData" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="protons.html" class="btn btn-neutral float-right" title="protons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="directionalityReport.html" class="btn btn-neutral" title="directionalityReport" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="inchi.html" class="btn btn-neutral" title="inchi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

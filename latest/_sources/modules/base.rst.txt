@@ -10,6 +10,7 @@ Base
    io
    print
    solvers
+   install
 
 .. automodule:: src.base
    :members:

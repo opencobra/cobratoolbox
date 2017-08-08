@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>experimentalDesign &mdash; The COBRA Toolbox</title>
+  <title>inchi &mdash; The COBRA Toolbox</title>
   
 
   
@@ -40,8 +40,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Thermo" href="thermo.html"/>
-        <link rel="next" title="experimentalData" href="experimentalData.html"/>
-        <link rel="prev" title="directionalityReport" href="directionalityReport.html"/> 
+        <link rel="next" title="molFiles" href="molFiles.html"/>
+        <link rel="prev" title="groupContribution" href="groupContribution.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -111,10 +111,10 @@
 <li class="toctree-l3 current"><a class="reference internal" href="thermo.html">Thermo</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
 <li class="toctree-l4"><a class="reference internal" href="experimentalData.html">experimentalData</a></li>
 <li class="toctree-l4"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="inchi.html">inchi</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">inchi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="molFiles.html">molFiles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="protons.html">protons</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
@@ -188,7 +188,7 @@
         
           <li><a href="thermo.html">Thermo</a> &raquo;</li>
         
-      <li>experimentalDesign</li>
+      <li>inchi</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -205,46 +205,100 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-src.analysis.thermo.experimentalDesign">
-<span id="experimentaldesign"></span><h1>experimentalDesign<a class="headerlink" href="#module-src.analysis.thermo.experimentalDesign" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="src.analysis.thermo.experimentalDesign.priorityKeqMeasurement">
-<code class="descname">priorityKeqMeasurement</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalDesign.priorityKeqMeasurement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optimal order of Keq measurement.</p>
-<p>Finds the optimal order of Keq measurement to completely define all
-standard Gibbs energies of formation for all metabolites. If the end of
-the loop is all reactions with two metabolites each then the loop is
-terminated</p>
+  <div class="section" id="inchi">
+<span id="id1"></span><h1>inchi<a class="headerlink" href="#inchi" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.inchi"></span><dl class="function">
+<dt id="src.analysis.thermo.inchi.createInChIStruct">
+<code class="descname">createInChIStruct</code><span class="sig-paren">(</span><em>mets</em>, <em>sdfFileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/inchi/createInChIStruct.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.inchi.createInChIStruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts metabolite structures in SDF to InChI strings with OpenBabel,
+and maps InChIs to mets.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[priorityKeq, numNonKeqMet] = priorityKeqMeasurement(modelT)</div></blockquote>
+<div>inchiStruct = createInChIStruct(mets, sdfFileName)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mets</strong> &#8211;
+<cite>m x 1</cite> cell array of metabolite identifiers (e.g., BiGG abbreviations).</li>
+<li><strong>sdfFileName</strong> &#8211;
+SDF with structures of metabolites in mets. Metabolite
+identifiers in the SDF are assumed to be the same as in mets.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>inchiStruct</strong> &#8211;
+Structure with following fields:<ul>
+<li>.standard - Standard InChIs with no isotope, stereo or charge layers.</li>
+<li>.standardWithStereo - Standard InChIs with stereo layers.</li>
+<li>.standardWithStereoAndCharge - Standard InChIs with stereo and charge layers</li>
+<li>.nonstandard - Nonstandard InChI with all layers.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.inchi.getFormulaAndChargeFromInChI">
+<code class="descname">getFormulaAndChargeFromInChI</code><span class="sig-paren">(</span><em>inchi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/inchi/getFormulaAndChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.inchi.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>[formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelT</strong> &#8211;
-structure with fields:<ul>
-<li>.S</li>
-<li>.met(m).dGft0Source</li>
-</ul>
-</li>
+<li><strong>inchi</strong> &#8211;
+Nonstandard IUPAC InChI for a particular pseudoisomer of a metabolite</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>priorityKeq</strong> &#8211;
-structure indicating which reactions to measure Keq:<ul>
-<li>priorityKeq{p, 1} - rxn abbr</li>
-<li>priorityKeq{p, 2} - rxn name</li>
-<li>priorityKeq{p, 3} - met abbr</li>
-<li>priorityKeq{p, 4} - rxn name</li>
-<li>priorityKeq{p, 5} - met name</li>
-<li>priorityKeq{p, 5} - number of reactions the same metabolite appears in
-this give options for which reaction to measure</li>
+<li><strong>formula</strong> &#8211;
+The chemical formula for the input pseudoisomer</li>
+<li><strong>nH</strong> &#8211;
+The number of hydrogen atoms</li>
+<li><strong>charge</strong> &#8211;
+The charge on the input pseudoisomer</li>
 </ul>
-</li>
-<li><strong>numNonKeqMet</strong> &#8211;
-number of metabolites without data at each iteration</li>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.inchi.sdf2inchi">
+<code class="descname">sdf2inchi</code><span class="sig-paren">(</span><em>sdfFileName</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/analysis/thermo/inchi/sdf2inchi.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.inchi.sdf2inchi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts metabolite structures in an SDF to a cell array of InChI
+strings with OpenBabel.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[inchi, metList] = sdf2inchi(sdfFileName, options)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sdfFileName</strong> &#8211;
+Path to SDF file.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>options</strong> &#8211;
+Write options for InChI strings. See InChI documentation
+for details. If no options are specified the function will
+output standard InChI.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>inchi</strong> &#8211;
+Cell array of InChI strings for metabolites in the SDF file.</li>
+<li><strong>metList</strong> &#8211;
+Cell array of metabolite identifiers (first line of each
+molfile in SDF). Will be empty unless write option <cite>t</cite> is
+used (i.e., options &gt;= &#8216;-xt&#8217;).</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -261,10 +315,10 @@ number of metabolites without data at each iteration</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="experimentalData.html" class="btn btn-neutral float-right" title="experimentalData" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="molFiles.html" class="btn btn-neutral float-right" title="molFiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="directionalityReport.html" class="btn btn-neutral" title="directionalityReport" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="groupContribution.html" class="btn btn-neutral" title="groupContribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

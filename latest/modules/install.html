@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>KEGG &mdash; The COBRA Toolbox</title>
+  <title>Install &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="IO" href="io.html"/>
-        <link rel="next" title="Utilities" href="utilities.html"/>
-        <link rel="prev" title="BiGG" href="BiGG.html"/> 
+        <link rel="up" title="Base" href="base.html"/>
+        <link rel="next" title="Data integration" href="dataIntegration.html"/>
+        <link rel="prev" title="tangiCode" href="tangiCode.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -93,15 +93,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="base.html">Base</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="io.html">IO</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="BiGG.html">BiGG</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">KEGG</a></li>
-<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l3"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solvers.html">Solvers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
@@ -165,9 +160,7 @@
         
           <li><a href="base.html">Base</a> &raquo;</li>
         
-          <li><a href="io.html">IO</a> &raquo;</li>
-        
-      <li>KEGG</li>
+      <li>Install</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -184,147 +177,106 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="kegg">
-<span id="id1"></span><h1>KEGG<a class="headerlink" href="#kegg" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.base.io.KEGG"></span><dl class="function">
-<dt id="src.base.io.KEGG.createUniversalReactionModel">
-<code class="descname">createUniversalReactionModel</code><span class="sig-paren">(</span><em>KEGGFilename</em>, <em>KEGGBlackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/io/KEGG/createUniversalReactionModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.KEGG.createUniversalReactionModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the <cite>U</cite> matrix using the universal data from the KEGG database</p>
+  <div class="section" id="install">
+<span id="id1"></span><h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.base.install"></span><dl class="function">
+<dt id="src.base.install.getGitBashVersion">
+<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>On Windows, this function determines the version of gitBash.
+This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>[installedVersion, installedVersionNum] = getGitBashVersion()</div></blockquote>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>KEGGFilename</strong> &#8211;
-downloaded from KEGG database (ie. &#8216;reaction.lst&#8217;)</li>
-<li><strong>KEGGBlackList</strong> &#8211;
-KEGG reactions not to use</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>KEGG</strong> &#8211;
-<cite>U</cite> Matrix</li>
+<li><strong>installedVersion</strong> &#8211;
+String of installed version of gitBash in the form <cite>2.13.2</cite></li>
+<li><strong>installedVersionNum</strong> &#8211;
+Integer of <cite>installedVersion</cite>, e.g. <cite>2132</cite></li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.io.KEGG.mapKEGGID2Model">
-<code class="descname">mapKEGGID2Model</code><span class="sig-paren">(</span><em>model</em>, <em>Dictionary</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/io/KEGG/mapKEGGID2Model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.KEGG.mapKEGGID2Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function matches the compound abreviation in model and from <cite>CompAbr</cite>
-and connects with the model metabolite the corresponding KEGGID</p>
+<dt id="src.base.install.installDevTools">
+<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if the MATLAB.devTools are already present and installs the
+MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = mapKEGGID2Model(model, Dictionary)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>installDevTools()</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to install the devTools, please make sure that the SSH key is
+configured properly as explained <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">here</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.install.installGitBash">
+<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function wraps the installer for PortableGit and checks for available updates.
+This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>installGitBash()</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.install.portableGitSetup">
+<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function downloads the latest version of PortableGit on Windows (archive), extracts the folder
+and moves the contents to the hidden .tmp folder in a folder called <cite>PortableGit-a.bc.c</cite>
+This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>portableGitSetup(gitBashVersion, removeFlag)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>Dictionary</strong> &#8211;
-consists of:<ul>
-<li>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</li>
-<li>KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></li>
+<li><strong>removeFlag</strong> &#8211;
+Flag to remove old versions from the path or not<ul>
+<li>0: install, don&#8217;t remove anything</li>
+<li>1: install, remove paths in registry</li>
+<li>2: don&#8217;t install gitBash, remove .exe file and paths in registry</li>
+<li>3: don&#8217;t install gitBash, remove everything including unpacked archives (to be implemented)</li>
 </ul>
 </li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-KEGG model structure</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.io.KEGG.mapMetName2KEGGID">
-<code class="descname">mapMetName2KEGGID</code><span class="sig-paren">(</span><em>model</em>, <em>Dictionary</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/io/KEGG/mapMetName2KEGGID.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.KEGG.mapMetName2KEGGID" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function maps names of metabolites to KEGG IDs.</p>
+<dt id="src.base.install.updateCobraToolbox">
+<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks new commits exist on the master branch of the openCOBRA repository
+and asks the user to update The COBRA Toolbox (updates the develop and master branches)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = mapMetName2KEGGID(model, Dictionary)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>updateCobraToolbox()</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-KEGG model structure</li>
-<li><strong>Dictionary</strong> &#8211;
-consists of:<ul>
-<li>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</li>
-<li>KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
+<li><strong>fetchAndCheckOnly</strong> &#8211;
+if set to true, the repository is not updated but only new commits are fetched (default: false)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.io.KEGG.transformKEGG2Model">
-<code class="descname">transformKEGG2Model</code><span class="sig-paren">(</span><em>modelKEGG</em>, <em>dictionary</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/io/KEGG/transformKEGG2Model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.KEGG.transformKEGG2Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Translates the metabolites from KEGG to cobra model names.</p>
+<dt id="src.base.install.updateGitBash">
+<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
+<dd><p>On windows, this function updates the already existing version of gitBash.
+This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = mapMetName2KEGGID(model, Dictionary)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>updateGitBash(fetchAndCheckOnly)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-KEGG model structure</li>
-<li><strong>Dictionary</strong> &#8211;
-consists of:<ul>
-<li>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</li>
-<li>KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.io.KEGG.transformModel2KEGG">
-<code class="descname">transformModel2KEGG</code><span class="sig-paren">(</span><em>model</em>, <em>Dictionary</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/bab5049fb45e601987a8b949892da49f77f90da7/src/base/io/KEGG/transformModel2KEGG.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.KEGG.transformModel2KEGG" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replaces <cite>model.mets</cite> with <cite>model.metKEGGID</cite>. If no KEGGID
-defined, the empty cell will be replaced with metabolite abreviation.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>modelKEGG = transformModel2KEGG(model, Dictionary)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>Dictionary</strong> &#8211;
-consists of:<ul>
-<li>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</li>
-<li>KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelKEGG</strong> &#8211;
-KEGG model structure</li>
+<li><strong>fetchAndCheckOnly</strong> &#8211;
+if set to <cite>true</cite>, gitBash is not updated, but only a check is made (default: <cite>false</cite>)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -341,10 +293,10 @@ KEGG model structure</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dataIntegration.html" class="btn btn-neutral float-right" title="Data integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="BiGG.html" class="btn btn-neutral" title="BiGG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tangiCode.html" class="btn btn-neutral" title="tangiCode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
