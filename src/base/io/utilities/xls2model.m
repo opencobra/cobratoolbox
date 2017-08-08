@@ -99,11 +99,11 @@ if isunix
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:20000');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:20000');
     warning on
-    if size(rxnInfo, 1) == 20000%limit set to 20,000 to prevent out-of-memory issues
+    if size(Strings, 1) == 10000 % limit set to 10,000 to prevent out-of-memory issues
         warning('XLS is not recommended for large models.')
         warning('Maximum number of reactions reached. Model reaction list truncated at 19,999 reactions.')
     end
-    if  size(metInfo, 1) == 20000
+    if  size(MetStrings, 1) == 10000
         warning('XLS is not recommended for large models.')
         warning('Maximum number of metabolites reached. Model metabolite list truncated at 19,999 metabolites.')
     end
