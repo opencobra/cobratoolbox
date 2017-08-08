@@ -1,33 +1,42 @@
-function model=setCommonZeroStandardGibbsEnergyOfFormation(model,adjustedMetList)
-% Set all Alberty's cofactor metabolites to have a common thermodynamic baseline.
+function model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetList)
+% Sets all Alberty's cofactor metabolites to have a common thermodynamic baseline.
 %
-% Set all the exceptional metabolites to have a common baseline.
+% Sets all the exceptional metabolites to have a common baseline.
 % i.e. Standard transformed Gibbs energies of reactants with the baseline adjusted
-% for certain paired cofactors e.g. fad & fadh2, such that the
+% for certain paired cofactors e.g. `fad` & `fadh2`, such that the
 % difference between the two is the same as in Albertys data but
 % the absolute values are consistent with the group contribution data
 %
-%INPUT
-% model                           Thermodynamic model
-% modelT.met(m).dGft0             standard transformed Gibbs energy of formation(kJ/mol)
-% modelT.met(m).dGft0Keq          standard transformed Gibbs energy of formation(kJ/mol)
-% modelT.met(m).dGft0Source       origin of data, Keq or groupContFileName.txt
-% modelT.met(m).dGft0GroupCont    group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)
-
-%OUTPUT
-% model.met(m).dGft0    Standard transformed Gibbs energies of reactants
-%                       with the baseline adjusted for certain paired
-%                       cofactors e.g. fad & fadh2, such that the
-%                       difference between the two is the same as in
-%                       Albertys data but the absolute values are
-%                       consistent with the group contribution data
+% USAGE:
 %
-% Ronan M.T. Fleming
-
-% Here is the list of cofactors in iAF1260 that have thermodynamic
-% properties backcalculated from Equilibrium values by Alberty
-% The compartments here are important since the same reactant in different
-% compartments may have different properties.
+%    model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetList)
+%
+% INPUT:
+%    model:              Thermodynamic model:
+%
+%                          * .met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)
+%                          * .met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)
+%                          * .met(m).dGft0Source - origin of data, `Keq` or `groupContFileName.txt`
+%                          * .met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)
+%
+% OPTIONAL INPUT:
+%    adjustedMetList:
+% OUTPUT:
+%    model:              structure with field:
+%
+%                          * .met(m).dGft0 - Standard transformed Gibbs energies of reactants
+%                            with the baseline adjusted for certain paired
+%                            cofactors e.g. `fad` & `fadh2`, such that the
+%                            difference between the two is the same as in
+%                            Albertys data but the absolute values are
+%                            consistent with the group contribution data
+%
+% .. Author: - Ronan M.T. Fleming
+%
+% .. Here is the list of cofactors in iAF1260 that have thermodynamic
+%    properties backcalculated from Equilibrium values by Alberty
+%    The compartments here are important since the same reactant in different
+%    compartments may have different properties.
 
 if ~exist('adjustedMetList','var')
 %This list of cofactors contains metabolites with own baselines reported
@@ -44,7 +53,7 @@ numChar=1;
 [allMetCompartments,uniqueCompartments]=getCompartment(model.mets,numChar);
 
 for p=1:length(uniqueCompartments)
-    
+
     n=1;
     leftAll{n}=['fad' '[' uniqueCompartments{p} ']'];
     rightAll{n}=['fadh2' '[' uniqueCompartments{p} ']'];
@@ -131,10 +140,10 @@ for p=1:length(uniqueCompartments)
     %check 'mmcoa-R'
     % methylmalonyl-CoA epimerase
     % equation:	[c] : mmcoa-R <==> mmcoa-S
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     [nMet,nRxn]=size(model.S);
-    
+
     exceptionMetBool=false(nMet,1);
     for m=1:nMet
         abbr=model.mets{m};
@@ -155,7 +164,7 @@ for p=1:length(uniqueCompartments)
         end
     end
     fprintf('\n\n')
-    
+
     fprintf('\n\n');
     fprintf('%s\n','Differences between pairs of cofactors (cytoplasm only):')
     fprintf('%22s%10s%10s%10s%10s%10s%16s%16s\n','left-right','#RxnLeft','#RxnRight','#Both','#LNotR','#RNotL','dGtr0Keq','dGrt0');
@@ -164,13 +173,13 @@ for p=1:length(uniqueCompartments)
         abbrL=[abbrL(1:end-3) '[c]'];
         abbrR=rightAll{x};
         abbrR=[abbrR(1:end-3) '[c]'];
-        
+
         nCoFcLRxn=length(find(model.S(strcmp(model.mets,abbrL),:)~=0));
         nCoFcRRxn=length(find(model.S(strcmp(model.mets,abbrR),:)~=0));
         nCoFc2Rxn=length(intersect(find(model.S(strcmp(model.mets,abbrL),:)~=0),find(model.S(strcmp(model.mets,abbrR),:)~=0)));
         nCoLeftOnly=length(setdiff(find(model.S(strcmp(model.mets,abbrL),:)~=0),find(model.S(strcmp(model.mets,abbrR),:)~=0)));
         nCoRightOnly=length(setdiff(find(model.S(strcmp(model.mets,abbrR),:)~=0),find(model.S(strcmp(model.mets,abbrL),:)~=0)));
-        
+
         %nothing to print out if no match
         if any(strcmp(model.mets,abbrL))  && any(strcmp(model.mets,abbrR))
             fprintf('%22s%10i%10i%10i%10i%10i\t%8.4g\t%8.4g\n',[abbrL '-' abbrR],nCoFcLRxn,nCoFcRRxn,nCoFc2Rxn,nCoLeftOnly,nCoRightOnly,...
@@ -191,7 +200,7 @@ for p=1:length(uniqueCompartments)
 %             nCoFc2Rxn=length(intersect(find(model.S(strcmp(model.mets,leftAll{x}),:)~=0),find(model.S(strcmp(model.mets,rightAll{x}),:)~=0)));
 %             nCoLeftOnly=length(setdiff(find(model.S(strcmp(model.mets,leftAll{x}),:)~=0),find(model.S(strcmp(model.mets,rightAll{x}),:)~=0)));
 %             nCoRightOnly=length(setdiff(find(model.S(strcmp(model.mets,rightAll{x}),:)~=0),find(model.S(strcmp(model.mets,leftAll{x}),:)~=0)));
-%             
+%
 %             %nothing to print out if no match
 %             if any(strcmp(model.mets,leftAll{x}))  && any(strcmp(model.mets,rightAll{x}))
 %                 fprintf('%20s\t\t%i\t\t\t%i\t\t%i\t\t%i\t\t%i\t\t%8.4g\t\t%8.4g\n',[leftAll{x} '-' rightAll{x}],nCoFcLRxn,nCoFcRRxn,nCoFc2Rxn,nCoLeftOnly,nCoRightOnly,...
@@ -201,7 +210,7 @@ for p=1:length(uniqueCompartments)
 %             a=1;
 %         end
 %     end
-    
+
     %edit the baseline of a cofactor that is not always used in a pair
     %with another cofactor
     coaSorted=0;
@@ -209,7 +218,7 @@ for p=1:length(uniqueCompartments)
     while x<=length(leftAll)
          abbrL=leftAll{x};
          abbrR=rightAll{x};
-            
+
         pause(eps)
         if strcmp('coa[c]',abbrR)
             pause(eps)
@@ -240,7 +249,7 @@ for p=1:length(uniqueCompartments)
                         end
                     end
                 end
-                
+
                 if nCoLeftOnly~=0 && nCoRightOnly==0
                     %calculate the difference between the group contribution
                     %estimate and Albertys value for the left cofactor
@@ -269,7 +278,7 @@ for p=1:length(uniqueCompartments)
                         x=x+1;
                     end
                 end
-                
+
             else
                 %for the cofactors associated with coa by Alberty, then set coA to
                 %have the same baseline as the group contribution data
@@ -319,13 +328,13 @@ for x=1:length(leftAll)
     abbrL=[abbrL(1:end-3) '[c]'];
     abbrR=rightAll{x};
     abbrR=[abbrR(1:end-3) '[c]'];
-    
+
     nCoFcLRxn=length(find(model.S(strcmp(model.mets,abbrL),:)~=0));
     nCoFcRRxn=length(find(model.S(strcmp(model.mets,abbrR),:)~=0));
     nCoFc2Rxn=length(intersect(find(model.S(strcmp(model.mets,abbrL),:)~=0),find(model.S(strcmp(model.mets,abbrR),:)~=0)));
     nCoLeftOnly=length(setdiff(find(model.S(strcmp(model.mets,abbrL),:)~=0),find(model.S(strcmp(model.mets,abbrR),:)~=0)));
     nCoRightOnly=length(setdiff(find(model.S(strcmp(model.mets,abbrR),:)~=0),find(model.S(strcmp(model.mets,abbrL),:)~=0)));
-    
+
     %nothing to print out if no match
     if any(strcmp(model.mets,abbrL))  && any(strcmp(model.mets,abbrR))
         fprintf('%22s%10i%10i%10i%10i%10i\t%8.4g\t%8.4g\n',[abbrL '-' abbrR],nCoFcLRxn,nCoFcRRxn,nCoFc2Rxn,nCoLeftOnly,nCoRightOnly,...
@@ -400,9 +409,3 @@ end
 %         end
 %     end
 % end
-
-
-
-
-
-

@@ -15,6 +15,7 @@ Thermo
    inchi
    molFiles
    protons
+   reactantContribution
 
 .. automodule:: src.analysis.thermo
    :members:

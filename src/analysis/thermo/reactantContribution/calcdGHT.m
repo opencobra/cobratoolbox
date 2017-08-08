@@ -1,54 +1,61 @@
-function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI,printLevel)
-% calculates the standard transformed Gibbs energy of a reactant
+function [dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)
+% Calculates the standard transformed Gibbs energy of a reactant
 %
-% reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
+% Reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
 % gives the standard transformed Gibbs energy of formation of a reactant
 % (sum of species) and the standard transformed enthalpy of a reactant.
 %
-%INPUT
 % Assuming p pseudoisomer species corresponding to one reactant
-%  dGzero      p x 1 standard Gibbs energy of formation at 298.15 K
-%  zi          p x 1 electric charge
-%  nH          p x 1 number of hydrogen atoms in each species
 %
-%  pHr         real pH of 5 to 9 (see realpH.m)
-%  is          ionic strength 0 to 0.35 M
-%  temp        temperature 273.15 K to 313.15 K
+% Optional output dependent on multiple precision toolbox
 %
-%OPTIONAL INPUT
-% dHzero      p x 1 standard enthalpy of formation at 298.15 K
-% chi         electrical potential
-% Legendre    {(1),0} Legendre Transformation for specifc pHr?
-% LegendreCHI {(1),0} Legendre Transformation for specifc electrical potential?
+% USAGE:
 %
-%OUTPUT
-% dGf0        reactant standard transformed Gibbs energy of formation
-% dHf0        reactant standard transformed enthalpy of formation
-% mf          mole fraction of each species within a pseudoisomer group
-% aveHbound   average number of protons bound to a reactant
-% aveZi       average charge of a reactant
-% lambda      activity coefficient for each metabolite species
-% gpfnsp      metabolite species standard transformed Gibbs energy of formation
+%    [dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)
 %
-%OPTIONAL OUTPUT (dependency on multiple precision toolbox)
-% dHf0        standard transformed enthalpy of formation
+% INPUTS:
+%    dGzero:         `p x 1` standard Gibbs energy of formation at 298.15 K
+%    zi:             `p x 1` electric charge
+%    nH:             `p x 1` number of hydrogen atoms in each species
+%    pHr:            real pH of 5 to 9 (see realpH.m)
+%    is:             ionic strength 0 to 0.35 M
+%    temp:           temperature 273.15 K to 313.15 K
 %
-%The values of the standard transformed Gibbs energy of formation
-%and the standard transformed enthalpy of formation can be calculated
-%temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.
-%pHr in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)
-%ionic strength in the range 0 to 0.35 M
-%See Mathematica program calcdGHT p289 Alberty 2003
+% OPTIONAL INPUT:
+%    dHzero:         `p x 1` standard enthalpy of formation at 298.15 K
+%    chi:            electrical potential
+%    Legendre:       {(1), 0} Legendre Transformation for specifc pHr?
+%    LegendreCHI:    {(1), 0} Legendre Transformation for specifc electrical potential?
 %
-%The changes in the values of standard transformed Gibbs energy of formation
-%and the standard transformed enthalpy of formation might be improved if
-%knowlegde of standard molar heat capacity was available for each species
-%See p41 Alberty 2003
+% OUTPUT:
+%    dGf0:           reactant standard transformed Gibbs energy of formation
+%    dHf0:           reactant standard transformed enthalpy of formation
+%    mf:             mole fraction of each species within a pseudoisomer group
+%    aveHbound:      average number of protons bound to a reactant
+%    aveZi:          average charge of a reactant
+%    lambda:         activity coefficient for each metabolite species
+%    gpfnsp:         metabolite species standard transformed Gibbs energy of formation
+%
+% OPTIONAL OUTPUT:
+%
+%    dHf0:           standard transformed enthalpy of formation
+%
+% The values of the standard transformed Gibbs energy of formation
+% and the standard transformed enthalpy of formation can be calculated
+% temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.
+% `pHr` in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)
+% ionic strength in the range 0 to 0.35 M.
+% See Mathematica program `calcdGHT p289 Alberty 2003`
+%
+% The changes in the values of standard transformed Gibbs energy of formation
+% and the standard transformed enthalpy of formation might be improved if
+% knowlegde of standard molar heat capacity was available for each species
+% See `p41 Alberty 2003`
 %
 % Multiple Precision Toolbox for MATLAB by Ben Barrowes (mptoolbox_1.1)
 % http://www.mathworks.com/matlabcentral/fileexchange/6446
 %
-% Ronan M.T. Fleming
+% .. Author: -Ronan M.T. Fleming
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -90,7 +97,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
 
     %Faraday Constant (kJ/mol)
     F=96.48; %kJ/mol
-    
+
     p=9.20483;
     q=10^3;
     r=1.284668;
@@ -105,11 +112,11 @@ if strcmp(which('mp'),'') || 1 %TODO install
     % in the extended Debye-Huckel equation
     gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
 
-    
-    %If standard enthalpy of formation is known, and independent of 
-    %temperature an adjustment for temperature can be made. 
+
+    %If standard enthalpy of formation is known, and independent of
+    %temperature an adjustment for temperature can be made.
     %(calcdGHT p289 Alberty 2003)
-    if isempty(dHzero) 
+    if isempty(dHzero)
         %dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);
         dGzeroT = dGzero;%(dGzero*temp)/T + dHzero*(1 - temp/T);
     else
@@ -130,7 +137,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
         %Eq 3.6-3 Alberty 2003 with temp dependent gibbscoeff
         istermG = (gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5); %omit the -nH if  no Legendre
     end
-    
+
     if LegendreCHI
         if 0
             %By convention, we assume the chemical potential of a metabolite
@@ -164,7 +171,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
         %need to approximate log(sum(exp(-gpfnsp/(R*temp))));
         dGf0 = -R*temp*maxstar(-gpfnsp/(R*temp));
     end
-    
+
     %Mole fraction
     %see 3.5-12 p45 Alberty 2003
     mf=exp((dGf0-gpfnsp)/(R*temp));
@@ -173,10 +180,10 @@ if strcmp(which('mp'),'') || 1 %TODO install
 
     %activity coefficient
     lambda=double(exp(-(gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5)/(R*temp)));
-    
+
     %average number of H+ ions bound by a reactant
     aveHbound=mf'*nH;
-   
+
     %average charge of a reactant
     aveZi=mf'*zi;
 %     fprintf('%s\n',int2str(length(dGzero)));
@@ -198,7 +205,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
                 C=zi(1);
                 D=nH(1);
                 dHf0 =(B*(1+1.6*is^0.5)*s*v + (C^2)*(is^0.5)*(t^2)*(2*s*t*u-r*v)+D*(is^0.5)*(t^2)*(-2*s*t*u+r*v)) / ((1+1.6*is^0.5)*s*v);
-                
+
                 if isnan(dHf0)
                     error('No multiple precision toolbox: NaN returned if exp(x) gets too large')
                 end
@@ -238,7 +245,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
                 %             s.*t.*u+(-0.1E1).*r.*v)))).*(B.*(1+0.16E1.*is.^0.5E0).*s.*v+C.^2.* ...
                 %             is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+D.*is.^0.5E0.*t.^2.*(( ...
                 %             -0.2E1).*s.*t.*u+r.*v)));
-                
+
                 if isnan(dHf0)
                     %see Mathematica file dHfn.nb
                     error('No multiple precision toolbox: NaN returned if exp(x) gets too large')
@@ -386,7 +393,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
                 %             p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v))))...
                 %             *(f*(1+1.6*is.^0.5)*s*v+g^2*is^0.5*t.^2*(2*s*t*u-r*v)+h*is^0.5*t^2*(-2*s*t*u+r*v)));
                 %             dHf0=denominatorInv*numerator;
-                
+
                 if isnan(dHf0)
                     %see Mathematica file dHfn.nb
                     error('No multiple precision toolbox: NaN returned if exp(x) gets too large')
@@ -422,7 +429,7 @@ else
     %Faraday Constant (kJ/mol)
     F=96.48; %kJ/mol
     F=mp(F);
-    
+
     p=mp(9.20483);
     q=mp(10^3);
     r=mp(1.284668);
@@ -434,8 +441,8 @@ else
     %where alpha is the Debye-Huckel Constant
     gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
 
-    %If standard enthalpy of formation is known, and independent of 
-    %temperature an adjustment for temperature can be made. 
+    %If standard enthalpy of formation is known, and independent of
+    %temperature an adjustment for temperature can be made.
     %(calcdGHT p289 Alberty 2003)
     if isempty(dHzero) || double(temp)==T;
         %dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);
@@ -457,7 +464,7 @@ else
         %Eq 3.6-3 Alberty 2003 with temp dependent gibbscoeff
         istermG = (gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5); %omit the -nH if  no Legendre
     end
-    
+
     if LegendreCHI
         if 0
             %By convention, we assume the chemical potential of a metabolite
@@ -495,13 +502,13 @@ else
         %cast back into a double
         mf=double(lin_gpfnsp/pf);
     end
-    
+
     %activity coefficient
     lambda=double(exp(-(gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5)/(R*temp)));
 
     %average number of H+ ions bound by a reactant
     aveHbound=mf'*double(nH);
-    
+
     %average number of H+ ions bound by a reactant
     aveZi=mf'*double(zi);
 
@@ -633,45 +640,45 @@ end
 function y = maxstar(x, w, dim)
 % maxstar   Log of a sum of exponentials.
 %   For vectors, maxstar(x) is equivalent to log(sum(exp(x))).
-%   For matrices, maxstar(x) is a row vector and maxstar operates on 
+%   For matrices, maxstar(x) is a row vector and maxstar operates on
 %   each column of x. For N-D arrays, maxstar(x) operates along the
 %   first non-singleton dimension.
 %
 %   maxstar(x,w) is the log of a weighted sum of exponentials,
 %   equivalent to log(sum(w.*exp(x))). Vectors w and x must be
 %   the same length. For matrix x, the weights w can be input as
-%   a matrix the same size as x, or as a vector of the same length 
+%   a matrix the same size as x, or as a vector of the same length
 %   as columns of x. Weights may be zero or negative, but the result
-%   sum(w.*exp(x)) must be greater than zero. 
-%   
-%   maxstar(x, [], dim) operates along the dimension dim, and has 
+%   sum(w.*exp(x)) must be greater than zero.
+%
+%   maxstar(x, [], dim) operates along the dimension dim, and has
 %   the same dimensions as the MATLAB function max(x, [], dim).
 %
 %   Note:
 %   The max* function is described in Lin & Costello, Error Control
 %   Coding, 2nd Edition, equation 12.127, in the two-argument form
 %     max*(x1,x2) = max(x1,x2) + log(1 + exp(-abs(x1-x2))).
-%   The function max* can be applied iteratively: 
+%   The function max* can be applied iteratively:
 %     max*(x1,x2,x3) = max*(max*(x1,x2),x3).
 %   Functions max(x) ~ max*(x), and min(x) ~ -max*(-x).
 %
 %   Algorithm:
-%   The double precision MATLAB expresson log(sum(exp(x))) fails 
-%   if all(x < -745), or if any(x > 706). This is avoided using 
+%   The double precision MATLAB expresson log(sum(exp(x))) fails
+%   if all(x < -745), or if any(x > 706). This is avoided using
 %   m = max(x) in  max*(x) = m + log(sum(exp(x - m))).
 %
-%   Example: If x = [2 8 4 
+%   Example: If x = [2 8 4
 %                    7 3 9]
 %
 %   then maxstar(x,[],1) is [7.0067 8.0067 9.0067],
 %
-%   and  maxstar(x,[],2) is [8.0206    
-%                            9.1291]. 
+%   and  maxstar(x,[],2) is [8.0206
+%                            9.1291].
 
 % 2006-02-10   R. Dickson
-% 2006-03-25   Implemented N-D array features following a suggestion 
+% 2006-03-25   Implemented N-D array features following a suggestion
 %              from John D'Errico.
-%              
+%
 %   Uses: max, log, exp, sum, shiftdim, repmat, size, zeros, ones,
 %         length, isempty, error, nargin, find, reshape
 
@@ -680,13 +687,13 @@ if nargin < 1 || nargin > 3
 end
 
 [x, n] = shiftdim(x);
-szx = size(x); 
+szx = size(x);
 
 switch nargin
     case 1
         w = [];
         dim = 1;
-    case 2 
+    case 2
         dim = 1;
     case 3
         dim = dim - n;
@@ -702,11 +709,11 @@ if isempty(w)
 else
     w = shiftdim(w);
     szw = size(w);
-    % protect the second condition with a short-circuit or 
+    % protect the second condition with a short-circuit or
     if ~(length(szw) == length(szx)) || ~all(szw == szx)
         if size(w,1) == size(x,dim)
             % replicate w with repmat so size(w) == size(x)
-            szw = ones(size(szx)); 
+            szw = ones(size(szx));
             szw(dim) = size(w,1);
             w = reshape(w, szw);
             szr = szx;
@@ -716,8 +723,8 @@ else
             error('Length of w must match size(x,dim).');
         end
     end
-    
-    % Move the weight into the exponent xw and find 
+
+    % Move the weight into the exponent xw and find
     % m = max(xw) over terms with positive weights
     ipos = find(w>0);
     xw = -Inf*zeros(szx);
@@ -726,10 +733,10 @@ else
     % replicate m with repmat so size(mm) == size(x)
     szm = ones(size(szx));
     szm(dim) = szx(dim);
-    mm = repmat(m,szm); 
+    mm = repmat(m,szm);
     exwp = zeros(szx);
     exwp(ipos) = exp(xw(ipos)-mm(ipos));
-    % check for terms with negative weights 
+    % check for terms with negative weights
     ineg = find(w<0);
     if ~isempty(ineg)
         exwn = zeros(szx);
@@ -740,4 +747,3 @@ else
     end
 end
 %
-
