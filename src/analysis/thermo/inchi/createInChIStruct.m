@@ -1,29 +1,27 @@
-function inchiStruct = createInChIStruct(mets,sdfFileName)
+function inchiStruct = createInChIStruct(mets, sdfFileName)
 % Converts metabolite structures in SDF to InChI strings with OpenBabel,
-% and maps InChIs to mets. 
-% 
-% inchi = createInChIStruct(mets,sdfFileName)
-% 
-% INPUTS
-% mets          m x 1 cell array of metabolite identifiers (e.g., BiGG
-%               abbreviations).
-% sdfFileName   SDF with structures of metabolites in mets. Metabolite
-%               identifiers in the SDF are assumed to be the same as in
-%               mets.
-% 
-% OUTPUTS
-% inchi                         Structure with following fields:
-% .standard                     Standard InChIs with no isotope, stereo
-%                               or charge layers. 
-% .standardWithStereo           Standard InChIs with stereo layers.
-% .standardWithStereoAndCharge  Standard InChIs with stereo and charge
-%                               layers
-% .nonstandard                  Nonstandard InChI with all layers.
-% 
-% Hulda SH, Nov. 2012
+% and maps InChIs to mets.
+%
+% USAGE:
+%
+%    inchiStruct = createInChIStruct(mets, sdfFileName)
+%
+% INPUTS:
+%    mets:           `m x 1` cell array of metabolite identifiers (e.g., BiGG abbreviations).
+%    sdfFileName:    SDF with structures of metabolites in mets. Metabolite
+%                    identifiers in the SDF are assumed to be the same as in mets.
+%
+% OUTPUT:
+%    inchiStruct:    Structure with following fields:
+%
+%                      * .standard - Standard InChIs with no isotope, stereo or charge layers.
+%                      * .standardWithStereo - Standard InChIs with stereo layers.
+%                      * .standardWithStereoAndCharge - Standard InChIs with stereo and charge layers
+%                      * .nonstandard - Nonstandard InChI with all layers.
+%
+% .. Author: - Hulda SH, Nov. 2012
 
-% Convert SDF to InChIs
-[standard,metList1] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg/nostereo');
+[standard,metList1] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg/nostereo'); % Convert SDF to InChIs
 
 [standardWithStereo,metList2] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg');
 if ~all(strcmp(metList1,metList2))
@@ -63,4 +61,3 @@ for i = 1:length(metList1)
     inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i);
     inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i);
 end
-
