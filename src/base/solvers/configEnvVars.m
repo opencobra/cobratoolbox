@@ -36,17 +36,25 @@ function [] = configEnvVars(printLevel)
         GUROBI_PATH = []; ILOG_CPLEX_PATH = []; TOMLAB_PATH = []; MOSEK_PATH = [];
 
         % define default locations of the root installation folder
-        defaultLocations = {'/Applications/', ...
-                            '~/Applications/', ...
-                            '/opt/', ...
-                            '/', ...
-                            '~/', ...
-                            '/Library/', ...
-                            '~/Library/', ...
-                            'C:\', ...
-                            'C:\Program Files\', ...
-                            'C:\Program Files (x86)\'
-                            };
+        defaultLocationsUNIX = {'/Applications/', ...
+                                '~/Applications/', ...
+                                '/opt/', ...
+                                '/', ...
+                                '~/', ...
+                                '/Library/', ...
+                                '~/Library/'
+                               };
+        defaultLocationsPC = {'C:\', ...
+                              'C:\Program Files\', ...
+                              'C:\Program Files (x86)\'
+                             };
+
+        % define default locations based on operating system
+        if ispc
+            defaultLocations = defaultLocationsPC;
+        else
+            defaultLocations = defaultLocationsUNIX;
+        end
 
         % structure for storing solver information
         % {*, 1}: environment variable of solver installation folder location
@@ -229,7 +237,7 @@ function [] = configEnvVars(printLevel)
                     if isempty(eval(globEnvVar))
                         if printLevel > 0
                             solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
-                            fprintf(['   - [', method, '] ', globEnvVar, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
+                            fprintf(['   - [', method, '] ', globEnvVar, ': --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
                         end
                     else
                         if printLevel > 0
@@ -268,7 +276,7 @@ function subDir = generateSolverSubDirectory(solverName)
             osPath = 'linux64';
         end
 
-        % check for 32-bit
+        % check for 64-bit
         if ~isempty(strfind(computer('arch'), '64'))
             subDir = [filesep, osPath, filesep, 'matlab'];
         end
@@ -284,7 +292,7 @@ function subDir = generateSolverSubDirectory(solverName)
             osPath = 'x86-64_linux';
         end
 
-        % check for 32-bit
+        % check for 64-bit
         if ~isempty(strfind(computer('arch'), '64'))
             subDir = [filesep, 'cplex', filesep, 'matlab', filesep, osPath];
         end
