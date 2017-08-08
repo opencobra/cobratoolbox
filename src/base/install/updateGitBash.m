@@ -1,5 +1,5 @@
-function [] = updateGitBash(fetchAndCheckOnly)
-% On windows, this function updates the already existing version of gitBash. 
+function updateGitBash(fetchAndCheckOnly)
+% On windows, this function updates the already existing version of gitBash.
 % This function can only be run on Windows, and throws an error when run on a UNIX system.
 %
 % USAGE:

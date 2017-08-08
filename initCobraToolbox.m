@@ -1,4 +1,4 @@
-function [] = initCobraToolbox()
+function initCobraToolbox()
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
 %     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017

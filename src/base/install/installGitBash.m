@@ -1,4 +1,4 @@
-function [] = installGitBash()
+function installGitBash()
 % This function wraps the installer for PortableGit and checks for available updates.
 % This function can only be run on Windows, and throws an error when run on a UNIX system.
 %
@@ -10,10 +10,6 @@ function [] = installGitBash()
     global gitBashVersion
 
     if ispc
-        % initialize variables
-        archstr = computer('arch');
-        archBit = archstr(end-1:end);
-
         % define the name of the temporary folder
         tmpFolder = '.tmp';
 

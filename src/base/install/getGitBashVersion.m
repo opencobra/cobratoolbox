@@ -10,12 +10,7 @@ function [installedVersion, installedVersionNum] = getGitBashVersion()
 %    installedVersionNum:   Integer of `installedVersion`, e.g. `2132`
 %
 
-    global CBTDIR
     global gitBashVersion
-
-    % define the architecture
-    archstr = computer('arch');
-    archBit = archstr(end-1:end);
 
     % define the name of the temporary folder
     tmpFolder = '.tmp';

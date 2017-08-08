@@ -1,4 +1,4 @@
-function [] = updateCobraToolbox(fetchAndCheckOnly)
+function updateCobraToolbox(fetchAndCheckOnly)
 % Checks new commits exist on the master branch of the openCOBRA repository
 % and asks the user to update The COBRA Toolbox (updates the develop and master branches)
 %

@@ -1,4 +1,4 @@
-function [] = portableGitSetup(gitBashVersion, removeFlag)
+function portableGitSetup(gitBashVersion, removeFlag)
 % This function downloads the latest version of PortableGit on Windows (archive), extracts the folder
 % and moves the contents to the hidden .tmp folder in a folder called `PortableGit-a.bc.c`
 % This function can only be run on Windows, and throws an error when run on a UNIX system.
@@ -86,7 +86,7 @@ function [] = portableGitSetup(gitBashVersion, removeFlag)
         end
 
         % extract the archive and set the paths
- 		if exist(fileNamePortableGit, 'file') == 2
+        if exist(fileNamePortableGit, 'file') == 2
 
             if removeFlag <= 2
                 % extract the archive
