@@ -22,7 +22,7 @@ function initCobraToolbox()
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-% Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
+%     Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
 
     % define GLOBAL variables
     global CBTDIR;
@@ -39,6 +39,10 @@ function initCobraToolbox()
     global MOSEK_PATH;
     global WAITBAR_TYPE;
     global ENV_VARS;
+    global gitBashVersion;
+
+    % define a base version of gitBash that is tested
+    gitBashVersion = '2.13.3';
 
     % default waitbar is of type text
     if isempty(WAITBAR_TYPE)
@@ -90,6 +94,12 @@ function initCobraToolbox()
 
     % define the root path of The COBRA Toolbox
     CBTDIR = fileparts(which('initCobraToolbox'));
+
+    % add the external install folder
+    addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
+
+    % add the install folder
+    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
 
     % check if git is installed
     checkGit();
@@ -202,11 +212,8 @@ function initCobraToolbox()
     % add the root folder
     addpath(CBTDIR);
 
-    % add the external folder first
-    addpath(genpath([CBTDIR, filesep, 'external']));
-
-    % remove the SBML Toolbox
-    rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
+    % add the external folder
+    addpath(genpath([CBTDIR filesep 'external']));
 
     % add specific subfolders
     for k = 1:length(folders)
@@ -540,9 +547,14 @@ function checkGit()
             fprintf(' Done.\n');
         end
     else
-        fprintf(result_gitVersion);
-        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
-        error(' > git is not installed.');
+        if ispc
+            fprintf('(not installed).\n');
+            installGitBash();
+        else
+            fprintf(result_gitVersion);
+            fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
+            error(' > git is not installed.');
+        end
     end
 end
 
@@ -575,9 +587,14 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         end
     else
         if throwError
-            fprintf(result_curl);
-            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/requirements.html', 'here', 'here: '), '.\n']);
-            error(' > curl is not installed.');
+            if ispc
+                fprintf('(not installed).\n');
+                installGitBash();
+            else
+                fprintf(result_curl);
+                fprintf(' > Please follow the guidelines on how to install curl: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
+                error(' > curl is not installed.');
+            end
         else
             if ENV_VARS.printLevel
                 fprintf(' (not installed).\n');

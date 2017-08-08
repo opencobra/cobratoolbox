@@ -69,6 +69,14 @@ test/verifiedTests/base/testTools/testData_printLabeledData.txt
 test/verifiedTests/base/testSolvers/MILPProblem.mat
 test/verifiedTests/base/testOutputNetworkCytoscape/data*
 test/verifiedTests/analysis/testPrint/printConstraints.txt
+ACHR_last_point.mat
+ACHRerror.txt
+EcoliModelSamples_1.mat
+EcoliModelSamples_2.mat
+EcoliModelSamples_3.mat
+EcoliModelSamples_4.mat
+modelRedTmp.mat
+sampleCbModelTmp.mat
 
 # shared libraries
 *.so
