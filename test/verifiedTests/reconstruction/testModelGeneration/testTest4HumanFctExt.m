@@ -15,7 +15,7 @@ cd(fileDir)
 solverOK = changeCobraSolver('gurobi');
 
 % set a tolerance
-tol = 1e-6;
+tol = 1e-4;
 
 if solverOK
     fileName= 'Recon1.0model.mat'; % if using Recon 3 model, amend filename. 
@@ -33,12 +33,27 @@ if solverOK
     model.ub(Sinks) = 1000;
 
     % run testATPYieldFromCsources
-    [Table_csourcesOri, TestedRxnsC, Perc] = testATPYieldFromCsources(model);
+    [Table_csourcesOri, TestedRxnsC, Perc] = testATPYieldFromCsources(model, 'Recon3');
     
     % load reference data
     load('refData_testATPYieldFromCsources.mat');
     
     % tests
+    for i = 1:size(Table_csourcesOri, 1)
+        for j = 1:size(Table_csourcesOri, 2)
+            if ~isempty(Table_csourcesOri{i, j}) && ~isempty(ref_Table_csourcesOri{i, j}) 
+                if ~isnumeric(Table_csourcesOri{i, j}) && ~isnumeric(ref_Table_csourcesOri{i, j})
+                    fprintf('%i - %i: %s : %s\n', i, j, Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j});  
+
+                    assert(isequal(Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j}));
+                else
+                    fprintf('%i - %i: %1.2f : %1.2f\n', i, j, Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j});  
+
+                    assert(abs(Table_csourcesOri{i, j} - ref_Table_csourcesOri{i, j}) < tol)
+                end
+            end
+        end
+    end
     assert(isequal(Table_csourcesOri, ref_Table_csourcesOri))
     assert(isequal(TestedRxnsC, ref_TestedRxnsC))
     assert(isequal(Perc, ref_Perc))
