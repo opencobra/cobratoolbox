@@ -13,7 +13,7 @@ function [model2] = generateRules(model)
 %    model2:    same model but with model.rules added
 %
 % .. Author: -  Aarash Bordar 11/17/2010
-%          :    Uri David Akavia 6-Aug-2017, bug fixes and speedup
+%            -  Uri David Akavia 6-Aug-2017, bug fixes and speedup
 
 grRules = model.grRules;
 genes = model.genes;
