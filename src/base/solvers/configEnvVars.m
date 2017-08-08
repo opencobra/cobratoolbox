@@ -108,50 +108,57 @@ function [] = configEnvVars(printLevel)
                 folderPattern = solverPaths{k, 3};
                 folderNameVect = solverPaths{k, 4};
 
-                % loop through all possible locations
-                for jj = 1:length(folderNameVect)
-                    for capsMode = 1:2
-                        folderName = folderNameVect(jj);
-                        folderName = folderName{1};
+                % define additional subfolders for IBM ILOG CPLEX and MOSEK
+                if k == 1 || k == 4
 
-                        % define additional subfolders
+                    % initialize and empty cell for storing folder names
+                    tmpFolderNameVect = {};
+
+                    % loop through all default location and add the subfolders
+                    for jj = 1:length(folderNameVect)
                         if k == 1 % IBM ILOG CPLEX
-                            if capsMode == 1
-                                folderName = [folderName 'ibm' filesep 'ilog' filesep];
-                            else
-                                folderName = [folderName 'ibm' filesep 'ILOG' filesep];
-                            end
-                        elseif k == 4 % mosek
-                            if capsMode == 1
-                                folderName = [folderName 'mosek' filesep];
-                            else
-                                folderName = [folderName 'Mosek' filesep];
-                            end
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'IBM' filesep 'ilog' filesep];
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'IBM' filesep 'ILOG' filesep];
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'ibm' filesep 'ilog' filesep];
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'ibm' filesep 'ILOG' filesep];
+                        end
+                        if k == 4 % MOSEK
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'mosek' filesep];
+                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'Mosek' filesep];
                             folderPattern = '';
                         end
+                    end
 
-                        % read the directory at the specified default location
-                        tempD = dir(folderName);
-                        tmpFileNameVect = {tempD.name};
+                    % set the new folderNameVect
+                    folderNameVect = tmpFolderNameVect;
+                end
 
-                        % loop through all the folders
-                        for ii = 1:length(tmpFileNameVect)
-                            % save a temporary directory name
-                            tmpFileName = tmpFileNameVect(ii);
+                % loop through all possible locations
+                for jj = 1:length(folderNameVect)
+                    folderName = folderNameVect(jj);
+                    folderName = folderName{1};
 
-                            % define all folders that match folderPattern1234
-                            if k == 3
-                                extraRE = '';
-                            else
-                                extraRE = '[0-9]+';
-                            end
-                            idCell = regexp(tmpFileName, ['(', folderPattern, ')', extraRE]);
+                    % read the directory at the specified default location
+                    tempD = dir(folderName);
+                    tmpFileNameVect = {tempD.name};
 
-                            for kk = 1:length(idCell)
-                                if ~isempty(idCell{kk})
-                                    tmpFolderName = [folderName, tmpFileName{1}];
-                                    solverPaths{k, 2} = [solverPaths{k, 2}; tmpFolderName];
-                                end
+                    % loop through all the folders
+                    for ii = 1:length(tmpFileNameVect)
+                        % save a temporary directory name
+                        tmpFileName = tmpFileNameVect(ii);
+
+                        % define all folders that match folderPattern1234
+                        if k == 3
+                            extraRE = '';
+                        else
+                            extraRE = '[0-9]+';
+                        end
+                        idCell = regexp(tmpFileName, ['(', folderPattern, ')', extraRE]);
+
+                        for kk = 1:length(idCell)
+                            if ~isempty(idCell{kk})
+                                tmpFolderName = [folderName, tmpFileName{1}];
+                                solverPaths{k, 2} = [solverPaths{k, 2}; tmpFolderName];
                             end
                         end
                     end
