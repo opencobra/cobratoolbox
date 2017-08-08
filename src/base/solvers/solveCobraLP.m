@@ -36,6 +36,8 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   without regularisation.
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
+%    parameters:    solver-specific parameters structure 
+%
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;
 % `changeCobraSolverParams('LP', 'parameter', value)` function. This
