@@ -156,7 +156,7 @@ else
 end
 tempSolution = solveCobraLP(LPproblem,cpxControl);
 
-if ~(tempSolution.stat == 1)
+if tempSolution.stat == 1
     objRxn = model.rxns(model.c~=0);
     if (strcmp(osenseStr,'max'))
         objValue = floor(tempSolution.obj/tol)*tol*optPercentage/100;
