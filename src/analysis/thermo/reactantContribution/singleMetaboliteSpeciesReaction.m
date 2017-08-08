@@ -1,4 +1,4 @@
-function [rxnBool, nSpecies]=singleMetaboliteSpeciesReaction(model)
+function [rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)
 % Identifies reactions involving reactants with only one metabolite species.
 %
 % Identifies the reactions involving one substrate metabolite species reactant,
@@ -7,7 +7,7 @@ function [rxnBool, nSpecies]=singleMetaboliteSpeciesReaction(model)
 %
 % USAGE:
 %
-%    [rxnBool, nSpecies]=singleMetaboliteSpeciesReaction(model)
+%    [rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)
 %
 % INPUT:
 %    model:    structure with fields:
