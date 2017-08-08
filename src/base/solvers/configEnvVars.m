@@ -237,11 +237,11 @@ function [] = configEnvVars(printLevel)
                     if isempty(eval(globEnvVar))
                         if printLevel > 0
                             solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
-                            fprintf(['   - [', method, '] ', globEnvVar, ': --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
+                            fprintf(['   - [', method, '] ', globEnvVar, ': --> set this path manually after installing the solver ( see ', solversLink, ' )\n']);
                         end
                     else
                         if printLevel > 0
-                            fprintf(['   - [', method, '] ', globEnvVar, ': ', strrep(eval(globEnvVar), '\', '\\'), '\n' ]);
+                            fprintf(['   - [', method, '] ', globEnvVar, ': ', strrep(eval(globEnvVar), '\', '\\'), '\n']);
                         end
                         ENV_VARS.STATUS = 1;
                     end
