@@ -41,7 +41,9 @@ end
 % Delete in reactions
 hydrogenCols = all(S == 0, 1);
 S(:, hydrogenCols) = [];
-rxnGeneMat(:, hydrogenCols) = [];
+if isfield(modelNew, 'rxnGeneMat')
+    rxnGeneMat(:, hydrogenCols) = [];
+end
 reactions=length(modelNew.rxns);
 for i =1:length(fields)
     if length(modelNew.(fields{i}))==reactions && isvector(modelNew.(fields{i}))
@@ -50,4 +52,6 @@ for i =1:length(fields)
 end
 
 modelNew.S=sparse(S);
-modelNew.rxnGeneMat=sparse(rxnGeneMat');
+if isfield(modelNew, 'rxnGeneMat')
+    modelNew.rxnGeneMat=sparse(rxnGeneMat');
+end
