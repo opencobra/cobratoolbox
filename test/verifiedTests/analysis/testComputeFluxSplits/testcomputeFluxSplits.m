@@ -22,10 +22,10 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 % load the model
 load('testComputeFluxSplitsData.mat');
 
-%metabolites of interest
+% metabolites of interest
 mets = {'atp[c]','atp[m]'};
 
-%flux vector
+% flux vector
 V = rand([2062,1],'double');
 
 for k = 1:length(solverPkgs)
@@ -38,10 +38,7 @@ for k = 1:length(solverPkgs)
         
         % check the function without optional input
         fprintf('\n>> without optional input\n');
-        %[P,C,vP,vC] = computeFluxSplits(model,mets,V,[]);
-        
-        % testing if f values are within range
-        
+        %[P,C,vP,vC] = computeFluxSplits(model,mets,V,[]);        
         assert(isequal(sum([model.S(ismember(model.mets,mets),:);...
             sparse(1,size(model.S,2))],1)',s1));
         
