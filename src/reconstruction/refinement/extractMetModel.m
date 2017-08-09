@@ -56,6 +56,8 @@ metS = model.S(selMets,:);
 [nMet,tmp] = size(metS);
 if (nMet > 1)
     selRxns = any(full(metS) ~= 0)';
+elseif (~nMet)
+	selRxns = false(size(model.rxns));
 else
     selRxns = (full(metS) ~= 0)';
 end
@@ -64,7 +66,9 @@ for i = 1:nLayers+1
     [nMet,tmp] = size(metS);
     if (nMet > 1)
         selRxns = any(full(metS) ~= 0)';
-    else
+    elseif (~nMet)
+        selRxns = false(size(model.rxns));
+	else
         selRxns = (full(metS) ~= 0)';
     end
 
