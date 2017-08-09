@@ -114,19 +114,20 @@ function [] = configEnvVars(printLevel)
                     % initialize and empty cell for storing folder names
                     tmpFolderNameVect = {};
 
-                    % loop through all default location and add the subfolders
-                    for jj = 1:length(folderNameVect)
-                        if k == 1 % IBM ILOG CPLEX
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'IBM' filesep 'ilog' filesep];
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'IBM' filesep 'ILOG' filesep];
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'ibm' filesep 'ilog' filesep];
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'ibm' filesep 'ILOG' filesep];
-                        end
-                        if k == 4 % MOSEK
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'mosek' filesep];
-                            tmpFolderNameVect{end+1} = [folderNameVect{jj} 'Mosek' filesep];
-                            folderPattern = '';
-                        end
+                    % retrieve the length of the current cell of folders
+                    len = length(folderNameVect);
+
+                    % define additional subfolders
+                    if k == 1 % IBM ILOG CPLEX
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['IBM' filesep 'ilog' filesep]);
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['IBM' filesep 'ILOG' filesep]);
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['ibm' filesep 'ilog' filesep]);
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['ibm' filesep 'ILOG' filesep]);
+                    end
+                    if k == 4 % MOSEK
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['mosek' filesep]);
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['Mosek' filesep]);
+                        folderPattern = '';
                     end
 
                     % set the new folderNameVect
