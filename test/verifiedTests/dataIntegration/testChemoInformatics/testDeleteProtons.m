@@ -7,6 +7,12 @@
 %     - German Preciat -- August 2017
 %
 
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+cd(fileparts(which('testDeleteProtons')));
+
 % Load reference data
 load('refData_deleteProtons.mat')
 
@@ -15,6 +21,10 @@ load('subDas.mat')
 
 modelNew = deleteProtons(model);
 assert(all(all(modelNew.S == modelNew0.S)), 'Reference S matrix does not match.')
-assert(all(all(modelNew.S == modelNew0.S)), 'Reference metabolites dont not match.')
+assert(all(all(modelNew.S == modelNew0.S)), 'Reference metabolites do not match.')
 assert(all(all(modelNew.S == modelNew0.S)), 'Reference metabolites formulas do not match.')
 assert(all(all(modelNew.S == modelNew0.S)), 'Reference metabolites charges do not match.')
+
+
+% change the directory
+cd(currentDir)
