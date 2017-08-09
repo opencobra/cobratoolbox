@@ -83,6 +83,15 @@ for i = 1:length(modelArr)
             fprintf(' Done.\n');
         end
     end
+    
+    % test that gene rules are generated correctly
+    % needs testing on model with large number of genes, i.e., 
+    % 'Abiotrophia_defectiva_ATCC_49176.xml'
+    if strcmp(modelArr{i}, 'Abiotrophia_defectiva_ATCC_49176.xml')
+        % test that rules are correctly generated, i.e. no gene partially matched
+        % no indication of x(1)23 instead of x(123).
+        assert(~any(~cellfun(@isempty, regexp(model.rules, '\(\d+\)\d+')))) %incorrect
+    end
 end
 
 % test reading COBRA models with symbols in objective reactions and multiple objective reactions

@@ -24,7 +24,7 @@ if ~verLessThan('matlab', '8.6')
     %system('cp refXLSX.xlsx testData.xlsx');
 
     % write the model to an xls file
-    writeCbModel(model, 'xlsx', 'testData.xlsx');
+    writeCbModel(model, 'xlsx', 'testData');
 
     % read in the xls model file
     modelIn = xls2model('testData.xlsx');
@@ -66,6 +66,6 @@ end
 % change to old directory
 cd(currentDir);
 
-% Kill the workers
-poolobj = gcp('nocreate');
+% Kill the workers        
+poolobj = gcp('nocreate');        
 delete(poolobj);

@@ -450,13 +450,16 @@ end
 ruleGenes = unique(ruleGenes);
 [pres,pos] = ismember(ruleGenes,genes);
 
+%get descending order of genes
+[posDes, iPos] = sort(pos, 'descend');
+
 %now, replace every gene by its position
 for i = 1:numel(ruleGenes)
-    if pres(i)
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{i}) '([\(\) ]?)'],['$1x(' num2str(pos(i)) ')$2']);
+    if pres(iPos(i))
+        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(posDes(i)) ')$2']);
     else
-        newGenes(end+1) = ruleGenes(i);
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{i}) '([\(\) ]?)'],['$1x(' num2str(numel(newGenes)) ')$2']);
+        newGenes(end+1) = ruleGenes(iPos(i));
+        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(numel(newGenes)) ')$2']);
     end
 end
 

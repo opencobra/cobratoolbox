@@ -213,7 +213,7 @@ switch fileType
         model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'], model);
     case 'Excel'
-        model = xls2model(filename, [], defaultbound);
+        model = xls2model(fileName, [], defaultBound);
     case 'Matlab'
         S = load(fileName);
         modeloptions = getModelOptions(S, matlabModelName);
