@@ -140,7 +140,7 @@ else
     %do not use advanced starting information when optimization is initiated.
     if isequal(interface,'tomlab_cplex')
         cpxControl.advance=0;
-    elseif isequal(interafce,'ILOGcomplex')
+    elseif isequal(interface,'ILOGcomplex')
         cpxControl.ADVIND=0;
     end
 end
