@@ -133,9 +133,10 @@ supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 if ~exist('fileType', 'var') || isempty(fileType)
     % if no filename was provided, we open a UI window.
     if ~exist('fileName', 'var') || isempty(fileName)
-        [fileName] = uigetfile([supportedFileExtensions, {'Model Files'}], 'Please select the model file');
+        [fileName, pathName] = uigetfile([supportedFileExtensions, {'Model Files'}], 'Please select the model file');
+        fileName = [pathName filesep fileName];
     end
-
+    
     [~, ~, FileExtension] = fileparts(fileName);
     if isempty(FileExtension)
         % if we don't have a file extension, we try to see, which files
