@@ -32,7 +32,7 @@ if (nargin < 2 || isequal(method, 'FVA'))
         end
     end
 else
-    solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6, 'ILOGcomplex');
+    solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6);
     blockedReactions = model.rxns(find(~solution.full))';
 end
 

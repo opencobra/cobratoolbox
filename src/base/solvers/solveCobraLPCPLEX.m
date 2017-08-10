@@ -101,6 +101,9 @@ end
 if ~exist('conflictResolve','var')
     conflictResolve=0;
 end
+if ~exist('interface','var')
+    interface='tomlab_cplex';
+end
 if isequal(interface,'tomlab_cplex')
     if ~exist('contFunctName','var')
         cpxControl=[];
@@ -143,10 +146,6 @@ else
     elseif isequal(interface,'ILOGcomplex')
         cpxControl.ADVIND=0;
     end
-end
-
-if ~exist('interface','var')
-    interface='tomlab_cplex';
 end
 
 if ~isfield(LPProblem,'A')
