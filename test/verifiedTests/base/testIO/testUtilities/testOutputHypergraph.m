@@ -10,7 +10,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('outputHypergraph'));
+fileDir = fileparts(which('testOutputHypergraph'));
 cd(fileDir);
 
 % test variables
