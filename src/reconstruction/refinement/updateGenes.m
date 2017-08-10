@@ -5,7 +5,7 @@ function [modelNew] = updateGenes(model)
 %
 %    [modelNew] = updateGenes(model);
 %
-% INPUTS:
+% INPUT:
 %    model:              COBRA model structure
 %
 % OUTPUT:
