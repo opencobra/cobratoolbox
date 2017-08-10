@@ -39,32 +39,39 @@ initial_score = output.error;
 fprintf('Done.\n');
 
 % create a parallel pool
-poolobj = gcp('nocreate'); % if no pool, do not create new one.
-if isempty(poolobj)
-    parpool(2); % launch 2 workers
-end
+minWorkers = 2;
+myCluster = parcluster(parallel.defaultClusterProfile);
 
-% define the solver packages to be used to run this test
-solverPkgs = {'matlab'}; % tomlab_snopt
-
-for k = 1:length(solverPkgs)
-
-    % change the COBRA solver (NLP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'NLP');
-
-    if solverOK == 1
-        fprintf('   Testing fitC13Data using %s ... ', solverPkgs{k});
-
-        [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit);
-
-        output = scoreC13Fit(vout, expdata, model);
-        final_score = output.error;
-
-        assert(final_score < initial_score)
-
-        % output a success message
-        fprintf('Done.\n');
+if myCluster.NumWorkers >= minWorkers
+    poolobj = gcp('nocreate');  % if no pool, do not create new one.
+    if isempty(poolobj)
+        parpool(minWorkers);  % launch minWorkers workers
     end
+
+    % define the solver packages to be used to run this test
+    solverPkgs = {'matlab'}; % tomlab_snopt
+
+    for k = 1:length(solverPkgs)
+
+        % change the COBRA solver (NLP)
+        solverOK = changeCobraSolver(solverPkgs{k}, 'NLP');
+
+        if solverOK == 1
+            fprintf('   Testing fitC13Data using %s ... ', solverPkgs{k});
+
+            [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit);
+
+            output = scoreC13Fit(vout, expdata, model);
+            final_score = output.error;
+
+            assert(final_score < initial_score)
+
+            % output a success message
+            fprintf('Done.\n');
+        end
+    end
+else
+    warning(' > Skipping testFitC13Data as the default parallel pool is not configured for more than 2 workers.');
 end
 
 % change the directory

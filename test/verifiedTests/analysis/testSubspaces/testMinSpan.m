@@ -30,32 +30,32 @@ assert(m == 72 & n == 94, 'Unable to setup input for MinSpan determination');
 % Setup parameters and run detMinSpan
 params.saveIntV = 0; % Do not save intermediate output
 
-% create a parallel pool
-poolobj = gcp('nocreate');  % if no pool, do not create new one.
-if isempty(poolobj)
-    parpool(2);  % launch 2 workers
-end
 
-% Test detMinSpan with GLPK. It should fail!
-changeCobraSolver('glpk', 'ALL', 0);
-try
-    minSpanVectors = detMinSpan(model, params);
-catch ME
-    assert(~isempty(ME.message))
-end
 
 changeCobraSolver('gurobi', 'all', 0);
 
 if changeCobraSolver('gurobi', 'MILP', 0)
+    % create a parallel pool
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
 
-    minSpanVectors = detMinSpan(model, params);
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
 
-    % Check size of vectors and number of entries
-    [r, c] = size(minSpanVectors);
-    numEntries = nnz(minSpanVectors);
+        minSpanVectors = detMinSpan(model, params);
 
-    assert(r == 94 & c == 23, 'MinSpan vector matrix wrong size');
-    assert(numEntries == 479, 'MinSpan vector matrix is not minimal');
+        % Check size of vectors and number of entries
+        [r, c] = size(minSpanVectors);
+        numEntries = nnz(minSpanVectors);
+
+        assert(r == 94 & c == 23, 'MinSpan vector matrix wrong size');
+        assert(numEntries == 479, 'MinSpan vector matrix is not minimal');
+    else
+        warning(' > Skipping testMinSpan as the default parallel pool is not configured for more than 2 workers.');
+    end
 else
-    fprintf('testMinSpan is skipped as Gurobi is not installed.\n');
+    fprintf(' > Skipping testMinSpan as Gurobi is not installed.\n');
 end
