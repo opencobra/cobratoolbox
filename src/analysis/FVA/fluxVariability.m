@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method, cpxControl)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method, cpxControl, advind)
 % Performs flux variablity analysis
 %
 % USAGE:
@@ -27,6 +27,9 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %                        * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
 %   cpxControl:        solver-specific parameters
+%
+%   advind:            1 : uses the original problem solution basis as advanced
+%                      0 : default
 %
 % OUTPUTS:
 %    minFlux:          Minimum flux for each reaction
@@ -70,6 +73,9 @@ if (nargin < 7)
 end
 if (nargin<8)
     cpxControl=struct();
+end
+if (nargin<9)
+   advind=0; 
 end
 if (isempty(optPercentage))
     optPercentage = 100;
@@ -155,8 +161,6 @@ else
     error('The fva could not be run because the model is infeasible or unbounded')
 end
 
-%get the initial basis
-LPproblem.basis = tempSolution.basis;
 
 %set the objective
 if hasObjective
@@ -169,6 +173,11 @@ if hasObjective
     end
 end
 
+%get the initial basis
+if advind==1
+    tempSolution    = solveCobraLP(LPproblem);
+    LPproblem.basis = tempSolution.basis;
+end
 LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
 % Loop through reactions
