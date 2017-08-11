@@ -198,7 +198,7 @@ else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
+if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
 
     for i = 1:length(rxnNameList)
         if minNorm
