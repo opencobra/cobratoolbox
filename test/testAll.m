@@ -212,11 +212,11 @@ try
     end
 
     % ensure that we ALWAYS call exit
-    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'laurent'))
         exit(exit_code);
     end
 catch ME
-    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'laurent'))
         % Only exit on jenkins.
         exit(1);
     else
