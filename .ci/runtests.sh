@@ -9,7 +9,7 @@ elif [ "$ARCH" == "Windows" ]; then
     cd "D:\jenkins\workspace\COBRAToolbox-windows\MATLAB_VER\R2016b\label\windows-biocore"
     whoami
     echo " -- Launching MATLAB --"
-    nohup "C:\Program Files\Matlab\R2016b\bin\matlab.exe" -logfile output.log -wait -r "restoredefaultpath;matlabrc; cd test; testAll;" &
+    nohup "C:\Program Files\Matlab\R2016b\bin\matlab.exe" -useStartupFolderPref -logfile output.log -wait -r "cd test; testAll;" & # #fprintf('%s\n', getenv('USERPROFILE')); pwd; initCobraToolbox; exit;
     tail -n0 -F --pid=$! output.log 2>/dev/null
 fi
 
