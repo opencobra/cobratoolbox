@@ -133,19 +133,8 @@ else
     LPproblem.csense = model.csense;
 end
 LPproblem.csense = LPproblem.csense';
-if hasObjective
-    LPproblem.A = [model.S;columnVector(model.c)'];
-    LPproblem.b = [model.b;objValue];
-    if (strcmp(osenseStr,'max'))
-        LPproblem.csense(end+1) = 'G';
-    else
-        LPproblem.csense(end+1) = 'L';
-    end
-else
-    LPproblem.A = model.S;
-    LPproblem.b = model.b;
-end
-
+LPproblem.A = model.S;
+LPproblem.b = model.b;
 LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
 %solve to get the original model optimal objective
@@ -169,6 +158,17 @@ end
 
 %get the initial basis
 LPproblem.basis = tempSolution.basis;
+
+%set the objective
+if hasObjective
+    LPproblem.A = [model.S;columnVector(model.c)'];
+    LPproblem.b = [model.b;objValue];
+    if (strcmp(osenseStr,'max'))
+        LPproblem.csense(end+1) = 'G';
+    else
+        LPproblem.csense(end+1) = 'L';
+    end
+end
 
 % Loop through reactions
 maxFlux = zeros(length(rxnNameList), 1);
@@ -198,7 +198,7 @@ else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
+if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
 
     for i = 1:length(rxnNameList)
         if minNorm
