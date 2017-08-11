@@ -135,7 +135,6 @@ end
 LPproblem.csense = LPproblem.csense';
 LPproblem.A = model.S;
 LPproblem.b = model.b;
-LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
 %solve to get the original model optimal objective
 if ~isfield(model,'osense')
@@ -169,6 +168,8 @@ if hasObjective
         LPproblem.csense(end+1) = 'L';
     end
 end
+
+LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
 % Loop through reactions
 maxFlux = zeros(length(rxnNameList), 1);
