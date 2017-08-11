@@ -4,7 +4,7 @@ function [P,C,vP,vC,s] = computeFluxSplits(model,mets,V, coeffSign)
 %
 % USAGE:
 %
-%    [P, C, vP, vC] = computeFluxSplits(model, mets, V);
+%    [P, C, vP, vC, s] = computeFluxSplits(model, mets, V, 0);
 %
 % INPUTS:
 %    model:     a COBRA model structure with required fields
@@ -25,7 +25,7 @@ function [P,C,vP,vC,s] = computeFluxSplits(model,mets,V, coeffSign)
 %    vC:    an `n` x `k` matrix of net consuming fluxes
 %    s:     net stoichiometry of reactions containing metabolites 
 %
-% Example: [P,C,vP,vC] = computeFluxSplits(model,mets,V,1);
+% Example: [P,C,vP,vC,s] = computeFluxSplits(model,mets,V,1);
 %
 % .. Author: - Hulda S. Haraldsdottir, December 2, 2016
 %            - Modified by Diana El Assal 22/7/2017
