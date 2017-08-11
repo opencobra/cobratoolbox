@@ -18,6 +18,7 @@ function metabModel = extractMetModel(model, metabNames, nLayers, allCompFlag, n
 %    metabModel:     COBRA model around one or more metabolites
 %
 % .. Author: - Markus Herrgard 3/1/06
+%              Uri David Akavia 26-Mar-2017
 
 if (nargin < 5)
     nRxnsMetThr = 100;
@@ -31,8 +32,9 @@ for i = 1:length(baseMetNames)
 end
 nRxnsMetComp = nRxnsMetComp';
 selLowDegMet = nRxnsMetComp < nRxnsMetThr;
-model.S = model.S(selLowDegMet,:);
-model.mets = model.mets(selLowDegMet);
+model.S(~selLowDegMet,:) = 0;
+%model.mets = model.mets(selLowDegMet); Commented out, because other fields
+%aren't shrunk, which can lead to mismatch later
 
 if (~iscell(metabNames))
     tmpMetName = metabNames;
@@ -47,12 +49,15 @@ else
     allMetNames = model.mets;
 end
 
+metabNames = intersect(metabNames, allMetNames(selLowDegMet));
 selMets = find(ismember(allMetNames,metabNames));
 
 metS = model.S(selMets,:);
 [nMet,tmp] = size(metS);
 if (nMet > 1)
     selRxns = any(full(metS) ~= 0)';
+elseif (~nMet)
+	selRxns = false(size(model.rxns));
 else
     selRxns = (full(metS) ~= 0)';
 end
@@ -61,7 +66,9 @@ for i = 1:nLayers+1
     [nMet,tmp] = size(metS);
     if (nMet > 1)
         selRxns = any(full(metS) ~= 0)';
-    else
+    elseif (~nMet)
+        selRxns = false(size(model.rxns));
+	else
         selRxns = (full(metS) ~= 0)';
     end
 
