@@ -7,12 +7,11 @@ elif [ "$ARCH" == "macOS" ]; then
 elif [ "$ARCH" == "Windows" ]; then
     echo " -- Changing to the build directory --"
     cd "D:\jenkins\workspace\COBRAToolbox-windows\MATLAB_VER\R2016b\label\windows-biocore"
-    # echo the current directory
-    whoami
+    echo "User currently executing: $whoami"
     echo " -- Launching MATLAB --"
-    "C:\Program Files\Matlab\R2016b\bin\matlab.exe" -logfile output.log -wait -r "initCobraToolbox; exit;"
-    #"run('D:\jenkins\workspace\COBRAToolbox-windows\MATLAB_VER\R2016b\label\windows-biocore\test\testAll.m')"
-    cat output.log
+    "C:\Program Files\Matlab\R2016b\bin\matlab.exe" -logfile output.log -wait -r "initCobraToolbox; cd test; testAll; exit;" &
+    tail -n0 -F --pid=$! output.log 2>/dev/null
 fi
+
 CODE=$?
 exit $CODE
