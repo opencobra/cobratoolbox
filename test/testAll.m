@@ -42,7 +42,7 @@ cd(CBTDIR);
 % run the official initialisation script
 initCobraToolbox;
 
-if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
 else
     WAITBAR_TYPE = 1;
@@ -159,12 +159,23 @@ try
     % retrieve the models first
     retrieveModels;
 
+    % print the environment variables
+    fprintf(['\n > USERPROFILE: ', strrep(getenv('USERPROFILE'), '\', '\\'), '\n']);
+    fprintf(['\n > HOME: ', strrep(getenv('HOME'), '\', '\\') , '\n']);
+
     % run the tests in the subfolder verifiedTests/ recursively
     result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
 
     sumFailed = 0;
     sumIncomplete = 0;
 
+    for i = 1:size(result, 2)
+        sumFailed = sumFailed + result(i).Failed;
+        sumIncomplete = sumIncomplete + result(i).Incomplete;
+    end
+    
+    fprintf(['\n > ', sumFailed, ' tests failed. ', sumIncomplete , ' tests are incomplete.\n\n']);
+        
     if COVERAGE
         % write coverage based on profile('info')
         fprintf('Running MoCov ... \n')
@@ -174,11 +185,6 @@ try
               '-cover_html_dir', 'coverage_html', ...
               '-cover_method', 'profile', ...
               '-verbose');
-
-        for i = 1:size(result, 2)
-            sumFailed = sumFailed + result(i).Failed;
-            sumIncomplete = sumIncomplete + result(i).Incomplete;
-        end
 
         % load the coverage file
         data = loadjson('coverage.json', 'SimplifyCell', 1);
@@ -208,8 +214,10 @@ try
     addpath(originalUserPath);
 
     if sumFailed > 0 || sumIncomplete > 0
-        exit_code = 1;
+        exit_code = 1;  
     end
+
+    fprintf(['\n > The exit code is ', exit_code, '.']);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
@@ -225,5 +233,6 @@ catch ME
         rethrow(ME);
     end
 end
+
 % Switch back to the folder we were in.
 cd(origDir)
