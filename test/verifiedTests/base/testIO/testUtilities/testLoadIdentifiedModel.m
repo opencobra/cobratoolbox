@@ -22,8 +22,7 @@ filename_2 = 'ecoli_core_model';
 model = loadIdentifiedModel(filename, directory);
 
 % run without directory argument
-cd(currentDir);
-cd models;
+cd(directory);
 model_2 = loadIdentifiedModel(filename_2);
 cd(fileDir);
 
