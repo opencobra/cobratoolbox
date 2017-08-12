@@ -21,10 +21,12 @@ testWeights = zeros(95);
 % function outputs
 outputHypergraph(testModel, testWeights, testFileName);
 testsFile = textread('testData_outputHypergraph.txt');
-modelFile = textread('refData_outputHypergraph.txt');
 
 % test
 assert(isequal(testsFile, modelFile))
+
+% remove the test file
+delete testData_outputHypergraph.txt
 
 % change to old directory
 cd(currentDir);
