@@ -15,10 +15,21 @@ cd(fileDir);
 
 % test variables
 directory = [CBTDIR filesep 'test' filesep 'models'];
-filename = 'ecoli_core_model';
+filename = 'iAF1260';
+filename_2 = 'ecoli_core_model';
+
 % function outputs
-model = loadIdentifiedModel(filename ,directory)
+model = loadIdentifiedModel(filename, directory);
+
+% run without directory argument
+cd(currentDir);
+cd models;
+model_2 = loadIdentifiedModel(filename_2);
+cd(fileDir);
+
 % test
-assert(isequal(model.modelID, filename))
+assert(isequal(model.modelID, filename));
+assert(isequal(model_2.modelID, 'model'));
+
 % change to old directory
 cd(currentDir);
