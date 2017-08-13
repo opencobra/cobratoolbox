@@ -167,7 +167,7 @@ function initCobraToolbox()
 
         % temporary disable ssl verification
         [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
-        
+
         if status_setSSLVerify ~= 0
             fprintf(strrep(result_setSSLVerify, '\', '\\'));
             warning('Your global git configuration could not be changed.');
@@ -175,7 +175,7 @@ function initCobraToolbox()
 
         % Update/initialize submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
-        
+
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));
             error('The submodules could not be initialized.');

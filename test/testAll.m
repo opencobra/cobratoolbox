@@ -159,10 +159,6 @@ try
     % retrieve the models first
     retrieveModels;
 
-    % print the environment variables
-    fprintf(['\n > USERPROFILE: ', strrep(getenv('USERPROFILE'), '\', '\\'), '\n']);
-    fprintf(['\n > HOME: ', strrep(getenv('HOME'), '\', '\\') , '\n']);
-
     % run the tests in the subfolder verifiedTests/ recursively
     result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
 
@@ -175,7 +171,8 @@ try
     end
     
     fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
-        
+
+    % count the number of covered lines of code
     if COVERAGE
         % write coverage based on profile('info')
         fprintf('Running MoCov ... \n')
@@ -214,10 +211,10 @@ try
     addpath(originalUserPath);
 
     if sumFailed > 0 || sumIncomplete > 0
-        exit_code = 1;  
+        exit_code = 1;
     end
 
-    fprintf(['\n > The exit code is ', num2str(exit_code), '.']);
+    fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
@@ -225,14 +222,14 @@ try
     end
 catch ME
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
-        % Only exit on jenkins.
+        % only exit on jenkins.
         exit(1);
     else
-        % Switch back to the folder we were in and rethrow the error
+        % switch back to the folder we were in and rethrow the error
         cd(origDir);
         rethrow(ME);
     end
 end
 
-% Switch back to the folder we were in.
+% switch back to the original directory
 cd(origDir)
