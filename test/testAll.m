@@ -174,7 +174,7 @@ try
         sumIncomplete = sumIncomplete + result(i).Incomplete;
     end
     
-    fprintf(['\n > ', sumFailed, ' tests failed. ', sumIncomplete , ' tests are incomplete.\n\n']);
+    fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
         
     if COVERAGE
         % write coverage based on profile('info')
@@ -217,7 +217,7 @@ try
         exit_code = 1;  
     end
 
-    fprintf(['\n > The exit code is ', exit_code, '.']);
+    fprintf(['\n > The exit code is ', num2str(exit_code), '.']);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
