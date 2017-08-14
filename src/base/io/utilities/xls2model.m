@@ -94,8 +94,17 @@ if ~exist('defaultbound','var')
     defaultbound = 1000;
 end
 
+% test if Excel is available
+excelInstalled = false;
+try
+    excelObj = actxserver('Excel.Application');
+    excelInstalled = true;
+catch ME
+    fprintf(' > Excel is not installed; limit of 10000 reactions.\n\n');
+end
+
 %assumes that one has an xls file with two tabs
-if isunix
+if isunix || ~excelInstalled
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:10000');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:10000');
     warning on
@@ -114,8 +123,8 @@ else
 end
 
 %trim empty row from Numbers and MetNumbers
-rxnInfo = rxnInfo(1:size(Strings,1),:)
-metInfo = metInfo(1:size(MetStrings,1),:)
+rxnInfo = rxnInfo(1:size(Strings,1),:);
+metInfo = metInfo(1:size(MetStrings,1),:);
 
 if isunix && isempty(MetStrings)
     error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
