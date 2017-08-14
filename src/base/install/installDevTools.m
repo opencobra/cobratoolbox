@@ -1,4 +1,4 @@
-function [] = installDevTools()
+function installDevTools()
 % checks if the MATLAB.devTools are already present and installs the
 % MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)
 %

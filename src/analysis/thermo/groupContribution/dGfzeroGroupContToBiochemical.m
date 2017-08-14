@@ -1,44 +1,46 @@
-function model=dGfzeroGroupContToBiochemical(model,Legendre)
-%transform group contribution estimate of metabolite standard transformed Gibbs energy
+function model = dGfzeroGroupContToBiochemical(model, Legendre)
+% Transforms group contribution estimate of metabolite standard transformed Gibbs energy.
+% Converts group contribution data biochemical standard transformed Gibbs
+% energy of formation, at specified pH and ionic strength.
 %
-%convert group contribution data biochemical standard transformed Gibbs
-%energy of formation, at specified pH and ionic strength
+% USAGE:
 %
-%INPUT
-% model
-% model.mets{m}
-% model.metCharges(m)
-% model.metFormulas{m}
-% model.T           temperature
-% model.faradayConstant     Faraday constant
-% model.gasConstant Universal Gas Constant
-% model.ph(p)       real pH in compartment defined by letter p
-% model.is(p)       ionic strength (0 - 0.35M) in compartment defined by letter *
-% model.chi(p)      electrical potential (mV) in compartment defined by letter *
-% model.cellCompartments 1 x # cell array of distinct compartment letters
-    % compartments      2 x # cell array of distinct compartment letters and
-    %                   compartment names (deprecated)
-% model.NaNdfG0GCMetBool  m x 1 boolean vector with 1 when no group contribution
-%                   data is available for a metabolite
-    % generated in old SetupThermoModel.m only!!! COME BACK HERE LATER!!!
-
+%    model = dGfzeroGroupContToBiochemical(model, Legendre)
 %
-%OPTIONAL INPUT
-% Legendre          {(1),0} Legendre Transformation for specifc pH and electrical potential?
+% INPUT:
+%    model:       structure with fields:
 %
-%OUTPUT
-% model.NaNdfG0GCMetBool                m x 1 boolean vector with 1 when no group contribution data is available for a metabolite
-% model.dfG0GroupCont(m)                group contribution estimate (kJ mol^-1)
-% model.dfG0GroupContUncertainty(m)     error on group contribution estimate (kJ mol^-1)  
-% model.dfGt0GroupCont(m)               group contribution estimate +/-Legendre transform (kJ mol^-1)
-% model.dfGt0GroupContUncertainty(m)    error on group contribution estimate +/- Legendre transform (kJ mol^-1)
-% model.aveHbound(m)                    average number of H+ bound
-% model.aveZi(m)                        average charge
-% model.mf(m)                           mole fraction of each species within a pseudoisomer group
-% model.lambda(m)                       activity coefficient
+%                   * model.mets{m}
+%                   * model.metCharges(m)
+%                   * model.metFormulas{m}
+%                   * model.T - temperature
+%                   * model.faradayConstant - Faraday constant
+%                   * model.gasConstant - Universal Gas Constant
+%                   * model.ph(p) - real pH in compartment defined by letter p
+%                   * model.is(p) - ionic strength (0 - 0.35M) in compartment defined by letter *
+%                   * model.chi(p) - electrical potential (mV) in compartment defined by letter *
+%                   * model.cellCompartments - `1 x #` cell array of distinct compartment letters
+%                   * model.NaNdfG0GCMetBool - `m x 1` boolean vector with 1 when no group contribution data is available for a metabolite generated in old `SetupThermoModel.m` only
 %
-%at the moment, the charges of the metabolites are for pH 7 only so
-%strictly it should be pH 7 only
+% OPTIONAL INPUT:
+%    Legendre:    {(1), 0} Legendre Transformation for specifc pH and electrical potential?
+%
+% OUTPUT:
+%    model:       structure with fields:
+%
+%                   * model.NaNdfG0GCMetBool - `m x 1` boolean vector with 1 when no group contribution data is available for a metabolite
+%                   * model.dfG0GroupCont(m) - group contribution estimate (kJ mol^-1)
+%                   * model.dfG0GroupContUncertainty(m) - error on group contribution estimate (kJ mol^-1)
+%                   * model.dfGt0GroupCont(m) - group contribution estimate +/-Legendre transform (kJ mol^-1)
+%                   * model.dfGt0GroupContUncertainty(m) - error on group contribution estimate +/- Legendre transform (kJ mol^-1)
+%                   * model.aveHbound(m) - average number of H+ bound
+%                   * model.aveZi(m) - average charge
+%                   * model.mf(m) - mole fraction of each species within a pseudoisomer group
+%                   * model.lambda(m) - activity coefficient
+%
+% NOTE:
+%
+%    At the moment, the charges of the metabolites are for pH 7 only so strictly it should be pH 7 only
 %
 % iAF1260 Supplemental Note:
 % "All delta_f_G_est_0 calculated for the reconstruction using the
@@ -47,13 +49,11 @@ function model=dGfzeroGroupContToBiochemical(model,Legendre)
 % zero ionic strength and 1M concentrations of all species except H+,
 % and water. In the cases where multiple charged forms of a molecule
 % exist at pH 7, the most abundant form is used."
-% Same as Janowski et al Biophysical Journal 95:1487-1499 (2008)
+% Same as `Janowski et al Biophysical Journal 95:1487-1499 (2008)`
 %
-% Ronan M.T. Fleming
-
-% Lemmer El Assal, 2016/10/14
-% Adaptation to old COBRA model structure
-
+% .. Author:
+%       - Ronan M.T. Fleming
+%       - Lemmer El Assal, 2016/10/14 Adaptation to old COBRA model structure
 
 if ~exist('Legendre','var')
     Legendre=1;
@@ -124,7 +124,7 @@ end
 %% modification ends here -Lemmer
 % Why is nMet == 1670?
 
-for m=1:nMet 
+for m=1:nMet
     if strcmp(model.mets{m},'damval[c]');
         pause(eps)
     end
@@ -148,7 +148,7 @@ for m=1:nMet
             dGzero = NaN;
             uncertainty = NaN;
         end
-        
+
         %get number of H atoms from formula (at pHc 7)
         %%%%%%%%%adapt these for InChI strings ?
         %formula=model.met(m).formulaMarvin;
@@ -180,7 +180,7 @@ for m=1:nMet
 %             %no hydrogens
 %             nH=0;
 %         end
-        
+
         nH = numAtomsOfElementInFormula(formula,'H'); % Inserted instead of preceding if statement. - Hulda
         if isnan(nH)
             error('No nH for metabolite');
@@ -201,7 +201,7 @@ for m=1:nMet
         %pHr=PHR.(model.mets(m)(end-1));
         %is=IS.(model.mets(m)(end-1));
         %chi=CHI.(model.mets(m)(end-1));
-        
+
         pHr=model.ph(find(strcmp(model.cellCompartments,model.metCompartments(m))));
         is=model.is(find(strcmp(model.cellCompartments,model.metCompartments(m))));
         chi=model.chi(find(strcmp(model.cellCompartments,model.metCompartments(m))));
@@ -268,11 +268,3 @@ for m=1:nMet
         model.mf{m,1} = NaN; %model.mf(m)=NaN;
     end
 end
-
-
-    
-    
-    
-    
-    
-    

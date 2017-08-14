@@ -133,9 +133,10 @@ supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 if ~exist('fileType', 'var') || isempty(fileType)
     % if no filename was provided, we open a UI window.
     if ~exist('fileName', 'var') || isempty(fileName)
-        [fileName] = uigetfile([supportedFileExtensions, {'Model Files'}], 'Please select the model file');
+        [fileName, pathName] = uigetfile([supportedFileExtensions, {'Model Files'}], 'Please select the model file');
+        fileName = [pathName filesep fileName];
     end
-
+    
     [~, ~, FileExtension] = fileparts(fileName);
     if isempty(FileExtension)
         % if we don't have a file extension, we try to see, which files
@@ -213,7 +214,7 @@ switch fileType
         model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'], model);
     case 'Excel'
-        model = xls2model(filename, [], defaultbound);
+        model = xls2model(fileName, [], defaultBound);
     case 'Matlab'
         S = load(fileName);
         modeloptions = getModelOptions(S, matlabModelName);

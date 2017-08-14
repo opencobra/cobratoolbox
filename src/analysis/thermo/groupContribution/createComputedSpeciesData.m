@@ -1,28 +1,30 @@
-function computedSpeciesData = createComputedSpeciesData(metSpeciespKa,metGroupCont)
-
+function computedSpeciesData = createComputedSpeciesData(metSpeciespKa, metGroupCont)
 % Use group contribution estimated standard Gibbs energies of formation for
-% predominant metabolite species at pH 7, and ChemAxon estimated pKa for species
+% predominant metabolite species at pH 7, and ChemAxon estimated `pKa` for species
 % equilibria, to calculate standard Gibbs energies of formation for
 % nonpredominant metabolite species.
 %
-% computedSpeciesData = createComputedSpeciesData(metSpeciespKa,metGroupCont)
+% USAGE:
 %
-% INPUTS
-% metSpeciespKa         Structure containing pKa for acid-base equilibria between
-%                       metabolite species. pKa are estimated with ChemAxon's
-%                       pKa calculator plugin (see function "assignpKasToSpecies")
-% metGroupCont          Structure array with group contribution method output
-%                       mapped to BiGG metabolites.
+%    computedSpeciesData = createComputedSpeciesData(metSpeciespKa, metGroupCont)
 %
-% OUTPUT
-% computedSpeciesData   Structure with thermodynamic data for metabolite
-%                       species. Contains two fields for each metabolite:
-%                       .abbreviation: Metabolite abbreviation
-%                       .basicData:    Cell array with 4 columns; 1) dGf0
-%                                      (kJ/mol), 2)dHf0, 3) charge, 4)
-%                                      #Hydrogens
-
-
+% INPUTS:
+%    metSpeciespKa:          Structure containing `pKa` for acid-base equilibria between
+%                            metabolite species. `pKa` are estimated with ChemAxon's
+%                            pKa calculator plugin (see function "assignpKasToSpecies")
+%    metGroupCont:           Structure array with group contribution method output
+%                            mapped to BiGG metabolites.
+%
+% OUTPUT:
+%    computedSpeciesData:    Structure with thermodynamic data for metabolite
+%                            species. Contains two fields for each metabolite:
+%
+%                              * .abbreviation: Metabolite abbreviation
+%                              * .basicData: Cell array with 4 columns;
+%                                1. dGf0 (kJ/mol),
+%                                2. dHf0,
+%                                3. charge,
+%                                4. #Hydrogens
 
 R = 1.9858775 * 1e-3; % Gas constant in kcal/(mol*K)
 T = 298; % Temperature in K
@@ -43,15 +45,15 @@ for metIdx = 1:nMets
     speciesData(metIdx).dGf0s = nan(nSpecies,1);
     %metGcIdx = strcmp(metGroupContMets,met);
     metGcIdx=find(strcmp(met,{metGroupCont.abbreviation}));
-    
+
     if any(metGcIdx)
         includedMets = [includedMets; {met}];
         metGcIdx = find(metGcIdx,1);
-        
+
         gcmSpeciesBool = speciesData(metIdx).zs == metGroupCont(metGcIdx,1).chargeMarvin;
         mmsBool = speciesData(metIdx).majorMSpH7;
         notInRangeBool = false;
-        
+
         if sum(gcmSpeciesBool) > 1
             if gcmSpeciesBool(mmsBool)
                 gcmSpeciesBool = mmsBool;
@@ -61,26 +63,26 @@ for metIdx = 1:nMets
                 gcmSpeciesBool(gcmSpeciesBool) = false;
             end
         end
-        
+
         if ~any(gcmSpeciesBool)
             disp(['GCM major microspecies for ' speciesData(metIdx).abbreviation ' not found.']);
             notInRangeBool = true;
         end
-        
+
         if nSpecies >= 2 && ~notInRangeBool
             speciesData(metIdx).gcmSpecies = gcmSpeciesBool;
-            
+
             % Calculate species Gibbs energies of formation from WebGCM
             % estimate for the major microspecies at pH 7 and pKas
             gcmSpeciesIdx = find(speciesData(metIdx).gcmSpecies); % Index of major microspecies at pH 7
             speciesData(metIdx).dGf0s(gcmSpeciesIdx) = metGroupCont(metGcIdx,1).delta_G_formation; % Insert WebGCM estimate of the Gibbs energy of formation for the major microspecies at pH 7
-            
+
             speciesEquilibriumPkas = speciesData(metIdx).pKas;
             speciesEquilibriumBool = speciesEquilibriumPkas ~= 0;
             speciesEquilibriumDoneBool = false(size(speciesEquilibriumBool));
             equilibriaCounter = zeros(size(speciesData(metIdx).dGf0s));
             equilibriaCounter(gcmSpeciesIdx) = 1;
-            
+
             while any(any(speciesEquilibriumDoneBool ~= speciesEquilibriumBool))
                 for spRow = 1:nSpecies
                     for spCol = 1:nSpecies
@@ -97,7 +99,7 @@ for metIdx = 1:nMets
                                             speciesData(metIdx).dGf0s(spCol) = (1/(equilibriaCounter(spCol) + 1)) * (equilibriaCounter(spCol)*speciesData(metIdx).dGf0s(spCol) + thisSpeciesDfG0); % Also need to figure out how to calculate running standard deviation
                                             equilibriaCounter(spCol) = equilibriaCounter(spCol) + 1;
                                         end
-                                        
+
                                         speciesEquilibriumDoneBool(spRow,spCol) = true;
                                         speciesEquilibriumDoneBool(spCol,spRow) = true;
                                     else
@@ -109,7 +111,7 @@ for metIdx = 1:nMets
                                             speciesData(metIdx).dGf0s(spCol) = (1/(equilibriaCounter(spCol) + 1)) * (equilibriaCounter(spCol)*speciesData(metIdx).dGf0s(spCol) + thisSpeciesDfG0);
                                             equilibriaCounter(spCol) = equilibriaCounter(spCol) + 1;
                                         end
-                                        
+
                                         speciesEquilibriumDoneBool(spRow,spCol) = true;
                                         speciesEquilibriumDoneBool(spCol,spRow) = true;
                                     end
@@ -123,7 +125,7 @@ for metIdx = 1:nMets
                                             speciesData(metIdx).dGf0s(spRow) = (1/(equilibriaCounter(spRow) + 1)) * (equilibriaCounter(spRow)*speciesData(metIdx).dGf0s(spRow) + thisSpeciesDfG0);
                                             equilibriaCounter(spRow) = equilibriaCounter(spRow) + 1;
                                         end
-                                        
+
                                         speciesEquilibriumDoneBool(spRow,spCol) = true;
                                         speciesEquilibriumDoneBool(spCol,spRow) = true;
                                     else
@@ -135,7 +137,7 @@ for metIdx = 1:nMets
                                             speciesData(metIdx).dGf0s(spRow) = (1/(equilibriaCounter(spRow) + 1)) * (equilibriaCounter(spRow)*speciesData(metIdx).dGf0s(spRow) + thisSpeciesDfG0);
                                             equilibriaCounter(spRow) = equilibriaCounter(spRow) + 1;
                                         end
-                                        
+
                                         speciesEquilibriumDoneBool(spRow,spCol) = true;
                                         speciesEquilibriumDoneBool(spCol,spRow) = true;
                                     end
@@ -145,7 +147,7 @@ for metIdx = 1:nMets
                     end
                 end
             end
-            
+
         else
             speciesData(metIdx).inchis = {};
             speciesData(metIdx).formulas = metGroupCont(metGcIdx,1).formulaMarvin;
@@ -156,7 +158,7 @@ for metIdx = 1:nMets
             speciesData(metIdx).pKas = [];
             speciesData(metIdx).dGf0s = metGroupCont(metGcIdx,1).delta_G_formation;
         end
-        
+
     else
         noDfG0Idx = [noDfG0Idx; metIdx];
     end
@@ -170,14 +172,14 @@ for n = 1:length(includedMets)
     computedSpeciesData(1,n).abbreviation = includedMets{n};
     computedSpeciesData(1,n).mmspH7Bool = speciesData(n,1).majorMSpH7;
     computedSpeciesData(1,n).gcmSpecies = speciesData(n,1).gcmSpecies;
-    
+
     nSpecies = length(speciesData(n,1).nHs);
     basicDataMat = nan(nSpecies,4);
-    
+
     basicDataMat(:,1) = speciesData(n,1).dGf0s * 4.184; % Convert from kcal/mol to kJ/mol
     basicDataMat(:,3) = speciesData(n,1).zs;
     basicDataMat(:,4) = speciesData(n,1).nHs;
-    
+
     computedSpeciesData(1,n).basicData = basicDataMat;
 end
 
@@ -210,7 +212,7 @@ for n = 1:length(computedSpeciesData)
                 if any(computedSpeciesData(n).mmspH7Bool(equalnHbool))
                     newMmspH7Bool(end) = true;
                 end
-                
+
             end
         end
     end

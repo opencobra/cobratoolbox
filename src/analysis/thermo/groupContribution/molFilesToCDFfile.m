@@ -1,5 +1,5 @@
-function metList=molFilesToCDFfile(model,cdfFileName)
-% Concatenates all the mol files in current folder into a cdf file
+function metList = molFilesToCDFfile(model, cdfFileName)
+% Concatenates all the mol files in current folder into a cdf file.
 %
 % Creates a cdf file, named  cdfFileNam, out of all the mol files in the
 % current folder. The cdf file can then be used with the web based
@@ -11,20 +11,22 @@ function metList=molFilesToCDFfile(model,cdfFileName)
 % abbreviation in the model, therefore, you should name your own mol files
 % accordingly.
 %
-%INPUT
-% model.mets      cell array of metabolite abbreviations corresponding to the mol files
-% cdfFileName     name of cdf file
+% USAGE:
 %
-%OUTPUT
-% model.met(m).molFile  =1 when mol file found, otherwise =0
+%    metList = molFilesToCDFfile(model, cdfFileName)
 %
-%WRITTEN OUTPUT
-% cdfFileName.cdf    cdf file with all the mol files in order of the
-%                   model metabolite abbreviations
+% INPUT:
+%    model:              structure with fields:
 %
-% Ronan M.T. Fleming
+%                          * model.mets - cell array of metabolite abbreviations corresponding to the mol files
+%    cdfFileName:        name of cdf file
+%
+% OUTPUT:
+%    metList:
+%    cdfFileName.cdf:    cdf file with all the mol files in order of the model metabolite abbreviations
+%
+% .. Author: - Ronan M.T. Fleming
 
-% [nMet,nRxn]=size(model.S);
 mets = model.mets;
 nMet = length(mets);
 noMolFileCount = 0;
@@ -36,10 +38,10 @@ fid0=fopen([cdfFileName '.cdf'],'w');
 for m=1:nMet
     metAbbr=mets{m};
     metAbbr=metAbbr(1:end-3);
-    
+
     %     if ~any(strcmp(metAbbr,doneMets))
     %         doneMets = [doneMets; {metAbbr}];
-    
+
     fid = fopen([metAbbr '.mol'],'r');
     if fid~=-1
         metList = [metList; mets(m)]; % [metList; {metAbbr}];

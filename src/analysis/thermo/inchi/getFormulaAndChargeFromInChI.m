@@ -1,15 +1,15 @@
 function [formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)
-
-% [formula,charge] = getFormulaAndChargeFromInChI(inchi)
-% 
-% INPUT
-% inchi.......Nonstandard IUPAC InChI for a particular pseudoisomer of a
-%             metabolite
-% 
-% OUTPUTS
-% formula....The chemical formula for the input pseudoisomer
-% charge.....The charge on the input pseudoisomer
-
+% USAGE:
+%
+%    [formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)
+%
+% INPUT:
+%    inchi:      Nonstandard IUPAC InChI for a particular pseudoisomer of a metabolite
+%
+% OUTPUTS:
+%    formula:    The chemical formula for the input pseudoisomer
+%    nH:         The number of hydrogen atoms
+%    charge:     The charge on the input pseudoisomer
 
 layers = regexp(inchi,'/','split');
 f1 = layers{2}; % Fully protonated formula

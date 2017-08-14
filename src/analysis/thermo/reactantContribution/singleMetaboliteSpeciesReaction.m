@@ -1,15 +1,21 @@
-function [rxnBool,nSpecies]=singleMetaboliteSpeciesReaction(model)
-%Identify reactions involving reactants with only one metabolite species.
+function [rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)
+% Identifies reactions involving reactants with only one metabolite species.
 %
-%identify the reactions involving one substrate metabolite species reactant,
-%one product metabolite species reactant and where each reactant is composed 
-%of only one metabolite species.
+% Identifies the reactions involving one substrate metabolite species reactant,
+% one product metabolite species reactant and where each reactant is composed
+% of only one metabolite species.
 %
-%INPUT
-%model.S
-%model.met(m).mf    mole fraction of each species
+% USAGE:
 %
-% Ronan M.T. Fleming
+%    [rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)
+%
+% INPUT:
+%    model:    structure with fields:
+%
+%                * .S
+%                * .met(m).mf - mole fraction of each species
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 
@@ -37,7 +43,7 @@ for n=1:nRxn
             fprintf('%s\t\t\t%s\n',model.rxns{n},model.rxn(n).equation);
             p=p+1;
         end
-        
+
         %     %reactions also involving only one reactant on either side
         %     if nnz(Shat(:,n))==2 %&& sum(nonzeros(model.S(:,n)))==0
         %         fprintf('%s\t%s\t%s\n',int2str(n),model.rxns{n},model.rxn(n).equation);
@@ -46,5 +52,3 @@ for n=1:nRxn
         %     end
     end
 end
-    
-

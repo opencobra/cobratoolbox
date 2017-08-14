@@ -1,30 +1,37 @@
-function model=thermodynamicAdjustmentToStoichiometry(model)
-% Thermodynamic adjustments to the stoichiometric matrix for co2, h2o, and bound cofactors.
+function model = thermodynamicAdjustmentToStoichiometry(model)
+% Thermodynamic adjustments to the stoichiometric matrix for 'co2', 'h2o', and bound cofactors.
 %
-% In aqueous phase, carbon dioxide is distributed between CO2(aq), H2CO3, HCO3^-, CO3^2-.
-% For each CO2(tot) in a reaction  add an H2O to the other side of reaction, and change the formula for 
-% carbon dioxide to CO2.H20 = H2CO3 see p150 Alberty 2003.
+% In aqueous phase, carbon dioxide is distributed between 'CO2(aq)', 'H2CO3', 'HCO3^-', 'CO3^2-'.
+% For each 'CO2(tot)' in a reaction  add an 'H2O' to the other side of reaction, and change the formula for
+% carbon dioxide to 'CO2.H20' = 'H2CO3' see `p150 Alberty 2003`.
 %
-% Also adjust stoichiometric matrix to account for the fact that the cofactors of 
+% Also adjust stoichiometric matrix to account for the fact that the cofactors of
 % succinate dehydrogenase, FAD/FADH, are bound.
 %
-%INPUT
-%model.S
-%model.mets
-%model.rxns
+% USAGE:
 %
-%OUTPUT
-%model.S        thermodynamically adjusted stoichiometric matrix 
-%model.mets
-%model.rxns
-%model.Sold
+%    model = thermodynamicAdjustmentToStoichiometry(model)
 %
-%Ronan M. T. Fleming
+% INPUT:
+%    model:    structure with fields:
 %
-% Lemmer El Assal / 2017 : 
-% * adaptation to current COBRA model structure
-% * optimization
-
+%                * .S
+%                * .mets
+%                * .rxns
+%
+% OUTPUT:
+%    model:    structure with fields:
+%
+%                * .S - thermodynamically adjusted stoichiometric matrix
+%                * .mets
+%                * .rxns
+%                * .Sold
+%
+% .. Authors:
+%       - Ronan M. T. Fleming
+%       - Lemmer El Assal / 2017 :
+%         * adaptation to current COBRA model structure
+%         * optimization
 
 [nMet,nRxn]=size(model.S);
 model.oldS=model.S;
@@ -87,14 +94,14 @@ for n=1:nRxn
                     %compartment1=model.met(co2Ind(1)).abbreviation(4:6);
                     abbr = model.mets(co2Ind(1));
                     compartment1=abbr(4:6);
-                    
+
                     model.S(strcmp(['h2o' compartment1],model.mets),n)=...
                         model.S(strcmp(['h2o' compartment1],model.mets),n)-model.S(co2Ind(1),n);
-                    
+
                     %compartment2=model.met(co2Ind(2)).abbreviation(4:6);
                     abbr = model.mets(co2Ind(2));
                     compartment2=abbr(4:6);
-                    
+
                     model.S(strcmp(['h2o' compartment2],model.mets),n)=...
                         model.S(strcmp(['h2o' compartment2],model.mets),n)-model.S(co2Ind(2),n);
                 end
@@ -104,7 +111,7 @@ for n=1:nRxn
                     %compartment=model.met(co2MatchBool).abbreviation(4:6);
                     abbr = model.mets(co2MatchBool);
                     compartment = abbr(4:6);
-                    
+
                     model.S(strcmp(['h2o' compartment],model.mets),n)=...
                         model.S(strcmp(['h2o' compartment],model.mets),n)-model.S(co2MatchBool,n);
                 else
@@ -133,16 +140,16 @@ if 1
     %FADH2 <==> FADH2_enz_SDH
     numChar=1;
     [compartments,uniqueCompartments]=getCompartment(model.mets,numChar);
-    
+
     %check for reaction in each compartment
     for p=1:length(uniqueCompartments);
         fad_ind   = [];
         fadh2_ind = [];
         fum_ind   = [];
         succ_ind  = [];
-        
+
         [nMet,nRxn]=size(model.S);
-        
+
         for m=1:nMet
             if strcmp(model.mets{m},['fad[' uniqueCompartments{p} ']']);
                 fad_ind=m;
@@ -167,14 +174,14 @@ if 1
                 break;
             end
         end
-        
+
         if ~isempty(fad_ind)  && ~isempty(fadh2_ind) && ~isempty(fum_ind) && ~isempty(succ_ind)
-            
+
             %         %terminate loop (why?)
             %         if exist('fad_ind') && ~exist('fadh2_ind')
             %             break
             %         end
-            
+
             %new metabolites
             model.mets{nMet+1}=['fad_enz_SDH[' uniqueCompartments{p} ']'];
             %model.met(nMet+1).abbreviation=model.mets{nMet+1};
@@ -183,9 +190,9 @@ if 1
 %            model.met(nMet+1).formula=model.met(fad_ind).formula;
             model.metCharges(nMet+1) = model.metCharges(fad_ind);
             model.metFormulas(nMet+1) = model.metFormulas(fad_ind);
-            
+
             model.b(nMet+1)=0;
-            
+
             model.mets{nMet+2}=['fadh2_enz_SDH[' uniqueCompartments{p} ']'];
             model.met(nMet+2).abbreviation=model.mets{nMet+2};
             model.metNames{nMet+2}=[model.mets{nMet+2} ' (bound to Succinate Dehydrogenase)'];
@@ -194,23 +201,23 @@ if 1
             model.metCharges(nMet+2) = model.metCharges(fadh2_ind);
             model.metFormulas(nMet+2) = model.metFormulas(fadh2_ind);
             model.b(nMet+2)=0;
-            
-            
+
+
             %new reactions
             model.rxns{nRxn+1}=['fad_enz_SDH_' uniqueCompartments{p}];
             model.rxnNames{nRxn+1}='fad binding to Succinate Dehydrogenase';
             model.subSystems{nRxn+1}='';
             model.lb(nRxn+1)=-1000;
             model.ub(nRxn+1)=1000;
-            model.c(nRxn+1)=0;            
-            
+            model.c(nRxn+1)=0;
+
             model.rxns{nRxn+2}=['fadh2_enz_SDH_' uniqueCompartments{p}];
             model.rxnNames{nRxn+2}='fadh2 binding to Succinate Dehydrogenase';
             model.subSystems{nRxn+2}='';
             model.lb(nRxn+2)=-1000;
             model.ub(nRxn+2)=1000;
             model.c(nRxn+2)=0;
-            
+
             %change S matrix
             %edit existing reaction Succinate FAD_enz <=> Fumarate + FADH2_enz
             for n=1:nRxn
@@ -219,30 +226,30 @@ if 1
                     fprintf('%s\n',model.rxnNames{n});
                     fprintf('%s\n','Succinate + FAD <=> Fumarate + FADH2','..changed to Succinate + FAD_enz <=> Fumarate + FADH2_enz.');
                     model.rxnNames{n}=[model.rxnNames{n} ' (cofactors bound)'];
-                    
+
                     model.S(nMet+1,n)=model.S(fad_ind,n);
                     model.S(fad_ind,n)=0;
                     model.S(nMet+2,n)=model.S(fadh2_ind,n);
                     model.S(fadh2_ind,n)=0;
                 end
             end
-            
+
             %add FAD associating to Succinate Dehydrogenase
             model.S(fad_ind,nRxn+1)=-1;
             model.S(nMet+1,nRxn+1)=1;
             %add FADH2 associating to Succinate Dehydrogenase
             model.S(fadh2_ind,nRxn+2)=-1;
             model.S(nMet+2,nRxn+2)=1;
-                
+
             %update v2 variables
             model.met(nMet+1).officialName='Flavin adenine dinucleotide oxidized (bound to Succinate Dehydrogenase)';
             model.met(nMet+2).officialName='Flavin adenine dinucleotide reduced (bound to Succinate Dehydrogenase)';
-            
+
             model.met(nMet+1).albertyAbbreviation='fadenzox';
             model.met(nMet+1).albertyName='FAD_enz_ox';
             model.met(nMet+2).albertyAbbreviation='fadenzred';
             model.met(nMet+2).albertyName='FAD_enz_red';
-            
+
             for n=nRxn+1:nRxn+2
                 model.rxn(n).abbreviation=model.rxns{n};
                 model.rxn(n).officialName=model.rxnNames{n};
@@ -272,5 +279,3 @@ model.oldS = [model.oldS, zeros(size(model.oldS,1),(size(model.S,2) - size(model
 model.SIntRxnBool(length(model.SIntRxnBool)+1:size(model.S,2))=1;
 model.SExRxnBool(length(model.SIntRxnBool)+1:size(model.S,2))=0;
 pause(eps)
-
-
