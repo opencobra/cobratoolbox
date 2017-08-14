@@ -380,12 +380,12 @@ table summarizing for each sample the secretion exchange reactions</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.metabotools.computeFluxSplits">
-<code class="descname">computeFluxSplits</code><span class="sig-paren">(</span><em>model</em>, <em>mets</em>, <em>V</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/dataIntegration/metabotools/computeFluxSplits.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.computeFluxSplits" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeFluxSplits</code><span class="sig-paren">(</span><em>model</em>, <em>mets</em>, <em>V</em>, <em>coeffSign</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/dataIntegration/metabotools/computeFluxSplits.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.computeFluxSplits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute relative contributions of fluxes (<cite>V</cite>) to the net production (<cite>P</cite>)
 and consumption (<cite>C</cite>) of a set of metabolites (<cite>mets</cite>)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[P, C, vP, vC] = computeFluxSplits(model, mets, V);</div></blockquote>
+<div>[P, C, vP, vC, s] = computeFluxSplits(model, mets, V, 0);</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -401,6 +401,14 @@ a list of metabolite identifiers from model.mets</li>
 an <cite>n</cite> x <cite>k</cite> matrix of <cite>k</cite> flux distributions</li>
 </ul>
 </div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>coeffSign</strong> &#8211;
+only use the sign of the stoichiometric coefficient
+(i.e. +1 or -1, Default = false)</li>
+</ul>
+</div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -412,8 +420,11 @@ an <cite>n</cite> x <cite>k</cite> matrix of relative contributions to the consu
 an <cite>n</cite> x <cite>k</cite> matrix of net producing fluxes</li>
 <li><strong>vC</strong> &#8211;
 an <cite>n</cite> x <cite>k</cite> matrix of net consuming fluxes</li>
+<li><strong>s</strong> &#8211;
+net stoichiometry of reactions containing metabolites</li>
 </ul>
 </div></blockquote>
+<p>Example: [P,C,vP,vC,s] = computeFluxSplits(model,mets,V,1);</p>
 </dd></dl>
 
 <dl class="function">
