@@ -23,7 +23,7 @@ function [status, message]=xlwrite(filename,A,sheet, range)
 %   FILE    String that specifies the file to write. If the file does not
 %           exist, XLWRITE creates a file, determining the format based on
 %           the specified extension. To create a file compatible with Excel
-%           97-2003 software, specify an extension of '.xls'. If you do not 
+%           97-2003 software, specify an extension of '.xls'. If you do not
 %           specify an extension, XLWRITE applies '.xls'.
 %   ARRAY   Two-dimensional logical, numeric or character array or, if each
 %           cell contains a single element, a cell array.
@@ -32,12 +32,12 @@ function [status, message]=xlwrite(filename,A,sheet, range)
 %           * Positive, integer-valued scalar indicating the worksheet
 %             index.
 %           If SHEET does not exist, XLWRITE adds a new sheet at the end
-%           of the worksheet collection. 
+%           of the worksheet collection.
 %   RANGE   String that specifies a rectangular portion of the worksheet to
 %           read. Not case sensitive. Use Excel A1 reference style.
 %           * If you specify a SHEET, RANGE can either fit the size of
 %             ARRAY or specify only the first cell (such as 'D2').
-%           * If you do not specify a SHEET, RANGE must include both 
+%           * If you do not specify a SHEET, RANGE must include both
 %             corners and a colon character (:), even for a single cell
 %             (such as 'D2:D2').
 %           * If RANGE is larger than the size of ARRAY, Excel fills the
@@ -47,7 +47,7 @@ function [status, message]=xlwrite(filename,A,sheet, range)
 %
 %   Note
 %   * This function requires the POI library to be in your javapath.
-%     To add the Apache POI Library execute commands: 
+%     To add the Apache POI Library execute commands:
 %     (This assumes the POI lib files are in folder 'poi_library')
 %       javaaddpath('poi_library/poi-3.8-20120326.jar');
 %       javaaddpath('poi_library/poi-ooxml-3.8-20120326.jar');
@@ -71,7 +71,7 @@ function [status, message]=xlwrite(filename,A,sheet, range)
 %   20121004 - First version using JExcelApi
 %   20121101 - Modified to use POI library instead of JExcelApi (allows to
 %           generate XLSX)
-%   20121127 - Fixed bug: use existing rows if present, instead of 
+%   20121127 - Fixed bug: use existing rows if present, instead of
 %           overwrite rows by default. Thanks to Dan & Jason.
 %   20121204 - Fixed bug: if a numeric sheet is given & didn't exist,
 %           an error was returned instead of creating the sheet. Thanks to Marianna
@@ -89,7 +89,7 @@ function [status, message]=xlwrite(filename,A,sheet, range)
 if exist('org.apache.poi.ss.usermodel.WorkbookFactory', 'class') ~= 8 ...
     || exist('org.apache.poi.hssf.usermodel.HSSFWorkbook', 'class') ~= 8 ...
     || exist('org.apache.poi.xssf.usermodel.XSSFWorkbook', 'class') ~= 8
-    
+
     error('xlWrite:poiLibsNotLoaded',...
         'The POI library is not loaded in Matlab.\nCheck that POI jar files are in Matlab Java path!');
 end
@@ -136,9 +136,9 @@ if xlsFile.isFile()
     fileIn = java.io.FileInputStream(xlsFile);
     xlsWorkbook = WorkbookFactory.create(fileIn);
 else
-    % Create a new workbook based on the extension. 
+    % Create a new workbook based on the extension.
     [~,~,fileExt] = fileparts(filename);
-    
+
     % Check based on extension which type to create. If no (valid)
     % extension is given, create XLSX file
     switch lower(fileExt)
@@ -148,7 +148,7 @@ else
             xlsWorkbook = XSSFWorkbook();
         otherwise
             xlsWorkbook = XSSFWorkbook();
-            
+
             % Also update filename with added extension
             filename = [filename '.xlsx'];
     end
@@ -158,7 +158,7 @@ end
 if ~isempty(sheet)
     if isnumeric(sheet)
         % Java uses 0-indexing, so take sheetnumer-1
-        % Check if the sheet can exist 
+        % Check if the sheet can exist
         if xlsWorkbook.getNumberOfSheets() >= sheet && sheet >= 1
             xlsSheet = xlsWorkbook.getSheetAt(sheet-1);
         else
@@ -169,11 +169,11 @@ if ~isempty(sheet)
     else
         xlsSheet = xlsWorkbook.getSheet(sheet);
     end
-    
+
     % Create a new sheet if it is empty
     if isempty(xlsSheet)
         warning('xlwrite:AddSheet', 'Added specified worksheet.');
-        
+
         % Add the sheet
         if isnumeric(sheet)
             xlsSheet = xlsWorkbook.createSheet(['Sheet ' num2str(sheet)]);
@@ -183,11 +183,11 @@ if ~isempty(sheet)
             xlsSheet = xlsWorkbook.createSheet(sheet);
         end
     end
-    
+
 else
     % check number of sheets
     nSheets = xlsWorkbook.getNumberOfSheets();
-    
+
     % If no sheets, create one
     if nSheets < 1
         xlsSheet = xlsWorkbook.createSheet('Sheet 1');
@@ -220,11 +220,11 @@ else
         % Define start & end cell
         cellStart = range(1:iSeperator-1);
         cellEnd = range(iSeperator+1:end);
-        
+
         % Create a helper to get the row and column
         cellStart = CellReference(cellStart);
         cellEnd = CellReference(cellEnd);
-        
+
         % Get start & end locations
         iRowStart = cellStart.getRow();
         iColStart = cellStart.getCol();
@@ -245,12 +245,12 @@ end
 % Iterate over all data
 for iRow = iRowStart:iRowEnd
     % Fetch the row (if it exists)
-    currentRow = xlsSheet.getRow(iRow); 
+    currentRow = xlsSheet.getRow(iRow);
     if isempty(currentRow)
         % Create a new row, as it does not exist yet
         currentRow = xlsSheet.createRow(iRow);
     end
-    
+
     % enter data for all cols
     for iCol = iColStart:iColEnd
         % Check if cell exists
@@ -259,18 +259,18 @@ for iRow = iRowStart:iRowEnd
             % Create a new cell, as it does not exist yet
             currentCell = currentRow.createCell(iCol);
         end
-        
+
         % Check if we are still in array A
         if (iRow-iRowStart)<=nRowA && (iCol-iColStart)<=nColA
             % Fetch the data
             data = A{iRow-iRowStart+1, iCol-iColStart+1};
-            
-            if ~isempty(data)          
+
+            if ~isempty(data)
                 % if it is a NaN value, convert it to an empty string
                 if isnumeric(data) && isnan(data)
                     data = '';
                 end
-                
+
                 % Write data to cell
                 currentCell.setCellValue(data);
             end

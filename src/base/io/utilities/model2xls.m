@@ -73,6 +73,7 @@ if ~exist('compSymbols','var')
         [compSymbols,compNames] = getDefaultCompartments();
     end
 end
+
 %Set up xlwrite in case its not set up.
 setupxlwrite();
 
@@ -155,6 +156,7 @@ for i = 1:numel(ExcelFields)
         tmpData(2:end,i) = modelField;
     end
 end
+
 xlwrite(fileName,tmpData,'Metabolite List');
 
 end
