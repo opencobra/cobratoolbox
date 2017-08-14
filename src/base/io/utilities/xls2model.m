@@ -81,7 +81,7 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 warning off
 
 if exist(fileName,'file')
-    [~,sheets,~] = xlsfinfo(fileName);
+    [status, sheets, format] = xlsfinfo(fileName);
     if ~all(ismember({'Reaction List','Metabolite List'},sheets))
         error(['The provided Excel Sheet must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
                '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
