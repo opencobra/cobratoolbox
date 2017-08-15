@@ -13,21 +13,21 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateFieldDescriptionFile'));
 cd(fileDir);
 
-% test variables
+% test variable
 FileName = 'testData_generateFieldDescriptionFile.md';
 
-% rerun the default function and save the output for references
+% rerun the default function and save the output for reference
 generateFieldDescriptionFile();
 fileID = fopen([CBTDIR filesep 'docs' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'], 'r');
 refData_FileString = fscanf(fileID, '%c');
 
-% function outputs
+% function output
 testData_FileString = generateFieldDescriptionFile(FileName);
 
 % test
 assert(isequal(testData_FileString, refData_FileString));
 
-% removal of test fileID
+% removal of test file
 delete 'testData_generateFieldDescriptionFile.md'
 
 % change to old directory
