@@ -15,12 +15,15 @@ cd(fileDir);
 
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model_2 = model;
+model_2.description = struct('name', 'ecoli_core_model_mat');
 
 % function
 outputNetworkOmix(model)
+outputNetworkOmix(model_2)
 
-% test
-assert(isequal(0, 0))
+% removal of the test filesep
+delete 'ecoli_core_model_mat.txt'
 
 % change to old directory
 cd(currentDir);
