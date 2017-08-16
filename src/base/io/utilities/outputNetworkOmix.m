@@ -12,11 +12,11 @@ function outputNetworkOmix(model, rxnBool)
 % OPTIONAL INPUT:
 %    rxnBool:    boolean vector with 1 for each reaction to be exported
 
-if ~exist(rxnBool)
+if nargin < 2
     rxnBool=true(size(model.S,2),1);
 end
 
-filename=[];
+filename = 'networkForOmix';
 if isfield(model,'description')
     if isstruct(model.description)
         if ~isempty(model.description.name)
@@ -25,14 +25,9 @@ if isfield(model,'description')
         end
     else
         filename = strrep( strrep( strrep(model.description,'.','_'), filesep, '_' ), ':','_' );
-
     end
-else
-    filename='networkForOmix';
 end
-if isempty(filename)
-    filename='networkForOmix';
-end
+
 filename=[filename '.txt'];
 fid=fopen(filename,'w');
 
