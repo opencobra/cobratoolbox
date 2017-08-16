@@ -12,7 +12,7 @@ elif [ "$ARCH" == "Windows" ]; then
     echo " -- Launching MATLAB --"
 
     # launch the test suite as a background process
-    nohup "C:\\Program Files\\Matlab\\$MATLAB_VER\\\bin\\matlab.exe" -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "cd test; testAll;" & PID=$!
+    nohup "C:\\Program Files\\Matlab\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "cd test; testAll;" & PID=$!
 
     # follow the log file
     tail -n0 -F --pid=$! output.log 2>/dev/null
