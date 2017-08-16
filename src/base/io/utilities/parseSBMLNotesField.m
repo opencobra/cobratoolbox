@@ -53,7 +53,7 @@ for i = 1:length(fieldList)
     fieldStr = strtrim(fieldTmp{1}{1});
     strfields = strsplit(fieldStr,':');
     %We have several
-    if strcmp(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION')
+    if strcmp(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION') || strcmp(strfields{1}, 'GPR_ASSOCIATION')
         %Remove leading and trailing whitespace, and join the remaining strin again with the : separator
         grRule = strtrim(strjoin(strfields(2:end),':'));
     elseif strcmp(strfields{1},'SUBSYSTEM')
