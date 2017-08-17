@@ -8,6 +8,8 @@ elif [ "$ARCH" == "macOS" ]; then
 elif [ "$ARCH" == "Windows" ]; then
     # change to the build directory
     echo " -- killing the sh process --"
+    nohup "C:\\Windows\\System32\\cmd.exe" /c "SET PATH=%PATH%;"
+    "C:\\Windows\\System32\\cmd.exe" /c "echo %PATH%"
     #nohup "C:\\Windows\\System32\\cmd.exe" /c "taskkill /im ssh-agent.exe /f /fi \"memusage gt 40\" 2>NUL | findstr SUCCESS >NUL && if errorlevel 1 ( echo ssh-agent was not killed ) else ( echo ssh-agent was killed )"
     #nohup "C:\\Windows\\System32\\cmd.exe" /c "taskkill /im sh.exe /f /fi \"memusage gt 40\" 2>NUL | findstr SUCCESS >NUL && if errorlevel 1 ( echo sh was not killed ) else ( echo sh was killed )"
 
