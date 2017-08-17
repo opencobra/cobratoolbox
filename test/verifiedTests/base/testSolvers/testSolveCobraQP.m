@@ -52,7 +52,7 @@ for k = 1:length(solverPkgs)
         assert(any(abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]));
 
         if strcmp(solverPkgs{k}, 'ibm_cplex') && isunix
-            % Note: On windows, the timelimit parameter is not set properly
+            % Note: On windows, the timelimit parameter has no effect
             % test IBM-Cplex-specific parameters. No good example for testing this. Just test time limit
             QPsolution = solveCobraQP(QPproblem, struct('timelimit', 0.0), 'printLevel', 0);
             % no solution because zero time is given and cplex status = 11
