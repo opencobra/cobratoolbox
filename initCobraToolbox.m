@@ -172,6 +172,8 @@ function initCobraToolbox()
             fprintf(strrep(result_setSSLVerify, '\', '\\'));
             warning('Your global git configuration could not be changed.');
         end
+        [status_gitSubmodule, result_gitSubmodule] = system('git --exec-path')
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule')
 
         % Update/initialize submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
