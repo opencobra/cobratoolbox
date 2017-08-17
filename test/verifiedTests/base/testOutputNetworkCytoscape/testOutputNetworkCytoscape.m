@@ -19,9 +19,18 @@ cd(fileDir);
 
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
+%additional tests to check all options
+outputNetworkCytoscape(model, 'data');
+outputNetworkCytoscape(model, 'data', [], [], [], [], 0); %up to 8
+outputNetworkCytoscape(model, 'data', model.rxns, {'1'}, model.mets, {'1'}, 0);
+outputNetworkCytoscape(model, 'data', model.rxns, ['1'], model.mets, ['1'], 0);
+outputNetworkCytoscape(model, 'data', model.rxns, ['1', '2'], model.mets, [], 0);
+outputNetworkCytoscape(model, 'data', model.rxns, {'1', '2'}, model.mets, {'1', '2'}, 0);
+outputNetworkCytoscape(model, 'data', model.rxns, ['1'], model.mets, ['1', '2'], 0);
+outputNetworkCytoscape(model, 'data', model.rxns, [], model.mets, ['1'], 0);
+outputNetworkCytoscape(model, 'data', model.rxns, ['1'], model.mets, [], 0);
 %call function
 notShownMets = outputNetworkCytoscape(model, 'data', model.rxns, [], model.mets, [], 100);
-
 testFiles = {'test.sif', 'test_edgeType.noa', 'test_nodeComp.noa', 'test_nodeType.noa', 'test_subSys.noa'};
 
 %call test
