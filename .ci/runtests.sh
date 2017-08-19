@@ -25,20 +25,25 @@ elif [ "$ARCH" == "Windows" ]; then
     #nohup "C:\\Windows\\System32\\cmd.exe" /c "taskkill /im sh.exe /f /fi \"memusage gt 40\" 2>NUL | findstr SUCCESS >NUL && if errorlevel 1 ( echo sh was not killed ) else ( echo sh was killed )"
 
     echo " -- changing to the build directory --"
+    sh
+
     cd "/cygdrive/d/jenkins/workspace/COBRAToolbox-windows/MATLAB_VER/R2016b/label/windows-biocore"
     #cd "D:\\jenkins\\workspace\\COBRAToolbox-windows\\MATLAB_VER\\$MATLAB_VER\\label\\windows-biocore"
     #echo " -- setting the git exec path --"
     #nohup "C:\\Windows\\System32\\cmd.exe" /c "SET GIT_EXEC_PATH=C:\Program Files\Git"
+
 
     echo " -- launching MATLAB --"
     unset Path
     # launch the test suite as a background process
     #matlab -logfile output.log -wait -r "system('which sh'); system('which git'); system('git --version'); system('whoami'); system('pwd'); system('git submodule');"
     nohup "/cygdrive/c/Program Files/MATLAB/R2016b/bin/matlab" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "system('which sh'); system('which git'); system('git --version'); system('whoami'); system('pwd'); system('git submodule'); exit;" & PID=$!
+#    nohup "C:\\Program Files\\Matlab\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "system('which sh'); system('which git'); system('git --version'); system('whoami'); system('pwd'); system('git submodule'); exit;" & PID=$!
+
     #nohup "C:\\Program Files\\Matlab\\$MATLAB_VER\\\bin\\matlab.exe"  -useStartupFolderPref -logfile output.log -wait -r "system('which git'); system('git --version'); system('whoami'); system('pwd'); initCobraToolbox" & PID=$! #cd test; testAll;
     #"C:\\Program Files\\Matlab\\R2016b\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "initCobraToolbox;" -nojvm -nodesktop -nosplash
     # follow the log file
-    #tail -n0 -F --pid=$! output.log 2>/dev/null
+    tail -n0 -F --pid=$! output.log 2>/dev/null
 
     # wait until the background process is done
     wait $PID
