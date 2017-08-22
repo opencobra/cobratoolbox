@@ -1,4 +1,4 @@
-% The COBRAToolbox: testListBiGGMOdels.m
+% The COBRAToolbox: testListBiGGModels.m
 %
 % Purpose:
 %     - test the listBiGGModels function
@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testListBiGGMOdels'));
+fileDir = fileparts(which('testListBiGGModels'));
 cd(fileDir);
 
 % test variables
