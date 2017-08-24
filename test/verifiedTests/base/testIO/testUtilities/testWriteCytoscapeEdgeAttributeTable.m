@@ -38,17 +38,17 @@ fclose(testFile);
 
 assert(isequal(refVar, testVar))
 
-refFile_2 = fopen('refData_ecoli_core_model.matedgeAttributes.txt', 'r');
+refFile_2 = fopen('refData_ecoli_core_model_edgeAttributes.txt', 'r');
 refVar_2 = fscanf(refFile_2, '%c');
 fclose(refFile_2);
-testFile_2 = fopen('ecoli_core_model.matedgeAttributes.txt', 'r');
+testFile_2 = fopen('ecoli_core_model_edgeAttributes.txt', 'r');
 testVar_2 = fscanf(testFile_2, '%c');
 fclose(testFile_2);
 
 assert(isequal(refVar_2, testVar_2))
 
 % removal of the created files
-delete 'ecoli_core_model.matedgeAttributes.txt';
+delete 'ecoli_core_model_edgeAttributes.txt';
 delete 'edgeAttributes.txt';
 
 % change to old directory
