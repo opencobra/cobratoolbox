@@ -1,5 +1,15 @@
-function v = checkThermodynamicConsistency(model,q)
+function v = checkThermodynamicConsistency(model, q)
+% USAGE:
 %
+%    v = checkThermodynamicConsistency(model, q)
+%
+% INPUTS:
+%    model:
+%    q:
+%
+% OUTPUT:
+%    v:
+
 S=model.S;
 [m,n]=size(S);
 
@@ -47,7 +57,7 @@ Inn=speye(n,n);
 A=[S*Q*S'  Omn  Omn;
      Q*S' -Inn  Onn;
      Q*S'  Onn  Inn];
- 
+
 b=[Sb;
    model.lb;
    model.ub];
@@ -79,4 +89,3 @@ if norm(v)>0
 else
     fprintf('%s\n','For this Q, no thermodynamically consistent production of biomass exists.')
 end
-
