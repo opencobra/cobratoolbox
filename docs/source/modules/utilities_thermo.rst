@@ -6,5 +6,5 @@ Utilities
 ---------
 
 
-.. automodule:: src.analysis.thermo.utilities_thermo
+.. automodule:: src.analysis.thermo.utilities
    :members:

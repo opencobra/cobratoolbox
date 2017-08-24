@@ -6,5 +6,5 @@ Transport
 ---------
 
 
-.. automodule:: src.analysis.thermo.transport_thermo
+.. automodule:: src.analysis.thermo.transport
    :members:
