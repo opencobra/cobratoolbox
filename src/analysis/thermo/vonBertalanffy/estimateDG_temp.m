@@ -1,57 +1,55 @@
-function model = estimateDrGt0(model)
+function model = estimateDG_temp(model)
 % Estimate standard transformed Gibbs energies of formation for metabolites
-% 
-% model = estimateDGt0(model)
-% 
-% INPUTS
-% model                 Model structure with following fields:
-% .S                    m x n stoichiometric matrix.
-% .mets                 m x 1 array of metabolite identifiers.
-% .metFormulas          m x 1 cell array of metabolite formulas. Formulas
-%                       for protons should be H.
-% .metCharges           m x 1 array of metabolite charges.
-% .T                    Temperature in Kelvin.
-% .cellCompartments     c x 1 array of cell compartment identifiers.
-% .ph                   c x 1 array of compartment specific pH values.
-% .is                   c x 1 array of compartment specific ionic strength
-%                       values in mol/L.
-% .chi                  c x 1 array of compartment specific electrical
-%                       potential values in mV.
-% .metCompartments      m x 1 cell array of compartment assignments for
-%                       metabolites in model.mets. Compartment identifiers
-%                       should be the same as in model.cellCompartments.
-% .DfG0                 m x 1 array of standard Gibbs energies of
-%                       formation.
-% .pKa                  m x 1 structure array with metabolite pKa values.
-% 
-% OUTPUTS
-% model                 Model structure with following fields added:
-% .DfG0_pseudoisomers   Four column matrix with pseudoisomer standard Gibbs
-%                       energies of formation in kJ/mol.
-%                       Column 1. Row index of pseudoisomer group in
-%                       model.S.
-%                       Column 2. Standard Gibbs energy of formation.
-%                       Column 3. Number of hydrogen atoms.
-%                       Column 4. Charge.
-% .DfGt0                Standard transformed Gibbs energies of formation in
-%                       kJ/mol.
-% .DrGt0                Standard transformed reaction Gibbs energy in
-%                       kJ/mol.
-% 
-% Elad Noor, Nov. 2012
-% Hulda SH, Nov. 2012   Added support for compartments with different pH
-%                       and I. Added adjustment to DrGt0 for transport
-%                       across membranes.
+%
+% USAGE:
+%
+%    model = estimateDG_temp(model)
+%
+% INPUT:
+%    model:    Model structure with following fields:
+%
+%                * .S - `m x n` stoichiometric matrix.
+%                * .mets - `m x 1` array of metabolite identifiers.
+%                * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas
+%                  for protons should be 'H'.
+%                * .metCharges - `m x 1` array of metabolite charges.
+%                * .T - Temperature in Kelvin.
+%                * .cellCompartments - `c x 1` array of cell compartment identifiers.
+%                * .ph - `c x 1` array of compartment specific pH values.
+%                * .is - `c x 1` array of compartment specific ionic strength
+%                  values in mol/L.
+%                * .chi - `c x 1` array of compartment specific electrical
+%                  potential values in mV.
+%                * .metCompartments - `m x 1` cell array of compartment assignments for
+%                  metabolites in `model.mets`. Compartment identifiers
+%                  should be the same as in `model.cellCompartments`.
+%                * .DfG0 - `m x 1` array of standard Gibbs energies of formation.
+%                * .pKa - `m x 1` structure array with metabolite pKa values.
+%
+% OUTPUT:
+%    model:    Model structure with following fields added:
+%
+%                * .DfG0_pseudoisomers   Four column matrix with pseudoisomer standard Gibbs
+%                  energies of formation in kJ/mol.
+%
+%                  * Column 1. Row index of pseudoisomer group in `model.S`.
+%                  * Column 2. Standard Gibbs energy of formation.
+%                  * Column 3. Number of hydrogen atoms.
+%                  * Column 4. Charge.
+%                * .DfGt0 - Standard transformed Gibbs energies of formation in kJ/mol.
+%                * .DrGt0 - Standard transformed reaction Gibbs energy in kJ/mol.
+%
+% .. Authors:
+%       - Elad Noor, Nov. 2012
+%       - Hulda SH, Nov. 2012   Added support for compartments with different pH
+%         and I. Added adjustment to DrGt0 for transport across membranes.
+%
+% .. model.DrG0 = model.S' * model.DfG0;
+%    model.ur = sqrt(diag(model.S'*model.covf*model.S));
+%    model.ur(model.ur >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
+%    model.ur(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
 
-
-% model.DrG0 = model.S' * model.DfG0;
-% model.ur = sqrt(diag(model.S'*model.covf*model.S));
-% model.ur(model.ur >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-% model.ur(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
-
-
-% Configure model.cellCompartments
-model.cellCompartments = reshape(model.cellCompartments,length(model.cellCompartments),1);
+model.cellCompartments = reshape(model.cellCompartments,length(model.cellCompartments),1); % Configure model.cellCompartments
 if ischar(model.cellCompartments)
     model.cellCompartments = strtrim(cellstr(model.cellCompartments));
 end
@@ -71,7 +69,7 @@ for i = 1:length(model.mets)
     pH  = model.ph(strcmp(model.cellCompartments,model.metCompartments{i}));
     I   = model.is(strcmp(model.cellCompartments,model.metCompartments{i}));
     chi = model.chi(strcmp(model.cellCompartments,model.metCompartments{i}));
-    
+
     if 1
         %Elad and Hulda's code
         diss = model.pKa(i);
@@ -150,5 +148,3 @@ deltaPH = model.S' * diag(model_nHs) * metCompartmentBool * -(R * T * log(10) * 
 model_zs = double(model.metCharges);
 deltaCHI = model.S' * diag(model_zs) * metCompartmentBool * F * model.chi/1000; % Adjustment due to compartmental differences in electrical potential
 model.DrGt0 = model.DrGt0 + deltaPH + deltaCHI;
-
-

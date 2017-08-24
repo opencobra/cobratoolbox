@@ -1,9 +1,26 @@
-function model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel)
-% Configures inputs to setupThermoModel (sets defaults etc.).
-% INPUTS
+function model = configureSetupThermoModelInputs(model, T, compartments, ph, is, chi, concMinDefault, concMaxDefault, confidenceLevel)
+% Configures inputs to `setupThermoModel` (sets defaults etc.). All optional inputs are empty by default.
 %
-% OUTPUTS
+% USAGE:
 %
+%    model = configureSetupThermoModelInputs(model, T, compartments, ph, is, chi, concMinDefault, concMaxDefault, confidenceLevel)
+%
+% INPUT:
+%    model:
+%
+% OPTIONAL INPUTS:
+%    T:
+%    compartments:
+%    ph:
+%    is:
+%    chi:
+%    concMinDefault:
+%    concMaxDefault:
+%    confidenceLevel:
+%
+% OUTPUT:
+%    model:
+
 if ~isfield(model,'metCompartments')
     model.metCompartments = [];
 end
@@ -114,7 +131,7 @@ end
 
 nCompartments = length(compartments);
 if length(ph) ~= nCompartments || length(is) ~= nCompartments || length(chi) ~= nCompartments
-   error('The variables compartments, ph, is, and chi should have equal length.') 
+   error('The variables compartments, ph, is, and chi should have equal length.')
 end
 
 missingCompartments = setdiff(unique(model.metCompartments),compartments);
@@ -122,10 +139,10 @@ if ~isempty(missingCompartments)
     default_ph = 7; % Default pH
     default_is = 0; % Default ionic strength in mol/L
     default_chi = 0; % default electrical potential in mV
-    
+
     fprintf(['\nph, is and chi not specified for compartments: ' regexprep(sprintf('%s, ',missingCompartments{:}),'(,\s)$','.') '\n']);
     fprintf('Setting ph = %.2f, is = %.2f M and chi = %.2f mV in these compartments.\n',default_ph,default_is,default_chi);
-    
+
     compartments = [compartments; missingCompartments];
     ph = [ph; default_ph*ones(length(missingCompartments),1)];
     is = [is; default_is*ones(length(missingCompartments),1)];
@@ -133,10 +150,10 @@ if ~isempty(missingCompartments)
 end
 
 if any(ph < 4.7 | ph > 9.3)
-   error(['pH in compartments: ' regexprep(sprintf('%s, ',compartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']); 
+   error(['pH in compartments: ' regexprep(sprintf('%s, ',compartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']);
 end
 if any(is < 0 | is > 0.35)
-   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',compartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']); 
+   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',compartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']);
 end
 
 model.compartments = compartments;
@@ -159,7 +176,7 @@ else
         model.concMin = concMinDefault*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
     end
 end
-    
+
 if isfield(model,'concMax')
     model.concMax = reshape(model.concMax,size(model.S,1),1);
     if isempty(concMaxDefault)
@@ -227,4 +244,3 @@ model.confidenceLevel = confidenceLevel;
 % p=p+1;
 % compartments{p,1}='i';
 % compartments{p,2}='intermembrane space in mitochondria';
-

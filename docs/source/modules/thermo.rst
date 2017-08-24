@@ -19,6 +19,7 @@ Thermo
    thermoFBA
    transport_thermo
    utilities_thermo
+   vonBertalanffy
 
 .. automodule:: src.analysis.thermo
    :members:
