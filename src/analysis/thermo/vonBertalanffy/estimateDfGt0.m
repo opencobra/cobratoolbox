@@ -1,5 +1,5 @@
 function model = estimateDfGt0(model, confidenceLevel)
-% Estimate standard transformed Gibbs energies of formation for metabolites
+% Estimates standard transformed Gibbs energies of formation for metabolites
 %
 % USAGE:
 %
@@ -30,12 +30,12 @@ function model = estimateDfGt0(model, confidenceLevel)
 %                            metabolites that are not covered by component contributions.
 %
 % OPTIONAL INPUT:
-%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for DGft0
-%                        and DrGt0 interval estimates. Default is 0.95,
+%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for `DGft0`
+%                        and `DrGt0` interval estimates. Default is 0.95,
 %                        corresponding to 95% confidence intervals.
 %
 % OUTPUT:
-% model:                 Model structure with following fields added:
+%    model:              Model structure with following fields added:
 %
 %                          * .DfG0_pseudoisomers - Four column matrix with pseudoisomer standard Gibbs
 %                            energies of formation in kJ/mol.

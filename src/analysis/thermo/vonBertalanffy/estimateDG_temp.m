@@ -1,5 +1,5 @@
 function model = estimateDG_temp(model)
-% Estimate standard transformed Gibbs energies of formation for metabolites
+% Estimates standard transformed Gibbs energies of formation for metabolites
 %
 % USAGE:
 %
@@ -29,7 +29,7 @@ function model = estimateDG_temp(model)
 % OUTPUT:
 %    model:    Model structure with following fields added:
 %
-%                * .DfG0_pseudoisomers   Four column matrix with pseudoisomer standard Gibbs
+%                * .DfG0_pseudoisomers - Four column matrix with pseudoisomer standard Gibbs
 %                  energies of formation in kJ/mol.
 %
 %                  * Column 1. Row index of pseudoisomer group in `model.S`.

@@ -35,9 +35,13 @@ function pseudoisomers = estimate_pKa(mets, inchi, npKas, takeMajorTaut)
 % REQUIRES
 % cxcalc - ChemAxon's Calculator plugin, with licence,
 % cxcalc is part of Marvin Beans, available by academic licence from ChemAxon
+%
 % https://www.chemaxon.com/download/marvin-suite/#mbeans
+%
 % https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
+%
 % https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
+%
 % https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
 %
 % .. Author: - Hulda SH, Nov. 2012, Ronan Fleming 2016
