@@ -1,29 +1,30 @@
 function model = assignQuantDir(model)
 % Quantitatively assigns reaction directionality based on estimated bounds
 % on transformed reaction Gibbs energies
-% 
-% INPUTS
-% model
-% .SIntRxnBool          n x 1 boolean of internal reactions
-% .DrGtMin              n x 1 array of estimated lower bounds on
-%                       transformed reaction Gibbs energies.
-% .DrGtMax              n x 1 array of estimated upper bounds on
-%                       transformed reaction Gibbs energies.
-
-% 
-% OUTPUTS
-%   directions.fwdThermoOnlyBool
-%   directions.revThermoOnlyBool
-%   directions.reversibleThermoOnlyBool
-
-% model
-% .quantDir             n x 1 array indicating quantitatively assigned
-%                       reaction directionality. 1 for reactions that are
-%                       irreversible in the forward direction, -1 for
-%                       reactions that are irreversible in the reverse
-%                       direction, and 0 for reversible reactions.
-% 
-% Hulda SH, Nov. 2012
+%
+% USAGE:
+%
+%    model = assignQuantDir(model)
+%
+% INPUT:
+%    model:    structure with fields:
+%
+%                * .SIntRxnBool - `n x 1` boolean of internal reactions
+%                * .DrGtMin - `n x 1` array of estimated lower bounds on
+%                  transformed reaction Gibbs energies.
+%                * .DrGtMax - `n x 1` array of estimated upper bounds on
+%                  transformed reaction Gibbs energies.
+%
+% OUTPUT:
+%    model:    structure with fields:
+%
+%                * .quantDir - `n x 1` array indicating quantitatively assigned
+%                  reaction directionality. 1 for reactions that are
+%                  irreversible in the forward direction, -1 for
+%                  reactions that are irreversible in the reverse
+%                  direction, and 0 for reversible reactions.
+%
+% .. Author: - Hulda SH, Nov. 2012
 
 model.NaNdfG0MetBool=isnan(model.DfGt0);
 model.NaNd0GRxnBool = isnan(model.DrGt0);
