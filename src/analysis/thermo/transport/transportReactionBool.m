@@ -1,20 +1,26 @@
-function [transportRxnBool]=transportReactionBool(model,originCompartment,destinationCompartment,unidirectionalBool)
-%Return a boolean vector indicating which reactions transport between compartments.
+function [transportRxnBool] = transportReactionBool(model, originCompartment, destinationCompartment, unidirectionalBool)
+% Return a boolean vector indicating which reactions transport between compartments.
 %
-% INPUT
-% model.S       
-% model.mets
+% USAGE:
 %
-% OPTIONAL INPUT
-% originCompartment       origin compartment (only relevant for unidirectional)
-% destinationCompartment         destination compartment (only relevant for unidirectional)
-% unidirectionalBool    1 = only return transport reactions between specified
-%                       compartments in the origin to destination direction
+%    [transportRxnBool] = transportReactionBool(model, originCompartment, destinationCompartment, unidirectionalBool)
 %
-% OUTPUT
-% transportRxnBool  boolean vector indicating transport reactions
-% 
-%Ronan M.T. Fleming
+% INPUT:
+%    model:                     COBRA model structure with fields:
+%
+%                                 * .S
+%                                 * .mets
+%
+% OPTIONAL INPUTS:
+%    originCompartment:         origin compartment (only relevant for unidirectional)
+%    destinationCompartment:    destination compartment (only relevant for unidirectional)
+%    unidirectionalBool:        1 = only return transport reactions between specified
+%                               compartments in the origin to destination direction
+%
+% OUTPUT:
+%    transportRxnBool:          boolean vector indicating transport reactions
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('originCompartment','var')
     originCompartment='null';
@@ -43,7 +49,7 @@ end
 
 transportRxnBool=false(nRxn,1);
 
-[compartments,uniqueCompartments]=getCompartment(model.mets);  
+[compartments,uniqueCompartments]=getCompartment(model.mets);
 
 for n=1:nRxn
     originCompartments=compartments(S(:,n)<0);

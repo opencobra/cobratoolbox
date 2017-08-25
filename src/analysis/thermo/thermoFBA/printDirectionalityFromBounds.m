@@ -1,19 +1,22 @@
-function directionality=printDirectionalityFromBounds(model,lb,ub)
-%prints the directionality for each reaction depending on the bounds for
-%each reaction. Defaults to using model.lb &  model.ub if none provided
+function directionality = printDirectionalityFromBounds(model, lb, ub)
+% Prints the directionality for each reaction depending on the bounds for
+% each reaction. Defaults to using `model.lb` &  `model.ub` if none provided
 %
-% INPUT
-% model
+% USAGE:
 %
-% OPTIONAL INPUT
-% lb        flux lower bounds
-% ub        flux upper bounds
+%    directionality = printDirectionalityFromBounds(model, lb, ub)
 %
-% OUTPUT
-% directionality    n x 1 cell array of strings with directionality for
-%                   each reaction
+% INPUT:
+%    model:             COBRA model structure
 %
-%Ronan M. T. Fleming
+% OPTIONAL INPUTS:
+%    lb:                flux lower bounds
+%    ub:                flux upper bounds
+%
+% OUTPUT:
+%    directionality:    `n x 1` cell array of strings with directionality for each reaction
+%
+% .. Author: - Ronan M. T. Fleming
 
 [nMet,nRxn]=size(model.S);
 
@@ -41,5 +44,3 @@ for n=1:nRxn
         end
     end
 end
-            
-            

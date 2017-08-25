@@ -1,17 +1,23 @@
-function y0=consistentPotentials(model,printLevel)
-%find a consistent set of potentials for each metabolite in a biochemical
-%network, given the directions specified by the bounds on each reaction
+function y0 = consistentPotentials(model, printLevel)
+% Find a consistent set of potentials for each metabolite in a biochemical
+% network, given the directions specified by the bounds on each reaction
+% i.e. find y0, such that :math:`S^T y_0 < 0` for a forward reaction and the opposite
+% for reverse.
 %
-% i.e. find y0, such that S'*y0<0 for a forward reaction and the opposite
-% for reverse
-% 
-%INPUT
-%model.S
-%model.lb
-%model.ub
+% USAGE:
 %
-%OUTPUT
-% y0    consistent set of chemical potentials
+%    y0 = consistentPotentials(model, printLevel)
+%
+% INPUTS:
+%    model:         structure with fields:
+%
+%                     * .S
+%                     * .lb
+%                     * .ub
+%    printLevel:    verbose level
+%
+% OUTPUT:
+%    y0:            consistent set of chemical potentials
 
 if ~isfield(model,'SIntRxnBool')
     %finds the reactions in the model which export/import from the model
@@ -77,7 +83,7 @@ end
 %
 % solution = solveCobraQP(QPproblem,parameters)
 %
-% % Solves problems of the type 
+% % Solves problems of the type
 %
 %      min   0.5 x' * F * x + osense * c' * x
 %      s/t   lb <= x <= ub
@@ -91,7 +97,7 @@ solution = solveCobraQP(QPproblem,'printLevel',printLevel);
 %  obj      Objective value
 %  solver   Solver used to solve QP problem
 %  stat     Solver status in standardized form (see below)
-%  origStat Original status returned by the specific solver 
+%  origStat Original status returned by the specific solver
 %  time     Solve time in seconds
 %
 %  stat     Solver status in standardized form

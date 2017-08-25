@@ -1,15 +1,17 @@
-function metaboliteMassBalancePlot(model,metAbbr,solution,N)
-%plots the top N reactions producing and consuming a metabolite in a flux
-%solution
+function metaboliteMassBalancePlot(model, metAbbr, solution, N)
+% Plots the top N reactions producing and consuming a metabolite in a flux solution
 %
-%INPUT
-% model
-% metAbbr       metabolite abbreviation
-% solution      solveCobraLP output of a solution to FBA problem
-% N             Number of reactions to include for production/consumption
+% USAGE:
 %
-%Ronan M.T. Fleming
-
+%    metaboliteMassBalancePlot(model, metAbbr, solution, N)
+%
+% INPUTS:
+%    model:       COBRA model structure
+%    metAbbr:     metabolite abbreviation
+%    solution:    `solveCobraLP` output of a solution to FBA problem
+%    N:           Number of reactions to include for production/consumption
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 
