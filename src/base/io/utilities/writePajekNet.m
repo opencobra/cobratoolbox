@@ -26,7 +26,7 @@ m = length(model.mets); %reaction and metabolite number
 n = length(model.rxns);
 
 %performs one FBA
-FBA = solveCobraLPCPLEX(model, 1, 0, 0, [], 0);
+FBA = solveCobraLP(model);
 
 %creats a .net file
 fileID = fopen('COBRAmodel.net', 'w');
