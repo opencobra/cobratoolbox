@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Analysis &mdash; The COBRA Toolbox</title>
+  <title>Transport &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Functions" href="index.html"/>
-        <link rel="next" title="FBA" href="FBA.html"/>
-        <link rel="prev" title="optForceGAMS" href="optForceGAMS.html"/> 
+        <link rel="up" title="Thermo" href="thermo.html"/>
+        <link rel="next" title="Utilities" href="utilities_thermo.html"/>
+        <link rel="prev" title="thermoFBA" href="thermoFBA.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
@@ -108,7 +108,21 @@
 <li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
-<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermo</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="thermo.html">Thermo</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalData.html">experimentalData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="inchi.html">inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="molFiles.html">molFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="protons.html">protons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="thermoFBA.html">thermoFBA</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities_thermo.html">Utilities</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
@@ -173,7 +187,11 @@
         
           <li><a href="index.html">Functions</a> &raquo;</li>
         
-      <li>Analysis</li>
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="thermo.html">Thermo</a> &raquo;</li>
+        
+      <li>Transport</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -190,79 +208,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="analysis">
-<span id="id1"></span><h1>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="FBA.html">FBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FVA.html">FVA</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fastFVA.html">fastFVA</a></li>
+  <div class="section" id="module-src.analysis.thermo.transport">
+<span id="transport"></span><span id="transport-thermo"></span><h1>Transport<a class="headerlink" href="#module-src.analysis.thermo.transport" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="src.analysis.thermo.transport.transportReactionBool">
+<code class="descname">transportReactionBool</code><span class="sig-paren">(</span><em>model</em>, <em>originCompartment</em>, <em>destinationCompartment</em>, <em>unidirectionalBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/transport/transportReactionBool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.transport.transportReactionBool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a boolean vector indicating which reactions transport between compartments.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[transportRxnBool] = transportReactionBool(model, originCompartment, destinationCompartment, unidirectionalBool)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with fields:<ul>
+<li>.S</li>
+<li>.mets</li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="MOMA.html">MOMA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coupling.html">Coupling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deletion.html">Deletion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="exploration.html">Exploration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SteadyCom.html">SteadyCom</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="subroutines.html">Subroutines</a></li>
 </ul>
-</li>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>originCompartment</strong> &#8211;
+origin compartment (only relevant for unidirectional)</li>
+<li><strong>destinationCompartment</strong> &#8211;
+destination compartment (only relevant for unidirectional)</li>
+<li><strong>unidirectionalBool</strong> &#8211;
+1 = only return transport reactions between specified
+compartments in the origin to destination direction</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subspaces.html">Subspaces</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rank.html">Rank</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rowReduce.html">rowReduce</a></li>
-<li class="toctree-l2"><a class="reference internal" href="subspaceProjection.html">subspaceProjection</a></li>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>transportRxnBool</strong> &#8211;
+boolean vector indicating transport reactions</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="thermo.html">Thermo</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
-<li class="toctree-l2"><a class="reference internal" href="experimentalData.html">experimentalData</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="alberty2006.html">alberty2006</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inchi.html">inchi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="molFiles.html">molFiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="protons.html">protons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="thermoFBA.html">thermoFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transport_thermo.html">Transport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities_thermo.html">Utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="topology.html">Topology</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="circuits.html">Circuits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="extremeRays.html">extremeRays</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lrs.html">lrs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="lrsInterface.html">lrsInterface</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="optimalRays.html">optimalRays</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="FR.html">FR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rumba.html">rumba</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coupling.html">Coupling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uFBA.html">uFBA</a></li>
-</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
-<span class="target" id="module-src.analysis"></span></div>
 
 
            </div>
@@ -274,10 +261,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FBA.html" class="btn btn-neutral float-right" title="FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="utilities_thermo.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="optForceGAMS.html" class="btn btn-neutral" title="optForceGAMS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="thermoFBA.html" class="btn btn-neutral" title="thermoFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

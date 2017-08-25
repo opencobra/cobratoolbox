@@ -212,36 +212,6 @@ The Model including a rxnGeneMat field.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.io.utilities.cobra_struct_to_sbml_struct">
-<code class="descname">cobra_struct_to_sbml_struct</code><span class="sig-paren">(</span><em>model</em>, <em>sbml_level</em>, <em>sbml_version</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/base/io/utilities/cobra_struct_to_sbml_struct.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.cobra_struct_to_sbml_struct" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a cobra structure to an sbml
-structure using the structures provided in the SBML toolbox 3.0.0</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_version)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-<li><strong>sbml_level</strong> &#8211;
-default = 2</li>
-<li><strong>sbml_version</strong> &#8211;
-default = 1</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>sbml_model</strong> &#8211;
-sbml structure</li>
-</ul>
-</div></blockquote>
-<p>The name mangling of reaction and metabolite ids is necessary
-for compliance with the SBML sID standard.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.base.io.utilities.convertOldStyleModel">
 <code class="descname">convertOldStyleModel</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/base/io/utilities/convertOldStyleModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.convertOldStyleModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts several old fields to their replacement.</p>

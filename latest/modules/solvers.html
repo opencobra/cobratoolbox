@@ -1478,9 +1478,10 @@ See <cite>basisReuse</cite></li>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>printLevel</strong> &#8211;
-Printing level in the CPLEX m-file and CPLEX C-interface.<ul>
+<div><ul>
+<li><p class="first"><strong>printLevel</strong> &#8211;
+Printing level in the CPLEX m-file and CPLEX C-interface.</p>
+<ul class="simple">
 <li>0 - Silent</li>
 <li>1 - Warnings and Errors</li>
 <li>2 - Summary information (Default)</li>
@@ -1488,10 +1489,11 @@ Printing level in the CPLEX m-file and CPLEX C-interface.<ul>
 <li>&gt; 10 - Pause statements, and maximal printing (debug mode)</li>
 </ul>
 </li>
-<li><strong>basisReuse</strong> &#8211;
+<li><p class="first"><strong>basisReuse</strong> &#8211;
 0 - Use this for one of solution of an LP (Default);
-1 - Returns a basis for reuse in the next LP i.e. outputs <cite>model.LPBasis</cite></li>
-<li><strong>conflictResolve</strong> &#8211;
+1 - Returns a basis for reuse in the next LP i.e. outputs <cite>model.LPBasis</cite></p>
+</li>
+<li><p class="first"><strong>conflictResolve</strong> &#8211;
 0 (Default);
 1 If LP problem is proven to be infeasible by CPLEX,
 it will print out a &#8216;conflict resolution file&#8217;,
@@ -1499,24 +1501,42 @@ which indicates the irreducible infeasible set of
 equaltiy &amp; inequality constraints that together,
 combine to make the problem infeasible. This is
 useful for debugging an LP problem if you want to
-try to resolve a constraint conflict</li>
-<li><strong>contFunctName</strong> &#8211;<ol class="arabic">
+try to resolve a constraint conflict</p>
+</li>
+<li><p class="first"><strong>contFunctName</strong> &#8211;
+structure or function with parameters (only for <cite>tomlab_cplex</cite> or <cite>ILOGcomplex</cite>)</p>
+<ul>
+<li><p class="first">when using the <cite>tomlab_cplex</cite> interface</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>contFunctName = [] Use all default CLPEX control parameters, (Default);</li>
 <li>contFunctName = someString e.g. &#8216;someFunctionName&#8217;
 uses the user specified control parameters defined
-in <cite>someFunctionName.m</cite>
-(see template function CPLEXParamSet for details).</li>
+in <cite>someFunctionName.m</cite> (see template function CPLEXParamSet for details).</li>
 <li>contFunctName = <cite>cpxControl</cite> structure (output from a file like <cite>CPLEXParamSet.m</cite>)</li>
 </ol>
+</div></blockquote>
 </li>
-<li><strong>minNorm</strong> &#8211;
+<li><p class="first">when using the <cite>ILOGcomplex</cite> interface (parameter structure for Cplex). The full set of parameters can be obtained by calling <cite>Cplex().Param</cite>. For example:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>[solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display, solverParams.sifting.display, solverParams.conflict.display] = deal(0);</cite></li>
+<li><cite>[solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9, 1e-8);</cite></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>minNorm</strong> &#8211;
 {(0), 1 , <cite>n x 1</cite> vector} If not zero then, minimise the Euclidean length
 of the solution to the LP problem. Gives the same objective,
 but minimises the square of flux. <cite>minNorm</cite> ~1e-6 should be
-high enough for regularisation yet keep the same objective</li>
-<li><strong>interface</strong> &#8211;
+high enough for regularisation yet keep the same objective</p>
+</li>
+<li><p class="first"><strong>interface</strong> &#8211;
 {&#8216;ILOGcomplex&#8217;, &#8216;ILOGsimple&#8217;, &#8216;tomlab_cplex&#8217;}
-Default is the tomlab_cplex interface</li>
+Default is the <cite>tomlab_cplex</cite> interface</p>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>

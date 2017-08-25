@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>experimentalDesign &mdash; The COBRA Toolbox</title>
+  <title>thermoFBA &mdash; The COBRA Toolbox</title>
   
 
   
@@ -40,8 +40,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Thermo" href="thermo.html"/>
-        <link rel="next" title="experimentalData" href="experimentalData.html"/>
-        <link rel="prev" title="directionalityReport" href="directionalityReport.html"/> 
+        <link rel="next" title="Transport" href="transport_thermo.html"/>
+        <link rel="prev" title="reactantContribution" href="reactantContribution.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -111,14 +111,14 @@
 <li class="toctree-l3 current"><a class="reference internal" href="thermo.html">Thermo</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
 <li class="toctree-l4"><a class="reference internal" href="experimentalData.html">experimentalData</a></li>
 <li class="toctree-l4"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="inchi.html">inchi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="molFiles.html">molFiles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="protons.html">protons</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="thermoFBA.html">thermoFBA</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">thermoFBA</a></li>
 <li class="toctree-l4"><a class="reference internal" href="transport_thermo.html">Transport</a></li>
 <li class="toctree-l4"><a class="reference internal" href="utilities_thermo.html">Utilities</a></li>
 </ul>
@@ -191,7 +191,7 @@
         
           <li><a href="thermo.html">Thermo</a> &raquo;</li>
         
-      <li>experimentalDesign</li>
+      <li>thermoFBA</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -208,46 +208,162 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-src.analysis.thermo.experimentalDesign">
-<span id="experimentaldesign"></span><h1>experimentalDesign<a class="headerlink" href="#module-src.analysis.thermo.experimentalDesign" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="src.analysis.thermo.experimentalDesign.priorityKeqMeasurement">
-<code class="descname">priorityKeqMeasurement</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalDesign.priorityKeqMeasurement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optimal order of Keq measurement.</p>
-<p>Finds the optimal order of Keq measurement to completely define all
-standard Gibbs energies of formation for all metabolites. If the end of
-the loop is all reactions with two metabolites each then the loop is
-terminated</p>
+  <div class="section" id="thermofba">
+<span id="id1"></span><h1>thermoFBA<a class="headerlink" href="#thermofba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.thermoFBA"></span><dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.addLoopLawConstraints">
+<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/thermoFBA/addLoopLawConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds loop law constraints to LP problem or MILP problem.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[priorityKeq, numNonKeqMet] = priorityKeqMeasurement(modelT)</div></blockquote>
-<p><strong>Input</strong></p>
+<div>[MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelT</strong> &#8211;
-structure with fields:<ul>
-<li>.S</li>
-<li>.met(m).dGft0Source</li>
+<li><strong>LPproblem</strong> &#8211;
+Structure containing the following fields:<ul>
+<li>A - LHS matrix</li>
+<li>b - RHS vector</li>
+<li>c - Objective coeff vector</li>
+<li>lb - Lower bound vector</li>
+<li>ub - Upper bound vector</li>
+<li>osense - Objective sense (-1 max, +1 min)</li>
+<li>csense - Constraint senses, a string containting the constraint sense for
+each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
+<li>F - (optional) If <cite>*QP</cite> problem</li>
+<li>vartype - (optional) if <cite>MI*P</cite> problem</li>
+</ul>
+</li>
+<li><strong>model</strong> &#8211;
+The model for which the loops should be removed</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnIndex</strong> &#8211;
+The index of variables in LPproblem corresponding to fluxes. Default = <cite>[1:n]</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>MILPproblem</strong> &#8211;
+Problem structure containing the following fields describing an MILP problem:<ul>
+<li>A, b, c, lb, ub - same as before but longer</li>
+<li>vartype - variable type of the MILP problem (&#8216;C&#8217;, and &#8216;B&#8217;)</li>
+<li><cite>x0 = []</cite> - Needed for <cite>solveMILPproblem</cite></li>
 </ul>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.checkThermodynamicConsistency">
+<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>v = checkThermodynamicConsistency(model, q)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>priorityKeq</strong> &#8211;
-structure indicating which reactions to measure Keq:<ul>
-<li>priorityKeq{p, 1} - rxn abbr</li>
-<li>priorityKeq{p, 2} - rxn name</li>
-<li>priorityKeq{p, 3} - met abbr</li>
-<li>priorityKeq{p, 4} - rxn name</li>
-<li>priorityKeq{p, 5} - met name</li>
-<li>priorityKeq{p, 5} - number of reactions the same metabolite appears in
-this give options for which reaction to measure</li>
+<li><strong>model</strong></li>
+<li><strong>q</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>v</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.consistentPotentials">
+<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/thermoFBA/consistentPotentials.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a consistent set of potentials for each metabolite in a biochemical
+network, given the directions specified by the bounds on each reaction
+i.e. find y0, such that <span class="math">\(S^T y_0 &lt; 0\)</span> for a forward reaction and the opposite
+for reverse.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>y0 = consistentPotentials(model, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with fields:<ul>
+<li>.S</li>
+<li>.lb</li>
+<li>.ub</li>
 </ul>
 </li>
-<li><strong>numNonKeqMet</strong> &#8211;
-number of metabolites without data at each iteration</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>y0</strong> &#8211;
+consistent set of chemical potentials</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot">
+<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the top N reactions producing and consuming a metabolite in a flux solution</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>metaboliteMassBalancePlot(model, metAbbr, solution, N)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>metAbbr</strong> &#8211;
+metabolite abbreviation</li>
+<li><strong>solution</strong> &#8211;
+<cite>solveCobraLP</cite> output of a solution to FBA problem</li>
+<li><strong>N</strong> &#8211;
+Number of reactions to include for production/consumption</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.printDirectionalityFromBounds">
+<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/9811ba41d37b4c7cb3cf7ae0bdd9c8e741b4159b/src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the directionality for each reaction depending on the bounds for
+each reaction. Defaults to using <cite>model.lb</cite> &amp;  <cite>model.ub</cite> if none provided</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>directionality = printDirectionalityFromBounds(model, lb, ub)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>lb</strong> &#8211;
+flux lower bounds</li>
+<li><strong>ub</strong> &#8211;
+flux upper bounds</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>directionality</strong> &#8211;
+<cite>n x 1</cite> cell array of strings with directionality for each reaction</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -264,10 +380,10 @@ number of metabolites without data at each iteration</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="experimentalData.html" class="btn btn-neutral float-right" title="experimentalData" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="transport_thermo.html" class="btn btn-neutral float-right" title="Transport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="directionalityReport.html" class="btn btn-neutral" title="directionalityReport" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="reactantContribution.html" class="btn btn-neutral" title="reactantContribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

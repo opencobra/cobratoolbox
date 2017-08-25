@@ -16,6 +16,9 @@ Thermo
    molFiles
    protons
    reactantContribution
+   thermoFBA
+   transport_thermo
+   utilities_thermo
 
 .. automodule:: src.analysis.thermo
    :members:
