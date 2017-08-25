@@ -99,7 +99,7 @@ Platform-specific instructions are marked with
 
 4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Navigate to the directory where `Gurobi` was downloaded and enter
     ````bash
-    $ tar xvzf <archive>.tar.gz
+    $ tar -xvzf <archive>.tar.gz
     $ sudo mv gurobi<ver> /opt/.
     $ cd /opt/gurobi<ver>/linux64/bin/
     ````
