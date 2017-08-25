@@ -1,4 +1,4 @@
-language: sh
+language: bash
 
 before_install:
     - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
