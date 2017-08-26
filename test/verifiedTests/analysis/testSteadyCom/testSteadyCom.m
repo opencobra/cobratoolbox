@@ -372,41 +372,9 @@ for jTest = 1:2
             l = fgetl(f);
         end
         fclose(f);
-        assert(~isempty(strfind(text, 'FVA was already finished previously and saved in testSteadyComFVAsave/test_GR0.')))
+        assert(~isempty(strfind(text, ['FVA was already finished previously and saved in testSteadyComFVAsave' filesep 'test_GR0.'])))
         delete('SteadyComFVA_saveResults.txt');
-        
-        % test parallel computation
-        if isempty(gcp('nocreate'))
-            parpool(2);
-        end
-        optionsPar = options;
-        optionsPar.threads = 2;
-        optionsPar.saveFVA = ['testSteadyComFVAsavePar' filesep 'test'];
-        SteadyComFVA(modelJoint, optionsPar, 'feasTol', feasTol);
-        % check existence of saved files
-        assert(exist([optionsPar.saveFVA, '_model.mat'], 'file') > 0)
-        suffix = {''; '_parInfo'; '_thread1'; '_thread2'};
-        filenames = strcat(optionsPar.saveFVA, '_GR0.13', suffix, '.mat');
-        filenames = [filenames; strrep(filenames, 'GR0.13', 'GR0.14')];
-        for jFile = 1:numel(filenames)
-            assert(exist(filenames{jFile}, 'file') > 0)
-        end
-        % check values
-        for j1 = {'13', '14'}
-            dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '.mat']);
-            for j2 = {'min', 'max'}
-                vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
-                v = dataSaveFVA.([j2{:}, 'Flux']);
-                for j3 = 1:numel(vRef)
-                    if abs(vRef(j3)) < 1e-5
-                        assert(abs(vRef(j3) - v(j3)) < 1e-5)
-                    else
-                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
-                    end
-                end
-            end
-        end
-        
+
         % test continuation from interrupted single-thread computation
         delete([pwd filesep options.saveFVA '_GR0.13.mat'])
         dataSaveFVA = load([options.saveFVA, '_GR0.14.mat']);
@@ -431,37 +399,77 @@ for jTest = 1:2
                 end
             end
         end
-        % test continuation from interrupted parallel computation
-        for j1 = {'13', '14'}
-            for j2 = {'1', '2'}
-                dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '_thread', j2{:}, '.mat']);
-                if dataSaveFVA.jP == 1
-                    [i0, i1] = deal(5);
-                else
-                    [i0, i1] = deal(16,5);
-                end
-                dataSaveFVA.i0 = i0;
-                [dataSaveFVA.minFluxP((i1 + 1):end), dataSaveFVA.maxFluxP((i1 + 1):end), ...
-                    dataSaveFVA.minFDP(:,(i1 + 1):end), dataSaveFVA.maxFDP(:,(i1 + 1):end)] = deal(0);
-                save([optionsPar.saveFVA, '_GR0.', j1{:}, '_thread', j2{:}, '.mat'], '-struct', 'dataSaveFVA')
+
+        % test parallel computation
+        minWorkers = 2;
+        myCluster = parcluster(parallel.defaultClusterProfile);
+        if myCluster.NumWorkers >= minWorkers
+            poolobj = gcp('nocreate');  % if no pool, do not create new one.
+            if isempty(poolobj)
+                parpool(minWorkers);  % launch minWorkers workers
             end
-        end
-        [minFlux, maxFlux] = SteadyComFVA(modelJoint, optionsPar, 'feasTol', feasTol);
-        % check values
-        for j1 = {'13', '14'}
-            dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '.mat']);
-            for j2 = {'min', 'max'}
-                vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
-                v = dataSaveFVA.([j2{:}, 'Flux']);
-                for j3 = 1:numel(vRef)
-                    if abs(vRef(j3)) < 1e-5
-                        assert(abs(vRef(j3) - v(j3)) < 1e-5)
+
+            optionsPar = options;
+            optionsPar.threads = 2;
+            optionsPar.saveFVA = ['testSteadyComFVAsavePar' filesep 'test'];
+            SteadyComFVA(modelJoint, optionsPar, 'feasTol', feasTol);
+            % check existence of saved files
+            assert(exist([optionsPar.saveFVA, '_model.mat'], 'file') > 0)
+            suffix = {''; '_parInfo'; '_thread1'; '_thread2'};
+            filenames = strcat(optionsPar.saveFVA, '_GR0.13', suffix, '.mat');
+            filenames = [filenames; strrep(filenames, 'GR0.13', 'GR0.14')];
+            for jFile = 1:numel(filenames)
+                assert(exist(filenames{jFile}, 'file') > 0)
+            end
+            % check values
+            for j1 = {'13', '14'}
+                dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '.mat']);
+                for j2 = {'min', 'max'}
+                    vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
+                    v = dataSaveFVA.([j2{:}, 'Flux']);
+                    for j3 = 1:numel(vRef)
+                        if abs(vRef(j3)) < 1e-5
+                            assert(abs(vRef(j3) - v(j3)) < 1e-5)
+                        else
+                            assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        end
+                    end
+                end
+            end
+
+            % test continuation from interrupted parallel computation
+            for j1 = {'13', '14'}
+                for j2 = {'1', '2'}
+                    dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '_thread', j2{:}, '.mat']);
+                    if dataSaveFVA.jP == 1
+                        [i0, i1] = deal(5);
                     else
-                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        [i0, i1] = deal(16,5);
+                    end
+                    dataSaveFVA.i0 = i0;
+                    [dataSaveFVA.minFluxP((i1 + 1):end), dataSaveFVA.maxFluxP((i1 + 1):end), ...
+                        dataSaveFVA.minFDP(:,(i1 + 1):end), dataSaveFVA.maxFDP(:,(i1 + 1):end)] = deal(0);
+                    save([optionsPar.saveFVA, '_GR0.', j1{:}, '_thread', j2{:}, '.mat'], '-struct', 'dataSaveFVA')
+                end
+            end
+            [minFlux, maxFlux] = SteadyComFVA(modelJoint, optionsPar, 'feasTol', feasTol);
+            % check values
+            for j1 = {'13', '14'}
+                dataSaveFVA = load([optionsPar.saveFVA, '_GR0.', j1{:}, '.mat']);
+                for j2 = {'min', 'max'}
+                    vRef = refDataSaveFVA.([j2{:}, 'Flux', j1{:}]);
+                    v = dataSaveFVA.([j2{:}, 'Flux']);
+                    for j3 = 1:numel(vRef)
+                        if abs(vRef(j3)) < 1e-5
+                            assert(abs(vRef(j3) - v(j3)) < 1e-5)
+                        else
+                            assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        end
                     end
                 end
             end
         end
+
         % remove all created files
         rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
         rmdir([pwd filesep 'testSteadyComFVAsavePar'], 's')

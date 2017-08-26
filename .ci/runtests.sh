@@ -1,13 +1,26 @@
 #!/bin/sh
-if [ $ARCH = "Linux" ]; then
+if [ "$ARCH" == "Linux" ]; then
     /mnt/data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
-elif [ $ARCH = "macOS" ]; then
+elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
     /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash < test/testAll.m
 
-elif [ $ARCH = "Windows" ]; then
-    c:/Program\ Files/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash < test/testAll.m
+elif [ "$ARCH" == "windows7" ]; then
+    # change to the build directory
+    echo " -- changing to the build directory --"
+    cd "D:\\jenkins\\workspace\\COBRAToolbox-windows\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCH"
+
+    echo " -- launching MATLAB --"
+    unset Path
+    nohup "D:\\MATLAB\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "cd test; testAll;" & PID=$!
+
+    # follow the log file
+    tail -n0 -F --pid=$! output.log 2>/dev/null
+
+    # wait until the background process is done
+    wait $PID
 fi
+
 CODE=$?
 exit $CODE

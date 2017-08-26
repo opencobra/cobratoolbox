@@ -54,34 +54,31 @@ function [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictionaryFile, prep
 %
 % .. Author: -  Will Bryant, Jan 2016
 
+global CBTDIR
+
 warning('off','MATLAB:load:variableNotFound') % Preparation - load data. Suppress load warnings and deal with in the function
 
 % Get folder for finding default files relative to submitGapFill
-runFile = which('submitFastGapFill');
-runDirCell = regexp(runFile,'(.+/)[^/]+$','tokens');
-runDir = runDirCell{1}{1};
+runDir = [CBTDIR filesep 'src' filesep 'reconstruction' filesep 'fastGapFill' filesep];
+
+% fastGapFill results files will be created in the same directory as prepareFGFResults
+resultsDir = [CBTDIR filesep 'tutorials' filesep 'reconstruction' filesep 'fastGapFill' filesep];
 
 % Get input files where specified
 if ~exist('modelFile','var') || isempty(modelFile)
-    modelFile = strcat(runDir,'examples/iAF1260.mat');
+    modelFile = strcat(runDir, ['examples' filesep 'iAF1260.mat']);
 end
 if ~exist('dbFile','var') || isempty(dbFile)
-    dbFile = strcat(runDir,'AuxillaryFiles/reaction.lst');
+    dbFile = strcat(runDir, ['AuxillaryFiles' filesep 'reaction.lst']);
 end
 if ~exist('dictionaryFile','var') || isempty(dictionaryFile)
-    dictionaryFile = strcat(runDir,'AuxillaryFiles/KEGG_dictionary.xls');
+    dictionaryFile = strcat(runDir, ['AuxillaryFiles' filesep 'KEGG_dictionary.xls']);
 end
 if ~exist('prepareFGFResults','var') || isempty(prepareFGFResults)
-    prepareFGFResults = strcat(runDir,'examples/prepareFGFResultsDefault.mat');
+    prepareFGFResults =  strcat(resultsDir, ['example' filesep 'prepareFGFResultsDefault.mat']);
 end
 if ~exist('weightsPerRxnFile','var') || isempty(weightsPerRxnFile)
-    weightsPerRxnFile = strcat(runDir,'examples/sampleWeights.tsv');
-end
-% fastGapFill results files will be created in the same directory as prepareFGFResults
-resultsDirCell = regexp(prepareFGFResults,'(.+/)[^/]+$','tokens');
-resultsDir = resultsDirCell{1}{1};
-if ~exist(resultsDir, 'dir')
-  mkdir(resultsDir);
+    weightsPerRxnFile = strcat(resultsDir, ['example' filesep 'sampleWeights.tsv']);
 end
 
 if ~exist('forceRerun','var') || isempty(forceRerun)
@@ -96,7 +93,6 @@ end
 if ~exist('listCompartments','var') || isempty(listCompartments)
     listCompartments=[];
 end
-
 
 %% prepareFastGapFill
 % If workspaceFile is present, check for all variables; if consistModel,

@@ -6,6 +6,8 @@
 % Authors:
 %     - Laurent Heirendt
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -20,8 +22,6 @@ if ~verLessThan('matlab', '8.6')
 
     % load the model
     load('ecoli_core_model.mat', 'model');
-
-    %system('cp refXLSX.xlsx testData.xlsx');
 
     % write the model to an xls file
     writeCbModel(model, 'xlsx', 'testData');
@@ -66,6 +66,6 @@ end
 % change to old directory
 cd(currentDir);
 
-% Kill the workers        
-poolobj = gcp('nocreate');        
+% Kill the workers
+poolobj = gcp('nocreate');
 delete(poolobj);

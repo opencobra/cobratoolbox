@@ -362,7 +362,7 @@ switch solverName
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         end
     case 'ibm_cplex'
-        if ~verLessThan('matlab', '9') && isempty(strfind(ILOG_CPLEX_PATH, '1271'))  % 2016b
+        if (~verLessThan('matlab', '9.0') && isempty(strfind(ILOG_CPLEX_PATH, '1271'))) || ispc && (~verLessThan('matlab', '9.0') && ~isempty(strfind(ILOG_CPLEX_PATH, '1271')))  % 2016b
             if printLevel > 0
                 fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
             end

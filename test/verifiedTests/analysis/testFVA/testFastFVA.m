@@ -9,6 +9,7 @@
 %
 
 global CBTDIR
+global ILOG_CPLEX_PATH
 
 % save the userpath
 originalUserPath = path;
@@ -30,6 +31,11 @@ solverName = 'ibm_cplex';
 load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 if changeCobraSolver(solverName, 'LP', 0)
+
+    if isempty(strfind(ILOG_CPLEX_PATH, '1271'))
+        generateMexFastFVA;
+    end
+
     [minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
     % Start a parpool environment in MATLAB
