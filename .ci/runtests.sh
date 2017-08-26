@@ -3,6 +3,7 @@ if [ $ARCH = "Linux" ]; then
     /mnt/data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ $ARCH = "macOS" ]; then
+    caffeinate -u &
     /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ $ARCH = "Windows" ]; then
