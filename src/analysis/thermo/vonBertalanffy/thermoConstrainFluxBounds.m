@@ -1,44 +1,51 @@
-function [modelThermo, directions] = thermoConstrainFluxBounds(model,confidenceLevel,DrGt0_Uncertainty_Cutoff,printLevel)
+function [modelThermo, directions] = thermoConstrainFluxBounds(model, confidenceLevel, DrGt0_Uncertainty_Cutoff, printLevel)
 % Thermodynamically constrain reaction bounds.
-% 
-% INPUT
-% model                 Model structure with following additional fields:
-% .DrGtMin              n x 1 array of estimated lower bounds on
-%                       transformed reaction Gibbs energies.
-% .DrGtMax              n x 1 array of estimated upper bounds on
-%                       transformed reaction Gibbs energies.
-% DrGt0_Uncertainty_Cutoff  Thermodynamic data not used if uncertainty is
-%                           high in estimates
 %
-% OPTIONAL INPUT
-% printLevel            -1  print out to file
-%                       0   silent
-%                       1   print out to command window
+% USAGE:
 %
-% OUTPUT
-% modelThermo                     Model structure with following additional fields:
-% modelThermo.lb_reconThermo      lower bound based on thermodynamic estimates,
-%                                  where uncertainty is below a threshold
-% modelThermo.ub_reconThermo      upper bound based on thermodynamic estimates,
-%                                 where uncertainty is below a threshold
+%    [modelThermo, directions] = thermoConstrainFluxBounds(model, confidenceLevel, DrGt0_Uncertainty_Cutoff, printLevel)
 %
-% directions    a structue of boolean vectors with different directionality
-%                     assignments where some vectors contain subsets of others
+% INPUTS:
+%    model:                       Model structure with following additional fields:
 %
-% qualitatively assigned directions
-%   directions.forwardRecon
-%   directions.reverseRecon
-%   directions.reversibleRecon
+%                                   * .DrGtMin - `n x 1` array of estimated lower bounds on
+%                                     transformed reaction Gibbs energies.
+%                                   * .DrGtMax - `n x 1` array of estimated upper bounds on
+%                                     transformed reaction Gibbs energies.
+%    confidenceLevel:
+%    DrGt0_Uncertainty_Cutoff:    Thermodynamic data not used if uncertainty is
+%                                 high in estimates
 %
-% qualitatively assigned directions using thermo in preference to
+% OPTIONAL INPUT:
+%    printLevel:                  -1 - print out to file, 0 - silent, 1 - print out to command window
+%
+% OUTPUTS:
+%    modelThermo:                 Model structure with following additional fields:
+%
+%                                   * modelThermo.lb_reconThermo - lower bound based on thermodynamic estimates,
+%                                     where uncertainty is below a threshold
+%                                   * modelThermo.ub_reconThermo - upper bound based on thermodynamic estimates,
+%                                     where uncertainty is below a threshold
+%
+%    directions:                  a structue of boolean vectors with different directionality
+%                                 assignments where some vectors contain subsets of others
+%
+% Qualitatively assigned direction:
+%
+%    * directions.forwardRecon
+%    * directions.reverseRecon
+%    * directions.reversibleRecon
+%
+% Qualitatively assigned directions using thermo in preference to
 % qualitative assignments but using qualitative assignments where
-% thermodynamic data is lacking
-%   directions.forwardThermo
-%   directions.reverseThermo
-%   directions.reversibleThermo
-%   directions.uncertainThermo
-
-% Ronan M.T. Fleming
+% thermodynamic data is lacking:
+%
+%    * directions.forwardThermo
+%    * directions.reverseThermo
+%    * directions.reversibleThermo
+%    * directions.uncertainThermo
+%
+% .. Author: -  Ronan M.T. Fleming
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -49,7 +56,7 @@ tValueMat = [0.50, 0;...
              0.70, 1.036;...
              0.95, 1.960;...
              0.99, 2.576];
-         
+
 tValue = tValueMat(tValueMat(:,1) == confidenceLevel,2);
 
 DrGtMin=model.DrGtMin;
@@ -74,7 +81,7 @@ if any(nZeroDrGt)
 end
 
 [~,nRxn]=size(model.S);
-    
+
 %Reconstruction directions
 %only consider internal reactions
 fwdRecon=model.lb>=0 & model.ub>0 & model.SIntRxnBool;
@@ -172,7 +179,7 @@ forwardProbabilityNaN=isnan(forwardProbability) & model.SIntRxnBool;
 if any(forwardProbabilityNaN)
     warning([int2str(nnz(forwardProbabilityNaN)) ' forwardProbability are NaN']);
 end
-    
+
 directions.forwardProbability=forwardProbability;
 
 %make structue out of directions
@@ -187,4 +194,3 @@ directions.reversibleThermo=reversibleThermo;
 directions.uncertainThermo=uncertainThermo;
 directions.equilibriumThermo=equilibriumThermo;
 end
-

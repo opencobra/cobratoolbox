@@ -39,6 +39,6 @@ end
 %stamp the model with the ID of the file
 model.modelID=modelName;
 
-if strmatch(modelName,filename)~=1
-    warning('fileName.mat and modelStructureName.mat did not match')   
+if isempty(strmatch(model.modelID, filename))
+    warning('fileName.mat and modelStructureName.mat did not match')
 end

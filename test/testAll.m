@@ -42,7 +42,7 @@ cd(CBTDIR);
 % run the official initialisation script
 initCobraToolbox;
 
-if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
 else
     WAITBAR_TYPE = 1;
@@ -165,6 +165,14 @@ try
     sumFailed = 0;
     sumIncomplete = 0;
 
+    for i = 1:size(result, 2)
+        sumFailed = sumFailed + result(i).Failed;
+        sumIncomplete = sumIncomplete + result(i).Incomplete;
+    end
+    
+    fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
+
+    % count the number of covered lines of code
     if COVERAGE
         % write coverage based on profile('info')
         fprintf('Running MoCov ... \n')
@@ -174,11 +182,6 @@ try
               '-cover_html_dir', 'coverage_html', ...
               '-cover_method', 'profile', ...
               '-verbose');
-
-        for i = 1:size(result, 2)
-            sumFailed = sumFailed + result(i).Failed;
-            sumIncomplete = sumIncomplete + result(i).Incomplete;
-        end
 
         % load the coverage file
         data = loadjson('coverage.json', 'SimplifyCell', 1);
@@ -211,19 +214,22 @@ try
         exit_code = 1;
     end
 
+    fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
+
     % ensure that we ALWAYS call exit
-    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         exit(exit_code);
     end
 catch ME
-    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-        % Only exit on jenkins.
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
+        % only exit on jenkins.
         exit(1);
     else
-        % Switch back to the folder we were in and rethrow the error
+        % switch back to the folder we were in and rethrow the error
         cd(origDir);
         rethrow(ME);
     end
 end
-% Switch back to the folder we were in.
+
+% switch back to the original directory
 cd(origDir)

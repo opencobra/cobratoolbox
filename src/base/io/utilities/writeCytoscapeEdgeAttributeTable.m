@@ -20,7 +20,7 @@ noColor='Black';
 
 if ~exist('filename','var')
     if isfield(model,'description')
-        filename=[model.description 'edgeAttributes.txt'];
+        filename=[model.description(1:end-4) '_edgeAttributes.txt'];
     else
         filename='edgeAttributes.txt';
     end

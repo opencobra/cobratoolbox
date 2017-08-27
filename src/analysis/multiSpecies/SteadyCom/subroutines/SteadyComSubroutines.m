@@ -563,7 +563,7 @@ end
             case 'Nstep',       param = 10;
             case 'NstepScale',  param = 'lin';
             case 'symmetric',   param = true;   % treat it as symmetric, optimize for only j > k
-            case 'savePOA',     param = 'POAtmp/POA';
+            case 'savePOA',     param = ['POAtmp' filesep 'POA'];
 
             otherwise,          param = [];
         end

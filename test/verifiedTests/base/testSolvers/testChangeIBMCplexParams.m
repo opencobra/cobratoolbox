@@ -2,7 +2,7 @@
 %
 % Purpose:
 %    This script tests whether input parameters for the IBM ILOG Cplex solver
-%    are in effect when calling solveCobraLP.m, and also tests directly the function 
+%    are in effect when calling solveCobraLP.m, and also tests directly the function
 %    setCplexParam used to change the IBM ILOG Cplex parameters in solveCobraLP.m
 
 % save the current path
@@ -28,12 +28,16 @@ if ibm_cplex
     LP.csense = 'L';
     sol = solveCobraLP(LP);
     assert(sol.full == 1)
-    % change the time limite for the solver
-    CplexParam = struct('timelimit', 0);
-    sol = solveCobraLP(LP, CplexParam);
-    % no solution because of time limit
-    assert(isempty(sol.full) & sol.origStat == 11)
-    
+
+    if isunix
+        % change the time limit for the solver
+        % Note: On windows, the timelimit parameter has no effect
+        CplexParam = struct('timelimit', 0);
+        sol = solveCobraLP(LP, CplexParam);
+        % no solution because of time limit
+        assert(isempty(sol.full) & sol.origStat == 11)
+    end
+
     % print parameters not recognized by Cplex
     CplexParam.notexist = 1;
     diary('testChangeIBMCplexParams.txt');
@@ -50,7 +54,7 @@ if ibm_cplex
     % check if the warning is printed
     assert(~isempty(strfind(text1, 'Warning: *.notexist cannot be identified as a valid cplex parameter. Ignore.')))
     delete('testChangeIBMCplexParams.txt');
-    
+
     % print parameters that cannot be uniquely identified
     CplexParam = struct('timelimit', 0, 'feasibility', 1e-8);
     diary('testChangeIBMCplexParams.txt');
@@ -67,7 +71,7 @@ if ibm_cplex
     % check if the warning is printed
     assert(~isempty(strfind(text1, 'Warning: *.feasibility cannot be uniquely identified as a valid cplex parameter. Ignore.')))
     delete('testChangeIBMCplexParams.txt');
-    
+
     % test changing other Cplex parameters
     LP = Cplex('test setCplexParam');
     CplexParam = struct();
@@ -77,7 +81,7 @@ if ibm_cplex
     LP = setCplexParam(LP, CplexParam);
     % Cplex internal method for getting all changed parameters
     ChangedParams = LP.getChgParam;
-    
+
     % test also with .Cur at the end of the input struct
     LP = Cplex('test setCplexParam');
     CplexParam = struct();
@@ -87,7 +91,7 @@ if ibm_cplex
     LP = setCplexParam(LP, CplexParam);
     % Cplex internal method for getting all changed parameters
     ChangedParams2 = LP.getChgParam;
-    
+
     % the changed parameters should be the same using either input structures
     assert(isequal(ChangedParams, ChangedParams2))
     % check if the parameters are really changed

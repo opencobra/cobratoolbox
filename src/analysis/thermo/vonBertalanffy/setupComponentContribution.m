@@ -1,73 +1,72 @@
-function model = setupComponentContribution(model,molFileDir,cid,printLevel)
+function model = setupComponentContribution(model, molFileDir, cid, printLevel)
 % Estimates standard transformed reaction Gibbs energy and directionality
 % at in vivo conditions in multicompartmental metabolic reconstructions.
 % Has external dependencies on the COBRA toolbox, the component
 % contribution method, Python (with numpy and Open Babel bindings),
 % ChemAxon's Calculator Plugins, and Open Babel. See details on
-% availability at the end of help text. 
-% 
-% modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,...
-%                           is,chi,concMin,concMax,confidenceLevel) 
-% 
-% INPUTS
-% model             Model structure with following fields:
-% .S                m x n stoichiometric matrix.
-% .mets             m x 1 array of metabolite identifiers.
-% .rxns             n x 1 array of reaction identifiers.
-% .metFormulas      m x 1 cell array of metabolite formulas. Formulas for
-%                   protons should be H, and formulas for water should be
-%                   H2O.
-% .metCharges       m x 1 numerical array of metabolite charges.
-% 
-% OPTIONAL INPUTS
-% molFileDir                Path to a directory containing molfiles for the
-%                           major tautomer of the major microspecies of
-%                           each metabolite at pH 7. Molfiles should be
-%                           named with the metabolite identifiers in
-%                           model.mets (without compartment assignments).
-%                           Not required if cid are specified.
-% cid                       m x 1 cell array of KEGG Compound identifiers.
-%                           Not required if molfiledir is specified.
-% model.metCompartments     m x 1 array of metabolite compartment
-%                           assignments. Not required if metabolite
-%                           identifiers are strings of the format ID[*]
-%                           where * is the appropriate compartment
-%                           identifier.
-% 
-% OUTPUTS
-% model                 Model structure with following additional fields:
-% .inchi                Structure containing four m x 1 cell array's of
-%                       IUPAC InChI strings for metabolites, with varying
-%                       levels of structural detail.
-% .pKa                  m x 1 structure containing metabolite pKa values
-%                       estimated with ChemAxon's Calculator Plugins.
-% .pseudoisomers        p x 4 matrix with the following columns:
-%                       1. Metabolite index.
-%                       2. Estimated pseudoisomer standard Gibbs energy.
-%                       3. Number of hydrogen atoms in pseudoisomer
-%                       chemical formula.
-%                       4. Charge on pseudoisomer.
-% 
-% WRITTEN OUTPUTS
-% MetStructures.sdf     An SDF containing all structures input to the
-%                       component contribution method for estimation of
-%                       standard Gibbs energies. 
-% 
-% 
-% Ronan M. T. Fleming, Sept. 2012   Version 1.0
-% Hulda S. H., Dec. 2012            Version 2.0
+% availability at the end of help text.
+%
+% USAGE:
+%
+%    model = setupComponentContribution(model, molFileDir, cid, printLevel)
+%
+% INPUT:
+%    model          Model structure with following fields:
+%
+%                     * .S - `m x n` stoichiometric matrix.
+%                     * .mets - `m x 1` array of metabolite identifiers.
+%                     * .rxns - `n x 1` array of reaction identifiers.
+%                     * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas for
+%                       protons should be H, and formulas for water should be H2O.
+%                     * .metCharges - `m x 1` numerical array of metabolite charges.
+%                     * .metCompartments - optional `m x 1` array of metabolite compartment
+%                       assignments. Not required if metabolite
+%                       identifiers are strings of the format `ID[*]`
+%                       where * is the appropriate compartment identifier.
+%
+% OPTIONAL INPUTS:
+%    molFileDir:    Path to a directory containing molfiles for the
+%                   major tautomer of the major microspecies of
+%                   each metabolite at pH 7. Molfiles should be
+%                   named with the metabolite identifiers in
+%                   model.mets (without compartment assignments).
+%                   Not required if cid are specified.
+%    cid:           `m x 1` cell array of KEGG Compound identifiers.
+%                   Not required if molfiledir is specified.
+%    printLevel:    Verbose level
+%
+% OUTPUTS:
+%    model:          Model structure with following additional fields:
+%
+%                        * .inchi - Structure containing four `m x 1` cell array's of
+%                          IUPAC InChI strings for metabolites, with varying
+%                          levels of structural detail.
+%                        * .pKa - `m x 1` structure containing metabolite pKa values
+%                          estimated with ChemAxon's Calculator Plugins.
+%                        * .pseudoisomers - `p x 4` matrix with the following columns:
+%
+%                          1. Metabolite index.
+%                          2. Estimated pseudoisomer standard Gibbs energy.
+%                          3. Number of hydrogen atoms in pseudoisomer chemical formula.
+%                          4. Charge on pseudoisomer.
+%
+% Written output - MetStructures.sdf - An SDF containing all structures input to the
+% component contribution method for estimation of standard Gibbs energies.
+%
+% .. Author:
+%       - Ronan M. T. Fleming, Sept. 2012, Version 1.0
+%       - Hulda S. H., Dec. 2012, Version 2.0
 
 
-%% Configure inputs
-% Retreive molfiles from KEGG if KEGG ID are given. Otherwise use molfiles
-% in molfileDir.
 if ~exist('cid','var')
     cid = [];
 end
 if ~exist('printLevel','var')
     printLevel = 1;
 end
-%% Get metabolite structures
+% Retreive molfiles from KEGG if KEGG ID are given. Otherwise use molfiles
+% in molfileDir.
+% Get metabolite structures
 if ~isempty(cid)
     molFileDir = 'molfilesFromKegg';
     fprintf('\nRetreiving molfiles from KEGG.\n');

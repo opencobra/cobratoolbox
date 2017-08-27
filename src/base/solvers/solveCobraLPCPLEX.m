@@ -41,19 +41,27 @@ function [solution, LPProblem] = solveCobraLPCPLEX(LPProblem, printLevel, basisR
 %                        combine to make the problem infeasible. This is
 %                        useful for debugging an LP problem if you want to
 %                        try to resolve a constraint conflict
-%    contFunctName:
-%                        1. contFunctName = [] Use all default CLPEX control parameters, (Default);
-%                        2. contFunctName = someString e.g. 'someFunctionName'
-%                           uses the user specified control parameters defined
-%                           in `someFunctionName.m`
-%                           (see template function CPLEXParamSet for details).
-%                        3. contFunctName = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
+%    contFunctName:      structure or function with parameters (only for `tomlab_cplex` or `ILOGcomplex`)
+%
+%                        - when using the `tomlab_cplex` interface
+%
+%                              1. contFunctName = [] Use all default CLPEX control parameters, (Default);
+%                              2. contFunctName = someString e.g. 'someFunctionName'
+%                                 uses the user specified control parameters defined
+%                                 in `someFunctionName.m` (see template function CPLEXParamSet for details).
+%                              3. contFunctName = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
+%
+%                        - when using the `ILOGcomplex` interface (parameter structure for Cplex). The full set of parameters can be obtained by calling `Cplex().Param`. For example:
+%
+%                              - `[solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display, solverParams.sifting.display, solverParams.conflict.display] = deal(0);`
+%                              - `[solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9, 1e-8);`
+%
 %    minNorm:            {(0), 1 , `n x 1` vector} If not zero then, minimise the Euclidean length
 %                        of the solution to the LP problem. Gives the same objective,
 %                        but minimises the square of flux. `minNorm` ~1e-6 should be
 %                        high enough for regularisation yet keep the same objective
 %    interface:          {'ILOGcomplex', 'ILOGsimple', 'tomlab_cplex'}
-%                        Default is the tomlab_cplex interface
+%                        Default is the `tomlab_cplex` interface
 %
 % OUTPUT:
 %    solution:           Structure containing the following fields describing a LP solution:
@@ -84,6 +92,13 @@ function [solution, LPProblem] = solveCobraLPCPLEX(LPProblem, printLevel, basisR
 % CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is
 % automatically chosen for you
 %
+% .. Note:
+%       ILOG CPLEX parameters
+%       https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.studio.help/pdf/paramcplex.pdf
+%
+%       TOMLAB Cplex parameters
+%       http://tomwiki.com/CPLEX_Parameter_Table
+%
 % .. Author: - Ronan Fleming
 
 if ~exist('printLevel','var')
@@ -95,50 +110,50 @@ end
 if ~exist('conflictResolve','var')
     conflictResolve=0;
 end
-if ~exist('contFunctName','var')
-    cpxControl=[];
-else
-    if isstruct(contFunctName)
-        cpxControl=contFunctName;
+if ~exist('interface','var')
+    interface='tomlab_cplex';
+end
+if strcmp(interface,'tomlab_cplex')
+    if ~exist('contFunctName','var')
+        cpxControl=[];
     else
-        if ~isempty(contFunctName)
-            %calls a user specified function to create a CPLEX control structure
-            %specific to the users problem. A TEMPLATE for one such function is
-            %CPLEXParamSet
-            cpxControl=eval(contFunctName);
+        if isstruct(contFunctName)
+            cpxControl=contFunctName;
         else
-            cpxControl=[];
+            if ~isempty(contFunctName)
+                %calls a user specified function to create a CPLEX control structure
+                %specific to the users problem. A TEMPLATE for one such function is
+                %CPLEXParamSet
+                cpxControl=eval(contFunctName);
+            else
+                cpxControl=[];
+            end
         end
     end
 end
 if ~exist('minNorm','var')
     minNorm=0;
 end
-if printLevel==0
-    %turn off solver iterations that is on by default in Linux
-    cpxControl.SCRIND = 0;
-end
+
 if basisReuse
-    if isfield(LPProblem,'LPBasis')
-        basis=LPProblem.LPBasis;
-        %use advanced starting information when optimization is initiated.
-        cpxControl.ADVIND=1;
+    if isfield(LPProblem, 'LPBasis')
+        basis = LPProblem.LPBasis;
+        % use advanced starting information when optimization is initiated.
+        cpxControl.advance = 1;
+        cpxControl.ADVIND = 1;
     else
         basis=[];
     end
 else
     basis=[];
-    %do not use advanced starting information when optimization is initiated.
-    cpxControl.ADVIND=0;
-end
-
-if ~exist('interface','var')
-    interface='tomlab_cplex';
+    % do not use advanced starting information when optimization is initiated.
+    cpxControl.advance = 0;
+    cpxControl.ADVIND = 0;
 end
 
 if ~isfield(LPProblem,'A')
     if ~isfield(LPProblem,'S')
-            error('Equality constraint matrix must either be a field denoted A or S.')
+        error('Equality constraint matrix must either be a field denoted A or S.')
     end
     LPProblem.A=LPProblem.S;
 end
@@ -180,12 +195,10 @@ b=full(b);
 %by CPLEX.
 if conflictResolve
     % set to deterministic mode to get reproducible conflict resolve file
-    if isfield(cpxControl,'PARALLEL') && cpxControl.PARALLEL ~=1
-        fprintf('PARALLEL Parameter was changed to 1 to ensure a reproducible log file');
-        cpxControl.PARALLEL = 1; % Tomlab CPLEX interface
-    elseif isfield(cpxControl,'PARALLELMODE') && cpxControl.PARALLELMODE ~=1
-        cpxControl.PARALLELMODE = 1; % ILOG CPLEX interface
-        fprintf('PARALLELMODE Parameter was changed to 1 to ensure a reproducible log file');
+    if (isfield(cpxControl,'PARALLEL') && cpxControl.PARALLEL ~=1) || (isfield(cpxControl,'PARALLELMODE') && cpxControl.PARALLELMODE ~=1)
+        fprintf('PARALLEL / PARALLELMODE Parameter was changed to 1 to ensure a reproducible log file\n');
+        cpxControl.PARALLEL = 1;
+        cpxControl.PARALLELMODE = 1;
     end
     [m_lin,n]=size(LPProblem.A);
     m_quad=0;
@@ -301,11 +314,11 @@ switch interface
             ILOGcplex.Model.Q=F;
         end
 
-        if ~isempty(cpxControl)
-            if isfield(cpxControl,'LPMETHOD')
-                %set the solver
-                ILOGcplex.Param.lpmethod.Cur=cpxControl.LPMETHOD;
-            end
+        if ~exist('contFunctName','var')
+            cpxControl= struct();
+        else
+            %Read ILOG cplex parameters
+            ILOGcplex = setCplexParam(ILOGcplex, cpxControl, printLevel);
         end
 
         if printLevel==0

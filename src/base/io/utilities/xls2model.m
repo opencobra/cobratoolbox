@@ -80,11 +80,26 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 
 warning off
 
-if exist(fileName,'file')
-    [~,sheets,~] = xlsfinfo(fileName);
-    if ~all(ismember({'Reaction List','Metabolite List'},sheets))
-        error(['The provided Excel Sheet must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
-               '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
+% test if Excel is available
+excelInstalled = false;
+try
+    excelObj = actxserver('Excel.Application');
+    excelInstalled = true;
+    %h.WorkBooks.Item(fileName).Close;
+    fprintf(' > Excel is installed.\n\n');
+catch ME
+    fprintf(' > Excel is not installed; limit of 10000 reactions.\n\n');
+end
+
+if exist(fileName,'file') == 2
+    try
+        [~, sheets] = xlsfinfo(fullfile(pwd, fileName));
+        if ~all(ismember({'Reaction List','Metabolite List'},sheets))
+            error(['The provided Excel Sheet (', fileName,') must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
+                   '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
+        end
+    catch ME
+        fprintf(strrep(sheets, '\', '\\'));
     end
 else
     error('File %s not found',fileName);
@@ -95,7 +110,7 @@ if ~exist('defaultbound','var')
 end
 
 %assumes that one has an xls file with two tabs
-if isunix
+if isunix || ~excelInstalled
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:10000');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:10000');
     warning on
@@ -109,13 +124,13 @@ if isunix
     end
     warning off
 else
-    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
-    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
+    [~, Strings, rxnInfo] = xlsread(fileName, 'Reaction List');
+    [~, MetStrings, metInfo] = xlsread(fileName, 'Metabolite List');
 end
 
 %trim empty row from Numbers and MetNumbers
-rxnInfo = rxnInfo(1:size(Strings,1),:)
-metInfo = metInfo(1:size(MetStrings,1),:)
+rxnInfo = rxnInfo(1:size(Strings,1),:);
+metInfo = metInfo(1:size(MetStrings,1),:);
 
 if isunix && isempty(MetStrings)
     error('Save .xls file as Windows 95 version using gnumeric not openoffice!');

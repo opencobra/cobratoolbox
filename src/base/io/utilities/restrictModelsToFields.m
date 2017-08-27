@@ -19,7 +19,7 @@ function restrictedModels = restrictModelsToFields(models, fieldNames)
 
 structin = false;
 if isstruct(models)
-    models = { models};
+    models = {models};
     structin = true;
 end
 restrictedModels = cell(size(models));
