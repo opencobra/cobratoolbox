@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$ARCH" == "Linux" ]; then
-    /mnt/data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
+    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
