@@ -143,11 +143,11 @@ if COVERAGE
     fprintf('\n\n -> The code grade is %s (%1.2f%%).\n\n', grade, avMsgsPerc);
 
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-        % remove the old badge
-        system('rm /var/lib/jenkins/userContent/codegrade.svg');
-
         % set the new badge
-        system(['cp /var/lib/jenkins/userContent/codegrade-', grade, '.svg /var/lib/jenkins/userContent/codegrade.svg']);
+        system(['cp /mnt/prince-data/jenkins/userContent/codegrade-', grade, '.svg /mnt/prince-data/jenkins/userContent/codegrade.svg']);
+
+        % secure copy the badge from the slave
+        system('scp -P 8022 /mnt/prince-data/jenkins/userContent/codegrade-', grade, '.svg jenkins@10.79.2.128:/var/lib/jenkins/userContent');
     end
 end
 
@@ -169,7 +169,7 @@ try
         sumFailed = sumFailed + result(i).Failed;
         sumIncomplete = sumIncomplete + result(i).Incomplete;
     end
-    
+
     fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
 
     % count the number of covered lines of code
