@@ -180,7 +180,7 @@ function [] = configEnvVars(printLevel)
                         subDir = filesep;
 
                         % generate solver sub-directories for IBM ILOG CPLEX and gurobi
-                        if k == 1 || k == 2
+                        if k == 1
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
                         end
                         possibleDir = [tmpSolverPath{i}, subDir];
