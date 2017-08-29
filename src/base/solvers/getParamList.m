@@ -2,6 +2,23 @@ function [paramList, paramPath, addCur] = getParamList(param, bottomFlag)
 % Get all the end parameters and their paths for matching CPLEX parameters appropriately
 % (e.g., if param.simplex.display is a parameter, then we will have 'display'
 % in paramList and 'param.simplex' in paramPath)
+%
+% USAGE:
+%
+%    [paramList, paramPath, addCur] = getParamList(param, bottomFlag)
+%
+% INPUTS:
+%    param:           existing structure with parameters for Cplex
+%    bottomFlag:      boolean switch to extract parameters based on 'Cur' at the
+%                     bottom level in the user-supplied parameter structure
+%
+% OUTPUTS:
+%    paramList:       Cell with proper parameter names
+%    paramPath:       Cell with superseeding parameter structure
+%    addCur:          Structure with booleans whether or not `.Cur` has been
+%                     added to the `paramPath` for user-supplied parameters
+%
+
 structCur = param;  % current structure
 lv = 1;  % current level of the structure
 % use a stack structure to store the found parameters
