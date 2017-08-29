@@ -1,4 +1,4 @@
-function cpxControl = CPLEXParamSet(solver)
+function cpxControl = CPLEXParamSet(interface)
 % This is a function which returns user specified CPLEX control
 % parameters. It is not necessary to use a file like this if you want to use
 % CPLEX default control parameters. It is intended to be a template for
@@ -9,7 +9,7 @@ function cpxControl = CPLEXParamSet(solver)
 %    cpxControl = CPLEXParamSet(solver)
 %
 % INPUT:
-%    solver:        'tomlab_cplex'(default) or 'ILOGcomplex'
+%    interface:        'tomlab_cplex'(default) or 'ILOGcomplex'
 %
 % OUTPUT:
 %    cpxControl:    user specified CPLEX control parameters
@@ -26,11 +26,12 @@ function cpxControl = CPLEXParamSet(solver)
 % CPLEX control parameter `cpxControl.LPMETHOD`
 %
 % .. Author: - Ronan Fleming 10th June 2008
-if nargin<1
-    solver='tomlab_cplex'
+
+if nargin < 1
+    interface = 'tomlab_cplex'
 end
 
-if isequal(solver,'tomlab_cplex')
+if strcmp(interface,'tomlab_cplex')
     cpxControl = [];
 
     %SELECT CPLEX CONTROL PARAMETERS (alphabetical order)
@@ -41,14 +42,14 @@ if isequal(solver,'tomlab_cplex')
     % 0  Do not use any aggregator
     % 1  Use aggregator
     % Default: -1
-    cpxControl.AGGIND=-1;
+    cpxControl.AGGIND = -1;
 
     %Description: Barrier column nonzeros.
     % Used in the recognition of dense columns. If columns in the presolved and aggregated problem exist with more
     % entries than this value, such columns are considered dense and are treated specially by the CPLEX Barrier
     % Optimizer to reduce their effect. If the problem contains fewer than 400 rows, dense column handling is NOT
     % initiated.
-    cpxControl.BARCOLNZ=0;
+    cpxControl.BARCOLNZ = 0;
 
     % Convergence tolerance for LP and QP problems.
     % Sets the tolerance on complementarity for convergence.
@@ -58,7 +59,7 @@ if isequal(solver,'tomlab_cplex')
     % result in no solution at all. Therefore, caution is advised in deviating from the default setting.
     %Any positive number >= 1e?12
     %Default: 1e?8
-    cpxControl.BAREPCOMP=1e-8;
+    cpxControl.BAREPCOMP = 1e-8;
 
     % Barrier iteration limit.
     % Sets the number of Barrier iterations before termination. When set to 0, no Barrier iterations occur, but problem
@@ -66,7 +67,7 @@ if isequal(solver,'tomlab_cplex')
     % 0 No Barrier iterations
     % or, any positive integer
     % Default: Large (varies by computer)
-    cpxControl.BARITLIM=2000; %%%
+    cpxControl.BARITLIM = 2000; %%%
 
     % Barrier maximum correction limit.
     % Sets the maximum number of centering corrections done on each iteration. An explicit value greater than 0
@@ -74,13 +75,13 @@ if isequal(solver,'tomlab_cplex')
     % -1 Automatically determined
     % 0 None
     % or, any positive integer
-    cpxControl.BARMAXCOR=-1;
+    cpxControl.BARMAXCOR = -1;
 
     % Barrier objective range.
     % Sets the maximum absolute value of the objective function. The barrier algorithm looks at this limit to detect
     % unbounded problems.
     %Any positive number default 1e21
-    cpxControl.BAROBJRNG=1e21;
+    cpxControl.BAROBJRNG = 1e21;
 
     % Coefficient reduction setting.
     % Determines how coefficient reduction is used. Coefficient reduction improves the objective value of the initial
@@ -89,7 +90,7 @@ if isequal(solver,'tomlab_cplex')
     % 1 Reduce only to integral coefficients
     % 2 Reduce all potential coefficients
     % Default: 2
-    cpxControl.COEREDIND=2;
+    cpxControl.COEREDIND = 2;
 
     % Lower cutoff.
     % When the problem is a maximization problem, the LOWERCUTOFF parameter is used to cut off any nodes
@@ -97,14 +98,14 @@ if isequal(solver,'tomlab_cplex')
     % larger of these values and the updated cutoff found during optimization are used during the next mixed integer
     % optimization. A too-restrictive value for the LOWERCUTOFF parameter may result in no integer solutions
     % being found.
-    cpxControl.CUTLO=-1e76;
+    cpxControl.CUTLO = -1e76;
 
     % Data consistency checking indicator.
     % When set to 1 (On), extensive checking is performed on data in the array arguments, such as checking that
     % indices are within range, that there are no duplicate entries and that values are valid for the type of data or are
     % valid numbers. This is useful for debugging applications.
     % default =1
-    cpxControl.DATACHECK=1;  %%%%
+    cpxControl.DATACHECK = 1;  %%%%
 
 
     % Description: Markowitz tolerance.
@@ -112,14 +113,14 @@ if isequal(solver,'tomlab_cplex')
     % numerical properties of the solution.
     % Any number from 0.0001 to 0.99999
     % Default: 0.01
-    cpxControl.EPMRK =0.01;
+    cpxControl.EPMRK = 0.01;
 
     % Optimality tolerance.
     % Influences the reduced-cost tolerance for optimality. This parameter governs how closely CPLEX must approach
     % the theoretically optimal solution.
     % Any number from 10?9 to 10?1
     % Default: 10^-6
-    cpxControl.EPOPT=1e-6;
+    cpxControl.EPOPT = 1e-6;
 
     % Perturbation constant.
     % Sets the amount by which CPLEX perturbs the upper and lower bounds on the variables when a problem is
@@ -127,12 +128,12 @@ if isequal(solver,'tomlab_cplex')
     % problem.
     % Any positive number  10?8
     % Default: 10?6
-    cpxControl.EPPER=1e-6;
+    cpxControl.EPPER = 1e-6;
 
     % FeasOpt tolerance.
     % Sets epsilon used to measure relaxation in FeasOpt.
     % Any positive number
-    cpxControl.EPRELAX=1e-6;
+    cpxControl.EPRELAX = 1e-6;
 
     % Feasibility tolerance.
     % The feasibility tolerance specifies the degree to which a problem�s basic variables may violate their bounds.
@@ -143,7 +144,7 @@ if isequal(solver,'tomlab_cplex')
     % during Phase II of the optimization, a small adjustment in the feasibility tolerance may improve performance.
     % Any number from 10?9 to 10?1
     % Default: 10?6
-    cpxControl.EPRHS=1e-6;
+    cpxControl.EPRHS = 1e-6;
 
     %FeasOpt settings.
     % FeasOpt works in two phases. In its first phase, it attempts to minimize its relaxation of the infeasible model.
@@ -167,13 +168,13 @@ if isequal(solver,'tomlab_cplex')
     %   relaxations in first phase and execute second
     %   phase to find optimum among minimal relaxations
     % Default: 0
-    cpxControl.FEASOPTMODE=0;
+    cpxControl.FEASOPTMODE = 0;
 
     % Simplex maximum iteration limit.
     % Sets the maximum number of iterations to be performed before the algorithm terminates without reaching
     % optimality.
     % default = Large e.g. 5000
-    cpxControl.ITLIM=5000; %%%Changed
+    cpxControl.ITLIM = 5000;
 
     % Method for linear optimization.
     % Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
@@ -189,14 +190,14 @@ if isequal(solver,'tomlab_cplex')
     % 5 Sifting
     % 6 Concurrent Dual, Barrier and Primal
     % Default: 0
-    cpxControl.LPMETHOD=0;  %%% was changed now default
+    cpxControl.LPMETHOD = 0;  %%% was changed now default
 
     % Numerical emphasis.
     %  0 Off: Do not emphasize extreme caution in
     % computation
     % 1 On: Emphasize extreme caution in computation
     % Default: Off
-    cpxControl.NUMERICALEMPHASIS=0; %%%
+    cpxControl.NUMERICALEMPHASIS = 0;
 
 
     % Polishing best solution.
@@ -205,7 +206,7 @@ if isequal(solver,'tomlab_cplex')
     % The default value of the polishing time parameter is 0 (zero); that is, spend no time polishing.
     % Any positive number in seconds
     % Default: 0
-    cpxControl.POLISHTIME=0; %%% Changed
+    cpxControl.POLISHTIME = 0;
 
     % Scale parameter.
     % Sets the method to be used for scaling the problem matrix.
@@ -213,7 +214,7 @@ if isequal(solver,'tomlab_cplex')
     % 0 Equilibrium scaling method
     % 1 More aggressive scaling
     % Default: 0
-    cpxControl.SCAIND=0; %%%
+    cpxControl.SCAIND = 0;
 
     % Simplex iteration display information.
     % Determines how often CPLEX reports during simplex optimization.
@@ -221,14 +222,14 @@ if isequal(solver,'tomlab_cplex')
     % 1 Iteration info after each refactorization
     % 2 Iteration info for each iteration
     % Default: 1
-    cpxControl.SIMDISPLAY=1; %%%
+    cpxControl.SIMDISPLAY = 1;
 
     % Computation time reporting.
     % Determines how computation times are measured.
     % 1 CPU time
     % 2 Wall clock time (total physical time elapsed)
     % Default: 1
-    cpxControl.CLOCKTYPE=1; %Changed
+    cpxControl.CLOCKTYPE = 1;
 
     % Global time limit.
     % Sets the maximum time, in seconds, for computations before termination, as measured according to the setting
@@ -238,16 +239,27 @@ if isequal(solver,'tomlab_cplex')
     % includes preprocessing time. For �hybrid� optimizations (such as network optimization followed by dual or
     % primal simplex, barrier optimization followed by crossover), the
     % cumulative time applies.
-    cpxControl.TILIM=600;%sec
+    cpxControl.TILIM = 600;%sec
 
-elseif isequal(solver,'ILOGcomplex')
-    ILOGcplex=Cplex('fba');
-    [paramList, paramPath] = getParamList(ILOGcplex, 0);
-    paramPath(1) = '';%take out model field
-    for i=1:length(paramPath)
-        eval([paramPath{i} '=ILOGcplex.' paramPath{i} '.Def;']);
+elseif strcmp(interface,'ILOGcomplex')
+
+    % change the solver to IBM CPLEX
+    solverOK = changeCobraSolver('ibm_cplex');
+
+    if solverOK
+        ILOGcplex = Cplex('fba');
+
+        [paramList, paramPath] = getParamList(ILOGcplex, 0);
+
+        paramPath(1) = '';% take out model field
+
+        for i = 1:length(paramPath)
+            eval([paramPath{i} '= ILOGcplex.' paramPath{i} '.Def;']);
+        end
+        cpxControl = Param;
+    else
+        cpxControl = [];
     end
-    cpxControl=Param;
 end
 
 end
