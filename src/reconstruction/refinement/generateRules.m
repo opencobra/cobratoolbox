@@ -14,17 +14,20 @@ function [model2] = generateRules(model)
 %
 % .. Author: -  Aarash Bordar 11/17/2010
 %            -  Uri David Akavia 6-Aug-2017, bug fixes and speedup
+%            -  Diana El Assal 30/8/2017
 
 grRules = model.grRules;
 genes = model.genes;
 convertGenes = @(x) sprintf('%d', find(strcmp(x, genes)));
-tmp = regexprep(grRules,'\( *','('); %replace all spaces after opening parenthesis
-tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
-tmp = regexprep(tmp, ' * (?i)(and) *', ' & ');
-tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
-rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', 'x(${convertGenes($0)})');
-
-model2 = model;
-model2.rules = rules;
-
+for i = 1:length(grRules)
+    if~isempty(grRules{i})
+        tmp = regexprep(grRules{i},'\( *','('); %replace all spaces after opening parenthesis
+        tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
+        tmp = regexprep(tmp, ' * (?i)(and) *', ' & ');
+        tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
+        rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', 'x(${convertGenes($0)})');
+        model2 = model;
+        model2.rules{i} = rules;
+    end
+end
 end

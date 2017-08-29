@@ -15,7 +15,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateRules'));
 cd(fileDir);
 
-modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
+modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon2.0model.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
 %fileList = dir([CBTDIR filesep 'test' filesep 'models' filesep '*.mat']);
 
 for i=1:length(modelsToTry)
