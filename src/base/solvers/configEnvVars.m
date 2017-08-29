@@ -180,7 +180,7 @@ function [] = configEnvVars(printLevel)
                         subDir = filesep;
 
                         % generate solver sub-directories for IBM ILOG CPLEX and gurobi
-                        if k == 1
+                        if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
                         end
                         possibleDir = [tmpSolverPath{i}, subDir];
@@ -231,8 +231,10 @@ function [] = configEnvVars(printLevel)
                     if ~isempty(eval(globEnvVar))
                         method = '--*-';
                         subDir = filesep;
-                        if k == 1 || k == 2
+                        if k == 1
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
+                        elseif k == 2
+                            subDir = generateSolverSubDirectory(solverPaths{k, 3}, false);
                         end
                         eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
                     end
@@ -263,20 +265,25 @@ function [] = configEnvVars(printLevel)
     end
 end
 
-function subDir = generateSolverSubDirectory(solverName)
+function subDir = generateSolverSubDirectory(solverName, extraFlagOSpath)
 % Define the subdirectory path of the solver to be included
 %
 % USAGE:
 %     subDir = generateSolverSubDirectory(solverName)
 %
 % INPUT:
-%     solverName:     string with the name of the solver (or alias)
+%     solverName:      string with the name of the solver (or alias)
+%     extraFlagOSpath: flag to add the osPath to subDir
 %
 % OUTPUT:
-%     subDir:         path to the subdirectory of the solver
+%     subDir:          path to the subdirectory of the solver
 %
 
     subDir = '';
+
+    if nargin < 2
+        extraFlagOSpath = true;
+    end
 
     % GUROBI path
     if ~isempty(strfind(solverName, 'gurobi'))
@@ -290,7 +297,11 @@ function subDir = generateSolverSubDirectory(solverName)
 
         % check for 64-bit
         if ~isempty(strfind(computer('arch'), '64'))
-            subDir = [filesep, osPath, filesep, 'matlab'];
+            if extraFlagOSpath
+                subDir = [filesep, osPath, filesep, 'matlab'];
+            else
+                subDir = [filesep, 'matlab'];
+            end
         end
     end
 
