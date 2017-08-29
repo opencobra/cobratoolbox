@@ -231,10 +231,10 @@ function [] = configEnvVars(printLevel)
                     if ~isempty(eval(globEnvVar))
                         method = '--*-';
                         subDir = filesep;
-                        if k == 1
+                        if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
-                        elseif k == 2
-                            subDir = generateSolverSubDirectory(solverPaths{k, 3}, false);
+                        %elseif k == 2
+                        %    subDir = generateSolverSubDirectory(solverPaths{k, 3}, false);
                         end
                         eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
                     end
