@@ -1,5 +1,6 @@
 #!/bin/sh
 if [ "$ARCH" == "Linux" ]; then
+    whoami
     /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "macOS" ]; then
