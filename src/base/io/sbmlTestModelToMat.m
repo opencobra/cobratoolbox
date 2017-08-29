@@ -29,7 +29,6 @@ printLevel = 1;  % only print out names of models that don't parse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global CBTDIR
 if isempty(CBTDIR)
-  x=888
     tmp = which('initCobraToolbox');
     CBTDIR = tmp(1:end - length('/initCobraToolbox.m'));
 end
@@ -43,7 +42,6 @@ for k = 3:length(files)
         % read in the xml file
         fileName = files(k).name;
         if ~exist([fileName(1:end - 3) 'mat'], 'file')
-          x=999
             filePathName = [originFolder filesep fileName];
             % save as mat file in the same directory
             % savedMatFile=[CBTDIR filesep 'testing' filesep 'testModels' filesep destFolder filesep fileName(1:end-4) '.mat'];
