@@ -18,12 +18,11 @@ function modelKEGG = transformModel2KEGG(model,Dictionary)
 %
 % .. Author: - 11-09-07 IT
 
-if (nargin == 3)
+if (nargin == 2)
     modelKEGG = mapKEGGID2Model(model, Dictionary);
-elseif(nargin == 2)
-    warning('missing data');
-elseif(nargin ==1)
-    modelKEGG = model;
+elseif(nargin == 1)
+    error('missing data');
+    %modelKEGG = model;
 end
 
 modelKEGG.metsAbr = modelKEGG.mets;
