@@ -49,7 +49,7 @@ for k = 3:length(files)
             try
                 defaultBound = 1000;
                 fileType = 'SBML';
-                if printLevel >= 1
+                if printLevel > 0
                     fprintf('%s%s\n', fileName, [' :compatible with readCbModel'])
                 end
                 model = readCbModel(filePathName, defaultBound, fileType);
@@ -66,10 +66,7 @@ for k = 3:length(files)
                 end
             end
         else
-            %if strcmp(fileName, 'textbook.xml')
-                % pause(eps)
-            %end
-            if printLevel >= 1
+            if printLevel > 0
                 fprintf('%s%s\n', fileName, [' :already parsed and compatible with readCbModel'])
             end
         end
