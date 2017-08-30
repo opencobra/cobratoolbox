@@ -29,8 +29,7 @@ printLevel = 1;  % only print out names of models that don't parse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global CBTDIR
 if isempty(CBTDIR)
-    tmp = which('initCobraToolbox');
-    CBTDIR = tmp(1:end - length('/initCobraToolbox.m'));
+    CBTDIR = fileparts(which('initCobraToolbox'));
 end
 
 % modelDir=[CBTDIR filesep 'testing' filesep 'testModels' filesep originFolder];
