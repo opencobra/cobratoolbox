@@ -14,22 +14,28 @@ fileDir = fileparts(which('testSbmlTestModelToMat'));
 cd(fileDir);
 
 % test variables
-CBTDIR = [];
+mkdir 'm_model_collection'
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO', filesep, 'm_model_collection']);
+copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Abiotrophia_defectiva_ATCC_49176.xml'));
+%copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Abiotrophia_defectiva_ATCC_49176.mat'));
+copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Sc_iND750_flux1.xml'));
 
 % function outputs
+CBTDIR = [];
 sbmlTestModelToMat();
+tmp = which('initCobraToolbox');
+CBTDIR = tmp(1:end - length('/initCobraToolbox.m'));
 
 % test
-x = exist('m_model_collection');
-assert(isequal(x, 7));
+assert((exist('m_model_collection') == 7));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO', filesep, 'm_model_collection']);
-x = exist('Abiotrophia_defectiva_ATCC_49176.xml');
-assert(isequal(x, 2));
-x = exist('Abiotrophia_defectiva_ATCC_49176.mat');
-assert(isequal(x, 2));
-x = exist('Sc_iND750_flux1.xml');
-assert(isequal(x, 2));
+assert((exist('Abiotrophia_defectiva_ATCC_49176.xml') == 2));
+%assert((exist('Abiotrophia_defectiva_ATCC_49176.mat') == 2));
+assert((exist('Sc_iND750_flux1.xml') == 2));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
+
+% remove the temporary files
+rmdir('m_model_collection', 's');
 
 % change to old directory
 cd(currentDir);
