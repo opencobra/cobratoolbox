@@ -62,7 +62,7 @@ for k = 3:length(files)
                 % should not leave half finished files around if there are
                 % any
                 if exist(savedMatFile, 'file')
-                    rmfile(savedMatFile)
+                    delete(savedMatFile)
                 end
             end
         else
