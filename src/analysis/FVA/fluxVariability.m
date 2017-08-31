@@ -152,10 +152,16 @@ if ~isfield(model,'osense')
 else
     LPproblem.osense = model.osense;
 end
-tempSolution = solveCobraLP(LPproblem, cpxControl);
+
+% Solve initial (normal) LP
+if allowLoops
+    tempSolution = solveCobraLP(LPproblem, cpxControl);
+else
+    MILPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+    tempSolution = solveCobraMILP(MILPproblem);
+end
 
 if tempSolution.stat == 1
-    objRxn = model.rxns(model.c~=0);
     if strcmp(osenseStr,'max')
         objValue = floor(tempSolution.obj/tol)*tol*optPercentage/100;
     else
@@ -164,7 +170,6 @@ if tempSolution.stat == 1
 else
     error('The FVA could not be run because the model is infeasible or unbounded')
 end
-
 
 %set the objective
 if hasObjective
@@ -179,7 +184,6 @@ end
 
 %get the initial basis
 if advind == 1
-    tempSolution = solveCobraLP(LPproblem, cpxControl);
     LPproblem.basis = tempSolution.basis;
 end
 LPproblem.S = LPproblem.A;%needed for sparse optimisation
@@ -188,7 +192,7 @@ LPproblem.S = LPproblem.A;%needed for sparse optimisation
 maxFlux = zeros(length(rxnNameList), 1);
 minFlux = zeros(length(rxnNameList), 1);
 
-%Thats not true. The eucleadean norm does not get rid of loops if the
+%Thats not true. The Euclidean norm does not get rid of loops if the
 %objective reaction is part of the loop.
 % if length(minNorm)> 1 || minNorm > 0
 %     %minimizing the Euclidean norm gets rid of the loops, so there
