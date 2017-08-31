@@ -63,6 +63,25 @@ else
     fprintf('\ntestWriteCbModel is not compatible with this version of MATLAB. Please upgrade your version of MATLAB.\n\n');
 end
 
+% test varargin
+
+% load the model
+load('ecoli_core_model.mat', 'model');
+
+% write out using varargin
+outmodel1 = writeCbModel(model, 'format', 'mat', 'fileName', 'testModel')
+outmodel2 = writeCbModel(model, 'mat', 'testModel2.mat')
+
+% read in the testModel and testModel2
+testModel = readCbModel('testModel.mat');
+testModel2 = readCbModel('testModel2.mat');
+testModel2.description = '';
+testModel.description = '';
+assert(isequal(testModel, testModel2))
+
+delete 'testModel.mat';
+delete 'testModel2.mat';
+
 % change to old directory
 cd(currentDir);
 
