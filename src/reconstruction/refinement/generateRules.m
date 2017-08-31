@@ -18,7 +18,7 @@ function [model2] = generateRules(model)
 
 grRules = model.grRules;
 genes = model.genes;
-convertGenes = @(x) sprintf('%d', find(strcmp(x, genes)));
+convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, genes)));
 model2 = model;
 
 for i = 1:length(grRules)
@@ -27,7 +27,7 @@ for i = 1:length(grRules)
         tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
         tmp = regexprep(tmp, ' * (?i)(and) *', ' & ');
         tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
-        rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', 'x(${convertGenes($0)})');
+        rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', '${convertGenes($0)}');
         model2.rules{i} = rules;
     else
         model2.rules{i} = model.grRules{i};
