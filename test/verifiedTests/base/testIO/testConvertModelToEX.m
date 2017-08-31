@@ -1,4 +1,4 @@
-% The COBRAToolbox: testOutputHypergraph.m
+% The COBRAToolbox: testConvertModelToEX.m
 %
 % Purpose:
 %     - test the convertModelToEX function
