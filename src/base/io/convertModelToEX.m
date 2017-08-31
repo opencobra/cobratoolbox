@@ -36,7 +36,6 @@ checkEX = ismember(model.rxns, EXrxns);
 % Reactions prior to exchange reactions
 for i = 1:length(model.rxns)
     if checkEX(i) == 0
-
         for t = 1:size(rxnzero, 1)
             if i == rxnzero(t)
                 fprintf(fid, '// ');
@@ -51,6 +50,7 @@ for i = 1:length(model.rxns)
         reactionPlace = find(model.S(:, i));
         if abs(model.S(reactionPlace, i)) > 1 - 1e-2
             for j = 1:size(reactionPlace, 1)
+              model.S=full(model.S);
                 fprintf(fid, '%i\t%s\t', model.S(reactionPlace(j), i), model.mets{reactionPlace(j)});
             end
         else
