@@ -1,9 +1,9 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method, cpxControl, advind)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
 % Performs flux variablity analysis
 %
 % USAGE:
 %
-%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)
+%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)
 %
 % INPUT:
 %    model:            COBRA model structure
@@ -15,7 +15,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %    osenseStr:        Objective sense ('min' or 'max') (Default = 'max')
 %    rxnNameList:      List of reactions for which FVA is performed
 %                      (Default = all reactions in the model)
-%    verbFlag:         Verbose output (opt, default false)
+%    printLevel:       Verbose level (default: 0)
 %    allowLoops:       Whether loops are allowed in solution. (Default = true)
 %                      See `optimizeCbModel` for description
 %    method:           when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
@@ -67,7 +67,7 @@ if nargin < 4
     rxnNameList = model.rxns;
 end
 if nargin < 5
-    verbFlag = false;
+    printLevel = 0;
 end
 if nargin < 6
     allowLoops = true;
@@ -122,10 +122,10 @@ else
     hasObjective = false;
 end
 
-if verbFlag == 1
+if printLevel == 1
     showprogress(0,'Flux variability analysis in progress ...');
 end
-if verbFlag > 1
+if printLevel > 1
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
 end
 
@@ -220,9 +220,9 @@ if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
 
     for i = 1:length(rxnNameList)
         if minNorm
-            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm,cpxControl);
+            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl);
         else
-            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm,cpxControl);
+            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl);
         end
     end
 else % parallel job.  pretty much does the same thing.
@@ -236,9 +236,9 @@ else % parallel job.  pretty much does the same thing.
         changeCobraSolver(lpsolver,'LP',0,1);
         parLPproblem = LPproblem;
         if minNorm
-            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm,cpxControl);
+            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl);
         else
-            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm,cpxControl);
+            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl);
         end
     end
 end
@@ -247,9 +247,9 @@ maxFlux = columnVector(maxFlux);
 minFlux = columnVector(minFlux);
 end
 
-function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallel, method, allowLoops, verbFlag, minNorm, cpxControl)
+function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, method, allowLoops, printLevel, minNorm, cpxControl)
 
-    if verbFlag == 1 && ~parallel
+    if printLevel == 1 && ~parallelMode
         fprintf('iteration %d.\n', i);
     end
     LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
@@ -295,10 +295,10 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         Vmin = getMinNorm(LPproblem,LPsolution,nRxns,maxFlux,model, method);
     end
 
-    if verbFlag == 1 && ~parallel
+    if printLevel == 1 && ~parallelMode
         showprogress(i/length(rxnNameList));
     end
-    if verbFlag > 1 && ~parallel
+    if printLevel > 1 && ~parallelMode
         fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
     end
 end
