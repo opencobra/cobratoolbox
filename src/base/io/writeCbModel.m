@@ -48,7 +48,9 @@ optionalInputs = {'compSymbols', 'compNames', 'sbmlLevel', 'sbmlVersion'};  % Fo
 
 % We can assume, that the old syntax is only used if varargin does not start
 % with a optional argument.
+oldSyntax = true;
 if numel(varargin) > 3
+    oldSyntax = false;
     % This is only relevant, if we have more than 2 non Required input
     % variables.
     % if this is apparent, we need to check the following:
@@ -56,10 +58,11 @@ if numel(varargin) > 3
     % NOT compSymbols or compNames, if the second argument is NOT a char,
     if ~ischar(varargin{4}) || ~any(ismember(varargin{4}, optionalInputs))
         % We assume the old version to be used
-        tempargin = varargin(1:3);
+
+        tempargin = varargin(1:4);
         % just replace the input by the options and replace varargin
         % accordingly
-        for i = 4:numel(varargin)
+        for i = 5:numel(varargin)
             if ~isempty(varargin{i})
                 tempargin(end+1) = optionalInputs(i-2);
                 tempargin(end+1) = varargin(i);
@@ -68,6 +71,7 @@ if numel(varargin) > 3
         varargin = tempargin;
     end
 end
+
 [compSymbols, compNames] = getDefaultCompartmentSymbols();
 if isfield(model, 'comps')
     compSymbols = model.comps;
@@ -84,22 +88,30 @@ if length(results) > 0
     model = convertOldStyleModel(model);
 end
 
-parser = inputParser();
+% parse if there are more than 3 inputs
+if ~oldSyntax
+    parser = inputParser();
 
-parser.addRequired('model', @(x) verifyModel(model, 'simpleCheck', true));
-parser.addOptional('format', 'toselect', @ischar);
-parser.addOptional('fileName', [], @ischar);
-parser.addParameter('compSymbols', compSymbols, @(x) isempty(x) || iscell(x));
-parser.addParameter('compNames', compNames, @(x) isempty(x) || iscell(x));
-% We currently only support output in SBML 3
-parser.addParameter('sbmlLevel', 3, @(x) isnumeric(x));
-parser.addParameter('sbmlVersion', 1, @(x) isnumeric(x));
+    parser.addRequired('model', @(x) verifyModel(model, 'simpleCheck', true));
+    parser.addParameter('format', 'toselect', @ischar);
+    parser.addParameter('fileName', '', @ischar);
+    parser.addParameter('compSymbols', compSymbols, @(x) isempty(x) || iscell(x));
+    parser.addParameter('compNames', compNames, @(x) isempty(x) || iscell(x));
+    % We currently only support output in SBML 3
+    parser.addParameter('sbmlLevel', 3, @(x) isnumeric(x));
+    parser.addParameter('sbmlVersion', 1, @(x) isnumeric(x));
 
-parser.parse(model, varargin{:});
-input = parser.Results;
-format = input.format;
-fileName = input.fileName;
+    parser.parse(model, varargin{:});
+    input = parser.Results
 
+    format = input.format;
+    fileName = input.fileName;
+else
+    format = varargin{1};
+    fileName = varargin{2};
+    input.compSymbols = compSymbols;
+    input.compNames = compNames;
+end
 outmodel = model;
 
 % Assume constraint matrix is S if no A provided.
@@ -110,9 +122,8 @@ else
 end
 
 [nMets, nRxns] = size(model.S);
-% formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
 
-%% Open a dialog to select file name
+% Open a dialog to select file name
 if (isempty(fileName))
     switch format
         case 'xls'
