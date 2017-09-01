@@ -109,6 +109,9 @@ global CBTDIR
 % save the userpath
 originalUserPath = path;
 
+% save the current directory
+currentDir = pwd;
+
 % the root path must be the root directory as the path to the logFiles is hard-coded
 cd(CBTDIR);
 
@@ -208,12 +211,12 @@ else
 end
 
 % Define the solverName
-if strmatch('glpk', solverName)
+if strcmp('glpk', solverName)
     fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
-elseif strmatch('ibm_cplex', solverName)
+elseif strcmp('ibm_cplex', solverName)
     FVAc = str2func(['cplexFVA' cplexVersion]);
 else
-    error(sprintf('Solver %s not supported', solverName))
+    error(['Solver ', solverName, ' not supported.']);
 end
 
 % Define the CPLEX parameter set and the associated values - split the struct
@@ -372,7 +375,7 @@ else
         cdVect(i) = columnDensity;
     end
 
-    [sortedcdVect, indexcdVect] = sort(cdVect, 'descend');
+    [~, indexcdVect] = sort(cdVect, 'descend');
 
     rxnsVect = linspace(1, NrxnsList, NrxnsList);
 
@@ -606,6 +609,9 @@ end
 % restore the original path
 path(originalUserPath);
 addpath(originalUserPath);
+
+% change back to the original directory
+cd(currentDir);
 
 
 function checkFastFVAbin(cplexVersion)
