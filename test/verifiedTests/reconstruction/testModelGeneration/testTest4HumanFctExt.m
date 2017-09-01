@@ -60,8 +60,6 @@ if solverOK
 
     % run test4HumanFctExt
     [TestSolutionOri, TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = test4HumanFctExt(model, 'all', 0);
-    TestedRxns = unique([TestedRxnsC; TestedRxnsClosedSinks]);
-    TestedRxnsX = intersect(model.rxns,TestedRxns);
 
     % load reference data
     load('refData_testTest4HumanFctExt.mat');
@@ -80,6 +78,8 @@ if solverOK
 
     % Note: the reactions cannot be tested, as they depend on the tolerance of the machine and the solver;
     %       the tested reacions are selected based on the solution vector itself
+    % TestedRxns = unique([TestedRxnsC; TestedRxnsClosedSinks]);
+    % TestedRxnsX = intersect(model.rxns,TestedRxns);
     % assert(isequal(TestedRxnsClosedSinks, ref_TestedRxnsClosedSinks))
     % assert(isequal(PercClosedSinks, ref_PercClosedSinks))
     % assert(isequal(TestedRxns, ref_TestedRxns))
