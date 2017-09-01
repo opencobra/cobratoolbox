@@ -28,7 +28,7 @@ function cpxControl = CPLEXParamSet(interface)
 % .. Author: - Ronan Fleming 10th June 2008
 
 if nargin < 1
-    interface = 'tomlab_cplex'
+    interface = 'tomlab_cplex';
 end
 
 if strcmp(interface,'tomlab_cplex')
