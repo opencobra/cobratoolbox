@@ -42,33 +42,21 @@ if solverOK
     for i = 1:size(Table_csourcesOri, 1)
         for j = 1:size(Table_csourcesOri, 2)
             if ~isempty(Table_csourcesOri{i, j}) && ~isempty(ref_Table_csourcesOri{i, j})
-                if ~isnumeric(Table_csourcesOri{i, j}) && ~isnumeric(ref_Table_csourcesOri{i, j})
+                if ~isempty(Table_csourcesOri{i, j}) && ~isempty(ref_Table_csourcesOri{i, j}) && ~isnumeric(Table_csourcesOri{i, j}) && ~isnumeric(ref_Table_csourcesOri{i, j})
                     fprintf('%i - %i: %s : %s\n', i, j, Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j});
-
                     assert(isequal(Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j}));
                 else
                     fprintf('%i - %i: %1.2f : %1.2f\n', i, j, Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j});
-
-                    assert(abs(Table_csourcesOri{i, j} - ref_Table_csourcesOri{i, j}) < tol)
+                    assert(abs(Table_csourcesOri{i, j} - ref_Table_csourcesOri{i, j}) < tol);
                 end
             end
         end
     end
 
-    for i = 1:size(Table_csourcesOri, 1)
-         for j = 1:size(Table_csourcesOri, 2)
-          %  fprintf(['i = ', num2str(i), ' j = ', num2str(j), '\n'])
-            if ~isempty(Table_csourcesOri{i, j}) && ~isempty(ref_Table_csourcesOri{i, j}) && isnumeric(Table_csourcesOri{i, j}) && isnumeric(ref_Table_csourcesOri{i, j})
-                assert(abs(double(ref_Table_csourcesOri{i, j}) - double(Table_csourcesOri{i, j})) < tol);
-            else
-                assert(isequal(Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j}));
-            end
-        end
-    end
-
-    % Note: the reactions cannot be tested, as they depend on the tolerance of the machine and the solver
-    %assert(isequal(sort(TestedRxnsC), sort(ref_TestedRxnsC)))
-    %assert(isequal(Perc, ref_Perc))
+    % Note: the reactions cannot be tested, as they depend on the tolerance of the machine and the solver;
+    %       the tested reacions are selected based on the solution vector itself
+    % assert(isequal(sort(TestedRxnsC), sort(ref_TestedRxnsC)))
+    % assert(isequal(Perc, ref_Perc))
 
     % run test4HumanFctExt
     [TestSolutionOri, TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = test4HumanFctExt(model, 'all', 0);
@@ -90,12 +78,17 @@ if solverOK
         assert(isequal(TestSolutionNameClosedSinks{i, 1}, ref_TestSolutionNameClosedSinks{i, 1}))
     end
 
-    % Note: the reactions cannot be tested, as they depend on the tolerance of the machine and the solver
+    % Note: the reactions cannot be tested, as they depend on the tolerance of the machine and the solver;
+    %       the tested reacions are selected based on the solution vector itself
     % assert(isequal(TestedRxnsClosedSinks, ref_TestedRxnsClosedSinks))
     % assert(isequal(PercClosedSinks, ref_PercClosedSinks))
     % assert(isequal(TestedRxns, ref_TestedRxns))
     % assert(isequal(TestedRxnsX, ref_TestedRxnsX))
 end
+
+% remove all log files
+delete '*.log'
+delete '*.txt'
 
 % change back to original directory
 cd(currentDir)
