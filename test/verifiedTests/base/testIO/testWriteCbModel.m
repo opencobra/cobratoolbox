@@ -69,18 +69,36 @@ end
 load('ecoli_core_model.mat', 'model');
 
 % write out using varargin
-outmodel1 = writeCbModel(model, 'format', 'mat', 'fileName', 'testModel')
-outmodel2 = writeCbModel(model, 'mat', 'testModel2.mat')
+outmodel1 = writeCbModel(model, 'format', 'mat', 'fileName', 'testModel1');
+outmodel2 = writeCbModel(model, 'mat', 'testModel2.mat');
 
 % read in the testModel and testModel2
-testModel = readCbModel('testModel.mat');
+testModel1 = readCbModel('testModel1.mat');
 testModel2 = readCbModel('testModel2.mat');
 testModel2.description = '';
-testModel.description = '';
-assert(isequal(testModel, testModel2))
+testModel1.description = '';
+assert(isequal(testModel1, testModel2));
 
-delete 'testModel.mat';
-delete 'testModel2.mat';
+% test the legacy signature with more input arguments
+[compSymbols, compNames] = getDefaultCompartmentSymbols();
+outmodel3 = writeCbModel(model, 'mat', 'testModel3.mat', compNames, compSymbols);
+testModel3 = readCbModel('testModel3.mat');
+testModel3.description = '';
+assert(isequal(testModel1, testModel3));
+
+% test new signature
+outmodel4 = writeCbModel(model, 'format', 'mat', 'fileName', 'testModel4.mat', 'compNames', compNames, 'compSymbols', compSymbols);
+outmodel5 = writeCbModel(model, 'format', 'mat', 'compNames', compNames, 'compSymbols', compSymbols,'fileName', 'testModel5.mat');
+testModel4 = readCbModel('testModel4.mat');
+testModel5 = readCbModel('testModel5.mat');
+testModel4.description = '';
+testModel5.description = '';
+assert(isequal(testModel4, testModel5));
+
+% remove generate files during testing
+for i = 1:5
+    delete(['testModel', num2str(i),'.mat']);
+end
 
 % change to old directory
 cd(currentDir);
