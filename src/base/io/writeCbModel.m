@@ -11,14 +11,12 @@ function outmodel = writeCbModel(model, varargin)
 % OPTIONAL INPUTS:
 %    varargin:          Optional parameters in 'Parametername',value
 %                       format. Available parameterNames are:
-%                       * format:   File format to be used ('text','xls', 'mat'(default) or 'sbml')
+%                       * format:   File format to be used ('text', 'xls', 'mat'(default) or 'sbml')
 %                         text will only output data from required fields (with GPR rules converted to string representation)
 %                         xls is restricted to the fields defined in the xls io documentation.
-%                       * fileName: File name for output file (optional, default opens
-%                         dialog box)
+%                       * fileName: File name for output file (optional, default opens dialog box)
 %                       * compSymbolList: List of compartment symbols (Cell array)
-%                       * compNameList:     List of compartment names corresponding to
-%                         `compSymbolList` (Cell array)
+%                       * compNameList:   List of compartment names corresponding to `compSymbolList` (Cell array)
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
@@ -43,32 +41,24 @@ function outmodel = writeCbModel(model, varargin)
 %    FBCv2 file. The current version of the `writeSBML.m` does not require the
 %    SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
+newKeyWords = {'format', 'fileName', 'compSymbolList', 'compNameList'};
 
-optionalInputs = {'compSymbols', 'compNames', 'sbmlLevel', 'sbmlVersion'};  % For backward compatability, we are checking whether the old signature is used.
+supportedSBML = 3;
+supportedSBMLv = 1;
 
-% We can assume, that the old syntax is only used if varargin does not start
-% with a optional argument.
-oldSyntax = true;
-if numel(varargin) > 3
-    oldSyntax = false;
-    % This is only relevant, if we have more than 2 non Required input
-    % variables.
-    % if this is apparent, we need to check the following:
-    % 1. is the 3rd vararginargument a cell array and is the second argument
-    % NOT compSymbols or compNames, if the second argument is NOT a char,
-    if ~ischar(varargin{4}) || ~any(ismember(varargin{4}, optionalInputs))
-        % We assume the old version to be used
+% We can assume, that the old syntax is only used if varargin does not start with a optional argument.
+legacySignature = true;
 
-        tempargin = varargin(1:4);
-        % just replace the input by the options and replace varargin
-        % accordingly
-        for i = 5:numel(varargin)
-            if ~isempty(varargin{i})
-                tempargin(end+1) = optionalInputs(i-2);
-                tempargin(end+1) = varargin(i);
-            end
+% check if any of the input arguments is part of the new keywords
+for i = 1:numel(varargin) - 1 % last argument is not relevant
+    if ischar(varargin{i})
+        if any(ismember(varargin{i}, newKeyWords))
+            legacySignature = false;
+            break;
+        else
+            legacySignature = true;
+            break;
         end
-        varargin = tempargin;
     end
 end
 
@@ -84,12 +74,35 @@ end
 
 % convert model if certain fields are missing
 results = verifyModel(model);
-if length(results) > 0
+if ~isempty(results)
     model = convertOldStyleModel(model);
 end
 
 % parse if there are more than 3 inputs
-if ~oldSyntax
+if legacySignature
+    if ~isempty(varargin), format = varargin{1}; end
+    if length(varargin) > 1, fileName = varargin{2}; end
+    if length(varargin) > 2
+        input.compSymbols = varargin{3};
+    else
+        input.compSymbols = compSymbols;
+    end
+    if length(varargin) > 3
+        input.compNames = varargin{4};
+    else
+        input.compNames = compNames;
+    end
+    if length(varargin) > 4
+        if varargin{5} ~= supportedSBML
+            error(['Only SBML ', num2str(supportedSBML), ' is supported.']);
+        end
+    end
+    if length(varargin) > 5
+        if varargin{6} ~= 1
+            error(['Only SBML version ', num2str(supportedSBMLv), ' is supported.']);
+        end
+    end
+else
     parser = inputParser();
 
     parser.addRequired('model', @(x) verifyModel(model, 'simpleCheck', true));
@@ -97,20 +110,16 @@ if ~oldSyntax
     parser.addParameter('fileName', '', @ischar);
     parser.addParameter('compSymbols', compSymbols, @(x) isempty(x) || iscell(x));
     parser.addParameter('compNames', compNames, @(x) isempty(x) || iscell(x));
+
     % We currently only support output in SBML 3
-    parser.addParameter('sbmlLevel', 3, @(x) isnumeric(x));
-    parser.addParameter('sbmlVersion', 1, @(x) isnumeric(x));
+    parser.addParameter('sbmlLevel', supportedSBML, @(x) isnumeric(x));
+    parser.addParameter('sbmlVersion', supportedSBMLv, @(x) isnumeric(x));
 
     parser.parse(model, varargin{:});
-    input = parser.Results
+    input = parser.Results;
 
     format = input.format;
     fileName = input.fileName;
-else
-    format = varargin{1};
-    fileName = varargin{2};
-    input.compSymbols = compSymbols;
-    input.compNames = compNames;
 end
 outmodel = model;
 
@@ -121,10 +130,11 @@ else
     model.S = model.A;
 end
 
-[nMets, nRxns] = size(model.S);
+% determine the number of reactions
+nRxns = size(model.S, 2);
 
 % Open a dialog to select file name
-if (isempty(fileName))
+if isempty(fileName)
     switch format
         case 'xls'
             [fileNameFull, filePath] = uiputfile({'*.xls;*.xlsx'});
@@ -139,7 +149,7 @@ if (isempty(fileName))
         otherwise
             [fileNameFull, filePath] = uiputfile({'*'});
     end
-    if (fileNameFull)
+    if fileNameFull
         [folder, fileName, extension] = fileparts([filePath filesep fileNameFull]);
         fileName = [folder filesep fileName extension];
         switch extension
