@@ -5,7 +5,7 @@ function [modelNew] = updateGenes(model)
 %
 %    [modelNew] = updateGenes(model);
 %
-% INPUTS:
+% INPUT:
 %    model:              COBRA model structure
 %
 % OUTPUT:
@@ -16,25 +16,15 @@ function [modelNew] = updateGenes(model)
 %        fields.
 %
 % .. Authors:
-%       - written by Diana El Assal 30/06/2017 
+%       - written by Diana El Assal 30/06/2017
 %       - fixed by Uri David Akavia 16/07/2017
 
 grRules = model.grRules;
-[~,n] = size(model.S);
 modelNew = model;
-genes = cell(0);
-for i = 1:n
-    if ~isempty(grRules{i})
-        tmp = grRules{i};
-        tmp = strrep(tmp,'and','');
-        tmp = strrep(tmp, 'AND', '');
-        tmp = strrep(tmp,'or','');
-        tmp = strrep(tmp, 'OR', '');
-        tmp = strrep(tmp,'(','');
-        tmp = strrep(tmp,')','');
-        tmp = splitString(tmp,' ');
-        genes = [genes; tmp];
-    end
-end
-genes = unique(genes(cellfun('isclass',genes,'char')));
-modelNew.genes = genes(~cellfun('isempty',genes)); % Not sure this is necessary anymore, but it won't hurt.
+
+genes = regexprep(grRules, {'and', 'AND', 'or', 'OR', '(', ')'}, '');
+genes = splitString(genes, ' ');
+genes = [genes{:}]';
+
+genes = unique(genes(cellfun('isclass', genes, 'char')));
+modelNew.genes = genes(~cellfun('isempty', genes));  % Not sure this is necessary anymore, but it won't hurt.
