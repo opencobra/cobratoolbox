@@ -437,6 +437,12 @@ if sbmlIDFlag
     ruleGenes = unique(regexp(grRule,'[A-Za-z_]+[A-Za-z0-9_]*','match')); %we can restict to acceptable SBML SIds.
     
 else
+    %We will remove empty parenthesis.
+    grRule = regexprep(grRule,'^ *\( *\) *$','');
+    if isempty(grRule)
+        rule = '';
+        return
+    end
     %Otherwise we will assume, that " and " and " or " are unique...
     geneFields = regexp(grRule,'[ \)](and|or)[ \(]','split','ignorecase');
     %Translate or and and to | and & 
