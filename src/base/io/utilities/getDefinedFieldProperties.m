@@ -143,8 +143,8 @@ if isempty(CBT_PROG_FIELD_PROPS)
      end
     %Get the indices for database, qualifier and reference.
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
-    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows)];
-    dbInfo = cell(0,5);
+    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.FBABasicField(relrows)];
+    progInfo = cell(0,6);
     for i = 1:size(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
@@ -166,9 +166,10 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 default = str2num(default);
             end
         end
-         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default};
+        fbaReq = eval(eval(relarray{i,6}));        
+        progInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default,fbaReq};
     end
-    CBT_PROG_FIELD_PROPS = dbInfo;
+    CBT_PROG_FIELD_PROPS = progInfo;
 end
 fields = CBT_PROG_FIELD_PROPS;
 

@@ -37,7 +37,7 @@ function model = convertOldStyleModel(model, printLevel)
 %    merged into new fields, with the data of new fields taking precedence
 %    (i.e. if not data is present in the new field at any position, the old
 %    field data replaces it, otherwise the new field data is kept.
-%    Furthermore, the following fields are created:
+%    Furthermore, fields deemed to be required for Flux Balance analysis are generated if not present:
 %    osense: Objective Sense.
 %            By default this field is initialized as -1 (maximisation)
 %            If the osenseStr field is present, that field will be
@@ -47,6 +47,7 @@ function model = convertOldStyleModel(model, printLevel)
 %            stands for lower than ('L') or greater than ('G') or equality constraints ('E'). It
 %            is initialized as a char vector of 'E' with the same size as
 %            model.mets.
+%    genes:  A Field for genes present in the model.
 %    rules:  The rules field is a logical representation of the GPR rules,
 %            and used in multiple functions. If the grRules field is
 %            present, this field will be initialized according to grRules,
@@ -142,6 +143,10 @@ if ~isfield(model,'csense')
     model.csense = repmat('E',numel(model.mets),1);
 else
     model.csense = columnVector(model.csense);
+end
+
+if ~isfield(model, 'genes')
+    model.genes = cell(0,1);
 end
 
 if ~isfield(model, 'rules') 
