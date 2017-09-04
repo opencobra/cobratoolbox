@@ -22,7 +22,7 @@ function [modelNew] = updateGenes(model)
 grRules = model.grRules;
 modelNew = model;
 
-genes = replace(grRules, {'and', 'AND', 'or', 'OR', '(', ')'}, '');
+genes = regexprep(grRules, {'and', 'AND', 'or', 'OR', '(', ')'}, '');
 genes = splitString(genes, ' ');
 genes = [genes{:}]';
 
