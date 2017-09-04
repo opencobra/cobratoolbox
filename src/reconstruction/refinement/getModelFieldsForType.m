@@ -66,26 +66,26 @@ modelFields = fieldnames(model);
 %Collect all fields of the given size
 possibleFields = {};
 dimensions = [];
-if fieldSize == 1
+if fieldSize == 1 || fieldSize == 0
     %This is special. We will only check the first dimension in this
     %instance, and we will check the field properties of S and
     %rxnGeneMat, Also, we will ONLY return defined fields...
     if isfield(model, 'rxnGeneMat') 
-        if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == 1) 
+        if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == fieldSize) 
             possibleFields{end+1} = 'rxnGeneMat';
             dimensions(end+1,1) = 2;
         end
-        if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == 1)
+        if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == fieldSize)
             possibleFields{end+1} = 'rxnGeneMat';
             dimensions(end+1,1) = 1;
         end
     end
     if isfield(model, 'S') 
-        if (strcmp(type,'mets') && size(model.S,1) == 1) 
+        if (strcmp(type,'mets') && size(model.S,1) == fieldSize) 
             possibleFields{end+1} = 'S';
             dimensions(end+1,1) = 1;
         end
-        if (strcmp(type,'rxns') && size(model.S,2) == 1)
+        if (strcmp(type,'rxns') && size(model.S,2) == fieldSize)
             possibleFields{end+1} = 'S';
             dimensions(end+1,1) = 2;
         end        
@@ -108,7 +108,26 @@ else
         matchingsizes = size(model.(modelFields{i})) == fieldSize;
         if any(matchingsizes) && ~(sum(matchingsizes) > 1) %A size > 1 should only happen if we have conflicting field sizes...
             possibleFields{end+1,1} = modelFields{i};            
-            dimensions(end+1,1) = find(matchingsizes);
+            dimensions(end+1,1) = find(matchingsizes);                    
+        elseif sum(matchingsizes) > 1 
+            %Now we have a problem. We have multiple dimensions that could fit
+            %to the found element. 
+            %if there is an element of the same size, we will have to
+            %resort to using the defined properties (i.e. we will add it
+            %with a dimension of -1 (that we can replace by the definition
+            %later)
+            if sameSizeExists
+                possibleFields{end+1,1} = modelFields{i};
+                dimensions(end+1,1) = -1;
+            else
+                %Otherwise, we add both dimensions, as it seems like this
+                %is a type x type field.
+                cdmins = find(matchingsizes);
+                for dim = 1:numel(cdmins)
+                    possibleFields{end+1,1} = modelFields{i};
+                    dimensions(end+1,1) = cdmins(dim);
+                end
+            end
         end
         
     end
@@ -117,7 +136,7 @@ end
 if sameSizeExists
     %we restrict the possibleFields to those which start with the
     %indicator, along with those fields, which are part of the defined
-    %fileds.
+    %fields.
     
     fields = getDefinedFieldProperties();
     firstdim = cellfun(@(x) isequal(x,type),fields(:,2));
