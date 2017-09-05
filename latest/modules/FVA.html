@@ -204,11 +204,11 @@
 </div>
 <span class="target" id="module-src.analysis.FVA"></span><dl class="function">
 <dt id="src.analysis.FVA.fluxVariability">
-<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>printLevel</em>, <em>allowLoops</em>, <em>method</em>, <em>cpxControl</em>, <em>advind</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/analysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>verbFlag</em>, <em>allowLoops</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/analysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs flux variablity analysis</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)</div></blockquote>
+<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -218,7 +218,6 @@ COBRA model structure</li>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><blockquote>
 <div><ul class="simple">
 <li><strong>optPercentage</strong> &#8211;
 Only consider solutions that give you at least a certain
@@ -229,8 +228,8 @@ Objective sense (&#8216;min&#8217; or &#8216;max&#8217;) (Default = &#8216;max&#
 <li><strong>rxnNameList</strong> &#8211;
 List of reactions for which FVA is performed
 (Default = all reactions in the model)</li>
-<li><strong>printLevel</strong> &#8211;
-Verbose level (default: 0)</li>
+<li><strong>verbFlag</strong> &#8211;
+Verbose output (opt, default false)</li>
 <li><strong>allowLoops</strong> &#8211;
 Whether loops are allowed in solution. (Default = true)
 See <cite>optimizeCbModel</cite> for description</li>
@@ -244,15 +243,6 @@ when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
 </ul>
 </li>
 </ul>
-</div></blockquote>
-<p>cpxControl:        solver-specific parameter structure</p>
-<p>advind:            switch to use the solution basis</p>
-<blockquote>
-<div><ul class="simple">
-<li>0 : default</li>
-<li>1 : uses the original problem solution basis as advanced basis</li>
-</ul>
-</div></blockquote>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
