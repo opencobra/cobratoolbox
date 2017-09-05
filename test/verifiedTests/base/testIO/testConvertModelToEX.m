@@ -22,7 +22,7 @@ rxnzero_2 = 1;
 
 % function outputs
 convertModelToEX(model, filename, rxnzero);
-% another call with arguemnts checking special options
+% another call with arguments checking special options
 model.ub(20) = -1;
 model.lb(20) = -1;
 convertModelToEX(model, filename_2, rxnzero_2);
