@@ -141,6 +141,11 @@ if ~isfield(model,'csense')
     LPproblem.csense(1:nMets) = 'E';
 else
     LPproblem.csense = model.csense(1:nMets);
+
+    % print a warning message if the csense vector does not have the same length as the mets vector
+    if length(model.mets) ~= length(model.csense)
+        warning(' > model.csense does not have the same length as model.mets. Consider checking the model using >> verifyModel.');
+    end
 end
 LPproblem.csense = LPproblem.csense';
 LPproblem.A = model.S;
