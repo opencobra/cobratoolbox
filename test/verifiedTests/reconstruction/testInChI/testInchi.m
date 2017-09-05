@@ -46,5 +46,17 @@ inchiForm = getFormulaFromInChI(MultiPartInChI);
 assert(isequal(inchicharge,0));
 assert(isequal(inchiForm,'C10H4Fe'));
 
+%Test a InChi with fixed Hydrogens -> altering the q-Value
+fixed_H_InChi = 'InChI=1/C60H101N22O15S/c1-33(2)27-40(77-50(88)37(12-6-21-69-59(64)65)74-55(93)44-15-9-24-81(44)56(94)38(13-7-22-70-60(66)67)75-48(86)35(62)17-18-46(63)84)51(89)79-42(31-83)53(91)78-41(28-34-29-68-32-72-34)52(90)73-36(11-4-5-20-61)49(87)71-30-47(85)80-23-8-14-43(80)54(92)76-39(19-26-98-3)57(95)82-25-10-16-45(82)58(96)97/h29,32-33,35-45H,4-28,30-31,61-62H2,1-3H3,(H2,63,84)(H,68,72)(H,71,87)(H,73,90)(H,74,93)(H,75,86)(H,76,92)(H,77,88)(H,78,91)(H,79,89)(H,96,97)(H4,64,65,69)(H4,66,67,70)/q-1/p+4/t35-,36-,37-,38+,39-,40+,41+,42-,43+,44+,45-/m1/s1/fC60H105N22O15S/h61-62,68-79H,63-67H2/q+3';
+fixed_H_InChI_Formula = 'C60H105N22O15S';
+fixed_H_InChI_Charge = -1;
+fixed_H_InChI_Charge_With_Protons = 3;
+[formula,protons,charge] = getFormulaAndChargeFromInChI(fixed_H_InChi);
+chargeWithProtons = getChargeFromInChI(fixed_H_InChi);
+assert(isequal(charge,fixed_H_InChI_Charge));
+assert(isequal(formula,fixed_H_InChI_Formula));
+assert(isequal(chargeWithProtons,fixed_H_InChI_Charge_With_Protons));
+
+
 %Returning to original directory
 cd(currentDir)
