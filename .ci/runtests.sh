@@ -1,12 +1,12 @@
 #!/bin/sh
 if [ "$ARCH" == "Linux" ]; then
-    /mnt/data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
+    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
     /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash < test/testAll.m
 
-elif [ "$ARCH" == "windows7" ]; then
+elif [ "$ARCH" == "windows" ]; then
     # change to the build directory
     echo " -- changing to the build directory --"
     cd "D:\\jenkins\\workspace\\COBRAToolbox-windows\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCH"
