@@ -303,11 +303,17 @@ for i = 1:numel(structFields)
                 res = verifyModel(cfieldConverted, 'silentCheck', true);
                 if isfield(res, 'Errors')
                     fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
+                    if ~isfield(cfield,'modelID')
+                        cfield.modelID = structFields{i};
+                    end
                     models{end + 1, 1} = cfield;
                     models{end, 2} = structFields{i};
                     models{end, 3} = false;
                 else
-                    models{end + 1, 1} = cfieldConverted;
+                    if ~isfield(cfieldConverted,'modelID')
+                        cfieldConverted.modelID = structFields{i};
+                    end
+                    models{end + 1, 1} = cfieldConverted;                    
                     models{end, 2} = structFields{i};
                     models{end, 3} = true;
                 end
@@ -324,6 +330,9 @@ for i = 1:numel(structFields)
                     % so lets try the test again.
                     res = verifyModel(cfield, 'silentCheck', true);
                     if ~isfield(res, 'Errors')
+                        if ~isfield(cfield,'modelID')
+                            cfield.modelID = structFields{i};
+                        end
                         models{end + 1, 1} = cfield;
                         models{end, 2} = structFields{i};
                         models{end, 3} = true;
