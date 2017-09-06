@@ -193,14 +193,21 @@
 </div>
 <span class="target" id="module-src.base.solvers"></span><dl class="function">
 <dt id="src.base.solvers.CPLEXParamSet">
-<code class="descname">CPLEXParamSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/base/solvers/CPLEXParamSet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.CPLEXParamSet" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CPLEXParamSet</code><span class="sig-paren">(</span><em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/base/solvers/CPLEXParamSet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.CPLEXParamSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a function which returns user specified CPLEX control
 parameters. It is not necessary to use a file like this if you want to use
 CPLEX default control parameters. It is intended to be a template for
 individual users to save with their own problem specific settings for CPLEX.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>cpxControl = CPLEXParamSet</div></blockquote>
+<div>cpxControl = CPLEXParamSet(solver)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>interface</strong> &#8211;
+&#8216;tomlab_cplex&#8217;(default) or &#8216;ILOGcomplex&#8217;</li>
+</ul>
+</div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -917,6 +924,39 @@ is outputted to.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.getParamList">
+<code class="descname">getParamList</code><span class="sig-paren">(</span><em>param</em>, <em>bottomFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/base/solvers/getParamList.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getParamList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the end parameters and their paths for matching CPLEX parameters appropriately
+(e.g., if param.simplex.display is a parameter, then we will have &#8216;display&#8217;
+in paramList and &#8216;param.simplex&#8217; in paramPath)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[paramList, paramPath, addCur] = getParamList(param, bottomFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>param</strong> &#8211;
+existing structure with parameters for Cplex</li>
+<li><strong>bottomFlag</strong> &#8211;
+boolean switch to extract parameters based on &#8216;Cur&#8217; at the
+bottom level in the user-supplied parameter structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>paramList</strong> &#8211;
+Cell with proper parameter names</li>
+<li><strong>paramPath</strong> &#8211;
+Cell with superseeding parameter structure</li>
+<li><strong>addCur</strong> &#8211;
+Structure with booleans whether or not <cite>.Cur</cite> has been
+added to the <cite>paramPath</cite> for user-supplied parameters</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.liftModel">
 <code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7799868772d1f26dcb5694e93e8789853d1acce6/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
@@ -1391,6 +1431,8 @@ checked on a case by case basis, by optimization with and
 without regularisation.</li>
 <li><strong>primalOnly</strong> &#8211;
 {(0), 1}; 1 = only return the primal vector (lindo solvers)</li>
+<li><strong>parameters</strong> &#8211;
+solver-specific parameters structure</li>
 </ul>
 </div></blockquote>
 <p>Optional parameters can also be set through the

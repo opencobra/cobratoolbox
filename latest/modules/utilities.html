@@ -263,7 +263,7 @@ If both an old and a new field is present, data from old fields is
 merged into new fields, with the data of new fields taking precedence
 (i.e. if not data is present in the new field at any position, the old
 field data replaces it, otherwise the new field data is kept.
-Furthermore, the following fields are created:
+Furthermore, fields deemed to be required for Flux Balance analysis are generated if not present:
 osense: Objective Sense.</p>
 <blockquote>
 <div>By default this field is initialized as -1 (maximisation)
@@ -275,11 +275,15 @@ interpreted and if it is &#8216;min&#8217; osense will be initialized to 1</div>
 stands for lower than (&#8216;L&#8217;) or greater than (&#8216;G&#8217;) or equality constraints (&#8216;E&#8217;). It
 is initialized as a char vector of &#8216;E&#8217; with the same size as
 model.mets.</dd>
-<dt>rules:  The rules field is a logical representation of the GPR rules,</dt>
-<dd>and used in multiple functions. If the grRules field is
+</dl>
+<p>genes:  A Field for genes present in the model.
+rules:  The rules field is a logical representation of the GPR rules,</p>
+<blockquote>
+<div>and used in multiple functions. If the grRules field is
 present, this field will be initialized according to grRules,
 otherwise it will be initialized as a cell array of the ame size as model.rxns
-with empty strings in each cell.</dd>
+with empty strings in each cell.</div></blockquote>
+<dl class="docutils">
 <dt>rev:    This field was deprecated and is therefore removed, for</dt>
 <dd>reversibility determination the toolbox relies on the lower
 bounds of the reactions.</dd>
