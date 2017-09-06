@@ -147,7 +147,7 @@ if COVERAGE
         system(['cp /mnt/prince-data/jenkins/userContent/codegrade-', grade, '.svg /mnt/prince-data/jenkins/userContent/codegrade.svg']);
 
         % secure copy the badge from the slave
-        system('scp -P 8022 /mnt/prince-data/jenkins/userContent/codegrade.svg jenkins@10.79.2.128:/var/lib/jenkins/userContent');
+        system('scp -P 8022 /mnt/prince-data/jenkins/userContent/codegrade.svg jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent');
     end
 end
 
