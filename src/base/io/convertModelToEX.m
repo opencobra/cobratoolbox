@@ -35,11 +35,9 @@ checkEX = ismember(model.rxns, EXrxns);
 
 % Reactions prior to exchange reactions
 for i = 1:length(model.rxns)
-    if checkEX(i) == 0
-        for t = 1:size(rxnzero, 1)
-            if i == rxnzero(t)
-                fprintf(fid, '// ');
-            end
+    if checkEX(i) == 0        
+        if any(ismember(i,rxnzero))
+           fprintf(fid, '// ');
         end
         fprintf(fid, '%s\t', model.rxns{i});
         if model.lb(i) == 0
@@ -54,8 +52,8 @@ for i = 1:length(model.rxns)
             end
         else
             for j = 1:size(reactionPlace, 1)
-                newS(j, i) = 2 * model.S(reactionPlace(j), i);
-                fprintf(fid, '%i\t%s\t', full(newS(j, i)), model.mets{reactionPlace(j)});
+                val = 2 * model.S(reactionPlace(j), i);
+                fprintf(fid, '%i\t%s\t', full(val), model.mets{reactionPlace(j)});
             end
         end
         fprintf(fid, '\n');
