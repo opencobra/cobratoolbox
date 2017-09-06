@@ -17,6 +17,9 @@ function outmodel = writeCbModel(model, varargin)
 %                       * fileName: File name for output file (optional, default opens dialog box)
 %                       * compSymbolList: List of compartment symbols (Cell array)
 %                       * compNameList:   List of compartment names corresponding to `compSymbolList` (Cell array)
+%                       * options:        Struct for optional parameters of
+%                                         an output format. Includes:
+%                                         - .rxn
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
@@ -144,6 +147,8 @@ if isempty(fileName)
             [fileNameFull, filePath] = uiputfile({'*.xml'});
         case 'mat'
             [fileNameFull, filePath] = uiputfile({'*.mat'});
+        case 'xpa'
+            [fileNameFull, filePath] = uiputfile({'*.xpa'});
         case 'toselect'
             [fileNameFull, filePath] = uiputfile({'*.mat', 'Matlab File'; '*.xml' 'SBML Model'; '*.txt' 'Text Export'; '*.xls;*.xlsx' 'Excel Export'; '*.MPS' 'MPS Export'});
         otherwise
@@ -163,6 +168,8 @@ if isempty(fileName)
                 format = 'sbml';
             case '.mat'
                 format = 'mat';
+            case '.xpa'
+                format = 'xpa';
             otherwise
                 format = 'unknown';
         end
@@ -206,6 +213,9 @@ switch format
         %% Mat
     case 'mat'
         save(fileName, 'model')
+        %% XPA
+    case 'xpa'
+        convertModelToEX(model,fileName,
         %% Uknown
     otherwise
         error('Unknown file format');
