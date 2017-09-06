@@ -11,9 +11,10 @@ function outmodel = writeCbModel(model, varargin)
 % OPTIONAL INPUTS:
 %    varargin:          Optional parameters in 'Parametername',value
 %                       format. Available parameterNames are:
-%                       * format:   File format to be used ('text', 'xls', 'mat'(default) or 'sbml')
+%                       * format:   File format to be used ('text', 'xls', 'mat'(default) 'expa' or 'sbml')
 %                         text will only output data from required fields (with GPR rules converted to string representation)
 %                         xls is restricted to the fields defined in the xls io documentation.
+%                         expa will print all reactions with Exchangers being detected by findExcRxns
 %                       * fileName: File name for output file (optional, default opens dialog box)
 %                       * compSymbolList: List of compartment symbols (Cell array)
 %                       * compNameList:   List of compartment names corresponding to `compSymbolList` (Cell array)
@@ -73,7 +74,7 @@ if isfield(model, 'compNames')
 end
 
 % convert model if certain fields are missing
-results = verifyModel(model);
+results = verifyModel(model,'silentCheck',true);
 if ~isempty(results)
     model = convertOldStyleModel(model);
 end
@@ -104,7 +105,7 @@ if legacySignature
     end
 else
     parser = inputParser();
-
+    
     parser.addRequired('model', @(x) verifyModel(model, 'simpleCheck', true));
     parser.addParameter('format', 'toselect', @ischar);
     parser.addParameter('fileName', '', @ischar);
@@ -117,11 +118,12 @@ else
 
     parser.parse(model, varargin{:});
     input = parser.Results;
-
     format = input.format;
     fileName = input.fileName;
 end
-outmodel = model;
+if nargout > 0
+    outmodel = model;
+end
 
 % Assume constraint matrix is S if no A provided.
 if ~isfield(model, 'A') && isfield(model, 'S')
@@ -144,6 +146,8 @@ if isempty(fileName)
             [fileNameFull, filePath] = uiputfile({'*.xml'});
         case 'mat'
             [fileNameFull, filePath] = uiputfile({'*.mat'});
+        case 'expa'
+            [fileNameFull, filePath] = uiputfile({'*.expa'});
         case 'toselect'
             [fileNameFull, filePath] = uiputfile({'*.mat', 'Matlab File'; '*.xml' 'SBML Model'; '*.txt' 'Text Export'; '*.xls;*.xlsx' 'Excel Export'; '*.MPS' 'MPS Export'});
         otherwise
@@ -163,6 +167,8 @@ if isempty(fileName)
                 format = 'sbml';
             case '.mat'
                 format = 'mat';
+            case '.expa'
+                format = 'expa';
             otherwise
                 format = 'unknown';
         end
@@ -206,6 +212,9 @@ switch format
         %% Mat
     case 'mat'
         save(fileName, 'model')
+        %% expa
+    case 'expa'
+        convertModelToEX(model,fileName,0,model.rxns(findExcRxns(model)));
         %% Uknown
     otherwise
         error('Unknown file format');
