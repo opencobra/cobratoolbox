@@ -272,7 +272,7 @@ end
 
 %fill in opt info for metabolites
 if ~isempty(Objective) && length(Objective) == length(model.rxns)
-    model.c = Objective * model.osense;
+    model.c = Objective;
 end
 
 metHeaders = metInfo(1,:);

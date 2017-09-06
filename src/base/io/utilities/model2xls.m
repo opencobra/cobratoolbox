@@ -85,7 +85,7 @@ if isfield(model,'rules')
     model = creategrRulesField(model);
 end
 if isfield(model,'osense')
-    model.c = model.c * -1;
+    model.c = model.c * (-model.osense);
 end
 
 model.formulas = printRxnFormula(model,'printFlag',0);
