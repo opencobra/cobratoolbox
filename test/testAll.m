@@ -44,6 +44,9 @@ initCobraToolbox;
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
+
+    % restore the original path
+    restoredefaultpath;
 else
     WAITBAR_TYPE = 1;
 end
