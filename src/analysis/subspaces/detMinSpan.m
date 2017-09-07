@@ -46,7 +46,7 @@ global CBT_MILP_SOLVER
 global CBT_LP_SOLVER
 global CBT_QP_SOLVER
 
-if ~strcmp(CBT_MILP_SOLVER, 'gurobi') && ~strcmp(CBT_LP_SOLVER, 'gurobi') && ~strcmp(CBT_QP_SOLVER, 'gurobi')
+if ~strcmp(CBT_MILP_SOLVER, 'gurobi') || ~strcmp(CBT_LP_SOLVER, 'gurobi') || ~strcmp(CBT_QP_SOLVER, 'gurobi')
     error('detMinSpan only runs with Gurobi.\nTry to run `changeCobraSolver(''gurobi'', ''MILP'')` to use Gurobi.');
 end
 
