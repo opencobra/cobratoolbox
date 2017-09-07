@@ -117,21 +117,40 @@ if strcmp(type,'genes')
 end
 
 
-fields = getModelFieldsForType(model, type, fieldSize);
-
-fields = setdiff(fields,excludeFields);
+[fields,dimensions] = getModelFieldsForType(model, type, fieldSize);
 
 for i = 1:numel(fields)
+    if any(ismember(fields{i},excludeFields))
+        continue
+    end
     %Lets assume, that we only have 2 dimensional fields.
-    if size(model.(fields{i}),1) == fieldSize
-        model.(fields{i}) = model.(fields{i})(~indicesToRemove,:);
-    end
-    if size(model.(fields{i}),2) == fieldSize
-        model.(fields{i}) = model.(fields{i})(:,~indicesToRemove);
-    end
+    model.(fields{i}) = removeIndicesInDimenion(model.(fields{i}),dimensions(i),~indicesToRemove);  
 end
 
 
+function removed = removeIndicesInDimenion(input,dimension,indices)
+% Remove the indices in a specified field in the given dimension
+% USAGE:
+%    removed = removeIndicesInDimenion(input, dimension, indices)
+%
+% INPUTS:
+%
+%    input:              The input matrix or array
+%    dimension:          The dimension from which to remove the indices
+%    indices:            The indices to remove
+%
+% OUTPUT:
+%
+%    removed:          The array/matrix with the given indices removed.
+%
+% .. Authors: 
+%                   - Thomas Pfau Sept 2017, adapted to merge all fields.
+
+inputDimensions = ndims(input);
+S.subs = repmat({':'},1,inputDimensions);
+S.subs{dimension} = indices;
+S.type = '()';
+removed = subsref(input,S);
 
         
 function model = normalizeRules(model)

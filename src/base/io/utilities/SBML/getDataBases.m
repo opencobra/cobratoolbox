@@ -24,9 +24,20 @@ function [databases,ids,qualifiers] = getDataBases(Ressources,qualifier)
 %  http://identifiers.org/databaseid/EntryID
 %  The correctness of the entries is NOT checked!
 
-tokens = cellfun(@(x) regexp(x,'http://identifiers\.org/([^/]*)/(.*)','tokens'),Ressources);
+try
+    %Try to parse identifiers.org ids. if this doesn't work leave them
+    %empty.
+    tokens = cellfun(@(x) regexp(x,'http://identifiers\.org/([^/]*)/(.*)','tokens'),Ressources);
+catch
+    tokens = {};
+end
 if isempty(tokens)
-    tokens = regexp(Ressources,'urn:miriam:([^:]*):(.*)','tokens');
+    try
+        %Try parsing urn.miriam IDs. if this doesn't work leave them empty.
+        tokens = cellfun(@(x) regexp(x,'urn:miriam:([^:]*):(.*)','tokens'),Ressources);
+    catch
+        tokens = {};        
+    end
 end
 databases = {};
 ids = {};

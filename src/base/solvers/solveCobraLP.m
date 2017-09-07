@@ -25,8 +25,10 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * 2 - Summary information
 %                     * 3 - More detailed information
 %                     * > 10 - Pause statements, and maximal printing (debug mode)
+%
 %    saveInput:     Saves LPproblem to filename specified in field.
 %                   i.e. parameters.saveInput = 'LPproblem.mat';
+%
 %    minNorm:       {(0), scalar , `n x 1` vector}, where `[m, n] = size(S)`;
 %                   If not zero then, minimise the Euclidean length
 %                   of the solution to the LP problem. minNorm ~1e-6 should be
@@ -34,7 +36,10 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   the linear part of the objective. However, this should be
 %                   checked on a case by case basis, by optimization with and
 %                   without regularisation.
+%
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%
+%    parameters:    solver-specific parameters structure 
 %
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;

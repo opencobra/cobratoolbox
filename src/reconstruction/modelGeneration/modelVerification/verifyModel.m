@@ -61,7 +61,10 @@ function results = verifyModel(model, varargin)
 % .. Authors:
 %       - Thomas Pfau, May 2017
 
-fluxConsistencyFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+
+optionalFields = getDefinedFieldProperties();
+
+fluxConsistencyFields = optionalFields(cellfun(@(x) x, optionalFields(:,6)),1);
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
@@ -88,7 +91,7 @@ stoichiometricConsistency = parser.Results.stoichiometricConsistency;
 checkDBs = parser.Results.checkDatabaseIDs;
 silentCheck = parser.Results.silentCheck;
 
-[optionalFields] = getDefinedFieldProperties();
+
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
 
