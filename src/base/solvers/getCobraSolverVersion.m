@@ -20,13 +20,6 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
     global ENV_VARS
     global SOLVERS
 
-    % save the userpath
-    originalUserPath = path;
-
-    if nargin > 2
-        restoredefaultpath;
-    end
-
     % run initCobraToolbox when not yet initialised
     if isempty(SOLVERS)
         ENV_VARS.printLevel = false;
@@ -34,82 +27,65 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
         ENV_VARS.printLevel = true;
     end
 
+    if nargin < 2
+        rootPathSolver = '';
+    end
+
     if nargin < 3
         printLevel = 1;
     end
 
-    if strcmp(solverName, 'ibm_cplex')
-        % Set the CPLEX file path
-        index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
-        rootPathSolver = ILOG_CPLEX_PATH(1:index);
+    solverStatus = eval(['SOLVERS.' solverName '.installed;']);
 
-        % try to set the ILOG cplex solver
-        %cplexInstalled = changeCobraSolver('ibm_cplex', 'LP', printLevel);
-        rootPathSolver = strrep(rootPathSolver, '~', getenv('HOME'));
-        addpath(genpath(rootPathSolver));
-
-        if exist(rootPathSolver, 'dir') == 7
-            cplexInstalled = true;
-        else
-            cplexInstalled = false;
-        end
-
-        if cplexInstalled
-            % detect the version of CPLEX
-            possibleVersions = {'1262', '1263', '1270', '1271'};
-
-            % check the version based on the presence of a precompiled MEX file
-            solverVersion = 'undetermined';
-            for i = 1:length(possibleVersions)
-                if isunix == 1 && ismac ~= 1
-                    versionLink = [rootPathSolver filesep 'matlab/x86-64_linux/cplexlink' possibleVersions{i} '.mexa64'];
-                elseif ismac == 1
-                    versionLink = [rootPathSolver filesep 'matlab/x86-64_osx/cplexlink' possibleVersions{i} '.mexmaci64'];
-                else
-                    versionLink = [rootPathSolver filesep 'matlab\x64_win64\cplexlink' possibleVersions{i} '.mexw64'];
-                end
-
-                % if the file exists, set the version
-                if exist(versionLink) == 3
-                    solverVersion = possibleVersions{i};
-                end
-            end
-
-            if ~strcmpi(solverVersion, 'undetermined')
-                fprintf([' > The CPLEX version has been determined as ' solverVersion '.\n']);
-            else
-                fprintf([' > CPLEX installation path: ', rootPathSolver, '\n']);
-                fprintf([' > The CPLEX version is ' solverVersion '\n. Your currently installed version of CPLEX is unsupported or you have multiple versions of CPLEX in the path.']);
-            end
-        else
-            error(['CPLEX is not installed. Please follow the installation instructions here: ', ...
-                'https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
-        end
-
-    elseif strcmp(solverName, 'gurobi')
-        solverVersion = 'undetermined';
-
-        index = regexp(GUROBI_PATH, solverName);
-        rootPathSolver = GUROBI_PATH(1:index-1);
-        beginIndex = index + length(solverName);
-
-        tmpPath = GUROBI_PATH(beginIndex:end);
-        % determine position of filesep
-        endIndex = strfind(tmpPath, filesep);
-
-        % determine solver version
-        solverVersion = tmpPath(1:endIndex(1)-1);
-        if ~strcmpi(solverVersion, 'undetermined')
-            fprintf([' > The GUROBI version has been determined as ' solverVersion '.\n']);
-        else
-            fprintf([' > GUROBI installation path: ', rootPathSolver, '\n']);
-            fprintf([' > The GUROBI version is ' solverVersion '\n. Your currently installed version of GUROBI is unsupported or you have multiple versions of GUROBI in the path.']);
-        end
-
+    % define solver specific patterns
+    switch solverName
+        case 'ibm_cplex'
+            solverPath = ILOG_CPLEX_PATH;
+            pattern = 'CPLEX_Studio';
+            aliasName = 'CPLEX';
+        case 'gurobi'
+            solverPath = GUROBI_PATH;
+            pattern = 'gurobi';
+            aliasName = 'GUROBI';
+        otherwise
     end
 
-    % restore the original path
-    path(originalUserPath);
-    addpath(originalUserPath);
+    if solverStatus
+        % retrieve the version number
+        try
+            [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pattern);
+        catch
+            solverVersion = 'undetermined';
+            rootPathSolver = '';
+        end
+
+        if printLevel > 0
+            if ~strcmpi(solverVersion, 'undetermined')
+                fprintf([' > The ' aliasName ' version has been determined as ' solverVersion '.\n']);
+            else
+                fprintf([' > ' aliasName ' installation path: ', rootPathSolver, '\n']);
+                fprintf([' > The ' aliasName ' version is ' solverVersion '\n. Your currently installed version of ' aliasName ' is unsupported or you have multiple versions of ' aliasName ' in the path.']);
+            end
+        end
+    else
+        error([aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
+    end
+
+end
+
+function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pattern)
+% extract the version number based on the path of the solver
+
+    index = regexp(globalVar, pattern);
+    rootPathSolver = globalVar(1:index-1);
+    beginIndex = index + length(pattern);
+
+    tmpPath = globalVar(beginIndex:end);
+
+    % determine position of filesep
+    endIndex = strfind(tmpPath, filesep);
+
+    % determine solver version
+    solverVersion = tmpPath(1:endIndex(1)-1);
 
 end
