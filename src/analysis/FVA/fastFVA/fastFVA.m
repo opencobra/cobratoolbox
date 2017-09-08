@@ -116,7 +116,7 @@ currentDir = pwd;
 cd(CBTDIR);
 
 % determine the latest installed CPLEX version
-cplexVersion = getCPLEXversion();
+cplexVersion = getCobraSolverVersion('ibm_cplex');
 
 % check if the provided fastFVA binaries are compatible with the current system configuration
 checkFastFVAbin(cplexVersion);
@@ -623,7 +623,7 @@ function checkFastFVAbin(cplexVersion)
 %    checkFastFVAbin(cplexVersion)
 %
 % INPUT:
-%    cplexVersion:    CPLEX version (string), obtained using getCPLEXversion()
+%    cplexVersion:    CPLEX version (string), obtained using `getCobraSolverVersion`
 %
 
 global CBTDIR
