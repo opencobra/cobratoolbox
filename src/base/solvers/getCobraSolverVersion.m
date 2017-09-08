@@ -17,6 +17,8 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
 
     global ILOG_CPLEX_PATH
     global GUROBI_PATH
+    global MOSEK_PATH
+    global TOMLAB_PATH
     global ENV_VARS
     global SOLVERS
 
@@ -47,6 +49,10 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
             solverPath = GUROBI_PATH;
             pattern = 'gurobi';
             aliasName = 'GUROBI';
+        case 'mosek'
+            solverPath = MOSEK_PATH;
+            pattern = 'Mosek';
+            aliasName = 'MOSEK';
         otherwise
     end
 
@@ -75,7 +81,6 @@ end
 
 function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pattern)
 % extract the version number based on the path of the solver
-
     index = regexp(globalVar, pattern);
     rootPathSolver = globalVar(1:index-1);
     beginIndex = index + length(pattern);
@@ -88,4 +93,8 @@ function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, patte
     % determine solver version
     solverVersion = tmpPath(1:endIndex(1)-1);
 
+    % if the solver version is still empty, try the second index
+    if isempty(solverVersion)
+        solverVersion = tmpPath(2:endIndex(2)-1);
+    end
 end
