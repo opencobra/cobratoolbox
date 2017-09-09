@@ -15,14 +15,10 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % define a false compatible status as default
     compatibleStatus = false;
 
-    % read in the file with the compatibility matrix
-
-    % retrieve the matlab version
-    matlabVersion = version('-release');
-
     % check if the solver and the matlab version are compatible
     compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
 
+    % read in the file with the compatibility matrix
     C = {};
     compatMatrix = {};
     fid = fopen(compatMatrixFile);
@@ -64,14 +60,13 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     else
         compatMatrix = compatMatrix{2};
     end
-    %keyboard
+
     compatMatlabVersions = compatMatrix{1};
     compatMatlabVersions = compatMatlabVersions(2:end);
     versionMatlab = ['R' version('-release')];
 
-    colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
+    colIndexVersion = strcmpi(versionMatlab, compatMatlabVersions);
 
-    %solverName = 'gurobi';
     solverNameAlias = strrep(upper(solverName), '_', '');
 
     solverVersion = getCobraSolverVersion(solverName);
