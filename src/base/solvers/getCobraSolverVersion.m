@@ -53,16 +53,37 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
             solverPath = MOSEK_PATH;
             pattern = 'Mosek';
             aliasName = 'MOSEK';
+        case 'tomlab_cplex'
+            solverPath = TOMLAB_PATH;
+            pattern = 'tomlab_cplex';
+            aliasName = 'TOMLAB';
         otherwise
     end
 
     if solverStatus
         % retrieve the version number
-        try
-            [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pattern);
-        catch
-            solverVersion = 'undetermined';
-            rootPathSolver = '';
+        if strcmp(pattern, 'tomlab_cplex')
+            % save the original user path
+            originalUserPath = path;
+
+            % add the tomlab path
+            addpath(genpath(TOMLAB_PATH));
+            tmpV = ver('tomlab');
+
+            % reset the path
+            restoredefaultpath;
+            addpath(originalUserPath);
+
+            % replace the version dot
+            solverVersion = strrep(tmpV.Version, '.', '');
+            rootPathSolver = solverPath;
+        else
+            try
+                [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pattern);
+            catch
+                solverVersion = 'undetermined';
+                rootPathSolver = '';
+            end
         end
 
         if printLevel > 0
@@ -81,7 +102,7 @@ end
 
 function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pattern)
 % extract the version number based on the path of the solver
-    index = regexp(globalVar, pattern);
+    index = regexp(lower(globalVar), lower(pattern));
     rootPathSolver = globalVar(1:index-1);
     beginIndex = index + length(pattern);
 
