@@ -1,10 +1,15 @@
-function compatibleStatus = isCompatible(solverName, printLevel)
+function compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
 
     global CBTDIR
 
     % define a default printLevel
     if nargin < 2
-        printLevel = 0;
+        printLevel = 1;
+    end
+
+    % determine specific version
+    if nargin < 3
+        specificSolverVersion = '';
     end
 
     % define a false compatible status as default
@@ -18,15 +23,6 @@ function compatibleStatus = isCompatible(solverName, printLevel)
     % check if the solver and the matlab version are compatible
     compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
 
-    %{
-        fid = fopen(compatMatrixFile);
-        N = 11; % number of columns
-        C_text = textscan(fid,'%s',N,'Delimiter','|');
-        C_data1 = textscan(fid,[repmat('%s',[1,N-1])],'CollectOutput',1,'Delimiter','|')
-        tableData = C_data1{1};
-        headerData = C_text{1};
-        headerData = headerData(3:end-1);
-    %}
     C = {};
     compatMatrix = {};
     fid = fopen(compatMatrixFile);
@@ -36,7 +32,9 @@ function compatibleStatus = isCompatible(solverName, printLevel)
             break;
         end
         if length(tline) > 1
-        %disp(tline)
+            if printLevel > 1
+                disp(tline);
+            end
             if strcmp(tline(1), '|')
 
                 % split the line at the vertical bar
@@ -85,19 +83,25 @@ function compatibleStatus = isCompatible(solverName, printLevel)
         solverNameRow = upper(solverNameRow);
         solverNameRow = strrep(solverNameRow, ' ', '');
         solverNameRow = strrep(solverNameRow, '.', '');
-        comaptibilityBoolean = row{colIndexVersion};
         if strcmpi([solverNameAlias, solverVersion], solverNameRow)
-            if comaptibilityBoolean
+
+            % retrieve the compatibility status from the table
+            compatibilityBoolean = row{colIndexVersion + 1};
+
+            % convert to boolean
+            compatibilityBoolean = logical(compatibilityBoolean(:)' - '0');
+            if compatibilityBoolean
                 compatibleStatus = true;
-                fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is compatible with MATLAB ', versionMatlab, '.\n']);
+                if printLevel > 0
+                    fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is compatible with MATLAB ', versionMatlab, '.\n']);
+                end
                 break;
+            else
+                if printLevel > 0
+                    fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is NOT compatible with MATLAB ', versionMatlab, '.\n']);
+                end
             end
         end
-    end
-
-    % return the compatibility status
-    if printLevel > 0
-        fprintf(['The selected solver ', solverName, ' and this MATLAB version (', matlabVersion, ') are not compatible. Please select a compatible pair.\n']);
     end
 
 end

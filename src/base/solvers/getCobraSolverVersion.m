@@ -88,14 +88,15 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
 
         if printLevel > 0
             if ~strcmpi(solverVersion, 'undetermined')
-                fprintf([' > The ' aliasName ' version has been determined as ' solverVersion '.\n']);
+                fprintf([' > The version of ' aliasName ' is ' solverVersion '.\n']);
             else
                 fprintf([' > ' aliasName ' installation path: ', rootPathSolver, '\n']);
                 fprintf([' > The ' aliasName ' version is ' solverVersion '\n. Your currently installed version of ' aliasName ' is unsupported or you have multiple versions of ' aliasName ' in the path.']);
             end
         end
     else
-        error([aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
+        solverVersion = '';
+        fprintf([' > ' aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
     end
 
 end
