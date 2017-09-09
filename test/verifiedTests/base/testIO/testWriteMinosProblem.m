@@ -21,21 +21,23 @@ LPproblem.ub = [4; 1; inf];                         %Upper bound vector
 LPproblem.c = [1 4 9];                              %Objective coeff vector
 LPproblem.csense = ['L'; 'L'; 'E'];                 %Constraint sense
 LPproblem.osense = 1;                               %Minimize
+
 LPproblem2 = rmfield(LPproblem, 'csense');          % function will add it automatically
 LPproblem2 = rmfield(LPproblem2, 'osense');         % function will add it automatically
+LPproblem2.S = ['L'; 'L'; 'E'];
 
 % function outputs
-[directory, fname] = writeMinosProblem(LPproblem)
-[directory2, fname2] = writeMinosProblem(LPproblem2, 'single', 'FBA2', pwd, 1)
+[directory, fname] = writeMinosProblem(LPproblem);
+[directory2, fname2] = writeMinosProblem(LPproblem2, 'single', 'FBA2', pwd, 1);
 
 % test for the common part, the rest differs by precision
 testFile = fopen('FBA.txt', 'r');
 testVar = fscanf(testFile, '%c');
-testVar = testVar(4:158)
+testVar = testVar(4:158);
 fclose(testFile);
 testFile_2 = fopen('FBA2.txt', 'r');
 testVar_2 = fscanf(testFile_2, '%c');
-testVar_2 = testVar_2(5:159)
+testVar_2 = testVar_2(5:159);
 fclose(testFile_2);
 
 assert(isequal(testVar, testVar_2));
