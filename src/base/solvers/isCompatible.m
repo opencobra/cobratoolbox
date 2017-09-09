@@ -43,15 +43,14 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     fid = fopen(compatMatrixFile);
     while 1
         tline = fgetl(fid);
-        if ~ischar(tline)
-            break;
-        end
+        if ~ischar(tline), break; end
+
+        % if the line is not empty, read it in
         if length(tline) > 1
             if printLevel > 1
                 disp(tline);
             end
             if strcmp(tline(1), '|')
-
                 % split the line at the vertical bar
                 Cpart = strsplit(tline, '|');
                 Cpart = Cpart(2:end-1);
@@ -121,7 +120,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 if printLevel > 0
                     fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is compatible with MATLAB ', versionMatlab, '.\n']);
                 end
-            elseif strcmp(compatibilityBoolean, '0')
+            elseif strcmpi(compatibilityBoolean, '0')
                 compatibleStatus = 0;
                 if printLevel > 0
                     fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is NOT compatible with MATLAB ', versionMatlab, '.\n']);
