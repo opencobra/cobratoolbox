@@ -26,6 +26,6 @@
 
 ### Legend
 
-- :white_check_mark: : compatible and tested
-- :x: : not compatible (tested)
-- :warning: : untested and unverified compatibility
+- :white_check_mark: : compatible with the COBRA Toolbox (tested)
+- :x: : not compatible with the COBRA Toolbox (tested)
+- :warning: : unverified compatibility with the COBRA Toolbox (not tested)
