@@ -1,4 +1,23 @@
 function compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
+% determine the compatibility status of a solver based on the file compatMatrix.md
+%
+% USAGE:
+%    compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
+%
+% INPUT:
+%    solverName:            Name of the solver
+%    printLevel:            verbose level (default: 0)
+%    specificSolverVersion: string with specific solver version (example: '12.7.1' or '6.5.1')
+%
+% OUTPUT:
+%    compatibleStatus:      compatibility status
+%
+%                             * 1:  compatible with the COBRA Toolbox (tested)
+%                             * 0:  not compatible with the COBRA Toolbox (tested)
+%                             * -1: unverified compatibility with the COBRA Toolbox (not tested)
+%
+% .. Author: - Laurent Heirendt, August 2017
+%
 
     global CBTDIR
 
