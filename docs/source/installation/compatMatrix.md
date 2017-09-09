@@ -24,8 +24,8 @@
 | TOMLAB CPLEX 8    | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | MOSEK 8           | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
-# Legend
+### Legend
 
-:white_check_mark: : compatible and tested
-:x: : not compatible (tested)
-:warning: : untested and unverified compatibility
+- :white_check_mark: : compatible and tested
+- :x: : not compatible (tested)
+- :warning: : untested and unverified compatibility
