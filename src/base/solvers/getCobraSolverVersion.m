@@ -1,13 +1,13 @@
-function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, printLevel)
+function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathSolver)
 % detects the version of given COBRA solver
 %
 % USAGE:
-%    solverVersion = getCobraSolverVersion(solverName, rootPathSolver, printLevel)
+%    solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathSolver)
 %
 % INPUT:
 %    solverName:        Name of the solver
-%    rootPathSolver:    Path to the CPLEX installation
 %    printLevel:        verbose level (default: 0)
+%    rootPathSolver:    Path to the solver installation
 %
 % OUTPUT:
 %    solverVersion:     string that contains the version number
@@ -29,11 +29,11 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
         ENV_VARS.printLevel = true;
     end
 
-    if nargin < 2
+    if nargin < 3
         rootPathSolver = '';
     end
 
-    if nargin < 3
+    if nargin < 2
         printLevel = 1;
     end
 
@@ -43,26 +43,27 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
     switch solverName
         case 'ibm_cplex'
             solverPath = ILOG_CPLEX_PATH;
-            pattern = 'CPLEX_Studio';
+            pat = 'CPLEX_Studio';
             aliasName = 'CPLEX';
         case 'gurobi'
             solverPath = GUROBI_PATH;
-            pattern = 'gurobi';
+            pat = 'gurobi';
             aliasName = 'GUROBI';
         case 'mosek'
             solverPath = MOSEK_PATH;
-            pattern = 'Mosek';
+            pat = 'Mosek';
             aliasName = 'MOSEK';
-        case 'tomlab_cplex'
+        case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
             solverPath = TOMLAB_PATH;
-            pattern = 'tomlab_cplex';
+            pat = 'tomlab_cplex';
             aliasName = 'TOMLAB';
         otherwise
+            error(['The solver version detection for the solver ' solverName ' is not yet implemented.']);
     end
 
-    if solverStatus
+    if ~isempty(solverPath)
         % retrieve the version number
-        if strcmp(pattern, 'tomlab_cplex')
+        if strcmp(pat, 'tomlab_cplex')
             % save the original user path
             originalUserPath = path;
 
@@ -79,7 +80,7 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
             rootPathSolver = solverPath;
         else
             try
-                [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pattern);
+                [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pat);
             catch
                 solverVersion = 'undetermined';
                 rootPathSolver = '';
@@ -91,21 +92,23 @@ function solverVersion = getCobraSolverVersion(solverName, rootPathSolver, print
                 fprintf([' > The version of ' aliasName ' is ' solverVersion '.\n']);
             else
                 fprintf([' > ' aliasName ' installation path: ', rootPathSolver, '\n']);
-                fprintf([' > The ' aliasName ' version is ' solverVersion '\n. Your currently installed version of ' aliasName ' is unsupported or you have multiple versions of ' aliasName ' in the path.']);
+                fprintf([' > The ' aliasName ' version is ' solverVersion '\n. Your currently installed version of ' aliasName ' is unsupported or you have multiple versions of ' aliasName ' in the path.\n']);
             end
         end
     else
         solverVersion = '';
-        fprintf([' > ' aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html']);
+        if printLevel > 0
+            fprintf([' > ' aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html\n']);
+        end
     end
 
 end
 
-function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pattern)
+function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pat)
 % extract the version number based on the path of the solver
-    index = regexp(lower(globalVar), lower(pattern));
+    index = regexp(lower(globalVar), lower(pat));
     rootPathSolver = globalVar(1:index-1);
-    beginIndex = index + length(pattern);
+    beginIndex = index + length(pat);
 
     tmpPath = globalVar(beginIndex:end);
 

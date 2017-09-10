@@ -95,7 +95,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     if exist('specificSolverVersion', 'var') && ~isempty(specificSolverVersion)
         solverVersion = strrep(specificSolverVersion, '.', '');
     else
-        solverVersion = getCobraSolverVersion(solverName);
+        solverVersion = getCobraSolverVersion(solverName, 0);
     end
 
     % check compatibility of solver

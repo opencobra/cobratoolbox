@@ -350,23 +350,18 @@ switch solverName
     case 'glpk'
         solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
     case 'mosek'
-        solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
-    case {'tomlab_cplex', 'tomlab_snopt'}
-        solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
-    case 'cplex_direct'
-        if ~verLessThan('matlab', '8.4')
-            if printLevel > 0
-                fprintf(' > The cplex_direct is incompatible with this version of MATLAB, please downgrade or change solver.\n');
-            end
-        else
+        compatibleStatus = isCompatible(solverName, 0);
+        if compatibleStatus == 1
+            solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
+        end
+    case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
+        compatibleStatus = isCompatible('tomlab_cplex', 0);
+        if compatibleStatus == 1
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         end
     case 'ibm_cplex'
-        if (~verLessThan('matlab', '9.0') && isempty(strfind(ILOG_CPLEX_PATH, '1271'))) || ispc && (~verLessThan('matlab', '9.0') && ~isempty(strfind(ILOG_CPLEX_PATH, '1271')))  % 2016b
-            if printLevel > 0
-                fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
-            end
-        else
+        compatibleStatus = isCompatible(solverName, 0);
+        if compatibleStatus == 1
             try
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
@@ -380,7 +375,10 @@ switch solverName
     case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
         solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
-        solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
+        compatibleStatus = isCompatible(solverName, 0);
+        if compatibleStatus == 1
+            solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
+        end
     case {'quadMinos', 'dqqMinos'}
         if isunix
             [stat, res] = system('which csh');
