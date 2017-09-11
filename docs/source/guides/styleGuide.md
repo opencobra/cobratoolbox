@@ -11,8 +11,8 @@
   * Include a single line of whitespace between blocks of code
 
 2. **Variable names**
+  * When using mixed words, separate with capital letters (with no intervening spaces or punctuation), e.g. `calculateKineticFlux`
   * Avoid ambiguity when naming variables: be as specific as possible
-  * When using mixed words, separate with capital letters, e.g. `calculateKineticFlux`
   * All variable names must be written in English
   * Use verb-noun structure for functions: allows to explain the operations performed
   * Append meaningful prefixes when possible, e.g. `Av`, `Sum`, `Min`, `Max`, etc
@@ -26,7 +26,7 @@
   * Indent the code: really improves readability.
   * Fix a maximum line length: break large ones if needed. Ensure that it is clear that the sentence is separated through different lines, e.g.:
   ```Matlab
-  function [parameter1, parameter2, parameter3, parameter4] = FunctionManyParameters...
+  function [parameter1, parameter2, parameter3, parameter4] = functionManyParameters...
             (InputParameter1, InputParameter2, InputParameter3, InputParameter3,...
              InputParameter4, InputParameter5)
   ```
