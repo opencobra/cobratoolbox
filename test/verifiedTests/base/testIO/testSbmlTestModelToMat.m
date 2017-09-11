@@ -43,7 +43,7 @@ while ~isdeleted
     rmdir('m_model_collection','s');
     isdeleted = true;
   catch
-    sleep(1); %wait a second before retry
+    pause(1); %wait a second before retry
     rehash;
   end
 end
