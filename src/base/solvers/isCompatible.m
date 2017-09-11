@@ -91,7 +91,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % any MATLAB version that is not explicitly supported yields a compatibility status of -1
     if isempty(colIndexVersion)
         compatibleStatus = -1;
-        fprintf([' > The sovler compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
+        fprintf([' > The solver compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
     else
         % replace any underscores in the solvername
         solverNameAlias = strrep(upper(solverName), '_', '');
@@ -105,6 +105,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 
         % check compatibility of solver
         for i = 1:length(compatMatrix)
+            % save the row of the compatibilitx matrix
             row = compatMatrix{i};
 
             % determine the name of the solver
