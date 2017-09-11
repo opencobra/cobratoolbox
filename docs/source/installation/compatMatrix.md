@@ -1,3 +1,5 @@
+# Solver compatibility matrices
+
 ## Unix (macOS or Linux)
 
 | SolverName        | R2017b             | R2017a             | R2016b             | R2016a             | R2015b             | R2015a             | R2014b             | R2014a             |
@@ -10,8 +12,10 @@
 | GUROBI 6.5.0      | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | TOMLAB CPLEX 8.2  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :x:                |
 | MOSEK 8           | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| GLPK              | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | DQQ MINOS         | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | OPTI              | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
+| LINDO LEGACY      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ## Windows
 
@@ -25,8 +29,10 @@
 | GUROBI 6.5.0      | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | TOMLAB CPLEX 8.2  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :x:                |
 | MOSEK 8           | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GLPK              | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | DQQ MINOS         | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
 | OPTI              | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :warning:          | :warning:          |
+| LINDO LEGACY      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ### Legend
 
@@ -38,3 +44,4 @@
 
 - The interfaces `cplex_direct` and `tomlab_snopt` bear the same compatibility pattern as `tomlab_cplex`.
 - The interface `quadMinos` bears the same compatibility pattern as `dqqMinos`.
+- The interface `lindo_old` bears the same compatibility pattern as `lindo_legacy`.

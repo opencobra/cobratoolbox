@@ -347,40 +347,31 @@ solverOK = false;
 % determine the compatibility status
 compatibleStatus = isCompatible(solverName, printLevel);
 
-switch solverName
-    case {'lindo_old', 'lindo_legacy'}
-        solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
-    case 'glpk'
-        solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
-    case 'mosek'
-        compatibleStatus = isCompatible(solverName, printLevel);
-        if compatibleStatus == 1 || compatibleStatus == -1
+if compatibleStatus == 1 || compatibleStatus == -1
+    switch solverName
+        case {'lindo_old', 'lindo_legacy'}
+            solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
+        case 'glpk'
+            solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
+        case 'mosek'
             solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
-        end
-    case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
-        if compatibleStatus == 1 || compatibleStatus == -1
+        case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
-        end
-    case 'ibm_cplex'
-        if compatibleStatus == 1 || compatibleStatus == -1
+        case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
             catch ME
                 solverOK = false;
             end
-        end
-        if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
-            warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
-        end
-    case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
-        solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
-    case 'gurobi'
-        if compatibleStatus == 1 || compatibleStatus == -1
+            if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
+                warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
+            end
+        case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
+            solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
+        case 'gurobi'
             solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
-        end
-    case {'quadMinos', 'dqqMinos'}
-        if compatibleStatus == 1 || compatibleStatus == -1
+        case {'quadMinos', 'dqqMinos'}
             [stat, res] = system('which csh');
             if ~isempty(res) && stat == 0
                 if strcmp(solverName, 'dqqMinos')
@@ -394,9 +385,7 @@ switch solverName
                     error(['You must have `csh` installed in order to use `', solverName, '`.']);
                 end
             end
-        end
-    case 'opti'
-        if compatibleStatus == 1 || compatibleStatus == -1
+        case 'opti'
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
                 availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
@@ -406,11 +395,11 @@ switch solverName
                     return;
                 end
             end
-        end
-    case 'matlab'
-        solverOK = true;
-    otherwise
-        error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
+        case 'matlab'
+            solverOK = true;
+        otherwise
+            error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
+    end
 end
 
 % set solver related global variables

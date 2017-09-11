@@ -58,7 +58,10 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
             pat = 'tomlab_cplex';
             aliasName = 'TOMLAB';
         otherwise
-            error(['The solver version detection for the solver ' solverName ' is not yet implemented.']);
+            solverPath = '';
+            solverVersion = '';
+            aliasName = upper(solverName);
+            %error(['The solver version detection for the solver ' solverName ' is not yet implemented.']);
     end
 
     if ~isempty(solverPath)
@@ -98,7 +101,7 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
     else
         solverVersion = '';
         if printLevel > 0
-            fprintf([' > ' aliasName ' is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html\n']);
+            fprintf([' > The exact version of ' aliasName ' could not be determined\n']);
         end
     end
 

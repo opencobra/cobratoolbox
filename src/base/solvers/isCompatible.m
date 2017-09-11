@@ -40,6 +40,10 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         solverName = 'dqqMinos';
     end
 
+    if strcmp(solverName, 'lindo_old')
+        solverName = 'lindo_legacy';
+    end
+
     % default compatibility status
     compatibleStatus = -1;
 
@@ -127,25 +131,31 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 
             % find the correct row
             if strcmpi([solverNameAlias, solverVersion], solverNameRow)
-
                 % retrieve the compatibility status from the table
                 compatibilityBoolean = row{colIndexVersion + 1};
+
+                % define output of solverVersion
+                if ~isempty(solverVersion),
+                    txtSolverVersion = [' (version ', solverVersion, ')'];
+                else
+                    txtSolverVersion = '';
+                end
 
                 % determine the compatibility status
                 if strcmpi(compatibilityBoolean, '1')
                     compatibleStatus = 1;
                     if printLevel > 0
-                        fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is compatible and fully tested with MATLAB ', versionMatlab, '.\n']);
                     end
                 elseif strcmpi(compatibilityBoolean, '0')
                     compatibleStatus = 0;
                     if printLevel > 0
-                        fprintf([' > ', upper(solverName), ' (version ', solverVersion, ') is NOT compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, '.\n']);
                     end
                 else
                     compatibleStatus = -1;
                     if printLevel > 0
-                        fprintf([' > The compatibility of ', upper(solverName), ' (version ', solverVersion, ') is not tested with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, '.\n']);
                     end
                 end
             end
