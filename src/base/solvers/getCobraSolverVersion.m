@@ -29,15 +29,15 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
         ENV_VARS.printLevel = true;
     end
 
-    if nargin < 3
-        rootPathSolver = '';
-    end
-
+    % define a default printLevel (verbose)
     if nargin < 2
         printLevel = 1;
     end
 
-    solverStatus = eval(['SOLVERS.' solverName '.installed;']);
+    % define an empty rootPathSolver when not defined
+    if nargin < 3
+        rootPathSolver = '';
+    end
 
     % define solver specific patterns
     switch solverName
