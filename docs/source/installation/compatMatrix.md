@@ -19,7 +19,7 @@
 |-------------------|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
 | IBM CPLEX 12.7.1  | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :white_check_mark: | :warning:          |
 | IBM CPLEX 12.7    | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| IBM CPLEX 12.6.3  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| IBM CPLEX 12.6.3  | :warning:          | :warning:          | :white_check_mark: | :warning:          | :white_check_mark: | :warning:          | :white_check_mark: | :warning:          |
 | GUROBI 7.5.1      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.0.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 6.5.0      | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
