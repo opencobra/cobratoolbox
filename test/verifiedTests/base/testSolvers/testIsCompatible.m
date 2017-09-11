@@ -3,10 +3,6 @@
 % Purpose:
 %     - testIsCompatible tests the isCompatible function
 
-
-% define global paths
-global SOLVERS;
-
 % save the current path
 currentDir = pwd;
 
@@ -22,19 +18,27 @@ if isunix && strcmp(matlabVersion, 'R2016b')
     assert(compatibleStatus == 1);
 
     % IBM CPLEX 12.7.0 is not compatible on UNIX when running R2016b
-    compatibleStatus = isCompatible('ibm_cplex', 1, '12.7.0');
+    compatibleStatus = isCompatible('ibm_cplex', 1, '12.7');
     assert(compatibleStatus == 0);
 
     % NOTE: for untested solvers, the compatibility matrix must be established
 end
 
 % loop through all solver names
-solverNames = {'ibm_cplex', 'gurobi', 'tomlab_cplex', 'mosek'};
+solverNames = {'ibm_cplex', 'gurobi', 'mosek'};
 
 for i = 1:length(solverNames)
-        compatibleStatus = isCompatible(solverNames{i});
+    solverOK = changeCobraSolver(solverNames{i});
 
-        compatibleStatus = isCompatible(solverNames{i}, 1);
+    % define a compatibility status with default printLevel
+    compatibleStatus = isCompatible(solverNames{i});
+
+    % define a compatibility status with printLevel = 1
+    compatibleStatus2 = isCompatible(solverNames{i}, 1);
+
+    % evalute the compatibility status as
+    assert(solverOK == compatibleStatus);
+    assert(solverOK == compatibleStatus2);
 end
 
 % change back to the old directory

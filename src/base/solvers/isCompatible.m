@@ -31,6 +31,15 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         specificSolverVersion = '';
     end
 
+    % define the same interface for tomlab and quadMinos
+    if strcmp(solverName, 'tomlab_snopt') || strcmp(solverName, 'cplex_direct')
+        solverName = 'tomlab_cplex';
+    end
+
+    if strcmp(solverName, 'quadMinos')
+        solverName = 'dqqMinos';
+    end
+
     % default compatibility status
     compatibleStatus = -1;
 
@@ -91,7 +100,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % any MATLAB version that is not explicitly supported yields a compatibility status of -1
     if isempty(colIndexVersion)
         compatibleStatus = -1;
-        fprintf([' > The solver compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
+        if printLevel > 0
+            fprintf([' > The solver compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
+        end
     else
         % replace any underscores in the solvername
         solverNameAlias = strrep(upper(solverName), '_', '');

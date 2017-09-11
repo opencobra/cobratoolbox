@@ -344,24 +344,25 @@ end
 
 solverOK = false;
 
+% determine the compatibility status
+compatibleStatus = isCompatible(solverName, printLevel);
+
 switch solverName
     case {'lindo_old', 'lindo_legacy'}
         solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
     case 'glpk'
         solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
     case 'mosek'
-        compatibleStatus = isCompatible(solverName, 0);
-        if compatibleStatus == 1
+        compatibleStatus = isCompatible(solverName, printLevel);
+        if compatibleStatus == 1 || compatibleStatus == -1
             solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
         end
     case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
-        compatibleStatus = isCompatible('tomlab_cplex', 0);
-        if compatibleStatus == 1
+        if compatibleStatus == 1 || compatibleStatus == -1
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         end
     case 'ibm_cplex'
-        compatibleStatus = isCompatible(solverName, 0);
-        if compatibleStatus == 1
+        if compatibleStatus == 1 || compatibleStatus == -1
             try
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
@@ -375,12 +376,11 @@ switch solverName
     case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
         solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
-        compatibleStatus = isCompatible(solverName, 0);
-        if compatibleStatus == 1
+        if compatibleStatus == 1 || compatibleStatus == -1
             solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
         end
     case {'quadMinos', 'dqqMinos'}
-        if isunix
+        if compatibleStatus == 1 || compatibleStatus == -1
             [stat, res] = system('which csh');
             if ~isempty(res) && stat == 0
                 if strcmp(solverName, 'dqqMinos')
@@ -396,7 +396,7 @@ switch solverName
             end
         end
     case 'opti'
-        if verLessThan('matlab', '8.4')
+        if compatibleStatus == 1 || compatibleStatus == -1
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
                 availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
