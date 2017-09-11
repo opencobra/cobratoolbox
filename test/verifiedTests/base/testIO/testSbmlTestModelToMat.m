@@ -37,12 +37,15 @@ assert((exist('Sc_iND750_flux1.xml') == 2));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
 
 % remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
-for x=1:10
-  status=rmdir('m_model_collection', 's');
-  if status==1
-     break
+isdeleted = false;
+while ~isdeleted
+  try
+    rmdir('m_model_collection','s');
+    isdeleted = true;
+  catch
+    sleep(1); %wait a second before retry
+    rehash;
   end
-  sleep(0.2*x)
 end
 
 % change to old directory
