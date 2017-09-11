@@ -14,10 +14,7 @@
 | MOSEK 8           | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GLPK              | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | DQQ MINOS         | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| OPTI              | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
-| LINDO LEGACY      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | PDCO              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| LP SOLVE          | :x:                | :x:                | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ## Windows
 
@@ -33,10 +30,7 @@
 | MOSEK 8           | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GLPK              | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | DQQ MINOS         | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
-| OPTI              | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :warning:          | :warning:          |
-| LINDO LEGACY      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | PDCO              | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| LP SOLVE          | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ### Legend
 
@@ -46,6 +40,8 @@
 
 ### Notes
 
+- Only **actively** supported interfaces are evaluated for compatibility.
+- The `MATLAB` solver interface is compatible with all actively supported MATLAB versions.
 - The interfaces `cplex_direct` and `tomlab_snopt` bear the same compatibility pattern as `tomlab_cplex`.
 - The interface `quadMinos` bears the same compatibility pattern as `dqqMinos`.
 - The interface `lindo_old` bears the same compatibility pattern as `lindo_legacy`.
