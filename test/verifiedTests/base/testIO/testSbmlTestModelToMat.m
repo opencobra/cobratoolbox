@@ -36,8 +36,14 @@ assert((exist('Abiotrophia_defectiva_ATCC_49176.xml') == 2));
 assert((exist('Sc_iND750_flux1.xml') == 2));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
 
-% remove the temporary files and 'm_model_collection' folder
-rmdir('m_model_collection', 's');
+% remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
+for x=1:10
+  status=rmdir('m_model_collection', 's');
+  if status==1
+     break
+  end
+  sleep(0.2*x)
+end
 
 % change to old directory
 cd(currentDir);
