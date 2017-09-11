@@ -10,7 +10,7 @@
 | GUROBI 6.5.0      | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | TOMLAB CPLEX 8.2  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :x:                |
 | MOSEK 8           | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| DQQ MINOS         | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| DQQ MINOS         | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ## Windows
 
@@ -23,7 +23,7 @@
 | GUROBI 7.0.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 6.5.0      | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | TOMLAB CPLEX 8    | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :x:                |
-| MOSEK 8           | :white_check_mark: | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| MOSEK 8           | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | DQQ MINOS         | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ### Legend
