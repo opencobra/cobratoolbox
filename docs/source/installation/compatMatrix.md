@@ -16,8 +16,8 @@
 | DQQ MINOS         | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | OPTI              | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
 | LINDO LEGACY      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| PDCO              | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| LP SOLVE          | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| PDCO              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| LP SOLVE          | :x:                | :x:                | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 
 ## Windows
 
