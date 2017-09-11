@@ -65,7 +65,7 @@ molfileNames = regexprep(molfileNames,'(\.mol)$','');
 
 molfileNames = molfileNames(ismember(molfileNames,mets)); % Only include molfiles for metabolites in mets
 
-noMolMetList = unique(mets(ismember(mets,molfileNames)));
+noMolMetList = unique(mets(~ismember(mets,molfileNames)));
 noMolMetList = reshape(noMolMetList,length(noMolMetList),1);
 
 metList = molfileNames;
