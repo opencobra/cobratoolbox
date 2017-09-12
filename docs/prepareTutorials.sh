@@ -13,6 +13,7 @@ echo_time() {
         }
 
 # default value
+
 mode="all"
 buildHTML=false
 buildPDF=false
@@ -45,12 +46,12 @@ done
 mode=${mode,,} # lowercase the mode
 
 # input checking
-if [[ -z "$pdfPath" ]]; then
-    echo_time "> pdfPath is empty"; echo_time; echo_time "$usage"; exit 1;
-fi
-
 if [[ -z "$cobraToolBoxPath" ]]; then
     echo_time "> cobraToolBoxPath is empty"; echo_time; echo_time "$usage"; exit 1;
+fi
+
+if [[ -z "$pdfPath" ]]; then
+    echo_time "> pdfPath is empty"; echo_time; echo_time "$usage"; exit 1;
 fi
 
 if [[ $mode = *"all"* ]]; then
@@ -76,13 +77,13 @@ fi
 
 pdfPath="${pdfPath/#\~/$HOME}"
 cobraToolBoxPath="${cobraToolBoxPath/#\~/$HOME}"
-
 echo_time "Path to the COBRAToolBox: " $cobraToolBoxPath
 echo_time "Path of the PDFs: " $pdfPath
+echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
 
 if [[ $buildHTML = true ]]; then
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('/tmp');exit;"
+    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$here');exit;"
     # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -nojvm -r "initCobraToolbox;generateTutorials('/tmp/tutorials');exit;"
 fi
 
