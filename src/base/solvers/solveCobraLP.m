@@ -38,6 +38,10 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   without regularisation.
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%   
+%    solverParams:  solver-specific parameter structure. Formats supported
+%                   are ILOG cplex and Tomlab parameter syntax. see example
+%                   for details.
 %
 %    parameters:    solver-specific parameters structure
 %
@@ -1119,6 +1123,9 @@ switch solver
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
 
+        % set parameters
+        tomlabProblem.MIP.cpxControl = solverParams;
+        
         % solve
         Result = cplexTL(tomlabProblem);
 
