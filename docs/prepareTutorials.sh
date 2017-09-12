@@ -91,8 +91,8 @@ fi
 if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
     tutorialPath="../tutorials"
-    tutorialDestination="source/_static/tutorials"
-    rstPath="source/tutorials"
+    tutorialDestination="$cobraToolBoxPath/docs/source/_static/tutorials"
+    rstPath="$cobraToolBoxPath/docs/source/tutorials"
     mkdir -p "$tutorialDestination"
 
     echo_time "Creating index.rst"
@@ -157,9 +157,9 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         foo="${tutorialName:9}"
         tutorialLongTitle="${tutorialName:0:8}${foo^}"
         readmePath="$cobraToolBoxPath/tutorials/$tutorialFolder"
-        htmlPath="$pdfPath/$tutorialFolder"
+        htmlPath="$pdfPath/tutorials/$tutorialFolder"
         rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
-        pngPath="$pdfPath/$tutorialFolder"
+        pngPath="$pdfPath/tutorials/$tutorialFolder"
 
         pdfHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
         pngHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.png"
