@@ -16,11 +16,11 @@ function sbmlTestModelToMat(originFolder, destFolder)
 % .. Author:
 %       - Ronan Fleming, 25/11/14 first version, 06/11/14 origin and destination folders different
 
-if ~exist('originFolder', 'var')  % choose the folder within the folder 'testModels' where the .xml files are located
-    folder = 'm_model_collection';
+if nargin < 1  % choose the folder within the folder 'testModels' where the .xml files are located
+    originFolder = 'm_model_collection';
 end
-if ~exist('destFolder', 'var')
-    folder = 'm_model_collection';
+if nargin < 2
+    destFolder = 'm_model_collection';
 end
 
 % choose the printLevel
@@ -29,8 +29,7 @@ printLevel = 1;  % only print out names of models that don't parse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global CBTDIR
 if isempty(CBTDIR)
-    tmp = which('initCobraToolbox');
-    CBTDIR = tmp(1:end - length('/initCobraToolbox.m'));
+    CBTDIR = fileparts(which('initCobraToolbox'));
 end
 
 % modelDir=[CBTDIR filesep 'testing' filesep 'testModels' filesep originFolder];
@@ -49,12 +48,12 @@ for k = 3:length(files)
             try
                 defaultBound = 1000;
                 fileType = 'SBML';
+                if printLevel > 0
+                    fprintf('%s%s\n', fileName, [' :compatible with readCbModel'])
+                end
                 model = readCbModel(filePathName, defaultBound, fileType);
                 % disp(savedMatFile)
                 save(savedMatFile, 'model');
-                if printLevel > 1
-                    fprintf('%s%s\n', fileName, [' :compatible with readCbModel'])
-                end
             catch
                 if printLevel > 0
                     fprintf('%s%s\n', fileName, [' :incompatible with readCbModel'])
@@ -62,14 +61,11 @@ for k = 3:length(files)
                 % should not leave half finished files around if there are
                 % any
                 if exist(savedMatFile, 'file')
-                    rmfile(savedMatFile)
+                    delete(savedMatFile)
                 end
             end
         else
-            if strcmp(fileName, 'textbook.xml')
-                % pause(eps)
-            end
-            if printLevel > 1
+            if printLevel > 0
                 fprintf('%s%s\n', fileName, [' :already parsed and compatible with readCbModel'])
             end
         end
