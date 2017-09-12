@@ -21,16 +21,16 @@
 | SolverName        | R2017b             | R2017a             | R2016b             | R2016a             | R2015b             | R2015a             | R2014b             | R2014a             |
 |-------------------|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
 | IBM CPLEX 12.7.1  | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :white_check_mark: | :warning:          |
-| IBM CPLEX 12.7    | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| IBM CPLEX 12.7    | :warning:          | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning:          |
 | IBM CPLEX 12.6.3  | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.5.1      | :warning:          | :warning:          | :white_check_mark: | :warning:          | :white_check_mark: | :warning:          | :white_check_mark: | :warning:          |
 | GUROBI 7.0.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| GUROBI 6.5.0      | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| GUROBI 6.5.0      | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | TOMLAB CPLEX 8.2  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :x:                |
 | MOSEK 8           | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
-| GLPK              | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          |
+| GLPK              | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | DQQ MINOS         | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                |
-| PDCO              | :warning:          | :warning:          | :white_check_mark: | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          |
+| PDCO              | :warning:          | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ### Legend
 
