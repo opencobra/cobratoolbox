@@ -30,6 +30,8 @@ function formulas = printRxnFormula(model, varargin)
 %                                            (Default = false)
 %                       * proteinFlag:       Print the protein names associated with the genes in the 
 %                                            GPRs associated with the reactions. (Default = false)
+%                       * printBounds:       Print the upper and lower Bounds of the reaction (Default = false)
+%                       
 %
 % OUTPUT:
 %    formulas:          Cell array containing formulas of specified reactions
@@ -56,7 +58,7 @@ function formulas = printRxnFormula(model, varargin)
 %       - Thomas Pfau May 2017 - Changed to Parameter value pair input
 
 
-optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag', 'proteinFlag'};
+optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag', 'proteinFlag','printBounds'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     %We have an old style thing....
     %Now, we need to check, whether this is a formula, or a complex setup
@@ -81,7 +83,7 @@ parser.addParameter('fid',1, @isnumeric);
 parser.addParameter('directionFlag',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('gprFlag',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('proteinFlag',false,@(x) isnumeric(x) || islogical(x));
-
+parser.addParameter('printBounds',false,@(x) isnumeric(x) || islogical(x));
 
 parser.parse(model,varargin{:})
 
@@ -94,6 +96,7 @@ fid = parser.Results.fid;
 directionFlag = parser.Results.directionFlag;
 gprFlag = parser.Results.gprFlag;
 proteinFlag = parser.Results.proteinFlag;
+printBounds = parser.Results.printBounds;
 
 if proteinFlag && ~isfield(model,'proteins')
     %If no proteins field is present, we will use the genes field.    
@@ -241,6 +244,11 @@ for i = 1:length(rxnAbbrList)
                 rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.proteins{num2str($1)}}');                
                 fprintf(fid, '\t%s', rule);
             end
+        end
+    end
+    if printBounds && printFlag
+        if rxnID > 0
+            fprintf('\tlb:%f\tub:%f',model.lb(rxnID),model.ub(rxnID));
         end
     end
     if (lineChangeFlag) && printFlag
