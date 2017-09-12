@@ -4,4 +4,4 @@
 </p>
 <p align="center">
   <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/analysis/vonBertalanffy/README.md"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/analysis/vonBertalanffy/tutorial_vonBertalanffy.png" width="100%"/></a>
-2017-09-11 14:10:38  </p>
+</p>

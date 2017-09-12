@@ -185,7 +185,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
             echo "<p align=\"center\">" >> $readmePath/README.md
             echo "  <a href=\"https://github.com/opencobra/cobratoolbox/blob/master/tutorials/$tutorialFolder/README.md\"><img src=\"$pngHyperlink\" width=\"100%\"/></a>" >> $readmePath/README.md
-            echo_time "</p>" >> $readmePath/README.md
+            echo "</p>" >> $readmePath/README.md
         fi
 
         # create rst file

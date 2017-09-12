@@ -4,4 +4,4 @@
 </p>
 <p align="center">
   <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/visualization/remoteVisualisation/README.md"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/visualization/remoteVisualisation/tutorial_remoteVisualisation.png" width="100%"/></a>
-2017-09-11 14:10:40  </p>
+</p>
