@@ -82,7 +82,7 @@ echo_time "Path of the PDFs: " $pdfPath
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
 
 if [[ $buildHTML = true ]]; then
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('/tmp/tutorials');exit;"
+    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('/tmp');exit;"
     # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -nojvm -r "initCobraToolbox;generateTutorials('/tmp/tutorials');exit;"
 fi
 

@@ -1,4 +1,4 @@
-function generateTutorials(destinationFolder, tutorialNa)
+function generateTutorials(destinationFolder)
 
 global CBTDIR
 
