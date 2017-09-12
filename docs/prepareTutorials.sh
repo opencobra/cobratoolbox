@@ -83,7 +83,7 @@ echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
 
 if [[ $buildHTML = true ]]; then
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$here');exit;"
+    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
     # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -nojvm -r "initCobraToolbox;generateTutorials('/tmp/tutorials');exit;"
 fi
 
@@ -111,7 +111,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
     nTutorial=0
     declare -a tutorials
     if [[ -z "$tutorialToConvert" ]]; then
-        for d in $(find $pdfPath -maxdepth 7 -type d)
+        for d in $(find $pdfPath/tutorials -maxdepth 7 -type d)
         do
             if [[ "${d}" == *additionalTutorials* ]]; then
                 continue  # if not a directory, skip
@@ -150,7 +150,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         else
             tutorialTitle="tutorialNoName"
         fi
-        tutorialFolder=${tutorialDir#$pdfPath/}
+        tutorialFolder=${tutorialDir#$pdfPath/tutorials/}
 
         echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder"
 
