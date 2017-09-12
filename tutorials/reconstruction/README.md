@@ -1,7 +1,12 @@
-<p align="center">
-    <a href="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/reconstruction/numCharact.pdf" title="Download PDF file"><img src="https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_pdf.png" height="90px"></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/reconstruction/numCharact.mlx" title="Download Live Script file"><img src="https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_mlx.png" height="90px"></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/reconstruction/numCharact.m" title="Download MATLAB file"><img src="https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_m.png" height="90px"></a>&nbsp;&nbsp;&nbsp;<a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html" title="Tutorials"><img src="https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_tut.png" height="90px"></a>
-<br><br>
-</p>
-<p align="center">
-  <a href="https://github.com/opencobra/cobratoolbox/blob/master/tutorials/reconstruction/README.md"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/reconstruction/numCharact.png" width="100%"/></a>
-2017-09-08 16:41:28  </p>
+# <img src="../../docs/source/_static/images/icon_reconstruction.png" height="22px">&nbsp;&nbsp;Tutorials - reconstruction
+
+- [Reconstruction: create a generic subnetwork from Recon3D (createSubnetworkRecon)](createSubnetworkRecon)
+- [Gap Filling (fastGapFill)](fastGapFill)
+- [Testing biochemical fidelity (fidelityTesting)](fidelityTesting)
+- [Test for physiologically relevant ATP yields from different carbon sources (modelATPYield)](modelATPYield)
+- [Reconstruction manipulation (modelManipulation)](modelManipulation)
+- [Testing basic properties of a metabolic model (modelSanityChecks)](modelSanityChecks)
+- [Numerical properties of a reconstruction (numCharact)](numCharact)
+- [Reconstruction: rBioNet (rBioNet)](rBioNet)
+- [Convert a reconstruction into a flux balance analysis model (recon2FBAmodel)](recon2FBAmodel)
+- [Reconstruction: Standard Operating Procedure (reconstructionSO)](reconstructionSOP)
