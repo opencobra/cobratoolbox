@@ -51,7 +51,7 @@ clean:
 .PHONY: html
 html:
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -c=$(here) -p=/tmp -m=md
+	bash prepareTutorials.sh -c=$(here) -p=/tmp -m=rst
 	@echo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
