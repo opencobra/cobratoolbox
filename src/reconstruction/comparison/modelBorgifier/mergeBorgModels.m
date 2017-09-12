@@ -1,4 +1,4 @@
-function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, rxnList, metList, Stats, varargin)
+function [TmodelC, Cspawn, Stats] = mergeBorgModels(CmodelIn, TmodelIn, rxnList, metList, Stats, varargin)
 % Checks Tmodel for duplicate reactions and other mistakes,
 % that may have occured during reaction and metabolite matching. It
 % resolves these problems and merges the models, and confirms that Cmodel
@@ -8,7 +8,7 @@ function [TmodelC, Cspawn, Stats] = mergeModels(CmodelIn, TmodelIn, rxnList, met
 %
 % USAGE:
 %
-%    [TmodelC, Cspawn, Stats, CMODEL] = mergeModels(CmodelIn, TmodelIn, rxnList, metList, Stats, score)
+%    [TmodelC, Cspawn, Stats, CMODEL] = mergeBorgModels(CmodelIn, TmodelIn, rxnList, metList, Stats, score)
 %
 % INPUTS:
 %    CmodelIn:     Comparison model

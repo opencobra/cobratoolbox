@@ -1,6 +1,6 @@
 function FluxCompare = compareMatricies(CMODEL, Cspawn)
 % Creates a structure with the matrices before and after merging. Useful
-% for comparing how successful merging was.  Called by `mergeModels`.
+% for comparing how successful merging was.  Called by `mergeBorgModels`.
 %
 % USAGE:
 %
