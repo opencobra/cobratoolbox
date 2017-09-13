@@ -21,7 +21,9 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 %                   * Charge:        The Charge(s) (default NaN, int)
 %                   * b:             The accumulation(s) or release(s) (default 0, double)
 %                   * csense:        The sense of this metabolite (default 'E', char)
-%
+%                   * printLevel - 1  : normal output
+%                                - 0  : Warnings Only
+%                                - -1 : Nothing
 % OUTPUT:
 %    newModel:      COBRA model with added metabolite(s)
 %
@@ -35,7 +37,7 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 % `metID` and all optional arguments either have to be a single value or cell
 % arrays. `Charge` and `b` have to be double arrays.
 
-optionalParameters = {'metName','metFormula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b', 'csense'};
+optionalParameters = {'metName','metFormula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b', 'csense','printLevel'};
 oldOptionalOrder = {'metName','metformula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b' };
 if (numel(varargin) > 0 && ischar(varargin{1}) && ~any(ismember(varargin{1},optionalParameters)))
     %We have an old style thing....
@@ -66,6 +68,7 @@ defaultInChi = {''};
 defaultCharge = NaN;
 defaultb = 0;
 defaultCsense = 'E';
+defaultPrintLevel = 1;
 if(iscell(metID))
     defaultFormula = repmat(defaultFormula,numel(metID),1);
     defaultCHEBI = repmat(defaultCHEBI,numel(metID),1);
@@ -89,12 +92,13 @@ parser.addParameter('InChi',defaultInChi, @(x)  ischar(x) || iscell(x));
 parser.addParameter('Charge',defaultCharge, @(x) isnumeric(x));
 parser.addParameter('b',defaultb,@(x) isnumeric(x));
 parser.addParameter('csense',defaultCsense, @(x) ischar(x));
+parser.addParameter('printLevel',defaultPrintLevel, @(x) isnumeric(x));
 
 parser.parse(model,metID,varargin{:});
 
-usedParameters = setdiff(parser.Parameters,parser.UsingDefaults);
-
+printLevel = parser.Results.printLevel;
 metName = parser.Results.metName;
+
 if ~iscell(metName)
     metName = {metName};
 end
@@ -143,7 +147,9 @@ for i = 1:numel(metID)
             cmetName = metName{i};
             if strcmp(cmetName,'')
                 model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;
-                warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
+                if printLevel >= 0
+                    warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
+                end
             else
                 model.metNames{end+1,1} = metName{i} ;
             end
