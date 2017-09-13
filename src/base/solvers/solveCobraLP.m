@@ -43,8 +43,6 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   are ILOG cplex and Tomlab parameter syntax. see example
 %                   for details.
 %
-%    parameters:    solver-specific parameters structure
-%
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;
 % `changeCobraSolverParams('LP', 'parameter', value)` function. This
