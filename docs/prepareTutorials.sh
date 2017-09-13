@@ -1,5 +1,5 @@
 #!/bin/bash
-usage="$(basename $0) -p=pdfPath -c=cobraToolBoxPath [-f=folderNameOfATutorial] [-h] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
+usage="$(basename $0) -p=pdfPath -c=cobraToolBoxPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
 
 where:
     -c  path of the COBRA Toolbox
@@ -34,7 +34,7 @@ do
         mode="${i#*=}"
         ;;
         -f=*)
-        tutorialToConvert="${i#*=}"
+        specificTutorial="${i#*=}"
         ;;
         *)
         echo_time "$usage" # unknown argument
@@ -83,8 +83,14 @@ echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
 
 if [[ $buildHTML = true ]]; then
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
-    # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -nojvm -r "initCobraToolbox;generateTutorials('/tmp/tutorials');exit;"
+    if [[ -z "$specificTutorial" ]]; then
+        /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
+        # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
+    else
+        /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+        # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/mmatlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    fi
+
 fi
 
 # now loop through the above array
@@ -110,7 +116,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
     nTutorial=0
     declare -a tutorials
-    if [[ -z "$tutorialToConvert" ]]; then
+    if [[ -z "$specificTutorial" ]]; then
         for d in $(find $pdfPath/tutorials -maxdepth 7 -type d)
         do
             if [[ "${d}" == *additionalTutorials* ]]; then
@@ -129,14 +135,19 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             done
         done
     else
-        singleTutorial="$pdfPath/$tutorialToConvert/tutorial_$(basename $tutorialToConvert).pdf"
-        if [[ -f "$singleTutorial" ]]; then
-            let "nTutorial+=1"
-            tutorials[$nTutorial]="$singleTutorial"
-            # echo_time " - ${tutorials[$nTutorial]}"
-        else
-            echo_time "> the supplied tutorial does not exist: ""$singleTutorial"; echo_time; echo_time "$usage"; exit 1;
-        fi
+        for d in $(find $pdfPath/tutorials -maxdepth 7 -type d)
+        do
+            if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
+                singleTutorial="$d/tutorial_$(basename $specificTutorial).pdf"
+                if [[ -f "$singleTutorial" ]]; then
+                    let "nTutorial+=1"
+                    tutorials[$nTutorial]="$singleTutorial"
+                    # echo_time " - ${tutorials[$nTutorial]}"
+                else
+                    echo_time "> the supplied tutorial does not exist: ""$singleTutorial"; echo_time; echo_time "$usage"; exit 1;
+                fi
+            fi
+        done
     fi
 
     echo_time "Creating requested files for tutorial(s):"
@@ -212,4 +223,6 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             rm "$htmlPath/$tutorialName.html.bak"
         fi
     done
+
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent
 fi
