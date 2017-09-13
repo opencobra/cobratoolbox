@@ -11,7 +11,7 @@ function model = readCbModel(fileName, varargin)
 %    varargin:           Optional values as 'ParameterName',value pairs
 %                        with the following available parameters:
 %                        - fileType:  File type for input files: 'SBML', 'SimPheny',
-%                          'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
+%                          'SimPhenyPlus', 'SimPhenyText', 'Matlab', 'BiGG', 'BiGGSBML' or 'Excel' (Default = 'Matlab')
 %                            * 'SBML' indicates a file in `SBML` format
 %                            * 'SimPheny' is a set of three files in `SimPheny` simulation output format
 %                            * 'SimPhenyPlus' is the same as 'SimPheny' except with
@@ -21,6 +21,12 @@ function model = readCbModel(fileName, varargin)
 %                              additionaltext file containing gene-protein-reaction
 %                              associations
 %                            * Matlab will save the model as a matlab variable file.
+%                            * BiGG and BIGGSBML indicate that the fileName is a BiGG
+%                              Model identifier and that the model should
+%                              be loaded from the BiGG database (requires
+%                              an Internet connection). BiGG loads it from
+%                              the BiGG Database mat file, BiGGSBML uses
+%                              the SBML file.
 %                            * Excel will save the model as a two sheet Excel Model.
 %                        - modelDescription:    Description of model contents (char), default is the
 %                          choosen filename
@@ -86,7 +92,7 @@ function model = readCbModel(fileName, varargin)
 %    COBRA model, others are not.
 
 optionalArgumentList = {'defaultBound', 'fileType', 'modelDescription', 'compSymbolList', 'compNameList', 'modelName'};
-processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
+processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab','BiGG','BiGGSBML'};
 
 if numel(varargin) > 0
     % Check, whether we have an old style input. (i.e. varargins are not optional arguments
@@ -108,7 +114,7 @@ end
 parser = inputParser();
 parser.addOptional('fileName', '', @(x) isempty(x) || ischar(x));
 parser.addParameter('defaultBound', 1000, @isnumeric);
-parser.addParameter('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileTypes)));
+parser.addParameter('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileTypes,x)));
 parser.addParameter('modelDescription', '', @ischar);
 parser.addParameter('compSymbolList', defaultCompSymbols, @iscell);
 parser.addParameter('compNameList', defaultCompNames, @iscell);
@@ -190,11 +196,6 @@ if ~exist('fileType', 'var') || isempty(fileType)
 
 end
 
-if isempty(modelDescription)
-    [~,mfile,mextension] = fileparts(fileName);
-    modelDescription = [mfile mextension];
-end
-
 switch fileType
     case 'SBML'
         % If the file is missing the .xml ending, we attach it, can happen
@@ -231,12 +232,25 @@ switch fileType
         if modeloptions{1, 3}
             model = convertOldStyleModel(model);
         end
+    case 'BiGG'
+        %This calls readCbModel again so the description is added.
+        model = loadBiGGModel(fileName, 'mat');        
+        modelDescription = model.description;
+    case 'BiGGSBML'
+        %This calls readCbModel again so the description is added.
+        model = loadBiGGModel(fileName, 'sbml');
+        modelDescription = model.description;
     otherwise
         error('Unknown file type');
 end
 
 % Check uniqueness of metabolite and reaction names
 checkCobraModelUnique(model);
+
+if isempty(modelDescription)
+    [~,mfile,mextension] = fileparts(fileName);
+    modelDescription = [mfile mextension];
+end
 
 if ~isfield(model, 'b')
     model.b = zeros(length(model.mets), 1);
