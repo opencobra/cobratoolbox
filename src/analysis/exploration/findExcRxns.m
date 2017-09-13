@@ -35,41 +35,19 @@ if (nargin < 3)
     irrevFlag = false;
 end
 
-if (~irrevFlag)
-    % Find exchange rxns
-    selExc = full((sum(model.S==-1,1) ==1) & (sum(model.S~=0) == 1))' | full((sum(model.S==1,1) ==1) & (sum(model.S~=0) == 1))';
+exp = (sum(modelClosed.S ~= 0) == 1) & (sum(modelClosed.S < 0) == 1);
+upt = (sum(modelClosed.S ~= 0) == 1) & (sum(modelClosed.S > 0) == 1);
 
-    if (isfield(model,'c'))
-        % Remove obj rxns
-        if (~inclObjFlag)
-            selExc(model.c ~= 0) = false;
-        else
-            selExc(model.c ~= 0) = true;
-        end
-    end
+selExc = exp | upt;
+%Default lb is 0, default ub is 1000;
+if ~isfield(model,'lb')    
+    model.lb = zeros(size(model.S,2),1);
+end
 
-    if (isfield(model,'lb'))
-        % Find uptake rxns
-        selUpt = full(model.lb < 0 & selExc);
-    else
-        selUpt = [];
-    end
+if ~isfield(model,'ub')
+    model.ub = 1000* ones(size(model.S,2),1);
+end
 
-else
-
-    % Find exchange rxns
-    selExc = full((sum(abs(model.S)==1,1) ==1) & (sum(model.S~=0) == 1))';
-
-    if (isfield(model,'c'))
-    % Remove obj rxns
-    if (~inclObjFlag)
-        selExc(model.c ~= 0) = false;
-    else
-        selExc(model.c ~= 0) = true;
-    end
-    end
-
-    % Find uptake rxns
-    selUpt = full((sum(model.S==1,1) ==1) & (sum(model.S~=0) == 1))';
+selUpt = (exp & model.lb < 0) | (upt & model.ub > 0);
 
 end
