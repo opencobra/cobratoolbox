@@ -1112,15 +1112,15 @@ switch solver
         tomlabProblem.PriLevOpt = printLevel;
 
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis) && ...
-                ~contains('basis',fieldnames(solverParams))
+                ~ismember('basis',fieldnames(solverParams))
             tomlabProblem.MIP.basis = LPproblem.basis;
         end
 
         % set tolerance
-        if exist('feasTol','var') && ~contains('EPRHS',fieldnames(solverParams))
+        if exist('feasTol','var') && ~ismember('EPRHS',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
         end
-        if exist('optTol','var') && ~contains('EPOPT',fieldnames(solverParams))
+        if exist('optTol','var') && ~ismember('EPOPT',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
         
