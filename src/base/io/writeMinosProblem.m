@@ -125,7 +125,7 @@ xu = LPproblem.ub;
 %              so that SQOPT will treat the problem as an LP, not a QP.
 %              This is ok for MINOS also.
 
-A = [A osense * sparse(c)']; % Luckily we only have to do it once
+A = [A ; osense * sparse(c)']; % Luckily we only have to do it once
 b = [b; 0];
 
 [m, n] = size(A);
