@@ -1105,6 +1105,9 @@ switch solver
         % Result = tomRun('cplex', tomlabProblem, 0);
         % This is faster than using tomRun
 
+        % set parameters (user parameters override defaults)
+        tomlabProblem.MIP.cpxControl = solverParams;
+        
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
@@ -1122,9 +1125,6 @@ switch solver
         if exist('optTol','var')
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
-
-        % set parameters
-        tomlabProblem.MIP.cpxControl = solverParams;
         
         % solve
         Result = cplexTL(tomlabProblem);
