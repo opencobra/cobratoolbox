@@ -11,8 +11,7 @@ function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 % OPTIONAL INPUTS:
 %    inclObjFlag:    Include objective `rxns` in the exchange rxn set (1) or not (0)
 %                    (Default = false)
-%    irrevFlag:      Model is in irreversible format (1) or not
-%                    (Default = false)
+%    irrevFlag:      Deprecated.
 %
 % OUTPUTS:
 %    selExc:         Boolean vector indicating whether each reaction in
@@ -31,14 +30,17 @@ function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 if (nargin < 2)
     inclObjFlag = false;
 end
-if (nargin < 3)
-    irrevFlag = false;
-end
 
 exp = full((sum(model.S ~= 0) == 1) & (sum(model.S < 0) == 1))';
 upt = full((sum(model.S ~= 0) == 1) & (sum(model.S > 0) == 1))';
+if ~inclObjFlag
+    exp = exp & ~ model.c ~= 0;
+    upt = upt & ~ model.c ~= 0;
+end
 
 selExc = exp | upt;
+
+
 %Default lb is 0, default ub is 1000;
 if ~isfield(model,'lb')    
     model.lb = zeros(size(model.S,2),1);
