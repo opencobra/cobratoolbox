@@ -35,8 +35,8 @@ if (nargin < 3)
     irrevFlag = false;
 end
 
-exp = (sum(modelClosed.S ~= 0) == 1) & (sum(modelClosed.S < 0) == 1);
-upt = (sum(modelClosed.S ~= 0) == 1) & (sum(modelClosed.S > 0) == 1);
+exp = full((sum(model.S ~= 0) == 1) & (sum(model.S < 0) == 1))';
+upt = full((sum(model.S ~= 0) == 1) & (sum(model.S > 0) == 1))';
 
 selExc = exp | upt;
 %Default lb is 0, default ub is 1000;
