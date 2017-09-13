@@ -1,31 +1,54 @@
-function generateTutorials(destinationFolder)
+function generateTutorials(destinationFolder, varargin)
 
-global CBTDIR
+    import matlab.internal.*
 
-import matlab.internal.*
+    p = inputParser;
+    addRequired(p, 'destinationFolder', @ischar);
+    addOptional(p, 'specificTutorial', '', @ischar);
+    parse(p, destinationFolder, varargin{:});
+    specificTutorial = p.Results.specificTutorial;
 
-if ~isempty(strfind(version, 'R2016b'))
-    openAndConvert = @matlab.internal.richeditor.openAndConvert;
-end 
-if ~isempty(strfind(version, 'R2017b'))
-    openAndConvert = @matlab.internal.liveeditor.openAndConvert;
-end 
-[status, msg, msgID] = mkdir(destinationFolder);
-
-% Gather all MLX files in the tutorials folder
-mlxFiles = dir([CBTDIR filesep 'tutorials' filesep '**' filesep '*.mlx']);
-totalNumberOfFiles = length(mlxFiles);
-
-if totalNumberOfFiles >= 1
-    % Go through all MLX files
-    showprogress(0, 'Generating HTML and PDF files ...');
-	for k = 1:totalNumberOfFiles
-        showprogress(k / totalNumberOfFiles);
-        fullFileName = fullfile(mlxFiles(k).folder, mlxFiles(k).name);
-        [status, msg, msgID] = mkdir([destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '')]);
-        openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.html'])
-        openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.pdf'])
+    global CBTDIR
+    if isempty(CBTDIR)
+        initCobraToolbox
     end
-else
-	fprintf(' > The tutorial folder does not contain any file.\n');
+
+    if strcmp(version('-release'), '2016b')
+        openAndConvert = @matlab.internal.richeditor.openAndConvert;
+    end
+    if strcmp(version('-release'), '2017b')
+        openAndConvert = @matlab.internal.liveeditor.openAndConvert;
+    end
+    [~, ~, ~] = mkdir(destinationFolder);
+
+    % Gather MLX files in the tutorials folder
+    if isempty(specificTutorial)
+        mlxFiles = dir([CBTDIR filesep 'tutorials' filesep '**' filesep '*.mlx']);
+    else
+        mlxFiles = dir([CBTDIR filesep 'tutorials' filesep '**' filesep 'tutorial_' specificTutorial '.mlx']);
+    end
+
+    toBeKept = [];
+    for k = 1:length(mlxFiles)
+        if isempty(strfind(mlxFiles(k).folder, 'additionalTutorials'))
+           toBeKept = [toBeKept, k];
+        end
+    end
+    mlxFiles = mlxFiles(toBeKept);
+
+    totalNumberOfFiles = length(mlxFiles);
+
+    if totalNumberOfFiles >= 1
+        % Go through all MLX files
+        showprogress(0, 'Generating HTML and PDF files ...');
+        for k = 1:totalNumberOfFiles
+            fullFileName = fullfile(mlxFiles(k).folder, mlxFiles(k).name);
+            [~, ~, ~] = mkdir([destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '')]);
+            openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.html'])
+            openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.pdf'])
+            showprogress(k / totalNumberOfFiles);
+        end
+    else
+        fprintf(' > The tutorial folder does not contain any file.\n');
+    end
 end
