@@ -6,6 +6,7 @@ where:
     -p  path of the PDFs
     -f  name of a folder of a tutorial
     -h  show this help text
+    -t  check if the triggering file is present
     -m  mode (all,html,md,pdf,png,rst)"
 
 echo_time() {
@@ -35,6 +36,9 @@ do
         ;;
         -f=*)
         specificTutorial="${i#*=}"
+        ;;
+        -t=*)
+        triggeringFile="${i#*=}"
         ;;
         *)
         echo_time "$usage" # unknown argument
@@ -81,6 +85,17 @@ echo_time "Path to the COBRAToolBox: " $cobraToolBoxPath
 echo_time "Path of the PDFs: " $pdfPath
 echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
+
+# check if the triggering file is present
+if ! [[ -z "$triggeringFile" ]]; then
+    if ! [[ -f "$triggeringFile" ]]; then
+        echo_time
+        echo_time " > triggering file ($triggeringFile) is not present: build aborted";
+        exit;
+    else
+        rm "$triggeringFile"
+    fi
+fi
 
 if [[ $buildHTML = true ]]; then
     if [[ -z "$specificTutorial" ]]; then
@@ -207,9 +222,6 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed "s/#tutorialLongTitle#/$tutorialLongTitle/g" "$rstPath/template.rst" > "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s/#tutorialTitle#/$tutorialTitle/g"  "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s/#underline#/$underline/g"          "$rstPath/$tutorialLongTitle.rst"
-
-
-
             sed -i.bak "s~#PDFtutorialPath#~$pdfHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MLXtutorialPath#~$mlxHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MtutorialPath#~$mHyperlink~g"     "$rstPath/$tutorialLongTitle.rst"
