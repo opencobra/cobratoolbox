@@ -22,7 +22,7 @@ for i = 1:size(Reactions,1)
     %All reactions are irreversible
     model = addReaction(model,Reactions{i,1},'metaboliteList',Reactions{i,2},...
           'stoichCoeffList',Reactions{i,3},'lowerBound',Reactions{i,4},'upperBound',Reactions{i,5},...
-          'printLevel',0, 'suppressWarnings', 1);
+          'printLevel',-1);
 end
 
 %Add Exchangers
