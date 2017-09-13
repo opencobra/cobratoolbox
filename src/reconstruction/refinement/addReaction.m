@@ -293,7 +293,7 @@ for i = 1:length(metaboliteList)
         if printLevel >= 0
             warning(['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
         end
-        model = addMetabolite(model,metaboliteList{i},metaboliteList{i});
+        model = addMetabolite(model,metaboliteList{i},'metName',metaboliteList{i},'printLevel',printLevel);
         Scolumn(end+1,1) = stoichCoeffList(i);
     end
 end
