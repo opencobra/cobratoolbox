@@ -234,11 +234,11 @@ switch fileType
         end
     case 'BiGG'
         %This calls readCbModel again so the description is added.
-        model = loadBiGGModel(fileName, 'mat');        
+        model = loadBiGGModel(fileName, 'mat',false);        
         modelDescription = model.description;
     case 'BiGGSBML'
         %This calls readCbModel again so the description is added.
-        model = loadBiGGModel(fileName, 'sbml');
+        model = loadBiGGModel(fileName, 'sbml',false);
         modelDescription = model.description;
     otherwise
         error('Unknown file type');
