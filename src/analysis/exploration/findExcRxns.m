@@ -31,13 +31,20 @@ if (nargin < 2)
     inclObjFlag = false;
 end
 
+%Exports are all reactions with exactly one negative value in the S matrix
+%and no other entries.
+%Uptakes are all reactions with exactly one positive value in the S matrix
+%and no other entries.
 exp = full((sum(model.S ~= 0) == 1) & (sum(model.S < 0) == 1))';
 upt = full((sum(model.S ~= 0) == 1) & (sum(model.S > 0) == 1))';
+
+%Exclude anything that is an objective.
 if ~inclObjFlag
-    exp = exp & ~ model.c ~= 0;
-    upt = upt & ~ model.c ~= 0;
+    exp = exp & ~( model.c ~= 0 );
+    upt = upt & ~( model.c ~= 0 );
 end
 
+%Exchangers are all uptakes and exports
 selExc = exp | upt;
 
 
@@ -49,7 +56,8 @@ end
 if ~isfield(model,'ub')
     model.ub = 1000* ones(size(model.S,2),1);
 end
-
+%Uptakes are all exports that can work in reverse (lb < 0) and uptakes that
+%can carry forward flux (ub > 0)
 selUpt = (exp & model.lb < 0) | (upt & model.ub > 0);
 
 end
