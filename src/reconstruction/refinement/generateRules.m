@@ -28,9 +28,9 @@ for i = 1:length(grRules)
         tmp = regexprep(tmp, ' * (?i)(and) *', ' & ');
         tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
         rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', '${convertGenes($0)}');
-        model2.rules{i} = rules;
+        model2.rules{i,1} = rules;
     else
-        model2.rules{i} = model.grRules{i};
+        model2.rules{i,1} = model.grRules{i};
     end
 end
 end
