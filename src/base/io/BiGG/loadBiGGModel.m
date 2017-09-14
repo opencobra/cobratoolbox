@@ -59,10 +59,12 @@ end
 structout = false;
 
 modelfiles = {};
+
+modelOptions = webread('http://bigg.ucsd.edu/api/v2/models');
+modelOptions = modelOptions.results;
+modelIDs = {modelOptions.bigg_id}';
+
 if nargin == 0 || isempty(model_ids)
-    modelOptions = webread('http://bigg.ucsd.edu/api/v2/models');
-    modelOptions = modelOptions.results;
-    modelIDs = {modelOptions.bigg_id}';
     orgNames = cellfun(@(x,y) strcat(x,' [',y,']'), {modelOptions.organism}, {modelOptions.bigg_id}, 'UniformOutput',0)' ;
     [sortedNames, order] = sort(orgNames);
     maxNameSize = max(cellfun(@numel,orgNames));
@@ -85,6 +87,16 @@ if nargin == 0 || isempty(model_ids)
 else
     if ~iscell(model_ids)
         model_ids = {model_ids};
+    end
+    
+    present = ismember(model_ids,modelIDs);
+    if any(~present)
+        nonpresent = model_ids(~present);
+        model_ids = model_ids(present);
+        fprintf('Could not find the following model ids in BiGG:\n');
+        for i = 1:numel(nonpresent)
+            fprintf('%s\n',nonpresent{i});
+        end
     end
 end
 
