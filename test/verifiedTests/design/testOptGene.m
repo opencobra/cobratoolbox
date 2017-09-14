@@ -15,9 +15,9 @@ cd(fileDir);
 
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
-targetRxn = '';
+targetRxn = char(model.rxns(2));
 substrateRxn = '';
-generxnList = cell(0);
+generxnList = model.rxns(1);
 
 % function outputs
 % requires Global Optimization Toolbox
