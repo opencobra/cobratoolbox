@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="../js/iframeResizer.contentWindow.min.js"></script><script type="text/javascript" src="../js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Metabotools tutorial II - Integration of quantitative metabolomic data</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.234px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.4px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S6 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S7 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S8 { line-height: 15.5927px; min-height: 18px; white-space: nowrap; font-size: 12.6667px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { min-height: 0px; white-space: pre; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S10 { line-height: 20.576px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S11 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S12 { min-height: 0px; white-space: pre; color: rgb(0, 0, 255); white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { min-height: 0px; white-space: pre; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { min-height: 0px; white-space: pre; color: rgb(34, 139, 34); white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S15 { min-height: 0px; white-space: pre; color: rgb(160, 32, 240); white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { min-height: 0px; white-space: pre; color: rgb(0, 0, 255); white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S17 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S18 { min-height: 0px; font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S19 { min-height: 0px; white-space: pre; color: rgb(160, 32, 240); white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S20 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S21 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; background-color: #F7F7F7; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Metabotools tutorial II - Integration of quantitative metabolomic data</span></h1><h2 class = "S3"><span class = "S2">Authors: Maike K. Aurich, Sylvain Arreckx, </span><span class = "S2">Systems Biochemistry Group, LCSB, University of Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">Reviewer(s): Anne Richelle, Lewis Lab at University of California, San Diego.</span></h2><p class = "S4"><span class = "S5">INTRODUCTION</span></p><p class = "S4"><span class = "S2">In this tutorial, we  generate a contextualized model by integrating quantitative extracellular metabolomic data [1]. We will afterwards analyze the behavior of the models to variations in flux by using phenotypic phase plane analysis.</span></p><p class = "S4"><span class = "S2">Before running a section in the tutorial, read the corresponding sections in the MetaboTools protocol and supplemental tutorial (Data sheet 3,</span><span class = "S2"> </span><a href = 'http://journal.frontiersin.org/article/10.3389/fphys.2016.00327/full'><span class = "S0">http://journal.frontiersin.org/article/10.3389/fphys.2016.00327/full</span></a><span class = "S2">). </span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S5">PROCEDURE</span></p><p class = "S4"><span class = "S2">Clear workspace and initialize the COBRA Toolbox</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">clear</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">initCobraToolbox</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step</span><span class = "S2"> </span><span class = "S2">0</span><span class = "S2"> - Define the output location and set the LP solver</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S12">global </span><span class = "S13">CBTDIR </span><span class = "S14">% set path to cobratoolbox (pathToCOBRA)</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">outputPath = pwd;</span><span class = "S14">% ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">solver = </span><span class = "S15">'gurobi'</span><span class = "S13">;  </span><span class = "S14">% can be gurobi or 'ibm_cplex'</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">solverOK = changeCobraSolver(solver, </span><span class = "S15">'LP'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S12">if </span><span class = "S9">solverOK == 1</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    display(</span><span class = "S15">'The LP solver is set.'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">else</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    error(</span><span class = "S15">'The LP solver is not set.'</span><span class = "S9">)</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">end</span></p></div></div><p class = "S17"><span class = "S2">Load and check that the input model is correclty loaded</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">tutorialPath = [CBTDIR filesep </span><span class = "S15">'tutorials' </span><span class = "S13">filesep </span><span class = "S15">'metabotools' </span><span class = "S13">filesep </span><span class = "S15">'tutorial_II'</span><span class = "S9">];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S12">if </span><span class = "S13">exist([tutorialPath filesep </span><span class = "S15">'starting_model.mat'</span><span class = "S13">], </span><span class = "S15">'file'</span><span class = "S13">) == 2  </span><span class = "S14">% 2 means it's a file.</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    load([tutorialPath filesep </span><span class = "S15">'starting_model.mat'</span><span class = "S9">]);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    display(</span><span class = "S15">'The model is loaded.'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">else</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    error(</span><span class = "S15">'The ''starting_model'' could not be loaded.'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">end</span></p></div></div><p class = "S17"><span class = "S2">Check output path and writing permission</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S12">if </span><span class = "S9">~exist(outputPath) == 7</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    error(</span><span class = "S15">'Output directory in ''outputPath'' does not exist. Verify that you type it correctly or create the directory.'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">end</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S14">% Make and save dummy file to test writing to output directory</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">A = rand(1);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">try</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    save([outputPath filesep </span><span class = "S15">'A'</span><span class = "S9">]);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S12">catch </span><span class = "S9">ME</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">    error(</span><span class = "S15">'Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set ''outputPath'' to a different directory.'</span><span class = "S9">, outputPath, outputPath);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S16">end</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 1 - Shaping the model's environment using setMediumConstraints</span></h2><h2 class = "S3"><span class = "S2">Define the model bounds using setMediumConstraints</span></h2><p class = "S4"><span class = "S2">Constrain the model using the data related to medium composition. To this end, define the set of exchange reactions for which exometabolomic data are available. In this example, no data are available</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">medium_composition = {};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">met_Conc_mM = [];</span></p></div></div><p class = "S17"><span class = "S2">Define constraints on basic medium components (i.e., metabolites that are uptake from the medium but not captured by the measured data) </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">mediumCompounds = {</span><span class = "S15">'EX_h(e)'</span><span class = "S13">, </span><span class = "S15">'EX_h2o(e)'</span><span class = "S13">, </span><span class = "S15">'EX_hco3(e)'</span><span class = "S13">, </span><span class = "S15">'EX_nh4(e)'</span><span class = "S13">, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_pi(e)'</span><span class = "S13">, </span><span class = "S15">'EX_so4(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">ions = {</span><span class = "S15">'EX_ca2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_cl(e)'</span><span class = "S13">, </span><span class = "S15">'EX_co(e)'</span><span class = "S13">, </span><span class = "S15">'EX_fe2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_fe3(e)'</span><span class = "S13">, </span><span class = "S15">'EX_k(e)'</span><span class = "S13">, </span><span class = "S15">'EX_na1(e)'</span><span class = "S13">, </span><span class = "S15">'EX_i(e)'</span><span class = "S13">, </span><span class = "S15">'EX_sel(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mediumCompounds = [ions mediumCompounds];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mediumCompounds_lb = -100;</span></p></div></div><p class = "S17"><span class = "S2">Define also additional constraints to limit the model behaviour (e.g., secretion of oxygen, essential amino acids that need to be taken up)</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">customizedConstraints = {</span><span class = "S15">'EX_co2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_his_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_ile_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_leu_L(e)'</span><span class = "S13">, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                         </span><span class = "S15">'EX_lys_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_phe_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_thr_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_trp_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_val_L(e)'</span><span class = "S13">, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                         </span><span class = "S15">'EX_met_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_ascb_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_btn(e)'</span><span class = "S13">, </span><span class = "S15">'EX_chol(e)'</span><span class = "S13">, </span><span class = "S15">'EX_fol(e)'</span><span class = "S13">, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                         </span><span class = "S15">'EX_pnto_R(e)'</span><span class = "S13">, </span><span class = "S15">'EX_retn(e)'</span><span class = "S13">, </span><span class = "S15">'EX_thm(e)'</span><span class = "S13">, </span><span class = "S15">'EX_vitd2(e)'</span><span class = "S13">, </span><span class = "S15">'EX_vitd3(e)'</span><span class = "S13">, </span><span class = "S15">'EX_retinol(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">customizedConstraints_ub = [2000, 0, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">                            2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">customizedConstraints_lb = [-100, -1000, -10, -10, -10, -10, -10, -10, -10, -10, -10, -1, -1, -1, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">                            -1, -1, -1, -1, -1, -1, -1];</span></p></div></div><p class = "S17"><span class = "S2">Apply the medium constraints previously defined using </span><span class = "S18">setMediumConstraints</span><span class = "S2">. Note that you can also provide information related to the cell concentration (</span><span class = "S18">cellConc</span><span class = "S2">), the cell weight (</span><span class = "S18">cellWeight</span><span class = "S2">), the time (</span><span class = "S18">t</span><span class = "S2">), the current value and the new value for infinite constraints (respectively </span><span class = "S18">current_inf</span><span class = "S2"> and </span><span class = "S18">set_inf</span><span class = "S2">).                        </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">cellConc = [];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">cellWeight = [];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">t = [];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">set_inf = 2000;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">current_inf = 1000;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">close_exchanges = 0;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[modelMedium, basisMedium] = setMediumConstraints(starting_model, set_inf, current_inf, medium_composition, met_Conc_mM, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                                                  cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">                                                  customizedConstraints_ub, customizedConstraints_lb, close_exchanges);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium tol solver outputPath tutorialPath solverQuant</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 2 : Generate an individual exchange profiles for each sample</span></h2><p class = "S4"><span class = "S2">Generate individual uptake and secretion profiles from fluxes data using </span><span class = "S18">prepIntegrationQuant</span><span class = "S2">. Note that negative flux values are interpreted as uptake and positive values as secretion. Moreover, the function removes from each sample the metabolite uptakes or secretions that cann</span><span class = "S2">ot be realized by the model due to missing production or degradation pathways, or blocked reactions. If only secretion is not possible</span><span class = "S2">, only secretion is eliminated from the sample profile whereas uptake will stil</span><span class = "S2">l be mapped.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">load([tutorialPath filesep </span><span class = "S15">'tutorial_II_data.mat'</span><span class = "S9">]);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">model = modelMedium;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">test_max = 500;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">test_min = 0.0001;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">variation = 20;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples tol solver outputPath tutorialPath solverQuant</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S2">Use </span><span class = "S18">checkExchangeProfiles</span><span class = "S2">  generate a summary of the number of uptake and secretion exchanges per samples.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">nmets = 70;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, outputPath, nmets);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S15">-EXCEPT modelMedium samples tol solver mapped_exchanges</span><span class = "S13">  </span><span class = "S19">outputPath tutorialPath solverQuant</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">save([outputPath filesep </span><span class = "S15">'Result_checkExchangeProfiles'</span><span class = "S9">]);</span></p></div></div><p class = "S17"><span class = "S2"></span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 3 : Generate contextualized model</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S18">setQuantConstraints </span><span class = "S2">to integrate the uptake and secretion profiles and generate condition-specific metabolic models for each sample. The function allows the definition of metabolites that should not be consumed (</span><span class = "S18">no uptake</span><span class = "S2">) or not secreted (</span><span class = "S18">no secretion</span><span class = "S2">). Note that the solver =’ibm_cplex’ is required for this step. </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">solverQuant = </span><span class = "S15">'ibm_cplex'</span><span class = "S9">;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">changeCobraSolver(solverQuant, </span><span class = "S15">'LP'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">minGrowth = 0.008;</span><span class = "S14">% lower bound to the biomass reaction obj</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">obj = </span><span class = "S15">'biomass_reaction2'</span><span class = "S9">;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">no_secretion = {</span><span class = "S15">'EX_o2(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">no_uptake = {</span><span class = "S15">'EX_o2s(e)'</span><span class = "S13">, </span><span class = "S15">'EX_h2o2(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">medium = {};</span><span class = "S14">% reactions that should be excluded from minimization of exchanges</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">tol = 1e-6;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">model = modelMedium;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">epsilon = 1e-4;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">addExtraExch = {</span><span class = "S15">'EX_tdchola(e)'</span><span class = "S13">, </span><span class = "S15">'Ex_5hoxindoa[e]'</span><span class = "S13">};</span><span class = "S14">% metabolite exchanges that are added to the upper and lower bounds</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">addExtraExch_value = 1;</span><span class = "S14">% flux values that are added to the upper and lower bounds</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, </span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">                                                             no_uptake, medium, addExtraExch, addExtraExch_value, outputPath);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 4 : Analyze added exchanges</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S18">statisticsAddedExchanges</span><span class = "S2"> </span><span class = "S2">to get a table summarizing the exchange reactions that were added to the models. The function</span><span class = "S2"> </span><span class = "S18">mkTableOfAddedExchanges</span><span class = "S2"> </span><span class = "S2">generates a table that summarizes the reactions added to individual models (*Added all*). </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">changeCobraSolver(solver, </span><span class = "S15">'LP'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[Ex_added_all_unique] = statisticsAddedExchanges(ResultsAllCellLines, samples);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique tol solver mapped_exchanges outputPath tutorialPath</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines, samples, Ex_added_all_unique);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">save([outputPath filesep </span><span class = "S15">'statistics'</span><span class = "S9">]);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 5 : Analyze the sets of essential genes</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S18">analyzeSingleGeneDeletion</span><span class = "S2"> </span><span class = "S2">to predict and analyze the sets of essential genes across a set of models. </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">cutoff = 0.05;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, outputPath, samples, cutoff, OverViewResults);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes tol solver mapped_exchanges outputPath tutorialPath</span></p></div></div><p class = "S17"><span class = "S2">The output table (genes) consists of six columns specifying (1) the gene ID, (2) the category, (3) the number of models for which the gene is essential (growth ratio &lt; 0.05), (4) the number of models for which the gene is not essential (growth ratio &gt; 0.95), (5) the number of models in which the growth (ratio between wild-type and knock-out model) is reduced (0.05 &gt; growth ratio &gt; 0.95), and (6) the number of models that do not have the gene. </span></p></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 6 : Check reaction essentiality		</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S2">checkEffectRxnKO </span><span class = "S2">to investigate which individual gene-associated reaction makes the model infeasible (i.e., reactions associated with a gene need to carry flux). </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">samples_to_test = samples; </span><span class = "S14">%(sub-)set of models</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">fill = </span><span class = "S15">'NAN'</span><span class = "S13">; </span><span class = "S14">%Define a placeholder for an empty cell</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">genes_to_test = {</span><span class = "S15">'55293.1'</span><span class = "S13">}; </span><span class = "S14">%set of genes</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, genes_to_test, samples, ResultsAllCellLines);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S19">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults tol solver mapped_exchanges outputPath tutorialPath</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 7 : Generate an intersect model and an union model</span></h2><p class = "S4"><span class = "S2">The function </span><span class = "S18">makeSummaryModels</span><span class = "S2"> </span><span class = "S2">generates a union model (</span><span class = "S18">unionModel</span><span class = "S2">) and an intersect model (</span><span class = "S18">intersectModel</span><span class = "S2">). Additionally, it writes out the set of reactions (</span><span class = "S18">diffRxns</span><span class = "S2">) and exchange reactions (</span><span class = "S18">diffExRxns</span><span class = "S2">) that distinguish the union and the intersect model for further analysis. </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mk_union = 1;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mk_intersect = 1;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mk_reactionDiff = 1;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">load([tutorialPath filesep </span><span class = "S15">'starting_model.mat'</span><span class = "S9">]);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">model = starting_model;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clearvars </span><span class = "S15">-EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults unionModel intersectModel</span><span class = "S13">  </span><span class = "S19">diffRxns diffExRxns tol solver mapped_exchanges outputPath model tutorialPath</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">save([outputPath filesep </span><span class = "S15">'summary'</span><span class = "S9">]);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 8 : Predict differences in metabolite production or consumption</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S2">predictFluxSplits </span><span class = "S2">to predict the production or consumption (defined using </span><span class = "S18">dir</span><span class = "S2">) of metabolites of interest (</span><span class = "S18">met2test = atp</span><span class = "S2">) for each model defined by </span><span class = "S18">samples</span><span class = "S2">. Define the objective function (</span><span class = "S18">obj</span><span class = "S2">) that should be used to generate the flux vector from which the reaction contributions for metabolite production/consumption are calculated. Furthermore, an ATP yield (</span><span class = "S18">ATPyield</span><span class = "S2">) can be predicted, which relates the total ATP production to a user-defined carbon source (default: </span><span class = "S18">carbon source</span><span class = "S2"> = ’EX glc(e)’). The ATP yield can be used as a metric to distinguish metabolic phenotypes. Reported are the reactions carrying highest flux for production/consumption of the metabolite of interest (</span><span class = "S18">maximum contributing rxn, maximum contributing flux</span><span class = "S2">).This analysis requires a quadratic programming (</span><span class = "S18">QP</span><span class = "S2">) solver. </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">changeCobraSolver(solver, </span><span class = "S15">'QP'</span><span class = "S9">);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">obj = </span><span class = "S15">'DM_atp_c_'</span><span class = "S9">;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">carbon_source = {</span><span class = "S15">'EX_glc(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">samples = samples(1:4, 1);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">dir = 1;</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Example A - ATP production</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S14">% exclude transport reactions from flux split analysis</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">transportRxns = {</span><span class = "S15">'ATPtm'</span><span class = "S13">; </span><span class = "S15">'ATPtn'</span><span class = "S13">; </span><span class = "S15">'ATPtx'</span><span class = "S13">; </span><span class = "S15">'ATP1ter'</span><span class = "S13">; </span><span class = "S15">'ATP2ter'</span><span class = "S13">; </span><span class = "S15">'EX_atp(e)'</span><span class = "S13">; </span><span class = "S15">'DNDPt13m'</span><span class = "S13">;</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                 </span><span class = "S15">'DNDPt2m'</span><span class = "S13">; </span><span class = "S15">'DNDPt31m'</span><span class = "S13">; </span><span class = "S15">'DNDPt56m'</span><span class = "S13">; </span><span class = "S15">'DNDPt32m'</span><span class = "S13">; </span><span class = "S15">'DNDPt57m'</span><span class = "S13">; </span><span class = "S15">'DNDPt20m'</span><span class = "S13">;</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">                 </span><span class = "S15">'DNDPt44m'</span><span class = "S13">; </span><span class = "S15">'DNDPt19m'</span><span class = "S13">; </span><span class = "S15">'DNDPt43m'</span><span class = "S13">; </span><span class = "S15">'ADK1'</span><span class = "S13">; </span><span class = "S15">'ADK1m'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">ATPprod = {</span><span class = "S15">'ATPS4m'</span><span class = "S13">; </span><span class = "S15">'PGK'</span><span class = "S13">; </span><span class = "S15">'PYK'</span><span class = "S13">; </span><span class = "S15">'SUCOASm'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">met2test = {</span><span class = "S15">'atp[c]'</span><span class = "S13">, </span><span class = "S15">'atp[m]'</span><span class = "S13">, </span><span class = "S15">'atp[n]'</span><span class = "S13">, </span><span class = "S15">'atp[r]'</span><span class = "S13">, </span><span class = "S15">'atp[x]'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits(model,</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">    obj, met2test, samples,ResultsAllCellLines, dir,  transportRxns, ATPprod, carbon_source);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">PHs = [samples maximum_contributing_rxn(:, 1)];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">maximum_contributing_flux_ATP = maximum_contributing_flux;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clear </span><span class = "S19">ATPprod transportRxns met2test maximum_contributing_rxn</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2"> Example B - NADH production</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">met2test = {</span><span class = "S15">'nadh[c]'</span><span class = "S13">, </span><span class = "S15">'nadh[m]'</span><span class = "S13">, </span><span class = "S15">'nadh[n]'</span><span class = "S13">, </span><span class = "S15">'nadh[x]'</span><span class = "S13">, </span><span class = "S15">'nadh[r]'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">transportRxns = {</span><span class = "S15">'NADHtpu'</span><span class = "S13">; </span><span class = "S15">'NADHtru'</span><span class = "S13">; </span><span class = "S15">'NADtpu'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_NADH] = predictFluxSplits(model,</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">    obj, met2test, samples, ResultsAllCellLines, dir, transportRxns);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">PHs = [PHs maximum_contributing_rxn(:, 1)];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clear </span><span class = "S19">transportRxns met2test maximum_contributing_rxn</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Example C - FADH2 production</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">transportRxns = {</span><span class = "S15">'FADH2tru'</span><span class = "S13">; </span><span class = "S15">'FADH2tx'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">met2test = {</span><span class = "S15">'fadh2[c]'</span><span class = "S13">, </span><span class = "S15">'fadh2[m]'</span><span class = "S13">, </span><span class = "S15">'fadh2[n]'</span><span class = "S13">, </span><span class = "S15">'fadh2[x]'</span><span class = "S13">, </span><span class = "S15">'fadh2[r]'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_FADH2] = predictFluxSplits(model,</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">    obj, met2test, samples, ResultsAllCellLines, dir,  transportRxns);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">PHs = [PHs maximum_contributing_rxn(:, 1)];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clear </span><span class = "S19">transportRxns met2test</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Example D - NADPH production</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">transportRxns = {</span><span class = "S15">'NADPHtru'</span><span class = "S13">; </span><span class = "S15">'NADPHtxu'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">met2test = {</span><span class = "S15">'nadph[c]'</span><span class = "S13">, </span><span class = "S15">'nadph[m]'</span><span class = "S13">, </span><span class = "S15">'nadph[n]'</span><span class = "S13">, </span><span class = "S15">'nadph[x]'</span><span class = "S13">, </span><span class = "S15">'nadph[r]'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_NADPH] = predictFluxSplits(model,</span><span class = "S16">...</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">    obj, met2test, samples, ResultsAllCellLines, dir, transportRxns);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">PHs = [PHs maximum_contributing_rxn(:, 1)];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">clear </span><span class = "S19">transportRxns met2test</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">save([outputPath filesep </span><span class = "S15">'fluxSplits'</span><span class = "S9">]);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2"> Step 9 - Illustrate the phenotypes (PHs) on 3Dplot</span></h2><p class = "S4"><span class = "S2">The function </span><span class = "S2">make3Dplot </span><span class = "S2">allows illustration of the results of the previous analysis. The colors specify different phenotypes. 	 </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">diff_view = 1;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">fonts = 18;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">make3Dplot(PHs, maximum_contributing_flux_ATP, fonts, outputPath, diff_view);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S10"><span class = "S2">Step 10 -  Perform Phase Plane Analysis</span></h2><p class = "S4"><span class = "S2">Use the function </span><span class = "S18">performPPP</span><span class = "S2"> </span><span class = "S2">to investigate the behavior of the models to variations in flux through a pair of exchange reactions. The following example illustrates the  testing of the robustness of the models to variation of glucose uptake &amp; oxygen uptake, and glutamine secretion &amp; oxygen uptake (defined in </span><span class = "S18">mets</span><span class = "S2">). The range of flux values to be tested is defined by the number of steps and step size (</span><span class = "S18">step num</span><span class = "S2"> and </span><span class = "S18">step size</span><span class = "S2">). The direction of exchange is defined individually for each exchange (</span><span class = "S18">direct</span><span class = "S2">). </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">mets = {</span><span class = "S15">'EX_glc(e)'</span><span class = "S13">, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">; </span><span class = "S15">'EX_gln_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">; </span><span class = "S15">'EX_lac_L(e)'</span><span class = "S13">, </span><span class = "S15">'EX_o2(e)'</span><span class = "S9">};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">step_size = [40, 40; 20, 40; 40, 40];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">step_num = [28, 26; 21, 26; 42, 26];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">direct = [-1, -1; -1, -1; 1, -1];</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">[ResultsAllCellLines] = performPPP(ResultsAllCellLines, mets, step_size, samples, step_num, direct);</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9"></span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S13">save([outputPath filesep </span><span class = "S15">'PPP'</span><span class = "S9">]);</span></p></div></div><p class = "S17"><span class = "S2">Use illustrate_ppp to illtustrate the results of the phase plane analysis</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">label = {'Glucose uptake (fmol/cell/hr)'; 'Oxygen uptake (fmol/cell/hr)'; 'Growth rate (hr-1)'};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">mets = {'EX_glc(e)'; 'EX_o2(e)'};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">fonts = 12;</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">samples = {'IGROV1'};</span></p></div><div class = 'inlineWrapper'><p class = "S8 lineNode"><span class = "S9">illustrate_ppp(ResultsAllCellLines, mets, outputPath, samples, label, fonts, tol);</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><p class = "S4"><span class = "S5">REFERENCE</span></p><ol class = "S20"><li class = "S21"><span class = "S0">Jain M, Nilsson R, Sharma S, Madhusudhan N, Kitami T, et al. (2012) Metabolite Profiling Identifies a Key Role for Glycine in Rapid Cancer Cell Proliferation. Science 336: 1040–1044. </span><span class = "S0">	</span></li></ol></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Metabotools tutorial II - Integration of quantitative metabolomic data
+%% Authors: Maike K. Aurich, Sylvain Arreckx, *Systems Biochemistry Group, LCSB, University of Luxembourg.*
+%% *Reviewer(s): Anne Richelle, Lewis Lab at University of California, San Diego.*
+% *INTRODUCTION*
+% 
+% In this tutorial, we  generate a contextualized model by integrating quantitative 
+% extracellular metabolomic data [1]. We will afterwards analyze the behavior 
+% of the models to variations in flux by using phenotypic phase plane analysis.
+% 
+% Before running a section in the tutorial, read the corresponding sections 
+% in the MetaboTools protocol and supplemental tutorial (Data sheet 3, <http://journal.frontiersin.org/article/10.3389/fphys.2016.00327/full 
+% http://journal.frontiersin.org/article/10.3389/fphys.2016.00327/full>). 
+% 
+% *PROCEDURE*
+% 
+% Clear workspace and initialize the COBRA Toolbox
+
+clear
+initCobraToolbox
+%% Step *0* - Define the output location and set the LP solver
+
+global CBTDIR % set path to cobratoolbox (pathToCOBRA)
+outputPath = pwd;% ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'
+solver = 'gurobi';  % can be gurobi or 'ibm_cplex'
+solverOK = changeCobraSolver(solver, 'LP');
+if solverOK == 1
+    display('The LP solver is set.');
+else
+    error('The LP solver is not set.')
+end
+%% 
+% Load and check that the input model is correclty loaded
+
+tutorialPath = [CBTDIR filesep 'tutorials' filesep 'metabotools' filesep 'tutorial_II'];
+if exist([tutorialPath filesep 'starting_model.mat'], 'file') == 2  % 2 means it's a file.
+    load([tutorialPath filesep 'starting_model.mat']);
+    display('The model is loaded.');
+else
+    error('The ''starting_model'' could not be loaded.');
+end
+%% 
+% Check output path and writing permission
+
+if ~exist(outputPath) == 7
+    error('Output directory in ''outputPath'' does not exist. Verify that you type it correctly or create the directory.');
+end
+
+% Make and save dummy file to test writing to output directory
+A = rand(1);
+try
+    save([outputPath filesep 'A']);
+catch ME
+    error('Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set ''outputPath'' to a different directory.', outputPath, outputPath);
+end
+%% Step 1 - Shaping the model's environment using setMediumConstraints
+%% Define the model bounds using setMediumConstraints
+% Constrain the model using the data related to medium composition. To this 
+% end, define the set of exchange reactions for which exometabolomic data are 
+% available. In this example, no data are available
+
+medium_composition = {};
+met_Conc_mM = [];
+%% 
+% Define constraints on basic medium components (i.e., metabolites that 
+% are uptake from the medium but not captured by the measured data) 
+
+mediumCompounds = {'EX_h(e)', 'EX_h2o(e)', 'EX_hco3(e)', 'EX_nh4(e)', 'EX_o2(e)', 'EX_pi(e)', 'EX_so4(e)'};
+ions = {'EX_ca2(e)', 'EX_cl(e)', 'EX_co(e)', 'EX_fe2(e)', 'EX_fe3(e)', 'EX_k(e)', 'EX_na1(e)', 'EX_i(e)', 'EX_sel(e)'};
+mediumCompounds = [ions mediumCompounds];
+mediumCompounds_lb = -100;
+%% 
+% Define also additional constraints to limit the model behaviour (e.g., 
+% secretion of oxygen, essential amino acids that need to be taken up)
+
+customizedConstraints = {'EX_co2(e)', 'EX_o2(e)', 'EX_his_L(e)', 'EX_ile_L(e)', 'EX_leu_L(e)', ...
+                         'EX_lys_L(e)', 'EX_phe_L(e)', 'EX_thr_L(e)', 'EX_trp_L(e)', 'EX_val_L(e)', ...
+                         'EX_met_L(e)', 'EX_ascb_L(e)', 'EX_btn(e)', 'EX_chol(e)', 'EX_fol(e)', ...
+                         'EX_pnto_R(e)', 'EX_retn(e)', 'EX_thm(e)', 'EX_vitd2(e)', 'EX_vitd3(e)', 'EX_retinol(e)'};
+customizedConstraints_ub = [2000, 0, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, ...
+                            2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000];
+customizedConstraints_lb = [-100, -1000, -10, -10, -10, -10, -10, -10, -10, -10, -10, -1, -1, -1, ...
+                            -1, -1, -1, -1, -1, -1, -1];
+%% 
+% Apply the medium constraints previously defined using _setMediumConstraints_. 
+% Note that you can also provide information related to the cell concentration 
+% (_cellConc_), the cell weight (_cellWeight_), the time (_t_), the current value 
+% and the new value for infinite constraints (respectively _current_inf_ and _set_inf_).                        
+
+cellConc = [];
+cellWeight = [];
+t = [];
+set_inf = 2000;
+current_inf = 1000;
+close_exchanges = 0;
+[modelMedium, basisMedium] = setMediumConstraints(starting_model, set_inf, current_inf, medium_composition, met_Conc_mM, ...
+                                                  cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, ...
+                                                  customizedConstraints_ub, customizedConstraints_lb, close_exchanges);
+
+clearvars -EXCEPT modelMedium tol solver outputPath tutorialPath solverQuant
+%% Step 2 : Generate an individual exchange profiles for each sample
+% Generate individual uptake and secretion profiles from fluxes data using _prepIntegrationQuant_. 
+% Note that negative flux values are interpreted as uptake and positive values 
+% as secretion. Moreover, the function removes from each sample the metabolite 
+% uptakes or secretions that cannot be realized by the model due to missing production 
+% or degradation pathways, or blocked reactions. If only secretion is not possible, 
+% only secretion is eliminated from the sample profile whereas uptake will still 
+% be mapped.
+
+load([tutorialPath filesep 'tutorial_II_data.mat']);
+model = modelMedium;
+test_max = 500;
+test_min = 0.0001;
+variation = 20;
+
+prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation);
+clearvars -EXCEPT modelMedium samples tol solver outputPath tutorialPath solverQuant
+%% 
+% Use _checkExchangeProfiles_  generate a summary of the number of uptake 
+% and secretion exchanges per samples.
+
+nmets = 70;
+[mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, outputPath, nmets);
+clearvars -EXCEPT modelMedium samples tol solver mapped_exchanges  outputPath tutorialPath solverQuant
+save([outputPath filesep 'Result_checkExchangeProfiles']);
+%% 
+% 
+%% Step 3 : Generate contextualized model
+% Use the function _setQuantConstraints _to integrate the uptake and secretion 
+% profiles and generate condition-specific metabolic models for each sample. The 
+% function allows the definition of metabolites that should not be consumed (_no 
+% uptake_) or not secreted (_no secretion_). Note that the solver =’ibm_cplex’ 
+% is required for this step. 
+
+solverQuant = 'ibm_cplex';
+changeCobraSolver(solverQuant, 'LP');
+
+minGrowth = 0.008;% lower bound to the biomass reaction obj
+obj = 'biomass_reaction2';
+
+no_secretion = {'EX_o2(e)'};
+no_uptake = {'EX_o2s(e)', 'EX_h2o2(e)'};
+medium = {};% reactions that should be excluded from minimization of exchanges
+tol = 1e-6;
+model = modelMedium;
+epsilon = 1e-4;
+
+addExtraExch = {'EX_tdchola(e)', 'Ex_5hoxindoa[e]'};% metabolite exchanges that are added to the upper and lower bounds
+addExtraExch_value = 1;% flux values that are added to the upper and lower bounds
+[ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, ...
+                                                             no_uptake, medium, addExtraExch, addExtraExch_value, outputPath);
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath
+%% Step 4 : Analyze added exchanges
+% Use the function _statisticsAddedExchanges_ to get a table summarizing the 
+% exchange reactions that were added to the models. The function _mkTableOfAddedExchanges_ 
+% generates a table that summarizes the reactions added to individual models (*Added 
+% all*). 
+
+changeCobraSolver(solver, 'LP');
+
+[Ex_added_all_unique] = statisticsAddedExchanges(ResultsAllCellLines, samples);
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique tol solver mapped_exchanges outputPath tutorialPath
+
+[Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines, samples, Ex_added_all_unique);
+
+save([outputPath filesep 'statistics']);
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath
+%% Step 5 : Analyze the sets of essential genes
+% Use the function _analyzeSingleGeneDeletion_ to predict and analyze the sets 
+% of essential genes across a set of models. 
+
+cutoff = 0.05;
+[genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, outputPath, samples, cutoff, OverViewResults);
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes tol solver mapped_exchanges outputPath tutorialPath
+%% 
+% The output table (genes) consists of six columns specifying (1) the gene 
+% ID, (2) the category, (3) the number of models for which the gene is essential 
+% (growth ratio < 0.05), (4) the number of models for which the gene is not essential 
+% (growth ratio > 0.95), (5) the number of models in which the growth (ratio between 
+% wild-type and knock-out model) is reduced (0.05 > growth ratio > 0.95), and 
+% (6) the number of models that do not have the gene. 
+%% Step 6 : Check reaction essentiality		
+% Use the function checkEffectRxnKO to investigate which individual gene-associated 
+% reaction makes the model infeasible (i.e., reactions associated with a gene 
+% need to carry flux). 
+
+samples_to_test = samples; %(sub-)set of models
+fill = 'NAN'; %Define a placeholder for an empty cell
+genes_to_test = {'55293.1'}; %set of genes
+
+[FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, genes_to_test, samples, ResultsAllCellLines);
+
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults tol solver mapped_exchanges outputPath tutorialPath
+%% Step 7 : Generate an intersect model and an union model
+% The function _makeSummaryModels_ generates a union model (_unionModel_) and 
+% an intersect model (_intersectModel_). Additionally, it writes out the set of 
+% reactions (_diffRxns_) and exchange reactions (_diffExRxns_) that distinguish 
+% the union and the intersect model for further analysis. 
+
+mk_union = 1;
+mk_intersect = 1;
+mk_reactionDiff = 1;
+load([tutorialPath filesep 'starting_model.mat']);
+model = starting_model;
+
+[unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff);
+clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_added_all_unique genes FBA_Rxns_KO ListResults unionModel intersectModel  diffRxns diffExRxns tol solver mapped_exchanges outputPath model tutorialPath
+
+save([outputPath filesep 'summary']);
+%% Step 8 : Predict differences in metabolite production or consumption
+% Use the function predictFluxSplits to predict the production or consumption 
+% (defined using _dir_) of metabolites of interest (_met2test = atp_) for each 
+% model defined by _samples_. Define the objective function (_obj_) that should 
+% be used to generate the flux vector from which the reaction contributions for 
+% metabolite production/consumption are calculated. Furthermore, an ATP yield 
+% (_ATPyield_) can be predicted, which relates the total ATP production to a user-defined 
+% carbon source (default: _carbon source_ = ’EX glc(e)’). The ATP yield can be 
+% used as a metric to distinguish metabolic phenotypes. Reported are the reactions 
+% carrying highest flux for production/consumption of the metabolite of interest 
+% (_maximum contributing rxn, maximum contributing flux_).This analysis requires 
+% a quadratic programming (_QP_) solver. 
+
+changeCobraSolver(solver, 'QP');
+obj = 'DM_atp_c_';
+carbon_source = {'EX_glc(e)'};
+samples = samples(1:4, 1);
+dir = 1;
+%% Example A - ATP production
+
+% exclude transport reactions from flux split analysis
+transportRxns = {'ATPtm'; 'ATPtn'; 'ATPtx'; 'ATP1ter'; 'ATP2ter'; 'EX_atp(e)'; 'DNDPt13m';...
+                 'DNDPt2m'; 'DNDPt31m'; 'DNDPt56m'; 'DNDPt32m'; 'DNDPt57m'; 'DNDPt20m';...
+                 'DNDPt44m'; 'DNDPt19m'; 'DNDPt43m'; 'ADK1'; 'ADK1m'};
+ATPprod = {'ATPS4m'; 'PGK'; 'PYK'; 'SUCOASm'};
+met2test = {'atp[c]', 'atp[m]', 'atp[n]', 'atp[r]', 'atp[x]'};
+
+[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits(model,...
+    obj, met2test, samples,ResultsAllCellLines, dir,  transportRxns, ATPprod, carbon_source);
+
+PHs = [samples maximum_contributing_rxn(:, 1)];
+maximum_contributing_flux_ATP = maximum_contributing_flux;
+clear ATPprod transportRxns met2test maximum_contributing_rxn
+%%  Example B - NADH production
+
+met2test = {'nadh[c]', 'nadh[m]', 'nadh[n]', 'nadh[x]', 'nadh[r]'};
+transportRxns = {'NADHtpu'; 'NADHtru'; 'NADtpu'};
+
+[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_NADH] = predictFluxSplits(model,...
+    obj, met2test, samples, ResultsAllCellLines, dir, transportRxns);
+
+PHs = [PHs maximum_contributing_rxn(:, 1)];
+clear transportRxns met2test maximum_contributing_rxn
+%% Example C - FADH2 production
+
+transportRxns = {'FADH2tru'; 'FADH2tx'};
+met2test = {'fadh2[c]', 'fadh2[m]', 'fadh2[n]', 'fadh2[x]', 'fadh2[r]'};
+
+[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_FADH2] = predictFluxSplits(model,...
+    obj, met2test, samples, ResultsAllCellLines, dir,  transportRxns);
+PHs = [PHs maximum_contributing_rxn(:, 1)];
+clear transportRxns met2test
+%% Example D - NADPH production
+
+transportRxns = {'NADPHtru'; 'NADPHtxu'};
+met2test = {'nadph[c]', 'nadph[m]', 'nadph[n]', 'nadph[x]', 'nadph[r]'};
+
+[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux_NADPH] = predictFluxSplits(model,...
+    obj, met2test, samples, ResultsAllCellLines, dir, transportRxns);
+
+PHs = [PHs maximum_contributing_rxn(:, 1)];
+clear transportRxns met2test
+save([outputPath filesep 'fluxSplits']);
+%%  Step 9 - Illustrate the phenotypes (PHs) on 3Dplot
+% The function make3Dplot allows illustration of the results of the previous 
+% analysis. The colors specify different phenotypes. 	 
+
+diff_view = 1;
+fonts = 18;
+
+make3Dplot(PHs, maximum_contributing_flux_ATP, fonts, outputPath, diff_view);
+%% Step 10 -  Perform Phase Plane Analysis
+% Use the function _performPPP_ to investigate the behavior of the models to 
+% variations in flux through a pair of exchange reactions. The following example 
+% illustrates the  testing of the robustness of the models to variation of glucose 
+% uptake & oxygen uptake, and glutamine secretion & oxygen uptake (defined in 
+% _mets_). The range of flux values to be tested is defined by the number of steps 
+% and step size (_step num_ and _step size_). The direction of exchange is defined 
+% individually for each exchange (_direct_). 
+
+mets = {'EX_glc(e)', 'EX_o2(e)'; 'EX_gln_L(e)', 'EX_o2(e)'; 'EX_lac_L(e)', 'EX_o2(e)'};
+step_size = [40, 40; 20, 40; 40, 40];
+step_num = [28, 26; 21, 26; 42, 26];
+direct = [-1, -1; -1, -1; 1, -1];
+
+[ResultsAllCellLines] = performPPP(ResultsAllCellLines, mets, step_size, samples, step_num, direct);
+
+save([outputPath filesep 'PPP']);
+%% 
+% Use illustrate_ppp to illtustrate the results of the phase plane analysis
+
+label = {'Glucose uptake (fmol/cell/hr)'; 'Oxygen uptake (fmol/cell/hr)'; 'Growth rate (hr-1)'};
+mets = {'EX_glc(e)'; 'EX_o2(e)'};
+fonts = 12;
+samples = {'IGROV1'};
+illustrate_ppp(ResultsAllCellLines, mets, outputPath, samples, label, fonts, tol);
+%% 
+% *REFERENCE*
+% 
+% # Jain M, Nilsson R, Sharma S, Madhusudhan N, Kitami T, et al. (2012) Metabolite 
+% Profiling Identifies a Key Role for Glycine in Rapid Cancer Cell Proliferation. 
+% Science 336: 1040–1044.
+##### SOURCE END #####
+--></body></html>
