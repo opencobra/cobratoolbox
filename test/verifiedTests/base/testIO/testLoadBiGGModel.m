@@ -29,8 +29,8 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 % Models: FileName of local file, model ID and type for BiGG, along with
 % FBA Min and Max value.
-modelArr = {'iIT341.xml','iIT341','sbml',0,0.692812693473487;...
-    'iJO1366.mat','iJO1366','mat',NaN,NaN};
+modelArr = {'iIT341.xml','iIT341','sbml','BiGGSBML',0,0.692812693473487;...
+    'iJO1366.mat','iJO1366','mat','BiGG',NaN,NaN};
 
 % set the tolerance
 tol = 1e-6;
@@ -46,8 +46,13 @@ for i = 1:size(modelArr,1)
     % where the model is found)
     model1 = readCbModel(which(modelArr{i,1}));
     model2 = loadBiGGModel(modelArr{i,2},modelArr{i,3});
+    model3 = readCbModel(modelArr{i,2},'fileType',modelArr{i,4});
+    %Check that the direct load is the same
     assert(isSameCobraModel(model1,model2));
-    if ~isnan(modelArr{i,4})
+    %Check that the model loaded through readCbModel is the same.
+    assert(isSameCobraModel(model1,model3));
+    
+    if ~isnan(modelArr{i,5})
         for k = 1:length(solverPkgs)
             
             % set the solver
@@ -62,7 +67,7 @@ for i = 1:size(modelArr,1)
                 
                 % test the maximisation solution
                 assert(FBA.stat == 1);
-                assert(abs(FBA.f - modelArr{i,5}) < tol);
+                assert(abs(FBA.f - modelArr{i,6}) < tol);
                 assert(norm(model2.S * FBA.x) < tol);
                 
                 % solve the minimisation problem
@@ -70,7 +75,7 @@ for i = 1:size(modelArr,1)
                 
                 % test the minimisation solution
                 assert(FBA.stat == 1);
-                assert(abs(FBA.f - modelArr{i,4}) < tol);
+                assert(abs(FBA.f - modelArr{i,5}) < tol);
                 assert(norm(model2.S * FBA.x) < tol);
                 
                 % print a line for success of loop i
