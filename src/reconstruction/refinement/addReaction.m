@@ -34,7 +34,9 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                         * systNameList - List of systematic names (Default empty)
 %                         * checkDuplicate - Check `S` matrix too see if a duplicate reaction is
 %                           already in the model (Deafult false)
-%                         * printLevel - default = 1
+%                         * printLevel - 1  : normal output
+%                                      - 0  : Warnings Only
+%                                      - -1 : Nothing
 %
 % OUTPUTS:
 %    model:             COBRA model structure with new reaction
@@ -109,7 +111,6 @@ end
 nRxns = length(model.rxns);
 [reactionpresence,rxnPos] = ismember(rxnID,model.rxns);
 if any(reactionpresence)
-    warning('Reaction with the same name already exists in the model, updating the reaction');
     oldRxnFlag = true;
 else
     rxnPos = nRxns+1;
@@ -176,6 +177,12 @@ stoichCoeffList = parser.Results.stoichCoeffList;
 revFlag = parser.Results.reversible;
 geneNameList = parser.Results.geneNameList;
 systNameList = parser.Results.systNameList;
+if oldRxnFlag
+    if printLevel >= 0
+         warning('Reaction with the same name already exists in the model, updating the reaction');
+    end
+end
+
 %Check variant, if both, return error
 if isempty(metaboliteList) && isempty(reactionFormula)
     error('No stoichiometry found! Set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters.\nModel was not modified.')
@@ -254,7 +261,9 @@ end
 %Give warning and combine the coeffeicient if a metabolite appears more than once
 [metaboliteListUnique,~,IC] = unique(metaboliteList);
 if numel(metaboliteListUnique) ~= numel(metaboliteList)
-    warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnID)
+    if printLevel >= 0
+        warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnID)
+    end
     stoichCoeffListUnique = zeros(size(metaboliteListUnique));
     for nMetsUnique = 1:numel(metaboliteListUnique)
         stoichCoeffListUnique(nMetsUnique) = sum(stoichCoeffList(IC == nMetsUnique));
@@ -281,8 +290,10 @@ for i = 1:length(metaboliteList)
     if (isInModel(i))
         Scolumn(metID(i),1) = stoichCoeffList(i);
     else
-        warning(['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
-        model = addMetabolite(model,metaboliteList{i},metaboliteList{i});
+        if printLevel >= 0
+            warning(['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
+        end
+        model = addMetabolite(model,metaboliteList{i},'metName',metaboliteList{i},'printLevel',printLevel);
         Scolumn(end+1,1) = stoichCoeffList(i);
     end
 end
@@ -316,7 +327,9 @@ end
 %If the reaction is already present, and the updated reaction is not one of
 %the reactions, which actually is matching.
 if any(~(duplicatePos == rxnPos))
-    warning(['Model already has the same reaction you tried to add: ' modelOrig.rxns{rxnIDexists}]);
+    if printLevel >= 0
+        warning(['Model already has the same reaction you tried to add: ' modelOrig.rxns{rxnIDexists}]);
+    end
     model = modelOrig;
 else
     if (oldRxnFlag)
