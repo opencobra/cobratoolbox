@@ -183,12 +183,13 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         foo="${tutorialName:9}"
         tutorialLongTitle="${tutorialName:0:8}${foo^}"
         readmePath="$cobraToolBoxPath/tutorials/$tutorialFolder"
-        htmlPath="$pdfPath/tutorials/$tutorialFolder"
+        htmlPath="$cobraToolBoxPath/docs/source/_static/tutorials"
         rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
         pngPath="$pdfPath/tutorials/$tutorialFolder"
 
         pdfHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
         pngHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.png"
+        htmlHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.html"
         mlxHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.mlx"
         mHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.m"
 
@@ -225,14 +226,13 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed -i.bak "s~#PDFtutorialPath#~$pdfHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MLXtutorialPath#~$mlxHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MtutorialPath#~$mHyperlink~g"     "$rstPath/$tutorialLongTitle.rst"
-            sed -i.bak "s~#IFRAMEtutorialPath#~https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.mlx~g" "$rstPath/$tutorialLongTitle.rst"
+            sed -i.bak "s~#IFRAMEtutorialPath#~../_static/tutorials/$tutorialName.html~g" "$rstPath/$tutorialLongTitle.rst"
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
             echo "   $tutorialLongTitle" >> $rstPath/index.rst
 
             # create html file
-            sed -i.bak 's#<html><head>#&<script type="text/javascript" src="../js/iframeResizer.contentWindow.min.js"></script>#g' "$htmlPath/$tutorialName.html"
-            rm "$htmlPath/$tutorialName.html.bak"
+            sed 's#<html><head>#&<script type="text/javascript" src="../js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$htmlPath/$tutorialName.html"
         fi
     done
 
