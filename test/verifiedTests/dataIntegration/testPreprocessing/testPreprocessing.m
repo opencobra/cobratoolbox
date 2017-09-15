@@ -38,3 +38,6 @@ assert(isequal(expressionRxns,[6; 5; 5; -1; -1]));
 assert(isequal(expressionRxns,[min(26/3,15/2); min(8, max(10,5)); max(5,9); -1; -1]));
 
 fprintf('Done...')
+
+%Switch back to original folder
+cd(currentDir)
