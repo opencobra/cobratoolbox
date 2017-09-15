@@ -39,7 +39,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
-%    parameters:    solver-specific parameters structure 
+%    parameters:    solver-specific parameters structure
 %
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;
@@ -1222,7 +1222,7 @@ switch solver
             if exist('optTol', 'var')
                 ILOGcplex.Param.simplex.tolerances.optimality.Cur = optTol;
             end
-            
+
             if ~isfield(solverParams, 'lpmethod')
                 % automatically chooses algorithm if not set in solverParams
                 % (should already be the default value in ILOGcplex.Param.lpmethod.Cur)
@@ -1251,14 +1251,14 @@ switch solver
                 f = osense*ILOGcplex.Solution.objval;
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
-                y = ILOGcplex.Solution.dual;                                            
+                y = ILOGcplex.Solution.dual;
             elseif origStat == 4
-                %This is likely unbounded, but could be infeasible 
+                %This is likely unbounded, but could be infeasible
                 %Lets check, by solving an additional LP with a bounded
                 %objective.
                 %Store the original solution
                 Solution = ILOGcplex.Solution;
-                ILOGcplex.Param.preprocessing.presolve.Cur = 0;                
+                ILOGcplex.Param.preprocessing.presolve.Cur = 0;
                 ILOGcplex.solve();
                 origStatNew   = ILOGcplex.Solution.status;
                 if origStatNew == 2
@@ -1270,12 +1270,12 @@ switch solver
                 ILOGcplex.Solution = Solution;
             elseif origStat == 3
                 stat = 0;
-            elseif origStat == 5 || origStat == 6 
-                stat = 3;                
+            elseif origStat == 5 || origStat == 6
+                stat = 3;
                 f = osense*ILOGcplex.Solution.objval;
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
-                y = ILOGcplex.Solution.dual;    
+                y = ILOGcplex.Solution.dual;
             elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
                 %Abort due to reached limit. check if there is a solution
                 %and return it.
@@ -1287,18 +1287,18 @@ switch solver
                     stat = -1;
                 end
                 if isfield(ILOGcplex.Solution ,'reducedcost')
-                    w = ILOGcplex.Solution.reducedcost; 
+                    w = ILOGcplex.Solution.reducedcost;
                 end
-                if isfield(ILOGcplex.Solution ,'dual')            
-                    y = ILOGcplex.Solution.dual;    
+                if isfield(ILOGcplex.Solution ,'dual')
+                    y = ILOGcplex.Solution.dual;
                 end
-                
+
             elseif origStat == 13
                 stat = -1;
             elseif origStat == 20
                 stat = 2;
             end
-            
+
             switch ILOGcplex.Param.lpmethod.Cur
                 case 0
                     algorithm='Automatic';
@@ -1381,7 +1381,7 @@ switch solver
             stat=origStat;
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
-        
+        labindex = 1;
         if exist([pwd filesep 'clone1_' labindex '.log'],'file')
             delete([pwd filesep 'clone1_' labindex '.log'])
         end
