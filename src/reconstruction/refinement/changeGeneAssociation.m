@@ -87,12 +87,12 @@ if (~isempty(grRule))
             if addRxnGeneMat == 1
                 model.rxnGeneMat(rxnID,end+1) = 1;
             end
-            rule = strrep(rule,['x(' num2str(i) ')'],['x(' num2str(nGenes) ')']);
+            rule = strrep(rule,['x(#' num2str(i) ')'],['x(' num2str(nGenes) ')']);
         else
             if addRxnGeneMat == 1
                 model.rxnGeneMat(rxnID,geneID) = 1;
             end
-            rule = strrep(rule,['x(' num2str(i) ')'],['x(' num2str(geneID) ')']);
+            rule = strrep(rule,['x(#' num2str(i) ')'],['x(' num2str(geneID) ')']);
         end
     end
     model.rules{rxnID} = rule;
