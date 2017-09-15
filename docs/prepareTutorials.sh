@@ -99,11 +99,11 @@ fi
 
 if [[ $buildHTML = true ]]; then
     if [[ -z "$specificTutorial" ]]; then
-        /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
-        # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
+        # /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
+        /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath');exit;"
     else
-        /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
-        # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/mmatlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+        # /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+        /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "initCobraToolbox;addpath('../.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
     fi
 
 fi
