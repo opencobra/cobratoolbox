@@ -64,7 +64,7 @@ if ischar(str)  % if it's a string, use MH's code
                     elements{end + 1} = tok;
                 end
                 % The replacement token
-                newTok = ['x(' num2str(cnt) ')'];
+                newTok = ['x(#' num2str(cnt) ')'];
                 % Remove troublesome characters ([])
                 tok = regexprep(tok, '\[', '');
                 tok = regexprep(tok, '\]', '');
