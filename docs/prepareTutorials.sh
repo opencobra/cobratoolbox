@@ -226,7 +226,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed -i.bak "s~#PDFtutorialPath#~$pdfHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MLXtutorialPath#~$mlxHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MtutorialPath#~$mHyperlink~g"     "$rstPath/$tutorialLongTitle.rst"
-            sed -i.bak "s~#IFRAMEtutorialPath#~$htmlHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
+            sed -i.bak "s~#IFRAMEtutorialPath#~../_static/tutorials/$tutorialName.html~g" "$rstPath/$tutorialLongTitle.rst"
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
             echo "   $tutorialLongTitle" >> $rstPath/index.rst
