@@ -1,54 +1,59 @@
 % The COBRAToolbox: testSbmlTestModelToMat.m
 %
 % Purpose:
-%     - test the sbmlTestModelToMat function
+%     - tests the batch conversion of SBML models to .mat files.
 %
 % Authors:
-%     - Jacek Wachowiak
+%     - Original file: Thomas Pfau - Sept 2017
+%
+
 global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testSbmlTestModelToMat'));
+fileDir = fileparts(which('testSbmlTestModelToMat.m'));
 cd(fileDir);
 
-% test variables
-% creating the default folder 'm_model_collection' for function call without input arguments, copying xml files to be worked on to this folder
-mkdir 'm_model_collection'
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO', filesep, 'm_model_collection']);
-copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Abiotrophia_defectiva_ATCC_49176.xml'));
-% copying xml file as mat file so that it will be deleted by the function
-copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Abiotrophia_defectiva_ATCC_49176.xml'), 'Abiotrophia_defectiva_ATCC_49176.mat');
-copyfile(strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep], 'Sc_iND750_flux1.xml'));
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
+%Create Temporary Folders
+SBMLFolder = tempname;
+mkdir(SBMLFolder);
 
-% function outputs
-% emptying CBTDIR global variable so that the function can recreate that
-CBTDIR = [];
-sbmlTestModelToMat();
-CBTDIR = fileparts(which('initCobraToolbox'));
+MATFolder = tempname;
+mkdir(MATFolder);
 
-% test
-assert((exist('m_model_collection') == 7));
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO', filesep, 'm_model_collection']);
-assert((exist('Abiotrophia_defectiva_ATCC_49176.xml') == 2));
-assert((exist('Sc_iND750_flux1.xml') == 2));
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
+%copy all xml files from the models to the temp folder 
+modeldir = [CBTDIR filesep 'test' filesep 'models'];
+copyfile([modeldir filesep '*.xml'], SBMLFolder);
 
-% remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
-isdeleted = false;
-k = 0;
-while ~isdeleted && k < 10
-    try
-        rmdir('m_model_collection','s');
-        isdeleted = true;
-    catch
-        k = k + 1; % increase counter for timeout
-        pause(1); %wait a second before retry
-        rehash;
+modelfiles = dir(SBMLFolder);
+models = cell(0);
+%Now, individually read all models
+for i = 1:size(modelfiles)
+    if ~isempty(regexp(modelfiles(i).name,'.*\.xml$'))
+        models{end+1} = readCbModel([modelfiles(i).folder filesep modelfiles(i).name]);
+    end
+end
+sbmlTestModelToMat(SBMLFolder,MATFolder)
+matModels = cell(0);
+for i = 1:size(modelfiles)
+    if ~isempty(regexp(modelfiles(i).name,'.*\.xml$'))
+        %We load them, as otherwise the ID would change to the mat file and
+        %they would no longer be equivalent.
+        load([MATFolder filesep strrep(modelfiles(i).name,'.xml','.mat')]);
+        matModels{end+1} = model;
     end
 end
 
-% change to old directory
-cd(currentDir);
+%Test that the models are the same
+assert(numel(matModels) == numel(models));
+for i = 1:numel(matModels)
+    assert(isSameCobraModel(matModels{i},models{i}));
+end
+
+%Clean up the folders.
+rmdir(MATFolder,'s');
+rmdir(SBMLFolder,'s');
+
+cd(currentDir)
