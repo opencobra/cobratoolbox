@@ -41,7 +41,7 @@ for k = 1:length(solverPkgs)
     
     if solverOK == 1
         fprintf('   Testing model lifting using %s ... \n', solverPkgs{k});
-        sol = optimizeCbModel(toy);
+        sol = optimizeCbModel(toy)
         assert(abs(sol.f-1e6) < tol);
         
         %Without coupling the max objective is 1e6
