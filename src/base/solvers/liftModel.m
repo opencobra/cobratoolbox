@@ -1,14 +1,17 @@
-function model = liftModel(model, BIG, printLevel,fileName,directory)
+function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 % Lifts a COBRA model with badly-scaled stoichiometric and
 % coupling constraints of the form:
 % :math:`max c*v`  subject to: :math:`Sv = 0, x, Cv <= 0`
+% Converts it into a COBRA LPproblem structure, which can be used with
+% solveCobraLP. Fluxes for the reactions should stay the same i.e. 
+% sol.full(1:nRxns) should yield an optimal flux vector.
 %
 % USAGE:
 %
-%    model = liftModel(model, BIG, printLevel,fileName,directory)
+%    LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %
 % INPUTS:
-%    model:         COBRA Structure contain the original LP to be solved. The format of
+%    LPproblem:     COBRA LPproblem Structure containing the original LP to be solved. The format of
 %                   this struct is described in the documentation for `solveCobraLP.m`
 %
 % OPTIONAL INPUTS:
@@ -27,6 +30,8 @@ function model = liftModel(model, BIG, printLevel,fileName,directory)
 %       - Michael Saunders, saunders@stanford.edu
 %       - Yuekai Sun, yuekai@stanford.edu, Systems Optimization Lab (SOL), Stanford University
 %       - Ronan Fleming   (updated interface to take COBRA model structure)
+%       - Thomas Pfau - Updated information, that the lifted problem is
+%                       converted to a COBRA LP structure
 
 if ~exist('BIG','var')
     BIG=1000;
@@ -67,8 +72,8 @@ if ~isfield(model,'osense')
 end
 
 %call the LP reformulate script by Michael and Yuekai
-model = reformulate(model, BIG, printLevel);
+LPproblem = reformulate(model, BIG, printLevel);
 
 if exist('fileName','var') && exist('directory','var')
-    save([directory filesep 'L_' fileName '.mat'],'model');
+    save([directory filesep 'L_' fileName '.mat'],'LPproblem');
 end
