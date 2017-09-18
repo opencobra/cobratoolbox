@@ -49,7 +49,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 
   A      = LPproblem.A;
   b      = LPproblem.b;
-  c      = LPproblem.c*LPproblem.osense;
+  c      = LPproblem.c;
   x_L    = LPproblem.lb;
   x_U    = LPproblem.ub;
   csense = char(LPproblem.csense);
