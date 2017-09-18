@@ -21,10 +21,14 @@ generxnList = model.rxns(1);
 
 % function outputs
 % requires Global Optimization Toolbox
-[x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList)
+[x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList);
 
 % test
-assert(isequal(0, 0));
+assert(isequal(x, 1));
+assert(isequal(size(population), size(zeros(500, 1))));
+assert(isequal(scores, zeros(500, 1)));
+assert(isequal(optGeneSol.numDel, 1));
+assert(isequal(optGeneSol.targetRxn, 'ACALDt'));
 
 % change to old directory
 cd(currentDir);

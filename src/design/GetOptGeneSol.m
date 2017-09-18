@@ -15,7 +15,7 @@ function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnLis
 %    scores:          an array of scores
 %    isGeneList:      boolean
 %    saveFile:        boolean. Default = false;
-%    outputFolder:    char. Default = pwd;    
+%    outputFolder:    char. Default = pwd;
 %
 % OUTPUT:
 %    optGeneSol:      Solution in the desired format
@@ -28,7 +28,7 @@ if nargin < 10 || isempty(outputFolder)
 end
 
 if ~isdir(outputFolder)
-    mkdir(outputFolder); 
+    mkdir(outputFolder);
 end
 
 writeDirect = [pwd filesep outputFolder filesep];
@@ -84,7 +84,7 @@ if isGeneList
             ), 'optGeneSol')
     end
 else
-    if safeFile
+    if saveFile
         save (strcat(writeDirect, 'optGeneSol--rxns--target-', char(optGeneSol.targetRxn),...
             '--sub-',char(optGeneSol.substrateRxn),'--KOs-',num2str(optGeneSol.numDel),...
             '--yield-',num2str(optGeneSol.obj),...
