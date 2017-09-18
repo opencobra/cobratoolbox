@@ -89,10 +89,12 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatMatrix{end+1} = C;
 
     % select the compatibility matrix based on the OS
-    if isunix
-        compatMatrix = compatMatrix{1};
+    if isunix && ~ismac
+        compatMatrix = compatMatrix{1}; % linux
+    elseif ismac
+        compatMatrix = compatMatrix{2}; % macOS
     else
-        compatMatrix = compatMatrix{2};
+        compatMatrix = compatMatrix{3}; % Windows
     end
 
     % determine the version of MATLAB and the corresponding column
