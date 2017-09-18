@@ -81,8 +81,7 @@ end
 
 %Test, whether the file IO function works
 save('toy.mat','toy')
-liftModel(model,1000,0,'toy',fileDir)
-liftedLPProblem.modelID = 'L_toy'; %THe model ID gets reset in the method. But everything else stays.
+liftModel(toy,1000,0,'toy',fileDir);
 load('L_toy.mat');
 assert(isSameCobraModel(LPproblem,liftedLPProblem));
 
