@@ -45,8 +45,8 @@ fprintf(fid, '\n');
 
 for i = 1:length(commonModel.rxns)
     fprintf(fid, '%s\t', commonModel.rxns{i});
-    if (isfield(commonModel, 'subSystems'))
-        fprintf(fid, '%s\t', commonModel.subSystems{i});
+    if (isfield(commonModel, 'subSystems'))                
+        fprintf(fid, '%s\t', strjoin(commonModel.subSystems{i},';'));
     end
     %for j = 1:length(samples)
     fprintf(fid, '%8.6f\t', sampleStats.mode(i));
