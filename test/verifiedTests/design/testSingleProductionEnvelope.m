@@ -22,7 +22,7 @@ biomassRxn = char(model.rxns(1));
 % function outputs
 % requires Global Optimization Toolbox
 singleProductionEnvelope(model, deletions, product, biomassRxn, 'savePlot', 1);
-singleProductionEnvelope(model, deletions, product, biomassRxn, 'geneDelFlag', 1);
+%singleProductionEnvelope(model, deletions, product, biomassRxn, 'geneDelFlag', 1);
 
 % test
 assert(isequal(0, 0));
