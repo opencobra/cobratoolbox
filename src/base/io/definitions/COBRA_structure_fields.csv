@@ -39,4 +39,4 @@ rxnECNumbers	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ec-code	is;isV
 rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDescribedBy	rxns	''	^\d+$	Column Cell Array of Strings	Description of references for each corresponding reaction.	'false(1)'
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'
 rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	rxns	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'
-subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	subSystem assignment for each reaction	'false(1)'
+subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y{:}],';')) , x))				{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'
