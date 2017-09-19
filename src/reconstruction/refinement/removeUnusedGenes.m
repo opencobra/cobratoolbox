@@ -14,15 +14,26 @@ function modelNew = removeUnusedGenes(model)
 %                  content present in the model
 %
 % .. Authors:
-%           - Sjoerd Opdam - 6/24/2014    
+%           - Sjoerd Opdam - 6/24/2014
 %           - Thomas Pfau - June 2016 - updated to catch all fields.
-	genes=unique(model.genes);
-    if length(model.genes) ~= length(genes)
-        disp('Some genes have identical IDs')
-    end
-    %update the rxnGeneMatField;    
+
+if ~isfield(model,'genes')
+    %This should not happen, but well, we can generate the genes field from
+    %the grRules field, if that exists.
+    model = updateGenes(model);
+end
+
+if ~isfield(model,'rules')
+    model = generateRules(model);
+end
+
+if ~isfield(model,'rxnGeneMat')
+    %If it doesn't exist, we generate the rxnGeneMat field.
     model = buildRxnGeneMat(model);
-    genesToRemove = sum(model.rxnGeneMat) == 0;
-    model = removeFieldEntriesForType(model,genesToRemove,'genes',numel(model.genes));
-    modelNew=model;    
+end
+
+genesToRemove = sum(model.rxnGeneMat) == 0;
+model = removeFieldEntriesForType(model,genesToRemove,'genes',numel(model.genes));
+modelNew=model;
+
 end
