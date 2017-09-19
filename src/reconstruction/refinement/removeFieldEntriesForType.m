@@ -50,10 +50,16 @@ fieldSize = parser.Results.fieldSize;
 excludeFields = parser.Results.excludeFields;
 
 
+
 if isnumeric(indicesToRemove)
     res = false(fieldSize,1);
     res(indicesToRemove) = 1;
     indicesToRemove = res;
+end
+
+%If there is nothing to remove, we remove nothing...
+if ~any(indicesToRemove)
+    return
 end
 
 %We need a special treatment for genes, i.e. if we remove genes, we need to
@@ -75,6 +81,7 @@ if strcmp(type,'genes')
         %First, eliminate all removed indices
         for i = 1:numel(genePos)
             %Replace either a trailing &, or a leading &
+            
             rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
             matchingrules = find(~cellfun(@isempty, rules));
             for elem = 1:numel(matchingrules)
@@ -95,7 +102,18 @@ if strcmp(type,'genes')
                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[\( ]*x\(' num2str(genePos(i)) '\)[\( ]*'],'');
                     end
                 end
-            end
+            end            
+            if isfield(model, 'grRules')
+                currentrules = strrep(model.rules(matchingrules),'&','and');
+                currentrules = strrep(currentrules,'|','or');
+                for i = 1:numel(currentrules)
+                    tokens = regexp(currentrules{i},'x\(([0-9])\)','tokens');
+                    genepositions = cellfun(@(x) str2num(x{1}),tokens);
+                    for j = 1:numel(genepositions)
+                        currentrules{i} = strrep(currentrules{i},['x(' num2str(genepositions(j)) ')'],['(' model.genes{genepositions(j)} ')']);
+                    end
+                end
+            end            
         end
         %Now, replace all remaining indices.
         oldIndices = find(~indicesToRemove);
@@ -107,9 +125,7 @@ if strcmp(type,'genes')
         end
         %remove the indicator.
         model.rules = strrep(model.rules,'$','');
-        if isfield(model, 'grRules')
-            model = creategrRulesField(model);
-        end
+
     end
     if removeRulesField
         model = rmfield(model,'rules');
