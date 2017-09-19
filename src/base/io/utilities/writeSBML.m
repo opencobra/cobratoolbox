@@ -625,7 +625,7 @@ for i=1:size(model.rxns, 1)
     end
     
     if isfield(model, 'subSystems')
-        tmp_note = [ tmp_note ' <p>SUBSYSTEM: ' model.subSystems{i} '</p>'];
+        tmp_note = [ tmp_note ' <p>SUBSYSTEM: ' strjoin(model.subSystems{i},';') '</p>'];
     end
     if isfield(model, 'rxnConfidenceScores')
         if iscell(model.rxnConfidenceScores)
