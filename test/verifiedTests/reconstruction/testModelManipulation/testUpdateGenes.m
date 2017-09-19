@@ -16,15 +16,17 @@ cd(fileDir);
 
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);
 
-% Check that updateGenes doesn't change the model
+% Check that updateGenes orders the gene list
 model2 = updateGenes(model);
 tmp = model;
 tmp.genes = sort(tmp.genes);
-assert(isSameCobraModel(tmp, model2));
+assert(isequal(tmp.genes,model2.genes));
+
+%Note the gens associated with the reaction for which we remove the gpr
+geneRemoved = model.genes(model.rxnGeneMat(strcmp(model.rxns, 'OROTGLUt'), :) == 1);
 
 % Remove one gene (by removing gene rules from one reaction)
-model2.grRules{strcmp(model.rxns, 'OROTGLUt')} = '';
-geneRemoved = model.genes(model.rxnGeneMat(strcmp(model.rxns, 'OROTGLUt'), :) == 1);
+model2 = changeGeneAssociation(model2,'OROTGLUt','');
 model2 = updateGenes(model2);
 
 assert(length(model.genes) == length(model2.genes) + 1);
@@ -32,7 +34,7 @@ geneDifference = setdiff(model.genes, model2.genes);
 assert(all(strcmp(geneRemoved, geneDifference)));
 
 % Test tolerance of capital letters and gene addition
-model2.grRules{strcmp(model.rxns, 'OROTGLUt')} = '(Foo AND bar) OR gene or gene2';
+model2 = changeGeneAssociation(model2,'OROTGLUt','(Foo AND bar) OR gene or gene2');
 model2 = updateGenes(model2);
 genesAddedShouldBe = {'Foo'; 'bar'; 'gene'; 'gene2'};
 assert(all(strcmp(setdiff(model2.genes, model.genes), genesAddedShouldBe)));
