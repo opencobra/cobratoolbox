@@ -33,11 +33,11 @@ if ~isfield(model,'genes')
 end
 
 
-if ~isfield(model,'rules')
+if ~isfield(modelNew,'rules')
     modelNew = generateRules(modelNew);
 end
 
-if ~isfield(model,'rxnGeneMat')
+if ~isfield(modelNew,'rxnGeneMat')
     %If it doesn't exist, we generate the rxnGeneMat field.
     modelNew = buildRxnGeneMat(modelNew);
 end
