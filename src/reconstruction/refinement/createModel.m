@@ -115,7 +115,7 @@ lowerBoundList = parser.Results.lowerBoundList;
 upperBoundList = parser.Results.upperBoundList;
 subSystemList = parser.Results.subSystemList;
 if ischar([subSystemList{:}])
-    subSystemList = cellfun(@(x) {x},subSystemList, 'UniformOutput',0);
+    subSystemList = cellfun(@(x) {x}, strsplit(subSystemList,';'), 'UniformOutput',0);
 end
 
 for i = 1 : nRxns
