@@ -182,7 +182,7 @@ end
 
 if ~isempty(strmatch('Subsystem',rxnHeaders,'exact'))
     subSystemList = Strings(2:end,strmatch('Subsystem',rxnHeaders,'exact'));
-    subSystemList = cellfun(@(x) {x}, subSystemList ,'UniformOutput',0);
+    subSystemList = cellfun(@(x) {strsplit(x,';')}, subSystemList ,'UniformOutput',0);
 else
     subSystemList = cell(size(rxnList,1),1);
     subSystemList(:) = {{''}};

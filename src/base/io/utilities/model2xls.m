@@ -88,6 +88,12 @@ if isfield(model,'osense')
     model.c = model.c * (-model.osense);
 end
 
+%Explicit handling of subSystems:
+if isfield(model,'subSystems')
+    %Merge the subSystems with separating ';'
+    model.subSystems = cellfun(@(x) strjoin(x,';'),model.subSystems);
+end
+
 model.formulas = printRxnFormula(model,'printFlag',0);
 actualFieldNames = fieldnames(model);
 usedFields = ismember(ReactionModelFields,actualFieldNames);
