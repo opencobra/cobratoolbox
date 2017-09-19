@@ -79,7 +79,11 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
             addpath(originalUserPath);
 
             % replace the version dot
-            solverVersion = strrep(tmpV.Version, '.', '');
+            if ~isempty(tmpV)
+                solverVersion = strrep(tmpV.Version, '.', '');
+            else
+                solverVersion = '';
+            end
             rootPathSolver = solverPath;
         else
             try
