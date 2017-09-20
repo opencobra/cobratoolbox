@@ -26,8 +26,6 @@ for i = 1 : length(Flux);
     Blockedrxns(i,1) = x;
 end
 Blocked= model.rxns(Blockedrxns);
-Blocked(:,2)= model.subSystems(Blockedrxns);
-noBlockedrxns(1,2) =length(find(Blockedrxns));
 
 modelPruned = removeRxns(model,Blocked(:,1));
 
