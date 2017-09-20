@@ -82,7 +82,7 @@ upperBoundDefault = 1000*ones(nRxns,1);
 lowerBoundDefault = -1000*ones(nRxns,1);
 revDefault = 1*ones(nRxns,1);
 subSysDefault = {};
-subSysDefault(1:nRxns) = {''};
+subSysDefault(1:nRxns) = {{''}};
 
 grRuleDefault = {};
 grRuleDefault(1:nRxns) = {''};
@@ -115,7 +115,7 @@ lowerBoundList = parser.Results.lowerBoundList;
 upperBoundList = parser.Results.upperBoundList;
 subSystemList = parser.Results.subSystemList;
 if ischar([subSystemList{:}])
-    subSystemList = cellfun(@(x) {x}, strsplit(subSystemList,';'), 'UniformOutput',0);
+    subSystemList = cellfun(@(x) {strsplit(x,';')}, subSystemList, 'UniformOutput',0);
 end
 
 for i = 1 : nRxns

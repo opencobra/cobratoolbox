@@ -91,7 +91,7 @@ end
 %Explicit handling of subSystems:
 if isfield(model,'subSystems')
     %Merge the subSystems with separating ';'
-    model.subSystems = cellfun(@(x) strjoin(x,';'),model.subSystems);
+    model.subSystems = cellfun(@(x) strjoin(x,';'),model.subSystems,'UniformOutput',0);
 end
 
 model.formulas = printRxnFormula(model,'printFlag',0);
