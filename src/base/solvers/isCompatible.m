@@ -98,8 +98,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     end
 
     % determine the version of MATLAB and the corresponding column
-    compatMatlabVersions = compatMatrix{1};
-    compatMatlabVersions = compatMatlabVersions(2:end);
+    compatMatlabVersions = compatMatrix{1}(2:end);
     versionMatlab = ['R' version('-release')];
     colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
 
@@ -128,8 +127,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             % determine the name of the solver
             solverNameRow = row{1};
             solverNameRow = upper(solverNameRow);
-            solverNameRow = strrep(solverNameRow, ' ', '');
-            solverNameRow = strrep(solverNameRow, '.', '');
+            solverNameRow = strrep(solverNameRow, {' ', '.'}, '');
 
             % find the correct row
             if strcmpi([solverNameAlias, solverVersion], solverNameRow)
