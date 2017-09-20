@@ -84,3 +84,6 @@ assert(~isequal(model.grRules,modelMerged.grRules))
 %And correctly updated
 assert(isequal(modelMerged.grRules,regexprep(model.grRules,['(' model.genes{1} ')|(' model.genes{end} ')'],strjoin(model.genes([1,end]),';'))));
 
+fprintf('Done...\n');
+%Switch back
+cd(currentDir)
