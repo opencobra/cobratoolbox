@@ -87,24 +87,24 @@ for i = 1:numel(fields)
     %present
     if strcmp(type,'genes')
          if isfield(modelNew,'rules')
-            for i = 1:numel(posToMerge)                
+            for j = 1:numel(posToMerge)                
                 %Replace by new position.
-                modelNew.rules = strrep(modelNew.rules,['x(' num2str(posToMerge(i)) ')'],['x(' num2str(posToKeep) ')']);                                
+                modelNew.rules = strrep(modelNew.rules,['x(' num2str(posToMerge(j)) ')'],['x(' num2str(posToKeep) ')']);                                
             end
          end
-         %Update the grRules field.
-        if isfield(modelNew, 'grRules')
-            for i = 1:numel(positions)                
+         %Update the grRules field (if necessary).         
+        if isfield(modelNew, 'grRules') && numel(unique(origNames)) > 1
+            for j = 1:numel(positions)                
                 %Replace by new name.
                 %First, replace all occurences, which only contain the
                 %name.                
-                modelNew.rules = regexprep(modelNew.grRules,['^' regexptranslate(origNames{i}) '$'],modelNew.genes(posToKeep));            
+                modelNew.grRules = regexprep(modelNew.grRules,['^' regexptranslate('escape',origNames{j}) '$'],modelNew.genes{posToKeep});            
                 %The replace all occurences which are at the beginning or
                 %end of a formula.
-                modelNew.rules = regexprep(modelNew.grRules,['^' regexptranslate(origNames{i}) '([\) ]+)'],[ modelNew.genes(posToKeep) '$1']);                                
-                modelNew.rules = regexprep(modelNew.grRules,['([\( ])+' regexptranslate(origNames{i}) '$'],['$1' modelNew.genes(posToKeep) ]);                                
+                modelNew.grRules = regexprep(modelNew.grRules,['^' regexptranslate('escape',origNames{j}) '([\) ]+)'],[ modelNew.genes{posToKeep} '$1']);                                
+                modelNew.grRules = regexprep(modelNew.grRules,['([\( ]+)' regexptranslate('escape',origNames{j}) '$'],['$1' modelNew.genes{posToKeep} ]);                                
                 %finally replace all  in the middle.
-                modelNew.rules = regexprep(modelNew.grRules,['([\( ])+' regexptranslate(origNames{i}) '([\) ]+)'],['$1' modelNew.genes(posToKeep) '$2']);                                
+                modelNew.grRules = regexprep(modelNew.grRules,['([\( ]+)' regexptranslate('escape',origNames{j}) '([\) ]+)'],['$1' modelNew.genes{posToKeep} '$2']);                                
             end            
         end
     end
