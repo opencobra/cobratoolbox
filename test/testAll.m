@@ -34,7 +34,7 @@ else
     cd(CBTDIR);
 end
 % include the root folder and all subfolders.
-addpath(genpath(pwd));
+addpath(genpath([pwd filesep 'test']));
 
 % change to the root folder of The COBRA TOolbox
 cd(CBTDIR);
