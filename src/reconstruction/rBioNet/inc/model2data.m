@@ -115,8 +115,8 @@ for i = 1:length(Optional)
         end
         if ismember('subSystems',names)
             Optional{i} = 'subSystems';
-            if ischar([handles.model.subSytems{:}])
-                handles.model.subSytems = cellfun(@(x) strjoin(x,';'),handles.model.subSytems);
+            if ~ischar([handles.model.subSystems{:}])
+                handles.model.subSystems = cellfun(@(x) strjoin(x,';'),handles.model.subSystems);
             end
             continue;
         end
