@@ -120,7 +120,7 @@ end
 
 % models with typical HMR subsystems - heuristic
 if isfield(model,'subSystems')
-    model.ExchRxnBool=cellfun(@(x) any(ismember({'Exchange reactions','Artificial reactions','Pool reactions'},x),model.subSystems));
+    model.ExchRxnBool=cellfun(@(x) any(ismember({'Exchange reactions','Artificial reactions','Pool reactions'},x)),model.subSystems);
     if isfield(model,'rxnComps')
         model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
     end
