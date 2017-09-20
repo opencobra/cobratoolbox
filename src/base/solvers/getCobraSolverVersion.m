@@ -43,30 +43,30 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
     switch solverName
         case 'ibm_cplex'
             solverPath = ILOG_CPLEX_PATH;
-            pat = 'CPLEX_Studio';
-            aliasName = 'CPLEX';
+            solverNamePattern = 'CPLEX_Studio';
+            solverNameAlias = 'CPLEX';
         case 'gurobi'
             solverPath = GUROBI_PATH;
-            pat = 'gurobi';
-            aliasName = 'GUROBI';
+            solverNamePattern = 'gurobi';
+            solverNameAlias = 'GUROBI';
         case 'mosek'
             solverPath = MOSEK_PATH;
-            pat = 'Mosek';
-            aliasName = 'MOSEK';
+            solverNamePattern = 'Mosek';
+            solverNameAlias = 'MOSEK';
         case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
             solverPath = TOMLAB_PATH;
-            pat = 'tomlab_cplex';
-            aliasName = 'TOMLAB';
+            solverNamePattern = 'tomlab_cplex';
+            solverNameAlias = 'TOMLAB';
         otherwise
             solverPath = '';
             solverVersion = '';
-            aliasName = upper(solverName);
+            solverNameAlias = upper(solverName);
             %error(['The solver version detection for the solver ' solverName ' is not yet implemented.']);
     end
 
     if ~isempty(solverPath)
         % retrieve the version number
-        if strcmp(pat, 'tomlab_cplex')
+        if strcmp(solverNamePattern, 'tomlab_cplex')
             % save the original user path
             originalUserPath = path;
 
@@ -87,7 +87,7 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
             rootPathSolver = solverPath;
         else
             try
-                [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, pat);
+                [solverVersion, rootPathSolver] = extractVersionNumber(solverPath, solverNamePattern);
             catch
                 solverVersion = 'undetermined';
                 rootPathSolver = '';
@@ -96,26 +96,27 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
 
         if printLevel > 0
             if ~strcmpi(solverVersion, 'undetermined')
-                fprintf([' > The version of ' aliasName ' is ' solverVersion '.\n']);
+                fprintf([' > The version of ' solverNameAlias ' is ' solverVersion '.\n']);
             else
-                fprintf([' > ' aliasName ' installation path: ', rootPathSolver, '\n']);
-                fprintf([' > The ' aliasName ' version is ' solverVersion '\n. Your currently installed version of ' aliasName ' is unsupported or you have multiple versions of ' aliasName ' in the path.\n']);
+                fprintf([' > ' solverNameAlias ' installation path: ', rootPathSolver, '\n']);
+                fprintf([' > The ' solverNameAlias ' version is ' solverVersion '\n. Your currently installed version of ' solverNameAlias ' is unsupported or you have multiple versions of ' solverNameAlias ' in the path.\n']);
             end
         end
     else
         solverVersion = '';
         if printLevel > 0
-            fprintf([' > The exact version of ' aliasName ' could not be determined\n']);
+            fprintf([' > The exact version of ' solverNameAlias ' could not be determined\n']);
         end
     end
 
 end
 
-function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, pat)
+function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, solverNamePattern)
 % extract the version number based on the path of the solver
-    index = regexp(lower(globalVar), lower(pat));
+
+    index = regexp(lower(globalVar), lower(solverNamePattern));
     rootPathSolver = globalVar(1:index-1);
-    beginIndex = index + length(pat);
+    beginIndex = index + length(solverNamePattern);
 
     tmpPath = globalVar(beginIndex:end);
 
