@@ -38,14 +38,16 @@ cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep,
 
 % remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
 isdeleted = false;
-while ~isdeleted
-  try
-    rmdir('m_model_collection','s');
-    isdeleted = true;
-  catch
-    pause(1); %wait a second before retry
-    rehash;
-  end
+k = 0;
+while ~isdeleted && k < 10
+    try
+        rmdir('m_model_collection','s');
+        isdeleted = true;
+    catch
+        k = k + 1; % increase counter for timeout
+        pause(1); %wait a second before retry
+        rehash;
+    end
 end
 
 % change to old directory
