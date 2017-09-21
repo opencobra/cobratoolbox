@@ -22,7 +22,24 @@ modelRed = reduceModel(model);
 
 % function outputs
 % requires Global Optimization Toolbox
-[improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
+% function operates on a not full rank matrix and therefore cannot end without an error
+try
+    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
+catch ME
+    assert(length(ME.message) > 0)
+end
+try
+    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, '');
+catch ME
+    assert(length(ME.message) > 0)
+end
+for i=2:9
+  try
+      [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, i, i);
+  catch ME
+      assert(length(ME.message) > 0)
+  end
+end
 
 % test
 assert(isequal(0, 0));
