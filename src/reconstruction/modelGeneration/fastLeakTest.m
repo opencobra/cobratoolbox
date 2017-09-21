@@ -61,6 +61,9 @@ while cnt == 1
         %so we throw an error.
         error(['Trivial solution is not a solution of the model.\n',...
                'Check that you are not enforcing flux as Leak testing does not work with forced fluxes.']);
+    elseif FF2.stat ~=1
+        error(['Problems exist in the model, which lead to the trivial problem being unbounded or otherwise problematic.\n',...
+               'If unbounded, one option could be to reduce the maximal upper/lower bounds to a specified value.']);
     end
    ObjValue = FF2.f;
     if FF2.f >= tol
