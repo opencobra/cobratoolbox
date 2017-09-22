@@ -60,7 +60,6 @@ wtRes.maxProd = solMax.f;
 wtRes.minProd = solMin.f;
 
 if (doubleDelFlag)
-  x=1
     growthRate = sparse(nDel,nDel);
     maxProd = sparse(nDel,nDel);
     minProd = sparse(nDel,nDel);
@@ -83,7 +82,6 @@ for i = 1:nDel
         end
     end
     if (geneDelFlag)
-      x=2
         % Gene deletion
         modelKO = deleteModelGenes(model,deletions{i});
     else
@@ -111,7 +109,6 @@ for i = 1:nDel
             for j = i+1:nDel
                 delCounter = delCounter+1;
                 if mod(j,50) == 0
-                  x=4
                     fComp = delCounter/(nDel*(nDel-1)/2);
                     fprintf('%d\t%f\t%f\n',delCounter,100*fComp,(cputime-t0)/60);
                 end
@@ -128,7 +125,6 @@ for i = 1:nDel
                 growthRate(i,j) = solKO2.f;
                 %fprintf('Double %s %s %f\n',deletions{i},deletions{j},solKO2.f);
                 if (solKO2.f > minGrowth && solKO2.stat == 1)
-                  x=5
                     grRounded2 = floor(solKO2.f/tol)*tol;
                     modelKO2 = changeRxnBounds(modelKO2,modelKO2.rxns(modelKO2.c==1),grRounded2,'l');
                     modelKO2 = changeObjective(modelKO2,targetRxn,1);
