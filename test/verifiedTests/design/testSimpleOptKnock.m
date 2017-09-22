@@ -15,12 +15,11 @@ cd(fileDir);
 
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
-targetRxn = model.rxns(2);
+targetRxn = model.rxns(1);
 
 % function outputs
-[wtRes, delRes] = simpleOptKnock(model, targetRxn)
-[wtRes, delRes] = simpleOptKnock(model, targetRxn, model.rxns, 1, 0.05, 1)
-
+[wtRes, delRes] = simpleOptKnock(model, targetRxn);
+[wtRes, delRes] = simpleOptKnock(model, targetRxn, model.genes, 1, 0.05, 1);
 % test for the successful removal of the files
 assert(isequal(0, 0));
 
