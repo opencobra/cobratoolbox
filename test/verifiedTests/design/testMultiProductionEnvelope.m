@@ -21,10 +21,9 @@ deletions = model.rxns(3);
 deletions2 = model.genes(3);
 
 % function outputs
-%[biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
 [biomassValues, targetValues] = multiProductionEnvelope(model);
 [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn);
-%gene nor reaction
+%gene not reaction removal
 [biomassValues2, targetValues2] = multiProductionEnvelope(model, deletions2, biomassRxn, 1, 20, 1);
 
 % tests
