@@ -41,8 +41,5 @@ for i=2:9
   end
 end
 
-% test
-assert(isequal(0, 0));
-
 % change to old directory
 cd(currentDir);
