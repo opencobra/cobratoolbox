@@ -127,7 +127,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             % determine the name of the solver
             solverNameRow = row{1};
             solverNameRow = upper(solverNameRow);
-            solverNameRow = strrep(solverNameRow, {' ', '.'}, '');
+            solverNameRow = regexprep(solverNameRow, {'\ ', '\.'}, '');
 
             % find the correct row
             if strcmpi([solverNameAlias, solverVersion], solverNameRow)
