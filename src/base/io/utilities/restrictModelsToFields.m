@@ -25,9 +25,11 @@ end
 restrictedModels = cell(size(models));
 for i = 1: numel(models)
     newModel = struct();
-    cmodel = models{i};
+    cmodel = models{i};    
     for f = 1:numel(fieldNames)
-        newModel.(fieldNames{f}) = cmodel.(fieldNames{f});
+        if isfield(cmodel,fieldNames{f})
+            newModel.(fieldNames{f}) = cmodel.(fieldNames{f});
+        end
     end
     restrictedModels{i} = newModel;
 end
