@@ -32,7 +32,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     end
 
     % define the same interface for tomlab and quadMinos
-    if strcmp(solverName, 'tomlab_snopt') || strcmp(solverName, 'cplex_direct')
+    if strcmp(solverName, 'tomlab_snopt')
         solverName = 'tomlab_cplex';
     end
 
@@ -159,6 +159,14 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                     end
                 end
             end
+        end
+    end
+
+    % special case: cplex_direct
+    if strcmp(solverName, 'cplex_direct') && ~verLessThan('matlab', '8.4')
+        compatibleStatus = 0;
+        if printLevel > 0
+            fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, '. Try using the tomlab_cplex interface.\n']);
         end
     end
 end
