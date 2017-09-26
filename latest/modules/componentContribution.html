@@ -213,7 +213,7 @@
 <span id="id1"></span><h1>componentContribution<a class="headerlink" href="#componentcontribution" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.componentContribution"></span><dl class="function">
 <dt id="src.analysis.thermo.componentContribution.Transform">
-<code class="descname">Transform</code><span class="sig-paren">(</span><em>pseudoisomers</em>, <em>pH</em>, <em>I</em>, <em>T</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/Transform.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.Transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Transform</code><span class="sig-paren">(</span><em>pseudoisomers</em>, <em>pH</em>, <em>I</em>, <em>T</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/Transform.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.Transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate pseudoisomer group standard transformed Gibbs energy of
 formation at specified pH, ionic strength and temperature.</p>
 <p><strong>Usage</strong></p>
@@ -256,7 +256,7 @@ formation in kJ/mol.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.addThermoToModel">
-<code class="descname">addThermoToModel</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/addThermoToModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.addThermoToModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addThermoToModel</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/addThermoToModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.addThermoToModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a standard COBRA model, add thermodynamic data to it using
 the Component Contribution method</p>
 <p><strong>Usage</strong></p>
@@ -298,7 +298,7 @@ metabolites that are not covered by component contributions.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.checkForMissingStereo">
-<code class="descname">checkForMissingStereo</code><span class="sig-paren">(</span><em>model</em>, <em>nist</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/checkForMissingStereo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.checkForMissingStereo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkForMissingStereo</code><span class="sig-paren">(</span><em>model</em>, <em>nist</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/checkForMissingStereo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.checkForMissingStereo" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>missingStereo = checkForMissingStereo(model, nist)</div></blockquote>
@@ -330,7 +330,7 @@ structure with fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.componentContribution">
-<code class="descname">componentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>trainingData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/componentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.componentContribution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">componentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>trainingData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/componentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.componentContribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform the component contribution method</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -378,7 +378,7 @@ structure</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.createGroupIncidenceMatrix">
-<code class="descname">createGroupIncidenceMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.createGroupIncidenceMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createGroupIncidenceMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.createGroupIncidenceMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize <cite>G</cite> matrix, and then use the python script &#8220;inchi2gv.py&#8221; to decompose each of the
 compounds that has an &#8216;InChI&#8217; and save the decomposition as a row in the <cite>G</cite> matrix.</p>
 <p><strong>Usage</strong></p>
@@ -401,7 +401,7 @@ compounds that has an &#8216;InChI&#8217; and save the decomposition as a row in
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI">
-<code class="descname">getFormulaAndChargeFromInChI</code><span class="sig-paren">(</span><em>inchi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/getFormulaAndChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getFormulaAndChargeFromInChI</code><span class="sig-paren">(</span><em>inchi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/getFormulaAndChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div><blockquote>
@@ -424,7 +424,7 @@ charge:    The charge on the input pseudoisomer (excluding the protonation state
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.getGroupVectorFromInchi">
-<code class="descname">getGroupVectorFromInchi</code><span class="sig-paren">(</span><em>inchi</em>, <em>silent</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/getGroupVectorFromInchi.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getGroupVectorFromInchi" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getGroupVectorFromInchi</code><span class="sig-paren">(</span><em>inchi</em>, <em>silent</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/getGroupVectorFromInchi.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getGroupVectorFromInchi" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>group_def = getGroupVectorFromInchi(inchi, silent)</div></blockquote>
@@ -452,7 +452,7 @@ default = true</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.getMappingScores">
-<code class="descname">getMappingScores</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/getMappingScores.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMappingScores" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getMappingScores</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/getMappingScores.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMappingScores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the best mapping between the model compounds and the training data (KEGG) compounds</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -477,7 +477,7 @@ best mapping</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.getMolecularWeight">
-<code class="descname">getMolecularWeight</code><span class="sig-paren">(</span><em>inchis</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/getMolecularWeight.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMolecularWeight" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getMolecularWeight</code><span class="sig-paren">(</span><em>inchis</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/getMolecularWeight.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMolecularWeight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes molecular weight and elemental matrix of compounds</p>
 <p>[MW, Ematrix] = computeMW(model, metList, warnings)</p>
 <p><strong>Input</strong></p>
@@ -515,7 +515,7 @@ in redox reactions anyway).</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.invertProjection">
-<code class="descname">invertProjection</code><span class="sig-paren">(</span><em>A</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/invertProjection.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.invertProjection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">invertProjection</code><span class="sig-paren">(</span><em>A</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/invertProjection.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.invertProjection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inverts a general matrix A using the pseudoinverse</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -546,7 +546,7 @@ the projection matrix onto the <cite>null(A&#8217;)</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.loadTrainingData">
-<code class="descname">loadTrainingData</code><span class="sig-paren">(</span><em>formation_weight</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/loadTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.loadTrainingData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loadTrainingData</code><span class="sig-paren">(</span><em>formation_weight</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/loadTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.loadTrainingData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the structure that contains all the training data needed for
 Component Contribution.</p>
 <p><strong>Usage</strong></p>
@@ -571,7 +571,7 @@ structure with data for Component Contribution</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.componentContribution.prepareTrainingData">
-<code class="descname">prepareTrainingData</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/analysis/thermo/componentContribution/prepareTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.prepareTrainingData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">prepareTrainingData</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/analysis/thermo/componentContribution/prepareTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.prepareTrainingData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a standard COBRA model, adds thermodynamic data to it using
 the Component Contribution method</p>
 <p><strong>Usage</strong></p>

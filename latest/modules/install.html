@@ -181,7 +181,7 @@
 <span id="id1"></span><h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.install"></span><dl class="function">
 <dt id="src.base.install.getGitBashVersion">
-<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Windows, this function determines the version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -200,7 +200,7 @@ Integer of <cite>installedVersion</cite>, e.g. <cite>2132</cite></li>
 
 <dl class="function">
 <dt id="src.base.install.installDevTools">
-<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if the MATLAB.devTools are already present and installs the
 MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <p><strong>Usage</strong></p>
@@ -215,7 +215,7 @@ configured properly as explained <a class="reference external" href="https://ope
 
 <dl class="function">
 <dt id="src.base.install.installGitBash">
-<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function wraps the installer for PortableGit and checks for available updates.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -225,7 +225,7 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 
 <dl class="function">
 <dt id="src.base.install.portableGitSetup">
-<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function downloads the latest version of PortableGit on Windows (archive), extracts the folder
 and moves the contents to the hidden .tmp folder in a folder called <cite>PortableGit-a.bc.c</cite>
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
@@ -249,7 +249,7 @@ Flag to remove old versions from the path or not<ul>
 
 <dl class="function">
 <dt id="src.base.install.updateCobraToolbox">
-<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks new commits exist on the master branch of the openCOBRA repository
 and asks the user to update The COBRA Toolbox (updates the develop and master branches)</p>
 <p><strong>Usage</strong></p>
@@ -266,7 +266,7 @@ if set to true, the repository is not updated but only new commits are fetched (
 
 <dl class="function">
 <dt id="src.base.install.updateGitBash">
-<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/90b5c64c515b9a535058101807ff171d2f0c7e71/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>On windows, this function updates the already existing version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
