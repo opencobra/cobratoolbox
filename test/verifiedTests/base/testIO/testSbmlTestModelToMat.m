@@ -25,7 +25,7 @@ cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep,
 
 % function outputs
 % emptying CBTDIR global variable so that the function can recreate that
-CBTDIR = [];
+clear CBTDIR
 sbmlTestModelToMat();
 CBTDIR = fileparts(which('initCobraToolbox'));
 
@@ -37,6 +37,7 @@ assert((exist('Sc_iND750_flux1.xml') == 2));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
 
 % remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
+%{
 isdeleted = false;
 k = 0;
 while ~isdeleted && k < 10
@@ -49,6 +50,6 @@ while ~isdeleted && k < 10
         rehash;
     end
 end
-
+%}
 % change to old directory
 cd(currentDir);
