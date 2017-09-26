@@ -7,6 +7,8 @@ Solver Installation Guide
 - [MOSEK](#mosek)
 <!-- /TOC -->
 
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure that you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
+
 Platform-specific instructions are marked with
 - **Windows** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">
 - **macOS** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">

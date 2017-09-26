@@ -37,7 +37,9 @@ System Requirements
 Solver Installation
 -------------------
 
-The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure that you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
+
+You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
 
 Installation
 ------------
