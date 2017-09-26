@@ -1485,7 +1485,7 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     if ~exist('basis','var'), basis=[]; end
     [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
         deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
-else
+elseif strcmp(solver,'mps')
     solution = [];
 end
 
