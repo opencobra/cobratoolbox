@@ -92,6 +92,10 @@ if ~exist('directory', 'var')
     directory = pwd;
 end
 
+if ~exist('printLevel', 'var')
+    printLevel = 0;
+end
+
 % filename
 longfname = [directory filesep fname '.txt'];
 
@@ -121,8 +125,7 @@ xu = LPproblem.ub;
 %              so that SQOPT will treat the problem as an LP, not a QP.
 %              This is ok for MINOS also.
 
-A = [A            % Luckily we only have to do it once
-     osense * sparse(c)'];
+A = [A ; osense * sparse(c)']; % Luckily we only have to do it once
 b = [b; 0];
 
 [m, n] = size(A);

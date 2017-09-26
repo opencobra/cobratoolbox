@@ -37,7 +37,7 @@ if isempty(poolobj)
 end
 
 % Test detMinSpan with GLPK. It should fail!
-changeCobraSolver('glpk', 'MILP', 0);
+changeCobraSolver('glpk', 'ALL', 0);
 try
     minSpanVectors = detMinSpan(model, params);
 catch ME

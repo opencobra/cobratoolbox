@@ -9,21 +9,21 @@
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="#PDFtutorialPath#">
                     <img src="../_static/images/icon5.png" height="90px">
                 </a>
                 <div>Download PDF</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class6 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.mlx">
+                <a class="tile" style="width: 90px; height: 90px;" href="#MLXtutorialPath#">
                 <img src="../_static/images/icon6.png" height="90px">
                 </a>
                   <div>Download live Script</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class7 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/#tutorialPath#.m">
+                <a class="tile" style="width: 90px; height: 90px;" href="#MtutorialPath#">
                 <img src="../_static/images/icon7.png" height="90px">
                 </a>
                   <div>Download m file</div>
@@ -46,7 +46,7 @@
     h1  {font-size:0px}
     </style>
     <div style="margin:-30px; margin-right:-30px;">
-      <iframe src="../_static/tutorials/#tutorialName#" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
+      <iframe src="#IFRAMEtutorialPath#" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
     </div>
 
     <script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>
