@@ -7,9 +7,9 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 <table>
   <tr>
+  <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
-    <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/linux.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/macOS.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/windows.svg?maxAge=0"></a></div></td>
@@ -20,17 +20,14 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 
 <br>
 
-System Requirements
--------------------
+System Requirements and Solver Installation
+-------------------------------------------
 
 <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please follow [this guide](https://opencobra.github.io/cobratoolbox/docs/requirements.html) in order to configure your system properly.
 
-Solver Installation
--------------------
-
 <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure that you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
 
-You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
+You may install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
 
 Installation
 ------------
@@ -51,19 +48,17 @@ Installation
     >> testAll
     ````
 
-Tutorials
----------
+Tutorials, Documentation, and Support
+-------------------------------------
 
-All tutorials are included in the directory [/tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorials are currently being prepared.
+- Consult all tutorials in the <a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a> section. All tutorials can be run from the [/tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials) directory.
 
-Support and Documentation
--------------------------
+- All functions are documentd in the <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>.
 
-- The documentation is available [here](http://opencobra.github.io/cobratoolbox). This version is in development, but the legacy version of the documentation is  [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
+- If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>.
 
 - Answers to Frequently Asked Questions (**FAQ**) are [here](https://opencobra.github.io/cobratoolbox/docs/FAQ.html).
 
-- If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>.
 
 How to contribute
 -----------------
