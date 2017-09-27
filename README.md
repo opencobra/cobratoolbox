@@ -1,11 +1,17 @@
+<style>
+.site-main table.no-border td {
+    border: none;
+}
+</style>
 <p align="center">
   <img class="readme_logo" src="docs/source/_static/images/logos/logo.png" height="160px"/>
 </p>
 
+
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
-<div align="center">
-<table>
+<br>
+<table class="no-border">
   <tr>
     <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
@@ -17,7 +23,6 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
     <td><div align="center"><a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
   </tr>
 </table>
-</div>
 <br>
 
 System Requirements
