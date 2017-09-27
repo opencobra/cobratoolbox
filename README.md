@@ -7,7 +7,7 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 <table>
   <tr>
-  <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a></div></td>
+  <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/linux.svg?maxAge=0"></a></div></td>
@@ -51,7 +51,7 @@ Installation
 Tutorials, Documentation, and Support
 -------------------------------------
 
-- Consult all tutorials in the <a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a> section. All tutorials can be run from the [/tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials) directory.
+- Consult all tutorials in the <a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a> section. All tutorials can be run from the [/tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials) directory.
 
 - All functions are documentd in the <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>.
 
