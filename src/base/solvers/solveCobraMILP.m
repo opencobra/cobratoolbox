@@ -88,7 +88,7 @@ optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
                  'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'solver'};
 
 parameters = [];
-
+parametersStructureFlag = false;
 % First input can be 'default' or a solver-specific parameter structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
@@ -99,8 +99,8 @@ if ~isempty(varargin)
         varargin = varargin(~isdone);
 
     elseif isstruct(varargin{1})  % solver-specific parameter structure
-        solverParams = varargin{1};
-
+        [solverParams, directParamStruct] = deal(varargin{1});
+        parametersStructureFlag = true;
         isdone(1) = true;
         varargin = varargin(~isdone);
     end
@@ -111,8 +111,8 @@ if ~isempty(varargin)
     isdone = false(size(varargin));
 
     if isstruct(varargin{end})
-        solverParams = varargin{end};
-
+        [solverParams, directParamStruct] = deal(varargin{end});
+        parametersStructureFlag = true;
         isdone(end) = true;
         varargin = varargin(~isdone);
     end
@@ -122,7 +122,6 @@ if nargin ~= 1
     if mod(length(varargin), 2) == 0
         try
             parameters = struct(varargin{:});
-            parametersStructureFlag = 0;
         catch
             error('solveCobraLP: Invalid parameter name-value pairs.')
         end
