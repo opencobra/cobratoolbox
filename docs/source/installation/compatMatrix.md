@@ -1,4 +1,4 @@
-# Solver compatibility matrices
+# Solver compatibility
 
 ## Linux
 
