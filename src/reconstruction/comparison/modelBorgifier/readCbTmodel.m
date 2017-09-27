@@ -1,7 +1,7 @@
 function Model = readCbTmodel(modelName, Tmodel, varargin)
 % Creates COBRA format of a specific model from `Tmodel`.
 % (composite database).
-% Called by `mergeModels`, `driveModelBorgifier`, calls `TmodelFields`, `orderModelFields`, `organizeModelCool`, `buildRxnEquations`, `ismatlab`, `parseBoolean`.
+% Called by `mergeBorgModels`, `driveModelBorgifier`, calls `TmodelFields`, `orderModelFields`, `organizeModelCool`, `buildRxnEquations`, `ismatlab`, `parseBoolean`.
 %
 % USAGE:
 %

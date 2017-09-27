@@ -3,7 +3,7 @@ function Model = organizeModelCool(Model)
 % mets are listed first, with sister mets grouped together. Reactions are
 % then organized so that the `S` matrix appoximates a rank order matrix, with
 % exchange reactions at the end.
-% Called by `mergeModels`, `readCbTmodel`, `readCbTModel`, `verifyModel`, calls `TmodelFields`.
+% Called by `mergeBorgModels`, `readCbTmodel`, `readCbTModel`, `verifyModel`, calls `TmodelFields`.
 %
 % USAGE:
 %

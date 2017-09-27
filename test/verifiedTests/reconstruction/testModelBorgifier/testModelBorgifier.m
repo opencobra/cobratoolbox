@@ -100,7 +100,7 @@ load('testModelBorgifierData.mat');
 % merge models (based off of loaded match arrays) and test success
 fprintf('modelBorgifier: Testing model merging and extraction... ')
 try
-    [TmodelC, Cspawn, Stats] = mergeModels(Cmodel, Tmodel, rxnList, metList, Stats, score);
+    [TmodelC, Cspawn, Stats] = mergeBorgModels(Cmodel, Tmodel, rxnList, metList, Stats, score);
 catch
     fprintf('failed.\n')
     return

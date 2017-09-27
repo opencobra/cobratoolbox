@@ -260,14 +260,14 @@ end
 % 
 % *6. Merge models*
 % 
-% mergeModels will combine Cmodel into Tmodel and into a composite model 
+% mergeBorgModels will combine Cmodel into Tmodel and into a composite model 
 % and return it as TmodelC. It will iteratively check the fidelity of the merging 
 % and will prompt the user if errors are found. It will also produce a copy of 
 % Cmodel which has been extracted from TmodelC (see next step).
 %% Merge models and test results.
 
 if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
-    [TmodelC, Cspawn, Stats] = mergeModels(Cmodel, Tmodel, rxnList, metList, Stats, 'Verbose');
+    [TmodelC, Cspawn, Stats] = mergeBorgModels(Cmodel, Tmodel, rxnList, metList, Stats, 'Verbose');
 end
 %% 
 % The structure Stats contains information about the number of unique and 
