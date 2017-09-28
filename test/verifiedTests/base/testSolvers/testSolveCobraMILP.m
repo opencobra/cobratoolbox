@@ -58,7 +58,7 @@ for k = 1:length(solverPkgs)
         % check results with expected answer.
         assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
         assert(abs(MILPsolution.obj - 554) < tol)
-        
+
         if strcmp(solverPkgs{k}, 'ibm_cplex')
             % test IBM-Cplex-specific parameters. Solve with the below parameters changed
             cplexParams = struct();
@@ -68,7 +68,7 @@ for k = 1:length(solverPkgs)
             % check expected answer
             assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
             assert(abs(MILPsolution.obj - 554) < tol)
-            
+
             % solve with the parameters changed to other values
             cplexParams.emphasis.mip = 1;  % MIP emphasis: integer feasibility.
             cplexParams.mip.strategy.search = 1;  % MIP search method: traditional branch-and-cut search
@@ -76,7 +76,7 @@ for k = 1:length(solverPkgs)
             % check expected answer
             assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
             assert(abs(MILPsolution.obj - 554) < tol)
-            
+
             % compare the log files to see whether the parameter changes are implemented
             testLog = {''; ''};
             paramsInLog = cell(2, 1);

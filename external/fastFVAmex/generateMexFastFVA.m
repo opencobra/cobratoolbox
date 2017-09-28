@@ -33,7 +33,7 @@ if nargin < 1 || isempty(rootPathCPLEX)
     rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
 end
 
-cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel);
+cplexVersion = getCobraSolverVersion('ibm_cplex', printLevel, rootPathCPLEX);
 
 % save the userpath
 originalUserPath = path;
