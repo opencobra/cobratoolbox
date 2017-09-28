@@ -155,12 +155,16 @@ if nargin ~= 1
     else
         error('solveCobraMILP: Invalid number of parameters/values')
     end
+%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+%     getCobraSolverParams('LP', optParamNames(1:6), parameters);
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', optParamNames(1:6), parameters);
+    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
 else
     parametersStructureFlag = 0;
+%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+%     getCobraSolverParams('LP', optParamNames(1:6));
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', optParamNames(1:6));
+    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
     % parameters will later be accessed and should be initialized.
     parameters = '';
 end
@@ -386,9 +390,11 @@ switch solver
         cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
         cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
         cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
-
-        outputfile = fopen(solverParams.logFile,'a');
-        cplexlp.DisplayFunc = @redirect;
+        
+        if printLevel < 3
+            outputfile = fopen(solverParams.logFile,'a');
+            cplexlp.DisplayFunc = @redirect;
+        end
 
         cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
         cplexlp.Param.mip.tolerances.absmipgap.Cur =  solverParams.absMipGapTol;
@@ -410,8 +416,10 @@ switch solver
         % Solve problem
         Result = cplexlp.solve();
         
-        % Close the output file
-        fclose(outputfile);
+        if printLevel < 3
+            % Close the output file
+            fclose(outputfile);
+        end
         
         % Get results
         x = Result.x;
