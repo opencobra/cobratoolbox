@@ -848,31 +848,6 @@ Description: list of solvers available in GAMS</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.solvers.getCPLEXversion">
-<code class="descname">getCPLEXversion</code><span class="sig-paren">(</span><em>rootPathCPLEX</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/getCPLEXversion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCPLEXversion" title="Permalink to this definition">¶</a></dt>
-<dd><p>detects the CPLEX version</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>rootPathCPLEX</strong> &#8211;
-Path to the CPLEX installation</li>
-<li><strong>printLevel</strong> &#8211;
-verbose level (default: 0)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>cplexVersion</strong> &#8211;
-string that contains the CPLEX version number</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.base.solvers.getCobraSolverParams">
 <code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function gets the specified parameters in <cite>paramNames</cite> from
@@ -924,6 +899,33 @@ is outputted to.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.getCobraSolverVersion">
+<code class="descname">getCobraSolverVersion</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>rootPathSolver</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/getCobraSolverVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>detects the version of given COBRA solver</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathSolver)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solverName</strong> &#8211;
+Name of the solver</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level (default: 0)</li>
+<li><strong>rootPathSolver</strong> &#8211;
+Path to the solver installation</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solverVersion</strong> &#8211;
+string that contains the version number</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.getParamList">
 <code class="descname">getParamList</code><span class="sig-paren">(</span><em>param</em>, <em>bottomFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/getParamList.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getParamList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the end parameters and their paths for matching CPLEX parameters appropriately
@@ -952,6 +954,38 @@ Cell with superseeding parameter structure</li>
 <li><strong>addCur</strong> &#8211;
 Structure with booleans whether or not <cite>.Cur</cite> has been
 added to the <cite>paramPath</cite> for user-supplied parameters</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.isCompatible">
+<code class="descname">isCompatible</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>specificSolverVersion</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/isCompatible.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine the compatibility status of a solver based on the file compatMatrix.md</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solverName</strong> &#8211;
+Name of the solver</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level (default: 0)</li>
+<li><strong>specificSolverVersion</strong> &#8211;
+string with specific solver version (example: &#8216;12.7.1&#8217; or &#8216;6.5.1&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compatibleStatus</strong> &#8211;
+compatibility status<ul>
+<li>1:  compatible with the COBRA Toolbox (tested)</li>
+<li>0:  not compatible with the COBRA Toolbox (tested)</li>
+<li>-1: unverified compatibility with the COBRA Toolbox (not tested)</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 </dd></dl>
