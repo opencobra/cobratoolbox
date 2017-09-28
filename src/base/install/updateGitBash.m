@@ -69,8 +69,12 @@ function updateGitBash(fetchAndCheckOnly)
                 fprintf([' > gitBash is up-to-date (version: ', installedVersion, ').\n']);
             end
         else
-            % gitBash is not installed or the path is not properly set
-            fprintf(' > gitBash is not installed.\n');
+            % check if git is properly installed
+            [status_gitVersion, result_gitVersion] = system('git --version');
+
+            if status_gitVersion ~= 0 || isempty(strfind(result_gitVersion, 'git version'))
+                fprintf(' > gitBash is not installed.\n');
+            end
 
             % install gitBash
             if ~fetchAndCheckOnly
