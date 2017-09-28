@@ -24,21 +24,23 @@ if isunix && strcmp(matlabVersion, 'R2016b')
     % NOTE: for untested solvers, the compatibility matrix must be established
 end
 
-% loop through all solver names
-solverNames = {'ibm_cplex', 'gurobi', 'mosek'};
+if isunix && ~ismac
+    % loop through all solver names
+    solverNames = {'ibm_cplex', 'gurobi', 'mosek'};
 
-for i = 1:length(solverNames)
-    solverOK = changeCobraSolver(solverNames{i});
+    for i = 1:length(solverNames)
+        solverOK = changeCobraSolver(solverNames{i});
 
-    % define a compatibility status with default printLevel
-    compatibleStatus = isCompatible(solverNames{i});
+        % define a compatibility status with default printLevel
+        compatibleStatus = isCompatible(solverNames{i});
 
-    % define a compatibility status with printLevel = 1
-    compatibleStatus2 = isCompatible(solverNames{i}, 1);
+        % define a compatibility status with printLevel = 1
+        compatibleStatus2 = isCompatible(solverNames{i}, 1);
 
-    % evalute the compatibility status as
-    assert(solverOK == compatibleStatus);
-    assert(solverOK == compatibleStatus2);
+        % evalute the compatibility status as
+        assert(solverOK == compatibleStatus);
+        assert(solverOK == compatibleStatus2);
+    end
 end
 
 % change back to the old directory
