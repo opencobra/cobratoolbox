@@ -12,9 +12,9 @@
     </tr>
     <tr>
         <td><b>Summary</b></td>
-        <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/linux.svg?maxAge=0"></a></div></td>
-        <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/macOS.svg?maxAge=0"></a></div></td>
-        <td colspan="2"><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/badges/windows.svg?maxAge=0"></a></div></td>
+        <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/badges//linux.svg?maxAge=0"></a></div></td>
+        <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://prince.lcsb.uni.lu/badges//macOS.svg?maxAge=0"></a></div></td>
+        <td colspan="2"><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/badges//windows.svg?maxAge=0"></a></div></td>
     </tr>
     <tr>
         <td><b>Job</b></td>
