@@ -21,13 +21,12 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 
 <br>
 
-
 System Requirements and Solver Installation
 -------------------------------------------
 
 <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please follow [this guide](https://opencobra.github.io/cobratoolbox/docs/requirements.html) in order to configure your system properly.
 
-<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure that you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
 
 You may install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
 
@@ -38,14 +37,14 @@ Installation
     ````bash
     $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
     ````
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png?maxAge=0" height="20px" alt="warning"> Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png?maxAge=0" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png?maxAge=0" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png?maxAge=0" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png?maxAge=0" height="20px" alt="warning"> Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png?maxAge=0" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png?maxAge=0" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png?maxAge=0" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="18px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
-2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">
+2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="18px" alt="Matlab">
     ````Matlab
     >> initCobraToolbox
     ````
 
-3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">
+3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="18px" alt="Matlab">
     ````Matlab
     >> testAll
     ````
@@ -100,6 +99,8 @@ When citing the COBRA Toolbox, it is important to cite the original paper where 
 
 Binaries and Compatibility
 ---------------------------
+
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please make sure you install a compatible solver. Check the compatibility [here](https://opencobra.github.io/cobratoolbox/docs/compatibility.html).
 
 For convenience, we provide [`glpk_mex`](https://github.com/blegat/glpkmex) and [`libSBML-5.15+`](http://sbml.org/Software/libSBML) in `/external`.
 
