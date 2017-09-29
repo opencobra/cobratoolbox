@@ -100,9 +100,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         if ~isempty(strfind(lower(resultVERS), lower(tmp{2})))
             compatMatrix = compatMatrix{tableNb};
         else
+            untestedFlag = true;
             if printLevel > 0
                 fprintf([' > The compatibility can only be evaluated on Linux ', tmp{2}, '.\n']);
-                untestedFlag = true;
             end
         end
     elseif ismac % macOS
@@ -112,21 +112,21 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         if ~isempty(strfind(resultVERS, tmp{2}))
             compatMatrix = compatMatrix{tableNb};
         else
+            untestedFlag = true;
             if printLevel > 0
                 fprintf([' > The compatibility can only be evaluated on macOS ', tmp{2}, '.\n']);
-                untestedFlag = true;
             end
         end
     else % Windows
         resultVERS = system_dependent('getwinsys');
-        for tableNb = 3:4
+        for tableNb = length(testedOS)-1:length(testedOS) % loop through the last 2 tables
             tmp = strsplit(testedOS{tableNb});
             if ~isempty(strfind(resultVERS, tmp{2}))
                 compatMatrix = compatMatrix{tableNb};
             else
-                if printLevel > 0
-                    fprintf([' > The compatibility can only be evaluated on Windows ', tmp{2}, '\n']);
-                    untestedFlag = true;
+                untestedFlag = true;
+                if printLevel > 0 && tableNb == length(testedOS)
+                    fprintf([' > The compatibility can only be evaluated on Windows 7 and Windows 10.\n']);
                 end
             end
         end
