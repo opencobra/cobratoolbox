@@ -16,7 +16,7 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
     <a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/badges/windows.svg"></a>
     <a href="http://opencobra.github.io/cobratoolbox/docs/builds.html"><img src="http://concordion.org/img/benefit-links.png?maxAge=0" height="20px" alt="All continuous integration builds"></a>
     </div></td>
-    <td><div align="center"><img src="https://prince.lcsb.uni.lu/badges/codegrade.svg?maxAge=0" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.">
+    <td><div align="center"><img src="https://prince.lcsb.uni.lu/badges/codegrade.svg" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.">
     <a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
   </tr>
 </table>
@@ -38,14 +38,14 @@ Installation
     ````bash
     $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
     ````
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png?maxAge=0" height="20px" alt="warning"> Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png?maxAge=0" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png?maxAge=0" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png?maxAge=0" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png?maxAge=0" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
-2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">
+2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">
     ````Matlab
     >> initCobraToolbox
     ````
 
-3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png?maxAge=0" height="20px" alt="Matlab">
+3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">
     ````Matlab
     >> testAll
     ````
