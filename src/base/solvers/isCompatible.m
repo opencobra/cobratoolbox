@@ -53,6 +53,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % read in the file with the compatibility matrix
     C = {};
     compatMatrix = {};
+    testedOS = {};
     fid = fopen(compatMatrixFile);
     while 1
         tline = fgetl(fid);
@@ -83,6 +84,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                     compatMatrix{end+1} = C;
                     C = {};
                 end
+                if strcmp(tline(1:2), '##') && ~strcmp(tline(3), '#')
+                    testedOS{end+1} = strtrim(tline(3:end));
+                end
             end
         end
     end
@@ -90,17 +94,52 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 
     % select the compatibility matrix based on the OS
     if isunix && ~ismac
-        compatMatrix = compatMatrix{1}; % linux
-    elseif ismac
-        compatMatrix = compatMatrix{2}; % macOS
-    else
-        compatMatrix = compatMatrix{3}; % Windows
+        tableNb = 1;
+        resultVERS = system_dependent('getos');
+        tmp = strsplit(testedOS{tableNb});
+        if ~isempty(strfind(lower(resultVERS), lower(tmp{2})))
+            compatMatrix = compatMatrix{tableNb};
+        else
+            if printLevel > 0
+                fprintf([' > The compatibility can only be evaluated on Linux ', tmp{2}, '.\n']);
+                compatMatrix = {};
+            end
+        end
+    elseif ismac % macOS
+        tableNb = 2;
+        [~, resultVERS] = unix('sw_vers');
+        tmp = strsplit(testedOS{tableNb});
+        if ~isempty(strfind(resultVERS, tmp{2}))
+            compatMatrix = compatMatrix{tableNb};
+        else
+            if printLevel > 0
+                fprintf([' > The compatibility can only be evaluated on macOS ', tmp{2}, '.\n']);
+                compatMatrix = {};
+            end
+        end
+    else % Windows
+        resultVERS = system_dependent('getwinsys');
+        for tableNb = 3:4
+            tmp = strsplit(testedOS{tableNb});
+            if ~isempty(strfind(resultVERS, tmp{2}))
+                compatMatrix = compatMatrix{tableNb};
+            else
+                if printLevel > 0
+                    fprintf([' > The compatibility can only be evaluated on Windows ', tmp{2}, '\n']);
+                    compatMatrix = {};
+                end
+            end
+        end
     end
 
     % determine the version of MATLAB and the corresponding column
-    compatMatlabVersions = compatMatrix{1}(2:end);
     versionMatlab = ['R' version('-release')];
-    colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
+    if ~isempty(compatMatrix)
+        compatMatlabVersions = compatMatrix{1}(2:end);
+        colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
+    else
+        colIndexVersion = [];
+    end
 
     % any MATLAB version that is not explicitly supported yields a compatibility status of -1
     if isempty(colIndexVersion)
