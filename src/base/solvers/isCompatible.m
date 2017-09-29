@@ -102,7 +102,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         else
             if printLevel > 0
                 fprintf([' > The compatibility can only be evaluated on Linux ', tmp{2}, '.\n']);
-                compatMatrix = {};
+                untestedFlag = true;
             end
         end
     elseif ismac % macOS
@@ -114,7 +114,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         else
             if printLevel > 0
                 fprintf([' > The compatibility can only be evaluated on macOS ', tmp{2}, '.\n']);
-                compatMatrix = {};
+                untestedFlag = true;
             end
         end
     else % Windows
@@ -126,10 +126,14 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             else
                 if printLevel > 0
                     fprintf([' > The compatibility can only be evaluated on Windows ', tmp{2}, '\n']);
-                    compatMatrix = {};
+                    untestedFlag = true;
                 end
             end
         end
+    end
+
+    if untestedFlag
+        compatMatrix = {};
     end
 
     % determine the version of MATLAB and the corresponding column
