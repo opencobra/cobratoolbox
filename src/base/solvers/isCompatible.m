@@ -48,12 +48,13 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatibleStatus = -1;
 
     % check if the solver and the matlab version are compatible
-    compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
+    compatMatrixFile = which('compatMatrix.md');
 
     % read in the file with the compatibility matrix
     C = {};
     compatMatrix = {};
     testedOS = {};
+    untestedFlag = false;
     fid = fopen(compatMatrixFile);
     while 1
         tline = fgetl(fid);
