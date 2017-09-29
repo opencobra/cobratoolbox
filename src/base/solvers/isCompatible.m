@@ -12,9 +12,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 % OUTPUT:
 %    compatibleStatus:      compatibility status
 %
-%                             * 1:  compatible with the COBRA Toolbox (tested)
-%                             * 0:  not compatible with the COBRA Toolbox (tested)
-%                             * -1: unverified compatibility with the COBRA Toolbox (not tested)
+%                             * 0: not compatible with the COBRA Toolbox (tested)
+%                             * 1: compatible with the COBRA Toolbox (tested)
+%                             * 2: unverified compatibility with the COBRA Toolbox (not tested)
 %
 % .. Author: - Laurent Heirendt, August 2017
 %
@@ -44,8 +44,8 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         solverName = 'lindo_legacy';
     end
 
-    % default compatibility status
-    compatibleStatus = -1;
+    % default compatibility status (untested)
+    compatibleStatus = 2;
 
     % check if the solver and the matlab version are compatible
     compatMatrixFile = which('compatMatrix.md');
@@ -77,7 +77,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 Cpart = strrep(Cpart, ':white_check_mark:', '1');
 
                 % convert untested flag
-                Cpart = strrep(Cpart, ':warning:', '-1');
+                Cpart = strrep(Cpart, ':warning:', '2');
 
                 C{end+1} = strtrim(Cpart);
             else
@@ -94,7 +94,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatMatrix{end+1} = C;
 
     % select the compatibility matrix based on the OS
-    if isunix && ~ismac
+    if isunix && ~ismac % linux
         tableNb = 1;
         resultVERS = system_dependent('getos');
         tmp = strsplit(testedOS{tableNb});
@@ -146,9 +146,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         colIndexVersion = [];
     end
 
-    % any MATLAB version that is not explicitly supported yields a compatibility status of -1
+    % any MATLAB version that is not explicitly supported yields a compatibility status of 2
     if isempty(colIndexVersion)
-        compatibleStatus = -1;
+        compatibleStatus = 2;
         if printLevel > 0
             fprintf([' > The solver compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
         end
@@ -197,7 +197,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                         fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, '.\n']);
                     end
                 else
-                    compatibleStatus = -1;
+                    compatibleStatus = 2;
                     if printLevel > 0
                         fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, '.\n']);
                     end

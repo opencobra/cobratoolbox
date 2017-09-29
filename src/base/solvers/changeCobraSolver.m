@@ -347,7 +347,7 @@ solverOK = false;
 % determine the compatibility status
 compatibleStatus = isCompatible(solverName, printLevel);
 
-if compatibleStatus == 1 || compatibleStatus == -1
+if compatibleStatus == 1 || compatibleStatus == 2
     switch solverName
         case {'lindo_old', 'lindo_legacy'}
             solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
