@@ -4,7 +4,7 @@ function [rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, scoreIn
 % globals if they are not provided. If `rxnList` is not provided then it is
 % generated with `autoMatchReactions`. If you are continuing comparison,
 % include the optional inputs.
-% Called by `optimalScores`, `autoMatchReactions`, `reactionCompareGUI`, calls `mergeModels`, `driveModelBorgifier`.
+% Called by `optimalScores`, `autoMatchReactions`, `reactionCompareGUI`, calls `mergeBorgModels`, `driveModelBorgifier`.
 %
 % USAGE:
 %

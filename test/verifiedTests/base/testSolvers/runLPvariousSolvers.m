@@ -244,23 +244,26 @@ ilt = i - 1;
 fprintf('%3s%15s%15s%15s%15s%20s\t%30s\n', '   ', 'time', 'obj', 'y(rand)', 'w(rand)', 'solver', 'algorithm')
 
 testIndex = 'max';
+% remove empty entries
+solution(~cellfun('isempty', solution));
+
 switch testIndex
     case 'max'
-    % pick a large entry in each dual vector, to check the signs
+        % pick a large entry in each dual vector, to check the signs
         randrcost = find(max(solution{1}.rcost) == solution{1}.rcost);
         randrcost = randrcost(1);
         randdual = find(max(solution{1}.dual) == solution{1}.dual);
         randdual = randdual(1);
 
     case 'min'
-    % pick a small entry in each dual vector, to check the signs
+        % pick a small entry in each dual vector, to check the signs
         randrcost = find(min(solution{1}.rcost) == solution{1}.rcost);
         randrcost = randrcost(1);
         randdual = find(min(solution{1}.dual) == solution{1}.dual);
         randdual = randdual(1);
 
     case 'rand'
-    % pick a random entry in each dual vector, to check the signs
+        % pick a random entry in each dual vector, to check the signs
         randrcost = ceil(rand * n);
         randrcost = randrcost(1);
         randdual = ceil(rand * m);
@@ -287,5 +290,4 @@ for i = 1:ilt
         all_obj(i) = NaN;
     end
 end
-
 end
