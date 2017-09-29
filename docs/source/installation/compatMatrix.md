@@ -36,7 +36,7 @@
 
 | SolverName        | R2017b             | R2017a             | R2016b             | R2016a             | R2015b             | R2015a             | R2014b             | R2014a             |
 |-------------------|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
-| IBM CPLEX 12.7.1  | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                |
+| IBM CPLEX 12.7.1  | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                |
 | IBM CPLEX 12.7    | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                |
 | IBM CPLEX 12.6.3  | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.5.1      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
