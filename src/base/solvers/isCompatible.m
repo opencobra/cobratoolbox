@@ -189,17 +189,17 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 if strcmpi(compatibilityBoolean, '1')
                     compatibleStatus = 1;
                     if printLevel > 0
-                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is compatible and fully tested with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is compatible and fully tested with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 elseif strcmpi(compatibilityBoolean, '0')
                     compatibleStatus = 0;
                     if printLevel > 0
-                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 else
                     compatibleStatus = 2;
                     if printLevel > 0
-                        fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 end
             end
@@ -210,7 +210,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     if strcmp(solverName, 'cplex_direct') && ~verLessThan('matlab', '8.4')
         compatibleStatus = 0;
         if printLevel > 0
-            fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, '. Try using the tomlab_cplex interface.\n']);
+            fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, ' on your operating system. Try using the tomlab_cplex interface.\n']);
         end
     end
 end
