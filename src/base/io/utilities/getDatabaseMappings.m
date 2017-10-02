@@ -3,11 +3,11 @@ function returnedmappings = getDatabaseMappings(field,qualifiers)
 % entries to model field names, along with additional information about the
 % fields.
 %
-%INPUT:
+% INPUT:
 %
 %    field:                 the basic model field to extract mappings for (e.g. 'met', 'gene', 'rxn')
 %
-%OPTIONAL INPUT:
+% OPTIONAL INPUT:
 %
 %    qualifiers:            the qualifiers to restrict the selection to.
 %                           These have to be part of the bioql modifiers
@@ -15,7 +15,7 @@ function returnedmappings = getDatabaseMappings(field,qualifiers)
 %                           etc) providing 'all' will return all associated 
 %                           Database mappings. Default: 'all'
 %
-%OUTPUT:
+% OUTPUT:
 %
 %    returnedmappings:      The mappings known for the given field. The
 %                           structure is:
