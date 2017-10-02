@@ -113,12 +113,12 @@ end
 [defaultCompSymbols, defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
 parser.addOptional('fileName', '', @(x) isempty(x) || ischar(x));
-parser.addParameter('defaultBound', 1000, @isnumeric);
-parser.addParameter('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileTypes,x)));
-parser.addParameter('modelDescription', '', @ischar);
-parser.addParameter('compSymbolList', defaultCompSymbols, @iscell);
-parser.addParameter('compNameList', defaultCompNames, @iscell);
-parser.addParameter('modelName', 'all', @ischar);
+parser.addParamValue('defaultBound', 1000, @isnumeric);
+parser.addParamValue('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileTypes,x)));
+parser.addParamValue('modelDescription', '', @ischar);
+parser.addParamValue('compSymbolList', defaultCompSymbols, @iscell);
+parser.addParamValue('compNameList', defaultCompNames, @iscell);
+parser.addParamValue('modelName', 'all', @ischar);
 
 if exist('fileName', 'var')
     parser.parse(fileName, varargin{:})

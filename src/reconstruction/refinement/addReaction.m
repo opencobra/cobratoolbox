@@ -151,21 +151,21 @@ end
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addRequired('rxnID',@ischar)
-parser.addParameter('reactionName',defaultReactionName,@ischar)
-parser.addParameter('metaboliteList',defaultMetaboliteList, @iscell);
-parser.addParameter('stoichCoeffList',defaultStoichCoefList, @isnumeric);
-parser.addParameter('reactionFormula','', @ischar);
-parser.addParameter('reversible',defaultReversibility, @(x) islogical(x) || isnumeric(x) );
-parser.addParameter('lowerBound',defaultLowerBound, @(x) isempty(x) || isnumeric(x));
-parser.addParameter('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric(x));
-parser.addParameter('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
-parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x) || iscell(x) && all(cellfun(@(y) ischar(y),x)));
-parser.addParameter('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
-parser.addParameter('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printLevel',1, @(x) isnumeric(x) );
-parser.addParameter('notes','', @ischar );
-parser.addParameter('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
-parser.addParameter('geneNameList',defaultSystNameList, @(x) isempty(x) || iscell(x));
+parser.addParamValue('reactionName',defaultReactionName,@ischar)
+parser.addParamValue('metaboliteList',defaultMetaboliteList, @iscell);
+parser.addParamValue('stoichCoeffList',defaultStoichCoefList, @isnumeric);
+parser.addParamValue('reactionFormula','', @ischar);
+parser.addParamValue('reversible',defaultReversibility, @(x) islogical(x) || isnumeric(x) );
+parser.addParamValue('lowerBound',defaultLowerBound, @(x) isempty(x) || isnumeric(x));
+parser.addParamValue('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric(x));
+parser.addParamValue('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
+parser.addParamValue('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x) || iscell(x) && all(cellfun(@(y) ischar(y),x)));
+parser.addParamValue('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
+parser.addParamValue('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printLevel',1, @(x) isnumeric(x) );
+parser.addParamValue('notes','', @ischar );
+parser.addParamValue('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
+parser.addParamValue('geneNameList',defaultSystNameList, @(x) isempty(x) || iscell(x));
 
 parser.parse(model,rxnID,varargin{:});
 

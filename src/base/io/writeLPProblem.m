@@ -73,11 +73,11 @@ end
 [defaultCompSymbols, defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
 parser.addRequired('LPProblem', @isstruct);
-parser.addParameter('problemName', 'CobraLPProblem', @ischar);
-parser.addParameter('fileName', '', @ischar);
-parser.addParameter('outputFormat', 'mps', @(x) ischar(x) && any(strcmpi(acceptedTypes)));
-parser.addParameter('solverParams', struct(), @isstruct);
-parser.addParameter('writeMatrix', true, @(x) islogical(x) || isnumeric(x));
+parser.addParamValue('problemName', 'CobraLPProblem', @ischar);
+parser.addParamValue('fileName', '', @ischar);
+parser.addParamValue('outputFormat', 'mps', @(x) ischar(x) && any(strcmpi(acceptedTypes)));
+parser.addParamValue('solverParams', struct(), @isstruct);
+parser.addParamValue('writeMatrix', true, @(x) islogical(x) || isnumeric(x));
 
 parser.parse(LPProblem, varargin{:})
 solverParams = parser.Results.solverParams;

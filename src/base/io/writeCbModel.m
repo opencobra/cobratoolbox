@@ -111,14 +111,14 @@ else
     parser = inputParser();
     
     parser.addRequired('model', @(x) verifyModel(model, 'simpleCheck', true));
-    parser.addParameter('format', 'toselect', @ischar);
-    parser.addParameter('fileName', '', @ischar);
-    parser.addParameter('compSymbols', compSymbols, @(x) isempty(x) || iscell(x));
-    parser.addParameter('compNames', compNames, @(x) isempty(x) || iscell(x));
+    parser.addParamValue('format', 'toselect', @ischar);
+    parser.addParamValue('fileName', '', @ischar);
+    parser.addParamValue('compSymbols', compSymbols, @(x) isempty(x) || iscell(x));
+    parser.addParamValue('compNames', compNames, @(x) isempty(x) || iscell(x));
 
     % We currently only support output in SBML 3
-    parser.addParameter('sbmlLevel', supportedSBML, @(x) isnumeric(x));
-    parser.addParameter('sbmlVersion', supportedSBMLv, @(x) isnumeric(x));
+    parser.addParamValue('sbmlLevel', supportedSBML, @(x) isnumeric(x));
+    parser.addParamValue('sbmlVersion', supportedSBMLv, @(x) isnumeric(x));
 
     parser.parse(model, varargin{:});
     input = parser.Results;

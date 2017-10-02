@@ -38,8 +38,8 @@ function MDFBAProblem = buildMDFBAProblem(model, varargin)
 
 parser = inputParser();
 parser.addRequired('model',@isstruct)
-parser.addParameter('ignoredMets',{},@(x) iscell(x) && all(ismember(x,model.mets)));
-parser.addParameter('minProd',max([abs(model.lb);model.ub])/10000,@isnumeric);
+parser.addParamValue('ignoredMets',{},@(x) iscell(x) && all(ismember(x,model.mets)));
+parser.addParamValue('minProd',max([abs(model.lb);model.ub])/10000,@isnumeric);
 
 parser.parse(model,varargin{:});
 ignoredMets = parser.Results.ignoredMets;

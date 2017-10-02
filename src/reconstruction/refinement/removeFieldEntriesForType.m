@@ -41,7 +41,7 @@ parser.addRequired('indicesToRemove',@(x) islogical(x) || isnumeric(x));
 parser.addRequired('type',@(x) any(ismember(PossibleTypes,x)));
 parser.addRequired('fieldSize',@isnumeric);
 
-parser.addParameter('excludeFields',{},@iscell);
+parser.addParamValue('excludeFields',{},@iscell);
 
 parser.parse(model,indicesToRemove,type,fieldSize,varargin{:});
 

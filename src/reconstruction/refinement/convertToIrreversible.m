@@ -57,9 +57,9 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
-parser.addParameter('sRxns',model.rxns,@iscell);
-parser.addParameter('flipOrientation',true,@(x) islogical(x) || isnumeric(x));
-parser.addParameter('orderReactions',false,@(x) islogical(x) || isnumeric(x));
+parser.addParamValue('sRxns',model.rxns,@iscell);
+parser.addParamValue('flipOrientation',true,@(x) islogical(x) || isnumeric(x));
+parser.addParamValue('orderReactions',false,@(x) islogical(x) || isnumeric(x));
 
 parser.parse(model,varargin{:});
 sRxns = parser.Results.sRxns;

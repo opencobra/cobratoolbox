@@ -56,9 +56,9 @@ persistent CBT_DB_FIELD_PROPS
 
 
 parser = inputParser();
-parser.addParameter('Descriptions',false,@(x) isnumeric(x) | islogical(x))
-parser.addParameter('SpecificFields',{},@iscell)
-parser.addParameter('DataBaseFields',false,@(x) isnumeric(x) | islogical(x))
+parser.addParamValue('Descriptions',false,@(x) isnumeric(x) | islogical(x))
+parser.addParamValue('SpecificFields',{},@iscell)
+parser.addParamValue('DataBaseFields',false,@(x) isnumeric(x) | islogical(x))
 
 parser.parse(varargin{:})
 
