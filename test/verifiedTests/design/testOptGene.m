@@ -15,20 +15,29 @@ cd(fileDir);
 
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
-targetRxn = char(model.rxns(2));
-substrateRxn = '';
-generxnList = model.rxns(1);
+targetRxn = model.rxns{39}; % Succinate
+fructose_substrateRxn = model.rxns{26}; %Fructose, even though this has no incluence whatsoever.
+generxnList = model.rxns(setdiff([1:95],[11,13,26,39])); %Everything besides the ATP Maintenance, The biomass reaction and the substrate and target reactions.
 
 % function outputs
 % requires Global Optimization Toolbox
-[x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, 'TimeLimit', 5);
-
-% test
-assert(isequal(x, 1));
-assert(isequal(size(population), size(zeros(500, 1))));
-assert(isequal(scores, zeros(500, 1)));
-assert(isequal(optGeneSol.numDel, 1));
-assert(isequal(optGeneSol.targetRxn, 'ACALDt'));
+%Set the rng, for reproducability
+rng(0);
+[x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn,generxnList, 'StallTimeLimit',5,'TimeLimit',60);
+%Check, that we get the expected solution from a previous run.
+assert(isempty(setxor(optGeneSol.rxnList,{'CO2t','FORti','PFL','PGI'}))); %Check that the set is correct
+%And that the optimum is correct.
+assert(abs(min(optGeneSol.scores)+10.4063) < 1e-4); %Check, that the optimium is correct, within precision.
+optSols = population((optGeneSol.scores == min(optGeneSol.scores)),:); %Get the set of optimal Solutions.
+optReacs = sum(optSols) == max(sum(optSols,1));
+%The smallest possible solution from this run is 3 reactions.
+assert(isempty(setxor(generxnList(optReacs),{'CO2t','FORti','PGI'}))); %The actual optimal solution is actually smaller than the reported one.
+model2 = model;
+model2.lb(ismember(model2.rxns,generxnList(optReacs))) = 0;
+model2.ub(ismember(model2.rxns,generxnList(optReacs))) = 0;
+sol = optimizeCbModel(model2);
+%And if we turn them off, we get the expected by product formation.
+assert(-sol.x(39) == min(scores));
 
 % close the open windows
 close all
