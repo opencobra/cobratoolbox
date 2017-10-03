@@ -19,9 +19,24 @@ function [baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseM
 %
 % .. Author: - Markus Herrgard 10/4/06
 %            - Thomas Pfau Speedup and cleanup Oct 2017
+if ~iscell(metNames)
+    metNames = {metNames};
+end
 
-data = cellfun(@(x) regexp(x,'^(?<metNames>.*)\[(?<compSymbols>[^\[*])\]$','names'),metNames);
-
+try
+    data = cellfun(@(x) regexp(x,'^(?<metNames>.*)\[(?<compSymbols>[^\[*])\]$','names'),metNames);
+catch
+    %If the above doesn't work, its likely, that we either have an odd
+    %compartment symbol (e.g. (), or that we have a non compartmented
+    %entry.
+    %Lets see if we have a ()compartment symbol
+    try
+        data = cellfun(@(x) regexp(x,'^(?<metNames>.*)\((?<compSymbols>[^\[*])\)$','names'),metNames);
+    catch
+        %No, we don't lets assume, we only have a metabolite name
+        data = cellfun(@(x) regexp(x,'^(?<metNames>.*)[\(\[]*(?<compSymbols>.*)[^\[\(]*[\]\)]*$','names'),metNames);
+    end
+end
 baseMetNames = columnVector({data.metNames});
 compSymbols = columnVector({data.compSymbols});
 uniqueCompSymbols = unique(compSymbols);
