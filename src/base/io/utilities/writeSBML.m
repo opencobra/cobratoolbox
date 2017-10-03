@@ -16,7 +16,7 @@ function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
 % OUTPUT:
 %    sbmlModel:         SBML MATLAB structure
 %
-% .. Author: - Longfei Mao 24/09/15 
+% .. Author: - Longfei Mao 24/09/15
 %            - Thomas Pfau May 2017 Updates to libsbml 5.15
 
 %% Compartments
@@ -25,7 +25,7 @@ if nargin<3 || ~exist('compSymbolList','var') || isempty(compSymbolList) || ~isf
         model.compNames = model.comps;
     else
         [model.comps,model.compNames] = getDefaultCompartments();
-    end    
+    end
 else
     model.comps = compSymbolList;
     model.compNames = compNameList;
@@ -225,7 +225,7 @@ for i=1:length(list)
     elseif strfind(list{i},'fbc_activeObjective')
         sbmlModel.(list{i})='obj'; % a default fbc_activeObjective field is assigned.
     elseif strfind(list{i},'id')
-
+        
         sbmlModel.(list{i})='COBRAModel';
     elseif strfind(list{i},'metaid')
         if isfield(model,'description')
@@ -294,7 +294,7 @@ for i=1:size(model.mets, 1)
     end
     
     if isempty(tmp_met_struct{i})
-        %Change id to correspond to SBML id specifications        
+        %Change id to correspond to SBML id specifications
         tmp_met = strcat('M_', (tmp_met), '_', unknownComp);
     else
         tmp_met = strcat('M_', (tmp_met), '_', tmp_met_struct{i}.comp);
@@ -315,7 +315,7 @@ for i=1:size(model.mets, 1)
         tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
     
-    if isfield(model, 'metCharges') 
+    if isfield(model, 'metCharges')
         if ~isnan(model.metCharges(i))
             tmp_metCharge=model.metCharges(i);
             tmp_isSetfbc_charge=1;
@@ -327,10 +327,22 @@ for i=1:size(model.mets, 1)
         tmp_metCharge=0;
         tmp_isSetfbc_charge=0;
     end
+    
+    if isfield(model,'metSBOTerm')
+        if ~isempty(model.metSBOTerms{i})
+            tmp_Sboterm = num2str(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
+        else
+            tmp_Sboterm = defaultSboTerm;
+        end
+    else
+        %Not existent.
+        tmp_Sboterm = defaultSboTerm;
+    end
     %% here notes can be formulated to include more annotations.
     tmp_species.id=convertSBMLID(tmp_met);
     tmp_species.metaid = tmp_species.id;
     tmp_species.name=tmp_metName;
+    tmp_species.sboTerm = tmp_Sboterm;
     try
         tmp_species.compartment=convertSBMLID(tmp_met_struct{i}.comp);
         %% Clean up the species names
@@ -344,12 +356,12 @@ for i=1:size(model.mets, 1)
     tmp_species.fbc_chemicalFormula=tmp_metFormulas;
     tmp_species.isSetfbc_charge=tmp_isSetfbc_charge;
     %% Add annotations for metaoblites to the reconstruction
-    tmp_species.metaid=tmp_species.id;  % set the metaid for each species        
+    tmp_species.metaid=tmp_species.id;  % set the metaid for each species
     [tmp_annot,met_notes] = makeSBMLAnnotationString(model,tmp_species.metaid,'met',i);
     
     tmp_note = emptyChar;
     if ~isempty(met_notes)
-        for noteid = 1:size(met_notes,1)            
+        for noteid = 1:size(met_notes,1)
             tmp_note = [ tmp_note ' <p>' regexprep(met_notes{noteid,1},'^rxn','') ':' met_notes{noteid,2} '</p>'];
         end
     end
@@ -372,7 +384,7 @@ for i=1:size(model.mets, 1)
     end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
-    end    
+    end
     tmp_species.notes = tmp_note;
     tmp_species.annotation=tmp_annot;
     
@@ -410,7 +422,7 @@ tmp_compartment=struct('typecode','SBML_COMPARTMENT',...
 
 for i=1:size(tmp_metCompartment,2)
     if ~isempty(tmp_metCompartment) % in the case of an empty model
-        tmp_id = convertSBMLID(tmp_metCompartment{1,i});        
+        tmp_id = convertSBMLID(tmp_metCompartment{1,i});
         tmp_symbol_index = find(strcmp(convertSBMLID(model.comps),tmp_id));
         %Check that symbol is in compSymbolList
         if ~isempty(tmp_symbol_index)
@@ -450,28 +462,28 @@ end
 % % % % % % sbml_tmp_parameter.isSetValue = 1;
 %%%%%%%% Rxn definitions
 
-   
-    tmp_Rxn=struct('typecode','SBML_REACTION',...
-        'metaid',emptyChar,...
-        'notes',emptyChar,... %%
-        'annotation',emptyChar,...
-        'sboTerm',176,...%% Biochemical or transport reaction, lets assume, that we don't have something odd...
-        'name',emptyChar,... %%
-        'id',emptyChar,... %%
-        'reactant',emptyChar,...
-        'product',emptyChar,...
-        'modifier',emptyChar,...
-        'kineticLaw',emptyChar,...
-        'reversible',emptyChar,... %%
-        'fast',emptyChar,...
-        'compartment',emptyChar,...
-        'isSetFast',emptyChar,...
-        'fbc_lowerFluxBound',emptyChar,...
-        'fbc_upperFluxBound',emptyChar,...
-        'fbc_geneProductAssociation',emptyChar,...
-        'level',defaultLevel,...
-        'version',defaultVersion,...
-        'fbc_version',defaultFbcVersion);
+
+tmp_Rxn=struct('typecode','SBML_REACTION',...
+    'metaid',emptyChar,...
+    'notes',emptyChar,... %%
+    'annotation',emptyChar,...
+    'sboTerm',176,...%% Biochemical or transport reaction, lets assume, that we don't have something odd...
+    'name',emptyChar,... %%
+    'id',emptyChar,... %%
+    'reactant',emptyChar,...
+    'product',emptyChar,...
+    'modifier',emptyChar,...
+    'kineticLaw',emptyChar,...
+    'reversible',emptyChar,... %%
+    'fast',emptyChar,...
+    'compartment',emptyChar,...
+    'isSetFast',emptyChar,...
+    'fbc_lowerFluxBound',emptyChar,...
+    'fbc_upperFluxBound',emptyChar,...
+    'fbc_geneProductAssociation',emptyChar,...
+    'level',defaultLevel,...
+    'version',defaultVersion,...
+    'fbc_version',defaultFbcVersion);
 
 
 sbml_tmp_species_ref=struct('typecode','SBML_SPECIES_REFERENCE',... %
@@ -604,27 +616,27 @@ model = creategrRulesField(model);
 for i=1:size(model.rxns, 1)
     tmp_rxnID =  strcat('R_', convertSBMLID(model.rxns{i}));
     tmp_Rxn.metaid = tmp_rxnID;
-    [tmp_Rxn.annotation,rxn_notes] = makeSBMLAnnotationString(model,tmp_Rxn.metaid,'rxn',i);    
+    [tmp_Rxn.annotation,rxn_notes] = makeSBMLAnnotationString(model,tmp_Rxn.metaid,'rxn',i);
     tmp_note = emptyChar;
     if ~isempty(rxn_notes)
-        for noteid = 1:size(rxn_notes,1)            
+        for noteid = 1:size(rxn_notes,1)
             tmp_note = [ tmp_note ' <p>' regexprep(rxn_notes{noteid,1},'^rxn','') ':' rxn_notes{noteid,2} '</p>'];
         end
     end
     
     if isfield(model, 'subSystems')
         tmp_note = [ tmp_note ' <p>SUBSYSTEM: ' model.subSystems{i} '</p>'];
-    end    
+    end
     if isfield(model, 'rxnConfidenceScores')
         if iscell(model.rxnConfidenceScores)
             %This is for old style models which provide confidence scores
             %as strings.
-            tmp_note = [ tmp_note ' <p>Confidence Level: ' model.rxnConfidenceScores{i} '</p>'];        
+            tmp_note = [ tmp_note ' <p>Confidence Level: ' model.rxnConfidenceScores{i} '</p>'];
         else
-            tmp_note = [ tmp_note ' <p>Confidence Level: ' num2str(model.rxnConfidenceScores(i)) '</p>'];        
+            tmp_note = [ tmp_note ' <p>Confidence Level: ' num2str(model.rxnConfidenceScores(i)) '</p>'];
         end
-    end    
-    if isfield(model, 'rxnNotes')      
+    end
+    if isfield(model, 'rxnNotes')
         %Lets test whether the field is correctly formatted
         COBRA_STYLE_NOTE_FIELDS = strsplit(model.rxnNotes{i},'\n');
         for pos = 1:length(COBRA_STYLE_NOTE_FIELDS)
@@ -639,24 +651,35 @@ for i=1:size(model.rxns, 1)
             else
                 tmp_note = [ tmp_note ' <p>NOTES: ' current '</p>'];
             end
-        end               
+        end
     end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
     end
     tmp_Rxn.notes=tmp_note;
-        
+    
     tmp_rxnName=emptyChar;
     if isfield(model, 'rxnNames')
         tmp_rxnName = model.rxnNames{i};
     end
     
-    tmp_rxnRev= (model.lb(i) < 0) + 0;   
+    if isfield(model,'rxnSBOTerm')
+        if ~isempty(model.rxnSBOTerms{i})
+            tmp_Sboterm = num2str(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
+        else
+            tmp_Sboterm = defaultSboTerm;
+        end
+    else
+        %Not existent.
+        tmp_Sboterm = -1;
+    end
+    
+    tmp_rxnRev= (model.lb(i) < 0) + 0;
     tmp_Rxn.id=tmp_rxnID;
     tmp_Rxn.metaid = tmp_rxnID;
     tmp_Rxn.name=tmp_rxnName;
     tmp_Rxn.reversible=tmp_rxnRev;
-    
+    tmp_Rxn.sboTerm = tmp_Sboterm;
     tmp_Rxn.fast=0;
     tmp_Rxn.isSetFast=1;
     
@@ -680,7 +703,7 @@ for i=1:size(model.rxns, 1)
     %% grRules
     
     if isfield(model, 'grRules')
-        sbml_tmp_grRules= model.grRules(i);       
+        sbml_tmp_grRules= model.grRules(i);
         tmp_Rxn.fbc_geneProductAssociation.fbc_association.fbc_association=sbml_tmp_grRules{1};
     end
     
@@ -745,12 +768,12 @@ if isfield(model,'genes')
             tmp_fbc_geneProduct.fbc_label=model.geneNames{i};
         else
             tmp_fbc_geneProduct.fbc_label=model.genes{i};
-        end        
+        end
         
         if isfield(model,'proteins')
             tmp_fbc_geneProduct.fbc_name = model.proteins{i};
         end
-            
+        
         tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
         if i==1
             sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;

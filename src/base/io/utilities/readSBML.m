@@ -108,6 +108,17 @@ else
 end
 model.mets = columnVector(sbmlids);
 model.metNames = columnVector({sbmlSpecies.name});
+if isfield(sbmlSpecies,'sboTerm')
+    SBOExists = false(size(model.mets));
+    if isfield(model,'metSBOTerm')
+        SBOExists = ~cellfun(@isempty, model.metSBOTerm);        
+    else
+        model.metSBOTerm = repmat({''},size(model.mets));
+    end
+    SBOTerms = columnVector({sbmlSpecies.sboTerm});
+    SBOToUse = ~SBOExists & ~cellfun(@(x) x == -1, SBOTerms);        
+    model.metSBOTerm(SBOToUse) = cellfun(@(x) strcat('SBO:',pad(num2str(x),7,'left','0')),SBOTerms(SBOToUse),'UniformOutput',0);    
+end
 emptyNames = cellfun(@isempty, model.metNames);
 model.metNames(emptyNames) = model.mets(emptyNames);
 model.b = zeros(numel(model.mets),1);
@@ -189,7 +200,7 @@ model.rxnNames = columnVector({sbmlReactions.name});
 emptyNames = cellfun(@isempty, model.rxnNames);
 model.rxnNames(emptyNames) = model.rxns(emptyNames);
 
-%Extract Annotations.
+%% Extract Annotations.
 if isfield(sbmlReactions,'cvterms')
     cvterms = [sbmlReactions.cvterms];
     if isstruct(cvterms)
@@ -216,6 +227,20 @@ else
         model.rules{i} = rule;
         model.genes = columnVector(model.genes);
     end
+end
+
+%Set up the SBO Term
+
+if isfield(sbmlReactions,'sboTerm')
+    SBOExists = false(size(model.rxns));
+    if isfield(model,'rxnSBOTerm')
+        SBOExists = ~cellfun(@isempty, model.rxnSBOTerm);        
+    else
+        model.rxnSBOTerm = repmat({''},size(model.rxns));
+    end
+    SBOTerms = columnVector({sbmlReactions.sboTerm});
+    SBOToUse = ~SBOExists & ~cellfun(@(x) x == -1, SBOTerms);        
+    model.rxnSBOTerm(SBOToUse) = cellfun(@(x) strcat('SBO:',pad(num2str(x),7,'left','0')),SBOTerms(SBOToUse),'UniformOutput',0);    
 end
 
 %% Finally, parse the Flux constraints.
