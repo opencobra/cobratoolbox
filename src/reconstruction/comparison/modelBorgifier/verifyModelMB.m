@@ -3,7 +3,7 @@ function Model = verifyModelMB(Model, varargin)
 % by any of the scripts in the `Tmodel` suite. It will add fields that are
 % missing and expected for comparison. It will remove fields not in this list.
 % Called by  `driveModelBorgifier`, calls `TmodelFields`, `fixNames`, `removeDuplicateNames`,
-% `makeNamesUnique`, `buildRxnEquations`, `fixChemFormulas`, `orderModelFields`, `organizeModelCool`.
+% `makeNamesUnique`, `buildRxnEquations`, `fixChemFormulas`, `orderModelFieldsMB`, `organizeModelCool`.
 %
 % USAGE:
 %
@@ -322,5 +322,5 @@ while needModelName
 end
 
 %% Reorder fields and organize model based on most common mets.
-Model = orderModelFields(Model);
+Model = orderModelFieldsMB(Model);
 Model = organizeModelCool(Model);
