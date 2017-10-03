@@ -69,7 +69,8 @@ end
 if size(model.rules,2)>size(model.rules,1)
     model.rules=model.rules';
 end
-if size(model.grRules,2)>size(model.grRules,1)
+
+if isfield(model,'grRules') && size(model.grRules,2)>size(model.grRules,1)
     model.grRules=model.grRules';
 end
 

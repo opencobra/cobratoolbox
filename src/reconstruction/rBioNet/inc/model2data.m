@@ -43,6 +43,12 @@ if sum(match) == length(name)
         ' it as a mat file.'], 'Incorrect file type','Help');
     return
 end
+
+%This field is necessary for the output.
+if ~isfield(model,'grRules')
+    model = creategrRulesField(model);
+end
+
 Mandatory = {'rxns','rxnNames', 'rev','grRules', 'lb', 'ub','S','genes'};
 %Opt numbers: CS = 1, subsystem = 2, citations = 3, comments = 4, ecNumbers = 5,
 % rxnKEGGID = 6, description = 7
