@@ -328,7 +328,7 @@ for i=1:size(model.mets, 1)
         tmp_isSetfbc_charge=0;
     end
     
-    if isfield(model,'metSBOTerm')
+    if isfield(model,'metSBOTerms')
         if ~isempty(model.metSBOTerms{i})
             tmp_Sboterm = num2str(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
         else
@@ -663,7 +663,7 @@ for i=1:size(model.rxns, 1)
         tmp_rxnName = model.rxnNames{i};
     end
     
-    if isfield(model,'rxnSBOTerm')
+    if isfield(model,'rxnSBOTerms')
         if ~isempty(model.rxnSBOTerms{i})
             tmp_Sboterm = num2str(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
         else
