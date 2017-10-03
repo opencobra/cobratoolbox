@@ -1,7 +1,7 @@
 function fields = TmodelFields()
 % Returns the field names of the `Tmodel` structure. This is
 % to help alleviate control between different scripts.
-% Called by `cleanTmodel`, `readCbTmodel`, `verifyModel`, `organizeModelCool`, `TmodelStats`, `orderModelFields`.
+% Called by `cleanTmodel`, `readCbTmodel`, `verifyModel`, `organizeModelCool`, `TmodelStats`, `orderModelFieldsMB`.
 %
 % USAGE:
 %
