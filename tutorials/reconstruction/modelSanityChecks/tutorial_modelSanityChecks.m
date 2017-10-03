@@ -315,20 +315,6 @@ else
 end
 cnt = cnt + 1;
 %% 
-% Check consistency of model.rev with model.lb.
-
-% model.rev not always included
-if isfield(model,'rev')
-TableChecks{cnt,1} = 'Check consistency of model.rev with model.lb';
-Rev = setdiff(find(model.lb<0), find(model.rev==1));
-if isempty(Rev)
-    TableChecks{cnt,2} = 'model.rev and model.lb are consistent.';
-else
-    TableChecks{cnt,2} = 'model.rev and model.lb are NOT consistent.';
-end
-cnt = cnt + 1;
-end
-%% 
 % Check whether singleGeneDeletion runs smoothly.
 
 TableChecks{cnt,1} = 'Check whether singleGeneDeletion runs smoothly';
@@ -348,7 +334,7 @@ param.modeFlag=0;
 %param.method='null_fastcc';
 param.method='fastcc';
 printLevel = 1;
-[fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,model] = findFluxConsistentSubset(model,param,printLevel)
+[fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,model] = findFluxConsistentSubset(model,param,printLevel);
 if isempty(find(fluxInConsistentRxnBool))
     TableChecks{cnt,2} = 'Model is flux consistent.';
 else
