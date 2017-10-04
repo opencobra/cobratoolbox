@@ -1,10 +1,10 @@
-function Model = orderModelFieldsMB(Model)
+function Model = orderModelFieldsBorg(Model)
 % Puts the fields in the correct order in the structure.
 % Called by `verifyModel`, `readCbTModel`, calls `TmodelFields`.
 %
 % USAGE:
 %
-%    Model = orderModelFieldsMB(Model)
+%    Model = orderModelFieldsBorg(Model)
 %
 % INPUTS:
 %    Model:    model structure with unsorted fiels

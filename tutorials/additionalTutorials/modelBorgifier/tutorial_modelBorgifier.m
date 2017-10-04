@@ -99,11 +99,11 @@ Cmodel = readCbModel('ecoli_core_model.mat', ...
 % to keep or edit the model name ("description"). Simply press 'y' in for this 
 % tutorial. 
 % 
-% Note that this verify function (verifyModelMB) is different from the Toolbox 
+% Note that this verify function (verifyModelBorg) is different from the Toolbox 
 % function verifyModel.
 
 % Verify model has the necessary fields required for later processing
-Cmodel = verifyModelMB(Cmodel, 'keepName', 'Verbose');
+Cmodel = verifyModelBorg(Cmodel, 'keepName', 'Verbose');
 %% 
 % *3. Load and verify the template model (Tmodel)*
 % 
@@ -137,7 +137,7 @@ Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'iIT341.xml
 
 % If Tmodel is just another model, verify it as well and convert it to a
 % proper format for comparison. Also make sure it carries flux. 
-Tmodel = verifyModelMB(Tmodel, 'keepName', 'Verbose');
+Tmodel = verifyModelBorg(Tmodel, 'keepName', 'Verbose');
 Tmodel = buildTmodel(Tmodel);           
 %% 
 % *4. Compare models*
@@ -260,14 +260,14 @@ end
 % 
 % *6. Merge models*
 % 
-% mergeBorgModels will combine Cmodel into Tmodel and into a composite model 
+% mergeModelsBorg will combine Cmodel into Tmodel and into a composite model 
 % and return it as TmodelC. It will iteratively check the fidelity of the merging 
 % and will prompt the user if errors are found. It will also produce a copy of 
 % Cmodel which has been extracted from TmodelC (see next step).
 %% Merge models and test results.
 
 if ~isempty(rxnList) && ~isempty(metList) && ~isempty(Stats)
-    [TmodelC, Cspawn, Stats] = mergeBorgModels(Cmodel, Tmodel, rxnList, metList, Stats, 'Verbose');
+    [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats, 'Verbose');
 end
 %% 
 % The structure Stats contains information about the number of unique and 
