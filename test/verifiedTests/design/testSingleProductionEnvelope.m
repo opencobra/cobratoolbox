@@ -26,17 +26,12 @@ biomassRxn = char(model.rxns(1));
 singleProductionEnvelope(model, deletions, product, biomassRxn, 'savePlot', 1);
 singleProductionEnvelope(model, deletions2, product, biomassRxn, 'geneDelFlag', 1);
 
-% remove the created plots and the folder - loop for windows because apparently 'rmdir' fails sometimes
- isdeleted = false;
- while ~isdeleted
-   try
-     [status, message] = rmdir([CBTDIR filesep 'tutorials' filesep 'additionalTutorials' filesep 'optKnock' filesep 'Results'], 's');
-     isdeleted = true;
-   catch
-     pause(1); %wait a second before retry
-     rehash;
-   end
- end
+% remove the created plots and the folder - .gitignore for windows because apparently 'rmdir' fails sometimes
+if isunix
+try
+  rmdir([CBTDIR filesep 'tutorials' filesep 'additionalTutorials' filesep 'optKnock' filesep 'Results'], 's');
+end
+end
 
 % test for the successful removal of the files
 assert(isequal(status, 1));
