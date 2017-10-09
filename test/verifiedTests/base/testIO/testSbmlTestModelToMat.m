@@ -36,20 +36,12 @@ assert((exist('Abiotrophia_defectiva_ATCC_49176.xml') == 2));
 assert((exist('Sc_iND750_flux1.xml') == 2));
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'base', filesep, 'testIO']);
 
-% remove the temporary files and 'm_model_collection' folder - loop for windows because apparently 'rmdir' fails sometimes
-%{
-isdeleted = false;
-k = 0;
-while ~isdeleted && k < 10
-    try
-        rmdir('m_model_collection','s');
-        isdeleted = true;
-    catch
-        k = k + 1; % increase counter for timeout
-        pause(1); %wait a second before retry
-        rehash;
-    end
+% since rmdir fails on windows it will be ignored and added to .gitignore
+if isunix
+try
+rmdir('m_model_collection','s')
 end
-%}
-% change to old directory
+end
+
+% back to old directory
 cd(currentDir);
