@@ -23,6 +23,7 @@ modelRed = reduceModel(model);
 % function outputs
 % requires Global Optimization Toolbox
 % function operates on a not full rank matrix and therefore cannot end without an error
+changeCobraSolver('gurobi', 'QP')
 try
     [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
 catch ME
