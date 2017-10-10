@@ -15,17 +15,18 @@ function model = buildRxnGeneMat(model)
 % .. Authors: - written by ?
 %             Diana El Assal 30/6/2017 - updates
 
-% First, update the genes in the model
-if ~isempty(model.grRules)
-    model = updateGenes(model);
+
+if ~isfield(model,'rules')
+    %If rules does not exist, we need to create it. This will either happen
+    %by generating it from grRules or initializing it as empty.
+    if isfield(model,'grRules')
+        model = generateRules(model);
+    else
+        %Empty rules field.
+        model.rules = repmat({''},size(model.rxns,1),1);
+    end    
 end
 
-%Then, update the gene rules of the model
-if ~isempty(model.grRules)
-    model = generateRules(model);
-end
-
-%Finally, update the rxnGeneMat
 model.rxnGeneMat = false(numel(model.rxns), numel(model.genes));
 if isfield(model,'rules')
     for i = 1:numel(model.rxns)
