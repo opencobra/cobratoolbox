@@ -73,7 +73,7 @@ model.ub(Sinks) = 1000;
 % to Recon3 only.
 
 if ~isempty(strfind(fileName, 'Recon3'))
-    [TestSolutionOri,TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = Test4HumanFctExt(model, 'all', 0);
+    [TestSolutionOri,TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = test4HumanFctExt(model, 'all', 0);
     TestedRxns = unique([TestedRxnsC; TestedRxnsClosedSinks]);
     TestedRxnsX = intersect(model.rxns,TestedRxns); 
 end
@@ -110,12 +110,6 @@ if ~isempty(strfind(fileName, 'Recon3'))
     model.lb(find(ismember(model.rxns, DM))) = 0;
     model.ub(find(ismember(model.rxns, DM))) = 0;
 end
-%% 
-% Now we will ensure that the reversibility of each reaction is in accordance 
-% to the defined lower bound.
-
-model.rev(find(model.lb < 0)) = 1;
-model.rev(find(model.lb >= 0)) = 0;
 %% 
 % We will use the method FASTCORE, '|fastcc'|, to ensure a flux-consistent 
 % subnetwork [5].
@@ -163,13 +157,13 @@ fprintf('%6s\t%6s\n','#mets','#rxns'); fprintf('%6u\t%6u\t%s%s\n',nMet,nRxn,' to
 % of gene variation in human metabolism. (submitted) 2017.
 % 
 % [2] Thiele I., Swainston N., Fleming R.M.T., et al. (2013) A community-driven 
-% global reconstruction of human metabolism. Nat. Biotechnol., 31, 419?425.
+% global reconstruction of human metabolism. Nat. Biotechnol., 31, 419–425.
 % 
 % [3] Mardinoglu A., Agren R., Kampf C., et al. (2014) Genome-scale metabolic 
 % modelling of hepatocytes reveals serine deficiency in patients with non-alcoholic 
 % fatty liver disease. Nat. commun., 5, 3083.
 % 
-% [4] Sahoo S, Haraldsd?ttir HS, Fleming RM, Thiele I. Modeling the effects 
+% [4] Sahoo S, Haraldsdóttir HS, Fleming RM, Thiele I. Modeling the effects 
 % of commonly used drugs on human metabolism. FEBS J. 2015 Jan;282(2):297-317.
 % 
 % [5] Vlassis N, Pacheco MP, Sauter T. Fast reconstruction of compact context-specific 
