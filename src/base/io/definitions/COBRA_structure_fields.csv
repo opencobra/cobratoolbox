@@ -34,7 +34,7 @@ rxnGeneMat	rxns	genes	issparse(x) || isnumeric(x) || islogical(x)				0		Sparse o
 rxnConfidenceScores	rxns	1	isnumeric(x) || iscell(x) && isnumeric(cellfun(str2num,x))				0		Column Vector of double	Confidence scores for reaction presence (0-5, with 5 being the highest confidence)	'false(1)'
 rxnNames	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				model.rxns{i}		Column Cell Array of Strings	Full name of each corresponding reaction.	'false(1)'
 rxnNotes	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	Description of each corresponding reaction.	'false(1)'
-rxnECNumbers	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ec-code	is	rxns	''	^\d+\.-\.-\.-|\d+\.\d+\.-\.-|\d+\.\d+\.\d+\.-|\d+\.\d+\.\d+\.(n)?\d+$	Column Cell Array of Strings	E.C. number for each reaction.	'false(1)'
+rxnECNumbers	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ec-code	is;isVersionOf	rxns	''	^\d+\.-\.-\.-|\d+\.\d+\.-\.-|\d+\.\d+\.\d+\.-|\d+\.\d+\.\d+\.(n)?\d+$	Column Cell Array of Strings	E.C. number for each reaction.	'false(1)'
 rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDescribedBy	rxns	''	^\d+$	Column Cell Array of Strings	Description of references for each corresponding reaction.	'false(1)'
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'
 subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	subSystem assignment for each reaction	'false(1)'
