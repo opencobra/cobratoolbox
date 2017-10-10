@@ -561,6 +561,11 @@ Useful for characterizing the network around an orphan reaction.</p>
 COBRA model structure</li>
 <li><strong>rxns</strong> &#8211;
 the target reaction as a string or multiple reactions as cell array</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>asSingleArray</strong> &#8211;
 If false, then return cell array of cell arrays with neighbor reactions
 for one particular connecting metabolite and input reaction combination.
@@ -583,7 +588,7 @@ if <cite>commonMets</cite> already have a compartment identifier, e.g. &#8216;at
 <li><strong>neighborRxns</strong> &#8211;
 the neighboring rxns in the network, (having common metabolites)</li>
 <li><strong>neighborGenes</strong> &#8211;
-the <cite>gprs</cite> associated with the neighbor <cite>rxns</cite></li>
+the genes associated with the neighbor <cite>rxns</cite></li>
 <li><strong>mets</strong> &#8211;
 the metabolites in the target reaction</li>
 </ul>

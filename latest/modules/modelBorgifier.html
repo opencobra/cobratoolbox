@@ -191,7 +191,7 @@
 <code class="descname">TmodelFields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/TmodelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.TmodelFields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the field names of the <cite>Tmodel</cite> structure. This is
 to help alleviate control between different scripts.
-Called by <cite>cleanTmodel</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>organizeModelCool</cite>, <cite>TmodelStats</cite>, <cite>orderModelFields</cite>.</p>
+Called by <cite>cleanTmodel</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>organizeModelCool</cite>, <cite>TmodelStats</cite>, <cite>orderModelFieldsBorg</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>fields = TmodelFields()</div></blockquote>
@@ -219,7 +219,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dt id="src.reconstruction.comparison.modelBorgifier.TmodelStats">
 <code class="descname">TmodelStats</code><span class="sig-paren">(</span><em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/TmodelStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.TmodelStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides information on <cite>Tmodel</cite>. Can also be used on a normal
-model. Called  by <cite>mergeBorgModels</cite>, calls <cite>TmodelFields</cite>.</p>
+model. Called  by <cite>mergeModelsBorg</cite>, calls <cite>TmodelFields</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>Stats = TmodelStats(Tmodel, [Stats]) ;</div></blockquote>
@@ -275,7 +275,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dt id="src.reconstruction.comparison.modelBorgifier.addToTmodel">
 <code class="descname">addToTmodel</code><span class="sig-paren">(</span><em>Cmodel</em>, <em>Tmodel</em>, <em>rxnList</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/addToTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addToTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds reactions and info from a comparison model into the
-master template database, <cite>Tmodel</cite>. Called by <cite>mergeBorgModels</cite>, calls <cite>cleanTmodel</cite></p>
+master template database, <cite>Tmodel</cite>. Called by <cite>mergeModelsBorg</cite>, calls <cite>cleanTmodel</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[TmodelC, Cmodel] = addToTModel(Cmodel, Tmodel, rxnList, metList)</div></blockquote>
@@ -499,7 +499,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dt id="src.reconstruction.comparison.modelBorgifier.cleanTmodel">
 <code class="descname">cleanTmodel</code><span class="sig-paren">(</span><em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/cleanTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.cleanTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reorganizes and checks <cite>Tmodel</cite> for completeness. To be used
-immediately after <cite>addToTmodel</cite>. Called by <cite>addToTmodel</cite>, <cite>mergeBorgModels</cite>, <cite>mergeTrxns</cite>, calls <cite>TmodelFields</cite>, <cite>buildRxnEquations</cite>, <cite>removeDuplicateNames</cite>, <cite>makeNamesUnique</cite>, <cite>charpos</cite>, <cite>removeProblematicCharacters</cite>.</p>
+immediately after <cite>addToTmodel</cite>. Called by <cite>addToTmodel</cite>, <cite>mergeModelsBorg</cite>, <cite>mergeTrxns</cite>, calls <cite>TmodelFields</cite>, <cite>buildRxnEquations</cite>, <cite>removeDuplicateNames</cite>, <cite>makeNamesUnique</cite>, <cite>charpos</cite>, <cite>removeProblematicCharacters</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>Tmodel = cleanTmodel(Tmodel)</div></blockquote>
@@ -551,34 +551,6 @@ String</li>
 <div><ul class="simple">
 <li><strong>outHtml</strong> &#8211;
 Text with formatting</li>
-</ul>
-</div></blockquote>
-<p>Please cite:
-<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
-metabolic reconstructions with modelBorgifier. Bioinformatics
-(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.comparison.modelBorgifier.columnvector">
-<code class="descname">columnvector</code><span class="sig-paren">(</span><em>in</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/columnvector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.columnvector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transposes the input vector to a column vector if it is not
-already a column vector.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>out = columnvector(in)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>in</strong> &#8211;
-Vector</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>out</strong> &#8211;
-Column vector</li>
 </ul>
 </div></blockquote>
 <p>Please cite:
@@ -680,7 +652,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dt id="src.reconstruction.comparison.modelBorgifier.compareMatricies">
 <code class="descname">compareMatricies</code><span class="sig-paren">(</span><em>CMODEL</em>, <em>Cspawn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/compareMatricies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareMatricies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a structure with the matrices before and after merging. Useful
-for comparing how successful merging was.  Called by <cite>mergeBorgModels</cite>.</p>
+for comparing how successful merging was.  Called by <cite>mergeModelsBorg</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>FluxCompare = compareMatricies(CMODEL, Cspawn)</div></blockquote>
@@ -971,8 +943,8 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.comparison.modelBorgifier.mergeBorgModels">
-<code class="descname">mergeBorgModels</code><span class="sig-paren">(</span><em>CmodelIn</em>, <em>TmodelIn</em>, <em>rxnList</em>, <em>metList</em>, <em>Stats</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/mergeBorgModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.mergeBorgModels" title="Permalink to this definition">¶</a></dt>
+<dt id="src.reconstruction.comparison.modelBorgifier.mergeModelsBorg">
+<code class="descname">mergeModelsBorg</code><span class="sig-paren">(</span><em>CmodelIn</em>, <em>TmodelIn</em>, <em>rxnList</em>, <em>metList</em>, <em>Stats</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.mergeModelsBorg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks Tmodel for duplicate reactions and other mistakes,
 that may have occured during reaction and metabolite matching. It
 resolves these problems and merges the models, and confirms that Cmodel
@@ -981,7 +953,7 @@ some statistics on the merging process and resulting combined model.
 Called by <cite>driveModelBorgifier</cite>, calls <cite>addToTmodel</cite>, <cite>compareMatricies</cite>, <cite>reactionCompare</cite>, <cite>cleanTmodel</cite>, organizeModelCool`, <cite>TmodelStats</cite>, <cite>readCbTmodel</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[TmodelC, Cspawn, Stats, CMODEL] = mergeBorgModels(CmodelIn, TmodelIn, rxnList, metList, Stats, score)</div></blockquote>
+<div>[TmodelC, Cspawn, Stats, CMODEL] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList, metList, Stats, score)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1296,13 +1268,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.comparison.modelBorgifier.orderModelFields">
-<code class="descname">orderModelFields</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/orderModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.orderModelFields" title="Permalink to this definition">¶</a></dt>
+<dt id="src.reconstruction.comparison.modelBorgifier.orderModelFieldsBorg">
+<code class="descname">orderModelFieldsBorg</code><span class="sig-paren">(</span><em>Model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/orderModelFieldsBorg.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.orderModelFieldsBorg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Puts the fields in the correct order in the structure.
 Called by <cite>verifyModel</cite>, <cite>readCbTModel</cite>, calls <cite>TmodelFields</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>Model = orderModelFields(Model)</div></blockquote>
+<div>Model = orderModelFieldsBorg(Model)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1330,7 +1302,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 mets are listed first, with sister mets grouped together. Reactions are
 then organized so that the <cite>S</cite> matrix appoximates a rank order matrix, with
 exchange reactions at the end.
-Called by <cite>mergeBorgModels</cite>, <cite>readCbTmodel</cite>, <cite>readCbTModel</cite>, <cite>verifyModel</cite>, calls <cite>TmodelFields</cite>.</p>
+Called by <cite>mergeModelsBorg</cite>, <cite>readCbTmodel</cite>, <cite>readCbTModel</cite>, <cite>verifyModel</cite>, calls <cite>TmodelFields</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>Model = organizeModelCool(Model)</div></blockquote>
@@ -1362,7 +1334,7 @@ the <cite>reactionCompareGUI</cite>. Loads <cite>CMODEL</cite>, <cite>TMODEL</ci
 globals if they are not provided. If <cite>rxnList</cite> is not provided then it is
 generated with <cite>autoMatchReactions</cite>. If you are continuing comparison,
 include the optional inputs.
-Called by <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>reactionCompareGUI</cite>, calls <cite>mergeBorgModels</cite>, <cite>driveModelBorgifier</cite>.</p>
+Called by <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>reactionCompareGUI</cite>, calls <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[rxnList, metList, Stats] = reactionCompare(CmodelIn, TmodelIn, scoreIn, [rxnList, metList, Stats])</div></blockquote>
@@ -1466,7 +1438,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <code class="descname">readCbTmodel</code><span class="sig-paren">(</span><em>modelName</em>, <em>Tmodel</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/readCbTmodel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.readCbTmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates COBRA format of a specific model from <cite>Tmodel</cite>.
 (composite database).
-Called by <cite>mergeBorgModels</cite>, <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>orderModelFields</cite>, <cite>organizeModelCool</cite>, <cite>buildRxnEquations</cite>, <cite>ismatlab</cite>, <cite>parseBoolean</cite>.</p>
+Called by <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>, <cite>buildRxnEquations</cite>, <cite>ismatlab</cite>, <cite>parseBoolean</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>Model = readCbTmodel(modelName, Tmodel)</div></blockquote>
@@ -1592,16 +1564,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.comparison.modelBorgifier.verifyModelMB">
-<code class="descname">verifyModelMB</code><span class="sig-paren">(</span><em>Model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/verifyModelMB.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.verifyModelMB" title="Permalink to this definition">¶</a></dt>
+<dt id="src.reconstruction.comparison.modelBorgifier.verifyModelBorg">
+<code class="descname">verifyModelBorg</code><span class="sig-paren">(</span><em>Model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.verifyModelBorg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensures that a model is in the correct format to be analyzed
 by any of the scripts in the <cite>Tmodel</cite> suite. It will add fields that are
 missing and expected for comparison. It will remove fields not in this list.
 Called by  <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>fixNames</cite>, <cite>removeDuplicateNames</cite>,
-<cite>makeNamesUnique</cite>, <cite>buildRxnEquations</cite>, <cite>fixChemFormulas</cite>, <cite>orderModelFields</cite>, <cite>organizeModelCool</cite>.</p>
+<cite>makeNamesUnique</cite>, <cite>buildRxnEquations</cite>, <cite>fixChemFormulas</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>Model = verifyModel(Model)</div></blockquote>
+<div>Model = verifyModelBorg(Model)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">

@@ -208,7 +208,6 @@ otherwise the rxnGeneMat is empty</li>
 The Model including a rxnGeneMat field.</li>
 </ul>
 </div></blockquote>
-<p>First, update the genes in the model</p>
 </dd></dl>
 
 <dl class="function">
@@ -359,18 +358,38 @@ The string written to the specified filename (or the default file)</li>
 <dl class="function">
 <dt id="src.base.io.utilities.getDatabaseMappings">
 <code class="descname">getDatabaseMappings</code><span class="sig-paren">(</span><em>field</em>, <em>qualifiers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/io/utilities/getDatabaseMappings.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDatabaseMappings" title="Permalink to this definition">¶</a></dt>
-<dd><p>getDataBaseMappings returns known field -&gt; uri mappings
-<strong>Inputs</strong></p>
+<dd><p>getDataBaseMappings returns information on known mappings of database
+entries to model field names, along with additional information about the
+fields.</p>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>field</strong> &#8211;
-the field to extract mappings for (e.g. &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rxns&#8217;)</li>
-<li><strong>OPTIONAL INPUT</strong></li>
+the basic model field to extract mappings for (e.g. &#8216;met&#8217;, &#8216;gene&#8217;, &#8216;rxn&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>qualifiers</strong> &#8211;
-the qualifiers to restrict the selection to.</li>
-<li><strong>OUTPUT</strong></li>
+the qualifiers to restrict the selection to.
+These have to be part of the bioql modifiers
+definition (e.g. is, isDescribedBy, isEncodedBy
+etc) providing &#8216;all&#8217; will return all associated
+Database mappings. Default: &#8216;all&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>returnedmappings</strong> &#8211;
-The mappings known for the given field</li>
+The mappings known for the given field. The
+structure is:
+X{:,1} : the database ID (in identifiers.org/miriam annotation)
+X{:,2} : The qualifier associated with the DB
+X{:,3} : The model field associated with this db
+X{:,4} : The association field (met/rxn/gene/prot/comp)
+X{:,5} : The specified regular expression the identifier has to adhere to.</li>
 </ul>
 </div></blockquote>
 </dd></dl>

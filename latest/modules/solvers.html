@@ -995,15 +995,18 @@ compatibility status<ul>
 <code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
 coupling constraints of the form:
-<span class="math">\(max c*v\)</span>  subject to: <span class="math">\(Sv = 0, x, Cv &lt;= 0\)</span></p>
+<span class="math">\(max c*v\)</span>  subject to: <span class="math">\(Sv = 0, x, Cv &lt;= 0\)</span>
+Converts it into a COBRA LPproblem structure, which can be used with
+solveCobraLP. Fluxes for the reactions should stay the same i.e.
+sol.full(1:nRxns) should yield an optimal flux vector.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = liftModel(model, BIG, printLevel,fileName,directory)</div></blockquote>
+<div>LPproblem = liftModel(model, BIG, printLevel,fileName,directory)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA Structure contain the original LP to be solved. The format of
+<li><strong>LPproblem</strong> &#8211;
+COBRA LPproblem Structure containing the original LP to be solved. The format of
 this struct is described in the documentation for <cite>solveCobraLP.m</cite></li>
 </ul>
 </div></blockquote>

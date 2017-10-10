@@ -1215,6 +1215,34 @@ COBRA model with reactions in the specified compartmetns</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.mergeModelFieldPositions">
+<code class="descname">mergeModelFieldPositions</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>positions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/refinement/mergeModelFieldPositions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeModelFieldPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelNew] = mergeModelFieldPositions(model,type,positions)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model with the fields to merge</li>
+<li><strong>type</strong> &#8211;
+the field type to merge ( rxns, mets, comps or genes)</li>
+<li><strong>positions</strong> &#8211;
+The positions in the given field type to merge.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelNew</strong> &#8211;
+merged model with the positions merged into one.
+Unique entries in Related String fields will be
+concatenated with &#8216;;&#8217; matrices will be summed up.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.mergeTwoModels">
 <code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em>, <em>mergeGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
@@ -1598,7 +1626,8 @@ reordered</li>
 <dl class="function">
 <dt id="src.reconstruction.refinement.updateGenes">
 <code class="descname">updateGenes</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c32d65ee866bc5786a1a235d1ad53066009733b/src/reconstruction/refinement/updateGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateGenes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates model.genes in a new model, based on model.grRules.</p>
+<dd><p>Update the model genes field (if it does not exist, generate it from the
+grRules field, if it exists, remove Unused genes and  remove duplicate genes.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelNew] = updateGenes(model);</div></blockquote>
