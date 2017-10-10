@@ -22,15 +22,11 @@ function [ convertedstr ] = convertSBMLID( str, toSBML )
 if ~exist('toSBML','var')
     toSBML = true;
 end
-try
 if toSBML
     
     convertedstr = regexprep(str,'([^0-9_a-zA-Z])','__${num2str($1+0)}__');
 else   
     convertedstr = regexprep(str,'__([0-9]+)__','${char(str2num($1))}');
-    end
-catch
-    Output
 end
 
 end
