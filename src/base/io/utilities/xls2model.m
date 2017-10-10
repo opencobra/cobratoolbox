@@ -364,6 +364,9 @@ else
     [model.comps,~,origin] = unique(metCompAbbrev(origpos));
     %Column Vector
     model.comps = columnVector(model.comps);
+    if ischar(model.comps)
+        model.comps = cellstr(model.comps);
+    end
     for i = 1:numel(model.comps)
         %combine all, ignoring empty entries.
         CompNames{i} = strjoin(setdiff(ucomps(origin==i),''),' or ');
