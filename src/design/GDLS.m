@@ -85,6 +85,14 @@ switch lower(options.koType)
     case 'genesets'
         %% Generate reaction gene set mapping matrix
         %remove biomass reaction from grRules and generate unique gene set list
+        %I would suggest a proper rewrite for this, as it does not make a
+        %lot of sense to explicitly check identical GPR Rules (which can be ordered in a different way while being the same).
+        %What would make sense is to check required gene sets, e.g. if 
+        %a gprRule has A and B, A would be one "required" set and B would
+        %be one required set.
+        if ~isfield(model, 'grRules')
+            model = creategrRulesField(model);
+        end
         possibleKOList = unique(model.grRules(selSelectedRxns));
         if isempty(possibleKOList{1}), possibleKOList = possibleKOList(2:end); end
         for i = 1:length(possibleKOList)

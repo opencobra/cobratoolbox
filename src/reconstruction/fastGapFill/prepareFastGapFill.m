@@ -137,7 +137,9 @@ while m == 0
     MatricesSUX.lb(NullRxns==1)=[];
     MatricesSUX.ub(NullRxns==1)=[];
     MatricesSUX.rules(NullRxns==1)=[];
-    MatricesSUX.grRules(NullRxns==1)=[];
+    if isfield(MatricesSUX,'grRules')
+        MatricesSUX.grRules(NullRxns==1)=[];
+    end
     MatricesSUX.c(NullRxns==1)=[];
 end
 

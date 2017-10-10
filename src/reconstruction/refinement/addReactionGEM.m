@@ -45,12 +45,23 @@ if ~exist('subSystems', 'var') || isempty(subSystems)
         subSystems(i,1) = {''};
     end
 end
+%We later assume, that this field exists, so we have to initialize it
+%properly.
+if ~isfield(model,'subSystems')
+    model.subSystems = repmat({''},size(model.rxns));
+end
 
 if ~exist('grRules', 'var') || isempty(grRules)
     clear grRules;
     for i = 1:length(rev)
         grRules(i,1) = {''};
     end
+end
+
+%We later assume, that this field exists, so we have to initialize it
+%properly.
+if ~isfield(model,'grRules')
+    model.grRules = repmat({''},size(model.rxns));
 end
 
 if ~exist('rules', 'var')|| isempty(rules)

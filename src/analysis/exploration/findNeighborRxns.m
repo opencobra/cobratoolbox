@@ -10,6 +10,8 @@ function [neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asS
 % INPUTS:
 %    model:            COBRA model structure
 %    rxns:             the target reaction as a string or multiple reactions as cell array
+%
+% OPTIONAL INPUTS:
 %    asSingleArray:    If false, then return cell array of cell arrays with neighbor reactions
 %                      for one particular connecting metabolite and input reaction combination.
 %                      Else just return all neighbors in one cell array. (Default = false)
@@ -23,7 +25,7 @@ function [neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asS
 %
 % OUTPUTS:
 %    neighborRxns:     the neighboring rxns in the network, (having common metabolites)
-%    neighborGenes:    the `gprs` associated with the neighbor `rxns`
+%    neighborGenes:    the genes associated with the neighbor `rxns`
 %    mets:             the metabolites in the target reaction
 %
 % .. Authors:
@@ -88,7 +90,7 @@ for i = 1:numel(rxns)
 	end
 
 	% remove target rxn from list
-	for i = 1:length(metIndex);
+	for i = 1:length(metIndex)
     	nRxnIndexs{i} = setdiff(nRxnIndexs{i},findRxnIDs(model,rxn));
 	end
 
@@ -98,7 +100,9 @@ for i = 1:numel(rxns)
 
 	%get genes for each rxn
 	for i = 1:length(metIndex)
-    	neighborGenes{runningGeneIndex + i} = model.grRules(nRxnIndexs{i});
+        allpos = regexp(model.rules(nRxnIndexs{i}),'x\((?<IDs>[0-9]+)\)','names');        
+        genes = cellfun(@(x) cellfun(@str2num, {x.IDs}),allpos, 'UniformOutput', 0);
+        neighborGenes{runningGeneIndex + i} = cellfun(@(x) strjoin(model.genes(unique(x)),'; '),genes,'Uni',false);
 	end
 
 	mets = unique([mets; model.mets(metIndex)]);
