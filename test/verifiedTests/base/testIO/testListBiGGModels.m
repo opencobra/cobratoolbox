@@ -13,14 +13,24 @@ currentDir = pwd;
 fileDir = fileparts(which('testListBiGGModels'));
 cd(fileDir);
 
-% test variables
-refData_str = fileread('refData_listBiGGModels.txt');
-refData_str = refData_str(1:end-1);
 % function outputs
+
 [str] = listBiGGModels();
 
-% test
-assert(isequal(refData_str, str));
+%With 2016b we can properly test this
+cver = ver('MATLAB');
+
+if str2num(cver.Version) >= 9.1 % after 2016b
+    data = jsondecode(str);
+    %Structure
+    assert(isfield(data,'results'))
+    assert(isfield(data,'results_count'));
+    %At least ecoli core should be there.
+    assert(any(ismember({data.results.bigg_id},'e_coli_core')));
+else
+    %Lets see, if there is at least e_coli_core in the result
+    assert(~isempty(regexp(str,'"bigg_id" *: *"e_coli_core"','once')));
+end
 
 % change to old directory
 cd(currentDir);
