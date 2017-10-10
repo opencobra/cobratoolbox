@@ -108,6 +108,24 @@ else
 end
 model.mets = columnVector(sbmlids);
 model.metNames = columnVector({sbmlSpecies.name});
+if isfield(sbmlSpecies,'sboTerm')
+    SBOExists = false(size(model.mets));
+    if isfield(model,'metSBOTerms')
+        SBOExists = ~cellfun(@isempty, model.metSBOTerms);        
+    else
+        model.metSBOTerms = repmat({''},size(model.mets));
+    end
+    SBOTerms = columnVector({sbmlSpecies.sboTerm});
+    SBOToUse = ~SBOExists & ~cellfun(@(x) x == -1, SBOTerms);    
+    try
+        model.metSBOTerms(SBOToUse) = cellfun(@(x) strcat('SBO:',pad(num2str(x),7,'left','0')),SBOTerms(SBOToUse),'UniformOutput',0);    
+    catch
+        %This fails if the version is prior to 2016b, since pad was only
+        %introduced at that time.
+        %So, we have to use repmat 
+        model.metSBOTerms(SBOToUse) = cellfun(@(x) strcat('SBO:', repmat('0',1,7-length(num2str(x))),num2str(x) ),SBOTerms(SBOToUse),'UniformOutput',0);
+    end                
+end
 emptyNames = cellfun(@isempty, model.metNames);
 model.metNames(emptyNames) = model.mets(emptyNames);
 model.b = zeros(numel(model.mets),1);
@@ -189,7 +207,7 @@ model.rxnNames = columnVector({sbmlReactions.name});
 emptyNames = cellfun(@isempty, model.rxnNames);
 model.rxnNames(emptyNames) = model.rxns(emptyNames);
 
-%Extract Annotations.
+%% Extract Annotations.
 if isfield(sbmlReactions,'cvterms')
     cvterms = [sbmlReactions.cvterms];
     if isstruct(cvterms)
@@ -216,6 +234,27 @@ else
         model.rules{i} = rule;
         model.genes = columnVector(model.genes);
     end
+end
+
+%Set up the SBO Term
+
+if isfield(sbmlReactions,'sboTerm')
+    SBOExists = false(size(model.rxns));
+    if isfield(model,'rxnSBOTerms')
+        SBOExists = ~cellfun(@isempty, model.rxnSBOTerms);        
+    else
+        model.rxnSBOTerms = repmat({''},size(model.rxns));
+    end
+    SBOTerms = columnVector({sbmlReactions.sboTerm});
+    SBOToUse = ~SBOExists & ~cellfun(@(x) x == -1, SBOTerms);        
+    try
+        model.rxnSBOTerms(SBOToUse) = cellfun(@(x) strcat('SBO:',pad(num2str(x),7,'left','0')),SBOTerms(SBOToUse),'UniformOutput',0);    
+    catch
+        %This fails if the version is prior to 2016b, since pad was only
+        %introduced at that time.
+        %So, we have to use repmat 
+        model.rxnSBOTerms(SBOToUse) = cellfun(@(x) strcat('SBO:', repmat('0',1,7-length(num2str(x))),num2str(x) ),SBOTerms(SBOToUse),'UniformOutput',0);
+    end  
 end
 
 %% Finally, parse the Flux constraints.
