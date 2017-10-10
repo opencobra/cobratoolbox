@@ -23,13 +23,16 @@ if isstruct(models)
     structin = true;
 end
 restrictedModels = cell(size(models));
-for i = 1: numel(models)
-    newModel = struct();
-    cmodel = models{i};
-    for f = 1:numel(fieldNames)
-        newModel.(fieldNames{f}) = cmodel.(fieldNames{f});
+
+for i = 1: numel(models)    
+    cmodel = models{i};    
+    modelfields = fieldnames(cmodel);
+    for f = 1:numel(modelfields)
+        if ~any(ismember(fieldNames,modelfields{f}))
+            cmodel = rmfield(cmodel,modelfields{f});
+        end
     end
-    restrictedModels{i} = newModel;
+    restrictedModels{i} = cmodel;
 end
 
 if structin
