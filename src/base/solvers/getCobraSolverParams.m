@@ -48,7 +48,7 @@ end
 
 %% Default Values
 valDef.minNorm = 0;
-%valDef.objTol = 1e-6; %cannot find where this is being used -RF
+valDef.objTol = 1e-6; %used in optimizeTwoCbModels
 valDef.optTol = 1e-9;
 valDef.feasTol = 1e-9;
 valDef.printLevel = 0;

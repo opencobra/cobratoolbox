@@ -56,14 +56,7 @@ function [solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, mod
 %
 % .. Author: - Markus Herrgard 1/4/07
 
-global CBT_LP_PARAMS % LP solution tolerance
-if (exist('CBT_LP_PARAMS', 'var'))
-    if isfield(CBT_LP_PARAMS, 'objTol')
-        tol = CBT_LP_PARAMS.objTol;
-    end
-else
-    tol = 1e-6;
-end
+tol = getCobraSolverParams('LP','objTol');
 
 %TODO: Have a look how the model.osenseStr can be incorporated here.
 if (nargin < 3)
