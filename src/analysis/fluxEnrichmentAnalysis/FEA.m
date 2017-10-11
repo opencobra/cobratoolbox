@@ -32,6 +32,15 @@ if ~ischar(group)
     error('Please provide the group name as string of characters e.g. ''subSystems'' ')
 end
 
+%Temporary Warning until FEA statistics are checked for multiple classes.
+if strcmp(group, 'subSystems') && isfield(model,'subSystems')
+    if iscell(model.subSystems{1}) %Potentially multiple subSystems
+        if any(cellfun(@numel, model.subSystems) > 2)
+            warning('Multiple subSystems detected for some reactions. FEA statistics might not be correct.\n Please consider using only one subSystem per reaction.')
+        end
+    end
+end
+
 % compute frequency of enriched terms
 groups = eval(['model.' group]);
 if iscell([groups{:}])
