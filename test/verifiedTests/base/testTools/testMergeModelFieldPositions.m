@@ -47,6 +47,9 @@ assert(any(ismember(newgrRules,modelMerged.grRules{newreacpos})));
 %The S matrix is added up.
 assert(isequal(modelMerged.S(:,newreacpos), sum(model.S(:,rxnspos),2)));
 
+%Also check that the subSystems were merged properly
+assert(isequal(unique([model.subSystems{rxnspos}]),modelMerged.subSystems{newreacpos}));
+
 %Now, lets change the model a bit, and duplicate the name of a gene
 %(replacing it in all grRules).
 geneReplaced = model.genes(end);
