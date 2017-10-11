@@ -26,7 +26,7 @@ load ExpressionData
 
 %The initial expression data has a max for G2 of 6 ; G3 of 5 and G6/G7 of
 %5, so the resulting vector would be 6 5 5 -1 -1
-[expressionRxns, parsedGpR] = mapExpressionToReactions(toy,expression1);
+[expressionRxns, parsedGpR] = mapExpressionToReactions(model,expression1);
 assert(isequal(expressionRxns,[6; 5; 5; -1; -1]));
 
 %The second expression vector leads to A gene expression of 
@@ -34,10 +34,10 @@ assert(isequal(expressionRxns,[6; 5; 5; -1; -1]));
 %R2: min(8, max(10,5));
 %R3: max(5,9)
 % And -1 for the exchangers.
-[expressionRxns, parsedGpR] = mapExpressionToReactions(toy,expression2);
+[expressionRxns, parsedGpR] = mapExpressionToReactions(model,expression2);
 assert(isequal(expressionRxns,[min(26/3,15/2); min(8, max(10,5)); max(5,9); -1; -1]));
 
-fprintf('Done...')
+fprintf('Done...\n')
 
 %Switch back to original folder
 cd(currentDir)
