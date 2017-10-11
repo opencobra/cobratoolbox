@@ -21,7 +21,6 @@ function [modelNew] = updateGenes(model)
 %       - fixed by Uri David Akavia 16/07/2017
 %       - Only recreate model.genes if it does not exist by Thomas Pfau Sept 2017
 
-grRules = unique(grRules(cellfun('isclass', grRules, 'char')));
 modelNew = model;
 
 %Now, remove unused genes.
