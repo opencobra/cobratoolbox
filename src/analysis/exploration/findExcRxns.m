@@ -27,6 +27,10 @@ function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 %
 % .. Author: - Markus Herrgard 10/14/05
 
+if ~exist('inclObjFlag','var')
+    inclObjFlag = false;
+end
+
 modelRes = findSExRxnInd(model);
 selExc = modelRes.SExRxnOneCoeffBool;
 
