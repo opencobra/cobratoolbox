@@ -27,37 +27,17 @@ function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 %
 % .. Author: - Markus Herrgard 10/14/05
 
-if (nargin < 2)
-    inclObjFlag = false;
+modelRes = findSExRxnInd(model);
+selExc = modelRes.SExRxnOneCoeffBool;
+
+if inclObjFlag
+    selExc(model.c~=0) = true;
+else
+    selExc(model.c~=0) = false;
 end
 
-%Exports are all reactions with exactly one negative value in the S matrix
-%and no other entries.
-%Uptakes are all reactions with exactly one positive value in the S matrix
-%and no other entries.
-exp = full((sum(model.S ~= 0) == 1) & (sum(model.S < 0) == 1))';
-upt = full((sum(model.S ~= 0) == 1) & (sum(model.S > 0) == 1))';
-
-%Exclude anything that is an objective.
-if ~inclObjFlag
-    exp = exp & ~( model.c ~= 0 );
-    upt = upt & ~( model.c ~= 0 );
-end
-
-%Exchangers are all uptakes and exports
-selExc = exp | upt;
-
-
-%Default lb is 0, default ub is 1000;
-if ~isfield(model,'lb')    
-    model.lb = zeros(size(model.S,2),1);
-end
-
-if ~isfield(model,'ub')
-    model.ub = 1000* ones(size(model.S,2),1);
-end
-%Uptakes are all exports that can work in reverse (lb < 0) and uptakes that
-%can carry forward flux (ub > 0)
-selUpt = (exp & model.lb < 0) | (upt & model.ub > 0);
+%This ignores the actual directionality, but it is, what the description
+%says... 
+selUpt = selExc & model.lb < 0;
 
 end
