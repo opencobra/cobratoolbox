@@ -27,6 +27,10 @@ if ~isfield(expression,'preprocessed')
     expression.preprocessed = 0;
 end
 
+if ~exist('minSum','var')
+    minSum = false;
+end
+
 if ~expression.preprocessed
     reactionExpression = mapExpressionToReactions(model,struct('gene',expression.target,'value',expression.value));
 else
