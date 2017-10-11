@@ -12,9 +12,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 % OUTPUT:
 %    compatibleStatus:      compatibility status
 %
-%                             * 1:  compatible with the COBRA Toolbox (tested)
-%                             * 0:  not compatible with the COBRA Toolbox (tested)
-%                             * -1: unverified compatibility with the COBRA Toolbox (not tested)
+%                             * 0: not compatible with the COBRA Toolbox (tested)
+%                             * 1: compatible with the COBRA Toolbox (tested)
+%                             * 2: unverified compatibility with the COBRA Toolbox (not tested)
 %
 % .. Author: - Laurent Heirendt, August 2017
 %
@@ -44,8 +44,8 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         solverName = 'lindo_legacy';
     end
 
-    % default compatibility status
-    compatibleStatus = -1;
+    % default compatibility status (untested)
+    compatibleStatus = 2;
 
     % check if the solver and the matlab version are compatible
     compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
@@ -53,6 +53,8 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % read in the file with the compatibility matrix
     C = {};
     compatMatrix = {};
+    testedOS = {};
+    untestedFlag = false;
     fid = fopen(compatMatrixFile);
     while 1
         tline = fgetl(fid);
@@ -75,7 +77,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 Cpart = strrep(Cpart, ':white_check_mark:', '1');
 
                 % convert untested flag
-                Cpart = strrep(Cpart, ':warning:', '-1');
+                Cpart = strrep(Cpart, ':warning:', '2');
 
                 C{end+1} = strtrim(Cpart);
             else
@@ -83,28 +85,70 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                     compatMatrix{end+1} = C;
                     C = {};
                 end
+                if strcmp(tline(1:2), '##') && ~strcmp(tline(3), '#')
+                    testedOS{end+1} = strtrim(tline(3:end));
+                end
             end
         end
     end
     compatMatrix{end+1} = C;
 
     % select the compatibility matrix based on the OS
-    if isunix && ~ismac
-        compatMatrix = compatMatrix{1}; % linux
-    elseif ismac
-        compatMatrix = compatMatrix{2}; % macOS
-    else
-        compatMatrix = compatMatrix{3}; % Windows
+    if isunix && ~ismac % linux
+        tableNb = 1;
+        resultVERS = system_dependent('getos');
+        tmp = strsplit(testedOS{tableNb});
+        if ~isempty(strfind(lower(resultVERS), lower(tmp{2})))
+            compatMatrix = compatMatrix{tableNb};
+        else
+            untestedFlag = true;
+            if printLevel > 0
+                fprintf([' > The compatibility can only be evaluated on Linux ', tmp{2}, '.\n']);
+            end
+        end
+    elseif ismac % macOS
+        tableNb = 2;
+        [~, resultVERS] = unix('sw_vers');
+        tmp = strsplit(testedOS{tableNb});
+        if ~isempty(strfind(resultVERS, tmp{2}))
+            compatMatrix = compatMatrix{tableNb};
+        else
+            untestedFlag = true;
+            if printLevel > 0
+                fprintf([' > The compatibility can only be evaluated on macOS ', tmp{2}, '.\n']);
+            end
+        end
+    else % Windows
+        resultVERS = system_dependent('getwinsys');
+        for tableNb = length(testedOS)-1:length(testedOS) % loop through the last 2 tables
+            tmp = strsplit(testedOS{tableNb});
+            if ~isempty(strfind(resultVERS, tmp{2}))
+                compatMatrix = compatMatrix{tableNb};
+            else
+                untestedFlag = true;
+                if printLevel > 0 && tableNb == length(testedOS)
+                    fprintf([' > The compatibility can only be evaluated on Windows 7 and Windows 10.\n']);
+                end
+            end
+        end
+    end
+
+    if untestedFlag
+        compatMatrix = {};
     end
 
     % determine the version of MATLAB and the corresponding column
-    compatMatlabVersions = compatMatrix{1}(2:end);
     versionMatlab = ['R' version('-release')];
-    colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
+    if ~isempty(compatMatrix)
+        compatMatlabVersions = compatMatrix{1}(2:end);
+        colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
+    else
+        colIndexVersion = [];
+    end
 
-    % any MATLAB version that is not explicitly supported yields a compatibility status of -1
+    % any MATLAB version that is not explicitly supported yields a compatibility status of 2
     if isempty(colIndexVersion)
-        compatibleStatus = -1;
+        compatibleStatus = 2;
         if printLevel > 0
             fprintf([' > The solver compatibility is not tested with MATLAB ', versionMatlab, '.\n']);
         end
@@ -145,17 +189,17 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 if strcmpi(compatibilityBoolean, '1')
                     compatibleStatus = 1;
                     if printLevel > 0
-                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is compatible and fully tested with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is compatible and fully tested with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 elseif strcmpi(compatibilityBoolean, '0')
                     compatibleStatus = 0;
                     if printLevel > 0
-                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > ', lower(solverName), txtSolverVersion, ' is NOT compatible with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 else
-                    compatibleStatus = -1;
+                    compatibleStatus = 2;
                     if printLevel > 0
-                        fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, '.\n']);
+                        fprintf([' > The compatibility of ', upper(solverName), txtSolverVersion, ' is not fully tested and might not be compatible with MATLAB ', versionMatlab, ' on your operating system.\n']);
                     end
                 end
             end
@@ -166,7 +210,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     if strcmp(solverName, 'cplex_direct') && ~verLessThan('matlab', '8.4')
         compatibleStatus = 0;
         if printLevel > 0
-            fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, '. Try using the tomlab_cplex interface.\n']);
+            fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, ' on your operating system. Try using the tomlab_cplex interface.\n']);
         end
     end
 end

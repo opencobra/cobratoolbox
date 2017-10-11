@@ -18,7 +18,7 @@ if isunix && strcmp(matlabVersion, 'R2016b')
     assert(compatibleStatus == 1);
 
     % IBM CPLEX 12.7.0 is not compatible on UNIX when running R2016b
-    compatibleStatus = isCompatible('ibm_cplex', -1, '12.6.3');
+    compatibleStatus = isCompatible('ibm_cplex', 0, '12.6.3');
     assert(compatibleStatus == 0);
 
     % NOTE: for untested solvers, the compatibility matrix must be established
