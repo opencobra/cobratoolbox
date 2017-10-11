@@ -72,7 +72,7 @@ mkdir(defaultname);
 invalidFile = fopen([defaultname filesep 'Invalid.xml'],'w');
 fprintf(invalidFile,'Not a vlid XML\n');
 fclose(invalidFile);
-%Test with defaults, and notie nothing works
+%Test with defaults, and nothing works
 sbmlTestModelToMat()
 defaultfoldercontent = dir(defaultname);
 
@@ -83,21 +83,15 @@ cd(fileDir);
 
 
 
-%Clean up the folders.
-isdeleted = false;
-k = 0;
-
-while ~isdeleted && k < 10 %we don'T try it more than ten times.
-    try
-        rmdir(MATFolder,'s');
-        rmdir(SBMLFolder,'s');        
-        rmdir([tempfolder filesep defaultname],'s');
-        isdeleted = true;
-    catch
-        k = k + 1; % increase counter for timeout
-        pause(1); %wait a second before retry
-        rehash;
-    end
+%Clean up the folders. (In a try/catch for windows)
+%Even if this does not work, those folders are just temporary folders.
+try
+   rmdir(MATFolder,'s');
+   rmdir(SBMLFolder,'s');        
+   rmdir([tempfolder filesep defaultname],'s');
+   isdeleted = true;
+catch
+    
 end
 
 cd(currentDir)
