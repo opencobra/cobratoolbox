@@ -29,7 +29,7 @@ end
 parsedGPR = GPRparser(model);% Extracting GPR data from model
 
 % Find wich genes in expression data are used in the model
-[gene_id, gene_expr] = findUsedGenesLevels(model,expressionData);
+[gene_id, gene_expr] = findUsedGenesLevels(model,expressionData,minSum);
 
 % Link the gene to the model reactions
 expressionRxns = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum);
