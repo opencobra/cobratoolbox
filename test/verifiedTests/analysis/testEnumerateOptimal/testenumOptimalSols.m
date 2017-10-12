@@ -28,12 +28,12 @@ model = createToyModelForAltOpts();
 
 %When detectDeadEnds is changed according to Ronans suggestion, we need to test
 %multiple solvers.
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk','ibm_cplex'};
 tol = getCobraSolverParams('LP','feasTol');
 for k = 1:length(solverPkgs)
     
     % set the solver
-    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);    
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0)  && changeCobraSolver(solverPkgs{k},'MILP',0);    
     if solverOK == 1
         fprintf('Testing enumerateOptimalSolutions with solver %s ...\n',solverPkgs{k});
         
