@@ -19,16 +19,16 @@ targetRxn = model.rxns{39}; % Succinate
 fructose_substrateRxn = model.rxns{26}; %Fructose, even though this has no incluence whatsoever.
 generxnList = model.rxns(setdiff([1:95],[11,13,26,39])); %Everything besides the ATP Maintenance, The biomass reaction and the substrate and target reactions.
 
-solverPkgs = {'gurobi6', 'glpk','ibm_cplex'};
-solComps = {{'CO2t','PFL','PGI'},10.4063;...
-            {'CO2t','PFL','PGI'},10.4063;...
-            {'CO2t', 'PFL'},1.0238};
+solverPkgs = {'ibm_cplex'};
+solComps = {{'CO2t', 'PFL'}, 1.0238};
+
 for k = 1:length(solverPkgs)
-    
+
     % set the solver
-    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0)  && changeCobraSolver(solverPkgs{k},'MILP',0);
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0)  && changeCobraSolver(solverPkgs{k}, 'MILP', 0);
+
     if solverOK == 1
-        fprintf('Testing optGene using %s...\n',solverPkgs{k});
+        fprintf('Testing optGene using %s ...\n',solverPkgs{k});
         % function outputs
         % requires Global Optimization Toolbox
         %Set the rng, for reproducability
@@ -52,6 +52,6 @@ for k = 1:length(solverPkgs)
 end
 % close the open windows
 close all
-fprintf('Done...\n');
+fprintf('Done.\n');
 % change to old directory
 cd(currentDir);
