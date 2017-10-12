@@ -94,10 +94,6 @@ downloadModelZipFile('Recon2.v04.mat', 'https://vmh.uni.lu/files/Recon2.v04.mat_
 downloadModelZipFile('cardiac_mit_glcuptake_atpmax.mat', 'https://wwwen.uni.lu/content/download/72949/917505/file/Human%20cardiac%20myocyte%20mitochondrial%20metabolic%20reconstruction_cardiac_mit_glcuptake_atpmax.mat.zip', ...
                      'printLevel', printLevel)
 
-% download Recon2 beta
-downloadModelZipFile('Recon-2.mat', 'https://webdav-r3lab.uni.lu/public/msp/Recon-2.zip', ...
-                     'printLevel', printLevel)
-
 % print sucess message
 if printLevel > 0
     fprintf(['   Done downloading models.\n']);

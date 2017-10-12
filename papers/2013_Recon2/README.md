@@ -6,5 +6,3 @@ The scripts in the folder `/papers/2013_Recon2` are relative to:
 >
 
 The publication can be downloaded from [here](https://www.nature.com/nbt/journal/v31/n5/full/nbt.2488.html).
-
-The model can be retrieved from [here](https://webdav-r3lab.uni.lu/public/msp/Recon-2.zip).
