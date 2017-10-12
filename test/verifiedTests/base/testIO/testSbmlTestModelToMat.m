@@ -38,7 +38,7 @@ for i = 1:size(modelfiles)
     end
     if ~isempty(regexp(modelfiles(i).name,'.*\.xml$'))
         copyfile([modeldir filesep, modelfiles(i).name],SBMLFolder);
-        models{end+1} = readCbModel([modelfiles(i).folder filesep modelfiles(i).name]);
+        models{end+1} = readCbModel([modeldir filesep modelfiles(i).name]);
         modelNames{end+1} = modelfiles(i).name;
     end
 end
