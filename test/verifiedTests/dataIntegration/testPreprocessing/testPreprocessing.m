@@ -22,7 +22,7 @@ cd(fileDir);
 model = createToyModelForPreProcessing();
 
 % load the gene Information.
-load ExpressionData
+load testData_ExpressionData
 
 %The initial expression data has a max for G2 of 6 ; G3 of 5 and G6/G7 of
 %5, so the resulting vector would be 6 5 5 -1 -1
