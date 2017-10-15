@@ -162,7 +162,7 @@ function initCobraToolbox()
         fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
     elseif status_curl == 0
         if ENV_VARS.printLevel
-            fprintf(' > Initializing and updating submodules ...');
+            fprintf(' > Initializing and updating submodules (this may take a while)...');
         end
 
         % temporary disable ssl verification
@@ -272,7 +272,7 @@ function initCobraToolbox()
     % Check that SBML toolbox is installed and accessible
     if ~exist('TranslateSBML', 'file')
         if ENV_VARS.printLevel
-            warning('SBML Toolbox not in Matlab path: COBRA Toolbox will be unable to read SBML files');
+            warning('libsbml binaries not on Matlab path: COBRA Toolbox will be unable to read/write SBML files');
         end
     else
         % Test the installation with:

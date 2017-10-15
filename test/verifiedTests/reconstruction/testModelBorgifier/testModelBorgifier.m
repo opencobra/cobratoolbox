@@ -32,7 +32,7 @@ Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'iIT341.xml
 % verify models are appropriate for comparison and test success
 fprintf('modelBorgifier: Testing Cmodel verification... ')
 try
-    Cmodel = verifyModelMB(Cmodel, 'keepName');
+    Cmodel = verifyModelBorg(Cmodel, 'keepName');
 catch
     fprintf('failed.\n')
     return
@@ -47,7 +47,7 @@ assert(isfield(Cmodel, 'rxnID'))
  
 fprintf('modelBorgifier: Testing Tmodel verification... ')
 try
-    Tmodel = verifyModelMB(Tmodel, 'keepName');
+    Tmodel = verifyModelBorg(Tmodel, 'keepName');
 catch
     fprintf('failed.\n')
     return
@@ -100,7 +100,7 @@ load('testModelBorgifierData.mat');
 % merge models (based off of loaded match arrays) and test success
 fprintf('modelBorgifier: Testing model merging and extraction... ')
 try
-    [TmodelC, Cspawn, Stats] = mergeModels(Cmodel, Tmodel, rxnList, metList, Stats, score);
+    [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats, score);
 catch
     fprintf('failed.\n')
     return

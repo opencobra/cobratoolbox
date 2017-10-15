@@ -14,35 +14,30 @@ function [baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseM
 %    uniqueMetNames:       Unique metabolite names (w/o comp symbol)
 %    uniqueCompSymbols:    Unique compartment symbols
 %
-% Metabolite names should describe the compartment assignment in either the
-% form "metName[compName]" or "metName(compName)"
+% Metabolite names should describe the compartment assignment in the
+% form "metName[compName]" 
 %
 % .. Author: - Markus Herrgard 10/4/06
-
-uniqueCompSymbols = {};
-uniqueMetNames = {};
-for metNo = 1:length(metNames)
-    metName = metNames{metNo};
-    if (~isempty(regexp(metName,'\[')))
-        [tokens,tmp] = regexp(metName,'(.+)\[(.+)\]','tokens','match');
-    else
-        [tokens,tmp] = regexp(metName,'(.+)\((.+)\)','tokens','match');
-    end
-    if ~isempty(tokens)
-        compSymbol = tokens{1}{2};
-        baseMetName = tokens{1}{1};
-    else
-        compSymbol = '';
-        baseMetName = metName;
-    end
-    compSymbols{metNo} = compSymbol;
-    baseMetNames{metNo} = baseMetName;
+%            - Thomas Pfau Speedup and cleanup Oct 2017
+if ~iscell(metNames)
+    metNames = {metNames};
 end
 
-% Get the list of unique compartment symbols and unique metabolite base
-% names
-uniqueCompSymbols = columnVector(unique(compSymbols));
-uniqueMetNames = columnVector(unique(baseMetNames));
-
-compSymbols = columnVector(compSymbols);
-baseMetNames = columnVector(baseMetNames);
+try
+    data = cellfun(@(x) regexp(x,'^(?<metNames>.*)\[(?<compSymbols>[^\[*])\]$','names'),metNames);
+catch
+    %If the above doesn't work, its likely, that we either have an odd
+    %compartment symbol (e.g. (), or that we have a non compartmented
+    %entry.
+    %Lets see if we have a ()compartment symbol
+    try
+        data = cellfun(@(x) regexp(x,'^(?<metNames>.*)\((?<compSymbols>[^\[*])\)$','names'),metNames);
+    catch
+        %No, we don't lets assume, we only have a metabolite name
+        data = cellfun(@(x) regexp(x,'^(?<metNames>.*)[\(\[]*(?<compSymbols>.*)[^\[\(]*[\]\)]*$','names'),metNames);
+    end
+end
+baseMetNames = columnVector({data.metNames});
+compSymbols = columnVector({data.compSymbols});
+uniqueCompSymbols = unique(compSymbols);
+uniqueMetNames = unique(baseMetNames);

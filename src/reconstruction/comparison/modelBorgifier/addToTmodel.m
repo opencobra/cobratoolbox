@@ -1,6 +1,6 @@
 function [TmodelC, Cmodel] = addToTmodel(Cmodel, Tmodel, rxnList, metList, varargin)
 % Adds reactions and info from a comparison model into the
-% master template database, `Tmodel`. Called by `mergeModels`, calls `cleanTmodel`
+% master template database, `Tmodel`. Called by `mergeModelsBorg`, calls `cleanTmodel`
 %
 % USAGE:
 %

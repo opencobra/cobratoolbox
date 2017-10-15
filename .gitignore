@@ -123,3 +123,6 @@ docs/source/tutorials/tutorial*.rst
 # temporary folder
 .tmp/
 output/
+
+# directory for windows when rmdir fails
+test/verifiedTests/base/testIO/m_model_collection

@@ -1,6 +1,6 @@
 function Stats = TmodelStats(Tmodel, varargin)
 % Provides information on `Tmodel`. Can also be used on a normal
-% model. Called  by `mergeModels`, calls `TmodelFields`.
+% model. Called  by `mergeModelsBorg`, calls `TmodelFields`.
 %
 % USAGE:
 %

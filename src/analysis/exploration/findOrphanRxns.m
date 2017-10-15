@@ -14,6 +14,7 @@ function orphans = findOrphanRxns(model)
 %
 % .. Author: - Jeff Orth 4/15/09
 
-rxns = find(strcmp('',model.grRules));
+
+rxns = find(strcmp('',model.rules));
 [selExc,selUpt] = findExcRxns(model,true,false);
 orphans = model.rxns(setdiff(rxns,find(selExc)));

@@ -27,13 +27,20 @@ if isempty(SOLVERS)
     ENV_VARS.printLevel = true;
 end
 
+% print a message of incompatibility
+compatibleStatus = isCompatible('ibm_cplex', 1);
+
+if compatibleStatus ~= 1
+    warning('As the ibm_cplex interface, the generated MEX file might not be compatible.');
+end
+
 if nargin < 1 || isempty(rootPathCPLEX)
     % Set the CPLEX file path
     index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
     rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
 end
 
-cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel);
+cplexVersion = getCobraSolverVersion('ibm_cplex', printLevel, rootPathCPLEX);
 
 % save the userpath
 originalUserPath = path;

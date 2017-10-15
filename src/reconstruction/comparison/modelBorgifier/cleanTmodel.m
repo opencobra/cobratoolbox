@@ -1,6 +1,6 @@
 function Tmodel = cleanTmodel(Tmodel, varargin)
 % Reorganizes and checks `Tmodel` for completeness. To be used
-% immediately after `addToTmodel`. Called by `addToTmodel`, `mergeModels`, `mergeTrxns`, calls `TmodelFields`, `buildRxnEquations`, `removeDuplicateNames`, `makeNamesUnique`, `charpos`, `removeProblematicCharacters`.
+% immediately after `addToTmodel`. Called by `addToTmodel`, `mergeModelsBorg`, `mergeTrxns`, calls `TmodelFields`, `buildRxnEquations`, `removeDuplicateNames`, `makeNamesUnique`, `charpos`, `removeProblematicCharacters`.
 %
 % USAGE:
 %

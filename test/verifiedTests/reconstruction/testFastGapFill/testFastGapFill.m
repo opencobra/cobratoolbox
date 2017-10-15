@@ -46,59 +46,49 @@ assert(sum(cellfun(@(s) ~isempty(strfind('A[c]', s)), translated_model.mets)) ==
 
 %Test SUX creation
 modelFull = readCbModel(modelFile);
-changeCobraSolver('glpk');
-if ~exist('modelFull.subSystems') || length(modelFull.subSystems) ~= length(modelFull.rxnNames)
-    modelFull.subSystems = repmat({''},size(modelFull.rxns));
-end
-if ~exist('modelFull.genes')    
-    modelFull.genes = {};
-end
-if ~exist('modelFull.rxnGeneMat')
-    modelFull.rxnGeneMat = false(0,length(modelFull.rxnNames));
-end
-if ~exist('modelFull.grRules')
-    modelFull.grRules = repmat({''},size(modelFull.rxns));
-end
-[modelConsistent, ~] = identifyBlockedRxns(modelFull, 1e-4);
+solverOK = changeCobraSolver('glpk');
+if solverOK
+    if ~exist('modelFull.subSystems') || length(modelFull.subSystems) ~= length(modelFull.rxnNames)
+        modelFull.subSystems = repmat({''},size(modelFull.rxns));
+    end
+    if ~exist('modelFull.genes')
+        modelFull.genes = {};
+    end
+    if ~exist('modelFull.rxnGeneMat')
+        modelFull.rxnGeneMat = false(0,length(modelFull.rxnNames));
+    end
+    if ~exist('modelFull.grRules')
+        modelFull.grRules = repmat({''},size(modelFull.rxns));
+    end
+    [modelConsistent, ~] = identifyBlockedRxns(modelFull, 1e-4);
 
-MatricesSUX = generateSUXComp(modelConsistent, dictionary, dbFile, [], listCompartments);
+    MatricesSUX = generateSUXComp(modelConsistent, dictionary, dbFile, [], listCompartments);
 
-rxnCount = length(MatricesSUX.rxns);
-metCount = length(MatricesSUX.mets);
-assert(rxnCount == 23 && metCount == 14);
+    rxnCount = length(MatricesSUX.rxns);
+    metCount = length(MatricesSUX.mets);
+    assert(rxnCount == 23 && metCount == 14);
+end
 
 %test solver packages
-solverPkgs = {'tomlab_cplex', 'ibm_cplex'};
+solverPkgs = {'ibm_cplex'};
 
 for k = 1:length(solverPkgs)
 
-        fprintf('   Running testFastGapFill using %s ... ', solverPkgs{k});
+    fprintf('   Running testFastGapFill using %s ... ', solverPkgs{k});
 
-        solverOK  = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverOK  = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
-        if solverOK
+    if solverOK
+        %Test full FastGapFill
+        [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictFile, [], 'test_sampleWeights.tsv', true, [], [], listCompartments);
 
-            % FASTCORE functions must have the CPLEX library included in order to run
-            if ~strcmp(solverPkgs{k}, 'ibm_cplex')
-                addpath(genpath(ILOG_CPLEX_PATH));
-            end
+        assert(sum(cellfun(@(s) ~isempty(strfind('RXN1013', s)), AddedRxns.rxns)) == 1)
 
-            %Test full FastGapFill
-            [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictFile, [], 'test_sampleWeights.tsv', true, [], [], listCompartments);
+        delete KEGGMatrix.mat;
+    end
 
-            assert(sum(cellfun(@(s) ~isempty(strfind('RXN1013', s)), AddedRxns.rxns)) == 1)
-
-            delete KEGGMatrix.mat;
-
-            % FASTCORE functions must have the CPLEX library included in order to run
-            if ~strcmp(solverPkgs{k}, 'ibm_cplex')
-                rmpath(genpath(ILOG_CPLEX_PATH));
-            end
-        end
-
-        % print a success message
-        fprintf('Done.\n')
-    
+    % print a success message
+    fprintf('Done.\n')
 end
 
 % change the directory

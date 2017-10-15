@@ -28,9 +28,10 @@ testdir = fileparts(which('testConnectedComponents.m'));
 cd(testdir)
 
 IPT = 'Image Processing Toolbox';
+IPT_Lic = 'Image_Toolbox';
 v = ver;
 
-if ~any(strcmp(IPT, {v.Name})) || ~license('test', IPT)
+if ~any(strcmp(IPT, {v.Name})) || ~license('test', IPT_Lic)
     warning([IPT, ' is not installed or not licensed. Aborting test.'])
 else
     model = createToyModelForConnectedComponentAnalysis();

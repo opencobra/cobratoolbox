@@ -155,9 +155,9 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
                 genePos{1} = pos;
                 geneSets{1} = geneNames(pos);
             else
-                for i = 1:numel(dnfNode.children)
-                    geneSets = cell(numel(dnfNode.children),1);
-                    genePos = cell(numel(dnfNode.children),1);
+                geneSets = cell(numel(dnfNode.children),1);
+                genePos = cell(numel(dnfNode.children),1);
+                for i = 1:numel(dnfNode.children)                    
                     childliterals = dnfNode.children(i).getLiterals();
                     pos = cellfun(@str2num, childliterals);
                     genePos{i} = pos;

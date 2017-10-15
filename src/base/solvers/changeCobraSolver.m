@@ -344,45 +344,34 @@ end
 
 solverOK = false;
 
-switch solverName
-    case {'lindo_old', 'lindo_legacy'}
-        solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
-    case 'glpk'
-        solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
-    case 'mosek'
-        solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
-    case {'tomlab_cplex', 'tomlab_snopt'}
-        solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
-    case 'cplex_direct'
-        if ~verLessThan('matlab', '8.4')
-            if printLevel > 0
-                fprintf(' > The cplex_direct is incompatible with this version of MATLAB, please downgrade or change solver.\n');
-            end
-        else
+% determine the compatibility status
+compatibleStatus = isCompatible(solverName, printLevel);
+
+if compatibleStatus == 1 || compatibleStatus == 2
+    switch solverName
+        case {'lindo_old', 'lindo_legacy'}
+            solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
+        case 'glpk'
+            solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
+        case 'mosek'
+            solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
+        case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
-        end
-    case 'ibm_cplex'
-        if (~verLessThan('matlab', '9.0') && isempty(strfind(ILOG_CPLEX_PATH, '1271'))) || ispc && (~verLessThan('matlab', '9.0') && ~isempty(strfind(ILOG_CPLEX_PATH, '1271')))  % 2016b
-            if printLevel > 0
-                fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
-            end
-        else
+        case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
             catch ME
                 solverOK = false;
             end
-        end
-        if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
-            warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
-        end
-    case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
-        solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
-    case 'gurobi'
-        solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
-    case {'quadMinos', 'dqqMinos'}
-        if isunix
+            if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
+                warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
+            end
+        case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
+            solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
+        case 'gurobi'
+            solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
+        case {'quadMinos', 'dqqMinos'}
             [stat, res] = system('which csh');
             if ~isempty(res) && stat == 0
                 if strcmp(solverName, 'dqqMinos')
@@ -396,9 +385,7 @@ switch solverName
                     error(['You must have `csh` installed in order to use `', solverName, '`.']);
                 end
             end
-        end
-    case 'opti'
-        if verLessThan('matlab', '8.4')
+        case 'opti'
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
                 availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
@@ -408,11 +395,11 @@ switch solverName
                     return;
                 end
             end
-        end
-    case 'matlab'
-        solverOK = true;
-    otherwise
-        error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
+        case 'matlab'
+            solverOK = true;
+        otherwise
+            error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
+    end
 end
 
 % set solver related global variables

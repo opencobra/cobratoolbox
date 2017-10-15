@@ -1,13 +1,13 @@
-function Model = verifyModelMB(Model, varargin)
+function Model = verifyModelBorg(Model, varargin)
 % Ensures that a model is in the correct format to be analyzed
 % by any of the scripts in the `Tmodel` suite. It will add fields that are
 % missing and expected for comparison. It will remove fields not in this list.
 % Called by  `driveModelBorgifier`, calls `TmodelFields`, `fixNames`, `removeDuplicateNames`,
-% `makeNamesUnique`, `buildRxnEquations`, `fixChemFormulas`, `orderModelFields`, `organizeModelCool`.
+% `makeNamesUnique`, `buildRxnEquations`, `fixChemFormulas`, `orderModelFieldsBorg`, `organizeModelCool`.
 %
 % USAGE:
 %
-%    Model = verifyModel(Model)
+%    Model = verifyModelBorg(Model)
 %
 % INPUTS:
 %    Vmodel:        Model from `readCbModel` or any of the `readModel` functions.
@@ -322,5 +322,5 @@ while needModelName
 end
 
 %% Reorder fields and organize model based on most common mets.
-Model = orderModelFields(Model);
+Model = orderModelFieldsBorg(Model);
 Model = organizeModelCool(Model);
