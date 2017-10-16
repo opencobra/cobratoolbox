@@ -15,31 +15,19 @@ cd(fileDir);
 
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
-selectedRxns = model.rxns(1);
-target = model.rxns(2);
-deletions = model.rxns(3);
 modelRed = reduceModel(model);
+selectedRxns = modelRed.rxns(20);
+target = modelRed.rxns(20);
+deletions = modelRed.rxns(60:87);
 
 % function outputs
-% requires Global Optimization Toolbox
 % function operates on a not full rank matrix and therefore cannot end without an error
-changeCobraSolver('gurobi', 'QP')
-try
-    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
-catch ME
-    assert(length(ME.message) > 0)
-end
-try
-    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, '');
-catch ME
-    assert(length(ME.message) > 0)
-end
+changeCobraSolver('gurobi', 'QP');
+
+[improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions)
+
 for i=2:9
-  try
-      [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, i, i);
-  catch ME
-      assert(length(ME.message) > 0)
-  end
+      [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, i, i)
 end
 
 % change to old directory
