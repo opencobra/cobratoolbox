@@ -357,7 +357,7 @@ else
             error(['The above metabolites are present both without compartment identifier and with id in the cytosol.\n',...
                   'Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!']);
         end
-    en and read like this again.
+    end
     metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets),'UniformOutput',false);
 
     %now reorder them and assign names to the ids.
