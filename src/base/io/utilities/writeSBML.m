@@ -34,6 +34,38 @@ end
 if nargin<2
     fileName='output';
 end
+
+%For IDs which are converted to SBML IDs check whether they have the
+%appropriate format:
+if any(cellfun(@isempty, regexp(convertSBMLID(model.mets),'^[_a-zA-Z]')))
+    %If any ID does not start with letter or _, add M_
+    metabolitePrefix = 'M_';
+else
+    metabolitePrefix = '';
+end
+
+if any(cellfun(@isempty, regexp(convertSBMLID(model.rxns),'^[_a-zA-Z]')))
+    %If any ID does not start with letter or _, add M_
+    reactionPrefix = 'R_';
+else
+    reactionPrefix = '';
+end
+
+if any(cellfun(@isempty, regexp(convertSBMLID(model.genes),'^[_a-zA-Z]')))
+    %If any ID does not start with letter or _, add M_
+    genePrefix = 'G_';
+else
+    genePrefix = '';
+end
+
+if any(cellfun(@isempty, regexp(convertSBMLID(model.comps),'^[_a-zA-Z]')))
+    %If any ID does not start with letter or _, add M_
+    compPrefix = 'C_';
+else
+    compPrefix = '';
+end
+
+
 % % debug_function=0; % implement SBML toolbox's debug function
 % five types of funcitons for initilising the variables
 
@@ -251,7 +283,7 @@ tmp_metCompartment = {};
 [tokens tmp_met_struct] = regexp(model.mets,'(?<met>.+)\[(?<comp>.+)\]','tokens','names'); % add the third type for parsing the string such as "M_10fthf5glu_c"
 %if we have any compartment, we will use unknown as compartment ID for
 %metabolites without compartment.
-if any(cellfun(@isempty, tmp_met_struct))
+if any(~cellfun(@isempty, tmp_met_struct))
     unknownComp = 'u';
 else
     unknownComp = 'c';
@@ -287,22 +319,7 @@ sbmlModel.species=tmp_species;
 %% Metabolites
 for i=1:size(model.mets, 1)
     tmp_notes='';
-    if  ~isempty(tmp_met_struct{i})          % If there are metabolites without compartment.
-        tmp_met = tmp_met_struct{i}.met;
-    else
-        tmp_met = model.mets{i};
-    end
-    
-    if isempty(tmp_met_struct{i})
-        %Change id to correspond to SBML id specifications
-        tmp_met = strcat('M_', (tmp_met), '_', unknownComp);
-    else
-        tmp_met = strcat('M_', (tmp_met), '_', tmp_met_struct{i}.comp);
-    end
-    
-    tmp_met= convertSBMLID(tmp_met);
-    %     model.mets{ i } = convertSBMLID(tmp_met); % remove illegal symbols
-    %     tmp_species.id = convertSBMLID(tmp_met);  % remove illegal symbols
+    tmp_met = strcat(metabolitePrefix,  convertSBMLID(model.mets{i}));                    
     if isfield(model, 'metNames')
         tmp_metName = (model.metNames{i});
     else
@@ -339,16 +356,16 @@ for i=1:size(model.mets, 1)
         tmp_Sboterm = defaultSboTerm;
     end
     %% here notes can be formulated to include more annotations.
-    tmp_species.id=convertSBMLID(tmp_met);
+    tmp_species.id=tmp_met;
     tmp_species.metaid = tmp_species.id;
     tmp_species.name=tmp_metName;
     tmp_species.sboTerm = tmp_Sboterm;
     try
-        tmp_species.compartment=convertSBMLID(tmp_met_struct{i}.comp);
+        tmp_species.compartment=[compPrefix, convertSBMLID(tmp_met_struct{i}.comp)];
         %% Clean up the species names
         tmp_metCompartment{ i } = convertSBMLID(tmp_met_struct{i}.comp); % remove illegal symbols
     catch   % if no compartment symbol is found in the metabolite names
-        tmp_species.compartment=convertSBMLID(unknownComp);
+        tmp_species.compartment=[compPrefix, convertSBMLID(unknownComp)];
         %% Clean up the species names
         tmp_metCompartment{ i } = unknownComp; % remove illegal symbols
     end
@@ -420,10 +437,11 @@ tmp_compartment=struct('typecode','SBML_COMPARTMENT',...
     'level',defaultLevel,...
     'version',defaultVersion);
 
+convertedComps = convertSBMLID(model.comps);
 for i=1:size(tmp_metCompartment,2)
     if ~isempty(tmp_metCompartment) % in the case of an empty model
         tmp_id = convertSBMLID(tmp_metCompartment{1,i});
-        tmp_symbol_index = find(strcmp(convertSBMLID(model.comps),tmp_id));
+        tmp_symbol_index = find(strcmp(convertedComps,tmp_id));
         %Check that symbol is in compSymbolList
         if ~isempty(tmp_symbol_index)
             tmp_name = model.compNames{tmp_symbol_index};
@@ -436,8 +454,8 @@ for i=1:size(tmp_metCompartment,2)
         
         %    sbmlModel = Model_addCompartment(sbmlModel, sbml_tmp_compartment);
         
-        tmp_compartment.id=tmp_id;
-        tmp_compartment.metaid = tmp_id;
+        tmp_compartment.id= [compPrefix, tmp_id];
+        tmp_compartment.metaid = tmp_compartment.id;
         tmp_compartment.name=tmp_name;
         tmp_compartment.annotation = makeSBMLAnnotationString(model,tmp_compartment.metaid,'comp',i);
     end
@@ -660,7 +678,7 @@ model.genes = cellfun(@convertSBMLID,model.genes,'UniformOutput',0);
 %this is always possible, and now we have acceptable gene IDs.
 model = creategrRulesField(model);
 for i=1:size(model.rxns, 1)
-    tmp_rxnID =  strcat('R_', convertSBMLID(model.rxns{i}));
+    tmp_rxnID =  strcat(reactionPrefix, convertSBMLID(model.rxns{i}));
     tmp_Rxn.metaid = tmp_rxnID;
     [tmp_Rxn.annotation,rxn_notes] = makeSBMLAnnotationString(model,tmp_Rxn.metaid,'rxn',i);
     tmp_note = emptyChar;
