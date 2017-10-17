@@ -358,6 +358,10 @@ end
 if all(~cellfun(@isempty, regexp(model.rxns,'^R_')))
     model.rxns= regexprep(model.rxns,'^R_','');
 end
+%And Gene IDs
+if all(~cellfun(@isempty, regexp(model.rxns,'^G_')))
+    model.rxns= regexprep(model.rxns,'^G_','');
+end
 
 %And convert the IDs from SBML.
 model.mets = cellfun(@(x) convertSBMLID(x,false),model.mets,'UniformOutput',0);

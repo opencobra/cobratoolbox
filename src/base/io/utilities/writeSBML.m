@@ -762,8 +762,8 @@ GeneProductAnnotations = {'gene',{'isEncodedBy','encoder'},'protein',{}};
 
 if isfield(model,'genes')
     for i=1:length(model.genes)
-        tmp_fbc_geneProduct.fbc_id=convertSBMLID(model.genes{i}); % This is a modified ID already.
-        tmp_fbc_geneProduct.metaid=convertSBMLID(model.genes{i});
+        tmp_fbc_geneProduct.fbc_id=['G_' convertSBMLID(model.genes{i})]; % This is a modified ID already.
+        tmp_fbc_geneProduct.metaid=['G_' convertSBMLID(model.genes{i})];
         if isfield(model,'geneNames')
             tmp_fbc_geneProduct.fbc_label=model.geneNames{i};
         else
