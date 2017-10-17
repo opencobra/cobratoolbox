@@ -500,6 +500,7 @@ end
 
 %Gene IDS:
 geneIDs = {sbmlModel.fbc_geneProduct.fbc_id};
+getGeneID = @(x) geneIDs{str2num(x)};
 
 %% Reaction
 
@@ -746,16 +747,15 @@ for i=1:size(model.rxns, 1)
         end
     end
     %% grRules
-    getGeneID = @(x) geneIDs{str2num(x)};
     if isfield(model, 'rules') %we will create the logic from the rules field.                
-        sbml_tmp_grRules= model.rules(i);
+        sbml_tmp_grRules= model.rules{i};
         %now, replace all occurences of | by or and & by and
         sbml_tmp_grRules = strrep(sbml_tmp_grRules,'|','or');
         sbml_tmp_grRules = strrep(sbml_tmp_grRules,'&','and');
         %and replace all x([0-9]+) occurences by their corresponding gene
         %ID
-        sbml_tmp_grRules = regexprep(sbml_tmp_grRules,'x\(([0-9]+\)','${getGeneID($1)}');
-        tmp_Rxn.fbc_geneProductAssociation.fbc_association.fbc_association=sbml_tmp_grRules{1};
+        sbml_tmp_grRules = regexprep(sbml_tmp_grRules,'x\(([0-9]+)\)','${getGeneID($1)}');
+        tmp_Rxn.fbc_geneProductAssociation.fbc_association.fbc_association=sbml_tmp_grRules;
     end
     
     if defaultFbcVersion==2 % in the cae of FBCv2
