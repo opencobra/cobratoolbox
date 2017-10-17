@@ -456,6 +456,51 @@ end
 % %     end
 % % end
 
+%% Genes
+%% geneProduct, i.e., list of genes in the SBML file, which are stored in the <fbc:listOfGeneProducts> attribute
+tmp_fbc_geneProduct=struct('typecode','SBML_FBC_GENE_PRODUCT',...
+    'metaid',emptyChar,... % 'ss'
+    'notes',emptyChar,...
+    'annotation',emptyChar,...
+    'sboTerm',defaultSboTerm,...
+    'fbc_id',emptyChar,...
+    'fbc_name',emptyChar,...
+    'fbc_label',emptyChar,...
+    'fbc_associatedSpecies',emptyChar,...
+    'level',defaultLevel,...
+    'version',defaultVersion,...
+    'fbc_version',defaultFbcVersion);
+
+sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct; % generate an default empty fbc_geneProduct field for the libSBML matlab structure
+
+GeneProductAnnotations = {'gene',{'isEncodedBy','encoder'},'protein',{}};
+
+if isfield(model,'genes')
+    for i=1:length(model.genes)
+        tmp_fbc_geneProduct.fbc_id=['G_' convertSBMLID(model.genes{i})]; % This is a modified ID already.
+        tmp_fbc_geneProduct.metaid=['G_' convertSBMLID(model.genes{i})];
+        if isfield(model,'geneNames')
+            tmp_fbc_geneProduct.fbc_label=model.geneNames{i};
+        else
+            tmp_fbc_geneProduct.fbc_label=model.genes{i};
+        end
+        
+        if isfield(model,'proteins')
+            tmp_fbc_geneProduct.fbc_name = model.proteins{i};
+        end
+        
+        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
+        if i==1
+            sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;
+        else
+            sbmlModel.fbc_geneProduct=[sbmlModel.fbc_geneProduct,tmp_fbc_geneProduct];
+        end
+    end
+end
+
+%Gene IDS:
+geneIDs = {sbmlModel.fbc_geneProduct.fbc_id};
+
 %% Reaction
 
 % % % % % % sbml_tmp_parameter.units = reaction_units;
@@ -701,9 +746,15 @@ for i=1:size(model.rxns, 1)
         end
     end
     %% grRules
-    
-    if isfield(model, 'grRules')
-        sbml_tmp_grRules= model.grRules(i);
+    getGeneID = @(x) geneIDs{str2num(x)};
+    if isfield(model, 'rules') %we will create the logic from the rules field.                
+        sbml_tmp_grRules= model.rules(i);
+        %now, replace all occurences of | by or and & by and
+        sbml_tmp_grRules = strrep(sbml_tmp_grRules,'|','or');
+        sbml_tmp_grRules = strrep(sbml_tmp_grRules,'&','and');
+        %and replace all x([0-9]+) occurences by their corresponding gene
+        %ID
+        sbml_tmp_grRules = regexprep(sbml_tmp_grRules,'x\(([0-9]+\)','${getGeneID($1)}');
         tmp_Rxn.fbc_geneProductAssociation.fbc_association.fbc_association=sbml_tmp_grRules{1};
     end
     
@@ -742,46 +793,7 @@ for i=1:size(model.rxns, 1)
     
 end
 
-%% geneProduct, i.e., list of genes in the SBML file, which are stored in the <fbc:listOfGeneProducts> attribute
-tmp_fbc_geneProduct=struct('typecode','SBML_FBC_GENE_PRODUCT',...
-    'metaid',emptyChar,... % 'ss'
-    'notes',emptyChar,...
-    'annotation',emptyChar,...
-    'sboTerm',defaultSboTerm,...
-    'fbc_id',emptyChar,...
-    'fbc_name',emptyChar,...
-    'fbc_label',emptyChar,...
-    'fbc_associatedSpecies',emptyChar,...
-    'level',defaultLevel,...
-    'version',defaultVersion,...
-    'fbc_version',defaultFbcVersion);
 
-sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct; % generate an default empty fbc_geneProduct field for the libSBML matlab structure
-
-GeneProductAnnotations = {'gene',{'isEncodedBy','encoder'},'protein',{}};
-
-if isfield(model,'genes')
-    for i=1:length(model.genes)
-        tmp_fbc_geneProduct.fbc_id=['G_' convertSBMLID(model.genes{i})]; % This is a modified ID already.
-        tmp_fbc_geneProduct.metaid=['G_' convertSBMLID(model.genes{i})];
-        if isfield(model,'geneNames')
-            tmp_fbc_geneProduct.fbc_label=model.geneNames{i};
-        else
-            tmp_fbc_geneProduct.fbc_label=model.genes{i};
-        end
-        
-        if isfield(model,'proteins')
-            tmp_fbc_geneProduct.fbc_name = model.proteins{i};
-        end
-        
-        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
-        if i==1
-            sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;
-        else
-            sbmlModel.fbc_geneProduct=[sbmlModel.fbc_geneProduct,tmp_fbc_geneProduct];
-        end
-    end
-end
 
 %Set the objective sense of the FBC objective according to the osenseStr in
 %the model.
@@ -859,3 +871,4 @@ if defaultFbcVersion==2
 end
 OutputSBML(sbmlModel,fileName,1,0,[1,0]);
 end
+
