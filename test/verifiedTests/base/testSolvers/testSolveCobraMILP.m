@@ -102,6 +102,26 @@ for k = 1:length(solverPkgs)
                 delete(['testIBMcplexMILPparam' num2str(jTest) '.log']);
             end
         end
+        
+        % check additional parameters for Gurobi 
+        if strcmp(solverPkgs{k}, 'gurobi6')
+            sol = solveCobraMILP(MILPproblem, struct('TimeLimit',0));
+            assert(strcmp(sol.origStat, 'TIME_LIMIT'))
+            
+            diary testGurobiMipStart.txt
+            sol = solveCobraMILP(MILPproblem, 'printLevel', 1);
+            diary off
+            text = '';
+            f = fopen('testGurobiMipStart.txt', 'r');
+            l = fgets(f);
+            while ~isequal(l, -1)
+                text = [text, l];
+                l = fgets(f);
+            end
+            fclose(f);
+            assert(~isempty(strfind(text, 'Loaded MIP start')))
+            delete('testGurobiMipStart.txt')
+        end
     end
 
     % output a success message
