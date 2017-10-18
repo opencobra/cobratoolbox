@@ -134,7 +134,7 @@ selPts = selPts(1:nPoints);
 
 plot(sample(id1, selPts),sample(id2, selPts), 'r.');
 set(gca, 'YTickLabel', []);
-set(gca,' XTickLabel', []);
+set(gca, 'XTickLabel', []);
 maxx = max(sample(id1, :));
 maxy = max(sample(id2, :));
 minx = min(sample(id1, :));
