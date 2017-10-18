@@ -319,8 +319,8 @@ switch solver
         end
 
         % minimum intTol for gurobi = 1e-9
-        if solverParams.intTol<1e-9,
-            solverParams.intTol=1e-9
+        if solverParams.intTol<1e-9
+            solverParams.intTol = 1e-9;
         end
 
         opts.TimeLimit=solverParams.timeLimit;
@@ -501,7 +501,7 @@ switch solver
         MILPproblem.vtype = vartype;
         MILPproblem.modelsense = MILPproblem.osense;
         [MILPproblem.A,MILPproblem.rhs,MILPproblem.obj,MILPproblem.sense] = deal(sparse(MILPproblem.A),MILPproblem.b,double(MILPproblem.c),MILPproblem.csense);
-        if isfield(MILPproblem, 'x0') && ~isempty(x0)
+        if ~isempty(x0)
 			MILPproblem.start = x0;
 		end
         resultgurobi = gurobi(MILPproblem,params);
