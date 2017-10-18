@@ -193,6 +193,10 @@ xInt = [];
 xCont = [];
 f = [];
 
+if ~isfield(MILPproblem, 'x0')
+    MILPproblem.x0 = [];
+end
+
 [A, b, c, lb, ub, csense, osense, vartype, x0] = ...
     deal(MILPproblem.A, MILPproblem.b, MILPproblem.c, MILPproblem.lb, MILPproblem.ub, ...
     MILPproblem.csense, MILPproblem.osense, MILPproblem.vartype, MILPproblem.x0);
