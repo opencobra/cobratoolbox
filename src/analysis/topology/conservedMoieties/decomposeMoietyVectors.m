@@ -48,7 +48,7 @@ while rp > 0 % Iterate since decomposed moiety vectors might themselves be decom
         P.osense = 1;
         P.csense = [repmat('E', 2*size(Np,2) + length(c), 1); 'L'; 'G'; 'G'];
         P.vartype = repmat('I', size(P.A,2), 1);
-        P.x0 = suma*[c; c];
+        P.x0 = suma(:);
 
         % Run MILP
         solution = solveCobraMILP(P);
