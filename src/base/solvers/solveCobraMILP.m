@@ -506,8 +506,8 @@ switch solver
         MILPproblem.modelsense = MILPproblem.osense;
         [MILPproblem.A,MILPproblem.rhs,MILPproblem.obj,MILPproblem.sense] = deal(sparse(MILPproblem.A),MILPproblem.b,double(MILPproblem.c),MILPproblem.csense);
         if ~isempty(x0)
-			MILPproblem.start = x0;
-		end
+            MILPproblem.start = x0;
+        end
         resultgurobi = gurobi(MILPproblem,params);
 
         stat = resultgurobi.status;

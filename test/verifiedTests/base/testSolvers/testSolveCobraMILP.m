@@ -24,7 +24,7 @@ solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
 tol = 1e-8;
 
 for k = 1:length(solverPkgs)
-    fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
+    fprintf('   Running solveCobraMILP using %s ... ', solverPkgs{k});
 
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
@@ -51,13 +51,18 @@ for k = 1:length(solverPkgs)
             parameters.relMipGapTol = 1e-12;
             parameters.intTol = 1e-12;
             MILPsolution = solveCobraMILP(MILPproblem, parameters);
+            % check if MILP can be solved without x0 supplied
+            MILPsolution2 = solveCobraMILP(rmfield(MILPproblem, 'x0'), parameters);
         else
             MILPsolution = solveCobraMILP(MILPproblem);
+            % check if MILP can be solved without x0 supplied
+            MILPsolution2 = solveCobraMILP(rmfield(MILPproblem, 'x0'));
         end
 
         % check results with expected answer.
         assert(all(abs(MILPsolution.int - [0; 31; 46]) < tol))
         assert(abs(MILPsolution.obj - 554) < tol)
+        assert(abs(MILPsolution2.obj - 554) < tol)
 
         if strcmp(solverPkgs{k}, 'ibm_cplex')
             % test IBM-Cplex-specific parameters. Solve with the below parameters changed
@@ -103,24 +108,36 @@ for k = 1:length(solverPkgs)
             end
         end
         
-        % check additional parameters for Gurobi 
         if strcmp(solverPkgs{k}, 'gurobi6')
+            % check additional parameters for Gurobi 
+            % temporarily shut down warning
+            warning_stat = warning;
+            warning off
+            % test TimeLimit as a gurobi-specific parameter
             sol = solveCobraMILP(MILPproblem, struct('TimeLimit',0));
             assert(strcmp(sol.origStat, 'TIME_LIMIT'))
+            % restore previous warning state
+            warning(warning_stat)
             
-            diary testGurobiMipStart.txt
-            sol = solveCobraMILP(MILPproblem, 'printLevel', 1);
-            diary off
-            text = '';
-            f = fopen('testGurobiMipStart.txt', 'r');
-            l = fgets(f);
-            while ~isequal(l, -1)
-                text = [text, l];
-                l = fgets(f);
-            end
-            fclose(f);
-            assert(~isempty(strfind(text, 'Loaded MIP start')))
-            delete('testGurobiMipStart.txt')
+            % check user-supplied x0
+            MILPproblem.A = rand(10,20);
+            MILPproblem.b = 1000 * ones(10,1);
+            MILPproblem.c = zeros(20,1);
+            MILPproblem.lb = zeros(20,1);
+            MILPproblem.ub = ones(20,1);
+            MILPproblem.vartype = char(['C'*ones(1,10), 'B'*ones(1,10)]);
+            MILPproblem.csense = char('L' * ones(1, 10));
+            
+            % no objective function. The supplied should be the returned
+            % (if not everything becomes zero after presolve)
+            MILPproblem.x0 = zeros(20, 1);
+            sol = solveCobraMILP(MILPproblem);
+            assert(isequal(sol.full, MILPproblem.x0));
+            
+            MILPproblem.x0 = ones(20, 1);
+            sol = solveCobraMILP(MILPproblem);
+            assert(isequal(sol.full, MILPproblem.x0));
+            
         end
     end
 
