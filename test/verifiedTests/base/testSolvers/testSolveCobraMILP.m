@@ -17,6 +17,10 @@ currentDir = pwd;
 fileDir = fileparts(which('testSolveCobraMILP'));
 cd(fileDir);
 
+% save original solve
+global CBT_MILP_SOLVER;
+orig_solver = CBT_MILP_SOLVER;
+
 % test solver packages
 solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
 
@@ -145,11 +149,47 @@ for k = 1:length(solverPkgs)
     fprintf('Done.\n');
 end
 
+% test ibm_cplex output to command window
+solverOK = changeCobraSolver('ibm_cplex', 'MILP', 0);
+if solverOK
+    fprintf('Test ibm_cplex output to command window ...\n')
+    % solve without logToFile = 1
+    diary test_ibm_cplex_output_to_console1.txt
+    sol = solveCobraMILP(MILPproblem);
+    diary off
+    % read the diary, which should be empty
+    f = fopen('test_ibm_cplex_output_to_console1.txt', 'r');
+    l = fgets(f);
+    assert(isequal(l, -1))
+    fclose(f);
+    delete('test_ibm_cplex_output_to_console1.txt')
+    
+    % solve wit logToFile = 1
+    diary test_ibm_cplex_output_to_console2.txt
+    sol = solveCobraMILP(MILPproblem, 'logFile', 1);
+    diary off
+    % read the diary, which should be non-empty
+    f = fopen('test_ibm_cplex_output_to_console2.txt', 'r');
+    l = fgets(f);
+    line = 0;
+    while ~isequal(l, -1)
+        line = line + 1;
+        l = fgets(f);
+    end
+    fclose(f);
+    assert(line > 3)
+    delete('test_ibm_cplex_output_to_console2.txt')
+    fprintf('Test ibm_cplex output to command window ... Done\n')
+end
+
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, 'MILPProblem.mat'];
 if exist(fullFileNamePath, 'file') == 2
     delete(fullFileNamePath);
 end
+
+% change back to the original solver
+changeCobraSolver(orig_solver, 'MILP', 0);
 
 % change the directory
 cd(currentDir)
