@@ -395,10 +395,16 @@ switch solver
         cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
         cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
         
-        if printLevel < 3
+        
+        if isscalar(solverParams.logFile) && solverParams.logFile == 1
+            % allow print to command window by setting solverParams.logFile == 1
+            outputfile = 1;
+            logToConsole = true;
+        else
             outputfile = fopen(solverParams.logFile,'a');
-            cplexlp.DisplayFunc = @redirect;
+            logToConsole = false;
         end
+        cplexlp.DisplayFunc = @redirect;
 
         cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
         cplexlp.Param.mip.tolerances.absmipgap.Cur =  solverParams.absMipGapTol;
@@ -420,7 +426,7 @@ switch solver
         % Solve problem
         Result = cplexlp.solve();
         
-        if printLevel < 3
+        if ~logToConsole
             % Close the output file
             fclose(outputfile);
         end
