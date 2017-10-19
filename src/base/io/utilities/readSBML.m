@@ -473,8 +473,7 @@ if sbmlIDFlag
     %Easy, if this is an SBML with an FBC constraint string
     grRule = strrep(grRule,' and ',' & ');
     grRule = strrep(grRule,' or ',' | ');
-    ruleGenes = unique(regexp(grRule,'[A-Za-z_]+[A-Za-z0-9_]*','match')); %we can restict to acceptable SBML SIds.
-    
+    ruleGenes = unique(regexp(grRule,'[A-Za-z_]+[A-Za-z0-9_]*','match')); %we can restict to acceptable SBML SIds.    
 else
     %We will remove empty parenthesis.
     grRule = regexprep(grRule,'^ *\( *\) *$','');
@@ -501,10 +500,20 @@ ruleGenes = unique(ruleGenes);
 %now, replace every gene by its position
 for i = 1:numel(ruleGenes)
     if pres(iPos(i))
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(posDes(i)) ')$2']);
+        %We have to ensure, that this is really the gene and not just a
+        %substring. So, its either at the start or preceded by a
+        %separator or its at the end and preceded by a separator,
+        % or its on its own.
+        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ])'],['$1x(' num2str(posDes(i)) ')$2']);
+        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '([\( ])'],['x(' num2str(posDes(i)) ')$1']);
+        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['$1x(' num2str(posDes(i)) ')']);
+        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['x(' num2str(posDes(i)) ')']);
     else
         newGenes(end+1) = ruleGenes(iPos(i));
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(numel(newGenes)) ')$2']);
+        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ])'],['$1x(' num2str(numel(newGenes)) ')$2']);
+        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '([\( ])'],['x(' num2str(numel(newGenes)) ')$1']);
+        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['$1x(' num2str(numel(newGenes)) ')']);
+        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['x(' num2str(numel(newGenes)) ')']);        
     end
 end
 
