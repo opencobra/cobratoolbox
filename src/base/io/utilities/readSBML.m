@@ -467,6 +467,17 @@ if isempty(grRule)
     rule = '';
     return
 end
+%first, get all genes in this rule:
+tmp = regexprep(grRule,'\( *','('); %replace all spaces after opening parenthesis
+tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
+tmp = regexprep(tmp, '([ \)]) *(?i)(and) *', '$1 & ');
+tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
+
+ruleGenes = unique(regexp(grRule,'([^\(\)\|\&\ ]+)','match'))
+
+convertGenes = @(x) sprintf('%d', find(strcmp(x, genes)));
+
+rules = regexprep(tmp, , 'x(${convertGenes($0)})'); 
 
 %Convert the grRule to a boolean rule
 if sbmlIDFlag

@@ -18,17 +18,16 @@ function [model2] = generateRules(model)
 
 grRules = model.grRules;
 genes = model.genes;
-convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, genes)));
 model2 = model;
 
 for i = 1:length(grRules)
     if~isempty(grRules{i})
-        tmp = regexprep(grRules{i},'\( *','('); %replace all spaces after opening parenthesis
-        tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
-        tmp = regexprep(tmp, ' * (?i)(and) *', ' & ');
-        tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
-        rules = regexprep(tmp, '([^\(\)\|\&\ ]+)', '${convertGenes($0)}');
-        model2.rules{i,1} = rules;
+        [rule,~,newGenes] = parseGPR(model2.grRules{i},model2.genes);
+        if ~isempty(newGenes)
+            warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+            model2.genes = [model2.genes ; newGenes];
+        end
+        model2.rules{i,1} = rule;
     else
         model2.rules{i,1} = model.grRules{i};
     end
