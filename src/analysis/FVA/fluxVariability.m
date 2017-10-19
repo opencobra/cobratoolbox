@@ -220,8 +220,8 @@ if  any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
 else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
-minFlux = model.lb;
-maxFlux = model.ub;
+minFlux = model.lb(ismember(model.rxns,rxnNameList));
+maxFlux = model.ub(ismember(model.rxns,rxnNameList));
 if ~minNorm
     %We don't have to provide the solutions, so we can speed this up quiet
     %a bit.
