@@ -467,68 +467,7 @@ if isempty(grRule)
     rule = '';
     return
 end
-%first, get all genes in this rule:
-tmp = regexprep(grRule,'\( *','('); %replace all spaces after opening parenthesis
-tmp = regexprep(tmp,' *\)',')'); %replace all spaces before closing paranthesis.
-tmp = regexprep(tmp, '([ \)]) *(?i)(and) *', '$1 & ');
-tmp = regexprep(tmp, ' * (?i)(or) *', ' | ');
-
-ruleGenes = unique(regexp(grRule,'([^\(\)\|\&\ ]+)','match'))
-
-convertGenes = @(x) sprintf('%d', find(strcmp(x, genes)));
-
-rules = regexprep(tmp, , 'x(${convertGenes($0)})'); 
-
-%Convert the grRule to a boolean rule
-if sbmlIDFlag
-    %Easy, if this is an SBML with an FBC constraint string
-    grRule = strrep(grRule,' and ',' & ');
-    grRule = strrep(grRule,' or ',' | ');
-    ruleGenes = unique(regexp(grRule,'[A-Za-z_]+[A-Za-z0-9_]*','match')); %we can restict to acceptable SBML SIds.    
-else
-    %We will remove empty parenthesis.
-    grRule = regexprep(grRule,'^ *\( *\) *$','');
-    if isempty(grRule)
-        rule = '';
-        return
-    end
-    %Otherwise we will assume, that " and " and " or " are unique...
-    geneFields = regexp(grRule,'[ \)](and|or)[ \(]','split','ignorecase');
-    %Translate or and and to | and & 
-    grRule = regexprep(grRule,'([ \)])and([ \(])','$1&$2');
-    grRule = regexprep(grRule,'([ \)])or([ \(])','$1|$2');
-    %and we assume, that there are no spaces, and no paranthesis in a gene
-    %identifier.
-    ruleGenes = cellfun(@(x) regexp(x,'[^ \[\]\(\)\{\}]*','match'),geneFields);
-end
-%Only use each gene once.
-ruleGenes = unique(ruleGenes);
-[pres,pos] = ismember(ruleGenes,genes);
-
-%get descending order of genes
-[posDes, iPos] = sort(pos, 'descend');
-
-%now, replace every gene by its position
-for i = 1:numel(ruleGenes)
-    if pres(iPos(i))
-        %We have to ensure, that this is really the gene and not just a
-        %substring. So, its either at the start or preceded by a
-        %separator or its at the end and preceded by a separator,
-        % or its on its own.
-        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ])'],['$1x(' num2str(posDes(i)) ')$2']);
-        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '([\( ])'],['x(' num2str(posDes(i)) ')$1']);
-        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['$1x(' num2str(posDes(i)) ')']);
-        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['x(' num2str(posDes(i)) ')']);
-    else
-        newGenes(end+1) = ruleGenes(iPos(i));
-        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ])'],['$1x(' num2str(numel(newGenes)) ')$2']);
-        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '([\( ])'],['x(' num2str(numel(newGenes)) ')$1']);
-        grRule = regexprep(grRule,['([\(\) ])' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['$1x(' num2str(numel(newGenes)) ')']);
-        grRule = regexprep(grRule,['^' regexptranslate('escape',ruleGenes{iPos(i)}) '$'],['x(' num2str(numel(newGenes)) ')']);        
-    end
-end
-
-rule = grRule;
+[rule,newGenes] = parseGPR(grRule,genes);
 end
 
 

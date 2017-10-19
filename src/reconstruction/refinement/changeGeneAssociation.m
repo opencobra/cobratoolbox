@@ -50,55 +50,27 @@ end
 
 nGenes = length(model.genes);
 nGenesInit = nGenes;
-model.rules{rxnID} = '';
-% IT 01/2010 - this line caused problems for xls2model.m
+model.rules{rxnID,1} = '';
 if addRxnGeneMat ==1 
     model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
+end  
+    
+[rule,~,newGenes] = parseGPR(grRule,model.genes);
+if translateNamesFlag
+    [pres,pos] = ismember(newGenes,geneNameList);
+    newGenes = columnVector(systNameList(pres(pos)));
+end   
+    
+model.genes = [model.genes;newGenes];
+model.rules{rxnID,1} = rule;
+getGene = @(x) model.genes{str2num(x)};
+if addRxnGeneMat
+    res = regexp(model.rules{rxnID},'x\((?<ID>[0-9]+)\)','names');
+    pos = cellfun(@str2num , {res.ID});
+    model.rxnGeneMat(rxnID,pos) = true;
 end
 
-if (~isempty(grRule))
-    % Ronan & Stefan 13/9/2011 - moved this inside check if empty
-    % Remove extra white space
-    grRule = regexprep(grRule,'\s{2,}',' ');
-    grRule = regexprep(grRule,'( ','(');
-    grRule = regexprep(grRule,' )',')');
-    [genes,rule] = parseBoolean(grRule);
-    rule = regexprep(rule,'x\(([0-9]+)\)','x(#$1)');
-    for i = 1:length(genes)
-        if (translateNamesFlag)
-            % Translate gene names to systematic names
-            [isInList,translID] = ismember(genes{i},geneNameList);
-            if isInList
-                newGene = systNameList{translID};
-                grRule = regexprep(grRule,[genes{i} '$'],newGene);
-                grRule = regexprep(grRule,[genes{i} '\s'],[newGene ' ']);
-                grRule = regexprep(grRule,[genes{i} ')'],[newGene ')']);
-                genes{i} = newGene;
-            else
-                fprintf(['Gene name ' genes{i} ' not in translation list\n']);
-            end
-        end
-        geneID = find(strcmp(model.genes,genes{i}));
-        if (isempty(geneID))
-            fprintf(['New gene ' genes{i} ' added to model\n']);
-            % Append gene
-            model.genes = [model.genes; genes(i)];
-            nGenes = length(model.genes);
-            if addRxnGeneMat == 1
-                model.rxnGeneMat(rxnID,end+1) = 1;
-            end
-            rule = strrep(rule,['x(#' num2str(i) ')'],['x(' num2str(nGenes) ')']);
-        else
-            if addRxnGeneMat == 1
-                model.rxnGeneMat(rxnID,geneID) = 1;
-            end
-            rule = strrep(rule,['x(#' num2str(i) ')'],['x(' num2str(geneID) ')']);
-        end
-    end
-    model.rules{rxnID} = rule;
-end
-
-model.grRules{rxnID} = grRule;
+model.grRules{rxnID,1} = regexprep(model.rules{rxnID},'x\(([0-9]+)\)','${getGene($1)}');
 model.grRules = columnVector(model.grRules);
 
 
@@ -106,4 +78,11 @@ model.grRules = columnVector(model.grRules);
 model.rules = columnVector(model.rules);
 if nGenes > nGenesInit
     model = extendModelFieldsForType(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
+end
+
+
+function geneID = convertGeneID(geneID, systNameList, geneNameList)
+presence = ismember(geneNameList,geneID);
+if any(presence)
+    geneID = systNameList(presence);
 end
