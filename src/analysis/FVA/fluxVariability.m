@@ -230,14 +230,14 @@ if ~minNorm
     QuickProblem.c(:) = 0;
     QuickProblem.c(Order(Presence)) = 1;
     %Maximise all reactions
-    QuickProblem.osence = -1;    
+    QuickProblem.osense = -1;    
     sol = solveCobraLP(QuickProblem);
     relSol = sol.full(Order(Presence));
     %Obtain fluxes at their boundaries
     maxSolved = model.ub(Order(Presence)) == relSol;    
     minSolved = model.lb(Order(Presence)) == relSol;        
     %Minimise reactions
-    QuickProblem.osence = 1;
+    QuickProblem.osense = 1;
     sol = solveCobraLP(QuickProblem);
     relSol = sol.full(Order(Presence));
     %Again obtain fluxes at their boundaries
