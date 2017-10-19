@@ -229,23 +229,34 @@ if ~minNorm
     [Presence,Order] = ismember(rxnNameList,model.rxns);
     QuickProblem.c(:) = 0;
     QuickProblem.c(Order(Presence)) = 1;
-    QuickProblem.osence = -1;
+    %Maximise all reactions
+    QuickProblem.osence = -1;    
     sol = solveCobraLP(QuickProblem);
     relSol = sol.full(Order(Presence));
+    %Obtain fluxes at their boundaries
     maxSolved = model.ub(Order(Presence)) == relSol;    
-    rxnListMax = rxnNameList(~maxSolved);
+    minSolved = model.lb(Order(Presence)) == relSol;        
+    %Minimise reactions
     QuickProblem.osence = 1;
     sol = solveCobraLP(QuickProblem);
     relSol = sol.full(Order(Presence));
-    minSolved = model.lb(Order(Presence)) == relSol;    
+    %Again obtain fluxes at their boundaries
+    maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);    
+    minSolved = minSolved | (model.lb(Order(Presence)) == relSol);        
+    %Restrict the reactions to test only those which are not at their boundariestestFv.
     rxnListMin = rxnNameList(~minSolved);
+    rxnListMax = rxnNameList(~maxSolved);
 end
 
 if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
     if minNorm
         for i = 1:length(rxnNameList)
         
-            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl);
+            LPproblem.osense = 1;
+            [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl);
+            LPproblem.osense = -1;
+            [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl);
+
             if printLevel == 1 && ~parallelMode
                 showprogress(i/length(rxnNameList));
             end
@@ -277,13 +288,15 @@ else % parallel job.  pretty much does the same thing.
     global CBT_QP_SOLVER;
     lpsolver = CBT_LP_SOLVER;
     qpsolver = CBT_QP_SOLVER;
-    if minNorm
-        
+    if minNorm        
         parfor i = 1:length(rxnNameList)
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
-            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl);
+            parLPproblem.osense = 1;
+            [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl);
+            parLPproblem.osense = -1;
+            [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl);
         end
     else
         mins = -inf*ones(length(rxnListMin),1);
