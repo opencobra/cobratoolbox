@@ -40,7 +40,6 @@ modelArr = {
     'Acinetobacter_calcoaceticus_PHEA_2.mat', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/mat/Acinetobacter_calcoaceticus_PHEA_2.mat';
     'Recon1.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon1.0model.mat';
     'Recon2.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon2.0model.mat';
-    'ME_matrix_GlcAer_WT.mat', 'https://cdn.rawgit.com/cobrabot/COBRA.models/9b817d96/ME_matrix_GlcAer_WT.mat';
     };
 
 % define silence level of curl
@@ -62,6 +61,13 @@ for i = 1:length(modelArr)
 
             if printLevel > 0 && status_curlDownload == 0
                 fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
+            else
+                % delete a partially downloaded file (e.g. timeout)
+                try
+                    delete(modelArr{i, 1});
+                catch
+                    fprintf(['The file is faulty and could not be removed. Please remove the ', modelArr{i, 1}, ' file manually.']);
+                end
             end
         else
             fprintf(' > The URL %s cannot be reached.\n', modelArr{i, 2});
@@ -82,6 +88,10 @@ downloadModelZipFile('Ec_iAF1260_flux1.xml', 'http://systemsbiology.ucsd.edu/sit
 % download STM_v1.0.xml
 downloadModelZipFile('STM_v1.0.xml', 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', ...
                      'printLevel', printLevel)
+
+% download GlcAer_WT.mat
+downloadModelZipFile('ME_matrix_GlcAer_WT.mat', '"https://wwwen.uni.lu/content/download/72953/917521/file/Metabolims%20&%20Expression%20matrix%20(ME-Matrix)%20for%20E.%20coli_ME_matrix_GlcAer_WT.mat.zip"', ...
+                     'printLevel', printLevel, 'downloadFileName', 'Metabolims%20&%20Expression%20matrix%20(ME-Matrix)%20for%20E.%20coli_ME_matrix_GlcAer_WT.mat.zip')
 
 % download Recon2.v04.mat
 downloadModelZipFile('Recon2.v04.mat', 'https://vmh.uni.lu/files/Recon2.v04.mat_.zip', ...
@@ -120,6 +130,7 @@ function downloadModelZipFile(filename, url, varargin)
     fileToBeRenamed = [];
     deleteExtraFiles = [];
     printLevel = 0;
+    downloadFileName = '';
 
     %% varargin checking
     if numel(varargin) > 1
@@ -133,6 +144,8 @@ function downloadModelZipFile(filename, url, varargin)
                     deleteExtraFiles = value;
                 case 'printLevel'
                     printLevel = value;
+                case 'downloadFileName'
+                    downloadFileName = value;
                 otherwise
                     msg = sprintf('Unexpected key %s', key)
                     error(msg);
@@ -148,31 +161,45 @@ function downloadModelZipFile(filename, url, varargin)
             curlSilence = '';
         end
         % check if the remote URL can be reached
-        [status_curl, result_curl] = system(['curl --max-time 15 -s -k --head ', url]);
+        [status_curl, result_curl] = system(['curl --max-time 15 -s -k -L --head ', url]);
 
         % check if the URL exists
         if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
-            status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O ', url]);
-            [~, zipName, ext] = fileparts(url);
-            zipName = [zipName, ext];
-            unzip(zipName);
-            % delete extra files
-            for i = 1:length(deleteExtraFiles)
-                delete(deleteExtraFiles{i});
-            end
-
-            % rename unzipped file if necessary
-            if ~isempty(fileToBeRenamed)
-                movefile(fileToBeRenamed, filename);
-            end
-            delete(zipName);
-
-            if exist('__MACOSX', 'dir') == 7
-                rmdir('__MACOSX', 's');
+            status_curlDownload = system(['curl ', curlSilence, ' --max-time 90 -O -L ', url]);
+            if length(downloadFileName) > 0
+                zipName = downloadFileName;
+            else
+                [~, zipName, ext] = fileparts(url);
+                zipName = [zipName, ext];
             end
 
             if printLevel > 0 && status_curlDownload == 0
+                % unzip the file
+                unzip(zipName);
+
+                % delete extra files
+                for i = 1:length(deleteExtraFiles)
+                    delete(deleteExtraFiles{i});
+                end
+
+                % rename unzipped file if necessary
+                if ~isempty(fileToBeRenamed)
+                    movefile(fileToBeRenamed, filename);
+                end
+                delete(zipName);
+
+                if exist('__MACOSX', 'dir') == 7
+                    rmdir('__MACOSX', 's');
+                end
+
                 fprintf(' + Downloaded:      %s\n', filename);
+            else
+                % delete a partially downloaded file (e.g. timeout)
+                try
+                    delete(zipName);
+                catch
+                    fprintf(['The file is faulty, but could not be removed. Please remove the ', zipName, ' file manually.']);
+                end
             end
         else
             fprintf(' > The URL %s cannot be reached.\n', url);
