@@ -167,7 +167,7 @@ if ~exist('fileType', 'var') || isempty(fileType)
         end
         [~, ~, FileExtension] = fileparts(fileName);
     end
-    switch FileExtension
+    switch lower(FileExtension)
         case '.xml'
             fileType = 'SBML';
         case '.sbml'
