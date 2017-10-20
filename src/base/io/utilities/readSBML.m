@@ -220,7 +220,7 @@ end
 if isfield(sbmlReactions,'fbc_geneProductAssociation')
     gprAssoc = {sbmlReactions.fbc_geneProductAssociation};
     fbc_grRules = cellfun(@(x) getFBCAssoc(x) , gprAssoc,'UniformOutput',0);
-    model.rules = cellfun(@(x) extractGPRRule(x,model.genes,1),fbc_grRules','UniformOutput',0);
+    model.rules = cellfun(@(x) parseGPR(x,model.genes),fbc_grRules','UniformOutput',0);
 else
     %otherwise use the grRules extracted.
     model.rules = cell(numel(model.rxns),1);
@@ -229,7 +229,7 @@ else
         model.genes = {};
     end
     for i = 1:numel(grRule)
-        [rule,cgenes] = extractGPRRule(grRule{i},model.genes,0);
+        [rule,cgenes] = parseGPR(grRule{i},model.genes);
         model.genes = cgenes;
         model.rules{i} = rule;
         model.genes = columnVector(model.genes);
@@ -457,20 +457,6 @@ if ~isempty(prods)
     stoichiometry(pres) = prodstoichs(pos(pres));    
 end
 end
-
-
-%Convert a gprRule in String format to boolean format.
-function [rule,newGenes] = extractGPRRule(grRule,genes,sbmlIDFlag)
-%Copy the current genes;
-newGenes = genes;
-if isempty(grRule)
-    rule = '';
-    return
-end
-[rule,newGenes] = parseGPR(grRule,genes);
-end
-
-
 
 function rule = getFBCAssoc(fbc_gprAssoc)
 %extract the fbc_associations fbc_association field or return an empty

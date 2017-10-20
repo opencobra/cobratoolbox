@@ -21,16 +21,12 @@ genes = model.genes;
 model2 = model;
 
 for i = 1:length(grRules)
-    if~isempty(grRules{i})
-        [rule,~,newGenes] = parseGPR(model2.grRules{i},model2.genes);
-        if ~isempty(newGenes)
-            warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
-            model2.genes = [model2.genes ; newGenes];
-        end
-        model2.rules{i,1} = rule;
-    else
-        model2.rules{i,1} = model.grRules{i};
+    [rule,~,newGenes] = parseGPR(model2.grRules{i},model2.genes);
+    if ~isempty(newGenes)
+        warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+        model2.genes = [model2.genes ; newGenes];
     end
+    model2.rules{i,1} = rule;
 end
 end
 

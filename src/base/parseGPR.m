@@ -27,6 +27,15 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, curre
 %
 % .. Author: -  Thomas Pfau Okt 2017 
 
+if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$')) 
+    %If the provided string is empty or consists only of whitespaces or
+    %brackets, i.e. it does not contain a rule
+    ruleString = '';
+    totalGeneList = currentGenes;
+    newGeneList = {};
+    return
+end
+    
 tmp = regexprep(grRuleString, '[\]\}]',')'); %replace other brackets by parenthesis.
 tmp = regexprep(tmp, '[\[\{]','('); %replace other brackets by parenthesis.
 tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenthesis

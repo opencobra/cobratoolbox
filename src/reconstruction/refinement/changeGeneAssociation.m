@@ -54,15 +54,15 @@ model.rules{rxnID,1} = '';
 if addRxnGeneMat ==1 
     model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
 end  
-    
+
 [rule,~,newGenes] = parseGPR(grRule,model.genes);
 if translateNamesFlag
     [pres,pos] = ismember(newGenes,geneNameList);
     newGenes = columnVector(systNameList(pres(pos)));
-end   
-    
+end
 model.genes = [model.genes;newGenes];
 model.rules{rxnID,1} = rule;
+
 getGene = @(x) model.genes{str2num(x)};
 if addRxnGeneMat
     res = regexp(model.rules{rxnID},'x\((?<ID>[0-9]+)\)','names');
