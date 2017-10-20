@@ -52,7 +52,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnReferences`| `n x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
 |`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
 |`model.rxnSBOTerms`| `n x 1` | Column Cell Array of Strings | The SBO Identifier associated with the reaction | 
-|`model.subSystems`| `n x 1` | Column Cell Array of Strings | subSystem assignment for each reaction | 
+|`model.subSystems`| `n x 1` | Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
 ### Model Specific Fields
 Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices). 
 

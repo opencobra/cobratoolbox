@@ -33,7 +33,7 @@ while 1
         rxns{cnt} = fields{1};
         rxnInfo(cnt).ID = fields{1};
         rxnInfo(cnt).name = fields{2};
-        rxnInfo(cnt).subSystem = fields{4};
+        rxnInfo(cnt).subSystem = {fields{4}};
         rxnInfo(cnt).EC = fields{5};
         rxnInfo(cnt).gra = fields{7};
         [genes,rule] = parseBoolean(rxnInfo(cnt).gra);

@@ -73,7 +73,14 @@ for i = 1:numel(fields)
             end
             modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),newData);     
         else
-            modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),unique([data{:}]));     
+            dataconcatenation = unique([data{:}]);
+            if iscell(dataconcatenation) % We have a field with Cell arrays of Cell arrays
+                modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),{unique([data{:}])});     
+            else
+                %Not sure which fields this would apply to, but I assume,
+                %this will lead to an error....
+                modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),unique([data{:}]));     
+            end
         end
     end
     if ischar(modelNew.(fields{i}))
@@ -167,5 +174,6 @@ function A = setSlice(A,idx,dim,B)
 
 slice = repmat({':'},1, ndims(A));
 slice{dim} = idx;
+%If B is a cell array of cell arrays
 A(slice{:}) = B;
 end

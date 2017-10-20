@@ -75,7 +75,7 @@ end
 % revFlagList           List of reversibility flag (opt, default = 1)
 % lowerBoundList        List of lower bound (opt, default = 0 or -vMax)
 % upperBoundList        List of upper bound (opt, default = vMax)
-% subSystemList         List of subsystem (opt, default = '')
+% subSystemList         List of subsystem (opt, default = {''})
 % grRuleList            List of gene-reaction rule in boolean format (and/or allowed)
 %                       (opt, default = '');
 % geneNameList          List of gene names (optional, used only for

@@ -14,6 +14,6 @@ function subSysModel = extractSubSysModel(model, subSysNames)
 %
 % .. Author: - Markus Herrgard 3/1/06
 
-rxnList = model.rxns(ismember(model.subSystems,subSysNames));
+rxnList = model.rxns(cellfun(@(x) any(ismember(x,subSysNames)), model.subSystems));
 
-subSysModel = extractSubNetwork(model,rxnList)
+subSysModel = extractSubNetwork(model,rxnList);

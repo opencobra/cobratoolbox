@@ -17,7 +17,7 @@ function model = createModel(varargin)
 %    revFlagList:       List of reversibility flag (opt, default = 1)
 %    lowerBoundList:    List of lower bound (Default = 0 or `-vMax`)
 %    upperBoundList:    List of upper bound (Default = `vMax`)
-%    subSystemList:     List of subsystem (Default = '')
+%    subSystemList:     List of subsystem (Default = {''})
 %    grRuleList:        List of gene-reaction rule in boolean format (and/or allowed)
 %                       (Default = '');
 %    geneNameList:      List of gene names (used only for translation
@@ -82,7 +82,7 @@ upperBoundDefault = 1000*ones(nRxns,1);
 lowerBoundDefault = -1000*ones(nRxns,1);
 revDefault = 1*ones(nRxns,1);
 subSysDefault = {};
-subSysDefault(1:nRxns) = {''};
+subSysDefault(1:nRxns) = {{''}};
 
 grRuleDefault = {};
 grRuleDefault(1:nRxns) = {''};
@@ -114,6 +114,9 @@ revFlagList = parser.Results.revFlagList;
 lowerBoundList = parser.Results.lowerBoundList;
 upperBoundList = parser.Results.upperBoundList;
 subSystemList = parser.Results.subSystemList;
+if ischar([subSystemList{:}])
+    subSystemList = cellfun(@(x) strsplit(x,';'), subSystemList, 'UniformOutput',0);
+end
 
 for i = 1 : nRxns
     if ~isempty(grRuleList{i})

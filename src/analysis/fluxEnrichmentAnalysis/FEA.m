@@ -32,16 +32,46 @@ if ~ischar(group)
     error('Please provide the group name as string of characters e.g. ''subSystems'' ')
 end
 
-% compute frequency of enriched terms
-[uniquehSubsystemsA, ~, K] = unique(eval(['model.' group]));
+%Temporary Warning until FEA statistics are checked for multiple classes.
+if strcmp(group, 'subSystems') && isfield(model,'subSystems')
+    if iscell(model.subSystems{1}) %Potentially multiple subSystems
+        if any(cellfun(@numel, model.subSystems) > 2)
+            warning('Multiple subSystems detected for some reactions. FEA statistics might not be correct.\n Please consider using only one subSystem per reaction.')
+        end
+    end
+end
 
+% compute frequency of enriched terms
+groups = eval(['model.' group]);
+if iscell([groups{:}])
+   [uniquehSubsystemsA] = unique([groups{:}]);
+   presenceindicator = false(numel(uniquehSubsystemsA),numel(model.rxns));
+   for i = 1:numel(groups)
+       presenceindicator(:,i) = ismember(uniquehSubsystemsA,groups{i});
+   end   
+   [K,~] = find(presenceindicator);
+else
+    %This works only for fields which have a single entry.
+    [uniquehSubsystemsA, ~, K] = unique(groups);
+end
 % fetch group
 enRxns = eval(['model.' group '(rxnSet)']);
 m = length(uniquehSubsystemsA);
 allSubsystems = zeros(1, m);
 
 % look for unique occurences
-[uniquehSubsystems, ~, J] = unique(enRxns);
+if iscell([enRxns{:}])
+   [uniquehSubsystems] = unique([enRxns{:}]);
+   presenceindicator = false(numel(uniquehSubsystems),numel(model.rxns));
+   for i = 1:numel(enRxns)       
+        presenceindicator(:,i) = ismember(uniquehSubsystems,enRxns{i});
+   end   
+   [J,~] = find(presenceindicator);
+else
+    %This works only for fields which have a single entry.
+    [uniquehSubsystems, ~, J] = unique(enRxns);
+end
+
 occ = histc(J, 1:numel(uniquehSubsystems));
 [l, p] = intersect(uniquehSubsystemsA, uniquehSubsystems);
 allSubsystems(p) = occ;
