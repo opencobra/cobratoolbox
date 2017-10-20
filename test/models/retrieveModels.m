@@ -40,6 +40,7 @@ modelArr = {
     'Acinetobacter_calcoaceticus_PHEA_2.mat', 'https://webdav-r3lab.uni.lu/public/msp/AGORA/mat/Acinetobacter_calcoaceticus_PHEA_2.mat';
     'Recon1.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon1.0model.mat';
     'Recon2.0model.mat', 'https://raw.github.com/cobrabot/COBRA.models/master/Recon2.0model.mat';
+    'ME_matrix_GlcAer_WT.mat', 'https://cdn.rawgit.com/cobrabot/COBRA.models/9b817d96/ME_matrix_GlcAer_WT.mat';
     };
 
 % define silence level of curl
@@ -80,10 +81,6 @@ downloadModelZipFile('Ec_iAF1260_flux1.xml', 'http://systemsbiology.ucsd.edu/sit
 
 % download STM_v1.0.xml
 downloadModelZipFile('STM_v1.0.xml', 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', ...
-                     'printLevel', printLevel)
-
-% download GlcAer_WT.mat
-downloadModelZipFile('ME_matrix_GlcAer_WT.mat', 'https://wwwen.uni.lu/content/download/72953/917521/file/Metabolims%20&%20Expression%20matrix%20(ME-Matrix)%20for%20E.%20coli_ME_matrix_GlcAer_WT.mat.zip', ...
                      'printLevel', printLevel)
 
 % download Recon2.v04.mat
