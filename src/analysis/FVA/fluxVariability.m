@@ -91,6 +91,12 @@ if isempty(rxnNameList)
     rxnNameList = model.rxns;
 end
 
+%Stop if there are reactions, which are not part of the model
+if any(~ismember(rxnNameList,model.rxns))
+    presence = ismember(rxnNameList,model.rxns);
+    error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
+end
+
 % Set up the problem size
 [nMets,nRxns] = size(model.S);
 Vmin=[];
