@@ -47,20 +47,24 @@ newKeyWords = {'format', 'fileName', 'compSymbolList', 'compNameList'};
 supportedSBML = 3;
 supportedSBMLv = 1;
 
-% We can assume, that the old syntax is only used if varargin does not start with a optional argument.
-legacySignature = true;
+% We can assume, that the old syntax is not used, if there is no varargin
+% i.e. if numel varargin == 0
 
-% check if any of the input arguments is part of the new keywords
-for i = 1:numel(varargin) - 1 % last argument is not relevant
-    if ischar(varargin{i})
-        if any(ismember(varargin{i}, newKeyWords))
-            legacySignature = false;
-            break;
+legacySignature = false;
+
+% check if the first argument of varargin is a keyword
+if numel(varargin) > 0    
+    if ischar(varargin{1})        
+        if any(ismember(varargin{1}, newKeyWords))
+            legacySignature = false;            
         else
-            legacySignature = true;
-            break;
+            legacySignature = true;            
         end
-    end
+    else
+        %If its not a char, its not the old signature, as that signature
+        %required format as second argument. So we can throw an error.
+        error('Additional arguments have to be Parameter and Value pairs of the form ''ParameterName'', value ');
+    end 
 end
 
 [compSymbols, compNames] = getDefaultCompartmentSymbols();
