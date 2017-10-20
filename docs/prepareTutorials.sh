@@ -100,8 +100,8 @@ fi
 if [[ $buildHTML = true ]]; then
     cd $cobraToolBoxPath
     if [[ -z "$specificTutorial" ]]; then
-        /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
-        # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+        #/Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+        /Applications/MATLAB_R2017b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
     else
         /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
         # /mnt/prince-data/MATLAB/$MATLAB_VER/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
@@ -188,8 +188,8 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
         pngPath="$pdfPath/tutorials/$tutorialFolder"
 
-        pdfHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
-        pngHyperlink="https://prince.lcsb.uni.lu/jenkins/userContent/tutorials/$tutorialFolder/$tutorialName.png"
+        pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
+        pngHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.png"
         htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
         mlxHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.mlx"
         mHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.m"
