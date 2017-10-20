@@ -202,6 +202,50 @@ result of url read</li>
 </div></blockquote>
 </dd></dl>
 
+<dl class="function">
+<dt id="src.base.io.BiGG.loadBiGGModel">
+<code class="descname">loadBiGGModel</code><span class="sig-paren">(</span><em>model_ids</em>, <em>format</em>, <em>multichoice</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/70b700944f07ea59227be1980e9f9ca65ecc7d7c/src/base/io/BiGG/loadBiGGModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.BiGG.loadBiGGModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = listBiGGModel(model_ids)</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model_ids</strong> &#8211;
+The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui
+will ask for the model to load.</li>
+<li><strong>format</strong> &#8211;
+The format from Bigg to load. Either &#8216;sbml&#8217; or (&#8216;mat&#8217;).
+Default(&#8216;mat&#8217;)</li>
+<li><strong>multichoice</strong> &#8211;
+Whether multiple models can be loaded if no ids are
+given. (Default: true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargout</strong> &#8211;
+The models in the order of the selected ids. If
+multiple models are selected in the dialog, a struct
+is provided with the models being fields of that
+struct.</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">Load</span> <span class="n">a</span> <span class="n">specific</span> <span class="n">model</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">mat</span> <span class="n">file</span> <span class="n">of</span> <span class="n">the</span> <span class="n">BiGG</span> <span class="n">database</span>
+       <span class="n">model</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">(</span><span class="s1">&#39;e_coli_core&#39;</span><span class="p">);</span>
+
+<span class="mi">2</span><span class="p">)</span> <span class="n">Load</span> <span class="n">several</span> <span class="n">models</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">BiGG</span> <span class="n">database</span> <span class="n">at</span> <span class="n">once</span>
+       <span class="p">[</span><span class="n">model1</span><span class="p">,</span> <span class="n">model2</span><span class="p">,</span> <span class="o">...</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">({</span><span class="s1">&#39;bigg_id1&#39;</span><span class="p">,</span><span class="s1">&#39;bigg_id2&#39;</span><span class="p">,</span><span class="o">...</span><span class="p">});</span>
+
+<span class="mi">3</span><span class="p">)</span> <span class="n">Load</span> <span class="n">model</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">BiGG</span> <span class="n">database</span> <span class="n">sbml</span> <span class="n">files</span>
+       <span class="n">model</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">(</span><span class="s1">&#39;iJR904&#39;</span><span class="p">,</span><span class="s1">&#39;sbml&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

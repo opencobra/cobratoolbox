@@ -330,7 +330,7 @@ with the following available parameters:
 - fileType:  File type for input files: &#8216;SBML&#8217;, &#8216;SimPheny&#8217;,</p>
 <blockquote>
 <div><dl class="docutils">
-<dt>&#8216;SimPhenyPlus&#8217;, &#8216;SimPhenyText&#8217;, &#8216;Matlab&#8217; or Excel&#8217; (Default = &#8216;Matlab&#8217;)</dt>
+<dt>&#8216;SimPhenyPlus&#8217;, &#8216;SimPhenyText&#8217;, &#8216;Matlab&#8217;, &#8216;BiGG&#8217;, &#8216;BiGGSBML&#8217; or &#8216;Excel&#8217; (Default = &#8216;Matlab&#8217;)</dt>
 <dd><ul class="first last simple">
 <li>&#8216;SBML&#8217; indicates a file in <cite>SBML</cite> format</li>
 <li>&#8216;SimPheny&#8217; is a set of three files in <cite>SimPheny</cite> simulation output format</li>
@@ -341,6 +341,12 @@ associations andcompound information</li>
 additionaltext file containing gene-protein-reaction
 associations</li>
 <li>Matlab will save the model as a matlab variable file.</li>
+<li>BiGG and BIGGSBML indicate that the fileName is a BiGG
+Model identifier and that the model should
+be loaded from the BiGG database (requires
+an Internet connection). BiGG loads it from
+the BiGG Database mat file, BiGGSBML uses
+the SBML file.</li>
 <li>Excel will save the model as a two sheet Excel Model.</li>
 </ul>
 </dd>
