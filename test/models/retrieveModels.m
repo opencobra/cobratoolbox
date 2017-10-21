@@ -86,8 +86,8 @@ downloadModelZipFile('Ec_iAF1260_flux1.xml', 'http://systemsbiology.ucsd.edu/sit
                      'printLevel', printLevel)
 
 % download STM_v1.0.xml
-downloadModelZipFile('STM_v1.0.xml', 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', ...
-                     'printLevel', printLevel)
+downloadModelZipFile('STM_v1.0.xml', '"https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP"', ...
+                     'printLevel', printLevel, 'downloadFileName', '12918_2010_598_MOESM2_ESM.ZIP')
 
 % download GlcAer_WT.mat
 downloadModelZipFile('ME_matrix_GlcAer_WT.mat', '"https://wwwen.uni.lu/content/download/72953/917521/file/Metabolims%20&%20Expression%20matrix%20(ME-Matrix)%20for%20E.%20coli_ME_matrix_GlcAer_WT.mat.zip"', ...
