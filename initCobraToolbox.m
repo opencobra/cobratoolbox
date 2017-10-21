@@ -173,6 +173,12 @@ function initCobraToolbox()
             warning('Your global git configuration could not be changed.');
         end
 
+        % Clean the test/models folder
+        [status, result] = system('git submodule status test/models');
+        if status == 0 && strcmp(result(1), '-')
+            [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
+        end
+
         % Update/initialize submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
 
