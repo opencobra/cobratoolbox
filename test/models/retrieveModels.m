@@ -59,8 +59,10 @@ for i = 1:length(modelArr)
         if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
             status_curlDownload = system(['curl ', curlSilence, ' --max-time 60 -O -L ', modelArr{i, 2}]);
 
-            if printLevel > 0 && status_curlDownload == 0
-                fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
+            if status_curlDownload == 0
+                if printLevel > 0
+                    fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
+                end
             else
                 % delete a partially downloaded file (e.g. timeout)
                 try
@@ -166,14 +168,14 @@ function downloadModelZipFile(filename, url, varargin)
         % check if the URL exists
         if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
             status_curlDownload = system(['curl ', curlSilence, ' --max-time 90 -O -L ', url]);
-            if length(downloadFileName) > 0
+            if ~isempty(downloadFileName)
                 zipName = downloadFileName;
             else
                 [~, zipName, ext] = fileparts(url);
                 zipName = [zipName, ext];
             end
 
-            if printLevel > 0 && status_curlDownload == 0
+            if status_curlDownload == 0
                 % unzip the file
                 unzip(zipName);
 
@@ -192,13 +194,17 @@ function downloadModelZipFile(filename, url, varargin)
                     rmdir('__MACOSX', 's');
                 end
 
-                fprintf(' + Downloaded:      %s\n', filename);
+                if printLevel > 0
+                    fprintf(' + Downloaded:      %s\n', filename);
+                end
             else
                 % delete a partially downloaded file (e.g. timeout)
                 try
                     delete(zipName);
                 catch
-                    fprintf(['The file is faulty, but could not be removed. Please remove the ', zipName, ' file manually.']);
+                    if printLevel > 0
+                        fprintf(['The file is faulty, but could not be removed. Please remove the ', zipName, ' file manually.']);
+                    end
                 end
             end
         else
