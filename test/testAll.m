@@ -156,9 +156,6 @@ try
     % save the userpath
     originalUserPath = path;
 
-    % retrieve the models first
-    retrieveModels;
-
     % run the tests in the subfolder verifiedTests/ recursively
     result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
 

@@ -251,18 +251,6 @@ function initCobraToolbox()
         end
     end
 
-    % retrieve the models
-    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ec_iAF1260_flux1.xml']);
-    if ENV_VARS.printLevel
-        fprintf(' > Retrieving models ...');
-    end
-    if ~exist(xmlTestFile, 'file')
-        retrieveModels(0);
-    end
-    if ENV_VARS.printLevel
-        fprintf('   Done.\n');
-    end
-
     % save the userpath
     originalUserPath = path;
 
