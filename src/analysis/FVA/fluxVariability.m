@@ -226,6 +226,7 @@ if  any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
 else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
+
 minFlux = model.lb(ismember(model.rxns,rxnNameList));
 maxFlux = model.ub(ismember(model.rxns,rxnNameList));
 
@@ -299,7 +300,7 @@ else % parallel job.  pretty much does the same thing.
     lpsolver = CBT_LP_SOLVER;
     qpsolver = CBT_QP_SOLVER;
     if minNorm        
-        parfor i = 1:length(rxnNameList)
+        for i = 1:length(rxnNameList)
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
@@ -339,12 +340,14 @@ end
 
 function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, method, allowLoops, printLevel, minNorm, cpxControl, sol)
 
+    %get Number of reactions
     nRxns = numel(model.rxns);
+    %Set the correct objective
+    LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
     if isempty(sol)
         if printLevel == 1 && ~parallelMode
             fprintf('iteration %d.\n', i);
         end
-        LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
         % do LP always
         if allowLoops
             LPsolution = solveCobraLP(LPproblem, cpxControl);
