@@ -74,11 +74,11 @@ if (nargin > 1)
           gpraID = gpraMap(i);
           model.rules{i} = gpraModel.rules{gpraID};
           model.rxnGeneMat(i,:) = gpraModel.rxnGeneMat(gpraID,:);
-          model.subSystems{i} = gpraModel.subSystems{gpraID};
+          model.subSystems{i} = gpraModel.subSystems(gpraID);
           model.grRules{i} = gpraModel.grRules{gpraID};
        else
           model.rules{i} = '';
-          model.subSystems{i} = '';
+          model.subSystems{i} = {''};
           model.grRules{i} = '';
        end
     end

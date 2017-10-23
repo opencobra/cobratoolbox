@@ -41,37 +41,37 @@ if length(AddedRxns.rxns) > 0
     Exchange = 0;
     for i = 1 : length(b)
         if isempty(char(b(i)))
-            AddedRxns.subSystem{i}= 'Metabolic reaction';
+            AddedRxns.subSystem{i}={'Metabolic reaction'};
             Metabolic = Metabolic + 1;
         elseif strcmp('e]',b(i))
-            AddedRxns.subSystem{i}='Exchange reaction';
+            AddedRxns.subSystem{i}={'Exchange reaction'};
             Exchange = Exchange + 1;
         elseif strcmp('n',b(i))
-            AddedRxns.subSystem{i}='Nucleus <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Nucleus <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('g',b(i))
-            AddedRxns.subSystem{i}='Golgi <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Golgi <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('m',b(i))
-            AddedRxns.subSystem{i}='Mitochondrion <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Mitochondrion <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('l',b(i))
-            AddedRxns.subSystem{i}='Lysosome <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Lysosome <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('r',b(i))
-            AddedRxns.subSystem{i}='ER <=> cytosol transport';
+            AddedRxns.subSystem{i}={'ER <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('e',b(i))
-            AddedRxns.subSystem{i}='Extracellular space <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Extracellular space <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('x',b(i))
-            AddedRxns.subSystem{i}='Peroxisome <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Peroxisome <=> cytosol transport'};
             Transport = Transport + 1;
         elseif strcmp('p',b(i))
-            AddedRxns.subSystem{i}='Periplasm <=> cytosol transport';
+            AddedRxns.subSystem{i}={'Periplasm <=> cytosol transport'};
             Transport = Transport + 1;
         else
-            AddedRxns.subSystem{i}=strcat(b{i},' <=> cytosol transport');
+            AddedRxns.subSystem{i}={strcat(b{i},' <=> cytosol transport')};
             Transport = Transport + 1;
         end
     end

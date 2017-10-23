@@ -99,7 +99,7 @@ load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
 load('testData_functionToBeTested.mat');
 ```
 
-Please only load *small* models, i.e. less than `100` reactions. If you want to use a non-standard test model that is already available online, please add its URL to `test/models/retrieveModels.m`.
+Please only load *small* models, i.e. less than `100` reactions. If you want to use a non-standard test model that is already available online, please make a pull request with the URL entry to the [COBRA.models repository](https://github.com/cobrabot/COBRA.models).
 
 :warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
 ```Matlab

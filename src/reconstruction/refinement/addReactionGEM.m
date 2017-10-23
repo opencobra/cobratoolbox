@@ -42,7 +42,11 @@ function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas,
 if ~exist('subSystems', 'var') || isempty(subSystems)
     clear subSystems;
     for i = 1:length(rev)
-        subSystems(i,1) = {''};
+        subSystems(i,1) = {{''}};
+    end
+else
+    if ischar([subSystems{:}])
+        subSystems = cellfun(@(x) {x},subSystems,'UniformOutput',0);
     end
 end
 %We later assume, that this field exists, so we have to initialize it

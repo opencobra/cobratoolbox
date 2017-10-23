@@ -205,7 +205,12 @@ for i = 1: numel(modelfields)
     end
 end
 
-
+if isfield(model,'subSystems')
+    %Convert subSystems to Cell Arrays of Cell Arrays.
+    if ischar([model.subSystems{:}])
+        model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);
+    end
+end
 %reset warnings
 for i = 1:numel(warnstate)
     warning(warnstate(i).state,warnstate(i).identifier)

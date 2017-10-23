@@ -13,3 +13,6 @@
 [submodule "external/gaimc"]
 	path = external/gaimc
 	url = https://github.com/dgleich/gaimc.git
+[submodule "test/models"]
+	path = test/models
+	url = https://github.com/cobrabot/COBRA.models

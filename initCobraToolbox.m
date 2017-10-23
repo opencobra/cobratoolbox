@@ -173,6 +173,12 @@ function initCobraToolbox()
             warning('Your global git configuration could not be changed.');
         end
 
+        % Clean the test/models folder
+        [status, result] = system('git submodule status test/models');
+        if status == 0 && strcmp(result(1), '-')
+            [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
+        end
+
         % Update/initialize submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
 
@@ -251,17 +257,8 @@ function initCobraToolbox()
         end
     end
 
-    % retrieve the models
+    % define xml test file
     xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ec_iAF1260_flux1.xml']);
-    if ENV_VARS.printLevel
-        fprintf(' > Retrieving models ...');
-    end
-    if ~exist(xmlTestFile, 'file')
-        retrieveModels(0);
-    end
-    if ENV_VARS.printLevel
-        fprintf('   Done.\n');
-    end
 
     % save the userpath
     originalUserPath = path;

@@ -26,7 +26,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                         * lowerBound - Lower bound (Default = 0 or -vMax`)
 %                         * upperBound - Upper bound (Default = `vMax`)
 %                         * objectiveCoef - Objective coefficient (Default = 0)
-%                         * subSystem - Subsystem (Default = '')
+%                         * subSystem - Subsystem (Default = {''})
 %                         * geneRule - Gene-reaction rule in boolean format (and/or allowed)
 %                           (Default = '');
 %                         * geneNameList - List of gene names (used only for translation from
@@ -120,7 +120,7 @@ maxavailableBound = max([1000,max(abs(model.lb)), max(abs(model.ub))]);
 defaultLowerBound = -maxavailableBound;
 defaultUpperBound = maxavailableBound;
 defaultObjective = 0;
-defaultSubSystem = '';
+defaultSubSystem = {''};
 defaultgeneRule = '';
 defaultMetaboliteList = {};
 defaultStoichCoefList = [];
@@ -159,7 +159,7 @@ parser.addParameter('reversible',defaultReversibility, @(x) islogical(x) || isnu
 parser.addParameter('lowerBound',defaultLowerBound, @(x) isempty(x) || isnumeric(x));
 parser.addParameter('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric(x));
 parser.addParameter('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
-parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x));
+parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x) || iscell(x) && all(cellfun(@(y) ischar(y),x)));
 parser.addParameter('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
 parser.addParameter('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
 parser.addParameter('printLevel',1, @(x) isnumeric(x) );
@@ -212,6 +212,11 @@ end
 upperBound = parser.Results.upperBound;
 objCoeff = parser.Results.objectiveCoef;
 subSystem = parser.Results.subSystem;
+
+if ischar(subSystem)
+    subSystem = {subSystem};
+end
+
 grRule = parser.Results.geneRule;
 checkDuplicate=parser.Results.checkDuplicate;
 
@@ -241,7 +246,7 @@ end
 if ~any(ismember(parser.UsingDefaults,'subSystem'))
     if ~isfield(model,'subSystems')
         model.subSystems = cell(numel(model.rxns),1);
-        model.subSystems(:) = {''};
+        model.subSystems(:) = {{''}};
     end
 end
 if (isfield(model,'subSystems'))

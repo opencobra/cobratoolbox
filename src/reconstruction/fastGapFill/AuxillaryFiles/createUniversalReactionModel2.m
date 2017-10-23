@@ -173,7 +173,7 @@ if exist('NullRxns','var')
     KEGG.rxns(NullRxns==1)=[];
     KEGG.rxnNames(NullRxns==1)=[];
     KEGG.rxnFormulas(NullRxns==1)=[];
-    KEGG.subSystems(NullRxns==1)=[];
+    KEGG.subSystems(NullRxns==1)={''};
     KEGG.lb(NullRxns==1)=[];
     KEGG.ub(NullRxns==1)=[];
     KEGG.rev(NullRxns==1)=[];

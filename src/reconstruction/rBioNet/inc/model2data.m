@@ -113,7 +113,13 @@ for i = 1:length(Optional)
             Optional{i} = 'rxnSubSystems';
             continue;
         end
-
+        if ismember('subSystems',names)
+            Optional{i} = 'subSystems';
+            if ~ischar([handles.model.subSystems{:}])
+                handles.model.subSystems = cellfun(@(x) strjoin(x,';'),handles.model.subSystems);
+            end
+            continue;
+        end
     elseif strcmp(Optional{i},'confidenceScores')
         if ismember('rxnConfidenceScores',names);
             Optional{i} = 'rxnConfidenceScores';

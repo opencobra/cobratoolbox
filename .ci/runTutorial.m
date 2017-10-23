@@ -20,9 +20,6 @@ addpath(pwd)  % include the root folder
 % run the official initialisation script
 initCobraToolbox
 
-% retrieve the models first
-retrieveModels;
-
 % set a default solver
 changeCobraSolver('glpk');
 fprintf('Default solver is set to GLPK\n');

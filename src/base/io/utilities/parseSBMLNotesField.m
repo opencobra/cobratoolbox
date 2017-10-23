@@ -24,7 +24,7 @@ function [subSystem, grRule, formula, confidenceScore, citation, comment, ecNumb
 %       - Handle different notes fields
 
 
-subSystem = '';
+subSystem = {''};
 grRule = '';
 formula = '';
 confidenceScore = NaN;
@@ -59,7 +59,7 @@ for i = 1:length(fieldList)
     elseif strcmp(strfields{1},'SUBSYSTEM')
         subSystem = strtrim(strjoin(strfields(2:end),':'));
         subSystem = strrep(subSystem,'S_','');
-        subSystem = regexprep(subSystem,'_+',' ');
+        subSystem = strsplit(regexprep(subSystem,'_+',' '),';');
         
     elseif strcmp(strfields{1},'EC Number') || strcmp(strfields{1},'EC_Number') || strcmp(strfields{1},'EC_NUMBER') || strcmp(strfields{1},'EC NUMBER')
         ecNumber = strtrim(strjoin(strfields(2:end),':'));

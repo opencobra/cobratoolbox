@@ -40,18 +40,16 @@ for k = 3:length(files)
     if strcmp(files(k).name(end - 2:end), 'xml')
         % read in the xml file
         fileName = files(k).name;
-        if ~exist([fileName(1:end - 3) 'mat'], 'file')
+        if ~exist([destFolder filesep fileName(1:end - 3) 'mat'], 'file')
             filePathName = [originFolder filesep fileName];
             % save as mat file in the same directory
             % savedMatFile=[CBTDIR filesep 'testing' filesep 'testModels' filesep destFolder filesep fileName(1:end-4) '.mat'];
             savedMatFile = [destFolder filesep fileName(1:end - 4) '.mat'];
             try
-                defaultBound = 1000;
-                fileType = 'SBML';
                 if printLevel > 0
                     fprintf('%s%s\n', fileName, [' :compatible with readCbModel'])
                 end
-                model = readCbModel(filePathName, defaultBound, fileType);
+                model = readCbModel(filePathName);
                 % disp(savedMatFile)
                 save(savedMatFile, 'model');
             catch
