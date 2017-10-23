@@ -33,9 +33,5 @@ try
 end
 end
 
-% test for the successful removal of the files
-assert(isequal(status, 1));
-assert(isequal(message, ''));
-
 % change to old directory
 cd(currentDir);
