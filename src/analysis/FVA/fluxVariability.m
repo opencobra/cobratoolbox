@@ -229,6 +229,8 @@ end
 
 minFlux = model.lb(ismember(model.rxns,rxnNameList));
 maxFlux = model.ub(ismember(model.rxns,rxnNameList));
+preCompMaxSols = cell(nRxns,1);
+preCompMinSols = cell(nRxns,1);
 
 %We will calculate a min and max sum flux solution.
 %This solution will (hopefully) provide multiple solutions for individual
@@ -244,6 +246,9 @@ relSol = sol.full(Order(Presence));
 %Obtain fluxes at their boundaries
 maxSolved = model.ub(Order(Presence)) == relSol;
 minSolved = model.lb(Order(Presence)) == relSol;
+preCompMaxSols(maxSolved) = {sol};
+preCompMinSols(minSolved) = {sol};
+
 %Minimise reactions
 QuickProblem.osense = 1;
 sol = solveCobraLP(QuickProblem);
@@ -251,13 +256,11 @@ relSol = sol.full(Order(Presence));
 %Again obtain fluxes at their boundaries
 maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
 minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
+preCompMaxSols((model.ub(Order(Presence)) == relSol)) = {sol};
+preCompMinSols((model.lb(Order(Presence)) == relSol)) = {sol};
 %Restrict the reactions to test only those which are not at their boundariestestFv.
 rxnListMin = rxnNameList(~minSolved);
 rxnListMax = rxnNameList(~maxSolved);
-preCompMaxSols = cell(nRxns,1);
-preCompMinSols = cell(nRxns,1);
-preCompMaxSols(maxSolved) = {sol};
-preCompMinSols(minSolved) = {sol};
 
 if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
     if minNorm
@@ -300,7 +303,7 @@ else % parallel job.  pretty much does the same thing.
     lpsolver = CBT_LP_SOLVER;
     qpsolver = CBT_QP_SOLVER;
     if minNorm        
-        for i = 1:length(rxnNameList)
+        parfor i = 1:length(rxnNameList)
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
@@ -312,7 +315,7 @@ else % parallel job.  pretty much does the same thing.
     else
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
-        for i = 1:length(rxnListMin)    
+        parfor i = 1:length(rxnListMin)    
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
