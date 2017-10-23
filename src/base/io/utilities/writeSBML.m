@@ -665,7 +665,7 @@ for i=1:size(model.rxns, 1)
     
     if isfield(model,'rxnSBOTerms')
         if ~isempty(model.rxnSBOTerms{i})
-            tmp_Sboterm = num2str(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
+            tmp_Sboterm = num2str(regexprep(model.rxnSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
         else
             tmp_Sboterm = defaultSboTerm;
         end
