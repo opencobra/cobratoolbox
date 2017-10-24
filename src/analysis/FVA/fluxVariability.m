@@ -246,8 +246,10 @@ relSol = sol.full(Order(Presence));
 %Obtain fluxes at their boundaries
 maxSolved = model.ub(Order(Presence)) == relSol;
 minSolved = model.lb(Order(Presence)) == relSol;
-preCompMaxSols(maxSolved) = {sol};
-preCompMinSols(minSolved) = {sol};
+if minNorm
+    preCompMaxSols(maxSolved) = {sol};
+    preCompMinSols(minSolved) = {sol};
+end
 
 %Minimise reactions
 QuickProblem.osense = 1;
@@ -256,11 +258,15 @@ relSol = sol.full(Order(Presence));
 %Again obtain fluxes at their boundaries
 maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
 minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
-preCompMaxSols((model.ub(Order(Presence)) == relSol)) = {sol};
-preCompMinSols((model.lb(Order(Presence)) == relSol)) = {sol};
+%This is only necessary, if we want a min norm.
+if minNorm
+    preCompMaxSols((model.ub(Order(Presence)) == relSol)) = {sol};
+    preCompMinSols((model.lb(Order(Presence)) == relSol)) = {sol};
+end
 %Restrict the reactions to test only those which are not at their boundariestestFv.
 rxnListMin = rxnNameList(~minSolved);
 rxnListMax = rxnNameList(~maxSolved);
+
 
 if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
     if minNorm
@@ -319,7 +325,7 @@ else % parallel job.  pretty much does the same thing.
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
-            [mins(i)] = calcSolForEntry(model,rxnListMin,i,parLPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
+            [mins(i)] = calcSolForEntry(model,rxnListMin,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
         [minFluxPres,minFluxOrder] = ismember(rxnListMin,rxnNameList);
         minFlux(minFluxOrder(minFluxPres)) = mins;   
@@ -330,7 +336,7 @@ else % parallel job.  pretty much does the same thing.
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
             parLPproblem = LPproblem;
-            [maxs(i)] = calcSolForEntry(model,rxnListMax,i,parLPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i});
+            [maxs(i)] = calcSolForEntry(model,rxnListMax,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
         [maxFluxPres,maxFluxOrder] = ismember(rxnListMax,rxnNameList);
         maxFlux(maxFluxOrder(maxFluxPres)) = maxs;         
