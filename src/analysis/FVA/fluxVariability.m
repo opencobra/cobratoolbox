@@ -289,7 +289,7 @@ if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
         for i = 1:length(rxnListMin)                        
-            [mins(i)] = calcSolForEntry(model,rxnListMin,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
+            [mins(i)] = calcSolForEntry(model,rxnListMin,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
         [minFluxPres,minFluxOrder] = ismember(rxnListMin,rxnNameList);
         minFlux(minFluxOrder(minFluxPres)) = mins;   
@@ -297,7 +297,7 @@ if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
         maxs = inf*ones(length(rxnListMax),1);
         LPproblem.osense = -1;
         for i = 1:length(rxnListMax)                        
-            [maxs(i)] = calcSolForEntry(model,rxnListMax,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i});
+            [maxs(i)] = calcSolForEntry(model,rxnListMax,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
         [maxFluxPres,maxFluxOrder] = ismember(rxnListMax,rxnNameList);
         maxFlux(maxFluxOrder(maxFluxPres)) = maxs; 
