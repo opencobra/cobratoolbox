@@ -33,7 +33,7 @@ AddedExchRxn = '';
 % check duplicate here to save time (avoid checking duplicate by calling ismember in addReaction)
 metOrd = findMetIDs(newModel, metList);  % met Id for metList
 % duplicate if there are exchange reactions with -1 stoichiometry involving any mets in metList
-duplicate = find(sum(newModel.S ~= 0, 1) == 1 & any(newModel.S == -1, 1) & any(newModel.S(metOrd, :), 1));
+duplicate = find(sum(newModel.S ~= 0, 1) == 1 & any(newModel.S == -1, 1) & any(newModel.S(metOrd(metOrd~=0), :), 1));
 if ~isempty(duplicate)
     % metWtExchRxn(j) is the met order already having exchange rxns duplicate(j) 
     [metWtExchRxn, ~] = find(newModel.S(:, duplicate));
