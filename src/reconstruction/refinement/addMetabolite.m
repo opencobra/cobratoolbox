@@ -80,15 +80,15 @@ end
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addRequired('metID',@(x) iscell(x) || ischar(x))
-parser.addParameter('metName',defaultMetName,@(x) ischar(x) || iscell(x) )
-parser.addParameter('metFormula',defaultFormula, @(x) ischar(x) || iscell(x));
-parser.addParameter('ChEBIID',defaultCHEBI, @(x) ischar(x) || iscell(x));
-parser.addParameter('KEGGId',defaultKEGG, @(x) ischar(x) || iscell(x));
-parser.addParameter('PubChemID',defaultPubChem, @(x) ischar(x) || iscell(x));
-parser.addParameter('InChi',defaultInChi, @(x)  ischar(x) || iscell(x));
-parser.addParameter('Charge',defaultCharge, @(x) isnumeric(x));
-parser.addParameter('b',defaultb,@(x) isnumeric(x));
-parser.addParameter('csense',defaultCsense, @(x) ischar(x));
+parser.addParamValue('metName',defaultMetName,@(x) ischar(x) || iscell(x) )
+parser.addParamValue('metFormula',defaultFormula, @(x) ischar(x) || iscell(x));
+parser.addParamValue('ChEBIID',defaultCHEBI, @(x) ischar(x) || iscell(x));
+parser.addParamValue('KEGGId',defaultKEGG, @(x) ischar(x) || iscell(x));
+parser.addParamValue('PubChemID',defaultPubChem, @(x) ischar(x) || iscell(x));
+parser.addParamValue('InChi',defaultInChi, @(x)  ischar(x) || iscell(x));
+parser.addParamValue('Charge',defaultCharge, @(x) isnumeric(x));
+parser.addParamValue('b',defaultb,@(x) isnumeric(x));
+parser.addParamValue('csense',defaultCsense, @(x) ischar(x));
 
 parser.parse(model,metID,varargin{:});
 

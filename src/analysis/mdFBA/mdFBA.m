@@ -56,10 +56,10 @@ persistent ressol
 
 parser = inputParser();
 parser.addRequired('model',@isstruct)
-parser.addParameter('ignoredMets',{},@(x) iscell(x) && all(ismember(x,model.mets)));
-parser.addParameter('minProd',max([abs(model.lb);model.ub])/10000,@isnumeric);
-parser.addParameter('getDiffToFBA',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('getInvalidSolution',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('ignoredMets',{},@(x) iscell(x) && all(ismember(x,model.mets)));
+parser.addParamValue('minProd',max([abs(model.lb);model.ub])/10000,@isnumeric);
+parser.addParamValue('getDiffToFBA',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('getInvalidSolution',false,@(x) isnumeric(x) || islogical(x));
 
 
 parser.parse(model,varargin{:});

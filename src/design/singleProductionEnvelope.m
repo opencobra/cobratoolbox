@@ -45,12 +45,12 @@ parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model
 parser.addRequired('deletions', @(x)  iscell(x) && ~isempty(x))
 parser.addRequired('product', @(x) ischar(x) && ~isempty(x))
 parser.addRequired('biomassRxn', @(x) ischar(x) && ~isempty(x))
-parser.addParameter('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('nPts', 20, @isnumeric);
-parser.addParameter('savePlot', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('showPlot', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('fileName', product, @(x) ischar(x))
-parser.addParameter('outputFolder', 'Results', @(x) ischar(x))
+parser.addParamValue('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('nPts', 20, @isnumeric);
+parser.addParamValue('savePlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('showPlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('fileName', product, @(x) ischar(x))
+parser.addParamValue('outputFolder', 'Results', @(x) ischar(x))
 
 parser.parse(model, deletions, product, biomassRxn, varargin{:})
 model = parser.Results.model;

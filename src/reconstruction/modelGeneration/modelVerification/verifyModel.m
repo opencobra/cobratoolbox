@@ -68,15 +68,15 @@ fluxConsistencyFields = optionalFields(cellfun(@(x) x, optionalFields(:,6)),1);
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
-parser.addParameter('massBalance',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('chargeBalance',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
-parser.addParameter('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('silentCheck',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('massBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('chargeBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParamValue('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('silentCheck',false,@(x) isnumeric(x) || islogical(x));
 
 
 parser.parse(model,varargin{:});

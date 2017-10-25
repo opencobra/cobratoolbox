@@ -154,18 +154,18 @@ parser.addRequired('model',@(x) isstruct(x) && isfield(x, 'S') && isfield(model,
     && isfield(model, 'c'))
 parser.addRequired('minFluxesW',@isnumeric)
 parser.addRequired('maxFluxesW',@isnumeric)
-parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []), @(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+parser.addParamValue('constrOpt', struct('rxnList', {{}}, 'values', []), @(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
     && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
-parser.addParameter('excludedRxns',@(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
+parser.addParamValue('excludedRxns',@(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
 hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-parser.addParameter('runID', defaultRunID, @(x) ischar(x))
-parser.addParameter('outputFolder', 'OutputsFindMustUU', @(x) ischar(x))
-parser.addParameter('outputFileName', 'MustUUSet', @(x) ischar(x))
-parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('runID', defaultRunID, @(x) ischar(x))
+parser.addParamValue('outputFolder', 'OutputsFindMustUU', @(x) ischar(x))
+parser.addParamValue('outputFileName', 'MustUUSet', @(x) ischar(x))
+parser.addParamValue('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('verbose', 1, @(x) isnumeric(x) || islogical(x));
 
 parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
 model = parser.Results.model;

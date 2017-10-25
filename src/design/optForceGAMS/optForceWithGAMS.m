@@ -206,16 +206,16 @@ parser.addRequired('minFluxesW', @isnumeric)
 parser.addRequired('maxFluxesW', @isnumeric)
 parser.addRequired('minFluxesM', @isnumeric)
 parser.addRequired('maxFluxesM', @isnumeric)
-parser.addParameter('k', 1, @isnumeric)
-parser.addParameter('nSets', 1, @isnumeric)
-parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []) ,@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+parser.addParamValue('k', 1, @isnumeric)
+parser.addParamValue('nSets', 1, @isnumeric)
+parser.addParamValue('constrOpt', struct('rxnList', {{}}, 'values', []) ,@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
     && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
-parser.addParameter('excludedRxns', struct('rxnList', {{}}, 'typeReg', ''),@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'typeReg') ...
+parser.addParamValue('excludedRxns', struct('rxnList', {{}}, 'typeReg', ''),@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'typeReg') ...
     && length(x.rxnList) == length(x.typeReg) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
 hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-parser.addParameter('runID', defaultRunID, @(x) ischar(x))
-parser.addParameter('outputFolder', 'OutputsOptForce', @(x) ischar(x))
-parser.addParameter('outputFileName', 'OptForce', @(x) ischar(x))
+parser.addParamValue('runID', defaultRunID, @(x) ischar(x))
+parser.addParamValue('outputFolder', 'OutputsOptForce', @(x) ischar(x))
+parser.addParamValue('outputFileName', 'OptForce', @(x) ischar(x))
 solvers = checkGAMSSolvers('MIP');
 if isempty(solvers)
     error('there is no GAMS solvers available to solver Mixed Integer Programming problems') ;
@@ -226,20 +226,20 @@ else
         defaultSolverName = lower(solvers(1));
     end
 end
-parser.addParameter('solverName', defaultSolverName, @(x) ischar(x))
+parser.addParamValue('solverName', defaultSolverName, @(x) ischar(x))
 if strcmp(filesep,'\')
     defaultPrintExcel = 1;
 else
     defaultPrintExcel = 0;
 end
-parser.addParameter('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepGamsOutputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('loop', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('kMin', 1, @(x) isnumeric(x));
+parser.addParamValue('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('keepGamsOutputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('loop', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('kMin', 1, @(x) isnumeric(x));
 
 parser.parse(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
 model = parser.Results.model;
