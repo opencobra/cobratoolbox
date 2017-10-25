@@ -156,10 +156,16 @@ digitRounded = 12;
 [~,eleK,metEleK] = checkEleBalance(metKform);
 % check if information on charges exists
 if ~any(strcmp(eleK, 'Charge'))
-    if (isfield(model, 'metCharges') && ~all(isnan(model.metCharges)) && ~all(model.metCharages == 0))
+    fieldCharge = '';
+    if isfield(model, 'metCharges')
+        fieldCharge = 'metCharges';
+    elseif isfield(model, 'metCharge')
+        fieldCharge = 'metCharge';
+    end
+    if ~isempty(fieldCharge) && ~all(isnan(model.(fieldCharge))) && ~all(model.(fieldCharge) == 0)
         % add charge as one of the elements
         eleK{end + 1} = 'Charge';
-        metEleK(:, end + 1) = double(model.metCharges(metK));
+        metEleK(:, end + 1) = double(model.(fieldCharge)(metK));
     elseif nargin < 4 || isempty(metFill)
         metFill = {'H'};  % no charge information, simply use H as filling metabolites
     end
@@ -201,76 +207,86 @@ eleConnect = eleConnect(:, 1:nEC);
 
 %% main loop
 % constraint matrix for m_ie, x^pos_je, x^neg_je: [S_unknown I_nR -I_nR]
-[row,col,entry] = find([model.S(metU, rxnC)', speye(nR), -speye(nR)]);
-nCol = mU + nR*2;
+[row,col,entry] = find([model.S(:, rxnC)', speye(nR), -speye(nR)]);
+nCol = m + nR * 2;
 % chemical formulae
 [metEleU.minIncon, metEleU.minFill, metEleU.minForm] = deal(NaN(mU, nE));
 % infeasibility of each solve
-[infeasibility,sol] = deal(repmat(struct('minIncon',[],'minFill',[],'minForm',[]), nEC, 1));
+[infeasibility, sol] = deal(repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1));
 [S_fill.minIncon, S_fill.minFill, S_fill.minForm] = deal(sparse(mF, nR));
 % bound on the total inconsistency allowed
-bound = repmat(struct('minIncon',[],'minFill',[],'minForm',[]), nEC, 1);
-index = repmat(struct('m',[],'xp',[],'xn',[],'Ap',[],'An',[]),nEC,1);
+bound = repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1);
+index = repmat(struct('m', [], 'xp', [], 'xn', [], 'Ap', [], 'An', []), nEC, 1);
 if nargout == 9
     % only assign output LP when requested
-    varargout = {repmat(struct('A',[],'b',[],'lb',[],'ub',[],'c',[],'csense',[],'osense',[]), nEC, 1)};
+    varargout = {repmat(struct('A', [], 'b', [], 'lb', [], 'ub', [], 'c', [], 'csense', [], 'osense', []), nEC, 1)};
 end
 for jEC = 1:nEC
     LPj = struct();
     %% minimum inconsistency
-    kE = sum(eleConnect(:,jEC));  % number of connected elements in the current component
-    metFillCon = any(metEleF(:, eleConnect(:,jEC)), 2);  % connected mets for filling 
+    kE = sum(eleConnect(:, jEC));  % number of connected elements in the current component
+    metFillCon = any(metEleF(:, eleConnect(:, jEC)), 2);  % connected mets for filling 
     mFC = sum(metFillCon);  % number of connected mets for filling
     % Matrix containing m_ie for all conected elements:
-    % [S_unknown I_nR -I_nR 0 ...                                    0 ;
-    %  0 ...              0 S_unknown I_nR -I_nR  0 ...              0 ;
-    %  0 ...                                   0  S_unknown I_nR -I_nR ]
-    rowJ = repmat(row(:), kE, 1) + reshape(repmat(0:nR:nR*(kE-1), numel(row), 1), numel(row)*kE, 1);
-    colJ = repmat(col(:), kE, 1) + reshape(repmat(0:nCol:nCol*(kE-1), numel(col), 1), numel(col)*kE, 1);
+    % [S I_nR -I_nR | 0 ...                               0 ;
+    %  0 ...      0 | S I_nR -I_nR | 0 ...   |            0 ;
+    %  0 ...                         0 ... 0 | S I_nR -I_nR ]
+    rowJ = repmat(row(:), kE, 1) + reshape(repmat(0:nR:(nR * (kE - 1)), numel(row), 1), numel(row) * kE, 1);
+    colJ = repmat(col(:), kE, 1) + reshape(repmat(0:nCol:(nCol * (kE - 1)), numel(col), 1), numel(col) * kE, 1);
     entryJ = repmat(entry(:), kE, 1);
-    LPj.A = sparse(rowJ, colJ, entryJ, nR*kE, nCol*kE);
+    LPj.A = sparse(rowJ, colJ, entryJ, nR * kE, nCol * kE);
     % Matrix for mets for filling (m_i,e for met i, element e, I_nR identity matrix):
     % [m_1,1 * I_nR  | m_2,1 * I_nR  | ... | m_mFC,1 * I_nR ;
     %  m_1,2 * I_nR  | m_2,2 * I_nR  | ... | m_mFC,2 * I_nR ;
     %  ...
     %  m_1,kE * I_nR | m_2,kE * I_nR | ... | m_mFC,kE * I_nR] 
-    rowJ = repmat((1:nR*kE)', mFC, 1); 
-    colJ = repmat((1:nR)', kE*mFC, 1) + reshape(repmat(0:nR:nR*(mFC-1), nR*kE, 1), nR*kE*mFC, 1);
-    entryJ = full(metEleF(metFillCon,eleConnect(:,jEC))');
-    entryJ = reshape(repmat(entryJ(:)', nR, 1), nR*kE*mFC, 1);
-    LPj.A = [LPj.A, sparse(rowJ, colJ, entryJ, nR*kE, nR*mFC), -sparse(rowJ, colJ, entryJ, nR*kE, nR*mFC)];
-    LPj.lb = zeros(size(LPj.A,2),1);
-    [~, idCharge] = ismember(find(eleCh), find(eleConnect(:,jEC)));
+    rowJ = repmat((1:(nR * kE))', mFC, 1); 
+    colJ = repmat((1:nR)', kE * mFC, 1) + reshape(repmat(0:nR:(nR * (mFC - 1)), nR * kE, 1), nR * kE * mFC, 1);
+    entryJ = full(metEleF(metFillCon, eleConnect(:, jEC))');
+    entryJ = reshape(repmat(entryJ(:)', nR, 1), nR * kE * mFC, 1);
+    LPj.A = [LPj.A, sparse(rowJ, colJ, entryJ, nR * kE, nR * mFC), -sparse(rowJ, colJ, entryJ, nR * kE, nR * mFC)];
+    LPj.lb = zeros(size(LPj.A, 2), 1);
+    LPj.ub = inf(size(LPj.A, 2),1);
+    [~, idCharge] = ismember(find(eleCh), find(eleConnect(:, jEC)));
     if idCharge > 0
         % charges can be negative
-        LPj.lb((nCol * (idCharge - 1) + 1) : (nCol * (idCharge - 1) + mU)) = -inf;
+        LPj.lb((nCol * (idCharge - 1) + 1) : (nCol * (idCharge - 1) + m)) = -inf;
     end
     % store the index
-    eleJ = eleK(eleConnect(:,jEC));
+    eleInd = find(eleConnect(:, jEC));
+    eleJ = eleK(eleInd);
     for jkE = 1:kE
-        index0 = (jkE-1)*(mU + nR*2);
-        index(jEC).m.(eleJ{jkE}) = (index0 + 1) : (index0 + mU);
-        index(jEC).xp.(eleJ{jkE}) = (index0 + mU + 1) : (index0 + mU + nR);
-        index(jEC).xn.(eleJ{jkE}) = (index0 + mU + nR + 1) : (index0 + mU + nR*2);
+        index0 = (jkE - 1) * nCol;
+        index(jEC).m.(eleJ{jkE}) = (index0 + 1) : (index0 + m);
+        index(jEC).xp.(eleJ{jkE}) = (index0 + m + 1) : (index0 + m + nR);
+        index(jEC).xn.(eleJ{jkE}) = (index0 + m + nR + 1) : (index0 + m + nR * 2);
+        if jkE == idCharge
+            % allow known formulas but unknown charges
+            chargeKnown = ~isnan(metEleK(:, eleInd(jkE)));
+            LPj.lb(index(jEC).m.(eleJ{jkE})(metK(chargeKnown))) = metEleK(chargeKnown, eleInd(jkE));
+            LPj.ub(index(jEC).m.(eleJ{jkE})(metK(chargeKnown))) = metEleK(chargeKnown, eleInd(jkE));
+        else
+            LPj.lb(index(jEC).m.(eleJ{jkE})(metK)) = metEleK(:, eleInd(jkE));
+            LPj.ub(index(jEC).m.(eleJ{jkE})(metK)) = metEleK(:, eleInd(jkE));
+        end
     end
     if mFC > 0
         metFillConName = metFill(metFillCon);
         for jFC = 1:mFC
-            index0 = kE*(mU + nR*2) + (jFC - 1) * nR;
+            index0 = kE * nCol + (jFC - 1) * nR;
             index(jEC).Ap.(metFillConName{jFC}) = (index0 + 1) : (index0 + nR);
-            index(jEC).An.(metFillConName{jFC}) = (index0 + nR + 1) : (index0 + nR*2);
+            index(jEC).An.(metFillConName{jFC}) = (index0 + nR + 1) : (index0 + nR * 2);
         end
     end
     
-    LPj.ub = inf(size(LPj.A,2),1);
+    
     % Objective: sum(x^pos_ie + x^neg_ie)
     LPj.c = zeros(size(LPj.A, 2), 1);
     for jkE = 1:kE
-        LPj.c((nCol * (jkE - 1) + mU + 1) : (nCol * jkE)) = 1;
+        LPj.c((nCol * (jkE - 1) + m + 1) : (nCol * jkE)) = 1;
     end
-    % RHS: -S_known' * n_known
-    LPj.b = - model.S(metK,rxnC)' * metEleK(:,eleConnect(:,jEC));
-    LPj.b = LPj.b(:);
+    % RHS: 0
+    LPj.b = zeros(nR * kE, 1);
     LPj.csense = char('E' * ones(1, nR * kE));
     LPj.osense = 1;  % minimize
     % solve for minimum inconsistency
@@ -279,34 +295,35 @@ for jEC = 1:nEC
     else
         sol(jEC).minIncon = solveCobraLP(LPj, varargin{:});
     end
-    if isfield(sol(jEC).minIncon,'full') && numel(sol(jEC).minIncon.full) == size(LPj.A,2)
+    if isfield(sol(jEC).minIncon, 'full') && numel(sol(jEC).minIncon.full) == size(LPj.A, 2)
         % store the chemical formulae
         jkE = 0;
         for jE = 1:nE
             if eleConnect(jE, jEC)
                 jkE = jkE + 1;
-                metEleU.minIncon(:,jE) = sol(jEC).minIncon.full((nCol*(jkE - 1) + 1):(nCol*(jkE - 1) + mU));
+                metEleU.minIncon(:, jE) = sol(jEC).minIncon.full(nCol * (jkE - 1) + metU);
             end
         end
-        S_fill.minIncon(metFillCon,:) = reshape(...
+        S_fill.minIncon(metFillCon, :) = reshape(...
             sol(jEC).minIncon.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
             - sol(jEC).minIncon.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
     else
-        metEleU.minIncon(:,eleConnect(:,jEC)) = NaN;
+        metEleU.minIncon(:,eleConnect(:, jEC)) = NaN;
     end
     % manually check feasibility
     infeas = checkSolFeas(LPj, sol(jEC).minIncon);
     infeasibility(jEC).minIncon = infeas;
     if infeas <= feasTol  % should always be feasible
-        %% minimize the stoichiometric coefficients of mets for filling
+       %% minimize the stoichiometric coefficients of mets for filling
         for jkE = 1:kE
+            % add constraint on total inconsistency: sum(x^pos_i,e + x^neg_i,e) <= inconsistency
             LPj.A(end + 1,:) = 0;
-            LPj.A(end, (nCol*(jkE - 1) + mU + 1):(nCol*jkE)) = 1;
-            LPj.b(end + 1) = sum(sol(jEC).minIncon.full((nCol*(jkE - 1) + mU + 1):(nCol*jkE)));
+            LPj.A(end, (nCol * (jkE - 1) + m + 1):(nCol * jkE)) = 1;
+            % rounding to avoid numerical issues on feasibility
+            LPj.b(end + 1) = round(sum(sol(jEC).minIncon.full((nCol * (jkE - 1) + m + 1):(nCol * jkE))), digitRounded);
         end
         LPj.csense((end + 1):(end + kE)) = 'L';
-        % rounding to avoid numerical issues on feasibility
-        LPj.b = round(LPj.b, digitRounded);
+        
         % reuse basis
         if isfield(sol(jEC).minIncon, 'basis')
             LPj.basis = sol(jEC).minIncon.basis;
@@ -342,7 +359,7 @@ for jEC = 1:nEC
             for jE = 1:nE
                 if eleConnect(jE, jEC)
                     jkE = jkE + 1;
-                    metEleU.minFill(:,jE) = sol(jEC).minFill.full((nCol*(jkE - 1) + 1):(nCol*(jkE - 1) + mU));
+                    metEleU.minFill(:,jE) = sol(jEC).minFill.full(nCol * (jkE - 1) + metU);
                 end
             end
             S_fill.minFill(metFillCon,:) = reshape(...
@@ -372,45 +389,47 @@ for jEC = 1:nEC
         LPj.c(:) = 0;  % reset objective
         % if charge is involved, split it into m^pos, m^neg
         if idCharge > 0
-            LPj.A = [LPj.A sparse(size(LPj.A,1), mU*2); sparse(1:mU, (nCol * (idCharge - 1) + 1) : (nCol * (idCharge - 1) + mU), ...
-                ones(mU, 1), mU, size(LPj.A,2)), -speye(mU), speye(mU)];
-            LPj.b = [LPj.b; zeros(mU, 1)];
-            LPj.csense = [LPj.csense char('E' * ones(1,mU))];
-            LPj.lb = [LPj.lb; zeros(mU*2, 1)];
-            LPj.ub = [LPj.ub; inf(mU*2, 1)];
-            LPj.c = [LPj.c; ones(mU*2, 1)];
+            mUch = sum(~chargeKnown);
+            LPj.A = [LPj.A,  sparse(size(LPj.A, 1), (mU + mUch) * 2); ...
+                sparse(1:(mU + mUch), nCol * (idCharge - 1) + [metU; metK(~chargeKnown)], ...
+                1, mU + mUch, size(LPj.A,2)), -speye(mU + mUch), speye(mU + mUch)];
+            LPj.b = [LPj.b; zeros(mU + mUch, 1)];
+            LPj.csense = [LPj.csense char('E' * ones(1, mU + mUch))];
+            LPj.lb = [LPj.lb; zeros((mU + mUch) * 2, 1)];
+            LPj.ub = [LPj.ub; inf((mU + mUch) * 2, 1)];
+            LPj.c = [LPj.c; ones((mU + mUch) * 2, 1)];
             if isfield(LPj, 'basis') 
                 if isstruct(LPj.basis)
                     % for gurobi
                     if isfield(LPj.basis, 'vbasis')
-                        LPj.basis.vbasis((end + 1) : (end + mU * 2)) = 0;
+                        LPj.basis.vbasis((end + 1) : (end + (mU + mUch) * 2)) = 0;
                     end
                     if isfield(LPj.basis, 'cbasis')
-                        LPj.basis.cbasis((end + 1) : (end + mU)) = 0;
+                        LPj.basis.cbasis((end + 1) : (end + mU + mUch)) = 0;
                     end
                 else
                     % for other solvers
-                    if numel(LPj.basis) == size(LPj.A, 2) - mU * 2
-                        LPj.basis((end + 1) : (end + mU * 2)) = 0;
+                    if numel(LPj.basis) == size(LPj.A, 2) - (mU + mUch) * 2
+                        LPj.basis((end + 1) : (end + (mU + mUch) * 2)) = 0;
                     end
                 end
             end
         end
         for jkE = 1:kE
             % fix inconsistency variables
-            ind = (nCol * (jkE - 1) + mU + 1) : (nCol * jkE);
+            ind = (nCol * (jkE - 1) + m + 1) : (nCol * jkE);
             LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + 1e-10);
             LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - 1e-10);
             % minimize chemical formulae
             if jkE ~= idCharge
-                LPj.c((nCol * (jkE - 1) + 1) : (nCol * (jkE - 1) + mU)) = 1;
+                LPj.c((nCol * (jkE - 1) + 1) : (nCol * (jkE - 1) + m)) = 1;
             end
         end
         % fix stoichiometric coefficients for filling mets
-        LPj.ub((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) ...
-            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) * (1 + 1e-10);
-        LPj.lb((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) ...
-            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) * (1 - 1e-10);
+        LPj.ub((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR* 2 * mFC)) * (1 + 1e-10);
+        LPj.lb((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - 1e-10);
         % rounding to avoid numerical issues on feasibility
         LPj.ub = round(LPj.ub, digitRounded);
         LPj.lb = round(LPj.lb, digitRounded);
@@ -429,32 +448,32 @@ for jEC = 1:nEC
             f = f * 10;
             for jkE = 1:kE
                 % relax tolerance
-                ind = (nCol * (jkE - 1) + mU + 1) : (nCol * jkE);
+                ind = (nCol * (jkE - 1) + m + 1) : (nCol * jkE);
                 LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + f);
                 LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - f);
             end
-            LPj.ub((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) ...
-                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) * (1 + f);
-            LPj.lb((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) ...
-                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR*2*mFC)) * (1 - f);
+            LPj.ub((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 + f);
+            LPj.lb((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - f);
             % rounding to avoid numerical issues on feasibility
             LPj.ub = round(LPj.ub, digitRounded);
             LPj.lb = round(LPj.lb, digitRounded);
         end
-        if isfield(sol(jEC).minForm,'full') && numel(sol(jEC).minForm.full) == size(LPj.A,2)
+        if isfield(sol(jEC).minForm, 'full') && numel(sol(jEC).minForm.full) == size(LPj.A, 2)
             % store the chemical formulae
             jkE = 0;
             for jE = 1:nE
                 if eleConnect(jE, jEC)
                     jkE = jkE + 1;
-                    metEleU.minForm(:,jE) = sol(jEC).minForm.full((nCol*(jkE - 1) + 1):(nCol*(jkE - 1) + mU));
+                    metEleU.minForm(:, jE) = sol(jEC).minForm.full(nCol * (jkE - 1) + metU);
                 end
             end
             S_fill.minForm(metFillCon,:) = reshape(...
                 sol(jEC).minForm.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
                 - sol(jEC).minForm.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
         else
-            metEleU.minForm(:,eleConnect(:,jEC)) = NaN;
+            metEleU.minForm(:, eleConnect(:,jEC)) = NaN;
         end
         infeasibility(jEC).minForm = infeas;
         bound(jEC).minForm = f;
@@ -522,46 +541,8 @@ elseif ~ischar(findCM) && numel(findCM) > 1
     warning('Input extreme ray matrix has #rows (%d) different from #mets (%d). Ignore.', size(findCM,1), numel(model.mets));
     findCM = 'efmtool';
 end
-if ~CMfound && ischar(findCM) && strcmpi(findCM, 'efmtool')
-    % use EFMtool
-    pathEFM = which('CalculateFluxModes.m');
-    if isempty(pathEFM)
-        warning('EFMtool not in Matlab path. Use rational basis.');
-        findCM = 'null';
-    else
-        dirEFM = strsplit(pathEFM,filesep);
-        dirEFM = strjoin(dirEFM(1:end-1),filesep);
-        dirCur = pwd;
-        cd(dirEFM);
-        if deadCM
-            % may fail due to lack of memory if there are a lot of dead end 
-            % metabolites, set deadCM = false to exclude them
-            N = CalculateFluxModes(full(model.S'),zeros(numel(model.mets),1));
-            N = N.efms;
-        else
-            [~,removedMets] = removeDeadEnds(model);
-            metActive = true(numel(model.mets), 1);
-            metActive(findMetIDs(model,removedMets)) = false;
-            N_active = CalculateFluxModes(full(model.S(metActive,:)'),zeros(sum(metActive),1));
-            N = zeros(numel(model.mets), size(N_active.efms,2));
-            N(metActive,:) = N_active.efms;
-        end
-        cd(dirCur);
-        CMfound = true;
-    end
-end
-if ~CMfound && ischar(findCM) && strcmpi(findCM, 'null')
-    % matlab rational basis
-    if deadCM
-        N = null(full(model.S'),'r');
-    else
-        [~,removedMets] = removeDeadEnds(model);
-        metActive = true(numel(model.mets), 1);
-        metActive(findMetIDs(model,removedMets)) = false;
-        N_active = null(full(model.S(metActive,:)'),'r');
-        N = zeros(numel(model.mets), size(N_active, 2));
-        N(metActive,:) = N_active;
-    end
+if ischar(findCM) && ~CMfound
+    N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCM', deadCM, varargin{:});
     CMfound = true;
 end
 if CMfound
@@ -657,16 +638,16 @@ if nameCM > 0 && CMfound
     for j = 1:nDefault
         j0 = j0 + 1;
         nameJ = ['Conserve_' num2alpha(j0)];
-        while any(strcmp(ele([1:nE, nE+nDefault+1:end]),nameJ))
+        while any(strcmp(ele([1:nE, (nE + nDefault + 1):end]), nameJ))
             j0 = j0 + 1;
             nameJ = ['Conserve_' num2alpha(j0)];
         end
-        ele{nE+j} = nameJ;
+        ele{nE + j} = nameJ;
     end
 end
 % reaction balance
 rxnBal = metEle' * model.S;
-model.metFormulas = convertMatrixFormulas(ele,metEle,10);
+model.metFormulas = convertMatrixFormulas(ele, metEle, 10);
 metCompute = [model.mets(metU) model.metFormulas(metU)];
 end
 
@@ -682,9 +663,9 @@ if nargin < 2
     charSet = ['_' char(97:122)];
 end
 if numel(index) > 1
-    s = cell(numel(index),1);
+    s = cell(numel(index), 1);
     for j = 1:numel(index)
-        s{j} = num2alpha(index(j),charSet);
+        s{j} = num2alpha(index(j), charSet);
     end
     return
 end
@@ -692,9 +673,9 @@ N = length(charSet);
 s = '';
 k = floor(index/N);
 while k > 0
-    s = [charSet(index - k*N + 1) s];
+    s = [charSet(index - k * N + 1) s];
     index = k;
-    k = floor(index/N);
+    k = floor(index / N);
 end
 s = [charSet(index + 1) s];
 end
