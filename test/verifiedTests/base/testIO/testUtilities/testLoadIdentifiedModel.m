@@ -14,7 +14,7 @@ fileDir = fileparts(which('testLoadIdentifiedModel'));
 cd(fileDir);
 
 % test variables
-directory = [CBTDIR filesep 'test' filesep 'models'];
+directory = [CBTDIR filesep 'test' filesep 'models' filesep 'mat'];
 filename = 'iAF1260';
 filename_2 = 'ecoli_core_model';
 

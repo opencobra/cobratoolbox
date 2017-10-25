@@ -18,7 +18,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testSurfNet'));
 cd(fileDir);
 
-model = readCbModel([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 
 % generate flux data for testing
 s = optimizeCbModel(model, 'max', 'one');
@@ -98,7 +98,7 @@ text2 = regexprep(text2, '\s*', ' ');
 % remove the generated file
 delete('surfNet.txt');
 
-% compare the similarity of text using a simple scheme 
+% compare the similarity of text using a simple scheme
 % (no need to solve a DP here, the two strings are supposed to be highly similar)
 [j1, j2, match] = deal(1, 1, 0);
 while j1 <= numel(text1) && j2 <= numel(text2)
@@ -126,7 +126,7 @@ fprintf('Compare the printed with the expected results ...\n')
 assert(score > 1 - 1e-3);  % some mismatches due to linebreaks and space
 fprintf('\nSuccess. Finish testing normal functionalities of surfNet.\n')
 
-% check warnings 
+% check warnings
 diary('surfNet.txt');
 
 % fields not printablable
@@ -153,10 +153,10 @@ delete('surfNet.txt');
 fprintf('Compare the printed warnings with the expected results ...\n')
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.')))
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.')))
-assert(~isempty(strfind(textSurfNet, 'Warning: The 2nd input is neither a metabolite nor reaction of the model.'))) 
+assert(~isempty(strfind(textSurfNet, 'Warning: The 2nd input is neither a metabolite nor reaction of the model.')))
 fprintf('\nSuccess. Finish testing warning output of surfNet.\n')
 
-% print a random reaction when the 2nd input 'metrxn' is not given and 
+% print a random reaction when the 2nd input 'metrxn' is not given and
 % no objective reactions exist.
 fprintf('Test printing random reactions ...\n')
 model2.c(:) = 0;
