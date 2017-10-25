@@ -51,7 +51,7 @@ end
 
 % test with ecoli_core_model
 load('testDataGraph2Hypergraph.mat');
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 for printLevel = 0:1
     [A, B] = convertHypergraphToBipartiteGraph(model.S, printLevel);

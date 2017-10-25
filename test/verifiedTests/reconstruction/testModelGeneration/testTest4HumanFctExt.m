@@ -19,7 +19,7 @@ tol = 1e-4;
 
 if solverOK
     fileName= 'Recon1.0model.mat'; % if using Recon 3 model, amend filename.
-    model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep fileName]);
+    model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep fileName]);
     model.csense(1:size(model.S,1),1) = 'E';
 
     % Set the lower bounds on all biomass reactions and sink/demand reactions to zero.

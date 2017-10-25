@@ -2,7 +2,7 @@
 %
 % Purpose:
 %     - The purpose is to test the major functionality of modelBorgifier
-%       using two models provided with the toolbox. 
+%       using two models provided with the toolbox.
 %
 % Authors:
 %     - Original File: JT Sauls June 21 2017
@@ -16,19 +16,19 @@ pth=which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 
 % status is 0 if failed, 1 when all scripts run successfully.
-status = 0 ; 
+status = 0 ;
 
 % initialize the test
 cd(fileparts(which('testModelBorgifier.m')));
 
 % load the models as well as comparision information
 fprintf('modelBorgifier: Loading Ecoli core model.\n')
-Cmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], ...
+Cmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], ...
                      'modelDescription', 'Ecoli_core') ;
 fprintf('modelBorgifier: Loading iIT341 model.\n')
-Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'iIT341.xml'], ...
-                     'modelDescription', 'iIT341') ;     
-                 
+Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'xml' filesep 'iIT341.xml'], ...
+                     'modelDescription', 'iIT341') ;
+
 % verify models are appropriate for comparison and test success
 fprintf('modelBorgifier: Testing Cmodel verification... ')
 try
@@ -44,7 +44,7 @@ else
     return
 end
 assert(isfield(Cmodel, 'rxnID'))
- 
+
 fprintf('modelBorgifier: Testing Tmodel verification... ')
 try
     Tmodel = verifyModelBorg(Tmodel, 'keepName');
@@ -111,10 +111,10 @@ else
     fprintf('failed.\n')
     return
 end
-assert(isfield(Stats, 'uniqueMetabolites')) 
-status = 1 ; % everything is cool. 
+assert(isfield(Stats, 'uniqueMetabolites'))
+status = 1 ; % everything is cool.
 
-% change the directory back 
+% change the directory back
 cd(currentDir)
 
 return

@@ -14,7 +14,7 @@ fileDir = fileparts(which('testConvertModelToEX'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 filename = 'testData_convertModelToEX.txt';
 rxnzero = 0;
 filename_2 = 'testData_convertModelToEX_2.txt';

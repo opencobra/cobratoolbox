@@ -22,7 +22,7 @@ cd(fileDir);
 tol = 1e-6;
 
 % load the model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % find the internal vs exchange/demand/sink reactions.
 model = findSExRxnInd(model);
@@ -76,7 +76,7 @@ assert(norm(v - v_R - v_N) < tol)
 assert(norm(u - u_C - u_L) < tol)
 
 % test for checkScaling
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 precisionEstimate = checkScaling(model);
 
@@ -95,7 +95,7 @@ for i = 1:length(estlevels)
 end
 
 % test a model for which a quad-precision solver is highly recommended
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ME_matrix_GlcAer_WT.mat'], 'modelGlcOAer_WT');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ME_matrix_GlcAer_WT.mat'], 'modelGlcOAer_WT');
 
 [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(modelGlcOAer_WT);
 assert(strcmp(precisionEstimate, 'quad'));

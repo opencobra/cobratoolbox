@@ -18,7 +18,7 @@ fileDir = fileparts(which('testNeighborRxn2data'));
 cd(fileDir);
 
 % load E. coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % equires EC number field
 model.rxnECNumbers = cell(size(model.rxns));%requires EC number field

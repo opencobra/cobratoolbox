@@ -28,7 +28,7 @@ nworkers = 2;
 solverName = 'ibm_cplex';
 
 % load the E.coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 if changeCobraSolver(solverName, 'LP', 0)
 
@@ -93,7 +93,7 @@ if changeCobraSolver(solverName, 'LP', 0)
     assert(optsol == referenceToyResults.optsol);
 
     % load the E.coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
     optPercentage = 90;  % FVA based on maximum growth
 

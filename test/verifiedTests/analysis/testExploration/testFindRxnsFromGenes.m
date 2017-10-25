@@ -17,7 +17,7 @@ fileDir = fileparts(which('testFindRxnsFromGenes'));
 cd(fileDir);
 
 % load model
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 
 % convert to new style model
 model = convertOldStyleModel(model);

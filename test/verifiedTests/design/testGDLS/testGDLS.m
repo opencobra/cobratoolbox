@@ -17,7 +17,7 @@ fileDir = fileparts(which('testGDLS'));
 cd(fileDir);
 
 % load model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % Set conditions to anaerobic and glucose uptake of 20
 model = changeRxnBounds(model, {'EX_o2(e)', 'EX_glc(e)'}, [0 - 20], 'l');

@@ -18,7 +18,7 @@ fileDir = fileparts(which('testMinSpan'));
 cd(fileDir);
 
 % load the model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % Remove biomass equation for MinSpan calculation
 bmName = {'Biomass_Ecoli_core_w_GAM'};

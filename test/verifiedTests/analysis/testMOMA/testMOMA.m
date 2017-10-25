@@ -27,7 +27,7 @@ fileDir = fileparts(which('testMOMA'));
 cd(fileDir);
 
 % load model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % test solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6'};  %,'ILOGcomplex'};
