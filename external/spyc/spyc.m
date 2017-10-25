@@ -1,4 +1,4 @@
-function spyc(sA, cmap, pb);
+function spyc(sA, cmap, pb, newFig);
 
 % SPYC Visualize sparsity pattern with color-coded scale.
 %   SPYC(S) plots the color-coded sparsity pattern of the matrix S.
@@ -9,6 +9,10 @@ function spyc(sA, cmap, pb);
 %   SPYC(S,CMAP,PB) allows turning off the display of a colorbar by passing
 %                   flag PB=0
 %
+
+if nargin < 4
+    newFig = true;
+end
 
 if nargin < 1 | nargin > 3 && ~isempty(cmap)
     error('spyc:InvalidNumArg', 'spyc takes one to three inputs')
@@ -41,8 +45,10 @@ ns = length(indx);
 
 imap = round((sA - min(sA)) / (max(sA) - min(sA))) + 1;
 
-h = figure;
-hold on;
+if newFig
+    h = figure;
+    hold on;
+end
 colormap(cmap)
 scatter(iy, ix, [], sA, 'Marker', '.', 'SizeData', 0.4 * 1e3 * (abs(sA) / max(max(abs(sA)))))
 set(gca, 'ydir', 'reverse')
