@@ -101,10 +101,10 @@ if myCluster.NumWorkers >= minWorkers
 
             % output a success message
             [minF,maxF] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0);
-            assert(maxF(2) == 0); %While R4 can carry a flux of 1000, it can't do so without a loop
-            assert(maxF(1) == 500); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
-            assert(minF(1)==5); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
-            assert(minF(2)==0); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+            assert(abs(maxF(2))< tol); %While R4 can carry a flux of 1000, it can't do so without a loop
+            assert(abs(maxF(1) -500) < tol); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
+            assert(abs(minF(1)-5) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+            assert(abs(minF(2)) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
             try
                 errored = false;
                 [minF,maxF,minSols,maxSols] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0);
