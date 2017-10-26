@@ -1,4 +1,4 @@
-function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)
+function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, combine_vars)
 % Adds loop law constraints to LP problem or MILP problem.
 %
 % USAGE:
@@ -22,6 +22,11 @@ function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)
 %
 % OPTIONAL INPUT:
 %    rxnIndex:       The index of variables in LPproblem corresponding to fluxes. Default = `[1:n]`
+%    method:         Indicator which method to use: 
+%                    * 1 - Two variables for each reaction af, ar
+%                    * 2 - One variable for each reaction af (default)
+%    reduce_vars:    eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
+%    combine_vars:   combines flux coupled reactions into one variable.  Should be faster in all cases but in practice may not be (default: false). 
 %
 % OUTPUT:
 %    MILPproblem:    Problem structure containing the following fields describing an MILP problem:
@@ -32,9 +37,16 @@ function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)
 %
 % .. Author: - Jan Schellenberger Sep 27, 2009
 
-method = 2; % methd = 1 - separete af,ar;  method = 2 - only af;  method 3 - same as method 2 except use b_L, b_U instad of b and csense;
-reduce_vars = 1; % eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason.
-combine_vars = 0; % combines flux coupled reactions into one variable.  Should be faster in all cases but in practice may not be.
+if ~exist('method','var')
+    method = 2;
+end
+if ~exist('reduce_vars','var')
+    reduce_vars = 1;
+end
+if ~exist('combine_vars','var')
+    combine_vars = 0;
+end
+
 % different ways of doing it.  I'm still playing with this.
 if nargin < 3
    if size(LPproblem.A,2) == size(model.S,2); % if the number of variables matches the number of model reactions
