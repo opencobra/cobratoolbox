@@ -152,7 +152,7 @@ LPproblem.ub = model.ub;
 if ~isfield(model,'csense')
     LPproblem.csense(1:nMets,1) = 'E';
 else
-    LPproblem.csense = model.csense(1:nMets,1);
+    LPproblem.csense = model.csense(1:nMets);
 
     % print a warning message if the csense vector does not have the same length as the mets vector
     if length(model.mets) ~= length(model.csense)
