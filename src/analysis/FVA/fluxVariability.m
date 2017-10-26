@@ -245,9 +245,16 @@ QuickProblem = LPproblem;
 [Presence,Order] = ismember(rxnNameList,model.rxns);
 QuickProblem.c(:) = 0;
 QuickProblem.c(Order(Presence)) = 1;
+if ~allowLoops
+    QuickProblem = addLoopLawConstraints(QuickProblem,model,1:nRxns);
+end
 %Maximise all reactions
 QuickProblem.osense = -1;
-sol = solveCobraLP(QuickProblem);
+if ~allowLoops
+    sol = solveCobraMILP(QuickProblem);
+else
+    sol = solveCobraLP(QuickProblem);
+end
 relSol = sol.full(Order(Presence));
 %Obtain fluxes at their boundaries
 maxSolved = model.ub(Order(Presence)) == relSol;
@@ -259,7 +266,11 @@ end
 
 %Minimise reactions
 QuickProblem.osense = 1;
-sol = solveCobraLP(QuickProblem);
+if ~allowLoops
+    sol = solveCobraMILP(QuickProblem);
+else
+    sol = solveCobraLP(QuickProblem);
+end
 relSol = sol.full(Order(Presence));
 %Again obtain fluxes at their boundaries
 maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
