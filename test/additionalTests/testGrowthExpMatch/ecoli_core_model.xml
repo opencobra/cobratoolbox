@@ -1,0 +1,3076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1" xmlns:html="http://www.w3.org/1999/xhtml">
+<model id="MODELID_3473243" name="E. coli textbook">
+<listOfUnitDefinitions>
+<unitDefinition id="mmol_per_gDW_per_hr">
+<listOfUnits>
+<unit kind="mole" scale="-3" multiplier="1" offset="0" />
+<unit kind="gram" exponent="-1" multiplier="1" offset="0" />
+<unit kind="second" exponent="-1" multiplier="0.00027777" offset="0" />
+</listOfUnits>
+</unitDefinition>
+</listOfUnitDefinitions>
+<listOfCompartments>
+<compartment id="Cytosol" outside="Extraorganism"/>
+<compartment id="Extraorganism"/>
+</listOfCompartments>
+<listOfSpecies>
+<species id="M_13dpg_c" name="_3-Phospho-D-glyceroyl phosphate_C3H4O10P2" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_2pg_c" name="D-Glycerate 2-phosphate_C3H4O7P" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_3pg_c" name="_3-Phospho-D-glycerate_C3H4O7P" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_6pgc_c" name="_6-Phospho-D-gluconate_C6H10O10P" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_6pgl_c" name="_6-phospho-D-glucono-1,5-lactone_C6H9O9P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_ac_c" name="Acetate_C2H3O2" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_ac_e" name="Acetate_C2H3O2" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+<species id="M_acald_c" name="Acetaldehyde_C2H4O" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_acald_e" name="Acetaldehyde_C2H4O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_accoa_c" name="Acetyl-CoA_C23H34N7O17P3S" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_acon_DASH_C_c" name="cis-Aconitate_C6H3O6" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_actp_c" name="Acetyl phosphate_C2H3O5P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_adp_c" name="ADP_C10H12N5O10P2" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_akg_c" name="_2-Oxoglutarate_C5H4O5" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_akg_e" name="_2-Oxoglutarate_C5H4O5" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+<species id="M_amp_c" name="AMP_C10H12N5O7P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_atp_c" name="ATP_C10H12N5O13P3" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_cit_c" name="Citrate_C6H5O7" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_co2_c" name="CO2_CO2" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_co2_e" name="CO2_CO2" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_coa_c" name="Coenzyme A_C21H32N7O16P3S" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_dhap_c" name="Dihydroxyacetone phosphate_C3H5O6P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_e4p_c" name="D-Erythrose 4-phosphate_C4H7O7P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_etoh_c" name="Ethanol_C2H6O" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_etoh_e" name="Ethanol_C2H6O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_f6p_c" name="D-Fructose 6-phosphate_C6H11O9P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_fdp_c" name="D-Fructose 1,6-bisphosphate_C6H10O12P2" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_for_c" name="Formate_CH1O2" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_for_e" name="Formate_CH1O2" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+<species id="M_fru_e" name="D-Fructose_C6H12O6" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_fum_c" name="Fumarate_C4H2O4" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_fum_e" name="Fumarate_C4H2O4" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+<species id="M_g3p_c" name="Glyceraldehyde 3-phosphate_C3H5O6P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_g6p_c" name="D-Glucose 6-phosphate_C6H11O9P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_glc_DASH_D_e" name="D-Glucose_C6H12O6" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_gln_DASH_L_c" name="L-Glutamine_C5H10N2O3" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_gln_DASH_L_e" name="L-Glutamine_C5H10N2O3" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_glu_DASH_L_c" name="L-Glutamate_C5H8NO4" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_glu_DASH_L_e" name="L-Glutamate_C5H8NO4" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+<species id="M_glx_c" name="Glyoxylate_C2H1O3" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_h2o_c" name="H2O_H2O" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_h2o_e" name="H2O_H2O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_h_c" name="H+_H" compartment="Cytosol" charge="1" boundaryCondition="false"/>
+
+<species id="M_h_e" name="H+_H" compartment="Extraorganism" charge="1" boundaryCondition="false"/>
+
+<species id="M_icit_c" name="Isocitrate_C6H5O7" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_lac_DASH_D_c" name="D-Lactate_C3H5O3" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_lac_DASH_D_e" name="D-Lactate_C3H5O3" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+<species id="M_mal_DASH_L_c" name="L-Malate_C4H4O5" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_mal_DASH_L_e" name="L-Malate_C4H4O5" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+<species id="M_nad_c" name="Nicotinamide adenine dinucleotide_C21H26N7O14P2" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_nadh_c" name="Nicotinamide adenine dinucleotide - reduced_C21H27N7O14P2" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_nadp_c" name="Nicotinamide adenine dinucleotide phosphate_C21H25N7O17P3" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_nadph_c" name="Nicotinamide adenine dinucleotide phosphate - reduced_C21H26N7O17P3" compartment="Cytosol" charge="-4" boundaryCondition="false"/>
+
+<species id="M_nh4_c" name="Ammonium_H4N" compartment="Cytosol" charge="1" boundaryCondition="false"/>
+
+<species id="M_nh4_e" name="Ammonium_H4N" compartment="Extraorganism" charge="1" boundaryCondition="false"/>
+
+<species id="M_o2_c" name="O2_O2" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_o2_e" name="O2_O2" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+<species id="M_oaa_c" name="Oxaloacetate_C4H2O5" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_pep_c" name="Phosphoenolpyruvate_C3H2O6P" compartment="Cytosol" charge="-3" boundaryCondition="false"/>
+
+<species id="M_pi_c" name="Phosphate_HO4P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_pi_e" name="Phosphate_HO4P" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+<species id="M_pyr_c" name="Pyruvate_C3H3O3" compartment="Cytosol" charge="-1" boundaryCondition="false"/>
+
+<species id="M_pyr_e" name="Pyruvate_C3H3O3" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+<species id="M_q8_c" name="Ubiquinone-8_C49H74O4" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_q8h2_c" name="Ubiquinol-8_C49H76O4" compartment="Cytosol" charge="0" boundaryCondition="false"/>
+
+<species id="M_r5p_c" name="alpha-D-Ribose 5-phosphate_C5H9O8P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_ru5p_DASH_D_c" name="D-Ribulose 5-phosphate_C5H9O8P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_s7p_c" name="Sedoheptulose 7-phosphate_C7H13O10P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_succ_c" name="Succinate_C4H4O4" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_succ_e" name="Succinate_C4H4O4" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+<species id="M_succoa_c" name="Succinyl-CoA_C25H35N7O19P3S" compartment="Cytosol" charge="-5" boundaryCondition="false"/>
+
+<species id="M_xu5p_DASH_D_c" name="D-Xylulose 5-phosphate_C5H9O8P" compartment="Cytosol" charge="-2" boundaryCondition="false"/>
+
+<species id="M_ac_b" name="Acetate_C2H3O2" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+
+<species id="M_acald_b" name="Acetaldehyde_C2H4O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_akg_b" name="_2-Oxoglutarate_C5H4O5" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+
+<species id="M_co2_b" name="CO2_CO2" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_etoh_b" name="Ethanol_C2H6O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_for_b" name="Formate_CH1O2" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+
+<species id="M_fru_b" name="D-Fructose_C6H12O6" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_fum_b" name="Fumarate_C4H2O4" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+
+<species id="M_glc_DASH_D_b" name="D-Glucose_C6H12O6" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_gln_DASH_L_b" name="L-Glutamine_C5H10N2O3" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_glu_DASH_L_b" name="L-Glutamate_C5H8NO4" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+
+<species id="M_h2o_b" name="H2O_H2O" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_h_b" name="H+_H" compartment="Extraorganism" charge="1" boundaryCondition="false"/>
+
+
+<species id="M_lac_DASH_D_b" name="D-Lactate_C3H5O3" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+
+<species id="M_mal_DASH_L_b" name="L-Malate_C4H4O5" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+
+<species id="M_nh4_b" name="Ammonium_H4N" compartment="Extraorganism" charge="1" boundaryCondition="false"/>
+
+
+<species id="M_o2_b" name="O2_O2" compartment="Extraorganism" charge="0" boundaryCondition="false"/>
+
+
+<species id="M_pi_b" name="Phosphate_HO4P" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+
+<species id="M_pyr_b" name="Pyruvate_C3H3O3" compartment="Extraorganism" charge="-1" boundaryCondition="false"/>
+
+
+<species id="M_succ_b" name="Succinate_C4H4O4" compartment="Extraorganism" charge="-2" boundaryCondition="false"/>
+
+
+</listOfSpecies>
+<listOfReactions>
+<reaction id="R_ACALD" name="acetaldehyde dehydrogenase (acetylating)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACALD</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.2.1.10</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : acald + coa + nad &lt;==&gt; accoa + h + nadh</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0351) or (b1241)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_acald_c" stoichiometry="1"/>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ACALDt" name="acetaldehyde reversible transport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACALDt</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: acald[e] &lt;==&gt; acald[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: (s0001)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_acald_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_acald_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ACKr" name="acetate kinase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACKr</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.7.2.1</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : ac + atp &lt;==&gt; actp + adp</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR- This is the reversible form of ACK.  The reaction already exists in the database, but it is listed as ACK_do not use.</html:p>
+<html:p>GENE ASSOCIATION: (b2296) or (b1849) or (b3115)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_ac_c" stoichiometry="1"/>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_actp_c" stoichiometry="1"/>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ACONTa" name="aconitase (half-reaction A, Citrate hydro-lyase)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACONTa</html:p>
+<html:p>Synonyms: _2</html:p>
+<html:p>EC Number: 4.2.1.3</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : cit &lt;==&gt; acon-C + h2o</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD
+AMF</html:p>
+<html:p>GENE ASSOCIATION: (b0118) or (b1276)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_cit_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_acon_DASH_C_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ACONTb" name="aconitase (half-reaction B, Isocitrate hydro-lyase)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACONTb</html:p>
+<html:p>Synonyms: _2</html:p>
+<html:p>EC Number: 4.2.1.3</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : acon-C + h2o &lt;==&gt; icit</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>AMF</html:p>
+<html:p>GENE ASSOCIATION: (b0118) or (b1276)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_acon_DASH_C_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_icit_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ACt2r" name="acetate reversible transport via proton symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ACt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: ac[e] + h[e] &lt;==&gt; ac[c] + h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_ac_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_ac_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ADK1" name="adenylate kinase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ADK1</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.7.4.3</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: [c] : amp + atp &lt;==&gt; (2) adp</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>Inorganic triphosphate can also act as donor</html:p>
+<html:p>GENE ASSOCIATION: (b0474)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_amp_c" stoichiometry="1"/>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="2"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_AKGDH" name="_2-Oxogluterate dehydrogenase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_AKGDH</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : akg + coa + nad --&gt; co2 + nadh + succoa</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>Changed from TEST_AKGDH
+</html:p>
+<html:p>GENE ASSOCIATION: (b0727) and (b0116) and (b0726)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_akg_c" stoichiometry="1"/>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_succoa_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_AKGt2r" name="_2-oxoglutarate reversible transport via symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_AKGt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: akg[e] + h[e] &lt;==&gt; akg[c] + h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: (b2587)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_akg_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_akg_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ALCD2x" name="alcohol dehydrogenase (ethanol)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ALCD2x</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.1</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : etoh + nad &lt;==&gt; acald + h + nadh</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>A zinc protein. Acts on primary or secondary alcohols or hemi-acetals; the animal, but not the yeast, enzyme acts also on cyclic secondary alcohols.
+</html:p>
+<html:p>GENE ASSOCIATION: (b0356) or (b1241) or (b1478)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_etoh_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_acald_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ATPM" name="ATP maintenance requirement" reversible="false">
+<notes>
+<html:p>Abbreviation: R_ATPM</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: [c] : atp + h2o --&gt; adp + h + pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="8.39" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="8.39" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ATPS4r" name="ATP synthase (four protons for one ATP)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ATPS4r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 3.6.3.14</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: adp[c] + (4) h[e] + pi[c] &lt;==&gt; atp[c] + (3) h[c] + h2o[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR- added reversible form of ATPS4 reactioin</html:p>
+<html:p>GENE ASSOCIATION: (b3739) and (b3737 and b3736 and b3738) and (b3735 and b3734 and b3732 and b3733 and b3731) or (b3737 and b3736 and b3738) and (b3735 and b3734 and b3732 and b3733 and b3731)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="4"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="3"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_Biomass_Ecoli_core_N_LPAREN_w_FSLASH_GAM_RPAREN__DASH_Nmet2" name="core E. coli biomass equation (Neidhardt Based with GAM, N metabolism)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_Biomass_Ecoli_core_N_LPAREN_w_FSLASH_GAM_RPAREN__DASH_Nmet2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [c] : (1.496) 3pg + (3.7478) accoa + (59.81) atp + (0.361) e4p + (0.0709) f6p + (0.129) g3p + (0.205) g6p + (0.2557) gln-L + (4.9414) glu-L + (59.81) h2o + (3.547) nad + (13.0279) nadph + (1.7867) oaa + (0.5191) pep + (2.8328) pyr + (0.8977) r5p --&gt; (59.81) adp + (4.1182) akg + (3.7478) coa + (59.81) h + (3.547) nadh + (13.0279) nadp + (59.81) pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_3pg_c" stoichiometry="1.496"/>
+<speciesReference species="M_accoa_c" stoichiometry="3.7478"/>
+<speciesReference species="M_atp_c" stoichiometry="59.81"/>
+<speciesReference species="M_e4p_c" stoichiometry="0.361"/>
+<speciesReference species="M_f6p_c" stoichiometry="0.0709"/>
+<speciesReference species="M_g3p_c" stoichiometry="0.129"/>
+<speciesReference species="M_g6p_c" stoichiometry="0.205"/>
+<speciesReference species="M_gln_DASH_L_c" stoichiometry="0.2557"/>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="4.9414"/>
+<speciesReference species="M_h2o_c" stoichiometry="59.81"/>
+<speciesReference species="M_nad_c" stoichiometry="3.547"/>
+<speciesReference species="M_nadph_c" stoichiometry="13.0279"/>
+<speciesReference species="M_oaa_c" stoichiometry="1.7867"/>
+<speciesReference species="M_pep_c" stoichiometry="0.5191"/>
+<speciesReference species="M_pyr_c" stoichiometry="2.8328"/>
+<speciesReference species="M_r5p_c" stoichiometry="0.8977"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="59.81"/>
+<speciesReference species="M_akg_c" stoichiometry="4.1182"/>
+<speciesReference species="M_coa_c" stoichiometry="3.7478"/>
+<speciesReference species="M_h_c" stoichiometry="59.81"/>
+<speciesReference species="M_nadh_c" stoichiometry="3.547"/>
+<speciesReference species="M_nadp_c" stoichiometry="13.0279"/>
+<speciesReference species="M_pi_c" stoichiometry="59.81"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="1" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_CO2t" name="CO2 transporter via diffusion" reversible="true">
+<notes>
+<html:p>Abbreviation: R_CO2t</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: co2[e] &lt;==&gt; co2[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>tv
+renamed from CO2TPr to CO2t
+NCD</html:p>
+<html:p>GENE ASSOCIATION: (s0001)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_co2_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_CS" name="citrate synthase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_CS</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : accoa + h2o + oaa --&gt; cit + coa + h</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>old EC number (4.1.3.7) is obsolete -- transferred to 2.3.3.1
+NCD</html:p>
+<html:p>GENE ASSOCIATION: (b0720)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_oaa_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_cit_c" stoichiometry="1"/>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_CYTBD" name="cytochrome oxidase bd (ubiquinol-8: 2 protons)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_CYTBD</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: (2) h[c] + (0.5) o2[c] + q8h2[c] --&gt; (2) h[e] + h2o[c] + q8[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR
+EC 1.10.2.2 and 1.9.3.1</html:p>
+<html:p>GENE ASSOCIATION: (b0979 and b0978) or (b0733 and b0734)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+<speciesReference species="M_o2_c" stoichiometry="0.5"/>
+<speciesReference species="M_q8h2_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_e" stoichiometry="2"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_q8_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_D_DASH_LACt2" name="D-lactate transport via proton symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_D_DASH_LACt2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: h[e] + lac-D[e] &lt;==&gt; h[c] + lac-D[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: (b2975) or (b3603)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+<speciesReference species="M_lac_DASH_D_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_lac_DASH_D_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ENO" name="enolase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ENO</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.2.1.11</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : 2pg &lt;==&gt; h2o + pep</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b2779)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_2pg_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ETOHt2r" name="ethanol reversible transport via proton symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ETOHt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: etoh[e] + h[e] &lt;==&gt; etoh[c] + h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_etoh_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_etoh_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_ac_LPAREN_e_RPAREN_" name="Acetate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_ac_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : ac &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_ac_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_ac_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_acald_LPAREN_e_RPAREN_" name="Acetaldehyde exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_acald_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : acald &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_acald_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_acald_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_akg_LPAREN_e_RPAREN_" name="_2-Oxoglutarate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_akg_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : akg &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_akg_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_akg_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_co2_LPAREN_e_RPAREN_" name="CO2 exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_co2_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : co2 &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_co2_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_etoh_LPAREN_e_RPAREN_" name="Ethanol exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_etoh_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : etoh &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_etoh_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_etoh_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_for_LPAREN_e_RPAREN_" name="Formate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_for_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : for &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_for_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_for_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_fru_LPAREN_e_RPAREN_" name="D-Fructose exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_fru_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : fru &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fru_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_fru_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_fum_LPAREN_e_RPAREN_" name="Fumarate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_fum_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : fum &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fum_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_fum_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_glc_LPAREN_e_RPAREN_" name="D-Glucose exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_glc_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : glc-D &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_glc_DASH_D_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glc_DASH_D_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-10" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_gln_DASH_L_LPAREN_e_RPAREN_" name="L-Glutamine exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_gln_DASH_L_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : gln-L &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_gln_DASH_L_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_gln_DASH_L_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_glu_DASH_L_LPAREN_e_RPAREN_" name="L-Glutamate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_glu_DASH_L_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : glu-L &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_glu_DASH_L_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glu_DASH_L_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_h2o_LPAREN_e_RPAREN_" name="H2O exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_h2o_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : h2o &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h2o_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h2o_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_h_LPAREN_e_RPAREN_" name="H+ exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_h_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : h &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_lac_DASH_D_LPAREN_e_RPAREN_" name="D-lactate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_lac_DASH_D_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : lac-D &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_lac_DASH_D_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_lac_DASH_D_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_mal_DASH_L_LPAREN_e_RPAREN_" name="L-Malate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_mal_DASH_L_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : mal-L &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_mal_DASH_L_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_mal_DASH_L_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_nh4_LPAREN_e_RPAREN_" name="Ammonia exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_nh4_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : nh4 &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_nh4_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_nh4_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_o2_LPAREN_e_RPAREN_" name="O2 exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_o2_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : o2 &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_o2_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_o2_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_pi_LPAREN_e_RPAREN_" name="Phosphate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_pi_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : pi &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_pi_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_pi_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_pyr_LPAREN_e_RPAREN_" name="Pyruvate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_pyr_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : pyr &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_pyr_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_pyr_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_EX_succ_LPAREN_e_RPAREN_" name="Succinate exchange" reversible="true">
+<notes>
+<html:p>Abbreviation: R_EX_succ_LPAREN_e_RPAREN_</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>Equation: [e] : succ &lt;==&gt;</html:p>
+<html:p>Confidence Level: </html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_succ_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_succ_b" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FBA" name="fructose-bisphosphate aldolase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_FBA</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.1.2.13</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : fdp &lt;==&gt; dhap + g3p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b2925) or (b1773) or (b2097)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fdp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_dhap_c" stoichiometry="1"/>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FBP" name="fructose-bisphosphatase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FBP</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 3.1.3.11</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : fdp + h2o --&gt; f6p + pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b4232) or (b3925)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fdp_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FORt2" name="formate transport in via proton symport" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FORt2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: for[e] + h[e] --&gt; for[c] + h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0904) or (b2492)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_for_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_for_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FORti" name="formate transport via diffusion" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FORti</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: for[c] --&gt; for[e]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0904) or (b2492)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_for_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_for_e" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FRD7" name="fumarate reductase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FRD7</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: [c] : fum + q8h2 --&gt; q8 + succ</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b4151 and b4153 and b4154 and b4152)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fum_c" stoichiometry="1"/>
+<speciesReference species="M_q8h2_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_q8_c" stoichiometry="1"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FRUpts2" name="Fructose transport via PEP:Pyr PTS (f6p generating)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FRUpts2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: fru[e] + pep[c] --&gt; f6p[c] + pyr[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: (b2415) and (b2416) and (b1818) and (b1817) and (b1819)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fru_e" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FUM" name="fumarase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_FUM</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.2.1.2</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : fum + h2o &lt;==&gt; mal-L</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b1612) or (b1611) or (b4122)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fum_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_FUMt2_2" name="Fumarate transport via proton symport (2 H)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_FUMt2_2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: fum[e] + (2) h[e] --&gt; fum[c] + (2) h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: (b3528)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_fum_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="2"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_fum_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_G6PDH2r" name="glucose 6-phosphate dehydrogenase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_G6PDH2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.49</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : g6p + nadp &lt;==&gt; 6pgl + h + nadph</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR - a reversible reaction that is otherwise identical to ZWF
+</html:p>
+<html:p>GENE ASSOCIATION: (b1852)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_g6p_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_6pgl_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GAPD" name="glyceraldehyde-3-phosphate dehydrogenase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_GAPD</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.2.1.12</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : g3p + nad + pi &lt;==&gt; 13dpg + h + nadh</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b1779)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_13dpg_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLCpts" name="D-glucose transport via PEP:Pyr PTS" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GLCpts</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: glc-D[e] + pep[c] --&gt; g6p[c] + pyr[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b2415) and (b1621) and (b2417) and (b2416) or (b2415) and (b2416) and (b1818) and (b1819) and (b1817) or (b2415) and (b2417) and (b2416) and (b1101)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_glc_DASH_D_e" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_g6p_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLNS" name="glutamine synthetase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GLNS</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 6.3.1.2</html:p>
+<html:p>SUBSYSTEM: Glutamate Metabolism</html:p>
+<html:p>Equation: [c] : atp + glu-L + nh4 --&gt; adp + gln-L + h + pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b3870) or (b1297)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_nh4_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_gln_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLNabc" name="L-glutamine transport via ABC system" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GLNabc</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: atp[c] + gln-L[e] + h2o[c] --&gt; adp[c] + gln-L[c] + h[c] + pi[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0811) and (b0810) and (b0809)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_gln_DASH_L_e" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_gln_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLUDy" name="glutamate dehydrogenase (NADP)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_GLUDy</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.4.1.4</html:p>
+<html:p>SUBSYSTEM: Glutamate Metabolism</html:p>
+<html:p>Equation: [c] : glu-L + h2o + nadp &lt;==&gt; akg + h + nadph + nh4</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b1761)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_akg_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+<speciesReference species="M_nh4_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLUN" name="glutaminase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GLUN</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 3.5.1.2</html:p>
+<html:p>SUBSYSTEM: Glutamate Metabolism</html:p>
+<html:p>Equation: [c] : gln-L + h2o --&gt; glu-L + nh4</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b1812) or (b1524) or (b0485)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_gln_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_nh4_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLUSy" name="glutamate synthase (NADPH)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GLUSy</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.4.1.13</html:p>
+<html:p>SUBSYSTEM: Glutamate Metabolism</html:p>
+<html:p>Equation: [c] : akg + gln-L + h + nadph --&gt; (2) glu-L + nadp</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b3212 and b3213)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_akg_c" stoichiometry="1"/>
+<speciesReference species="M_gln_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="2"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GLUt2r" name="L-glutamate transport via proton symport, reversible" reversible="true">
+<notes>
+<html:p>Abbreviation: R_GLUt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: glu-L[e] + h[e] &lt;==&gt; glu-L[c] + h[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: (b4077)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_glu_DASH_L_e" stoichiometry="1"/>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glu_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_GND" name="phosphogluconate dehydrogenase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_GND</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.44</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : 6pgc + nadp --&gt; co2 + nadph + ru5p-D</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP
+Note no proton generation by the the reaction</html:p>
+<html:p>GENE ASSOCIATION: (b2029)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_6pgc_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+<speciesReference species="M_ru5p_DASH_D_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_H2Ot" name="H2O transport via diffusion" reversible="true">
+<notes>
+<html:p>Abbreviation: R_H2Ot</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: h2o[e] &lt;==&gt; h2o[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>renamed from H20t5 to H2Ot
+NCD</html:p>
+<html:p>GENE ASSOCIATION: (b0875)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h2o_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ICDHyr" name="isocitrate dehydrogenase (NADP)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_ICDHyr</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.42</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : icit + nadp &lt;==&gt; akg + co2 + nadph</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>Two reactions (ICDH1 and ICDH2) for isocitrate dehydrogenase</html:p>
+<html:p>GENE ASSOCIATION: (b1136)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_icit_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_akg_c" stoichiometry="1"/>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ICL" name="Isocitrate lyase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_ICL</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.1.3.1</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : icit --&gt; glx + succ</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>IF
+</html:p>
+<html:p>GENE ASSOCIATION: (b4015)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_icit_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_glx_c" stoichiometry="1"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_LDH_D" name="D-lactate dehydrogenase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_LDH_D</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.28</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : lac-D + nad &lt;==&gt; h + nadh + pyr</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>See also LDL_L</html:p>
+<html:p>GENE ASSOCIATION: (b1380) or (b2133)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_lac_DASH_D_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_MALS" name="malate synthase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_MALS</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.1.3.2</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : accoa + glx + h2o --&gt; coa + h + mal-L</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>IF</html:p>
+<html:p>GENE ASSOCIATION: (b2976) or (b4014)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_glx_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_MALt2_2" name="Malate transport via proton symport (2 H)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_MALt2_2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: (2) h[e] + mal-L[e] --&gt; (2) h[c] + mal-L[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: (b3528)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="2"/>
+<speciesReference species="M_mal_DASH_L_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_MDH" name="malate dehydrogenase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_MDH</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.1.1.37</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : mal-L + nad &lt;==&gt; h + nadh + oaa</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b3236)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_oaa_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ME1" name="malic enzyme (NAD)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_ME1</html:p>
+<html:p>Synonyms: _6</html:p>
+<html:p>EC Number: 1.1.1.38</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : mal-L + nad --&gt; co2 + nadh + pyr</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b1479)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_ME2" name="malic enzyme (NADP)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_ME2</html:p>
+<html:p>Synonyms: _6</html:p>
+<html:p>EC Number: 1.1.1.40</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : mal-L + nadp --&gt; co2 + nadph + pyr</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b2463)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_mal_DASH_L_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_NADH16" name="NADH dehydrogenase (ubiquinone-8 &amp; 3 protons)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_NADH16</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: (4) h[c] + nadh[c] + q8[c] --&gt; (3) h[e] + nad[c] + q8h2[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b2285 and b2284 and b2281 and b2287 and b2276 and b2288 and b2283 and b2282 and b2286 and b2277 and b2278 and b2280 and b2279)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_c" stoichiometry="4"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_q8_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_e" stoichiometry="3"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+<speciesReference species="M_q8h2_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_NADTRHD" name="NAD transhydrogenase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_NADTRHD</html:p>
+<html:p>Synonyms: _16</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: [c] : nad + nadph --&gt; nadh + nadp</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>changed from TEST_NADTRHD</html:p>
+<html:p>GENE ASSOCIATION: (b1602 and b1603) or (b3962)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_NH4t" name="ammonia reversible transport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_NH4t</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Inorganic Ion Transport and Metabolism</html:p>
+<html:p>Equation: nh4[e] &lt;==&gt; nh4[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: (b0451)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_nh4_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_nh4_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_O2t" name="o2 transport (diffusion)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_O2t</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: o2[e] &lt;==&gt; o2[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>tv
+renamed from O2TP to O2t to avoid confusion with transport reaction from cytosol to peroxisome
+NCD</html:p>
+<html:p>GENE ASSOCIATION: (s0001)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_o2_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_o2_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PDH" name="pyruvate dehydrogenase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PDH</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : coa + nad + pyr --&gt; accoa + co2 + nadh</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0114) and (b0116) and (b0115)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PFK" name="phosphofructokinase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PFK</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.7.1.11</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : atp + f6p --&gt; adp + fdp + h</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b3916) or (b1723)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_fdp_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PFL" name="pyruvate formate lyase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PFL</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : coa + pyr --&gt; accoa + for</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR
+E.C. - 2.3.1.54  MM
+
+</html:p>
+<html:p>GENE ASSOCIATION: (b3951 and b3952) or (b2579) and (b0902 and b0903) or (b0902 and b3114) or (b0902 and b0903)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_for_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PGI" name="glucose-6-phosphate isomerase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PGI</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 5.3.1.9</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : g6p &lt;==&gt; f6p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b4025)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_g6p_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PGK" name="phosphoglycerate kinase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PGK</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.7.2.3</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : 3pg + atp &lt;==&gt; 13dpg + adp</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b2926)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_3pg_c" stoichiometry="1"/>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_13dpg_c" stoichiometry="1"/>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PGL" name="_6-phosphogluconolactonase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PGL</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 3.1.1.31</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : 6pgl + h2o --&gt; 6pgc + h</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP 
+Net reaction same as described in Lehringer 334</html:p>
+<html:p>GENE ASSOCIATION: (b0767)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_6pgl_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_6pgc_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PGM" name="phosphoglycerate mutase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PGM</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 5.4.2.1</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : 2pg &lt;==&gt; 3pg</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b4395) or (b3612) or (b0755)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_2pg_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_3pg_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PIt2r" name="phosphate reversible transport via symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PIt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Inorganic Ion Transport and Metabolism</html:p>
+<html:p>Equation: h[e] + pi[e] &lt;==&gt; h[c] + pi[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>NCD</html:p>
+<html:p>GENE ASSOCIATION: (b2987) or (b3493)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+<speciesReference species="M_pi_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PPC" name="phosphoenolpyruvate carboxylase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PPC</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.1.1.31</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : co2 + h2o + pep --&gt; h + oaa + pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b3956)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_oaa_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PPCK" name="phosphoenolpyruvate carboxykinase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PPCK</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 4.1.1.49</html:p>
+<html:p>SUBSYSTEM: Anaplerotic reactions</html:p>
+<html:p>Equation: [c] : atp + oaa --&gt; adp + co2 + pep</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b3403)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_oaa_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_co2_c" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PPS" name="phosphoenolpyruvate synthase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PPS</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.7.9.2</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : atp + h2o + pyr --&gt; amp + (2) h + pep + pi</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP
+Note: two protons generated</html:p>
+<html:p>GENE ASSOCIATION: (b1702)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_h2o_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_amp_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PTAr" name="phosphotransacetylase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PTAr</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.3.1.8</html:p>
+<html:p>SUBSYSTEM: Pyruvate Metabolism</html:p>
+<html:p>Equation: [c] : accoa + pi &lt;==&gt; actp + coa</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR- added reversible form of PTA reaction.  The reversible form already exists, but it is called PTA_do not use.</html:p>
+<html:p>GENE ASSOCIATION: (b2297) or (b2458)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_accoa_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_actp_c" stoichiometry="1"/>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PYK" name="pyruvate kinase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_PYK</html:p>
+<html:p>Synonyms: _7</html:p>
+<html:p>EC Number: 2.7.1.40</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : adp + h + pep --&gt; atp + pyr</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b1854) or (b1676)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pep_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_PYRt2r" name="pyruvate reversible transport via proton symport" reversible="true">
+<notes>
+<html:p>Abbreviation: R_PYRt2r</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: h[e] + pyr[e] &lt;==&gt; h[c] + pyr[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+<speciesReference species="M_pyr_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_pyr_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_RPE" name="ribulose 5-phosphate 3-epimerase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_RPE</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 5.1.3.1</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : ru5p-D &lt;==&gt; xu5p-D</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b3386) or (b4301)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_ru5p_DASH_D_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_xu5p_DASH_D_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_RPI" name="ribose-5-phosphate isomerase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_RPI</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 5.3.1.6</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : r5p &lt;==&gt; ru5p-D</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b2914) or (b4090)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_r5p_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_ru5p_DASH_D_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_SUCCt2_2" name="succinate transport via proton symport (2 H)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_SUCCt2_2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: (2) h[e] + succ[e] --&gt; (2) h[c] + succ[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR</html:p>
+<html:p>GENE ASSOCIATION: (b3528)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="2"/>
+<speciesReference species="M_succ_e" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_SUCCt3" name="succinate transport out via proton antiport" reversible="false">
+<notes>
+<html:p>Abbreviation: R_SUCCt3</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>SUBSYSTEM: Transport, Extracellular</html:p>
+<html:p>Equation: h[e] + succ[c] --&gt; h[c] + succ[e]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: </html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="1"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="1"/>
+<speciesReference species="M_succ_e" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_SUCDi" name="succinate dehydrogenase (irreversible)" reversible="false">
+<notes>
+<html:p>Abbreviation: R_SUCDi</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 1.3.99.1</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: [c] : q8 + succ --&gt; fum + q8h2</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>AMF - Activation of the enzyme by covalent attachment of FAD to the SdhA enzyme subunit is promoted by intermediates of the TCA cycle PMID: 2659351</html:p>
+<html:p>GENE ASSOCIATION: (b0722 and b0721 and b0723 and b0724)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_q8_c" stoichiometry="1"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_fum_c" stoichiometry="1"/>
+<speciesReference species="M_q8h2_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_SUCOAS" name="succinyl-CoA synthetase (ADP-forming)" reversible="true">
+<notes>
+<html:p>Abbreviation: R_SUCOAS</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 6.2.1.5</html:p>
+<html:p>SUBSYSTEM: Citric Acid Cycle</html:p>
+<html:p>Equation: [c] : atp + coa + succ &lt;==&gt; adp + pi + succoa</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>GENE ASSOCIATION: (b0728 and b0729)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_atp_c" stoichiometry="1"/>
+<speciesReference species="M_coa_c" stoichiometry="1"/>
+<speciesReference species="M_succ_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_adp_c" stoichiometry="1"/>
+<speciesReference species="M_pi_c" stoichiometry="1"/>
+<speciesReference species="M_succoa_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_TALA" name="transaldolase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_TALA</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.2.1.2</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : g3p + s7p &lt;==&gt; e4p + f6p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b0008) or (b2464)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+<speciesReference species="M_s7p_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_e4p_c" stoichiometry="1"/>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_THD2" name="NAD(P) transhydrogenase" reversible="false">
+<notes>
+<html:p>Abbreviation: R_THD2</html:p>
+<html:p>Synonyms: _1</html:p>
+<html:p>EC Number: 1.6.1.1</html:p>
+<html:p>SUBSYSTEM: Oxidative Phosphorylation</html:p>
+<html:p>Equation: (2) h[e] + nadh[c] + nadp[c] --&gt; (2) h[c] + nad[c] + nadph[c]</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>JLR - proton translocating form</html:p>
+<html:p>GENE ASSOCIATION: (b1602 and b1603)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_h_e" stoichiometry="2"/>
+<speciesReference species="M_nadh_c" stoichiometry="1"/>
+<speciesReference species="M_nadp_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_h_c" stoichiometry="2"/>
+<speciesReference species="M_nad_c" stoichiometry="1"/>
+<speciesReference species="M_nadph_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="0" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_TKT1" name="transketolase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_TKT1</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.2.1.1</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : r5p + xu5p-D &lt;==&gt; g3p + s7p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP
+Two reactions for transketolase: TKT1 and TKT2</html:p>
+<html:p>GENE ASSOCIATION: (b2935) or (b2465)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_r5p_c" stoichiometry="1"/>
+<speciesReference species="M_xu5p_DASH_D_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+<speciesReference species="M_s7p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_TKT2" name="transketolase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_TKT2</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 2.2.1.1</html:p>
+<html:p>SUBSYSTEM: Pentose Phosphate Pathway</html:p>
+<html:p>Equation: [c] : e4p + xu5p-D &lt;==&gt; f6p + g3p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP
+Two reactions for transketolase: TKT1 and TKT2</html:p>
+<html:p>GENE ASSOCIATION: (b2935) or (b2465)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_e4p_c" stoichiometry="1"/>
+<speciesReference species="M_xu5p_DASH_D_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_f6p_c" stoichiometry="1"/>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+<reaction id="R_TPI" name="triose-phosphate isomerase" reversible="true">
+<notes>
+<html:p>Abbreviation: R_TPI</html:p>
+<html:p>Synonyms: _0</html:p>
+<html:p>EC Number: 5.3.1.1</html:p>
+<html:p>SUBSYSTEM: Glycolysis/Gluconeogenesis</html:p>
+<html:p>Equation: [c] : dhap &lt;==&gt; g3p</html:p>
+<html:p>Confidence Level: 0</html:p>
+<html:p>SMP</html:p>
+<html:p>GENE ASSOCIATION: (b3919)</html:p>
+</notes>
+<listOfReactants>
+<speciesReference species="M_dhap_c" stoichiometry="1"/>
+</listOfReactants>
+<listOfProducts>
+<speciesReference species="M_g3p_c" stoichiometry="1"/>
+</listOfProducts>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>FLUX_VALUE</ci>
+</math>
+<listOfParameters>
+<parameter id="LOWER_BOUND" value="-999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="UPPER_BOUND" value="999999" units="mmol_per_gDW_per_hr"/>
+<parameter id="OBJECTIVE_COEFFICIENT" value="0" />
+<parameter id="FLUX_VALUE" value="0" units="mmol_per_gDW_per_hr"/>
+</listOfParameters>
+</kineticLaw>
+</reaction>
+</listOfReactions>
+</model>
+</sbml>
