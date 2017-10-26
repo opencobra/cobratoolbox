@@ -121,6 +121,12 @@ if exist('CBT_LP_PARAMS', 'var')
     end
 end
 
+%Return if minNorm is not FBA but allowloops is set to false
+%This is currently not supported as it requires mechanisms that are likely
+%incompatible.
+if ~allowLoops && minNorm && ~strcmp(method,'FBA')
+    error('Cannot return solutions with special properties if allowLoops is set to false.\nIf you want solutions without loops please set method to ''FBA''.');
+end
 % Determine constraints for the correct space (0-100% of the full space)
 if sum(model.c ~= 0) > 0
     hasObjective = true;
@@ -144,16 +150,16 @@ LPproblem.c = model.c;
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
 if ~isfield(model,'csense')
-    LPproblem.csense(1:nMets) = 'E';
+    LPproblem.csense(1:nMets,1) = 'E';
 else
-    LPproblem.csense = model.csense(1:nMets);
+    LPproblem.csense = model.csense(1:nMets,1);
 
     % print a warning message if the csense vector does not have the same length as the mets vector
     if length(model.mets) ~= length(model.csense)
         warning(' > model.csense does not have the same length as model.mets. Consider checking the model using >> verifyModel.');
     end
 end
-LPproblem.csense = LPproblem.csense';
+LPproblem.csense = columnVector(LPproblem.csense);
 LPproblem.A = model.S;
 LPproblem.b = model.b;
 
@@ -305,14 +311,18 @@ if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
 else % parallel job.  pretty much does the same thing.
 
     global CBT_LP_SOLVER;
+    global CBT_MILP_SOLVER;
     global CBT_QP_SOLVER;
     lpsolver = CBT_LP_SOLVER;
     qpsolver = CBT_QP_SOLVER;
+    milpsolver = CBT_MILP_SOLVER;    
     if minNorm        
         parfor i = 1:length(rxnNameList)
             changeCobraSolver(qpsolver,'QP',0,1);
             changeCobraSolver(lpsolver,'LP',0,1);
-            parLPproblem = LPproblem;
+        changeCobraSolver(milpsolver,'MILP',0,1);        
+        
+        parLPproblem = LPproblem;        
             parLPproblem.osense = 1;
             [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
             parLPproblem.osense = -1;
@@ -403,7 +413,7 @@ function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
         vSparse = sparseFBA(LPproblem, 'min', 0, 0);
         V = vSparse;
     elseif strcmp(method, 'FBA')
-        V=LPsolution.full;
+        V=LPsolution.full(1:nRxns);
     elseif strcmp(method, 'minOrigSol')
         LPproblemMOMA = LPproblem;
         LPproblemMOMA=rmfield(LPproblemMOMA, 'csense');
