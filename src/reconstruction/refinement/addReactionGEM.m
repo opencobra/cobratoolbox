@@ -76,7 +76,7 @@ if ~exist('rules', 'var')|| isempty(rules)
 end
 
 if ~exist('genes', 'var')|| isempty(genes)
-    genes = cell(0,1);
+    genes = {''};
 end
 
 if ~exist('nRxn', 'var') || isempty(nRxn)
