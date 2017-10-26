@@ -105,14 +105,8 @@ for i = 1: length(KEGGReactionList)
     showprogress(i/length(KEGGReactionList))
 end
 
-%Allocate a nMets x nRxns matrix with approximately 4.5 metabolites per
-%reaction. (Recon2 has 4.23 per reaction)
-KEGG.S=spalloc(length(KEGG.mets), length(KEGG.rxns), floor(4.5 * length(KEGG.rxns)));
-%Initialize required fields properly.
-KEGG.csense = repmat('E',size(KEGG.mets));
-KEGG.b = zeros(size(KEGG.mets));
+KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
+
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
-%a=length(KEGG.mets);
-%b=length(KEGG.rxns);
-%KEGG.S(a+1:end,:)=[];
-%KEGG.S(:,b+1:end) = [];
+a=length(KEGG.mets);
+KEGG.S(a+1:end,:)=[];
