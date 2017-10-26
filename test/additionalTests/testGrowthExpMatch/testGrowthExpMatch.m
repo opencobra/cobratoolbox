@@ -1,23 +1,4 @@
-function x = testGrowthExpMatch()
 %testGrowthExpMatch tests the functionality of all the components of growthExpMatch
-%
-%[solution,b,solInt,m ]=testGrowthExpMatch()
-%
-%Inputs:        
-%model                      model to be examined, which is obtained from BiGG Database (ie. 'core.xml')
-%Dictionary                  n x 2 cell array of metabolites names for
-%                               conversion from KEGG ID's to the compound
-%                               abbreviations from BiGG database (1st
-%                               column is compound abb. and 2nd column is
-%                               KEGG ID)
-%Kegg_reaction_list.lst      universal data from KEGG website
-%Compartment                 [c] --> transport from cytoplasm [c] to extracellulat space
-%                               [e] (default), [p] creates transport from [c] to [p] 
-%                               and from [p] to [c]
-%Outputs:
-%solution  MILP solution that consists of the continuous solution, integer
-%               solution, objective value, stat, full solution, and
-%               imported reactions
 %
 %Procedure to run growthExpMatch:
 %(1) obtain all input files (ie. model, CompAbr, and KEGGID are from BiGG, KEGGList is from KEGG website)
@@ -31,15 +12,16 @@ function x = testGrowthExpMatch()
 %       obtained 'R00658_f' which is the KEGGID for ENO
 %
 %   Joseph Kang 11/16/09
+%   Adaptions to CI - Thomas Pfau Okt 2017
 
 oriFolder = pwd;
 
 %moves to testing folder that contains testGrowthExpMatch
-test_folder = what('testGrowthExpMatch');
-cd(test_folder(1).path);
+test_folder = fileparts(which('testGrowthExpMatch.m'));
+cd(test_folder);
 
 %load Model
-load('ecoli_core_model.mat');
+model = readCbModel('ecoli_core_model.mat');
 
 %removes reaction ENO
 disp('------------------------------------')
@@ -54,20 +36,20 @@ d = load('Dictionary.mat');
 KEGGFilename = 'Test_KEGG_Reaction_List.lst';
 
 %runs growthExpMatch and obtains solution
-cd(test_folder(1).path);
 [solution]=growthExpMatch(model, KEGGFilename,'[c]', 1, d.dictionary);
 
 %if R00658_f is solution result, returns a positive answer, else negative
-if strcmp(solution.importedRxns{1}, 'R00658_f')
-    disp('growthExpMatch has imported the correct reaction from Universal data');
-    x=1;
-else
-    disp('growthExpMatch has not imported the correct reaction from Universal data');
-    x=0;
-end
+assert(isequal(solution.importedRxns, {{'R00658_f'}}))
 
-close;
+%perform cleanup 
+if exist([test_folder filesep 'GEMLog_solution_1.mat'],'file')
+    delete('GEMLog_solution_1.mat')
+end
+if exist([test_folder filesep 'CobraMILPSolver.log'],'file')
+    delete('CobraMILPSolver.log')
+end
+if exist([test_folder filesep 'GEMLog.txt'],'file')
+    delete('GEMLog.txt')
+end
 cd(oriFolder);
-
-end
 
