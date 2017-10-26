@@ -127,7 +127,7 @@ if method == 1 % two variables (ar, af)
     for i = 1:nint, MILPproblem.csense(end+1,1) = 'G';end  % E >
     for i = 1:linternal, MILPproblem.csense(end+1,1) = 'E';end % N*E = 0
 
-    MILPproblem.vartype = [];
+    MILPproblem.vartype = '';
     if isfield(LPproblem, 'vartype')
         MILPproblem.vartype = LPproblem.vartype;  % keep variables same as previously.
     else
