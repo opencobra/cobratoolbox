@@ -119,7 +119,7 @@ currentDir = pwd;
 cd(CBTDIR);
 
 % determine the printLevel
-if (nargin < 9 || isempty(printLevel))
+if (nargin < 10 || isempty(printLevel))
     printLevel = 1;
 end
 
