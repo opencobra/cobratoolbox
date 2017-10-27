@@ -869,12 +869,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     mxArray         *STATUSSOLMAX = NULL;
     double          *statussolmax = NULL;
-    
+
     /*mxArray         *PRINTLEVEL = NULL;
     int             *printLevel = NULL;
     */
     int             printLevel = 0;
-    
+
     /* numThread_IN*/
     int             numThread = 0;
     char            numThreadstr[MAX_STR_LENGTH];
@@ -1070,17 +1070,17 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     nrxn          = mxGetM(RXNS_IN);
     rxnsOptMode   = mxGetPr(RXNS_OPTMODE_IN);
     printLevel    = mxGetScalar(PRINTLEVEL_IN);
-    
+
     if (printLevel > 0) {
       mexPrintf(" >> The number of reactions retrieved is %d\n", nrxn);
     }
-    
+
     /* Retrieve the number of the thread */
     numThread     = mxGetScalar(NUM_THREAD_IN);
 
     /* Retrieve the location of log files */
     logFileDir = mxArrayToString(prhs[LOGFILE_DIR_IN]);
-    
+
     if (printLevel > 0) {
       mexPrintf(" >> Log files will be stored at %s\n", logFileDir);
     }
@@ -1140,7 +1140,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if (printLevel > 0) {
       mexPrintf(" -- Start time:     %s", c_time_string);
     }
-    
+
     /* Create a log file. */
     if (opt_logfile){
        	/*
@@ -1155,7 +1155,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         if (printLevel > 0) {
           mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
         }
-        
+
         LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
 
        if (LogFile == NULL) {
@@ -1425,7 +1425,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if (c_time_string == NULL) {
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
-    
+
     if (printLevel > 0) {
       mexPrintf(" -- End time:     %s", c_time_string);
     }
