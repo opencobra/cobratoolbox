@@ -117,10 +117,10 @@ else
     if ~isfield(constrM,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrM');  end
 
     % check correct length for fields
-    constrM.rxnList
-    size(constrM.rxnList, 1)
-    size(constrM.rxnValues, 1)
-    size(constrM.rxnBoundType, 1)
+    constrM.rxnList;
+    size(constrM.rxnList, 1);
+    size(constrM.rxnValues, 1);
+    size(constrM.rxnBoundType, 1);
     if size(constrM.rxnList, 1) == size(constrM.rxnValues, 1) && size(constrM.rxnList, 1) == size(constrM.rxnBoundType, 1)
         if size(constrM.rxnList,1) > size(constrM.rxnList,2); constrM.rxnList = constrM.rxnList'; end;
         if size(constrM.rxnValues,1) > size(constrM.rxnValues,2); constrM.rxnValues = constrM.rxnValues'; end;
@@ -139,19 +139,7 @@ for i = 1:size(constrW.rxnList, 1)
 end
 
 % FVA for wild-type
-minFluxesW = zeros(size(modelW.rxns, 1), 1);
-maxFluxesW = zeros(size(modelW.rxns, 1), 1);
-for i = 1:size(modelW.rxns, 1)
-    modelW.c = zeros(size(modelW.c));
-    modelW.c(i) = 1;
-    fmin = optimizeCbModel(modelW, 'min');
-    fmax = optimizeCbModel(modelW, 'max');
-    if fmin.stat == 0 || fmax.stat == 0
-        warning('Model infeasible. Make sure you entered correct constraints');
-    end
-    minFluxesW(i) = fmin.f;
-    maxFluxesW(i) = fmax.f;
-end
+[minFluxesW,maxFluxesW] = fluxVariability(modelW,0,'max',modelW.rxns);
 
 % Save summary information
 boundsW = [model.rxns num2cell(minFluxesW) num2cell(minFluxesW)];
@@ -165,19 +153,7 @@ for i = 1:size(constrM.rxnList, 1)
 end
 
 % FVA for mutant
-minFluxesM = zeros(size(modelM.rxns, 1), 1);
-maxFluxesM = zeros(size(modelM.rxns, 1), 1);
-for i = 1:size(modelM.rxns, 1)
-    modelM.c = zeros(size(modelM.c));
-    modelM.c(i) = 1;
-    fmin = optimizeCbModel(modelM, 'min');
-    fmax = optimizeCbModel(modelM, 'max');
-    if fmin.stat == 0 || fmax.stat == 0
-        warning('Model infeasible. Make sure you entered correct constraints');
-    end
-    minFluxesM(i) = fmin.f;
-    maxFluxesM(i) = fmax.f;
-end
+[minFluxesM,maxFluxesM] = fluxVariability(modelM,0,'max',modelM.rxns);
 
 % save summary information
 boundsM = [model.rxns num2cell(minFluxesM) num2cell(minFluxesM)];
