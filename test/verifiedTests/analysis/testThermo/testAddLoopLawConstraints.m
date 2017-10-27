@@ -36,12 +36,12 @@ for k = 1:length(solverPkgs)
                 LPproblem.c = NormalObjective;
                 MILPProblem = addLoopLawConstraints(LPproblem,loopToyModel,1:nRxns,method,reduce_vars);
                 sol = solveCobraMILP(MILPProblem);
-                assert(sol.obj == 1000); %This can carry a flux of 1000
-                assert(all(sol.full(ismember(loopToyModel.rxns,{'R4','R5','R6'})) == 0)); %The loop is not part of the solution and can't carry flux.
+                assert(abs(sol.obj - 1000) < tol); %This can carry a flux of 1000
+                assert(all(abs(sol.full(ismember(loopToyModel.rxns,{'R4','R5','R6'}))) < tol)); %The loop is not part of the solution and can't carry flux.
                 LPproblem.c = R4objective;
                 MILPProblem = addLoopLawConstraints(LPproblem,loopToyModel,1:nRxns,method,reduce_vars);
                 sol = solveCobraMILP(MILPProblem);
-                assert(sol.obj == 0); %There can't be any flux on this.
+                assert(abs(sol.obj) < tol); %There can't be any flux on this.
             end
         end
     end
