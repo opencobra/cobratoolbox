@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, osenseStr, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
+function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, osenseStr, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode, printLevel)
 % Flux variablity analysis optimized for the CPLEX solver.
 % Solves LPs of the form:
 %
@@ -56,6 +56,9 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %                       * 0 = only minimization;
 %                       * 1 = only maximization;
 %                       * 2 = minimization & maximization;
+%   printLevel:        Verbose level (default: 1)
+%                       * 0 = mute
+%                       * 1 = default
 %
 % OUTPUTS:
 %   minFlux:           Minimum flux for each reaction
@@ -115,8 +118,13 @@ currentDir = pwd;
 % the root path must be the root directory as the path to the logFiles is hard-coded
 cd(CBTDIR);
 
+% determine the printLevel
+if (nargin < 9 || isempty(printLevel))
+    printLevel = 1;
+end
+
 % determine the latest installed CPLEX version
-cplexVersion = getCobraSolverVersion('ibm_cplex');
+cplexVersion = getCobraSolverVersion('ibm_cplex', printLevel);
 
 % check if the provided fastFVA binaries are compatible with the current system configuration
 checkFastFVAbin(cplexVersion);
@@ -131,9 +139,6 @@ loadBalancing = 0;  % 0: off; 1: on
 
 % Define if information about the work load distriibution will be shown or not
 showSplitting = 1;
-
-% Turn on the verbose mode by default
-printLevel = 1;
 
 % Define the input arguments
 if (nargin < 8 || isempty(strategy))
@@ -198,7 +203,9 @@ end
 
 % print a warning when output arguments are not defined.
 if nargout ~= 4 && nargout ~= 7 && nargout ~= 9
-    fprintf('\n-- Warning:: You may only ouput 4, 7 or 9 variables.\n\n')
+    if printLevel > 0
+        fprintf('\n-- Warning:: You may only ouput 4, 7 or 9 variables.\n\n')
+    end
 end
 
 % Define the osenseStr
@@ -212,7 +219,7 @@ end
 
 % Define the solverName
 if strcmp('glpk', solverName)
-    fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
+    error('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strcmp('ibm_cplex', solverName)
     FVAc = str2func(['cplexFVA' cplexVersion]);
 else
@@ -234,15 +241,21 @@ b = model.b;
 if isfield(model, 'A') && (matrixAS == 'A')
     A = model.A;
     csense = model.csense(:);
-    fprintf(' >> Solving Model.A. (coupled) - Generalized\n');
+    if printLevel > 0
+        fprintf(' >> Solving Model.A. (coupled) - Generalized\n');
+    end
 else
     A = model.S;
     csense = char('E' * ones(size(A, 1), 1));
     b = b(1:size(A, 1));
-    fprintf(' >> Solving Model.S. (uncoupled) \n');
+    if printLevel > 0
+        fprintf(' >> Solving Model.S. (uncoupled) \n');
+    end
 end
 
-fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
+if printLevel > 0
+    fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
+end
 
 % Define the matrix A as sparse in case it is not as
 % C code assumes a sparse stochiometric matrix
@@ -252,37 +265,55 @@ end
 
 % Determine the size of the stoichiometric matrix
 [m, n] = size(A);
-fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m, n);
+if printLevel > 0
+    fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m, n);
+end
 
 % Determine the number of reactions that are considered
 nR = length(rxns);
 if nR ~= n
-    fprintf(' >> Only %d reactions of %d are solved (~ %1.2f%%).\n', nR, n, nR * 100 / n);
+    if printLevel > 0
+        fprintf(' >> Only %d reactions of %d are solved (~ %1.2f%%).\n', nR, n, nR * 100 / n);
+    end
     n = nR;
 else
-    fprintf(' >> All reactions are solved (%d reactions - 100%%).\n', n);
+    if printLevel > 0
+        fprintf(' >> All reactions are solved (%d reactions - 100%%).\n', n);
+    end
 end
 
 % output how many reactions are min, max, or both
 totalOptMode = length(find(rxnsOptMode == 0));
 if totalOptMode == 1
-    fprintf(' >> %d reaction out of %d is minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0    
+        fprintf(' >> %d reaction out of %d is minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 else
-    fprintf(' >> %d reactions out of %d are minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0    
+        fprintf(' >> %d reactions out of %d are minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 end
 
 totalOptMode = length(find(rxnsOptMode == 1));
 if totalOptMode == 1
-    fprintf(' >> %d reaction out of %d is maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0    
+        fprintf(' >> %d reaction out of %d is maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 else
-    fprintf(' >> %d reactions out of %d are maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0
+        fprintf(' >> %d reactions out of %d are maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 end
 
 totalOptMode = length(find(rxnsOptMode == 2));
 if totalOptMode == 1
-    fprintf(' >> %d reaction out of %d is minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0    
+        fprintf(' >> %d reaction out of %d is minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 else
-    fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    if printLevel > 0    
+        fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
+    end
 end
 
 % count the number of workers
@@ -309,23 +340,27 @@ if nworkers <= 1
     end
 
     % Sequential version
-    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
+    if printLevel > 0    
+        fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
+    end
     if bExtraOutputs1
         [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                                                                    optPercentage, obj, rxnsKey, ...
-                                                                                                   1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir);
+                                                                                                   1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     elseif bExtraOutputs
         [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                                        optPercentage, obj, rxnsKey, ...
-                                                                       1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir);
+                                                                       1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     else
         [minFlux, maxFlux, optsol, ret] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                optPercentage, obj, rxnsKey, ...
-                                               1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir);
+                                               1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     end
 
     if ret ~= 0 && printLevel > 0
-        fprintf('Unable to complete the FVA, return code=%d\n', ret);
+        if printLevel > 0        
+            fprintf('Unable to complete the FVA, return code=%d\n', ret);
+        end
     end
 else
     % Divide the reactions amongst workers
@@ -337,7 +372,9 @@ else
     if n > 5000 & loadBalancing == 1
         % A primitive load-balancing strategy for large problems
         nworkers = 4 * nworkers;
-        fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
+        if printLevel > 0    
+            fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
+        end
     end
 
     nrxn = repmat(fix(n / nworkers), nworkers, 1);
@@ -442,10 +479,12 @@ else
         statussolminRes = {};
         statussolmaxRes = {};
     end
-
-    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
-    fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
-
+    
+    if printLevel > 0
+        fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
+        fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
+    end
+    
     out = parfor_progress(nworkers, filenameParfor);
 
     parfor i = 1:nworkers
@@ -460,15 +499,20 @@ else
         end
 
         t = getCurrentTask();
-
-        fprintf('\n----------------------------------------------------------------------------------\n');
+        if printLevel > 0
+            fprintf('\n----------------------------------------------------------------------------------\n');
+        end
         if strategy == 0
-            fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
+            if printLevel > 0    
+                fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
                     t.ID, nworkers, i, istart(i), iend(i), m, n);
+            end
         else
-            fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d:%d] & [%d:%d] / [%d, %d].\n', ...
+            if printLevel > 0
+                fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d:%d] & [%d:%d] / [%d, %d].\n', ...
                     t.ID, nworkers, i, startMarker1(i), endMarker1(i), ...
                     startMarker2(i), endMarker2(i), m, n);
+            end
         end
 
         tstart = tic;
@@ -482,27 +526,32 @@ else
              statussolmin_single, statussolmax_single] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                               optPercentage, obj, rxnsKey', ...
                                                               t.ID, cpxControl, valuesCPLEXparams, ...
-                                                              rxnsOptMode(istart(i):iend(i)), logFileDir);
+                                                              rxnsOptMode(istart(i):iend(i)), logFileDir, printLevel);
         elseif bExtraOutputs
             [minf, maxf, iopt(i), iret(i), fbasol_single, fvamin_single, fvamax_single] = FVAc(model.c, A, b, csense, ...
                                                                                                model.lb, model.ub, ...
                                                                                                optPercentage, obj, rxnsKey', ...
                                                                                                t.ID, cpxControl, valuesCPLEXparams, ...
                                                                                                rxnsOptMode(istart(i):iend(i)), ...
-                                                                                               logFileDir);
+                                                                                               logFileDir, printLevel);
         else
-            fprintf(' >> Number of reactions given to the worker: %d \n', length(rxnsKey));
+            if printLevel > 0
+                fprintf(' >> Number of reactions given to the worker: %d \n', length(rxnsKey));
+            end
 
             [minf, maxf, iopt(i), iret(i)] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                   optPercentage, obj, rxnsKey', ...
                                                   t.ID, cpxControl, valuesCPLEXparams, ...
-                                                  rxnsOptMode(istart(i):iend(i)), logFileDir);
+                                                  rxnsOptMode(istart(i):iend(i)), logFileDir, printLevel);
         end
-
-        fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
-
+        if printLevel > 0
+            fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
+        end
+        
         if iret(i) ~= 0 && printLevel > 0
-            fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
+            if printLevel > 0
+                fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
+            end
         end
 
         minFluxTmp{i} = minf;
@@ -518,16 +567,21 @@ else
             statussolminRes{i} = statussolmin_single;
             statussolmaxRes{i} = statussolmax_single;
         end
-
-        fprintf('\n----------------------------------------------------------------------------------\n');
-
+        if printLevel > 0
+            fprintf('\n----------------------------------------------------------------------------------\n');
+        end
+        
         % print out the percentage of the progress
         percout = parfor_progress(-1, filenameParfor);
 
         if percout < 100
-            fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
+            if printLevel > 0
+                fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
+            end
         else
-            fprintf(' ==> 100%% done. Analysis completed.\n', percout);
+            if printLevel > 0    
+                fprintf(' ==> 100%% done. Analysis completed.\n', percout);
+            end
         end
     end
 

@@ -91,10 +91,12 @@ enum {F_IN_POS,
       VALUES_CPLEX_PARAMS,
       RXNS_OPTMODE_IN,
       LOGFILE_DIR_IN,
-      MAX_NUM_IN_ARG};
+      PRINTLEVEL_IN_POS,
+      MAX_NUM_IN_ARG
+      };
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        14
+#define MIN_NUM_IN_ARG        15
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -109,6 +111,7 @@ enum {F_IN_POS,
 #define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
 #define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
 #define RXNS_OPTMODE_IN       prhs[RXNS_OPTMODE_IN]
+#define PRINTLEVEL_IN         prhs[PRINTLEVEL_IN_POS]
 
 /* MEX Output Arguments */
 enum {MINFLUX_OUT_POS,
@@ -222,7 +225,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
          double* FBAsol, double* FVAmin, double* FVAmax, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
          const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams,
-         const double* rxnsOptMode, double* statussolmin,  double* statussolmax) {
+         const double* rxnsOptMode, double* statussolmin,  double* statussolmax, int printLevel) {
 
     int           status;
     int           rmatbeg[2];
@@ -254,8 +257,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
 
     if(countParam > 0) {
-        mexPrintf("    -- Setting %i CPLEX parameters ... \n", countParam);
-
+        if (printLevel > 0) {
+            mexPrintf("    -- Setting %i CPLEX parameters ... \n", countParam);
+        }
         for(j = 0; j < countParam; j++)
         {
           /* Reinitialisation for each new parameter*/
@@ -284,8 +288,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
                 /*mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
                           statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);*/
+                if (printLevel > 0) {
                 mexPrintf("        ++ (int)[%i|%i]: %s (%i) = [set> %i] & [%i <get] \n",
                           statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);
+                }
                 flag = false;
           } else {   /* set DOUBLE or FLOAT parameters */
 
@@ -297,25 +303,29 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
               if(statusdbl == 0 && getStatusdbl == 0 ){
                   /*  mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
                               statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);*/
-                    mexPrintf("        ++ (dbl)[%i|%i]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
-                              statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);
-                    flag = false;
-                  }
+                    if (printLevel > 0) {
+                        mexPrintf("        ++ (dbl)[%i|%i]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
+                                  statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);
+                        flag = false;
+                    }
+              }
           }
           /* Print warning messages */
           if(flag)
               mexPrintf("        --> %s Impossible to set or get %s (%d).\n\n", PRINT_WARNING, nameParam, numParam);
+          }
+        if (printLevel > 0) {
+            mexPrintf("    -- All %i CPLEX parameters set --\n", countParam);
         }
-
-        mexPrintf("    -- All %i CPLEX parameters set --\n", countParam);
-
     }
 
     if(monitorPerformance) markersBegin[4] = clock();
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > OPT_PERCENTAGE) {
-      mexPrintf("\n -- %s: The optPercentage is higher than 90. The solution process might take longer than you expect.\n\n",PRINT_WARNING);
+      if (printLevel > 0) {
+        mexPrintf("\n -- %s: The optPercentage is higher than 90. The solution process might take longer than you expect.\n\n",PRINT_WARNING);
+      }
     }
 
     if(monitorPerformance) {
@@ -446,9 +456,13 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     {
 
       if (iRound == 0) {
-        mexPrintf("        -- Minimization (iRound = %i). Number of reactions: %i.\n", iRound, nrxn);
+        if (printLevel > 0) {
+          mexPrintf("        -- Minimization (iRound = %i). Number of reactions: %i. - printLevel %i\n", iRound, nrxn, printLevel);
+        }
       } else {
-        mexPrintf("        -- Maximization (iRound = %i). Number of reactions: %i.\n", iRound, nrxn);
+        if (printLevel > 0) {
+          mexPrintf("        -- Maximization (iRound = %i). Number of reactions: %i.\n", iRound, nrxn);
+        }
       }
 
       CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
@@ -575,7 +589,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       for (j = 0; j < Nmarkers; j++)
       {
         markers[j] = (double)(markersEnd[j] - markersBegin[j]) / CLOCKS_PER_SEC;
-        mexPrintf(" >> _fva / Markers(%d) Execution time: %.2f seconds.\n", j, markers[j]);
+        if (printLevel > 0) {
+          mexPrintf(" >> _fva / Markers(%d) Execution time: %.2f seconds.\n", j, markers[j]);
+        }
       }
     }
 
@@ -853,7 +869,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     mxArray         *STATUSSOLMAX = NULL;
     double          *statussolmax = NULL;
-
+    
+    /*mxArray         *PRINTLEVEL = NULL;
+    int             *printLevel = NULL;
+    */
+    int             printLevel = 0;
+    
     /* numThread_IN*/
     int             numThread = 0;
     char            numThreadstr[MAX_STR_LENGTH];
@@ -894,10 +915,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     /* If there are no input nor output arguments display version number */
     if ((nrhs == 0) && (nlhs == 0)){
-    	mexPrintf("CPLEXINT, Version %s.\n", CPLEXINT_VERSION);
-    	mexPrintf("MEX interface for using CPLEX in Matlab.\n");
-    	mexPrintf("%s.\n", CPLEXINT_COPYRIGHT);
-    	return;
+        if (printLevel > 0) {
+          mexPrintf("CPLEXINT, Version %s.\n", CPLEXINT_VERSION);
+          mexPrintf("MEX interface for using CPLEX in Matlab.\n");
+          mexPrintf("%s.\n", CPLEXINT_COPYRIGHT);
+        }
+        return;
     }
 
     /* Check for proper number of arguments. */
@@ -1046,15 +1069,21 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     rxns          = mxGetPr(RXNS_IN);
     nrxn          = mxGetM(RXNS_IN);
     rxnsOptMode   = mxGetPr(RXNS_OPTMODE_IN);
-
-    mexPrintf(" >> The number of reactions retrieved is %d\n", nrxn);
-
+    printLevel    = mxGetScalar(PRINTLEVEL_IN);
+    
+    if (printLevel > 0) {
+      mexPrintf(" >> The number of reactions retrieved is %d\n", nrxn);
+    }
+    
     /* Retrieve the number of the thread */
     numThread     = mxGetScalar(NUM_THREAD_IN);
 
     /* Retrieve the location of log files */
     logFileDir = mxArrayToString(prhs[LOGFILE_DIR_IN]);
-    mexPrintf(" >> Log files will be stored at %s\n", logFileDir);
+    
+    if (printLevel > 0) {
+      mexPrintf(" >> Log files will be stored at %s\n", logFileDir);
+    }
     logFileName = concat2(logFileDir, "/cplexint_logfile_");
 
     /* Register safe exit. */
@@ -1108,9 +1137,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if (c_time_string == NULL) {
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
-
-    mexPrintf(" -- Start time:     %s", c_time_string);
-
+    if (printLevel > 0) {
+      mexPrintf(" -- Start time:     %s", c_time_string);
+    }
+    
     /* Create a log file. */
     if (opt_logfile){
        	/*
@@ -1122,8 +1152,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         /* Convert numThreads to a string */
         sprintf(numThreadstr, "%d", numThread);
 
-        mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
-
+        if (printLevel > 0) {
+          mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
+        }
+        
         LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
 
        if (LogFile == NULL) {
@@ -1226,7 +1258,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
                 fbasol, fvaminsol, fvamaxsol,
                 n_constr,n_vars,optPercent,objective,rxns,nrxn,
                 CPLEX_PARAMS, VALUES_CPLEX_PARAMS,
-                rxnsOptMode, statussolmin, statussolmax);
+                rxnsOptMode, statussolmin, statussolmax, printLevel);
 
     if(monitorPerformance) markersEnd[4] = clock();
 
@@ -1369,10 +1401,14 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
       for (j = 0; j < Nmarkers; j++)
       {
         markers[j] = (double)(markersEnd[j] - markersBegin[j]) / CLOCKS_PER_SEC;
-        mexPrintf(" >> Markers(%d) Execution time: %.2f seconds.\n", j, markers[j]);
+        if (printLevel > 0) {
+          mexPrintf(" >> Markers(%d) Execution time: %.2f seconds.\n", j, markers[j]);
+        }
       }
 
-      mexPrintf("\n >> Total c-Script Execution time: %.2f seconds.\n\n", time_spent);
+      if (printLevel > 0) {
+        mexPrintf("\n >> Total c-Script Execution time: %.2f seconds.\n\n", time_spent);
+      }
     }
 
     /* Print out the time stamp for each worker */
@@ -1389,8 +1425,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if (c_time_string == NULL) {
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
-
-    mexPrintf(" -- End time:     %s", c_time_string);
-
+    
+    if (printLevel > 0) {
+      mexPrintf(" -- End time:     %s", c_time_string);
+    }
     return;
 }
