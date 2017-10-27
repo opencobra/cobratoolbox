@@ -35,12 +35,24 @@ model = removeRxns(model, 'ENO');
 d = load('Dictionary.mat');
 KEGGFilename = 'Test_KEGG_Reaction_List.lst';
 
-%runs growthExpMatch and obtains solution
-[solution]=growthExpMatch(model, KEGGFilename,'[c]', 1, d.dictionary);
+%Test for the default solvers
+solverPkgs = {'gurobi', 'glpk'};
 
-%if R00658_f is solution result, returns a positive answer, else negative
-assert(isequal(solution.importedRxns, {{'R00658_f'}}))
+for k = 1:length(solverPkgs)
+    fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
+    % change the COBRA solver 
+    solverOKLP = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverOKMILP = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
+    
+    if solverOKLP && solverOKMILP
+        %runs growthExpMatch and obtains solution
+        [solution]=growthExpMatch(model, KEGGFilename,'[c]', 1, d.dictionary);
+        
+        %if R00658_f is solution result, returns a positive answer, else negative
+        assert(isequal(solution.importedRxns, {{'R00658_f'}}))
+    end
+end
 %perform cleanup 
 if exist([test_folder filesep 'GEMLog_solution_1.mat'],'file')
     delete('GEMLog_solution_1.mat')
@@ -51,5 +63,7 @@ end
 if exist([test_folder filesep 'GEMLog.txt'],'file')
     delete('GEMLog.txt')
 end
+close all 
+
 cd(oriFolder);
 
