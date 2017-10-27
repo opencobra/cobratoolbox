@@ -44,8 +44,9 @@ if myCluster.NumWorkers >= minWorkers
         % change the COBRA solver (LP)
         solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
         solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
+        solverMILPOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
-        if solverLPOK && solverQPOK
+        if solverLPOK && solverQPOK && solverMILPOK
             fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
             rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', ...
