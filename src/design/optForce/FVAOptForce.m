@@ -134,7 +134,7 @@ end
 modelW = model;
 
 % Set contraints for wildtype
-for i = 1:size(constrW.rxnList, 1)
+for i = 1:length(constrW.rxnList)
     modelW = changeRxnBounds(modelW, constrW.rxnList{i}, constrW.rxnValues(i) ,constrW.rxnBoundType(i));
 end
 
@@ -148,7 +148,7 @@ boundsW = [model.rxns num2cell(minFluxesW) num2cell(minFluxesW)];
 modelM = model;
 
 % Set contraints for mutant
-for i = 1:size(constrM.rxnList, 1)
+for i = 1:length(constrM.rxnList)
     modelM = changeRxnBounds(modelM, constrM.rxnList{i}, constrM.rxnValues(i), constrM.rxnBoundType(i));
 end
 

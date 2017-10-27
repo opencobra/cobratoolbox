@@ -227,7 +227,7 @@ parser.addParamValue('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islog
 parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParamValue('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('verbose', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('loop', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('kMin', 1, @(x) isnumeric(x));
 
@@ -382,7 +382,7 @@ if loop % if k = kMin:k
 
             bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
             % Solve problem
-            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
             if Force.stat == 1
                 nSolsFound = nSolsFound + 1;
                 if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
@@ -572,7 +572,7 @@ else
 
         bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
         % Solve problem
-        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
         if Force.stat == 1
             nSolsFound = nSolsFound + 1;
             if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;

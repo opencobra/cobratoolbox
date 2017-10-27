@@ -259,7 +259,7 @@ while 1
     % create bilevel problem
     bilevelMILPproblem = buildBilevelMILPproblemForFindMustU(model, can, must, maxFluxesW, constrOpt);
     % solve problem
-    MustUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+    MustUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
 
     if MustUSol.stat~=1
         break;
