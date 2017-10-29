@@ -31,7 +31,7 @@ end
 compatibleStatus = isCompatible('ibm_cplex', 1);
 
 if compatibleStatus ~= 1
-    warning('As the ibm_cplex interface, the generated MEX file might not be compatible.');
+    warning('As the ibm_cplex interface is not compatible, the generated MEX file might not be compatible.');
 end
 
 if nargin < 1 || isempty(rootPathCPLEX)
