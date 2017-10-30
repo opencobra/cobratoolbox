@@ -14,6 +14,8 @@
 %   Joseph Kang 11/16/09
 %   Adaptions to CI - Thomas Pfau Okt 2017
 
+global CBTDIR
+
 oriFolder = pwd;
 
 %moves to testing folder that contains testGrowthExpMatch
@@ -21,7 +23,7 @@ test_folder = fileparts(which('testGrowthExpMatch.m'));
 cd(test_folder);
 
 %load Model
-model = readCbModel('ecoli_core_model.mat');
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 
 %removes reaction ENO
 disp('------------------------------------')
@@ -32,8 +34,8 @@ model = removeRxns(model, 'ENO');
 % w = what('testing');
 % p = w.path;
 % cd(p);
-d = load('Dictionary.mat');
-KEGGFilename = 'Test_KEGG_Reaction_List.lst';
+d = load([test_folder filesep 'Dictionary.mat']);
+KEGGFilename = 'testTest_KEGG_Reaction_List.lst';
 
 %Test for the default solvers
 solverPkgs = {'gurobi', 'glpk'};
