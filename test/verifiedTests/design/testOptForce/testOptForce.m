@@ -7,13 +7,31 @@
 %     - Thomas Pfau Oct 2017
 %
 
+global CBTDIR
+
 originalDir = pwd;
 
 pathTutorial = which('testOptForce.m');
 pathstr = fileparts(pathTutorial);
 cd(pathstr)
 
-model = readCbModel('AntCore.mat');
+%Init paralell pool, if possible
+try
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
+    
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
+        parPoolCreated = true;
+    end
+catch
+    parPoolCreated = false;
+end
+    
+model = readCbModel([CBTDIR filesep 'test' filesep 'moedls' filesep 'AntCore.mat']);
 model.c(strcmp(model.rxns, 'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 

@@ -678,7 +678,8 @@ else
                     num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] ...
                     [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
             end
-            xlswrite(outputFileName,Info)
+            setupxlwrite();
+            xlwrite(outputFileName,Info)
             cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
             if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
