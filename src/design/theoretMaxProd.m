@@ -1,12 +1,15 @@
-function [ExRxns, MaxTheoOut] = theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
+function [ExRxns, MaxTheoOut] = theoretMaxProd(model, inputrxn, criterion, normalize, rxns)
 % Determines the max theoretical output for each exchange reaction
 %
 % USAGE:
 %
-%    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, criterion, inputrxn, normalize, rxns)
+%    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, inputrxn, criterion, normalize, rxns)
 %
 % INPUT:
 %    model:         model structure
+%    inputrxn:      the input reaction ('EX_glu(e)', etc.)
+%
+% OPTIONAL INPUT:
 %    criterion:     One of
 %
 %                     * 'pr_mol' (default)
@@ -14,9 +17,6 @@ function [ExRxns, MaxTheoOut] = theoretMaxProd(model, criterion, inputrxn, norma
 %                     * 'pr_other_mol' (other carbon compounds secretion rate)
 %                     * 'pr_other_mw'  (same thing in molecular weight)
 %                       weight yield)
-%    inputrxn:      the input reaction ('EX_glu(e)', etc.)
-%
-% OPTIONAL INPUT:
 %    normalize:     normalize by input flux.  Either the flux rate in mol or
 %                   in molecular weight (Default = false)
 %    rxns:          Selection Vector (1 for selected, 0 otherwise)
@@ -27,7 +27,7 @@ function [ExRxns, MaxTheoOut] = theoretMaxProd(model, criterion, inputrxn, norma
 %
 % .. Author: - Jan Schellenberger 11/7/08
 
-if isempty(criterion)
+if nargin < 3 || isempty(criterion)
     criterion = 'pr_mol';
 end
 if nargin < 4
