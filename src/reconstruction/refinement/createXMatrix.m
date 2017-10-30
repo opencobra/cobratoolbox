@@ -63,7 +63,7 @@ elseif transport == 1
         ExchangeRxnMatrix.S=spalloc(3 * length(compounds),3 * length(compounds),4*length(compounds));
     end
 end
-try
+
 ExchangeRxnMatrix.mets=compounds;
 for i=1:length(compounds)
     HTABLE.put(compounds{i}, i);
@@ -143,8 +143,4 @@ for i=1:length(compounds)
     end
 
     showprogress(i/length(compounds));
-end
-catch ME
-    disp('Blubb');
-    rethrow(ME)
 end
