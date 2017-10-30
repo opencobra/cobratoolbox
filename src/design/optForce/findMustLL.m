@@ -328,7 +328,7 @@ else
 end
 
 % print info into an excel file if required by the user
-if printExcel && ~isunix
+if printExcel
     if cont > 0
         currentFolder = pwd;
         cd(outputFolder);
@@ -336,8 +336,9 @@ if printExcel && ~isunix
         for i = 1:size(mustLL, 1)
             must{i} = strjoin(mustLL(i, :), ' or ');
         end
-        xlswrite([outputFileName '_Info'], [{'Reactions'}; must]);
-        xlswrite(outputFileName, mustLL_linear);
+        setupxlwrite();
+        xlwrite([outputFileName '_Info'], [{'Reactions'}; must]);
+        xlwrite(outputFileName, mustLL_linear);
         cd(currentFolder);
         if printLevel
             fprintf(['MustLL set was printed in ' outputFileName '.xls  \n']);

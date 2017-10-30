@@ -329,7 +329,7 @@ else
 end
 
 % print info into an excel file if required by the user
-if printExcel && ~isunix
+if printExcel
     if cont > 0
         currentFolder = pwd;
         cd(outputFolder);
@@ -337,8 +337,9 @@ if printExcel && ~isunix
         for i = 1:size(mustUU, 1)
             must{i} = strjoin(mustUU(i, :), ' or ');
         end
-        xlswrite([outputFileName '_Info'], [{'Reactions'}; must]);
-        xlswrite(outputFileName, mustUU_linear);
+        setupxlwrite();
+        xlwrite([outputFileName '_Info'], [{'Reactions'}; must]);
+        xlwrite(outputFileName, mustUU_linear);
         cd(currentFolder);
         if printLevel
             fprintf(['MustUU set was printed in ' outputFileName '.xls  \n']);

@@ -460,7 +460,7 @@ if loop % if k = kMin:k
             outputFileNameK = [outputFileName '_k' num2str(currentK)];
 
             % print info into an excel file if required by the user
-            if printExcel && ~isunix
+            if printExcel
 
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
@@ -476,8 +476,9 @@ if loop % if k = kMin:k
                         num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos))...
                         num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] ...
                         [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
-                end
-                xlswrite(outputFileNameK,Info)
+                end     
+                setupxlwrite();
+                xlwrite(outputFileNameK,Info)                
                 cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
                 if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;

@@ -105,6 +105,8 @@ for k = 1:length(solverPkgs)
              'excludedRxns', excludedRxns, ...
              'runID', runID);
         assert(validateOptForceSol(origmodel,posOptForceSets,typeRegOptForceSets,'EX_suc'));
+        %clean up
+        rmdir(runID,'s');
     end
 end
 

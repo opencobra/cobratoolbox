@@ -316,14 +316,15 @@ else
 end
 
 % print info into an excel text file if required by the user
-if printExcel && ~isunix
+if printExcel
     if found
         currentFolder = pwd;
         cd(outputFolder);
         Info = [{'Reactions'},{'Min Flux in Wild-type strain'},{'Max Flux in Wild-type strain'},{'Min Flux in Mutant strain'},{'Max Flux in Mutant strain'}];
         Info = [Info; [model.rxns(posMustU), num2cell(minFluxesW(posMustU)), num2cell(maxFluxesW(posMustU)), num2cell(vmin(posMustU)), num2cell(vmax(posMustU))]];
-        xlswrite([outputFileName '_Info'],Info);
-        xlswrite(outputFileName, mustUSet);
+        setupxlwrite();
+        xlwrite([outputFileName '_Info'],Info);
+        xlwrite(outputFileName, mustUSet);
         cd(currentFolder);
         if printLevel; fprintf(['MustU set was printed in ' outputFileName '.xls  \n']); end;
         if printReport; fprintf(freport, ['\nMustU set was printed in ' outputFileName '.xls  \n']); end;
