@@ -14,7 +14,7 @@ fileDir = fileparts(which('testSimpleOptKnock'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 targetRxn = model.rxns(20); % 'EX_ac(e)'
 
 % function outputs
