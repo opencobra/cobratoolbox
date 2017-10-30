@@ -161,7 +161,7 @@ elseif method == 2 % One variables (a)
         -10000*ones(nint, 1); % v > -10000 + 10000*af
         -ones(nint,1); % e<
         -100*ones(nint, 1); % e>
-        zeros(linternal,1);];
+        zeros(linternal,1)];
     
     MILPproblem.c = [LPproblem.c;
         zeros(2*nint,1)];

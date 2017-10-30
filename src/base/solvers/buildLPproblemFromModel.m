@@ -1,9 +1,9 @@
-function [ LPproblem ] = buildLPproblemFromModel( model)
+function LPproblem = buildLPproblemFromModel(model)
 % Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure. 
 %
 % USAGE:
 %
-%    LPproblem = solveCobraLP(model)
+%    LPproblem = buildLPproblemFromModel(model)
 %
 % INPUT:
 %    model:     A COBRA model structure with at least the following fields
