@@ -50,6 +50,70 @@ model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
 % adding a reaction to the model (test only)
 model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
 
+%Trying to add a reaction without stoichiometry will fail.
+errored = 0;
+try   
+    addReaction(model,'NoStoich');
+catch
+    errored = 1;
+end
+assert(errored == 1);
+
+%Try adding a new reaction with two different stoichiometries
+errored = 0;
+try   
+    addReaction(model, 'reactionFormula', 'A + B -> C','stoichCoeffList',[ -1 2], 'metaboliteList',{'A','C'});
+catch
+    errored = 1;
+end
+assert(errored == 1);
+
+%Try having a metabolite twice in the metabolite list or reaction formula
+modelWAddedMet = addReaction(model, 'reactionFormula', 'Alpha + Beta -> Gamma + 2 Beta');
+assert(modelWAddedMet.S(ismember(modelWAddedMet.mets,'Beta'),end) == 1);
+
+%Try to change metabolites of a specific reaction
+exchangedMets = {'atp','adp','pi'};
+[A,B] = ismember(exchangedMets,modelWAddedMet.mets);
+exMetPos = B(A);
+newMets = {'Alpha','Beta','Gamma'};
+[A,B] = ismember(newMets,modelWAddedMet.mets);
+newMetPos = B(A);
+HEXPos = ismember(modelWAddedMet.rxns,'HEX1');
+FBPPos = ismember(modelWAddedMet.rxns,'FBP');
+oldvaluesHEX = modelWAddedMet.S(exMetPos,HEXPos);
+oldvaluesFBP = modelWAddedMet.S(exMetPos,FBPPos);
+[modelWAddedMetEx,changedRxns] = changeRxnMets(modelWAddedMet,exchangedMets,newMets,{'HEX1','FBP'});
+%The new metabolites have the right values
+assert(all(modelWAddedMetEx.S(newMetPos,HEXPos)==oldvaluesHEX));
+assert(all(modelWAddedMetEx.S(newMetPos,FBPPos)==oldvaluesFBP));
+assert(all(modelWAddedMetEx.S(exMetPos,HEXPos) == 0));
+assert(all(modelWAddedMetEx.S(exMetPos,FBPPos) == 0));
+
+%Also give new Stoichiometry
+newStoich = [ 1 4; 2 5; 3 6];
+[modelWAddedMetEx,changedRxns] = changeRxnMets(modelWAddedMet,exchangedMets,newMets,{'HEX1','FBP'},newStoich);
+%The new metabolites have the right values
+assert(all(modelWAddedMetEx.S(newMetPos,HEXPos)==newStoich(:,1)));
+assert(all(modelWAddedMetEx.S(newMetPos,FBPPos)==newStoich(:,2)));
+assert(all(modelWAddedMetEx.S(exMetPos,HEXPos) == 0));
+assert(all(modelWAddedMetEx.S(exMetPos,FBPPos) == 0));
+
+%And try random ones.
+%Also give new Stoichiometry
+newStoich = [ 1 2 3; 4 5 6];
+[modelWAddedMetEx,changedRxns] = changeRxnMets(modelWAddedMet,exchangedMets,newMets,2);
+OldPos1 = ismember(modelWAddedMet.rxns,changedRxns{1});
+OldPos2 = ismember(modelWAddedMet.rxns,changedRxns{2});
+oldvalues1 = modelWAddedMet.S(exMetPos,OldPos1);
+oldvalues2 = modelWAddedMet.S(exMetPos,OldPos2);
+%The new metabolites have the right values
+assert(all(modelWAddedMetEx.S(newMetPos,OldPos1)==oldvalues1));
+assert(all(modelWAddedMetEx.S(newMetPos,OldPos2)==oldvalues2));
+assert(all(modelWAddedMetEx.S(exMetPos,OldPos1) == 0));
+assert(all(modelWAddedMetEx.S(exMetPos,OldPos2) == 0));
+
+
 % check if the number of reactions was incremented by 1
 assert(length(model.rxns) == rxns_length + 2);
 
@@ -63,7 +127,13 @@ model = removeRxns(model, {'EX_glc'});
 model = removeRxns(model, {'ABC_def'});
 
 % add exchange reaction
-addExchangeRxn(model, {'glc-D[e]'; 'glc-D';})
+modelWEx = addExchangeRxn(model, {'glc-D[e]'; 'glc-D'});
+%We added two reactions, check that.
+assert(numel(modelWEx.rxns) == numel(model.rxns)+2);
+
+%Now try again, this time, we should get the same model
+modelWEx2 = addExchangeRxn(modelWEx, {'glc-D[e]'; 'glc-D'});
+assert(isSameCobraModel(modelWEx,modelWEx2));
 
 %check if rxns length was decremented by 1
 assert(length(model.rxns) == rxns_length);
