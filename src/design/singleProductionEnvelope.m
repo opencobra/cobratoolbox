@@ -37,9 +37,9 @@ function [x, y1, y2] = singleProductionEnvelope(model, deletions, product, bioma
 %                     Default = 'Results'
 %
 % OUTPUTS;
-%    x:               x range for the curves
-%    y1:              y results for the first curve
-%    y2:              y results for the second curve
+%    x:               x axis for the curves
+%    y1:              y results for the first curve - 'Minimum Wild-type'  
+%    y2:              y results for the second curve - 'Maximum Wild-type'
 %
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 %           - Added output arguments for testing - Jacek Wachowiak
@@ -120,7 +120,7 @@ end
 % plot
 hold on
 plot(x2, ymin_KO, 'r', x2, ymax_KO, 'm', 'LineWidth', 2);
-legend('Minimun Wild-type', 'Maximun Wild-type', 'Minimun Mutant', 'Maximun Mutant')
+legend('Minimum Wild-type', 'Maximum Wild-type', 'Minimum Mutant', 'Maximum Mutant')
 ylabel([strrep(product, '_', '\_'), ' (mmol/gDW h)']);
 xlabel('Growth Rate (1/h)');
 % added outputs
