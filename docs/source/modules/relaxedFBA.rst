@@ -1,9 +1,9 @@
 
-.. _relaxFBA:
+.. _relaxedFBA:
 
 
-relaxFBA
---------
+relaxedFBA
+----------
 
-.. automodule:: src.analysis.relaxFBA
+.. automodule:: src.analysis.relaxedFBA
    :members:
