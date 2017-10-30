@@ -157,16 +157,25 @@ if (strcmp(typecode, 'rule') == 1)
 end;
 
 % check that structure contains all the necessary fields
-[SBMLfieldnames, numFields] = getStructureFieldnames(typecode, level, version, packages, pkgVersion);
-
-if (numFields ==0)
+if (isempty(typecode))
 	valid = 0;
-	message = sprintf('%s invalid level/version', typecode); 
+	message = sprintf('missing typecode');     
 end;
+if (valid == 1)
+    [SBMLfieldnames, numFields] = getStructureFieldnames(typecode, level, version, packages, pkgVersion);
+    if (numFields ==0)
+        valid = 0;
+        message = sprintf('%s invalid level/version', typecode); 
+    end;
 
-[types] = getValueType(typecode, level, version, packages, pkgVersion);
-[defaults] = getDefaultValues(typecode, level, version, packages, pkgVersion);
-
+    [value_types] = getValueType(typecode, level, version, packages, pkgVersion);
+    [defaults] = getDefaultValues(typecode, level, version, packages, pkgVersion);
+else
+    SBMLfieldnames = [];
+    numFields = 0;
+    [value_types] = [];
+    [defaults] = [];
+end;
 % check the typecode
 if (valid == 1 && ~isempty(SBMLStructure))
   if isfield(SBMLStructure, 'typecode')
@@ -192,7 +201,7 @@ if (valid == 1 && ~isempty(SBMLStructure))
   end;
 end;
 
-if iscell(types) == 0
+if iscell(value_types) == 0
     typecode
     SBMLfieldnames
 end;
@@ -210,9 +219,9 @@ while (valid == 1 && index <= numFields)
         mess = '';
         if (index ~= 1)
             value = getfield(SBMLStructure, field);
-            if (strcmp(types{index}, 'structure') ~= 1)
-                correctType = getCorrectType(types{index});
-                % need to deal with matlab number types 
+            if (strcmp(value_types{index}, 'structure') ~= 1)
+                correctType = getCorrectType(value_types{index});
+                % need to deal with matlab number value_types 
                 valid = isValidType(value, correctType);
 %                valid = isa(value, correctType);
             else
