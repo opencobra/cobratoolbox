@@ -66,7 +66,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 %    keepInputs:                (double) 1 to save inputs to run
 %                               `findMustL.m` 0 otherwise.
 %                               Default: 1
-%    verbose:                   (double) 1 to print results in console.
+%    printLevel:                (double) 1 to print results in console.
 %                               0 otherwise.
 %                               Default: 0
 %
@@ -130,7 +130,7 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargi
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'runID', 'outputFolder', 'outputFileName',  ...
-    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
+    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose', 'printLevel'};
 
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
 
@@ -161,6 +161,8 @@ parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printLevel', 1, @(x) isnumeric(x) || islogical(x));
+
 
 parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
 model = parser.Results.model;
@@ -174,7 +176,20 @@ printExcel = parser.Results.printExcel;
 printText = parser.Results.printText;
 printReport = parser.Results.printReport;
 keepInputs = parser.Results.keepInputs;
-verbose = parser.Results.verbose;
+
+printFlags = {'printLevel','verbose'};
+%get the printLevel.
+if all(~ismember(printFlags,parser.UsingDefaults))
+    error('Either supply printLevel or verbose optional parameter')
+else    
+    if any(~ismember(printFlags,parser.UsingDefaults))
+        selected = ~ismember(printFlags,parser.UsingDefaults);
+        printLevel = parser.Results.(printFlags{selected});
+    else
+        printLevel = parser.Results.printLevel;
+    end
+end
+
 
 % correct size of constrOpt
 if ~isempty(constrOpt.rxnList)
@@ -233,7 +248,7 @@ if printReport
 
 
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nverbose: %1.0f \n',...
-        printExcel, printText, printReport, keepInputs, verbose);
+        printExcel, printText, printReport, keepInputs, printLevel);
 
 end
 
@@ -264,7 +279,7 @@ while 1
     % create bilevel problem
     bilevelMILPproblem = buildBilevelMILPproblemForFindMustL(model, can, must, minFluxesW, constrOpt);
     % solve problem
-    MustLSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
+    MustLSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
 
     if MustLSol.stat~=1
         break;
@@ -294,14 +309,14 @@ if ~keepInputs; rmdir(inputFolder,'s'); end;
 if found
     %if a solution is found
     if printReport; fprintf(freport, '\na MustL set was found\n'); end;
-    if verbose; fprintf('a MustL set was found\n'); end;
+    if printLevel; fprintf('a MustL set was found\n'); end;
     %find mustL sets
     posMustL=find(mustL);
     mustLSet=model.rxns(posMustL);
 else
     %if no solution is found
     if printReport; fprintf(freport, '\na MustL set was not found\n'); end;
-    if verbose; fprintf('a MustL set was not found\n'); end;
+    if printLevel; fprintf('a MustL set was not found\n'); end;
     %initilize empty arrays
     mustLSet = {};
     posMustL = {};
@@ -317,10 +332,10 @@ if printExcel && ~isunix
         xlswrite([outputFileName '_Info'], Info);
         xlswrite(outputFileName, mustLSet);
         cd(currentFolder);
-        if verbose; fprintf(['MustL set was printed in ' outputFileName '.xls  \n']); end;
+        if printLevel; fprintf(['MustL set was printed in ' outputFileName '.xls  \n']); end;
         if printReport; fprintf(freport, ['\nMustL set was printed in ' outputFileName '.xls  \n']); end;
     else
-        if verbose; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end;
+        if printLevel; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustL set was not found. Therefore, no excel file was generated\n'); end;
     end
 end
@@ -344,10 +359,10 @@ if printText
         fclose(f);
 
         cd(currentFolder);
-        if verbose; fprintf(['MustL set was printed in ' outputFileName '.txt  \n']); end;
+        if printLevel; fprintf(['MustL set was printed in ' outputFileName '.txt  \n']); end;
         if printReport; fprintf(freport, ['\nMustL set was printed in ' outputFileName '.txt  \n']); end;
     else
-        if verbose; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end;
+        if printLevel; fprintf('No mustL set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustL set was not found. Therefore, no excel file was generated\n'); end;
     end
 end

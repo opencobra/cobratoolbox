@@ -112,7 +112,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %    keepInputs:             (double) 1 to mantain folder with
 %                            inputs to run `findMustLL.gms`. 0 otherwise.
 %                            Default: 1
-%    verbose:                (double) 1 to print results in console.
+%    printLevel:             (double) 1 to print results in console.
 %                            0 otherwise.
 %                            Default: 0
 %
@@ -228,6 +228,7 @@ parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('verbose', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printLevel', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('loop', 0, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('kMin', 1, @(x) isnumeric(x));
 
@@ -252,7 +253,19 @@ printExcel = parser.Results.printExcel;
 printText = parser.Results.printText;
 printReport = parser.Results.printReport;
 keepInputs = parser.Results.keepInputs;
-verbose = parser.Results.verbose;
+printFlags = {'printLevel','verbose'};
+%get the printLevel.
+if all(~ismember(printFlags,parser.UsingDefaults))
+    error('Either supply printLevel or verbose optional parameter')
+else    
+    if any(~ismember(printFlags,parser.UsingDefaults))
+        selected = ~ismember(printFlags,parser.UsingDefaults);
+        printLevel = parser.Results.(printFlags{selected});
+    else
+        printLevel = parser.Results.printLevel;
+    end
+end
+
 loop = parser.Results.loop;
 kMin = parser.Results.kMin;
 
@@ -331,7 +344,7 @@ if printReport
 
 
     fprintf(freport, '\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f \n\nverbose: %1.0f \n',...
-        printExcel, printText, printReport, keepInputs, verbose);
+        printExcel, printText, printReport, keepInputs, printLevel);
 end
 
 %initialize arrays for excluding reactions.
@@ -382,10 +395,10 @@ if loop % if k = kMin:k
 
             bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
             % Solve problem
-            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
+            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
             if Force.stat == 1
                 nSolsFound = nSolsFound + 1;
-                if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+                if printLevel; fprintf('set n %1.0f was found\n', nSolsFound), end;
                 pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
                 prev = cell(k, 1);
                 flux = zeros(k, 1);
@@ -433,7 +446,7 @@ if loop % if k = kMin:k
             noSolution = 0;
 
             if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
-            if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
+            if printLevel; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
 
             for i = 1:nSolsFound
                 %incorporte info of set i into general matrices.
@@ -467,7 +480,7 @@ if loop % if k = kMin:k
                 xlswrite(outputFileNameK,Info)
                 cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
-                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
+                if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
             end
 
             if printText
@@ -506,7 +519,7 @@ if loop % if k = kMin:k
                 fclose(f);
                 cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
-                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
+                if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
             end
 
             %close file for saving report
@@ -521,7 +534,7 @@ if loop % if k = kMin:k
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
                 end
             end
-            if verbose
+            if printLevel
                 fprintf('\n optForce did not find any set using k = %1.0f \n', currentK);
                 if currentK < k -1
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
@@ -572,10 +585,10 @@ else
 
         bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
         % Solve problem
-        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', verbose);
+        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
         if Force.stat == 1
             nSolsFound = nSolsFound + 1;
-            if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+            if printLevel; fprintf('set n %1.0f was found\n', nSolsFound), end;
             pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
             prev = cell(k, 1);
             flux = zeros(k, 1);
@@ -620,7 +633,7 @@ else
 
     if nSolsFound > 0
         if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
-        if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
+        if printLevel; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
 
         for i = 1:nSolsFound
             %incorporte info of set i into general matrices.
@@ -632,7 +645,7 @@ else
     else
         %in case that none set was found, initialize empty arrays
         if printReport; fprintf(freport, '\n optForce did not find any set \n'); end;
-        if verbose; fprintf('\n optForce did not find any set \n'); end;
+        if printLevel; fprintf('\n optForce did not find any set \n'); end;
         optForceSets = {};
         posOptForceSets = [];
         typeRegOptForceSets = {};
@@ -667,10 +680,10 @@ else
             xlswrite(outputFileName,Info)
             cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
-            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
+            if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
         else
             if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no excel file was generated\n'); end;
-            if verbose; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
+            if printLevel; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
         end
     end
 
@@ -712,10 +725,10 @@ else
             fclose(f);
             cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
-            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
+            if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
         else
             if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
-            if verbose; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
+            if printLevel; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
         end
     end
 
