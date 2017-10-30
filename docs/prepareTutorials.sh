@@ -78,6 +78,24 @@ createLocalVariables(){
     mHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.m"
 }
 
+buildHTMLTutorials(){
+    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+    for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
+    do
+        createLocalVariables $tutorial
+        # create html file
+        sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    done
+}
+
+buildHTMLSpecificTutorial(){
+    specificTutorial=$1
+    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    createLocalVariables $specificTutorial
+    # create html file
+    sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+}
+
 # default vallues
 mode="all"
 buildHTML=false
@@ -175,18 +193,9 @@ mkdir -p "$tutorialDestination"
 if [[ $buildHTML = true ]]; then
     cd $cobraToolBoxPath
     if [[ -z "$specificTutorial" ]]; then
-        /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
-        for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
-        do
-            createLocalVariables $tutorial
-            # create html file
-            sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
-        done
+        buildHTMLTutorials;
     else
-        /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
-        createLocalVariables $specificTutorial
-        # create html file
-        sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        buildHTMLSpecificTutorial "$specificTutorial";
     fi
 fi
 
