@@ -43,10 +43,15 @@ model = changeRxnBounds(model, 'EX_glyc', -100, 'l');
 origmodel = model;
 
 solverPkgs = {'gurobi'};
+%set up the xlwrite command for xls io. We do this before the loop, as
+%changeCobraSolver will correct the globals which are reset on 2014b by a
+%javaaddpath.
+setupxlwrite();
 
 for k = 1:length(solverPkgs)
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP');
     solverMILPOK = changeCobraSolver(solverPkgs{k}, 'MILP');
+    
     if solverLPOK && solverMILPOK
         %get max growth rate
         model = origmodel;
@@ -98,28 +103,26 @@ for k = 1:length(solverPkgs)
         mustU = unique(union(mustUSet, mustUU));
         mustL = unique(union(mustLSet, mustLL));
         targetRxn = 'EX_suc';
-        biomassRxn = 'R75';
-        k = 1;
+        biomassRxn = 'R75';        
         nSets = 1;
         constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
         fprintf('Running OptForce with k = 1\n')
         [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
                 optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
                          minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
-                         'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+                         'k', 1, 'nSets', nSets, 'constrOpt', constrOpt, ...
                          'runID', runID);
         assert(validateOptForceSol(origmodel,posOptForceSets,typeRegOptForceSets,'EX_suc'));
         %clean up
         rmdir(runID,'s')
         fprintf('Running Optforce with k = 2\n')
-        k = 2;
         nSets = 20;
         runID = 'TestOptForceM2';
         excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
         [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
             optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
              minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
-             'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+             'k', 2, 'nSets', nSets, 'constrOpt', constrOpt, ...
              'excludedRxns', excludedRxns, ...
              'runID', runID);
         assert(validateOptForceSol(origmodel,posOptForceSets,typeRegOptForceSets,'EX_suc'));
