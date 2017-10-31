@@ -215,3 +215,9 @@ end
 for i = 1:numel(warnstate)
     warning(warnstate(i).state,warnstate(i).identifier)
 end
+
+%check rxnGeneMat. If there are no genes set rxnGeneMat to the correct
+%dimensions.
+if size(model.rxnGeneMat,2) ~= size(model.genes,1) && size(model.genes,1) == 0
+    model.rxnGeneMat = false(size(model.rxns,1),0);
+end
