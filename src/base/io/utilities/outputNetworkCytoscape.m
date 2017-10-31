@@ -119,7 +119,7 @@ for i = 1:length(rxnList)
     fprintf(fidNodeType,'%s = rxn\n',model.rxns{rxnNo});
     % Subsystems
     if (isfield(model,'subSystems'))
-        fprintf(fidSubSys,'%s = %s\n',model.rxns{rxnNo},model.subSystems{rxnNo});
+        fprintf(fidSubSys,'%s = %s\n',model.rxns{rxnNo},strjoin(model.subSystems{rxnNo},';'));
     end
     % Gene-reaction associations
     if (isfield(model,'genes'))
