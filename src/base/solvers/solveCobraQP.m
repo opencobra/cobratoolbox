@@ -68,7 +68,7 @@ else
 end
 
 optParamNames = {'printLevel','saveInput'};
-parameters = '';
+parameters = struct();
 if nargin ~=1
     if mod(length(varargin),2)==0
         for i=1:2:length(varargin)-1
