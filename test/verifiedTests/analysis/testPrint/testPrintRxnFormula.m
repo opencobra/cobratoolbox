@@ -36,7 +36,6 @@ assert(isequal(text1, text2));
 % remove the generated file
 delete('printRxnFormula.txt');
 
-model = rmfield(model, 'rev');
 diary('printRxnFormula.txt');
 formulas = printRxnFormula(model, model.rxns, true, true, true, 1, true, true);
 diary off
