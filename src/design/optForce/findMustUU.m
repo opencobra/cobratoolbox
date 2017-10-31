@@ -70,7 +70,7 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 %    keepInputs:                 (double) 1 to save inputs to run
 %                                `findMustUU.m`, 0 otherwise.
 %                                Default: 1
-%    verbose:                    (double) 1 to print results in console.
+%    printLevel:                 (double) 1 to print results in console.
 %                                0 otherwise.
 %                                Default: 0
 %
@@ -134,7 +134,7 @@ function [mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mode
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 optionalParameters = {'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
-    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
+    'printExcel', 'printText', 'printReport', 'keepInputs', 'printLevel'};
 
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
 
@@ -166,6 +166,7 @@ parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
 parser.addParamValue('verbose', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printLevel', 1, @(x) isnumeric(x) || islogical(x));
 
 parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
 model = parser.Results.model;
@@ -180,7 +181,20 @@ printExcel = parser.Results.printExcel;
 printText = parser.Results.printText;
 printReport = parser.Results.printReport;
 keepInputs = parser.Results.keepInputs;
-verbose = parser.Results.verbose;
+
+printFlags = {'printLevel','verbose'};
+%get the printLevel.
+if all(~ismember(printFlags,parser.UsingDefaults))
+    error('Either supply printLevel or verbose optional parameter')
+else    
+    if any(~ismember(printFlags,parser.UsingDefaults))
+        selected = ~ismember(printFlags,parser.UsingDefaults);
+        printLevel = parser.Results.(printFlags{selected});
+    else
+        printLevel = parser.Results.printLevel;
+    end
+end
+
 
 % correct size of constrOpt
 if ~isempty(constrOpt.rxnList)
@@ -242,7 +256,7 @@ if printReport
 
 
     fprintf(freport,'\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f  \n\nverbose: %1.0f \n',...
-        printExcel, printText, printReport, keepInputs, verbose);
+        printExcel, printText, printReport, keepInputs, printLevel);
 
 end
 
@@ -271,7 +285,7 @@ cont=0;
 while 1
     bilevelMILPproblem = buildBilevelMILPproblemForFindMustUU(model, can, maxFluxesW, constrOpt, excludedRxns, solutions);
     % Solve problem
-    MustUUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+    MustUUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
     if MustUUSol.stat ~= 1
         break;
     else
@@ -295,7 +309,7 @@ if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
 if cont>0
 
     if printReport; fprintf(freport, '\na MustUU set was found\n'); end;
-    if verbose; fprintf('a MustUU set was found\n'); end;
+    if printLevel; fprintf('a MustUU set was found\n'); end;
     mustUU = mustUU(1:cont, :);
     posMustUU = posMustUU(1:cont, :);
 
@@ -306,7 +320,7 @@ if cont>0
     [~, pos_mustUU_linear] = intersect(model.rxns, mustUU_linear);
 else
     if printReport; fprintf(freport, '\na MustUU set was not found\n'); end;
-    if verbose; fprintf('a MustUU set was not found\n'); end;
+    if printLevel; fprintf('a MustUU set was not found\n'); end;
 
     mustUU = {};
     posMustUU = [];
@@ -315,7 +329,7 @@ else
 end
 
 % print info into an excel file if required by the user
-if printExcel && ~isunix
+if printExcel
     if cont > 0
         currentFolder = pwd;
         cd(outputFolder);
@@ -323,10 +337,11 @@ if printExcel && ~isunix
         for i = 1:size(mustUU, 1)
             must{i} = strjoin(mustUU(i, :), ' or ');
         end
-        xlswrite([outputFileName '_Info'], [{'Reactions'}; must]);
-        xlswrite(outputFileName, mustUU_linear);
+        setupxlwrite();
+        xlwrite([outputFileName '_Info'], [{'Reactions'}; must]);
+        xlwrite(outputFileName, mustUU_linear);
         cd(currentFolder);
-        if verbose
+        if printLevel
             fprintf(['MustUU set was printed in ' outputFileName '.xls  \n']);
             fprintf(['MustUU set was also printed in ' outputFileName '_Info.xls  \n']);
         end
@@ -335,7 +350,7 @@ if printExcel && ~isunix
             fprintf(freport, ['\nMustUU set was printed in ' outputFileName '_Info.xls  \n']);
         end
     else
-        if verbose; fprintf('No mustUU set was not found. Therefore, no excel file was generated\n'); end;
+        if printLevel; fprintf('No mustUU set was not found. Therefore, no excel file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustUU set was not found. Therefore, no excel file was generated\n'); end;
     end
 end
@@ -359,7 +374,7 @@ if printText
         fclose(f);
         cd(currentFolder);
 
-        if verbose
+        if printLevel
             fprintf(['MustUU set was printed in ' outputFileName '.txt  \n']);
             fprintf(['MustUU set was also printed in ' outputFileName '_Info.txt  \n']);
         end
@@ -369,7 +384,7 @@ if printText
         end
 
     else
-        if verbose; fprintf('No mustUU set was not found. Therefore, no plain text file was generated\n'); end;
+        if printLevel; fprintf('No mustUU set was not found. Therefore, no plain text file was generated\n'); end;
         if printReport; fprintf(freport, '\nNo mustUU set was not found. Therefore, no plain text file was generated\n'); end;
     end
 end

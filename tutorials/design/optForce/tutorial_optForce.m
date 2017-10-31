@@ -1,5 +1,5 @@
 %% OptForce Tutorial
-%% Author: Sebasti�n N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
 %% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group), John Sauls*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
@@ -99,7 +99,7 @@ fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
 
 constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b')
 constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], ...
-                  'rxnBoundType', 'b')
+                  'rxnBoundType', 'bb')
 %% Step 3: Flux Variability Analysis
 % *TIMING*: This task should take from a few seconds to a few hours depending 
 % on the size of your reconstruction
@@ -121,13 +121,13 @@ disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
 % the folder defined by your run ID. Thus, if your runID is ''TestOptForce", the 
 % structure of the folders will be the following:
 % 
-% |??? CurrentFolder|
+% |├── CurrentFolder|
 % 
-% ||   ??? TestOptForce|
+% ||   ├── TestOptForce|
 % 
-% ||   |   ??? Inputs|
+% ||   |   ├── Inputs|
 % 
-% ||   |   ??? Outputs|
+% ||   |   └── Outputs|
 % 
 % To avoid the generation of inputs and outputs folders, set |keepInputs 
 % = 0|, |printExcel = 0| and |printText = 0|.
@@ -360,33 +360,33 @@ disp(optForceSets)
 % In this case runID = 'TestOptForce', so inside this folder the following 
 % folders will be created:
 % 
-% |??? CurrentFolder|
+% |├── CurrentFolder|
 % 
-% ||   ??? TestOptForceM|
+% ||   ├── TestOptForceM|
 % 
-% ||   |   ??? InputsFindMustL|
+% ||   |   ├── InputsFindMustL|
 % 
-% ||   |   ??? OutputsFindMustL|
+% ||   |   ├── OutputsFindMustL|
 % 
-% ||   |   ??? InputsFindMustU|
+% ||   |   ├── InputsFindMustU|
 % 
-% ||   |   ??? OutputsFindMustU|
+% ||   |   ├── OutputsFindMustU|
 % 
-% ||   |   ??? InputsFindMustLL|
+% ||   |   ├── InputsFindMustLL|
 % 
-% ||   |   ??? OutputsFindMustLL|
+% ||   |   ├── OutputsFindMustLL|
 % 
-% ||   |   ??? InputsFindMustUU|
+% ||   |   ├── InputsFindMustUU|
 % 
-% ||   |   ??? OutputsFindMustUU|
+% ||   |   ├── OutputsFindMustUU|
 % 
-% ||   |   ??? InputsFindMustUL|
+% ||   |   ├── InputsFindMustUL|
 % 
-% ||   |   ??? OutputsFindMustUL|
+% ||   |   ├── OutputsFindMustUL|
 % 
-% ||   |   ??? InputsOptForce|
+% ||   |   ├── InputsOptForce|
 % 
-% ||   |   ??? OutputsOptForce|
+% ||   |   └── OutputsOptForce|
 % 
 % The input folders contain inputs (.mat files) for running the functions 
 % to solve each one of the bilevel problems. Output folders contain results of 
@@ -410,7 +410,7 @@ disp(optForceSets)
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. 
 % PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.
 % 
-% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna Gonz�lez-Lergier, 
+% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, 
 % Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary 
 % system: Fed-batch fermentation of a high yielding strain of E. coli producing 
 % 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, 
