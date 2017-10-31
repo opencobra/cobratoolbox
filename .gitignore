@@ -126,3 +126,4 @@ output/
 
 # directory for windows when rmdir fails
 test/verifiedTests/base/testIO/m_model_collection
+tutorials/additionalTutorials/optKnock/Results/
