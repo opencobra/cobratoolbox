@@ -250,7 +250,8 @@ function initCobraToolbox()
     end
 
     % define xml test file
-    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ec_iAF1260_flux1.xml']);
+    xmlTestModel = 'Ec_iAF1260_flux1.xml';
+    xmlTestFile = [getDistributedModelFolder(xmlTestModel) filesep xmlTestModel];
 
     % save the userpath
     originalUserPath = path;
