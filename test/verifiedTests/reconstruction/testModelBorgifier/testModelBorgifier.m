@@ -23,11 +23,9 @@ cd(fileparts(which('testModelBorgifier.m')));
 
 % load the models as well as comparision information
 fprintf('modelBorgifier: Loading Ecoli core model.\n')
-Cmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], ...
-                     'modelDescription', 'Ecoli_core') ;
+Cmodel = getDistributedModel('ecoli_core_model.mat','Ecoli_core');
 fprintf('modelBorgifier: Loading iIT341 model.\n')
-Tmodel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'xml' filesep 'iIT341.xml'], ...
-                     'modelDescription', 'iIT341') ;
+Tmodel = getDistributedModel('iIT341.xml','iIT341');
 
 % verify models are appropriate for comparison and test success
 fprintf('modelBorgifier: Testing Cmodel verification... ')

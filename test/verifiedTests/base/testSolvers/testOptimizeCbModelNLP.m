@@ -32,7 +32,7 @@ end
 tol = 1e-6;
 
 % load the model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 toymodel = createToyModel(0, 0, 0); % create a toy model
 toymodel.ub(1) = -1; % force uptake, otherwise the default Objective will try to minimize all fluxes...

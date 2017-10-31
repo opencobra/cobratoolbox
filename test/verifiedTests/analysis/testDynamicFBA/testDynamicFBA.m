@@ -15,7 +15,8 @@ currentDir = pwd;
 fileDir = fileparts(which('testDynamicFBA'));
 cd(fileDir);
 
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
+
 load('testData_dynamicFBA.mat');
 
 smi = {'EX_glc(e)' 'EX_ac(e)'}; % exchange reaction for substrate in environment

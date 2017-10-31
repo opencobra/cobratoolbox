@@ -13,7 +13,7 @@ fileDir = fileparts(which('testCheckObjective'));
 cd(fileDir);
 
 % load the ecoli core model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 abbr = checkObjective(model);
 

@@ -31,7 +31,7 @@ catch
     parPoolCreated = false;
 end
     
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'AntCore.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 model.c(strcmp(model.rxns, 'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 

@@ -20,7 +20,7 @@ fileDir = fileparts(which('testCreateMultipleSpeciesModel'));
 cd(fileDir);
 
 % load the model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % set the tolerance
 tol = 1e-6;

@@ -14,7 +14,7 @@ fileDir = fileparts(which('testTransformModel2KEGG'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 Dictionary = {'0', '1'; '2', '3'};
 ref_KEGGID = cell(72, 1);
 

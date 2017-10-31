@@ -17,7 +17,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testPrintUptakeBound'));
 cd(fileDir);
 
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % remove old generated file
 delete('printUptakeBound.txt');

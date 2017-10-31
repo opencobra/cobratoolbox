@@ -43,7 +43,7 @@ for i = 1:length(modelArr)
 
     % load the model (actually supply the full filename of the path
     % where the model is found)
-    model = readCbModel(which(modelArr{i}));
+    model = getDistributedModel(modelArr{i});
 
     for k = 1:length(solverPkgs)
 

@@ -21,7 +21,7 @@ fileDir = fileparts(which('testOptGene'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 targetRxn = model.rxns{39}; % Succinate
 fructose_substrateRxn = model.rxns{26}; %Fructose, even though this has no incluence whatsoever.
 generxnList = model.rxns(setdiff([1:95],[11,13,26,39])); %Everything besides the ATP Maintenance, The biomass reaction and the substrate and target reactions.

@@ -90,7 +90,7 @@ solverPkgs={'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ..
             'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
 
 % load the ecoli_core_model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % set the tolerance
 tol = 1e-6;

@@ -18,7 +18,7 @@ fileDir = fileparts(which('testLoadReaction'));
 cd(fileDir);
 
 % load E. coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % load reaction and metabolite databases
 load([fileDir, filesep 'metab.mat'])

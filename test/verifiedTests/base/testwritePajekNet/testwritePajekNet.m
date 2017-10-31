@@ -16,7 +16,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testwritePajekNet'));
 cd(fileDir);
 
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 %test solver packages
 solverPkgs = {'tomlab_cplex'};

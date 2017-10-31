@@ -66,7 +66,7 @@ end
 % test varargin
 
 % load the model
-load('ecoli_core_model.mat', 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % write out using varargin
 outmodel1 = writeCbModel(model, 'format', 'mat', 'fileName', 'testModel1');

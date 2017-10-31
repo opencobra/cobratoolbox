@@ -18,7 +18,7 @@ sbmlLevel = 0;
 sbmlVersion = 0;
 compSymbolList = '';
 compNameList = '';
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 % function outputs
 warning('off', 'all')
