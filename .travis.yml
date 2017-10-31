@@ -9,7 +9,7 @@ script:
 
     # change to the current directory
     - cd $CURRENT_DIR
-
+    - echo env.BRANCH_NAME
     # launch the tests
     # - bash .ci/runtests.sh
 
