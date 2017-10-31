@@ -223,3 +223,8 @@ if isfield(model,'rxnGeneMat') && isfield(model,'genes')
         model.rxnGeneMat = false(size(model.rxns,1),0);
     end
 end
+
+%Create b field if missing
+if isfield(model,'S') && isfield(model,'mets') && ~isfield(model,'b')
+    model.b = zeros(size(model.mets));
+end
