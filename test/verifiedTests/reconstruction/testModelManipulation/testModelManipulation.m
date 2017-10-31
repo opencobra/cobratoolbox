@@ -51,22 +51,12 @@ model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
 model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
 
 %Trying to add a reaction without stoichiometry will fail.
-errored = 0;
-try   
-    addReaction(model,'NoStoich');
-catch
-    errored = 1;
-end
-assert(errored == 1);
+errorCall = @() addReaction(model,'NoStoich');
+assert(verifyCobraFunctionError(errorCall));
 
 %Try adding a new reaction with two different stoichiometries
-errored = 0;
-try   
-    addReaction(model, 'reactionFormula', 'A + B -> C','stoichCoeffList',[ -1 2], 'metaboliteList',{'A','C'});
-catch
-    errored = 1;
-end
-assert(errored == 1);
+errorCall = @() addReaction(model, 'reactionFormula', 'A + B -> C','stoichCoeffList',[ -1 2], 'metaboliteList',{'A','C'});
+assert(verifyCobraFunctionError(errorCall));
 
 %Try having a metabolite twice in the metabolite list or reaction formula
 modelWAddedMet = addReaction(model, 'reactionFormula', 'Alpha + Beta -> Gamma + 2 Beta');
