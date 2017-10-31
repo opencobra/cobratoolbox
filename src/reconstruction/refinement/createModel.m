@@ -131,8 +131,8 @@ for i = 1 : nRxns
        end
     end
     [metaboliteList,stoichCoeffList,revFlag_i] = parseRxnFormula(rxnList{i});
-    if  ~any(ismember('lowerBoundList',parser.UsingDefaults))
-        if ~any(ismember('revFlagList',parser.UsingDefaults))
+    if  any(ismember('lowerBoundList',parser.UsingDefaults))
+        if any(ismember('revFlagList',parser.UsingDefaults))
             %if both revFlag and lb are not given, update the revFlag
             %implied by the rxn formula
             revFlagList(i) = revFlag_i;
