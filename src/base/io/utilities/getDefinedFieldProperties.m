@@ -73,7 +73,7 @@ end
 if db
     if isempty(CBT_DB_FIELD_PROPS)
         fileName = which('COBRA_structure_fields.csv');
-        [raw] = tdfread(fileName);
+        [raw] = descFileRead(fileName);
 
         fields = fieldnames(raw);
         for i = 1:numel(fields)
@@ -103,7 +103,7 @@ end
 if desc
     if isempty(CBT_DESC_FIELD_PROPS)
         fileName = which('COBRA_structure_fields.csv');
-        [raw] = tdfread(fileName);
+        [raw] = descFileRead(fileName);
 
         fields = fieldnames(raw);
         for i = 1:numel(fields)
@@ -134,7 +134,7 @@ end
 
 if isempty(CBT_PROG_FIELD_PROPS)
      fileName = which('COBRA_structure_fields.csv');
-     [raw] = tdfread(fileName);
+     [raw] = descFileRead(fileName);
      
      fields = fieldnames(raw);
      for i = 1:numel(fields)
