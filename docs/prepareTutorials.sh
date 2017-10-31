@@ -224,8 +224,8 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             if [[ -f $pngPath/${tutorialName}.png ]]; then
                 rm $pngPath/${tutorialName}.png
             fi
-
-            /usr/local/bin/convert -density 125 "$tutorial" ${tutorialName}_%04d.png
+	    echo $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
+            /usr/local/bin/convert -density 125 "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" ${tutorialName}_%04d.png
             /usr/local/bin/convert -shave 4%x5% -append ${tutorialName}*.png ${tutorialName}2.png && rm ${tutorialName}_*.png
             /usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
         fi
