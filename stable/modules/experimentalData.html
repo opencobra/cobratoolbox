@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>experimentalData &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Thermo" href="thermo.html"/>
+        <link rel="next" title="alberty2006" href="alberty2006.html"/>
+        <link rel="prev" title="experimentalDesign" href="experimentalDesign.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="thermo.html">Thermo</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">experimentalData</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="alberty2006.html">alberty2006</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="inchi.html">inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="molFiles.html">molFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="protons.html">protons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="thermoFBA.html">thermoFBA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="transport_thermo.html">Transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities_thermo.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vonBertalanffy.html">vonBertalanffy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="thermo.html">Thermo</a> &raquo;</li>
+        
+      <li>experimentalData</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="experimentaldata">
+<h1>experimentalData<a class="headerlink" href="#experimentaldata" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="alberty2006.html">alberty2006</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.thermo.experimentalData"></span><dl class="function">
+<dt id="src.analysis.thermo.experimentalData.boundsToFiles">
+<code class="descname">boundsToFiles</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/thermo/experimentalData/boundsToFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalData.boundsToFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints out the model bounds as a tab delimited text file</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>boundsToFiles(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.experimentalData.readMetRxnBoundsFiles">
+<code class="descname">readMetRxnBoundsFiles</code><span class="sig-paren">(</span><em>model</em>, <em>setDefaultConc</em>, <em>setDefaultFlux</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>metBoundsFile</em>, <em>rxnBoundsFile</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalData.readMetRxnBoundsFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.</p>
+<p>Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
+mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, concMinDefault, concMaxDefault, metBoundsFile, rxnBoundsFile, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with fields:<ul>
+<li>model.mets</li>
+<li>model.rxns</li>
+</ul>
+</li>
+<li><strong>setDefaultConc</strong> &#8211;
+1 = sets default bounds on conc</li>
+<li><strong>setDefaultFlux</strong> &#8211;
+1 = sets all reactions reversible [-1000, 1000]</li>
+<li><strong>concMaxDefault</strong> &#8211;
+Default upper bound on metabolite
+concentrations in <cite>M</cite></li>
+<li><strong>concMinDefault</strong> &#8211;
+Default lower bound on metabolite
+concentrations in <cite>M</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metBoundsFile</strong> &#8211;
+name of tab delimited file with metabolite bounds
+format: &#8216;%s %f %f&#8217;
+i.e. abbreviation lowerBound upperBound</li>
+<li><strong>rxnBoundsFile</strong> &#8211;
+name of tab delimited file with reaction bounds
+format: &#8216;%s %f %f&#8217;
+i.e. abbreviation lowerBound upperBound</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with fileds:<ul>
+<li>model.concMin(j)</li>
+<li>model.concMax(j)</li>
+<li>model.lb</li>
+<li>model.ub</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="alberty2006.html" class="btn btn-neutral float-right" title="alberty2006" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="experimentalDesign.html" class="btn btn-neutral" title="experimentalDesign" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
