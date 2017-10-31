@@ -31,7 +31,7 @@ catch
     parPoolCreated = false;
 end
     
-model = getDistributedModel('ecoli_core_model.mat');
+model = getDistributedModel('AntCore.mat');
 model.c(strcmp(model.rxns, 'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
