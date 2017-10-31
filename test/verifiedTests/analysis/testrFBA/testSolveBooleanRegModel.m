@@ -17,7 +17,7 @@ cd(fileDir);
 solverPkgs = {'tomlab_cplex'};
 
 % load model and test data
-load('modelReg.mat');
+modelReg = getDistributedModel('modelReg.mat');
 load('refData_solveBooleanRegModel.mat');
 
  for k = 1:length(solverPkgs)

@@ -17,8 +17,7 @@ fileDir = fileparts(which('testFASTCC'));
 cd(fileDir);
 
 %load a model
-load('FastCoreTest.mat')
-model=modelR204;
+model = readCbModel('FastCoreTest.mat','modelName','modelR204');
 
 %randomly pick some reactions
 epsilon = 1e-4;

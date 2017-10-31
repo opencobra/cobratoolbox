@@ -14,13 +14,13 @@ fileDir = fileparts(which('testdynamicRFBA'));
 cd(fileDir);
 
 %load model and test data
-load('modelReg.mat');
+modelReg = getDistributedModel('modelReg.mat');
 load('refData_dynamicRFBA.mat');
 
 %Solver packages
-solverPkgs = {'tomlab_cplex'};
+solverPkgs = {'tomlab_cplex','ibm_cplex'};
 %QP solvers
-QPsolverPkgs = {'tomlab_cplex'};
+QPsolverPkgs = {'tomlab_cplex','ibm_cplex'};
 
 for k =1:length(solverPkgs)
 
