@@ -22,7 +22,7 @@ buildTutorialList(){
                 continue  # if not a directory, skip
             fi
 
-            # we convert PDF to PNG, so check for PDF files.
+            # check for MLX files.
             for tutorial in ${d}/*.mlx
             do
                 if ! [[ -f "$tutorial" ]]; then
@@ -30,7 +30,7 @@ buildTutorialList(){
                 fi
                 let "nTutorial+=1"
                 tutorials[$nTutorial]="$tutorial"
-                echo_time " - ${tutorials[$nTutorial]}"
+                # echo_time " - ${tutorials[$nTutorial]}"
             done
         done
     else
@@ -55,12 +55,12 @@ createLocalVariables(){
     tutorialDir=${tutorial%/*}
     tutorialName=${tutorial##*/}
     tutorialName="${tutorialName%.*}"
-    if [[ -f "$tutorialDir/$tutorialName.html" ]]; then
-        tutorialTitle=`awk '/<title>/ { show=1 } show; /<\/title>/ { show=0 }'  $tutorialDir/$tutorialName.html | sed -e 's#.*<title>\(.*\)</title>.*#\1#'`
+    tutorialFolder=${tutorialDir#$cobraToolBoxPath/tutorials/}
+    if [[ -f "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" ]]; then
+        tutorialTitle=`awk '/<title>/ { show=1 } show; /<\/title>/ { show=0 }' $pdfPath/tutorials/$tutorialFolder/$tutorialName.html | sed -e 's#.*<title>\(.*\)</title>.*#\1#'`
     else
         tutorialTitle="tutorialNoName"
     fi
-    tutorialFolder=${tutorialDir#$pdfPath/tutorials/}
  
     echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder"
  
@@ -79,7 +79,7 @@ createLocalVariables(){
 }
 
 buildHTMLTutorials(){
-    /Applications/MATLAB_$MATLAB_VER_DOC.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+    # /Applications/MATLAB_$MATLAB_VER_DOC.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -164,7 +164,7 @@ fi
 pdfPath="${pdfPath/#\~/$HOME}"
 cobraToolBoxPath="${cobraToolBoxPath/#\~/$HOME}"
 echo_time "Path to the COBRAToolBox: " $cobraToolBoxPath
-echo_time "Path of the PDFs: " $pdfPath
+echo_time "Path of the generated files: " $pdfPath
 echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
 
@@ -183,7 +183,6 @@ fi
 if [[ -z "$specificTutorial" ]]; then
     buildTutorialList
 fi
-# echo ${tutorials[*]}
 
 tutorialPath="../tutorials"
 tutorialDestination="$cobraToolBoxPath/docs/source/_static/tutorials"
