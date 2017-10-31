@@ -9,7 +9,7 @@ script:
 
     # change to the current directory
     - cd $CURRENT_DIR
-    - echo env.BRANCH_NAME
+    - echo $GIT_LOCAL_BRANCH
     # launch the tests
     # - bash .ci/runtests.sh
 
