@@ -21,7 +21,7 @@ if ~verLessThan('matlab', '8.6')
     tol = 1e-6;
 
     % load the model
-    load('ecoli_core_model.mat', 'model');
+    model = getDistributedModel('ecoli_core_model.mat');
 
     % write the model to an xls file
     writeCbModel(model, 'xlsx', 'testData');

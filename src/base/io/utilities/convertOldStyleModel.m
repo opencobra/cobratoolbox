@@ -228,3 +228,8 @@ end
 if isfield(model,'S') && isfield(model,'mets') && ~isfield(model,'b')
     model.b = zeros(size(model.mets));
 end
+
+%Also, comps could currently be a char array if it is, convert it
+if isfield(model,'comps') && ischar(model.comps)
+    model.comps = columnVector(arrayfun(@(x) {x},model.comps));
+end

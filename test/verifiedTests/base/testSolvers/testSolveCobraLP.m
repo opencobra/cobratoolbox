@@ -62,7 +62,9 @@ for k = 1:length(solverPkgs)
 
                 elseif p == 2
                     % solve th ecoli_core_model (csense vector is missing)
-                    load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+                    %This is explicitly a load, to test missing csense
+                    %vector compensation
+                    model = load([getDistributedModelFolder('ecoli_core_model.mat') filesep 'ecoli_core_model.mat'], 'model');
 
                     % solveCobraLP
                     solution_solveCobraLP = solveCobraLP(model);

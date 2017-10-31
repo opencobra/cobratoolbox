@@ -18,7 +18,7 @@ fileDir = fileparts(which('testFitC13Data'));
 cd(fileDir);
 
 majorIterationLimit = 10000; % fitting length
-load('model.mat', 'model'); % loads modelWT
+model = readCbModel('model.mat'); % loads modelWT
 load('expdata.mat', 'expdata'); % load data
 load('point.mat', 'v0'); % load initial point
 
