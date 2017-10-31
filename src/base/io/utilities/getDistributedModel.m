@@ -1,4 +1,4 @@
-function  model = getDistributedModel(modelName) 
+function  model = getDistributedModel(modelName, description) 
 % Loads the indicated model from the models submodule.
 %
 % USAGE:
@@ -7,6 +7,10 @@ function  model = getDistributedModel(modelName)
 %
 % INPUT:
 %    modelName:         The name of the model including the file extension
+%    
+% OPTIONAL INPUTS:
+%    description:       If the model description should be set to a
+%                       specific value
 %
 % OUTPUTS:
 %    model:             The loaded model from the models submodule (i.e.
@@ -22,16 +26,14 @@ if isempty(CBTDIR)
     ENV_VARS.printLevel = true;
 end
 
-modelDir = [CBTDIR filesep 'test' filesep 'models'];
-
-[~,~,extension] = fileparts(modelName);
-if strcmp(extension,'.mat')
-    modelDir = [modelDir filesep 'mat'];
-elseif strcmp(extension,'.xml')
-    modelDir = [modelDir filesep 'xml'];
+if ~exist('description','var')
+    description = modelName;
 end
+
+modelDir = getDistributedModelFolder(modelName);
+
 if exist([modelDir filesep modelName], 'file')
-    model = readCbModel([modelDir filesep modelName]);
+    model = readCbModel([modelDir filesep modelName],'modelDescription',description);
 else    
     error('Requested Model not present in the Model directory.\n This is either due to the model not being downloaded, or not being part of the distributed models.')
 end
