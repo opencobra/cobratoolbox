@@ -1,7 +1,7 @@
 .. _tutorialReconstructionSOP:
 
-tutorialNoName
-==============
+Example use of functions listed in the Standard operating procedure for metabolic reconstruction.
+=================================================================================================
 
 
 .. raw:: html
@@ -9,21 +9,21 @@ tutorialNoName
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials//mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/R2016b/label/linux/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.pdf">
                     <img src="../_static/images/icon5.png" height="90px">
                 </a>
                 <div>Download PDF</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class6 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials//mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/R2016b/label/linux/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.mlx">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.mlx">
                 <img src="../_static/images/icon6.png" height="90px">
                 </a>
                   <div>Download live Script</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class7 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials//mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/R2016b/label/linux/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.m">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/reconstruction/reconstructionSOP/tutorial_reconstructionSOP.m">
                 <img src="../_static/images/icon7.png" height="90px">
                 </a>
                   <div>Download m file</div>
@@ -46,7 +46,7 @@ tutorialNoName
     h1  {font-size:0px}
     </style>
     <div style="margin:-30px; margin-right:-30px;">
-      <iframe src="https://prince.lcsb.uni.lu/cobratoolbox/tutorials//mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/R2016b/label/linux/tutorials/reconstruction/reconstructionSOP/iframe_tutorial_reconstructionSOP.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
+      <iframe src="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/reconstruction/reconstructionSOP/iframe_tutorial_reconstructionSOP.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
     </div>
 
     <script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>

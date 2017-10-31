@@ -845,11 +845,13 @@ SU matrix</li>
 <li><strong>transport</strong> &#8211;
 if 1, transport reactions will be defined as well for
 every compound (default: 0, which corresponds to only
-exchange reactions)</li>
+exchange reactions (from the specified compartment)</li>
 <li><strong>compartment</strong> &#8211;
-(default = [c]) &#8211;&gt; transport from cytoplasm [c] to
-extracellulat space [e], [p] creates transport from [c] to
-[p] and from [p] to [c]</li>
+(default = &#8216;[c]&#8217;) &#8211;&gt; transport from cytoplasm [c] to
+extracellular space [e] (or sink)
+any other compartment (except &#8216;[e]&#8217; creates transport from [c] to
+the compartment, from the compartment to the external compartment
+and an exchanger in the external compartment.</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
