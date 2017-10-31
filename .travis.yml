@@ -21,5 +21,9 @@ after_success:
       pip install --upgrade --user -r docs/requirements.txt;
       export here=`pwd`;
       python ~/github_stats.py $here/docs/source/list_contributors.rst;
+<<<<<<< HEAD
+=======
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins', latest='documentation', latest_dir='unstable'); doc.deploy()";
+>>>>>>> build doc in unstable folder
       fi
       fi
