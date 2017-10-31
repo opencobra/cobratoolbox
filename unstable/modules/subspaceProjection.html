@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>subspaceProjection &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Subspaces" href="subspaces.html"/>
+        <link rel="next" title="Thermo" href="thermo.html"/>
+        <link rel="prev" title="rowReduce" href="rowReduce.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxedFBA.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="subspaces.html">Subspaces</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rank.html">Rank</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rowReduce.html">rowReduce</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">subspaceProjection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="subspaces.html">Subspaces</a> &raquo;</li>
+        
+      <li>subspaceProjection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="subspaceprojection">
+<span id="id1"></span><h1>subspaceProjection<a class="headerlink" href="#subspaceprojection" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.subspaces.subspaceProjection"></span><dl class="function">
+<dt id="src.analysis.subspaces.subspaceProjection.projectOntoSubspace">
+<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>modelT</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Projects flux, net flux, potential and logarithmic concentration onto
+their respective subspaces of the internal reaction stoichiometric matrix
+using projection matrices generated using the Moore-Penrose pseudoinverse</p>
+<p>Let <cite>M</cite> denote the Moore-Penrose pseudoinverse of the internal reaction
+stoichiometric matrix and the subscripts are the following
+<cite>_R</cite> row space,
+<cite>_N</cite> nullspace,
+<cite>_C</cite> column space,
+<cite>_L</cite> left nullspace,</p>
+<p>Example for flux of net flux</p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}vf   &amp;= vf_R + vf_N \\
+vf_R &amp;= M S vf = PR vf \\
+vf_N &amp;= (I - M S) vf = PN vf\end{split}\]</div>
+<p>Example for potential or logarithmic concentration</p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}u   &amp;= u_C + u_L \\
+u_C &amp;= S M u = PC u \\
+u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelT</strong> &#8211;
+structure with:<ul>
+<li>modelT.S - <cite>m x n</cite> matrix</li>
+<li>modelT.SIntRxnBool - Boolean vector defining the <cite>nIntRxn</cite> internal reactions</li>
+</ul>
+</li>
+<li><strong>vf</strong> &#8211;
+<cite>nIntRxn x 1</cite> - forward flux for internal reactions</li>
+<li><strong>vr</strong> &#8211;
+<cite>nIntRxn x 1</cite> - reverse flux for internal reactions</li>
+<li><strong>vnet</strong> &#8211;
+<cite>n x 1</cite> - net flux for all reactions</li>
+<li><strong>u</strong> &#8211;
+<cite>m x 1</cite> - chemical potential</li>
+<li><strong>u0</strong> &#8211;
+<cite>m x 1</cite> - standard chemical potential</li>
+<li><strong>lnx</strong> &#8211;
+<cite>m x 1</cite> - logarithmic concentration</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vfN</strong> &#8211;
+forward flux - nullspace</li>
+<li><strong>vfR</strong> &#8211;
+forward flux - row space</li>
+<li><strong>vrN</strong> &#8211;
+reverse flux - nullspace</li>
+<li><strong>vrR</strong> &#8211;
+reverse flux - row space</li>
+<li><strong>vnetN</strong> &#8211;
+net flux - nullspace</li>
+<li><strong>vnetR</strong> &#8211;
+net flux - row space</li>
+<li><strong>uL</strong> &#8211;
+chemical potential - left nullspace</li>
+<li><strong>uC</strong> &#8211;
+chemical potential - column space</li>
+<li><strong>lnxL</strong> &#8211;
+logarithmic concentration - left nullspace</li>
+<li><strong>lnxC</strong> &#8211;
+logarithmic concentration - column space</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.subspaces.subspaceProjection.projectSVD">
+<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assumes that <cite>U1</cite> has orthonormal columns
+so that <span class="math">\(U1 U1^T\)</span> is a projector.
+It returns the projections</p>
+<div class="math">
+\[\begin{split}u1 &amp;= U1 U1^T u \\
+u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[u1, u2] = projectSVD(U1, u)</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">U1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">subspaceSVD</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<span class="p">[</span><span class="n">uC</span><span class="p">,</span> <span class="n">uL</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>
+<span class="p">[</span><span class="n">vfR</span><span class="p">,</span> <span class="n">vfN</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">vf</span><span class="p">);</span>
+<span class="p">[</span><span class="n">vrR</span><span class="p">,</span> <span class="n">vrN</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">vr</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.subspaces.subspaceProjection.subspaceProjector">
+<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>sub_space</em>, <em>fullS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the matrix for projection onto the sub_space of the internal
+reaction stoichiometric matrix specified by <cite>sub_space</cite>
+If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
+<p>Let M denote the Moore-Penrose pseudoinverse of the internal reaction
+stoichiometric matrix and the subscripts are the following
+<cite>_R</cite> row space
+<cite>_N</cite> nullspace
+<cite>_C</cite> column space
+<cite>_L</cite> left nullspace</p>
+<p>Let</p>
+<div class="math">
+\[\begin{split}v   &amp;= v_R + v_N \\
+v_R &amp;= M S v = PR v \\
+v_N &amp;= (I - M S) v = PN v\end{split}\]</div>
+<p>Let</p>
+<div class="math">
+\[\begin{split}u   &amp;= u_C + u_L \\
+u_C &amp;= S M u = PC u \\
+u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
+<p>Examples:</p>
+<p>Given <span class="math">\(S v = b\)</span>, then <span class="math">\(v_R = M b\)</span></p>
+<p>Given <span class="math">\(S^Tu = q\)</span>, then <span class="math">\(u_C = M^T q\)</span></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, fullS)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+structure with:</p>
+<ul class="simple">
+<li>model.S - <cite>m x n</cite> Stoichiometric matrix</li>
+<li>model.SIntRxnBool - <cite>n x 1</cite> Boolean of reactions though to be mass balanced.</li>
+</ul>
+<p>By default, projectors only provided for the matrix: <cite>model.S(:, model.SIntRxnBool)</cite></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>printLevel</strong> &#8211;
+{(1), 0}, 1 = print diagnostics, 0 = silent</p>
+</li>
+<li><p class="first"><strong>sub_space</strong> &#8211;
+returns projection matrices onto all or one select</p>
+<ul class="simple">
+<li>sub_space</li>
+<li>&#8216;all&#8217;</li>
+<li>&#8216;R&#8217; row space</li>
+<li>&#8216;N&#8217; nullspace</li>
+<li>&#8216;C&#8217; column space</li>
+<li>&#8216;L&#8217; left nullspace</li>
+</ul>
+</li>
+<li><p class="first"><strong>fullS</strong> &#8211;</p>
+<p>0 = uses only those columns given by <cite>model.SIntRxnBool</cite></p>
+<p>1 = uses full <cite>m x n</cite> Stoichiometric matrix (all columns)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>[PR, PN, PC, PL]</strong> &#8211;
+projection matrices</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.subspaces.subspaceProjection.subspaceSVD">
+<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
+where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
+and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
+<p>The matrix <cite>S</cite> may be diagonal.
+Matrices <cite>U1</cite> and <cite>V1</cite> may be used by <cite>projectSVD.m</cite>
+to project given vectors onto certain subspaces.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[U1, D1, V1, r] = subspaceSVD(S)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+matrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>U1, D1, V1</strong> &#8211;
+matrices</li>
+<li><strong>r</strong> &#8211;
+numerical rank of <cite>D1</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="thermo.html" class="btn btn-neutral float-right" title="Thermo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rowReduce.html" class="btn btn-neutral" title="rowReduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

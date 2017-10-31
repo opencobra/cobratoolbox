@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Topology &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Analysis" href="analysis.html"/>
+        <link rel="next" title="Circuits" href="circuits.html"/>
+        <link rel="prev" title="vonBertalanffy" href="vonBertalanffy.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="analysis.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxedFBA.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermo</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Topology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="circuits.html">Circuits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extremeRays.html">extremeRays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FR.html">FR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rumba.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coupling.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uFBA.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="analysis.html">Analysis</a> &raquo;</li>
+        
+      <li>Topology</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="topology">
+<span id="id1"></span><h1>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="circuits.html">Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extremeRays.html">extremeRays</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lrs.html">lrs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lrsInterface.html">lrsInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="optimalRays.html">optimalRays</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FR.html">FR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.topology"></span><dl class="function">
+<dt id="src.analysis.topology.connectedComponents">
+<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/connectedComponents.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.connectedComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assuming two reactions are connected if they share metabolites, calculates the connected components
+in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[groups, orphans, R, C] = connectedComponents(model, type, figures)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>type</strong> &#8211;
+{(&#8216;allComponents&#8217;), &#8216;largestComponent&#8217;}</li>
+<li><strong>figures</strong> &#8211;
+Will generate plots of the grouping algorithm as it creates block diagonal
+groups in from top left to bottom right in <cite>W</cite>.</li>
+<li><strong>files</strong> &#8211;
+Indicator, whether several files containing indicator
+matrices are generated.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>groups</strong> &#8211;
+a structure array (the number of distinct groups is length(groups)) with fields:<ul>
+<li><cite>groups(i).num_els</cite> - number of reactions in group <cite>i</cite>.</li>
+<li><cite>groups(i).block</cite> - sub-block identity of group <cite>i</cite>.</li>
+<li><cite>groups(i).elements</cite> - reactions of W that are in group <cite>i</cite>.</li>
+<li><cite>groups(i).degrees</cite> - degrees of connection for each reaction in group <cite>i</cite>.</li>
+</ul>
+</li>
+<li><strong>orphans</strong> &#8211;
+elements of W that were not in any group, becasue they did not meet the constraints.</li>
+<li><strong>R</strong> &#8211;
+reaction adjacency</li>
+<li><strong>C</strong> &#8211;
+compound adjacency</li>
+</ul>
+</div></blockquote>
+<p>All components require:
+Connected Component Analysis on an Undirected Graph by Tristan Ursell
+<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph">http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph</a>.</p>
+<p>Largest component requires:
+gaimc : Graph Algorithms In Matlab Code by David Gleich
+<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code">http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code</a>.</p>
+<blockquote>
+<div></div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.findCyclicRxns">
+<code class="descname">findCyclicRxns</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/findCyclicRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.findCyclicRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the reactions that are part of one or more stoichiometrically
+balanced cycles in the network</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[cyclicRxnBool, rankS] = findCyclicRxns(model, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>cyclicRxnBool</strong> &#8211;
+boolean value</li>
+<li><strong>rankS</strong> &#8211;
+scalar giving rank of <cite>S</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.getCorrespondingCols">
+<code class="descname">getCorrespondingCols</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/getCorrespondingCols.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingCols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean vector that is true for a subset of the true cols in
+<cite>colBool</cite> according to whether the cols &#8216;exclusively&#8217; or &#8216;inclusively&#8217;
+correspond to true entries in <cite>rowBool</cite></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+<cite>m x n</cite> stoichiometric matrix</li>
+<li><strong>rowBool</strong> &#8211;
+<cite>m x 1</cite> boolean vector</li>
+<li><strong>colBool</strong> &#8211;
+<cite>n x 1</cite> boolean vector</li>
+<li><strong>mode</strong> &#8211;
+&#8216;exclusive&#8217; or &#8216;inclusive&#8217; or &#8216;partial&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>restrictedColBool</strong> &#8211;
+<cite>n x 1</cite> boolean vector</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span>
+    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>    <span class="o">-</span><span class="mi">7</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+
+<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span><span class="p">];</span>
+<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">];</span>
+
+<span class="o">%</span><span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>     <span class="mi">0</span>     <span class="mi">0</span>
+
+<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;exclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedColBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>
+<span class="o">%</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">colBool</span> <span class="n">reactions</span> <span class="n">exclusively</span> <span class="n">involving</span> <span class="n">rowBool</span> <span class="n">metabolites</span>
+
+<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;inclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedColBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
+<span class="o">%</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">colBool</span> <span class="n">reactions</span> <span class="n">involving</span> <span class="n">at</span> <span class="n">least</span> <span class="n">one</span> <span class="n">rowBool</span> <span class="n">metabolite</span>
+
+<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span><span class="s1">&#39;partial&#39;</span> <span class="n">then</span> <span class="n">restrictedColBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">the</span> <span class="n">extra</span> <span class="n">cols</span>
+<span class="o">%</span><span class="k">with</span> <span class="n">inclusive</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">present</span> <span class="k">with</span> <span class="n">exclusive</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.getCorrespondingRows">
+<code class="descname">getCorrespondingRows</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/getCorrespondingRows.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean vector that is true for a subset of the true rows in
+<cite>rowBool</cite> according to whether the rows &#8216;exclusively&#8217; or &#8216;inclusively&#8217;
+correspond to true entries in <cite>colBool</cite></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+<cite>m x n</cite> stoichiometric matrix</li>
+<li><strong>rowBool</strong> &#8211;
+<cite>m x 1</cite> boolean vector</li>
+<li><strong>colBool</strong> &#8211;
+<cite>n x 1</cite> boolean vector</li>
+<li><strong>mode</strong> &#8211;
+&#8216;exclusive&#8217; or &#8216;inclusive&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>restrictedRowBool</strong> &#8211;
+<cite>m x 1</cite> boolean vector</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span>
+    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>     <span class="mi">0</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>    <span class="o">-</span><span class="mi">7</span>     <span class="mi">0</span>
+     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+
+<span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span><span class="p">];</span>
+
+<span class="o">%</span> <span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
+
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;exclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
+<span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">exclusively</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">colBool</span>
+<span class="o">%</span> <span class="n">reactions</span>
+
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;inclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
+<span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>
+<span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">colBool</span> <span class="n">reactions</span>
+
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span><span class="s1">&#39;partial&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">the</span> <span class="n">extra</span> <span class="n">rows</span>
+<span class="o">%</span> <span class="k">with</span> <span class="n">inclusive</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">present</span> <span class="k">with</span> <span class="n">exclusive</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.matrixCoherence">
+<code class="descname">matrixCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/matrixCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.matrixCoherence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the coherence of a matrix <cite>A</cite>, that is
+the maximum absolute value of the cross correlations
+between the columns of <cite>A</cite></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[mu, Q] = matrixCoherence(A)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+Matrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mu</strong> &#8211;
+coherence</li>
+<li><strong>Q</strong> &#8211;
+matrix used by <cite>mu</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.minimalCutSets">
+<code class="descname">minimalCutSets</code><span class="sig-paren">(</span><em>targets</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/minimalCutSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.minimalCutSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes minimal cut sets for paths/cycles/elementary modes with Berge algorithm
+(equivalent to hypergraph transversal) by the CellNetAnalyzer software package [1].</p>
+<p>CellNetAnalyzer can be downloaded at <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html</a></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>C = minimialCutSets(targets, varargin)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>targets</strong> &#8211;
+a binary matrix that row-wise contains the
+target paths/cycles/elementary modes; a &#8216;1&#8217; in
+the i-th row and j-th column in targets indicates
+participation of element (reaction) j in mode i;</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mcsmax</strong> &#8211;
+maximal size of cutsets to be calculated; must
+be a value grater 0; Inf means no size limit
+(default: Inf)</li>
+<li><strong>names</strong> &#8211;
+a char matrix; its rows are names corresponding
+to the columns of &#8216;targets&#8217;; used for diagnostics
+in preprocessing (default:[]; the matrix is then
+constructed with &#8216;I1,&#8217;,I2&#8217;,....)</li>
+<li><strong>sets2save</strong> &#8211;
+(default: []) struct array with sets of (desired)
+modes/paths/cycles that should be preserved (not
+be hit by the cut sets computed). Should have the
+following fields:<ul>
+<li>sets2save(k).tabl2save = k-th matrix containing
+row-wise &#8216;desired&#8217; sets (desired paths/cycles/
+modes) that should not be hit by the cut sets
+to be computed. be saved A &#8216;1&#8217; in the i-th row
+and j-th column of sets2save(k) indicates
+participation of element j in mode i in set k
+of desired modes. These matrics must have the
+same number of columns (reactions) as &#8216;targets&#8217;.</li>
+<li>sets2save(k).min2save = specifies the minimum
+number of desired paths/cycles/modes in
+sets2save(k).tabl2save that should not be
+hit by the cut sets computed.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>earlycheck:     whether the test checking for the fulfillment</dt>
+<dd>of constraints in sets2save should be caried
+out during (1) or after (0) computation
+of cut sets [default: 1; makes only sense
+in combination with sets2save]</dd>
+</dl>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>C</strong> &#8211;
+matrix that contains the (constrained) cutsets
+row-wise; a &#8216;1&#8217; means that the reaction/interaction
+is part of the cutset, 0 means the
+element/reaction/interaction is not involved.
+Each cutset hits all modes stored in &#8220;targets&#8221;
+while it does not hit at least
+&#8220;sets2save(k).min2save&#8221; many modes in
+&#8220;sets2save(k).tabl2save&#8221;</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>[1] Klamt S, Saez-Rodriguez J and Gilles ED (2007)</dt>
+<dd>Structural and functional analysis of cellular networks with CellNetAnalyzer.
+BMC Systems Biology 1:2</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.pathVectors">
+<code class="descname">pathVectors</code><span class="sig-paren">(</span><em>model</em>, <em>directory</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/pathVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.pathVectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes elementary mode and extreme pathway
+(convex basis) of a COBRA model using the CellNetAnalyzer software
+package [1].</p>
+<p>CellNetAnalyzer can be downloaded at <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/download.html</a></p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model<ul>
+<li>S  - <cite>m x 1</cite> Stoichiometric matrix</li>
+<li>c  - <cite>n x 1</cite> Linear objective coefficients</li>
+<li>lb - <cite>n x 1</cite> Lower bounds</li>
+<li>ub - <cite>n x 1</cite> Upper bounds</li>
+</ul>
+</li>
+<li><strong>directory</strong> &#8211;
+folder path to where the CNA model is going to be
+saved (required for intermediate computations)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>constraints</strong> &#8211;
+empty
+the number of reactions
+many rows and up to 4 columns:
+- COLUMN1 specifies excluded/enforced reactions: if</p>
+<blockquote>
+<div><p>(constraints(i,1)==0) then onlythose modes / rays
+/ points will be computed that do not include
+reaction i; constraints(i,1)~=0 and
+constraints(i)~=NaN enforces reaction i, i.e. only
+those modes / rays / points will be computed that
+involve reaction i; for all other reactions choose
+constraint(i,1)=NaN; several reactions may be
+suppressed/enforced simultaneously</p>
+</div></blockquote>
+<ul class="simple">
+<li>COLUMN2: specifies lower boundaries for the
+reaction rates (choose NaN if none is active).
+Note that zero boundaries (irreversibilities) are
+better described by the vector containg all lower
+bound of reactions(Lb). In any case, the
+lower boundary eventually considered will be zero
+if Lb(i)==0 and constraints(i,2)&lt;0.</li>
+<li>COLUMN3: specifies upper boundaries for the
+reaction rates (choose NaN if none is active)</li>
+<li>COLUMN4: specifies equalities for the reaction
+rates (choose NaN if none is active).</li>
+</ul>
+</li>
+<li><p class="first"><strong>mexVersion</strong> &#8211;
+(default:4)
+1, CNA mex files,
+2, Metatool mex files,
+3, CNA and Metatool mex files
+4, Marco Terzer&#8217;s EFM tool</p>
+</li>
+<li><p class="first"><strong>irrevFlag</strong> &#8211;
+(default: 1)
+0, reversible
+1, irreversible</p>
+</li>
+<li><p class="first"><strong>convBasisFlag</strong> &#8211;
+(Default: 0)
+0, elementary modes
+1, extreme pathways</p>
+</li>
+<li><p class="first"><strong>isoFlag</strong> &#8211;
+(default: 0)
+0, not consider isoenzymes
+1, consider isoenzymes</p>
+</li>
+<li><p class="first"><strong>cMacro</strong> &#8211;
+(default: the vector containing the default
+value of the macromolecules)
+empty
+MC : A (m*w) matrix defining the stoichiometry
+of the macromolucules with respect to the
+metabolietes</p>
+</li>
+<li><p class="first"><strong>printLevel</strong> &#8211;
+(default: &#8216;All&#8217;)
+&#8216;None&#8217;
+&#8216;Iteration&#8217;
+&#8216;All&#8217;
+&#8216;Details&#8217;</p>
+</li>
+<li><p class="first"><strong>efmToolOptions</strong> &#8211;
+(default: {})
+&#8216;arithmetic&#8217;
+&#8216;fractional&#8217;
+&#8216;compression&#8217;
+&#8216;off&#8217;</p>
+</li>
+<li><p class="first"><strong>positivity</strong> &#8211;
+0, normal convex basis
+1, positive convex basis</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>efms</strong> &#8211;
+matrix that contains (row-wise) the elementary
+modes (or elemenatry vectors) or a minimal set
+of generators (lineality space + extreme rays/
+points), depending on the chosen option. The
+columns  correspond to the reactions; the column
+indices of efms (with respect to the columns in
+stoichiometric matrix) are stored in the returned
+variable idx (see below; note that columns are
+removed in efms if the corresponding reactions
+are not contained in any mode) %</p>
+</li>
+<li><p class="first"><strong>rev</strong> &#8211;
+vector indicating for each mode whether it is
+reversible(0)/irreversible (1)</p>
+</li>
+<li><p class="first"><strong>id</strong> &#8211;
+maps the columns in efm onto the column indices
+in stoichiometric matrix, i.e. idx(i) refers to the
+column number in stoichmatric matrix (and to</p>
+<blockquote>
+<div><p>the row number in a vector containing the</p>
+</div></blockquote>
+<p>identifiers of the reactions)</p>
+</li>
+<li><p class="first"><strong>ir</strong> &#8211;
+indicates whether the i-th row (vector) in efm
+is an unbounded (1) or bounded (0) direction
+of the flux cone / flux polyhedron. Bounded
+directions (such as extreme points) can only
+arise if an inhomogeneous problem was defined
+(see also above for &#8216;constraints&#8217;).</p>
+</li>
+<li><p class="first"><strong>modelOut</strong> &#8211;
+If the input model be changed during computations
+then the new model will be saved as modelOut (COBRA
+model)</p>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>[1] Klamt S, Saez-Rodriguez J and Gilles ED (2007)</dt>
+<dd>Structural and functional analysis of cellular networks with CellNetAnalyzer.
+BMC Systems Biology 1:2</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.testForTypeIIIPathways">
+<code class="descname">testForTypeIIIPathways</code><span class="sig-paren">(</span><em>model</em>, <em>ListExch</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/analysis/topology/testForTypeIIIPathways.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.testForTypeIIIPathways" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the model to run extreme pathway analysis
+(expa) for identifying loops in the model (Type III pathways) and runs expa.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>testForTypeIIIPathways(model, ListExch, filename)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>ListExch</strong> &#8211;
+List of position of exchange reactions in <cite>S</cite> matrix</li>
+<li><strong>filename</strong> &#8211;
+name of the file</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="circuits.html" class="btn btn-neutral float-right" title="Circuits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vonBertalanffy.html" class="btn btn-neutral" title="vonBertalanffy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
