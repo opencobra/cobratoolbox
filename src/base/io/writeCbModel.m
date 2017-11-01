@@ -212,6 +212,7 @@ switch format
         end
         %% SBML
     case 'sbml'
+        fileName = strrep(fileName, '~', getenv('HOME'));
         outmodel = writeSBML(model, fileName, input.compSymbols, input.compNames);
         %% Mat
     case 'mat'
