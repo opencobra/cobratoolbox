@@ -79,7 +79,6 @@ for pos = 1:size(fieldentries,1)
             dbstring = strjoin(strcat(dbrdfstring,ids,sprintf('%s\n','"/>')),sprintf('\n'));
             dbnote = [dbnote, dbstring];
         end
-        knownExistentFields = [];
         knownExistentFields = knownFields(ismember(knownFields(:,3),modelFields),:);
         
         for fieldid = 1:size(knownExistentFields,1)
