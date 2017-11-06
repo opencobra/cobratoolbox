@@ -1,5 +1,5 @@
 function [StopFlag, Status] = StopCritBDCA(nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
-% StopCriterion is a function checking that one of the stopping criteria
+% Function checking that one of the stopping criteria
 % holds to terminate LLM and GLM. It perepare the status determining why
 % the algorithm is stopped.
 %

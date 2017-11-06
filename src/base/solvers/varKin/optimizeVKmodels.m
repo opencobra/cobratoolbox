@@ -1,10 +1,10 @@
 function output = optimizeVKmodels(model, solver, x0, parms)
 % Function for finding a solution of the nonlinear system
 % :math:`h(x) = f(x) = 0`, `x` in :math:`R^m`, (I)
-% or `h(x) = (f(x)^{T},l(x)^{T})^{T} = 0`, `x` in `R^m`, (II)
-% where `f(x) = [F-R, R-F]*exp(k+[F,R]'*x)`, "math:`l(x) = L*exp(x)-l0`,
+% or :math:`h(x) = (f(x)^T, l(x)^T)^T = 0`, `x` in :math:`R^m`, (II)
+% where :math:`f(x) = [F - R, R - F]*exp(k + [F, R]^T * x)`, :math:`l(x) = L*exp(x) - l_0`,
 % using the nonlinear unconstrained minimization
-% :math:`min psi(x) = 1/2 ||h(x)||^2` s.t. `x` in :math:`R^m`.
+% :math:`\textrm{min}\ psi(x) = 1/2 ||h(x)||^2` s.t. `x` in :math:`R^m`.
 % with several solvers. For (I), one can use all the following solvers;
 % however, for (II), one can only apply local solvers LLM_F, LLM_FY,
 % LLM_YF, LLM and global solvers GLM_FY, GLM_YF, LevMar, LMLS, and LMTR.
@@ -15,134 +15,123 @@ function output = optimizeVKmodels(model, solver, x0, parms)
 %    output = optimizeVKmodels(model, solver, x0, parms)
 %
 % INPUT:
-%    model:    stracture includes F, R and/or L
+%    model:    stracture includes `F`, `R` and/or `L`
 %
 %                 * .F - forward stoichiometric matrix
 %                 * .R - reverse stoichiometric matrix
-%                 * .L - basis for the left null-space of `N = R-F`
-%                 * .l0 - constant `l0`
+%                 * .L - basis for the left null-space of `N = R - F`
+%                 * .l0 - constant :math:`l_0`
 %
 %    solver:
 %
-%    Local Levenberg-Marquardt (LM) solvers:
-%    LLM               % LM of Ahookhosh et al.
-%    LLM_F             % LM of Fischer
-%    LLM_FY            % LM of Fun and Yuan
-%    LLM_YF            % LM of Yamashita and Fukushima
-%    Global Levenberg-Marquardt (LM) solvers:
-%    LM_FY             % LM of Fun and Yuan
-%    LM_YF             % LM of Yamashita and Fukushima
-%    LevMar            % LM of Kelly
-%    LMLS              % LM line search of Ahookhosh et al.
-%    LMTR              % LM trust-region of Ahookhosh et al.
-%    DC programming solvers:
-%    DCA               % DC programming algorithm
-%    BDCA              % boosted DC programming algorithm
-%    Duplomonotone derivative-free solvers:
-%    BDF               % Derivative-free duplomonotone method 1
-%    CSDF              % Derivative-free duplomonotone method 2
-%    DBDF              % Derivative-free duplomonotone method 3
+%                 * Local `Levenberg-Marquardt` (LM) solvers:
 %
-% Parameters for LLM_F, LLM_FY, LLM_YF, LLM, GLM_FY, GLM_YF, LevMar,
-%                LMLS, LMTR
-% parms                % structure including the parameteres of schemes
+%                   * LLM - LM of `Ahookhosh et al.`
+%                   * LLM_F - LM of `Fischer`
+%                   * LLM_FY - LM of `Fun` and `Yuan`
+%                   * LLM_YF - LM of `Yamashita` and `Fukushima`
+%                 * Global `Levenberg-Marquardt` (LM) solvers:
 %
-%   .eta               % constant for Levenberg-Marquardt parameter
-%   .MaxNumIter        % maximum number of iterations
-%   .MaxNumMapEval     % maximum number of function evaluations
-%   .MaxNumGmapEval    % maximum number of gradient evaluations
-%   .TimeLimit         % maximum running time
-%   .epsilon           % accuracy parameter
-%   .x_opt             % optimizer
-%   .psi_opt           % optimum
-%   .adaptive          % update lambda adaptively
-%   .kin               % kinetic parameter in R^(2n)
-%   .flag_x_error      % 1 : saves x_error
-%                      % 0 : do not saves x_error (default)
-%   .flag_psi_error    % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .flag_time         % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .Stopping_Crit     % stopping criterion
+%                   * LM_FY - LM of `Fun` and `Yuan`
+%                   * LM_YF - LM of `Yamashita` and `Fukushima`
+%                   * LevMar - LM of `Kelly`
+%                   * LMLS - LM line search of `Ahookhosh et al.`
+%                   * LMTR - LM trust-region of `Ahookhosh et al.`
+%                 * DC programming solvers:
 %
-%                      % 1 : stop if ||grad|| <= epsilon
-%                      % 2 : stop if ||nhxk|| <= epsilon
-%                      % 3 : stop if MaxNumIter is reached
-%                      % 4 : stop if MaxNumMapEval is reached
-%                      % 5 : stop if MaxNumGmapEval is reached
-%                      % 6 : stop if TimeLimit is reached
-%                      % 7 : stop if
-%                               ||grad||<=max(epsilon,epsilon^2*ngradx0)
-%                      % 8 : stop if
-%                               ||nhxk||<=max(epsilon,epsilon^2*nhx0)
-%                      % 9 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
+%                   * DCA - DC programming algorithm
+%                   * BDCA - boosted DC programming algorithm
+%                 * Duplomonotone derivative-free solvers:
 %
-% Parameters for DCA, BDCA
-% parms                % structure including the parameteres of schemes
+%                   * BDF - Derivative-free duplomonotone method 1
+%                   * CSDF - Derivative-free duplomonotone method 2
+%                   * DBDF - Derivative-free duplomonotone method 3
 %
-% mapp                 % function handle provides f(x) and gradient f(x)
-% x0                   % initial point
-% options              % structure including the parameteres of scheme
+%    Parameters for LLM_F, LLM_FY, LLM_YF, LLM, GLM_FY, GLM_YF, LevMar, LMLS, LMTR
+%    parms:     structure including the parameteres of schemes
 %
-%   .MaxNumIter        % maximum number of iterations
-%   .MaxNumMapEval     % maximum number of function evaluations
-%   .TimeLimit         % maximum running time
-%   .epsilon           % accuracy parameter
-%   .x_opt             % optimizer
-%   .psi_opt           % optimum
-%   .alpha             % constant for the line search
-%   .beta              % backtarcking constant
-%   .lambda_bar        % starting step-size for the line search
-%   .rho               % strong convexity parameter
-%   .kin               % kinetic parameter in R^(2n)
-%   .flag_line_search  % "Armijo" or "Quadratic_interpolation"
-%   .flag_x_error      % 1 : saves x_error
-%                      % 0 : do not saves x_error (default)
-%   .flag_psi_error    % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .flag_time         % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .Stopping_Crit     % stopping criterion
+%                 * .eta - constant for `Levenberg-Marquardt` parameter
+%                 * .MaxNumIter - maximum number of iterations
+%                 * .MaxNumMapEval - maximum number of function evaluations
+%                 * .MaxNumGmapEval - maximum number of gradient evaluations
+%                 * .TimeLimit - maximum running time
+%                 * .epsilon - accuracy parameter
+%                 * .x_opt - optimizer
+%                 * .psi_opt - optimum
+%                 * .adaptive - update lambda adaptively
+%                 * .kin - kinetic parameter in :math:`R^{2n}`
+%                 * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
+%                 * .flag_psi_error - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .Stopping_Crit - stopping criterion
 %
-%                      % 1 : stop if ||nfxk|| <= epsilon
-%                      % 2 : stop if MaxNumIter is reached
-%                      % 3 : stop if MaxNumMapEval is reached
-%                      % 4 : stop if TimeLimit is reached
-%                      % 5 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
+%                   * 1 : stop if :math:`||grad|| \leq \epsilon`
+%                   * 2 : stop if :math:`||nhxk|| \leq \epsilon`
+%                   * 3 : stop if `MaxNumIter` is reached
+%                   * 4 : stop if `MaxNumMapEval` is reached
+%                   * 5 : stop if `MaxNumGmapEval` is reached
+%                   * 6 : stop if `TimeLimit` is reached
+%                   * 7 : stop if :math:`||grad|| \leq \textrm{max}(\epsilon, \epsilon ^2 * ngradx_0)`
+%                   * 8 : stop if :math:`||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx_0)`
+%                   * 9 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
-% Parameters for BDF, CSDF, DBDF
-% parms                % structure including the parameteres of schemes
+%    Parameters for DCA, BDCA
+%    parms:     structure including the parameteres of schemes
 %
-% mapp                 % function handle provides f(x) and gradient f(x)
-% x0                   % initial point
-% options              % structure including the parameteres of scheme
+%                 * mapp - function handle provides `f(x)` and gradient `f(x)`
+%    x0:        initial point
+%    options:   structure including the parameteres of scheme
 %
-%   .MaxNumIter        % maximum number of iterations
-%   .MaxNumMapEval     % maximum number of function evaluations
-%   .TimeLimit         % maximum running time
-%   .epsilon           % accuracy parameter
-%   .x_opt             % optimizer
-%   .psi_opt           % optimum
-%   .alpha             % constant with alpha < 2 sigma
-%   .beta              % is the backtarcking constant;
-%   .lambda_min        % lower bound of the step-size
-%   .lambda_max        % upper bound of the step-size
-%   .flag_x_error      % 1 : saves x_error
-%                      % 0 : do not saves x_error (default)
-%   .flag_psi_error    % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .flag_time         % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .Stopping_Crit     % stopping criterion
+%                 * .MaxNumIter - maximum number of iterations
+%                 * .MaxNumMapEval - maximum number of function evaluations
+%                 * .TimeLimit - maximum running time
+%                 * .epsilon - accuracy parameter
+%                 * .x_opt - optimizer
+%                 * .psi_opt - optimum
+%                 * .alpha - constant for the line search
+%                 * .beta - backtarcking constant
+%                 * .lambda_bar - starting step-size for the line search
+%                 * .rho - strong convexity parameter
+%                 * .kin - kinetic parameter in :math:`R^{2n}`
+%                 * .flag_line_search - "Armijo" or "Quadratic_interpolation"
+%                 * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
+%                 * .flag_psi_error - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .Stopping_Crit - stopping criterion
 %
-%                      % 1 : stop if ||nfxk|| <= epsilon
-%                      % 2 : stop if MaxNumIter is reached
-%                      % 3 : stop if MaxNumMapEval is reached
-%                      % 4 : stop if TimeLimit is reached
-%                      % 5 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
+%                   * 1 : stop if :math:`||nfxk|| \leq \epsilon`
+%                   * 2 : stop if `MaxNumIter` is reached
+%                   * 3 : stop if `MaxNumMapEval` is reached
+%                   * 4 : stop if `TimeLimit` is reached
+%                   * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%
+%    Parameters for BDF, CSDF, DBDF
+%    parms:     structure including the parameteres of schemes
+%
+%                 * mapp - function handle provides `f(x)` and gradient `f(x)`
+%    x0:        initial point
+%    options:   structure including the parameteres of scheme
+%
+%                 * .MaxNumIter - maximum number of iterations
+%                 * .MaxNumMapEval - maximum number of function evaluations
+%                 * .TimeLimit - maximum running time
+%                 * .epsilon - accuracy parameter
+%                 * .x_opt - optimizer
+%                 * .psi_opt - optimum
+%                 * .alpha - constant with :math:`\alpha < 2 \sigma`
+%                 * .beta - is the backtarcking constant;
+%                 * .lambda_min - lower bound of the step-size
+%                 * .lambda_max - upper bound of the step-size
+%                 * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
+%                 * .flag_psi_error - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                 * .Stopping_Crit - stopping criterion
+%
+%                   * 1 : stop if :math:`||nfxk|| \leq \epsilon`
+%                   * 2 : stop if `MaxNumIter` is reached
+%                   * 3 : stop if `MaxNumMapEval` is reached
+%                   * 4 : stop if `TimeLimit` is reached
+%                   * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUT:
 %    output:    structure including more output information:
@@ -154,8 +143,8 @@ function output = optimizeVKmodels(model, solver, x0, parms)
 %                 * .Nmap - total number of mapping evaluations
 %                 * .Ngmap - total number of mapping gradient evaluations
 %                 * .merit_func - array including all merit function  values
-%                 * .x_error - relative error :math:`norm(xk(:)-x_opt(:))/norm(x_opt)`
-%                 * .psi_error - relative error :math:`(psik-psi_opt)/(psi0-psi_opt))`
+%                 * .x_error - relative error :math:`norm(x_k(:)-x_{opt}(:))/norm(x_{opt})`
+%                 * .psi_error - relative error :math:`(psi_k-psi_{opt})/(psi_0-psi_{opt}))`
 %                 * .Status - reason of termination
 %                 * .Time - running time of all iterations
 %
