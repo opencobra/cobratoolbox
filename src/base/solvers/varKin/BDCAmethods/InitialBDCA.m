@@ -3,7 +3,7 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 % DCA. If some parameters specified by the user `InitialDuplo` uses these
 % parameters. Otherwise, the default values will be used.
 %
-% INPUT:
+% INPUTS:
 %    options:           structure including the parameteres of scheme
 %
 %                         * .MaxNumIter - maximum number of iterations
@@ -18,9 +18,9 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %                         * .rho - strong convexity parameter
 %                         * .kin - kinetic parameter in :math:`R^{2n}`
 %                         * .flag_line_search - "Armijo" or "Quadratic_interpolation"
-%                         * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
-%                         * .flag_psi_error - 1:saves `psi_error`, 0: do not saves `psi_error` (default)
-%                         * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                         * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%                         * .flag_psi_error - 1:saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                         * .Stopping_Crit - stopping criterion:
 %
 %                           * 1 : stop if :math:`||nfxk|| \leq \epsilon`
@@ -29,7 +29,7 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %                           * 4 : stop if TimeLimit is reached
 %                           * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
-% OUTPUT:
+% OUTPUTS:
 %    MaxNumIter:        maximum number of iterations
 %    MaxNumMapEval:     maximum number of function evaluations
 %    TimeLimit:         maximum running time
@@ -39,9 +39,9 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %    alpha:             constant for the line search
 %    beta:              backtracking constant
 %    lambda_bar:        starting step-size for the line search
-%    flag_x_error:      1: saves x_error, 0: do not saves x_error (default)
-%    flag_psi_error:    1: saves `psi_error`, 0: do not saves `psi_error` (default)
-%    flag_time:         1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%    flag_x_error:      1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%    flag_psi_error:    1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%    flag_time:         1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %    Stopping_Crit:     stopping criterion
 %
 %

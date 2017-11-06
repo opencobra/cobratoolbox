@@ -1,13 +1,13 @@
 function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 % BDCA is a derivative-free algorithm for solving systems of nonlinear
 % equations :math:`f(x) = 0`, `x` in :math:`R^m` using the nonlinear unconstrained minimization
-% :math:`min psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
+% :math:`\textrm{min}\ \psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
 %
 % USAGE:
 %
 %    [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %
-% INPUT:
+% INPUTS:
 %    mapp:        function handle provides `f(x)` and gradient `f(x)`
 %    x0:          initial point
 %    options:     structure including the parameteres of scheme
@@ -24,9 +24,9 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .rho - strong convexity parameter
 %                   * .kin - kinetic parameter in `R^(2n)`
 %                   * .flag_line_search - "Armijo" or "Quadratic_interpolation"
-%                   * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
-%                   * .flag_psi_error - 1:saves `psi_error`, 0: do not saves `psi_error` (default)
-%                   * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                   * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%                   * .flag_psi_error - 1:saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                   * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                   * .Stopping_Crit - stopping criterion:
 %
 %                     * 1 : stop if :math:`||nfxk|| \leq \epsilon`
@@ -35,7 +35,7 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                     * 4 : stop if `TimeLimit` is reached
 %                     * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
-% OUTPUT:
+% OUTPUTS:
 %    x_best:      the best approximation of the optimizer
 %    psi_best:    the best approximation of the optimum
 %    out:         structure including more output information
@@ -45,7 +45,7 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .Nmap - total number of mapping evaluations
 %                   * .merit_func - array including all merit function values
 %                   * .x_error - relative error :math:`norm(x_k(:)-x_{opt}(:))/norm(x_{opt})`
-%                   * .psi_error - relative error :math:`(psi_k-psi_{opt})/(psi_0-psi_{opt}))`
+%                   * .psi_error - relative error :math:`(\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))`
 %                   * .Status - reason of termination
 %
 % .. REFERENCE:

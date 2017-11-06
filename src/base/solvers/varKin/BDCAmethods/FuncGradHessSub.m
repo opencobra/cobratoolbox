@@ -6,14 +6,14 @@ function [func, grad, Hess] = FuncGradHessSub(x, y, F, R, kin, rho)
 %
 %    [func, grad, Hess] = FuncGradHessSub(x, y, F, R, kin, rho)
 %
-% INPUT:
+% INPUTS:
 %    x,y:     points
 %    F:       Forward stoichiometric matrix
 %    kin:     kinetics parameter in :math:`R^{2n}`
 %    rho:     strongly comvex modulus
 %
 %
-% OUTPUT:
+% OUTPUTS:
 %    f:       function value
 %    grad:    gradient
 %    H:       Hessian

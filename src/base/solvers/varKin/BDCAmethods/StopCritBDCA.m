@@ -7,7 +7,7 @@ function [StopFlag, Status] = StopCritBDCA(nfxk, Niter, Nmap, T, MaxNumIter, Max
 %
 %    [StopFlag, Status] = StopCritBDCA(nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
 %
-% INPUT:
+% INPUTS:
 %    nhxk:             the norm 2 of `h(xk)`
 %    Niter:            the number of iterations
 %    Nmap:             the number of mapping calls

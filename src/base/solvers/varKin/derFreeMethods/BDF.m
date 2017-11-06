@@ -1,7 +1,7 @@
 function [x_best, psi_best, out] = BDF(mapp, x0, options)
 % BDF is a derivative-free algorithm for solving systems of
 % nonlinear equations :math:`f(x) = 0`, `x` in :math:`R^m`
-% using the nonlinear unconstrained minimization :math:`min psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
+% using the nonlinear unconstrained minimization :math:`\textrm{min}\ \psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
 %
 % USAGE:
 %
@@ -18,18 +18,18 @@ function [x_best, psi_best, out] = BDF(mapp, x0, options)
 %                   * .epsilon - accuracy parameter
 %                   * .x_opt - optimizer
 %                   * .psi_opt - optimum
-%                   * .alpha - constant with `alpha < 2 sigma`
+%                   * .alpha - constant with :math:`\alpha < 2 \sigma`
 %                   * .beta - reduction constant of the line search
-%                   * .flag_x_error - 1: saves `x_error`, 0: do not saves `x_error` (default)
-%                   * .flag_psi_error - 1:saves `psi_error`, 0: do not saves `psi_error` (default)
-%                   * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
+%                   * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%                   * .flag_psi_error - 1:saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                   * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                   * .Stopping_Crit - stopping criterion:
 %
-%                     * 1 : stop if :math:`||nfxk|| \leq epsilon`
-%                     * 2 : stop if MaxNumIter is reached
-%                     * 3 : stop if MaxNumMapEval is reached
-%                     * 4 : stop if TimeLimit is reached
-%                     * 5 : stop if (default) :math:`||hxk|| \leq epsilon` or `MaxNumIter` is reached
+%                     * 1 : stop if :math:`||nfxk|| \leq \epsilon`
+%                     * 2 : stop if `MaxNumIter` is reached
+%                     * 3 : stop if `MaxNumMapEval` is reached
+%                     * 4 : stop if `TimeLimit` is reached
+%                     * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUTS:
 %    x_best:      the best approximation of the optimizer
@@ -40,14 +40,12 @@ function [x_best, psi_best, out] = BDF(mapp, x0, options)
 %                   * .Niter - total number of iterations
 %                   * .Nmap - total number of mapping evaluations
 %                   * .merit_func - array including all merit function values
-%                   * .x_error - relative error :math:`norm(xk(:)-x_{opt}(:))/norm(x_{opt})`
-%                   * .psi_error - relative error :math:`(psi_k-psi_{opt})/(psi_0-psi_{opt}))`
+%                   * .x_error - relative error :math:`norm(x_k(:)-x_{opt}(:))/norm(x_{opt})`
+%                   * .psi_error - relative error :math:`(\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))`
 %                   * .Status - reason of termination
 %
 % .. REFERENCE:
-% .. Algorithm 1 of [1]:
-% .. [1] F.J. Aragon Artacho, R.M.T. Fleming, Globally convergent algorithms for finding zeros of duplomonotone mappings, Optimization Letter, 9, 569-584 (2015)
-%
+% .. Algorithm 1 of [1]: F.J. Aragon Artacho, R.M.T. Fleming, Globally convergent algorithms for finding zeros of duplomonotone mappings, Optimization Letter, 9, 569-584 (2015)
 % .. Author: - Masoud Ahookhosh, System Biochemistry Group, Luxembourg Center for System Biomedicine, University of Luxembourg, Luxembourg
 
 format longG ;
