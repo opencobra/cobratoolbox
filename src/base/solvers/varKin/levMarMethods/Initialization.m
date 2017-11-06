@@ -1,4 +1,3 @@
-%not ready
 function [eta, epsilon, MaxNumIter, MaxNumMapEval, MaxNumGmapEval, adaptive, TimeLimit, flag_x_error, flag_psi_error, flag_time, Stopping_Crit] = Initialization(options)
 % Initialization is a function for initializing the parameters of LLM
 % and GLM. If some parameters specified by the user Initialization uses
@@ -10,53 +9,46 @@ function [eta, epsilon, MaxNumIter, MaxNumMapEval, MaxNumGmapEval, adaptive, Tim
 %
 % INPUTS:
 %
-% options              % structure including the parameteres of schemes
+%    options:           structure including the parameteres of schemes
 %
-%   .eta               % parameter of the scheme
-%   .MaxNumIter        % maximum number of iterations
-%   .MaxNumMapEval     % maximum number of function evaluations
-%   .MaxNumGmapEval    % maximum number of subgradient evaluations
-%   .TimeLimit         % maximum running time
-%   .epsilon           % accuracy parameter
-%   .x_opt             % optimizer
-%   .psi_opt           % optimum
-%   .adaptive          % update lambda adaptively
-%   .flag_x_error      % 1 : saves x_error
-%                      % 0 : do not saves x_error (default)
-%   .flag_psi_error    % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .flag_time         % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .Stopping_Crit     % stopping criterion
+%                         * .eta - parameter of the scheme
+%                         * .MaxNumIter - maximum number of iterations
+%                         * .MaxNumMapEval - maximum number of function evaluations
+%                         * .MaxNumGmapEval - maximum number of subgradient evaluations
+%                         * .TimeLimit - maximum running time
+%                         * .epsilon - accuracy parameter
+%                         * .x_opt - optimizer
+%                         * .psi_opt - optimum
+%                         * .adaptive - update lambda adaptively
+%                         * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%                         * .flag_psi_error - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                         * .Stopping_Crit - stopping criterion
 %
-%                      % 1 : stop if ||grad|| <= epsilon
-%                      % 2 : stop if ||nhxk|| <= epsilon
-%                      % 3 : stop if MaxNumIter is reached
-%                      % 4 : stop if MaxNumMapEval is reached
-%                      % 5 : stop if MaxNumGmapEval is reached
-%                      % 6 : stop if TimeLimit is reached
-%                      % 7 : stop if
-%                               ||grad||<=max(epsilon,epsilon^2*ngradx0)
-%                      % 8 : stop if
-%                               ||nhxk||<=max(epsilon,epsilon^2*nhx0)
-%                      % 9 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
+%                           1. stop if :math:`||grad|| \leq \epsilon`
+%                           2. stop if :math:`||nhxk|| \leq \epsilon`
+%                           3. stop if `MaxNumIter` is reached
+%                           4. stop if `MaxNumMapEval` is reached
+%                           5. stop if `MaxNumGmapEval` is reached
+%                           6. stop if `TimeLimit` is reached
+%                           7. stop if :math:`||grad|| \leq \textrm{max}(\epsilon, \epsilon^2 * ngradx0)`
+%                           8. stop if :math:`||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx0)`
+%                           9. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
-% OUTPUT:
-%
-% x_best               % the best approximation of the optimizer
-% psi_best             % the best approximation of the optimum
-% out                  % structure including more output information
-%
-%   .T                 % running time
-%   .Niter             % total number of iterations
-%   .Nmap              % total number of mapping evaluations
-%   .Ngmap             % total number of mapping gradient evaluations
-%   .merit_func        % array including all merit function values
-%   .x_error           % relative error norm(xk(:)-x_opt(:))/norm(x_opt)
-%   .psi_error         % relative error (psik-psi_opt)/(psi0-psi_opt))
-%   .status            % reason of termination
-%
+% OUTPUTS:
+%    eta:               parameter of the scheme
+%    MaxNumIter:        maximum number of iterations
+%    MaxNumMapEval:     maximum number of function evaluations
+%    MaxNumGmapEval:    maximum number of subgradient evaluations
+%    TimeLimit:         maximum running time
+%    epsilon:           accuracy parameter
+%    x_opt:             optimizer
+%    psi_opt:           optimum
+%    adaptive:          update lambda adaptively
+%    flag_x_error:      1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%    flag_psi_error:    1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%    flag_time:         1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%    Stopping_Crit:     stopping criterion
 
 if isfield(options,'eta')
     eta = options.eta;

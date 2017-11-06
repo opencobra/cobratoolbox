@@ -28,15 +28,15 @@ function [x_best, psi_best, out] = GLM_YF(mapp, lin_sym_solver, x0, options)
 %                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                         * .Stopping_Crit - stopping criterion
 %
-%                           * 1 : stop if :math:`||grad|| \leq \epsilon`
-%                           * 2 : stop if :math:`||nhxk|| \leq \epsilon`
-%                           * 3 : stop if `MaxNumIter` is reached
-%                           * 4 : stop if `MaxNumMapEval` is reached
-%                           * 5 : stop if `MaxNumGmapEval` is reached
-%                           * 6 : stop if `TimeLimit` is reached
-%                           * 7 : stop if :math:`||grad|| \leq \textrm{max}(\epsilon, \epsilon^2 * ngradx0)`
-%                           * 8 : stop if :math:`||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx0)`
-%                           * 9 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%                           1. stop if :math:`||grad|| \leq \epsilon`
+%                           2. stop if :math:`||nhxk|| \leq \epsilon`
+%                           3. stop if `MaxNumIter` is reached
+%                           4. stop if `MaxNumMapEval` is reached
+%                           5. stop if `MaxNumGmapEval` is reached
+%                           6. stop if `TimeLimit` is reached
+%                           7. stop if :math:`||grad|| \leq \textrm{max}(\epsilon, \epsilon^2 * ngradx0)`
+%                           8. stop if :math:`||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx0)`
+%                           9. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUT:
 %    x_best:            the best approximation of the optimizer

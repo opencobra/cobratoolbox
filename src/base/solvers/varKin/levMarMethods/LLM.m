@@ -1,93 +1,62 @@
+function [x_best, psi_best, out] = LLM(mapp, lin_sym_solver, x0, options)
+% LLM is a Levenberg-Marquardt algorithm for solving systems of
+% nonlinear equations :math:`h(x) = 0`, `x` in :math:`R^m`
+% using the nonlinear unconstrained minimization :math:`\textrm{min} \psi(x) = 1/2 ||h(x)||^2`
+% s.t. `x` in :math:`R^m`.
+%
+% USAGE:
+%
+%    [x_best, psi_best, out] = LLM(mapp, lin_sym_solver, x0, options)
+%
+% INPUTS:
+%    mapp:              function handle provides `h(x)` and gradient `h(x)`
+%    lin_sym_solver:    function handle for solving the linear system
+%    x0:                initial point
+%    options:           structure including the parameteres of scheme
+%
+%                         * .eta - parameter of the scheme
+%                         * .MaxNumIter - maximum number of iterations
+%                         * .MaxNumMapEval - maximum number of function evaluations
+%                         * .MaxNumGmapEval - maximum number of subgradient evaluations
+%                         * .TimeLimit - maximum running time
+%                         * .epsilon - accuracy parameter
+%                         * .x_opt - optimizer
+%                         * .psi_opt - optimum
+%                         * .adaptive - update lambda adaptively
+%                         * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
+%                         * .flag_psi_error - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
+%                         * .Stopping_Crit - stopping criterion
+%
+%                           1. stop if :math:`||grad|| \leq \epsilon`
+%                           2. stop if :math:`||nhxk|| \leq \epsilon`
+%                           3. stop if `MaxNumIter` is reached
+%                           4. stop if `MaxNumMapEval` is reached
+%                           5. stop if `MaxNumGmapEval` is reached
+%                           6. stop if `TimeLimit` is reached
+%                           7. stop if :math:`||grad|| \leq \textrm{max}(\epsilon, \epsilon^2 * ngradx0)`
+%                           8. stop if :math:`||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx0)`
+%                           9. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%
+% OUTPUTS:
+%    x_best:            the best approximation of the optimizer
+%    psi_best:          the best approximation of the optimum
+%    out:               structure including more output information
+%
+%                         * .T - running time
+%                         * .Niter - total number of iterations
+%                         * .Nmap - total number of mapping evaluations
+%                         * .Ngmap - total number of mapping gradient evaluations
+%                         * .merit_func - array including all merit function values
+%                         * .x_error - relative error :math:`\textrm{norm}(x_k(:)-x_{opt}(:))/\textrm{norm}(x_{opt})`
+%                         * .psi_error - relative error :math:`(\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))`
+%                         * .Status - reason of termination
+%
+% .. REFERENCE:
+% .. 1. M. Ahookhosh, F.J. Aragon Artacho, R.M.T. Fleming, V. Phan, Local convergence of Levenberg-Marquardt methods under Holder metric subregularity, Submitted, (2016)
+% .. Author: - Masoud Ahookhosh, System Biochemistry Group, Luxembourg Center for System Biomedicine, University of Luxembourg, Luxembourg
+%            - Update: July 2017, M. Ahookhosh
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LLM.m %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% function [ x_best,psi_best,out ] = LLM(mapp,lin_sym_solver,x0,options) 
-% LLM is a Levenberg-Marquardt algorithm for solving systems of 
-%      nonlinear equations
-%                         h(x) = 0, x in R^m
-%      using the nonlinear unconstrained minimization
-%                        min  psi(x) = 1/2 ||h(x)||^2
-%                        s.t. x in R^m.
-%
-% INPUT:
-%
-% mapp                 % function handle provides h(x) and gradient h(x)
-% lin_sym_solver       % function handle for solving the linear system
-% x0                   % initial point
-% options              % structure including the parameteres of scheme
-%
-%   .eta               % parameter of the scheme
-%   .MaxNumIter        % maximum number of iterations
-%   .MaxNumMapEval     % maximum number of function evaluations
-%   .MaxNumGmapEval    % maximum number of subgradient evaluations
-%   .TimeLimit         % maximum running time
-%   .epsilon           % accuracy parameter
-%   .x_opt             % optimizer 
-%   .psi_opt           % optimum
-%   .adaptive          % update lambda adaptively
-%   .flag_x_error      % 1 : saves x_error
-%                      % 0 : do not saves x_error (default)
-%   .flag_psi_error    % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .flag_time         % 1 : saves psi_error
-%                      % 0 : do not saves psi_error (default)
-%   .Stopping_Crit     % stopping criterion
-%
-%                      % 1 : stop if ||grad|| <= epsilon 
-%                      % 2 : stop if ||nhxk|| <= epsilon 
-%                      % 3 : stop if MaxNumIter is reached 
-%                      % 4 : stop if MaxNumMapEval is reached
-%                      % 5 : stop if MaxNumGmapEval is reached
-%                      % 6 : stop if TimeLimit is reached
-%                      % 7 : stop if 
-%                               ||grad||<=max(epsilon,epsilon^2*ngradx0)
-%                      % 8 : stop if 
-%                               ||nhxk||<=max(epsilon,epsilon^2*nhx0)
-%                      % 9 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
-%
-% OUTPUT:
-%
-% x_best               % the best approximation of the optimizer
-% psi_best             % the best approximation of the optimum
-% out                  % structure including more output information
-%
-%   .T                 % running time
-%   .Niter             % total number of iterations
-%   .Nmap              % total number of mapping evaluations
-%   .Ngmap             % total number of mapping gradient evaluations
-%   .merit_func        % array including all merit function values            
-%   .x_error           % relative error norm(xk(:)-x_opt(:))/norm(x_opt)
-%   .psi_error         % relative error (psik-psi_opt)/(psi0-psi_opt))    
-%   .Status            % reason of termination
-%
-% REFERENCE: 
-%
-% [1] M. Ahookhosh, F.J. Aragon Artacho, R.M.T. Fleming, V. Phan, 
-%     Local convergence of Levenberg-Marquardt methods under Holder 
-%     metric subregularity, Submitted, (2016)
-%           
-% WRITTEN BY: 
-%
-% Masoud Ahookhosh
-% System Biochemistry Group, Luxembourg Center for System Biomedicine,
-% University of Luxembourg, Luxembourg
-%
-% UPDATES: 
-%
-% July 2017             M. Ahookhosh
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-function [x_best,psi_best,out] = LLM(mapp, lin_sym_solver, x0, options)
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%% Initializing and setting the parameters %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 format longG ;
 
 % ================ Error messages for input and output =================
@@ -174,12 +143,12 @@ T0 = tic;
 
 % ======================= start of the main loop =======================
 while ~StopFlag
-    
+
     muk = max(lambda*nhxk^eta+(1-lambda)*norm(grad)^eta,1e-8);
     Hk  = ghxk*ghxk'+muk*I;
     dk  = lin_sym_solver(Hk,grad);
     xk  = xk+dk;
-      
+
     Niter       = Niter+1;
     Xk(:,Niter) = xk;
     [hxk,ghxk]  = mapp(xk);
@@ -187,7 +156,7 @@ while ~StopFlag
     Ngmap       = Ngmap+1;
     grad        = ghxk*hxk;
     nhxk        = norm(hxk);
-    
+
     if adaptive == 1
         l = 0.95^Niter;
         if l >= 1e-2
@@ -196,31 +165,31 @@ while ~StopFlag
             lambda = max(0.95^Niter,1e-10);
         end
     end
-        
+
     % ================= Gathering output information ===================
-    psik              = 0.5*nhxk^2; 
+    psik              = 0.5*nhxk^2;
     merit_func(Niter) = psik;
     if flag_time == 1
         Time(Niter+1) = toc(T0);
     end
-                              
+
     if flag_x_error == 1
         Nx_opt = norm(x_opt);
-        x_error(Niter+1) = sqrt(sum((xk(:)-x_opt(:)).^2))/Nx_opt;          
+        x_error(Niter+1) = sqrt(sum((xk(:)-x_opt(:)).^2))/Nx_opt;
     end
 
     if flag_psi_error == 1
-        psi_error(Niter+1) = (psik-psi_opt)/(psi0-psi_opt);          
+        psi_error(Niter+1) = (psik-psi_opt)/(psi0-psi_opt);
     end
-    
-    
+
+
     % ================== checking stopping criteria ====================
     T = toc(T0);
-        
+
     [StopFlag,Status] = StopCriterion(grad,nhxk,Niter,Nmap, ...
     Ngmap,MaxNumIter,MaxNumMapEval,MaxNumGmapEval,T,TimeLimit, ...
     epsilon,nhx0,ngradx0,Stopping_Crit);
-         
+
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -239,12 +208,12 @@ out.Niter      = Niter;
 out.Nmap       = Nmap;
 out.Ngmap      = Ngmap;
 out.Status     = Status;
-        
+
 if flag_x_error == 1
-    out.x_error = x_error;          
+    out.x_error = x_error;
 end
 if flag_psi_error == 1
-    out.psi_error = psi_error;          
+    out.psi_error = psi_error;
 end
 if flag_time == 1
     out.Time = Time;
@@ -255,5 +224,3 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% End of LLM.m %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-

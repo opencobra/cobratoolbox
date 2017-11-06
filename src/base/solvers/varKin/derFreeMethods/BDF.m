@@ -25,11 +25,11 @@ function [x_best, psi_best, out] = BDF(mapp, x0, options)
 %                   * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                   * .Stopping_Crit - stopping criterion:
 %
-%                     * 1 : stop if :math:`||nfxk|| \leq \epsilon`
-%                     * 2 : stop if `MaxNumIter` is reached
-%                     * 3 : stop if `MaxNumMapEval` is reached
-%                     * 4 : stop if `TimeLimit` is reached
-%                     * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%                     1. stop if :math:`||nfxk|| \leq \epsilon`
+%                     2. stop if `MaxNumIter` is reached
+%                     3. stop if `MaxNumMapEval` is reached
+%                     4. stop if `TimeLimit` is reached
+%                     5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUTS:
 %    x_best:      the best approximation of the optimizer

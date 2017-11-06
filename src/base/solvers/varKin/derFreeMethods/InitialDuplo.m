@@ -29,11 +29,11 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, sigma, l, 
 %                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                         * .Stopping_Crit - stopping criterion
 %
-%                           * 1 : stop if :math:`||nhxk|| \leq \epsilon`
-%                           * 2 : stop if `MaxNumIter` is reached (default)
-%                           * 3 : stop if `MaxNumMapEval` is reached
-%                           * 4 : stop if `TimeLimit` is reached
-%                           * 5 : stop if :math:`||nhxk|| \leq textrm{max}(\epsilon, \epsilon^2 * nhx0)``
+%                           1. stop if :math:`||nfxk|| \leq \epsilon`
+%                           2. stop if `MaxNumIter` is reached
+%                           3. stop if `MaxNumMapEval` is reached
+%                           4. stop if `TimeLimit` is reached
+%                           5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUTS:
 %    MaxNumIter:        maximum number of iterations

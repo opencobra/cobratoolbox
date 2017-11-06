@@ -29,11 +29,11 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                   * .Stopping_Crit - stopping criterion:
 %
-%                     * 1 : stop if :math:`||nfxk|| \leq \epsilon`
-%                     * 2 : stop if `MaxNumIter` is reached
-%                     * 3 : stop if `MaxNumMapEval` is reached
-%                     * 4 : stop if `TimeLimit` is reached
-%                     * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%                     1. stop if :math:`||nfxk|| \leq \epsilon`
+%                     2. stop if `MaxNumIter` is reached
+%                     3. stop if `MaxNumMapEval` is reached
+%                     4. stop if `TimeLimit` is reached
+%                     5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUTS:
 %    x_best:      the best approximation of the optimizer
@@ -44,7 +44,7 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .Niter - total number of iterations
 %                   * .Nmap - total number of mapping evaluations
 %                   * .merit_func - array including all merit function values
-%                   * .x_error - relative error :math:`norm(x_k(:)-x_{opt}(:))/norm(x_{opt})`
+%                   * .x_error - relative error :math:`\textrm{norm}(x_k(:)-x_{opt}(:))/\textrm{norm}(x_{opt})`
 %                   * .psi_error - relative error :math:`(\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))`
 %                   * .Status - reason of termination
 %

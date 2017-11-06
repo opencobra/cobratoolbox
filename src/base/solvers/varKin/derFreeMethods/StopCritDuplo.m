@@ -18,11 +18,11 @@ function [StopFlag, Status] = StopCritDuplo(nfxk,Niter, Nmap, T, MaxNumIter, Max
 %    epsilon:          accuracy parameter
 %    Stopping_Crit:    stopping criterion:
 %
-%                        * 1 : stop if :math:`||nfxk|| \leq \epsilon`
-%                        * 2 : stop if `MaxNumIter` is reached
-%                        * 3 : stop if `MaxNumMapEval` is reached
-%                        * 4 : stop if `TimeLimit` is reached
-%                        * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%                        1. stop if :math:`||nfxk|| \leq \epsilon`
+%                        2. stop if `MaxNumIter` is reached
+%                        3. stop if `MaxNumMapEval` is reached
+%                        4. stop if `TimeLimit` is reached
+%                        5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 % OUTPUTS:
 %    StopFlag:         1: if one of the stopping criteria holds, 0: if none of the stopping criteria holds
 %    Status:           the reason of the scheme termination
