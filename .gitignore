@@ -70,6 +70,7 @@ test/verifiedTests/base/testTools/testData_printLabeledData.txt
 test/verifiedTests/base/testSolvers/MILPProblem.mat
 test/verifiedTests/base/testOutputNetworkCytoscape/data*
 test/verifiedTests/analysis/testPrint/printConstraints.txt
+test/verifiedTests/analysis/testEnumerateOptimal/MILPProblem.mat
 ACHR_last_point.mat
 ACHRerror.txt
 EcoliModelSamples_1.mat
