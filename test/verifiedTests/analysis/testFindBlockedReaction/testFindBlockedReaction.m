@@ -28,47 +28,48 @@ ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % create a parallel pool
-minWorkers = 2;
-myCluster = parcluster(parallel.defaultClusterProfile);
+try
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
 
-if myCluster.NumWorkers >= minWorkers
-    poolobj = gcp('nocreate');  % if no pool, do not create new one.
-    if isempty(poolobj)
-        parpool(minWorkers);  % launch minWorkers workers
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
     end
+catch
+    %Don't create Parallel pool
+end
+for k = 1:length(solverPkgs)
 
-    for k = 1:length(solverPkgs)
+    fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
 
-        fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
-        solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    if solverLPOK
 
-        if solverLPOK
+        % using FVA
+        blockedReactionsFVA = findBlockedReaction(model);
 
-            % using FVA
-            blockedReactionsFVA = findBlockedReaction(model);
+        % asert individual reaction names
+        for i = 1:length(ecoli_blckd_rxn)
+            assert(strcmp(ecoli_blckd_rxn{i}, blockedReactionsFVA{i}));
+        end
+
+        if strcmp(solverPkgs{k}, 'tomlab_cplex')
+            % using 2-norm min
+            blockedReactions = findBlockedReaction(model, 'L2');
 
             % asert individual reaction names
             for i = 1:length(ecoli_blckd_rxn)
-                assert(strcmp(ecoli_blckd_rxn{i}, blockedReactionsFVA{i}));
-            end
-
-            if strcmp(solverPkgs{k}, 'tomlab_cplex')
-                % using 2-norm min
-                blockedReactions = findBlockedReaction(model, 'L2');
-
-                % asert individual reaction names
-                for i = 1:length(ecoli_blckd_rxn)
-                    assert(strcmp(ecoli_blckd_rxn{i}, blockedReactions{i}));
-                end
+                assert(strcmp(ecoli_blckd_rxn{i}, blockedReactions{i}));
             end
         end
-
-        % output a success message
-        fprintf('Done.\n');
     end
-else
-    warning(' > Skipping testfindBlockedReaction as the default parallel pool is not configured for more than 2 workers.');
+
+    % output a success message
+    fprintf('Done.\n');
 end
 
 % change the directory

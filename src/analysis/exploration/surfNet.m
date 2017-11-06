@@ -125,9 +125,10 @@ if ~showPrev && (nargin < 2 || isempty(metrxn))
     else
         % pick a random reaction otherwise
         if ~isempty(fluxLocal)
-            metrxn = modelLocal.rxns{randsample(find(abs(fluxLocal(:, 1)) > fluxTol), 1)};
-        else
-            metrxn = modelLocal.rxns{randsample(numel(modelLocal.rxns), 1)};
+            sample = find(abs(fluxLocal(:, 1)) > fluxTol);
+            metrxn = modelLocal.rxns{sample(randi(length(sample),1))};
+        else            
+            metrxn = modelLocal.rxns{randi(numel(modelLocal.rxns), 1)};
         end
     end
 end
