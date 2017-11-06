@@ -1,5 +1,5 @@
 function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout] ...
-    = computeMetFormulae(model, metKnown, rxns, metFill, findCM, nameCM, varargin)
+    = computeMetFormulae(model, varargin)
 % Compute the chemical formulas of all metabolites without formulas using 
 % a set of metabolites with known formulae and a set of reactions by
 % solving an optimization problem minimizing the overall inconsistency in
@@ -8,7 +8,7 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %
 % USAGE:
 %    [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, LP] ...
-%        = computeMetFormulae(model, metKnown, rxns, metFill, findCM, nameCM, parameters)
+%        = computeMetFormulae(model, metKnown, rxns, metFill, findCM, nameCM, LPparams)
 %
 % INPUT:
 %    model:          COBRA model
@@ -32,7 +32,7 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %                      * 0:  The program assigns default names for conserved moieties (Conserve_a, Conserve_b, ...)
 %                      * 1:  Name true conserved moieties interactively (exclude dead end mets). 
 %                      * 2:  Name all interactively (including dead end)
-%    params:         Parameters for `solveCobraLP`, in a struct or name-value arguments. See `solveCobraLP` for details
+%    LPparams:       Additional parameters for `solveCobraLP`. See `solveCobraLP` for details
 %
 % OUTPUTS:
 %    model:          COBRA model with updated formulas
@@ -75,6 +75,37 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 % As an internal parameter deciding to include dead end metabolites or not when calculating conserved moieties
 deadCM = true;
 
+optArgin = {'knownMets', 'rxns', 'fillMets', 'calcCMs', 'nameCMs', 'deadCMs'}; 
+defaultValues = {[], [], [], true, false, true};
+validator = {@(x) iscellstr(x) | isvector(x), ...  % metKnown
+    @(x) iscellstr(x) | isvector(x), ...  % rxns
+    @(x) ischar(x) | iscellstr(x), ...  %metFill
+    @(x) ischar(x) | isnumeric(x) | isscalar(x), ...  % findCM
+    @isscalar, @isscalar};  % nameCM and deadCM
+[tempArgin, checkFields, stat, jArg] = deal({}, false, 0, 1);
+if isempty(varargin)
+    varargin = {[]};
+end
+while jArg <= min(numel(varargin), numel(optArgin))
+    if ischar(varargin{jArg}) && any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
+        % name-value pair arguments begin
+        break
+    else
+        tempArgin = [tempArgin; optArgin(jArg); varargin(jArg)];
+    end
+    jArg = jArg + 1;
+end
+
+% the rest are parameters for solveCobraLP
+varargin = varargin(jArg:end);
+% get printLevel from the cobra solver parameters if exists
+printLevel = 0;
+for j = 1:(numel(varargin) - 1)
+    if ischar(varargin{j}) && strcmpi(varargin{j}, 'printLevel')
+        printLevel = varargin{j + 1};
+        break
+    end
+end
 if ~isfield(model,'metFormulas')
     error('model does not have the field ''metFormulas.''')
 end
@@ -481,6 +512,9 @@ for jEC = 1:nEC
         [infeasibility(jEC).minFill, infeasibility(jEC).minForm] = deal(inf);
     end
     if nargout == 9
+        if isfield(LPj, 'basis')
+            LPj = rmfield(LPj, 'basis');
+        end
         varargout{1}(jEC) = LPj;
     end
 end
