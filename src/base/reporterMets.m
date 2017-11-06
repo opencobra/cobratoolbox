@@ -113,15 +113,15 @@ for i = 1:length(model.mets)
         else
             switch metric
                 case 'default'
-                    rawScore(i, :) = nansum(data(dataRxnInd, :)) / sqrt(nRxnsMet(i));
+                    rawScore(i, :) = applyToNonNan(data(dataRxnInd, :) / sqrt(nRxnsMet(i)),@sum);
                 case 'mean'
-                    rawScore(i, :) = nanmean(data(dataRxnInd, :));
+                    rawScore(i, :) = applyToNonNan(data(dataRxnInd, :),@mean);
                 case 'median'
-                    rawScore(i, :) = nanmedian(data(dataRxnInd, :));
+                    rawScore(i, :) = applyToNonNan(data(dataRxnInd, :),@median);
                 case 'std'
-                    rawScore(i, :) = nanstd(data(dataRxnInd, :));
+                    rawScore(i, :) = applyToNonNan(data(dataRxnInd, :),@std);
                 case 'count'
-                    rawScore(i, :) = nansum(data(dataRxnInd, :) ~= 0);
+                    rawScore(i, :) = applyToNonNan(data(dataRxnInd, :) ~= 0,@sum);
             end
         end
     end
@@ -151,15 +151,15 @@ if (~isempty(nRand))
                 else
                     switch metric
                         case 'default'
-                            randScore(j, :) = nansum(data(randInd, :)) / sqrt(nRxns);
+                            randScore(j, :) = applyToNonNan(data(randInd, :),@sum) / sqrt(nRxns);
                         case 'mean'
-                            randScore(j, :) = nanmean(data(randInd, :));
+                            randScore(j, :) = applyToNonNan(data(randInd, :),@mean);
                         case 'median'
-                            randScore(j, :) = nanmedian(data(randInd, :));
+                            randScore(j, :) = applyToNonNan(data(randInd, :),@median);
                         case 'std'
-                            randScore(j, :) = nanstd(data(randInd, :));
+                            randScore(j, :) = applyToNonNan(data(randInd, :),@std);
                         case 'count'
-                            randScore(j, :) = nansum(data(randInd, :) ~= 0);
+                            randScore(j, :) = applyToNonNan(data(randInd, :) ~= 0,@sum);
                     end
                 end
             end
