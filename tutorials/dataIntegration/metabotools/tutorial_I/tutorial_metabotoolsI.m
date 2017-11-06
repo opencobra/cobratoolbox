@@ -16,19 +16,19 @@
 % *PROCEDURE*
 % 
 % Clear workspace and initialize the COBRA Toolbox
-%%
+
 clear
 initCobraToolbox
 %% Step *0* - Define the output location and set the LP solver
 % Define the output path and set the solver for LP problem
-%%
+
 global CBTDIR % set path to cobratoolbox (pathToCOBRA)
 outputPath = pwd;% ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'
 solver = 'glpk'; % solver = 'ADD YOUR SOLVER'; %, e.g., 'cplex_direct' for ILOG
 solverOK = changeCobraSolver(solver, 'LP');
 %% 
 % Check the solver setup
-%%
+
 if solverOK == 1
     fprintf('Solver %s is set.\n', solver);
 else
@@ -36,17 +36,17 @@ else
 end
 %% 
 % Load and check that the input model is correclty loaded
-%%
+
 tutorialPath = fileparts(which('tutorial_metabotoolsI.mlx'));
 if isequal(exist([tutorialPath filesep 'starting_model.mat'], 'file'), 2)
-    load([tutorialPath filesep 'starting_model.mat']);
+    starting_model = readCbModel([tutorialPath filesep 'starting_model.mat']);
     fprintf('The model is loaded.\n');
 else
     error('The model ''starting_model'' could not be loaded.');
 end
 %% 
 % Check output path and writing permission
-%%
+
 if ~exist(outputPath, 'dir') == 7
     error('Output directory in ''outputPath'' does not exist. Verify that you type it correctly or create the directory.');
 end
@@ -62,7 +62,7 @@ end
 % Constrain the model using the data related to RPMI medium composition. To 
 % this end, define the set of exchange reactions for which exometabolomic data 
 % are available
-%%
+
 medium_composition = {'EX_ala_L(e)';'EX_arg_L(e)';'EX_asn_L(e)';'EX_asp_L(e)';'EX_cys_L(e)';'EX_gln_L(e)';...
     'EX_glu_L(e)';'EX_gly(e)';'EX_his_L(e)';'EX_ile_L(e)';'EX_leu_L(e)';'EX_lys_L(e)';'EX_met_L(e)';...
     'EX_phe_L(e)';'EX_4HPRO(e)';'EX_pro_L(e)';'EX_ser_L(e)';'EX_thr_L(e)';'EX_trp_L(e)';'EX_tyr_L(e)';...
@@ -79,13 +79,13 @@ met_Conc_mM = [0.1;1.15;0.15;0.379;0.208;2;0.136;0.133;0.0968;0.382;0.382;0.274;
 %% 
 % Define constraints on basic medium components (i.e., metabolites that 
 % are uptake from the medium but not captured by the measured data) 
-%%
+
 mediumCompounds = {'EX_co2(e)';'EX_h(e)';'EX_h2o(e)';'EX_hco3(e)';'EX_nh4(e)';'EX_o2(e)';'EX_pi(e)';'EX_so4(e)'};
 mediumCompounds_lb = -100;
 %% 
 % Define also additional constraints to limit the model behaviour (e.g., 
 % secretion of oxygen, essential amino acids that need to be taken up)
-%%
+
 customizedConstraints = {'EX_o2(e)';'EX_strch1(e)';'EX_acetone(e)';'EX_glc(e)';'EX_his_L(e)';'EX_val_L(e)';'EX_met_L(e)'};
 customizedConstraints_lb = [-2.3460;0;0;-500;-100;-100;-100];
 customizedConstraints_ub = [500;0;0;500;500;500;500];
@@ -105,7 +105,7 @@ set_inf = 500;
 %% Step *2*: calculate the limit of detection (LODs) for each metabolites
 % Use the function _calculateLODs_ to converts detection limits of unit _ng/mL_ 
 % to _mM_ using the theoretical mass (g/mol)
-%%
+
 ex_RXNS = {'EX_5mta(e)';'EX_uri(e)';'EX_chol(e)';'EX_ncam(e)';'EX_3mop(e)';'EX_succ(e)';'EX_pnto_R(e)';...
     'EX_5oxpro(e)';'EX_thm(e)';'EX_anth(e)';'EX_4HPRO(e)';'EX_lac_L(e)';'EX_3mob(e)';'EX_his_L(e)';...
     'EX_trp_L(e)';'EX_orn(e)';'EX_arg_L(e)';'EX_thr_L(e)';'EX_fol(e)';'EX_gln_L(e)';'EX_4pyrdx(e)';...
@@ -131,7 +131,7 @@ lod_ngmL = [0.3;1.7;2.8;3;3.5;3.9;4;4.8;6.1;7.7;8.1;10.9;11.2;13.6;15.7;16.9;24.
 %% Step *3:* define the uptake and secretion profiles
 % Exclude metabolites with uncertain experimental data from the list of metabolites 
 % for which uptake and secretion profiles need to be computed
-%%
+
 exclude_upt = {'EX_gln_L(e)'; 'EX_cys_L(e)'; 'EX_ala_L(e)'; 'EX_mal_L(e)'; 'EX_fol(e)'};
 exclude_secr = {'EX_gln_L(e)'; 'EX_cys_L(e)'; 'EX_ala_L(e)'};
 %% 
@@ -156,7 +156,7 @@ data_RXNS = {'EX_orn(e)';'EX_mal_L(e)';'EX_lac_L(e)';'EX_gly(e)';'EX_glu_L(e)';'
     'EX_pnto_R(e)';'EX_pro_L(e)';'EX_fol(e)'};
 %% 
 % Define the data associated with Molt-4 cell cultures
-%%
+
 input_A = [
     % control TP 1	control TP 2	Cond TP 1	Cond TP 2
     65245.09667	68680.93	54272.41667	65159.50333
@@ -195,7 +195,7 @@ input_A = [
 ];
 %% 
 % Define the data associated with CCRF-CEM cell cultures
-%%
+
 input_B = [
     % control 2 TP 1	control 2 TP 2	Cond 2 TP 1	Cond 2 TP 2
     65245.09667	68680.93	73850.77	98489.89
@@ -246,11 +246,11 @@ tol = 0.05;
 % 
 % Also adapt the condition uptake and secretion for the second condition. 
 % this is sometimes necessary to allow the model to achieve a feasible flux.
-%%
+
 cond2_secretion = [cond2_secretion; 'EX_4pyrdx(e)';'EX_34hpp';'EX_uri(e)';'EX_succ(e)';'EX_glyb(e)';'EX_5mta(e)';'EX_asn_L(e)'];
 cond2_secretion(ismember(cond2_secretion, {'EX_asp_L(e)';'EX_pnto_R(e)'})) = [];
 cond2_uptake = [cond2_uptake; 'EX_fol(e)'];
-cond2_uptake(find(ismember(cond2_uptake, {'EX_met_L(e)'}))) = [];
+cond2_uptake(ismember(cond2_uptake, {'EX_met_L(e)'})) = [];
 
 [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher, cond1_uptake_LODs,...
     cond2_uptake_LODs, cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,...
@@ -264,7 +264,7 @@ cond2_uptake(find(ismember(cond2_uptake, {'EX_met_L(e)'}))) = [];
 % in Molt-4 compared to CCRF-CEM cells. Therefore, these metabolites need to be 
 % removed from the input for semi-quantitative adjustment unless such large differences 
 % are justified and make sense biologically.
-%%
+
 remove = {'EX_anth(e)'; 'EX_ile_L(e)'};
 A = [];
 for i = 1:length(cond2_upt_higher)
@@ -282,7 +282,7 @@ cond2_upt_higher(A, :) = [];
 % the model will be infeasible.
 % 
 % Definition of the qualitative constraints for Molt-4 cells
-%%
+
 ambiguous_metabolites = {'EX_ala_L(e)'; 'EX_gln_L(e)'; 'EX_cys_L(e)'};
 
 basisMedium = {'EX_o2(e)'; 'EX_strch1(e)'; 'EX_acetone(e)'; 'EX_glc(e)'; 'EX_his_L(e)'; 'EX_ca2(e)'; 'EX_cl(e)'; 'EX_co(e)';...
@@ -293,7 +293,7 @@ basisMedium = {'EX_o2(e)'; 'EX_strch1(e)'; 'EX_acetone(e)'; 'EX_glc(e)'; 'EX_his
     cellConc, t, cellWeight, ambiguous_metabolites, basisMedium);
 %% 
 % Definition of the qualitative constraints for CCRF-CEM cells
-%%
+
 ambiguous_metabolites = {'EX_ala_L(e)'; 'EX_gln_L(e)'; 'EX_pydxn(e)'; 'EX_cys_L(e)'};
 
 basisMedium = {'EX_ca2(e)'; 'EX_cl(e)'; 'EX_co(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_k(e)'; 'EX_na1(e)'; 'EX_i(e)'; 'EX_sel(e)';...
@@ -306,12 +306,12 @@ basisMedium = {'EX_ca2(e)'; 'EX_cl(e)'; 'EX_co(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'E
 % Use the relative difference of signal intensities previously calculated for 
 % the two conditions (_calculateQuantitativeDiffs_) to define semi-quantitative 
 % constraints (setSemiQuantConstraints).
-%%
+
 [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(model_A, model_B, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher);
 %% Step 7: Define growth constraints
 % Using the data related to the doubling time for each cell, constrain the growth 
 % reaction using _setConstraintsOnBiomassReaction_
-%%
+
 GrowthRxn = 'biomass_reaction2';
 tolerance = 20;
 doublingTimeA = 19.6; %MOLT4 cells
@@ -320,7 +320,7 @@ doublingTimeB = 22; %CCRF-CEM
 [model_B_BM] = setConstraintsOnBiomassReaction(modelB_QUANT, GrowthRxn, doublingTimeB, tolerance);
 %% Step 8: Delete absent genes
 % Constrain to zero the set of absent genes, defined in _DataGenes_
-%%
+
 dataGenes = [535;1548;2591;3037;4248;4709;6522;7167;7367;8399;23545;129807;221823]; % set of genes absent in MOLT4 cells
 [model_A_GE] = integrateGeneExpressionData(model_A_BM, dataGenes);
 
@@ -331,7 +331,7 @@ dataGenes = [239;443;535;1548;2683;3037;4248;4709;5232;6522;7364;7367;8399;23545
 % flux value threshold. This function a flux variability analyis to extract a 
 % subnetwork for which all reactions carry fluxes higher or equal to the defined 
 % threshold value
-%%
+
 theshold = 1e-6;
 model = model_A_GE;
 [model_Molt] = extractConditionSpecificModel(model, theshold);%  MOLT4 condition specific model
@@ -341,7 +341,7 @@ model = model_A_GE;
 % 
 % Compare the differents model generated previously by analysing the metabolite 
 % connectivity of the networks
-%%
+
 [MetConn, RxnLength] = networkTopology(modelMedium); % model constrained by medium composition data
 [MetConnA, RxnLengthA] = networkTopology(model_Molt); %  MOLT4 condition specific model
 [MetConnB, RxnLengthB] = networkTopology(model_CEM); %  CCRF-CEM condition specific model
