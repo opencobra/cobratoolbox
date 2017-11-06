@@ -5,5 +5,5 @@
 BDCAmethods
 -----------
 
-.. automodule:: src.base.solvers.varKin.derFreeMethods
+.. automodule:: src.base.solvers.varKin.BDCAmethods
    :members:

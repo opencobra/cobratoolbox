@@ -23,11 +23,11 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %                         * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
 %                         * .Stopping_Crit - stopping criterion:
 %
-%                           * 1 : stop if :math:`||nfxk|| \leq epsilon`
+%                           * 1 : stop if :math:`||nfxk|| \leq \epsilon`
 %                           * 2 : stop if MaxNumIter is reached
 %                           * 3 : stop if MaxNumMapEval is reached
 %                           * 4 : stop if TimeLimit is reached
-%                           * 5 : stop if (default) :math:`||hxk|| \leq epsilon` or `MaxNumIter` is reached
+%                           * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUT:
 %    MaxNumIter:        maximum number of iterations
@@ -37,7 +37,7 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %    x_opt:             optimizer
 %    psi_opt:           optimum
 %    alpha:             constant for the line search
-%    beta:              backtarcking constant
+%    beta:              backtracking constant
 %    lambda_bar:        starting step-size for the line search
 %    flag_x_error:      1: saves x_error, 0: do not saves x_error (default)
 %    flag_psi_error:    1: saves `psi_error`, 0: do not saves `psi_error` (default)
@@ -46,8 +46,7 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %
 %
 % .. REFERENCE:
-% .. Algorithm 2 and 3 of [1]:
-% .. [1] F.J. Aragon Artacho, R.M.T. Fleming, V.T. Phan, Accelerating the DC algorithm for smooth functions, Submitted (2015)
+% .. Algorithm 2 and 3 of [1]: F.J. Aragon Artacho, R.M.T. Fleming, V.T. Phan, Accelerating the DC algorithm for smooth functions, Submitted (2015)
 %
 % .. Authors:
 %       - Francisco J. Aragón Artacho, Department of Mathematics, University of Alicante, Spain

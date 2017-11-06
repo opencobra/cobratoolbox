@@ -1,6 +1,6 @@
 function [func, grad, Hess] = FuncGradHessSub(x, y, F, R, kin, rho)
 % `SubGradHess` provides the function value, the gradient, and the Hessian
-% of the subproblem of DCA and BDCA to be used in fminunc.
+% of the subproblem of DCA and BDCA to be used in `fminunc`.
 %
 % USAGE:
 %

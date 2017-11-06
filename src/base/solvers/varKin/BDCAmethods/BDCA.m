@@ -1,7 +1,7 @@
 function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 % BDCA is a derivative-free algorithm for solving systems of nonlinear
-% equations :math:`f(x) = 0`, `x` in "math:`R^m` using the nonlinear unconstrained minimization
-% :math:`min psi(x) = 1/2 ||f(x)||^2` s.t. `x `in :math:`R^m`.
+% equations :math:`f(x) = 0`, `x` in :math:`R^m` using the nonlinear unconstrained minimization
+% :math:`min psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
 %
 % USAGE:
 %
@@ -29,11 +29,11 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .flag_time - 1: saves `psi_error`, 0: do not saves `psi_error` (default)
 %                   * .Stopping_Crit - stopping criterion:
 %
-%                     * 1 : stop if :math:`||nfxk|| \leq epsilon`
-%                     * 2 : stop if MaxNumIter is reached
-%                     * 3 : stop if MaxNumMapEval is reached
-%                     * 4 : stop if TimeLimit is reached
-%                     * 5 : stop if (default) :math:`||hxk|| \leq epsilon` or `MaxNumIter` is reached
+%                     * 1 : stop if :math:`||nfxk|| \leq \epsilon`
+%                     * 2 : stop if `MaxNumIter` is reached
+%                     * 3 : stop if `MaxNumMapEval` is reached
+%                     * 4 : stop if `TimeLimit` is reached
+%                     * 5 : stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
 %
 % OUTPUT:
 %    x_best:      the best approximation of the optimizer
@@ -44,13 +44,12 @@ function [x_best,psi_best,out] = BDCA(mapp, x0, options)
 %                   * .Niter - total number of iterations
 %                   * .Nmap - total number of mapping evaluations
 %                   * .merit_func - array including all merit function values
-%                   * .x_error - relative error :math:`norm(xk(:)-x_{opt}(:))/norm(x_{opt})`
+%                   * .x_error - relative error :math:`norm(x_k(:)-x_{opt}(:))/norm(x_{opt})`
 %                   * .psi_error - relative error :math:`(psi_k-psi_{opt})/(psi_0-psi_{opt}))`
 %                   * .Status - reason of termination
 %
 % .. REFERENCE:
-% .. Algorithm 2 and 3 of [1]:
-% .. [1] F.J. Aragon Artacho, R.M.T. Fleming, V.T. Phan, Accelerating the DC algorithm for smooth functions, Submitted (2015)
+% .. Algorithm 2 and 3 of [1]: F.J. Aragon Artacho, R.M.T. Fleming, V.T. Phan, Accelerating the DC algorithm for smooth functions, Submitted (2015)
 %
 % .. Authors:
 %       - Francisco J. Aragón Artacho, Department of Mathematics, University of Alicante, Spain
