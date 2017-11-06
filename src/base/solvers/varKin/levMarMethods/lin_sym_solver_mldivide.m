@@ -1,37 +1,21 @@
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%% lin_sym_solver_mldivide.m %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% dk = lin_sym_solver_linsolve( Hk,grad )
-% lin_sym_solver_linsolve solves the linear system
-%                           Hkdk = -grad.  
+function dk = lin_sym_solver_mldivide(Hk, grad)
+% Solves the linear system :math:`Hkdk = -grad`.
 %
-% INPUT:
+% USAGE:
 %
-% ghxk                 % gradient of h at xk
-% grad                 % gradient of the merit function at xk
-% muk                  % the parameter muk
-%    
+%   dk = lin_sym_solver_mldivide(Hk, grad)
+%
+% INPUTS:
+%    ghxk:    gradient of `h` at `xk`
+%    grad:    gradient of the merit function at `xk`
+%    muk:     the parameter `muk`
+%
 % OUTPUT:
-%
-% dk                   % the solution of the linear system
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    dk:      the solution of the linear system
 
-
-function dk = lin_sym_solver_mldivide( Hk,grad )
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%% Main body of lin_sym_solver_mldivide.m %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 dk = -(Hk\grad);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% End of lin_sym_solver_mldivide.m %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-

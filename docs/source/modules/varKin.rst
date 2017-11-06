@@ -9,6 +9,7 @@ varKin
 
    BDCAmethods
    derFreeMethods
+   levMarMethods
 
 .. automodule:: src.base.solvers.varKin
    :members:
