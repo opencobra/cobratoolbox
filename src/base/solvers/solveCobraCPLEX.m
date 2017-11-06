@@ -154,11 +154,11 @@ if conflictResolve
     m_log=0;
     %determines how elaborate the output is
     mode='full';%'minimal';
-    fprintf('%s\n%s\n','Building Structure for Conflict Resolution...','...this slows CPLEX down so should not be used for repeated LP');
+    fprintf('%s\n%s\n','Building Structure for Conflict Resolution...','... this slows CPLEX down so should not be used for repeated LP');
     confgrps = cpxBuildConflict(n,m_lin,m_quad,m_sos,m_log,mode);
     prefix=pwd;
     suffix='CPLEX_conflict_file.txt';
-    conflictFile=[prefix '\' suffix];
+    conflictFile=[prefix filesep suffix];
 else
     confgrps=[]; conflictFile=[];
 end
@@ -172,7 +172,7 @@ end
 
 % Now populate the problem with the data
 cplex.Model.sense = 'minimize';
-if model.osense==1
+if model.osense == 1
     %minimise linear objective
     cplex.Model.obj   = model.c;
 else
