@@ -41,6 +41,10 @@ if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p
     Elements = {};
     Coefficients = [];
     for i = 1:numel(CoefLists)
+        if isempty(CoefLists{i})
+            %This should only happen, if there was no actual formula. 
+            continue
+        end
         currentForm = CoefLists{i};
         Elements = [Elements,setdiff(currentForm(1,:),Elements)];
         current_coefs = cell2mat(currentForm(2,:));
