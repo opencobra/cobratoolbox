@@ -14,7 +14,7 @@ fileDir = fileparts(which('testGpSampler'));
 cd(fileDir);
 
 % load the model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % define the number of sample points
 samplePoints = [5, 190];

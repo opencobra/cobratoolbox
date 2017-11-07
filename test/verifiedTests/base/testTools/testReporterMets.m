@@ -18,7 +18,7 @@ fileDir = fileparts(which('testReporterMets'));
 cd(fileDir);
 
 % load reference data and model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 load('ref_testReporterMets.mat');
 nRand = 10;

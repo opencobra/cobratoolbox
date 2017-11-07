@@ -5,6 +5,7 @@
 %
 % Authors:
 %     - Jacek Wachowiak
+
 global CBTDIR
 % save the current path
 currentDir = pwd;
@@ -14,7 +15,7 @@ fileDir = fileparts(which('testOptGene'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 targetRxn = model.rxns{39}; % Succinate
 fructose_substrateRxn = model.rxns{26}; %Fructose, even though this has no incluence whatsoever.
 generxnList = model.rxns(setdiff([1:95],[11,13,26,39])); %Everything besides the ATP Maintenance, The biomass reaction and the substrate and target reactions.
@@ -27,7 +28,10 @@ for k = 1:length(solverPkgs)
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0)  && changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
-    if solverOK == 1
+    % save the version information of MATLAB toolboxes
+    v = ver;
+
+    if solverOK == 1 && any(strcmp('Global Optimization Toolbox', {v.Name}))
         fprintf('Testing optGene using %s ...\n',solverPkgs{k});
         % function outputs
         % requires Global Optimization Toolbox
@@ -48,6 +52,8 @@ for k = 1:length(solverPkgs)
         sol = optimizeCbModel(model2);
         %And if we turn them off, we get the expected by product formation.
         assert(-sol.x(39) == min(scores));
+    else
+        fprintf(' > Skipping testOptGene as the system is not properly configured.\n');
     end
 end
 % close the open windows

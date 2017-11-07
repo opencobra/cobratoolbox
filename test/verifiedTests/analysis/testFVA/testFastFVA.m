@@ -28,7 +28,7 @@ nworkers = 2;
 solverName = 'ibm_cplex';
 
 % load the E.coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 if changeCobraSolver(solverName, 'LP', 0)
 
@@ -93,7 +93,7 @@ if changeCobraSolver(solverName, 'LP', 0)
     assert(optsol == referenceToyResults.optsol);
 
     % load the E.coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
     optPercentage = 90;  % FVA based on maximum growth
 
@@ -193,13 +193,15 @@ load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'm
 
     % test distribution strategies
     for strategy = 0:2
-        rxnsList = model.rxns(1:20);
+        for printLevel = 0:1
+            rxnsList = model.rxns(1:20);
 
-        % determine the reaction IDs
-        rxnsIDlist = findRxnIDs(model, rxnsList);
-        [minFluxT, maxFluxT] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, [], strategy);
-        assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
-        assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
+            % determine the reaction IDs
+            rxnsIDlist = findRxnIDs(model, rxnsList);
+            [minFluxT, maxFluxT] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, [], strategy, [], printLevel);
+            assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
+            assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
+        end
     end
 
     % define the reaction list

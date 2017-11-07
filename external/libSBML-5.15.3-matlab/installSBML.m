@@ -1,18 +1,13 @@
-function installSBML(varargin)
+function installSBML_1(varargin)
 % Installs the MATLAB language interface for libSBML.
 %
 % This script assumes that the libsbml matlab binding executables files already
-% exist; either because the user has built them using buildSBML (only
-% in the src release) or the binding is being installed from an installer.
+% exist in the folder where this install file is located.
 %
-% Currently prebuilt executables are only available in the windows installers
-% of libSBML.
-%
-% For Linux or Mac users this means that you need to build libsbml and then
-% run the buildSBML script.
+% It optionally takes an argument indicating whether messages should be
+% displayed. This is on by default.
 
-
-% Filename    : installSBML.m
+% Filename    : install.m
 % Description : install matlab binding
 % Author(s)   : SBML Team <sbml-team@googlegroups.com>
 % Organization: EMBL-EBI
@@ -49,13 +44,13 @@ function installSBML(varargin)
 
 % look at input arguments
 
-  [verbose, directory] = checkInputArguments(varargin);
+  [verbose] = checkInputArguments(varargin);
       
   myDisp({'Installing the libSBML interface.'},  verbose);
 
  [matlab_octave]  = check_system(verbose);
  
- [functioning, located] = checkForExecutables(matlab_octave, directory, verbose);
+ [functioning, located] = checkForExecutables(matlab_octave, verbose);
  
  if (functioning == 0)
    if (located == 0)
@@ -94,48 +89,32 @@ end
 
 % check any input arguments
 %--------------------------------------------------------------------------
-function [verbose, directory] = checkInputArguments(input)
+function [verbose] = checkInputArguments(input)
 
   numArgs = length(input);
   
-  if (numArgs > 2)
-    reportInputArgumentError('Too many arguments to installSBML');
+  if (numArgs > 1)
+    reportInputArgumentError('Too many arguments to install script');
   end;
   
-  if (numArgs == 0)
-    verbose = 1;
-    if (isWindows() == 1)
-      directory = pwd;
-    else
-      directory = '/usr/local/lib';
-    end;
-  elseif (numArgs == 1)
-    directory = input{1};
-    verbose = 1;
+  if (numArgs == 1)
+    verbose = input{1};
   else
-    directory = input{1};
-    verbose = input{2};
+     verbose = 1;
   end;
  
   if (verbose ~= 0 && verbose ~= 1)
-    reportInputArgumentError('Incorrect value for verbose flag');
+    reportInputArgumentError('Incorrect value for verbose flag; it should be either 1 or 0');
   end;
-  
-  if (ischar(directory) ~= 1)
-    reportInputArgumentError('Directory value should be a string');
-  elseif(exist(directory, 'dir') ~= 7)
-    reportInputArgumentError('Directory value should be a directory');
-  end;
-
 end
+
 % display error message relating to input arguments
 %---------------------------------------------------
 function reportInputArgumentError(message)
 
     error('%s\n%s\n\t%s%s\n\t%s%s\n\t\t%s', message, ...
       'Arguments are optional but if present:', ...
-      'the first should be a string representing the directory containing ', ...
-      'the executables', 'the second should be a flag (0 or 1) indicating ', ...
+      'the argument should be a flag (0 or 1) indicating ', ...
       'whether messages should be displayed ', ...
       '0 - no messages; 1 - display messages');
 end
@@ -205,7 +184,8 @@ end
 %
 % check for executables and that they are right ones
 % -------------------------------------------------------------------------
-function [success, located] = checkForExecutables(matlab_octave, directory, verbose)  
+function [success, located] = checkForExecutables(matlab_octave, verbose)  
+  directory = pwd();
   message{1} = 'Checking for executables in ';
   message{2} = sprintf('\t%s', directory);
   

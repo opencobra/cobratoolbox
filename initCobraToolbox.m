@@ -104,6 +104,14 @@ function initCobraToolbox()
     % check if git is installed
     checkGit();
 
+    % temporary disable ssl verification
+    [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
+
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be changed.');
+    end
+
     % change to the root of The COBRA Tooolbox
     cd(CBTDIR);
 
@@ -165,14 +173,6 @@ function initCobraToolbox()
             fprintf(' > Initializing and updating submodules (this may take a while)...');
         end
 
-        % temporary disable ssl verification
-        [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
-
-        if status_setSSLVerify ~= 0
-            fprintf(strrep(result_setSSLVerify, '\', '\\'));
-            warning('Your global git configuration could not be changed.');
-        end
-
         % Clean the test/models folder
         [status, result] = system('git submodule status test/models');
         if status == 0 && strcmp(result(1), '-')
@@ -193,14 +193,6 @@ function initCobraToolbox()
         if status_gitReset ~= 0
             fprintf(strrep(result_gitReset, '\', '\\'));
             warning('The submodules could not be reset.');
-        end
-
-        % restore global configuration by unsetting http.sslVerify
-        [status_setSSLVerify, result_setSSLVerify] = system('git config --unset http.sslVerify');
-
-        if status_setSSLVerify ~= 0
-            fprintf(strrep(result_setSSLVerify, '\', '\\'));
-            warning('Your global git configuration could not be restored.');
         end
 
         if ENV_VARS.printLevel
@@ -511,6 +503,14 @@ function initCobraToolbox()
     % check if a new update exists
     if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         updateCobraToolbox(true); % only check
+    end
+
+    % restore global configuration by unsetting http.sslVerify
+    [status_setSSLVerify, result_setSSLVerify] = system('git config --unset http.sslVerify');
+
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be restored.');
     end
 
     % change back to the current directory

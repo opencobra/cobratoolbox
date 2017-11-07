@@ -74,20 +74,20 @@ parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model
 parser.addRequired('targetRxn', @(x) ischar(x))
 parser.addRequired('substrateRxn', @(x) ischar(x))
 parser.addRequired('generxnList',@iscell)
-parser.addParameter('MaxKOs', 10, @(x) isnumeric(x));
-parser.addParameter('population', [], @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
-parser.addParameter('mutationRate', 1/ngenes, @(x) isnumeric(x)); % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
-parser.addParameter('crossovermutationRate', (1/ngenes)*.2, @(x) isnumeric(x)); % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
-parser.addParameter('CrossoverFraction', .80, @(x) isnumeric(x)); % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
-parser.addParameter('PopulationSize', 125, @(x) isnumeric(x)); % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
-parser.addParameter('Generations', 10000, @(x) isnumeric(x)); % paper: 5000.  maximum number of generations to perform
-parser.addParameter('TimeLimit', 3600*24*2, @(x) isnumeric(x)); % global time limit in seconds
-parser.addParameter('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall time limit (terminate after this much time of not finding an improvement in fitness)
-parser.addParameter('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate after this many generations of not finding an improvement
-parser.addParameter('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
-parser.addParameter('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
-parser.addParameter('saveFile', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('outputFolder', 'optGeneResults', @(x) ischar(x));
+parser.addParamValue('MaxKOs', 10, @(x) isnumeric(x));
+parser.addParamValue('population', [], @(x) isnumeric(x) && ismatrix(x) && ~isvector(x));
+parser.addParamValue('mutationRate', 1/ngenes, @(x) isnumeric(x)); % paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.
+parser.addParamValue('crossovermutationRate', (1/ngenes)*.2, @(x) isnumeric(x)); % the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.
+parser.addParamValue('CrossoverFraction', .80, @(x) isnumeric(x)); % Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.
+parser.addParamValue('PopulationSize', 125, @(x) isnumeric(x)); % paper: it was found that an increase beyond 125 individuals did not improve the results significantly.
+parser.addParamValue('Generations', 10000, @(x) isnumeric(x)); % paper: 5000.  maximum number of generations to perform
+parser.addParamValue('TimeLimit', 3600*24*2, @(x) isnumeric(x)); % global time limit in seconds
+parser.addParamValue('StallTimeLimit', 3600*24*1, @(x) isnumeric(x)); % Stall time limit (terminate after this much time of not finding an improvement in fitness)
+parser.addParamValue('StallGenLimit', 10000, @(x) isnumeric(x)); % terminate after this many generations of not finding an improvement
+parser.addParamValue('MigrationFraction', .1, @(x) isnumeric(x)); % how many individuals migrate (.1 * 125 ~ 12 individuals).
+parser.addParamValue('MigrationInterval', 100, @(x) isnumeric(x)); % how often individuals migrate from one population to another.
+parser.addParamValue('saveFile', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('outputFolder', 'optGeneResults', @(x) ischar(x));
 
 parser.parse(model, targetRxn, substrateRxn, generxnList, varargin{:});
 model = parser.Results.model;

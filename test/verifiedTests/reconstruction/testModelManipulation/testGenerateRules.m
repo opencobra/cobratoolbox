@@ -18,7 +18,7 @@ cd(fileDir);
 modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'Recon2.v04.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
 
 for i=1:length(modelsToTry)
-    model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep modelsToTry{i}]);
+    model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep modelsToTry{i}]);
     fprintf('Beginning model %s\n', modelsToTry{i});
 
     model2 = generateRules(model);

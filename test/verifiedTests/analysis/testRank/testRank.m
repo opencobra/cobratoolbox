@@ -19,7 +19,7 @@ cd(fileDir);
 
 if isunix
     % load the model
-    load([CBTDIR, filesep, 'test' filesep 'models' filesep 'iAF1260.mat']);
+    load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'iAF1260.mat']);
     A = iAF1260.S;
     printLevel = 1;
 

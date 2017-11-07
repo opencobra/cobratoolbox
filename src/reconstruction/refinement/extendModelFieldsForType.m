@@ -44,9 +44,9 @@ PossibleTypes = {'rxns','mets','comps','genes'}';
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));
 parser.addRequired('type',@(x) any(ismember(PossibleTypes,x)));
-parser.addParameter('originalSize',numel(model.(type))-1,@isnumeric);
-parser.addParameter('targetSize',numel(model.(type)),@isnumeric);
-parser.addParameter('excludeFields',{},@iscell);
+parser.addParamValue('originalSize',numel(model.(type))-1,@isnumeric);
+parser.addParamValue('targetSize',numel(model.(type)),@isnumeric);
+parser.addParamValue('excludeFields',{},@iscell);
 
 parser.parse(model,type,varargin{:});
 

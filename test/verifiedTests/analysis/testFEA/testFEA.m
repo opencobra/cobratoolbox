@@ -18,7 +18,7 @@ cd(fileDir);
 
 % load the model and reference data
 load('testDataFEA.mat');
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % run FEA
 resultCellFtest = FEA(model, 1:10, 'subSystems');

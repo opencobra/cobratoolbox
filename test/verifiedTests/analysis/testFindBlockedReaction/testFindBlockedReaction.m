@@ -19,7 +19,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testfindBlockedReaction'));
 cd(fileDir);
 
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'};

@@ -112,7 +112,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %    keepInputs:             (double) 1 to mantain folder with
 %                            inputs to run `findMustLL.gms`. 0 otherwise.
 %                            Default: 1
-%    verbose:                (double) 1 to print results in console.
+%    printLevel:             (double) 1 to print results in console.
 %                            0 otherwise.
 %                            Default: 0
 %
@@ -208,28 +208,29 @@ parser.addRequired('minFluxesW', @isnumeric)
 parser.addRequired('maxFluxesW', @isnumeric)
 parser.addRequired('minFluxesM', @isnumeric)
 parser.addRequired('maxFluxesM', @isnumeric)
-parser.addParameter('k', 1, @isnumeric)
-parser.addParameter('nSets', 1, @isnumeric)
-parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []) ,@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+parser.addParamValue('k', 1, @isnumeric)
+parser.addParamValue('nSets', 1, @isnumeric)
+parser.addParamValue('constrOpt', struct('rxnList', {{}}, 'values', []) ,@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
     && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
-parser.addParameter('excludedRxns', struct('rxnList', {{}}, 'typeReg', ''),@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'typeReg') ...
+parser.addParamValue('excludedRxns', struct('rxnList', {{}}, 'typeReg', ''),@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'typeReg') ...
     && length(x.rxnList) == length(x.typeReg) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
 hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-parser.addParameter('runID', defaultRunID, @(x) ischar(x))
-parser.addParameter('outputFolder', 'OutputsOptForce', @(x) ischar(x))
-parser.addParameter('outputFileName', 'OptForce', @(x) ischar(x))
+parser.addParamValue('runID', defaultRunID, @(x) ischar(x))
+parser.addParamValue('outputFolder', 'OutputsOptForce', @(x) ischar(x))
+parser.addParamValue('outputFileName', 'OptForce', @(x) ischar(x))
 if strcmp(filesep,'\')
     defaultPrintExcel = 1;
 else
     defaultPrintExcel = 0;
 end
-parser.addParameter('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('loop', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('kMin', 1, @(x) isnumeric(x));
+parser.addParamValue('printExcel', defaultPrintExcel, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('verbose', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('printLevel', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('loop', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('kMin', 1, @(x) isnumeric(x));
 
 parser.parse(model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
 model = parser.Results.model;
@@ -252,7 +253,19 @@ printExcel = parser.Results.printExcel;
 printText = parser.Results.printText;
 printReport = parser.Results.printReport;
 keepInputs = parser.Results.keepInputs;
-verbose = parser.Results.verbose;
+printFlags = {'printLevel','verbose'};
+%get the printLevel.
+if all(~ismember(printFlags,parser.UsingDefaults))
+    error('Either supply printLevel or verbose optional parameter')
+else    
+    if any(~ismember(printFlags,parser.UsingDefaults))
+        selected = ~ismember(printFlags,parser.UsingDefaults);
+        printLevel = parser.Results.(printFlags{selected});
+    else
+        printLevel = parser.Results.printLevel;
+    end
+end
+
 loop = parser.Results.loop;
 kMin = parser.Results.kMin;
 
@@ -331,7 +344,7 @@ if printReport
 
 
     fprintf(freport, '\nprintExcel: %1.0f \n\nprintText: %1.0f \n\nprintReport: %1.0f \n\nkeepInputs: %1.0f \n\nverbose: %1.0f \n',...
-        printExcel, printText, printReport, keepInputs, verbose);
+        printExcel, printText, printReport, keepInputs, printLevel);
 end
 
 %initialize arrays for excluding reactions.
@@ -382,10 +395,10 @@ if loop % if k = kMin:k
 
             bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
             % Solve problem
-            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+            Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
             if Force.stat == 1
                 nSolsFound = nSolsFound + 1;
-                if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+                if printLevel; fprintf('set n %1.0f was found\n', nSolsFound), end;
                 pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
                 prev = cell(k, 1);
                 flux = zeros(k, 1);
@@ -433,7 +446,7 @@ if loop % if k = kMin:k
             noSolution = 0;
 
             if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
-            if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
+            if printLevel; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets using k = ' num2str(currentK) '\n']); end;
 
             for i = 1:nSolsFound
                 %incorporte info of set i into general matrices.
@@ -447,7 +460,7 @@ if loop % if k = kMin:k
             outputFileNameK = [outputFileName '_k' num2str(currentK)];
 
             % print info into an excel file if required by the user
-            if printExcel && ~isunix
+            if printExcel
 
                 if ~isdir(outputFolderK); mkdir(outputFolderK); end;
                 cd(outputFolderK);
@@ -463,11 +476,12 @@ if loop % if k = kMin:k
                         num2cell(minFluxesM(solutions{i}.pos)) num2cell(maxFluxesM(solutions{i}.pos))...
                         num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] ...
                         [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
-                end
-                xlswrite(outputFileNameK,Info)
+                end     
+                setupxlwrite();
+                xlwrite(outputFileNameK,Info)                
                 cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
-                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
+                if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.xls  \n']); end;
             end
 
             if printText
@@ -506,7 +520,7 @@ if loop % if k = kMin:k
                 fclose(f);
                 cd(runID);
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
-                if verbose; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
+                if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileNameK '.txt  \n']); end;
             end
 
             %close file for saving report
@@ -521,7 +535,7 @@ if loop % if k = kMin:k
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
                 end
             end
-            if verbose
+            if printLevel
                 fprintf('\n optForce did not find any set using k = %1.0f \n', currentK);
                 if currentK < k -1
                     fprintf(freport, '\n increasing k to %1.0f \n', currentK + 1);
@@ -572,10 +586,10 @@ else
 
         bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, targetRxn, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions);
         % Solve problem
-        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+        Force = solveCobraMILP(bilevelMILPproblem, 'printLevel', printLevel);
         if Force.stat == 1
             nSolsFound = nSolsFound + 1;
-            if verbose; fprintf('set n %1.0f was found\n', nSolsFound), end;
+            if printLevel; fprintf('set n %1.0f was found\n', nSolsFound), end;
             pos_bin = find(Force.int>0.999999 | Force.int>1.000001);
             prev = cell(k, 1);
             flux = zeros(k, 1);
@@ -620,7 +634,7 @@ else
 
     if nSolsFound > 0
         if printReport; fprintf(freport, ['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
-        if verbose; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
+        if printLevel; fprintf(['\noptForce found ' num2str(nSolsFound) ' sets \n']); end;
 
         for i = 1:nSolsFound
             %incorporte info of set i into general matrices.
@@ -632,7 +646,7 @@ else
     else
         %in case that none set was found, initialize empty arrays
         if printReport; fprintf(freport, '\n optForce did not find any set \n'); end;
-        if verbose; fprintf('\n optForce did not find any set \n'); end;
+        if printLevel; fprintf('\n optForce did not find any set \n'); end;
         optForceSets = {};
         posOptForceSets = [];
         typeRegOptForceSets = {};
@@ -664,13 +678,14 @@ else
                     num2cell(solutions{i}.flux), [{solutions{i}.obj};cell(k-1,1)] [{solutions{i}.minTarget};cell(k-1,1)] ...
                     [{solutions{i}.maxTarget};cell(k-1,1)] [{solutions{i}.growth};cell(k-1,1)]];
             end
-            xlswrite(outputFileName,Info)
+            setupxlwrite();
+            xlwrite(outputFileName,Info)
             cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
-            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
+            if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
         else
             if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no excel file was generated\n'); end;
-            if verbose; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
+            if printLevel; fprintf('No solution to optForce was not found. Therefore, no excel file was generated\n'); end;
         end
     end
 
@@ -712,10 +727,10 @@ else
             fclose(f);
             cd(runID);
             if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
-            if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
+            if printLevel; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
         else
             if printReport; fprintf(freport, '\nNo solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
-            if verbose; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
+            if printLevel; fprintf('No solution to optForce was not found. Therefore, no plain text file was generated\n'); end;
         end
     end
 

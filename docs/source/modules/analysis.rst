@@ -13,7 +13,7 @@ Analysis
    exploration
    multiSpecies
    rFBA
-   relaxFBA
+   relaxedFBA
    sampling
    sparseFBA
    subspaces

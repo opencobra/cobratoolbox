@@ -14,7 +14,7 @@ fileDir = fileparts(which('testWriteCytoscapeEdgeAttributeTable'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model);
 C = cell(95, 1);
 C{1} = '1';

@@ -88,7 +88,7 @@ optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
                  'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'solver'};
 
 parameters = [];
-
+parametersStructureFlag = false;
 % First input can be 'default' or a solver-specific parameter structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
@@ -99,8 +99,8 @@ if ~isempty(varargin)
         varargin = varargin(~isdone);
 
     elseif isstruct(varargin{1})  % solver-specific parameter structure
-        solverParams = varargin{1};
-
+        [solverParams, directParamStruct] = deal(varargin{1});
+        parametersStructureFlag = true;
         isdone(1) = true;
         varargin = varargin(~isdone);
     end
@@ -111,8 +111,8 @@ if ~isempty(varargin)
     isdone = false(size(varargin));
 
     if isstruct(varargin{end})
-        solverParams = varargin{end};
-
+        [solverParams, directParamStruct] = deal(varargin{end});
+        parametersStructureFlag = true;
         isdone(end) = true;
         varargin = varargin(~isdone);
     end
@@ -122,7 +122,6 @@ if nargin ~= 1
     if mod(length(varargin), 2) == 0
         try
             parameters = struct(varargin{:});
-            parametersStructureFlag = 0;
         catch
             error('solveCobraLP: Invalid parameter name-value pairs.')
         end
@@ -156,12 +155,16 @@ if nargin ~= 1
     else
         error('solveCobraMILP: Invalid number of parameters/values')
     end
+%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+%     getCobraSolverParams('LP', optParamNames(1:6), parameters);
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', optParamNames(1:6), parameters);
+    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
 else
     parametersStructureFlag = 0;
+%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+%     getCobraSolverParams('LP', optParamNames(1:6));
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', optParamNames(1:6));
+    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
     % parameters will later be accessed and should be initialized.
     parameters = '';
 end
@@ -189,6 +192,10 @@ x = [];
 xInt = [];
 xCont = [];
 f = [];
+
+if ~isfield(MILPproblem, 'x0')
+    MILPproblem.x0 = [];
+end
 
 [A, b, c, lb, ub, csense, osense, vartype, x0] = ...
     deal(MILPproblem.A, MILPproblem.b, MILPproblem.c, MILPproblem.lb, MILPproblem.ub, ...
@@ -316,8 +323,8 @@ switch solver
         end
 
         % minimum intTol for gurobi = 1e-9
-        if solverParams.intTol<1e-9,
-            solverParams.intTol=1e-9
+        if solverParams.intTol<1e-9
+            solverParams.intTol = 1e-9;
         end
 
         opts.TimeLimit=solverParams.timeLimit;
@@ -387,8 +394,16 @@ switch solver
         cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
         cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
         cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
-
-        outputfile = fopen(solverParams.logFile,'a');
+        
+        
+        if isscalar(solverParams.logFile) && solverParams.logFile == 1
+            % allow print to command window by setting solverParams.logFile == 1
+            outputfile = 1;
+            logToConsole = true;
+        else
+            outputfile = fopen(solverParams.logFile,'a');
+            logToConsole = false;
+        end
         cplexlp.DisplayFunc = @redirect;
 
         cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
@@ -411,8 +426,10 @@ switch solver
         % Solve problem
         Result = cplexlp.solve();
         
-        % Close the output file
-        fclose(outputfile);
+        if ~logToConsole
+            % Close the output file
+            fclose(outputfile);
+        end
         
         % Get results
         x = Result.x;
@@ -494,6 +511,9 @@ switch solver
         MILPproblem.vtype = vartype;
         MILPproblem.modelsense = MILPproblem.osense;
         [MILPproblem.A,MILPproblem.rhs,MILPproblem.obj,MILPproblem.sense] = deal(sparse(MILPproblem.A),MILPproblem.b,double(MILPproblem.c),MILPproblem.csense);
+        if ~isempty(x0)
+            MILPproblem.start = x0;
+        end
         resultgurobi = gurobi(MILPproblem,params);
 
         stat = resultgurobi.status;

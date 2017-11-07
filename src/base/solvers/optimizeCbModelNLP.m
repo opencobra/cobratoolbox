@@ -53,13 +53,13 @@ defaultInitFunction = 'randomObjFBASol';
 
 p = inputParser;
 addRequired(p,'model',@isstruct)
-addParameter(p,'objFunction',defaultObjFunction,@ischar)
-addParameter(p,'initFunction',defaultInitFunction,@ischar)
-addParameter(p,'osenseStr',defaultosenseStr,@(x) strcmp(x,'min') | strcmp(x,'max'));
-addParameter(p,'nOpt',100,@(x) rem(x,1) == 0);
-addParameter(p,'objArgs',{},@iscell)
-addParameter(p,'initArgs',[],@iscell)
-addParameter(p,'solverOptions',[],@isstruct)
+addParamValue(p,'objFunction',defaultObjFunction,@ischar)
+addParamValue(p,'initFunction',defaultInitFunction,@ischar)
+addParamValue(p,'osenseStr',defaultosenseStr,@(x) strcmp(x,'min') | strcmp(x,'max'));
+addParamValue(p,'nOpt',100,@(x) rem(x,1) == 0);
+addParamValue(p,'objArgs',{},@iscell)
+addParamValue(p,'initArgs',[],@iscell)
+addParamValue(p,'solverOptions',[],@isstruct)
 
 parse(p,model,varargin{:});
 

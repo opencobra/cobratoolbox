@@ -50,8 +50,8 @@ end
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addRequired('rxnRemoveList',@(x) iscell(x) || ischar(x))
-parser.addParameter('irrevFlag',false,@(x) isnumeric(x) || islogical(x))
-parser.addParameter('metFlag',true,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('irrevFlag',false,@(x) isnumeric(x) || islogical(x))
+parser.addParamValue('metFlag',true,@(x) isnumeric(x) || islogical(x));
 
 parser.parse(model,rxnRemoveList,varargin{:})
 

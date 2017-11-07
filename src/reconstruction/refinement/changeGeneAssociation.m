@@ -99,10 +99,11 @@ if (~isempty(grRule))
 end
 
 model.grRules{rxnID} = grRule;
+model.grRules = columnVector(model.grRules);
+
 
 %make sure variables are column vectors
 model.rules = columnVector(model.rules);
-model.grRules = columnVector(model.grRules);
 if nGenes > nGenesInit
     model = extendModelFieldsForType(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
 end

@@ -95,13 +95,13 @@ parser = inputParser();
 parser.addRequired('rxnAbrList',@iscell);
 parser.addRequired('rxnNameList',@iscell);
 parser.addRequired('rxnList',@iscell);
-parser.addParameter('revFlagList',revDefault,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('lowerBoundList',lowerBoundDefault,@isnumeric);
-parser.addParameter('upperBoundList',upperBoundDefault,@isnumeric);
-parser.addParameter('subSystemList', subSysDefault ,@iscell);
-parser.addParameter('grRuleList', grRuleDefault,@iscell);
-parser.addParameter('geneNameList', geneNameDefault,@iscell);
-parser.addParameter('systNameList', systNameDefault,@iscell);
+parser.addParamValue('revFlagList',revDefault,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('lowerBoundList',lowerBoundDefault,@isnumeric);
+parser.addParamValue('upperBoundList',upperBoundDefault,@isnumeric);
+parser.addParamValue('subSystemList', subSysDefault ,@iscell);
+parser.addParamValue('grRuleList', grRuleDefault,@iscell);
+parser.addParamValue('geneNameList', geneNameDefault,@iscell);
+parser.addParamValue('systNameList', systNameDefault,@iscell);
 parser.parse(varargin{:});
 
 rxnAbrList = parser.Results.rxnAbrList;
@@ -131,8 +131,8 @@ for i = 1 : nRxns
        end
     end
     [metaboliteList,stoichCoeffList,revFlag_i] = parseRxnFormula(rxnList{i});
-    if  ~any(ismember('lowerBoundList',parser.UsingDefaults))
-        if ~any(ismember('revFlagList',parser.UsingDefaults))
+    if  any(ismember('lowerBoundList',parser.UsingDefaults))
+        if any(ismember('revFlagList',parser.UsingDefaults))
             %if both revFlag and lb are not given, update the revFlag
             %implied by the rxn formula
             revFlagList(i) = revFlag_i;

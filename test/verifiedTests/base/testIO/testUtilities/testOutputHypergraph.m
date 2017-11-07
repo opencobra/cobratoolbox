@@ -14,7 +14,7 @@ fileDir = fileparts(which('testOutputHypergraph'));
 cd(fileDir);
 
 % test variables
-testModel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+testModel = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 testFileName = 'testData_outputHypergraph.txt';
 testWeights = zeros(95);
 

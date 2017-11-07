@@ -14,7 +14,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testUpdateGenes'));
 cd(fileDir);
 
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'Recon2.v04.mat']);
 
 % Check that updateGenes orders the gene list
 model2 = updateGenes(model);

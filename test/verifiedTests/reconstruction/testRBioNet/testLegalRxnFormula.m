@@ -18,7 +18,7 @@ fileDir = fileparts(which('testReactionEq'));
 cd(fileDir);
 
 % load E. coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % check validity of reaction formulas
 formula = printRxnFormula(model, model.rxns(1));

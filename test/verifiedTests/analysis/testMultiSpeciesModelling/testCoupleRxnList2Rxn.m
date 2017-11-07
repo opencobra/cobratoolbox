@@ -17,7 +17,7 @@ fileDir = fileparts(which('testCoupleRxnList2Rxn'));
 cd(fileDir);
 
 % test coupling constraints
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 
 % remove ATPM constraint so no infeasible model is generated
 model = changeRxnBounds(model, 'ATPM', 0, 'l');

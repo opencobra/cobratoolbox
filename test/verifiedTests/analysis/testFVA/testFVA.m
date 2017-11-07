@@ -31,6 +31,8 @@ load('testFVAData.mat');
 minWorkers = 2;
 myCluster = parcluster(parallel.defaultClusterProfile);
 
+loopToyModel = createToyModelForgapFind();
+
 if myCluster.NumWorkers >= minWorkers
     poolobj = gcp('nocreate');  % if no pool, do not create new one.
     if isempty(poolobj)
@@ -42,8 +44,9 @@ if myCluster.NumWorkers >= minWorkers
         % change the COBRA solver (LP)
         solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
         solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
+        solverMILPOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
-        if solverLPOK && solverQPOK
+        if solverLPOK && solverQPOK && solverMILPOK
             fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
             rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', ...
@@ -98,12 +101,30 @@ if myCluster.NumWorkers >= minWorkers
             end
 
             % output a success message
+            [minF,maxF] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0);
+            assert(abs(maxF(2))< tol); %While R4 can carry a flux of 1000, it can't do so without a loop
+            assert(abs(maxF(1) -500) < tol); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
+            assert(abs(minF(1)-5) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+            assert(abs(minF(2)) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+            try
+                errored = false;
+                [minF,maxF,minSols,maxSols] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0);
+            catch ME
+                errored = true;
+            end
+            assert(errored);
+            [minF,maxF,minSols,maxSols] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0,'FBA');
+            assert(all(minSols(:,1) == maxSols(:,2))); %This is an odd assertion, but since the minimal solution for reaction 1 is the minimal solution of the system, 
+                                                  %it has to be the same as the maximal solution for the second tested
+                                                  %Reaction.
             fprintf('Done.\n');
         end
     end
 else
     warning(' > Skipping testFVA as the default parallel pool is not configured for more than 2 workers.');
 end
+
+
 
 % change the directory
 cd(currentDir)

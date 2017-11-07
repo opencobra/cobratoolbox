@@ -1,4 +1,4 @@
-function singleProductionEnvelope(model, deletions, product, biomassRxn, varargin)
+function [x, y1, y2] = singleProductionEnvelope(model, deletions, product, biomassRxn, varargin)
 % Plots maximum growth rate as a function of the
 % output of one specified products
 %
@@ -36,7 +36,13 @@ function singleProductionEnvelope(model, deletions, product, biomassRxn, varargi
 %    outputFolder:    (char) name of the folder where files are saved
 %                     Default = 'Results'
 %
+% OUTPUTS;
+%    x:               x axis for the curves
+%    y1:              y results for the first curve - 'Minimum Wild-type'  
+%    y2:              y results for the second curve - 'Maximum Wild-type'
+%
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+%           - Added output arguments for testing - Jacek Wachowiak
 
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
@@ -45,12 +51,12 @@ parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model
 parser.addRequired('deletions', @(x)  iscell(x) && ~isempty(x))
 parser.addRequired('product', @(x) ischar(x) && ~isempty(x))
 parser.addRequired('biomassRxn', @(x) ischar(x) && ~isempty(x))
-parser.addParameter('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('nPts', 20, @isnumeric);
-parser.addParameter('savePlot', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('showPlot', 0, @(x) isnumeric(x) || islogical(x));
-parser.addParameter('fileName', product, @(x) ischar(x))
-parser.addParameter('outputFolder', 'Results', @(x) ischar(x))
+parser.addParamValue('geneDelFlag', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('nPts', 20, @isnumeric);
+parser.addParamValue('savePlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('showPlot', 0, @(x) isnumeric(x) || islogical(x));
+parser.addParamValue('fileName', product, @(x) ischar(x))
+parser.addParamValue('outputFolder', 'Results', @(x) ischar(x))
 
 parser.parse(model, deletions, product, biomassRxn, varargin{:})
 model = parser.Results.model;
@@ -114,9 +120,13 @@ end
 % plot
 hold on
 plot(x2, ymin_KO, 'r', x2, ymax_KO, 'm', 'LineWidth', 2);
-legend('Minimun Wild-type', 'Maximun Wild-type', 'Minimun Mutant', 'Maximun Mutant')
+legend('Minimum Wild-type', 'Maximum Wild-type', 'Minimum Mutant', 'Maximum Mutant')
 ylabel([strrep(product, '_', '\_'), ' (mmol/gDW h)']);
 xlabel('Growth Rate (1/h)');
+% added outputs
+x = x2;
+y1 = ymin_KO;
+y2 = ymax_KO;
 
 %plot optKnock sol
 plot(max, target, 'Marker', 'o', 'Color', [0 0 0], 'MarkerEdgeColor', [0 0 0], 'MarkerFaceColor', [0.5 0.5 0.5], 'MarkerSize', 10);

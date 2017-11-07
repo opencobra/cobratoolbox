@@ -89,12 +89,12 @@ while 1
     end
 
     % vartype
-    vartype = [];
+    vartype = char();
     for i = 1:n
-        vartype(i) = 'C';
+        vartype(i,1) = 'C';
     end
     for i = 1:2*n
-        vartype(end+1) = 'B';
+        vartype(end+1,1) = 'B';
     end
 
     % lb,ub
@@ -118,7 +118,7 @@ while 1
     %MILPproblem.contSolInd = [];
 
 %    pause;
-    MILPsol = solveCobraMILP(MILPproblem)
+    MILPsol = solveCobraMILP(MILPproblem);
 %    MILPsol.full
     NZ(:,end+1) = abs(MILPsol.full(1:n))>.000000001;
     PrevNZ = NZ(:,end);

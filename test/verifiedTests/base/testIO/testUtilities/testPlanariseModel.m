@@ -14,7 +14,7 @@ fileDir = fileparts(which('testPlanariseModel'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 
 % function outputs
 [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model);
