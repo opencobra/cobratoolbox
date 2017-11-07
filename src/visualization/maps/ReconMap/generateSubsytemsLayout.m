@@ -21,10 +21,13 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
     for i = 1:length(cobra_model.rxns)
 
         if strcmp(cobra_model.subSystems(i), subsystem)
-%             Assuming that reactions not existing in the map won't be a
-%             problem
+            % Assuming that reactions not existing in the map won't be a
+            % problem
             mapReactionId = cobra_model.rxns{i};
-%             disp(mapReactionId)
+            % if not ReconMap 2.01 use new reaction notation   
+            if ~strcmp(minerva.map, 'ReconMap-2.01')
+                mapReactionId = strcat('r_', mapReactionId);
+            end
             line = strcat('\t', mapReactionId, '\t', '5', '\t', color, '\n');
             content = strcat(content, line);
         end
@@ -32,12 +35,10 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
     end
 
     %   get all the parameters
-    minerva_servlet = minerva.minervaURL;
     login = minerva.login;
     password = minerva.password;
     model = minerva.map;
     %     have to turn it into string
     content = sprintf(content);
-    response = postMINERVArequest(minerva_servlet, login, password, model, subsystem, content);
-
+    response = postMINERVArequest(login, password, model, subsystem, content);
 end
