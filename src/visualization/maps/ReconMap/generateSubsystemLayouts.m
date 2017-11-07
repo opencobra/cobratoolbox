@@ -17,9 +17,9 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
     for i= 1:length(subsystems)
 
         if nargin < 3
-            response = generateSubsytemsLayout(minerva, cobra_model, subsystems(i));
+            response = generateSubsytemsLayout(cobra_model, subsystems(i));
         else
-            response = generateSubsytemsLayout(minerva, cobra_model, subsystems(i), color);
+            response = generateSubsytemsLayout(cobra_model, subsystems(i), color);
         end
 
         if ~isempty(strfind(response, '<span id="default_form:status">OK</span>'))
