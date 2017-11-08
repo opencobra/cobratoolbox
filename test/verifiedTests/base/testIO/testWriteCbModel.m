@@ -102,7 +102,3 @@ end
 
 % change to old directory
 cd(currentDir);
-
-% Kill the workers
-poolobj = gcp('nocreate');
-delete(poolobj);
