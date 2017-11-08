@@ -30,8 +30,8 @@ for k = 1:length(solverPkgs)
 
     % save the version information of MATLAB toolboxes
     v = ver;
-
-    if solverOK == 1 && any(strcmp('Global Optimization Toolbox', {v.Name}))
+    
+    if solverOK == 1 && any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox')
         fprintf('Testing optGene using %s ...\n',solverPkgs{k});
         % function outputs
         % requires Global Optimization Toolbox
