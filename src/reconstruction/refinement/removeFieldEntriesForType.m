@@ -7,8 +7,8 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 % INPUTS:
 %
 %    model:              the model to update
-%    indicesToRemove:    indices which should eb removed (either a logical array or double indices)
-%    type:               the Type of field to update one of 
+%    indicesToRemove:    indices which should be removed (either a logical array or double indices)
+%    type:               the Type of field to update. one of 
 %                        ('rxns','mets','comps','genes')
 %    fieldSize:          The size of the original field before
 %                        modification. This is necessary to identify fields
@@ -90,7 +90,7 @@ if strcmp(type,'genes')
                     if isequal(cres(pos).pre,'&')
                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)])'],'$1');
                     elseif isequal(cres(pos).post,'&')
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[ \(] *x\(' num2str(genePos(i)) '\) *& *'],'$1');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['([ \(]) *x\(' num2str(genePos(i)) '\) *& *'],'$1');
                     elseif isequal(cres(pos).post,'|')
                         %Make sure its not preceded by a &
                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['([^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
@@ -99,7 +99,7 @@ if strcmp(type,'genes')
                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\) *([^&])'],' $1');
                     else
                         %This should only ever happen if there is only one gene.
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[\( ]*x\(' num2str(genePos(i)) '\)[\( ]*'],'');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[\( ]*x\(' num2str(genePos(i)) '\)[\) ]*'],'');
                     end
                 end
             end            
