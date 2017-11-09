@@ -349,6 +349,7 @@ end
 if all(~cellfun(@isempty , regexp(model.comps,'^C_')))
     %And check, that the metabolites are not using these ids.
     model.comps = regexprep(model.comps,'^C_','');
+    model.mets = regexprep(model.mets,'\[C_(.*)\]$','[$1]'); %Replace the C_ in the metabolite ids as well.
 end
 %now, check whether all metabolites start with an M_
 if all(~cellfun(@isempty, regexp(model.mets,'^M_')))
@@ -357,6 +358,10 @@ end
 %Also update Reaction IDs.
 if all(~cellfun(@isempty, regexp(model.rxns,'^R_')))
     model.rxns= regexprep(model.rxns,'^R_','');
+end
+%And Gene IDs
+if all(~cellfun(@isempty, regexp(model.genes,'^G_')))
+    model.genes= regexprep(model.genes,'^G_','');
 end
 
 %And convert the IDs from SBML.
@@ -417,8 +422,12 @@ else
     if all(~cellfun(@(met,comp) isempty(regexp(met,['_' regexptranslate('escape',comp) '$'])),model.mets,metComps))
         model.mets = cellfun(@(id,compID) regexprep(id,['_' regexptranslate('escape',compID) '$'],['[' compID ']']),model.mets,metComps,'UniformOutput',0);
     else
-        %otherwise, we will just append the compartmentid.
-        model.mets = strcat(model.mets,'[',metComps,']');
+        %Lets check if there is already an id in here:
+        if ~all(~cellfun(@isempty, regexp(model.mets,'\[[^\[]*\]$')))
+            % if not, append the compartmentID
+            model.mets = strcat(model.mets,'[',convertSBMLID(metComps,false),']');
+        end
+        %Otherwise we have a set up model.
     end
     
     
