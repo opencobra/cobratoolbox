@@ -47,7 +47,7 @@ for k = 1:length(solverPkgs)
         [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn,generxnList, 'StallTimeLimit',15,'TimeLimit',30);
         %Check, that we get the expected solution from a previous run.
         optSols = population((optGeneSol.scores == min(optGeneSol.scores)),:); %Get the set of optimal Solutions.
-        optReacs = sum(optSols,1) == max(sum(optSols,1));
+        optReacs = optSols(1,:);        
         model2 = model;
         model2.lb(ismember(model2.rxns,generxnList(optReacs))) = 0;
         model2.ub(ismember(model2.rxns,generxnList(optReacs))) = 0;
