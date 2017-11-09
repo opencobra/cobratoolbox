@@ -32,6 +32,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
 %                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
 %                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` (optional field)
+%                     * .SExRxnOneCoeffBool - Boolean indicating whether the reaction has less than 2 non zero coefficients.                       
 %
 % .. Author: -  Ronan Fleming
 
@@ -233,3 +234,5 @@ model.SExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'incl
 if nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool) ~= nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool)
     error('Inconsistency in metabolite counts')
 end
+
+model.SExRxnOneCoeffBool = SExRxnBoolOneCoefficient;
