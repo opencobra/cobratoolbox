@@ -40,7 +40,11 @@ function results = verifyModel(model, varargin)
 %                     applies to the model structure check. (default is to
 %                     print info)
 %                   * 'restrictToFields' restricts the check to the listed
-%                     fields. (default all model fields)
+%                     fields. This will lead to requiredFields being reduced 
+%                     to those fields present in the restricted fields. If
+%                     an empty cell array is provided no restriction is
+%                     applied.
+%                     (default: {})
 %
 % OUTPUT:
 %
@@ -79,7 +83,7 @@ parser.addParamValue('stoichiometricConsistency',false,@(x) isnumeric(x) || islo
 parser.addParamValue('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
 parser.addParamValue('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('silentCheck',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('restrictToFields',fieldnames(model),@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParamValue('restrictToFields',{},@(x) iscell(x) && all(cellfun(@ischar, x)));
 
 
 parser.parse(model,varargin{:});
@@ -98,9 +102,10 @@ restrictToFields = parser.Results.restrictToFields;
 
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
-
-requiredFields = requiredFields(ismember(requiredFields(:,1),restrictToFields),:);
-optionalFields = optionalFields(ismember(optionalFields(:,1),restrictToFields),:);
+if ~isempty(restrictToFields)
+    requiredFields = requiredFields(ismember(requiredFields(:,1),restrictToFields),:);
+    optionalFields = optionalFields(ismember(optionalFields(:,1),restrictToFields),:);
+end
 
 results = struct();
 results.Errors = struct();
