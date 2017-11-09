@@ -1,51 +1,34 @@
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%% StopCritDuplo.m %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% StopCriterion is a function checking that one of the stopping criteria 
-% holds to terminate LLM and GLM. It perepare the status determining why
+function [StopFlag, Status] = StopCritDuplo(nfxk,Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
+% Function checking that one of the stopping criteria
+% holds to terminate LLM and GLM. It perepares the status determining why
 % the algorithm is stopped.
 %
-% INPUT:
+% USAGE:
 %
-% nhxk              % the norm 2 of h(xk)
-% Niter             % the number of iterations
-% Nmap              % the number of mapping calls
-% T                 % the running time
-% MaxNumIter        % maximum number of iterations
-% MaxNumMapEval     % maximum number of function evaluations
-% TimeLimit         % maximum running time
-% epsilon           % accuracy parameter
-% Stopping_Crit     % stopping criterion
+%    [StopFlag, Status] = StopCritDuplo(nfxk,Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
 %
-%                      % 1 : stop if ||nhxk|| <= epsilon 
-%                      % 2 : stop if MaxNumIter is reached 
-%                      % 3 : stop if MaxNumMapEval is reached
-%                      % 4 : stop if TimeLimit is reached
-%                      % 5 : stop if                         (default)
-%                            ||hxk||<=epsilon or MaxNumIter is reached
+% INPUTS:
+%    nhxk:             the norm 2 of `h(xk)`
+%    Niter:            the number of iterations
+%    Nmap:             the number of mapping calls
+%    T:                the running time
+%    MaxNumIter:       maximum number of iterations
+%    MaxNumMapEval:    maximum number of function evaluations
+%    TimeLimit:        maximum running time
+%    epsilon:          accuracy parameter
+%    Stopping_Crit:    stopping criterion:
 %
-% OUTPUT:
-%
-% StopFlag             % 1: if one of the stopping criteria holds
-%                      % 0: if none of the stopping criteria holds
-% Status               % the reason of the scheme termination
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
-
-function [StopFlag,Status] = StopCritDuplo(nfxk,Niter,Nmap,T, ...
-         MaxNumIter,MaxNumMapEval,TimeLimit,epsilon,Stopping_Crit)
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%% Main body of StopCritDuplo.m %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        1. stop if :math:`||nfxk|| \leq \epsilon`
+%                        2. stop if `MaxNumIter` is reached
+%                        3. stop if `MaxNumMapEval` is reached
+%                        4. stop if `TimeLimit` is reached
+%                        5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+% OUTPUTS:
+%    StopFlag:         1: if one of the stopping criteria holds, 0: if none of the stopping criteria holds
+%    Status:           the reason of the scheme termination
 
 switch Stopping_Crit
-        
+
   case 1
     if nhxk <= epsilon
       StopFlag = 1;
@@ -53,8 +36,8 @@ switch Stopping_Crit
     else
       StopFlag = 0;
       Status   = [];
-    end 
-    
+    end
+
   case 2
     if Niter >= MaxNumIter
       StopFlag = 1;
@@ -62,8 +45,8 @@ switch Stopping_Crit
     else
       StopFlag = 0;
       Status   = [];
-    end 
-    
+    end
+
   case 3
     if Nmap >= MaxNumMapEval
       StopFlag = 1;
@@ -71,8 +54,8 @@ switch Stopping_Crit
     else
       StopFlag = 0;
       Status   = [];
-    end 
-    
+    end
+
   case 4
     if T >= TimeLimit
       StopFlag = 1;
@@ -81,7 +64,7 @@ switch Stopping_Crit
       StopFlag = 0;
       Status   = [];
     end
-    
+
   case 5
     if (nfxk <= epsilon || Niter >= MaxNumIter)
       StopFlag = 1;
@@ -94,7 +77,7 @@ switch Stopping_Crit
       StopFlag = 0;
       Status   = [];
     end
-    
+
 end
 
 end

@@ -1,41 +1,28 @@
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%% Extended_rate_function.m %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% [ hxk,ghxk ] = Extended_rate_function( opt,varargin )
+function [hxk, ghxk] = Extended_rate_function(opt, varargin)
+% USAGE:
 %
-% INPUT:
+%    [hxk, ghxk] = Extended_rate_function(opt, varargin)
 %
-% xk        % current point;
-% opt       % structure includes required parameters;
+% INPUTS:
+%    xk:      current point;
+%    opt:     structure includes required parameters:
 %
-%    .FR    % concatenation of forward and reverse stoichiometric matrix               
-%    .A     % Reduced forward stoichiometric matrix
-%    .B     % Reduced reverse stoichiometric matrix
-%    .L     % left null space of R-F
-%    .l0    % positive initial concentration
-%    .k     % initial kinetic
-%   
-% OUTPUT:
+%               * .FR - concatenation of forward and reverse stoichiometric matrix
+%               * .A - Reduced forward stoichiometric matrix
+%               * .B - Reduced reverse stoichiometric matrix
+%               * .L - left null space of `R-F`
+%               * .l0 - positive initial concentration
+%               * .k - initial kinetic
 %
-% hxk       % the vector h(xk)
-% ghxk      % gradient of h at xk 
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% OUTPUTS:
+%    hxk:     the vector `h(xk)`
+%    ghxk:    gradient of `h` at `xk`
 
-
-function [hxk,ghxk] = Extended_rate_function(opt, varargin)
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%% Main body of Extended_rate_function.m %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if nargin ~= 2
     error('The number of input arguments is not valid');
-end   
+end
 
-if nargout >= 3 
+if nargout >= 3
     error('The number of output arguments is not valid');
 end
 
@@ -47,7 +34,7 @@ k     = opt.k;
 
 xk = varargin{1};
 
-% ======================== Function evaluation ========================= 
+% ======================== Function evaluation =========================
 f   = AB_BA*exp(k+FR'*xk);
 l   = L*exp(xk)-l0;
 hxk = [f;l];
@@ -62,5 +49,3 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% End of Extended_rate_function.m %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
