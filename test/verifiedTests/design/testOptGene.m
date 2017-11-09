@@ -6,6 +6,12 @@
 % Authors:
 %     - Jacek Wachowiak
 
+%Test PResence of optimisation Toolbox required for this function
+v = ver;
+optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+
+
 global CBTDIR
 % save the current path
 currentDir = pwd;
@@ -31,7 +37,7 @@ for k = 1:length(solverPkgs)
     % save the version information of MATLAB toolboxes
     v = ver;
     
-    if solverOK == 1 && any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox')
+    if solverOK == 1
         fprintf('Testing optGene using %s ...\n',solverPkgs{k});
         % function outputs
         % requires Global Optimization Toolbox
@@ -53,13 +59,7 @@ for k = 1:length(solverPkgs)
         %And if we turn them off, we get the expected by product formation.
         assert(-sol.x(39) == min(scores));
     else
-        if solverOK
-            v = ver;
-            optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
-            assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
-        else
-            assert(false,sprintf('The tested solver (ibm_cplex) is not installed on your system.\nThis function might work with other solvers, but they are not tested.'))
-        end
+        assert(false,sprintf('The tested solver (ibm_cplex) is not installed on your system.\nThis function might work with other solvers, but they are not tested.'))
     end
 end
 % close the open windows

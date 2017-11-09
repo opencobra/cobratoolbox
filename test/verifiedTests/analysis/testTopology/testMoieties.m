@@ -10,6 +10,12 @@
 %     - Sylvain Arreckx March 2017
 %
 
+%Test presence of required toolboxes.
+v = ver;
+bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
+assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
+
+
 % define global paths
 global CBTDIR
 
@@ -19,11 +25,6 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testMoieties'));
 cd(fileDir);
-
-%Test presence of required toolboxes.
-v = ver;
-bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
-assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
 
 % Load reference data
 load('refData_moieties.mat')

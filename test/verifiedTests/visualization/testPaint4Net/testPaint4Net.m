@@ -7,14 +7,14 @@
 %     - Original file: Agris Pentjuss, Andrejs Kostromins 04.07.2017
 %
 
-% save the current path
-currentDir = pwd;
-
 %Test presence of required toolboxes.
 v = ver;
 bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
 assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
 
+
+% save the current path
+currentDir = pwd;
 
 % initialize the test
 cd(fileparts(which('testPaint4Net')))

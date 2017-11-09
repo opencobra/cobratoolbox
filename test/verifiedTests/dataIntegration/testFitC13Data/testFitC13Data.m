@@ -56,16 +56,18 @@ end
 % define the solver packages to be used to run this test
 solverPkgs = {'matlab'}; % tomlab_snopt
 
-v = ver;
+if ~all(ismember(solverPkgs,'matlab'))
+    %Test this only if matlab is the only solver set here.
+    v = ver;
+    optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');    
+    assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+end
 
 for k = 1:length(solverPkgs)
 
     % change the COBRA solver (NLP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'NLP');
     
-    optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
-    
-    assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
     if solverOK == 1
         fprintf('   Testing fitC13Data using %s ... ', solverPkgs{k});
 

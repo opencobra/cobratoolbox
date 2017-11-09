@@ -23,9 +23,13 @@ tol = 1e-4;
 
 % define the solver packages to be used to run this test
 solverPkgs = {'matlab'};  % tomlab_snopt
-v = ver;
-optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
-assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+
+if ~all(ismember(solverPkgs,'matlab'))
+    %Test this only if matlab is the only solver set here.
+    v = ver;
+    optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+    assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+end
 
 for k = 1:length(solverPkgs)
 
