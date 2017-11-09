@@ -17,6 +17,12 @@ currentDir = pwd;
 fileDir = fileparts(which('testuFBA'));
 cd(fileDir);
 
+%Test presence of required Toolboxes
+v = ver;
+statPres = any(strcmp('Statistics and Machine Learning Toolbox', {v.Name})) && license('test','Statistics_Toolbox');
+assert(statPres,sprintf('The Statistics and Machine Learning Toolbox required for this function is not installed or not licensed on your system.'))
+
+
 % Load in data and model
 % This data is quantified and volume adjusted. The following
 % variables will be loaded into your workspace:

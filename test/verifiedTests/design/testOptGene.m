@@ -53,7 +53,13 @@ for k = 1:length(solverPkgs)
         %And if we turn them off, we get the expected by product formation.
         assert(-sol.x(39) == min(scores));
     else
-        fprintf(' > Skipping testOptGene as the system is not properly configured.\n');
+        if solverOK
+            v = ver;
+            optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+            assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+        else
+            assert(false,sprintf('The tested solver (ibm_cplex) is not installed on your system.\nThis function might work with other solvers, but they are not tested.'))
+        end
     end
 end
 % close the open windows

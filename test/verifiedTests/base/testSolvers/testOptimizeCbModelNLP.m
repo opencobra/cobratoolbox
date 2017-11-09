@@ -20,7 +20,13 @@ cd(fileDir);
 changeCobraSolver('glpk', 'LP');
 
 % set the NLP cobra the solver
-changeCobraSolver('matlab', 'NLP');
+solverOk = changeCobraSolver('matlab', 'NLP');
+if ~solverOk
+    v = ver;
+    optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+    assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
+end
+
 
 % set the tolerance
 tol = 1e-6;
