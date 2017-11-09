@@ -334,10 +334,10 @@ for i = 1:numel(structFields)
             else
                 % We have errors. lets see if osense/csense are missing and
                 % if, add them
-                if isfield(res.Errors, 'missingFields')
+                if isfield(res.Errors, 'missingFields') || isfield(res.Errors,'propertiesNotMatched')
                     % first, see if it contains an S matrix, only then will
                     % we add the fields.
-                    if ~any(ismember(res.Errors.missingFields, 'S'))
+                    if any(ismember(fieldnames(cfield), 'S'))
                         cfield = convertOldStyleModel(cfield, 0);
                     end
                     % if we reach this place, the conversion worked,
@@ -353,10 +353,11 @@ for i = 1:numel(structFields)
                     end
                 end
             end
-        catch
+        catch ME
             % IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
             % not a model.
-    end
+            0;
+        end
     end
 end
 
