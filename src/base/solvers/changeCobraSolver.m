@@ -396,7 +396,8 @@ if compatibleStatus == 1 || compatibleStatus == 2
                 end
             end
         case 'matlab'
-            solverOK = true;
+            v = ver;
+            solverOK = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
         otherwise
             error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
     end

@@ -1,4 +1,4 @@
-function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
+function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon, printLevel)
 % Adjusts the objective function to eliminate
 % "non-unique" optknock solutions by favoring the lowest production rate at
 % a given predicted max growth-rate.
@@ -14,6 +14,7 @@ function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
 %
 % OPTIONAL INPUT:
 %    epsilon:      degree of augmentation considering the biochemical objective
+%    printLevel:   determine output level. (default: 0)
 %
 % OUTPUTS:
 %    model:        Augmented model structure
@@ -32,6 +33,10 @@ if (nargin < 3)
     epsilon = .00001;
 end
 
+if ~exist('printLevel','var')
+    printLevel = 0;
+end
+
 rxnID = findRxnIDs(model,targetRxn);
 metID = find(model.S(:,rxnID));
 
@@ -41,7 +46,9 @@ OMtransRxnID = find(model.S(metID,:));
 % reactions that act on this metabolite in the extracellular space
 [m,n]=size(OMtransRxnID);
 if n >= 3
-    fprintf 'augmentBOF will not work.'
+    if printLevel > 0
+        fprintf 'augmentBOF will not work.'
+    end
     return
 end
 %remove the exchange reaction from the variable that held all the reaction

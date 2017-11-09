@@ -257,14 +257,17 @@ end
 objList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xName, n, nVar, 'rxnNameList');
 
 % parallel computation
-if threads ~= 1 && isempty(gcp('nocreate'))
+
+if threads ~= 1
     try
-        if threads > 1
-            %given explicit no. of threads
-            parpool(ceil(threads));
-        else
-            %default max no. of threads (input 0 or -1 etc)
-            parpool;
+        if isempty(gcp('nocreate'))
+            if threads > 1
+                %given explicit no. of threads
+                parpool(ceil(threads));
+            else
+                %default max no. of threads (input 0 or -1 etc)
+                parpool;
+            end
         end
     catch
         threads = 1;

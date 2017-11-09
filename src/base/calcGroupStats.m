@@ -71,8 +71,8 @@ if randStat
                 randData = data(randInd(1:thisGroupCnt), :);
                 groupStatRand(j, :) = calcStatInternal(thisGroupCnt, randData, statName, nSets);
             end
-            groupStatRandMean = nanmean(groupStatRand);
-            groupStatRandStd = nanstd(groupStatRand);
+            groupStatRandMean = applyToNonNan(groupStatRand,@mean);
+            groupStatRandStd = applyToNonNan(groupStatRand,@std);
             nGroups = length(selGroups);
             zScore(selGroups, :) = (groupStat(selGroups, :) - repmat(groupStatRandMean, nGroups, 1)) ./ repmat(groupStatRandStd, nGroups, 1);
         end
@@ -84,26 +84,26 @@ function groupStat = calcStatInternal(groupCnt, data, statName, nSets)
 if groupCnt > 0
     switch lower(statName)
         case 'mean'
-            if groupCnt > 1
-                groupStat = nanmean(data);
+            if groupCnt > 1                
+                groupStat = applyToNonNan(data,@mean);
             else
                 groupStat = data;
             end
         case 'std'
             if groupCnt > 1
-                groupStat = nanstd(data);
+                groupStat = applyToNonNan(data,@std);
             else
                 groupStat = zeros(1, nSets);
             end
         case 'median'
             if groupCnt > 1
-                groupStat = nanmedian(data);
+                groupStat = applyToNonNan(data,@median);
             else
                 groupStat = data;
             end
         case 'count'
             if groupCnt > 1
-                groupStat = nansum(data);
+                groupStat = applyToNonNan(data,@sum);
             else
                 groupStat = data;
             end
@@ -112,3 +112,5 @@ if groupCnt > 0
 else
     groupStat = ones(1, nSets) * NaN;
 end
+
+
