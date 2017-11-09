@@ -13,6 +13,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testTheoretMaxProd'));
 cd(fileDir);
 
+% change solver to gurobi
+changeCobraSolver('gurobi', 'QP');
+
 % test variables
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 
