@@ -44,7 +44,7 @@ for k = 1:length(solverPkgs)
         % requires Global Optimization Toolbox
         %Set the rng, for reproducability
         rng(0);
-        [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn,generxnList, 'StallTimeLimit',5,'TimeLimit',15);
+        [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn,generxnList, 'StallTimeLimit',15,'TimeLimit',30);
         %Check, that we get the expected solution from a previous run.
         optSols = population((optGeneSol.scores == min(optGeneSol.scores)),:); %Get the set of optimal Solutions.
         optReacs = sum(optSols,1) == max(sum(optSols,1));
