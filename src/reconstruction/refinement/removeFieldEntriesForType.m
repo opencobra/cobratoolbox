@@ -78,7 +78,9 @@ if strcmp(type,'genes')
     if isfield(model,'rules') %Rely on rules first  
         rulesFieldOk = verifyModel(model,'simpleCheck',true,'restrictToFields',{'rules'}, 'silentCheck', true);
         if ~rulesFieldOk
-            error('Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given <a href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">here</a>');
+            includedLink = hyperlink('https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md','here');
+            errormessage = ['Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given ' includedLink];
+            error(errormessage);
         end
         %However, we first normalize the rules.        
         model = normalizeRules(model);

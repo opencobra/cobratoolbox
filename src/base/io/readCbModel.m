@@ -355,8 +355,7 @@ for i = 1:numel(structFields)
             end
         catch ME
             % IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
-            % not a model.
-            0;
+            % not a model.            
         end
     end
 end
