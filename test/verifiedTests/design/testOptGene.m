@@ -28,7 +28,6 @@ generxnList = model.rxns(setdiff([1:95],[11,13,26,39])); %Everything besides the
 
 solverPkgs = {'ibm_cplex','gurobi'};
 tested = false;
-basicsolution = optimizeCbModel(model);
 for k = 1:length(solverPkgs)
 
     % set the solver
@@ -38,6 +37,7 @@ for k = 1:length(solverPkgs)
     v = ver;
     
     if solverOK == 1
+        basicsolution = optimizeCbModel(model);
         tested = true;
         fprintf('Testing optGene using %s ...\n',solverPkgs{k});
         % function outputs
