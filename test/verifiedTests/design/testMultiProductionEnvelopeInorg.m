@@ -45,5 +45,9 @@ assert(isequal((abs(refData_1stcolumn-targetValues(:, 1)) < 1e-4), ones(20, 1)))
 assert(isequal(refData_2ndcolumn, targetValues(:, 2)));
 assert(isequal((abs(refData_6thcolumn-targetValues(:, 6)) < 1e-4), ones(20, 1)));
 
+pause(3);
+
+close all hidden force
+
 % change to old directory
 cd(currentDir);
