@@ -179,14 +179,10 @@ systNameList = parser.Results.systNameList;
 %Check variant, if both, return error
 if isempty(metaboliteList) && isempty(reactionFormula)
     error('No stoichiometry found! Set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters.\nModel was not modified.')
-    rxnIDexists = -1;
-    return
 end
 %if this is not an old reaction and we have two definitions
 if ~oldRxnFlag && ~isempty(metaboliteList) && ~isempty(reactionFormula)
     error('Two stoichiometry definitions found! Please set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters but do not use both.\nModel was not modified.')
-    rxnIDexists = -1;
-    return
 end
 
 parseFormulaFlag = 0;
