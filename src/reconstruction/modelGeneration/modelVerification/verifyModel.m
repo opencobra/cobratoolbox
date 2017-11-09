@@ -25,8 +25,8 @@ function results = verifyModel(model, varargin)
 %                     2008`) (Default: false)
 %                   * 'deadEndMetabolites' (metabolites which can either not
 %                     be produced, or consumed) (Default: false)
-%                   * 'simpleCheck' returns 0 if this is not a valid model
-%                     and 1 if it is a valid model, ignored if any other
+%                   * 'simpleCheck' returns false if this is not a valid model
+%                     and true if it is a valid model, ignored if any other
 %                     option is selected. (Default: false)
 %                   * 'requiredFields' sets the fields which are required,
 %                     the argument must be firectly followed by the list of
@@ -39,6 +39,8 @@ function results = verifyModel(model, varargin)
 %                   * 'silentCheck', do not print any information. Only
 %                     applies to the model structure check. (default is to
 %                     print info)
+%                   * 'restrictToFields' restricts the check to the listed
+%                     fields. (default all model fields)
 %
 % OUTPUT:
 %
@@ -77,6 +79,7 @@ parser.addParamValue('stoichiometricConsistency',false,@(x) isnumeric(x) || islo
 parser.addParamValue('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
 parser.addParamValue('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('silentCheck',false,@(x) isnumeric(x) || islogical(x));
+parser.addParamValue('restrictToFields',fieldnames(model),@(x) iscell(x) && all(cellfun(@ischar, x)));
 
 
 parser.parse(model,varargin{:});
@@ -90,10 +93,14 @@ simpleCheck = parser.Results.simpleCheck;
 stoichiometricConsistency = parser.Results.stoichiometricConsistency;
 checkDBs = parser.Results.checkDatabaseIDs;
 silentCheck = parser.Results.silentCheck;
+restrictToFields = parser.Results.restrictToFields;
 
 
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
+
+requiredFields = requiredFields(ismember(requiredFields(:,1),restrictToFields),:);
+optionalFields = optionalFields(ismember(optionalFields(:,1),restrictToFields),:);
 
 results = struct();
 results.Errors = struct();

@@ -76,7 +76,11 @@ if strcmp(type,'genes')
     end
     %update the rules fields.
     if isfield(model,'rules') %Rely on rules first  
-        %However, we first normalize the rules.
+        rulesFieldOk = verifyModel(model,'simpleCheck',true,'restrictToFields',{'rules'}, 'silentCheck', true);
+        if ~rulesFieldOk
+            error('Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given <a href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">here</a>');
+        end
+        %However, we first normalize the rules.        
         model = normalizeRules(model);
         %First, eliminate all removed indices
         for i = 1:numel(genePos)
