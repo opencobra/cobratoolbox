@@ -56,11 +56,19 @@ compounds=unique(compoundsIn);
 %creates sparse matrix with corresponding dimensions
 if  transport==0
     ExchangeRxnMatrix.S=spalloc(length(compounds),length(compounds),length(compounds));
+    %Create one sink reaction per input metabolit = 1 S entry, one model
+    %metabolite and one reaction per input metabolite
 elseif transport == 1
     if (strcmp(compartment,'[c]')==1)
-        ExchangeRxnMatrix.S=spalloc(2 * length(compounds),length(compounds),2*length(compounds));
+        ExchangeRxnMatrix.S=spalloc(2 * length(compounds),2*length(compounds),3*length(compounds));
+        %This has 1 transporter and 1 Exchanger = 3 non zero entries per input metabolite.
+        %2 model metabolites per input metabolites and 2 reactions per
+        %input metabolite.
     else
-        ExchangeRxnMatrix.S=spalloc(3 * length(compounds),3 * length(compounds),4*length(compounds));
+        ExchangeRxnMatrix.S=spalloc(3 * length(compounds),3 * length(compounds),5*length(compounds));
+        %Generate 2 transporters and 1 Exchanger = 5 non zero entries per input metabolite.
+        %3 model metabolites (c,e,comp) per input metabolites and 3 reactions per
+        %input metabolite.
     end
 end
 
@@ -68,6 +76,7 @@ ExchangeRxnMatrix.mets=compounds;
 for i=1:length(compounds)
     HTABLE.put(compounds{i}, i);
 end
+
 for i=1:length(compounds)
     if ~isempty(compounds(i))
         if transport == 0
@@ -106,7 +115,7 @@ for i=1:length(compounds)
                 tmp = ['1 ' compounds{i} '[e] <==> 1 ' compounds{i} '[c]'];
                 ExchangeRxnMatrix.rxnFormulas{cnt,1} =  tmp;
                 tmp = [compounds{i} '[c]'];
-                ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = tmp;
+                ExchangeRxnMatrix.mets{length(ExchangeRxnMatrix.mets)+1,1} = tmp;
                 HTABLE.put(ExchangeRxnMatrix.mets{end}, length(ExchangeRxnMatrix.mets));
                 %  ExchangeRxnMatrix.grRules{cnt}='';
                 [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
