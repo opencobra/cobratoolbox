@@ -405,8 +405,10 @@ end
 
 % set solver related global variables
 if solverOK    
-    eval(['oldval = CBT_', solverType, '_SOLVER;']);
-    eval(['CBT_', solverType, '_SOLVER = solverName;']);
+    cwarn = warning;
+    warning('off');
+    eval(['oldval = CBT_', solverType, '_SOLVER']);
+    eval(['CBT_', solverType, '_SOLVER = solverName']);
     Problem = struct('A',0,'b',0,'c',1,'osense',-1,'F',1,'lb',0,'ub',0,'csense','E','vartype','C','x0',0);
     try
         eval(['solveCobra' solverType '(Problem,''printLevel'', 0);'])
@@ -414,6 +416,7 @@ if solverOK
         solverOK = false;
         eval(['CBT_', solverType, '_SOLVER = oldval;']);
     end    
+    warning(cwarn)
 end
 end
 
