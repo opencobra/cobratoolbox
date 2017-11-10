@@ -259,10 +259,11 @@ if ~any(ismember(parser.UsingDefaults,'subSystem'))
         model.subSystems(:) = {{''}};
     end
 end
-if (isfield(model,'subSystems'))
-    model.subSystems{rxnPos,1} = subSystem;
-end
 
+% 
+if (isfield(model,'subSystems'))
+    model.subSystems(rxnPos,1) = subSystem;
+end
 %This will have to be modified once the model structure is set.
 
 
