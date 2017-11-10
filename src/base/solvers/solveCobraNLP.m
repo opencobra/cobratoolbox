@@ -160,7 +160,17 @@ switch solver
 
         %Get fminCon Options, and set the options supplied by the user.
         [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);
-        options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
+        switch printLevel
+            case 0
+                fminconPrintLevel = 'off';
+            case 1
+                fminconPrintLevel = 'final';
+            case 2
+                fminconPrintLevel = 'iter-detailed';
+            otherwise
+                fminconPrintLevel = 'off'
+        end
+        options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit, 'Display',fminconPrintLevel);
 
         if isstruct(parameters)
             paramFields = fieldnames(parameters);

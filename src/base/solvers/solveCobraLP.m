@@ -142,7 +142,6 @@ if ~isempty(varargin)
     elseif isstruct(varargin{1})  % solver-specific parameter structure
         if isstruct(varargin{1})
             solverParams = varargin{1};
-
             isdone(1) = true;
             varargin = varargin(~isdone);
         end
@@ -155,7 +154,6 @@ if ~isempty(varargin)
 
     if isstruct(varargin{end})
         solverParams = varargin{end};
-
         isdone(end) = true;
         varargin = varargin(~isdone);
     end
@@ -1059,8 +1057,28 @@ switch solver
 
     case 'matlab'
         % matlab is not a reliable LP solver
+        switch printLevel
+           case 0
+               matlabPrintLevel = 'off';
+           case 1
+               matlabPrintLevel = 'final';
+           case 2
+               matlabPrintLevel = 'iter-detailed';
+           otherwise
+               matlabPrintLevel = 'off';
+        end  
+        %Set the solver Options.        
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol,'ConstraintTolerance',feasTol);
+        %Replace all options if they are provided by the solverParameters
+        %struct
+        if ~isempty(fieldnames(solverParams))
+            solverParamFields = fieldnames(solverParams);
+            for fieldPos = 1:numel(solverParamFields)                
+                linprogOptions.(solverParamFields{fieldPos}) = solverParams.(solverParamFields{fieldPos});
+            end              
+        end 
         if (isempty(csense))
-            [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub);
+            [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
         else
             Aeq = A(csense == 'E',:);
             beq = b(csense == 'E');
@@ -1072,7 +1090,7 @@ switch solver
             A = [Al;-Ag];
             clear b;
             b = [bl;-bg];
-            [x,f,origStat,output,lambda] = linprog(c*osense,A,b,Aeq,beq,lb,ub);
+            [x,f,origStat,output,lambda] = linprog(c*osense,A,b,Aeq,beq,lb,ub,linprogOptions);
         end
         y = [];
         if (origStat > 0)
