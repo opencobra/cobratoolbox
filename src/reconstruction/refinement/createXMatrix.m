@@ -58,7 +58,7 @@ if  transport==0
     ExchangeRxnMatrix.S=spalloc(length(compounds),length(compounds),length(compounds));
 elseif transport == 1
     if (strcmp(compartment,'[c]')==1)
-        ExchangeRxnMatrix.S=spalloc(2 * length(compounds),length(compounds),2*length(compounds));
+        ExchangeRxnMatrix.S=spalloc(2 * length(compounds),2*length(compounds),2*length(compounds));
     else
         ExchangeRxnMatrix.S=spalloc(3 * length(compounds),3 * length(compounds),4*length(compounds));
     end
@@ -68,6 +68,7 @@ ExchangeRxnMatrix.mets=compounds;
 for i=1:length(compounds)
     HTABLE.put(compounds{i}, i);
 end
+
 for i=1:length(compounds)
     if ~isempty(compounds(i))
         if transport == 0
@@ -106,7 +107,7 @@ for i=1:length(compounds)
                 tmp = ['1 ' compounds{i} '[e] <==> 1 ' compounds{i} '[c]'];
                 ExchangeRxnMatrix.rxnFormulas{cnt,1} =  tmp;
                 tmp = [compounds{i} '[c]'];
-                ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = tmp;
+                ExchangeRxnMatrix.mets{length(ExchangeRxnMatrix.mets)+1,1} = tmp;
                 HTABLE.put(ExchangeRxnMatrix.mets{end}, length(ExchangeRxnMatrix.mets));
                 %  ExchangeRxnMatrix.grRules{cnt}='';
                 [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
@@ -144,3 +145,4 @@ for i=1:length(compounds)
 
     showprogress(i/length(compounds));
 end
+
