@@ -79,6 +79,10 @@ else
     error('No solver found.  call changeCobraSolver(solverName)');
 end
 
+currentDir = pwd;
+
+cleanupobj = onCleanup(@() cd(currentDir));
+
 optParamNames = {'printLevel','warning','checkNaN','PbName', ...
                  'iterationLimit', 'logFile'};
 parameters = '';
