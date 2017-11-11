@@ -48,8 +48,8 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 %                               * .ratioU: ratio of the maximum and minimum values of the upper bound vector
 %                               * .ratioU_orderOfMag: order of magnitude of the ratio of the
 %                                 maximum and minimum values of the upper bound vector
-%                               * .ratioU: ratio of the maximum and minimum row scaling coefficients
-%                               * .ratioU_orderOfMag: order of magnitude of the ratio of the
+%                               * .ratioR: ratio of the maximum and minimum row scaling coefficients
+%                               * .ratioR_orderOfMag: order of magnitude of the ratio of the
 %                                 maximum and minimum row scaling coefficients
 %                               * .ratioC: ratio of the maximum and minimum column scaling coefficients
 %                               * .ratioC_orderOfMag: order of magnitude of the ratio of the
