@@ -34,7 +34,8 @@ end
 % normScore is random
 assert(isequal(nRxnsMet, ref_nRxnsMet));
 assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
-assert(isequal(rawScore, ref_rawScore));
+diff = abs((rawScore - ref_rawScore) < 1e-12);
+assert(all(diff(:)));
 
 % update with pValFlag=1
 try
@@ -51,7 +52,9 @@ for i=1:length(metric)
 end
 assert(isequal(nRxnsMet, ref_nRxnsMet));
 assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
-assert(isequal(rawScore, ref_rawScore));
+diff = abs((rawScore - ref_rawScore) < 1e-12);
+assert(all(diff(:)));
+
 
 % update with nRand=empty
 for i=1:length(metric)
@@ -59,7 +62,8 @@ for i=1:length(metric)
 end
 assert(isequal(nRxnsMet, ref_nRxnsMet));
 assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
-assert(isequal(rawScore, ref_rawScore));
+diff = abs((rawScore - ref_rawScore) < 1e-12);
+assert(all(diff(:)));
 
 % update with dataRxns={{'a'}}
 for i=1:length(metric)
@@ -79,7 +83,8 @@ rawScore=[];
 [normScore(:, 3), nRxnsMet(:, 3), nRxnsMetUni(:, 3), rawScore(:, 3)] = reporterMets(model, data, 1000, false, 1, 'count');
 assert(isequal(nRxnsMet, nRxnsMet_ref2));
 assert(isequal(nRxnsMetUni, nRxnsMetUni_ref2));
-assert(isequal(rawScore, rawScore_ref2));
+diff = abs((rawScore - rawScore_ref2) < 1e-12);
+assert(all(diff(:)));
 
 % change the directory
 cd(currentDir)

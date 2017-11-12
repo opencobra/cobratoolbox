@@ -33,115 +33,117 @@ objModel = load('testpFBAData.mat', 'modelIrrev_glc2', 'modelIrrev_glc1', 'model
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % create a parallel pool
-minWorkers = 2;
-myCluster = parcluster(parallel.defaultClusterProfile);
-
-if myCluster.NumWorkers >= minWorkers
-    poolobj = gcp('nocreate');  % if no pool, do not create new one.
-    if isempty(poolobj)
-        parpool(minWorkers);  % launch minWorkers workers
-    end
-
-    for k = 1:length(solverPkgs)
-        fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
-
-        solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-
-        if solverLPOK
-
-            % run pFBA
-            fprintf('\n*** Test basic pFBA calculations ***\n\n');
-            fprintf('\n** Optimal solution - minimize flux not associated with gene: glucose\n');
-            [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 2);
-
-            fprintf('\n** Optimal solution - minimize flux not associated with gene: lactate\n');
-            [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 2);
-
-            fprintf('\n** Optimal solution - minimize gene-associated flux: glucose\n');
-            [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
-
-            fprintf('\n** Optimal solution - minimize gene-associated flux: lactate\n');
-            [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 1);
-
-            fprintf('\n** Optimal solution - minimize all flux: glucose **\n');
-            [t_objGenes.GeneClasses_glc0 t_objRxns.RxnClasses_glc0 t_objModel.modelIrrev_glc0] = pFBA(model_glc, 'geneoption', 0);
-
-            fprintf('\n** Optimal solution - minimize all flux: lactate **\n');
-            [t_objGenes.GeneClasses_lac0 t_objRxns.RxnClasses_lac0 t_objModel.modelIrrev_lac0] = pFBA(model_lac, 'geneoption', 0);
-
-            t_objGenesf = fieldnames(t_objGenes);
-            t_objRxnsf = fieldnames(t_objRxns);
-            t_objModelf = fieldnames(t_objModel);
-
-            % testing if gene lists are consistent with expected lists
-            t_fg = zeros(40, 1);
-            cnt = 0;
-            for i = 1:length(t_objGenesf)
-                tmp_lists = fieldnames(t_objGenes.(t_objGenesf{i}));
-                for j = 1:length(tmp_lists)
-                    t1 = find(~ismember(t_objGenes.(t_objGenesf{i}).(tmp_lists{j}), objGenes.(t_objGenesf{i}).(tmp_lists{j})));
-                    t2 = find(~ismember(objGenes.(t_objGenesf{i}).(tmp_lists{j}), t_objGenes.(t_objGenesf{i}).(tmp_lists{j})));
-                    cnt = cnt + 1;
-                    if isempty(t1)
-                        t_fg(cnt) = 1;
-                    end
-                    cnt = cnt + 1;
-                    if isempty(t2)
-                        t_fg(cnt) = 1;
-                    end
-                end
-            end
-
-            assert(min(t_fg) == 1)
-
-            % testing if rxn lists are consistent with expected lists
-            t_fr = zeros(40, 1);
-            cnt = 0;
-            for i = 1:length(t_objRxnsf)
-                tmp_lists = fieldnames(t_objRxns.(t_objRxnsf{i}));
-                for j = 1:length(tmp_lists)
-                    t1 = find(~ismember(t_objRxns.(t_objRxnsf{i}).(tmp_lists{j}), objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
-                    t2 = find(~ismember(objRxns.(t_objRxnsf{i}).(tmp_lists{j}), t_objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
-                    cnt = cnt + 1;
-                    if isempty(t1)
-                        t_fr(cnt) = 1;
-                    end
-                    cnt = cnt + 1;
-                    if isempty(t2)
-                        t_fr(cnt) = 1;
-                    end
-                end
-            end
-
-            assert(min(t_fr) == 1)
-
-            % testing if flux minima are consistent with expected values
-            t_fm = zeros(8, 1);
-            cnt = 0;
-            for i = 1:length(t_objModelf)
-                t1 = t_objModel.(t_objModelf{i}).lb(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).lb(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
-                t2 = t_objModel.(t_objModelf{i}).ub(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).ub(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
-                cnt = cnt + 1;
-                if t1 < tol
-                    t_fm(cnt) = 1;
-                end
-                cnt = cnt + 1;
-                if t2 < tol
-                    t_fm(cnt) = 1;
-                end
-            end
-
-            assert(min(t_fm) == 1)
-
-            x = min([t_fm; t_fg; t_fr]);
-
-            % output a success message
-            fprintf('Done.\n');
+try
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
+    
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
         end
     end
-else
-    warning(' > Skipping testpFBA as the default parallel pool is not configured for more than 2 workers.');
+catch
+    disp('Trying non parallel test')
 end
+for k = 1:length(solverPkgs)
+    fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
+
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+
+    if solverLPOK
+
+        % run pFBA
+        fprintf('\n*** Test basic pFBA calculations ***\n\n');
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: glucose\n');
+        [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 2);
+
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: lactate\n');
+        [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 2);
+
+        fprintf('\n** Optimal solution - minimize gene-associated flux: glucose\n');
+        [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
+
+        fprintf('\n** Optimal solution - minimize gene-associated flux: lactate\n');
+        [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 1);
+
+        fprintf('\n** Optimal solution - minimize all flux: glucose **\n');
+        [t_objGenes.GeneClasses_glc0 t_objRxns.RxnClasses_glc0 t_objModel.modelIrrev_glc0] = pFBA(model_glc, 'geneoption', 0);
+
+        fprintf('\n** Optimal solution - minimize all flux: lactate **\n');
+        [t_objGenes.GeneClasses_lac0 t_objRxns.RxnClasses_lac0 t_objModel.modelIrrev_lac0] = pFBA(model_lac, 'geneoption', 0);
+
+        t_objGenesf = fieldnames(t_objGenes);
+        t_objRxnsf = fieldnames(t_objRxns);
+        t_objModelf = fieldnames(t_objModel);
+
+        % testing if gene lists are consistent with expected lists
+        t_fg = zeros(40, 1);
+        cnt = 0;
+        for i = 1:length(t_objGenesf)
+            tmp_lists = fieldnames(t_objGenes.(t_objGenesf{i}));
+            for j = 1:length(tmp_lists)
+                t1 = find(~ismember(t_objGenes.(t_objGenesf{i}).(tmp_lists{j}), objGenes.(t_objGenesf{i}).(tmp_lists{j})));
+                t2 = find(~ismember(objGenes.(t_objGenesf{i}).(tmp_lists{j}), t_objGenes.(t_objGenesf{i}).(tmp_lists{j})));
+                cnt = cnt + 1;
+                if isempty(t1)
+                    t_fg(cnt) = 1;
+                end
+                cnt = cnt + 1;
+                if isempty(t2)
+                    t_fg(cnt) = 1;
+                end
+            end
+        end
+
+        assert(min(t_fg) == 1)
+
+        % testing if rxn lists are consistent with expected lists
+        t_fr = zeros(40, 1);
+        cnt = 0;
+        for i = 1:length(t_objRxnsf)
+            tmp_lists = fieldnames(t_objRxns.(t_objRxnsf{i}));
+            for j = 1:length(tmp_lists)
+                t1 = find(~ismember(t_objRxns.(t_objRxnsf{i}).(tmp_lists{j}), objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
+                t2 = find(~ismember(objRxns.(t_objRxnsf{i}).(tmp_lists{j}), t_objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
+                cnt = cnt + 1;
+                if isempty(t1)
+                    t_fr(cnt) = 1;
+                end
+                cnt = cnt + 1;
+                if isempty(t2)
+                    t_fr(cnt) = 1;
+                end
+            end
+        end
+
+        assert(min(t_fr) == 1)
+
+        % testing if flux minima are consistent with expected values
+        t_fm = zeros(8, 1);
+        cnt = 0;
+        for i = 1:length(t_objModelf)
+            t1 = t_objModel.(t_objModelf{i}).lb(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).lb(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
+            t2 = t_objModel.(t_objModelf{i}).ub(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).ub(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
+            cnt = cnt + 1;
+            if t1 < tol
+                t_fm(cnt) = 1;
+            end
+            cnt = cnt + 1;
+            if t2 < tol
+                t_fm(cnt) = 1;
+            end
+        end
+
+        assert(min(t_fm) == 1)
+
+        x = min([t_fm; t_fg; t_fr]);
+
+        % output a success message
+        fprintf('Done.\n');
+    end
+end
+
 
 % change back to the root directory
 cd(currentDir)

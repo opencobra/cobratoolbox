@@ -55,35 +55,24 @@ if ~all(isnumeric(Rxn))
     ModifiedRxns = model.rxns(RxnsInd);
 else
     %%% find all reactions with the old mets, and choose the specified number of rxns
-    RxnsInd = 1:length(model.rxns);
-    tempS = full(model.S);
-    for i = 1:length(OldMetInd)
-        RxnsInd = intersect(find(tempS(OldMetInd(i),:)),RxnsInd);
-    end
-    if length(RxnsInd)<Rxn
-        warning('Fewer reactions have your metabolites than the number you wanted to randomly choose!')
-        RxnsToSwitch = RxnsInd(ceil(rand(length(RxnsInd),1)));
-        Rxn = length(RxnsToSwitch);
-    else
-        %%% chose the reactions to randomize
-        RxnsToSwitch = [];
-         Rxns2Exclude = findRxnIDs(model,{'DM_SC_PRECUSOR'});
-         for r=1:length(Rxns2Exclude)
-             tmp = find(RxnsInd==Rxns2Exclude(r));
-             if ~isempty(tmp)
-                 RxnsInd(tmp) = [];
-             end
-         end
-        while length(unique(RxnsToSwitch))<Rxn
-
-        RxnsToSwitch = RxnsInd(ceil(rand(length(RxnsInd),1)*length(RxnsInd)));
-        RxnsToSwitch = RxnsToSwitch(1:Rxn);
+    %%% Preferably those with all the metabolites. 
+    
+    RxnsIndAll = find(all(model.S(OldMetInd,:)));
+    RxnsIndAny = find(any(model.S(OldMetInd,:)));
+    if length(RxnsIndAll)<Rxn
+        warning('Fewer reactions have all your metabolites than the number you wanted to randomly choose! Selecting additional ones from those which have ANY.')
+        if numel(RxnsIndAny) + numel(RxnsIndAll) < Rxn
+            warning('Fewer reactions have any of your metabolites than the number you wanted to randomly choose! Using all which do have a matching metabolite.')
+            RxnsToSwitch = union(RxnsIndAll,RxnsIndAny);
+            Rxn = length(RxnsToSwitch);
+        else
+            RxnsToSwitch = union(RxnsIndAll,RxnsIndAny(randperm(numel(RxnsIndAny),Rxn-numel(RxnsIndAll))));
         end
+    else
+        RxnsToSwitch = RxnsIndAll(randperm(numel(RxnsIndAll),Rxn));
     end
-
-        model = changeMets(model,OldMetInd,NewMetInd,RxnsToSwitch,NewStoich);
-   ModifiedRxns = model.rxns(RxnsToSwitch);
-
+    model = changeMets(model,OldMetInd,NewMetInd,RxnsToSwitch,NewStoich);
+    ModifiedRxns = model.rxns(RxnsToSwitch);
 end
 end
 function model = changeMets(model,OldMetInd,NewMetInd,RxnsInd,NewStoich)

@@ -38,8 +38,10 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   without regularisation.
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
-%
-%    parameters:    solver-specific parameters structure
+%   
+%    solverParams:  solver-specific parameter structure. Formats supported
+%                   are ILOG cplex and Tomlab parameter syntax. see example
+%                   for details.
 %
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;
@@ -1101,24 +1103,27 @@ switch solver
         % Result = tomRun('cplex', tomlabProblem, 0);
         % This is faster than using tomRun
 
+        % set parameters (user parameters override defaults)
+        tomlabProblem.MIP.cpxControl = solverParams;
+        
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
         tomlabProblem.PriLevOpt = printLevel;
 
-        % if basis is availible use it
-        if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
+        if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis) && ...
+                ~ismember('basis',fieldnames(solverParams))
             tomlabProblem.MIP.basis = LPproblem.basis;
         end
 
         % set tolerance
-        if exist('feasTol','var')
+        if exist('feasTol','var') && ~ismember('EPRHS',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
         end
-        if exist('optTol','var')
+        if exist('optTol','var') && ~ismember('EPOPT',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
-
+        
         % solve
         Result = cplexTL(tomlabProblem);
 

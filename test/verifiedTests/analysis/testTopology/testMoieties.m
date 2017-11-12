@@ -10,6 +10,12 @@
 %     - Sylvain Arreckx March 2017
 %
 
+%Test presence of required toolboxes.
+v = ver;
+bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
+assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
+
+
 % define global paths
 global CBTDIR
 

@@ -294,10 +294,10 @@ if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
             LPproblem.osense = -1;
             [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i});
 
-            if printLevel == 1 && ~parallelMode
+            if printLevel == 1
                 showprogress(i/length(rxnNameList));
             end
-            if printLevel > 1 && ~parallelMode
+            if printLevel > 1
                 fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
             end
         end

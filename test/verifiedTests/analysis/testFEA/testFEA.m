@@ -9,12 +9,22 @@
 
 global CBTDIR
 
+%Test presence of required toolboxes.
+v = ver;
+bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
+assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
+
+statPres = (any(strcmp('Statistics and Machine Learning Toolbox', {v.Name})) || any(strcmp('Statistics Toolbox', {v.Name}))) && license('test','Statistics_Toolbox');
+assert(statPres,sprintf('The Statistics and Machine Learning Toolbox required for this function is not installed or not licensed on your system.'))
+
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
 fileDir = fileparts(which('testFEA'));
-cd(fileDir);
+cd(fileDir);    
+
 
 % load the model and reference data
 load('testDataFEA.mat');

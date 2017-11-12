@@ -70,6 +70,9 @@ oldOptionalOrder = {'metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
     'objectiveCoef','subSystem','geneRule','geneNameList','systNameList','checkDuplicate','printLevel'};
 oldStyle = false;
+
+origargin = varargin;
+
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters)))) || iscell(rxnID)
     %We have an old style thing....
     %Now, we need to check, whether this is a formula, or a complex setup
@@ -153,7 +156,7 @@ parser.addRequired('model',@isstruct) % we only check, whether its a struct, no 
 parser.addRequired('rxnID',@ischar)
 parser.addParamValue('reactionName',defaultReactionName,@ischar)
 parser.addParamValue('metaboliteList',defaultMetaboliteList, @iscell);
-parser.addParamValue('stoichCoeffList',defaultStoichCoefList, @isnumeric);
+parser.addParamValue('stoichCoeffList',defaultStoichCoefList, @(x) isnumeric(x) || isempty(x));
 parser.addParamValue('reactionFormula','', @ischar);
 parser.addParamValue('reversible',defaultReversibility, @(x) islogical(x) || isnumeric(x) );
 parser.addParamValue('lowerBound',defaultLowerBound, @(x) isempty(x) || isnumeric(x));
@@ -167,8 +170,19 @@ parser.addParamValue('notes','', @ischar );
 parser.addParamValue('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
 parser.addParamValue('geneNameList',defaultSystNameList, @(x) isempty(x) || iscell(x));
 
-parser.parse(model,rxnID,varargin{:});
-
+try
+    parser.parse(model,rxnID,varargin{:});
+catch ME
+    if oldStyle
+        if ischar(origargin{1}) || isstring(origargin{1})
+            if ~any(ismember(origargin{1},optionalParameters))
+                error('''%s'' is not a valid parameter name or it does not fit to the deprecated signature of addReaction.',origargin{1});
+            end
+        end    
+    else
+        rethrow(ME)
+    end
+end
 printLevel = parser.Results.printLevel;
 metaboliteList = parser.Results.metaboliteList;
 reactionFormula = parser.Results.reactionFormula;
@@ -179,14 +193,10 @@ systNameList = parser.Results.systNameList;
 %Check variant, if both, return error
 if isempty(metaboliteList) && isempty(reactionFormula)
     error('No stoichiometry found! Set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters.\nModel was not modified.')
-    rxnIDexists = -1;
-    return
 end
 %if this is not an old reaction and we have two definitions
 if ~oldRxnFlag && ~isempty(metaboliteList) && ~isempty(reactionFormula)
     error('Two stoichiometry definitions found! Please set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters but do not use both.\nModel was not modified.')
-    rxnIDexists = -1;
-    return
 end
 
 parseFormulaFlag = 0;
@@ -249,10 +259,11 @@ if ~any(ismember(parser.UsingDefaults,'subSystem'))
         model.subSystems(:) = {{''}};
     end
 end
-if (isfield(model,'subSystems'))
-    model.subSystems{rxnPos,1} = subSystem;
-end
 
+% 
+if (isfield(model,'subSystems'))
+    model.subSystems(rxnPos,1) = subSystem;
+end
 %This will have to be modified once the model structure is set.
 
 

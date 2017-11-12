@@ -24,10 +24,10 @@ writeCbModel(testModelXML, 'sbml', 'testModelSBML.sbml');
 testModelSBML = readCbModel('testModelSBML.sbml');
 
 %Due to the original model being SBML 2.1, no proteins/geneNames were
-%generated. 
+%generated.
 %These models are not the same, since the References given by the xml (in
 %the notes field), are not PubMed IDs, so they are transferred to the
-%rxnNotes field, 
+%rxnNotes field,
 testModelSBML = rmfield(testModelSBML,'rxnNotes');
 testModelXML = rmfield(testModelXML,'rxnNotes');
 testModelXML = rmfield(testModelXML,'rxnReferences');
@@ -39,13 +39,12 @@ testModelXML = rmfield(testModelXML,'rxnReferences');
 assert(~any(numDiff))
 
 % remove the written file to clean up
-fullFileNamePath = [fileparts(which(mfilename)), filesep, 'testModelSBML.sbml.xml'];
-if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
-end
+delete 'testModelSBML.sbml.xml';
+
 %read/writeSBML should be the only methods used for cobra sbml conversion.
 % change the directory
 cd(currentDir)
 
+% shut down any left open parpool
+poolobj = gcp('nocreate');
+delete(poolobj);

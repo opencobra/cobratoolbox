@@ -143,8 +143,9 @@ for i = 1 : nRxns
         end
     end
     for q=1:length(metaboliteList)
-        if length(metaboliteList{q})<=3 || ~strcmp(metaboliteList{q}(end-2),'[')
-            %assuming the default compartment is cytoplasmic
+        if isempty(regexp(metaboliteList{q},'\[[^\[]*\]$','ONCE'))
+            %If there is a compartment ID, don't add one.
+            %If there is none, add cytoplasm
             metaboliteList{q}=[metaboliteList{q},'[c]'];
         end
     end

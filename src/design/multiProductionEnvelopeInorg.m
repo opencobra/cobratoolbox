@@ -1,10 +1,10 @@
-function [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
+function [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
 % Calculates the byproduct secretion envelopes
 % for every product, including inorganic compounds
 %
 % USAGE:
 %
-%    [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
+%    [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
 %
 % INPUT:
 %    model:            COBRA model structure
@@ -17,6 +17,7 @@ function [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, del
 %    nPts:             Number of points in the plot (Default = 20)
 %    plotAllFlag:      Plots all envelopes, even ones that are not growth coupled
 %                      (Default = false)
+%    plotTools:        boolean (default = false) - add tools for editing the figure and its properties
 %
 % OUTPUT:
 %    biomassValues:    Biomass values for plotting
@@ -40,6 +41,9 @@ if (nargin < 5)
 end
 if (nargin < 6)
     plotAllFlag = false;
+end
+if (nargin < 7)
+    plotTools = false;
 end
 
 
@@ -110,7 +114,8 @@ legend(excRxns(plottedRxns));
 legend off;
 ylabel('Production Rate (mmol/gDW h)');
 xlabel('Growth Rate (1/h)');
-plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
-
+if plotTools
+    plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
+end
 biomassValues = biomassValues';
 targetValues = [targetLowerBound' targetUpperBound'];

@@ -358,7 +358,7 @@ else
                   'Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!']);
         end
     end
-    metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets));
+    metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets),'UniformOutput',false);
 
     %now reorder them and assign names to the ids.
     [ucomps, origpos] = unique(Compartments);

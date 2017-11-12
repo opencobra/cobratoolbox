@@ -37,9 +37,9 @@ end
 %% 
 % Load and check that the input model is correclty loaded
 
-tutorialPath = [CBTDIR filesep 'tutorials' filesep 'metabotools' filesep 'tutorial_I'];
+tutorialPath = fileparts(which('tutorial_metabotoolsI.mlx'));
 if isequal(exist([tutorialPath filesep 'starting_model.mat'], 'file'), 2)
-    load([tutorialPath filesep 'starting_model.mat']);
+    starting_model = readCbModel([tutorialPath filesep 'starting_model.mat']);
     fprintf('The model is loaded.\n');
 else
     error('The model ''starting_model'' could not be loaded.');
@@ -243,6 +243,14 @@ tol = 0.05;
 %% Step *4*: Calculate the difference between the uptake and secretion profiles from the two conditions
 % Use _calculateQuantitativeDiffs _to calculate the sets of exchange reactions 
 % with higher uptake and secretion in condition 1 than in condition 2.
+% 
+% Also adapt the condition uptake and secretion for the second condition. 
+% this is sometimes necessary to allow the model to achieve a feasible flux.
+
+cond2_secretion = [cond2_secretion; 'EX_4pyrdx(e)';'EX_34hpp';'EX_uri(e)';'EX_succ(e)';'EX_glyb(e)';'EX_5mta(e)';'EX_asn_L(e)'];
+cond2_secretion(ismember(cond2_secretion, {'EX_asp_L(e)';'EX_pnto_R(e)'})) = [];
+cond2_uptake = [cond2_uptake; 'EX_fol(e)'];
+cond2_uptake(ismember(cond2_uptake, {'EX_met_L(e)'})) = [];
 
 [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher, cond1_uptake_LODs,...
     cond2_uptake_LODs, cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,...
