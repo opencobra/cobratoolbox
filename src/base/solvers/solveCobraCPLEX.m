@@ -84,6 +84,17 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %
 % .. Author: - Ronan Fleming 23 Oct  09  ILOG-CPLEX 12.1 via  matlab API
 
+global CBT_LP_SOLVER
+global CBT_MILP_SOLVER
+global CBT_QP_SOLVER
+global CBT_MIQP_SOLVER
+
+% Note: Certain parts of the conflict resolution only work with tomlab cplex: http://tomwiki.com/CPLEX_Conflict_refiner
+tomlabSelected = false;
+if (strcmp(CBT_LP_SOLVER, 'tomlab_cplex') || strcmp(CBT_QP_SOLVER, 'tomlab_cplex') || strcmp(CBT_MILP_SOLVER, 'tomlab_cplex') || strcmp(CBT_MIQP_SOLVER, 'tomlab_cplex'))
+    tomlabSelected = true;
+end
+
 if ~exist('printLevel','var')
     printLevel=0;
 end
@@ -148,19 +159,18 @@ end
 %conflict refinement is desired in the case that infeasibility is detected
 %by CPLEX.
 if conflictResolve
-    [m_lin,n]=size(model.A);
-    m_quad=0;
-    m_sos=0;
-    m_log=0;
-    %determines how elaborate the output is
-    mode='full';%'minimal';
-    fprintf('%s\n%s\n','Building Structure for Conflict Resolution...','...this slows CPLEX down so should not be used for repeated LP');
-    confgrps = cpxBuildConflict(n,m_lin,m_quad,m_sos,m_log,mode);
+    if tomlabSelected
+        [m_lin,n]=size(model.A);
+        m_quad=0;
+        m_sos=0;
+        m_log=0;
+        %determines how elaborate the output is
+        mode='full';%'minimal';
+        fprintf('%s\n%s\n','Building Structure for Conflict Resolution...','... this slows CPLEX down so should not be used for repeated LP');
+        cpxBuildConflict(n,m_lin,m_quad,m_sos,m_log,mode);
+    end
     prefix=pwd;
     suffix='CPLEX_conflict_file.txt';
-    conflictFile=[prefix '\' suffix];
-else
-    confgrps=[]; conflictFile=[];
 end
 
 % Initialize the CPLEX object
@@ -172,7 +182,7 @@ end
 
 % Now populate the problem with the data
 cplex.Model.sense = 'minimize';
-if model.osense==1
+if model.osense == 1
     %minimise linear objective
     cplex.Model.obj   = model.c;
 else
@@ -246,7 +256,7 @@ cplex.Param.threads.Cur = 3;
 cplex.solve();
 solution.origStat   = cplex.Solution.status;
 
-if printLevel>0 && solution.origStat~=1
+if printLevel>0 && solution.origStat~=1 && tomlabSelected
     %use tomlab code to print out exit meassage
     [ExitText,ExitFlag] = cplexStatus(solution.origStat);
     solution.ExitText=ExitText;
@@ -270,8 +280,8 @@ else
     solution.time=NaN;
     %conflict resolution
     if conflictResolve ==1
-        Cplex.refineConflict
-        Cplex.writeConflict(suffix)
+        cplex.refineConflict();
+        cplex.writeConflict(suffix);
         if isfield(model,'mets') && isfield(model,'rxns')
             %this code reads the conflict resolution file and replaces the
             %arbitrary names with the abbreviations of metabolites and reactions
@@ -303,12 +313,10 @@ else
             end
             fclose(fid1);
             fclose(fid2);
-            %delete other file without replacements
-            %         delete(suffix)
         else
             warning('Need reaction and metabolite abbreviations in order to make a readable conflict resolution file');
         end
-        fprintf('%s\n',['Conflict resolution file written to: ' prefix '\COBRA_' suffix]);
+        fprintf('%s\n',['Conflict resolution file written to: ' prefix filesep 'COBRA_' suffix]);
         fprintf('%s\n%s\n','The Conflict resolution file gives an irreducible infeasible subset ','of constraints which are making this LP Problem infeasible');
     else
         if printLevel>0
@@ -326,11 +334,13 @@ if solution.origStat==1
     solution.stat = 1;
 else
     %use tomlab code to print out exit meassage
-    [ExitText,ExitFlag] = cplexStatus(solution.origStat);
-    solution.ExitText=ExitText;
-    solution.ExitFlag=ExitFlag;
-    if any(model.c~=0) && isfield(cplex.Solution,'x')
-        fprintf('\n%s%g\n',[ExitText ', Objective '],  model.c'*cplex.Solution.x);
+    if tomlabSelected
+        [ExitText,ExitFlag] = cplexStatus(solution.origStat);
+        solution.ExitText=ExitText;
+        solution.ExitFlag=ExitFlag;
+        if any(model.c~=0) && isfield(cplex.Solution,'x')
+            fprintf('\n%s%g\n',[ExitText ', Objective '],  model.c'*cplex.Solution.x);
+        end
     end
     if solution.origStat==2
         solution.stat = 2;
