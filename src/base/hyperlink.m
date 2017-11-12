@@ -26,6 +26,6 @@ function outLink = hyperlink(url, urlText, altText1, altText2)
 
     outLink = [altText1, url, altText2];
     if usejava('desktop')
-        outLink = ['<a href=\"', url, '\">', urlText, '</a>'];
+        outLink = ['<a href="', url, '">', urlText, '</a>'];
     end
 end
