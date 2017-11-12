@@ -14,7 +14,7 @@ fileDir = fileparts(which('testAnalyzeGCdesign'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat']);
+model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
 modelRed = reduceModel(model);
 selectedRxns = modelRed.rxns(22:25);
 target = modelRed.rxns(20); % 'EX_ac(e)'
@@ -23,8 +23,9 @@ improvedRxnsM = {};
 intermediateSlnsM = {};
 
 % function outputs
-% solver change due to instability of QP
-changeCobraSolver('gurobi', 'QP');
+% solver change due to instability of qpng
+% to be changed with gurobi
+changeCobraSolver('pdco', 'QP');
 [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
 
 for i=2:8
@@ -36,7 +37,7 @@ end
 
 % tests
 assert(isequal({'EX_akg(e)', 'EX_co2(e)', 'EX_etoh(e)'}, improvedRxns));
-assert(isequal({'EX_acald(e)'}, improvedRxnsM{7}));
+assert(isequal({'EX_akg(e)', 'EX_co2(e)'}, improvedRxnsM{7}));
 assert(isequal({'EX_acald(e)'}, intermediateSlnsM{7}{1}));
 
 
