@@ -9,9 +9,9 @@ script:
 
     # change to the current directory
     - cd $CURRENT_DIR
-    - echo $GIT_BRANCH
+
     # launch the tests
-    # - bash .ci/runtests.sh
+    - bash .ci/runtests.sh
 
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
@@ -21,9 +21,6 @@ after_success:
       pip install --upgrade --user -r docs/requirements.txt;
       export here=`pwd`;
       python ~/github_stats.py $here/docs/source/list_contributors.rst;
-<<<<<<< HEAD
-=======
-      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins', latest='documentation', latest_dir='unstable'); doc.deploy()";
->>>>>>> build doc in unstable folder
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins'); doc.deploy()";
       fi
       fi
