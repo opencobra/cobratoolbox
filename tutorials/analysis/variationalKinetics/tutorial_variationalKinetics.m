@@ -131,7 +131,8 @@
 % (kinetic vector). For example, for "Ecoli core" model, we have
 
 global CBTDIR
-load([CBTDIR filesep 'tutorials' filesep 'variationalKinetics' filesep 'Ecoli_core_data.mat']);
+tutorialPath = fileparts(which('tutorial_variationalKinetics.mlx'));
+load([tutorialpath filesep 'Ecoli_core_data.mat']);
 %% 
 % Then, we need to make a struture "model" by
 
