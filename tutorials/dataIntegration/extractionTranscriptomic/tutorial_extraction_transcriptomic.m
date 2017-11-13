@@ -64,7 +64,11 @@ changeCobraSolver ('glpk', 'all');
 % http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/downloads/Ecoli_core/ecoli_core_model.mat> 
 % and save it in your preferred folder.
 
-load('ecoli_core_model.mat');
+modelFileName = 'ecoli_core_model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 %% 
 % Load the expression data that will be used for the extraction. For this 
 % tutorial, we have choosen to use E. coli Microarray-based gene expression data 
@@ -274,7 +278,7 @@ load('dataEcoli');
 % are consistent with experiments. PLoS Comput. Biol. 4, e1000082 (2008)._
 % 
 % _4. Zur, H., Ruppin, E., and Shlomi, T. iMAT: an integrative metabolic 
-% anal- ysis tool. Bioinformatics 26, 3140–3142 (2010)._
+% anal- ysis tool. Bioinformatics 26, 3140â€“3142 (2010)._
 % 
 % _5.Agren, R. et al. Reconstruction of genome-scale active metabolic networks 
 % for 69 human cell types and 16 cancer types using INIT. PLoS Comput. Biol. 8, 
@@ -288,7 +292,7 @@ load('dataEcoli');
 % metabolic models for 126 human tissues using mCADRE. BMC Syst. Biol. 6, 153 
 % (2012). _
 % 
-% _8. Uhlén M, et al. Tissue-based map of the human proteome. Science, 347(6220):1260419  
+% _8. UhlÃ©n M, et al. Tissue-based map of the human proteome. Science, 347(6220):1260419  
 % (2015). _
 % 
 % 
