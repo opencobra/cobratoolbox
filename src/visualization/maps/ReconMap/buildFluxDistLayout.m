@@ -67,7 +67,6 @@ for i=1:length(solution.v)
 end
 
 %   get all the parameters
-minerva_servlet = minerva.minervaURL;
 login = minerva.login;
 password = minerva.password;
 map = minerva.map;
