@@ -8,30 +8,33 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %
 % USAGE:
 %    [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, LP] ...
-%        = computeMetFormulae(model, metKnown, rxns, metFill, findCM, nameCM, LPparams)
+%        = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)
+%    [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, LP] ...
+%        = computeMetFormulae(model, 'parameter', value, ...)
 %
 % INPUT:
 %    model:          COBRA model
 %
-% OPTIONAL INPUTS:
-%    metKnown:       Known metabolites (cell array of strings or vector of IDs) 
+% OPTIONAL INPUTS (support name-value argument input):
+%    kownMets:       Known metabolites (cell array of strings or vector of met IDs) 
 %                    [default all mets with nonempty .metFormulas]
-%    rxns:           The set of reactions for inferring formulae (cell array of strings or vector of IDs)
+%    balancedRxns:   The set of reactions for inferring formulae (cell array of strings or vector of rxn IDs)
 %                    [default all non-exchange reactions]
-%    metFill:        The chemical formulas for compounds for freely filling the
-%                    imbalance, e.g. {'HCharge1', 'H2O'} [default 'HCharge1']
-%    findCM:         Find conserved moieties from the left null space of S. Options:
+%    fillMets:       The chemical formulas for compounds for freely filling the
+%                    imbalance, e.g. {'HCharge1', 'H2O'} [default 'HCharge1' if charge info exists else 'H']
+%    calcCMs:        Calculate conserved moieties from the left null space of S. Options:
 %                      * 'efmtool': Use EFMtool (most comprehensive, recommanded, but computational 
 %                                   cost may be high if there are many deadend mets)
 %                      * 'null':    Use the rational basis computed by Matlab 
 %                      * N:         Directly supply the matrix :math:`N` for conserved moieties 
 %                                   (rational basis or the set of extreme rays)
 %                      * false:     Not to find conserved moieties and return minimal formulae
-%                      [default 'efmtool' if 'CalculateFluxModes.m' is in path, else switch to rational basis]
-%    nameCM:         Name the identified conserved moieties or not [default 0]
+%                      [default 'efmtool' if 'CalculateFluxModes.m' is in path, else switch to 'null']
+%    nameCMs:        Name the identified conserved moieties or not [default 0]
 %                      * 0:  The program assigns default names for conserved moieties (Conserve_a, Conserve_b, ...)
 %                      * 1:  Name true conserved moieties interactively (exclude dead end mets). 
 %                      * 2:  Name all interactively (including dead end)
+%    deadCMs:        true to include dead end metabolites when finding conserved moieties (default true)
 %    LPparams:       Additional parameters for `solveCobraLP`. See `solveCobraLP` for details
 %
 % OUTPUTS:
@@ -72,25 +75,36 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %                    matrix representing the minimal conserved moiety vectors
 %    LP:             LP problem structure for solveCobraLP (#components x 1)
 
-% As an internal parameter deciding to include dead end metabolites or not when calculating conserved moieties
-deadCM = true;
-
-optArgin = {'knownMets', 'rxns', 'fillMets', 'calcCMs', 'nameCMs', 'deadCMs'}; 
-defaultValues = {[], [], [], true, false, true};
-validator = {@(x) iscellstr(x) | isvector(x), ...  % metKnown
-    @(x) iscellstr(x) | isvector(x), ...  % rxns
-    @(x) ischar(x) | iscellstr(x), ...  %metFill
-    @(x) ischar(x) | isnumeric(x) | isscalar(x), ...  % findCM
-    @isscalar, @isscalar};  % nameCM and deadCM
-[tempArgin, checkFields, stat, jArg] = deal({}, false, 0, 1);
+if ~isfield(model,'metFormulas')
+    error('model does not have the field ''metFormulas.''')
+end
+optArgin = {'knownMets', 'balancedRxns', 'fillMets', 'calcCMs', 'nameCMs', 'deadCMs', 'metMwRange'}; 
+defaultValues = {[], [], 'HCharge1', true, false, true, []};
+validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
+    @(x) ischar(x) | iscellstr(x) | isvector(x), ...  % balancedRxns
+    @(x) ischar(x) | iscellstr(x), ...  % fillMets
+    @(x) ischar(x) | isnumeric(x) | isscalar(x), ...  % calcCMs
+    @isscalar, @isscalar, ...    % nameCMs and deadCMs
+    @(x) ischar(x) | isscalar(x)};  % metMwRange
+[tempArgin, jArg] = deal({}, 1);
 if isempty(varargin)
     varargin = {[]};
 end
 while jArg <= min(numel(varargin), numel(optArgin))
     if ischar(varargin{jArg}) && any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
         % name-value pair arguments begin
+        % get the name-vale pair arguments
+        while jArg <= numel(varargin) - 1
+            if any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
+                tempArgin = [tempArgin; varargin(jArg:(jArg + 1))];
+                jArg = jArg + 2;
+            else
+                break
+            end
+        end
         break
-    else
+    elseif ~isempty(varargin{jArg}) || (jArg == 3 && isequal(varargin{jArg}, {}))
+        % true input if it is nonempty
         tempArgin = [tempArgin; optArgin(jArg); varargin(jArg)];
     end
     jArg = jArg + 1;
@@ -99,34 +113,65 @@ end
 % the rest are parameters for solveCobraLP
 varargin = varargin(jArg:end);
 % get printLevel from the cobra solver parameters if exists
-printLevel = 0;
+printLevel = 1;
 for j = 1:(numel(varargin) - 1)
     if ischar(varargin{j}) && strcmpi(varargin{j}, 'printLevel')
         printLevel = varargin{j + 1};
         break
     end
 end
-if ~isfield(model,'metFormulas')
-    error('model does not have the field ''metFormulas.''')
+
+% parse the name-value arguments
+parser = inputParser();
+for jArg = 1:numel(optArgin)
+    parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});
 end
-if nargin < 6 || isempty(nameCM)
-    nameCM = 0;
+parser.CaseSensitive = false;
+parser.parse(tempArgin{:});
+
+metKnown = parser.Results.knownMets;
+rxns = parser.Results.balancedRxns;
+metFill  = parser.Results.fillMets;
+findCM = parser.Results.calcCMs;
+nameCM = parser.Results.nameCMs;
+deadCM = parser.Results.deadCMs;
+metInterest0 = parser.Result.metMwRange;
+
+if isempty(metKnown)  % use all mets with chemical formulae
+    metKnown = model.mets(~cellfun(@isempty,model.metFormulas));
+elseif ischar(metKnown)
+    metKnown = {metKnown};
 end
-if nargin < 5 || isempty(findCM)
-    findCM = 'efmtool';
-end
-if nargin < 4 || isempty(metFill)
-    % defaulted proton for filling imbalance
-    metFill = {'HCharge1'};
-elseif ischar(metFill)
-    metFill = {metFill};
-end
-if nargin < 3 || isempty(rxns)
+if isempty(rxns)  % use all non-exchange reactions
     rxns = find(sum(model.S~=0,1) > 1 & (model.lb ~= 0 | model.ub ~= 0)');
-end
-if ischar(rxns)
+elseif ischar(rxns)
     rxns = {rxns};
 end
+if ischar(metFill)
+    if strcmpi(metFill, 'none')
+        metFill = {};
+    else
+        metFill = {metFill};
+    end
+end
+if isempty(findCM) || (numel(findCM) == 1 && findCM)
+    findCM = 'efmtool';
+end
+calcMetMwRange = false;
+if ~isempty(metInterest0)
+    % calculate the range for MW of metInterest, no metabolite for filling inconsistency
+    metFill = {};
+    if ischar(metInterest0)
+        metInterest = findMetIDs(model, metInterest0);
+    else
+        metInterest = metInterest0;
+    end
+    if metInterest <= 0 || round(metInterest) ~= metInterest
+        error('''%s'' is neither a metabolite nor a valid met index in the model.', metInterest0)
+    end
+    calcMetMwRange = true;
+end
+% get reaction indices
 if iscell(rxns)
     rxnC = findRxnIDs(model,rxns);
 else
@@ -134,17 +179,12 @@ else
 end
 if any(rxnC == 0)
     if iscell(rxns)
-        error('%s in rxns is not in the model.', rxns{find(rxnC==0,1)});
+        error('%s in rxns is/are not in the model.', strjoing(rxns(rxnC == 0), ' ,'));
     else
-        error('rxns index must be positive integer.')
+        error('rxn indices must be positive integer.')
     end
 end
-if nargin < 2 || isempty(metKnown)
-    metKnown = model.mets(~cellfun(@isempty,model.metFormulas));
-end
-if ischar(metKnown)
-    metKnown = {metKnown};
-end
+% get metabolite indices
 if iscell(metKnown)
     metK = findMetIDs(model,metKnown);
 else
@@ -152,18 +192,15 @@ else
 end
 if any(metK == 0) 
     if iscell(metKnown)
-        error('%s in metKnown is not in the model.', metKnown{find(metK==0,1)});
+        error('%s in knownMets is/are not in the model.', strjoin(metKnown(metK == 0), ' ,'));
     else
-        error('metKnown index must be positive integer.')
+        error('metKnown indices must be positive integer.')
     end
 end
-metKform = cellfun(@isempty,model.metFormulas(metK));
+metKform = cellfun(@isempty, model.metFormulas(metK));
 if any(metKform)
     warning('Some mets in metKnown do not have formulas in the model. Ignore them.');
 end
-% All formulas must be in the form of e.g. Abc2Bcd1. Elements are represented by one capital letter 
-% followed by lower case letter or underscore, followed by a number for the stoichiometry. 
-% Brackets/parentheses and repeated elements are also supported, e.g. CuSO4(H2O)5.
 [metK,metKform] = deal(metK(~metKform), model.metFormulas(metK(~metKform)));
 
 % get feasibility tolerance
@@ -175,7 +212,7 @@ else
         if feasTolInInput == numel(varargin) || ~isnumeric(varargin{feasTolInInput+1})
             error('Invalid input for the parameter feasTol.');
         end
-        feasTol = varargin{find(feasTolInInput)+1};
+        feasTol = varargin{find(feasTolInInput) + 1};
     else
         feasTol = getCobraSolverParams('LP',{'feasTol'});
     end
@@ -184,6 +221,9 @@ end
 digitRounded = 12;
 %% Preprocess
 % formulas for known metabolites
+% [All formulas must be in the form of e.g. Abc2Bcd1. Elements are represented by one capital letter 
+% followed by lower case letter or underscore, followed by a number for the stoichiometry. 
+% Brackets/parentheses and repeated elements are also supported, e.g. CuSO4(H2O)5.]
 [~,eleK,metEleK] = checkEleBalance(metKform);
 % check if information on charges exists
 if ~any(strcmp(eleK, 'Charge'))
@@ -197,7 +237,7 @@ if ~any(strcmp(eleK, 'Charge'))
         % add charge as one of the elements
         eleK{end + 1} = 'Charge';
         metEleK(:, end + 1) = double(model.(fieldCharge)(metK));
-    elseif nargin < 4 || isempty(metFill)
+    elseif numel(metFill) == 1 && strcmp(metFill{1}, 'HCharge1')
         metFill = {'H'};  % no charge information, simply use H as filling metabolites
     end
 end
@@ -346,6 +386,7 @@ for jEC = 1:nEC
     infeasibility(jEC).minIncon = infeas;
     if infeas <= feasTol  % should always be feasible
        %% minimize the stoichiometric coefficients of mets for filling
+        %  or calculate the range for the MW of the metabolite of interest
         for jkE = 1:kE
             % add constraint on total inconsistency: sum(x^pos_i,e + x^neg_i,e) <= inconsistency
             LPj.A(end + 1,:) = 0;
@@ -562,12 +603,10 @@ for jEC = 1:nEC
     end
 end
 %% find conserved moieties
-if nargin < 4 || isempty(findCM) || (numel(findCM) == 1 && findCM)
-    findCM = 'efmtool';
-end
+
 CMfound = false;
 N = [];
-if size(findCM,1) == numel(model.mets)
+if size(findCM, 1) == numel(model.mets)
     % input is the null space matrix / set of extreme rays
     N = findCM;
     CMfound = true;
@@ -576,11 +615,13 @@ elseif ~ischar(findCM) && numel(findCM) > 1
     findCM = 'efmtool';
 end
 if ischar(findCM) && ~CMfound
-    N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCM', deadCM, varargin{:});
+    N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, varargin{:});
     CMfound = true;
 end
 if CMfound
-    fprintf('Conserved moieties found.\n');    
+    if printLevel
+        fprintf('Elementary conserved moiety vectors found.\n');
+    end
     % clear close-to-zero values
     N(abs(N) < 1e-8) = 0;
     N = sparse(N);

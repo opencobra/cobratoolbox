@@ -12,7 +12,7 @@ function EMV = findElementaryMoietyVectors(model, varargin)
 %    'method':           method for finding all conserved moiety vectors
 %                          * 'efmtool':  use EFMtool, 'CalculateFluxModes.m' must be in matlab path (default)
 %                          * 'null':     use matlab rational null basis. 
-%    'deadCM':           include dead end metabolites or not, default true
+%    'deadCMs':           include dead end metabolites or not, default true
 %                        (will have more conserved moieties found for dead end metabolites if true)
 %
 %    Other COBRA LP solver parameters, see solveCobraLP.m
@@ -28,7 +28,7 @@ while k <= numel(varargin) - 1
     if ischar(varargin{k}) && strcmp(varargin{k}, 'method') && k < numel(varargin)
         method = varargin{k + 1};
         varargin = varargin([1:(k - 1), (k + 2):numel(varargin)]);
-    elseif ischar(varargin{k}) && strcmp(varargin{k}, 'deadCM') && k < numel(varargin)
+    elseif ischar(varargin{k}) && strcmp(varargin{k}, 'deadCMs') && k < numel(varargin)
         deadCM = logical(varargin{k + 1});
         varargin = varargin([1:(k - 1), (k + 2):numel(varargin)]);
     else
@@ -53,7 +53,7 @@ bigM = 1000;
 minMass = 1;
 [nM, nR] = size(model.S);
 LP.A = [model.S',           sparse(nR, nM); ...   S' * m        = 0
-        -speye(nM),  -bigM * speye(nM)];  %     -m - M z <= -minMass (% z = 0 ==> m can be positive)
+        -speye(nM),  -bigM * speye(nM)];  %           -m - M z <= -minMass (% z = 0 ==> m can be positive)
 LP.b = [zeros(nR, 1); -minMass * ones(nM, 1)];
 LP.c = [zeros(nM, 1); ones(nM, 1)];
 LP.lb = zeros(nM * 2, 1);
@@ -87,7 +87,7 @@ end
 
 % find rational null space basis. May not include all extreme rays as using EFMtool
 if strcmpi(method, 'null')
-    N = null(S', 'r');  % should usually be fast for most networks since number of metabolites having conserved moieties should be low
+    N = null(S', 'r');  % should usually be fast for most networks since the number of metabolites having conserved moieties should be low
     N(abs(N) < 1e-10) = 0;
     N = N(:, all(N >= 0, 1));
 end
