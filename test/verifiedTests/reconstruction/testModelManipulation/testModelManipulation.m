@@ -50,6 +50,15 @@ model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
 % adding a reaction to the model (test only)
 model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
 
+%Now, add some fields by an extensive addReaction call
+modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem','Some Sub','geneRule','GeneA or GeneB');
+assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
+
+%And test this also with a different input of subSystems:
+modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem',{'Some Sub', 'And another sub'},'geneRule','GeneA or GeneB');
+assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
+
+
 %Trying to add a reaction without stoichiometry will fail.
 errorCall = @() addReaction(model,'NoStoich');
 assert(verifyCobraFunctionError(errorCall));
