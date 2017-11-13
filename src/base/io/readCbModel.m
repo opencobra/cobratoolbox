@@ -339,6 +339,7 @@ for i = 1:numel(structFields)
                     % we add the fields.
                     if any(ismember(fieldnames(cfield), 'S'))
                         cfield = convertOldStyleModel(cfield, 0);
+                        cfield = initFBAFields(cfield);
                     end
                     % if we reach this place, the conversion worked,
                     % so lets try the test again.
