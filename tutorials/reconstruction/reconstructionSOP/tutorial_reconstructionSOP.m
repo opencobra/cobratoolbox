@@ -15,8 +15,8 @@
 % functions applied in the steps 38 to 96 of the protocol workflow, using the 
 % E. coli core reconstruction [2] as the model of choice. _
 % 
-% _When Matlab/Toolbox commands are following by a ‘;’ the output is not 
-% printed. Omitting the ‘;’ invokes printing of the variable content. _
+% _When Matlab/Toolbox commands are following by a â€˜;â€™ the output is not 
+% printed. Omitting the â€˜;â€™ invokes printing of the variable content. _
 % 
 % __
 %% EQUIPMENT SETUP
@@ -50,7 +50,10 @@ warning off MATLAB:subscripting:noSubscriptsSpecified
 % The metabolic network reconstruction, containing a reaction and metabolite 
 % list, is contained by the file 'Ecoli_core_model.mat'.
 
-load('ecoli_core_model.mat', 'model');
+modelFileName = 'ecoli_core_model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 modelEcore = model;
 %% 
 % The reconstruction is contained in the resulting model structure.  
@@ -95,7 +98,7 @@ modelEcore.lb(5) = 10
 % 
 %             A note: 
 
-modelEcore.newField = 'ABC – a note'
+modelEcore.newField = 'ABC â€“ a note'
 %% 
 %             An array B = [1 2 3]
 
@@ -114,7 +117,7 @@ ListNumbers = [1 2 3]
 
 ListTranspose = ListNumbers'
 %% 
-% * Find the index of a reaction, e.g., ‘ATPM', in the model 
+% * Find the index of a reaction, e.g., â€˜ATPM', in the model 
 
 rxnList = 'ATPM';
 rxnID = findRxnIDs(modelEcore, rxnList)
@@ -174,7 +177,7 @@ printConstraints(modelEcore, minInf, maxInf)
 % glucose exchange reaction (EX_glc(e)), the aconitase reaction (ACONTb) and the 
 % ATP non-growth associated maintenance reaction (ATPM). Note that in all three 
 % cases, a lower bound has been set only but no upper bound.
-% * The ‘minInf’ and ‘maxInf’ were set to -1000 and 1000, respectively, as these 
+% * The â€˜minInfâ€™ and â€˜maxInfâ€™ were set to -1000 and 1000, respectively, as these 
 % values represent the infinity of the E. coli core model. Other models may have 
 % different infinities.
 % * Note also that the |printConstraints| function returns only those constraints 
@@ -188,12 +191,12 @@ printUptakeBound(modelEcore);
 % * As you can see, the model is set to a minimal medium (EX_glc(e) set to -10 
 % mmol/gDW/h) with the presence of oxygen.
 % 
-% Let’s assume that you would like to set the lower bound of the ATP maintenance 
-% reaction (‘ATPM’) to 8.39 mmol/gDW/h:
+% Letâ€™s assume that you would like to set the lower bound of the ATP maintenance 
+% reaction (â€˜ATPMâ€™) to 8.39 mmol/gDW/h:
 
 modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'l');
 %% 
-%             and the upper bound of the ‘ATPM’ reaction to 8.39 mmol/gDW/h: 
+%             and the upper bound of the â€˜ATPMâ€™ reaction to 8.39 mmol/gDW/h: 
 
 modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'u');
 %% 
@@ -201,8 +204,8 @@ modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'u');
 
 modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'b');
 %% 
-% Let’s assume that you would like to set the lower bound of the ‘ATPM’ 
-% reaction to 8.39 mmol/gDW/h and the ATP synthetase (‘ATPS4r’) to an upper bound 
+% Letâ€™s assume that you would like to set the lower bound of the â€˜ATPMâ€™ 
+% reaction to 8.39 mmol/gDW/h and the ATP synthetase (â€˜ATPS4râ€™) to an upper bound 
 % of 100 mmol/gDW/h:
 
 modelEcore = changeRxnBounds(modelEcore, 'ATPM', 8.39, 'l' );
@@ -274,8 +277,8 @@ DeadEnds = modelEcore_New.mets(outputMets)
 % the following |testForTypeIIIPathways| function: 
 % 
 % * The indices of the exchange reactions ('EX_') are input as a list. 
-% * The output filename can be specified with ‘test’, it receives automatically 
-% the extension ‘.expa’. The filename is optional, the default name is: 'ModelTestTypeIII'
+% * The output filename can be specified with â€˜testâ€™, it receives automatically 
+% the extension â€˜.expaâ€™. The filename is optional, the default name is: 'ModelTestTypeIII'
 
 selExc = findExcRxns(modelEcore);
 listExch = find(selExc);
@@ -312,7 +315,7 @@ for i = 1 : length(BiomassComponents)
 %% 
 % 
 % 
-% *63.*  Maximize (‘max’) for new objective function (Demand function)
+% *63.*  Maximize (â€˜maxâ€™) for new objective function (Demand function)
 
     FBAsolution = optimizeCbModel(modelEcore_NEW, 'max');
 %% 
@@ -459,7 +462,7 @@ modelEcore_New = changeRxnBounds(modelEcore_New, 'Biomass_Ecoli_core_w_GAM', 0.6
 
 modelEcore_New = changeObjective(modelEcore_New, 'EX_ac(e)');
 %% 
-% *70.  *Maximize (‘max’) for the new objective function (as a secretion 
+% *70.  *Maximize (â€˜maxâ€™) for the new objective function (as a secretion 
 % is expected to have a positive flux value, see Figure ):
 % 
 % 
@@ -541,8 +544,8 @@ FBAsolution.x(find(ismember(modelEcore_NEW.rxns, 'EX_for(e)')))
 %% Steps 76 - 77. Check for blocked reactions.
 % *76. * Change simulation conditions to rich medium or open all exchange reactions.
 % 
-% * Identify the exchange reactions and set the reaction values to ? infinity 
-% (e.g., ? 1,000) and + infinity (e.g., + 1,000):
+% * Identify the exchange reactions and set the reaction values to âˆ’ infinity 
+% (e.g., âˆ’ 1,000) and + infinity (e.g., + 1,000):
 
 selExc = findExcRxns(modelEcore);
 ExR = modelEcore.rxns(selExc);
@@ -555,7 +558,7 @@ printConstraints(modelEcore_Open, -1000, 1000)
 printUptakeBound(modelEcore_Open);
 %% 
 % *77.*  Run analysis for blocked reactions. The |findBlockedReaction| function 
-% returns a list of blocked reactions (‘BlockedReactions’).
+% returns a list of blocked reactions (â€˜BlockedReactionsâ€™).
 
 BlockedReactions = findBlockedReaction(modelEcore_Open)
 %% 
@@ -629,7 +632,7 @@ FBAsolution = optimizeCbModel(modelIncapable, 'max', false)
 % 
 % *82.* If the _in silico_ model is capable of a function that the organism 
 % is incapable of _in vitro_, use single-reaction deletion to identify candidate 
-% reactions that enable the model’s capability despite known incapability (see 
+% reactions that enable the modelâ€™s capability despite known incapability (see 
 % step 79). 
 % 
 % * Such reactions need to be manually evaluated.
