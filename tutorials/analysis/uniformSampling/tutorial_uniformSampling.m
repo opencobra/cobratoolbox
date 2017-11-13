@@ -289,7 +289,7 @@ for i = rxnsIdx
     h1 = plot(xUn, yUn, xLim, yLim);
     xlabel('Flux (mmol/gDW/h)')
     ylabel('# samples')
-    title(sprintf('%s (%s)', model.subSystems{i}, model.rxns{i}), 'FontWeight', 'normal')
+    title(sprintf('%s (%s)', strjoin(model.subSystems{i},';'), model.rxns{i}), 'FontWeight', 'normal')
     
     if find(rxnsIdx==i)==2
         legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
