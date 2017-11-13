@@ -13,31 +13,14 @@
 % Here we focus on human metabolism and use the Recon3.0model or Recon2.0 model.
 %% PROCEDURE
 %% Load a model
-% Load Recon3.0model, or use Recon2.0model instead. You may also load your own 
-% model.
+% Load Recon2.0model. You may also load your own model.
 
 clear %model
-if exist('2017_04_28_Recon3dForCurrentDistribution.mat','file')==2
-    filename = '2017_04_28_Recon3dForCurrentDistribution.mat';
-    load(filename);
-    model=modelRecon3model;
-    clear modelRecon3model;
-    model.csense(1:size(model.S,1),1)='E';
-    if ~isfield(model,'modelID')
-        model.modelID='Recon3.0model';
-    end
-else
-    filename2='Recon2.0model.mat';
-    if exist('Recon2.0model.mat','file')==2
-        load(filename2);
-        model=Recon2model;
-        clear Recon2model;
-        model.csense(1:size(model.S,1),1)='E';
-        if ~isfield(model,'modelID')
-        model.modelID='Recon2.0model';
-    end
-    end
-end
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 %% 
 % Display the size of the  model
 
@@ -171,6 +154,6 @@ end
 % 
 % _ _[<#LyXCite-sparsePaper sparsePaper>] Le Thi, H.A., Pham Dinh, T., Le, 
 % H.M., and Vo, X.T. (2015). DC approximation approaches for sparse optimization. 
-% European Journal of Operational Research 244, 26–46.
+% European Journal of Operational Research 244, 26â€“46.
 % 
 % __
