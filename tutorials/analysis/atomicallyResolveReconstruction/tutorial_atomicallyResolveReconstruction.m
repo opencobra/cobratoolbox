@@ -85,12 +85,11 @@
 % MDL MOL format. For this tutorial, using the RDT algorithm, the atom mappings 
 % are generated based on the molecular structures contained in cobratoolbox/tutorials/atomicallyResolveReconstruction/data/molFiles 
 % (|molFileDir|) and the reconstructed DAS network without hydrogen atoms (|model|).
-%%
+
 global CBTDIR
-load([CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep...
-    'data' filesep 'subDas.mat'], 'model') % The subnetwork of the dopamine synthesis network
-molFileDir = [CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep...
-    'data' filesep 'molFiles']; % The chemical structures of metabolites
+tutorialdir = fileparts(which('tutorial_atomicallyResolveReconstruction.mlx'));
+model = readCbModel([tutorialdir filesep 'data' filesep 'subDas.mat']); % The subnetwork of the dopamine synthesis network
+molFileDir = [tutorialdir filesep 'data' filesep 'molFiles']; % The chemical structures of metabolites
 %% 
 % The function |obtainAtomMappingsRDT |generates 4 different directories 
 % containing: 
@@ -176,7 +175,7 @@ end
 % detailed information on the coordinates, element, charge and atom mapping number 
 % for each of the atoms, and then finally, the bond block connects all the atoms 
 % in the metabolite.
-%%
+
 regexp(fileread([outputDir filesep 'atomMapped' filesep 'R3.rxn']), '\n', 'split')'
 %% 
 % The _txtData _directory contains the TXT information of the reaction including 
@@ -219,10 +218,9 @@ regexp(fileread([outputDir filesep 'txtData' filesep 'R3.txt']), '\n', 'split')'
 % network (|model|) and atom mappings for internal reactions, obtained in the 
 % previous section and predicted with the RDT algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>3</mn></mrow></msup></mrow></math>$.
-%%
+
 if ~isChemaxonInstalled
-    copyfile([CBTDIR filesep 'tutorials' filesep 'atomicallyResolveReconstruction' filesep...
-        'data' filesep 'atomMapped'],[outputDir filesep 'atomMapped'])
+    copyfile([tutorialdir filesep 'data' filesep 'atomMapped'],[outputDir filesep 'atomMapped'])
 end    
 atomMappedDir = [outputDir filesep 'atomMapped'];
 ATN = buildAtomTransitionNetwork(model, atomMappedDir);
@@ -280,7 +278,7 @@ ATN.mets(cco2)'
 % 
 % *Step 2: Identify conserved moieties in DAS by graph theoretical analysis 
 % of the atom transition network generated in Step 1.*
-%%
+
 tic
 [L,Lambda,moietyFormulas,moieties2mets,moieties2vectors,atoms2moieties] = ...
     identifyConservedMoieties(model, ATN);
@@ -365,7 +363,7 @@ types = classifyMoieties(L, model.S)
 % in (b).
 % 
 % *Step 1: Identify conserved moieties with the alternative set of atom mappings.*
-%%
+
 % Create an alternative MDL RXN file
 R2rxn = regexp(fileread([outputDir filesep 'atomMapped' filesep 'R2.rxn']), '\n', 'split')';
 R2rxn{2} = 'alternativeR2';
@@ -387,7 +385,7 @@ ATN = buildAtomTransitionNetwork(alternativeModel, atomMappedDir);
 % *Step 2: Decompose the composite moiety vector*
 % 
 % First, extract the internal stoichiometric matrix for DAS, by running:
-%%
+
 rbool = ismember(alternativeModel.rxns, ATN.rxns);
 mbool = any(alternativeModel.S(:,rbool), 2);
 N = alternativeModel.S(mbool, rbool);
