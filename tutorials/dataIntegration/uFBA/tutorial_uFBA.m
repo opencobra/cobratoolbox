@@ -31,8 +31,8 @@
 % 
 % $$<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mtable 
 % columnalign="left"><mtr><mtd><mrow><mi mathvariant="bold">S</mi><mo>&sdot;</mo><mi 
-% mathvariant="bold">v</mi><mtext>?</mtext><mo>&geq;</mo><msub><mrow><mi mathvariant="bold">b</mi></mrow><mrow><mn>1</mn></mrow></msub></mrow></mtd></mtr><mtr><mtd><mrow><mi 
-% mathvariant="bold">S</mi><mo>&sdot;</mo><mi mathvariant="bold">v</mi><mtext>?
+% mathvariant="bold">v</mi><mtext> </mtext><mo>&geq;</mo><msub><mrow><mi mathvariant="bold">b</mi></mrow><mrow><mn>1</mn></mrow></msub></mrow></mtd></mtr><mtr><mtd><mrow><mi 
+% mathvariant="bold">S</mi><mo>&sdot;</mo><mi mathvariant="bold">v</mi><mtext> 
 % </mtext><mo>&leq;</mo><msub><mrow><mi mathvariant="bold">b</mi></mrow><mrow><mn>2</mn></mrow></msub></mrow></mtd></mtr></mtable></mrow></math>$$
 % 
 % where [$\mathbf{b}_1$, $\mathbf{b}_2$] represents the 95% confidence interval 
@@ -61,8 +61,10 @@ initCobraToolbox
 % already been volume adjusted such that intracellular and extracellular metabolite 
 % concentrations have compatible units. 
 
-global CBTDIR
-load([CBTDIR filesep 'tutorials' filesep 'uFBA' filesep 'sample_data.mat']);
+tutorialPath = fileparts(which('tutorial_uFBA.mlx'));
+load([tutorialPath filesep 'sample_data.mat']);
+% We load the model by readCbModel to make sure it fits to the specifications.
+model = readCbModel([tutorialPath filesep 'sample_data.mat'],'modelName','model') 
 %% 
 % The |sample_data.mat| file contains the following variabels:
 % 
