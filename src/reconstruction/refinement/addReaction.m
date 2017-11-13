@@ -262,7 +262,7 @@ end
 
 % 
 if (isfield(model,'subSystems'))
-    model.subSystems(rxnPos,1) = subSystem;
+    model.subSystems{rxnPos,1} = subSystem;
 end
 %This will have to be modified once the model structure is set.
 
