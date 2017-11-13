@@ -50,6 +50,15 @@ model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
 % adding a reaction to the model (test only)
 model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
 
+%Now, add some fields by an extensive addReaction call
+modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem','Some Sub','geneRule','GeneA or GeneB');
+assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
+
+%And test this also with a different input of subSystems:
+modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem',{'Some Sub', 'And another sub'},'geneRule','GeneA or GeneB');
+assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
+
+
 %Trying to add a reaction without stoichiometry will fail.
 errorCall = @() addReaction(model,'NoStoich');
 assert(verifyCobraFunctionError(errorCall));
@@ -184,8 +193,12 @@ assert(length(model.mets) == mets_length);
 
 % Convert to irreversible
 fprintf('>> Testing convertToIrreversible (1)\n');
-load('testModelManipulation.mat','model','modelIrrev');
+model = readCbModel('testModelManipulation.mat','modelName', 'model');
+assert(verifyModel(model, 'simpleCheck', 1));
+modelIrrev = readCbModel('testModelManipulation.mat','modelName', 'modelIrrev');
+assert(verifyModel(modelIrrev, 'simpleCheck', 1));
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+testModelIrrev.modelID = 'modelIrrev'; % newer COBRA models have modelID
 
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
@@ -196,15 +209,20 @@ testModelRev = convertToReversible(testModelIrrev);
 testModelRev = rmfield(testModelRev,'reversibleModel'); % this should now be the original model!
 
 % test if both models are the same
+testModelRev.modelID = 'model'; % newer COBRA models have modelID
 assert(isSameCobraModel(model,testModelRev));
 
 % test irreversibility of model
 fprintf('>> Testing convertToIrreversible (2)\n');
-load('testModelManipulation.mat','model','modelIrrev');
+model = readCbModel('testModelManipulation.mat','modelName', 'model');
+assert(verifyModel(model, 'simpleCheck', 1));
+modelIrrev = readCbModel('testModelManipulation.mat','modelName', 'modelIrrev');
+assert(verifyModel(modelIrrev, 'simpleCheck', 1));
 
 % set a lower bound to positive (faulty model)
 modelRev.lb(1) = 10;
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+testModelIrrev.modelID = 'modelIrrev'; % newer COBRA models have modelID
 
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
@@ -212,9 +230,13 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
 %test Conversion with special ordering
 fprintf('>> Testing convertToIrreversible (3)\n');
-load('testModelManipulation.mat','model','modelIrrevOrdered');
+model = readCbModel('testModelManipulation.mat','modelName', 'model');
+assert(verifyModel(model, 'simpleCheck', 1));
+modelIrrevOrdered = readCbModel('testModelManipulation.mat','modelName', 'modelIrrevOrdered');
+assert(verifyModel(modelIrrevOrdered, 'simpleCheck', 1));
 
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, 'orderReactions', true);
+testModelIrrev.modelID = 'modelIrrevOrdered'; % newer COBRA models have modelID
 
 % test if both models are the same
 assert(isSameCobraModel(modelIrrevOrdered, testModelIrrev));
@@ -246,20 +268,25 @@ value = {'TEST', true, ...
     {}, {}, true, 1};
 arg = [name; value];
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], arg{:});
+assert(verifyModel(model2, 'simpleCheck', 1));
 for k = 1:numel(name)
     % test differet optional name-value argument as the first argument after rxnID
     model2b = addReaction(model, 'TEST', name{k}, value{k}, 'reactionFormula', [model.mets{1} ' <=>']);
-    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    assert(verifyModel(model2b, 'simpleCheck', 1));
+    assert(isequal(model2, model2b))  
     
     model2b = addReaction(model, 'TEST', name{k}, value{k}, 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
-    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    assert(verifyModel(model2b, 'simpleCheck', 1));
+    assert(isequal(model2, model2b))  
     
     % test differet optional name-value argument as argument after reactionFormula or stoichCoeffList
     model2b = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], name{k}, value{k});
-    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    assert(verifyModel(model2b, 'simpleCheck', 1));
+    assert(isequal(model2, model2b))  
     
     model2b = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, name{k}, value{k});
-    assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))  % rev field can be nan, not comparable
+    assert(verifyModel(model2b, 'simpleCheck', 1));
+    assert(isequal(model2, model2b))  
 end
 
 % Test addReaction backward compatibility
@@ -268,48 +295,66 @@ fprintf('>> Testing addReaction backward compatibility\n');
 % reactionName
 fprintf('reactionFormula\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'reactionName', 'TestReaction');
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, {'TEST', 'TestReaction'}, [model.mets{1} ' <=>']);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % metaboliteList & stoichCoeffList
 fprintf('metaboliteList & stoichCoeffList\n');
 model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', model.mets(1), -1);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % revFlag
 fprintf('reversible\n');
 model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, 'reversible', 0);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', model.mets(1), -1, 0);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')))
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % irreversible revFlag overridden by reversible reaction formula
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'stoichCoeffList', -1, 'reversible', 0);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], 0);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & model2.lb(end) < 0)
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % lowerBound
 fprintf('lowerBound\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'lowerBound', -10);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], -10);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & model2.lb(end) == -10)
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % upperBound
 fprintf('upperBound\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'upperBound', 10);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], 10);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & model2.ub(end) == 10)
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % objCoeff
 fprintf('objectiveCoef\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'objectiveCoef', 3);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], 3);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & model2.c(end) == 3)
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % subSystem
 fprintf('subSystem\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'subSystem', 'testSubSystem');
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], 'testSubSystem');
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & strcmp(model2.subSystems{end},'testSubSystem'))
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b))
 % grRule
 fprintf('geneRule\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'geneRule', 'test1 & test2');
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], [], 'test1 & test2');
+assert(verifyModel(model2b, 'simpleCheck', 1));
 nGene = numel(model2.genes);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) ...
+assert(isequal(model2, model2b) ...
     & isequal(model2.genes(end-1:end), {'test1'; 'test2'}) & strcmp(model2.grRules{end}, 'test1 & test2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % geneNameList & systNameList
@@ -317,22 +362,27 @@ fprintf('geneRule with geneNameList and systNameList\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], ...
     'geneRule', 'testGeneName1 & testGeneName2', 'geneNameList', {'testGeneName1'; 'testGeneName2'}, ...
     'systNameList', {'testSystName1'; 'testSystName2'});
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], [], ...
     'testGeneName1 & testGeneName2', {'testGeneName1'; 'testGeneName2'}, {'testSystName1'; 'testSystName2'});
+assert(verifyModel(model2b, 'simpleCheck', 1));
 nGene = numel(model2.genes);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) ...
+assert(isequal(model2, model2b) ...
     & isequal(model2.genes(end-1:end), {'testSystName1'; 'testSystName2'}) & strcmp(model2.grRules{end}, 'testSystName1 & testSystName2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % checkDuplicate
 fprintf('checkDuplicate\n');
 formula = printRxnFormula(model,'rxnAbbrList', model.rxns(1), 'printFlag', false);
 model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'checkDuplicate', true);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', formula{1}, [], [], [], [], [], [], [], [], [], true);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model, 'rev')) ...
-    & isequal(rmfield(model2b, 'rev'), rmfield(model2, 'rev')))
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model) & isequal(model2b, model2))
 model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'checkDuplicate', false);
+assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', formula{1}, [], [], [], [], [], [], [], [], [], false);
-assert(isequal(rmfield(model2, 'rev'), rmfield(model2b, 'rev')) & numel(model2.rxns) == numel(model.rxns) + 1)
+assert(verifyModel(model2b, 'simpleCheck', 1));
+assert(isequal(model2, model2b) & numel(model2.rxns) == numel(model.rxns) + 1)
 
 
 % change the directory
