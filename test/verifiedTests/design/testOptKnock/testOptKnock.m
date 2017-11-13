@@ -22,7 +22,7 @@ cd(fileDir);
 tol = 1e-3;
 
 % load model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l'); % anaerobic
 model = changeRxnBounds(model, 'EX_glc(e)', -20, 'l'); % set glucose uptake to 20
 

@@ -21,8 +21,7 @@ global CBTDIR
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 % load the model 
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'Recon2.0model.mat'])
-model = Recon2model;
+model = getDistributedModel('Recon2.0model.mat');
 
 % define the metabolites of interest
 mets = {'atp[c]','atp[m]', 'atp[e]'};

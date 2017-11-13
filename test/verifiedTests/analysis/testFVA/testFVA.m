@@ -24,7 +24,7 @@ tol = 1e-4;
 solverPkgs = {'tomlab_cplex', 'gurobi'};
 
 % load the model
-load('Ec_iJR904.mat', 'model');
+model = readCbModel('Ec_iJR904.mat');
 load('testFVAData.mat');
 
 % create a parallel pool

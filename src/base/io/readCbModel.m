@@ -351,6 +351,21 @@ for i = 1:numel(structFields)
                         models{end, 2} = structFields{i};
                         models{end, 3} = true;
                     end
+                else
+                    %There were no missing fields, but something else was
+                    %wrong. lets try to correct it. 
+                    cfield = convertOldStyleModel(cfield,0);
+                                        % if we reach this place, the conversion worked,
+                    % so lets try the test again.
+                    res = verifyModel(cfield, 'silentCheck', true);
+                    if ~isfield(res, 'Errors')
+                        if ~isfield(cfield,'modelID')
+                            cfield.modelID = structFields{i};
+                        end
+                        models{end + 1, 1} = cfield;
+                        models{end, 2} = structFields{i};
+                        models{end, 3} = true;
+                    end
                 end
             end
         catch ME

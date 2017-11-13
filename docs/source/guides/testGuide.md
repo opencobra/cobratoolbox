@@ -37,11 +37,12 @@ The test succeeds if the argument of `assert()` yields a `true` logical conditio
 If you want to test whether your `function1` correctly throws an **error** message, you can test as follows:
 ````Matlab
 % Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)
-try
-    output1 = function1(input1, input2');
-catch ME
-    assert(length(ME.message) > 0)
-end
+% There are two options. If a particular error message is to be tested (here, 'Input2 has the wrong dimension'):
+assert(verifyCobraFunctionError(@() function1(input1,input2'),'Input2 has the wrong dimension'));
+
+% If the aim is to test, that the function throws an error at all
+    assert(verifyCobraFunctionError(@() function1(input1,input2')));
+
 ````
 
 If you want to test whether your `function1` correctly throws a **warning** message, you can test as follows:

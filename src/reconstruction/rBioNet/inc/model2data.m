@@ -49,7 +49,7 @@ if ~isfield(model,'grRules')
     model = creategrRulesField(model);
 end
 
-Mandatory = {'rxns','rxnNames', 'rev','grRules', 'lb', 'ub','S','genes'};
+Mandatory = {'rxns','rxnNames','grRules', 'lb', 'ub','S','genes'};
 %Opt numbers: CS = 1, subsystem = 2, citations = 3, comments = 4, ecNumbers = 5,
 % rxnKEGGID = 6, description = 7
 
@@ -116,7 +116,7 @@ for i = 1:length(Optional)
         if ismember('subSystems',names)
             Optional{i} = 'subSystems';
             if ~ischar([handles.model.subSystems{:}])
-                handles.model.subSystems = cellfun(@(x) strjoin(x,';'),handles.model.subSystems);
+                handles.model.subSystems = cellfun(@(x) strjoin(x,';'),handles.model.subSystems,'UniformOutput',0);
             end
             continue;
         end

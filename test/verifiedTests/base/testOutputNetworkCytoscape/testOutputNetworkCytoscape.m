@@ -17,7 +17,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testOutputNetworkCytoscape'));
 cd(fileDir);
 
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 %additional calls to check all options
 notShownMets_cell = cell(9, 1);

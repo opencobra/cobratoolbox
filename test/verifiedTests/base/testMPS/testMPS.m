@@ -17,7 +17,8 @@ fileDir = fileparts(which('testMPS'));
 cd(fileDir);
 
 % load the ecoli_core_model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
+
 
 % write the MPS using method 1 (creates a file CobraLPProblem.mps)
 out = writeLPProblem(model);
@@ -113,8 +114,9 @@ assert(~any(~strcmp(strtrim(mpsFileMILP), strtrim(mpsFileMILP_ref))));
 
 clear paramStruct;
 
-% verify another model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'iAF1260.mat'], 'model');
+% verify another model (this is still ecoli, iAF was never used as its name
+% is iAF...
+model = getDistributedModel('ecoli_core_model.mat');
 
 paramStruct.EqtNames = model.mets;
 paramStruct.VarNames = model.rxns;

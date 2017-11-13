@@ -25,7 +25,7 @@ fileDir = fileparts(which('testSolveCobraLPCPLEX'));
 cd(fileDir);
 
 load testDataSolveCobraLPCPLEX;
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 tol = 1e-2;%set tolerance
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)',...

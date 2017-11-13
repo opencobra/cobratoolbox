@@ -21,7 +21,7 @@ tol = 1e-6;
 solverPkgs = {'tomlab_cplex', 'glpk'};
 
 % load the model
-load('ecoli_core_model.mat', 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 osenseStr = 'max';
 allowLoops = true;

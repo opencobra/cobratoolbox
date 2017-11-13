@@ -17,7 +17,7 @@ fileDir = fileparts(which('testMergeModelFieldPositions.m'));
 cd(fileDir);
 
 % load reference data and model
-model = readCbModel([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 %Merge two reactions first two reactions which have a non empty rules
 %field. 

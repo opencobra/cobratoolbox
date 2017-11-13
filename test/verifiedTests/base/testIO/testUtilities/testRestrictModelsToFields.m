@@ -14,8 +14,9 @@ fileDir = fileparts(which('testRestrictModelsToFields'));
 cd(fileDir);
 
 % test variables
-models{1} = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
-models{2} = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'xml' filesep 'Abiotrophia_defectiva_ATCC_49176.xml']);
+models{1} = getDistributedModel('ecoli_core_model.mat');
+models{2} = getDistributedModel('Abiotrophia_defectiva_ATCC_49176.xml');
+
 fieldNames = fieldnames(models{1});
 fieldNames2 = fieldnames(models{2});
 

@@ -20,7 +20,7 @@ cd(fileDir);
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
-model = readCbModel(which('ecoli_core_model.mat'));
+model = getDistributedModel('ecoli_core_model.mat');
 
 %First, we have to remove all flux forcing constraints, because they interfere with leak testing.
 model.lb(model.lb > 0) = 0;

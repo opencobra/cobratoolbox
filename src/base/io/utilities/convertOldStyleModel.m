@@ -215,3 +215,21 @@ end
 for i = 1:numel(warnstate)
     warning(warnstate(i).state,warnstate(i).identifier)
 end
+
+%check rxnGeneMat. If there are no genes set rxnGeneMat to the correct
+%dimensions.
+if isfield(model,'rxnGeneMat') && isfield(model,'genes')
+    if size(model.rxnGeneMat,2) ~= size(model.genes,1) && size(model.genes,1) == 0
+        model.rxnGeneMat = false(size(model.rxns,1),0);
+    end
+end
+
+%Create b field if missing
+if isfield(model,'S') && isfield(model,'mets') && ~isfield(model,'b')
+    model.b = zeros(size(model.mets));
+end
+
+%Also, comps could currently be a char array if it is, convert it
+if isfield(model,'comps') && ischar(model.comps)
+    model.comps = columnVector(arrayfun(@(x) {x},model.comps));
+end

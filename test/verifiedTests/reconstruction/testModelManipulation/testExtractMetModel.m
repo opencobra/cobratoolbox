@@ -14,7 +14,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testUpdateGenes'));
 cd(fileDir);
 
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'Recon2.v04.mat']);
+model = getDistributedModel('Recon2.v04.mat');
 load('testExtractMetModel.mat', 'emptyModel', 'atpModel', 'pppg9Level0', 'pppg9Level1');
 
 % Test getting level 0 (just reactions that involve a metaoblite)

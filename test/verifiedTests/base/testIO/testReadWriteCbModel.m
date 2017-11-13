@@ -20,7 +20,7 @@ cd(fileDir);
 tol = 1e-6;
 
 % read in mat model
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 % convert an old style model
 model = convertOldStyleModel(model);
