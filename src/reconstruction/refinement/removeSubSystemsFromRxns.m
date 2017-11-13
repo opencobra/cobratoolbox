@@ -56,7 +56,7 @@ model.subSystems(reactions) = cellfun(@(x) removeSubSystems(x,subSystems),model.
 
 function newSubSystems = removeSubSystems(subSystemVector,subSysToRemove)
 
-newSubSystems = setDiff(subSystemVector,subSysToRemove);
+newSubSystems = setdiff(subSystemVector,subSysToRemove);
 if isempty(newSubSystems)
     newSubSystems = {''};
 end
