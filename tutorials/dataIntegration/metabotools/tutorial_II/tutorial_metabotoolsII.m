@@ -31,9 +31,9 @@ end
 %% 
 % Load and check that the input model is correclty loaded
 
-tutorialPath = [CBTDIR filesep 'tutorials' filesep 'metabotools' filesep 'tutorial_II'];
+tutorialPath = fileparts(which('tutorial_metabotools2.m'));
 if exist([tutorialPath filesep 'starting_model.mat'], 'file') == 2  % 2 means it's a file.
-    load([tutorialPath filesep 'starting_model.mat']);
+    starting_model = readCbModel([tutorialPath filesep 'starting_model.mat']);
     display('The model is loaded.');
 else
     error('The ''starting_model'' could not be loaded.');
@@ -112,7 +112,7 @@ test_max = 500;
 test_min = 0.0001;
 variation = 20;
 
-prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation);
+prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath);
 clearvars -EXCEPT modelMedium samples tol solver outputPath tutorialPath solverQuant
 %% 
 % Use _checkExchangeProfiles_  generate a summary of the number of uptake 
@@ -199,7 +199,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_add
 mk_union = 1;
 mk_intersect = 1;
 mk_reactionDiff = 1;
-load([tutorialPath filesep 'starting_model.mat']);
+starting_model = readCbModel([tutorialPath filesep 'starting_model.mat']);
 model = starting_model;
 
 [unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff);
