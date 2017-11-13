@@ -1,8 +1,7 @@
 %% Determining MinSpan vectors of COBRA model
-%% Aarash Bordbar
-% Sinopia Biosciences, San Diego, CA USA
-% 
-% Reviewed by James T. Yurkovich
+%% Author: Aarash Bordbar
+%% Affiliation: Sinopia Biosciences, San Diego, CA USA
+%% Reviewer: James T. Yurkovich
 %% INTRODUCTION
 % In this tutorial, we show how to calculate MinSpan vectors [1] for a COBRA 
 % model. COBRA models are predominantly studied under steady-state conditions, 
@@ -50,11 +49,26 @@
 % setting a time limit on the MILP calculation.
 %% Procedure
 % In this example, we will calculate the MinSpan vectors for the _E. coli_ core 
-% network. We begin by initializing the COBRA Toolbox in the MATLAB environment 
-% and loading the core model.
+% network. 
+% 
+% Ensure that the Gurobi MILP and LP solvers are working:
 
-initCobraToolbox
-load('ecoli_core_model.mat', 'model');
+test1 = changeCobraSolver('gurobi', 'MILP');
+test2 = changeCobraSolver('gurobi', 'LP');
+test3 = changeCobraSolver('gurobi', 'QP');
+if test1 == 0 || test2 == 0 || test3 == 0
+    error('minSpan only works with gurobi version 5+');
+end
+%% 
+% Load the core model:
+% 
+% 
+
+global CBTDIR
+modelFileName = 'ecoli_core_model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 %% 
 % The biomass function is then removed from the model using the COBRA function 
 % |removeRxns|.
@@ -72,12 +86,45 @@ model = removeRxns(model, bmName);
 % Running the algorithm on the modified _E. coli_ core model returns the 
 % calculated MinSpans for the network:
 
+tic
 minSpanVectors = detMinSpan(model);
+toc
 %% 
 % |minSpanVectors| is a matrix that consists of 23 linearly independent 
 % vectors. A further description of these vectors is provided and their comparison 
 % to Extreme Pathways [2] is provided in the Supplementary Material of Bordbar 
 % et al 2014 [1] (Section 1 and Figure S2).
+% 
+% Numerical properties of the stoichiometric matrix:
+
+[nMet,nRxn]=size(model.S)
+%% 
+% Independent dimensions of the right nullspace of the stoichiometric matrix
+
+fprintf('%s%g\n','Number of right nullspace basis vectors expected: ',nRxn-rank(full(model.S)))
+%% 
+% Numerical properties of the minSpan basis:
+
+
+[nRxn2,nMinSpanVectors]=size(minSpanVectors)
+%% 
+% Rank of the minSpanVectors
+
+fprintf('%s%g\n','Rank of minSpanVectors matrix:',rank(full(minSpanVectors)))
+%% 
+% 
+
+
+%% 
+% Check the minSpan is really a basis for the nullspace:
+
+fprintf('%s%g\n','Should be zero: ',norm(model.S*minSpanVectors))
+fprintf('%s%g\n','Should be zero (?): ',norm(nRxn-rank(full(model.S))-rank(full(minSpanVectors))))
+%% 
+% Investigate the sparsity pattern of the minSpan basis:
+
+fprintf('%s%g\n','Sparsity ratio of minSpanVectors: ',nnz(minSpanVectors)/(nRxn2*nMinSpanVectors))
+spy(minSpanVectors)
 %% References
 % [1] Bordbar A, Nagarajan H, Lewis NE, Latif H, Ebrahim A, Federowicz S, Schellenberger 
 % J, Palsson BO. "Minimal metabolic pathway structure is consistent with associated 
