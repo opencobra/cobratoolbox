@@ -1,5 +1,6 @@
 function  modelDir = getDistributedModelFolder(modelName) 
-% Identifies the folder a model is to be searched in.
+% Identifies the folder a distributed model is located in.
+% This function only works with models which are part of the models 
 %
 % USAGE:
 %
@@ -10,12 +11,15 @@ function  modelDir = getDistributedModelFolder(modelName)
 %    
 %
 % OUTPUTS:
-%    modelDir:          The folder the model should eb located in.
+%    modelDir:          The folder the model should be located in.
 % 
 
 global CBTDIR
-if isempty(CBTDIR)
-    error('The Toolbox is not initialized. Cannot identfy the Model folder.\nPlease run initCobraToolbox() and try again');
+global ENV_VARS
+if isempty(CBTDIR)    
+    ENV_VARS.printLevel = false;
+    initCobraToolbox;
+    ENV_VARS.printLevel = true;    
 end
 
 modelDir = [CBTDIR filesep 'test' filesep 'models'];

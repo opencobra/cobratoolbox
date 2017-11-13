@@ -41,12 +41,12 @@ try
     if isempty(poolobj)
         parpool(2); % launch 2 workers
     end
-catch
+catch ME
     parTest = false;
-    disp('Some info whether the test is not run if no parallel toolbox is present')
+    fprintf('No Parallel Toolbox found. TRying test without Parallel toolbox.\n')
 end
 if parTest 
-% if paralell toolbox has to be present (if not, this can be left out).
+% if parallel toolbox has to be present (if not, this can be left out).
 %}
 
 for k = 1:length(solverPkgs)
