@@ -1068,7 +1068,10 @@ switch solver
                matlabPrintLevel = 'off';
         end  
         %Set the solver Options.        
-        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol,'ConstraintTolerance',feasTol);
+        %Seems like matlab tends to ignore the optimalityTolerance (or at
+        %least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
+        %make this tolerance smaller...)
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);        
         %Replace all options if they are provided by the solverParameters
         %struct
         if ~isempty(fieldnames(solverParams))
