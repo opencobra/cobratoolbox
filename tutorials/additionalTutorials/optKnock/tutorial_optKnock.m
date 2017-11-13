@@ -33,7 +33,7 @@
 % 
 % Verify that cobratoolbox has been initialized and that the solver has been 
 % set.
-%%
+
 global TUTORIAL_INIT_CB;
 if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
     initCobraToolbox
@@ -47,8 +47,12 @@ cd(folder);
 
 %% 
 % Load the model of E. coli [2].
-%%
-load('iJO1366.mat')
+
+modelFileName = 'iJO1366.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 biomass = 'BIOMASS_Ec_iJO1366_core_53p95M';
 %% 
 % Define the maximum number of solutions to find (i.e., maximum number of 
@@ -111,7 +115,7 @@ fprintf(['The production of other products such as ethanol, formate, lactate and
 % 
 % *Aim:* *finding optKnock reactions sets of size 2 for increasing production 
 % of succinate*
-%%
+
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 2 or less...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
@@ -183,7 +187,7 @@ end
 % 
 % *Aim : finding optKnock reactions sets of size 3 for increasing production 
 % of succinate*
-%%
+
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of succinate will be the objective of the outer problem
@@ -253,7 +257,7 @@ end
 % 
 % *Aim: finding optKnock reactions sets of size 3 for increasing production 
 % of lactate*
-%%
+
 fprintf('\n...EXAMPLE 1: Finding optKnock sets of size 3...\n\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
@@ -323,7 +327,7 @@ end
 % 
 % *Aim: finding optKnock reactions sets of size 6 for increasing production 
 % of lactate*
-%%
+
 fprintf('...EXAMPLE 3: Finding optKnock sets of size 6...\n')
 % Set optKnock options
 % The exchange of lactate will be the objective of the outer problem
