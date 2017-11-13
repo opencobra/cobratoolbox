@@ -73,13 +73,6 @@
 % 
 % Before proceeding with the simulations, load the model into the workspace:
 
-% check if Recon3 exists:
-% pathModel = '....'; enter the path to the Recon 3 model file
-% filename = '2017_04_28_Recon3d.mat';
-% load([pathModel, filename])
-% model = modelRecon3model;
-% clear modelRecon3model
-% and if not select your own model, or use Recon2.0model instead filename='Recon3.0model';
 global CBTDIR
 modelFileName = 'Recon2.0model.mat';
 modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
