@@ -46,19 +46,14 @@ initCobraToolbox
 
 changeCobraSolver('gurobi','LP');
 %% 
-% Unless the model is already loaded into the workspace, ReconX needs to 
-% be loaded. Here, we use Recon2.0 model for illustration, although any model 
-% can be used. 
+% Here, we use Recon2.0 model (distributed by the toolbox) for illustration, 
+% although any model can be used. 
 
-clear model
-if ~exist('modelOrig','var')
-    load('Recon2.0model.mat');
-    model = Recon2model;
-    model.csense(1:size(model.S,1),1)='E';
-else
-    model=modelOrig;
-    model.csense(1:size(model.S,1),1)='E';
-end
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+modelOrig = model;
 %% *1. Environmental constraints*
 % 
 % 
@@ -416,18 +411,18 @@ end
 % feasible solution space to obtain fluxes that better agree with the known physiology 
 % of the cell type. 
 %% REFERENCES
-% 1. Feist, A.M. and Palsson, B.Ø. The biomass objective function. Current Opinion 
-% in Microbiology. 13(3), 344–349 (2010).  
+% 1. Feist, A.M. and Palsson, B.Ã˜. The biomass objective function. Current Opinion 
+% in Microbiology. 13(3), 344â€“349 (2010).  
 % 
 % 2. Kuhar, M.J. On the use of protein turnover and half-lives. Neuropsychopharmacology. 
-% 34(5), 1172–1173 (2008). 
+% 34(5), 1172â€“1173 (2008). 
 % 
 % 3. Sokoloff, L. et al. The [14C]deoxyglucose method for the measurement 
 % of local cerebral  glucose utilization: theory, procedure, and normal values 
 % in the  conscious and anesthetized albino rat. J Neurochem. 28(5):897-916 (1977).
 % 
-% 4. Thiele, I.  and Palsson B.Ø. A protocol for generating a high-quality 
-% genome-scale metabolic reconstruction. Nat. Protocols. 5(1), 93–121(2010).
+% 4. Thiele, I.  and Palsson B.Ã˜. A protocol for generating a high-quality 
+% genome-scale metabolic reconstruction. Nat. Protocols. 5(1), 93â€“121(2010).
 % 
 % 5. Zhang, J. and Liu, Q. Cholesterol metabolism and homeostasis in the 
 % brain. Protein Cell. 6(4), 254-64 (2015). 
