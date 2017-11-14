@@ -14,10 +14,14 @@ fileDir = fileparts(which('testComputeMetFormulae'));
 cd(fileDir);
 
 % save original solve
-global CBT_LP_SOLVER;
-orig_solver = CBT_LP_SOLVER;
+global CBT_LP_SOLVER
+orig_lp_solver = CBT_LP_SOLVER;
+
+global CBT_MILP_SOLVER
+orig_milp_solver = CBT_MILP_SOLVER;
 
 changeCobraSolver('gurobi', 'LP');
+changeCobraSolver('gurobi', 'MILP');
 % check the added functionality in computeElementalMatrix
 % test parsing generic formulae
 modelTest = struct();
@@ -153,7 +157,8 @@ assert(all(yn))
 assert(sum(any(abs(metEle2 - metEle(:, id)) > 1e-5, 2)) < 5)
 
 % change back to the original solver
-changeCobraSolver(orig_solver, 'MILP', 0);
+changeCobraSolver(orig_lp_solver, 'LP', 0);
+changeCobraSolver(orig_milp_solver, 'MILP', 0);
 
 % change the directory
 cd(currentDir)
