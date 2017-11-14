@@ -12,9 +12,9 @@ function EMV = findElementaryMoietyVectors(model, varargin)
 %    'method':           method for finding all conserved moiety vectors
 %                          * 'efmtool':  use EFMtool, 'CalculateFluxModes.m' must be in matlab path (default)
 %                          * 'null':     use matlab rational null basis. 
-%    'deadCMs':           include dead end metabolites or not, default true
+%    'deadCMs':           include dead end metabolites or not (default true)
 %                        (will have more conserved moieties found for dead end metabolites if true)
-%    'printLevel':       print messages or not.
+%    'printLevel':       print messages or not (default 0).
 %
 %    Other COBRA LP solver parameters, see solveCobraLP.m
 %

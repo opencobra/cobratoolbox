@@ -754,7 +754,7 @@ if ~calcMetMwRange
     end
     
     % get formulae in string
-    model.metFormulas = convertMatrixFormulas(ele,metEle,10);
+    model.metFormulas = eleMatrixToFormulae(ele,metEle,10);
     if nameCM > 0 && CMfound
         % manually name conserved moieties
         ele0 = ele;
@@ -843,7 +843,7 @@ if ~calcMetMwRange
             model.metCharge = full(metEle(:, idCharge));
         end
     end
-    model.metFormulas = convertMatrixFormulas(ele(~idCharge), metEle(:, ~idCharge), 10);
+    model.metFormulas = eleMatrixToFormulae(ele(~idCharge), metEle(:, ~idCharge), 10);
     metFormulae = [model.mets(metU) model.metFormulas(metU)];
     rxnBal = metEle' * model.S;
 else
@@ -852,7 +852,7 @@ else
     metMw = [metMwMin; metMwMax];
     % the corresponding chemical formulae
     realEle = MWele > 0;
-    metFormulae = convertMatrixFormulas(eleK(realEle), ...
+    metFormulae = eleMatrixToFormulae(eleK(realEle), ...
         [metEleU.minMw(metIinU, realEle); metEleU.maxMw(metIinU, realEle)], 10);
     S_fill = [];
     ele = eleK;
