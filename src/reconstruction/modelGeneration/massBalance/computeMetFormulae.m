@@ -1,5 +1,4 @@
-function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout] ...
-    = computeMetFormulae(model, varargin)
+function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] = computeMetFormulae(model, varargin)
 % Compute the chemical formulas of all metabolites without formulas using 
 % a set of metabolites with known formulae and a set of reactions by
 % solving an optimization problem minimizing the overall inconsistency in
@@ -7,10 +6,12 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 % (e.g., H+, H2O) can be supplied to automatically fill up inconsistency
 %
 % USAGE:
-%    [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, LP] ...
-%        = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)
-%    [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, LP] ...
-%        = computeMetFormulae(model, 'parameter', value, ...)
+%    Find unknown chemical formulae for all metabolites:
+%      [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'parameter', value, ... )
+%    Find the min/max possible MW of a particular metabolite of interest:
+%      [mwRange, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'metMwRange', met, ...)
+%    Also support direct input in the following order:
+%      [...] = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)
 %
 % INPUT:
 %    model:          COBRA model
@@ -20,14 +21,14 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %                    [default all mets with nonempty .metFormulas]
 %    balancedRxns:   The set of reactions for inferring formulae (cell array of strings or vector of rxn IDs)
 %                    [default all non-exchange reactions]
-%    fillMets:       The chemical formulas for compounds for freely filling the
-%                    imbalance, e.g. {'HCharge1', 'H2O'} [default 'HCharge1' if charge info exists else 'H']
+%    fillMets:       The chemical formulas for compounds for freely filling the imbalance, e.g. {'HCharge1', 'H2O'}. 
+%                    'none' not to have any. [default 'HCharge1' if charge info exists else 'H']
 %    calcCMs:        Calculate conserved moieties from the left null space of S. Options:
 %                      * 'efmtool': Use EFMtool (most comprehensive, recommanded, but computational 
 %                                   cost may be high if there are many deadend mets)
 %                      * 'null':    Use the rational basis computed by Matlab 
 %                      * N:         Directly supply the matrix :math:`N` for conserved moieties 
-%                                   (rational basis or the set of extreme rays)
+%                                   (from rational basis or the set of extreme rays)
 %                      * false:     Not to find conserved moieties and return minimal formulae
 %                      [default 'efmtool' if 'CalculateFluxModes.m' is in path, else switch to 'null']
 %    nameCMs:        Name the identified conserved moieties or not [default 0]
@@ -35,11 +36,15 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %                      * 1:  Name true conserved moieties interactively (exclude dead end mets). 
 %                      * 2:  Name all interactively (including dead end)
 %    deadCMs:        true to include dead end metabolites when finding conserved moieties (default true)
+%    metMwRange:     the metabolite of interest (or its ID) for which the range of possible molecular weights is determined
+%                    (if supplied, inputs 'fillMets', ... , 'deadCMs' are all not used)
 %    LPparams:       Additional parameters for `solveCobraLP`. See `solveCobraLP` for details
 %
 % OUTPUTS:
-%    model:          COBRA model with updated formulas
-%    metCompute:     #unknown mets x 2 cel array [mets | computed formulas]
+%    model:          COBRA model with updated formulas and charges (1st output if 'metMwRange' is not called)
+%    mwRange:        range for the MW of the metabolite of interest (1st output if 'metMwRange' is called)
+%    metFormulae:    Formulae for unknown mets (#unknown mets x 2 cell array) if 'metMwRange' is not called
+%                    Cell array of two chemical formulae for the min/max MW of the metabolite of interest if 'metMwRange' is called
 %    ele:            Elements corresponding to the row of rxnBal, the coloumn of metEle
 %    metEle:         Chemical formulas in matrix (#metKnown x #elements)
 %    rxnBal:         Elemental balance of rxns (#elements x #rxns)
@@ -71,8 +76,8 @@ function [model, metCompute, ele, metEle, rxnBal, S_fill, solInfo, N, varargout]
 %                      * final:         minIncon/minFill/minForm/mixed/infeasible stating where 
 %                                       the final solution metEleUnknwon is obtained from. 
 %                                       Ideally minForm if no numerical issue on feasibility.
-%    N:              the set of extreme rays or the rational null space
-%                    matrix representing the minimal conserved moiety vectors
+%                      * N:             the set of extreme rays or the rational null space
+%                                       matrix representing the minimal conserved moiety vectors
 %    LP:             LP problem structure for solveCobraLP (#components x 1)
 
 if ~isfield(model,'metFormulas')
@@ -90,18 +95,17 @@ validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
 if isempty(varargin)
     varargin = {[]};
 end
+varargin = varargin(:);
+solverParamArg = false;
 while jArg <= min(numel(varargin), numel(optArgin))
-    if ischar(varargin{jArg}) && any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
-        % name-value pair arguments begin
-        % get the name-vale pair arguments
-        while jArg <= numel(varargin) - 1
-            if any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
-                tempArgin = [tempArgin; varargin(jArg:(jArg + 1))];
-                jArg = jArg + 2;
-            else
-                break
-            end
-        end
+    if ischar(varargin{jArg}) && ((jArg ~= 1 && jArg ~= 3) || ~any(strcmp(model.mets, varargin{jArg}))) ...
+            && (jArg ~= 2 || ~any(strcmp(model.rxns, varargin{jArg}))) ...
+            && (jArg ~= 4 || (~strcmpi(varargin{jArg}, 'efmtool') && ~strcmpi(varargin{jArg}, 'null')))
+        % name-value pair arguments begin. Get the name-vale pair arguments
+        break
+    elseif isstruct(varargin{jArg})
+        % structure input. Assume it is a solver-specific parameter structure
+        solverParamArg = true;
         break
     elseif ~isempty(varargin{jArg}) || (jArg == 3 && isequal(varargin{jArg}, {}))
         % true input if it is nonempty
@@ -109,11 +113,19 @@ while jArg <= min(numel(varargin), numel(optArgin))
     end
     jArg = jArg + 1;
 end
-
+while jArg <= numel(varargin) - 1 && ~solverParamArg
+    if any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
+        tempArgin = [tempArgin; varargin(jArg:(jArg + 1))];
+        jArg = jArg + 2;
+    else
+        break
+    end
+end
 % the rest are parameters for solveCobraLP
 varargin = varargin(jArg:end);
+
 % get printLevel from the cobra solver parameters if exists
-printLevel = 1;
+printLevel = 0;
 for j = 1:(numel(varargin) - 1)
     if ischar(varargin{j}) && strcmpi(varargin{j}, 'printLevel')
         printLevel = varargin{j + 1};
@@ -135,7 +147,7 @@ metFill  = parser.Results.fillMets;
 findCM = parser.Results.calcCMs;
 nameCM = parser.Results.nameCMs;
 deadCM = parser.Results.deadCMs;
-metInterest0 = parser.Result.metMwRange;
+metInterest = parser.Results.metMwRange;
 
 if isempty(metKnown)  % use all mets with chemical formulae
     metKnown = model.mets(~cellfun(@isempty,model.metFormulas));
@@ -158,16 +170,16 @@ if isempty(findCM) || (numel(findCM) == 1 && findCM)
     findCM = 'efmtool';
 end
 calcMetMwRange = false;
-if ~isempty(metInterest0)
+if ~isempty(metInterest)
     % calculate the range for MW of metInterest, no metabolite for filling inconsistency
     metFill = {};
-    if ischar(metInterest0)
-        metInterest = findMetIDs(model, metInterest0);
+    if ischar(metInterest)
+        metI = findMetIDs(model, metInterest);
     else
-        metInterest = metInterest0;
+        metI = metInterest;
     end
-    if metInterest <= 0 || round(metInterest) ~= metInterest
-        error('''%s'' is neither a metabolite nor a valid met index in the model.', metInterest0)
+    if metI <= 0 || round(metI) ~= metI
+        error('''%s'' is neither a metabolite nor a valid met index in the model.', metInterest)
     end
     calcMetMwRange = true;
 end
@@ -196,12 +208,21 @@ if any(metK == 0)
     else
         error('metKnown indices must be positive integer.')
     end
+elseif calcMetMwRange && any(metK == metI)
+    if printLevel
+        fprintf('The met of interest (supplied in the argument ''metMwRange'') already has a known formula. Nothing to calculate.\n');
+    end
+    metMw = repmat(computeMW(model, model.mets(metI), false, true), 2, 1);
+    metFormulae = repmat(model.metFormulas(metI), 2, 1);
+    [ele, metEle, rxnBal, S_fill, solInfo, LP] = deal([]);
+    varargout = {LP};
+    return
 end
 metKform = cellfun(@isempty, model.metFormulas(metK));
 if any(metKform)
     warning('Some mets in metKnown do not have formulas in the model. Ignore them.');
 end
-[metK,metKform] = deal(metK(~metKform), model.metFormulas(metK(~metKform)));
+metK = metK(~metKform);
 
 % get feasibility tolerance
 if ~isempty(varargin) && isstruct(varargin{1}) && isfield(varargin{1}, 'feasTol')
@@ -224,7 +245,8 @@ digitRounded = 12;
 % [All formulas must be in the form of e.g. Abc2Bcd1. Elements are represented by one capital letter 
 % followed by lower case letter or underscore, followed by a number for the stoichiometry. 
 % Brackets/parentheses and repeated elements are also supported, e.g. CuSO4(H2O)5.]
-[~,eleK,metEleK] = checkEleBalance(metKform);
+[metEleK, eleK] = computeElementalMatrix(model, model.mets(metK), false, true);
+
 % check if information on charges exists
 if ~any(strcmp(eleK, 'Charge'))
     fieldCharge = '';
@@ -241,11 +263,16 @@ if ~any(strcmp(eleK, 'Charge'))
         metFill = {'H'};  % no charge information, simply use H as filling metabolites
     end
 end
+
 % formulas for filling metabolites
-[~,eleK,metEleF] = checkEleBalance(metFill, eleK);
+modelF = struct();
+[modelF.mets, modelF.metFormulas] = deal(metFill);
+[metEleF, eleK] = computeElementalMatrix(modelF, modelF.mets, false, true, eleK);
+clear modelF
 if numel(eleK) > size(metEleK,2)
     metEleK = [metEleK, zeros(size(metEleK,1), numel(eleK) - size(metEleK,2))];
 end
+
 eleCh = strcmp(eleK,'Charge');  % index for charge coloumn
 m = size(model.S,1);  % number of mets
 nE = numel(eleK);  % number of elements
@@ -280,24 +307,42 @@ eleConnect = eleConnect(:, 1:nEC);
 % constraint matrix for m_ie, x^pos_je, x^neg_je: [S_unknown I_nR -I_nR]
 [row,col,entry] = find([model.S(:, rxnC)', speye(nR), -speye(nR)]);
 nCol = m + nR * 2;
-% chemical formulae
-[metEleU.minIncon, metEleU.minFill, metEleU.minForm] = deal(NaN(mU, nE));
-% infeasibility of each solve
-[infeasibility, sol] = deal(repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1));
-[S_fill.minIncon, S_fill.minFill, S_fill.minForm] = deal(sparse(mF, nR));
-% bound on the total inconsistency allowed
-bound = repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1);
+
+if ~calcMetMwRange
+    % chemical formulae
+    [metEleU.minIncon, metEleU.minFill, metEleU.minForm] = deal(NaN(mU, nE));
+    % infeasibility of each solve
+    [infeasibility, sol] = deal(repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1));
+    % stoichiometry for metabolites to fill inconsistency
+    [S_fill.minIncon, S_fill.minFill, S_fill.minForm] = deal(sparse(mF, nR));
+    % bound on the total inconsistency allowed
+    bound = repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1);
+else
+    modelEle = struct();
+    [modelEle.mets, modelEle.metFormulas] = deal(eleK);
+    MWele = computeMW(modelEle, [], false, true);
+    clear modelEle
+    [metMwMin, metMwMax] = deal(0);
+    [metEleU.minIncon, metEleU.minMw, metEleU.maxMw] = deal(NaN(mU, nE));
+    [infeasibility, sol] = deal(repmat(struct('minIncon', [], 'minMw', [], 'maxMw', []), nEC, 1));
+    bound = repmat(struct('minIncon', [], 'minMw', [], 'maxMw', []), nEC, 1);
+end
+% index for variables in the LP problems
 index = repmat(struct('m', [], 'xp', [], 'xn', [], 'Ap', [], 'An', []), nEC, 1);
-if nargout == 9
+
+if nargout == 8
     % only assign output LP when requested
     varargout = {repmat(struct('A', [], 'b', [], 'lb', [], 'ub', [], 'c', [], 'csense', [], 'osense', []), nEC, 1)};
 end
 for jEC = 1:nEC
-    LPj = struct();
     %% minimum inconsistency
+    
     kE = sum(eleConnect(:, jEC));  % number of connected elements in the current component
-    metFillCon = any(metEleF(:, eleConnect(:, jEC)), 2);  % connected mets for filling 
+    metFillCon = any(metEleF(:, eleConnect(:, jEC)), 2);  % connected mets for filling
     mFC = sum(metFillCon);  % number of connected mets for filling
+    
+    % construct LP problem
+    LPj = struct();
     % Matrix containing m_ie for all conected elements:
     % [S I_nR -I_nR | 0 ...                               0 ;
     %  0 ...      0 | S I_nR -I_nR | 0 ...   |            0 ;
@@ -310,27 +355,38 @@ for jEC = 1:nEC
     % [m_1,1 * I_nR  | m_2,1 * I_nR  | ... | m_mFC,1 * I_nR ;
     %  m_1,2 * I_nR  | m_2,2 * I_nR  | ... | m_mFC,2 * I_nR ;
     %  ...
-    %  m_1,kE * I_nR | m_2,kE * I_nR | ... | m_mFC,kE * I_nR] 
-    rowJ = repmat((1:(nR * kE))', mFC, 1); 
+    %  m_1,kE * I_nR | m_2,kE * I_nR | ... | m_mFC,kE * I_nR]
+    rowJ = repmat((1:(nR * kE))', mFC, 1);
     colJ = repmat((1:nR)', kE * mFC, 1) + reshape(repmat(0:nR:(nR * (mFC - 1)), nR * kE, 1), nR * kE * mFC, 1);
     entryJ = full(metEleF(metFillCon, eleConnect(:, jEC))');
     entryJ = reshape(repmat(entryJ(:)', nR, 1), nR * kE * mFC, 1);
     LPj.A = [LPj.A, sparse(rowJ, colJ, entryJ, nR * kE, nR * mFC), -sparse(rowJ, colJ, entryJ, nR * kE, nR * mFC)];
     LPj.lb = zeros(size(LPj.A, 2), 1);
     LPj.ub = inf(size(LPj.A, 2),1);
+    LPj.c = zeros(size(LPj.A, 2), 1);
+    % Objective: sum(x^pos_ie + x^neg_ie)
+    for jkE = 1:kE
+        LPj.c((nCol * (jkE - 1) + m + 1) : (nCol * jkE)) = 1;
+    end
+    LPj.b = zeros(nR * kE, 1);   % RHS: 0
+    LPj.csense = char('E' * ones(1, nR * kE));
+    LPj.osense = 1;  % minimize
+    
+    % if charge is being balanced in the current loop
     [~, idCharge] = ismember(find(eleCh), find(eleConnect(:, jEC)));
     if idCharge > 0
         % charges can be negative
         LPj.lb((nCol * (idCharge - 1) + 1) : (nCol * (idCharge - 1) + m)) = -inf;
     end
+    
     % store the index
     eleInd = find(eleConnect(:, jEC));
     eleJ = eleK(eleInd);
     for jkE = 1:kE
         index0 = (jkE - 1) * nCol;
-        index(jEC).m.(eleJ{jkE}) = (index0 + 1) : (index0 + m);
-        index(jEC).xp.(eleJ{jkE}) = (index0 + m + 1) : (index0 + m + nR);
-        index(jEC).xn.(eleJ{jkE}) = (index0 + m + nR + 1) : (index0 + m + nR * 2);
+        index(jEC).m.(eleJ{jkE}) = (index0 + 1) : (index0 + m);  % elemental compoisiton
+        index(jEC).xp.(eleJ{jkE}) = (index0 + m + 1) : (index0 + m + nR);  % positive inconsistency
+        index(jEC).xn.(eleJ{jkE}) = (index0 + m + nR + 1) : (index0 + m + nR * 2);  % negative inconsistency
         if jkE == idCharge
             % allow known formulas but unknown charges
             chargeKnown = ~isnan(metEleK(:, eleInd(jkE)));
@@ -345,27 +401,14 @@ for jEC = 1:nEC
         metFillConName = metFill(metFillCon);
         for jFC = 1:mFC
             index0 = kE * nCol + (jFC - 1) * nR;
-            index(jEC).Ap.(metFillConName{jFC}) = (index0 + 1) : (index0 + nR);
-            index(jEC).An.(metFillConName{jFC}) = (index0 + nR + 1) : (index0 + nR * 2);
+            index(jEC).Ap.(metFillConName{jFC}) = (index0 + 1) : (index0 + nR);  % positive adjustable stoichiometry for metabolite to fill inconsistency
+            index(jEC).An.(metFillConName{jFC}) = (index0 + nR + 1) : (index0 + nR * 2);  % negative adjustable stoichiometry
         end
     end
     
-    
-    % Objective: sum(x^pos_ie + x^neg_ie)
-    LPj.c = zeros(size(LPj.A, 2), 1);
-    for jkE = 1:kE
-        LPj.c((nCol * (jkE - 1) + m + 1) : (nCol * jkE)) = 1;
-    end
-    % RHS: 0
-    LPj.b = zeros(nR * kE, 1);
-    LPj.csense = char('E' * ones(1, nR * kE));
-    LPj.osense = 1;  % minimize
     % solve for minimum inconsistency
-    if nargin < 6
-        sol(jEC).minIncon = solveCobraLP(LPj);
-    else
-        sol(jEC).minIncon = solveCobraLP(LPj, varargin{:});
-    end
+    sol(jEC).minIncon = solveCobraLP(LPj, varargin{:});
+    
     if isfield(sol(jEC).minIncon, 'full') && numel(sol(jEC).minIncon.full) == size(LPj.A, 2)
         % store the chemical formulae
         jkE = 0;
@@ -385,10 +428,8 @@ for jEC = 1:nEC
     infeas = checkSolFeas(LPj, sol(jEC).minIncon);
     infeasibility(jEC).minIncon = infeas;
     if infeas <= feasTol  % should always be feasible
-       %% minimize the stoichiometric coefficients of mets for filling
-        %  or calculate the range for the MW of the metabolite of interest
+        % add constraint on total inconsistency: sum(x^pos_i,e + x^neg_i,e) <= inconsistency
         for jkE = 1:kE
-            % add constraint on total inconsistency: sum(x^pos_i,e + x^neg_i,e) <= inconsistency
             LPj.A(end + 1,:) = 0;
             LPj.A(end, (nCol * (jkE - 1) + m + 1):(nCol * jkE)) = 1;
             % rounding to avoid numerical issues on feasibility
@@ -407,152 +448,193 @@ for jEC = 1:nEC
         bound(jEC).minIncon = LPj.b((end - kE + 1) : end);
         % change objective to min adjustment
         LPj.c(:) = 0;
-        LPj.c((nCol * kE + 1) : (nCol * kE + nR * mFC * 2)) = 1;
-        % solve, adjust tolerance if infeasible
-        f = 1e-6;
-        while true
-            if nargin < 6
-                sol(jEC).minFill = solveCobraLP(LPj);
-            else
+        if ~calcMetMwRange
+            %% minimize the stoichiometric coefficients of mets for filling
+            LPj.c((nCol * kE + 1) : (nCol * kE + nR * mFC * 2)) = 1;
+            % solve, adjust tolerance if infeasible
+            f = 1e-6;
+            while true
                 sol(jEC).minFill = solveCobraLP(LPj, varargin{:});
-            end
-            infeas = checkSolFeas(LPj, sol(jEC).minFill);
-            if infeas <= feasTol || f > 1e-4 + 1e-8
-                break
-            end
-            f = f * 10;
-            LPj.b((end - kE + 1) : end) = bound(jEC).minIncon * (1 + f);
-            % rounding to avoid numerical issues on feasibility
-            LPj.b = round(LPj.b, digitRounded);
-        end
-        if isfield(sol(jEC).minFill,'full') && numel(sol(jEC).minFill.full) == size(LPj.A,2)
-            % store the chemical formulae
-            jkE = 0;
-            for jE = 1:nE
-                if eleConnect(jE, jEC)
-                    jkE = jkE + 1;
-                    metEleU.minFill(:,jE) = sol(jEC).minFill.full(nCol * (jkE - 1) + metU);
+                infeas = checkSolFeas(LPj, sol(jEC).minFill);
+                if infeas <= feasTol || f > 1e-4 + 1e-8
+                    break
                 end
+                f = f * 10;
+                LPj.b((end - kE + 1) : end) = bound(jEC).minIncon * (1 + f);
+                % rounding to avoid numerical issues on feasibility
+                LPj.b = round(LPj.b, digitRounded);
             end
-            S_fill.minFill(metFillCon,:) = reshape(...
-                sol(jEC).minFill.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
-                - sol(jEC).minFill.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
-        else
-            metEleU.minFill(:,eleConnect(:,jEC)) = NaN;
-        end
-        infeasibility(jEC).minFill = infeas;
-        bound(jEC).minFill = LPj.b((end - kE + 1) : end);
-        %% minimal formulas
-        if infeas <= feasTol
-            % feasible solution found. Use sol.minFill to constrain
-            solChoice = 'minFill';
-        else
-            % infeasible when minimizing stoichiometric coefficients of
-            % filling mets. Use sol.minIncon to constrain
-            solChoice = 'minIncon'; 
-        end
-        % remove constraint on total inconsistency
-        LPj.A((end - kE + 1) : end, :) = [];
-        LPj.b((end - kE + 1) : end) = [];
-        LPj.csense((end - kE + 1) : end) = '';
-        if isfield(LPj, 'basis') && isfield(LPj.basis, 'cbasis')
-            LPj.basis.cbasis((end - kE + 1) : end) = [];
-        end
-        LPj.c(:) = 0;  % reset objective
-        % if charge is involved, split it into m^pos, m^neg
-        if idCharge > 0
-            mUch = sum(~chargeKnown);
-            LPj.A = [LPj.A,  sparse(size(LPj.A, 1), (mU + mUch) * 2); ...
-                sparse(1:(mU + mUch), nCol * (idCharge - 1) + [metU; metK(~chargeKnown)], ...
-                1, mU + mUch, size(LPj.A,2)), -speye(mU + mUch), speye(mU + mUch)];
-            LPj.b = [LPj.b; zeros(mU + mUch, 1)];
-            LPj.csense = [LPj.csense char('E' * ones(1, mU + mUch))];
-            LPj.lb = [LPj.lb; zeros((mU + mUch) * 2, 1)];
-            LPj.ub = [LPj.ub; inf((mU + mUch) * 2, 1)];
-            LPj.c = [LPj.c; ones((mU + mUch) * 2, 1)];
-            if isfield(LPj, 'basis') 
-                if isstruct(LPj.basis)
-                    % for gurobi
-                    if isfield(LPj.basis, 'vbasis')
-                        LPj.basis.vbasis((end + 1) : (end + (mU + mUch) * 2)) = 0;
-                    end
-                    if isfield(LPj.basis, 'cbasis')
-                        LPj.basis.cbasis((end + 1) : (end + mU + mUch)) = 0;
-                    end
-                else
-                    % for other solvers
-                    if numel(LPj.basis) == size(LPj.A, 2) - (mU + mUch) * 2
-                        LPj.basis((end + 1) : (end + (mU + mUch) * 2)) = 0;
+            if isfield(sol(jEC).minFill,'full') && numel(sol(jEC).minFill.full) == size(LPj.A,2)
+                % store the chemical formulae
+                jkE = 0;
+                for jE = 1:nE
+                    if eleConnect(jE, jEC)
+                        jkE = jkE + 1;
+                        metEleU.minFill(:,jE) = sol(jEC).minFill.full(nCol * (jkE - 1) + metU);
                     end
                 end
+                S_fill.minFill(metFillCon,:) = reshape(...
+                    sol(jEC).minFill.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
+                    - sol(jEC).minFill.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
+                %             else
+                %                 metEleU.minFill(:,eleConnect(:,jEC)) = NaN;
             end
-        end
-        for jkE = 1:kE
-            % fix inconsistency variables
-            ind = (nCol * (jkE - 1) + m + 1) : (nCol * jkE);
-            LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + 1e-10);
-            LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - 1e-10);
-            % minimize chemical formulae
-            if jkE ~= idCharge
-                LPj.c((nCol * (jkE - 1) + 1) : (nCol * (jkE - 1) + m)) = 1;
-            end
-        end
-        % fix stoichiometric coefficients for filling mets
-        LPj.ub((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
-            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR* 2 * mFC)) * (1 + 1e-10);
-        LPj.lb((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
-            = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - 1e-10);
-        % rounding to avoid numerical issues on feasibility
-        LPj.ub = round(LPj.ub, digitRounded);
-        LPj.lb = round(LPj.lb, digitRounded);
-        % solve, adjust tolerance if infeasible
-        f = 1e-10;
-        while true
-            if nargin < 6
-                sol(jEC).minForm = solveCobraLP(LPj);
+            infeasibility(jEC).minFill = infeas;
+            bound(jEC).minFill = LPj.b((end - kE + 1) : end);
+            %% minimal formulas
+            if infeas <= feasTol
+                % feasible solution found. Use sol.minFill to constrain
+                solChoice = 'minFill';
             else
-                sol(jEC).minForm = solveCobraLP(LPj, varargin{:});
+                % infeasible when minimizing stoichiometric coefficients of
+                % filling mets. Use sol.minIncon to constrain
+                solChoice = 'minIncon';
             end
-            infeas = checkSolFeas(LPj, sol(jEC).minForm);
-            if infeas <= feasTol || f > 1e-5
-                break
+            % remove constraint on total inconsistency
+            LPj.A((end - kE + 1) : end, :) = [];
+            LPj.b((end - kE + 1) : end) = [];
+            LPj.csense((end - kE + 1) : end) = '';
+            if isfield(LPj, 'basis') && isfield(LPj.basis, 'cbasis')
+                LPj.basis.cbasis((end - kE + 1) : end) = [];
             end
-            f = f * 10;
+            LPj.c(:) = 0;  % reset objective
+            % if charge is involved, split it into m^pos, m^neg
+            if idCharge > 0
+                mUch = sum(~chargeKnown);
+                LPj.A = [LPj.A,  sparse(size(LPj.A, 1), (mU + mUch) * 2); ...
+                    sparse(1:(mU + mUch), nCol * (idCharge - 1) + [metU; metK(~chargeKnown)], ...
+                    1, mU + mUch, size(LPj.A,2)), -speye(mU + mUch), speye(mU + mUch)];
+                LPj.b = [LPj.b; zeros(mU + mUch, 1)];
+                LPj.csense = [LPj.csense char('E' * ones(1, mU + mUch))];
+                LPj.lb = [LPj.lb; zeros((mU + mUch) * 2, 1)];
+                LPj.ub = [LPj.ub; inf((mU + mUch) * 2, 1)];
+                LPj.c = [LPj.c; ones((mU + mUch) * 2, 1)];
+                if isfield(LPj, 'basis')
+                    if isstruct(LPj.basis)
+                        % for gurobi
+                        if isfield(LPj.basis, 'vbasis')
+                            LPj.basis.vbasis((end + 1) : (end + (mU + mUch) * 2)) = 0;
+                        end
+                        if isfield(LPj.basis, 'cbasis')
+                            LPj.basis.cbasis((end + 1) : (end + mU + mUch)) = 0;
+                        end
+                    else
+                        % for other solvers
+                        if numel(LPj.basis) == size(LPj.A, 2) - (mU + mUch) * 2
+                            LPj.basis((end + 1) : (end + (mU + mUch) * 2)) = 0;
+                        end
+                    end
+                end
+            end
             for jkE = 1:kE
-                % relax tolerance
+                % fix inconsistency variables
                 ind = (nCol * (jkE - 1) + m + 1) : (nCol * jkE);
-                LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + f);
-                LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - f);
+                LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + 1e-10);
+                LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - 1e-10);
+                % minimize chemical formulae
+                if jkE ~= idCharge
+                    LPj.c((nCol * (jkE - 1) + 1) : (nCol * (jkE - 1) + m)) = 1;
+                end
             end
+            % fix stoichiometric coefficients for filling mets
             LPj.ub((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
-                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 + f);
+                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR* 2 * mFC)) * (1 + 1e-10);
             LPj.lb((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
-                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - f);
+                = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - 1e-10);
             % rounding to avoid numerical issues on feasibility
             LPj.ub = round(LPj.ub, digitRounded);
             LPj.lb = round(LPj.lb, digitRounded);
-        end
-        if isfield(sol(jEC).minForm, 'full') && numel(sol(jEC).minForm.full) == size(LPj.A, 2)
-            % store the chemical formulae
-            jkE = 0;
-            for jE = 1:nE
-                if eleConnect(jE, jEC)
-                    jkE = jkE + 1;
-                    metEleU.minForm(:, jE) = sol(jEC).minForm.full(nCol * (jkE - 1) + metU);
+            % solve, adjust tolerance if infeasible
+            f = 1e-10;
+            while true
+                sol(jEC).minForm = solveCobraLP(LPj, varargin{:});
+                infeas = checkSolFeas(LPj, sol(jEC).minForm);
+                if infeas <= feasTol || f > 1e-5
+                    break
                 end
+                f = f * 10;
+                for jkE = 1:kE
+                    % relax tolerance
+                    ind = (nCol * (jkE - 1) + m + 1) : (nCol * jkE);
+                    LPj.ub(ind) = sol(jEC).(solChoice).full(ind) * (1 + f);
+                    LPj.lb(ind) = sol(jEC).(solChoice).full(ind) * (1 - f);
+                end
+                LPj.ub((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+                    = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 + f);
+                LPj.lb((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) ...
+                    = sol(jEC).(solChoice).full((nCol * kE + 1) : (nCol * kE + nR * 2 * mFC)) * (1 - f);
+                % rounding to avoid numerical issues on feasibility
+                LPj.ub = round(LPj.ub, digitRounded);
+                LPj.lb = round(LPj.lb, digitRounded);
             end
-            S_fill.minForm(metFillCon,:) = reshape(...
-                sol(jEC).minForm.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
-                - sol(jEC).minForm.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
-        else
-            metEleU.minForm(:, eleConnect(:,jEC)) = NaN;
+            if isfield(sol(jEC).minForm, 'full') && numel(sol(jEC).minForm.full) == size(LPj.A, 2)
+                % store the chemical formulae
+                jkE = 0;
+                for jE = 1:nE
+                    if eleConnect(jE, jEC)
+                        jkE = jkE + 1;
+                        metEleU.minForm(:, jE) = sol(jEC).minForm.full(nCol * (jkE - 1) + metU);
+                    end
+                end
+                S_fill.minForm(metFillCon,:) = reshape(...
+                    sol(jEC).minForm.full((nCol * kE + 1) : (nCol * kE + nR * mFC)) ...
+                    - sol(jEC).minForm.full((nCol * kE + nR * mFC + 1) : (nCol * kE + nR * mFC *2)), nR, mFC)';
+            else
+                metEleU.minForm(:, eleConnect(:,jEC)) = NaN;
+            end
+            infeasibility(jEC).minForm = infeas;
+            bound(jEC).minForm = f;
+        else  
+            %%  calculate the range for the MW of the metabolite of interest
+            % perform only if the element is a real chemical element with molecular weight
+            if MWele(jEC) > 0
+                LPj.c(metI) = MWele(jEC);
+                % minimization, adjust tolerance if infeasible
+                f = 1e-6;
+                while true
+                    sol(jEC).minMw = solveCobraLP(LPj, varargin{:});
+                    infeas = checkSolFeas(LPj, sol(jEC).minMw);
+                    if infeas <= feasTol || f > 1e-4 + 1e-8
+                        break
+                    end
+                    f = f * 10;
+                    LPj.b((end - kE + 1) : end) = bound(jEC).minIncon * (1 + f);
+                    % rounding to avoid numerical issues on feasibility
+                    LPj.b = round(LPj.b, digitRounded);
+                end
+                if isfield(sol(jEC).minMw,'full') && numel(sol(jEC).minMw.full) == nCol
+                    metEleU.minMw(:, eleConnect(:, jEC)) = sol(jEC).minMw.full(metU);
+                end
+                infeasibility(jEC).minMw = infeas;
+                bound(jEC).minMw = LPj.b((end - kE + 1) : end);
+                metMwMin = metMwMin + LPj.c' * sol(jEC).minMw.full;
+                
+                % maximization, adjust tolerance if infeasible
+                LPj.osense = -1;
+                f = 1e-6;
+                while true
+                    sol(jEC).maxMw = solveCobraLP(LPj, varargin{:});
+                    infeas = checkSolFeas(LPj, sol(jEC).maxMw);
+                    if infeas <= feasTol || f > 1e-4 + 1e-8
+                        break
+                    end
+                    f = f * 10;
+                    LPj.b((end - kE + 1) : end) = bound(jEC).minIncon * (1 + f);
+                    % rounding to avoid numerical issues on feasibility
+                    LPj.b = round(LPj.b, digitRounded);
+                end
+                if isfield(sol(jEC).maxMw,'full') && numel(sol(jEC).maxMw.full) == nCol
+                    metEleU.maxMw(:, eleConnect(:, jEC)) = sol(jEC).maxMw.full(metU);
+                end
+                infeasibility(jEC).maxMw = infeas;
+                bound(jEC).maxMw = LPj.b((end - kE + 1) : end);
+                metMwMax = metMwMax + LPj.c' * sol(jEC).maxMw.full;
+            end
         end
-        infeasibility(jEC).minForm = infeas;
-        bound(jEC).minForm = f;
     else
         [infeasibility(jEC).minFill, infeasibility(jEC).minForm] = deal(inf);
     end
-    if nargout == 9
+    if nargout == 8
         if isfield(LPj, 'basis')
             LPj = rmfield(LPj, 'basis');
         end
@@ -561,169 +643,226 @@ for jEC = 1:nEC
 end
 %% store the solution and relevant info
 solInfo.metUnknown = model.mets(metU);
+solInfo.metFill = metFill;
+solInfo.rxns = model.rxns(rxnC);
 solInfo.ele = eleK;
 solInfo.eleConnect = eleConnect;
-solInfo.rxns = model.rxns(rxnC);
 solInfo.metEleUnknwon = metEleU;
-solInfo.metFill = metFill;
-solInfo.S_fill = S_fill;
-solInfo.sol = sol;
-solInfo.var = index;
-solInfo.infeasibility = infeasibility;
-solInfo.bound = bound;
-solInfo.feasTol = feasTol;
-solInfo.stat = repmat({'infeasible'}, nEC, 1);
-solInfo.stat([infeasibility.minIncon] <= feasTol) = {'minIncon'};
-solInfo.stat([infeasibility.minFill] <= feasTol) = {'minFill'};
-solInfo.stat([infeasibility.minForm] <= feasTol) = {'minForm'};
-if any(strcmp(solInfo.stat, 'infeasible'))
-    fprintf('Critical failure: no feasible solution is found.\n')
-    metCompute = {};
-    solInfo.final = 'infeasible';
-    return
-elseif all(strcmp(solInfo.stat, 'minForm'))
-    solInfo.final = 'minForm';
-elseif all(strcmp(solInfo.stat, 'minFill'))
-    solInfo.final = 'minFill';
-elseif all(strcmp(solInfo.stat, 'minIncon'))
-    solInfo.final = 'minIncon';
-else
-    solInfo.final = 'mixed';
+if ~calcMetMwRange
+    solInfo.S_fill = S_fill;
+    solInfo.N = [];
+    S_fill = sparse(mF, numel(model.rxns));
 end
-% Get the best metEle and S_fill as the solution for incorporating results from conserved moiety calculations. 
+solInfo.solEachEle = repmat(struct('sol', [], 'var', [], 'infeasibility', [], 'bound', [], 'stat', ''), nEC, 1);
+stat = repmat({'infeasible'}, nEC, 1);
+stat([infeasibility.minIncon] <= feasTol) = {'minIncon'};
+if ~calcMetMwRange
+    stat([infeasibility.minFill] <= feasTol) = {'minFill'};
+    stat([infeasibility.minForm] <= feasTol) = {'minForm'};
+else
+    stat([infeasibility.minMw] <= feasTol & ~([infeasibility.maxMw] <= feasTol)) = {'minMw'};
+    stat(~([infeasibility.minMw] <= feasTol) & [infeasibility.maxMw] <= feasTol) = {'maxMw'};
+    stat([infeasibility.minMw] <= feasTol & [infeasibility.maxMw] <= feasTol) = {'minMw & maxMw'};
+end
+for jEC = 1:nEC
+    solInfo.solEachEle(jEC).sol = sol(jEC);
+    solInfo.solEachEle(jEC).varIndex = index(jEC);
+    solInfo.solEachEle(jEC).infeasibility = infeasibility(jEC);
+    solInfo.solEachEle(jEC).bound = bound(jEC);
+    solInfo.solEachEle(jEC).stat = stat(jEC);
+end
+solInfo.feasTol = feasTol;
+
+if any(strcmp(stat, 'infeasible'))
+    if printLevel
+        fprintf('Critical failure: no feasible solution is found.\n')
+    end
+    solInfo.stat = 'infeasible';
+    [metFormulae, ele] = deal({});
+    [metEle, rxnBal, S_fill] = deal([]);
+    return
+elseif all(strcmp(stat, 'minIncon'))
+    solInfo.stat = 'minIncon';
+elseif ~calcMetMwRange && all(strcmp(stat, 'minForm'))
+    solInfo.stat = 'minForm';
+elseif ~calcMetMwRange && all(strcmp(stat, 'minFill'))
+    solInfo.stat = 'minFill';
+elseif calcMetMwRange && all(strcmp(stat, 'minMw'))
+    solInfo.stat = 'minMw';
+elseif calcMetMwRange && all(strcmp(stat, 'maxMw'))
+    solInfo.stat = 'maxMw';
+elseif calcMetMwRange && all(strcmp(stat, 'minMw & maxMw'))
+    solInfo.stat = 'minMw & maxMw';
+else
+    solInfo.stat = 'mixed';
+end
+
+% Get the best metEle and S_fill as the solution for incorporating results from conserved moiety calculations.
 % For each set of elements in eleConnect, choose the latest solution (minForm > minFill > minIncon), recorded in solInfo.stat.
 metEle = zeros(m, nE);
 metEle(metK,:) = metEleK;
-S_fill = sparse(mF, numel(model.rxns));
-for jEC = 1:nEC
-    metEle(metU,eleConnect(:,jEC)) = metEleU.(solInfo.stat{jEC})(:, eleConnect(:,jEC));
-    metFillCon = any(metEleF(:, eleConnect(:,jEC)), 2);
-    if any(metFillCon)
-        S_fill(metFillCon, rxnC) = solInfo.S_fill.(solInfo.stat{jEC})(metFillCon, :);
-    end
-end
-%% find conserved moieties
 
-CMfound = false;
-N = [];
-if size(findCM, 1) == numel(model.mets)
-    % input is the null space matrix / set of extreme rays
-    N = findCM;
-    CMfound = true;
-elseif ~ischar(findCM) && numel(findCM) > 1
-    warning('Input extreme ray matrix has #rows (%d) different from #mets (%d). Ignore.', size(findCM,1), numel(model.mets));
-    findCM = 'efmtool';
-end
-if ischar(findCM) && ~CMfound
-    N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, varargin{:});
-    CMfound = true;
-end
-if CMfound
-    if printLevel
-        fprintf('Elementary conserved moiety vectors found.\n');
+for jEC = 1:nEC
+    if ~calcMetMwRange
+        metEle(metU,eleConnect(:,jEC)) = metEleU.(stat{jEC})(:, eleConnect(:,jEC));
+        metFillCon = any(metEleF(:, eleConnect(:,jEC)), 2);
+        if any(metFillCon)
+            S_fill(metFillCon, rxnC) = solInfo.S_fill.(stat{jEC})(metFillCon, :);
+        end
+    else
+        metEle(metU,eleConnect(:,jEC)) = metEleU.minIncon(:, eleConnect(:,jEC));
     end
-    % clear close-to-zero values
-    N(abs(N) < 1e-8) = 0;
-    N = sparse(N);
-    % true generic conserved moieties, positive and not involving known mets
-    Ncm = N(:,~any(N < 0, 1) & ~any(N(metK,:),1));
-    % add them into formulas
-    metEle = [metEle, Ncm];
-    ele = [eleK(:); cell(size(Ncm,2),1)];
-    j2 = 1;
-    for j = 1:size(Ncm,2)
-        while any(strcmp(ele(1:nE),['Conserve_' num2alpha(j2)]))
+end
+if ~calcMetMwRange
+    %% find conserved moieties
+    CMfound = false;
+    N = [];
+    if size(findCM, 1) == numel(model.mets)
+        % input is the null space matrix / set of extreme rays
+        N = findCM;
+        CMfound = true;
+    elseif ~ischar(findCM) && numel(findCM) > 1
+        warning('Input extreme ray matrix has #rows (%d) different from #mets (%d). Ignore.', size(findCM,1), numel(model.mets));
+        findCM = 'efmtool';
+    end
+    if ischar(findCM) && ~CMfound
+        N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, varargin{:});
+        CMfound = true;
+    end
+    if CMfound
+        if printLevel
+            fprintf('Elementary conserved moiety vectors found.\n');
+        end
+        % clear close-to-zero values
+        N(abs(N) < 1e-8) = 0;
+        N = sparse(N);
+        % true generic conserved moieties, positive and not involving known mets
+        Ncm = N(:,~any(N < 0, 1) & ~any(N(metK,:),1));
+        % add them into formulas
+        metEle = [metEle, Ncm];
+        ele = [eleK(:); cell(size(Ncm,2),1)];
+        j2 = 1;
+        for j = 1:size(Ncm,2)
+            while any(strcmp(ele(1:nE),['Conserve_' num2alpha(j2)]))
+                j2 = j2 + 1;
+            end
+            ele{nE+j} = ['Conserve_' num2alpha(j2)];
             j2 = j2 + 1;
         end
-        ele{nE+j} = ['Conserve_' num2alpha(j2)];
-        j2 = j2 + 1;
+    else
+        ele = eleK(:);
     end
-else
-    ele = eleK(:);
-end
-
-% get formulae in string
-model.metFormulas = convertMatrixFormulas(ele,metEle,10);
-if nameCM > 0 && CMfound
-    % manually name conserved moieties
-    ele0 = ele;
-    nDefault = 0;
-    nCM = size(Ncm,2);
-    eleDel = false(nE + nCM, 1);
-    if nameCM == 1
-        % get dead end metatbolites
-        [~,removedMets] = removeDeadEnds(model);
-        metDead = findMetIDs(model,removedMets);
-    end
-    for j = 1:nCM
-        fprintf('\n');
-        writeCell2Text([model.mets(Ncm(:,j)~=0),model.metFormulas(Ncm(:,j)~=0),...
-            model.metNames(Ncm(:,j)~=0)]);
-        fprintf('\n');
-        if nameCM == 1 && any(Ncm(metDead,j),1)
-            % use the defaulted for dead end mets
-            nDefault = nDefault + 1;
-            ele{nE+j} = ele0{nE + nDefault};
-        else
-            cont = false;
-            while true
-                s = input(['Enter the formula for the conserved moiety (e.g. OHRab_cd):\n',...
-                    '(hit return to use default name ''Conserve_xxx'')\n'],'s');
-                if isempty(s)
-                    % use the defaulted
-                    nDefault = nDefault + 1;
-                    ele{nE+j} = ele0{nE + nDefault};
-                    break
+    
+    % get formulae in string
+    model.metFormulas = convertMatrixFormulas(ele,metEle,10);
+    if nameCM > 0 && CMfound
+        % manually name conserved moieties
+        ele0 = ele;
+        nDefault = 0;
+        nCM = size(Ncm,2);
+        eleDel = false(nE + nCM, 1);
+        if nameCM == 1
+            % get dead end metatbolites
+            [~,removedMets] = removeDeadEnds(model);
+            metDead = findMetIDs(model,removedMets);
+        end
+        modelCM = struct();
+        for j = 1:nCM
+            fprintf('\n');
+            writeCell2Text([model.mets(Ncm(:,j)~=0),model.metFormulas(Ncm(:,j)~=0),...
+                model.metNames(Ncm(:,j)~=0)]);
+            fprintf('\n');
+            if nameCM == 1 && any(Ncm(metDead,j),1)
+                % use the defaulted for dead end mets
+                nDefault = nDefault + 1;
+                ele{nE+j} = ele0{nE + nDefault};
+            else
+                cont = false;
+                while true
+                    s = input(['Enter the formula for the conserved moiety (e.g. OHRab_cd):\n',...
+                        '(hit return to use default name ''Conserve_xxx'')\n'],'s');
+                    if isempty(s)
+                        % use the defaulted
+                        nDefault = nDefault + 1;
+                        ele{nE+j} = ele0{nE + nDefault};
+                        break
+                    end
+                    re = regexp(s,'[A-Z][a-z_]*(\-?\d+\.?\d*)?','match');
+                    if strcmp(strjoin(re,''),s)
+                        % manual input formula, continue to checking
+                        cont = true;
+                        break
+                    end
                 end
-                re = regexp(s,'[A-Z][a-z_]*(\-?\d+\.?\d*)?','match');
-                if strcmp(strjoin(re,''),s)
-                    % manual input formula, continue to checking
-                    cont = true;
-                    break
-                end
-            end
-            if cont
-                % get the matrix for the input formula
-                nEnew = numel(ele) - nE - nCM;
-                [~, eleJ, metEleJ] = checkEleBalance(s,ele([1:nE, (nE+nCM+1):end]));
-                metEle(:,[1:nE, (nE+nCM+1):end]) ...
-                    = metEle(:,[1:nE, (nE+nCM+1):end])...
+                if cont
+                    % get the matrix for the input formula
+                    nEnew = numel(ele) - nE - nCM;
+                    [modelCM.mets, modelCM.metFormulas] = deal({s});
+                    [metEleJ, eleJ] = computeElementalMatrix(modelCM, modelCM.mets, false, true, ele([1:nE, (nE+nCM+1):end]));
+                    metEle(:,[1:nE, (nE+nCM+1):end]) ...
+                        = metEle(:,[1:nE, (nE+nCM+1):end])...
                         + metEle(:,nE+j) * metEleJ(1,1:(nE+nEnew));
-                if numel(eleJ) > nE + nEnew
-                    % there are new elements
-                    ele = [ele(:); eleJ((numel(ele)-nCM+1):end)];
-                    metEle = [metEle, ...
-                        metEle(:,nE+j) * metEleJ(1,(nE+nEnew+1):end)];
+                    if numel(eleJ) > nE + nEnew
+                        % there are new elements
+                        ele = [ele(:); eleJ((numel(ele)-nCM+1):end)];
+                        metEle = [metEle, ...
+                            metEle(:,nE+j) * metEleJ(1,(nE+nEnew+1):end)];
+                    end
+                    eleDel(nE + j) = true;
                 end
-                eleDel(nE + j) = true;
             end
         end
-    end
-    % del defaulted but replaced columns
-    if any(eleDel)
-        eleDel = find(eleDel);
-        ele(eleDel) = [];
-        metEle(:,eleDel) = [];
-    end
-    % 1:nE                    :    real elements
-    % nE + 1 : nE + nDefault  :    default generic elements (Conserve_xxx)
-    % nE + nDeafult + 1 : end :    generic element by user's input
-    % Change if names of default generic elements are mixed up with user input
-    j0 = 0;
-    for j = 1:nDefault
-        j0 = j0 + 1;
-        nameJ = ['Conserve_' num2alpha(j0)];
-        while any(strcmp(ele([1:nE, (nE + nDefault + 1):end]), nameJ))
+        % del defaulted but replaced columns
+        if any(eleDel)
+            eleDel = find(eleDel);
+            ele(eleDel) = [];
+            metEle(:,eleDel) = [];
+        end
+        % 1:nE                    :    real elements
+        % nE + 1 : nE + nDefault  :    default generic elements (Conserve_xxx)
+        % nE + nDeafult + 1 : end :    generic element by user's input
+        % Change if names of default generic elements are mixed up with user input
+        j0 = 0;
+        for j = 1:nDefault
             j0 = j0 + 1;
             nameJ = ['Conserve_' num2alpha(j0)];
+            while any(strcmp(ele([1:nE, (nE + nDefault + 1):end]), nameJ))
+                j0 = j0 + 1;
+                nameJ = ['Conserve_' num2alpha(j0)];
+            end
+            ele{nE + j} = nameJ;
         end
-        ele{nE + j} = nameJ;
     end
+    solInfo.ele = ele;
+    solInfo.N = N;
+    idCharge = strcmp(ele, 'Charge');
+    if any(idCharge)
+        if isfield(model, 'metCharges')
+            model.metCharges = full(metEle(:, idCharge));
+        elseif isfield(model, 'metCharge')
+            model.metCharge = full(metEle(:, idCharge));
+        end
+    end
+    model.metFormulas = convertMatrixFormulas(ele(~idCharge), metEle(:, ~idCharge), 10);
+    metFormulae = [model.mets(metU) model.metFormulas(metU)];
+    rxnBal = metEle' * model.S;
+else
+    metIinU = find(metU == metI);  % index of metInterest in metUnknown
+    % the range for the MW of the met of interest
+    metMw = [metMwMin; metMwMax];
+    % the corresponding chemical formulae
+    realEle = MWele > 0;
+    metFormulae = convertMatrixFormulas(eleK(realEle), ...
+        [metEleU.minMw(metIinU, realEle); metEleU.maxMw(metIinU, realEle)], 10);
+    S_fill = [];
+    ele = eleK;
+    rxnBal = metEle' * model.S;
+    model = metMw;  % range for the MW of the metabolite of interest as the 1st output
 end
 % reaction balance
-rxnBal = metEle' * model.S;
-model.metFormulas = convertMatrixFormulas(ele, metEle, 10);
-metCompute = [model.mets(metU) model.metFormulas(metU)];
+
+
+
 end
 
 function s = num2alpha(index,charSet)

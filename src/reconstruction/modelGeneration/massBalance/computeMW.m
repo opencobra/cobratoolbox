@@ -1,4 +1,4 @@
-function [MW, Ematrix] = computeMW(model, metList, warnings)
+function [MW, Ematrix] = computeMW(model, metList, warnings, genericFormula)
 % Computes molecular weight and elemental matrix of compounds
 %
 % USAGE:
@@ -11,6 +11,9 @@ function [MW, Ematrix] = computeMW(model, metList, warnings)
 % OPTIONAL INPUTS:
 %    metList:     Cell array of which metabolites to search for. (Default = all metabolites in model)
 %    warnings:    Display warnings if there are errors with the formula. (Default = true)
+%    genericFormula: true to accept generic formulae containing any elements starting with 'A'-'Z', 
+%                    followed by 'a'-'z' or '_' of indefinite length, followed by a real number (can be -ve). 
+%                    Support '()', '[]', '{}'. E.g. '([H2O]2(CuSO4))2Generic_element-0.5' (Default = false)
 %
 % OUTPUTS:
 %    MW:          Vector of molecular weights
@@ -18,7 +21,11 @@ function [MW, Ematrix] = computeMW(model, metList, warnings)
 %
 % .. Author: - Jan Schellenberger (Nov. 5, 2008)
 
-if nargin < 3
+if nargin < 4
+    genericFormula = false;
+end
+
+if nargin < 3 || isempty(warnings)
     warnings = true;
 end
 
@@ -31,75 +38,44 @@ end
 
 metIDs = reshape(metIDs, length(metIDs),1);
 
-MW = zeros(size(metIDs));
-for n = 1:length(metIDs)
-    i = metIDs(n);
-    formula = model.metFormulas(i);
-    [compounds, tok] = regexp(formula, '([A-Z][a-z]*)(\d*)', 'match', 'tokens');
-    tok = tok{1,1};
-    for j = 1:length(tok) % go through each token.
-        t = tok{1,j};
-        comp = t{1,1};
-        q = str2num(t{1,2});
-        if (isempty(q))
-            q = 1;
+% molecular weight of elements in a structure
+elementMwStruct = struct('H', 1, 'C', 12, 'N', 14, 'O', 16, 'Na', 23, 'Mg', 24, 'P', 31, ...
+    'S', 32, 'Cl', 35, 'K', 39, 'Ca', 40, 'Mn', 55, 'Fe', 56, 'Ni', 58, 'Co', 59, ...
+    'Cu', 63, 'Zn', 65, 'As', 75, 'Se', 80, 'Ag', 107, 'Cd', 114, 'W', 184, 'Hg', 202);
+elementNames = fieldnames(elementMwStruct);  % elements' names
+
+if ~genericFormula
+    MW = zeros(size(metIDs));
+
+    for n = 1:length(metIDs)
+        i = metIDs(n);
+        formula = model.metFormulas(i);
+        [compounds, tok] = regexp(formula, '([A-Z][a-z]*)(\d*)', 'match', 'tokens');
+        tok = tok{1, 1};
+        for j = 1:length(tok) % go through each token.
+            t = tok{1,j};
+            comp = t{1,1};
+            q = str2num(t{1, 2});
+            if (isempty(q))
+                q = 1;
+            end
+            mwt = 0;
+            if any(strcmp(elementNames, comp))
+                % if the element is in the structure, give it a weight
+                mwt = elementMwStruct.(comp);
+            elseif warnings
+                display('Warning');
+                display(formula)
+                display(comp);
+            end
+            MW(n) = MW(n) + q * mwt;
         end
-        mwt = 0;
-        switch comp
-            case 'H'
-                mwt = 1;
-            case 'C'
-                mwt = 12;
-            case 'N'
-                mwt = 14;
-            case 'O'
-                mwt = 16;
-            case 'Na'
-                mwt = 23;
-            case 'Mg'
-                mwt = 24;
-            case 'P'
-                mwt = 31;
-            case 'S'
-                mwt = 32;
-            case 'Cl'
-                mwt = 35;
-            case 'K'
-                mwt = 39;
-            case 'Ca'
-                mwt = 40;
-            case 'Mn'
-                mwt = 55;
-            case 'Fe'
-                mwt = 56;
-            case 'Ni'
-                mwt = 58;
-            case 'Co'
-                mwt = 59;
-            case 'Cu'
-                mwt = 63;
-            case 'Zn'
-                mwt = 65;
-            case 'As'
-                mwt = 75;
-            case 'Se'
-                mwt = 80;
-            case 'Ag'
-                mwt = 107;
-            case 'Cd'
-                mwt = 114;
-            case 'W'
-                mwt = 184;
-            case 'Hg'
-                mwt = 202;
-            otherwise
-                if warnings
-                    display('Warning');
-                    display(formula)
-                    display(comp);
-                end
-        end
-        MW(n) = MW(n)+ q*mwt;
     end
+    Ematrix = computeElementalMatrix(model,metList,false);
+else
+    % elements' MWs in a vector
+    elementMwVector = struct2array(elementMwStruct);
+    [Ematrix, elements] = computeElementalMatrix(model, metList, false, true);
+    [yn, id] = ismember(elements, elementNames);
+    MW = Ematrix(:, yn) * columnVector(elementMwVector(id(yn)));
 end
-Ematrix = computeElementalMatrix(model,metList,false);

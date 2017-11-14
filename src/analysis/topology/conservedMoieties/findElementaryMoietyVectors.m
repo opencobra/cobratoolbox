@@ -14,6 +14,7 @@ function EMV = findElementaryMoietyVectors(model, varargin)
 %                          * 'null':     use matlab rational null basis. 
 %    'deadCMs':           include dead end metabolites or not, default true
 %                        (will have more conserved moieties found for dead end metabolites if true)
+%    'printLevel':       print messages or not.
 %
 %    Other COBRA LP solver parameters, see solveCobraLP.m
 %
@@ -32,6 +33,9 @@ while k <= numel(varargin) - 1
         deadCM = logical(varargin{k + 1});
         varargin = varargin([1:(k - 1), (k + 2):numel(varargin)]);
     else
+        if ischar(varargin{k}) && strcmp(varargin{k}, 'printLevel')
+            printLevel = varargin{k + 1};
+        end
         k = k + 1;
     end
 end
@@ -40,6 +44,9 @@ if ~exist('method', 'var')
 end
 if ~exist('deadCM', 'var')
     deadCM = true;
+end
+if ~exist('printLevel', 'var')
+    printLevel = 0;
 end
 
 metActive = true(numel(model.mets), 1);
@@ -55,7 +62,7 @@ minMass = 1;
 LP.A = [model.S',           sparse(nR, nM); ...   S' * m        = 0
         -speye(nM),  -bigM * speye(nM)];  %           -m - M z <= -minMass (% z = 0 ==> m can be positive)
 LP.b = [zeros(nR, 1); -minMass * ones(nM, 1)];
-LP.c = [zeros(nM, 1); ones(nM, 1)];
+LP.c = [zeros(nM, 1); ones(nM, 1)];  %           min (sum(z))
 LP.lb = zeros(nM * 2, 1);
 LP.ub = [bigM * metActive; ones(nM, 1)];
 LP.osense = 1;
@@ -70,7 +77,9 @@ S = full(model.S(metCM, any(model.S(metCM, :), 1)));
 if strcmpi(method, 'efmtool')
     pathEFM = which('CalculateFluxModes.m');
     if isempty(pathEFM)
-        warning('EFMtool not in Matlab path. Use Matlab rational basis.');
+        if printLevel
+            warning('EFMtool not in Matlab path. Use Matlab rational basis.');
+        end
         method = 'null';
     else
         dirEFM = strsplit(pathEFM,filesep);
@@ -79,7 +88,12 @@ if strcmpi(method, 'efmtool')
         cd(dirEFM);
         % may fail due to lack of memory if there are a huge number of dead end
         % metabolites, set deadCM = false to exclude them
-        N = CalculateFluxModes(S',zeros(size(S, 1), 1));
+        if ~printLevel
+            opts = CreateFluxModeOpts('level', 'WARNING');
+        else
+            opts = CreateFluxModeOpts('level', 'INFO');
+        end
+        N = CalculateFluxModes(S',zeros(size(S, 1), 1), opts);
         N = N.efms;
         cd(dirCur);
     end
