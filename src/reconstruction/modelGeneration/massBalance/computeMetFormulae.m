@@ -1,9 +1,12 @@
 function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] = computeMetFormulae(model, varargin)
-% Compute the chemical formulas of all metabolites without formulas using 
-% a set of metabolites with known formulae and a set of reactions by
-% solving an optimization problem minimizing the overall inconsistency in
-% elemental balance. Metabolites that may have variable stoichiometries
-% (e.g., H+, H2O) can be supplied to automatically fill up inconsistency
+% Compute the chemical formulas for metabolites without formulas using a set of metabolites with 
+% known formulae by minimizing the overall inconsistency in elemental balance. They are combined with the 
+% conserved moiety vectors identified from the left null space of S-matrix to return the general formulae.
+% Known formulae for all external mets (including sink/demand) suffice to infer the formulae for all 
+% metabolites. More mets with known formulae will reveal more inconsistency in mass balance. 
+% This is particularly useful for checking the molecular weight of the biomass produced in the model, 
+% which should be curated to have MW = 1000 g/mol for prediction fidelity. 
+% Metabolites that may have adjustable stoichiometries (e.g., H+, H2O) can be supplied to fill up inconsistency.
 %
 % USAGE:
 %    Find unknown chemical formulae for all metabolites:
@@ -49,35 +52,22 @@ function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] =
 %    metEle:         Chemical formulas in matrix (#metKnown x #elements)
 %    rxnBal:         Elemental balance of rxns (#elements x #rxns)
 %    S_fill:         Adjustment of the S-matrix by 'metFill' (#metFill x #rxns in the input)
-%    solInfo:        Info for the Minimum Inconsistency under Parsimony optimization:
+%    solInfo:        Info for the solutions for each of the optimization problems solved:
 %                      * metUnknown:    mets whose formulae are being solved for (#met_unknown x 1 cell)
-%                      * ele:           the original elements present in the model's formulae. 
-%                                       May have less elements than the output 'ele' above. (#elements x 1 cell)
+%                      * metFill:       metabolite formulae used to automatically fill inconsistency
+%                      * rxns:          reactions with elemental balance imposed
+%                      * ele:           the chemical elements present in the model's formulae. 
 %                      * eleConnect:    connected components partitioning solInf.ele (#elements x #components logical matrix).
 %                                       Elements in the same component mean that they are connected
 %                                       by some 'metFill' and are optimized in the same round.
-%                      * metEleUnknown: the formulae found for unknown metabolites (#met_unknown x #elements)
-%                      * sol:           solutions returned by solveCobraLP, #components x 1 struct array, 
-%                                       each with the following three solutions:
-%                                         * .minIncon: minimum inconsistency (Step 1), 
-%                                         * .minFill: minimum adjustment by filling metabolites (Step 2),
-%                                         * .minForm: minimal formulae (Step 3)
-%                      * var:           indices of variables corresponding to the vector solInfo.sol.full
-%                                       (including .m.ele, .xp.ele, .xn.ele, .Ap.metFill, .An.metFill)
-%                      * infeasibility: infeasibility of each solve (#components x 1 struct array,
-%                                       each with .minIncon, .minFill and .minForm)
-%                                       The problem is not solved successfully if infeasibility > solInfo.feasTol
-%                      * bound:         * .minFill, bounds on total inconsistency for each element.
-%                                       * .minForm, tolerance f used for relaxing the bounds on inconsistency
-%                                                   and adjustment (ub = value x (1 + f), lb = value x (1 - f)) (#components x 1)
+%                      * metEleUnknown: the formulae found for unknown metabolites in different steps (#met_unknown x #elements)
+%                      * S_fill:        solution for S_fill in each step
+%                      * solEachEle:    structure of solutions, one for each connected componenets of elements
 %                      * feasTol:       tolerance used to determine solution feasibility
-%                      * stat:          cell array of minIncon/minFill/minForm/infeasible stating which 
-%                                       solution is feasible for the optimization for each componenet in .eleConnect. 
-%                      * final:         minIncon/minFill/minForm/mixed/infeasible stating where 
-%                                       the final solution metEleUnknwon is obtained from. 
-%                                       Ideally minForm if no numerical issue on feasibility.
-%                      * N:             the set of extreme rays or the rational null space
-%                                       matrix representing the minimal conserved moiety vectors
+%                      * stat:          minIncon/minFill/minForm/mixed/infeasible stating where the final solution metEleUnknwon 
+%                                       is obtained from. Ideally minForm if no numerical issue on feasibility.
+%                                       (minIncon/minMw/maxMw/minMw & maxMw if calling with option 'metMwRange')
+%                      * N:             the minimal conserved moiety vectors
 %    LP:             LP problem structure for solveCobraLP (#components x 1)
 
 if ~isfield(model,'metFormulas')
@@ -653,7 +643,19 @@ if ~calcMetMwRange
     solInfo.N = [];
     S_fill = sparse(mF, numel(model.rxns));
 end
-solInfo.solEachEle = repmat(struct('sol', [], 'var', [], 'infeasibility', [], 'bound', [], 'stat', ''), nEC, 1);
+%   each item in solEachEle has the following three fields:
+%      * .minIncon: minimum inconsistency 
+%      * .minFill: minimum adjustment byfilling metabolites, or * .minMw if calling with 'metMwRange'
+%      * .minForm: minimal formulae, or  * .maxMw if calling with 'metMwRange'
+%   - solEachEle(e).sol:             solutions returned by solveCobraLP, for the e-th connected componenet of elements, 
+%   - solEachEle(e).varIndex:        indices of variables corresponding to the vector solEachEle(e).sol.full
+%                                    (including .m.ele, .xp.ele, .xn.ele, .Ap.metFill, .An.metFill)
+%   - solEachEle(e).infeasibility:   infeasibility of each solve. The problem is infeasible if infeasibility > solInfo.feasTol
+%   - solEachEle(e).bound:           bounds on total inconsistency for each element.
+%   - solEachEle(e).stat:            'infeasibility', 'minIncon', 'minFill', 'minForm' (or 'minMw', 'maxMw' or 'minMw & maxMw' if calling with 'metMwRange')
+%                                    the termination status for each connected component of elements. 'minForm' or 'minMw & maxMw' means perfectly solved.
+
+solInfo.solEachEle = repmat(struct('sol', [], 'varIndex', [], 'infeasibility', [], 'bound', [], 'stat', ''), nEC, 1);
 stat = repmat({'infeasible'}, nEC, 1);
 stat([infeasibility.minIncon] <= feasTol) = {'minIncon'};
 if ~calcMetMwRange
