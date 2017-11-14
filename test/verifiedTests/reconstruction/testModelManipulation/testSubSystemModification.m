@@ -3,7 +3,7 @@
 % Purpose:
 %     - test Manipulation of subSystems and retrieval by subSystems in
 %     addSubSystemToReaction, setRxnSubSystem, removeSubSystemFromReaction,
-%     findRxnsFromSubSystem
+%     findRxnsFromSubSystem, getModelSubSystems, isReactionInSubSystem
 %
 % Authors:
 %     Thomas Pfau - Nov 2017
@@ -62,6 +62,11 @@ SomeSubSys = 'testtSubSys';
 modelTest = addSubSystemToReaction(model,1:4,SomeSubSys);
 newSubs = getModelSubSystems(modelTest);
 assert(isempty(setxor(newSubs,union(originalSubSystems,SomeSubSys))));
+
+%finally test isReactionInSubSystem
+assert(~isReactionInSubSystem(model,model.rxns{9},'Citric Acid Cycle'))
+assert(all(isReactionInSubSystem(model,model.rxns(4:5),'Citric Acid Cycle')));
+assert(isequal(isReactionInSubSystem(model,21:-1:18,'Exchange'),[true; true; false; false]));
 
 %Return to old path
 cd(currentDir)

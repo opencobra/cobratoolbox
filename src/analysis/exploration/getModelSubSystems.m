@@ -1,5 +1,5 @@
 function [subSystems]  = getModelSubSystems(model)
-% Find all reactions which are part of a given subsystem.
+% Get all subSystems present in a model
 %
 % USAGE:
 %
