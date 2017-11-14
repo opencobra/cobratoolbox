@@ -18,13 +18,18 @@ cd(fileDir);
 
 model = getDistributedModel('ecoli_core_model.mat');
 %This is a correct model. Now lets do some subSystem Manipulation
-
+originalSubSystems = {'Exchange','Anaplerotic reactions','Citric Acid Cycle','Glutamate Metabolism','Glycolysis/Gluconeogenesis','Inorganic Ion Transport and Metabolism','Oxidative Phosphorylation','Pentose Phosphate Pathway','Pyruvate Metabolism','Transport, Extracellular'};
 subSysToManipulate = 'Citric Acid Cycle';
 originalPositions = [4;5;8;15;46;59;64;90];
+
 %First get all reactions with 'Citric Acid Cycle' subSystem annotation
 [reactionNames,reactionPos] = findRxnsFromSubSystem(model,subSysToManipulate);
 assert(isempty(setxor(reactionPos,[4;5;8;15;46;59;64;90]))); %These and only these
 assert(isequal(reactionNames,model.rxns(reactionPos))); %Same order
+
+%Now, get all subSystems in the model
+subsInModel = getModelSubSystems(model);
+assert(isempty(setxor(subsInModel,originalSubSystems)));
 
 %Now, add Citric Acid Cycle to the first three reactions
 originalSubsystems = model.subSystems;
@@ -51,6 +56,12 @@ modelWithSet = setRxnSubSystems(model,reactionsToSet,subSysToManipulate);
 assert(all(cellfun(@(x) isequal(x,{subSysToManipulate}),modelWithSet.subSystems(reactionsToSet))));
 notChanged = setdiff(1:numel(model.rxns),reactionsToSet);
 assert(all(cellfun(@(x,y) isequal(x,y), modelWithSet.subSystems(notChanged),model.subSystems(notChanged))));
+
+%Test for multiple values
+SomeSubSys = 'testtSubSys';
+modelTest = addSubSystemToReaction(model,1:4,SomeSubSys);
+newSubs = getModelSubSystems(modelTest);
+assert(isempty(setxor(newSubs,union(originalSubSystems,SomeSubSys))));
 
 %Return to old path
 cd(currentDir)
