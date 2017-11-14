@@ -1,5 +1,6 @@
 function [model]  = setRxnSubSystems(model,reactions,subSystems)
-% Adds the subSystem to the specified reaction
+% Sets the subSystems of the specified reactions to the specified
+% subSystems
 %
 % USAGE:
 %

@@ -1,5 +1,5 @@
 function [model]  = addSubSystemsToReactions(model,reactions,subSystems)
-% Adds the subSystem to the specified reaction
+% Adds the subSystems to the specified reactions
 %
 % USAGE:
 %

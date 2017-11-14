@@ -2,7 +2,7 @@
 %
 % Purpose:
 %     - test Manipulation of subSystems and retrieval by subSystems in
-%     addSubSystemToReaction, setRxnSubSystem, removeSubSystemFromReaction,
+%     addSubSystemsToReactions, setRxnSubSystem, removeSubSystemFromReaction,
 %     findRxnsFromSubSystem, getModelSubSystems, isReactionInSubSystem
 %
 % Authors:
@@ -33,14 +33,14 @@ assert(isempty(setxor(subsInModel,originalSubSystems)));
 
 %Now, add Citric Acid Cycle to the first three reactions
 originalSubsystems = model.subSystems;
-modelNew = addSubSystemToReaction(model,model.rxns(1:3),subSysToManipulate);
+modelNew = addSubSystemsToReactions(model,model.rxns(1:3),subSysToManipulate);
 [reactionNames,reactionPos] = findRxnsFromSubSystem(modelNew,subSysToManipulate);
 assert(isempty(setxor(union(originalPositions,[1:3]),reactionPos))); %Added only to those and not changed elsewhere.
 assert(all(~cellfun(@(x) isequal(x,{''}),originalSubsystems(1:3)))); %The first three subSystems are non Empty, i.e. this empty is not removed
 assert(all(cellfun(@(x,y) all(ismember(y,x)),modelNew.subSystems,originalSubsystems))); %Old subSystems are retained.
 
 %Add it to an empty reactions
-modelWithEmptyReplaced = addSubSystemToReaction(model,13,subSysToManipulate); %Biomass gets assigned to Citric Acid Cycle
+modelWithEmptyReplaced = addSubSystemsToReactions(model,13,subSysToManipulate); %Biomass gets assigned to Citric Acid Cycle
 assert(isequal(modelWithEmptyReplaced.subSystems{13},{subSysToManipulate})); %Assert that the '' was removed and only the Citric Acid cycle is there.
 
 %Remove the Citric Acid Cycle from all reactions
@@ -59,7 +59,7 @@ assert(all(cellfun(@(x,y) isequal(x,y), modelWithSet.subSystems(notChanged),mode
 
 %Test for multiple values
 SomeSubSys = 'testtSubSys';
-modelTest = addSubSystemToReaction(model,1:4,SomeSubSys);
+modelTest = addSubSystemsToReactions(model,1:4,SomeSubSys);
 newSubs = getModelSubSystems(modelTest);
 assert(isempty(setxor(newSubs,union(originalSubSystems,SomeSubSys))));
 
