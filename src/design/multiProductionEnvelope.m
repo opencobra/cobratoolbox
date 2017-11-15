@@ -1,4 +1,4 @@
-function [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotTools)
+function [biomassValues, targetLowerBounds, targetUpperBounds, plottedReactions] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
 % Calculates the byproduct secretion envelopes for
 % every product (excreted metabolites with 1 or more Carbons)
 %
@@ -16,10 +16,17 @@ function [biomassValues, targetValues] = multiProductionEnvelope(model, deletion
 %    geneDelFlag:      Perform gene and not reaction deletions (Default = false)
 %    nPts:             Number of points in the plot (Default = 20)
 %    plotTools:        boolean (default = false) - add tools for editing the figure and its properties
+%    plotAllFlag:      plot all envelopes, even ones that are not growth
+%                      coupled (Default = false)
+%    plotTools:        boolean (default = false) - add tools for editing the figure and its properties
 %
 % OUTPUT:
-%    biomassValues:    Biomass values for plotting
-%    targetValues:     Target upper and lower bounds for plotting
+%    biomassValues:         Biomass values for plotting
+%    targetUpperBounds:     Target upper bounds for plotting (
+%                           biomassvalues x reactions)
+%    targetLowerBounds:     Target lower bounds for plotting (
+%                           biomassvalues x reactions)
+%    plottedReactions:      Reactions that led to relevant side product 
 %
 % .. Author: - Jeff Orth 8/16/07
 
@@ -37,8 +44,12 @@ end
 if (nargin < 5)
     nPts = 20;
 end
-if (nargin < 6)
+if ~exist('plotTools','var')
     plotTools = false;
+end
+
+if ~exist('plotAllFlag','var')
+    plotAllFlag = false;
 end
 
 % Create model with deletions
@@ -76,46 +87,50 @@ solMin = optimizeCbModel(model,'min');
 % Create biomass range vector
 biomassValues = linspace(solMin.f,solMax.f,nPts);
 
-plottedRxns = [];
-targetUpperBound = [];
-targetLowerBound = [];
+plottedReactions = {};
+targetUpperBounds = zeros(0,0);
+targetLowerBounds = zeros(0,0);
 % Max/min for target production
 for i = 1:length(CExcRxns)
     model = changeObjective(model,CExcRxns(i),1);
     model2 = changeRxnBounds(model,biomassRxn,max(biomassValues),'b');
     fbasol2 = optimizeCbModel(model2,'max');
     maxRate = fbasol2.f; %find max production at max growth rate
-        plottedRxns = [plottedRxns,i];
-        for j = 1:length(biomassValues)
+    if (plotAllFlag)||(maxRate > getCobraSolverParams('LP','feasTol')) %Change to plot everything that is above the detection limit         
+        plottedReactions = [plottedReactions,CExcRxns(i)];
+        targetUpperBounds(end+1,1) = 0;
+        targetLowerBounds(end+1,1) = 0;
+        for j = 1:length(biomassValues)            
             model = changeRxnBounds(model,biomassRxn,biomassValues(j),'b');
             sol = optimizeCbModel(model,'max');
             if (sol.stat == 1)
-                targetUpperBound(i,j) = sol.f;
+                targetUpperBounds(end,j) = sol.f;
             elseif (sol.stat == 2)
-                targetUpperBound(i,j) = Inf;
+                targetUpperBounds(end,j) = Inf;
             else
-                targetUpperBound(i,j) = NaN;
+                targetUpperBounds(end,j) = NaN;
             end
             sol = optimizeCbModel(model,'min');
             if (sol.stat == 1)
-                targetLowerBound(i,j) = sol.f;
+                targetLowerBounds(end,j) = sol.f;
             elseif (sol.stat == 2)
-                  targetUpperBound(i,j) = Inf;
+                  targetUpperBounds(end,j) = Inf;
             else
-                targetLowerBound(i,j) = NaN;
+                targetLowerBounds(end,j) = NaN;
             end
         end
+    end
 end
 
 % Plot results
 colors = {'b','g','r','c','m','y','k'};
-for i = 1:length(plottedRxns)
-    plot([biomassValues fliplr(biomassValues)],[targetUpperBound(plottedRxns(i),:) fliplr(targetLowerBound(plottedRxns(i),:))],colors{mod(i-1,length(colors))+1},'LineWidth',2)
+for i = 1:length(plottedReactions)
+    plot([biomassValues fliplr(biomassValues)],[targetUpperBounds(i,:) fliplr(targetLowerBounds(i,:))],colors{mod(i-1,length(colors))+1},'LineWidth',2)
     axis tight;
     hold on;
 end
 hold off;
-legend(CExcRxns(plottedRxns));
+legend(plottedReactions);
 legend off;
 ylabel('Production Rate (mmol/gDW h)');
 xlabel('Growth Rate (1/h)');
@@ -123,4 +138,5 @@ if plotTools
     plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
 end
 biomassValues = biomassValues';
-targetValues = [targetLowerBound' targetUpperBound'];
+targetLowerBounds = targetLowerBounds';
+targetUpperBounds = targetUpperBounds';
