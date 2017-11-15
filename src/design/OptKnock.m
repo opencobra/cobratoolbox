@@ -42,8 +42,11 @@ function [optKnockSol, bilevelMILPproblem] = OptKnock(model, selectedRxnList, op
 %
 % OUTPUTS:
 %    optKnockSol:            `optKnock` solution structure
-%    rxnList:                Reaction `KO` list
-%    fluxes:                 Flux distribution
+%                            This is the same as the solution Structure
+%                            from solveCobraMILP plus the following fields
+%                            (if a solution exists):
+%                            .rxnList - Reaction `KO` list
+%                            .fluxes - the flux distribution 
 %    bilevelMILPproblem:     `optKnock` problem structure
 %
 % .. Authors:
@@ -200,5 +203,5 @@ if (options.solveOptKnock)
     end
 else
     optKnockSol.rxnList = {};
-    optKnockSol.fluxes = [];
+    optKnockSol.fluxes = [];   
 end
