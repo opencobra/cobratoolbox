@@ -29,7 +29,7 @@ refData_1stcolumn(18) = 0.0736;
 refData_1stcolumn(19) = 3.9862;
 refData_1stcolumn(20) = 8.5036;
 refData_2ndcolumn = zeros(20, 1);
-refData_6thcolumn = (10:(-1.4964/19):8.5036)';
+refData_14thcolumn = (10:(-1.4964/19):8.5036)';
 
 % function outputs
 % each column of targetValues corresponds to one reaction results, while biomassValues is the x axis
@@ -43,10 +43,10 @@ refData_6thcolumn = (10:(-1.4964/19):8.5036)';
 % tests - not all results are possible to be tested, the suitable were chosen
 % x axis comparison
 assert(isequal((abs(refData_x-biomassValues) < 1e-4), ones(20, 1)));
-% tests for 1st (rising in the end), 2nd (zeros) and 6th column (decreasing from 10 to 8.5)
+% tests for 1st (rising in the end), 2nd (zeros) and 14th column (decreasing from 10 to 8.5)
 assert(isequal((abs(refData_1stcolumn-targetValues(:, 1)) < 1e-4), ones(20, 1)));
 assert(isequal(refData_2ndcolumn, targetValues(:, 2)));
-assert(isequal((abs(refData_6thcolumn-targetValues(:, 6)) < 1e-4), ones(20, 1)));
+assert(isequal((abs(refData_14thcolumn-targetValues(:, 14)) < 1e-4), ones(20, 1)));
 
 pause(3);
 
