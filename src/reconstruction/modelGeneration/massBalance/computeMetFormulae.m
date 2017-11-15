@@ -320,10 +320,6 @@ end
 % index for variables in the LP problems
 index = repmat(struct('m', [], 'xp', [], 'xn', [], 'Ap', [], 'An', []), nEC, 1);
 
-if nargout == 8
-    % only assign output LP when requested
-    varargout = {repmat(struct('A', [], 'b', [], 'lb', [], 'ub', [], 'c', [], 'csense', [], 'osense', []), nEC, 1)};
-end
 for jEC = 1:nEC
     %% minimum inconsistency
     
@@ -628,7 +624,12 @@ for jEC = 1:nEC
         if isfield(LPj, 'basis')
             LPj = rmfield(LPj, 'basis');
         end
-        varargout{1}(jEC) = LPj;
+        % only assign output LP when requested
+        if jEC == 1
+            varargout{1} = LPj;
+        else
+            varargout{1} = [varargout{1}; LPj];
+        end
     end
 end
 %% store the solution and relevant info
@@ -835,7 +836,6 @@ if ~calcMetMwRange
             ele{nE + j} = nameJ;
         end
     end
-    solInfo.ele = ele;
     solInfo.N = N;
     idCharge = strcmp(ele, 'Charge');
     if any(idCharge)
