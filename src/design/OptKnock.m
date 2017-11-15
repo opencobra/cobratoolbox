@@ -203,5 +203,5 @@ if (options.solveOptKnock)
     end
 else
     optKnockSol.rxnList = {};
-    optKnockSol.fluxes = [];   
+    optKnockSol.fluxes = [];
 end
