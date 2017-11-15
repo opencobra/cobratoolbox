@@ -89,17 +89,17 @@ for i = 1:length(CExcRxns)
         for j = 1:length(biomassValues)
             model = changeRxnBounds(model,biomassRxn,biomassValues(j),'b');
             sol = optimizeCbModel(model,'max');
-            if (sol.stat = 1)
+            if (sol.stat == 1)
                 targetUpperBound(i,j) = sol.f;
-            elseif (sol.stat = 2)
+            elseif (sol.stat == 2)
                 targetUpperBound(i,j) = Inf;
             else
                 targetUpperBound(i,j) = NaN;
             end
             sol = optimizeCbModel(model,'min');
-            if (sol.stat = 1)
+            if (sol.stat == 1)
                 targetLowerBound(i,j) = sol.f;
-            elseif (sol.stat = 2)
+            elseif (sol.stat == 2)
                   targetUpperBound(i,j) = Inf;
             else
                 targetLowerBound(i,j) = NaN;
