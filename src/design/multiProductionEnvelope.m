@@ -1,10 +1,10 @@
-function [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
+function [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotTools)
 % Calculates the byproduct secretion envelopes for
 % every product (excreted metabolites with 1 or more Carbons)
 %
 % USAGE:
 %
-%    [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
+%    [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotTools)
 %
 % INPUT:
 %    model:            COBRA model structure
@@ -15,8 +15,6 @@ function [biomassValues, targetValues] = multiProductionEnvelope(model, deletion
 %    biomassRxn:       Biomass `rxn` name (Default = whatever is defined in model)
 %    geneDelFlag:      Perform gene and not reaction deletions (Default = false)
 %    nPts:             Number of points in the plot (Default = 20)
-%    plotAllFlag:      plot all envelopes, even ones that are not growth coupled
-%                      (Default = false)
 %    plotTools:        boolean (default = false) - add tools for editing the figure and its properties
 %
 % OUTPUT:
@@ -40,9 +38,6 @@ if (nargin < 5)
     nPts = 20;
 end
 if (nargin < 6)
-    plotAllFlag = false;
-end
-if (nargin < 7)
     plotTools = false;
 end
 
@@ -90,24 +85,26 @@ for i = 1:length(CExcRxns)
     model2 = changeRxnBounds(model,biomassRxn,max(biomassValues),'b');
     fbasol2 = optimizeCbModel(model2,'max');
     maxRate = fbasol2.f; %find max production at max growth rate
-    if (plotAllFlag)||(maxRate > 0.5) %only plot growth coupled solutions
         plottedRxns = [plottedRxns,i];
         for j = 1:length(biomassValues)
             model = changeRxnBounds(model,biomassRxn,biomassValues(j),'b');
             sol = optimizeCbModel(model,'max');
-            if (sol.stat > 0)
+            if (sol.stat = 1)
                 targetUpperBound(i,j) = sol.f;
+            elseif (sol.stat = 2)
+                targetUpperBound(i,j) = Inf;
             else
                 targetUpperBound(i,j) = NaN;
             end
             sol = optimizeCbModel(model,'min');
-            if (sol.stat > 0)
+            if (sol.stat = 1)
                 targetLowerBound(i,j) = sol.f;
+            elseif (sol.stat = 2)
+                  targetUpperBound(i,j) = Inf;
             else
                 targetLowerBound(i,j) = NaN;
             end
         end
-    end
 end
 
 % Plot results

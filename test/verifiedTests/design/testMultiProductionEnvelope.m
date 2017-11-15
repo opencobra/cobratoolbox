@@ -38,7 +38,7 @@ refData_6thcolumn = (10:(-1.4964/19):8.5036)';
 [biomassValues, targetValues] = multiProductionEnvelope(model);
 [biomassValues2, targetValues2] = multiProductionEnvelope(model, deletions, biomassRxn);
 %gene not reaction removal
-[biomassValues3, targetValues3] = multiProductionEnvelope(model, deletions2, biomassRxn, 1, 20, 1);
+[biomassValues3, targetValues3] = multiProductionEnvelope(model, deletions2, biomassRxn, 1, 20);
 
 % tests - not all results are possible to be tested, the suitable were chosen
 % x axis comparison
