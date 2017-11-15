@@ -357,7 +357,11 @@ switch solver
         else
            solStat = -1; % Solution not optimal or solver problem
         end
+        
     case 'ibm_cplex'
+        % Free academic licenses for the IBM CPLEX solver can be obtained from
+        % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
+
         cplexlp = Cplex();
         if (~isempty(csense))
             b_L(csense == 'E') = b(csense == 'E');
@@ -432,8 +436,8 @@ switch solver
         end
         
         % Get results
-        x = Result.x;
-        f = osense*Result.objval;
+        try x = Result.x; catch x=zeros(size(cplexlp.Model.ub)); end %return zeros if infeasible
+        try f = osense*Result.objval; catch f=nan; end %return Nan if infeasible
         stat = Result.status;
         if (stat == 101 || stat == 102 || stat == 1)
             solStat = 1; % Opt integer within tolerance
