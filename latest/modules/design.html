@@ -648,12 +648,12 @@ The plotted growth rates at each (<cite>x1</cite>, <cite>x2</cite>)</li>
 
 <dl class="function">
 <dt id="src.design.multiProductionEnvelope">
-<code class="descname">multiProductionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em>, <em>plotAllFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/922cc2c54827cc73438f96ff115d2db2d367a116/src/design/multiProductionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.multiProductionEnvelope" title="Permalink to this definition">¶</a></dt>
+<code class="descname">multiProductionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em>, <em>plotAllFlag</em>, <em>plotTools</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/922cc2c54827cc73438f96ff115d2db2d367a116/src/design/multiProductionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.multiProductionEnvelope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the byproduct secretion envelopes for
 every product (excreted metabolites with 1 or more Carbons)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)</div></blockquote>
+<div>[biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotTools)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -673,9 +673,13 @@ Biomass <cite>rxn</cite> name (Default = whatever is defined in model)</li>
 Perform gene and not reaction deletions (Default = false)</li>
 <li><strong>nPts</strong> &#8211;
 Number of points in the plot (Default = 20)</li>
+<li><strong>plotTools</strong> &#8211;
+boolean (default = false) - add tools for editing the figure and its properties</li>
 <li><strong>plotAllFlag</strong> &#8211;
-plot all envelopes, even ones that are not growth coupled
-(Default = false)</li>
+plot all envelopes, even ones that are not growth
+coupled (Default = false)</li>
+<li><strong>plotTools</strong> &#8211;
+boolean (default = false) - add tools for editing the figure and its properties</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -683,8 +687,14 @@ plot all envelopes, even ones that are not growth coupled
 <div><ul class="simple">
 <li><strong>biomassValues</strong> &#8211;
 Biomass values for plotting</li>
-<li><strong>targetValues</strong> &#8211;
-Target upper and lower bounds for plotting</li>
+<li><strong>targetUpperBounds</strong> &#8211;
+Target upper bounds for plotting (
+biomassvalues x reactions)</li>
+<li><strong>targetLowerBounds</strong> &#8211;
+Target lower bounds for plotting (
+biomassvalues x reactions)</li>
+<li><strong>plottedReactions</strong> &#8211;
+Reactions that led to relevant side product</li>
 </ul>
 </div></blockquote>
 </dd></dl>
