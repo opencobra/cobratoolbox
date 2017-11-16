@@ -25,30 +25,51 @@ changeCobraSolver('gurobi', 'MILP');
 % check the added functionality in computeElementalMatrix
 % test parsing generic formulae
 modelTest = struct();
-[modelTest.mets, modelTest.metFormulas] = deal({'A'; 'B'; 'C'}, {'C6H11O9PCharge-1', '[H2O]5CuSO4', 'Random_element-0.5(Abc(O2)1.5)2'});
+[modelTest.mets, modelTest.metFormulas] = deal({'A'; 'B'; 'C'}, {'C6H11O9P', '[H2O]5CuSO4', 'Random_element0.5(Abc(O2)1.5)2'});
 [metEleTest, eleTest] = computeElementalMatrix(modelTest, [], false, true);
-eleTest0 = {'C'; 'O'; 'H'; 'P'; 'Charge'; 'Cu'; 'S'; 'Abc'; 'Random_element'};
-metEleTest0 = [6, 9, 11, 1, -1, 0, 0, 0,    0;...
-               0, 9, 10, 0,  0, 1, 1, 0,    0;...
-               0, 6,  0, 0,  0, 0, 0, 2, -0.5];
+eleTest0 = {'C'; 'O'; 'H'; 'P'; 'Cu'; 'S'; 'Abc'; 'Random_element'}';
+metEleTest0 = [6, 9, 11, 1, 0, 0, 0,   0;...
+               0, 9, 10, 0, 1, 1, 0,   0;...
+               0, 6,  0, 0, 0, 0, 2, 0.5];
 [yn, id] = ismember(eleTest, eleTest0);
 assert(all(yn))
 assert(isequal(metEleTest, metEleTest0(:, id)))
 % test error message
 modelTest.metFormulas{2} = '(H2O(2HO)2)2';
+modelTest.metFormulas{1} = 'H-1(H2O(2HO)2)-2';
 try
     [metEleTest, eleTest] = computeElementalMatrix(modelTest, [], false, true);
     error('Should not finish!')
 catch ME
 end
-assert(~isempty(strfind(ME.message, '#1: Invalid chemical formula. Only ''HO'' can be recognized from ''(2HO)'' in the input formula ''(H2O(2HO)2)2''.')))
-assert(~isempty(strfind(ME.message, 'Each element should start with a capital letter followed by lower case letters or ''_'' with indefinite length and followed by a number.')))
+errMsg = load('errorMessages.mat');
+assert(isequal(ME.message, errMsg.errMsg1))
+
+% test getElementalComposition
+try
+    % throw error with charge in formula
+    [Ematrix, element] = getElementalComposition('C6H11O9PCharge-1');
+    error('Should not finish!')
+catch ME
+end
+assert(isequal(ME.message, errMsg.errMsg2))
+% ok with charge in formula
+[Ematrix, elements] = getElementalComposition('C6H11O9PCharge-1', [], true);
+[yn, id] = ismember(elements, {'C', 'H', 'O', 'P', 'Charge'});
+Ematrix0 = [6 11 9 1 -1];
+assert(all(yn))
+assert(isequal(Ematrix, Ematrix0(:, id)))
+[Ematrix, elements] = getElementalComposition('C6H11O9PCharge-1', {'Charge', 'P'}, true);
+% preserve the order of elements
+assert(isequal(elements(1:2), {'Charge', 'P'}))
 
 % test eleMatrixToFormulae
 formulae = eleMatrixToFormulae(eleTest, metEleTest);
-assert(all(strcmp(formulae, {'C6H11O9PCharge-1'; 'H10O9SCu'; 'O6Abc2Random_element-0.5'})))
+assert(all(strcmp(formulae, {'C6H11O9P'; 'H10O9SCu'; 'O6Abc2Random_element0.5'})))
 
 % ensure the original functionality is unchanged
+modelTest.mets = {'A'};
+modelTest.metFormulas = {'C6H11O9PRandom_element0.5'};
 [metEleTest, eleTest] = computeElementalMatrix(modelTest, 'A');
 assert(isequal(eleTest, {'C', 'N', 'O', 'H', 'P', 'Other'}))
 assert(isequal(metEleTest, [6 0 9 11 1 0]))
@@ -73,11 +94,9 @@ assert(all(ismember(D' ~= 0, EMV' ~= 0, 'rows')))
 % get the elemental compoisiton matrix for all metabolites
 [metEle, ele] = computeElementalMatrix(model, [], false, true);
 % find the molecular weight of each element
-modelEle = struct();
-[modelEle.mets, modelEle.metFormulas] = deal(ele);
-MWele = computeMW(modelEle, [], false, true);
-% generic elements will have weight = 0
-metKnown = model.mets(~any(metEle(:, MWele == 0), 2) & ~cellfun(@isempty, model.metFormulas));
+MWele = getFormulaWeight(ele, 0);
+% generic elements will have weight = NaN
+metKnown = model.mets(~any(metEle(:, isnan(MWele)), 2) & ~cellfun(@isempty, model.metFormulas));
 % PGPm1[c] is involved in the biomass reaction and is an exchange 
 % metabolite (with a sink reaction) without known chemical formula. 
 % Fix it and treat it as known. Or the max possible biomass MW may be unbounded.
@@ -95,16 +114,40 @@ metKnown = [metKnown; {'PGPm1[c]'}; pseudoMet];
 [model1, metFormulae, ele, metEle, rxnBalance, S_fill, solInfo, LP] = computeMetFormulae(model, metKnown, 'printLevel', 0);
 assert(max(max(abs(metEle' * model.S - rxnBalance))) < 1e-6)
 % check the biomass MW
-biomassMw = computeMW(model1, 'biomass[c]', 0, 1);
-assert(abs(biomassMw - 918.8727) < 1e-2)
+[biomassMw, biomassEleComp, biomassEle, knownMw, unknownEle] = computeMW(model1, 'biomass[c]', 0, 1);
+% sum of the stoich for all metabolites containing Pg_subunit is not
+% exactly zero (-2e-7), causing the slight difference accounted by the biomass
+assert(isequal(unknownEle, {'Pg_subunit'}))
+assert(biomassEleComp(strcmp(biomassEle, 'Pg_subunit')) == 2e-7)
+% MW = NaN since it contains an unknown group
+assert(isnan(biomassMw))  
+% the MW for the known part
+assert(abs(knownMw - 919.7837) < 1)  % allow 1 g/mmol descrepancy
+
 % find the range for the biomass molecular weight under minimum inconsitency
 [biomassMwRange, biomassFormula] = computeMetFormulae(model, 'knownMets', metKnown, 'metMwRange', 'biomass[c]');
 % check the range (should be a unique value)
-assert(max(abs(biomassMwRange - 918.8727)) < 1e-3)
+assert(max(abs(biomassMwRange - 919.7837)) < 1)
+
+% find the range for an already knwon metabolites
+[atpMwRange, atpFormula] = computeMetFormulae(model, 'metMwRange', 'atp[c]', 'knownMets', metKnown);
+assert(atpMwRange(1) == atpMwRange(2) & abs(atpMwRange(1) - 503.1493) < 1)
+assert(strcmp(atpFormula{1}, atpFormula{2}) &  strcmp(atpFormula{1}, model.metFormulas{findMetIDs(model, 'atp[c]')}))
+
+% call without change balancing
+modelWoCharge = model;
+modelWoCharge.metCharges(:) = NaN;
+[modelWoCharge, metFormulae] = computeMetFormulae(modelWoCharge, metKnown);
+[biomassMw, biomassEleComp, biomassEle, knownMw, unknownEle] = computeMW(modelWoCharge, 'biomass[c]', [], 1);
+% should be the same as above
+assert(isequal(unknownEle, {'Pg_subunit'}))
+assert(biomassEleComp(strcmp(biomassEle, 'Pg_subunit')) == 2e-7)
+assert(isnan(biomassMw))  
+assert(abs(knownMw - 919.7837) < 1)
 
 % test other parameters
 
-% print messages
+% print EFM calculations
 computeMetFormulae(model, metKnown, 'printLevel', 1);
 % solver-specific parameter structure (time limit = 0, no solution)
 diary('testBiomassMW_diary.txt')
