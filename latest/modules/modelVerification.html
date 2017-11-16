@@ -191,7 +191,7 @@
 <span id="id1"></span><h1>modelVerification<a class="headerlink" href="#modelverification" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.modelVerification"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.modelVerification.verifyModel">
-<code class="descname">verifyModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/20fd3e9e1ef1db8fe7488113be9858dafb21e351/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">verifyModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/922cc2c54827cc73438f96ff115d2db2d367a116/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the model for consistency with the COBRA Toolbox</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -224,8 +224,8 @@ Consisteny, according to <cite>Gevorgyan, Bioinformatics,
 2008</cite>) (Default: false)</li>
 <li>&#8216;deadEndMetabolites&#8217; (metabolites which can either not
 be produced, or consumed) (Default: false)</li>
-<li>&#8216;simpleCheck&#8217; returns 0 if this is not a valid model
-and 1 if it is a valid model, ignored if any other
+<li>&#8216;simpleCheck&#8217; returns false if this is not a valid model
+and true if it is a valid model, ignored if any other
 option is selected. (Default: false)</li>
 <li>&#8216;requiredFields&#8217; sets the fields which are required,
 the argument must be firectly followed by the list of
@@ -238,6 +238,12 @@ for those databases.</li>
 <li>&#8216;silentCheck&#8217;, do not print any information. Only
 applies to the model structure check. (default is to
 print info)</li>
+<li>&#8216;restrictToFields&#8217; restricts the check to the listed
+fields. This will lead to requiredFields being reduced
+to those fields present in the restricted fields. If
+an empty cell array is provided no restriction is
+applied.
+(default: {})</li>
 </ul>
 </div></blockquote>
 </li>

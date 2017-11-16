@@ -5,7 +5,7 @@ Functions
 ---------
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 6
 
    base
    dataIntegration
