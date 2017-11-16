@@ -436,11 +436,12 @@ switch solver
         end
         
         % Get results
-        try x = Result.x; catch x=zeros(size(cplexlp.Model.ub)); end %return zeros if infeasible
-        try f = osense*Result.objval; catch f=nan; end %return Nan if infeasible
         stat = Result.status;
         if (stat == 101 || stat == 102 || stat == 1)
             solStat = 1; % Opt integer within tolerance
+            % Return solution if problem is feasible, bounded and optimal
+            x = Result.x;
+            f = osense*Result.objval;
         elseif (stat == 103 || stat == 3)
             solStat = 0; % Integer infeas
         elseif (stat == 118 || stat == 119 || stat == 2)
