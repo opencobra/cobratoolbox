@@ -202,10 +202,13 @@ elseif calcMetMwRange && any(metK == metI)
     if printLevel
         fprintf('The met of interest (supplied in the argument ''metMwRange'') already has a known formula. Nothing to calculate.\n');
     end
-    metMw = repmat(computeMW(model, model.mets(metI), false, true), 2, 1);
+    
+    metMw = repmat(getFormulaWeight(model.metFormulas(metI)), 2, 1);
     metFormulae = repmat(model.metFormulas(metI), 2, 1);
+    
     [ele, metEle, rxnBal, S_fill, solInfo, LP] = deal([]);
     varargout = {LP};
+    model = metMw; % range for the MW of the metabolite of interest as the 1st output
     return
 end
 metKform = cellfun(@isempty, model.metFormulas(metK));
@@ -235,7 +238,8 @@ digitRounded = 12;
 % [All formulas must be in the form of e.g. Abc2Bcd1. Elements are represented by one capital letter 
 % followed by lower case letter or underscore, followed by a number for the stoichiometry. 
 % Brackets/parentheses and repeated elements are also supported, e.g. CuSO4(H2O)5.]
-[metEleK, eleK] = computeElementalMatrix(model, model.mets(metK), false, true);
+[metEleK, eleK] = getElementalComposition(model.metFormulas(metK), [], true);
+eleK = eleK(:);
 
 % check if information on charges exists
 if ~any(strcmp(eleK, 'Charge'))
@@ -255,10 +259,8 @@ if ~any(strcmp(eleK, 'Charge'))
 end
 
 % formulas for filling metabolites
-modelF = struct();
-[modelF.mets, modelF.metFormulas] = deal(metFill);
-[metEleF, eleK] = computeElementalMatrix(modelF, modelF.mets, false, true, eleK);
-clear modelF
+[metEleF, eleK] = getElementalComposition(metFill, eleK, true);
+eleK = eleK(:);
 if numel(eleK) > size(metEleK,2)
     metEleK = [metEleK, zeros(size(metEleK,1), numel(eleK) - size(metEleK,2))];
 end
@@ -310,7 +312,7 @@ if ~calcMetMwRange
 else
     modelEle = struct();
     [modelEle.mets, modelEle.metFormulas] = deal(eleK);
-    MWele = computeMW(modelEle, [], false, true);
+    MWele = getFormulaWeight(eleK);
     clear modelEle
     [metMwMin, metMwMax] = deal(0);
     [metEleU.minIncon, metEleU.minMw, metEleU.maxMw] = deal(NaN(mU, nE));
@@ -801,7 +803,8 @@ if ~calcMetMwRange
                     % get the matrix for the input formula
                     nEnew = numel(ele) - nE - nCM;
                     [modelCM.mets, modelCM.metFormulas] = deal({s});
-                    [metEleJ, eleJ] = computeElementalMatrix(modelCM, modelCM.mets, false, true, ele([1:nE, (nE+nCM+1):end]));
+                    [metEleJ, eleJ] = getElementalComposition(s, ele([1:nE, (nE+nCM+1):end]), true);
+                    eleJ = eleJ(:);
                     metEle(:,[1:nE, (nE+nCM+1):end]) ...
                         = metEle(:,[1:nE, (nE+nCM+1):end])...
                         + metEle(:,nE+j) * metEleJ(1,1:(nE+nEnew));

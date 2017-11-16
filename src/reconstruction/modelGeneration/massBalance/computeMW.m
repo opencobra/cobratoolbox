@@ -1,4 +1,4 @@
-function [MW, Ematrix] = computeMW(model, metList, warnings, genericFormula)
+function [MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(model, metList, warnings, genericFormula, isotopeAbundance)
 % Computes molecular weight and elemental matrix of compounds
 %
 % USAGE:
@@ -9,20 +9,38 @@ function [MW, Ematrix] = computeMW(model, metList, warnings, genericFormula)
 %    model:       COBRA model structure (must define .mets and .metFormulas)
 %
 % OPTIONAL INPUTS:
-%    metList:     Cell array of which metabolites to search for. (Default = all metabolites in model)
-%    warnings:    Display warnings if there are errors with the formula. (Default = true)
-%    genericFormula: true to accept generic formulae containing any elements starting with 'A'-'Z', 
-%                    followed by 'a'-'z' or '_' of indefinite length, followed by a real number (can be -ve). 
-%                    Support '()', '[]', '{}'. E.g. '([H2O]2(CuSO4))2Generic_element-0.5' (Default = false)
+%    metList:            Cell array of which metabolites to search for. (Default = all metabolites in model)
+%    warnings:           Display warnings if there are errors with the formula. (Default = true)
+%    genericFormula:     true to use the accept generic formulae containing any elements starting with 'A'-'Z', 
+%                        followed by 'a'-'z' or '_' of indefinite length, followed by a real number (can be -ve). 
+%                        Support '()', '[]', '{}'. E.g. '([H2O]2(CuSO4))2Generic_element-0.5' (Default = false)
+%    (isotopeAbundance is used only if genericFormula = true)
+%    isotopeAbundance:   * false to use standard atomic weights (default)
+%                        * true to use the weights of naturally predominant isotopes for biological 
+%                            elements and standard weights for other elements.
+%                        * `m` x 3 cell arrray with user defined isotope abundance:
+%                            isotopeAbundance{i, 1} = 'Atomic_Symbol';
+%                            isotopeAbundance{i, 2} = Mass_Number;
+%                            isotopeAbundance{i, 3} = abundance;
+%                            (where sum of abundances of all isotopes of an element must be one)   
 %
 % OUTPUTS:
-%    MW:          Vector of molecular weights
-%    Ematrix:     `m` x 6 matrix of order [C N O H P other]
+%    MW:                 Vector of molecular weights
+%    Ematrix:            * `m` x 6 matrix of order [C N O H P other] if genericFormula = false
+%                        * `m` x `e` matrix if genericFormula = true given `e` elements in the chemical formulae
+%    element:            cell array of elements corresponding to the columns of Ematrix
+%    (knownWeights and unknownElements are returned only if genericFormula = true)
+%    knownWeights:       MWs for the part whose MW is computable ofr each of the formulae
+%    unknownElements:    cell arrary of elements without known atomic weights that appear in the formulae
 %
 % .. Author: - Jan Schellenberger (Nov. 5, 2008)
 
-if nargin < 4
+if nargin < 4 || isempty(genericFormula)
     genericFormula = false;
+end
+
+if nargin < 5
+    isotopeAbundance = false;
 end
 
 if nargin < 3 || isempty(warnings)
@@ -72,10 +90,8 @@ if ~genericFormula
         end
     end
     Ematrix = computeElementalMatrix(model,metList,false);
+    [knownWeights, unknownElements] = deal([], {});
 else
     % elements' MWs in a vector
-    elementMwVector = struct2array(elementMwStruct);
-    [Ematrix, elements] = computeElementalMatrix(model, metList, false, true);
-    [yn, id] = ismember(elements, elementNames);
-    MW = Ematrix(:, yn) * columnVector(elementMwVector(id(yn)));
+    [MW, knownWeights, unknownElements, Ematrix, elements] = getFormulaWeight(model.metFormulas(metIDs), isotopeAbundance);
 end
