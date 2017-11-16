@@ -22,7 +22,7 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
             response = generateSubsytemsLayout(cobra_model, subsystems(i), color);
         end
 
-        if ~isempty(strfind(response, '<span id="default_form:status">OK</span>'))
+        if ~isempty(regexp(response, '"status":"OK"'))
             result = [subsystems(i), ' successfully sent to MINERVA instace.'];
             disp(result)
         else

@@ -36,7 +36,7 @@ function [ response ] = postMINERVArequest(login, password, map, identifier, con
        filename = strcat(identifier, '.txt');
        curl_str = strcat('curl -X POST --data "content=', content, '&description=', identifier ,'&filename=', filename, '&name=', identifier, {'" --cookie "MINERVA_AUTH_TOKEN='}, minerva_auth_token, {'" '}, minerva_server);
        [x , response] = system(char(curl_str));
-       if contains(response, '"status":"OK"')
+       if ~isempty(regexp(response, '"status":"OK"'))
            response = 'Overlay generated successfully!'
        end
    else
