@@ -29,6 +29,9 @@ load('minerva.mat');
 % check if the URL exists
 if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
     % Set the user to testing user
+    oldLogin = minerva.login;
+    oldPassword = minerva.password;
+    
     minerva.login = 'cobratoolbox-test';
     minerva.password = 'test';
 
@@ -49,6 +52,8 @@ if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
     % Same as before - two possible correct responses
     assert(~(strcmpi(response, 'Overlay generated successfully!') == 0 && strcmpi(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.') == 0));
     
+    minerva.login = oldLogin;
+    minerva.password = oldPassword;
 else
     error('The remote repository cannot be reached. Please check your internet connection.');
 end

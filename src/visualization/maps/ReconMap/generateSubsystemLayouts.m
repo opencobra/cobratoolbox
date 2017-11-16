@@ -11,8 +11,7 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
 %    cobra_model:       COBRA model structure
 %    color:             Color
 
-    subsystems = unique(cobra_model.subSystems);
-    subsystems = subsystems(~cellfun('isempty',subsystems));
+    subsystems = getModelSubSystems(cobra_model);
 
     for i= 1:length(subsystems)
 
@@ -23,7 +22,7 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
         end
 
         if ~isempty(regexp(response, '"status":"OK"'))
-            result = [subsystems(i), ' successfully sent to MINERVA instace.'];
+            result = [subsystems(i), ' successfully sent to ReconMap.'];
             disp(result)
         else
             result = [subsystems(i), ' failed.'];

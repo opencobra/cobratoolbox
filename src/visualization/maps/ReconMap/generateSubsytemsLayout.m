@@ -20,7 +20,7 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
 
     for i = 1:length(cobra_model.rxns)
 
-        if strcmp(cobra_model.subSystems(i), subsystem)
+        if isReactionInSubSystem(cobra_model, cobra_model.rxns(i), subsystem)
             % Assuming that reactions not existing in the map won't be a
             % problem
             mapReactionId = cobra_model.rxns{i};
