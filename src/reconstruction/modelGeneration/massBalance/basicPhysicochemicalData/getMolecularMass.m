@@ -83,7 +83,7 @@ if ischar(formulae)
     formulae{1}=tmp;
 end
 
-if exist('isotopeAbundance','var')
+if ~isscalar(isotopeAbundance) || isotopeAbundance
     isotopeSensitive=1;
     if isnumeric(isotopeAbundance) || islogical(isotopeAbundance)
         if isotopeAbundance
@@ -233,7 +233,7 @@ if exist('isotopeAbundance','var')
             % Copper, all as Cu63 (69% naturally Cu63)
             isotopeAbundance{i,1}= 'Cu';
             isotopeAbundance{i,2}= 63;
-            isotopeAbundance{i,3}= 0;
+            isotopeAbundance{i,3}= 1;
             i=i+1;
             isotopeAbundance{i,1}= 'Cu';
             isotopeAbundance{i,2}= 65;
