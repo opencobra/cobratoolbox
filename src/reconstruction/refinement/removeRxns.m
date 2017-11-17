@@ -102,3 +102,10 @@ if metFlag
         modelOut = removeMetabolites(modelOut, selMets, false);
     end
 end
+
+%Also if there is a C field, remove all empty Constraints (i.e. constraints
+%with nnz = 0)
+if isfield(modelOut,'ctrs')
+    emptyConstraints = sum(modelOut.C ~= 0,2) == 0;
+    modelOut = removeNMConstraints(modelOut,emptyConstraints);    
+end
