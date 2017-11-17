@@ -35,25 +35,25 @@ metEleTest0 = [6, 9, 11, 1, 0, 0, 0,   0;...
 assert(all(yn))
 assert(isequal(metEleTest, metEleTest0(:, id)))
 % test error message
-modelTest.metFormulas{2} = '(H2O(2HO)2)2';
-modelTest.metFormulas{1} = 'H-1(H2O(2HO)2)-2';
+modelTest.metFormulas{1} = 'H-1(H2O(HO)2)-2';
+modelTest.metFormulas{2} = '(H2O((2OH)O-5)2)2';
 try
     [metEleTest, eleTest] = computeElementalMatrix(modelTest, [], false, true);
     error('Should not finish!')
 catch ME
 end
-errMsg = load('errorMessages.mat');
+errMsg = load('testComputeMetFormulae_errorMessages.mat');
 assert(isequal(ME.message, errMsg.errMsg1))
 
 % test getElementalComposition
 try
-    % throw error with charge in formula
+    % throw error with 'Charge' in formula
     [Ematrix, element] = getElementalComposition('C6H11O9PCharge-1');
     error('Should not finish!')
 catch ME
 end
 assert(isequal(ME.message, errMsg.errMsg2))
-% ok with charge in formula
+% ok with chargeInFormula = true
 [Ematrix, elements] = getElementalComposition('C6H11O9PCharge-1', [], true);
 [yn, id] = ismember(elements, {'C', 'H', 'O', 'P', 'Charge'});
 Ematrix0 = [6 11 9 1 -1];

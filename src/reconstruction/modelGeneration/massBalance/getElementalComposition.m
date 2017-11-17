@@ -1,4 +1,4 @@
-function [Ematrix, elements, errMsg] = getElementalComposition(formulae, elements, chargeInFormula, selfCall)
+function [Ematrix, elements] = getElementalComposition(formulae, elements, chargeInFormula)
 % Get the complete elemental composition matrix including generic elements
 %
 % USAGE:
@@ -24,19 +24,25 @@ function [Ematrix, elements, errMsg] = getElementalComposition(formulae, element
 %
 % Siu Hung Joshua Chan May 2017
 
-if nargin < 4
-    selfCall = 0;
-end
 if nargin < 3 || isempty(chargeInFormula)
     chargeInFormula = false;
 else
     chargeInFormula = logical(chargeInFormula);
 end
-%for recalling the original formula at the top level if there are parentheses
-%in the formula leading to iterative calling
+% for recalling the original formula at the top level if there are parentheses
+% in the formula leading to iterative calling
 persistent formTopLv
+persistent formCurLv
+% for storing error message during iterative calling
+persistent errMsg
+persistent errMsgInThisLoop
+persistent topLvJ
+persistent selfCall
+if isempty(selfCall)
+    selfCall = 0;
+end
 if ~selfCall
-    formTopLv = '';
+    [formTopLv, errMsg] = deal('');
 end
 
 if ~isstruct(formulae)
@@ -67,13 +73,15 @@ Ematrix = zeros(numel(formulae), numel(elements));
 formulae = regexprep(formulae, '[\[\{]', '\(');
 formulae = regexprep(formulae, '[\]\}]', '\)');
 nE = numel(elements);
-errMsg = '';
 digit = floor(log10(numel(formulae))) + 1;
 for j = 1:numel(formulae)
-    errMsgJ = '';
+    if ~selfCall
+        % reset top level information for each formula
+        [formTopLv, topLvJ, errMsgInThisLoop] = deal(formulae{j}, j, false);
+    end
     formulae{j} = strtrim(formulae{j});
     if ~isempty(formulae{j})
-        %get all outer parentheses
+        % get all outer parentheses
         parenthesis = [];
         stP = [];
         stPpos = [];
@@ -95,16 +103,15 @@ for j = 1:numel(formulae)
                         stPpos = [stPpos; k k];
                     else
                         stCheck = str2double(stPre{1});
-                        if any(isnan(stCheck))  % if any string is not convertible to number
+                        s = '';
+                        if isnan(stCheck)
+                            s = 'Invalid';
+                        elseif stCheck < 0
+                            s = 'Negative';
+                        end
+                        if ~isempty(s)  % error if not convertible to number or negative
                             f = [formulae{j}(parenthesis(end,1):parenthesis(end,2)), stPre{1}];
-                            if isempty(formTopLv)
-                                s2 = '';
-                            elseif selfCall == 1
-                                s2 = sprintf('from the part ''(%s)''', formulae{j});
-                            elseif selfCall == 2
-                                s2 = sprintf('from the part ''%s''', formulae{j});
-                            end
-                            errMsgJ = [errMsgJ, sprintf('    Invalid stoichiometry in ''%s'' %s\n', f, s2)];
+                            addErrorMessage(sprintf('    %s stoichiometry in ''%s''\n', s, f))
                         end
                         % stoichiometry
                         stP = [stP; stCheck];
@@ -142,20 +149,21 @@ for j = 1:numel(formulae)
                 end
             end
             if errorFlag > 0
-                if isempty(formTopLv)
+                if selfCall <= 1
                     s2 = '';
-                elseif selfCall == 1
-                    s2 = sprintf('from the part ''(%s)''', formulae{j});
                 elseif selfCall == 2
-                    s2 = sprintf('from the part ''%s''', formulae{j});
+                    s2 = sprintf('from the part ''(%s)''', formCurLv);
+                elseif selfCall == 3
+                    s2 = sprintf('from the part ''(%s)''', formulae{j});
                 end
                 if errorFlag == 1
-                    errMsgJ = [errMsgJ, sprintf(['    Only ''%s'' can be recognized %s.\n'...
+                    s2 = sprintf(['    Only ''%s'' can be recognized %s.\n'...
                         '       Each element should start with a capital letter followed by lower case letters'...
-                        ' or ''_'' with indefinite length and followed by a number.\n'], s, s2)];
+                        ' or ''_'' with indefinite length and followed by a number.\n'], s, s2);
                 elseif errorFlag == 2
-                    errMsgJ = [errMsgJ, sprintf('    %s stoichiometry in ''%s'' %s\n', errMsgKey, f, s2)];
+                    s2 = sprintf('    %s stoichiometry in ''%s'' %s\n', errMsgKey, f, s2);
                 end
+                addErrorMessage(s2);
             end
             elementJ = repmat({''},numel(re), 1);
             nEj = 0;
@@ -186,50 +194,53 @@ for j = 1:numel(formulae)
             end
             Ematrix(j, idE) = stoichJ;
         else
-            % parentheses found. iteratively get the formula inside parentheses
+            % parentheses found. Iteratively get the formula inside parentheses
             rest = true(length(formulae{j}),1);
-            if isempty(formTopLv)
-                formTopLv = formulae{j};
-            end
             for k = 1:size(parenthesis,1)
-                [EmatrixK, elements, errMsgK] = getElementalComposition(formulae{j}(...
-                    (parenthesis(k,1)+1):(parenthesis(k,2)-1)), elements, chargeInFormula, 1);
+                selfCallCur = selfCall;
+                selfCall = 3;
+                [EmatrixK, elements] = getElementalComposition(formulae{j}(...
+                    (parenthesis(k,1)+1):(parenthesis(k,2)-1)), elements, chargeInFormula);
                 if numel(elements) > size(Ematrix, 2)
                     Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
                 end
-                negSt = (~chargeInFormula | ~strcmp(elements, 'Charge')) & EmatrixK * stP(k) < 0;
-                negSt2 = (~chargeInFormula | ~strcmp(elements, 'Charge')) & EmatrixK ~= 0 & stP(k) < 0;
-                if (isempty(errMsgK) && any(negSt)) || any(negSt2)
-                    errMsgK = [errMsgK, sprintf(['    Negative stoichiometry in the part (%s)', ...
-                        num2str(stP(k)), '\n'], formulae{j}((parenthesis(k,1)+1):(parenthesis(k,2)-1)))];
-                end
+                selfCall = selfCallCur;
                 Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK * stP(k);
                 rest(parenthesis(k,1):stPpos(k,2)) = false;
-                errMsgJ = [errMsgJ, errMsgK];
+                
             end
             if any(rest)
-                [EmatrixK, elements, errMsgK] = getElementalComposition(formulae{j}(rest), elements, chargeInFormula, 2);
+                formCurLv = formulae{j};
+                selfCallCur = selfCall;
+                selfCall = 1 + (selfCall >= 1);
+                [EmatrixK, elements] = getElementalComposition(formulae{j}(rest), elements, chargeInFormula);
                 if numel(elements) > size(Ematrix, 2)
                     Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
                 end
                 Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK;
-                errMsgJ = [errMsgJ, errMsgK];
+                selfCall = selfCallCur;
             end
-            formTopLv = '';
         end
     else
         Ematrix(j,:) = NaN;
     end
-    if ~isempty(errMsgJ)
-        if ~selfCall
-            errMsg = [errMsg, sprintf(['#%0' num2str(digit) 'd:  %s\n'], j, formulae{j})];
-        end
-        errMsg = [errMsg, errMsgJ];
-    end
 end
 Ematrix = Ematrix(:, 1:numel(elements));
 elements = elements(:)';
-if ~selfCall && ~isempty(errMsg)
-    error(['%s\n', errMsg], 'Invalid formula input:')
+if ~selfCall 
+    selfCall = [];
+    if ~isempty(errMsg)
+        error(['%s\n', errMsg], 'Invalid formula input:')
+    end
 end
+
+% nested function for adding error messages
+    function addErrorMessage(s)
+        if ~errMsgInThisLoop
+            errMsg = [errMsg, sprintf(['#%0' num2str(digit) 'd:  %s\n'], topLvJ, formTopLv)];
+            errMsgInThisLoop = true;
+        end
+        errMsg = [errMsg, s];
+    end
 end
+
