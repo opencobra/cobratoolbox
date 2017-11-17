@@ -2,7 +2,6 @@ function [MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(mode
 % Computes molecular weight and elemental matrix of compounds
 %
 % USAGE:
-%
 %    [MW, Ematrix] = computeMW(model, metList, warnings)
 %
 % INPUT:

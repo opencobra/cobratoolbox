@@ -63,8 +63,8 @@ assert(isequal(Ematrix, Ematrix0(:, id)))
 % preserve the order of elements
 assert(isequal(elements(1:2), {'Charge', 'P'}))
 
-% test eleMatrixToFormulae
-formulae = eleMatrixToFormulae(eleTest, metEleTest);
+% test elementalMatrixToFormulae
+formulae = elementalMatrixToFormulae(metEleTest, eleTest);
 assert(all(strcmp(formulae, {'C6H11O9P'; 'H10O9SCu'; 'O6Abc2Random_element0.5'})))
 
 % ensure the original functionality is unchanged

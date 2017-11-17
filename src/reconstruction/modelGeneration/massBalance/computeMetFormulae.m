@@ -1,4 +1,4 @@
-function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] = computeMetFormulae(model, varargin)
+function [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, varargout] = computeMetFormulae(model, varargin)
 % Compute the chemical formulas for metabolites without formulas using a set of metabolites with 
 % known formulae by minimizing the overall inconsistency in elemental balance. They are combined with the 
 % conserved moiety vectors identified from the left null space of S-matrix to return the general formulae.
@@ -10,9 +10,9 @@ function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] =
 %
 % USAGE:
 %    Find unknown chemical formulae for all metabolites:
-%      [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'parameter', value, ... )
+%      [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'parameter', value, ... )
 %    Find the min/max possible MW of a particular metabolite of interest:
-%      [mwRange, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'metMwRange', met, ...)
+%      [mwRange, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, 'metMwRange', met, ...)
 %    Also support direct input in the following order:
 %      [...] = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)
 %
@@ -48,7 +48,7 @@ function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] =
 %    mwRange:        range for the MW of the metabolite of interest (1st output if 'metMwRange' is called)
 %    metFormulae:    Formulae for unknown mets (#unknown mets x 2 cell array) if 'metMwRange' is not called
 %                    Cell array of two chemical formulae for the min/max MW of the metabolite of interest if 'metMwRange' is called
-%    ele:            Elements corresponding to the row of rxnBal, the coloumn of metEle
+%    elements:       Elements corresponding to the row of rxnBal, the coloumn of metEle
 %    metEle:         Chemical formulas in matrix (#metKnown x #elements)
 %    rxnBal:         Elemental balance of rxns (#elements x #rxns)
 %    S_fill:         Adjustment of the S-matrix by 'metFill' (#metFill x #rxns in the input)
@@ -56,8 +56,8 @@ function [model, metFormulae, ele, metEle, rxnBal, S_fill, solInfo, varargout] =
 %                      * metUnknown:    mets whose formulae are being solved for (#met_unknown x 1 cell)
 %                      * metFill:       metabolite formulae used to automatically fill inconsistency
 %                      * rxns:          reactions with elemental balance imposed
-%                      * ele:           the chemical elements present in the model's formulae. 
-%                      * eleConnect:    connected components partitioning solInf.ele (#elements x #components logical matrix).
+%                      * elements:      the chemical elements present in the model's formulae. 
+%                      * eleConnect:    connected components partitioning solInfo.elements (#elements x #components logical matrix).
 %                                       Elements in the same component mean that they are connected
 %                                       by some 'metFill' and are optimized in the same round.
 %                      * metEleUnknown: the formulae found for unknown metabolites in different steps (#met_unknown x #elements)
@@ -206,7 +206,7 @@ elseif calcMetMwRange && any(metK == metI)
     metMw = repmat(getFormulaWeight(model.metFormulas(metI)), 2, 1);
     metFormulae = repmat(model.metFormulas(metI), 2, 1);
     
-    [ele, metEle, rxnBal, S_fill, solInfo, LP] = deal([]);
+    [elements, metEle, rxnBal, S_fill, solInfo, LP] = deal([]);
     varargout = {LP};
     model = metMw; % range for the MW of the metabolite of interest as the 1st output
     return
@@ -638,7 +638,7 @@ end
 solInfo.metUnknown = model.mets(metU);
 solInfo.metFill = metFill;
 solInfo.rxns = model.rxns(rxnC);
-solInfo.ele = eleK;
+solInfo.elements = eleK;
 solInfo.eleConnect = eleConnect;
 solInfo.metEleUnknwon = metEleU;
 if ~calcMetMwRange
@@ -652,7 +652,7 @@ end
 %      * .minForm: minimal formulae, or  * .maxMw if calling with 'metMwRange'
 %   - solEachEle(e).sol:             solutions returned by solveCobraLP, for the e-th connected componenet of elements, 
 %   - solEachEle(e).varIndex:        indices of variables corresponding to the vector solEachEle(e).sol.full
-%                                    (including .m.ele, .xp.ele, .xn.ele, .Ap.metFill, .An.metFill)
+%                                    (including .m.elements, .xp.elements, .xn.elements, .Ap.metFill, .An.metFill)
 %   - solEachEle(e).infeasibility:   infeasibility of each solve. The problem is infeasible if infeasibility > solInfo.feasTol
 %   - solEachEle(e).bound:           bounds on total inconsistency for each element.
 %   - solEachEle(e).stat:            'infeasibility', 'minIncon', 'minFill', 'minForm' (or 'minMw', 'maxMw' or 'minMw & maxMw' if calling with 'metMwRange')
@@ -683,7 +683,7 @@ if any(strcmp(stat, 'infeasible'))
         fprintf('Critical failure: no feasible solution is found.\n')
     end
     solInfo.stat = 'infeasible';
-    [metFormulae, ele] = deal({});
+    [metFormulae, elements] = deal({});
     [metEle, rxnBal, S_fill] = deal([]);
     return
 elseif all(strcmp(stat, 'minIncon'))
@@ -745,24 +745,24 @@ if ~calcMetMwRange
         Ncm = N(:,~any(N < 0, 1) & ~any(N(metK,:),1));
         % add them into formulas
         metEle = [metEle, Ncm];
-        ele = [eleK(:); cell(size(Ncm,2),1)];
+        elements = [eleK(:); cell(size(Ncm,2),1)];
         j2 = 1;
         for j = 1:size(Ncm,2)
-            while any(strcmp(ele(1:nE),['Conserve_' num2alpha(j2)]))
+            while any(strcmp(elements(1:nE),['Conserve_' num2alpha(j2)]))
                 j2 = j2 + 1;
             end
-            ele{nE+j} = ['Conserve_' num2alpha(j2)];
+            elements{nE+j} = ['Conserve_' num2alpha(j2)];
             j2 = j2 + 1;
         end
     else
-        ele = eleK(:);
+        elements = eleK(:);
     end
     
     % get formulae in string
-    model.metFormulas = eleMatrixToFormulae(ele,metEle,10);
+    model.metFormulas = elementalMatrixToFormulae(metEle, elements, 10);
     if nameCM > 0 && CMfound
         % manually name conserved moieties
-        ele0 = ele;
+        ele0 = elements;
         nDefault = 0;
         nCM = size(Ncm,2);
         eleDel = false(nE + nCM, 1);
@@ -780,7 +780,7 @@ if ~calcMetMwRange
             if nameCM == 1 && any(Ncm(metDead,j),1)
                 % use the defaulted for dead end mets
                 nDefault = nDefault + 1;
-                ele{nE+j} = ele0{nE + nDefault};
+                elements{nE+j} = ele0{nE + nDefault};
             else
                 cont = false;
                 while true
@@ -789,7 +789,7 @@ if ~calcMetMwRange
                     if isempty(s)
                         % use the defaulted
                         nDefault = nDefault + 1;
-                        ele{nE+j} = ele0{nE + nDefault};
+                        elements{nE+j} = ele0{nE + nDefault};
                         break
                     end
                     re = regexp(s,'[A-Z][a-z_]*(\-?\d+\.?\d*)?','match');
@@ -801,16 +801,16 @@ if ~calcMetMwRange
                 end
                 if cont
                     % get the matrix for the input formula
-                    nEnew = numel(ele) - nE - nCM;
+                    nEnew = numel(elements) - nE - nCM;
                     [modelCM.mets, modelCM.metFormulas] = deal({s});
-                    [metEleJ, eleJ] = getElementalComposition(s, ele([1:nE, (nE+nCM+1):end]), true);
+                    [metEleJ, eleJ] = getElementalComposition(s, elements([1:nE, (nE+nCM+1):end]), true);
                     eleJ = eleJ(:);
                     metEle(:,[1:nE, (nE+nCM+1):end]) ...
                         = metEle(:,[1:nE, (nE+nCM+1):end])...
                         + metEle(:,nE+j) * metEleJ(1,1:(nE+nEnew));
                     if numel(eleJ) > nE + nEnew
                         % there are new elements
-                        ele = [ele(:); eleJ((numel(ele)-nCM+1):end)];
+                        elements = [elements(:); eleJ((numel(elements)-nCM+1):end)];
                         metEle = [metEle, ...
                             metEle(:,nE+j) * metEleJ(1,(nE+nEnew+1):end)];
                     end
@@ -821,7 +821,7 @@ if ~calcMetMwRange
         % del defaulted but replaced columns
         if any(eleDel)
             eleDel = find(eleDel);
-            ele(eleDel) = [];
+            elements(eleDel) = [];
             metEle(:,eleDel) = [];
         end
         % 1:nE                    :    real elements
@@ -832,15 +832,15 @@ if ~calcMetMwRange
         for j = 1:nDefault
             j0 = j0 + 1;
             nameJ = ['Conserve_' num2alpha(j0)];
-            while any(strcmp(ele([1:nE, (nE + nDefault + 1):end]), nameJ))
+            while any(strcmp(elements([1:nE, (nE + nDefault + 1):end]), nameJ))
                 j0 = j0 + 1;
                 nameJ = ['Conserve_' num2alpha(j0)];
             end
-            ele{nE + j} = nameJ;
+            elements{nE + j} = nameJ;
         end
     end
     solInfo.N = N;
-    idCharge = strcmp(ele, 'Charge');
+    idCharge = strcmp(elements, 'Charge');
     if any(idCharge)
         if isfield(model, 'metCharges')
             model.metCharges = full(metEle(:, idCharge));
@@ -848,31 +848,28 @@ if ~calcMetMwRange
             model.metCharge = full(metEle(:, idCharge));
         end
     end
-    model.metFormulas = eleMatrixToFormulae(ele(~idCharge), metEle(:, ~idCharge), 10);
+    model.metFormulas = elementalMatrixToFormulae(metEle(:, ~idCharge), elements(~idCharge), 10);
     metFormulae = [model.mets(metU) model.metFormulas(metU)];
-    rxnBal = metEle' * model.S;
+    rxnBal = metEle' * model.S;  % reaction balance
 else
     metIinU = find(metU == metI);  % index of metInterest in metUnknown
     % the range for the MW of the met of interest
     metMw = [metMwMin; metMwMax];
     % the corresponding chemical formulae
     realEle = MWele > 0;
-    metFormulae = eleMatrixToFormulae(eleK(realEle), ...
-        [metEleU.minMw(metIinU, realEle); metEleU.maxMw(metIinU, realEle)], 10);
+    metFormulae = elementalMatrixToFormulae([metEleU.minMw(metIinU, realEle); ...
+        metEleU.maxMw(metIinU, realEle)], eleK(realEle), 10);
     S_fill = [];
-    ele = eleK;
-    rxnBal = metEle' * model.S;
+    elements = eleK;
+    rxnBal = metEle' * model.S;  % reaction balance
     model = metMw;  % range for the MW of the metabolite of interest as the 1st output
 end
-% reaction balance
-
-
 
 end
 
 function s = num2alpha(index,charSet)
-% s = num2alpha(j, charSet)
-% Given a nonzero integer j and a character set charSet, convert j into
+% s = num2alpha(index, charSet)
+% Given a nonzero integer index and a character set charSet, convert index into
 % a string formed from the characters in charSet having order j.
 % 'charSet' defaulted to be '_abcdefghijklmnopqrstuvwxyz' in which '_' acts
 % like 0 and 'z' acts like the largest digit 9 in decimal expression

@@ -1,24 +1,24 @@
-function [Ematrix, element, errMsg] = getElementalComposition(formulae, element, chargeInFormula, selfCall)
+function [Ematrix, elements, errMsg] = getElementalComposition(formulae, elements, chargeInFormula, selfCall)
 % Get the complete elemental composition matrix including generic elements
 %
 % USAGE:
-%    [Ematrix, element] = parseGenericFormula(formulae, element, chargeInFormula)
+%    [Ematrix, elements] = parseGenericFormula(formulae, elements, chargeInFormula)
 %
 % INPUT:
 %    formulae:        cell array of strings of chemical formulae. Can contain any generic elements starting 
 %                     with a capital letter followed by lowercase letters or '_', followed by a non-negative number. 
 %                     Also support '()', '[]', '{}'. E.g. {'H2O'; '[H2O]2(CuSO4)Generic_element0.5'}
-% OPTIONAL INPUT:
-%    element:         element from previous call to preserve the order (default [])
+% OPTIONAL INPUTS:
+%    elements:        elements from previous call to preserve the order (default [])
 %    chargeInFormula: true to accept formulae containing the generic element 'Charge' representing the charges, 
 %                     followed by a real number, e.g., 'HCharge1', 'SO4Charge-2' (default false).
 %
 % OUTPUTS:
 %    Ematrix:         elemental composition matrix (#formulae x #elements)
-%    element:         cell array of elements corresponding to the columns of Ematrix
+%    elements:         cell array of elements corresponding to the columns of Ematrix
 %
-% E.g., [Ematrix, element] = getElementalComposition({'H2O'; '[H2O]2(CuSO4)Generic_element0.5'}) would return:
-%  element = {'H', 'O', 'Cu', 'S', 'Generic_element'}
+% E.g., [Ematrix, elements] = getElementalComposition({'H2O'; '[H2O]2(CuSO4)Generic_element0.5'}) would return:
+%  elements = {'H', 'O', 'Cu', 'S', 'Generic_element'}
 %  Ematrix = [ 2,   1,    0,   0,   0; 
 %              4,   6,    1,   1,   0.5]
 %
@@ -53,20 +53,20 @@ else
     end
 end
 
-if nargin < 2 || isempty(element)
-    element = {};
-elseif numel(unique(element)) < numel(element)
-    error('Repeated elements in the input ''element'' array.')
+if nargin < 2 || isempty(elements)
+    elements = {};
+elseif numel(unique(elements)) < numel(elements)
+    error('Repeated elements in the input ''elements'' array.')
 else
-    element = element(:);  % make sure it is a column vector
+    elements = elements(:);  % make sure it is a column vector
 end
 
 % the Ematrix
-Ematrix = zeros(numel(formulae), numel(element));
+Ematrix = zeros(numel(formulae), numel(elements));
 % replace all brackets and braces by parentheses
 formulae = regexprep(formulae, '[\[\{]', '\(');
 formulae = regexprep(formulae, '[\]\}]', '\)');
-nE = numel(element);
+nE = numel(elements);
 errMsg = '';
 digit = floor(log10(numel(formulae))) + 1;
 for j = 1:numel(formulae)
@@ -133,7 +133,7 @@ for j = 1:numel(formulae)
                     f = strjoin(cellfun(@(x) strjoin(x, ''), re(isnan(stCheck)), 'UniformOutput', false), ''', ''');
                     [errorFlag, errMsgKey] = deal(2, 'Invalid');
                 else
-                    % if chargeInFormula is true, detect negative stoich for non-charge element, else any negative stoich
+                    % if chargeInFormula is true, detect negative stoich for non-charge elements, else any negative stoich
                     negSt = (~chargeInFormula | ~strcmp(eleCheck, 'Charge')) & stCheck < 0;
                     if any(negSt)
                         f = strjoin(cellfun(@(x) strjoin(x, ''), re(negSt), 'UniformOutput', false), ''', ''');
@@ -177,12 +177,12 @@ for j = 1:numel(formulae)
             end
             elementJ = elementJ(1:nEj);
             stoichJ = stoichJ(1:nEj);
-            [ynE, idE] = ismember(elementJ, element);  % map to existing elements
+            [ynE, idE] = ismember(elementJ, elements);  % map to existing elements
             if any(~ynE)
                 idE(~ynE) = (nE + 1):(nE + sum(~ynE));
                 Ematrix(:, (nE + 1):(nE + sum(~ynE))) = 0;
                 nE = nE + sum(~ynE);
-                element = [element; elementJ(~ynE)];
+                elements = [elements; elementJ(~ynE)];
             end
             Ematrix(j, idE) = stoichJ;
         else
@@ -192,27 +192,27 @@ for j = 1:numel(formulae)
                 formTopLv = formulae{j};
             end
             for k = 1:size(parenthesis,1)
-                [EmatrixK, element, errMsgK] = getElementalComposition(formulae{j}(...
-                    (parenthesis(k,1)+1):(parenthesis(k,2)-1)), element, chargeInFormula, 1);
-                if numel(element) > size(Ematrix, 2)
-                    Ematrix(:, (size(Ematrix, 2) + 1):numel(element)) = 0;
+                [EmatrixK, elements, errMsgK] = getElementalComposition(formulae{j}(...
+                    (parenthesis(k,1)+1):(parenthesis(k,2)-1)), elements, chargeInFormula, 1);
+                if numel(elements) > size(Ematrix, 2)
+                    Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
                 end
-                negSt = (~chargeInFormula | ~strcmp(element, 'Charge')) & EmatrixK * stP(k) < 0;
-                negSt2 = (~chargeInFormula | ~strcmp(element, 'Charge')) & EmatrixK ~= 0 & stP(k) < 0;
+                negSt = (~chargeInFormula | ~strcmp(elements, 'Charge')) & EmatrixK * stP(k) < 0;
+                negSt2 = (~chargeInFormula | ~strcmp(elements, 'Charge')) & EmatrixK ~= 0 & stP(k) < 0;
                 if (isempty(errMsgK) && any(negSt)) || any(negSt2)
                     errMsgK = [errMsgK, sprintf(['    Negative stoichiometry in the part (%s)', ...
                         num2str(stP(k)), '\n'], formulae{j}((parenthesis(k,1)+1):(parenthesis(k,2)-1)))];
                 end
-                Ematrix(j, 1:numel(element)) = Ematrix(j, 1:numel(element)) + EmatrixK * stP(k);
+                Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK * stP(k);
                 rest(parenthesis(k,1):stPpos(k,2)) = false;
                 errMsgJ = [errMsgJ, errMsgK];
             end
             if any(rest)
-                [EmatrixK, element, errMsgK] = getElementalComposition(formulae{j}(rest), element, chargeInFormula, 2);
-                if numel(element) > size(Ematrix, 2)
-                    Ematrix(:, (size(Ematrix, 2) + 1):numel(element)) = 0;
+                [EmatrixK, elements, errMsgK] = getElementalComposition(formulae{j}(rest), elements, chargeInFormula, 2);
+                if numel(elements) > size(Ematrix, 2)
+                    Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
                 end
-                Ematrix(j, 1:numel(element)) = Ematrix(j, 1:numel(element)) + EmatrixK;
+                Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK;
                 errMsgJ = [errMsgJ, errMsgK];
             end
             formTopLv = '';
@@ -227,8 +227,8 @@ for j = 1:numel(formulae)
         errMsg = [errMsg, errMsgJ];
     end
 end
-Ematrix = Ematrix(:, 1:numel(element));
-element = element(:)';
+Ematrix = Ematrix(:, 1:numel(elements));
+elements = elements(:)';
 if ~selfCall && ~isempty(errMsg)
     error(['%s\n', errMsg], 'Invalid formula input:')
 end
