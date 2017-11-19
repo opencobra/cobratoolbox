@@ -19,6 +19,10 @@ function N = numAtomsOfElementInFormula(formula, element, printLevel)
 %       - Ronan Fleming 18 Sept 09 handles composite formulae like C62H90N13O14P.C10H11N5O3.Co
 %       - Hulda SH 7 July 2011 Simplified and generalized code. Now handles most or all exceptional formulas.
 
+if nargin < 3
+    printLevel = 1;
+end
+
 if any(~isletter(element))
     disp(element)
     error('Element must not contain numbers')
