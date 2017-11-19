@@ -92,5 +92,5 @@ if ~genericFormula
     [knownWeights, unknownElements] = deal([], {});
 else
     % elements' MWs in a vector
-    [MW, knownWeights, unknownElements, Ematrix, elements] = getFormulaWeight(model.metFormulas(metIDs), isotopeAbundance);
+    [MW, knownWeights, unknownElements, Ematrix, elements] = getMolecularMass(model.metFormulas(metIDs), isotopeAbundance, 1);
 end

@@ -203,7 +203,7 @@ elseif calcMetMwRange && any(metK == metI)
         fprintf('The met of interest (supplied in the argument ''metMwRange'') already has a known formula. Nothing to calculate.\n');
     end
     
-    metMw = repmat(getFormulaWeight(model.metFormulas(metI)), 2, 1);
+    metMw = repmat(getMolecularMass(model.metFormulas(metI), 0, 1), 2, 1);
     metFormulae = repmat(model.metFormulas(metI), 2, 1);
     
     [elements, metEle, rxnBal, S_fill, solInfo, LP] = deal([]);
@@ -310,10 +310,7 @@ if ~calcMetMwRange
     % bound on the total inconsistency allowed
     bound = repmat(struct('minIncon', [], 'minFill', [], 'minForm', []), nEC, 1);
 else
-    modelEle = struct();
-    [modelEle.mets, modelEle.metFormulas] = deal(eleK);
-    MWele = getFormulaWeight(eleK);
-    clear modelEle
+    MWele = getMolecularMass(eleK, 0, 1);
     [metMwMin, metMwMax] = deal(0);
     [metEleU.minIncon, metEleU.minMw, metEleU.maxMw] = deal(NaN(mU, nE));
     [infeasibility, sol] = deal(repmat(struct('minIncon', [], 'minMw', [], 'maxMw', []), nEC, 1));
@@ -771,7 +768,6 @@ if ~calcMetMwRange
             [~,removedMets] = removeDeadEnds(model);
             metDead = findMetIDs(model,removedMets);
         end
-        modelCM = struct();
         for j = 1:nCM
             fprintf('\n');
             writeCell2Text([model.mets(Ncm(:,j)~=0),model.metFormulas(Ncm(:,j)~=0),...
@@ -802,7 +798,6 @@ if ~calcMetMwRange
                 if cont
                     % get the matrix for the input formula
                     nEnew = numel(elements) - nE - nCM;
-                    [modelCM.mets, modelCM.metFormulas] = deal({s});
                     [metEleJ, eleJ] = getElementalComposition(s, elements([1:nE, (nE+nCM+1):end]), true);
                     eleJ = eleJ(:);
                     metEle(:,[1:nE, (nE+nCM+1):end]) ...

@@ -94,7 +94,7 @@ assert(all(ismember(D' ~= 0, EMV' ~= 0, 'rows')))
 % get the elemental compoisiton matrix for all metabolites
 [metEle, ele] = computeElementalMatrix(model, [], false, true);
 % find the molecular weight of each element
-MWele = getFormulaWeight(ele, 0);
+MWele = getMolecularMass(ele, 0, 1);
 % generic elements will have weight = NaN
 metKnown = model.mets(~any(metEle(:, isnan(MWele)), 2) & ~cellfun(@isempty, model.metFormulas));
 % PGPm1[c] is involved in the biomass reaction and is an exchange 
