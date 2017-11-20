@@ -55,7 +55,18 @@ while ~isequal(l, -1)
 end
 fclose(f);
 delete('testElementBalance_warning.txt')
-assert(isequal(text, warningMessage))
+% the warning should contain the following:
+re = regexp(text, 'formula \=');
+assert(~isempty(re))
+text = text(re:end);
+re = regexp(text, '''U''');
+assert(~isempty(re))
+text = text(re:end);
+re = regexp(text, 'comp \=');
+assert(~isempty(re))
+text = text(re:end);
+re = regexp(text, 'U');
+assert(~isempty(re))
 
 % test genericFormula = true
 model = addMetabolite(model, 'hypothetical1[c]', 'metFormula', '((CH2O)3H2O)2H2O');
