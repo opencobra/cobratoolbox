@@ -99,7 +99,9 @@ end
 %Also check for duplicates in the C Matrix.
 constRow = zeros(1,size(model.C,2));
 constRow(rxnList) = c;
-dupRows = all((model.C == constRow), 2);
+
+dupRows = all(model.C == constRow(ones(size(model.C,1),1),:),2);
+
 duplicate = any(dupRows) && (model.dsense(dupRows) == dsense) && (model.d(dupRows) == d);
 if duplicate && checkDuplicate
     warning('Constraint not added, because it already exists with ID: %s',strjoin(model.ctrs(dupRows)));
