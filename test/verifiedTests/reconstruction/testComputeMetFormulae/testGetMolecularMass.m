@@ -125,3 +125,11 @@ assert(isequal(uE, {'Element'}))
 [yn, id] = ismember({'H', 'O', 'Cu', 'S', 'Element'}, ele);
 assert(all(yn) & numel(ele) == 5)
 assert(isequal(Ematrix(:, id), [4, 6, 1, 1, 2]))
+
+% 'Mass0' as a keyword for massless metabolites (e.g., photon)
+[mw, kMw, uE, Ematrix, ele] = getMolecularMass('Mass0', [], 1);
+assert(mw == 0 & kMw == 0 & isequal(uE, {'Mass'}) & isequal(Ematrix, 0) & isequal(ele, {'Mass'}))
+% NaN is returned for all undefined elements, defined elements with only zero
+% coefficients, and empty formula
+[mw, kMw] = getMolecularMass({''; 'Mass1'; 'E2'; 'C0H0'}, [], 1);
+assert(all(isnan(mw)) & ~any(kMw))

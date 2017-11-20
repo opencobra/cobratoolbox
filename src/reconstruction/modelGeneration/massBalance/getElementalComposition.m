@@ -64,7 +64,7 @@ if nargin < 2 || isempty(elements)
 elseif numel(unique(elements)) < numel(elements)
     error('Repeated elements in the input ''elements'' array.')
 else
-    elements = elements(:);  % make sure it is a column vector
+    elements = elements(:)';  % make sure it is a row vector
 end
 
 % the Ematrix
@@ -150,7 +150,7 @@ for j = 1:numel(formulae)
             end
             if errorFlag > 0
                 if selfCall <= 1
-                    s2 = '';
+                    s2 = sprintf('from the part ''%s''', formulae{j});
                 elseif selfCall == 2
                     s2 = sprintf('from the part ''(%s)''', formCurLv);
                 elseif selfCall == 3
@@ -165,7 +165,7 @@ for j = 1:numel(formulae)
                 end
                 addErrorMessage(s2);
             end
-            elementJ = repmat({''},numel(re), 1);
+            elementJ = repmat({''}, 1, numel(re));
             nEj = 0;
             stoichJ = zeros(numel(re),1);
             for k = 1:numel(re)
@@ -190,7 +190,7 @@ for j = 1:numel(formulae)
                 idE(~ynE) = (nE + 1):(nE + sum(~ynE));
                 Ematrix(:, (nE + 1):(nE + sum(~ynE))) = 0;
                 nE = nE + sum(~ynE);
-                elements = [elements; elementJ(~ynE)];
+                elements = [elements, elementJ(~ynE)];
             end
             Ematrix(j, idE) = stoichJ;
         else
@@ -213,11 +213,22 @@ for j = 1:numel(formulae)
                 formCurLv = formulae{j};
                 selfCallCur = selfCall;
                 selfCall = 1 + (selfCall >= 1);
-                [EmatrixK, elements] = getElementalComposition(formulae{j}(rest), elements, chargeInFormula);
-                if numel(elements) > size(Ematrix, 2)
-                    Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
+                while any(rest)
+                    % get the consecutive part of the formula that is not in parentheses
+                    [pStart, pEnd] = deal(find(rest, 1), find(~rest));
+                    pEnd = min(pEnd(pEnd > pStart));
+                    if isempty(pEnd)
+                        pEnd = numel(rest);
+                    else
+                        pEnd = pEnd - 1;
+                    end
+                    [EmatrixK, elements] = getElementalComposition(formulae{j}(pStart:pEnd), elements, chargeInFormula);
+                    if numel(elements) > size(Ematrix, 2)
+                        Ematrix(:, (size(Ematrix, 2) + 1):numel(elements)) = 0;
+                    end
+                    Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK;
+                    rest(pStart:pEnd) = false;
                 end
-                Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK;
                 selfCall = selfCallCur;
             end
         end
@@ -226,7 +237,6 @@ for j = 1:numel(formulae)
     end
 end
 Ematrix = Ematrix(:, 1:numel(elements));
-elements = elements(:)';
 if ~selfCall 
     selfCall = [];
     if ~isempty(errMsg)

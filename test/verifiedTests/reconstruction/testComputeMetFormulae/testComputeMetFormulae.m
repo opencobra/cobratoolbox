@@ -35,7 +35,7 @@ metEleTest0 = [6, 9, 11, 1, 0, 0, 0,   0;...
 assert(all(yn))
 assert(isequal(metEleTest, metEleTest0(:, id)))
 % test error message
-modelTest.metFormulas{1} = 'H-1(H2O(HO)2)-2';
+modelTest.metFormulas{1} = 'H-1CO2(H2O(HO)2)-2';
 modelTest.metFormulas{2} = '(H2O((2OH)O-5)2)2';
 try
     [metEleTest, eleTest] = computeElementalMatrix(modelTest, [], false, true);
@@ -66,6 +66,8 @@ assert(isequal(elements(1:2), {'Charge', 'P'}))
 % test elementalMatrixToFormulae
 formulae = elementalMatrixToFormulae(metEleTest, eleTest);
 assert(all(strcmp(formulae, {'C6H11O9P'; 'H10O9SCu'; 'O6Abc2Random_element0.5'})))
+% return 'Mass0' for metabolites with all zeros the the elemental compoisiton matrix
+assert(isequal(elementalMatrixToFormulae([0, 0, 0, 0], {'C', 'H', 'O', 'R'}), {'Mass0'}))
 
 % ensure the original functionality is unchanged
 modelTest.mets = {'A'};
