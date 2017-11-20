@@ -220,7 +220,7 @@ end
 if isfield(sbmlReactions,'fbc_geneProductAssociation')
     gprAssoc = {sbmlReactions.fbc_geneProductAssociation};
     fbc_grRules = cellfun(@(x) getFBCAssoc(x) , gprAssoc,'UniformOutput',0);
-    model.rules = cellfun(@(x) extractGPRRule(x,model.genes,1),fbc_grRules','UniformOutput',0);
+    model.rules = cellfun(@(x) parseGPR(x,model.genes),fbc_grRules','UniformOutput',0);
 else
     %otherwise use the grRules extracted.
     model.rules = cell(numel(model.rxns),1);
@@ -229,7 +229,7 @@ else
         model.genes = {};
     end
     for i = 1:numel(grRule)
-        [rule,cgenes] = extractGPRRule(grRule{i},model.genes,0);
+        [rule,cgenes] = parseGPR(grRule{i},model.genes);
         model.genes = cgenes;
         model.rules{i} = rule;
         model.genes = columnVector(model.genes);
@@ -466,61 +466,6 @@ if ~isempty(prods)
     stoichiometry(pres) = prodstoichs(pos(pres));    
 end
 end
-
-
-%Convert a gprRule in String format to boolean format.
-function [rule,newGenes] = extractGPRRule(grRule,genes,sbmlIDFlag)
-%Copy the current genes;
-newGenes = genes;
-if isempty(grRule)
-    rule = '';
-    return
-end
-
-%Convert the grRule to a boolean rule
-if sbmlIDFlag
-    %Easy, if this is an SBML with an FBC constraint string
-    grRule = strrep(grRule,' and ',' & ');
-    grRule = strrep(grRule,' or ',' | ');
-    ruleGenes = unique(regexp(grRule,'[A-Za-z_]+[A-Za-z0-9_]*','match')); %we can restict to acceptable SBML SIds.
-    
-else
-    %We will remove empty parenthesis.
-    grRule = regexprep(grRule,'^ *\( *\) *$','');
-    if isempty(grRule)
-        rule = '';
-        return
-    end
-    %Otherwise we will assume, that " and " and " or " are unique...
-    geneFields = regexp(grRule,'[ \)](and|or)[ \(]','split','ignorecase');
-    %Translate or and and to | and & 
-    grRule = regexprep(grRule,'([ \)])and([ \(])','$1&$2');
-    grRule = regexprep(grRule,'([ \)])or([ \(])','$1|$2');
-    %and we assume, that there are no spaces, and no paranthesis in a gene
-    %identifier.
-    ruleGenes = cellfun(@(x) regexp(x,'[^ \[\]\(\)\{\}]*','match'),geneFields);
-end
-%Only use each gene once.
-ruleGenes = unique(ruleGenes);
-[pres,pos] = ismember(ruleGenes,genes);
-
-%get descending order of genes
-[posDes, iPos] = sort(pos, 'descend');
-
-%now, replace every gene by its position
-for i = 1:numel(ruleGenes)
-    if pres(iPos(i))
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(posDes(i)) ')$2']);
-    else
-        newGenes(end+1) = ruleGenes(iPos(i));
-        grRule = regexprep(grRule,['([\(\) ]?)' regexptranslate('escape',ruleGenes{iPos(i)}) '([\(\) ]?)'],['$1x(' num2str(numel(newGenes)) ')$2']);
-    end
-end
-
-rule = grRule;
-end
-
-
 
 function rule = getFBCAssoc(fbc_gprAssoc)
 %extract the fbc_associations fbc_association field or return an empty

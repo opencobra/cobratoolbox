@@ -19,17 +19,13 @@ function modelNew = removeUnusedGenes(model)
 
 modelNew=model;
 if ~isfield(model,'genes')
-    %This is VERY odd and should not happen, but lets see    
-    grRules = model.grRules;
-    grRules = grRules(~cellfun(@isempty,grRules));
-    genes = regexprep(grRules, {'and', 'AND', 'or', 'OR', '(', ')'}, '');
-    genes = splitString(genes, ' ');
-    genes = [genes{:}]';
-    genes = unique(genes(cellfun('isclass', genes, 'char')));    
-    %Now, we created the genes field, so lets build the rules field as
-    %well.
-    modelNew.genes = genes(~cellfun('isempty', genes));  % Not sure this is necessary anymore, but it won't hurt.
+    %This is VERY odd and should not happen, but lets see            
+    modelNew.genes = {};
+    warning('Model did not contain a genes field. Building it along with the rules field');
+    res = warning();
+    warning('off','all')
     modelNew = generateRules(modelNew);   
+    warning(res)
 end
 
 
