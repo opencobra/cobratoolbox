@@ -1,22 +1,21 @@
-function [Ematrix, elements] = computeElementalMatrix(model, metList, warnings, genericFormula)
+function [Ematrix, elements] = computeElementalMatrix(model, metList, warnings, generalFormula)
 % Computes elemental matrix
 %
 % USAGE:
 %
-%    [Ematrix, element] = computeElementalMatrix(model, metList, warnings, acceptGenericFormula, element)
+%    [Ematrix, element] = computeElementalMatrix(model, metList, warnings, generalFormula)
 %
 % INPUT:
 %    model:       COBRA model structure (must define `.mets` and `.metFormulas`)
 %
 % OPTIONAL INPUTS:
-%    metList:     Cell array of which metabolites to search for
-%                 (Default = all metabolites in model)
-%    warnings:    Display warnings if there are errors with the
-%                 formula. (Default = true)
-%    genericFormula: false to return composition for  [C N O H P other] only (Default = false).
-%                    true to accept generic formulae containing any elements starting with 'A'-'Z', 
-%                    followed by 'a'-'z' or '_' of indefinite length, followed by a real number (can be -ve),
-%                    and also support '()', '[]', '{}'. E.g. '([H2O]2(CuSO4))2Generic_element-0.5'
+%    metList:          Cell array of which metabolites to search for
+%                      (Default = all metabolites in model)
+%    warnings:         Display warnings if there are errors with the
+%                      formula. (Default = true)
+%    generalFormula:   * (default) false to return composition for  [C N O H P other] only.
+%                      * true to support formulae with brackets, decimal places and any chemical elements
+%                        including undefined groups (e.g., '([H2O]2(CuSO4))2Generic_element0.5').
 %
 % OUTPUT:
 %    Ematrix:     `m x 6` matrix of order [C N O H P other] if genericFormula = 0 
@@ -31,8 +30,8 @@ if nargin < 5
     elements = [];
 end
 
-if nargin < 4 || isempty(genericFormula)
-    genericFormula = false;
+if nargin < 4 || isempty(generalFormula)
+    generalFormula = false;
 end
 
 if nargin < 3 || isempty(warnings)
@@ -48,7 +47,7 @@ end
 metIDs = reshape(metIDs, length(metIDs),1);
 
 
-if ~genericFormula
+if ~generalFormula
     if isempty(elementalWeightMatrix)
         elementalWeightMatrix = getElementalWeightMatrix();
     end

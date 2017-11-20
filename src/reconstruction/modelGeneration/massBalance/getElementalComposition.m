@@ -1,15 +1,16 @@
 function [Ematrix, elements] = getElementalComposition(formulae, elements, chargeInFormula)
-% Get the complete elemental composition matrix including generic elements
+% Get the complete elemental composition matrix. It supports formulae with 
+% generic elements, parentheses and decimal places
 %
 % USAGE:
-%    [Ematrix, elements] = parseGenericFormula(formulae, elements, chargeInFormula)
+%    [Ematrix, elements] = getElementalComposition(formulae, elements, chargeInFormula)
 %
 % INPUT:
 %    formulae:        cell array of strings of chemical formulae. Can contain any generic elements starting 
 %                     with a capital letter followed by lowercase letters or '_', followed by a non-negative number. 
 %                     Also support '()', '[]', '{}'. E.g. {'H2O'; '[H2O]2(CuSO4)Generic_element0.5'}
 % OPTIONAL INPUTS:
-%    elements:        elements from previous call to preserve the order (default [])
+%    elements:        elements from previous call to preserve the order (default {})
 %    chargeInFormula: true to accept formulae containing the generic element 'Charge' representing the charges, 
 %                     followed by a real number, e.g., 'HCharge1', 'SO4Charge-2' (default false).
 %
@@ -72,7 +73,6 @@ Ematrix = zeros(numel(formulae), numel(elements));
 % replace all brackets and braces by parentheses
 formulae = regexprep(formulae, '[\[\{]', '\(');
 formulae = regexprep(formulae, '[\]\}]', '\)');
-nE = numel(elements);
 digit = floor(log10(numel(formulae))) + 1;
 for j = 1:numel(formulae)
     if ~selfCall
@@ -187,9 +187,8 @@ for j = 1:numel(formulae)
             stoichJ = stoichJ(1:nEj);
             [ynE, idE] = ismember(elementJ, elements);  % map to existing elements
             if any(~ynE)
-                idE(~ynE) = (nE + 1):(nE + sum(~ynE));
-                Ematrix(:, (nE + 1):(nE + sum(~ynE))) = 0;
-                nE = nE + sum(~ynE);
+                idE(~ynE) = (numel(elements) + 1):(numel(elements) + sum(~ynE));
+                Ematrix(:, (numel(elements) + 1):(numel(elements) + sum(~ynE))) = 0;
                 elements = [elements, elementJ(~ynE)];
             end
             Ematrix(j, idE) = stoichJ;
@@ -206,8 +205,7 @@ for j = 1:numel(formulae)
                 end
                 selfCall = selfCallCur;
                 Ematrix(j, 1:numel(elements)) = Ematrix(j, 1:numel(elements)) + EmatrixK * stP(k);
-                rest(parenthesis(k,1):stPpos(k,2)) = false;
-                
+                rest(parenthesis(k,1):stPpos(k,2)) = false;          
             end
             if any(rest)
                 formCurLv = formulae{j};

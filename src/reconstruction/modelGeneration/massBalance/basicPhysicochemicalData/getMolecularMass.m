@@ -1,4 +1,4 @@
-function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(formulae, isotopeAbundance, general)
+function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(formulae, isotopeAbundance, generalFormula)
 % Gets mono-isotopic exact molecular mass for a single formula or a cell array of
 % formulae using the atomic weight for each element from NIST
 % http://physics.nist.gov/PhysRefData/Compositions/
@@ -12,16 +12,15 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 % weighted mean of the relative atomic mass over all the atoms in the
 % sample (polyisotopic mass).
 %
-%
 % If the ratio of the different isotopes are known exactly, this may be
-% provided in the `m` x 2 cell array of m isotopes, i.e. `isotopeAbundance`.
+% provided in the `m` x 3 cell array of m isotopes, i.e. `isotopeAbundance`.
 %
 % By default, this script gives the molecular mass assuming monoisotopic
 % exact mass.
 %
 % USAGE:
 %
-%    M = getMolecularMass(formulae, isotopeAbundance)
+%    [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(formulae, isotopeAbundance, generalFormula)
 %
 % INPUT:
 %    formulae:             single formula or a cell array of formulae
@@ -37,15 +36,16 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 %
 %                         or
 %
-%                         `m` x 2 cell arrray with user defined isotope abundance:
+%                         `m` x 3 cell arrray with user defined isotope abundance:
 %                         isotopeAbundance{i, 1} = 'Atomic_Symbol';
 %                         isotopeAbundance{i, 2} = Mass_Number;
 %                         isotopeAbundance{i, 3} = abundance;
 %                         (where sum of abundances of all isotopes of an element must be one)
-%    general              * (default) false to support formulae containing only biological elements. 
+%    generalFormula       * (default) false to support formulae containing only biological elements. 
 %                           Return Masses = 0 if a formula contains none of these elements.
 %                           (C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)
-%                         * true to support formulae with brackets and any chemical elements.
+%                         * true to support formulae with brackets, decimal places and any chemical elements 
+%                           including undefined groups (e.g., '([H2O]2(CuSO4))2Generic_element0.5').
 %                           Return Masses = NaN for any formulae with chemical elements of unknown weights
 %                           except the reserved formula 'Mass0' for denoting truly massless metabolites (e.g., photon)
 %
@@ -84,8 +84,8 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 % .. Author:
 %       - Ronan Fleming 9 March 09 ronan.mt.fleming@gmail.com, 15 Sept 09, support for non-natural isotope distributions
 
-if nargin < 3 || isempty(general)
-    general = false;
+if nargin < 3 || isempty(generalFormula)
+    generalFormula = false;
 end
 
 if nargin < 2 || isempty(isotopeAbundance)
@@ -102,7 +102,7 @@ end
 elementalWeightMatrix = getElementalWeightMatrix(isotopeAbundance);
 Masses = zeros(length(formulae),1);
 
-if ~general
+if ~generalFormula
     allBiologicalElements={'C','O','P','N','S','H','Mg','Na','K','Cl','Ca','Zn','Fe','Cu','Mo','I'};
     [~, id] = ismember(allBiologicalElements, elementalWeightMatrix(:, 1));
     for n = 1:length(formulae)
@@ -112,6 +112,8 @@ if ~general
             Masses(n) = Masses(n) + N * elementalWeightMatrix{id(a), 2};
         end
     end
+    [knownMasses, Ematrix] = deal([]);
+    [unknownElements, elements] = deal({});
 else
     % get elemental composition matrix
     [Ematrix, elements] = getElementalComposition(formulae, [], 1);

@@ -45,15 +45,25 @@ end
 errMsg = load('testComputeMetFormulae_errorMessages.mat');
 assert(isequal(ME.message, errMsg.errMsg1))
 
-% test getElementalComposition
+% test getElementalComposition (called by coputeElementalMatrix when genericFormula = true)
+[modelTest.mets, modelTest.metFormulas] = deal({'A'; 'B'; 'C'}, {'C6H11O9P', '[H2O]5CuSO4', 'Random_element0.5(Abc(O2)1.5)2'});
+% formulae as input
+[metEleTest2, eleTest2] = getElementalComposition(modelTest.metFormulas);
+% COBRA model as input
+[metEleTest3, eleTest3] = getElementalComposition(modelTest);
+[yn, id] = ismember(eleTest2, eleTest);
+assert(all(yn) & numel(eleTest2) == numel(eleTest))
+assert(isequal(eleTest2, eleTest3))
+assert(isequal(metEleTest(:, id), metEleTest2) & isequal(metEleTest(:, id), metEleTest3))
+
+% error with 'Charge' in formula
 try
-    % throw error with 'Charge' in formula
     [Ematrix, element] = getElementalComposition('C6H11O9PCharge-1');
     error('Should not finish!')
 catch ME
 end
 assert(isequal(ME.message, errMsg.errMsg2))
-% ok with chargeInFormula = true
+% ok with 'Charge' in formula if chargeInFormula = true
 [Ematrix, elements] = getElementalComposition('C6H11O9PCharge-1', [], true);
 [yn, id] = ismember(elements, {'C', 'H', 'O', 'P', 'Charge'});
 Ematrix0 = [6 11 9 1 -1];
@@ -68,6 +78,8 @@ formulae = elementalMatrixToFormulae(metEleTest, eleTest);
 assert(all(strcmp(formulae, {'C6H11O9P'; 'H10O9SCu'; 'O6Abc2Random_element0.5'})))
 % return 'Mass0' for metabolites with all zeros the the elemental compoisiton matrix
 assert(isequal(elementalMatrixToFormulae([0, 0, 0, 0], {'C', 'H', 'O', 'R'}), {'Mass0'}))
+% duplicate elements
+assert(isequal(elementalMatrixToFormulae([1, 1, 1], {'H', 'O', 'H'}), {'H2O'}))
 
 % ensure the original functionality is unchanged
 modelTest.mets = {'A'};
@@ -173,6 +185,13 @@ delete('testBiomassMW_diary.txt')
 posCol = all(solInfo2.N >= 0, 1);
 assert(size(solInfo.N, 2) >= sum(posCol))
 assert(all(ismember(solInfo2.N(:, posCol)' ~= 0, solInfo.N' ~= 0, 'rows')))
+
+% calculate left null space matrix only for metabolites not in dead end
+% call findElementaryMoietyVectors directly (called by computeMetFormulae)
+NwoDeadend = findElementaryMoietyVectors(model, 'method', 'null', 'deadCMs', false);
+assert(size(NwoDeadend, 2) == 6)
+assert(all(ismember(NwoDeadend(:, all(NwoDeadend >= 0, 1))' ~= 0, solInfo.N' ~= 0, 'rows')))
+
 % more than one metabolites for filling inconsistency. And supply elementary moiety vectors
 [model2, metFormulae2, ele2, metEle2, rxnBalance2, S_fill, solInfo, LP] = ...
     computeMetFormulae(model, metKnown, [], {'HCharge1', 'H2O'}, [], 'calcCMs', solInfo.N);

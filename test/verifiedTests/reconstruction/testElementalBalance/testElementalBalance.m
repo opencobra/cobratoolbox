@@ -26,13 +26,56 @@ assert(isequal(MW, stdMW))
 assert(isequal(Ematrix, stdEmatrix))
 
 % run computeMW with a specific met list
-[MW, Ematrix] = computeMW(model, model.mets(25:35), false);
+[MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(model, model.mets(25:35), false);
 
 % check that the molecular weights have been calculated properly
 assert(isequal(MW, stdMW2))
 
 % check that the Ematrix has been computed correctly
 assert(isequal(Ematrix, stdEmatrix2))
+
+% check the list of returned elements
+assert(isequal(elements, {'C', 'N', 'O', 'H', 'P', 'Other'}))
+
+% empty knownWeights and unknownElements (non-empty only if the genericFomrula 
+% flag is turned on)
+assert(isempty(knownWeights) & isempty(unknownElements))
+
+% check warning message
+model = addMetabolite(model, 'uranium[c]', 'metFormula', 'U');
+diary('testElementBalance_warning.txt')
+computeMW(model, 'uranium[c]');
+diary off
+f = fopen('testElementBalance_warning.txt', 'r');
+l = fgets(f);
+text = '';
+while ~isequal(l, -1)
+    text = [text, l];
+    l = fgets(f);
+end
+fclose(f);
+delete('testElementBalance_warning.txt')
+assert(isequal(text, warningMessage))
+
+% test genericFormula = true
+model = addMetabolite(model, 'hypothetical1[c]', 'metFormula', '((CH2O)3H2O)2H2O');
+nMets = numel(model.mets);
+model = addMetabolite(model, 'hypothetical2[c]', 'metFormula', '(H2O)2CuSO4Element2');
+model = addMetabolite(model, 'hypothetical3[c]', 'metFormula', 'C0H0');
+model = addMetabolite(model, 'photon[c]', 'metFormula', 'Mass0');
+[MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(model, [], false, true);
+% check weights
+assert(all(isnan(MW) == isnan(stdMW3)) && max(abs(MW(~isnan(MW)) - stdMW3(~isnan(MW)))) < 1e-5)
+% check elements and Ematrix
+[yn, id] = ismember(elements, {'C', 'H', 'O', 'P', 'N', 'S', 'U', 'Cu', 'Element', 'Mass'});
+assert(all(yn) & numel(elements) == 10)
+assert(isequal(Ematrix, stdEmatrix3(:, id)))
+% check weights for the known part
+assert(all(knownWeights(1:nMets) == MW(1:nMets)))
+assert(abs(knownWeights(nMets + 1) - 195.6392) < 1e-4)
+assert(all(knownWeights(nMets + (2:3)) == 0))
+% check unknownElements
+assert(isequal(sort({'Element', 'Mass'}), sort(unknownElements)))
 
 % change the directory
 cd(currentDir)
