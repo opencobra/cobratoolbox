@@ -392,6 +392,46 @@ to reactions, and columns corresponding to genes).</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.parseGPR">
+<code class="descname">parseGPR</code><span class="sig-paren">(</span><em>grRuleString</em>, <em>currentGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/922cc2c54827cc73438f96ff115d2db2d367a116/src/base/parseGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.parseGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a GPR rule in string format to a rule in logic format.
+We assume the following properties of GPR Rules:
+1. There are no genes called &#8220;and&#8221; or &#8220;or&#8221; (in any capitalization).
+2. A gene name does not contain any of the following characters:
+(),{},[],|,&amp; and no whitespace.
+3. The general format of a GPR is: Gene1 or Gene2 and (Gene3 or Gene4)
+4. &#8216;and&#8217; and &#8216;or&#8217; operators as well as gene names have to be followed and preceded by either a
+whitespace character or a opening or closing bracket, respectively. Gene
+Names can also be at the beginning or the end of the string.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,currentGenes)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>grRuleString</strong> &#8211;
+The rule string in textual format.</li>
+<li><strong>currentGenes</strong> &#8211;
+Names of all currently known genes. Encountered
+genes (column cell Array of Strings)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>ruleString</strong> &#8211;
+The logical formula representing the grRuleString.
+Any position refers to the totalGeneList returned.</li>
+<li><strong>totalGeneList</strong> &#8211;
+The concatenation of currentGenes and newGeneList</li>
+<li><strong>newGeneList</strong> &#8211;
+A list of gene Names that were not present in
+currentGenes</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.parseMetNames">
 <code class="descname">parseMetNames</code><span class="sig-paren">(</span><em>metNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/922cc2c54827cc73438f96ff115d2db2d367a116/src/base/parseMetNames.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.parseMetNames" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figures out the base metabolite names and compartments for each metabolite</p>
