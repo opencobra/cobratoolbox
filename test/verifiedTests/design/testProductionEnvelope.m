@@ -42,13 +42,12 @@ catch ME
 end
 
 % tests
-assert(isequal((abs(refData_biomass-biomassValues) < 1e-4), ones(20, 1)));
-assert(isequal((abs(refData_targetValues-targetValues) < 1e-4), ones(20, 2)));
+assert(isequal((abs(refData_biomass-biomassValues) < 1e-4), true(20, 1)));
+assert(isequal((abs(refData_targetValues-targetValues) < 1e-4), true(20, 2)));
 
-assert(isequal((abs(refData_biomass2-biomassValues2) < 1e-4), ones(20, 1)));
-assert(isequal((abs(refData_targetValues2-targetValues2) < 1e-4), ones(20, 2)));
+assert(isequal((abs(refData_biomass2-biomassValues2) < 1e-4), true(20, 1)));
+assert(isequal((abs(refData_targetValues2-targetValues2) < 1e-4), true(20, 2)));
 
-pause(3);
 close all hidden force
 
 % change to old directory
