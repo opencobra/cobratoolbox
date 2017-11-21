@@ -1,7 +1,7 @@
-function model = removeNMConstraints(model, constraintsToRemove)
+function model = removeCOBRAConstraints(model, constraintsToRemove)
 % Remove the specified Non Metabolic Constraints.
 % USAGE:
-%    model = removeNMConstraint(model, constraintsToRemove)
+%    model = removeCOBRAConstraint(model, constraintsToRemove)
 %
 % INPUTS:
 %    model:                 model structure

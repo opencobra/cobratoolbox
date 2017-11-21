@@ -1,17 +1,20 @@
-function model = addNMConstraint(model, rxnList, varargin)
-% Add a non Metabolic Constraint as defined by:
-% sum(c(i)*v(rxn(i)) dsense d
+function model = addCOBRAConstraint(model, rxnList, d, varargin)
+% Add a Constraint as defined by c1 * v(rxn1) + c2 * v(rxn2) * ... cj * rxn(j) dsense d
+% where c is a vector with coefficients for each reaction in rxnList
+% (default 1 for each reaction), dsense is one of lower than ('L', default), greater than
+% ('G'), or equal ('E'), and d is a value. 
 % USAGE:
-%    model = addNMConstraint(model, rxnList, varargin)
+%    model = addCOBRAConstraint(model, rxnList, varargin)
 %
 % INPUTS:
 %    model:         model structure
 %    rxnList:       cell array of reaction names, or double vector of
 %                   reaction Positions 
+%    d:             The right hand side of the C*v <= d constraint
+%
+%    varargin:
 %                   * c:                the coefficients to use with one entry per
 %                                       reaction of a constraint (default: 1 for each element in rxnList)
-%                   * d:                The right hand side of the C*v <= rhs constraint
-%                                       (default: 0)
 %                   * dsense:           the constraint sense ('L': <= , 'G': >=, 'E': =)
 %                                       (default: ('L'))
 %                   * ConstraintID:     the Name of the constraint. by
@@ -26,11 +29,12 @@ function model = addNMConstraint(model, rxnList, varargin)
 % EXAMPLE:
 %    Add a constraint that leads to EX_glc and EX_fru not carrying a
 %    combined flux higher than 5
-%    model = addNMConstraint(model, {'EX_glc','EX_fru'}, 'c', [1 1], 'd', 5, 'dsense', 'L')
+%    model = addNMConstraint(model, {'EX_glc','EX_fru'}, 5)
 %    Assume Reaction 4 to be 2 A -> D and reaction 5 being A -> F. Create a
 %    constraint that requires that the two reactions remove at least 4 units of A:
-%    model = addNMConstraint(model, model.rxns(4:5), 'c', [2 1], 'd', 4, 'dsense', 'G')
+%    model = addNMConstraint(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
 %
+% Author: Thomas Pfau, Nov 2017
 
 if ischar(rxnList)
     rxnList = {rxnList};
@@ -49,19 +53,20 @@ if ~(length(rxnList) == length(unique(rxnList)))
     error('There were duplicate reaction IDs or positions provided. No Constraint will be added.');        
 end
 defaultcoefficients = ones(sum(rxnList));
-defaultrhs = 0;
+
 defaultcsense = 'L';
 defaultConstraintName = getConstraintName(model);
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
 parser.addRequired('rxnList',@(x) isnumeric(x));
+parser.addRequired('d',@isnumeric);
 parser.addParameter('c',defaultcoefficients,@(x) isnumeric(x) && length(x) == length(rxnList));
-parser.addParameter('d',defaultrhs,@isnumeric);
 parser.addParameter('dsense',defaultcsense, @ischar );
 parser.addParameter('ConstraintID',defaultConstraintName,@(x) ischar(x) );
 parser.addParameter('checkDuplicates',false,@(x) islogical(x) || isnumeric(x) );
-parser.parse(model,rxnList,varargin{:});
+
+parser.parse(model,rxnList,d,varargin{:});
 
 
 c = parser.Results.c;

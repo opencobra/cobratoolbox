@@ -81,14 +81,14 @@ modelTest2 = removeCOBRAConstraints(modelWConst,modelWConst.ctrs{1}); % Remove t
 assert(isSameCobraModel(modelTest,modelTest2));
 
 %And Add another Constraint
-modelWConst = addCOBRAConstraint(modelWConst,model.rxns(1:3),'c',[1,1,1],'d',6,'dsense','L','ConstraintID','NewConstraint');
+modelWConst = addCOBRAConstraint(modelWConst,model.rxns(1:3), 6, 'c',[1,1,1],'dsense','L','ConstraintID','NewConstraint');
 assert(size(modelWConst.C,2) == size(model.S,2));
 assert(size(modelWConst.C,1) == size(modelWConst.d,1));
 assert(size(modelWConst.C,1) == size(modelWConst.ctrs,1));
 assert(size(modelWConst.C,1) == size(modelWConst.dsense,1));
 assert(size(modelWConst.C,1) == nCtrs+3)
-assert(verifyCobraFunctionError(@() addCOBRAConstraint(modelWConst,model.rxns(1:3),'c',[1,1,1],'d',6,'dsense','L','ConstraintID','NewConstraint'))); %Assert duplication error.
-modelWConst2 = addCOBRAConstraint(modelWConst,model.rxns(1:3),'c',[1,1,1],'d',6,'dsense','L','checkDuplicate',true); 
+assert(verifyCobraFunctionError(@() addCOBRAConstraint(modelWConst,model.rxns(1:3), 6, 'c', [1,1,1],'dsense','L','ConstraintID','NewConstraint'))); %Assert duplication error.
+modelWConst2 = addCOBRAConstraint(modelWConst,model.rxns(1:3), 6,'c',[1,1,1],'dsense','L','checkDuplicate',true); 
 assert(isSameCobraModel(modelWConst2,modelWConst)) % No new constraint was added, as it already exists.
 
 %Finally, test whether modifications in the model correctly update the C

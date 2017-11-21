@@ -21,4 +21,4 @@ function modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
 % .. Author: - Ines Thiele 02/09
 
 ConstraintName = ['Ratio_',listOfRxns{1},'_',listOfRxns{2}];
-modelNew = addCOBRAConstraint(model,listOfRxns,'c',[-ratioCoeff(1) ratioCoeff(2)],'d',0,'dsense','E','ConstraintID',ConstraintName);
+modelNew = addCOBRAConstraint(model,listOfRxns, 0, 'c', [-ratioCoeff(1) ratioCoeff(2)], 'dsense', 'E', 'ConstraintID', ConstraintName);
