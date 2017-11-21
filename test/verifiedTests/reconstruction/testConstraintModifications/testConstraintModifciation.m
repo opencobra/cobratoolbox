@@ -5,7 +5,7 @@
 %       metabolic constraints in the model. These currently include:
 %       addCOBRAConstraint, removeCOBRAConstraint
 %       addRatioReaction, constrainRxnListAboveBound, addCouplingConstraint 
-%
+%       coupleRxnList2Rxn
 %       In addition this test checks, whether models stay consistent when
 %       manipulating them e.g. by addReaction/removeReaction, reorderModelFields or similar.
 %       
@@ -109,8 +109,20 @@ newReacPosition = ismember(modelAdd.rxns,'NewReac');
 assert(isequal(modelAdd.C(:,~newReacPosition),modelWConst.C));
 assert(all(modelAdd.C(:,newReacPosition)== 0));
 
-
-
+%Also test the RxnList coupling function.
+%This should add cs of 1000, and us of 0.001;
+%Rxn 8 is irreversible, rxn 0 is reversible.
+modelWithList = coupleRxnList2Rxn(model,model.rxns([8,9]),model.rxns(10),6);
+assert(size(modelWithList.C,2) == size(modelWithList.S,2));
+assert(size(modelWithList.C,1) == 3)); %Two for the reversible, one for the irreversible constraint.
+assert(all(all(modelWithList.C(1,[8])==1)));
+assert(all(all(modelWithList.C(2:3,[8])==1)));
+assert(nnz(modelWithList.C) == 6); %There are 6 non Zero Elements in this Z (and we check all of their values.
+assert(all(all(modelWithList.C(1,[10])==-6))); %The first was irreversible, so the constraint is added positive.
+assert(all(all(modelWithList.C(2:3,[10])==[-6;6])));%The second was so we add both directions.
+assert(all(modelWithList.d(1)== 0.01));%The first 
+assert(all(modelWithList.d(2:3) == [0.01;-0.01]));%The forward / backwards
+assert(all(modelWithList.dsense(1:3)== ['L';'L';'G']));
 
 
 
