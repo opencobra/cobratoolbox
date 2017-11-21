@@ -1,15 +1,15 @@
-function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform)
+function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_transcript)
 % Build the G matrices required for the calculation of genetic Minimal Cut
 % Sets (gMCSs).
 % 
 % USAGE:
 % 
-%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform)
+%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_transcript)
 % 
 % INPUTS:
 %    model_name:          Name of the metabolic model under study.
 %    model_struct:        Metabolic model structure (COBRA Toolbox format).
-%    separate_isoform:    Character used to discriminate different isoforms of a gene.
+%    separate_transcript:    Character used to discriminate different transcripts of a gene.
 % 
 % OUTPUTS:
 %    G:             G matrix.
@@ -100,7 +100,7 @@ if exist(search_filename)
 else
     printLevel = 1;
     pos_rxns_or_and = find(rxns_or_and);
-    [models_or_and, rxnNumGenes_or_and] = GPR2models(model_struct, pos_rxns_or_and, separate_isoform, printLevel);
+    [models_or_and, rxnNumGenes_or_and] = GPR2models(model_struct, pos_rxns_or_and, separate_transcript, printLevel);
     save(search_filename, 'models_or_and', 'rxnNumGenes_or_and');
 end
 
@@ -128,7 +128,7 @@ else
             DM = ~cellfun(@isempty, DM);
             n_DM = sum(DM);
             DM = rxns(find(DM));
-            act_model.rev = zeros(size(act_model.ub));
+%             act_model.rev = zeros(size(act_model.ub));
             options.KO = KO;
             options.rxn_set = DM;
             options.timelimit = timelimit;
@@ -152,7 +152,7 @@ for i = 1:n_rxns_or_and
         if ~iscell(act_G_ind) && isnan(act_G_ind)
         else
             act_G_ind = cellfun(@strrep, act_G_ind, repmat({'DM_'}, length(act_G_ind), 1), repmat({''}, length(act_G_ind), 1), 'UniformOutput', false);
-            is_dot = cellfun(@sum, cellfun(@ismember, act_G_ind, repmat({separate_isoform}, length(act_G_ind), 1), 'UniformOutput', false));
+            is_dot = cellfun(@sum, cellfun(@ismember, act_G_ind, repmat({separate_transcript}, length(act_G_ind), 1), 'UniformOutput', false));
             is_dot = is_dot >= 1;
             dot_G_ind = cellfun(@(x) x(1:end-2), act_G_ind(is_dot), 'UniformOutput', false);
             act_G_ind(is_dot) = dot_G_ind;
@@ -164,8 +164,8 @@ for i = 1:n_rxns_or_and
     end
 end
 
-% Delete isoforms in order to work at the gene level
-is_dot = cellfun(@sum, cellfun(@ismember, G_ind_1, repmat({separate_isoform}, length(G_ind_1), 1), 'UniformOutput', false));
+% Delete transcripts in order to work at the gene level
+is_dot = cellfun(@sum, cellfun(@ismember, G_ind_1, repmat({separate_transcript}, length(G_ind_1), 1), 'UniformOutput', false));
 is_dot = is_dot >= 1;
 dot_G_ind = cellfun(@(x) x(1:end-2), G_ind_1(is_dot), 'UniformOutput', false);
 G_ind_1(is_dot) = dot_G_ind;
@@ -173,14 +173,14 @@ G_ind_1(is_dot) = dot_G_ind;
 n_KO_2 = length(G_ind_2);
 for i = 1:n_KO_2
     act_G_ind_2 = G_ind_2{i};
-    is_dot = cellfun(@sum, cellfun(@ismember, act_G_ind_2, repmat({separate_isoform}, 1, length(act_G_ind_2)), 'UniformOutput', false));
+    is_dot = cellfun(@sum, cellfun(@ismember, act_G_ind_2, repmat({separate_transcript}, 1, length(act_G_ind_2)), 'UniformOutput', false));
     is_dot = is_dot >= 1;
     dot_G_ind = cellfun(@(x) x(1:end-2), act_G_ind_2(is_dot), 'UniformOutput', false);
     act_G_ind_2(is_dot) = dot_G_ind;
     G_ind_2{i} = unique(act_G_ind_2);
 end
 
-is_dot = cellfun(@sum, cellfun(@ismember, G_ind_3, repmat({separate_isoform}, length(G_ind_3), 1), 'UniformOutput', false));
+is_dot = cellfun(@sum, cellfun(@ismember, G_ind_3, repmat({separate_transcript}, length(G_ind_3), 1), 'UniformOutput', false));
 is_dot = is_dot >= 1;
 dot_G_ind = cellfun(@(x) x(1:end-2), G_ind_3(is_dot), 'UniformOutput', false);
 G_ind_3(is_dot) = dot_G_ind;

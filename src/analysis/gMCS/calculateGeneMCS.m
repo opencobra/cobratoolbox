@@ -24,13 +24,13 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %                    gMCS in seconds. Default maximum permited by solver.
 %                  * .target_b - Desired activity level of the metabolic
 %                    task to be disrupted (i.e. biomass reaction). Default 1e-3.
-%                  * .separate_isoform - Character used to discriminate
-%                    different isoforms of a gene. Default ''.
-%                    Example: separate_isoform = ''      
+%                  * .separate_transcript - Character used to discriminate
+%                    different transcripts of a gene. Default ''.
+%                    Example: separate_transcript = ''      
 %                                   gene 10005.1    ==>    gene 10005.1    
 %                                   gene 10005.2    ==>    gene 10005.2
 %                                   gene 10005.3    ==>    gene 10005.3 
-%                             separate_isoform = '.'      
+%                             separate_transcript = '.'      
 %                                   gene 10005.1    
 %                                   gene 10005.2    ==>    gene 10005 
 %                                   gene 10005.3
@@ -53,7 +53,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    %options.KO = '6240'
 %    %options.gene_set = {'54675'; '259230'; '2987'; '60386 '; '1841'; '50484'; '6241'}
 %    %options.timelimit = 300
-%    %options.separate_isoform = '.'
+%    %options.separate_transcript = '.'
 % 
 %    %Without optional values 
 %    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 10)
@@ -69,7 +69,7 @@ if nargin == 3
     KO = [];
     gene_set = [];
     target_b = 1e-3;
-    separate_isoform = '';
+    separate_transcript = '';
     printLevel = 0;
 else
     if isfield(options, 'KO')
@@ -90,10 +90,10 @@ else
     else
         target_b = 1e-3;
     end
-    if isfield(options, 'separate_isoform')
-        separate_isoform = options.separate_isoform;
+    if isfield(options, 'separate_transcript')
+        separate_transcript = options.separate_transcript;
     else
-        separate_isoform = '';
+        separate_transcript = '';
     end
     if isfield(options, 'printLevel')
         printLevel = options.printLevel;
@@ -114,7 +114,7 @@ G_file = ['G_' model_name '.mat'];
 if exist(G_file) == 2
     load(G_file)
 else
-    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform);
+    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_transcript);
 end
 len_KO = cellfun(@length, G_ind);
 n_poss_KO = length(G_ind);
@@ -161,8 +161,8 @@ if ~isempty(gene_set)
 end
 
 % Splitting
-S = [model_struct.S -model_struct.S(:, logical(model_struct.rev))];
-G = [G G(:, logical(model_struct.rev))];
+S = [model_struct.S -model_struct.S(:, model_struct.lb<0)];
+G = [G G(:, model_struct.lb<0)];
 [n_mets, n_rxns] = size(S);
 nbio = find(model_struct.c);
 t = zeros(n_rxns, 1);

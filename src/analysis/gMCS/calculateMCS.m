@@ -98,8 +98,8 @@ phi = 1000; % b/c;
 K = eye(n_ini_rxns);
 
 % Splitting
-S = [model_struct.S -model_struct.S(:, logical(model_struct.rev))];
-K = [K K(:, logical(model_struct.rev))];
+S = [model_struct.S -model_struct.S(:, model_struct.lb<0)];
+K = [K K(:, model_struct.lb<0)];
 [n_mets, n_rxns] = size(S);
 nbio = find(model_struct.c);
 t = zeros(n_rxns, 1);

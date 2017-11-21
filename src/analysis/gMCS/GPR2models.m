@@ -1,17 +1,17 @@
-function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_isoform, printLevel)
+function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
 % Each GPR rule is converted into a network where the reaction and genes
 % involved are interconnected.
 %
 % USAGE:
 %
-%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_isoform, printLevel)
+%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
 %
 % INPUTS:
-%    metabolic_model:     Metabolic model structure (COBRA Toolbox format)
-%    selected_rxns:       Index array which indicates selected reactions to
-%                         calculate the network.
-%    separate_isoform:    Character used to discriminate
-%                         different isoforms of a gene. Default ''.
+%    metabolic_model:        Metabolic model structure (COBRA Toolbox format)
+%    selected_rxns:          Index array which indicates selected reactions to
+%                            calculate the network.
+%    separate_transcript:    Character used to discriminate
+%                            different isoforms of a gene. Default ''.
 %
 % OPTIONAL INPUTS:
 %    printLevel:        show the reactions created in models.
@@ -34,7 +34,7 @@ if (nargin < 4 || isempty(printLevel))
 end
 
 if (nargin < 3)
-    separate_isoform = ''; % default is empty
+    separate_transcript = ''; % default is empty
 end
 
 if (nargin < 2)
@@ -65,8 +65,10 @@ end
 
 % Step 2: Create models
 disp('Calculating Networks for GPR rules...');
-parfor (i=1:length(selected_rxns),poolsize)
+% parfor (i=1:length(selected_rxns),poolsize)
+for i=1:length(selected_rxns)
     if printLevel > 0
+        clc
         disp([num2str(i),' of ', num2str(length(selected_rxns)) ,' rxns']);
     end
     RXN = metabolic_model.rxns{selected_rxns(i)};
@@ -103,8 +105,8 @@ parfor (i=1:length(selected_rxns),poolsize)
     end
 
     % converge isoforms (if neccesary)
-    if ~isempty(separate_isoform) && length(genes)>1
-        model = convergeIsoforms(model, separate_isoform, printLevel);
+    if ~isempty(separate_transcript) && length(genes)>1
+        model = convergeTranscripts2Gene(model, separate_transcript, printLevel);
     end
 
     % Add objective function
@@ -123,7 +125,7 @@ for i = 1:length(selected_rxns)
     rxn = selected_rxns(i);
     idx_genes = find(metabolic_model.rxnGeneMat(rxn,:));
     rxn_isoforms = metabolic_model.genes(idx_genes);
-    rxn_genes = unique(strtok(rxn_isoforms,separate_isoform));
+    rxn_genes = unique(strtok(rxn_isoforms,separate_transcript));
     rxnNumGenes(i) = length(rxn_genes);
 end
 
@@ -205,32 +207,15 @@ for gen=1:length(genes)
 end
 
 % remove unused reactions and unused metabolites
-% model = removeTrivialStoichiometry(model);    % problems, removes mets 2 times
-anyRowBool = any(model.S,2);
-anyColBool = any(model.S,1);
-modelOut.rxns = model.rxns(anyColBool);
-modelOut.lb = model.lb(anyColBool);
-modelOut.ub = model.ub(anyColBool);
-modelOut.c = model.c(anyColBool);
-modelOut.rules = model.rules(anyColBool);
-modelOut.grRules = model.grRules(anyColBool);
-modelOut.grRules = model.grRules(anyColBool);
-modelOut.rxnGeneMat = model.rxnGeneMat(anyColBool,:);
-modelOut.mets = model.mets(anyRowBool);
-modelOut.b = model.b(anyRowBool);
-modelOut.S = model.S(anyRowBool,anyColBool);
-% selMets = model.mets(any(sum(abs(model.S), 2) == 0, 2));
-% if ~isempty(selMets)
-%     model = removeMetabolites(model, selMets, false);
-% end
-% modelOut = model;
+modelOut = removeTrivialStoichiometry(model);    
 
 end
 
 
-function model = convergeIsoforms(model, separate_isoform, printLevel)
-% Some COBRA models have isoforms instead of genes. Most of the isoforms
-% have the same functionallity, so we can converge them as the same gene.
+function model = convergeTranscripts2Gene(model, separate_transcripts, printLevel)
+% Some COBRA models have transcripts instead of genes. Most of the
+% transcripts have the same functionallity, so we can converge them as the
+% same gene.
 % Ej:       gene 10005.1    
 %           gene 10005.2        ==>     gene 10005 
 %           gene 10005.3
@@ -240,18 +225,18 @@ function model = convergeIsoforms(model, separate_isoform, printLevel)
 % seach demand reactions
 DM_rxns = model.rxns(startsWith(model.rxns,'DM_'));
 % obtain isoforms and genes
-isoforms = regexprep(DM_rxns,'DM_','');
-genes = strtok(isoforms,separate_isoform);
+transcripts = regexprep(DM_rxns,'DM_','');
+genes = strtok(transcripts,separate_transcripts);
 [genes_unique,IA,IC] = unique(genes);
 
 for i = 1:length(genes_unique)
     % look those genes with several isoforms
     if sum(strcmp(genes_unique(i),genes))>1
-        idx_isoforms = IC==i;
-        model = removeRxns(model,DM_rxns(idx_isoforms), 'metFlag', false);
+        idx_transcripts = IC==i;
+        model = removeRxns(model,DM_rxns(idx_transcripts), 'metFlag', false);
         model = addReaction(model,['DM_',genes_unique{i}],...
-            'metaboliteList',isoforms(idx_isoforms)','stoichCoeffList',...
-            ones(size(isoforms(idx_isoforms)')),'reversible',false,...
+            'metaboliteList',transcripts(idx_transcripts)','stoichCoeffList',...
+            ones(size(transcripts(idx_transcripts)')),'reversible',false,...
             'printLevel',printLevel-1);
     end
 end
