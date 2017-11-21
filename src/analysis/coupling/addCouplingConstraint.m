@@ -1,4 +1,4 @@
-function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)
+function modelConstrained = addCouplingConstraint(model, rxnList, c, d, ineqSense)
 % Constrains one (weighted) sum of fluxes to be above a lower bound.
 % Appends to existing inequality constraints if they are present
 %

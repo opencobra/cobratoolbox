@@ -107,5 +107,5 @@ end
 %with nnz = 0)
 if isfield(modelOut,'ctrs')
     emptyConstraints = sum(modelOut.C ~= 0,2) == 0;
-    modelOut = removeNMConstraints(modelOut,emptyConstraints);    
+    modelOut = removeCOBRAConstraints(modelOut,emptyConstraints);    
 end
