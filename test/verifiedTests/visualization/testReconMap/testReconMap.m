@@ -44,13 +44,14 @@ if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
 
     % 2 Correct responses, either successful or layout exists already (the
     % latter will happen all the time)
-    assert(~(strcmpi(response, 'Overlay generated successfully!') == 0 && strcmpi(response{1,2}, 'ERROR. Layout with given identifier ("Test - Flux distribution 1") already exists.') == 0));
+    assert(~isempty(regexp(response, 'Overlay generated successfully!')) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
 
     % Send the subsystem layout to MINERVA
     response = generateSubsytemsLayout(minerva, model, 'Pyruvate metabolism', '#6617B5');
 
     % Same as before - two possible correct responses
-    assert(~(strcmpi(response, 'Overlay generated successfully!') == 0 && strcmpi(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.') == 0));
+    assert(~isempty(regexp(response, 'Overlay generated successfully!')) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
+    
     
     minerva.login = oldLogin;
     minerva.password = oldPassword;
