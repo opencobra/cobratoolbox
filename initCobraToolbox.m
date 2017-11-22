@@ -104,14 +104,6 @@ function initCobraToolbox()
     % check if git is installed
     checkGit();
 
-    % temporary disable ssl verification
-    [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
-
-    if status_setSSLVerify ~= 0
-        fprintf(strrep(result_setSSLVerify, '\', '\\'));
-        warning('Your global git configuration could not be changed.');
-    end
-
     % change to the root of The COBRA Tooolbox
     cd(CBTDIR);
 
@@ -160,6 +152,14 @@ function initCobraToolbox()
 
     if ENV_VARS.printLevel
         fprintf(' Done.\n');
+    end
+
+    % temporary disable ssl verification
+    [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
+
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be changed.');
     end
 
     % check curl
