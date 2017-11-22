@@ -14,13 +14,16 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ]; then
 
     echo " > Temporary folder created: /tmp/releaseCT"
 
+    # clone from local repository
+    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
+
     # copy all files and folders to the /tmp directory
-    cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/* /tmp/releaseCT
+    #cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/* /tmp/releaseCT
 
     # copy all hiden files and folders to the /tmp directory
-    cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/.[^.]* /tmp/releaseCT
+    #cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/.[^.]* /tmp/releaseCT
 
-    echo " > Workspace copied"
+    echo " > Workspace cloned"
 
     # change to the local temporary release directory
     cd /tmp/releaseCT
@@ -65,6 +68,6 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ]; then
     rm /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip
 
     echo " > Local .zip file removed"
-    echo " > Done."
+    echo " > Done. The zip file can be downloaded from https://prince.lcsb.uni.lu/releases/the_COBRA_Toolbox-$lastCommit"
 
 fi
