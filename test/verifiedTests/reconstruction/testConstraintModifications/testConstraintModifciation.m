@@ -15,6 +15,8 @@
 % Authors:
 %     Thomas Pfau - Nov 2017
 
+currentDir = pwd;
+
 %Lets start with the E.coli core model
 model = getDistributedModel('ecoli_core_model.mat');
 %Assert that the model does not yet have these fields.
@@ -109,23 +111,49 @@ newReacPosition = ismember(modelAdd.rxns,'NewReac');
 assert(isequal(modelAdd.C(:,~newReacPosition),modelWConst.C));
 assert(all(modelAdd.C(:,newReacPosition)== 0));
 
-%Also test the RxnList coupling function.
+%Also test adding multiple Constraints:
+c = [1,2; 3,4 ; 5,6];
+d = [1;2;3];
+rxnList = [2,3;2,4;1,5];
+dsense = ['E';'L';'G'];
+modelWMultConst = addCOBRAConstraint(model,rxnList,d,'c',c,'dsense',dsense);
+assert(size(modelWMultConst.C,2) == size(model.S,2));
+assert(size(modelWMultConst.C,1) == 3); %Three constraints
+assert(size(modelWMultConst.C,1) == size(modelWMultConst.d,1));
+assert(size(modelWMultConst.C,1) == size(modelWMultConst.ctrs,1));
+assert(size(modelWMultConst.C,1) == size(modelWMultConst.dsense,1));
+assert(isequal(modelWMultConst.d,d)); %This is not necessarily true if multiple Constraints are added and duplicates are checked.
+assert(isequal(modelWMultConst.dsense,dsense));
+%Assert that readding a Constraint with the same name fails.
+assert(verifyCobraFunctionError(@() addCOBRAConstraint(modelWMultConst,rxnList,d,'c',c,'dsense',dsense,'ConstraintID', {'Constraint1','B','C'})));
+
+%No Constraint gets added if duplicates are checked.
+modelWMultConst2 = addCOBRAConstraint(modelWMultConst,rxnList,d,'c',c,'dsense',dsense,'checkDuplicate',true);
+assert(isSameCobraModel(modelWMultConst,modelWMultConst2));
+
+%No duplicates, within the Constraints are added:
+modelWMultConst = addCOBRAConstraint(model,[rxnList;rxnList],[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
+assert(size(modelWMultConst.C,1) == 3); %Three constraints
+
+
+
+%Also test the RxnList coupling function. 
 %This should add cs of 1000, and us of 0.001;
-%Rxn 8 is irreversible, rxn 0 is reversible.
+%Rxn 8 is irreversible, rxn 9 is reversible.
 modelWithList = coupleRxnList2Rxn(model,model.rxns([8,9]),model.rxns(10),6);
 assert(size(modelWithList.C,2) == size(modelWithList.S,2));
-assert(size(modelWithList.C,1) == 3)); %Two for the reversible, one for the irreversible constraint.
-assert(all(all(modelWithList.C(1,[8])==1)));
-assert(all(all(modelWithList.C(2:3,[8])==1)));
+assert(size(modelWithList.C,1) == 3); %one forward + backward, one forward constraint.
+assert(all(all(modelWithList.C(3,9)==1)));
+assert(all(all(modelWithList.C([1,2],8)==1)));
 assert(nnz(modelWithList.C) == 6); %There are 6 non Zero Elements in this Z (and we check all of their values.
-assert(all(all(modelWithList.C(1,[10])==-6))); %The first was irreversible, so the constraint is added positive.
-assert(all(all(modelWithList.C(2:3,[10])==[-6;6])));%The second was so we add both directions.
+assert(all(all(modelWithList.C(1,[10])==-6))); %The first was irreversible, so the constraint is added negative.
+assert(all(all(modelWithList.C(2:3,[10])==[6;-6])));%The second was so we add both directions.
 assert(all(modelWithList.d(1)== 0.01));%The first 
-assert(all(modelWithList.d(2:3) == [0.01;-0.01]));%The forward / backwards
-assert(all(modelWithList.dsense(1:3)== ['L';'L';'G']));
+assert(all(modelWithList.d(2:3) == [-0.01;0.01]));%The forward / backwards
+assert(all(modelWithList.dsense(1:3)== ['L';'G';'L']));
 
 
 
-
+cd(currentDir);
 
 
