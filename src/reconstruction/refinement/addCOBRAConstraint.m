@@ -9,17 +9,23 @@ function model = addCOBRAConstraint(model, rxnList, d, varargin)
 % INPUTS:
 %    model:         model structure
 %    rxnList:       cell array of reaction names, or double vector of
-%                   reaction Positions 
-%    d:             The right hand side of the C*v <= d constraint
+%                   reaction Positions, to simultaneously add multiple
+%                   similar constraints, this can also be a matrix. 
+%    d:             The right hand side of the C*v <= d constraint (or a
+%                   vector, for multiple simultaneous addition;
 %
 %    varargin:
 %                   * c:                the coefficients to use with one entry per
-%                                       reaction of a constraint (default: 1 for each element in rxnList)
-%                   * dsense:           the constraint sense ('L': <= , 'G': >=, 'E': =)
+%                                       reaction of a constraint for multiple constraints, a matrix
+%                                       (default: 1 for each element in rxnList)
+%                   * dsense:           the constraint sense ('L': <= ,
+%                                       'G': >=, 'E': =), or a vector for multiple constraints
 %                                       (default: ('L'))
 %                   * ConstraintID:     the Name of the constraint. by
 %                                       (default: 'ConstraintXYZ' with XYZ being the initial 
-%                                       position in the mets vector
+%                                       position in the mets vector)
+%                                       or a cell array of Strings for
+%                                       multiple Constraints
 %                   * checkDuplicates:  check whether the constraint already
 %                                       exists, and if it does, don't add it (default: false)
 %
@@ -46,33 +52,61 @@ if iscell(rxnList)
         missingreactions = setdiff(rxnList,model.rxns);
         error('The following reactions were not found in the model:\n%s\nNo Constraint was added',strjoin(missingreactions,', '));        
     end
-    rxnList = pos(pres);        
+    rxnList = pos(pres)';        
 end
-
-if ~(length(rxnList) == length(unique(rxnList)))
-    error('There were duplicate reaction IDs or positions provided. No Constraint will be added.');        
+multiAdd = false;
+if ~all(size(rxnList) > 1) %if this is true, its multiple rows...    
+    if (length(d) > 1) %This should be a multiAdd
+        dim = length(d) == size(rxnList);
+        multiAdd = true
+        if ~all(dim)
+            %make sure this is the right orientation
+             cdim = find(dim);
+             if cdim ~= 1
+                 rxnList = rxnList';
+             end
+        else
+            error('d has to be either a single value or a vector of doubles');
+        end                
+    else
+        if ~(length(rxnList) == length(unique(rxnList))) 
+            error('There were duplicate reaction IDs or positions provided. No Constraint will be added.');        
+        end
+    end
+else
+    multiAdd = true;
 end
 defaultcoefficients = ones(sum(rxnList));
 
 defaultcsense = 'L';
-defaultConstraintName = getConstraintName(model);
+if ~multiAdd
+    defaultConstraintName = getConstraintName(model,1);
+else
+    defaultConstraintName = getConstraintName(model,length(d));
+end
+
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
 parser.addRequired('rxnList',@(x) isnumeric(x));
 parser.addRequired('d',@isnumeric);
-parser.addParameter('c',defaultcoefficients,@(x) isnumeric(x) && length(x) == length(rxnList));
-parser.addParameter('dsense',defaultcsense, @ischar );
-parser.addParameter('ConstraintID',defaultConstraintName,@(x) ischar(x) );
-parser.addParameter('checkDuplicates',false,@(x) islogical(x) || isnumeric(x) );
+parser.addParamValue('c',defaultcoefficients,@(x) isnumeric(x) && (multiAdd || length(x) == length(rxnList)));
+parser.addParamValue('dsense',defaultcsense, @ischar );
+parser.addParamValue('ConstraintID',defaultConstraintName,@(x) ischar(x) || iscell(x) );
+parser.addParamValue('checkDuplicates',false,@(x) islogical(x) || isnumeric(x) );
 
 parser.parse(model,rxnList,d,varargin{:});
 
 
 c = parser.Results.c;
-d = parser.Results.d;
+d = columnVector(parser.Results.d);
 dsense = parser.Results.dsense;
 ctrID = parser.Results.ConstraintID;
+if ischar(ctrID)
+    ctrID = {ctrID};
+else
+    ctrID = columnVector(ctrID);
+end
 checkDuplicate = parser.Results.checkDuplicates;
 
 ConstraintFields = {'C','d','dsense','ctrs'};
@@ -97,41 +131,94 @@ end
 
 %Now, we have all fields.
 %Check for duplicates:
-if any(ismember(model.ctrs,ctrID))
-    error('A Constraint with this ID already exists.')
+if any(ismember(model.ctrs,ctrID))    
+    error('Constraints with the following IDs already exist.\n%s\n', strjoin(model.ctrs(ismember(model.ctrs,ctrID)),', '));
+end
+%And if multiAdd also check for duplicates in the input
+if multiAdd && numel(ctrID) > numel(unique(ctrID))
+    [unq,~,orig] = unique(ctrID);
+    dupreacs = hist(orig,numel(unq)) > 1;
+    error('Input contained the following duplicated IDs:\n %s ', strjoin(unq(dupreacs),', '));
 end
 
-%Also check for duplicates in the C Matrix.
-constRow = zeros(1,size(model.C,2));
-constRow(rxnList) = c;
+if checkDuplicate && multiAdd
+    %If we check for duplicates, and don't want to add them, we will first
+    %filter them from the input, but only if we add multiple things.
+    [sorted,order] = sort(rxnList,2);
+    sortedC = c;
+    for i = 1:size(rxnList,1)
+        sortedC(i,:) = c(i,order(i,:));
+    end
+    %Now, concatenate all inputs (except names) 
+    toCompare = [sorted,sortedC,dsense]; %This will convert the dsense into doubles which is fine to get uniques.
+    [~,pos] = unique(toCompare,'rows');
+    %Now lets remove anything thats duplicated.
+    rxnList = rxnList(pos,:);
+    d = d(pos,:);
+    c = c(pos,:);
+    dsense = dsense(pos,:);
+    ctrID = ctrID(pos,:);    
+end
 
-dupRows = all(model.C == constRow(ones(size(model.C,1),1),:),2);
-
-duplicate = any(dupRows) && (model.dsense(dupRows) == dsense) && (model.d(dupRows) == d);
-if duplicate && checkDuplicate
-    warning('Constraint not added, because it already exists with ID: %s',strjoin(model.ctrs(dupRows)));
+%In case nothing is left.
+if isempty(ctrID)
     return
 end
-model.C(end+1,:) = constRow;
-model.d(end+1,1) = d;
-model.dsense(end+1,1) = dsense;
-model.ctrs{end+1,1} = ctrID;
+
+
+%Also check for duplicates in the C Matrix.
+constRow = zeros(size(rxnList,1),size(model.C,2));
+duppedRows = false(size(rxnList,1),1);
+for i = 1:size(rxnList,1)    
+    constRow(i,rxnList(i,:)) = c(i,:);      
+    cRow = constRow(i,:);
+    dupRows = all(model.C == cRow(ones(size(model.C,1),1),:),2);
+    if checkDuplicate
+        duppedRows(i) = any(dupRows) && (model.dsense(dupRows) == dsense(i)) && (model.d(dupRows) == d(i));
+    end
+end
+
+if any(duppedRows) && checkDuplicate
+    warning('Constraint not added, because it already exists with ID: %s',strjoin(model.ctrs(dupRows)));    
+    if ~multiAdd
+        return
+    else
+        ctrID(duppedRows) = [];
+        d(duppedRows) = [];
+        constRow(duppedRows,:) = [];
+        dsense(duppedRows) = [];
+    end
+end
+
+
+
+model.C = [model.C;constRow];
+model.d = [model.d;d];
+model.dsense = [model.dsense;dsense];
+model.ctrs = [model.ctrs;ctrID];
 
 end
     
 
 
-function name = getConstraintName(model)
+function name = getConstraintName(model, count)
 %Get a unique, not yet used constraint name.
 if ~isfield(model,'ctrs')
-    name = 'Constraint1';
+    name = strcat('Constraint',cellfun(@num2str,num2cell(1:count)','UniformOutput',false));
     return
 else
+    name = cell(count,1);
+    name(:) = {''}; %Need to initialize, otherwise we get a mismatch during ismember.
+    constraintsCreated = 0;
     i = size(model.C,1) + 1;
-    name = ['Constraint' num2str(i)];
-    while any(ismember(model.ctrs,name))
-        i = i + 1;
-        name = ['Constraint' num2str(i)];
+    cname = ['Constraint' num2str(i)];
+    while constraintsCreated < count
+        while any(ismember(model.ctrs,cname)) || any(ismember(name,cname))
+            i = i + 1;
+            cname = ['Constraint' num2str(i)];
+        end
+        constraintsCreated = constraintsCreated + 1;
+        name{constraintsCreated} = cname;        
     end
 end
 end
