@@ -47,7 +47,7 @@ if ~exist('u', 'var') || isempty(u)
     u = 0.01;
 end
 
-rxnCPos = ismember(model.rxns,rxnC);
+rxnCPos = find(ismember(model.rxns,rxnC));
 
 if ~any(rxnCPos)
     error('Reaction not in model!');    
@@ -55,17 +55,52 @@ elseif any(~ismember(rxnList,model.rxns))
     notpres = ~ismember(rxnList,model.rxns);
     error('The following reactions are missing from the model:\n%s\nNot adding Constraints.',strjoin(rxnList(notpres),'; '));
 else
-    modelCoupled = model;        
-    for i = 1:length(rxnList)                
-        RPos = ismember(model.rxns,rxnList(i));
-        %Add vi - c * vrxnC <= u
-        modelCoupled = addCOBRAConstraint(modelCoupled,[rxnList(i);model.rxns(rxnCPos)],u,'dsense', 'L','c', [1, -c * ones(1,sum(rxnCPos))],'ConstraintID',strcat('slack_', rxnList{i}));
-        % for reversible reactions we add a "mirror" constraint
-        if modelCoupled.lb(RPos) < 0
-            % Add `vi + c * vrxnC >= u`.
-            modelCoupled = addCOBRAConstraint(modelCoupled,[rxnList(i);model.rxns(rxnCPos)],-u,'dsense', 'G', 'c', [1, c * ones(1,sum(rxnCPos))],'ConstraintID',strcat('slack_', rxnList{i}, '_R'));            
-        end
+    %Remove duplicate rxns from rxnList
+    targetInList = false;
+    rxnList = unique(rxnList);
+    rxnPosList = columnVector(cellfun(@(x) find(ismember(model.rxns,x)),rxnList));
+    [pres,pos] = ismember(rxnCPos,rxnPosList);
+    if any(pres)
+        targetRxnList = rxnCPos(pres);
+        rxnPosList(pos) = [];
+        targetInList = true;
     end
+    revReacs = find(model.lb(rxnPosList) < 0);
+    nRxns = length(rxnPosList);
+    %We will initially create a List with forward and backward for all:
+    dsense = repmat(['L';'G'],nRxns,1);
+    constraintC = repmat([1, -c * ones(1,numel(rxnCPos)); 1, c * ones(1,numel(rxnCPos))],nRxns,1);
+    d = repmat([u;-u],nRxns,1);    
+    IDs = strcat('slack_', model.rxns(rxnPosList));
+    BIDs = strcat('slack_', model.rxns(rxnPosList), '_B');
+    rxnPosList = reshape([rxnPosList,rxnPosList]',nRxns*2,1); %(1; 1; 2;2; ...);    
+    constraintRxns = [rxnPosList, repmat(rxnCPos,2*nRxns,1)];    
+    ConstraintIDs = reshape([IDs,BIDs]',2*nRxns,1);
+    %And now remove all the non reversible reaction positions.
+    constraintRxns(2*revReacs,:) = [];
+    dsense(2*revReacs,:) = [];
+    constraintC(2*revReacs,:) = [];
+    d(2*revReacs,:) = [];
+    ConstraintIDs(2*revReacs,:) = [];
+    
+    modelCoupled = model;        
+    modelCoupled = addCOBRAConstraint(modelCoupled,constraintRxns,d,'dsense',dsense,'c', constraintC,'ConstraintID', ConstraintIDs);
+    if targetInList         
+        % This is odd, but it could be. 
+        % according to the old code: modelCoupled.C(i,rxnCPos) = c(i) for
+        % each reaction in rxnCPos. with u  as rhs and 'L' as sense. 
+        % If any of those reactions is reversible, then also add the
+        % opposite one. This was potentially duplicating quite some
+        % constraints..
+        % 
+        modelCoupled = addCOBRAConstraint(modelCoupled,rxnCPos,u,'c',[1, -c * ones(1,numel(rxnCPos))],...
+            'dsense','L','ConstraintID', strcat('slack_', model.rxns(rxnCPos(1))));
+        if any(model.lb(rxnCPos) < 0)
+            modelCoupled = addCOBRAConstraint(modelCoupled,rxnCPos, -u,'c',[1, c * numel(1,sum(rxnCPos))],...
+                'dsense','G','ConstraintID', strcat('slack_', model.rxns(rxnCPos(1))));
+        end                
+    end    
+        
 end
 
 
