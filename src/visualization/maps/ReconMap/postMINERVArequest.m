@@ -27,8 +27,7 @@ function [ response ] = postMINERVArequest(login, password, map, identifier, con
    
    loginURL = strcat({'curl -X POST -c - --data "login='}, login, {'&password='}, password, {'" https://vmh.uni.lu/MapViewer/api/doLogin/'});
    [x , command_out] = system(char(loginURL));
-   
-   if ~contains(command_out, 'Invalid credentials')
+   if isempty(regexp(command_out, 'Invalid credentials'))
        [startIndex,endIndex] = regexp(command_out,'MINERVA_AUTH_TOKEN\s+(.*)$');
        split = strsplit(command_out(startIndex:endIndex), '\t');
        minerva_auth_token = split{2};
