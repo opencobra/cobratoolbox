@@ -68,6 +68,6 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ]; then
     rm /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip
 
     echo " > Local .zip file removed"
-    echo " > Done. The zip file can be downloaded from https://prince.lcsb.uni.lu/releases/the_COBRA_Toolbox-$lastCommit"
+    echo " > Done. The zip file can be downloaded from https://prince.lcsb.uni.lu/releases/the_COBRA_Toolbox-$lastCommit.zip"
 
 fi
