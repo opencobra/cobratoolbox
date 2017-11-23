@@ -22,12 +22,9 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     # change to the local temporary release directory
     cd /tmp/releaseCT
 
-    # clean all files that are omitted by gitignore
-    git clean -fdX
-
-    # clean all files that are not tracked
-    git clean -fd
-    echo " > git repo cleaned"
+    # clone submodules
+    git submodule update --depth 1
+    echo " > submodules cloned"
 
     # retrieve the SHA1 of the detached head
     lastCommit=$(git rev-parse --short HEAD)
