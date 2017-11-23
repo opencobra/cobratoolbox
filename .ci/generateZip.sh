@@ -13,7 +13,7 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
 
     # make a clean local temporary release directory
     rm -rf /tmp/releaseCT && mkdir /tmp/releaseCT
-    echo " > Temporary folder created: /tmp/releaseCT"
+    echo " > New temporary folder created: /tmp/releaseCT"
 
     # clone from local repository
     git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
@@ -49,9 +49,11 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     scp -P 8022 /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/releases
     echo " > .zip file sent to prince-server"
 
-    # remove temporary directory
-    rm -rf /tmp/releaseCT
-    echo " > Temporary folder removed"
+    # update the symbolic link
+    cd /mnt/prince-data/releases
+    ln -s the_COBRA_Toolbox-$lastCommit.zip the_COBRA_Toolbox.zip
+    scp -P 8022 the_COBRA_Toolbox.zip jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/releases
+    echo " > .zip alias sent to prince-server"
 
     # remove the local zip file
     rm /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip
