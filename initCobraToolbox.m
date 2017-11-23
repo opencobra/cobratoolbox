@@ -180,7 +180,7 @@ function initCobraToolbox()
         end
 
         % Update/initialize submodules
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --depth 1');
 
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));
