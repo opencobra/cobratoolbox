@@ -34,13 +34,6 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     lastCommit=$(git rev-parse --short HEAD)
     echo " > Last commit determined as $lastCommit"
 
-    # remove the .git directory inside of the local temporary release directory
-    rm -rf /tmp/releaseCT/.git
-    echo " > .git folder removed"
-
-    # change to the local temporary release directory
-    cd /tmp/releaseCT
-
     # zip the entire directory
     zip -qr /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip .
     echo " > Workspace zipped"
