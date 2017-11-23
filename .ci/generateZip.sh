@@ -50,10 +50,8 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     echo " > .zip file sent to prince-server"
 
     # update the symbolic link
-    cd /mnt/prince-data/releases
-    ln -s the_COBRA_Toolbox-$lastCommit.zip the_COBRA_Toolbox.zip
-    scp -P 8022 the_COBRA_Toolbox.zip jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/releases
-    echo " > .zip alias sent to prince-server"
+    ssh -p8022 jenkins@prince-server.lcsb.uni.lux -o TCPKeepAlive=no "cd /mnt/isilon-dat/releases && rm the_COBRA_Toolbox.zip && ln -s the_COBRA_Toolbox-$lastCommit.zip the_COBRA_Toolbox.zip"
+    echo " > .zip alias set on prince-server"
 
     # remove the local zip file
     rm /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip
