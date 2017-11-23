@@ -9,7 +9,7 @@ echo " > Architecture:   $ARCH"
 echo " > MATLAB version: $MATLAB_VER"
 echo " > Branch:         $GIT_BRANCH"
 
-if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "master"]; then
+if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "origin/generate-zip" ]; then
 
     # make a clean local temporary release directory
     rm -rf /tmp/releaseCT && mkdir /tmp/releaseCT
