@@ -16,15 +16,29 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     echo " > Temporary folder created: /tmp/releaseCT"
 
     # clone from local repository
-    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
-    echo " > Workspace cloned"
+    #git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
+    #echo " > Workspace cloned"
+
+    # copy all files and folders to the /tmp directory
+    cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/* /tmp/releaseCT
+
+    # copy all hiden files and folders to the /tmp directory
+    cp -rf /mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux/.[^.]* /tmp/releaseCT
+
+     echo " > Workspace copied"
 
     # change to the local temporary release directory
     cd /tmp/releaseCT
 
+    # clean all files that are omitted by gitignore
+    git clean -fdX
+
+    # clean all files that are not tracked
+    git clean -fd
+
     # clone submodules
-    git submodule update --depth 1
-    echo " > submodules cloned"
+    #git submodule update --depth 1
+    #echo " > submodules cloned"
 
     # retrieve the SHA1 of the detached head
     lastCommit=$(git rev-parse --short HEAD)
