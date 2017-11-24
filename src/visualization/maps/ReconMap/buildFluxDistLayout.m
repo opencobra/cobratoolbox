@@ -38,7 +38,7 @@ end
 %nRxn=length(solution.v);
 %normalizedFluxes = min(ones(nRxn,1),normalizeFluxes(abs(solution.v))-8);
 normalizedFluxes = normalizeFluxes(abs(solution.v), thickness);
-content = 'name\treactionIdentifier\tlineWidth\tcolor\n';
+content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
 for i=1:length(solution.v)
     mapReactionId = model.rxns{i};
 
@@ -49,7 +49,7 @@ for i=1:length(solution.v)
     
 
     if solution.v(i) ~= 0
-        line = strcat('\t', mapReactionId, '\t', num2str(normalizedFluxes(i)), '\t', defaultColor, '\n');
+        line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
         content = strcat(content, line);
     end
 end

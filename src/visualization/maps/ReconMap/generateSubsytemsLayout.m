@@ -16,7 +16,7 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
         color = '#009933';
     end
 
-    content = 'name\treactionIdentifier\tlineWidth\tcolor\n';
+    content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
 
     for i = 1:length(cobra_model.rxns)
 
@@ -28,7 +28,7 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
             if ~strcmp(minerva.map, 'ReconMap-2.01')
                 mapReactionId = strcat('r_', mapReactionId);
             end
-            line = strcat('\t', mapReactionId, '\t', '5', '\t', color, '\n');
+            line = strcat('%09', mapReactionId, '%09', '5', '%09', color, '%0D');
             content = strcat(content, line);
         end
 

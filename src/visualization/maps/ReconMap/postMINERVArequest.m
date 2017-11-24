@@ -24,8 +24,12 @@ function [ response ] = postMINERVArequest(login, password, map, identifier, con
 
 %    content = {'identifier', identifier, 'login', login, 'password', password, 'model', map, 'expression_value', content};
 %    xmlresponse = urlread(minerva_servlet, 'POST', content);
-   
-   loginURL = strcat({'curl -X POST -c - --data "login='}, login, {'&password='}, password, {'" https://vmh.uni.lu/MapViewer/api/doLogin/'});
+    
+    headerlength = ' ';
+    if ispc
+        headerlength = ' -H "Content-Length: 0" ';  
+    end
+   loginURL = strcat({'curl'}, {headerlength} , {'-X POST -c - --data "login='}, login, {'&password='}, password, {'" https://vmh.uni.lu/MapViewer/api/doLogin/'});
    [x , command_out] = system(char(loginURL));
    if isempty(regexp(command_out, 'Invalid credentials'))
        [startIndex,endIndex] = regexp(command_out,'MINERVA_AUTH_TOKEN\s+(.*)$');
@@ -33,7 +37,7 @@ function [ response ] = postMINERVArequest(login, password, map, identifier, con
        minerva_auth_token = split{2};
        minerva_server = strcat('https://vmh.uni.lu/MapViewer/api/projects/', map, '/overlays/');
        filename = strcat(identifier, '.txt');
-       curl_str = strcat('curl -X POST --data "content=', content, '&description=', identifier ,'&filename=', filename, '&name=', identifier, {'" --cookie "MINERVA_AUTH_TOKEN='}, minerva_auth_token, {'" '}, minerva_server);
+       curl_str = strcat({'curl'}, {headerlength}, '-X POST --data "content=', content, '&description=', identifier ,'&filename=', filename, '&name=', identifier, {'" --cookie "MINERVA_AUTH_TOKEN='}, minerva_auth_token, {'" '}, minerva_server);
        [x , response] = system(char(curl_str));
        if ~isempty(regexp(response, '"status":"OK"'))
            response = 'Overlay generated successfully!'

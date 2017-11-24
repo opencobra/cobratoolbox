@@ -42,8 +42,7 @@ if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
     % Send the flux distribution to MINERVA
     response = buildFluxDistLayout(minerva, model, FBAsolution, 'Test - Flux distribution 1');
 
-    % 2 Correct responses, either successful or layout exists already (the
-    % latter will happen all the time)
+    % 2 Correct responses, either successful or layout exists already 
     assert(~isempty(regexp(response, 'Overlay generated successfully!')) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
 
     % Send the subsystem layout to MINERVA
