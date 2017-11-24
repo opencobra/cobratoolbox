@@ -334,15 +334,17 @@ tmp_Rxn=getSBMLDefaultStruct('Reaction',sbmlLevel, sbmlVersion,sbmlPackages, sbm
 sbml_tmp_species_ref=getSBMLDefaultStruct('SpeciesReference',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 
 % fieldnames(converted.reaction.modifier{1})
-tmp_Rxn.modifier=getSBMLDefaultStruct('ModifierSpeciesReference',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
+%tmp_Rxn.modifier=getSBMLDefaultStruct('ModifierSpeciesReference',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 
 % fieldnames(converted.reaction.kineticLaw{1})
 
-tmp_Rxn.kineticLaw=getSBMLDefaultStruct('KineticLaw',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
+%tmp_Rxn.kineticLaw=getSBMLDefaultStruct('KineticLaw',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 
 %% sbmlModel.parameter
 tmp_parameter=getSBMLDefaultStruct('SBML_PARAMETER',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
-
+fbc_parameter = tmp_parameter;
+fbc_parameter.constant = 1;
+fbc_parameter.isSetValue = 1;
 %% Generate a list of unqiue fbc_bound names
 totalValues=[model.lb; model.ub];
 totalNames=cell(size(totalValues,1),1);
@@ -358,16 +360,16 @@ end
 if ~isempty(listUniqueValues)
     for i=1:length(listUniqueNames)
         
-        tmp_parameter.id=listUniqueNames{i,1};
-        tmp_parameter.value=listUniqueValues(i);
+        fbc_parameter.id=listUniqueNames{i,1};
+        fbc_parameter.value=listUniqueValues(i);
         if i==1
-            sbmlModel.parameter=tmp_parameter;
+            sbmlModel.parameter=fbc_parameter;
         else
-            sbmlModel.parameter=[sbmlModel.parameter,tmp_parameter];
+            sbmlModel.parameter=[sbmlModel.parameter,fbc_parameter];
         end
     end
 else
-    sbmlModel.parameter=tmp_parameter;
+    sbmlModel.parameter=fbc_parameter;
 end
 
 tmp_Rxn.fbc_geneProductAssociation=getSBMLDefaultStruct('SBML_FBC_GENE_PRODUCT_ASSOCIATION',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
@@ -382,12 +384,13 @@ sbmlModel.reaction=tmp_Rxn;
 model.genes = cellfun(@convertSBMLID,model.genes,'UniformOutput',0);
 %this is always possible, and now we have acceptable gene IDs.
 model = creategrRulesField(model);
-
+model.rxns = strcat(reactionPrefix,convertSBMLID(model.rxns));
 
 %% generate Groups
 tmp_group_member_struct= getSBMLDefaultStruct('SBML_GROUPS_MEMBER',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 tmp_group=getSBMLDefaultStruct('SBML_GROUPS_GROUP',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
-
+tmp_group.groups_kind = 'partonomy';
+tmp_group.sboTerm = 633;
 modelSubSystems = getModelSubSystems(model); 
 if ~isempty(modelSubSystems)    
     sbmlModel.groups_version = 1;    
@@ -398,7 +401,7 @@ if ~isempty(modelSubSystems)
         groupMembers = findRxnsFromSubSystem(model,modelSubSystems{i});
         for j = 1:numel(groupMembers)            
             cMember = tmp_group_member_struct;
-            cMember.groups_idRef = strcat(reactionPrefix, convertSBMLID(groupMembers{j}));
+            cMember.groups_idRef = groupMembers{j};
             if j == 1
                 cgroup.groups_member = cMember;
             else
@@ -415,8 +418,9 @@ if ~isempty(modelSubSystems)
     end
 end
 
+%% Reactions
 for i=1:size(model.rxns, 1)
-    tmp_rxnID =  strcat(reactionPrefix, convertSBMLID(model.rxns{i}));
+    tmp_rxnID =  model.rxns{i};
     tmp_Rxn.metaid = tmp_rxnID;
     [tmp_Rxn.annotation,rxn_notes] = makeSBMLAnnotationString(model,tmp_Rxn.metaid,'rxn',i);
     tmp_note = emptyChar;
@@ -522,9 +526,7 @@ for i=1:size(model.rxns, 1)
     
 end
 
-
-
-%Set the objective sense of the FBC objective according to the osenseStr in
+%% Set the objective sense of the FBC objective according to the osenseStr in
 %the model.
 objectiveSense = 'maximize';
 
@@ -533,7 +535,7 @@ if isfield(model,'osense') && model.osense == 1
 end
 
 tmp_fbc_objective=getSBMLDefaultStruct('SBML_FBC_OBJECTIVE',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
-tmp_fbc_objective.id = 'obj';
+tmp_fbc_objective.fbc_id = 'obj';
 tmp_fbc_objective.fbc_type = objectiveSense;
 sbmlModel.fbc_activeObjective = 'obj';
 
@@ -570,6 +572,9 @@ else
         end
     end
 end
+
+
+
 
 %end
 
