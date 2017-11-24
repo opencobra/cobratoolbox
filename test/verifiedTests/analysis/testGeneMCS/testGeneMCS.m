@@ -16,13 +16,14 @@ currentDir = pwd;
 cd(fileparts(which('testGeneMCS')));
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'gurobi6'}; % add 'ibm_cplex' in the future
+solverPkgs = {'ibm_cplex','gurobi'}; 
 
 % Load Ecoli core
 load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
 % make all boundaries +1000, 0 or -1000
 model.ub(:) = +1000;
-model.lb(model.lb<0) = -1000;
+model.lb(logical(model.rev)) = -1000;
+model.lb(~logical(model.rev)) = 0;
   
 % expected solution
 true_gmcs = cell(16,1);
