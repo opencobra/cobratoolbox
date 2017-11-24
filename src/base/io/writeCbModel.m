@@ -179,6 +179,26 @@ if isempty(fileName)
     else
         return;
     end
+else
+    if strcmp(format,'toselect') % no format was given. try to detect from fileName.
+        [~, ~, extension] = fileparts(fileName);
+        switch extension
+            case '.MPS'
+                format = 'mps';
+            case {'.xls', '.xlsx'}
+                format = 'xls';
+            case '.txt'
+                format = 'text';
+            case '.xml'
+                format = 'sbml';
+            case '.mat'
+                format = 'mat';
+            case '.expa'
+                format = 'expa';
+            otherwise
+                format = 'unknown';
+        end
+    end        
 end
 % Use lower case
 format = lower(format);
