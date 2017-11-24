@@ -324,9 +324,9 @@ else % parallel job.  pretty much does the same thing.
     global CBT_LP_SOLVER;
     global CBT_MILP_SOLVER;
     global CBT_QP_SOLVER;
-    lpsolver = CBT_LP_SOLVER
-    qpsolver = CBT_QP_SOLVER
-    milpsolver = CBT_MILP_SOLVER   
+    lpsolver = CBT_LP_SOLVER;
+    qpsolver = CBT_QP_SOLVER;
+    milpsolver = CBT_MILP_SOLVER;
     if minNorm        
         parfor i = 1:length(rxnNameList)
             changeCobraSolver(qpsolver,'QP',0,1);
