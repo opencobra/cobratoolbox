@@ -5,7 +5,10 @@
 %       when performing FBA in the COBRA Toolbox with different solvers and
 %       prints the results
 %
-% Author: Almut Heinken, 11/2017
+% Author: Almut Heinken, 11/2017 (original file)
+%         Laurent Heirendt, 11/2017 (integration)
+
+global CBT_LP_SOLVER
 
 % save the current path
 currentDir = pwd;
@@ -31,7 +34,8 @@ incObjMet = find(strcmp(model.mets, 'glc-D[e]'));
 incObjRxn = find(strcmp(model.rxns, 'EX_glc(e)'));
 solverSummary{1, 2} = 'ShadowPrice_IncreasedObjective';
 solverSummary{1, 3} = 'ReducedCost_IncreasedObjective';
-% Now ind the index for a metabolite and a reaction that would decrease the flux through the objective
+
+% Now find the index for a metabolite and a reaction that would decrease the flux through the objective
 % function (BOF) with increased availability/flux.
 % So here the shadow prices and reduced costs should indicate that the
 % metabolite/flux is in excess and needs to be removed.
@@ -41,9 +45,9 @@ solverSummary{1, 4} = 'ShadowPrice_DecreasedObjective';
 solverSummary{1, 5} = 'ReducedCost_DecreasedObjective';
 
 % print the results on the screen
-fprintf('SP=Shadow prices\n')
-fprintf('RC=Reduced costs\n')
-fprintf('OF=Objective function\n')
+fprintf('SP = Shadow prices\n')
+fprintf('RC = Reduced costs\n')
+fprintf('OF = Objective function\n')
 
 % test the definition of shadow price and reduced cost in all solvers
 for i = 1:length(solvers)
@@ -55,6 +59,23 @@ for i = 1:length(solvers)
         solverSummary{i + 1, 3} = FBA.rcost(incObjRxn);
         solverSummary{i + 1, 4} = FBA.dual(decObjMet);
         solverSummary{i + 1, 5} = FBA.rcost(decObjRxn);
+
+        if strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex')
+            assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
+            assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
+            assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
+            assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
+        elseif strcmp(CBT_LP_SOLVER, 'tomlab_cplex')
+            assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
+            assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
+            assert(solverSummary{i + 1, 3} < 0); % RC is negative for reactions that increase OF flux
+            assert(solverSummary{i + 1, 5} > 0); % RC is positive for reactions that decrease OF flux
+        elseif strcmp(CBT_LP_SOLVER, 'matlab')
+            assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
+            assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
+            assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
+            assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
+        end
 
         fprintf('%6s\t%6s\n', solvers{i})
         fprintf('solver summary\n')
