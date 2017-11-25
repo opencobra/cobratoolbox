@@ -22,7 +22,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 model = changeRxnBounds(model, 'EX_o2(e)', -30, 'b');
 
 summaryTable = {};
-solvers = {'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'matlab', 'mosek'};
+solvers = {'matlab', 'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'mosek'};
 
 % Find the index for a metabolite and a reaction that would increase the flux through the objective
 % function (BOF) with increased availability/flux.
