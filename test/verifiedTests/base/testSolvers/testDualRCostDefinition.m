@@ -51,9 +51,13 @@ fprintf('OF = Objective function\n')
 
 % test the definition of shadow price and reduced cost in all solvers
 for i = 1:length(solvers)
+
+    % change the LP solver
     solverOK = changeCobraSolver(solvers{i}, 'LP', 0);
+    solverSummary{i + 1, 1} = solvers{i};
+
+    % run the tests if the solver is available
     if solverOK
-        solverSummary{i + 1, 1} = solvers{i};
         FBA = optimizeCbModel(model, 'max');
         solverSummary{i + 1, 2} = FBA.dual(incObjMet);
         solverSummary{i + 1, 3} = FBA.rcost(incObjRxn);
@@ -67,7 +71,6 @@ for i = 1:length(solvers)
         assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
 
         fprintf(['\n > Solver summary: ', solvers{i}, '\n'])
-        fprintf('solver summary\n')
         % shadow prices
         if solverSummary{i + 1, 2} > 0
             fprintf(' + SP is positive for metabolites that increase OF flux\n')
