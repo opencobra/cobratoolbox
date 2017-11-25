@@ -60,16 +60,16 @@ for i = 1:length(solvers)
         solverSummary{i + 1, 4} = FBA.dual(decObjMet);
         solverSummary{i + 1, 5} = FBA.rcost(decObjRxn);
 
-        if strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex') || strcmp(CBT_LP_SOLVER, 'mosek')
+        if strcmp(CBT_LP_SOLVER, 'tomlab_cplex') || strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex') || strcmp(CBT_LP_SOLVER, 'mosek')
             assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
             assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
             assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
             assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
-        elseif strcmp(CBT_LP_SOLVER, 'tomlab_cplex')
-            assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
-            assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
-            assert(solverSummary{i + 1, 3} < 0); % RC is negative for reactions that increase OF flux
-            assert(solverSummary{i + 1, 5} > 0); % RC is positive for reactions that decrease OF flux
+        %elseif strcmp(CBT_LP_SOLVER, 'tomlab_cplex')
+        %    assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
+        %    assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
+        %    assert(solverSummary{i + 1, 3} < 0); % RC is negative for reactions that increase OF flux
+        %    assert(solverSummary{i + 1, 5} > 0); % RC is positive for reactions that decrease OF flux
         elseif strcmp(CBT_LP_SOLVER, 'matlab')
             assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
             assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux

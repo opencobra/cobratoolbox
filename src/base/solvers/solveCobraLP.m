@@ -38,7 +38,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   without regularisation.
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
-%   
+%
 %    solverParams:  solver-specific parameter structure. Formats supported
 %                   are ILOG cplex and Tomlab parameter syntax. see example
 %                   for details.
@@ -1066,20 +1066,20 @@ switch solver
                matlabPrintLevel = 'iter-detailed';
            otherwise
                matlabPrintLevel = 'off';
-        end  
-        %Set the solver Options.        
+        end
+        %Set the solver Options.
         %Seems like matlab tends to ignore the optimalityTolerance (or at
         %least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
         %make this tolerance smaller...)
-        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);        
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
         if ~isempty(fieldnames(solverParams))
             solverParamFields = fieldnames(solverParams);
-            for fieldPos = 1:numel(solverParamFields)                
+            for fieldPos = 1:numel(solverParamFields)
                 linprogOptions.(solverParamFields{fieldPos}) = solverParams.(solverParamFields{fieldPos});
-            end              
-        end 
+            end
+        end
         if (isempty(csense))
             [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
         else
@@ -1126,7 +1126,7 @@ switch solver
 
         % set parameters (user parameters override defaults)
         tomlabProblem.MIP.cpxControl = solverParams;
-        
+
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
@@ -1144,7 +1144,7 @@ switch solver
         if exist('optTol','var') && ~ismember('EPOPT',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
-        
+
         % solve
         Result = cplexTL(tomlabProblem);
 
@@ -1154,8 +1154,8 @@ switch solver
         %        [Result.f_k f]
 
         origStat = Result.Inform;
-        w = osense*Result.v_k(1:length(lb));
-        y = osense*Result.v_k((length(lb)+1):end);
+        w = Result.v_k(1:length(lb));
+        y = Result.v_k((length(lb)+1):end);
         basis = Result.MIP.basis;
         if (origStat == 1)
             stat = 1;
