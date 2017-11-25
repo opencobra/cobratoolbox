@@ -5,8 +5,8 @@
 %       when performing FBA in the COBRA Toolbox with different solvers and
 %       prints the results
 %
-% Author: Almut Heinken, 11/2017 (original file)
-%         Laurent Heirendt, 11/2017 (integration)
+% Authors: - Almut Heinken, 11/2017 (original file)
+%          - Laurent Heirendt, 11/2017 (integration)
 
 global CBT_LP_SOLVER
 
@@ -24,7 +24,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 model = changeRxnBounds(model, 'EX_o2(e)', -30, 'b');
 
 solverSummary = {};
-solvers = {'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'matlab'};
+solvers = {'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'matlab', 'mosek'};
 
 % Find the index for a metabolite and a reaction that would increase the flux through the objective
 % function (BOF) with increased availability/flux.
@@ -60,7 +60,7 @@ for i = 1:length(solvers)
         solverSummary{i + 1, 4} = FBA.dual(decObjMet);
         solverSummary{i + 1, 5} = FBA.rcost(decObjRxn);
 
-        if strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex')
+        if strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex') || strcmp(CBT_LP_SOLVER, 'mosek')
             assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
             assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
             assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
