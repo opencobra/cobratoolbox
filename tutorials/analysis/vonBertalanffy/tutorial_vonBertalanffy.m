@@ -56,8 +56,8 @@
 % ChemAxon calculator plugin requires a license. Apply for an academic license 
 % at the following link: http://www.chemaxon.com/my-chemaxon/my-academic-license/ 
 % 
-% After your license has been made available, you can download from the “My 
-% Licenses” tab on the ChemAxon website. 
+% After your license has been made available, you can download from the ?My 
+% Licenses? tab on the ChemAxon website. 
 % 
 % Download the license and place it under (replace USER by your actual user 
 % account): 
@@ -108,7 +108,7 @@ end
 % may not be so useful for iAF1260.  The Recon3Dmodel example uses values from 
 % literature for input variables where they are available.
 
-if 0
+if 1
     modelName='iAF1260';
 else
     modelName='Recon3.0model';
@@ -297,14 +297,15 @@ if ~exist('massImbalance','var')
 end
 %% Check that the input data necessary for the component contribution method is in place
 
-if ~isfield(model,'pseudoisomers')
+if 1 %isfield(model,'pseudoisomers')
     model = setupComponentContribution(model,molfileDir);
 end
 %% Prepare the training data for the component contribution method
 
-if ~exist('training_data','var')
+
+%if ~exist('training_data','var')
     training_data = prepareTrainingData(model,printLevel);
-end
+%end
 %% Call the component contribution method
 
 if ~isfield(model,'DfG0')
@@ -319,6 +320,7 @@ end
 
 if ~isfield(model,'Srecon') 
     printLevel_pHbalanceProtons=-1;
+
     model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
 end
 %% Determine quantitative directionality assignments
@@ -399,15 +401,15 @@ generateThermodynamicTables(modelThermo,resultsBaseFileName);
 % 
 % [1] Fleming, R. M. T. & Thiele, I. von Bertalanffy 1.0: a COBRA toolbox 
 % extension to thermodynamically constrain metabolic models. Bioinformatics 27, 
-% 142–143 (2011).
+% 142?143 (2011).
 % 
-% [2] Haraldsdóttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment 
+% [2] Haraldsd?ttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment 
 % of reaction directionality in a multicompartmental human metabolic reconstruction. 
-% Biophysical Journal 102, 1703–1711 (2012).
+% Biophysical Journal 102, 1703?1711 (2012).
 % 
-% [3] Noor, E., Haraldsdóttir, H. S., Milo, R. & Fleming, R. M. T. Consistent 
+% [3] Noor, E., Haraldsd?ttir, H. S., Milo, R. & Fleming, R. M. T. Consistent 
 % Estimation of Gibbs Energy Using Component Contributions. PLoS Comput Biol 9, 
 % e1003098 (2013).
 % 
-% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsdóttir, H. S., Thiele, I. 
+% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsd?ttir, H. S., Thiele, I. 
 % von Bertalanffy 2.0 (in preparation).
