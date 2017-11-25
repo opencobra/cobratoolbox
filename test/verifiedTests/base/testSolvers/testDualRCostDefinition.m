@@ -8,8 +8,6 @@
 % Authors: - Almut Heinken, 11/2017 (original file)
 %          - Laurent Heirendt, 11/2017 (integration)
 
-global CBT_LP_SOLVER
-
 % save the current path
 currentDir = pwd;
 
@@ -23,7 +21,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 % change constraints to have both types of reduced costs in the solution
 model = changeRxnBounds(model, 'EX_o2(e)', -30, 'b');
 
-solverSummary = {};
+summary = {};
 solvers = {'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'matlab', 'mosek'};
 
 % Find the index for a metabolite and a reaction that would increase the flux through the objective
@@ -32,8 +30,8 @@ solvers = {'glpk', 'gurobi', 'pdco', 'tomlab_cplex', 'ibm_cplex', 'matlab', 'mos
 % the objective function.
 incObjMet = find(strcmp(model.mets, 'glc-D[e]'));
 incObjRxn = find(strcmp(model.rxns, 'EX_glc(e)'));
-solverSummary{1, 2} = 'ShadowPrice_IncreasedObjective';
-solverSummary{1, 3} = 'ReducedCost_IncreasedObjective';
+summary{1, 2} = 'SP_IncreasedObjective';
+summary{1, 3} = 'RC_IncreasedObjective';
 
 % Now find the index for a metabolite and a reaction that would decrease the flux through the objective
 % function (BOF) with increased availability/flux.
@@ -41,8 +39,8 @@ solverSummary{1, 3} = 'ReducedCost_IncreasedObjective';
 % metabolite/flux is in excess and needs to be removed.
 decObjMet = find(strcmp(model.mets, 'o2[e]'));
 decObjRxn = find(strcmp(model.rxns, 'EX_o2(e)'));
-solverSummary{1, 4} = 'ShadowPrice_DecreasedObjective';
-solverSummary{1, 5} = 'ReducedCost_DecreasedObjective';
+summary{1, 4} = 'SP_DecreasedObjective';
+summary{1, 5} = 'RC_DecreasedObjective';
 
 % print the results on the screen
 fprintf('SP = Shadow prices\n')
@@ -54,55 +52,50 @@ for i = 1:length(solvers)
 
     % change the LP solver
     solverOK = changeCobraSolver(solvers{i}, 'LP', 0);
-    solverSummary{i + 1, 1} = solvers{i};
+    summary{i + 1, 1} = solvers{i};
 
     % run the tests if the solver is available
     if solverOK
         FBA = optimizeCbModel(model, 'max');
-        solverSummary{i + 1, 2} = FBA.dual(incObjMet);
-        solverSummary{i + 1, 3} = FBA.rcost(incObjRxn);
-        solverSummary{i + 1, 4} = FBA.dual(decObjMet);
-        solverSummary{i + 1, 5} = FBA.rcost(decObjRxn);
+        summary{i + 1, 2} = FBA.dual(incObjMet);
+        summary{i + 1, 3} = FBA.rcost(incObjRxn);
+        summary{i + 1, 4} = FBA.dual(decObjMet);
+        summary{i + 1, 5} = FBA.rcost(decObjRxn);
 
         % compare all solvers
-        assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
-        assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
-        assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
-        assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
+        assert(summary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
+        assert(summary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
+        assert(summary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
+        assert(summary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
 
         fprintf(['\n > Solver summary: ', solvers{i}, '\n'])
         % shadow prices
-        if solverSummary{i + 1, 2} > 0
-            fprintf(' + SP is positive for metabolites that increase OF flux\n')
-        elseif solverSummary{i + 1, 2} < 0
-            fprintf(' - SP is negative for metabolites that increase OF flux\n')
-        elseif solverSummary{i + 1, 2} == 0
-            fprintf(' * SP is zero for metabolites that increase OF flux\n')
-        end
-        if solverSummary{i + 1, 4} > 0
-            fprintf(' + SP is positive for metabolites that decrease OF flux\n')
-        elseif solverSummary{i + 1, 4} < 0
-            fprintf(' - SP is negative for metabolites that decrease OF flux\n')
-        elseif solverSummary{i + 1, 4} == 0
-            fprintf(' * SP is zero for metabolites that decrease OF flux\n')
-        end
+        outputSummary(summary, i, 2, 'increase', 'SP');
+        outputSummary(summary, i, 4, 'decrease', 'SP');
+
         % reduced costs
-        if solverSummary{i + 1, 3} > 0
-            fprintf(' + RC is positive for reactions that increase OF flux\n')
-        elseif solverSummary{i + 1, 3} < 0
-            fprintf(' - RC is negative for reactions that increase OF flux\n')
-        elseif solverSummary{i + 1, 3} == 0
-            fprintf(' * RC is zero for reactions that increase OF flux\n')
-        end
-        if solverSummary{i + 1, 5} > 0
-            fprintf(' + RC is positive for reactions that decrease OF flux\n')
-        elseif solverSummary{i + 1, 5} < 0
-            fprintf(' - RC is negative for reactions that decrease OF flux\n')
-        elseif solverSummary{i + 1, 5} == 0
-            fprintf(' * RC is zero for reactions that decrease OF flux\n')
-        end
+        outputSummary(summary, i, 3, 'increase', 'RC');
+        outputSummary(summary, i, 5, 'decrease', 'RC');
     end
 end
-solverSummary
+
+% print out the summary table
+fprintf('\n > Summary table: \n\n');
+T = cell2table(summary(2:end, :));
+T.Properties.VariableNames = {'Solvername', summary{1,2}, summary{1, 3}, summary{1, 4}, summary{1, 5}};
+disp(T);
+
 % change the directory
 cd(currentDir)
+
+function outputSummary(summary, i, k, variation, shadRed)
+% internal function to print out a summary
+
+    if summary{i + 1, k} > 0
+        fprintf([' + ', shadRed, ' is positive for metabolites that ', variation, ' OF flux\n']);
+    elseif summary{i + 1, k} < 0
+        fprintf([' - ', shadRed, ' is negative for metabolites that ', variation, ' OF flux\n']);
+    elseif summary{i + 1, k} == 0
+        fprintf([' * ', shadRed, ' is zero for metabolites that ', variation, ' OF flux\n']);
+    end
+end
