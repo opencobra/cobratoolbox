@@ -1099,8 +1099,8 @@ switch solver
         if (origStat > 0)
             stat = 1; % Optimal solution found
             f = f*osense;
-            y = lambda.eqlin;
-            w = lambda.lower-lambda.upper;
+            y = osense*lambda.eqlin;
+            w = osense*(lambda.upper-lambda.lower);
         elseif (origStat < 0)
             stat = 0; % Infeasible
         else

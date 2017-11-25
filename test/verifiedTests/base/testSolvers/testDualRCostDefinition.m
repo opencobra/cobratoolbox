@@ -60,57 +60,46 @@ for i = 1:length(solvers)
         solverSummary{i + 1, 4} = FBA.dual(decObjMet);
         solverSummary{i + 1, 5} = FBA.rcost(decObjRxn);
 
-        if strcmp(CBT_LP_SOLVER, 'tomlab_cplex') || strcmp(CBT_LP_SOLVER, 'glpk') || strcmp(CBT_LP_SOLVER, 'gurobi') || strcmp(CBT_LP_SOLVER, 'pdco') || strcmp(CBT_LP_SOLVER, 'ibm_cplex') || strcmp(CBT_LP_SOLVER, 'mosek')
-            assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
-            assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
-            assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
-            assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
-        %elseif strcmp(CBT_LP_SOLVER, 'tomlab_cplex')
-        %    assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
-        %    assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
-        %    assert(solverSummary{i + 1, 3} < 0); % RC is negative for reactions that increase OF flux
-        %    assert(solverSummary{i + 1, 5} > 0); % RC is positive for reactions that decrease OF flux
-        elseif strcmp(CBT_LP_SOLVER, 'matlab')
-            assert(solverSummary{i + 1, 2} < 0); % SP is negative for metabolites that increase OF flux
-            assert(solverSummary{i + 1, 4} > 0); % SP is positive for metabolites that decrease OF flux
-            assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
-            assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
-        end
+        % compare all solvers
+        assert(solverSummary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
+        assert(solverSummary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
+        assert(solverSummary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
+        assert(solverSummary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
 
-        fprintf('%6s\t%6s\n', solvers{i})
+        fprintf(['\n > Solver summary: ', solvers{i}, '\n'])
         fprintf('solver summary\n')
         % shadow prices
         if solverSummary{i + 1, 2} > 0
-            fprintf('SP is positive for metabolites that increase OF flux\n')
+            fprintf(' + SP is positive for metabolites that increase OF flux\n')
         elseif solverSummary{i + 1, 2} < 0
-            fprintf('SP is negative for metabolites that increase OF flux\n')
+            fprintf(' - SP is negative for metabolites that increase OF flux\n')
         elseif solverSummary{i + 1, 2} == 0
-            fprintf('SP is zero for metabolites that increase OF flux\n')
+            fprintf(' * SP is zero for metabolites that increase OF flux\n')
         end
         if solverSummary{i + 1, 4} > 0
-            fprintf('SP is positive for metabolites that decrease OF flux\n')
+            fprintf(' + SP is positive for metabolites that decrease OF flux\n')
         elseif solverSummary{i + 1, 4} < 0
-            fprintf('SP is negative for metabolites that decrease OF flux\n')
+            fprintf(' - SP is negative for metabolites that decrease OF flux\n')
         elseif solverSummary{i + 1, 4} == 0
-            fprintf('SP is zero for metabolites that decrease OF flux\n')
+            fprintf(' * SP is zero for metabolites that decrease OF flux\n')
         end
         % reduced costs
         if solverSummary{i + 1, 3} > 0
-            fprintf('RC is positive for reactions that increase OF flux\n')
+            fprintf(' + RC is positive for reactions that increase OF flux\n')
         elseif solverSummary{i + 1, 3} < 0
-            fprintf('RC is negative for reactions that increase OF flux\n')
+            fprintf(' - RC is negative for reactions that increase OF flux\n')
         elseif solverSummary{i + 1, 3} == 0
-            fprintf('RC is zero for reactions that increase OF flux\n')
+            fprintf(' * RC is zero for reactions that increase OF flux\n')
         end
         if solverSummary{i + 1, 5} > 0
-            fprintf('RC is positive for reactions that decrease OF flux\n')
+            fprintf(' + RC is positive for reactions that decrease OF flux\n')
         elseif solverSummary{i + 1, 5} < 0
-            fprintf('RC is negative for reactions that decrease OF flux\n')
+            fprintf(' - RC is negative for reactions that decrease OF flux\n')
         elseif solverSummary{i + 1, 5} == 0
-            fprintf('RC is zero for reactions that decrease OF flux\n')
+            fprintf(' * RC is zero for reactions that decrease OF flux\n')
         end
     end
 end
-
+solverSummary
 % change the directory
 cd(currentDir)
