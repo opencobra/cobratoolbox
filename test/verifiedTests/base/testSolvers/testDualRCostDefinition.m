@@ -63,10 +63,10 @@ for i = 1:length(solvers)
         summary{i + 1, 5} = FBA.rcost(decObjRxn);
 
         % compare all solvers
-        assert(summary{i + 1, 2} > 0); % SP is positive for metabolites that increase OF flux
-        assert(summary{i + 1, 4} < 0); % SP is negative for metabolites that decrease OF flux
-        assert(summary{i + 1, 3} > 0); % RC is positive for reactions that increase OF flux
-        assert(summary{i + 1, 5} < 0); % RC is negative for reactions that decrease OF flux
+        assert(summary{i + 1, 2} > 0);  % SP is positive for metabolites that increase OF flux
+        assert(summary{i + 1, 4} < 0);  % SP is negative for metabolites that decrease OF flux
+        assert(summary{i + 1, 3} > 0);  % RC is positive for reactions that increase OF flux
+        assert(summary{i + 1, 5} < 0);  % RC is negative for reactions that decrease OF flux
 
         fprintf(['\n > Solver summary: ', solvers{i}, '\n'])
         % shadow prices
@@ -82,7 +82,7 @@ end
 % print out the summary table
 fprintf('\n > Summary table: \n\n');
 T = cell2table(summary(2:end, :));
-T.Properties.VariableNames = {'Solvername', summary{1,2}, summary{1, 3}, summary{1, 4}, summary{1, 5}};
+T.Properties.VariableNames = {'Solvername', summary{1, 2}, summary{1, 3}, summary{1, 4}, summary{1, 5}};
 disp(T);
 
 % change the directory
