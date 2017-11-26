@@ -1,6 +1,6 @@
 git+https://github.com/uni-lu/sphinx.git@develop#egg=sphinx
 recommonmark
-sphinxcontrib-matlabdomain
+git+https://github.com/syarra/sphinxcontrib-matlabdomain#egg=sphinxcontrib-matlabdomain
 sphinxcontrib-fulltoc
 sphinx_rtd_theme
 git+https://github.com/uni-lu/sphinx_cobra_theme.git@develop#egg=sphinx_cobra_theme
