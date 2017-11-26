@@ -1,7 +1,9 @@
+<img src="https://prince.lcsb.uni.lu/note_maintenance.png" width="100%">
+<br>
+
 <p align="center">
   <img class="readme_logo" src="docs/source/_static/images/logos/logo.png" height="160px"/>
 </p>
-
 
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================

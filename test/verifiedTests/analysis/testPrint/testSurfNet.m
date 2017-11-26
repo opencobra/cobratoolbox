@@ -18,7 +18,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testSurfNet'));
 cd(fileDir);
 
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 % generate flux data for testing
 s = optimizeCbModel(model, 'max', 'one');

@@ -384,7 +384,15 @@ for i = 1:numel(presentFields)
     checkY = ~isnan(yFieldMatch);
     if checkX
         if ischar(xFieldMatch)
-            x_pres = numel(model.(xFieldMatch));
+            if ~isfield(model,xFieldMatch)
+                x_pres = 0;
+                if ~isfield(results.Errors,'missingFields')
+                    results.Errors.missingFields = {};
+                end
+                results.Errors.missingFields(end+1) = {xFieldMatch};
+            else
+                x_pres = numel(model.(xFieldMatch));
+            end
         elseif isnumeric(xFieldMatch)
             x_pres = xFieldMatch;
         end
@@ -397,7 +405,15 @@ for i = 1:numel(presentFields)
     end
     if checkY
         if ischar(yFieldMatch)
-            y_pres = numel(model.(yFieldMatch));
+            if ~isfield(model,yFieldMatch)
+                y_pres = 0;
+                if ~isfield(results.Errors,'missingFields')
+                    results.Errors.missingFields = {};
+                end
+                results.Errors.missingFields(end+1) = {yFieldMatch};
+            else
+                y_pres = numel(model.(yFieldMatch));
+            end
         elseif isnumeric(yFieldMatch)
             y_pres = yFieldMatch;
         end

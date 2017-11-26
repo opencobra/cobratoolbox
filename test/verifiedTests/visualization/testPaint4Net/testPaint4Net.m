@@ -23,7 +23,8 @@ cd(fileparts(which('testPaint4Net')))
 solverPkgs = {'glpk'};
 
 % load the model
-load('testPaint4Net.mat');   
+load('testPaint4Net.mat');
+model = readCbModel('testPaint4Net.mat','modelName','model');
 
 for k = 1:length(solverPkgs)
     fprintf('Running Paint4Net using solver %s ... ', solverPkgs{k});

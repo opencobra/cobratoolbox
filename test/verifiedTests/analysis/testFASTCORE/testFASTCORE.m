@@ -22,8 +22,8 @@ cd(fileDir);
 solverPkgs = {'ibm_cplex', 'gurobi', 'tomlab_cplex'};
 
 %load a model
-load('FastCoreTest.mat')
-model=ConsistentRecon2;
+model = readCbModel('FastCoreTest.mat','modelName','ConsistentRecon2');
+load('FastCoreTest.mat','coreInd');
 
 k = 1;
 while k < length(solverPkgs)+1 % note: only run with 1 solver, not with all 3

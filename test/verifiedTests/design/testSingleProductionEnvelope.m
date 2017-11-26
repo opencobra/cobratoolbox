@@ -14,7 +14,7 @@ fileDir = fileparts(which('testSingleProductionEnvelope'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 deletions = model.rxns(21); % 'EX_acald(e)'
 deletions2 = model.genes(21);
 product = char(model.rxns(20)); % 'EX_ac(e)' - the created and deleted plot has the name of the reaction

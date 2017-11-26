@@ -44,7 +44,7 @@ for i = 1:size(modelArr,1)
     
     % load the model (actually supply the full filename of the path
     % where the model is found)
-    model1 = readCbModel(which(modelArr{i,1}));
+    model1 = getDistributedModel(modelArr{i,1});
     model2 = loadBiGGModel(modelArr{i,2},modelArr{i,3});
     model3 = readCbModel(modelArr{i,2},'fileType',modelArr{i,4});
     %Check that the direct load is the same

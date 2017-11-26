@@ -8,6 +8,10 @@
 % save the current path
 currentDir = pwd;
 
+%get the warning settings and turn on all warnings
+cwarn = warning;
+warning('on');
+
 % initialize the test
 fileDir = fileparts(which('testChangeIBMCplexParams'));
 cd(fileDir);
@@ -101,6 +105,9 @@ if ibm_cplex
         && isfield(ChangedParams.simplex.tolerances, 'feasibility') && ChangedParams.simplex.tolerances.feasibility.Cur == 1e-8 ...
         && isfield(ChangedParams, 'tune') && isfield(ChangedParams.tune, 'display') && ChangedParams.tune.display.Cur == 0)
 end
+
+%Reset the warning settings
+warning(cwarn);
 
 % change the directory
 cd(currentDir)

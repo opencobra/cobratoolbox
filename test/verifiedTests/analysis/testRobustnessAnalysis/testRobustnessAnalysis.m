@@ -34,7 +34,7 @@ tol = 1e-3;
 % Testing robustnessAnalysis
 
 % 1. Set input parameters.
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 controlRxn = 'PFK';
 
 % 2. Run robustnessAnalysis.

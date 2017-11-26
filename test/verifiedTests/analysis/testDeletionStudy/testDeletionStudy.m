@@ -24,7 +24,7 @@ cd(fileDir);
 tol = 1e-6;
 
 %load model
-load([CBTDIR, filesep, 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};

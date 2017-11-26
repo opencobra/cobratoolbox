@@ -18,7 +18,7 @@ fileDir = fileparts(which('testGPR2Genes'));
 cd(fileDir);
 
 % load E. coli model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat'], 'model');
+model = getDistributedModel('ecoli_core_model.mat');
 
 % extract genes from grRules
 Genes = GPR2Genes(model.grRules);

@@ -22,17 +22,31 @@ tol = 1e-8;
 solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 % load the model
-load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
+%Either:
+model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
+%or
+model = readCbModel('testModel.mat','modelName','NameOfTheModelStruct'); %For all models which are part of this particular test.
+
+%Load reference data
 load('testData_functionToBeTested.mat');
 
 %{
 % This is only necessary for tests that test a function that runs in parallel.
 % create a parallel pool
-
-poolobj = gcp('nocreate'); % if no pool, do not create new one.
-if isempty(poolobj)
-    parpool(2); % launch 2 workers
+% This is in try/catch as otherwise the test will error if no parallel
+% toolbox is installed.
+try
+    parTest = true;
+    poolobj = gcp('nocreate'); % if no pool, do not create new one.
+    if isempty(poolobj)
+        parpool(2); % launch 2 workers
+    end
+catch ME
+    parTest = false;
+    fprintf('No Parallel Toolbox found. TRying test without Parallel toolbox.\n')
 end
+if parTest 
+% if parallel toolbox has to be present (if not, this can be left out).
 %}
 
 for k = 1:length(solverPkgs)
@@ -43,7 +57,7 @@ for k = 1:length(solverPkgs)
     if solverLPOK
         % <your test goes here>
     end
-
+    verifyCobraFunctionError(@() testFile(wrongInput));
     % output a success message
     fprintf('Done.\n');
 end
