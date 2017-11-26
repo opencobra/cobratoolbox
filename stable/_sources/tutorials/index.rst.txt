@@ -1,4 +1,4 @@
-.. _tutorials
+.. _tutorials:
 
 Tutorials
 =========
@@ -6,36 +6,36 @@ Tutorials
 
 .. toctree::
 
-   tutorialVariationalKinetics
-   tutorialUniformSampling
-   tutorialFBA
+   tutorialOptForce
+   tutorialInitializeAndVerify
+   tutorialIO
+   tutorialEngaging
+   tutorialReconstructionSOP
+   tutorialRBioNet
+   tutorialCreateSubnetworkRecon
+   tutorialFastGapFill
+   tutorialReconToFBAmodel
+   tutorialFidelityTesting
+   tutorialModelATPYield
+   tutorialModelSanityChecks
+   tutorialNumCharact
+   tutorialModelManipulation
+   tutorialPaint4net
+   tutorialRemoteVisualisation
+   tutorialFVA
    tutorialSparseFBA_freeATPtest
    tutorialSparseFBA
    tutorialSparseFBA_protonShuttle
    tutorialSparseLP
-   tutorialFVA
-   tutorialMinSpan
-   tutorialAtomicallyResolveReconstruction
+   tutorialVariationalKinetics
    tutorialVonBertalanffy
+   tutorialMinSpan
+   tutorialUniformSampling
+   tutorialFBA
+   tutorialAtomicallyResolveReconstruction
    tutorialRelaxedFBABounds
    tutorialRelaxedFBA
-   tutorialOptForce
-   tutorialExtraction_transcriptomic
-   tutorialUFBA
    tutorialMetabotoolsI
    tutorialMetabotoolsII
-   tutorialRemoteVisualisation
-   tutorialPaint4net
-   tutorialReconToFBAmodel
-   tutorialModelATPYield
-   tutorialFastGapFill
-   tutorialReconstructionSOP
-   tutorialModelSanityChecks
-   tutorialCreateSubnetworkRecon
-   tutorialFidelityTesting
-   tutorialNumCharact
-   tutorialModelManipulation
-   tutorialRBioNet
-   tutorialIO
-   tutorialEngaging
-   tutorialInitializeAndVerify
+   tutorialExtraction_transcriptomic
+   tutorialUFBA
