@@ -513,7 +513,13 @@ function initCobraToolbox()
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be restored.');
     end
-
+    
+    %Handle odd macOS problems.
+    if ismac
+        adaptMacPath()
+    end
+    
+    
     % change back to the current directory
     cd(currentDir);
 
@@ -522,6 +528,44 @@ function initCobraToolbox()
     if ENV_VARS.printLevel
         clearvars
     end
+        
+    
+end
+
+
+function adaptMacPath()
+% Adapts the path for binaries on a mac with Sierra/High Sierra or higher
+% and Anything below.
+%
+% USAGE:
+%     adaptMacPath();
+%
+global CBTDIR;
+oldMac = false;
+
+[status,macVer] = system('sw_vers')
+if status ~= 0
+    oldMac = true;
+else
+    try
+        macVer = strsplit(macVer,'\n');
+        macVer = macVer{2};
+        macVer = strplit(macVer,':');
+        macVer = str2double(macVer{2});
+        if macVer < 10.12 %Lower than Sierra
+            oldMac = true;
+        end
+    catch
+        oldMac = true;
+    end
+end
+
+macBinaryPath = [CBTDIR filesep 'binary' filesep 'maxi64' filesep 'bin'];
+if oldMac
+    addpath([macBinaryPath filesep 'preSierra']);
+else
+    addpath([macBinaryPath filesep 'postSierra']);
+end
 end
 
 function checkGit()
