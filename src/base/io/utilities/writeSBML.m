@@ -592,10 +592,5 @@ function sbmlStruct = getSBMLDefaultStruct(field_type, sbmlLevel, sbmlVersion, p
 fieldData = [getStructureFieldnames(field_type,sbmlLevel,sbmlVersion,packages,packageVersions);getDefaultValues(field_type,sbmlLevel,sbmlVersion,packages,packageVersions)];
 fieldData = reshape(fieldData,numel(fieldData),1);
 sbmlStruct = struct(fieldData{:});
-if ~isfield(sbmlStruct,'level')
-    sbmlStruct.level = sbmlLevel;
-end
-if ~isfield(sbmlStruct,'version')
-    sbmlStruct.version = sbmlVersion;
-end
+sbmlStruct = addLevelVersion(sbmlStruct,sbmlLevel,sbmlVersion);
 end
