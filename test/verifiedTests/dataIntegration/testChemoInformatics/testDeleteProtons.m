@@ -17,7 +17,7 @@ cd(fileparts(which('testDeleteProtons')));
 load('refData_deleteProtons.mat')
 
 % Load the dopamine synthesis network
-load('subDas.mat')
+model = readCbModel('subDas.mat');
 
 modelNew = deleteProtons(model);
 assert(all(all(modelNew.S == modelNew0.S)), 'Reference S matrix does not match.')

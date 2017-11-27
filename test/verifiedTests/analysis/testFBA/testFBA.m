@@ -26,7 +26,7 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 % load the model
 load('testFBAData.mat');
-
+model = readCbModel('testFBAData.mat','modelName','model');
 for k = 1:length(solverPkgs)
 
     % change the COBRA solver (LP)
