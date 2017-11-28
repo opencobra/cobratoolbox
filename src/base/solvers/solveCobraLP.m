@@ -384,7 +384,7 @@ switch solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
         if ~debug % IF debugging leave the files in case of an error.
-            cleanUp = onCleanup(@() DQQCleanup(tmpPath));
+            cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
         end
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
@@ -468,6 +468,7 @@ switch solver
         if ~isunix
             error('Minos and quadMinos can only be used on UNIX systems (macOS or Linux).')
         end
+        originalDirectory = pwd;
 
         % input precision
         precision = 'double';  % 'single'
@@ -483,11 +484,10 @@ switch solver
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
         
         if ~debug % IF debugging leave the files in case of an error.
-            cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname));
+            cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
         end
         
         % change system to testFBA directory
-        originalDirectory = pwd;
         cd([MINOS_PATH]);
 
         % call minos
@@ -1755,7 +1755,7 @@ else
 end
 
 
-function DQQCleanup(tmpPath)
+function DQQCleanup(tmpPath, originalDirectory)
 % perform cleanup after DQQ.
 try
 % cleanup        
@@ -1770,9 +1770,11 @@ try        % remove the temporary .mps model file
         rmdir([tmpPath filesep 'MPS'], 's')
 catch
 end
+cd(originalDirectory);
 
 
-function minosCleanUp(MINOS_PATH,fname)
+
+function minosCleanUp(MINOS_PATH,fname, originalDirectory)
 % CleanUp after Minos Solver.
 
 fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
@@ -1796,3 +1798,5 @@ for k = 1:length(fileEnding)
         end
     end
 end
+
+cd(originalDirectory);
