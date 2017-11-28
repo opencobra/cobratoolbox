@@ -376,7 +376,7 @@ switch solver
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
-
+        cleanUp = onCleanup(@() DQQCleanup(tmpPath));
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
@@ -451,15 +451,6 @@ switch solver
         else
             stat = -1;  % Solution not optimal or solver problem
         end
-        % cleanup
-        rmdir([tmpPath filesep 'results'], 's');
-        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
-        for k = 1:length(fortFiles)
-            delete(['fort.', num2str(fortFiles(k))]);
-        end
-
-        % remove the temporary .mps model file
-        rmdir([tmpPath filesep 'MPS'], 's')
 
         % return to original directory
         cd(originalDirectory);
@@ -1768,4 +1759,21 @@ elseif (origStat == 184 || origStat == 6)
     stat = 2; % Unbounded
 else
     stat = -1; % Solution not optimal or solver problem
+end
+
+
+function DQQCleanup(tmpPath)
+% perform cleanup after DQQ.
+try
+% cleanup        
+        rmdir([tmpPath filesep 'results'], 's');
+        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
+        for k = 1:length(fortFiles)
+            delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
+        end
+catch
+end
+try        % remove the temporary .mps model file
+        rmdir([tmpPath filesep 'MPS'], 's')
+catch
 end
