@@ -120,11 +120,14 @@ end
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm', 'printLevel', 'primalOnly', 'saveInput', 'feasTol', ...
                  'optTol', 'solver', 'pdco_method', 'pdco_maxiter', 'pdco_xsize', ...
-                 'pdco_zsize'};
+                 'pdco_zsize','debug'};
 
 % Set default parameter values
 [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
     getCobraSolverParams('LP', optParamNames(1:6));
+
+%By default this is not debugging
+debug = false;
 
 % Set user specified parameter values
 solverParams.dummy = 3;
@@ -198,6 +201,10 @@ if ~isempty(varargin)
         if isfield(parameters, 'pdco_zsize')
             pdco_zsize = parameters.pdco_zsize;
             parameters = rmfield(parameters, 'pdco_zsize');
+        end
+        if isfield(parameters, 'debug')
+            debug = parameters.debug;
+            parameters = rmfield(parameters, 'debug');
         end
         % overwrite defaults
         [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
@@ -376,7 +383,9 @@ switch solver
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
-        cleanUp = onCleanup(@() DQQCleanup(tmpPath));
+        if ~debug % IF debugging leave the files in case of an error.
+            cleanUp = onCleanup(@() DQQCleanup(tmpPath));
+        end
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
@@ -472,7 +481,11 @@ switch solver
 
         % write out flat file to current folder
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
-
+        
+        if ~debug % IF debugging leave the files in case of an error.
+            cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname));
+        end
+        
         % change system to testFBA directory
         originalDirectory = pwd;
         cd([MINOS_PATH]);
@@ -537,26 +550,6 @@ switch solver
         %     stat = 0; % Infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
-        end
-
-        % cleanup
-        fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
-        addFileName = {'', 'q'};
-
-        % remove temporary data directories
-        tmpFileName = [MINOS_PATH filesep 'data'];
-        if exist(tmpFileName, 'dir') == 7
-            rmdir(tmpFileName, 's')
-        end
-
-        % remove temporary solver files
-        for k = 1:length(fileEnding)
-            for q = 1:length(addFileName)
-                tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
-                if exist(tmpFileName, 'file') == 2
-                    delete(tmpFileName);
-                end
-            end
         end
 
         % return to original directory
@@ -1776,4 +1769,30 @@ end
 try        % remove the temporary .mps model file
         rmdir([tmpPath filesep 'MPS'], 's')
 catch
+end
+
+
+function minosCleanUp(MINOS_PATH,fname)
+% CleanUp after Minos Solver.
+
+fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
+addFileName = {'', 'q'};
+
+% remove temporary data directories
+tmpFileName = [MINOS_PATH filesep 'data'];
+try
+    if exist(tmpFileName, 'dir') == 7
+        rmdir(tmpFileName, 's')
+    end
+catch
+end
+
+% remove temporary solver files
+for k = 1:length(fileEnding)
+    for q = 1:length(addFileName)
+        tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
+        if exist(tmpFileName, 'file') == 2
+            delete(tmpFileName);
+        end
+    end
 end
