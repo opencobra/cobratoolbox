@@ -875,11 +875,16 @@ if pathname == 0
 end
 handles.last_path = pathname;
 
-model = load([pathname input_file]);
-name = fieldnames(model);
-name2 = ['model.' name{1}];
-handles.model= eval(name2);
+model = readCbModel([pathname input_file]);
+%Create fields which are not necessarily part of all loaded models.
+if ~isfield(model,'grRules')
+    model = creategrRulesField(model);
+end
+if ~isfield(model,'rxnNames')
+    model.rxnNames = repmat('',size(model.rxns));
+end
 
+handles.model= model;
 output = model2data(handles.model);
 
 data = output{1};
