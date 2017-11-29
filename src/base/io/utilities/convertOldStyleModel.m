@@ -149,6 +149,10 @@ if ~isfield(model, 'genes')
     model.genes = cell(0,1);
 end
 
+if ~isfield(model,'c')
+    model.c = zeros(size(model.rxns));
+end
+
 if ~isfield(model, 'rules') 
     if isfield(model, 'grRules')
         model = generateRules(model);

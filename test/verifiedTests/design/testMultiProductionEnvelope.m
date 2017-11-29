@@ -14,7 +14,7 @@ fileDir = fileparts(which('testMultiProductionEnvelope'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 model.lb(36) = 0; % setting the model to anaerobic conditions
 model.ub(36) = 0; % setting the model to anaerobic conditions
 biomassRxn = model.rxns(13);
