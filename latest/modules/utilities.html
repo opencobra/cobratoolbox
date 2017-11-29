@@ -595,6 +595,49 @@ The folder the model should be located in.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.initFBAFields">
+<code class="descname">initFBAFields</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/io/utilities/initFBAFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.initFBAFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initializes all fields in a model that are required for
+downstream FBA analysis. It does so if and only if a Stoichiometric
+matrix S is provided.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = convertOldStyleModel(model, printLevel)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+a COBRA Model structure with at least the model.S field.
+All fields already present are retained and absent
+fields are initialized with their defaults.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> &#8211;
+indicates whether warnings and messages are given (default, 1).</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+a COBRA model struct with the following fields:
+.S (same as input)
+.rxns (default: a vector of strings R1 .. R size(S,2)
+.mets (default: a vector of strings M1 .. M size(S,1)
+.lb   (default: -1000 * ones(size(S,2),1) );
+.ub   (default: 1000 * ones(size(S,2),1) );
+.genes   (default: cell(0,1));
+.rules   (default: repmat({&#8216;&#8217;},size(S,2),1))
+.osense (default: -1)
+.csense (default: a char vector of &#8216;E&#8217; of the size size(S,1) x 1)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.loadIdentifiedModel">
 <code class="descname">loadIdentifiedModel</code><span class="sig-paren">(</span><em>filename</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/io/utilities/loadIdentifiedModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.loadIdentifiedModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a single cobra toolbox model saved as a filename.mat file, then
