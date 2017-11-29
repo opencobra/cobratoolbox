@@ -54,7 +54,6 @@ persistent CBT_PROG_FIELD_PROPS
 persistent CBT_DESC_FIELD_PROPS
 persistent CBT_DB_FIELD_PROPS
 
-
 parser = inputParser();
 parser.addParamValue('Descriptions',false,@(x) isnumeric(x) | islogical(x))
 parser.addParamValue('SpecificFields',{},@iscell)
@@ -143,8 +142,8 @@ if isempty(CBT_PROG_FIELD_PROPS)
      end
     %Get the indices for database, qualifier and reference.
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
-    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.FBABasicField(relrows)];
-    progInfo = cell(0,6);
+    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.FBABasicField(relrows),raw.FieldBasisType];
+    progInfo = cell(0,7);
     for i = 1:size(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
@@ -167,12 +166,17 @@ if isempty(CBT_PROG_FIELD_PROPS)
             end
         end
         fbaReq = eval(eval(relarray{i,6}));        
-        progInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default,fbaReq};
+        FieldType = relarray{i,7};  
+        progInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default,fbaReq,FieldType};
     end
     CBT_PROG_FIELD_PROPS = progInfo;
 end
 fields = CBT_PROG_FIELD_PROPS;
 
 if ~isempty(spec)
-    fields = fields(ismember(fields(:,1),spec),:);
+    [fieldPres,fieldpos] = ismember(spec,fields(:,1));
+    if ~all(fieldPres)
+        error('The following requesteds fields have no Specifications:\n%s\n',strjoin(spec(~fieldPres),',\n'));
+    end
+    fields = fields(fieldpos(fieldPres),:);
 end
