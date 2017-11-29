@@ -20,6 +20,7 @@ octave-workspace
 # specific extensions
 *.pyc
 *.mps
+diary.txt
 
 # logfiles
 *.log
