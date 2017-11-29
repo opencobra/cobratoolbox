@@ -67,7 +67,7 @@ end
 for i=1:length(model.rxns)
     if minFlux(i)*maxFlux(i)>=0 
         %unidirectional
-        if model.rev(i) 
+        if model.lb(i) < 0
             %reversible
             if minFlux(i)<0 || maxFlux(i)<0
                 %reverse direction: Cyan 0 255 255
