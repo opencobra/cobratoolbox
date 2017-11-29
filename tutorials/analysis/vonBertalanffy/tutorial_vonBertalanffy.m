@@ -56,8 +56,8 @@
 % ChemAxon calculator plugin requires a license. Apply for an academic license 
 % at the following link: http://www.chemaxon.com/my-chemaxon/my-academic-license/ 
 % 
-% After your license has been made available, you can download from the ?My 
-% Licenses? tab on the ChemAxon website. 
+% After your license has been made available, you can download from the “My 
+% Licenses” tab on the ChemAxon website. 
 % 
 % Download the license and place it under (replace USER by your actual user 
 % account): 
@@ -108,41 +108,30 @@ end
 % may not be so useful for iAF1260.  The Recon3Dmodel example uses values from 
 % literature for input variables where they are available.
 
-if 1
-    modelName='iAF1260';
-else
-    modelName='Recon3.0model';
-end
+modelName='iAF1260';
+% modelName='Recon3.0model'; uncomment this line and comment the line above if you want to use Recon3D
 %% Load a model
 % Load a model, and save it as the original model in the workspace, unless it 
 % is already loaded into the workspace. 
 
 clear model
-if ~exist('modelOrig','var')
-    switch modelName
-        case 'iAF1260'
-            load('iAF1260.mat');
-            if model.S(952, 350)==0
-                model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
-            end
-            model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
-        case 'Recon3.0model'
-            modelPath='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-            model = loadIdentifiedModel(modelName,modelPath);
-            model.csense(1:size(model.S,1),1)='E';
-            %Hack for thermodynamics
-            model.metFormulas{strcmp(model.mets,'h[i]')}='H';
-            model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
-            if isfield(model,'metCharge')
-                model.metCharges = double(model.metCharge);
-                model=rmfield(model,'metCharge');
-            end
-            modelOrig = model;
-        otherwise
+global CBTDIR
+modelFileName = [modelName '.mat']
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+switch modelName
+    case 'iAF1260'
+        if model.S(952, 350)==0
+            model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
+        end
+        model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
+        
+    case 'Recon3.0model'
+        model.metFormulas{strcmp(model.mets,'h[i]')}='H';
+        model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
+    otherwise
             error('setup specific parameters for your model')
-    end
-else
-    model=modelOrig;
 end
 %% Set the directory containing the results
 
@@ -401,15 +390,15 @@ generateThermodynamicTables(modelThermo,resultsBaseFileName);
 % 
 % [1] Fleming, R. M. T. & Thiele, I. von Bertalanffy 1.0: a COBRA toolbox 
 % extension to thermodynamically constrain metabolic models. Bioinformatics 27, 
-% 142?143 (2011).
+% 142–143 (2011).
 % 
-% [2] Haraldsd?ttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment 
+% [2] Haraldsdóttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment 
 % of reaction directionality in a multicompartmental human metabolic reconstruction. 
-% Biophysical Journal 102, 1703?1711 (2012).
+% Biophysical Journal 102, 1703–1711 (2012).
 % 
-% [3] Noor, E., Haraldsd?ttir, H. S., Milo, R. & Fleming, R. M. T. Consistent 
+% [3] Noor, E., Haraldsdóttir, H. S., Milo, R. & Fleming, R. M. T. Consistent 
 % Estimation of Gibbs Energy Using Component Contributions. PLoS Comput Biol 9, 
 % e1003098 (2013).
 % 
-% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsd?ttir, H. S., Thiele, I. 
+% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsdóttir, H. S., Thiele, I. 
 % von Bertalanffy 2.0 (in preparation).
