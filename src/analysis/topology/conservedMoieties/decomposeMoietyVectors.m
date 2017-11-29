@@ -21,9 +21,8 @@ rp = size(Lp,2);
 % Decompose moiety vectors
 while rp > 0 % Iterate since decomposed moiety vectors might themselves be decomposable
 
-    Lpp = [];
-    cols = [];
-
+    Lpp = [];  % new possibly decomposable moiety vectors
+    D2 = [];  % new non-decomposable moiety vectors 
     for k = 1:rp
         l  = full(Lp(:,k)); % Moiety vector k
 
@@ -33,22 +32,18 @@ while rp > 0 % Iterate since decomposed moiety vectors might themselves be decom
         mbool = c ~= 0;
         rbool = any(N(mbool,:));
         c = c(mbool);
-        Np = N(mbool,rbool);
 
         % Formulate MILP problem
-        Sigma = [diag(ones(size(c))) diag(ones(size(c)))];
-        suma = [ones(size(c)); zeros(size(c))]';
-        sumb = [zeros(size(c)); ones(size(c))]';
-
-        P.A = sparse([Np' zeros(size(Np')); zeros(size(Np')) Np'; Sigma; sumb; suma; sumb]);
-        P.b = [zeros(size(Np,2),1); zeros(size(Np,2),1); c; sum(c) - 1; 1; 1];
-        P.c = suma';
-        P.lb = zeros(size(P.A,2),1);
-        P.ub = inf*ones(size(P.A,2),1);
+        P.A = [N(mbool,rbool)'; ...                                       Np' * a = 0
+               sparse(ones(numel(c), 1), 1:numel(c), 1, 1, numel(c))];  % sum(a) >= 1 
+        P.b = [zeros(sum(rbool), 1); 1];
+        P.c = ones(size(c));                                            % min sum(a)
+        P.lb = zeros(size(P.A, 2), 1);
+        P.ub = c;                                                       % bounded by Lp(:, k)
         P.osense = 1;
-        P.csense = [repmat('E', 2*size(Np,2) + length(c), 1); 'L'; 'G'; 'G'];
-        P.vartype = repmat('I', size(P.A,2), 1);
-        P.x0 = suma' .* [c; c];
+        P.csense = [repmat('E', sum(rbool), 1); 'G'];
+        P.vartype = repmat('I', size(P.A, 2), 1);
+        P.x0 = c;
 
         % Run MILP
         solution = solveCobraMILP(P);
@@ -61,22 +56,19 @@ while rp > 0 % Iterate since decomposed moiety vectors might themselves be decom
         if solution.stat == 1
             solution.full = round(solution.full);
             a(mbool) = solution.full(1:length(c));
-            b(mbool) = solution.full(length(c)+1:end);
+            b(mbool) = c - a(mbool);
         end
 
-        if any(a) && ~any(N'*a)
-            Lpp = [Lpp a];
-            cols = [cols; k];
+        if any(a) && ~any(N'*a)  % normally must be true
+            D2 = [D2, a];  % 'a' must be nondecomposable
         end
         if any(b) && ~any(N'*b)
-            Lpp = [Lpp b];
-            cols = [cols; k];
+            Lpp = [Lpp b]; % b is nonzero, may be decomposable
         end
     end
 
-    D = [D Lp(:,setdiff(1:size(Lp,2),cols))]; % Nondecomposable moieties
+    D = [D D2]; % Nondecomposable moieties
     Lp = Lpp; % New moieties that may be decomposable
     rp = size(Lp,2);
 end
-
 D = unique(D','rows','stable')'; % Eliminate duplicates
