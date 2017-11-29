@@ -76,7 +76,10 @@ changeCobraSolver(solverName, solverType);
 % The substrate used is glucose, and for this tutorial limit its uptake up to 
 % 18 mmol/(gDW·h).
 
-load('ecoli_core_model.mat', 'model');
+modelFileName = 'ecoli_core_model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 model = changeRxnBounds(model, 'EX_glc(e)', -18, 'l');
 %% PROCEDURE
 %% Identify essentail reactions: perform a gene knocked-out analysis. 

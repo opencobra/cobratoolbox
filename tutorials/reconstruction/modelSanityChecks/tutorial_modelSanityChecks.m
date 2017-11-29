@@ -38,8 +38,10 @@ initCobraToolbox
 % For solving linear programming problems in FBA analysis, certain solvers 
 % are required:
 
-% changeCobraSolver ('glpk', 'all', 1);
-changeCobraSolver ('tomlab_cplex', 'all', 1);
+changeCobraSolver ('glpk', 'all', 1);
+%Uncomment if you don't want to use glpk.
+%changeCobraSolver ('ibm_cplex', 'all', 1); 
+%changeCobraSolver ('tomlab_cplex', 'all', 1);
 %% 
 % This tutorial can be run with |'glpk'| package as linear programming solver, 
 % which does not require additional instalation and configuration. However, for 
@@ -54,21 +56,10 @@ warning off MATLAB:subscripting:noSubscriptsSpecified
 % set up. In this tutorial, the used model is the generic model of human metabolism, 
 % Recon 3 [1]. If Recon 3 is not available, please use Recon 2.
 
-if exist('2017_04_28_Recon3dForCurrentDistribution.mat','file')==2
-    filename = '2017_04_28_Recon3dForCurrentDistribution.mat';
-    load(filename);
-    model=modelRecon3model;
-    clear modelRecon3model;
-    model.csense(1:size(model.S,1),1)='E';
-else
-    filename2='Recon2.0model.mat';
-    if exist('Recon2.0model.mat','file')==2
-        load(filename2);
-        model=Recon2model;
-        clear Recon2model;
-        model.csense(1:size(model.S,1),1)='E';
-    end
-end
+modelFileName = 'Recon2.0model.mat'; %Replace if you want to load Recon3D
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 %% Model Harmonization
 % Replace reaction abbreviation for the ATP hydrolysis (DM_atp_c_) and Biomass 
 % reaction used differently in various models.

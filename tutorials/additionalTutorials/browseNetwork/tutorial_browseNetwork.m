@@ -14,7 +14,11 @@
 %% PROCEDURE
 % Load the _E. coli_ iJO1366 model as an example model.
 
-load('iJO1366.mat')
+modelFileName = 'iJO1366.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+iJO1366 = readCbModel(modelFileName);
+
 %% 
 % *Browse a network*
 % 

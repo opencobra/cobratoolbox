@@ -42,11 +42,11 @@ changeCobraSolver ('gurobi', 'all');
 % Recon2.0 $$^3$. Load the model
 
 global CBTDIR
-load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
-model = Recon2model;
-model.rxns = strrep(model.rxns, '(', '[');
-model.rxns = strrep(model.rxns, ')', ']');
-clear Recon2model
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 %% 
 % The metabolites structures and reactions od Recon2.0 can be founded in 
 % the Virtual Metabolic Human database (VMH, <http://vmh.life http://vmh.life>).
@@ -68,10 +68,10 @@ modelalter = changeRxnBounds(model, hiCarbonRxns, 0, 'b');
 % Also close the other reaction related to the exchange of oxygen and energy 
 % sources:
 
-energySources = {'EX_adp'; 'EX_amp[e]'; 'EX_atp[e]'; 'EX_co2[e]';...
-    'EX_coa[e]'; 'EX_fad[e]'; 'EX_fe2[e]'; 'EX_fe3[e]'; 'EX_gdp[e]';...
-    'EX_gmp[e]'; 'EX_gtp[e]'; 'EX_h[e]'; 'EX_h2o[e]'; 'EX_h2o2[e]';...
-    'EX_nad[e]'; 'EX_nadp[e]'; 'EX_no[e]'; 'EX_no2[e]'; 'EX_o2s[e]'};
+energySources = {'EX_adp'; 'EX_amp(e)'; 'EX_atp(e)'; 'EX_co2(e)';...
+    'EX_coa(e)'; 'EX_fad(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_gdp(e)';...
+    'EX_gmp(e)'; 'EX_gtp(e)'; 'EX_h(e)'; 'EX_h2o(e)'; 'EX_h2o2(e)';...
+    'EX_nad(e)'; 'EX_nadp(e)'; 'EX_no(e)'; 'EX_no2(e)'; 'EX_o2s(e)'};
 modelalter = changeRxnBounds (modelalter, energySources, 0, 'l');
 %% 
 % For this tutorial, we will analyse the variability of several reactions 
@@ -84,12 +84,12 @@ modelalter = changeRxnBounds (modelalter, energySources, 0, 'l');
 
 % modelfva1 represents aerobic condition
 modelfva1 = modelalter;
-modelfva1 = changeRxnBounds(modelfva1, 'EX_glc[e]', -20, 'l');
-modelfva1 = changeRxnBounds(modelfva1, 'EX_o2[e]', -1000, 'l');
+modelfva1 = changeRxnBounds(modelfva1, 'EX_glc(e)', -20, 'l');
+modelfva1 = changeRxnBounds(modelfva1, 'EX_o2(e)', -1000, 'l');
 % modelfva2 represents anaerobic condition
 modelfva2 = modelalter;
-modelfva2 = changeRxnBounds(modelfva2, 'EX_glc[e]', -20, 'l');
-modelfva2 = changeRxnBounds(modelfva2, 'EX_o2[e]',  0, 'l');
+modelfva2 = changeRxnBounds(modelfva2, 'EX_glc(e)', -20, 'l');
+modelfva2 = changeRxnBounds(modelfva2, 'EX_o2(e)',  0, 'l');
 %% 1) Standard FVA
 % The full spectrum of flux variability analysis options can be accessed using 
 % the command:

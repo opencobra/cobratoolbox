@@ -41,10 +41,10 @@ warning off MATLAB:subscripting:noSubscriptsSpecified
 % Human> webpage. Before proceeding with the simulations, the path to the model 
 % needs to be set up and the model loaded:
 
-global CBTDIR
-load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);
-model = modelR204;
-clear modelR204;
+modelFileName = 'Recon2.v04.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 %% PROCEDURE
 % We first initialize the table
 

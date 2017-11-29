@@ -37,21 +37,12 @@ changeCobraSolver ('gurobi', 'all', 1);
 % physiological functions of the human body. If Recon 3 is not available, please 
 % use Recon 2.
 
-if exist('2017_04_28_Recon3dForCurrentDistribution.mat','file')==2
-    filename = '2017_04_28_Recon3dForCurrentDistribution.mat';
-    load(filename);
-    model=modelRecon3model;
-    clear modelRecon3model;
-    model.csense(1:size(model.S,1),1)='E';
-else
-    filename2='Recon2.0model.mat';
-    if exist('Recon2.0model.mat','file')==2
-        load(filename2);
-        model=Recon2model;
-        clear Recon2model;
-        model.csense(1:size(model.S,1),1)='E';
-    end
-end
+%For Recon3D Change the model
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 %% 
 % If Recon2 is used, the reaction nomenclature needs to be adjusted.
 
@@ -240,9 +231,9 @@ modelphpp = changeObjective (modelphpp, 'DM_atp_c_');
 % [1] Noronha A., et al. (2017). ReconMap: an interactive visualization of human 
 % metabolism. _Bioinformatics_., 33 (4): 605-607.
 % 
-% [2] Edwards, J.S. and and Palsson, B. Ø. (2000). Robustness analysis of 
+% [2] Edwards, J.S. and and Palsson, B. Ã˜. (2000). Robustness analysis of 
 % the Escherichia coli metabolic network. _Biotechnology Progress, _16(6):927-39.
 % 
-% [3] Edwards, J.S., Ramakrishna, R. and and Palsson, B. Ø. (2002). Characterizing 
+% [3] Edwards, J.S., Ramakrishna, R. and and Palsson, B. Ã˜. (2002). Characterizing 
 % the metabolic phenotype: A phenotype phase plane analysis. _Biotechnology and 
 % Bioengineering_, 77:27-36.
