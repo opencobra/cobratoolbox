@@ -338,11 +338,12 @@ File name for storing temporary solutions</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>optKnockSol</strong> &#8211;
-<cite>optKnock</cite> solution structure</li>
-<li><strong>rxnList</strong> &#8211;
-Reaction <cite>KO</cite> list</li>
-<li><strong>fluxes</strong> &#8211;
-Flux distribution</li>
+<cite>optKnock</cite> solution structure
+This is the same as the solution Structure
+from solveCobraMILP plus the following fields
+(if a solution exists):
+.rxnList - Reaction <cite>KO</cite> list
+.fluxes - the flux distribution</li>
 <li><strong>bilevelMILPproblem</strong> &#8211;
 <cite>optKnock</cite> problem structure</li>
 </ul>
