@@ -319,6 +319,46 @@ An <cite>r x 1</cite> cell array of estimated moiety formulas.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.topology.conservedMoieties.findElementaryMoietyVectors">
+<code class="descname">findElementaryMoietyVectors</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/analysis/topology/conservedMoieties/findElementaryMoietyVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.findElementaryMoietyVectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate all possible elementary conserved moiety vectors based on the
+left null space of the stoichiometric matrix S.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>EMV = findElementaryMoietyVectors(model, method)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL INPUTS (in name-value pair):</dt>
+<dd><dl class="first docutils">
+<dt>&#8216;method&#8217;:           method for finding all conserved moiety vectors</dt>
+<dd><ul class="first last simple">
+<li>&#8216;efmtool&#8217;:  use EFMtool, &#8216;CalculateFluxModes.m&#8217; must be in matlab path (default)</li>
+<li>&#8216;null&#8217;:     use matlab rational null basis.</li>
+</ul>
+</dd>
+<dt>&#8216;deadCMs&#8217;:           include dead end metabolites or not (default true)</dt>
+<dd>(will have more conserved moieties found for dead end metabolites if true)</dd>
+</dl>
+<p>&#8216;printLevel&#8217;:       print messages or not (default 0).</p>
+<p class="last">Other COBRA LP solver parameters, see solveCobraLP.m</p>
+</dd>
+</dl>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>EMV</strong> &#8211;
+all minimal conserved moiety vectors</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.topology.conservedMoieties.identifyConservedMoieties">
 <code class="descname">identifyConservedMoieties</code><span class="sig-paren">(</span><em>model</em>, <em>ATN</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/analysis/topology/conservedMoieties/identifyConservedMoieties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.identifyConservedMoieties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies conserved moieties in a metabolic network (model) by graph

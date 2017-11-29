@@ -308,6 +308,43 @@ having cell arrays with chars.</dd>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.createEmptyFields">
+<code class="descname">createEmptyFields</code><span class="sig-paren">(</span><em>model</em>, <em>fieldNames</em>, <em>fieldDefinitions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/io/utilities/createEmptyFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.createEmptyFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the specified model field with its default values. Works only for
+fields defined in the toolbox if fieldDefinitions are not supplied.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>USAGE:</dt>
+<dd>model = createEmptyFields(model,fieldName, fieldDefinitions)</dd>
+</dl>
+<p>INPUTS:</p>
+<blockquote>
+<div>model:                 The model to add a field to
+fieldNames:            The names of the fields to add.</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>fieldDefinitions:      The Specifications of the field. Only necessary</dt>
+<dd>if a field which is not defined yet should be
+added.</dd>
+</dl>
+</dd>
+</dl>
+<p>OUTPUTS:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>model:                 The original model struct with the specified</dt>
+<dd>field added.</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd>Thomas Pfau Nov 2017</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.creategrRulesField">
 <code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the grRules optional model field from the required rules and gene fields.</p>

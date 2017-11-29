@@ -283,40 +283,6 @@ maximum and minimum column scaling coefficients</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.subspaces.computeElementalMatrix">
-<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/analysis/subspaces/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes elemental matrix</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[Ematrix] = computeElementalMatrix(model, metList, warnings)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure (must define <cite>.mets</cite> and <cite>.metFormulas</cite>)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metList</strong> &#8211;
-Cell array of which metabolites to search for
-(Default = all metabolites in model)</li>
-<li><strong>warnings</strong> &#8211;
-Display warnings if there are errors with the
-formula. (Default = true)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Ematrix</strong> &#8211;
-<cite>m x 6</cite> matrix of order [C N O H P other]</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.analysis.subspaces.conservationAnalysis">
 <code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/analysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.</p>

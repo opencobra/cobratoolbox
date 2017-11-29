@@ -340,12 +340,58 @@ boolean vector indicating metabolites exclusively involved in balanced reactions
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.computeElementalMatrix">
+<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes elemental matrix</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[Ematrix, element] = computeElementalMatrix(model, metList, warnings, generalFormula)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure (must define <cite>.mets</cite> and <cite>.metFormulas</cite>)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>metList</strong> &#8211;
+Cell array of which metabolites to search for
+(Default = all metabolites in model)</p>
+</li>
+<li><p class="first"><strong>warnings</strong> &#8211;
+Display warnings if there are errors with the
+formula. (Default = true)</p>
+</li>
+<li><p class="first"><strong>generalFormula</strong> &#8211;
+* (default) false to return composition for  [C N O H P other] only.
+* true to support formulae with brackets, decimal places and any chemical elements</p>
+<blockquote>
+<div><p>including undefined groups (e.g., &#8216;([H2O]2(CuSO4))2Generic_element0.5&#8217;).</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Ematrix</strong> &#8211;
+<cite>m x 6</cite> matrix of order [C N O H P other] if genericFormula = 0
+<cite>m x e</cite> matrix if genericFormula = 1 given e elements in the chemical formulae</li>
+<li><strong>elements</strong> &#8211;
+cell array of elements corresponding to the columns of Ematrix</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.computeMW">
-<code class="descname">computeMW</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/computeMW.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMW" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeMW</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em>, <em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/computeMW.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes molecular weight and elemental matrix of compounds</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[MW, Ematrix] = computeMW(model, metList, warnings)</div></blockquote>
+<div>[MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(model, metList, warnings, generalFormula, isotopeAbundance)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -355,11 +401,44 @@ COBRA model structure (must define .mets and .metFormulas)</li>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>metList</strong> &#8211;
-Cell array of which metabolites to search for. (Default = all metabolites in model)</li>
-<li><strong>warnings</strong> &#8211;
-Display warnings if there are errors with the formula. (Default = true)</li>
+<div><ul>
+<li><p class="first"><strong>metList</strong> &#8211;
+Cell array of which metabolites to search for. (Default = all metabolites in model)</p>
+</li>
+<li><p class="first"><strong>warnings</strong> &#8211;
+Display warnings if there are errors with the formula. (Default = true)</p>
+</li>
+<li><p class="first"><strong>generalFormula</strong> &#8211;
+* (default) false to calculate MWs for formulae containing consisting of common</p>
+<blockquote>
+<div><p>biological elements using their mass numbers (instead of the standard atomic mass)</p>
+</div></blockquote>
+<ul class="simple">
+<li>true to support formulae with brackets, decimal places and any chemical elements
+including undefined groups (e.g., &#8216;([H2O]2(CuSO4))2Generic_element0.5&#8217;).
+MW = NaN for any formulae with chemical elements of unknown weights
+except the reserved formula &#8216;Mass0&#8217; for denoting truly massless metabolites (e.g., photon)</li>
+</ul>
+</li>
+<li><p class="first"><strong>(isotopeAbundance is used only if genericFormula = true)</strong></p>
+</li>
+<li><p class="first"><strong>isotopeAbundance</strong> &#8211;
+* (default) false to use standard atomic weights
+* true to use the weights of naturally predominant isotopes for biological</p>
+<blockquote>
+<div><p>elements and standard weights for other elements.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><cite>m</cite> x 3 cell arrray with user defined isotope abundance:</dt>
+<dd>isotopeAbundance{i, 1} = &#8216;Atomic_Symbol&#8217;;
+isotopeAbundance{i, 2} = Mass_Number;
+isotopeAbundance{i, 3} = abundance;
+(where sum of abundances of all isotopes of an element must be one)</dd>
+</dl>
+</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -368,9 +447,170 @@ Display warnings if there are errors with the formula. (Default = true)</li>
 <li><strong>MW</strong> &#8211;
 Vector of molecular weights</li>
 <li><strong>Ematrix</strong> &#8211;
-<cite>m</cite> x 6 matrix of order [C N O H P other]</li>
+* <cite>m</cite> x 6 matrix of order [C N O H P other] if genericFormula = false
+* <cite>m</cite> x <cite>e</cite> matrix if genericFormula = true given <cite>e</cite> elements in the chemical formulae</li>
+<li><strong>element</strong> &#8211;
+cell array of elements corresponding to the columns of Ematrix</li>
+<li><strong>(knownWeights and unknownElements are non-empty only if genericFormula = true)</strong></li>
+<li><strong>knownWeights</strong> &#8211;
+MWs for the part whose MW is computable ofr each of the formulae</li>
+<li><strong>unknownElements</strong> &#8211;
+cell arrary of elements without known atomic weights that appear in the formulae</li>
 </ul>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.computeMetFormulae">
+<code class="descname">computeMetFormulae</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/computeMetFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMetFormulae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the chemical formulas for metabolites without formulas using a set of metabolites with
+known formulae by minimizing the overall inconsistency in elemental balance. They are combined with the
+conserved moiety vectors identified from the left null space of S-matrix to return the general formulae.
+Known formulae for all external mets (including sink/demand) suffice to infer the formulae for all
+metabolites. More mets with known formulae will reveal more inconsistency in mass balance.
+This is particularly useful for checking the molecular weight of the biomass produced in the model,
+which should be curated to have MW = 1000 g/mol for prediction fidelity.
+Metabolites that may have adjustable stoichiometries (e.g., H+, H2O) can be supplied to fill up inconsistency.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Find unknown chemical formulae for all metabolites:</dt>
+<dd>[model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, &#8216;parameter&#8217;, value, ... )</dd>
+<dt>Find the min/max possible MW of a particular metabolite of interest:</dt>
+<dd>[mwRange, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, &#8216;metMwRange&#8217;, met, ...)</dd>
+<dt>Also support direct input in the following order:</dt>
+<dd>[...] = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)</dd>
+</dl>
+</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL INPUTS (support name-value argument input):</dt>
+<dd><dl class="first docutils">
+<dt>kownMets:       Known metabolites (cell array of strings or vector of met IDs)</dt>
+<dd>[default all mets with nonempty .metFormulas]</dd>
+<dt>balancedRxns:   The set of reactions for inferring formulae (cell array of strings or vector of rxn IDs)</dt>
+<dd>[default all non-exchange reactions]</dd>
+<dt>fillMets:       The chemical formulas for compounds for freely filling the imbalance, e.g. {&#8216;HCharge1&#8217;, &#8216;H2O&#8217;}.</dt>
+<dd>&#8216;none&#8217; not to have any. [default &#8216;HCharge1&#8217; if charge info exists else &#8216;H&#8217;]</dd>
+<dt>calcCMs:        Calculate conserved moieties from the left null space of S. Options:</dt>
+<dd><ul class="first simple">
+<li><dl class="first docutils">
+<dt>&#8216;efmtool&#8217;: Use EFMtool (most comprehensive, recommanded, but computational</dt>
+<dd>cost may be high if there are many deadend mets)</dd>
+</dl>
+</li>
+<li>&#8216;null&#8217;:    Use the rational basis computed by Matlab</li>
+<li><dl class="first docutils">
+<dt>N:         Directly supply the matrix <span class="math">\(N\)</span> for conserved moieties</dt>
+<dd>(from rational basis or the set of extreme rays)</dd>
+</dl>
+</li>
+<li>false:     Not to find conserved moieties and return minimal formulae</li>
+</ul>
+<p class="last">[default &#8216;efmtool&#8217; if &#8216;CalculateFluxModes.m&#8217; is in path, else switch to &#8216;null&#8217;]</p>
+</dd>
+<dt>nameCMs:        Name the identified conserved moieties or not [default 0]</dt>
+<dd><ul class="first last simple">
+<li>0:  The program assigns default names for conserved moieties (Conserve_a, Conserve_b, ...)</li>
+<li>1:  Name true conserved moieties interactively (exclude dead end mets).</li>
+<li>2:  Name all interactively (including dead end)</li>
+</ul>
+</dd>
+</dl>
+<p>deadCMs:        true to include dead end metabolites when finding conserved moieties (default true)
+metMwRange:     the metabolite of interest (or its ID) for which the range of possible molecular weights is determined</p>
+<blockquote>
+<div>(if supplied, inputs &#8216;fillMets&#8217;, ... , &#8216;deadCMs&#8217; are all not used)</div></blockquote>
+<p class="last">LPparams:       Additional parameters for <cite>solveCobraLP</cite>. See <cite>solveCobraLP</cite> for details</p>
+</dd>
+</dl>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+COBRA model with updated formulas and charges (1st output if &#8216;metMwRange&#8217; is not called)</p>
+</li>
+<li><p class="first"><strong>mwRange</strong> &#8211;
+range for the MW of the metabolite of interest (1st output if &#8216;metMwRange&#8217; is called)</p>
+</li>
+<li><p class="first"><strong>metFormulae</strong> &#8211;
+Formulae for unknown mets (#unknown mets x 2 cell array) if &#8216;metMwRange&#8217; is not called
+Cell array of two chemical formulae for the min/max MW of the metabolite of interest if &#8216;metMwRange&#8217; is called</p>
+</li>
+<li><p class="first"><strong>elements</strong> &#8211;
+Elements corresponding to the row of rxnBal, the coloumn of metEle</p>
+</li>
+<li><p class="first"><strong>metEle</strong> &#8211;
+Chemical formulas in matrix (#metKnown x #elements)</p>
+</li>
+<li><p class="first"><strong>rxnBal</strong> &#8211;
+Elemental balance of rxns (#elements x #rxns)</p>
+</li>
+<li><p class="first"><strong>S_fill</strong> &#8211;
+Adjustment of the S-matrix by &#8216;metFill&#8217; (#metFill x #rxns in the input)</p>
+</li>
+<li><p class="first"><strong>solInfo</strong> &#8211;
+Info for the solutions for each of the optimization problems solved:
+* metUnknown:    mets whose formulae are being solved for (#met_unknown x 1 cell)
+* metFill:       metabolite formulae used to automatically fill inconsistency
+* rxns:          reactions with elemental balance imposed
+* elements:      the chemical elements present in the model&#8217;s formulae.
+* eleConnect:    connected components partitioning solInfo.elements (#elements x #components logical matrix).</p>
+<blockquote>
+<div><p>Elements in the same component mean that they are connected
+by some &#8216;metFill&#8217; and are optimized in the same round.</p>
+</div></blockquote>
+<ul class="simple">
+<li>metEleUnknown: the formulae found for unknown metabolites in different steps (#met_unknown x #elements)</li>
+<li>S_fill:        solution for S_fill in each step</li>
+<li>solEachEle:    structure of solutions, one for each connected componenets of elements</li>
+<li>feasTol:       tolerance used to determine solution feasibility</li>
+<li><dl class="first docutils">
+<dt>stat:          minIncon/minFill/minForm/mixed/infeasible stating where the final solution metEleUnknwon</dt>
+<dd>is obtained from. Ideally minForm if no numerical issue on feasibility.
+(minIncon/minMw/maxMw/minMw &amp; maxMw if calling with option &#8216;metMwRange&#8217;)</dd>
+</dl>
+</li>
+<li>N:             the minimal conserved moiety vectors</li>
+</ul>
+</li>
+<li><p class="first"><strong>LP</strong> &#8211;
+LP problem structure for solveCobraLP (#components x 1)</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae">
+<code class="descname">elementalMatrixToFormulae</code><span class="sig-paren">(</span><em>Ematrix</em>, <em>elements</em>, <em>dMax</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the elemental composition matrix into chemical formulae</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>metForm = elementalMatrixToFormulae(elements, Ematrix, dMax)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Ematrix</strong> &#8211;
+elemental composition (<cite>M</cite> x <cite>E</cite> matrix) for <cite>M</cite> metabolites and <cite>E</cite> elements</li>
+<li><strong>elements</strong> &#8211;
+cell array of elements corresponding to the columns of Ematrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>dMax</strong> &#8211;
+the maximum number of decimal places for the stoichiometry (default 12)</li>
+</ul>
+</div></blockquote>
+<p>Siu Hung Joshua Chan Nov 2016</p>
 </dd></dl>
 
 <dl class="function">
@@ -454,6 +694,53 @@ proton layer. If nothing is defined, the compound is uncharged.
 First: Discard any &#8220;Reconnected&#8221; parts, as those don&#8217;t influence the
 charge</p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.getElementalComposition">
+<code class="descname">getElementalComposition</code><span class="sig-paren">(</span><em>formulae</em>, <em>elements</em>, <em>chargeInFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/getElementalComposition.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getElementalComposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the complete elemental composition matrix. It supports formulae with
+generic elements, parentheses and decimal places</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[Ematrix, elements] = getElementalComposition(formulae, elements, chargeInFormula)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>formulae</strong> &#8211;
+cell array of strings of chemical formulae. Can contain any generic elements starting
+with a capital letter followed by lowercase letters or &#8216;_&#8217;, followed by a non-negative number.
+Also support &#8216;()&#8217;, &#8216;[]&#8217;, &#8216;{}&#8217;. E.g. {&#8216;H2O&#8217;; &#8216;[H2O]2(CuSO4)Generic_element0.5&#8217;}</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>elements</strong> &#8211;
+elements from previous call to preserve the order (default {})</li>
+<li><strong>chargeInFormula</strong> &#8211;
+true to accept formulae containing the generic element &#8216;Charge&#8217; representing the charges,
+followed by a real number, e.g., &#8216;HCharge1&#8217;, &#8216;SO4Charge-2&#8217; (default false).</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Ematrix</strong> &#8211;
+elemental composition matrix (#formulae x #elements)</li>
+<li><strong>elements</strong> &#8211;
+cell array of elements corresponding to the columns of Ematrix</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>E.g., [Ematrix, elements] = getElementalComposition({&#8216;H2O&#8217;; &#8216;[H2O]2(CuSO4)Generic_element0.5&#8217;}) would return:</dt>
+<dd><p class="first">elements = {&#8216;H&#8217;, &#8216;O&#8217;, &#8216;Cu&#8217;, &#8216;S&#8217;, &#8216;Generic_element&#8217;}
+Ematrix = [ 2,   1,    0,   0,   0;</p>
+<blockquote class="last">
+<div>4,   6,    1,   1,   0.5]</div></blockquote>
+</dd>
+</dl>
+<p>Siu Hung Joshua Chan May 2017</p>
 </dd></dl>
 
 <dl class="function">
