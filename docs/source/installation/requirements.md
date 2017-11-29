@@ -41,3 +41,5 @@ Please download the `git` tools for Windows from [here](https://git-scm.com/down
 <div align="center">
 <img src="../_static/images/installation_git_windows_0.png" height="280px">&nbsp;&nbsp;&nbsp;<img src="../_static/images/installation_git_windows_1.png" height="280px">.
 </div>
+
+For installing `curl`, follow the instructions [here](https://stackoverflow.com/questions/9507353/how-do-i-install-set-up-and-use-curl-on-windows/16216825#16216825). 
