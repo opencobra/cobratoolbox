@@ -28,13 +28,26 @@ if m>n & 0%TODO need to check this
 end
 
 gmscale=1;%by default, use geometric mean scaling of S
+archstr = computer('arch');
+archstr = lower(archstr);
+switch archstr
+    case {'win32', 'win64'}        
+        if issparse(S) && any(size(S) > 3000)
+            [Z,rankS] = sparseNull(S);
+            
+        else % for small matrices or those which are full, use the normal matlab functions
+            Z = null(full(S));
+            rankS = rank(full(S));
+        end
+    case {'glnxa64','maci64','glnxa86'}
+        nullS = nullSpaceOperator(S,gmscale,printLevel);        % forms a structure nullS.
+        rankS = nullS.rank;
+        V     = speye(n-rankS,n-rankS);       % is a sparse I of order n-rankS.
+        Z     = nullSpaceOperatorApply(nullS,V); % satisfies S*Z = 0.
 
-nullS = nullSpaceOperator(S,gmscale,printLevel);        % forms a structure nullS.
-rankS = nullS.rank;
-V     = speye(n-rankS,n-rankS);       % is a sparse I of order n-rankS.
-Z     = nullSpaceOperatorApply(nullS,V); % satisfies S*Z = 0.
+        % Check if S*Z = 0.
+end
 
-% Check if S*Z = 0.
 SZ    = S*Z;
 normSZ= norm(SZ,inf);
 
