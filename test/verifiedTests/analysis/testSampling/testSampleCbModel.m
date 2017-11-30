@@ -67,10 +67,6 @@ for k = 1:length(solverPkgs)
                     assert(all(removedRxns == [26; 27; 29; 34; 45; 47; 52; 63]))                    
                     
                 case 'CHRR'
-                    if ~isunix
-                        fprintf('CHRR sampler not compatible with Operating System\n');
-                        continue;
-                    end
                     fprintf('\nTesting the coordinate hit-and-run with rounding (CHRR) sampler\n.');
                     
                     options.nStepsPerPoint = 1;
