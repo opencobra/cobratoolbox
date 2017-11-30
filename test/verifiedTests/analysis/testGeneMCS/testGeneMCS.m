@@ -19,7 +19,7 @@ cd(fileparts(which('testGeneMCS')));
 solverPkgs = {'ibm_cplex','gurobi'}; 
 
 % Load Toy Example
-load gMCStoyExample.mat
+readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
   
 % expected solution
 true_gmcs = cell(3,1);

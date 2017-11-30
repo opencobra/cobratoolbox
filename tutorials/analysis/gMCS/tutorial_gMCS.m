@@ -29,7 +29,7 @@
 %% EQUIPMENT SETUP
 %% Initialize The Cobra Toolbox and select the solver (~20 sec)
 % If necessary, initialise the cobre toolbox:
-%%
+
 initCobraToolbox
 %% 
 % Select the appropriate solver removing the "%" symbol only for the desired 
@@ -49,8 +49,8 @@ changeCobraSolver('ibm_cplex', 'all');
 % 
 % First, we are going to load the MAT-file which contains the metabolic network 
 % in the toy example.
-%%
-load('gMCStoyExample.mat');
+
+model = readCbModel('gMCStoyExample.mat');
 %% 
 % As different metabolic models in COBRA format, it contains the following 
 % fields: _S_, _ub_, _lb_, _rxns_, _mets_, _genes_, _rules_, _grRules_, _rxnGeneMat 
@@ -159,7 +159,7 @@ gMCSs{4}
 % has to be executed.
 % 
 % First, we are going to load the metabolic model.
-%%
+
 global CBTDIR
 load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'Recon2.v04.mat']);
 %% 
