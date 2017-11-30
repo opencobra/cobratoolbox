@@ -51,5 +51,8 @@ end
 % define the solver packages to be used to run this test
 fprintf('Done.\n');
 
+%Remove the output, to keep the toolbox updateable.
+delete([fileDir filesep 'MILPProblem.mat']);
+
 % change the directory
 cd(currentDir)
