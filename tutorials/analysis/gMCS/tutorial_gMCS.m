@@ -160,8 +160,7 @@ gMCSs{4}
 % 
 % First, we are going to load the metabolic model.
 
-global CBTDIR
-load([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'Recon2.v04.mat']);
+modelR204 = getDistributedModel('Recon2.v04.mat');
 %% 
 % Next, in the same way as in the toy example, we will proceed to set the 
 % name of the model ('Recon2'), the number of gMCSs to be calculated (6) and the 

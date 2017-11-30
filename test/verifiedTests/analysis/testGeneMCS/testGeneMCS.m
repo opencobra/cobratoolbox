@@ -19,7 +19,7 @@ cd(fileparts(which('testGeneMCS')));
 solverPkgs = {'ibm_cplex','gurobi'}; 
 
 % Load Toy Example
-readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
+model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
   
 % expected solution
 true_gmcs = cell(3,1);
@@ -34,7 +34,7 @@ for k = 1:length(solverPkgs)
 
     if solverLPOK
         % Eliminate G-matrix if it exist
-        if exist('G_toy_example_gMCS.mat', 'file')
+        if exist([currentDir filesep 'G_toy_example_gMCS.mat'], 'file')
             delete G_toy_example_gMCS.mat
         end
         
@@ -60,6 +60,17 @@ for k = 1:length(solverPkgs)
         assert(sum(~logical(gmcsIsTrue))==0);
     else
         warning('The test testGeneMCS cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
+    end
+    
+    % Eliminate generated files
+    if exist([currentDir filesep 'G_toy_example_gMCS.mat'], 'file')
+        delete G_toy_example_gMCS.mat
+    end
+    if exist([currentDir filesep 'CobraMILPSolver.log'], 'file')
+        delete CobraMILPSolver.log
+    end
+    if exist([currentDir filesep 'MILPProblem.mat'], 'file')
+        delete MILPProblem.mat
     end
 
     % output a success message
