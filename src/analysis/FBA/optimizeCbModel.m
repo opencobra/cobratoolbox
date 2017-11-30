@@ -206,22 +206,7 @@ end
 
 %Ensure Constraint Field Consistency
 modelfields = fieldnames(model);
-ConstraintFields = {'C','d','dsense','ctrs'}; %All or none have to be present.
-if ~all(ismember(ConstraintFields,modelfields))
-    
-    if any(ismember(ConstraintFields,modelfields))
-        error('If any field for additional linear Constraints (%s) is present, all of those fields have to be present. For a explanation of those fields please Refer to the %s.\nYou can use verifyModelFields to determine what exactly is wrong.',...
-            strjoin(ConstraintFields,'; '), hyperlink('https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html','Model Field Definitions') );            
-    end    
-else
-    %So we have all Constraint fields. Now check that the sizes are
-    %correct.
-    res = verifyModel(model,'restrictToFields',ConstraintFields,'simpleCheck',true,'silentCheck',true);
-    if ~res
-        error('Constraint fields (%s) were inconsistent with the %s.\nYou can use verifyModelFields to determine what exactly is wrong.',...
-            strjoin(ConstraintFields,'; '), hyperlink('https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html','Model Field Definitions'));
-    end
-end
+
 
 if ~isfield(model,'dxdt')
     if isfield(model,'b')
@@ -258,26 +243,12 @@ else % if csense is in the model, move it to the lp problem structure
 end
 
 %now build the equality and inequality constraint matrices
-if isfield(model,'d')    
-    LPproblem.b = [model.dxdt;model.d];
-else
-    LPproblem.b = model.dxdt;
-end
+LPproblem.b = model.dxdt;
+LPproblem.A = model.S;
+LPproblem.csense=model.csense;
 
-if isfield(model,'C')    
-    LPproblem.A = [model.S;model.C];
-else
-    LPproblem.A = model.S;
-end
-
-%copy over the constraint sense also
-
-if isfield(model,'dsense')    
-    LPproblem.csense = [model.csense;model.dsense];
-else
-    LPproblem.csense=model.csense;
-end
-
+%and add any C*v dsense d constraints
+LPproblem = addCConstraints(LPproblem,model);
 %linear objective coefficient
 LPproblem.c = model.c;
 
