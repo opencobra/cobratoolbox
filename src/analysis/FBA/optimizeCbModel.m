@@ -204,10 +204,6 @@ end
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
 
-%Ensure Constraint Field Consistency
-modelfields = fieldnames(model);
-
-
 if ~isfield(model,'dxdt')
     if isfield(model,'b')
         %old style model
