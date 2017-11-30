@@ -204,25 +204,23 @@ end
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
 
-%make sure C is present if d is present
-if ~isfield(model,'C') && isfield(model,'d')
-    error('For the constraints C*v <= d, both must be present')
-end
-
-if isfield(model,'C')
-    [nIneq,nltC]=size(model.C);
-    [nIneq2,nltd]=size(model.d);
-    if nltC~=nRxns
-        error('For the constraints C*v <= d the number of columns of S and C are inconsisent')
-    end
-    if nIneq~=nIneq2
-        error('For the constraints C*v <= d, the number of rows of C and d are inconsisent')
-    end
-    if nltd~=1
-        error('For the constraints C*v <= d, d must have only one column')
-    end
+%Ensure Constraint Field Consistency
+modelfields = fieldnames(model);
+ConstraintFields = {'C','d','dsense','ctrs'}; %All or none have to be present.
+if ~all(ismember(ConstraintFields,modelfields))
+    
+    if any(ismember(ConstraintFields,modelfields))
+        error('If any field for additional linear Constraints (%s) is present, all of those fields have to be present. For a explanation of those fields please Refer to the %s.\nYou can use verifyModelFields to determine what exactly is wrong.',...
+            strjoin(ConstraintFields,'; '), hyperlink('https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html','Model Field Definitions') );            
+    end    
 else
-    nIneq=0;
+    %So we have all Constraint fields. Now check that the sizes are
+    %correct.
+    res = verifyModel(model,'restrictToFields',ConstraintFields,'simpleCheck',true,'silentCheck',true);
+    if ~res
+        error('Constraint fields (%s) were inconsistent with the %s.\nYou can use verifyModelFields to determine what exactly is wrong.',...
+            strjoin(ConstraintFields,'; '), hyperlink('https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html','Model Field Definitions'));
+    end
 end
 
 if ~isfield(model,'dxdt')
@@ -230,16 +228,8 @@ if ~isfield(model,'dxdt')
         %old style model
         if length(model.b)==nMets
             model.dxdt=model.b;
-            %model=rmfield(model,'b'); %tempting to do this
         else
-            if isfield(model,'C')
-                %new style model, b must be rhs for [S;C]*v {=,<=,>=} [dxdt,d] == b
-                if length(model.b)~=nMets+nIneq
-                    error('model.b must equal the number of rows of [S;C]')
-                end
-            else
-                error('model.b must equal the number of rows of S or [S;C]')
-            end
+            error('model.b must equal the number of rows of S or [S;C]')
         end
     else
         fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
@@ -252,36 +242,18 @@ else
 end
 
 %check the csense and make sure it is consistent
-if isfield(model,'C')
-    if ~isfield(model,'csense')
-        if printLevel>1
-            fprintf('%s\n','No defined csense.')
-            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
-        end
-        model.csense(1:nMets,1) = 'E';
-        model.csense(nMets+1:nMets+nIneq,1) = 'L';
-    else 
-        if length(model.csense)~=nMets+nIneq
-            error('Length of csense is invalid! Defaulting to equality constraints.')
-        else
-            model.csense = columnVector(model.csense);
-        end
+if ~isfield(model,'csense')
+    % If csense is not declared in the model, assume that all constraints are equalities.
+    if printLevel>1
+        fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
     end
-else   
-    if ~isfield(model,'csense')
-        % If csense is not declared in the model, assume that all constraints are equalities.
-        if printLevel>1
-            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
-        end
+    model.csense(1:nMets,1) = 'E';
+else % if csense is in the model, move it to the lp problem structure
+    if length(model.csense)~=nMets
+        error('The length of csense does not match the number of rows of model.S.')
         model.csense(1:nMets,1) = 'E';
-    else % if csense is in the model, move it to the lp problem structure
-        if length(model.csense)~=nMets
-            error('The length of csense does not match the number of rows of model.S.')
-            model.csense(1:nMets,1) = 'E';
-        else
-            model.csense = columnVector(model.csense);
-        end
+    else
+        model.csense = columnVector(model.csense);
     end
 end
 
@@ -299,7 +271,12 @@ else
 end
 
 %copy over the constraint sense also
-LPproblem.csense=model.csense;
+
+if isfield(model,'dsense')    
+    LPproblem.csense = [model.csense;model.dsense];
+else
+    LPproblem.csense=model.csense;
+end
 
 %linear objective coefficient
 LPproblem.c = model.c;
@@ -310,8 +287,7 @@ LPproblem.ub = model.ub;
 
 %Double check that all inputs are valid:
 if ~(verifyCobraProblem(LPproblem, [], [], false) == 1)
-    warning('invalid problem');
-    return;
+    error('invalid problem'); %This should be an error, not a warning... If the problem is invalid, code should never proceed
 end
 
 %%
