@@ -19,16 +19,13 @@ function [ response ] = postMINERVArequest(login, password, map, identifier, con
 %                               index 2 - success or error message
 %
 % .. Author: - Alberto Noronha Jan/2016
-    
-   
+
+
 
 %    content = {'identifier', identifier, 'login', login, 'password', password, 'model', map, 'expression_value', content};
 %    xmlresponse = urlread(minerva_servlet, 'POST', content);
-    
+
     headerlength = ' ';
-    if ispc
-        headerlength = ' -H "Content-Length: 0" ';  
-    end
    loginURL = strcat({'curl'}, {headerlength} , {'-X POST -c - --data "login='}, login, {'&password='}, password, {'" https://vmh.uni.lu/MapViewer/api/doLogin/'});
    [x , command_out] = system(char(loginURL));
    if isempty(regexp(command_out, 'Invalid credentials'))
