@@ -72,6 +72,7 @@
 % Initialize The Cobra Toolbox using the |initCobraToolbox| function.
 
 initCobraToolbox
+global CBTDIR; %Get the folder of the toolbox.
 %% *Setting the *optimization* solver.*
 % This tutorial will be run with a |'glpk'| package, which is a linear programming 
 % ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
@@ -101,27 +102,18 @@ if usejava('desktop') % This line of code is to avoid execution of this turorial
 % window, the metabolites participating in these reactions in the metabolite creator 
 % window.
 % 
-% 
-% 
-% *0.* Open MATLAB
-% 
-% *1.* Add The CobraToolbox provided to you in your path:
-
-global CBTDIR
-addpath(genpath([CBTDIR filesep 'src']))
-%% 
-% Or, manually in MATLAB window go to _file-> setpath-> add with subfolders-> 
-% cobra toolbox folder -> save & close_
-% 
-%  *2.* Initiate rBioNet by linking the database files.
+% *1.* Initiate rBioNet by linking the database files.
 % 
 % * For the tutorial, we will create a file "rBioNetSettingsDB.mat" that contains 
 % the paths to the tutorial reaction, metabolite, and compartment database files.
 
-comp_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_compartments.mat'];
-met_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_metabolites.mat'];
-rxn_path = [CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'tutorial_reactions.mat'];
-save([CBTDIR filesep 'tutorials' filesep 'rBioNet' filesep 'rBioNetSettingsDB.mat'],...
+%Get the path of the tutorial to store the rBioNet Databases in this folder.
+%If you want to use another folder just change the pathes.
+tutorialPath = fileparts(which('tutorial_rBioNet'));
+comp_path = [tutorialPath filesep 'tutorial_compartments.mat'];
+met_path = [tutorialPath filesep 'tutorial_metabolites.mat'];
+rxn_path = [tutorialPath filesep 'tutorial_reactions.mat'];
+save([tutorialPath filesep 'rBioNetSettingsDB.mat'],...
     'comp_path', 'met_path', 'rxn_path')
 %% 
 % * Note there are three .mat files, corresponding to the reaction database, 
@@ -191,7 +183,7 @@ ReconstructionTool
 % 
 % _File -> open model -> complete reconstruction -> select the E. coli core 
 % model provided in the tutorial folder (tutorial_Ecoli_core_model.mat) -> click 
-% yes on the reconstruction description bar –> click no on the load gene index 
+% yes on the reconstruction description bar â€“> click no on the load gene index 
 % bar._
 % 
 % 
