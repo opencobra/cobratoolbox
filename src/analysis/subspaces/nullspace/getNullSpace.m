@@ -44,10 +44,9 @@ switch archstr
         rankS = nullS.rank;
         V     = speye(n-rankS,n-rankS);       % is a sparse I of order n-rankS.
         Z     = nullSpaceOperatorApply(nullS,V); % satisfies S*Z = 0.
-
-        % Check if S*Z = 0.
 end
 
+% Check if S*Z = 0.
 SZ    = S*Z;
 normSZ= norm(SZ,inf);
 

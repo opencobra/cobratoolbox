@@ -31,7 +31,7 @@ catch
     %No pool
 end
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex'};
+solverPkgs = {'gurobi', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
     fprintf('   Testing sampleCbModel using %s ... \n', solverPkgs{k});
