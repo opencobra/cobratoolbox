@@ -1,4 +1,4 @@
-function [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, rxnList, hexColour, thickness)
+function [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, thickness)
 % Builds a layout for MINERVA from a flux distribution. If a dictionary
 % of identifiers is not provided it is assumed that the map and the COBRA
 % model's nomenclature is coherent. Sends the layout to the remote MINERVA
@@ -16,7 +16,6 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 %    identifier:        Name for the layout in MINERVA
 %
 % OPTIONAL INPUT:
-%    rxnList:           cell array of reaction abbreviations to colour
 %    hexColour          colour of overlay (hex color format)
 %                       e.g. '#009933' corresponds to http://www.color-hex.com/color/009933
 %    thickness:         maximum thickness
@@ -26,16 +25,6 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 %
 % .. Author: - Alberto Noronha Jan/2016
 
-if exist('rxnList','var')
-    if ~isempty(rxnList)
-        dicFlag=1;
-    else
-        dicFlag = 0;
-    end
-else
-    dicFlag = 0;
-end
-
 if exist('thickness', 'var') || nargin < 7
     thickness = 10;
 end
@@ -43,45 +32,43 @@ end
 if exist('hexColour','var')
     defaultColor = hexColour;
 else
-    defaultColor = '#009933';
+    defaultColor = '#57c657';
 end
 
 %nRxn=length(solution.v);
 %normalizedFluxes = min(ones(nRxn,1),normalizeFluxes(abs(solution.v))-8);
 normalizedFluxes = normalizeFluxes(abs(solution.v), thickness);
-content = 'name\treactionIdentifier\tlineWidth\tcolor\n';
+content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
 for i=1:length(solution.v)
+    mapReactionId = model.rxns{i};
 
-    %get reaction
-    if dicFlag == 1
-        index = strcmp(model.rxns{i}, rxnList(:,1));
-        mapReactionId = rxnList(index,2);
-    else
-        mapReactionId = model.rxns{i};
+    % if not ReconMap 2.01 use new reaction notation   
+    if ~strcmp(minerva.map, 'ReconMap-2.01')
+        mapReactionId = strcat('r_', mapReactionId);
     end
+    
 
     if solution.v(i) ~= 0
-        line = strcat('\t', mapReactionId, '\t', num2str(normalizedFluxes(i)), '\t', defaultColor, '\n');
+        line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
         content = strcat(content, line);
     end
 end
 
 %   get all the parameters
-minerva_servlet = minerva.minervaURL;
 login = minerva.login;
 password = minerva.password;
 map = minerva.map;
 %     have to turn it into string
 %     disp(content);
 content = sprintf(content);
-serverResponse = postMINERVArequest(minerva_servlet, login, password, map, identifier, content);
+serverResponse = postMINERVArequest(login, password, map, identifier, content);
 end
 
 %% Normalize a flux into a range of 1 to 10
 function [ normalized_value ] = normalizeFluxes(fluxDistribution, thickness)
 
     if exist('thickness','var') || nargin < 2
-        thickness = 10;
+        thickness = 8;
     end
 
     m = min(fluxDistribution);
