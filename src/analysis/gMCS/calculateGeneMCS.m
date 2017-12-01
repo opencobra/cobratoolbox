@@ -276,11 +276,6 @@ if isempty(KO)
             gmcs_time{n_time+1, 1} = ['gMCS_' num2str(i)];
             gmcs_time{n_time+1, 2} = gmcsi_time;
         else
-            gmcs{i, 1} = NaN;
-            gmcsi_time = toc-ini_gmcs_time;
-            n_time = size(gmcs_time, 1);
-            gmcs_time{n_time+1, 1} = ['gMCS_' num2str(i)];
-            gmcs_time{n_time+1, 2} = gmcsi_time;
             n_time = size(gmcs_time, 1);
             gmcs_time{n_time+1, 1} = 'Total Time gMCS';
             gmcs_time{n_time+1, 2} = toc;
@@ -451,11 +446,6 @@ else
             gmcs_time{n_time+1, 1} = ['gMCS_' num2str(i)];
             gmcs_time{n_time+1, 2} = gmcsi_time;
         else
-            gmcs{i, 1} = NaN;
-            gmcsi_time = toc-ini_gmcs_time;
-            n_time = size(gmcs_time, 1);
-            gmcs_time{n_time+1, 1} = ['gMCS_' num2str(i)];
-            gmcs_time{n_time+1, 2} = gmcsi_time;
             n_time = size(gmcs_time, 1);
             gmcs_time{n_time+1, 1} = 'Total Time gMCS';
             gmcs_time{n_time+1, 2} = toc;
