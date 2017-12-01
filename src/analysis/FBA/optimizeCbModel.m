@@ -242,15 +242,16 @@ end
 LPproblem.b = model.dxdt;
 LPproblem.A = model.S;
 LPproblem.csense=model.csense;
-
-%and add any C*v dsense d constraints
-LPproblem = addCConstraints(LPproblem,model);
 %linear objective coefficient
 LPproblem.c = model.c;
 
 %box constraints
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
+BasicLP = LPproblem;
+
+%and add any C*v dsense d constraints
+LPproblem = addCConstraintsToLPProblem(LPproblem,model);
 
 %Double check that all inputs are valid:
 if ~(verifyCobraProblem(LPproblem, [], [], false) == 1)
@@ -299,28 +300,16 @@ if strcmp(minNorm, 'one')
     % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
     %
     % delta+,delta- >= 0
-    LPproblem2.A = [model.S sparse(nMets,2*nRxns);
+    LPproblem2.A = [BasicLP.A sparse(nMets,2*nRxns);
         speye(nRxns,nRxns) speye(nRxns,nRxns) sparse(nRxns,nRxns);
         -speye(nRxns,nRxns) sparse(nRxns,nRxns) speye(nRxns,nRxns);
-        model.c' sparse(1,2*nRxns)];
+        BasicLP.c' sparse(1,2*nRxns)];
     LPproblem2.c  = [zeros(nRxns,1);ones(2*nRxns,1)];
-    LPproblem2.lb = [model.lb;zeros(2*nRxns,1)];
-    LPproblem2.ub = [model.ub;Inf*ones(2*nRxns,1)];
-    LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
-    if ~isfield(model,'csense')
-        % If csense is not declared in the model, assume that all
-        % constraints are equalities.
-        LPproblem2.csense(1:nMets) = 'E';
-    else % if csense is in the model, move it to the lp problem structure
-        if length(model.csense)~=nMets,
-            warning('Length of csense is invalid! Defaulting to equality constraints.')
-            LPproblem2.csense(1:nMets) = 'E';
-        else
-            LPproblem2.csense = columnVector(model.csense);
-        end
-    end
-    LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';
-
+    LPproblem2.lb = [BasicLP.lb;zeros(2*nRxns,1)];
+    LPproblem2.ub = [BasicLP.ub;Inf*ones(2*nRxns,1)];
+    LPproblem2.b  = [BasicLP.b;zeros(2*nRxns,1);solution.obj];
+    LPproblem2.csense = BasicLP.csense;    
+    LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';    
     % constrain the optimal value according to the original problem
     if LPproblem.osense==-1
         LPproblem2.csense(nMets+2*nRxns+1) = 'G';
@@ -328,14 +317,16 @@ if strcmp(minNorm, 'one')
         LPproblem2.csense(nMets+2*nRxns+1) = 'L';
     end
     LPproblem2.csense = columnVector(LPproblem2.csense);
-    LPproblem2.osense = 1;
+    LPproblem2.osense = 1;    
     % Re-solve the problem
     if allowLoops
+        LPproblem2 = addCConstraintsToLPProblem(LPproblem2,model);
         solution = solveCobraLP(LPproblem2);
         solution.dual = []; % slacks and duals will not be valid for this computation.
         solution.rcost = [];
     else
         MILPproblem2 = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+        MILPproblem2 = addCConstraintsToLPProblem(MILPproblem2,model);
         solution = solveCobraMILP(MILPproblem2);
     end
 elseif strcmp(minNorm, 'zero')
@@ -346,12 +337,13 @@ elseif strcmp(minNorm, 'zero')
     %                   lb <= v <= ub
 
     % Define the constraints structure
-    constraint.A = [LPproblem.A ; LPproblem.c'];
-    constraint.b = [LPproblem.b ; solution.obj];
-    constraint.csense = [LPproblem.csense;'E'];
-    constraint.lb = LPproblem.lb;
-    constraint.ub = LPproblem.ub;
-
+    constraint.A = [BasicLP.A ; BasicLP.c'];
+    constraint.b = [BasicLP.b ; solution.obj];
+    constraint.csense = [BasicLP.csense;'E'];
+    constraint.lb = BasicLP.lb;
+    constraint.ub = BasicLP.ub;
+    constraint = addCConstraintsToLPProblem(constraint,model);
+    
     % Call the sparse LP solver
     solutionL0 = sparseLP(zeroNormApprox,constraint);
 
@@ -379,11 +371,11 @@ elseif length(minNorm)> 1 || minNorm > 0
 
     % quadratic minimization of the norm.
     % set previous optimum as constraint.
-    LPproblem.A = [LPproblem.A;LPproblem.c'];
-    LPproblem.b = [LPproblem.b;LPproblem.c'*solution.full];
+    LPproblem.A = [BasicLP.A;BasicLP.c'];
+    LPproblem.b = [BasicLP.b;BasicLP.c'*solution.full];
     LPproblem.csense(end+1) = 'E';
 
-    LPproblem.c = zeros(size(LPproblem.c)); % no need for c anymore.
+    LPproblem.c = zeros(size(BasicLP.c)); % no need for c anymore.
     %Minimise Euclidean norm using quadratic programming
     if length(minNorm)==1
         minNorm=ones(nRxns,1)*minNorm;
@@ -395,6 +387,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
         %part of a loop. By definition, exchange reactions are not part of these loops, more
         %properly called stoichiometrically balanced cycles.
+        LPproblem = addCConstraintsToLPProblem(LPproblem,model);
         solution = solveCobraQP(LPproblem);
 
         if isfield(solution,'dual')
@@ -406,6 +399,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
         %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
         MIQPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+        MIQPproblem = addCConstraintsToLPProblem(MIQPproblem,model);
         solution = solveCobraMIQP(MIQPproblem);
     end
 end

@@ -1,9 +1,9 @@
-function LPproblem = buildLPproblemFromModel(model)
+function LPproblem = buildLPproblemFromModelStoichiometry(model)
 % Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure. 
 %
 % USAGE:
 %
-%    LPproblem = buildLPproblemFromModel(model)
+%    LPproblem = buildLPproblemFromModelStoichiometry(model)
 %
 % INPUT:
 %    model:     A COBRA model structure with at least the following fields
@@ -31,6 +31,10 @@ function LPproblem = buildLPproblemFromModel(model)
 %                     * .osense - Objective sense (-1 means maximise (default), 1 means minimise)
 %                     * .csense - Constraint senses, a string containting the constraint sense for
 %                       each row in A ('E', equality, 'G' greater than, 'L' less than).
+%
+% NOTE:
+%    This function only uses the Stoichiometric Matrix S to build the
+%    problem. No other model parts are used.
 
 
 

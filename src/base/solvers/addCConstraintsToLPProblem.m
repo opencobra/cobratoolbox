@@ -1,8 +1,8 @@
-function LPproblem = addCConstraints(LPproblem,model,Sstart)
+function LPproblem = addCConstraintsToLPProblem(LPproblem,model,Sstart)
 % Adds constraints stored in the model to the given LPproblem.
 % The constraints are of the Form: C * v dsense d
 % USAGE:
-%    LPproblem = addCConstraints(LPproblem,model,Sstart)
+%    LPproblem = addCConstraintsToLPProblem(LPproblem,model,Sstart)
 %
 % INPUTS:
 %
