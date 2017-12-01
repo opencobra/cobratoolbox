@@ -80,6 +80,7 @@ n_MCS = 10;
 % In this case, we will calculate MCSs involving reactions 1 to 6. The biomass 
 % reaction (_rBio_) is omitted since it is the target metabolic task. 
 
+optional_inputs = struct();
 optional_inputs.rxn_set = {'r1'; 'r2'; 'r3'; 'r4'; 'r5'; 'r6'};
 %% 
 % The time limit for the calculation of each MCS will be set to 30 seconds.
@@ -93,9 +94,9 @@ optional_inputs.timelimit = 30;
 
 [MCSs, MCS_time] = calculateMCS(model, n_MCS, optional_inputs);
 %% 
-% Despite having tried to calculate 10 MCSs, only 7 will be calculated. 
-% Notice that the last MCS is NaN, meaning that there only exist 6 MCSs for this 
-% toy example. The results are shown in the following piece of code:
+% Despite having tried to calculate 10 MCSs, only 6 will be calculated. 
+% Notice that there only exist 6 MCSs for this toy example. The results are shown 
+% in the following piece of code:
 
 MCSs{1}
 MCSs{2}
@@ -103,7 +104,6 @@ MCSs{3}
 MCSs{4}
 MCSs{5}
 MCSs{6}
-MCSs{7}
 %% 
 % We now translate these minimal reaction knockout strategies to the gene 
 % level following the _grRules_. The following table shows the 8 possible genetic 
@@ -136,13 +136,12 @@ optional_inputs.timelimit = 30;
 
 [gMCSs, gMCS_time] = calculateGeneMCS(model_name, model, n_gMCS, optional_inputs);
 %% 
-% In the same way as with MCSs, 4 gMCSs have been calculated in total. As 
-% the last on is NaN, the toy example only has 3 gMCSs.
+% In the same way as with MCSs, 3 gMCSs have been calculated in total, as 
+% there are no more feasible solutions. 
 
 gMCSs{1}
 gMCSs{2}
 gMCSs{3}
-gMCSs{4}
 %% 
 % As shown in the previous table, calculating MCSs would result in 8 different 
 % genetic intervention strategies, even when, as we have just demonstrated, only 
@@ -173,6 +172,7 @@ modelR204 = getDistributedModel('Recon2.v04.mat');
 
 model_name = 'Recon2';
 n_gMCS = 6;
+optional_inputs = struct();
 optional_inputs.KO = '6240';
 optional_inputs.separate_transcript = '.';
 optional_inputs.timelimit = 2*60;
@@ -190,7 +190,6 @@ gMCSs{2}
 gMCSs{3}
 gMCSs{4}
 gMCSs{5}
-gMCSs{6}
 %% 
 % 5 gMCSs have been calculated involving 2, 3, 4, 4 and 5 genes, respectively. 
 % It is important to note that no more gMCSs have been found as a consequence 
