@@ -81,7 +81,8 @@ if ~all(size(rxnList) > 1) %if this is true, its multiple rows...
 else
     multiAdd = true;
 end
-defaultcoefficients = ones(sum(rxnList));
+
+defaultcoefficients = ones(size(rxnList));
 
 defaultcsense = 'L';
 if ~multiAdd
