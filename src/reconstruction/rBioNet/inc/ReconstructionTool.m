@@ -170,6 +170,7 @@ if isempty(handles.rxn)
     return
 end
 handles.dispdata_rxn = handles.rxn;
+set(handles.rxntable,'data',handles.dispdata_rxn);
 
 handles.metab = rBioNetSaveLoad('load','met');
 if isempty(handles.metab)
@@ -177,6 +178,7 @@ if isempty(handles.metab)
     return;
 end
 handles.dispdata_met = handles.metab;
+set(handles.metatable,'data',handles.dispdata_met);
 
 
 % ---------- Open and display  -------------- end
@@ -367,6 +369,7 @@ if ~isempty(similar)
     uiwait;
 end
 
+
 guidata(hObject,handles)
 %------------------------ Generate Reaction ---------------------- end
 
@@ -409,9 +412,11 @@ else
     switch save_rxn,
         case 'Yes',
             handles.rxn(end+1,:) = newrxn;
-            handles.rxn = sortrows(handles.rxn,1);
-
+            handles.rxn = sortrows(handles.rxn,1);            
             out = rBioNetSaveLoad('save','rxn',handles.rxn);
+            %Update the display data
+            handles.dispdata_rxn = handles.rxn;
+            set(handles.rxntable,'data',handles.dispdata_rxn);
             if out == 1
                 msgbox('Your reaction has been saved.','New reaction saved.','help')
             end
@@ -943,13 +948,16 @@ save_met = questdlg('Are you sure you want to save?', ...
     'Yes', 'No', 'Yes');
 
 %perform the following operation depending on the option chosen
-switch save_met,
-    case 'Yes',
+switch save_met
+    case 'Yes'
         handles.metab(end+1,:) = handles.newmet;
         handles.metab = sortrows(handles.metab,1);
         rBioNetSaveLoad('save','met',handles.metab);
+        %Update the display data
+        handles.dispdata_met = handles.metab;
+        set(handles.metatable,'data',handles.dispdata_met);
         msgbox('Your metabolite has been saved.','Metabolite saved','help');
-    case 'No',
+    case 'No'
         %Do nothing.
 end % switch
 
