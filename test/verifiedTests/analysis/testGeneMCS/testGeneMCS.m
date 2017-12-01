@@ -13,7 +13,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which('testGeneMCS')));
+testDir = fileparts(which('testGeneMCS'));
+cd(testDir);
 
 % define the solver packages to be used to run this test
 solverPkgs = {'ibm_cplex','gurobi'}; 
@@ -60,13 +61,13 @@ for k = 1:length(solverPkgs)
     end
     
     % Eliminate generated files
-    if exist([currentDir filesep 'G_toy_example_gMCS.mat'], 'file')
+    if exist([testDir filesep 'G_toy_example_gMCS.mat'], 'file')
         delete G_toy_example_gMCS.mat
     end
-    if exist([currentDir filesep 'CobraMILPSolver.log'], 'file')
+    if exist([testDir filesep 'CobraMILPSolver.log'], 'file')
         delete CobraMILPSolver.log
     end
-    if exist([currentDir filesep 'MILPProblem.mat'], 'file')
+    if exist([testDir filesep 'MILPProblem.mat'], 'file')
         delete MILPProblem.mat
     end
 
