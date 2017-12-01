@@ -18,7 +18,7 @@ cd(fileDir);
 tol = 1e-6;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk'};
+solverPkgs = {'tomlab_cplex', 'glpk','gurobi'};
 
 % load the model
 origmodel = getDistributedModel('ecoli_core_model.mat');
@@ -85,6 +85,9 @@ for k = 1:length(solverPkgs)
         %Add A Constraint that makes this lower than half the flux before.
         model = addCOBRAConstraint(origmodel,origmodel.rxns(selectedFluxes),totalFlux,'c',[1 1]);
         ConstraintSolution = optimizeCbModel(model);
+        assert(sum(ConstraintSolution.full(selectedFluxes)) - totalFlux <= tol);
+        %test Constraints with min
+        ConstraintSolutionMin = optimizeCbModel(model,'max','one');
         assert(sum(ConstraintSolution.full(selectedFluxes)) - totalFlux <= tol);
         
         % And test some inconsistency cases
