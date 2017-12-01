@@ -40,9 +40,6 @@ for k = 1:length(solverPkgs)
         
         % Calculate GMCS
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20);
-               
-        % Eliminante Nan -> no more gMCS
-        gmcs = gmcs(cellfun('isclass', gmcs,'cell'));
         
         % Check if the solution obtained is the same as the expected
         % solution
