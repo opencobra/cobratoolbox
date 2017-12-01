@@ -184,7 +184,7 @@
 <span id="id1"></span><h1>ReconMaps<a class="headerlink" href="#reconmaps" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.visualization.maps.ReconMap"></span><dl class="function">
 <dt id="src.visualization.maps.ReconMap.buildFluxDistLayout">
-<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>rxnList</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a layout for MINERVA from a flux distribution. If a dictionary
 of identifiers is not provided it is assumed that the map and the COBRA
 model&#8217;s nomenclature is coherent. Sends the layout to the remote MINERVA
@@ -209,9 +209,6 @@ Name for the layout in MINERVA</li>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul>
-<li><p class="first"><strong>rxnList</strong> &#8211;
-cell array of reaction abbreviations to colour</p>
-</li>
 <li><p class="first"><strong>hexColour          colour of overlay (hex color format)</strong> &#8211;</p>
 <p>e.g. &#8216;#009933&#8217; corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a></p>
 </li>
@@ -275,7 +272,7 @@ Color</li>
 
 <dl class="function">
 <dt id="src.visualization.maps.ReconMap.postMINERVArequest">
-<code class="descname">postMINERVArequest</code><span class="sig-paren">(</span><em>minerva_servlet</em>, <em>login</em>, <em>password</em>, <em>map</em>, <em>identifier</em>, <em>content</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">postMINERVArequest</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>map</em>, <em>identifier</em>, <em>content</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a new layout to a MINERVA instance</p>
 <p><strong>Usage</strong></p>
 <blockquote>
