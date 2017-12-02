@@ -7,17 +7,20 @@ function MIIS = findMIIS(LPProblem,printLevel)
 % findMIIS points the user to the infeasible subset which guides decision
 % making. The user can then check errors in the data or correct the model based on 
 % the literature.
-%Input:
+%
+% USAGE
+%         MIIS = findMIIS(model,1)
+% Input:
 %        LPProblem: COBRA model structure
 %        printLevel:0/1/2
-%Output:
+% Output:
 %        MIIS.rxns:     Reactions of MIIS
 %        MIIS.mets:     Mets of MIIS
 %        MIIS.rxnsStat: Status of infeasiblity of reactions
 %        MIIS.metsStat: Status of infeasiblity of metabolites
 %        please refer to this link for status meaning
 % https://www.ibm.com/support/knowledgecenter/de/SSSA5P_12.7.0/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
-% Marouen Ben Guebila 24/07/2017
+% .. Author: - Marouen Ben Guebila 24/07/2017
 
 if ~changeCobraSolver('ibm_cplex')
     fprintf('This function requires IBM ILOG CPLEX');
@@ -68,8 +71,6 @@ c=full(c*osense);
 b=full(b);
 
 %call cplex
-tic;
-
 %complex ibm ilog cplex interface
 if ~isempty(csense)
     %set up constant vectors for CPLEX
@@ -101,7 +102,7 @@ ILOGcplex.Model.A     = LPProblem.A;
 ILOGcplex.Model.lhs   = b_L;
 ILOGcplex.Model.rhs   = b_U;
 
-% Call conflict refiner the problem
+% Call conflict refiner in the problem
 ILOGcplex.Param.conflict.display.Cur=printLevel;
 ILOGcplex.refineConflict();
 if ILOGcplex.Conflict.status == 31
