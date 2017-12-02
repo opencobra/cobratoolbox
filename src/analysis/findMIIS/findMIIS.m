@@ -1,8 +1,8 @@
 function MIIS = findMIIS(LPProblem,printLevel)
-% Finds Minimal Irreducible Infeasible Subset (MIIS) in an infeasible
-% linear program. It uses (for now) teh IBM ILOG CPLEX conflict refine
+% Finds the Minimal Irreducible Infeasible Subset (MIIS) in an infeasible
+% linear program. It uses (for now) the IBM ILOG CPLEX conflict refine
 % routine. The MIIS is the smallest infeasible submodel that becomes feasbile if one
-% constraint/bound is removed. All subsets of a MIIS is feasbile.
+% constraint/bound is removed. All subsets of a MIIS are feasbile.
 % Where relaxedFBA and feasOpt take corrective measures automatically,
 % findMIIS points the user to the infeasible subset which guides decision
 % making. The user can then check errors in the data or correct the model based on 
@@ -11,7 +11,7 @@ function MIIS = findMIIS(LPProblem,printLevel)
 % USAGE
 %         MIIS = findMIIS(model,1)
 % Input:
-%        LPProblem: COBRA model structure
+%        LPProblem: infeasible model as COBRA model structure
 %        printLevel:0/1/2
 % Output:
 %        MIIS.rxns:     Reactions of MIIS

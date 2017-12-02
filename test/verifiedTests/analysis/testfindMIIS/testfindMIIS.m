@@ -36,6 +36,7 @@ model.lb(4) = 2;
 model.ub(6) = 2;
 
 %findMIIS (works with IBM CPLEX)
+changeCobraSolver('ibm_cplex');
 res = findMIIS(model);
 
 %test results
