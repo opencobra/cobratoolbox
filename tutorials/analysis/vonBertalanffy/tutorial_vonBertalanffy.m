@@ -1,118 +1,41 @@
-%% Thermodynamically constrain a metabololic model
-%% *Author: Ronan Fleming, University of Luxembourg*
-%% *Reviewers: *
-%% INTRODUCTION
-% In flux balance analysis of genome scale stoichiometric models of metabolism, 
-% the principal constraints are uptake or secretion rates, the steady state mass 
-% conservation assumption and reaction directionality. Von Bertylanffy [1,4] is 
-% a set of methods for (i) quantitative estimation of thermochemical parameters 
-% for metabolites and reactions using the component contribution method [3], (ii) 
-% quantitative assignment of reaction directionality in a multi-compartmental 
-% genome scale model based on an application of the second law of thermodynamics 
-% to each reaction [2], (iii) analysis of thermochemical parameters in a network 
-% context, and (iv) thermodynamically constrained flux balance analysis. The theoretical 
+% Thermodynamically constrain a metabololic model
+% *Author: Ronan Fleming, University of Luxembourg*
+% *Reviewers: *
+%
+% INTRODUCTION
+% In flux balance analysis of genome scale stoichiometric models of metabolism,
+% the principal constraints are uptake or secretion rates, the steady state mass
+% conservation assumption and reaction directionality. Von Bertylanffy [1,4] is
+% a set of methods for (i) quantitative estimation of thermochemical parameters
+% for metabolites and reactions using the component contribution method [3], (ii)
+% quantitative assignment of reaction directionality in a multi-compartmental
+% genome scale model based on an application of the second law of thermodynamics
+% to each reaction [2], (iii) analysis of thermochemical parameters in a network
+% context, and (iv) thermodynamically constrained flux balance analysis. The theoretical
 % basis for each of these methods is detailed within the cited papers.
-% 
-% *EQUIPMENT*
-% 
-% Ubuntu 16.04 LTS
-% 
-% Python 2.7
-% 
-% NumPy 1.11.1
-% 
-% ChemAxon MarvinBeans 16.9.5.0
-% 
-% OpenBabel 2.3
-% 
-% *EQUIPMENT SETUP*
-% 
-% The following commands are entered in a terminal window (bash or similar 
-% shell).
-%% Python 2 
-% OpenBabel only works with Python 2. Most distributions should already have 
-% this installed, but if this is not the case, the following lines will do it: 
-% 
-% sudo add-apt-repository ppa:fkrull/deadsnakes  
-% 
-% sudo apt-get update  
-% 
-% sudo apt-get install python2.7
-%% NumPy 
-% NumPy can be installed using the following commands: 
-% 
-% sudo apt-get install python-dev 
-% 
-% sudo apt-get install python-setuptools 
-% 
-% sudo wget http://downloads.sourceforge.net/project/numpy/NumPy/1.11.1/numpy-1.11.1.tar.gz  
-% 
-% sudo tar -xzvf numpy-1.11.1.tar.gz 
-% 
-% sudo cd numpy-1.11.1  
-% 
-% sudo python setup.py build -j 4 install 
-%% ChemAxon Calculator Plugin 
-% ChemAxon calculator plugin requires a license. Apply for an academic license 
-% at the following link: http://www.chemaxon.com/my-chemaxon/my-academic-license/ 
-% 
-% After your license has been made available, you can download from the “My 
-% Licenses” tab on the ChemAxon website. 
-% 
-% Download the license and place it under (replace USER by your actual user 
-% account): 
-% 
-% /home/USER/.chemaxon 
-% 
-% Download MarvinBeans for Linux, navigate to the directory where it was 
-% saved and make it executable (here, we downloaded version 16.9.5.0 - use the 
-% appropriate filename for your version):  
-% 
-% sudo chmod +x marvinbeans-16.9.5.0-linux_with_jre64.sh  
-% 
-% Execute the installer (again, use the same filename as above): 
-% 
-% sudo ./marvinbeans-16.9.5.0-linux_with_jre64.sh 
-% 
-% When asked for an installation directory, make it:  
-% 
-% /opt/ChemAxon/MarvinBeans 
-% 
-% This is important, since this is the path used by COBRA Toolbox. 
-% 
-% Finally, add the installation path to the PATH environment variable: 
-% 
-% PATH=$PATH:/opt/ChemAxon/MarvinBeans/bin 
-% 
-% sudo export PATH
-%% OpenBabel and Python bindings  
-% Install the OpenBabel and Python 2 bindings by entering the following: 
-% 
-% sudo apt-get install openbabel  
-% 
-% sudo apt-get install python-openbabel
-%% PROCEDURE
-%% Configure the environment
-% With all dependencies installed correctly, we configure our environment, verfy 
+%
+% PROCEDURE
+% Configure the environment
+% With all dependencies installed correctly, we configure our environment, verfy
 % all dependencies, and add required fields and directories to the matlab path.
 
 if 1
     initVonBertalanffy
 end
 %% Select the model
-% This tutorial is tested for the E. coli model iAF1260 and the human metabolic 
-% model Recon3.0model. However, only the data for the former is provided within 
-% the COBRA Toolbox as it is used for testing von Bertylanffy, while Recon3D is 
-% not yet published and the data is not yet available. Having said this, the figures 
-% generated below are most suited to plotting results for Recon3Dmodel, so they 
-% may not be so useful for iAF1260.  The Recon3Dmodel example uses values from 
+% This tutorial is tested for the E. coli model iAF1260 and the human metabolic
+% model Recon3.0model. However, only the data for the former is provided within
+% the COBRA Toolbox as it is used for testing von Bertylanffy, while Recon3D is
+% not yet published and the data is not yet available. Having said this, the figures
+% generated below are most suited to plotting results for Recon3Dmodel, so they
+% may not be so useful for iAF1260.  The Recon3Dmodel example uses values from
 % literature for input variables where they are available.
 
 modelName='iAF1260';
 % modelName='Recon3.0model'; uncomment this line and comment the line above if you want to use Recon3D
 %% Load a model
-% Load a model, and save it as the original model in the workspace, unless it 
-% is already loaded into the workspace. 
+% Load a model, and save it as the original model in the workspace, unless it
+% is already loaded into the workspace.
 
 clear model
 global CBTDIR
@@ -126,7 +49,7 @@ switch modelName
             model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
         end
         model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
-        
+
     case 'Recon3.0model'
         model.metFormulas{strcmp(model.mets,'h[i]')}='H';
         model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
@@ -171,15 +94,15 @@ switch modelName
         chi = [0; 90; 90]; % Compartment specific electrical potential relative to cytosol in mV
     case 'Recon3.0model'
         % Temperature in Kelvin
-        T = 310.15; 
+        T = 310.15;
         % Cell compartment identifiers
-        compartments = ['c'; 'e'; 'g'; 'l'; 'm'; 'n'; 'r'; 'x';'i']; 
+        compartments = ['c'; 'e'; 'g'; 'l'; 'm'; 'n'; 'r'; 'x';'i'];
         % Compartment specific pH
-        ph = [7.2; 7.4; 6.35; 5.5; 8; 7.2; 7.2; 7; 7.2]; 
+        ph = [7.2; 7.4; 6.35; 5.5; 8; 7.2; 7.2; 7; 7.2];
         % Compartment specific ionic strength in mol/L
-        is = 0.15*ones(length(compartments),1); 
+        is = 0.15*ones(length(compartments),1);
         % Compartment specific electrical potential relative to cytosol in mV
-        chi = [0; 30; 0; 19; -155; 0; 0; -2.303*8.3144621e-3*T*(ph(compartments == 'x') - ph(compartments == 'c'))/(96485.3365e-6); 0]; 
+        chi = [0; 30; 0; 19; -155; 0; 0; -2.303*8.3144621e-3*T*(ph(compartments == 'x') - ph(compartments == 'c'))/(96485.3365e-6); 0];
     otherwise
         error('setup specific parameters for your model')
 end
@@ -198,12 +121,12 @@ switch modelName
         error('setup specific parameters for your model')
 end
 %% Set the desired confidence level for estimation of thermochemical parameters
-% The confidence level for estimated standard transformed reaction Gibbs energies 
+% The confidence level for estimated standard transformed reaction Gibbs energies
 % is used to quantitatively assign reaction directionality.
 
 switch modelName
     case 'iAF1260'
-        confidenceLevel = 0.95; 
+        confidenceLevel = 0.95;
         DrGt0_Uncertainty_Cutoff = 20; %KJ/KMol
     case 'Recon3.0model'
         confidenceLevel = 0.95;
@@ -253,7 +176,7 @@ if ~exist('massImbalance','var')
         %     Sink reactions
         model = findSExRxnInd(model,[],printLevel);
     end
-    
+
     if ignoreBalancingOfSpecifiedInternalReactions
         [nMet,nRxn]=size(model.S);
         ignoreBalancingMetBool=false(nMet,1);
@@ -269,7 +192,7 @@ if ~exist('massImbalance','var')
         SIntRxnBool=model.SIntRxnBool;
         model.SIntRxnBool=model.SIntRxnBool & ~ignoreBalancingRxnBool;
     end
-    
+
     printLevelcheckMassChargeBalance=-1;  % -1; % print problem reactions to a file
     %mass and charge balance can be checked by looking at formulas
     [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
@@ -278,7 +201,7 @@ if ~exist('massImbalance','var')
     model.balancedMetBool=balancedMetBool;
     model.Elements=Elements;
     model.missingFormulaeBool=missingFormulaeBool;
-    
+
     %reset original boolean vector
     if ignoreBalancingOfSpecifiedInternalReactions
         model.SIntRxnBool=SIntRxnBool;
@@ -307,7 +230,7 @@ if ~isfield(model,'DfGt0')
 end
 %% Generate a model with reactants instead of major microspecies
 
-if ~isfield(model,'Srecon') 
+if ~isfield(model,'Srecon')
     printLevel_pHbalanceProtons=-1;
 
     model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
@@ -322,7 +245,7 @@ end
 % Choose the cutoff for probablity that reaction is reversible
 
 cumNormProbCutoff=0.2;
-%% 
+%%
 % Build Boolean vectors with reaction directionality statistics
 
 [modelThermo,directions]=directionalityStats(modelThermo,directions,cumNormProbCutoff,printLevel);
@@ -344,61 +267,61 @@ cumNormProbCutoff=0.2;
 %   .reverse2Uncertain
 %   .tightened
 %
-% subsets of qualtiatively forward  -> quantiatively reversible 
+% subsets of qualtiatively forward  -> quantiatively reversible
 %   .forward2Reversible_bydGt0
 %   .forward2Reversible_bydGt0LHS
 %   .forward2Reversible_bydGt0Mid
 %   .forward2Reversible_bydGt0RHS
-% 
+%
 %   .forward2Reversible_byConc_zero_fixed_DrG0
 %   .forward2Reversible_byConc_negative_fixed_DrG0
 %   .forward2Reversible_byConc_positive_fixed_DrG0
 %   .forward2Reversible_byConc_negative_uncertain_DrG0
 %   .forward2Reversible_byConc_positive_uncertain_DrG0
-%% 
-% Write out reports on directionality changes for individual reactions to 
+%%
+% Write out reports on directionality changes for individual reactions to
 % the results folder.
 
 if 1
     fprintf('%s\n','directionalityChangeReport...');
     directionalityChangeReport(modelThermo,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
 end
-%% 
-% Generate pie charts with proportions of reaction directionalities and 
+%%
+% Generate pie charts with proportions of reaction directionalities and
 % changes in directionality
 
 if 1
     fprintf('%s\n','directionalityStatFigures...');
     directionalityStatsFigures(directions,resultsBaseFileName)
 end
-%% 
-% Generate figures to interpret the overall reasons for reaction directionality 
+%%
+% Generate figures to interpret the overall reasons for reaction directionality
 % changes for the qualitatively forward now quantiatiavely reversible reactions
 
 if any(directions.forward2Reversible)
     fprintf('%s\n','forwardReversibleFigures...');
     forwardReversibleFigures(modelThermo,directions,confidenceLevel)
 end
-%% 
-% Write out tables of experimental and estimated thermochemical parameters 
+%%
+% Write out tables of experimental and estimated thermochemical parameters
 % for the model
 
 generateThermodynamicTables(modelThermo,resultsBaseFileName);
 
-%% 
+%%
 % *REFERENCES*
-% 
-% [1] Fleming, R. M. T. & Thiele, I. von Bertalanffy 1.0: a COBRA toolbox 
-% extension to thermodynamically constrain metabolic models. Bioinformatics 27, 
+%
+% [1] Fleming, R. M. T. & Thiele, I. von Bertalanffy 1.0: a COBRA toolbox
+% extension to thermodynamically constrain metabolic models. Bioinformatics 27,
 % 142–143 (2011).
-% 
-% [2] Haraldsdóttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment 
-% of reaction directionality in a multicompartmental human metabolic reconstruction. 
+%
+% [2] Haraldsdóttir, H. S., Thiele, I. & Fleming, R. M. T. Quantitative assignment
+% of reaction directionality in a multicompartmental human metabolic reconstruction.
 % Biophysical Journal 102, 1703–1711 (2012).
-% 
-% [3] Noor, E., Haraldsdóttir, H. S., Milo, R. & Fleming, R. M. T. Consistent 
-% Estimation of Gibbs Energy Using Component Contributions. PLoS Comput Biol 9, 
+%
+% [3] Noor, E., Haraldsdóttir, H. S., Milo, R. & Fleming, R. M. T. Consistent
+% Estimation of Gibbs Energy Using Component Contributions. PLoS Comput Biol 9,
 % e1003098 (2013).
-% 
-% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsdóttir, H. S., Thiele, I. 
+%
+% [4] Fleming, R. M. T. , Predicat, G.,  Haraldsdóttir, H. S., Thiele, I.
 % von Bertalanffy 2.0 (in preparation).
