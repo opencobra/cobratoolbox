@@ -9,6 +9,9 @@
 %     - Marouen BEN GUEBILA 02/12/2017
 
 global CBTDIR
+global ILOG_CPLEX_PATH
+
+addpath(genpath(ILOG_CPLEX_PATH));
 
 %Test presence of required toolboxes.
 v = ver;
