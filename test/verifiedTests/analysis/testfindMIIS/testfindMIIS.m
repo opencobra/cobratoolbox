@@ -39,12 +39,15 @@ model.lb(4) = 2;
 model.ub(6) = 2;
 
 %findMIIS (works with IBM CPLEX)
-changeCobraSolver('ibm_cplex');
-res = findMIIS(model);
+solverOK = changeCobraSolver('ibm_cplex');
 
-%test results
-assert(isequal(res.rxns,[3;4;6]))
-assert(isequal(res.mets,[3;4]))
+if solverOK
+    res = findMIIS(model);
+
+    %test results
+    assert(isequal(res.rxns,[3;4;6]))
+    assert(isequal(res.mets,[3;4]))
+end
 %%
 % change the directory
 cd(currentDir)
