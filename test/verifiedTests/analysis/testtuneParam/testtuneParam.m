@@ -28,12 +28,12 @@ solverOK = changeCobraSolver('ibm_cplex');
 if solverOK
     cpxControl = CPLEXParamSet('ILOGcomplex');
     cpxControl.lpmethod=4;%set barrier as solver algorithm
-    optimParam = tuneParam(model,cpxControl,10,10,0);
+    optimParam = tuneParam(model,cpxControl,5,5,0);
 
     %test results
     %check if automatic is the optimal solver algorithm for Ecoli
     assert(isequal(optimParam.lpmethod,0))
 end
-%%
+
 % change the directory
 cd(currentDir)
