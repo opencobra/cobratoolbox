@@ -1,7 +1,7 @@
-function N = sparseNull(S, tol)
+function [N,rankS] = sparseNull(S, tol)
 % sparseNull returns computes the sparse Null basis of a matrix
 %
-% N = sparseNull(S, tol)
+% [N,rankS] = sparseNull(S, tol)
 % 
 % Computes a basis of the null space for a sparse matrix.  For sparse
 % matrixes this is much faster than using null.  It does however have lower
@@ -11,11 +11,14 @@ function N = sparseNull(S, tol)
 % Jan Schellenberger 10/20/2009 
 % based on this:
 % http://www.mathworks.com/matlabcentral/fileexchange/11120-null-space-of-a-sparse-matrix
+% Modified Tomas Pfau -> The size of the U is exactly the rank of the
+% matrix (up to the tolerance).
 if nargin <2
     tol = 1e-9;
 end
 [SpLeft, SpRight] = spspaces(S,2, tol);
 N = SpRight{1}(:,SpRight{3});
+rankS = numel(SpRight{2});
 N(abs(N) < tol) = 0;
 
 
