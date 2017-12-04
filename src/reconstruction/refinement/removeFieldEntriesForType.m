@@ -9,7 +9,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 %    model:              the model to update
 %    indicesToRemove:    indices which should be removed (either a logical array or double indices)
 %    type:               the Type of field to update. one of 
-%                        ('rxns','mets','comps','genes')
+%                        ('rxns','mets','comps','genes','ctrs')
 %    fieldSize:          The size of the original field before
 %                        modification. This is necessary to identify fields
 %                        from which entries have to be removed.
@@ -32,7 +32,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 % .. Authors: 
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
 
-PossibleTypes = {'rxns','mets','comps','genes'};
+PossibleTypes = {'rxns','mets','comps','genes','ctrs'};
 
 
 parser = inputParser();
@@ -82,44 +82,37 @@ if strcmp(type,'genes')
             errormessage = ['Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given ' includedLink];
             error(errormessage);
         end
+        %Store all modified rules
+        modifiedRules = [];
         %However, we first normalize the rules.        
         model = normalizeRules(model);
         %First, eliminate all removed indices
         for i = 1:numel(genePos)
-            %Replace either a trailing &, or a leading &
-            
+            %Replace either a trailing &, or a leading &            
             rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
             matchingrules = find(~cellfun(@isempty, rules));
+            modifiedRules = union(modifiedRules,matchingrules);
             for elem = 1:numel(matchingrules)
                 cres = rules{matchingrules(elem)};                
                 for pos = 1:numel(cres)
                     if isequal(cres(pos).pre,'&')
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)])'],'$1');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)|$])'],'$1');
                     elseif isequal(cres(pos).post,'&')
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['([ \(]) *x\(' num2str(genePos(i)) '\) *& *'],'$1');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[ \(]) *x\(' num2str(genePos(i)) '\) *& *'],'$1');
                     elseif isequal(cres(pos).post,'|')
                         %Make sure its not preceded by a &
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['([^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
                     elseif isequal(cres(pos).pre,'|')
                         %Make sure its not followed by a &
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\) *([^&])'],' $1');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\)([^&]|$)'],'$1');
                     else
                         %This should only ever happen if there is only one gene.
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['[\( ]*x\(' num2str(genePos(i)) '\)[\) ]*'],'');
+                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['^|[\( ]*x\(' num2str(genePos(i)) '\)[\) ]*|$'],'');
                     end
+                    %Remove trailing or leading whitespaces
+                    model.rules(matchingrules(elem)) = strtrim(model.rules(matchingrules(elem)));
                 end
-            end            
-            if isfield(model, 'grRules')
-                currentrules = strrep(model.rules(matchingrules),'&','and');
-                currentrules = strrep(currentrules,'|','or');
-                for i = 1:numel(currentrules)
-                    tokens = regexp(currentrules{i},'x\(([0-9])\)','tokens');
-                    genepositions = cellfun(@(x) str2num(x{1}),tokens);
-                    for j = 1:numel(genepositions)
-                        currentrules{i} = strrep(currentrules{i},['x(' num2str(genepositions(j)) ')'],['(' model.genes{genepositions(j)} ')']);
-                    end
-                end
-            end            
+            end              
         end
         %Now, replace all remaining indices.
         oldIndices = find(~indicesToRemove);
@@ -131,6 +124,7 @@ if strcmp(type,'genes')
         end
         %remove the indicator.
         model.rules = strrep(model.rules,'$','');
+        %remove the indicator.
 
     end
     if removeRulesField
@@ -147,6 +141,16 @@ for i = 1:numel(fields)
     end
     %Lets assume, that we only have 2 dimensional fields.
     model.(fields{i}) = removeIndicesInDimenion(model.(fields{i}),dimensions(i),~indicesToRemove);  
+end
+
+%Now, if this was a genes removal, we now have to update the grRules field.
+%update the grRules is the field is present:
+if isfield(model, 'grRules') && exist('modifiedRules','var')
+    currentrules = strrep(model.rules(modifiedRules),'&','and');
+    currentrules = strrep(currentrules,'|','or');
+    getGeneName = @(pos) model.genes{str2num(pos)};
+    currentrules = regexprep(currentrules,'x\(([0-9])\)','${getGeneName($1)}');
+    model.grRules(modifiedRules) = currentrules;
 end
 
 
