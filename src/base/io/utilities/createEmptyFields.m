@@ -72,9 +72,13 @@ for field = 1:length(fieldNames)
             model.(fieldNames{field}) = sparse(xdim,ydim);            
         case 'cell'
             model.(fieldNames{field}) =cell(xdim,ydim);
-            for i = 1:xdim
-                eval(['currentvalue = ' defaultValue ]);
-                model.(fieldNames{field}){i} = currentvalue;
+            if strcmp(eval(defaultValue),'')
+                model.(fieldNames{field})(:) = {''};
+            else
+                for i = 1:xdim
+                    eval(['currentvalue = ' defaultValue ';' ]);
+                    model.(fieldNames{field}){i} = currentvalue;
+                end
             end
         case 'numeric'
             model.(fieldNames{field}) = repmat(defaultValue,xdim,ydim);            
