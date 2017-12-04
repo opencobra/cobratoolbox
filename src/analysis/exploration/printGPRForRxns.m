@@ -26,7 +26,7 @@ if isfield(model,'grRules')
     gprs = model.grRules(rxnPos);
 else
     if isfield(model,'rules') && isfield(model,'genes')
-        gprs = strrep(model.rules(rxnIDs),'|','or');
+        gprs = strrep(model.rules(rxnPos),'|','or');
         gprs = strrep(gprs,'&','and');
         gprs = regexprep(gprs,'x\(([0-9]+)\)','${model.genes{str2num($1)}}');
     else
