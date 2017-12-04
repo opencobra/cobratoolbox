@@ -22,13 +22,19 @@ currentDir = pwd;
 fileDir = fileparts(which('testtuneParam'));
 cd(fileDir);    
 
-%findMIIS (works with IBM CPLEX)
+%Change the solver to IBM Cplex
 solverOK = changeCobraSolver('ibm_cplex');
 
 if solverOK
+    %retrieve all IBM Cplex paramters
     cpxControl = CPLEXParamSet('ILOGcomplex');
-    cpxControl.lpmethod=4;%set barrier as solver algorithm
-    optimParam = tuneParam(model,cpxControl,5,5,0);
+    %set barrier as solver algorithm
+    cpxControl.lpmethod=4;
+    %Optimize parameter values
+    timeLimit=5;%seconds
+    nRuns=5;%runs
+    printLevel=0;
+    optimParam = tuneParam(model,cpxControl,timeLimit,nRuns,printLevel);
 
     %test results
     %check if automatic is the optimal solver algorithm for Ecoli
