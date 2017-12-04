@@ -34,10 +34,11 @@ nMets = numel(model.mets);
 %We have make sure, that the new fields are in sync, so we create those
 %first.
 fieldDefs = getDefinedFieldProperties();
-
+fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,3)));
+modelMetFields = getModelFieldsForType(model,'mets');
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
-    if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~isfield(model,cfield))
+    if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
         warning('Field %s is excluded');
         continue;
     end
