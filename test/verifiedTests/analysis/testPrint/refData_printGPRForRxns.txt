@@ -1,0 +1,5 @@
+ACALD   :	(b0351 or b1241)
+ACALDt  :	s0001
+ACKr    :	(b3115 or b2296 or b1849)
+ACONTa  :	(b0118 or b1276)
+ACONTb  :	(b0118 or b1276)
