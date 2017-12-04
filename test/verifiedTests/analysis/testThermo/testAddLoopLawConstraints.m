@@ -46,7 +46,7 @@ for k = 1:length(solverPkgs)
         end
         %Also test the addLoopLawConstraints from optimizeCbModel with a
         %Coupling Constraint.
-        modelWConst = addCOBRAConstraint(model, model.rxns([1,2]),300); %Add a Constraint with a max of 300 for the sum of R1 and R2
+        modelWConst = addCOBRAConstraint(loopToyModel, loopToyModel.rxns([1,2]),300); %Add a Constraint with a max of 300 for the sum of R1 and R2
         sol = optimizeCbModel(modelWConst,'max',0,false); %Maximise, no min Norm, add LoopLaw Constraints.
         assert(sum(sol.v([1,2])) - 300 < tol);
     end
