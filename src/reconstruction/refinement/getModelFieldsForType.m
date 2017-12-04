@@ -32,7 +32,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 
 
 
-PossibleTypes = {'rxns','mets','comps','genes','ctrs'};
+PossibleTypes = {'rxns','mets','comps','genes'};
 
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));
@@ -104,15 +104,6 @@ if fieldSize == 1 || fieldSize == 0
     possibleFields = possibleFields(posFields);
     dimensions = dimensions(posFields);
 else
-    knownfields = getDefinedFieldProperties();
-    firstdim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),1) == fieldSize),knownfields(:,2), knownfields(:,1));
-    seconddim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),2) == fieldSize),knownfields(:,3), knownfields(:,1));
-    %Remove the known fields.
-    unknownModelFields = setdiff(modelFields,knownfields(:,1));
-    %And get all matching fields
-    knownMatchingFields = knownfields((firstdim|seconddim),1);
-    %Only look at known fields which are defined, or undefined fields
-    modelFields = union(unknownModelFields,knownMatchingFields);
     for i = 1:numel(modelFields)
         matchingsizes = size(model.(modelFields{i})) == fieldSize;
         if any(matchingsizes) && ~(sum(matchingsizes) > 1) %A size > 1 should only happen if we have conflicting field sizes...
@@ -145,22 +136,18 @@ end
 if sameSizeExists
     %we restrict the possibleFields to those which start with the
     %indicator, along with those fields, which are part of the defined
-    %fields.    
+    %fields.
+    
     fields = getDefinedFieldProperties();
-    firstdim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),1) == fieldSize),fields(:,2), fields(:,1));
-    seconddim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),2) == fieldSize),fields(:,3), fields(:,1));        
-    definedFieldDims = ones(numel(fields),1);
-    definedFieldDims(seconddim) = 2;    
+    firstdim = cellfun(@(x) isequal(x,type),fields(:,2));
+    seconddim = cellfun(@(x) isequal(x,type),fields(:,3));
     fields = fields( firstdim | seconddim ,1);
-    definedFieldDims = definedFieldDims(firstdim | seconddim);
-    definedPossibles = ismember(fields,possibleFields);    
+    definedFieldDims = ones(numel(fields),1);
+    definedFieldDims(seconddim) = 2;
+    definedPossibles = ismember(fields,possibleFields);
     %Reduce the fields to those which match the size AND are defined.
     definedFieldDims = definedFieldDims(definedPossibles);    
     fields = fields(definedPossibles);        
-    %Now, check again the if the sizes fit...
-    actualFieldDimsMatch = arrayfun(@(x) size(model.(fields{x}),definedFieldDims(x)) == fieldSize, 1:numel(fields));
-    definedFieldDims = definedFieldDims(actualFieldDimsMatch);
-    fields = fields(actualFieldDimsMatch);        
     %Now check the relevant field positions in the possible fields, i.e.
     %those starting with the respective id (e.g. rxn).
     relevantPossibles = cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);    
@@ -176,4 +163,3 @@ if sameSizeExists
 end
 
 matchingFields = possibleFields;
-end
