@@ -182,77 +182,6 @@
   <div class="section" id="refinement">
 <span id="id1"></span><h1>Refinement<a class="headerlink" href="#refinement" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.refinement"></span><dl class="function">
-<dt id="src.reconstruction.refinement.addCOBRAConstraint">
-<code class="descname">addCOBRAConstraint</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>d</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/refinement/addCOBRAConstraint.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addCOBRAConstraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a Constraint as defined by c1 * v(rxn1) + c2 * v(rxn2) * ... cj * rxn(j) dsense d
-where c is a vector with coefficients for each reaction in rxnList
-(default 1 for each reaction), dsense is one of lower than (&#8216;L&#8217;, default), greater than
-(&#8216;G&#8217;), or equal (&#8216;E&#8217;), and d is a value.
-<strong>Usage</strong></p>
-<blockquote>
-<div>model = addCOBRAConstraint(model, rxnList, varargin)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-<li><strong>rxnList</strong> &#8211;
-cell array of reaction names, or double vector of
-reaction Positions, to simultaneously add multiple
-similar constraints, this can also be a matrix.</li>
-<li><strong>d</strong> &#8211;
-The right hand side of the C*v &lt;= d constraint (or a
-vector, for multiple simultaneous addition;</li>
-<li><strong>varargin</strong> &#8211;<ul>
-<li><dl class="first docutils">
-<dt>c:                the coefficients to use with one entry per</dt>
-<dd>reaction of a constraint for multiple constraints, a matrix
-(default: 1 for each element in rxnList)</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>dsense:           the constraint sense (&#8216;L&#8217;: &lt;= ,</dt>
-<dd>&#8216;G&#8217;: &gt;=, &#8216;E&#8217;: =), or a vector for multiple constraints
-(default: (&#8216;L&#8217;))</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>ConstraintID:     the Name of the constraint. by</dt>
-<dd>(default: &#8216;ConstraintXYZ&#8217; with XYZ being the initial
-position in the mets vector)
-or a cell array of Strings for
-multiple Constraints</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>checkDuplicates:  check whether the constraint already</dt>
-<dd>exists, and if it does, don&#8217;t add it (default: false)</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelConstrained</strong> &#8211;
-constrained model</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Add</span> <span class="n">a</span> <span class="n">constraint</span> <span class="n">that</span> <span class="n">leads</span> <span class="n">to</span> <span class="n">EX_glc</span> <span class="ow">and</span> <span class="n">EX_fru</span> <span class="ow">not</span> <span class="n">carrying</span> <span class="n">a</span>
-<span class="n">combined</span> <span class="n">flux</span> <span class="n">higher</span> <span class="n">than</span> <span class="mi">5</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addNMConstraint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_glc&#39;</span><span class="p">,</span><span class="s1">&#39;EX_fru&#39;</span><span class="p">},</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">Assume</span> <span class="n">Reaction</span> <span class="mi">4</span> <span class="n">to</span> <span class="n">be</span> <span class="mi">2</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">D</span> <span class="ow">and</span> <span class="n">reaction</span> <span class="mi">5</span> <span class="n">being</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="o">.</span> <span class="n">Create</span> <span class="n">a</span>
-<span class="n">constraint</span> <span class="n">that</span> <span class="n">requires</span> <span class="n">that</span> <span class="n">the</span> <span class="n">two</span> <span class="n">reactions</span> <span class="n">remove</span> <span class="n">at</span> <span class="n">least</span> <span class="mi">4</span> <span class="n">units</span> <span class="n">of</span> <span class="n">A</span><span class="p">:</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addNMConstraint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span><span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;dsense&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Author: Thomas Pfau, Nov 2017</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.reconstruction.refinement.addDemandReaction">
 <code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/refinement/addDemandReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addDemandReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds demand reactions for a set of metabolites
@@ -992,7 +921,7 @@ field of the given type, or a specified size.
 the model to update</li>
 <li><strong>type</strong> &#8211;
 the Type of field to update one of
-(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;,&#8217;ctrs&#8217;)</li>
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -1527,37 +1456,6 @@ Minimum fluxes</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.removeCOBRAConstraints">
-<code class="descname">removeCOBRAConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>constraintsToRemove</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/refinement/removeCOBRAConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the specified Non Metabolic Constraints.
-<strong>Usage</strong></p>
-<blockquote>
-<div>model = removeCOBRAConstraint(model, constraintsToRemove)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-<li><strong>constraintsToRemove</strong> &#8211;
-cell array of Constraint IDs, or Constraint
-Positions to remove, or a boolean vector of
-positions to remove.</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-the model with the constraints removed.</li>
-</ul>
-</div></blockquote>
-<dl class="docutils">
-<dt>Author:</dt>
-<dd>Thomas Pfau - Nov 2017</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.reconstruction.refinement.removeFieldEntriesForType">
 <code class="descname">removeFieldEntriesForType</code><span class="sig-paren">(</span><em>model</em>, <em>indicesToRemove</em>, <em>type</em>, <em>fieldSize</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/refinement/removeFieldEntriesForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeFieldEntriesForType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove field entries at the specified indices from all fields associated
@@ -1574,7 +1472,7 @@ the model to update</li>
 indices which should be removed (either a logical array or double indices)</li>
 <li><strong>type</strong> &#8211;
 the Type of field to update. one of
-(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;,&#8217;ctrs&#8217;)</li>
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
 <li><strong>fieldSize</strong> &#8211;
 The size of the original field before
 modification. This is necessary to identify fields
