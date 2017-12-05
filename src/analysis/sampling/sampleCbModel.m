@@ -14,8 +14,8 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
-%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to 
-%                   sample the solution.  
+%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to
+%                   sample the solution.
 %    options:       Options for sampling and pre/postprocessing (default values
 %                   in parenthesis).
 %
@@ -27,6 +27,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                     * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
 %                     * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
 %                     * .toRound - Option to round the model before sampling (true). CHRR only.
+%                     * .lambda - the bias vector for exponential sampling. CHRR_EXP only.
 %    modelSampling: From a previous round of sampling the same
 %                   model. Input to avoid repeated preprocessing.
 %
@@ -112,7 +113,7 @@ switch samplerName
         % Prepare model for sampling by reducing bounds
         [nMet, nRxn] = size(model.S);
         fprintf('Original model: %d rxns %d metabolites\n', nRxn, nMet);
-
+        
         % Reduce model
         fprintf('Reduce model\n');
         model.rxns = regexprep(model.rxns,'(_r)$', '_bladibla'); % Workaround to avoid renaming reactions that end in '_r'
@@ -125,21 +126,21 @@ switch samplerName
             modelRed = modelSampling;
         end
         save modelRedTmp modelRed;
-
+        
         modelSampling = modelRed;
-
+        
         % Use Artificial Centering Hit-and-run
-
+        
         fprintf('Create warmup points\n');
         % Create warmup points for sampler
         warmupPts= createHRWarmup(modelSampling, nWarmupPoints);
-
+        
         save sampleCbModelTmp modelSampling warmupPts
-
+        
         fprintf('Run sampler for a total of %d steps\n', nFiles*nPointsPerFile*nStepsPerPoint);
         % Sample model
         ACHRSampler(modelSampling, warmupPts, sampleFile, nFiles, nPointsPerFile, nStepsPerPoint, [], [], maxTime);
-
+        
         fprintf('Load samples\n');
         % Load samples
         nPointsPerFileLoaded = ceil(nPointsReturned / (nFiles - nFilesSkipped));
@@ -150,36 +151,47 @@ switch samplerName
         samples = samples(:, round(linspace(1, size(samples, 2), min([nPointsReturned, size(samples, 2)]))));
         % Fix reaction directions
         [modelSampling, samples] = convRevSamples(modelSampling, samples);
-
+        
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
-
-    case 'CHRR'        
-        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, [], [], useFastFVA);
-
+        
+    case 'CHRR'
+        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, useFastFVA);
+        
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
-
+        
+    case 'CHRR_EXP'
+        %get the bias vector
+        if isfield(options,'lambda')
+            lambda = options.lambda;
+        elseif isfield(model,'c')
+            lambda = model.c;
+        end
+        
+        [samples, modelSampling] = chrrExpSampler(model, nStepsPerPoint, nPointsReturned, lambda, toRound, modelSampling, useFastFVA);
+        
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
     case 'MFE'
         %[volume,T,steps] = Volume(P,E,eps,p,flags)
         %This function is a randomized algorithm to approximate the volume of a convex
         %body K = P \cap E with relative error eps. The last 4 parameters are optional;
         %you can see the default values at the top of Volume.m.
-
+        
         %---INPUT VALUES---
         %P: the polytope [A b] which is {x | Ax <= b}
         %E: the ellipsoid [Q v] which is {x | (x-v)'Q^{-1}(x-v)<=1}
         %eps: the target relative error
         %p: a point inside P \cap E close to the center
         %flags: a string of input flags. see parseFlags.m
-
+        
         %---RETURN VALUES---
         %volume: the computed volume estimate
         %T: the rounding matrix. If no rounding, then T is identity matrix
         %steps: the number of steps the volume algorithm took
         %r_steps: the number of steps the rounding algorithm took
-
+        
         %assign default values if not assigned in function call
         [m,n]=size(model.S);
-
+        
         A=[ model.S;...
             -model.S;...
             -eye(n,n);...
@@ -194,7 +206,7 @@ switch samplerName
         % b=[ model.b;...
         %     -model.lb;...
         %     model.ub];
-
+        
         P=[A b];
         E=[];
         if ~isfield(options,'eps')
@@ -202,17 +214,17 @@ switch samplerName
         else
             eps=options.eps;
         end
-
+        
         %get an intial point
         FBAsolution = optimizeCbModel(model);
         p=FBAsolution.x;
         %[volume,T,steps,r_steps] = Volume(P,E,eps,p,flags);
         %[volume,T,steps,r_steps] = Volume(P,E,eps,p);
         [volume, T, steps, r_steps] = Volume(P,E,eps);
-
+        
         modelSampling=[];
         samples=[];
-
+        
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end

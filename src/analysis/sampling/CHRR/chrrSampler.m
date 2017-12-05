@@ -1,4 +1,4 @@
-function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux)
+function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,useFastFVA)
 % CHRRSAMPLER Generate uniform random flux samples with CHRR
 %   Coordinate Hit-and-Run with Rounding
 %
@@ -24,15 +24,15 @@ function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRoun
 % toRound ... {0,(1)} Option to round the polytope before sampling.
 % roundedPolytope ... The rounded polytope from a previous round of
 %                     sampling the same model.
-% minFlux,maxFlux ... n x 1 flux minima and maxima from flux variability
-%                     analysis of the same model.
 %
 % OUTPUTS:
 % samples ... n x numSamples matrix of random flux samples
 % roundedPolytope ... The rounded polytope. Save for use in subsequent
 %                     rounds of sampling.
 %
-% March 2017, Ben Cousins and Hulda S. Haraldsdóttir
+% .. Authors: 
+%       -Ben Cousins and Hulda S. Haraldsdóttir, 03/2017, Original code
+%       -Ben Cousins, 12/2017, Updated to use sampling submodule
 
 % Define defaults
 if nargin>=5 && isempty(numSkip)
@@ -53,11 +53,9 @@ else
     toPreprocess = 0;
 end
 
-if nargin < 6 || isempty(minFlux)
-    toGetWidths = 1;
-else
-    toGetWidths = 0;
-end
+if nargin < 6 || isempty(useFastFVA)
+    useFastFVA = false;
+end 
 
 % Preprocess model
 if toPreprocess
@@ -68,31 +66,6 @@ if toPreprocess
     %check for width 0 facets to make sure we are full dimensional
     %also check for feasibility
     fprintf('Checking for width 0 facets...\n');
-    
-%     if toGetWidths
-%         %check if we can use fastFVA
-%         if exist('fastFVA')==2
-%             %check if we can do parallel for fastFVA
-%             v=ver;
-%             PCT='Parallel Computing Toolbox';
-%             if  any(strcmp(PCT,{v.Name}))
-%                 p = parcluster('local');
-%                 SetWorkerCount(p.NumWorkers);
-%             end
-%             [minFlux, maxFlux] = fastFVA(model,100);
-%         else
-%             [minFlux, maxFlux] = fluxVariability(model);
-%         end
-%     end
-%     
-%     eps_cutoff = 1e-7;
-%     
-%     isEq = (maxFlux - minFlux) < eps_cutoff;
-%     eq_constraints = sparse(sum(isEq),size(P.A_eq,2));
-%     eq_constraints(:,isEq) = speye(sum(isEq));
-%     
-%     P.A_eq = [P.A_eq; eq_constraints];
-%     P.b_eq = [P.b_eq; minFlux(isEq)];
     
     %check to make sure P.A and P.b are defined, and appropriately sized
     if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
@@ -121,10 +94,11 @@ if toPreprocess
     %preprocess the polytope of feasible solutions
     %restict to null space
     %round via maximum volume ellipsoid
-    options.toRound=1;
+    options.toRound=toRound;
     options.bioModel=1;
     options.fullDim=0;
     options.model = model;
+    options.useFastFVA = useFastFVA;
     [roundedPolytope] = preprocess(P,options);
 end
 
@@ -132,8 +106,6 @@ fprintf('Generating samples...\n');
 
 %now we're ready to sample
 samples = genSamples(roundedPolytope, numSkip, numSamples);
-
-% samples = genSamplesGaussian(roundedPolytope,numSkip,numSamples,100*ones(size(roundedPolytope.N,1),1),eye(size(roundedPolytope.N,1)));
 
 end
 
