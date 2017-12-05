@@ -36,7 +36,7 @@ function [map2, Flux2, fluxMap] = addFluxFBA(map, model, FBAsolution, color)
     map2 = map;
     
     % Call function to give color name instead color code
-    Colors = Create_colors_map;
+    Colors = createColorsMap;
 
     % Obtain fluxes in the map from FBA solution
     Flux = FBAsolution.v;
