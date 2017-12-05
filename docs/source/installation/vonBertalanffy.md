@@ -1,8 +1,9 @@
-# This is an instruction for installing all necessary tools to use vonBertalanffy
+# Installation instructions - vonBertalanffy
+(Suitable for UNIX-based computers)
 
-## First, begin by installing all the necessary dependencies. At the time of writing this, the following were used:
+First, begin by installing all the necessary dependencies. At the time of writing this, the following were used:
 
- * Ubuntu 16.04 LTS
+ * Ubuntu 16.04 LTS (or newer)
 
  * Python 2.7
 
@@ -27,6 +28,10 @@ Alternatively, Python 2 is freely available at http://www.python.org/download/
 ### NumPy
 NumPy can be installed using the following commands:
 ```
+ pip install NumPy
+```
+In case it is not enough this is an alternative way:
+```
  sudo apt-get install python-de
  sudo apt-get install python-setuptool
  sudo wget http://downloads.sourceforge.net/project/numpy/NumPy/1.11.1/numpy-1.11.1.tar.gz  
@@ -34,11 +39,11 @@ NumPy can be installed using the following commands:
  cd numpy-1.11.1  
  sudo python setup.py build -j 4 install
 ```
- Alternatively, Numpy is freely available at
- http://sourceforge.net/projects/numpy/files/NumPy/
+Alternatively, Numpy is freely available at
+http://sourceforge.net/projects/numpy/files/NumPy/
 
 ### Sun Java
-In order not to get issues with the add-apt-repository command, install the following package:
+In order not to get issues with the add-apt-repository command, install the following package if Java 8 is not already installed on your machine:
 ```
  sudo apt-get install software-properties-common
 ```
@@ -62,9 +67,9 @@ ChemAxon calculator plugin requires a license. Apply for an academic license.
 After your license has been made available, you can download from the “My
 Licenses” tab on the ChemAxon website.
 
-Download the license and place it under (replace USER by your actual user account):
+Download the license and place it under (replace <user> by your actual user account):
 ```
- /home/USER/.chemaxon
+ /home/<user>/.chemaxon
 ```
 Download Marvin for Linux fromn https://www.chemaxon.com/products/marvin/download, avigate to the directory where it was
 saved and make it executable (here, we downloaded version 17.28.0 - use the
@@ -95,26 +100,26 @@ Licenses of additionally used third party programs can be found in license.html
 Online version: http://www.chemaxon.com/marvin/license.html
 Runs various molecule calculations: charge, pKa, logP, etc.
 
- For more info, see:
- ChemAxon's cxcalc, with licence, which is part of Marvin Beans
+For more info, see:
+ChemAxon's cxcalc, with licence, which is part of Marvin Beans
 
- #### ChemAxon Marvin Beans download
- https://www.chemaxon.com/download/marvin-suite/#mbeans
+ChemAxon Marvin Beans download
+https://www.chemaxon.com/download/marvin-suite/#mbeans
 
- #### ChemAxon Marvin Beans installation - all platforms
- https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
+ChemAxon Marvin Beans installation - all platforms
+https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
 
- #### ChemAxon Marvin Beans installation - linux
- https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
+ChemAxon Marvin Beans installation - linux
+https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
 
- #### ChemAxon Marvin Beans cxcalc - about
- https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
+ChemAxon Marvin Beans cxcalc - about
+https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
 
- #### ChemAxon Free academic license - available from
- http://www.chemaxon.com/my-chemaxon/my-academic-license/
+ChemAxon Free academic license - available from
+http://www.chemaxon.com/my-chemaxon/my-academic-license/
 
- #### ChemAxon Free academic license - installation
- https://marvin-demo.chemaxon.com/marvin/help/licensedoc/installToDesktop.html#gui
+ChemAxon Free academic license - installation
+https://marvin-demo.chemaxon.com/marvin/help/licensedoc/installToDesktop.html#gui
 
  ### OpenBabel and Python bindings  
 Install the OpenBabel and Python 2 bindings by entering the following:
