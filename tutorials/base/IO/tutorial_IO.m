@@ -84,7 +84,7 @@
 %% EQUIPMENT SETUP
 %% *Initialize the COBRA Toolbox.*
 % Initialize The Cobra Toolbox using the |initCobraToolbox| function.
-%%
+
 initCobraToolbox
 %% 
 % For this tutorial we will use a MAT-file formated model of the _E.coli 
@@ -106,7 +106,7 @@ end
 % The most direct way to load a model into The COBRA Toolbox is to use the |readCbModel| 
 % function. For example, to load a model from a MAT-file, you can simply use the 
 % filename (with or without file extension). 
-%%
+
 fileName = 'ecoli_core_model.mat';
 model = readCbModel(fileName);
 %% 
@@ -118,23 +118,45 @@ model = readCbModel(fileName);
 % 
 % You can also call the |readCbModel |function without a fileName to get 
 % a dialog box. This is provided when the Java feature is available. 
-%%
+
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
     model = readCbModel();
 end
 %% 
 % Once the model is loaded it can be used directly with The COBRA Toolbox 
 % functions. To view the data stored in the model use the following command.
-%%
+
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments    
     open model
 end
+%% Anticipated results
+% After reading the model you should have a struct called model in your workspace. 
+% This struct should look approximately like:
+% 
+% 
+% 
+% In general, the following fields should always be present: 
+% 
+% * rxns, the identifiers of the reactions
+% * mets, the identifiers of the metabolites
+% * genes, the list of genes in your model (can be empty)
+% * rules, the Gene-protein-reaction rules in a computer readable format present 
+% in your model.
+% * S, the stoichiometric matrix
+% * lb, the lower bounds of the reactions
+% * ub, the upper bounds of the reactions
+% * osense, the objective sense (by convention, -1 indicates maximisation, 1 
+% minimisation)
+% * b, Accumulation (positive) or depletion (negative) of the corresponding 
+% metabolites. 0 Indicates no concentration change. 
+% * csense, indicator whether the b vector is a lower bound ('G'), upper bound 
+% ('L'), or hard constraint 'E' for the metabolite.
 %% Writing a model (timing: 1 second to a few minutes)
 % To write files, use the |writeCbModel| function. A dialog box will appear, 
 % select or enter the filename and the file format. The output is then generated 
 % and saved to the directory indicated in the diaglog box. A summary of the fields 
 % present in the model will also appear in the command window. 
-%%
+
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model)
 end
@@ -144,20 +166,22 @@ end
 % the file type was not specified and so the default file type to be saved was 
 % as a MAT-file. To use the function to write a file types other than a MAT-file, 
 % specificy the file type for input as: ‘text’,’xls’, or ‘sbml’. 
-%%
+
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model,'text')
 end
 %% 
 % It is also possible to specify the file type and file name explicitly. 
 % The following example writes a model directly to the file name 'Acidaminococcus.xml'.
-%%
+
 if usejava('desktop') % This line of code is to avoid execution of example in non gui-environments
     writeCbModel(model, 'SBML', 'Acidaminococcus.xml')
 end
+%% Anticipated Results
+% A file with the given filename containing the model in the specified format.
 %% CLEAN UP
 % Clean up of materials used in the tutorial.  
-%%
+
 currentDir = pwd;
 cd(fileparts(which('tutorial_IO.mlx')));
 

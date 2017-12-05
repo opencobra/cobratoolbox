@@ -25,7 +25,7 @@ MATFolder = tempname;
 mkdir(MATFolder);
 
 %copy all xml files from the models to the temp folder 
-modeldir = [CBTDIR filesep 'test' filesep 'models'];
+modeldir = getDistributedModelFolder('iIT341.xml');
 
 modelfiles = dir(modeldir);
 

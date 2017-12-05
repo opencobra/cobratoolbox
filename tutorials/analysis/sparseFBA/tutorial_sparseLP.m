@@ -39,24 +39,11 @@ initCobraToolbox
 % Human> webpage. You can also select your own model to work with. Before proceeding 
 % with the simulations, the path for the model needs to be set up:      
 
-if 0
-    % Using own model, change "if 0" to "if 1" and change the filename and directory
-    filename = 'Recon3.0model';
-    directory = '~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-    model = loadIdentifiedModel(filename, directory);
-    % model = convertOldStyleModel(model);%convert to new COBRA format style if needed.
-else
-    % Default use of Recon 2.04
-    global CBTDIR            
-    load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.v04.mat']);            
-    model = modelR204;            
-    clear modelR204;
-%% 
-% Recon 2.04 is written in the "old style" COBRA format, and we thus use 
-% the function |convertOldStyleModel| to convert it to the new COBRA Toolbox format.
-
-    model = convertOldStyleModel(model);
-end
+global CBTDIR
+modelFileName = 'Recon2.v04.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 %% 
 % *NOTE: The following text, code, and results are shown for the Recon 2.04 
 % model*
@@ -192,7 +179,7 @@ end
 %% REFERENCES
 % _ _[1] Le Thi, H.A., Pham Dinh, T., Le, H.M., and Vo, X.T. (2015). DC approximation 
 % approaches for sparse optimization. European Journal of Operational Research 
-% 244, 26–46.
+% 244, 26â€“46.
 % 
 % [2] Thiele, I., Swainston, N., Fleming, R.M., Hoppe, A., Sahoo, S., Aurich, 
 % M.K., Haraldsdottir, H., Mo, M.L., Rolfsson, O., Stobbe, M.D., et al. (2013). 

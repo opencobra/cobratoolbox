@@ -32,8 +32,13 @@
 % is a structure named |modelName| with a field |matrixName| that contains the 
 % stoichiometric matrix |S| (or |A|).
 
+% If this is a distributed model, get the folder for the model. Commonly if you use your own model, this is unnecessary
+% As the file would be in the current folder. But for this tutorial we need to make sure, that the right model is used, 
+% and that no other model with the same name is above it in the path.
+modelFolder = getDistributedModelFolder('ecoli_core_model.mat');
+
 % define the filename of the model
-modelFile = 'ecoli_core_model.mat';
+modelFile = [modelFolder filesep 'ecoli_core_model.mat'];
 
 % define the name of model structure
 modelName = 'model';
@@ -43,11 +48,11 @@ matrixName = 'S';
 %% 
 % *Load the stoichiometric matrix*
 % 
-% In order to use the model, we need to load the |modelFile| that contains 
+% In order to use the model, we need to read the |modelFile| that contains 
 % a COBRA model structure  |modelName|:
 
 % load the modelName structure from the modelFile
-load(modelFile, modelName);
+model = readCbModel(modelFile, 'modelName','model');
 %% 
 % Some models contain stoichiometric matrices with a different name (commonly 
 % coupled models). By default, the stoichiometric matrix is denoted |S|.
@@ -357,7 +362,10 @@ solverRecommendation
 % In order to see the effect of scaling, let us consider the ME model [4]:
 
 % load the modelName structure from the modelFile
-load('ME_matrix_GlcAer_WT.mat', 'modelGlcOAer_WT');
+%as before this model is distributed and we need to make sure, that the right file is choosen.
+modelFolder = getDistributedModelFolder('ME_matrix_GlcAer_WT.mat');
+
+modelGlcOAer_WT = readCbModel([modelFolder filesep 'ME_matrix_GlcAer_WT.mat'], 'modelGlcOAer_WT');
 %% 
 % The scaling can be checked as follows:
 

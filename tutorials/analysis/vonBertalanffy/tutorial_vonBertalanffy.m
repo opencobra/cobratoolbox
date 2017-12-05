@@ -108,41 +108,30 @@ end
 % may not be so useful for iAF1260.  The Recon3Dmodel example uses values from 
 % literature for input variables where they are available.
 
-if 0
-    modelName='iAF1260';
-else
-    modelName='Recon3.0model';
-end
+modelName='iAF1260';
+% modelName='Recon3.0model'; uncomment this line and comment the line above if you want to use Recon3D
 %% Load a model
 % Load a model, and save it as the original model in the workspace, unless it 
 % is already loaded into the workspace. 
 
 clear model
-if ~exist('modelOrig','var')
-    switch modelName
-        case 'iAF1260'
-            load('iAF1260.mat');
-            if model.S(952, 350)==0
-                model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
-            end
-            model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
-        case 'Recon3.0model'
-            modelPath='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-            model = loadIdentifiedModel(modelName,modelPath);
-            model.csense(1:size(model.S,1),1)='E';
-            %Hack for thermodynamics
-            model.metFormulas{strcmp(model.mets,'h[i]')}='H';
-            model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
-            if isfield(model,'metCharge')
-                model.metCharges = double(model.metCharge);
-                model=rmfield(model,'metCharge');
-            end
-            modelOrig = model;
-        otherwise
+global CBTDIR
+modelFileName = [modelName '.mat']
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+switch modelName
+    case 'iAF1260'
+        if model.S(952, 350)==0
+            model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
+        end
+        model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
+        
+    case 'Recon3.0model'
+        model.metFormulas{strcmp(model.mets,'h[i]')}='H';
+        model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
+    otherwise
             error('setup specific parameters for your model')
-    end
-else
-    model=modelOrig;
 end
 %% Set the directory containing the results
 
@@ -297,14 +286,15 @@ if ~exist('massImbalance','var')
 end
 %% Check that the input data necessary for the component contribution method is in place
 
-if ~isfield(model,'pseudoisomers')
+if 1 %isfield(model,'pseudoisomers')
     model = setupComponentContribution(model,molfileDir);
 end
 %% Prepare the training data for the component contribution method
 
-if ~exist('training_data','var')
+
+%if ~exist('training_data','var')
     training_data = prepareTrainingData(model,printLevel);
-end
+%end
 %% Call the component contribution method
 
 if ~isfield(model,'DfG0')
@@ -319,6 +309,7 @@ end
 
 if ~isfield(model,'Srecon') 
     printLevel_pHbalanceProtons=-1;
+
     model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
 end
 %% Determine quantitative directionality assignments

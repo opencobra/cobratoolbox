@@ -344,6 +344,7 @@ switch interface
             solution.origStat   = ILOGcplex.Solution.status;
             solution.solver     = ILOGcplex.Solution.method;
             solution.time       = ILOGcplex.Solution.time;
+            solution.kappa      = ILOGcplex.Solution.quality.kappa.value;
         else
             warning(['IBM CPLEX STATUS = ' int2str(ILOGcplex.Solution.status) ', see: http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.2.0/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX1210.html'])
             solution.origStat   = ILOGcplex.Solution.status;

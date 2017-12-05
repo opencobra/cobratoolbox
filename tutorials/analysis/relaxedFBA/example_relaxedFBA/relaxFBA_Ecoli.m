@@ -1,4 +1,4 @@
-load('ecoli_core_model.mat');
+model = getDistributedModel('ecoli_core_model.mat');
 
 %Run FBA
 FBAsolution = optimizeCbModel(model,'max','zero', true);

@@ -77,7 +77,7 @@ if ~isempty(varargin{1})
     data = varargin{1};
     time = clock;
     colmn = [];
-    for i = 1:length(time)-3;
+    for i = 1:length(time)-3
         if isempty(colmn)
             colmn = num2str(round(time(i)));
         else
@@ -160,6 +160,7 @@ function act_load_Callback(hObject, eventdata, handles)
 %------------------- Read text file -----------------------
 [input_file,pathname] = uigetfile( ...
     {'*.txt', 'Text files (*.txt)';...
+    '*.xml','SBML Files (*.xml)';...
     '*.*','All Files (*.*)'},...
     'Select files',...
     'MultiSelect','off');
@@ -167,43 +168,92 @@ if pathname == 0
     return
 end
 data = cell(1,20);
-fid = fopen([pathname input_file]);
-
-line = fgetl(fid);
-cnt = 0;
-while line ~= -1 %Read text file
-    cnt = cnt + 1;
-    if strcmp(line(1),'*');
-        cnt = cnt - 1;
-    else
-        data_line = regexp(line, '\t','split');
-        Sd = size(data_line);
-        if Sd(2) > 20
-            msgbox(['Line ' cnt ' exceeds allowed colmns with ' Sd(2) '.'],...
-                'Please check your text file.','error');
-            return
+[~,~,ext] = fileparts(input_file);
+switch ext
+    case '.txt' % a txt file, manual parsing
+        fid = fopen([pathname input_file]);
+        
+        line = fgetl(fid);
+        cnt = 0;
+        while line ~= -1 %Read text file
+            cnt = cnt + 1;
+            if strcmp(line(1),'*')
+                cnt = cnt - 1;
+            else
+                data_line = regexp(line, '\t','split');
+                Sd = size(data_line);
+                if Sd(2) > 20
+                    msgbox(['Line ' cnt ' exceeds allowed colmns with ' Sd(2) '.'],...
+                        'Please check your text file.','error');
+                    return
+                end
+                data(cnt,1:Sd(2)) = data_line;
+            end
+            line = fgetl(fid);
         end
-        data(cnt,1:Sd(2)) = data_line;
-    end
-    line = fgetl(fid);
-end
-fclose(fid);
-time = clock;
-colmn = [];
-for i = 1:length(time)-3;
-    if isempty(colmn)
-        colmn = num2str(round(time(i)));
-    else
-        colmn = [colmn '/' num2str(round(time(i)))];
-    end
-end
-S = size(data);
-for i = 1:S(1) % Add time and remove compartment
-    data{i,12} = colmn;
-    abb = regexpi(data{i,1},'[','split');
-    if ~isempty(abb)
-        data{i,1} = abb{1};
-    end
+        fclose(fid);
+        time = clock;
+        colmn = [];
+        for i = 1:length(time)-3
+            if isempty(colmn)
+                colmn = num2str(round(time(i)));
+            else
+                colmn = [colmn '/' num2str(round(time(i)))];
+            end
+        end
+        S = size(data);
+        for i = 1:S(1) % Add time and remove compartment
+            data{i,12} = colmn;
+            abb = regexpi(data{i,1},'[','split');
+            if ~isempty(abb)
+                data{i,1} = abb{1};
+            end
+        end
+    case '.xml'
+        try
+            model = readCbModel([pathname input_file]);
+        catch
+             msgbox('Not a valid SBML file.',...
+                        'Please check your text file.','error');
+             return
+        end
+        time = clock;
+        colmn = [];
+        for i = 1:length(time)-3
+            if isempty(colmn)
+                colmn = num2str(round(time(i)));
+            else
+                colmn = [colmn '/' num2str(round(time(i)))];
+            end
+        end
+        model = creategrRulesField(model);        
+        data = cell(numel(model.mets),20);
+        data(1:end,1) = model.mets;
+        data(1:end,2) = model.metNames;
+        data(1:end,3) = repmat({''}, size(model.metFormulas));
+        data(1:end,4) = model.metFormulas;
+        data(1:end,5) = num2cell(model.metCharges);
+        if isfield(model,'metKEGGID')
+            data(1:end,6) = model.metKEGGID;
+        end
+        if isfield(model,'metPubChemID')
+            data(1:end,7) = model.metPubChemID;
+        end
+        if isfield(model,'metChEBIID')
+            data(1:end,8) = model.metChEBIID;
+        end
+        if isfield(model,'metInChIString')
+            data(1:end,9) = model.metInChIString;
+        end
+        if isfield(model,'metSmiles')
+            data(1:end,10) = model.metSmiles;
+        end
+        if isfield(model,'metHMDBID')
+            data(1:end,11) = model.metHMDBID;
+        end
+        data(1:end,12) = {colmn};
+
+        
 end
 %-------------- Read text file ------------------------------
 
@@ -355,6 +405,10 @@ answer = questdlg('Metabolites are ready to be saved, do you wish to save?',...
 switch answer
     case 'Yes'
         rBioNetSaveLoad('save','met',metab);
+        %Also update the handles.
+        handles.metab = metab;
+        handles.dispdata_met = handles.metab;
+        set(handles.metatable,'data',handles.dispdata_met);
         if ~isempty(handles.reactions)
             disp([num2str(S(1)) ' metabolites saved.']);
             delete(gcf)

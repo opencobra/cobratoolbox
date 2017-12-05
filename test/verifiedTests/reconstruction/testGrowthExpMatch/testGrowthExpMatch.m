@@ -23,7 +23,7 @@ test_folder = fileparts(which('testGrowthExpMatch.m'));
 cd(test_folder);
 
 %load Model
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 %removes reaction ENO
 disp('------------------------------------')

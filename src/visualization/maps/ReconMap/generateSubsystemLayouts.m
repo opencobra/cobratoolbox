@@ -11,19 +11,18 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
 %    cobra_model:       COBRA model structure
 %    color:             Color
 
-    subsystems = unique(cobra_model.subSystems);
-    subsystems = subsystems(~cellfun('isempty',subsystems));
+    subsystems = getModelSubSystems(cobra_model);
 
     for i= 1:length(subsystems)
 
         if nargin < 3
-            response = generateSubsytemsLayout(minerva, cobra_model, subsystems(i));
+            response = generateSubsytemsLayout(cobra_model, subsystems(i));
         else
-            response = generateSubsytemsLayout(minerva, cobra_model, subsystems(i), color);
+            response = generateSubsytemsLayout(cobra_model, subsystems(i), color);
         end
 
-        if ~isempty(strfind(response, '<span id="default_form:status">OK</span>'))
-            result = [subsystems(i), ' successfully sent to MINERVA instace.'];
+        if ~isempty(regexp(response, '"status":"OK"'))
+            result = [subsystems(i), ' successfully sent to ReconMap.'];
             disp(result)
         else
             result = [subsystems(i), ' failed.'];

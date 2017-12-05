@@ -14,7 +14,7 @@ fileDir = fileparts(which('testTheoretMaxProd'));
 cd(fileDir);
 
 % test variables
-model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+model = getDistributedModel('ecoli_core_model.mat');
 
 % change solver since qpng is unstable - to be changed after installation of gurobi
 changeCobraSolver('pdco', 'QP');

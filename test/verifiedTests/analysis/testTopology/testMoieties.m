@@ -30,7 +30,7 @@ cd(fileDir);
 load('refData_moieties.mat')
 
 % Load the dopamine synthesis network
-load('subDas.mat')
+model = readCbModel('subDas.mat');
 model.rxns{2} = 'alternativeR2';
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)
