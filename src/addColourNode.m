@@ -1,4 +1,4 @@
-function [map] = addColourNode(map,rxnList,colour)
+function [map] = addColourNode(map, rxnList, colour)
 
 % Add colour to all metabolites linked to a list of reaction names.
 % If no colour is specified as input, 'RED' will be used by default.
