@@ -34,7 +34,7 @@ function [map] = addColourNode(map, rxnList, colour)
         colour = 'RED';
     end
 
-    Colors = Create_colors_map();
+    Colors = createColorsMap();
 
     index = find(ismember(map.rxnName,rxnList)); % find index of reactions
     
