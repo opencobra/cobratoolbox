@@ -11,7 +11,7 @@ function map = transformToIrreversibleMap(map, rxnlist)
 %
 %   map:        Map from CD parsed to matlab format
 %
-%   rxnlist:    List of reaction names to change
+%   rxnlist:    List of reaction names to transform
 %
 % OUTPUT:
 %
