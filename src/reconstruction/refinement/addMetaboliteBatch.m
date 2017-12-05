@@ -11,6 +11,8 @@ function newmodel = addMetaboliteBatch(model,metIDs,varargin)
 %               according to the values. Only defined COBRA fields may be
 %               used. The S matrix will always be extended by the number of
 %               metabolites, but cannot be updated in this function.
+%               Varargin can also contain the parameter/Value pair
+%               "checkDuplicate", with value true or false.
 %
 % OUTPUTS:
 %
@@ -24,8 +26,19 @@ function newmodel = addMetaboliteBatch(model,metIDs,varargin)
 %    
 
 
+if numel(varargin) > 0 
+    if any(ismember(varargin(1:2:end),'checkDuplicate'))
+        checkDupPos = 2 * find(ismember(varargin(1:2:end),'checkDuplicate'));
+        checkDuplicate = varargin{checkDupPos};
+        varargin([checkDupPos-1,checkDupPos]) = []; %Remove the values.
+    end   
+end
   
-if any(ismember(model.mets,metIDs)) || numel(unique(metIDs)) < numel(metIDs)
+if ~exist('checkDuplicate','var')
+    checkDuplicate = true;
+end
+
+if checkDuplicate && (any(ismember(model.mets,metIDs)) || numel(unique(metIDs)) < numel(metIDs))
     error('Duplicate Metabolite ID detected.');
 end
 
