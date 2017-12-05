@@ -19,7 +19,7 @@ function [map, Flux2, fluxMap] = addFluxFBAdirectionAndColor(map, model, FBAsolu
 % .. Author: J.Modamio. LCSB, Belval, Luxembourg, 18/07/2017.
 
     % Call function to give color name instead color code
-    Colors = Create_colors_map;
+    Colors = createColorsMap;
 
     % Obtain fluxes in the map from FBA solution
     Flux = FBAsolution.v;
