@@ -3,7 +3,7 @@ function gprs = findGPRFromRxns(model,rxnIDs)
 % reactions. 
 % USAGE:
 %
-%    gprs = findGPRFromRxns(mode,rxnID)
+%    gprs = findGPRFromRxns(model,rxnIDs)
 %
 % INPUTS:
 %    model:             The model to add the Metabolite batch to.

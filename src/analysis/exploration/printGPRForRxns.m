@@ -2,7 +2,7 @@ function gprs = printGPRForRxns(model,rxnIDs, printLevel)
 % Print the GPRs (in textual format) for the given RxnIDs
 % USAGE:
 %
-%    gprs = printGPRForRxns(mode,rxnID)
+%    gprs = printGPRForRxns(model,rxnID)
 %
 % INPUTS:
 %    model:             The model to add the Metabolite batch to.
