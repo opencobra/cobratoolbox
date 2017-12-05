@@ -21,8 +21,8 @@ function prepIntegrationQuant(model,metData,exchanges,samples,test_max,test_min,
 %       exchanges:               Vector containing exchange reactions
 %       metData:                 Fluxes of uptake (negative) and secretion(positive) flux values. The columns are the samples and the rows are the metabolites (Unit matching remaining model constraints!).
 %       samples:                 Vector of sample names (no dublicate names)
-%       test_max:                Minimal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 500)
-%       test_min:                Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)
+%       test_max:                Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 500)
+%       test_min:                Minimal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)
 %       outputPath:              Path where output files should be saved (e.g. 'Y:\Studies\Data_integration\CORE\usingRecon1\models\')
 %
 % OPTIONAL INPUTS:
