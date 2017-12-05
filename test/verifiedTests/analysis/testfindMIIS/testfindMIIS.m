@@ -9,18 +9,6 @@
 %     - Marouen BEN GUEBILA 02/12/2017
 
 global CBTDIR
-global ILOG_CPLEX_PATH
-
-addpath(genpath(ILOG_CPLEX_PATH));
-
-%Test presence of required toolboxes.
-v = ver;
-bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
-assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
-
-statPres = (any(strcmp('Statistics and Machine Learning Toolbox', {v.Name})) || any(strcmp('Statistics Toolbox', {v.Name}))) && license('test','Statistics_Toolbox');
-assert(statPres,sprintf('The Statistics and Machine Learning Toolbox required for this function is not installed or not licensed on your system.'))
-
 
 % save the current path
 currentDir = pwd;
@@ -31,9 +19,9 @@ cd(fileDir);
 
 
 % Build infeasible model
-rxnForms = {' -> A','A -> B','B -> C', 'B -> D','D -> C','C ->'}
+rxnForms = {' -> A','A -> B','B -> C', 'B -> D','D -> C','C ->'};
 rxnNames = {'R1','R2','R3','R4','R5', 'R6'};
-model = createModel(rxnNames, rxnNames,rxnForms)
+model = createModel(rxnNames, rxnNames,rxnForms);
 model.lb(3) = 1;
 model.lb(4) = 2;
 model.ub(6) = 2;

@@ -9,21 +9,25 @@ function MIIS = findMIIS(LPProblem,printLevel)
 % the literature.
 %
 % USAGE
-%         MIIS = findMIIS(model,1)
-% Input:
-%        LPProblem: infeasible model as COBRA model structure
-%        printLevel:0/1/2
-% Output:
-%        MIIS.rxns:     Reactions of MIIS
-%        MIIS.mets:     Mets of MIIS
-%        MIIS.rxnsStat: Status of infeasiblity of reactions
-%        MIIS.metsStat: Status of infeasiblity of metabolites
-%        please refer to this link for status meaning
+%
+%    MIIS = findMIIS(model,1)
+%
+% INPUTS:
+%    LPProblem:        Infeasible model as COBRA model structure
+%    printLevel:       0/1/2
+%
+% OUTPUT:
+%    MIIS.rxns:        Reactions of MIIS
+%    MIIS.mets:        Mets of MIIS
+%    MIIS.rxnsStat:    Status of infeasiblity of reactions
+%    MIIS.metsStat:    Status of infeasiblity of metabolites
+%    please refer to this link for status meaning
 % https://www.ibm.com/support/knowledgecenter/de/SSSA5P_12.7.0/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
-% .. Author: - Marouen Ben Guebila 24/07/2017
+%
+% .. Author: - Marouen Ben Guebila - 24/07/2017
 
-if ~changeCobraSolver('ibm_cplex')
-    fprintf('This function requires IBM ILOG CPLEX');
+if ~changeCobraSolver('ibm_cplex','LP',0)
+    error('This function requires IBM ILOG CPLEX');
 end
 
 if (nargin < 2)
