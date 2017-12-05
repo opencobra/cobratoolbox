@@ -17,7 +17,7 @@ The following commands are entered in a *terminal window (bash or similar  shell
 
 ### Python 2
 OpenBabel only works with Python 2. Most distributions should already have
-this installed, but if this is not the case, the following lines will do it:
+this installed, but if this is not the case, the following lines will do it. The commands require administrator rights:
 ```
  sudo add-apt-repository ppa:fkrull/deadsnakes
  sudo apt-get update
@@ -28,11 +28,11 @@ Alternatively, Python 2 is freely available at http://www.python.org/download/
 ### NumPy
 NumPy can be installed using the following commands:
 ```
- pip install NumPy
+ pip install NumPy --user
 ```
 In case it is not enough this is an alternative way:
 ```
- sudo apt-get install python-de
+ sudo apt-get install python-dev
  sudo apt-get install python-setuptool
  sudo wget http://downloads.sourceforge.net/project/numpy/NumPy/1.11.1/numpy-1.11.1.tar.gz  
  sudo tar -xzvf numpy-1.11.1.tar.gz
