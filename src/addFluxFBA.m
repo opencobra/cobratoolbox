@@ -1,4 +1,4 @@
-function [map2,Flux2,fluxMap] = addFluxFBA(map,model,FBAsolution,color)
+function [map2, Flux2, fluxMap] = addFluxFBA(map, model, FBAsolution, color)
     
 % Change reactions type for a specific list of reactions
 % Visualize the fluxes obtained in a cobra model (FBA) in a CD map 
