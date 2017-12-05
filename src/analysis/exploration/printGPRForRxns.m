@@ -5,8 +5,8 @@ function gprs = printGPRForRxns(model,rxnIDs, printLevel)
 %    gprs = printGPRForRxns(model,rxnID)
 %
 % INPUTS:
-%    model:             The model to add the Metabolite batch to.
-%    rxnIDs:            The IDs of the reactions that shall be added.
+%    model:             The model to retrieve the GPR rules from
+%    rxnIDs:            The reaction IDs to obtain the GPR rules for
 %
 % OPTIONAL INPUTS:
 %
@@ -22,9 +22,17 @@ function gprs = printGPRForRxns(model,rxnIDs, printLevel)
 %
 %    Thomas Pfau Dec 2017
 
-rxnPos = findRxnIDs(model,rxnIDs);
+if ~isnumeric(rxnIDs)
+    rxnPos = findRxnIDs(model,rxnIDs);
+else
+    %We got a list of positions
+    rxnPos = rxnIDs;
+    if any(rxnPos > numel(model.rxns))
+        error('Some indices provided are larger than the number of reactions.');
+    end
+end
 
-if any(rxnPos == 0)
+if any(rxnPos == 0) 
     error('The following reaction IDs are not part of this model:\n%s\n',strjoin(rxnIDs(rxnPos==0),'; '));
 end
 

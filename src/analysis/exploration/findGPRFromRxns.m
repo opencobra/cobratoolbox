@@ -6,8 +6,8 @@ function gprs = findGPRFromRxns(model,rxnIDs)
 %    gprs = findGPRFromRxns(model,rxnIDs)
 %
 % INPUTS:
-%    model:             The model to add the Metabolite batch to.
-%    rxnIDs:            The IDs of the reactions that shall be added.
+%    model:             The model to retrieve the GPR rules from
+%    rxnIDs:            The reaction IDs to obtain the GPR rules for
 %
 % OUTPUTS:
 %
