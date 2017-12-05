@@ -1,4 +1,4 @@
-function gprs = printGPRForRxns(model,rxnIDs)
+function gprs = printGPRForRxns(model,rxnIDs, printLevel)
 % Print the GPRs (in textual format) for the given RxnIDs
 % USAGE:
 %
@@ -7,6 +7,12 @@ function gprs = printGPRForRxns(model,rxnIDs)
 % INPUTS:
 %    model:             The model to add the Metabolite batch to.
 %    rxnIDs:            The IDs of the reactions that shall be added.
+%
+% OPTIONAL INPUTS:
+%
+%    printLevel:        Whether to print out the GPRs. If printLevel is 0,
+%                       the function will only return the Strings in a cell
+%                       array.
 %
 % OUTPUTS:
 %
@@ -20,6 +26,10 @@ rxnPos = findRxnIDs(model,rxnIDs);
 
 if any(rxnPos == 0)
     error('The following reaction IDs are not part of this model:\n%s\n',strjoin(rxnIDs(rxnPos==0),'; '));
+end
+
+if ~exist('printLevel','var')
+    printLevel = 1;
 end
 
 if isfield(model,'grRules')
@@ -36,8 +46,10 @@ end
 rxnNames = model.rxns(rxnPos);
 maxRxnLength = num2str(max(cellfun(@length,rxnNames))+2);
 
-for i = 1:numel(rxnPos)
-    fprintf(['%-' maxRxnLength 's:\t%s\n'],rxnNames{i},gprs{i});
+if printLevel > 0
+    for i = 1:numel(rxnPos)
+        fprintf(['%-' maxRxnLength 's:\t%s\n'],rxnNames{i},gprs{i});
+    end
 end
 
 

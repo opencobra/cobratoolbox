@@ -57,5 +57,13 @@ assert(all(cellfun(@isempty, gprs)));
 %Give an error, if a reaction is not present
 verifyCobraFunctionError(@() findGPRFromRxns(model,'A'));
 
+% Finally test, that no output is generated from findGPRFromRxns
+diary findGPR.txt
+findGPRFromRxns(modelTemp2,modelTemp2.rxns(1:5));
+diary off 
+text = importdata('findGPR.txt');
+assert(isempty(text));
+delete('findGPR.txt');
+
 % change the directory
 cd(currentDir)

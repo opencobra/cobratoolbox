@@ -1,5 +1,6 @@
 function gprs = findGPRFromRxns(model,rxnIDs)
-% Print the GPRs (in textual format) for the given RxnIDs
+% Get the Textual representations of the GPR rules for the indicated
+% reactions. 
 % USAGE:
 %
 %    gprs = findGPRFromRxns(mode,rxnID)
@@ -16,7 +17,7 @@ function gprs = findGPRFromRxns(model,rxnIDs)
 %
 %    Thomas Pfau Dec 2017
 
-gprs = printGPRForRxns(model,rxnIDs);
+gprs = printGPRForRxns(model,rxnIDs, 0);
 
 
 
