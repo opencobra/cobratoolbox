@@ -19,9 +19,8 @@
 % With all dependencies installed correctly, we configure our environment, verfy
 % all dependencies, and add required fields and directories to the matlab path.
 
-if 1
-    initVonBertalanffy
-end
+initVonBertalanffy
+
 % Select the model
 % This tutorial is tested for the E. coli model iAF1260 and the human metabolic
 % model Recon3.0model. However, only the data for the former is provided within
@@ -31,8 +30,8 @@ end
 % may not be so useful for iAF1260.  The Recon3Dmodel example uses values from
 % literature for input variables where they are available.
 
-% modelName='iAF1260';
-modelName='Recon3.0model'; % uncomment this line and comment the line above if you want to use Recon3D
+% modelName='iAF1260'; % uncomment this line and comment the line below if you want to use the other model
+modelName='Recon3.0model';
 % Load a model
 % Load a model, and save it as the original model in the workspace, unless it
 % is already loaded into the workspace.
@@ -42,12 +41,7 @@ global CBTDIR
 modelFileName = [modelName '.mat'];
 modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
 modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
-% model = readCbModel(modelFileName);
-%
-% model = loadIdentifiedModel(modelName, modelDirectory);
-% load /home/jacek/work/fork-cobratoolbox/test/models/mat/Recon3.0model.mat;
-% model = Recon3model;
-%
+
 switch modelName
     case 'iAF1260'
         model = readCbModel(modelFileName);
