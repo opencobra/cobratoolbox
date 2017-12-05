@@ -151,23 +151,23 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %    This means that it is up to the person calling `optimizeCbModel` to adapt their code to the
 %    case when no solution is returned, by checking the value of `solution.stat` first.
 
-if exist('osenseStr', 'var') % Process arguments and set up problem
-    if isempty(osenseStr)
-        osenseStr = 'max';
-    end
-else
-    if isfield(model, 'osenseStr')
-        osenseStr = model.osenseStr;
+if exist('osenseStr', 'var') && ~isempty(osenseStr) % If it is present and not empty, use it.
+    if strcmpi(osenseStr,'max')
+        LPproblem.osense = -1;
     else
-        osenseStr = 'max';
+        LPproblem.osense = +1;
     end
+elseif isfield(model, 'osense') % otherwise use the model osense Field.
+    LPproblem.osense = model.osense;
+else    %Or assume maximisation
+    if nargin > 1
+        warning('Assuming maximisation')
+        %If there is only the model, the description says it is using max.        
+    end
+    LPproblem.osense = -1;
 end
 % Figure out objective sense
-if strcmpi(osenseStr,'max')
-    LPproblem.osense = -1;
-else
-    LPproblem.osense = +1;
-end
+
 
 if exist('minNorm', 'var')
     if isempty(minNorm)
