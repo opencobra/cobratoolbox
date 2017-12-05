@@ -31,7 +31,7 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 % .. Author: Marouen Ben Guebila 24/07/2017
 
 if ~changeCobraSolver('ibm_cplex')
-    fprintf('This function requires IBM ILOG CPLEX');
+    error('This function requires IBM ILOG CPLEX');
 end
 if exist('timelimit','var')
     contFunctName.tune.timelimit = timelimit;
@@ -42,21 +42,18 @@ end
 if exist('printLevel','var')
     contFunctName.tune.display = printLevel;
 end
-interface='ILOGcomplex';
-if ~exist('contFunctName','var')
-    cpxControl=[];
+
+%read parameters
+if isstruct(contFunctName)
+    cpxControl=contFunctName;
 else
-    if isstruct(contFunctName)
-        cpxControl=contFunctName;
+    if ~isempty(contFunctName)
+        %calls a user specified function to create a CPLEX control structure
+        %specific to the users problem. A TEMPLATE for one such function is
+        %CPLEXParamSet
+        cpxControl=eval(contFunctName);
     else
-        if ~isempty(contFunctName)
-            %calls a user specified function to create a CPLEX control structure
-            %specific to the users problem. A TEMPLATE for one such function is
-            %CPLEXParamSet
-            cpxControl=eval(contFunctName);
-        else
-            cpxControl=[];
-        end
+        cpxControl=[];
     end
 end
 
@@ -101,10 +98,6 @@ c=full(c*osense);
 %cplex expects it dense
 b=full(b);
 
-
-%call cplex
-tic;
-
 %complex ibm ilog cplex interface
 if ~isempty(csense)
     %set up constant vectors for CPLEX
@@ -114,9 +107,6 @@ if ~isempty(csense)
     b_U(csense == 'G',1) = Inf;
     b_L(csense == 'L',1) = -Inf;
     b_U(csense == 'L',1) = b(csense == 'L');
-else
-    b_L = b;
-    b_U = b;
 end
 
 % Initialize the CPLEX object

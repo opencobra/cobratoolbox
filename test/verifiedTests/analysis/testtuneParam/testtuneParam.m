@@ -28,8 +28,9 @@ solverOK = changeCobraSolver('ibm_cplex');
 if solverOK
     %retrieve all IBM Cplex paramters
     cpxControl = CPLEXParamSet('ILOGcomplex');
-    %set barrier as solver algorithm
+    %set barrier as solver algorithm and set numerical emphasis to 1
     cpxControl.lpmethod=4;
+    cpxControl.emphasis.numerical=1;
     %Optimize parameter values
     timeLimit=5;%seconds
     nRuns=5;%runs
@@ -37,8 +38,10 @@ if solverOK
     optimParam = tuneParam(model,cpxControl,timeLimit,nRuns,printLevel);
 
     %test results
-    %check if automatic is the optimal solver algorithm for Ecoli
+    %check if automatic is the optimal solver algorithm for Ecoli and
+    %numerical emphasis desactivated
     assert(isequal(optimParam.lpmethod,0))
+    assert(isequal(optimParam.emphasis.numerical,0))
 end
 
 % change the directory
