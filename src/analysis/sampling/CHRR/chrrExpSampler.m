@@ -1,10 +1,10 @@
-function [samples,roundedPolytope] = chrrExpSampler(model,numSkip,numSamples,lambda,toRound,roundedPolytope,minFlux,maxFlux)
-% CHRRSAMPLER Generate uniform random flux samples with CHRR
-%   Coordinate Hit-and-Run with Rounding
+function [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSkip,numSamples,lambda,toRound,roundedPolytope,useFastFVA)
+% CHRREXPSAMPLER Generate random flux samples from an exponential distribution 
+%   with CHRR Coordinate Hit-and-Run with Rounding
 %
-% [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
+% [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
 %
-%   chrrSampler will generate numSamples samples from model, taking
+%   chrrExpSampler will generate numSamples samples from model, taking
 %   numSkip steps of a random walk between each sample
 %
 %   Rounding the polytope is a potentially expensive step. If you generate multiple rounds
@@ -12,38 +12,47 @@ function [samples,roundedPolytope] = chrrExpSampler(model,numSkip,numSamples,lam
 %   input it for subsequent rounds.
 %
 % INPUTS:
-% model ... COBRA model structure with fields:
-% .S ... The m x n stoichiometric matrix
-% .lb ... n x 1 lower bounds on fluxes
-% .ub ... n x 1 upper bounds on fluxes
-% .c ... n x 1 linear objective
-% numSkip ... Number of steps of coordinate hit-and-run between samples
-% numSamples ... Number of samples
+%    model:               COBRA model structure with fields:
+%
+%                           * .S - The `m x n` stoichiometric matrix
+%                           * .lb - `n x 1` lower bounds on fluxes
+%                           * .ub - `n x 1` upper bounds on fluxes
+%                           * .c - `n x 1` linear objective
+%    numSkip:             Number of steps of coordinate hit-and-run between samples
+%    numSamples:          Number of samples
 %
 % OPTIONAL INPUTS:
-% lambda ... the bias vector, i.e. generate samples from exp(-<lambda, x>) restricted to the feasible region.
-%            ***OPTIONAL ONLY IF model.c is nonzero, in which case we set
-%            lambda=model.c
-% toRound ... {0,(1)} Option to round the polytope before sampling.
-% roundedPolytope ... The rounded polytope from a previous round of
-%                     sampling the same model.
-% minFlux,maxFlux ... n x 1 flux minima and maxima from flux variability
-%                     analysis of the same model.
+%    lambda:              the bias vector, i.e. generate samples from exp(-<lambda, x>) 
+%                         restricted to the feasible region. ***OPTIONAL ONLY IF model.c 
+%                         is nonzero, in which case we set lambda=model.c.
+%    toRound:             {0, 1} Option to round the polytope before sampling.
+%    roundedPolytope:     The rounded polytope from a previous round of
+%                         sampling the same model.
+%
+% `chrrExpSampler` will generate `numSamples` samples from model, taking
+% `numSkip` steps of a random walk between each sample.
+%
+% Rounding the polytope is a potentially expensive step. If you generate multiple rounds
+% of samples from a single model, you can save `roundedPolytope` from the first round and
+% input it for subsequent rounds. It is allowed to change lambda without
+% recomputing roundedPolytope.
 %
 % OUTPUTS:
-% samples ... n x numSamples matrix of random flux samples
-% roundedPolytope ... The rounded polytope. Save for use in subsequent
-%                     rounds of sampling.
+%    samples:             `n x numSamples` matrix of random flux samples
+%    roundedPolytope:     The rounded polytope. Save for use in subsequent
+%                         rounds of sampling.
+%    minFlux, maxFlux:    flux minima and maxima
 %
-% November 2017, Ben Cousins and Hulda S. Haraldsdóttir
+% .. Authors: 
+%       -Ben Cousins, 12/2017, based on chrrSampler by Ben Cousins and Hulda S. Haraldsdóttir
 
 % Define defaults
-if nargin < 4
-   lambda = model.c;
+if nargin < 4 || isempty(lambda)
+    lambda = model.c;
 end
 
 if max(abs(lambda))<1e-8
-       error('Bias vector is too close to the zero vector.');
+    error('Bias vector is too close to the zero vector.');
 end
 
 if nargin>=6 && isempty(numSkip)
@@ -54,8 +63,8 @@ if nargin<3 || isempty(numSamples)
     numSamples = 1000;
 end
 
-if nargin<5 || isempty(toRound)
-    toRound=1;
+if nargin < 5 || isempty(toRound)
+    toRound = 1;
 end
 
 if nargin < 6 || isempty(roundedPolytope)
@@ -64,11 +73,9 @@ else
     toPreprocess = 0;
 end
 
-if nargin < 7 || isempty(minFlux)
-    toGetWidths = 1;
-else
-    toGetWidths = 0;
-end
+if nargin < 7 || isempty(useFastFVA)
+    useFastFVA = false;
+end 
 
 % Preprocess model
 if toPreprocess
@@ -103,16 +110,19 @@ if toPreprocess
     %preprocess the polytope of feasible solutions
     %restict to null space
     %round via maximum volume ellipsoid
-    options.toRound=1;
+    options.toRound=toRound;
     options.bioModel=1;
     options.fullDim=0;
     options.model = model;
     options.model.c = 0*options.model.c;
+    options.useFastFVA = useFastFVA;
     [roundedPolytope] = preprocess(P,options);
-    roundedPolytope.lambda = -lambda' * roundedPolytope.N;
+    minFlux = roundedPolytope.minFlux;
+    maxFlux = roundedPolytope.maxFlux;
 end
 
 fprintf('Generating samples...\n');
+roundedPolytope.lambda = -lambda' * roundedPolytope.N;
 
 if norm(roundedPolytope.lambda)<1e-8
     warning('In the preprocessed space, bias vector is close to zero. Reverting to uniform sampling.');

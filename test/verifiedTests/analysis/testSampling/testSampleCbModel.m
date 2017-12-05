@@ -14,8 +14,7 @@ fileDir = fileparts(which('testSampleCbModel'));
 cd(fileDir);
 
 % define the samplers
-samplers = {'ACHR', 'CHRR'}; %'MFE'
-
+    samplers = {'ACHR', 'CHRR','CHRR_EXP'}; %'MFE'
 % create a parallel pool (if possible)
 try
     minWorkers = 2;
@@ -71,10 +70,24 @@ for k = 1:length(solverPkgs)
                     
                     options.nStepsPerPoint = 1;
                     options.nPointsReturned = 10;
+                        options.toRound = 1;
                     
                     [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR', options);
                     
                     assert(norm(samples) > 0)
+                    case 'CHRR_EXP'
+                        fprintf('\nTesting the coordinate hit-and-run with rounding (CHRR) sampler, with exponential target distribution.\n.');
+
+                        options.nStepsPerPoint = 1;
+                        options.nPointsReturned = 10;
+                        options.toRound = 1;
+                        numRxns = length(model.c);
+                        options.lambda = 0*model.c + 1;
+                        
+                        [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR_EXP', options);
+
+                        assert(norm(samples) > 0)
+                        
             end
         end
         
