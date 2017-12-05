@@ -15,6 +15,7 @@ function newmap = defaultColorCD(map)
 %   newmap:     Matlab structure of map with all rxn lines as default
 %               color and width
 %
+% .. Authors:
 % A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
 % N.Sompairac - Institut Curie, Paris, 17/07/2017.
 
