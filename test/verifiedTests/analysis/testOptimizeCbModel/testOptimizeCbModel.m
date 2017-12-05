@@ -53,7 +53,29 @@ for k = 1:length(solverPkgs)
         assert(L0solution.stat == 1);
         assert(norm(model.S * L0solution.x - model.b, 2) < tol);
         assert(abs(FBAsolution.f - L0solution.x'* model.c) < 0.01);
-
+        
+        %Test minimisation (objective should eb zero)
+        %First by setting osenseStr:
+        minSol = optimizeCbModel(model,'min');
+        assert(minSol.f == 0);
+        
+        %Then by setting the osense of the model.
+        modelMod = model;
+        modelMod.osense = 1;        
+        minSol = optimizeCbModel(model,'min');
+        assert(minSol.f == 0);
+        
+        %Test the warning when maxmimisation is implicitly assumed:
+        warnStat = warning;
+        warning('on');
+        modelMod = rmfield(model,'osense');
+        maxSol = optimizeCbModel(modelMod,'',minNorm);
+        warnstr = lastwarn;
+        expectedWarn = 'Assuming maximisation';
+        assert(abs(FBAsolution.f - maxSol.x' * model.c) < 0.01);
+        assert(strncmp(warnstr,expectedWarn,length(expectedWarn)));
+        warning(warnStat)
+        
         if strcmp(solverPkgs{k}, 'tomlab_cplex')
         % change the COBRA solver (QP)
             solverOK = changeCobraSolver('tomlab_cplex', 'QP');
@@ -65,7 +87,7 @@ for k = 1:length(solverPkgs)
             assert(norm(model.S * L2solution.x - model.b, 2) < tol);
             assert(abs(FBAsolution.f - L2solution.x'* model.c) < 0.01);
         end
-
+        
         % output a success message
         fprintf('Done.\n');
     end
