@@ -5,7 +5,7 @@ function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
 %
 % USAGE:
 %
-%   ColorRxnsFromGenes(map, model, EntrezList, color, width);
+%   colorRxnsFromGenes(map, model, EntrezList, color, width);
 %
 % INPUTS:
 %
