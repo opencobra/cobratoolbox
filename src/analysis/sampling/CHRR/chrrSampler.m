@@ -1,45 +1,40 @@
-function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux, useFastFVA)
-% Generate uniform random flux samples with CHRR
-% Coordinate Hit-and-Run with Rounding
+function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,useFastFVA)
+% CHRRSAMPLER Generate uniform random flux samples with CHRR
+%   Coordinate Hit-and-Run with Rounding
 %
-% USAGE:
+% [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
 %
-%    [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, minFlux, maxFlux, useFastFVA);
+%   chrrSampler will generate numSamples samples from model, taking
+%   numSkip steps of a random walk between each sample
+%
+%   Rounding the polytope is a potentially expensive step. If you generate multiple rounds
+%   of samples from a single model, you can save roundedPolytope from the first round and
+%   input it for subsequent rounds.
 %
 % INPUTS:
-%    model:               COBRA model structure with fields:
-%
-%                           * .S - The `m x n` stoichiometric matrix
-%                           * .lb - `n x 1` lower bounds on fluxes
-%                           * .ub - `n x 1` upper bounds on fluxes
-%                           * .c - `n x 1` linear objective
-%    numSkip:             Number of steps of coordinate hit-and-run between samples
-%    numSamples:          Number of samples
+% model ... COBRA model structure with fields:
+% .S ... The m x n stoichiometric matrix
+% .lb ... n x 1 lower bounds on fluxes
+% .ub ... n x 1 upper bounds on fluxes
+% .c ... n x 1 linear objective
+% numSkip ... Number of steps of coordinate hit-and-run between samples
+% numSamples ... Number of samples
 %
 % OPTIONAL INPUTS:
-%    toRound:             {0, 1} Option to round the polytope before sampling.
-%    roundedPolytope:     The rounded polytope from a previous round of
-%                         sampling the same model.
-%    minFlux, maxFlux:    `n x 1` flux minima and maxima from flux variability
-%                         analysis of the same model.
+% toRound ... {0,(1)} Option to round the polytope before sampling.
+% roundedPolytope ... The rounded polytope from a previous round of
+%                     sampling the same model.
 %
 % OUTPUTS:
-%    samples:             `n x numSamples` matrix of random flux samples
-%    roundedPolytope:     The rounded polytope. Save for use in subsequent
-%                         rounds of sampling.
-%    minFlux, maxFlux:    flux minima and maxima
+% samples ... n x numSamples matrix of random flux samples
+% roundedPolytope ... The rounded polytope. Save for use in subsequent
+%                     rounds of sampling.
 %
-% .. Authors: - Ben Cousins and Hulda S. Haraldsdóttir, March 2017
-%
-% `chrrSampler` will generate `numSamples` samples from model, taking
-% `numSkip` steps of a random walk between each sample
-%
-% Rounding the polytope is a potentially expensive step. If you generate multiple rounds
-% of samples from a single model, you can save `roundedPolytope` from the first round and
-% input it for subsequent rounds.
+% .. Authors: 
+%       -Ben Cousins and Hulda S. Haraldsdóttir, 03/2017, Original code
+%       -Ben Cousins, 12/2017, Updated to use sampling submodule
 
-global SOLVERS
-
+% Define defaults
 if nargin>=5 && isempty(numSkip)
     numSkip = 8*size(roundedPolytope.A,2)^2;
 end
@@ -58,16 +53,10 @@ else
     toPreprocess = 0;
 end
 
-if nargin < 6 || isempty(minFlux)
-    toGetWidths = 1;
-else
-    toGetWidths = 0;
-end
-
-if nargin < 8 || isempty(useFastFVA)
+if nargin < 6 || isempty(useFastFVA)
     useFastFVA = false;
 end 
-% End of define defaults
+
 % Preprocess model
 if toPreprocess
     
@@ -77,34 +66,6 @@ if toPreprocess
     %check for width 0 facets to make sure we are full dimensional
     %also check for feasibility
     fprintf('Checking for width 0 facets...\n');
-    
-    if toGetWidths
-        % check if we can use fastFVA
-        if useFastFVA && SOLVERS.ibm_cplex.installed
-            % check if we can do parallel for fastFVA
-            v=ver;
-            PCT='Parallel Computing Toolbox';
-            if  any(strcmp(PCT,{v.Name}))
-                p = parcluster('local');
-                setWorkerCount(p.NumWorkers);
-            end
-            [minFlux, maxFlux] = fastFVA(model,100);
-        elseif useFastFVA && ~SOLVERS.ibm_cplex.installed
-            fprintf('IBM CPLEX is not installed, so `fastFVA` cannot be run. Using `fluxVariability` instead\n');
-            [minFlux, maxFlux] = fluxVariability(model);
-        else
-            [minFlux, maxFlux] = fluxVariability(model);
-        end
-    end
-    
-    eps_cutoff = 1e-7;
-    
-    isEq = (maxFlux - minFlux) < eps_cutoff;
-    eq_constraints = sparse(sum(isEq),size(P.A_eq,2));
-    eq_constraints(:,isEq) = speye(sum(isEq));
-    
-    P.A_eq = [P.A_eq; eq_constraints];
-    P.b_eq = [P.b_eq; minFlux(isEq)];
     
     %check to make sure P.A and P.b are defined, and appropriately sized
     if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
@@ -133,7 +94,12 @@ if toPreprocess
     %preprocess the polytope of feasible solutions
     %restict to null space
     %round via maximum volume ellipsoid
-    [roundedPolytope] = preprocess(P, toRound);
+    options.toRound=toRound;
+    options.bioModel=1;
+    options.fullDim=0;
+    options.model = model;
+    options.useFastFVA = useFastFVA;
+    [roundedPolytope] = preprocess(P,options);
 end
 
 fprintf('Generating samples...\n');
@@ -141,6 +107,5 @@ fprintf('Generating samples...\n');
 %now we're ready to sample
 samples = genSamples(roundedPolytope, numSkip, numSamples);
 
-% samples = genSamplesGaussian(roundedPolytope,numSkip,numSamples,100*ones(size(roundedPolytope.N,1),1),eye(size(roundedPolytope.N,1)));
-
 end
+
