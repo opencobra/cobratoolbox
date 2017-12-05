@@ -1,11 +1,11 @@
-function [mets,ID] = findMetFromCompartmentMap(map, compartment)
+function [mets, ID] = findMetFromCompartMap(map, compartment)
 
     % Finds all the metabolites and their names in the map structure for
     % a compartment of interest.
     %
     % USAGE:
     %
-    %    [mets,ID] = findMetFromCompartment(map,Compartment)
+    %    [mets, ID] = findMetFromCompartMap(map, Compartment)
     %
     % INPUTS:
     %
@@ -23,8 +23,6 @@ function [mets,ID] = findMetFromCompartmentMap(map, compartment)
     % .. Modifications added J.Modamio BLCSB, Belval, Luxembourg.
     % .. Improvements N.Sompairac - Institut Curie, Paris, 11/10/2017
 
-
-    % metabolites = map.specName; 
     index = strfind(map.specName, compartment);
     ID = find(~cellfun(@isempty, index));
     mets = map.specName(ID);
