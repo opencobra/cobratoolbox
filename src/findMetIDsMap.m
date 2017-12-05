@@ -17,8 +17,8 @@ function metID = findMetIDsMap(map, metList)
 %    metID:    List of metabolite indexes corresponding to `metList`
 %
 % .. Authors:
-% Mouss Rouquaya 24/07/2017
-% N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code checking)
+% .. Mouss Rouquaya 24/07/2017
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code checking)
 
     metID = find(ismember(map.specName, metList));
 

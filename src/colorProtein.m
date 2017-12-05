@@ -23,8 +23,8 @@ function map = colorProtein(map, protList, color)
 %   new_map:     Map with proteins nodes coloured (default: 'RED')
 %
 % .. Authors:
-% J.modamio  LCSB, Belval, Luxembourg, 10.08/2017
-% N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code checking)
+% .. J.modamio  LCSB, Belval, Luxembourg, 10.08/2017
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code checking)
 
     if nargin<3
     color = 'Red';

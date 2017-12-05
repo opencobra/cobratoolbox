@@ -18,8 +18,8 @@ function [map] = addNotes(model, map)
 %   new_map:        Modified map containing notes from the model
 %
 % .. Authors:
-% A.Danielsdottir 20/07/2017 LCSB. Belval. Luxembourg.
-% N.Sompairac - Institut Curie, Paris, 20/10/2017.
+% .. A.Danielsdottir 20/07/2017 LCSB. Belval. Luxembourg.
+% .. N.Sompairac - Institut Curie, Paris, 20/10/2017.
 
     % Add metabolites notes 
     % Abbreviation: h2o ChargedFormula: H2O Charge: 0 Name: Water 

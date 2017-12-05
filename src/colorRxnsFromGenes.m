@@ -26,9 +26,10 @@ function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
 %
 %   newmap          Matlab structure of new map with default look
 %
-% A.Danielsdottir 01/08/2017 
-% MOUSS Rouquaya and J.Modamio 21/08/2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code Checking)
+% .. Authors:
+% .. A.Danielsdottir 01/08/2017 
+% .. MOUSS Rouquaya and J.Modamio 21/08/2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code Checking)
 
     if nargin<5
         width = 8;

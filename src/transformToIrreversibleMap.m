@@ -18,8 +18,8 @@ function map = transformToIrreversibleMap(map, rxnlist)
 %   mapIrrev:    Map with reactions in irreversible format
 %
 % .. Authors:
-% MOUSS Rouquaya 24/07/2017
-% N.Sompairac - Institut Curie, Paris 25/07/2017
+% .. MOUSS Rouquaya 24/07/2017
+% .. N.Sompairac - Institut Curie, Paris 25/07/2017
 
     index = find(ismember(map.rxnName,rxnlist));
     map.rxnReversibility(index,1) = {'false'};

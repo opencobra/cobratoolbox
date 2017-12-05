@@ -17,8 +17,8 @@ function map2 = unifyMetabolicPPImapCD(map)
 %           Change colour complex to white 
 %
 % .. Authors:
-% J.Modamio LCSB, Belval, Luxembourg. 19.08.2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 20/10/2017
+% .. J.Modamio LCSB, Belval, Luxembourg. 19.08.2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 20/10/2017
     
     map2 = map;
 

@@ -22,9 +22,9 @@ function [map2] = changeNodesArea(map, metList, height, width)
 %
 %    map2:          New parsed file with the changes in the reactions   
 %     
-% .. Author:
-% J.modamio 18/07/2017. Belval, Luxembourg, 18/07/2017.
-% N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code checking)
+% .. Authors:
+% .. J.modamio 18/07/2017. Belval, Luxembourg, 18/07/2017.
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code checking)
 
     if nargin<3
         height = 25.0; 

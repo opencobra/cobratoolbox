@@ -20,8 +20,8 @@ function map = changeMetColor(map, metList, color)
 %   new_map:        Matlab structure of map with reaction modifications
 %
 % .. Authors:
-% A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 17/07/2017.
+% .. A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 17/07/2017.
 
     if nargin<3
        color = 'RED';

@@ -20,8 +20,8 @@ function newmap = defaultLookMap(map)
 %   and PDmap nomenclature for metabolites
 %
 % .. Authors:
-% A.Danielsdottir 01/08/2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 01/08/2017.
+% .. A.Danielsdottir 01/08/2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 01/08/2017.
 
     newmap = map;
     Colors = createColorsMap;

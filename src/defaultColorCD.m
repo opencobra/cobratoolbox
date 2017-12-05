@@ -16,8 +16,8 @@ function newmap = defaultColorCD(map)
 %               color and width
 %
 % .. Authors:
-% A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 17/07/2017.
+% .. A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 17/07/2017.
 
     newmap = map;
     color = 'ff000000';

@@ -25,9 +25,9 @@ function [FormulaList, RxnsList, AbsentRxns, Duplicated_rxns] = mapFormula(map, 
 %   Duplicated_rxns:    Duplicated reactions in the map
 %     
 % .. Authors:
-% N.Sompairac - Institut Curie, Paris, 15/07/2017.
-% A.Danielsdottir  Belval, Luxembourg, 15/07/2017.
-% J.Modamio. LCSB, Belval, Luxembourg, 23/07/2017. (identify repeated rxns in the map)
+% .. N.Sompairac - Institut Curie, Paris, 15/07/2017.
+% .. A.Danielsdottir  Belval, Luxembourg, 15/07/2017.
+% .. J.Modamio. LCSB, Belval, Luxembourg, 23/07/2017. (identify repeated rxns in the map)
     
     % Check what reactions are present in the list but not in the map
     AbsentRxns = setdiff(rxnList,map.rxnName);

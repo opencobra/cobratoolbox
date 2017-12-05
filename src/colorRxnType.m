@@ -21,8 +21,7 @@ function newmap = colorRxnType(map, type, color, width)
 %   newmap:     Matlab structure of new map with needed reactions type
 %               colored and width modified
 %
-% .. Author:
-% N.Sompairac - Institut Curie, Paris, 20/10/2017
+% .. Author: N.Sompairac - Institut Curie, Paris, 20/10/2017
     
     % Copying the map to use as output
     newmap = map;

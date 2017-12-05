@@ -15,7 +15,8 @@ function map2 = unifyMetabolicMapCD(map)
 %
 %   map2:   Map with grey reactions colour, width 1 and white nodes colour.
 %
-% J.Modamio LCSB, Belval, Luxembourg. 19.08.2017
+% .. Authors:
+% .. J.Modamio LCSB, Belval, Luxembourg. 19.08.2017
     
     map2 = map;
     

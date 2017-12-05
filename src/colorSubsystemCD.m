@@ -24,8 +24,9 @@ function newmap = colorSubsystemCD(map, model, subsystem, color, width)
 %
 %   newmap          Matlab structure of map with reaction modifications
 %
-% A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
-% N.Sompairac - Institut Curie, Paris, 11/10/2017.
+% .. Authors:
+% .. A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017.
 
     if nargin<5
         width = 8; 

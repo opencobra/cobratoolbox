@@ -66,8 +66,7 @@ function [Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table] = 
 %                           Map_Formula:    Formula of the reaction
 %                                           from the map
 %                   
-% .. Author:
-% N.Sompairac - Institut Curie, Paris, 25/07/2017.
+% .. Author: N.Sompairac - Institut Curie, Paris, 25/07/2017.
 
     % Getting the names from the model and the map
     model_reaction_name_list = model.rxns;

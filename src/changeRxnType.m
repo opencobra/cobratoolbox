@@ -21,8 +21,8 @@ function [map2] = changeRxnType(map, rxnsList, rxnsType)
 %    map2:          New parsed file with the changes in the reactions   
 %    
 % .. Author:
-% J.modamio 18/07/2017. Belval, Luxembourg.
-% N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code cheking)
+% .. J.modamio 18/07/2017. Belval, Luxembourg.
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017. (Code cheking)
 
     % Rename map to do not overwrite 
     map2 = map;

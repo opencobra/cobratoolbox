@@ -1,12 +1,12 @@
 function [map] = addColourNode(map, rxnList, colour)
 
-% Add colour to all metabolites linked to a list of reaction names.
-% If no colour is specified as input, 'RED' will be used by default.
-% Complementary function of ChangeRxnColorAndWidth.m
+%   Add colour to all metabolites linked to a list of reaction names.
+%   If no colour is specified as input, 'RED' will be used by default.
+%   Complementary function of ChangeRxnColorAndWidth.m
 %
 % USAGE:
 %
-%   [map2] = addColour(map,rxnList,color)
+%   [map2] = addColour(map, rxnList, color)
 %
 % INPUTS:
 %
@@ -26,16 +26,15 @@ function [map] = addColourNode(map, rxnList, colour)
 %                  
 %     
 % .. Authors:
-% J.modamio 18/07/2017. LCSB, Belval, Luxembourg.
-% N.Sompairac - Institut Curie, Paris, 11/10/2017 (commented code to
-% color PPI maps).
+% .. J.modamio 18/07/2017. LCSB, Belval, Luxembourg.
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017 (commented code to
+% .. color PPI maps).
 
     if nargin<3
         colour = 'RED';
     end
 
-    Colors = createColorsMap();
-
+    Colors = Create_colors_map();
     index = find(ismember(map.rxnName,rxnList)); % find index of reactions
     
     % Change colour base reactants 
@@ -44,6 +43,9 @@ function [map] = addColourNode(map, rxnList, colour)
         a = baseR{i};
         id = ismember(map.molAlias,a);
         map.molColor(id) = {Colors(colour)};
+        % % Check for complexes
+        % id = ismember(map.cplxAlias,a);
+        % map.cplxColor(id) = {Colors(colour)};
     end
     
     % Change colour of base products 
@@ -51,7 +53,10 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(baseP)
         a = baseP{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};   
+        map.molColor(id) = {Colors(colour)};
+        % % Check for complexes
+        % id = ismember(map.cplxAlias,a);
+        % map.cplxColor(id) = {Colors(colour)};
     end
     
     % Change color of secondary reactants 
@@ -59,7 +64,10 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(react)
         a = react{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};   
+        map.molColor(id) = {Colors(colour)};
+        % % Check for complexes
+        % id = ismember(map.cplxAlias,a);
+        % map.cplxColor(id) = {Colors(colour)};
     end
     
     % Change color of secondary products
@@ -67,7 +75,10 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(product)
         a = product{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};      
+        map.molColor(id) = {Colors(colour)};
+        % % Check for complexes
+        % id = ismember(map.cplxAlias,a);
+        % map.cplxColor(id) = {Colors(colour)};
     end
     
     % Change color of modificators
@@ -75,7 +86,10 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(modif)
         a = modif{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};     
+        map.molColor(id) = {Colors(colour)};
+        % % Check for complexes
+        % id = ismember(map.cplxAlias,a);
+        % map.cplxColor(id,1) = {Colors(colour)};
     end
 
-end
+end 

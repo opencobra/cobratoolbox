@@ -19,8 +19,8 @@ function [rxnID, rxnIDref] = findRxnIDsMap(map, rxnList)
 %    rxnID:         List of reactions indexes
 %
 % .. Authors:
-% Mouss Rouquaya LSCB, Belval, Luxembourg. Date: - 24.07.2017
-% N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code checking)
+% .. Mouss Rouquaya LSCB, Belval, Luxembourg. Date: - 24.07.2017
+% .. N.Sompairac - Institut Curie, Paris, 11/10/2017
 
     if (iscell(rxnList))
         [~,rxnID] = ismember(rxnList,map.rxnName);
