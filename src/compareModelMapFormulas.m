@@ -1,5 +1,4 @@
-function [Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table] = compareModelMapFormulas(model, map, excel_name)
-
+function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
 % Checks the errors in a given map using a given base model by
 % comparing the reactions formulas. As different errors can exist, the
 % output is separated in 4 different tables that can later be exported
@@ -7,66 +6,55 @@ function [Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table] = 
 %
 % USAGE:
 %
-%   Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table = compareModelMapFormulas(model, map, excel_name)
+%	[wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
 %
 % INPUTS:
-%
-%   model:          Matlab structure of a model
-%
+%	model:          COBRA structure of a model
 %   map:            Matlab structure of the map obtained from the
 %                   function "transformXML2MatStruct".
 % 
 % OPTIONAL INPUTS:
-%
-%   excel_name:     Name of the excel file in which to export the info
+%   excelName:      Name of the excel file in which to export the info
 %
 % OUTPUTS:
-%
-%   Wrong_table:            Table containing the information on wrong
+%   wrongTable:             Table containing the information on wrong
 %                           reactions. The fields are arranged as
 %                           followed:
-%                           Reaction_Name:  Name of the reaction in the
-%                                           map
-%                           Reaction_ID:    ID of the reaction in the
-%                                           map
+%                           Reaction_Name:  Name of the reaction in the map
+%                           Reaction_ID:    ID of the reaction in the map
 %                           Model_formula:  Formula of the reaction
 %                                           from the model
 %                           Map_Formula:    Formula of the reaction
 %                                           from the map
 %
-%   Absent_model_table:     Table containing the information on
+%   absentModelTable:       Table containing the information on
 %                           reactions present in the map but absent
 %                           from the model. The fields are arranged as
 %                           followed:
-%                           Reaction_Name:  Name of the reaction in the
-%                                           map
-%                           Reaction_ID:    ID of the reaction in the
-%                                           map
+%                           Reaction_Name:  Name of the reaction in the map
+%                           Reaction_ID:    ID of the reaction in the map
 %                           Map_Formula:    Formula of the reaction
 %                                           from the map
 %
-%   Absent_map_table:       Table containing the information on
+%   absentMapTable:         Table containing the information on
 %                           reactions present in the model but absent
 %                           from the map. The fields are arranged as
 %                           followed:
-%                           Reaction_Name:  Name of the reaction in the
-%                                           model
+%                           Reaction_Name:  Name of the reaction in the model
 %                           Model_formula:  Formula of the reaction
 %                                           from the model
 %
-%   Duplicate_table:        Table containing the information on
+%   duplicateTable:         Table containing the information on
 %                           duplicated reactions in the map. The fields
 %                           are arranged as followed:
-%                           Reaction_Name:  Name of the reaction in the
-%                                           model
-%                           Reaction_ID:    ID of the reaction in the
-%                                           map
+%                           Reaction_Name:  Name of the reaction in the model
+%                           Reaction_ID:    ID of the reaction in the map
 %                           Model_formula:  Formula of the reaction
 %                                           from the model
 %                           Map_Formula:    Formula of the reaction
 %                                           from the map
-%                   
-% .. Author: N.Sompairac - Institut Curie, Paris, 25/07/2017.
+%
+% .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017.
 
     % Getting the names from the model and the map
     model_reaction_name_list = model.rxns;
@@ -137,27 +125,27 @@ function [Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table] = 
 
     if ~isempty(Wrong_list)
     
-        Wrong_table = table(Wrong_list.name', Wrong_list.ID', Wrong_list.model_formula', Wrong_list.map_formula');
-        Wrong_table.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Model_formula', 'Map_Formula'};
+        wrongTable = table(Wrong_list.name', Wrong_list.ID', Wrong_list.model_formula', Wrong_list.map_formula');
+        wrongTable.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Model_formula', 'Map_Formula'};
     
     else
         
-        Wrong_table = [];
+        wrongTable = [];
         
     end
     
     if ~isempty(Duplicate_list)
-        Duplicate_table = table(Duplicate_list.name', Duplicate_list.ID', Duplicate_list.model_formula', Duplicate_list.map_formula');
-        Duplicate_table.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Model_formula', 'Map_Formula'};
+        duplicateTable = table(Duplicate_list.name', Duplicate_list.ID', Duplicate_list.model_formula', Duplicate_list.map_formula');
+        duplicateTable.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Model_formula', 'Map_Formula'};
     else
-        Duplicate_table = [];
+        duplicateTable = [];
     end
     
     if ~isempty(Absent_map_list)
-        Absent_map_table = table(Absent_map_list.name', Absent_map_list.model_formula');
-        Absent_map_table.Properties.VariableNames = {'Reaction_Name', 'Model_formula'};
+        absentMapTable = table(Absent_map_list.name', Absent_map_list.model_formula');
+        absentMapTable.Properties.VariableNames = {'Reaction_Name', 'Model_formula'};
     else
-        Absent_map_table = [];
+        absentMapTable = [];
     end
     
     % Finding reaction names in the map that are not present in the model
@@ -172,27 +160,27 @@ function [Wrong_table, Absent_model_table, Absent_map_table, Duplicate_table] = 
         Different_map_rxn_formulas_list = map_formulas_list(ismember(map_reaction_name_list, Different_map_rxn_names_list));
         
         % Storing the relevant info on missing reactions in the model from the map
-        Absent_model_table = table(Different_map_rxn_names_list, Different_map_rxn_id_list,Different_map_rxn_formulas_list);
-        Absent_model_table.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Map_Formula'};
+        absentModelTable = table(Different_map_rxn_names_list, Different_map_rxn_id_list,Different_map_rxn_formulas_list);
+        absentModelTable.Properties.VariableNames = {'Reaction_Name', 'Reaction_ID', 'Map_Formula'};
     else        
-        Absent_model_table = []; 
+        absentModelTable = []; 
     end
     
     if nargin == 3
         % Commented part to use a possible Excel output.
-        filename_out = excel_name;
+        filename_out = excelName;
         warning('off','MATLAB:xlswrite:AddSheet');
-        if ~isempty(Wrong_table)
-            writetable(Wrong_table, filename_out, 'Sheet', 'Wrong_reactions')
+        if ~isempty(wrongTable)
+            writetable(wrongTable, filename_out, 'Sheet', 'Wrong_reactions')
         end
-        if ~isempty(Absent_map_table)
-            writetable(Absent_map_table, filename_out, 'Sheet', 'Absent_from_map_reactions')
+        if ~isempty(absentMapTable)
+            writetable(absentMapTable, filename_out, 'Sheet', 'Absent_from_map_reactions')
         end
-        if ~isempty(Absent_model_table)
-            writetable(Absent_model_table, filename_out, 'Sheet', 'Absent_from_model_reactions')
+        if ~isempty(absentModelTable)
+            writetable(absentModelTable, filename_out, 'Sheet', 'Absent_from_model_reactions')
         end
-        if ~isempty(Duplicate_table)
-            writetable(Duplicate_table, filename_out, 'Sheet', 'Duplicated_reactions')
+        if ~isempty(duplicateTable)
+            writetable(duplicateTable, filename_out, 'Sheet', 'Duplicated_reactions')
         end
     end
 
