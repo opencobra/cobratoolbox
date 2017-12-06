@@ -1,15 +1,15 @@
-function [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSkip,numSamples,lambda,toRound,roundedPolytope,useFastFVA)
-% CHRREXPSAMPLER Generate random flux samples from an exponential distribution 
-%   with CHRR Coordinate Hit-and-Run with Rounding
+function [samples, roundedPolytope, minFlux, maxFlux] = chrrExpSampler(model, numSkip, numSamples, lambda, toRound, roundedPolytope, useFastFVA)
+% Generate random flux samples from an exponential distribution
+% with CHRR Coordinate Hit-and-Run with Rounding.
+% chrrExpSampler will generate `numSamples` samples from model, taking `numSkip` steps of a random walk between each sample.
+% Rounding the polytope is a potentially expensive step. If you generate multiple rounds
+% of samples from a single model, you can save `roundedPolytope` from the first round and
+% input it for subsequent rounds. It is allowed to change lambda without
+% recomputing roundedPolytope.
 %
-% [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
+% USAGE:
 %
-%   chrrExpSampler will generate numSamples samples from model, taking
-%   numSkip steps of a random walk between each sample
-%
-%   Rounding the polytope is a potentially expensive step. If you generate multiple rounds
-%   of samples from a single model, you can save roundedPolytope from the first round and
-%   input it for subsequent rounds.
+%    [samples, roundedPolytope, minFlux, maxFlux] = chrrExpSampler(model, numSkip, numSamples, lambda, toRound, roundedPolytope, useFastFVA)
 %
 % INPUTS:
 %    model:               COBRA model structure with fields:
@@ -22,20 +22,13 @@ function [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSki
 %    numSamples:          Number of samples
 %
 % OPTIONAL INPUTS:
-%    lambda:              the bias vector, i.e. generate samples from exp(-<lambda, x>) 
-%                         restricted to the feasible region. ***OPTIONAL ONLY IF model.c 
-%                         is nonzero, in which case we set lambda=model.c.
-%    toRound:             {0, 1} Option to round the polytope before sampling.
+%    lambda:              the bias vector, i.e. generate samples from exp(-<lambda, x>)
+%                         restricted to the feasible region. OPTIONAL ONLY IF `model.c`
+%                         is nonzero, in which case we set `lambda=model.c`.
+%    toRound:             `{0, 1}` Option to round the polytope before sampling.
 %    roundedPolytope:     The rounded polytope from a previous round of
 %                         sampling the same model.
-%
-% `chrrExpSampler` will generate `numSamples` samples from model, taking
-% `numSkip` steps of a random walk between each sample.
-%
-% Rounding the polytope is a potentially expensive step. If you generate multiple rounds
-% of samples from a single model, you can save `roundedPolytope` from the first round and
-% input it for subsequent rounds. It is allowed to change lambda without
-% recomputing roundedPolytope.
+%    useFastFVA:          Boolean to use fastFVA (default: `false`)
 %
 % OUTPUTS:
 %    samples:             `n x numSamples` matrix of random flux samples
@@ -43,11 +36,10 @@ function [samples,roundedPolytope,minFlux,maxFlux] = chrrExpSampler(model,numSki
 %                         rounds of sampling.
 %    minFlux, maxFlux:    flux minima and maxima
 %
-% .. Authors: 
-%       -Ben Cousins, 12/2017, based on chrrSampler by Ben Cousins and Hulda S. Haraldsdóttir
+% .. Authors:
+%       - Ben Cousins, 12/2017, based on chrrSampler by Ben Cousins and Hulda S. Haraldsdóttir
 
-% Define defaults
-if nargin < 4 || isempty(lambda)
+if nargin < 4 || isempty(lambda) % Define defaults
     lambda = model.c;
 end
 
@@ -75,38 +67,38 @@ end
 
 if nargin < 7 || isempty(useFastFVA)
     useFastFVA = false;
-end 
+end
 
 % Preprocess model
 if toPreprocess
-    
+
     % parse the model to get the meat
     P = chrrParseModel(model);
-    
+
     %check to make sure P.A and P.b are defined, and appropriately sized
     if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
         %either P.A or P.b do not exist
         error('You need to define both P.A and P.b for a polytope {x | P.A*x <= P.b}.');
     end
-    
+
     [num_constraints,dim] = size(P.A);
-    
+
     if exist('numSkip')~=1 || isempty(numSkip)
         numSkip=8*dim^2;
     end
-    
+
     fprintf('Currently (P.A, P.b) are in %d dimensions\n', dim);
-    
+
     if size(P.b,2)~= 1 || num_constraints ~= size(P.b,1)
         error('Dimensions of P.b do not align with P.A.\nP.b should be a %d x 1 vector.',num_constraints);
     end
-    
+
     if (isfield(P,'A_eq')==0 || isempty(P.A_eq)) && ...
             (isfield(P,'b_eq')==0 || isempty(P.b_eq))
         P.A_eq = [];
         P.b_eq = [];
     end
-    
+
     %preprocess the polytope of feasible solutions
     %restict to null space
     %round via maximum volume ellipsoid

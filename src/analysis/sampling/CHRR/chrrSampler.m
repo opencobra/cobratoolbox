@@ -1,8 +1,6 @@
 function [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA)
-% Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding
-% chrrSampler will generate numSamples samples from model, taking
-% numSkip steps of a random walk between each sample
-%
+% Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
+% chrrSampler will generate numSamples samples from model, taking numSkip steps of a random walk between each sample.
 % Rounding the polytope is a potentially expensive step. If you generate multiple rounds
 % of samples from a single model, you can save roundedPolytope from the first round and
 % input it for subsequent rounds.
@@ -12,30 +10,31 @@ function [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, to
 %    [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA)
 %
 % INPUTS:
-%    model             COBRA model structure with fields:
+%    model:            COBRA model structure with fields:
+%
 %                        * .S - The m x n stoichiometric matrix
 %                        * .lb - n x 1 lower bounds on fluxes
 %                        * .ub - n x 1 upper bounds on fluxes
 %                        * .c - n x 1 linear objective
-%    numSkip           Number of steps of coordinate hit-and-run between samples
-%    numSamples        Number of samples
+%    numSkip:          Number of steps of coordinate hit-and-run between samples
+%    numSamples:       Number of samples
 %
 % OPTIONAL INPUTS:
-%    toRound           {0,(1)} Option to round the polytope before sampling.
-%    roundedPolytope   The rounded polytope from a previous round of
+%    toRound:          `{0,(1)}` Option to round the polytope before sampling.
+%    roundedPolytope:  The rounded polytope from a previous round of
 %                        sampling the same model.
+%    useFastFVA:       Boolean to use fastFVA (default: `false`)
 %
 % OUTPUTS:
-%    samples           n x numSamples matrix of random flux samples
-%    roundedPolytope   The rounded polytope. Save for use in subsequent
+%    samples:          `n x numSamples` matrix of random flux samples
+%    roundedPolytope:  The rounded polytope. Save for use in subsequent
 %                      rounds of sampling.
 %
 % .. Authors:
 %       - Ben Cousins and Hulda S. Haraldsdóttir, 03/2017, Original code
 %       - Ben Cousins, 12/2017, Updated to use sampling submodule
 
-% Define defaults
-if nargin>=5 && isempty(numSkip)
+if nargin>=5 && isempty(numSkip) % Define defaults
     numSkip = 8*size(roundedPolytope.A,2)^2;
 end
 
