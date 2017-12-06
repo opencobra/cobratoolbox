@@ -152,18 +152,15 @@ cd(resultsPath)
 %% Set the print level and decide to record a diary or not (helpful for debugging)
 
 printLevel=2;
-if 1
-    diary([resultsPath filesep 'diary.txt'])
-end
+
+diary([resultsPath filesep 'diary.txt'])
 %% Setup a thermodynamically constrained model
 %% Read in the metabolite bounds
 
-if 1
-    setDefaultConc=1;
-    setDefaultFlux=0;
-    rxnBoundsFile=[];
-    model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel);
-end
+setDefaultConc=1;
+setDefaultFlux=0;
+rxnBoundsFile=[];
+model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel);
 %% Check inputs
 
 model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel);
@@ -218,15 +215,14 @@ if ~exist('massImbalance','var')
 end
 %% Check that the input data necessary for the component contribution method is in place
 %%
-if 1 %isfield(model,'pseudoisomers')
+% if isfield(model,'pseudoisomers')
     model = setupComponentContribution(model,molfileDir);
-end
+% end
 %% Prepare the training data for the component contribution method
 %%
-
-%if ~exist('training_data','var')
+% if ~exist('training_data','var')
     training_data = prepareTrainingData(model,printLevel);
-%end
+% end
 %% Call the component contribution method
 %%
 if ~isfield(model,'DfG0')
@@ -291,18 +287,14 @@ cumNormProbCutoff=0.2;
 % Write out reports on directionality changes for individual reactions to 
 % the results folder.
 
-if 1
-    fprintf('%s\n','directionalityChangeReport...');
-    directionalityChangeReport(modelThermo,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
-end
+fprintf('%s\n','directionalityChangeReport...');
+directionalityChangeReport(modelThermo,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
 %% 
 % Generate pie charts with proportions of reaction directionalities and 
 % changes in directionality
 
-if 1
-    fprintf('%s\n','directionalityStatFigures...');
-    directionalityStatsFigures(directions,resultsBaseFileName)
-end
+fprintf('%s\n','directionalityStatFigures...');
+directionalityStatsFigures(directions,resultsBaseFileName)
 %% 
 % Generate figures to interpret the overall reasons for reaction directionality 
 % changes for the qualitatively forward now quantiatiavely reversible reactions
