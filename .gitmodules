@@ -19,4 +19,3 @@
 [submodule "external/Volume-and-Sampling"]
 	path = external/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
-	branch = master
