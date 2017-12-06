@@ -1,38 +1,34 @@
-function newmap = defaultLookMap(map)
-
-% Give default look to structures on map in terms of color, size and width.
+function [newmap] = defaultLookMap(map)
+% Give default look to structures on map in terms of color, size and areaWidth.
 %
 % USAGE:
 %
-%   newmap = defaultLookMap(map);
+%   [newmap] = defaultLookMap(map)
 %
-%   INPUTS:
-%
-%   map:        Map from CD parsed to matlab format
+%   INPUT:
+%   map:        Map from CellDesigner parsed to matlab format
 %
 % OUTPUT:
-%
-%   newmap:     Matlab structure of new map with default look
+%   newmap:     MATLAB structure of new map with default look
 %
 % NOTE:
-%
 %   Note that this is specific to MitoMap and Recon3Map, as it uses Recon3
 %   and PDmap nomenclature for metabolites
 %
 % .. Authors:
-% .. A.Danielsdottir 01/08/2017 LCSB. Belval. Luxembourg
-% .. N.Sompairac - Institut Curie, Paris, 01/08/2017.
+%       - A.Danielsdottir 01/08/2017 LCSB. Belval. Luxembourg
+%       - N.Sompairac - Institut Curie, Paris, 01/08/2017.
 
     newmap = map;
     Colors = createColorsMap;
 
-    % Set all rxn lines to black and normal width
+    % Set all rxn lines to black and normal areaWidth
     color = 'BLACK';
-    width = 1.0;
+    areaWidth = 1.0;
     
     for j = 1:length(newmap.rxnName)
         newmap.rxnColor{j} = Colors(color);
-        newmap.rxnWidth{j} = width;
+        newmap.rxnWidth{j} = areaWidth;
     end
 
     % Use the existence of reactant lines to check if the map has the
@@ -42,19 +38,19 @@ function newmap = defaultLookMap(map)
             if ~isempty(newmap.rxnReactantLineColor{j})
                 for k = 1:length(map.rxnReactantLineColor{j})
                     newmap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
-                    newmap.rxnReactantLineWidth{j,1}{k,1} = width;
+                    newmap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;
                 end
             end
             if ~isempty(newmap.rxnProductLineColor{j})
                 for m = 1:1:length(newmap.rxnProductLineColor{j})
                     newmap.rxnProductLineColor{j,1}{m,1} = Colors(color);
-                    newmap.rxnProductLineWidth{j,1}{m,1} = width;
+                    newmap.rxnProductLineWidth{j,1}{m,1} = areaWidth;
                 end
             end
         end
     end
 
-    % Start with giving all simple molecules the CD default color and size
+    % Start with giving all simple molecules the CellDesigner default color and size
     SM_ID = newmap.specID(ismember(newmap.specType,'SIMPLE_MOLECULE'));
     SM_Alias = find(ismember(newmap.molID,SM_ID));
     
@@ -140,7 +136,7 @@ function newmap = defaultLookMap(map)
     end
 
     % Define and change species type for known "secondary" metabolites from model
-    % (all ions will acquire round shape instead of oval, no matter how width and height is defined)
+    % (all ions will acquire round shape instead of oval, no matter how areaWidth and height is defined)
     ions = {'^h\[\w\]';'^na1\[\w\]';'^cl\[\w\]';'^k\[\w\]';'^ca2\[\w\]';'^fe2\[\w\]';'^fe3\[\w\]';'^i\[\w\]';'^zn2\[\w\]';'Ca2_plus_';'Cl_minus_';'Co2_plus_';'Fe2_plus_';'Fe3_plus_';'H_plus_';'K_plus_';'Mg2_plus_';'Mn2_plus_';'Na_plus_';'Ni2_plus_';'Zn2_plus_'};
     non_ions = {'^atp\[\w\]';'^adp\[\w\]';'^amp\[\w\]';'^utp\[\w\]';'^udp\[\w\]';'^ump\[\w\]';'^ctp\[\w\]';'^cdp\[\w\]';'^cmp\[\w\]';'^gtp\[\w\]';'^gdp\[\w\]';'^gmp\[\w\]';'^imp\[\w\]';'^idp\[\w\]';'^itp\[\w\]';'^dgtp\[\w\]';'^dgdp\[\w\]';'^dgmp\[\w\]';'^datp\[\w\]';'^dadp\[\w\]';'^damp\[\w\]';'^dctp\[\w\]';'^dcdp\[\w\]';'^dcmp\[\w\]';'^dutp\[\w\]';'^dudp\[\w\]';'^dump\[\w\]';'^dttp\[\w\]';'^dtdp\[\w\]';'^dtmp\[\w\]';'^pppi\[\w\]';'^ppi\[\w\]';'^pi\[\w\]';'^h2o\[\w\]';'^nadp\[\w\]';'^nadph\[\w\]';'^nad\[\w\]';'^nadh\[\w\]';'^fad\[\w\]';'^fadh2\[\w\]';'^fmn\[\w\]';'^fmnh2\[\w\]';'^coa\[\w\]';'^h2o2\[\w\]';'^o2\[\w\]';'^co2\[\w\]';'^co\[\w\]';'^no\[\w\]';'^no2\[\w\]';'^o2s\[\w\]';'^oh1\[\w\]';'^nh4\[\w\]';'^hco3\[\w\]';'^h2co3\[\w\]';'^so4\[\w\]';'^so3\[\w\]';'^crn\[\w\]';'FAD';'FADH2';'NAD(_plus_)';'NADH'};
     ionindex = [];
