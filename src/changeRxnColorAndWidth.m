@@ -1,56 +1,53 @@
-function map = changeRxnColorAndWidth(map, rxnList, color, width)
-
-% Change color and width of reactions from a list of names
+function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
+% Change color and areaWidth of reactions from a list of names
 %
 % USAGE:
 %
-%   new_map = changeRxnColorAndWidth(map, rxnList, color, width);
+%   [newMap] = changeRxnColorAndareaWidth(map, rxnList, color, areaWidth);
 %
 % INPUTS:
-%
 %   map:            File from CD parsed to matlab format
 %   rxnList:        List of reactions
-% 
-% OPTIONAL INPUT:
 %
+% OPTIONAL INPUTS:
 %   color:          New color of reactions from list (default: 'RED')
-%   width:          New width of reactions from list (default: 8)
+%   areaWidth:      New areaWidth of reactions from list (default: 8)
 %
 % OUTPUT:
-%
-%   new_map:        Matlab structure of map with reaction modifications
+%   newMap:         Matlab structure of map with reaction modifications
 %
 % .. Authors:
-% .. A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
-% .. N.Sompairac - Institut Curie, Paris, 17/07/2017.
+%       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
+%       - N.Sompairac - Institut Curie, Paris, 17/07/2017.
 
     if nargin<4
-        width = 8;
+        areaWidth = 8;
     end
     if nargin<3
        color = 'RED';
     end
 
-    Colors = Create_colors_map;
+    newMap = map;
+    Colors = createColorsMap;
 
-    index = find(ismember(map.rxnName,rxnList));
+    index = find(ismember(newMap.rxnName,rxnList));
     for j = index'
-        map.rxnColor{j,1} = Colors(color);
-        map.rxnWidth{j,1} = width;
+        newMap.rxnColor{j,1} = Colors(color);
+        newMap.rxnWidth{j,1} = areaWidth;
         
-        % Use the existence of reactant lines to check if the map has the
+        % Use the existence of reactant lines to check if the newMap has the
         % complete structure.
-        if any(strcmp('rxnReactantLineColor',fieldnames(map))) == 1
-            if ~isempty(map.rxnReactantLineColor{j})
-                for k = 1:length(map.rxnReactantLineColor{j})
-                    map.rxnReactantLineColor{j,1}{k,1} = Colors(color);
-                    map.rxnReactantLineWidth{j,1}{k,1} = width;
+        if any(strcmp('rxnReactantLineColor',fieldnames(newMap))) == 1
+            if ~isempty(newMap.rxnReactantLineColor{j})
+                for k = 1:length(newMap.rxnReactantLineColor{j})
+                    newMap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
+                    newMap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;
                 end
             end
-            if ~isempty(map.rxnProductLineColor{j}) 
-                for m = 1:1:length(map.rxnProductLineColor{j})
-                    map.rxnProductLineColor{j,1}{m,1} = Colors(color);
-                    map.rxnProductLineWidth{j,1}{m,1} = width;
+            if ~isempty(newMap.rxnProductLineColor{j}) 
+                for m = 1:1:length(newMap.rxnProductLineColor{j})
+                    newMap.rxnProductLineColor{j,1}{m,1} = Colors(color);
+                    newMap.rxnProductLineWidth{j,1}{m,1} = areaWidth;
                 end
             end
         end
