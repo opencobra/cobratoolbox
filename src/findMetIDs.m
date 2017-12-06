@@ -1,16 +1,16 @@
-function [metID] = findMetIDsMap(map, metList)
-% Finds metabolites Indexes in a map for a given list of names
+function [metID] = findMetIDs(map, metList)
+% Finds metabolites indices in a CellDesigner map for a given list of names
 %
 % USAGE:
 %
 %    [metID] = findMetIdsMap(map, metList)
 %
 % INPUTS:
-%    map:      Map from CellDesigner parsed to matlab format
-%    metList:  List of metabolites names
+%    map:       Map from CellDesigner parsed to MATLAB format
+%    metList:   List of metabolites names
 %
 % OUTPUT:
-%    metID:    List of metabolite indexes corresponding to `metList`
+%    metID:     List of metabolite indices corresponding to `metList`
 %
 % .. Authors:
 %       - Mouss Rouquaya 24/07/2017
