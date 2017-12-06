@@ -1,25 +1,22 @@
-function map2 = unifyMetabolicPPImapCD(map)
-
+function [map2] = unifyMetabolicPPImapCD(map)
 % Unify a metabolic and protein-protein interaction map as a standard.
-% Reaction will be Gray and Metabolites/Complexes will be White.
+% Reaction will be grey and Metabolites/Complexes will be White.
 %
 % USAGE:
 %
-%   map2 = unifyMetabolicPPImapCD(map)
+%   [map2] = unifyMetabolicPPImapCD(map)
 %
-% INPUTS:
-%
+% INPUT:
 %   map:    MATLAB structure of CD map
 %
 % OUTPUT:
-%
 %   map2:   Map with grey reactions colour, width 1 and white nodes colour.
 %           Change colour complex to white 
 %
 % .. Authors:
-% .. J.Modamio LCSB, Belval, Luxembourg. 19.08.2017 LCSB. Belval. Luxembourg
-% .. N.Sompairac - Institut Curie, Paris, 20/10/2017
-    
+%       - J.Modamio LCSB, Belval, Luxembourg. 19.08.2017 LCSB. Belval. Luxembourg
+%       - N.Sompairac - Institut Curie, Paris, 20/10/2017
+
     map2 = map;
 
     % Change reaction colour to ligth grey and and width to 1.0
