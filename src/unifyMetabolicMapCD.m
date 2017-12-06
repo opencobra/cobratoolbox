@@ -1,22 +1,18 @@
-function map2 = unifyMetabolicMapCD(map)
-
-% Unify colours in a metabolic map as a standard. Reaction will be Gray
+function [map2] = unifyMetabolicMapCD(map)
+% Unify colours in a metabolic map as a standard. Reaction will be grey
 % and Metabolites will be White.
 %
 % USAGE:
 %
-%   map2 = unifyMetabolicMapCD(map)
+%   [map2] = unifyMetabolicMapCD(map)
 %
-% INPUTS:
-%
+% INPUT:
 %   map:    MATLAB structure of CD map
 %
 % OUTPUT:
-%
 %   map2:   Map with grey reactions colour, width 1 and white nodes colour.
 %
-% .. Authors:
-% .. J.Modamio LCSB, Belval, Luxembourg. 19.08.2017
+% .. Authors: - J.Modamio LCSB, Belval, Luxembourg. 19.08.2017
     
     map2 = map;
     
