@@ -1,6 +1,6 @@
 function [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA)
 % Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
-% chrrSampler will generate numSamples samples from model, taking numSkip steps of a random walk between each sample.
+% chrrSampler will generate numSamples samples from model, taking `numSkip` steps of a random walk between each sample.
 % Rounding the polytope is a potentially expensive step. If you generate multiple rounds
 % of samples from a single model, you can save roundedPolytope from the first round and
 % input it for subsequent rounds.
