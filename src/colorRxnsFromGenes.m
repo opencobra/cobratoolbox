@@ -1,38 +1,31 @@
-function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
-
-% Color and change the width of reactions based on the imlicated gene
-% given from a list of EntezIDs.
+function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
+% Color and change the areaWidth of reactions based on the imlicated gene
+% given from a list of entezIDs.
 %
 % USAGE:
 %
-%   colorRxnsFromGenes(map, model, EntrezList, color, width);
+%   [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth);
 %
 % INPUTS:
-%
 %   map:            map from CD parsed to matlab format
-%
 %   model:          COBRA model
-%
-%   EntrezList:     List of genes, given as EntrezIDs. 
+%   entrezList:     List of genes, given as entrezIDs. 
 %
 % OPTIONAL INPUTS:
-%
 %   color:          Preferred color, as written in function
 %                   'createColorsMap'. (default: 'RED')
-%
-%   width:          Preferred width of lines. (default: 8)
+%   areaWidth:      Preferred areaWidth of lines. (default: 8)
 %
 % OUTPUT:
-%
 %   newmap          Matlab structure of new map with default look
 %
 % .. Authors:
-% .. A.Danielsdottir 01/08/2017 
-% .. MOUSS Rouquaya and J.Modamio 21/08/2017 LCSB. Belval. Luxembourg
-% .. N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code Checking)
+%       - A.Danielsdottir 01/08/2017 
+%       - MOUSS Rouquaya and J.Modamio 21/08/2017 LCSB. Belval. Luxembourg
+%       - N.Sompairac - Institut Curie, Paris, 11/10/2017 (Code Checking)
 
     if nargin<5
-        width = 8;
+        areaWidth = 8;
     end
     if nargin<4
        color = 'RED';
@@ -47,7 +40,7 @@ function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
     end
     
     % Find index of Entrez IDs provided in input list
-    geneIndex = find(ismember(newmodel.genes,EntrezList));
+    geneIndex = find(ismember(newmodel.genes,entrezList));
     
     % Find the rxns that correspond to these genes
     summary = num2cell(geneIndex);
@@ -70,7 +63,7 @@ function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
     
     for j = index'
         newmap.rxnColor{j,1} = Colors(color);
-        newmap.rxnWidth{j,1} = width;
+        newmap.rxnWidth{j,1} = areaWidth;
     end
     
     % Use the existence of reactant lines to check if the map has the
@@ -80,13 +73,13 @@ function newmap = colorRxnsFromGenes(map, model, EntrezList, color, width)
             if ~isempty(newmap.rxnReactantLineColor{j})
                 for k = 1:length(map.rxnReactantLineColor{j})
                     newmap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
-                    newmap.rxnReactantLineWidth{j,1}{k,1} = width;     
+                    newmap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;     
                 end
             end
             if ~isempty(newmap.rxnProductLineColor{j})
                 for m = 1:1:length(newmap.rxnProductLineColor{j})
                     newmap.rxnProductLineColor{j,1}{m,1} = Colors(color);
-                    newmap.rxnProductLineWidth{j,1}{m,1} = width;   
+                    newmap.rxnProductLineWidth{j,1}{m,1} = areaWidth;   
                 end
             end
         end
