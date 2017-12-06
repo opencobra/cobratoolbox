@@ -1,4 +1,8 @@
+<<<<<<< 73e2ad51964d54e09586417d8bc0956d020716ce
 % All the installation instructions are in a separate .md file named vonBertalanffy.md in docs/source/installation
+=======
+% All the installation instructions are in a separate .md file named vonBertalanffy.md
+>>>>>>> Changes to .mlx and removeal of old files
 % Setup the paths to the data, scripts and functions
 % Check if this COBRA toolbox extension is in the Matlab path
 stm_dir = which('setupThermoModel.m');
