@@ -1,17 +1,17 @@
-function [rxnID, rxnIDref] = findRxnIDsMap(map, rxnList)
-% Finds reaction indexes in a CD map from a list of names
+function [rxnID, rxnIDref] = findRxnIDs(map, rxnList)
+% Finds reaction indices in a CellDesigner map from a list of names
 %
 % USAGE:
 %
 %    [rxnID, rxnIDref] = findRxnIDs(map, rxnList)
 %
 % INPUTS:
-%    map:           Map from CD parsed to matlab format
+%    map:           Map from CellDesigner parsed to MATLAB format
 %    rxnList:       List of reaction names
 %
 % OUTPUTS:
 %    rxnIDref:      ID reference for reactions
-%    rxnID:         List of reactions indexes
+%    rxnID:         List of reactions indices
 %
 % .. Authors:
 %       - Mouss Rouquaya LSCB, Belval, Luxembourg. Date: - 24.07.2017
