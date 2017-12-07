@@ -28,22 +28,22 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017 
 
     % Create a Color map with corresponding colors names and their HTML code
-    Colors = createColorsMap;
+    colors = createColorsMap;
     
     mapStruct = map;
 
     % Get the indexes of the needed reactions to color
-    rxn_index_list = find(ismember(mapStruct.rxnName, rxnList));
+    rxnIndexList = find(ismember(mapStruct.rxnName, rxnList));
 
     % Initialise a list that will contain aliases of molecules implicated in
     % all the needed reactions
-    reaction_alias_list = {};
+    rxnAliasList = {};
 
     % Loop over reactions and change the corresponding values
-    for rxn = rxn_index_list'
+    for rxn = rxnIndexList'
 
         % Change de color of the reaction
-        mapStruct.rxnColor{rxn} = Colors(newColor);
+        mapStruct.rxnColor{rxn} = colors(newColor);
 
         % Change de areaWidth of the reaction
         mapStruct.rxnWidth{rxn} = newAreaWidth;
@@ -51,38 +51,38 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
         % Get the list of aliases involved in this reaction
         % Loop over base reactants
         for x = 1:length(mapStruct.rxnBaseReactantID{rxn})
-            reaction_alias_list = [reaction_alias_list, mapStruct.rxnBaseReactantAlias{rxn}{x}];
+            rxnAliasList = [rxnAliasList, mapStruct.rxnBaseReactantAlias{rxn}{x}];
         end
 
         % Loop over reactants
         for x = 1:length(mapStruct.rxnReactantID{rxn})
-            reaction_alias_list = [reaction_alias_list, mapStruct.rxnReactantAlias{rxn}{x}];
+            rxnAliasList = [rxnAliasList, mapStruct.rxnReactantAlias{rxn}{x}];
         end
 
         % Loop over base products
         for x = 1:length(mapStruct.rxnBaseProductID{rxn})
-            reaction_alias_list = [reaction_alias_list, mapStruct.rxnBaseProductAlias{rxn}{x}];
+            rxnAliasList = [rxnAliasList, mapStruct.rxnBaseProductAlias{rxn}{x}];
         end
 
         % Loop over products
         for x = 1:length(mapStruct.rxnProductID{rxn})
-            reaction_alias_list = [reaction_alias_list, mapStruct.rxnProductAlias{rxn}{x}];
+            rxnAliasList = [rxnAliasList, mapStruct.rxnProductAlias{rxn}{x}];
         end
     end
 
     % Get the indexes of the needed molecules to color
     % Get the corresponding IDs of the species based on their Names
-    spec_id_list = mapStruct.specID(ismember(mapStruct.specName, metList));
+    specIdList = mapStruct.specID(ismember(mapStruct.specName, metList));
     % Get the correspoding Aliases of the molecules based on the species IDs
-    map_alias_list = mapStruct.molAlias(ismember(mapStruct.molID, spec_id_list));
+    mapAliasList = mapStruct.molAlias(ismember(mapStruct.molID, specIdList));
     % Get only the Aliases of the molecules implicated in the needed reactions
-    needed_alias_list = map_alias_list(ismember(map_alias_list, reaction_alias_list));
+    neededAliasList = mapAliasList(ismember(mapAliasList, rxnAliasList));
     % Get the corresponding Indexes of the molecules in the needed reactions
-    mol_index_list = find(ismember(mapStruct.molAlias, needed_alias_list));
+    molIndexList = find(ismember(mapStruct.molAlias, neededAliasList));
 
     % Loop over molecules and change the color
-    for x = mol_index_list'
-        mapStruct.molColor{x} = Colors(newColor);
+    for x = molIndexList'
+        mapStruct.molColor{x} = colors(newColor);
     end
     
 end
