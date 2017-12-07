@@ -58,11 +58,11 @@ function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
     rxnName = unique(globalList);
     
     % Find the same rxns on the map and change the color
-    Colors = createColorsMap;
+    colors = createColorsMap();
     index = find(ismember(newmap.rxnName,rxnName));
     
     for j = index'
-        newmap.rxnColor{j,1} = Colors(color);
+        newmap.rxnColor{j,1} = colors(color);
         newmap.rxnWidth{j,1} = areaWidth;
     end
     
@@ -72,13 +72,13 @@ function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
         for j = index'
             if ~isempty(newmap.rxnReactantLineColor{j})
                 for k = 1:length(map.rxnReactantLineColor{j})
-                    newmap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
+                    newmap.rxnReactantLineColor{j,1}{k,1} = colors(color);
                     newmap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;     
                 end
             end
             if ~isempty(newmap.rxnProductLineColor{j})
                 for m = 1:1:length(newmap.rxnProductLineColor{j})
-                    newmap.rxnProductLineColor{j,1}{m,1} = Colors(color);
+                    newmap.rxnProductLineColor{j,1}{m,1} = colors(color);
                     newmap.rxnProductLineWidth{j,1}{m,1} = areaWidth;   
                 end
             end
