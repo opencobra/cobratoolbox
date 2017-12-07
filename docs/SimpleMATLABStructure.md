@@ -14,36 +14,36 @@ Using this function, the MATLAB structure contains the following fields:
     - molID:                  ID of each molecules (duplicates)
 
     - molCompartAlias:        Corresponding compartment alias of each
-                          molecules (EMPTY if no info)
+                              molecules (EMPTY if no info)
 
     - molXPos:                X position of each molecules (stored as
-                          string but can be changed to double)
+                              string but can be changed to double)
 
     - molYPos:                Y position of each molecules (stored as
-                          string but can be changed to double)
+                              string but can be changed to double)
 
     - molWidth:               Width of each molecules (stored as string
-                          but can be changed to double)
+                              but can be changed to double)
 
     - molHeight:              Height of each molecules (stored as string
-                          but can be changed to double)
+                              but can be changed to double)
 
     - molColor:               Color of each molecules (in "HTML" code
-                          with lowercases and "ff" in stead of "#' at
-                          the beginning)
+                              with lowercases and "ff" in stead of "#' at
+                              the beginning)
 
 2.  Species info (specific to each entity in the map)
 
     - specID:                 ID of each species (no duplicates)
 
     - specMetaID:             MetaID of each species often related to
-                          ID (no ducplicates)
+                              ID (no ducplicates)
 
     - specType:               Type of each species
-                          (SIMPLE_MOLECULE/ION/PROTEIN...)
+                              (SIMPLE_MOLECULE/ION/PROTEIN...)
 
     - specNotes:              Notes of reach species (in the body of HTML
-                          format?) (EMPTY if no info)
+                              format?) (EMPTY if no info)
 
 3.  Reactions info (with their corresponding modifications)
 
@@ -56,7 +56,7 @@ Using this function, the MATLAB structure contains the following fields:
     - rxnType:                Type of each reactions
 
     - rxnReversibility:       Reversibility of each reactions (false or
-                          true)
+                              true)
 
     - rxnBaseReactantAlias:   Alias of the base reactant(s)
 
@@ -75,45 +75,45 @@ Using this function, the MATLAB structure contains the following fields:
     - rxnProductID:           ID of product(s) (EMPTY if not present)
 
     - rxnModAlias:            Alias of modifiers metabolites of each
-                          reactions
+                              reactions
 
     - rxnModID:               ID of modifiers metabolites of each
-                          reactions
+                              reactions
 
     - rxnModType:             Type of the modification by the metabolite
-                          of each reactions
+                              of each reactions
 
     - rxnModColor:            Color of the modification line of each
-                          reactions
+                              reactions
 
     - rxnModWidth:            Width of the modification line of each
-                          reactions
+                              reactions
 
     - rxnColor:               Color of the main reaction (in "HTML" code
-                          with lowercases and "ff" in stead of "#' at
-                          the beginning) => later modified for the
-                          whole reaction's members
+                              with lowercases and "ff" in stead of "#' at
+                              the beginning) => later modified for the
+                              whole reaction's members
 
     - rxnWidth:               Width of the main reaction (stored as
-                          string but can be changed to double)
-                          => later modified for the whole reaction's
-                          members
+                              string but can be changed to double)
+                              => later modified for the whole reaction's
+                              members
 
-	rxnNotes:               Notes of each reactions (in the body of
-	                        HTML format?) (EMPTY if no info)
+	  - rxnNotes:               Notes of each reactions (in the body of
+                              HTML format?) (EMPTY if no info)
 
 4.  Compartment info (if existing in the map)
 
     - compartAlias:           Alias of each compartments
-                          (EMPTY if no info)
+                              (EMPTY if no info)
     - compartName:            Name of each compartments
-                          (EMPTY if no info)
+                              (EMPTY if no info)
 
 5.  Matrices (specific for the map and comparable with the model)
 
     - S_ID:                   Logical matrix with rows=species_ID and
-                          columns=reactions_ID
+                              columns=reactions_ID
     - S_alias:                Logical matrix with rows=species_Alias and
-                          columns=reactions_ID
+                              columns=reactions_ID
     - ID_alias:               Logical matrix widh rows=species_ID and
-                          columns=species_Alias
+                              columns=species_Alias
