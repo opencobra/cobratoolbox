@@ -53,8 +53,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017.
 
-    % Getting the names from the model and the map
-    modelReactionNameList = model.rxns;
+    modelReactionNameList = model.rxns; % Getting names from model and map
     mapReactionNameList = map.rxnName;
 
     % Getting the formulas from the model and the map for further comparison
@@ -90,9 +89,9 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
                 leftMap = strtrim(strsplit(mapFormulaSplit{1}, '+'));
                 rightMap = strtrim(strsplit(mapFormulaSplit{2}, '+'));
                 % Testing if the formulas are different and storing the info
-                left_test = setxor(leftModel, leftMap);
-                right_test = setxor(rightModel, rightMap);
-                if ~isempty(left_test) || ~isempty(right_test)
+                leftTest = setxor(leftModel, leftMap);
+                rightTest = setxor(rightModel, rightMap);
+                if ~isempty(leftTest) || ~isempty(rightTest)
                     wrongList.name{wrong} = mapReactionNameList{index};
                     wrongList.ID{wrong} = map.rxnID{strcmp(modelReactionNameList{rxn}, map.rxnName)};
                     wrongList.modelFormula{wrong} = modelFormulasList{rxn};
@@ -102,13 +101,13 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
             % Case where a reaction name is duplicated in the map    
             else
                 % Finding the IDs of the duplicated reactions in the map
-                Duplicates_ids = map.rxnID(strcmp(modelReactionNameList{rxn}, map.rxnName));
+                duplicateIDs = map.rxnID(strcmp(modelReactionNameList{rxn}, map.rxnName));
                 % Looping over the duplicates to get the relevant info
                 for d = 1:length(index)
                     duplicateList.name{dupl} = modelReactionNameList{rxn};
                     duplicateList.modelFormula{dupl} = modelFormulasList{rxn};
                     duplicateList.mapFormula{dupl} = mapFormulasList{index(d)};
-                    duplicateList.ID{dupl} = Duplicates_ids{d};
+                    duplicateList.ID{dupl} = duplicateIDs{d};
                     dupl = dupl+1;
                 end
             end
