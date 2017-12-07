@@ -16,6 +16,7 @@ Using this function, the MATLAB structure contains the following fields:
 
 | Field name | Dimension | Data Type | Field description |
 |---|---|---|---|
+| Molecules information |
 | `map.molAlias` | `a x 1` | cell of char | Alias of each molecules (no duplicates) |
 | `map.molID` | `a x 1` | cell of char | ID of each molecules (duplicates) |
 | `map.molCompartAlias` | `a x 1` | cell of char | Corresponding compartment alias of each molecules (EMPTY if no info) |
@@ -24,13 +25,13 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.molWidth` | `a x 1` | cell of char or double | Width of each molecules (stored as string but can be changed to double) |
 | `map.molHeight` | `a x 1` | cell of char or double | Height of each molecules (stored as string but can be changed to double) |
 | `map.molColor` | `a x 1` | cell of char | Color of each molecules (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
-| |
+| Species info |
 | `map.specID` | `s x 1` | cell of char | ID of each species (no duplicates) |
 | `map.specMetaID` | `s x 1` | cell of char | MetaID of each species often related to ID (no ducplicates) |
 | `map.specName` | `s x 1` | cell of char | Name of each species |
 | `map.specType` | `s x 1` | cell of char | Type of each species (SIMPLE_MOLECULE/ION/PROTEIN...) |
 | `map.specNotes` | `s x 1` | cell of char | Notes of each species (EMPTY if no info) |
-| |
+| Reactions info |
 | `map.rxnID` | `r x 1` | cell of char | ID of each reactions (no duplicates) |
 | `map.rxnMetaID` | `r x 1` | cell of char | MetaID of each reactions |
 | `map.rxnName` | `r x 1` | cell of char | Name of each reactions |
@@ -58,10 +59,10 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.rxnColor` | `r x 1` | cell of char | Color of the main reaction (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) => later modified for the whole reaction's members |
 | `map.rxnWidth` | `r x 1` | cell of char | Width of the main reaction (stored as string but can be changed to double) => later modified for the whole reaction's members |
 | `map.rxnNotes` | `r x 1` | cell of char | Notes of each reactions (EMPTY if no info) |
-| |
+| Compartment info |
 | `map.compartAlias` | `c x 1` | cell of char | Alias of each compartments (EMPTY if no info) |
 | `map.compartName` | `c x 1` | cell of char | Name of each compartments (EMPTY if no info) |
-| |
+| Matrices |
 | `map.sID` | `s x r` | logical | Logical matrix with rows=speciesID and columns=reactionsID |
 | `map.sAlias` | `m x r` | logical | Logical matrix with rows=speciesAlias and columns=reactionsID |
 | `map.idAlias` | `s x m` | logical | Logical matrix widh rows=speciesID and columns=speciesAlias |
