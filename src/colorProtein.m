@@ -7,7 +7,7 @@ function [newMap] = colorProtein(map, protList, color)
 %
 % INPUTS:
 %   map:        xml file parsed to Matlab using the function
-%               'transformFullXML2MatStruct'
+%               'transformFullXML2Map'
 %   protList:   List of protein names 
 %
 % OPTIONAL INPUT:
