@@ -32,7 +32,8 @@ sumRxnSubsystems = {};
 
 for j=1:numModels
     match = {'_','.mat'};
-    filename = erase(modelsFileName{1,j}, match);
+    str = strrep(modelsFileName{1,j}, match{1},{''});
+    filename = strrep(str, match{2},{''});
     loadedFile = load(strcat(modelsDir,'/',modelsFileName{1,j}));
     fields = fieldnames(loadedFile);
     model = loadedFile.(fields{1,1});
@@ -48,9 +49,9 @@ for j=1:numModels
         filename;
     end
     sumRxnSubsystems = vertcat(sumRxnSubsystems,delRxnSubsystems);
-    dataStruct.(filename).rxnSubsystems = delRxnSubsystems;
-    dataStruct.(filename).grRateKO = grRateKO;
-    dataStruct.(filename).fluxSolution = fluxSolution;
+    dataStruct.(filename{1}).rxnSubsystems = delRxnSubsystems;
+    dataStruct.(filename{1}).grRateKO = grRateKO;
+    dataStruct.(filename{1}).fluxSolution = fluxSolution;
     clear model
     clear delRxnSubsystems
 end
