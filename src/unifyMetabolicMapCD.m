@@ -7,7 +7,7 @@ function [map2] = unifyMetabolicMapCD(map)
 %   [map2] = unifyMetabolicMapCD(map)
 %
 % INPUT:
-%   map:    MATLAB structure of CD map
+%   map:    MATLAB structure of CellDesigner map
 %
 % OUTPUT:
 %   map2:   Map with grey reactions colour, width 1 and white nodes colour.
