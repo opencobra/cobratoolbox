@@ -16,8 +16,12 @@
 % **
 %% PROCEDURE
 %% Configure the environment
-% With all dependencies installed correctly, we configure our environment, verfy 
-% all dependencies, and add required fields and directories to the matlab path.
+% All the installation instructions are in a separate .md file named vonBertalanffy.md 
+% in docs/source/installation
+% 
+% With all dependencies installed correctly, we configure our environment, 
+% verfy all dependencies, and add required fields and directories to the matlab 
+% path.
 %%
 
 initVonBertalanffy
