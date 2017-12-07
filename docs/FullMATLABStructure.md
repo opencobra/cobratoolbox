@@ -118,15 +118,14 @@ Using this function, the MATLAB structure contains the following fields:
                               (EMPTY if no info)
 
 7. Matrices (specific for the map and comparable with the model)
-
-    Attention: this functionality is disabled for the moment. To be
-    structured as the model and be comparable, the access to entities
-    has to be adapted...
-
-
    - sID:                     Logical matrix with rows=speciesID and
                               columns=reactionsID
    - sAlias:                  Logical matrix with rows=speciesAlias and
                               columns=reactionsID
    - isAlias:                 Logical matrix widh rows=speciesID and
                               columns=speciesAlias
+
+
+    Attention: this functionality is disabled for the moment. To be
+    structured as the model and be comparable, the access to entities
+    has to be adapted for PPI maps...

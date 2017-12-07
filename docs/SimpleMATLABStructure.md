@@ -66,18 +66,16 @@ Using this function, the MATLAB structure contains the following fields:
                               string but can be changed to double)
                               => later modified for the whole reaction's
                               members
-	  - rxnNotes:               Notes of each reactions (in the body of
+    - rxnNotes:               Notes of each reactions (in the body of
                               HTML format?) (EMPTY if no info)
 
 4.  Compartment info (if existing in the map)
-
     - compartAlias:           Alias of each compartments
                               (EMPTY if no info)
     - compartName:            Name of each compartments
                               (EMPTY if no info)
 
 5.  Matrices (specific for the map and comparable with the model)
-
     - sID:                   Logical matrix with rows=species_ID and
                               columns=reactions_ID
     - sAlias:                Logical matrix with rows=species_Alias and
