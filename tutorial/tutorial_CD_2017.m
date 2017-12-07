@@ -73,8 +73,8 @@ model = readCbModel(modelFileName);
 % MATLAB.
 %% 1. Import a CellDesigner XML file to MATLAB environment
 %% A) Parse a Metabolic map
-% The |transformXML2MatStruct| function parses an XML file from Cell Designer 
-% (CD) into a Matlab structure. This structure is organised similarly to the structure 
+% The |transformXML2Map| function parses an XML file from Cell Designer (CD) 
+% into a Matlab structure. This structure is organised similarly to the structure 
 % found in the COnstraint-Base and Reconstruction Analysis (COBRA) models.
 % 
 % Load two types of metabolic maps: 
@@ -82,9 +82,9 @@ model = readCbModel(modelFileName);
 % # A small metabolic model representative of glycolysis and citric acid cycle. 
 % # A bigger metabolic map representative of the mitochondrial metabolism. 
 %%
-[xml_gly, map_gly] = transformXML2MatStruct('Glycolysis_and_TCA.xml');
+[xml_gly, map_gly] = transformXML2Map('Glycolysis_and_TCA.xml');
 [xml_mitoMetab, map_mitoMetab] = ...
-    transformXML2MatStruct('metabolic_mitochondria.xml');
+    transformXML2Map('metabolic_mitochondria.xml');
 %% 
 % 
 % 
@@ -94,12 +94,12 @@ model = readCbModel(modelFileName);
 % the general Matlab structure obtain from |xml2struct| function, whereas "|map|" 
 % is the desired final structure that could be later manipulated.
 %% B) Parse a Metabolic map combined with Protein-Protein-Interactions (PPI)
-% The |transformFullXML2MatStruct| function parses an XML file from Cell Designer 
+% The |transformFullXML2Map| function parses an XML file from Cell Designer 
 % (CD) into a Matlab structure. The resultant structure contains all the information 
 % commonly stored in a metabolic map, plus extra information corresponding to 
 % proteins and complexes.
 %%
-[xml_PPI, map_PPI] = transformFullXML2MatStruct('metabolic_PPI_mitochondria.xml');
+[xml_PPI, map_PPI] = transformFullXML2Map('metabolic_PPI_mitochondria.xml');
 %% 
 % _*NOTE! *The XML file to be parsed must be in the current folder in MATLAB 
 % when executing the function._
@@ -214,15 +214,14 @@ corrected_formula = mapFormula(map_gly_corrected, ...
 % In order to save the corrections previously made into an XML file, two functions 
 % are available depending on the MATLAB structure used.
 %% A) Parse a metabolic MATLAB structure
-% The "|transformMatStruct2XML|" function parsed a MATLAB structure (from a 
-% simple metabolic map) into a XML file.  In order to save the previous corrections 
-% made.
+% The "|transformMap2XML|" function parsed a MATLAB structure (from a simple 
+% metabolic map) into a XML file.  In order to save the previous corrections made.
 %%
-transformMatStruct2XML(xml_gly, ...
+transformMap2XML(xml_gly, ...
     map_gly_corrected,'Glycolysis_and_TCA_corrected.xml');
 %% B) Parse a metabolic MATLAB structure combined with PPI
 % As in the parsing from XML to a MATLAB structure, a different function will 
-% be used when proteins and complexes are present in the map "|transformFullMatStruct2XML|".
+% be used when proteins and complexes are present in the map "|transformFullMap2XML|".
 %% Visualisation of Metabolic networks
 %% EQUIPMENT SETUP
 % CellDesigner uses the HTML-based colour format. This information if used to 
@@ -255,7 +254,7 @@ open createColorsMap.m
 %%
 map_gly_coloured = changeRxnColorAndWidth(map_gly_corrected, ...
     map_gly_corrected.rxnName, 'LIGHTSALMON',10);
-transformMatStruct2XML(xml_gly, map_gly_coloured,'map_gly_rxn_coloured.xml');
+transformMap2XML(xml_gly, map_gly_coloured,'map_gly_rxn_coloured.xml');
 %% 
 % 
 % 
@@ -270,7 +269,7 @@ transformMatStruct2XML(xml_gly, map_gly_coloured,'map_gly_rxn_coloured.xml');
 %%
 map_gly_coloured_Nodes = addColourNode(map_gly_coloured, ...
     map_gly_coloured.rxnName, 'LIGHTSTEELBLUE');
-transformMatStruct2XML(xml_gly, ...
+transformMap2XML(xml_gly, ...
     map_gly_coloured_Nodes,'map_gly_met_coloured.xml');
 %% 
 % 
@@ -291,7 +290,7 @@ map_ATP_ADP = changeMetColor(map_ATP_ADP, ...
     {'atp[m]'}, 'RED'); % Change specifically the colour of ATP and ADP
 map_ATP_ADP = changeMetColor(map_ATP_ADP, {'adp[m]'}, 'RED');
 
-transformMatStruct2XML(xml_gly, map_ATP_ADP, 'map_ATP_ADP_coloured.xml');
+transformMap2XML(xml_gly, map_ATP_ADP, 'map_ATP_ADP_coloured.xml');
 %% 
 % 
 % 
@@ -306,7 +305,7 @@ rxns_ATP_ADP = findRxnsFromMets(model,{'atp[m]';'adp[m]'});
 map_ATP_ADP_rxns = changeRxnColorAndWidth(map_ATP_ADP, ...
     rxns_ATP_ADP, 'AQUAMARINE' ,10);
 
-transformMatStruct2XML(xml_gly, map_ATP_ADP_rxns, 'map_ATP_ADP_rxns_coloured.xml');
+transformMap2XML(xml_gly, map_ATP_ADP_rxns, 'map_ATP_ADP_rxns_coloured.xml');
 %% 
 % 
 % 
@@ -324,7 +323,7 @@ transformMatStruct2XML(xml_gly, map_ATP_ADP_rxns, 'map_ATP_ADP_rxns_coloured.xml
 % set as default).
 %%
 map_gly_unified = unifyMetabolicMapCD(map_gly);
-transformMatStruct2XML(xml_gly, map_gly_unified, 'map_gly_Unified.xml');
+transformMap2XML(xml_gly, map_gly_unified, 'map_gly_Unified.xml');
 %% 
 % 
 %% *5. Change reactions and specific nodes color and width *
@@ -336,7 +335,7 @@ transformMatStruct2XML(xml_gly, map_gly_unified, 'map_gly_Unified.xml');
 %%
 map_gly_ATP_ADP_RXNS = modifyReactionsMetabolites(map_gly_unified, ...
     rxns_ATP_ADP , {'atp[m]';'adp[m]'}, 'DODGERBLUE', 10);
-transformMatStruct2XML(xml_gly, ...
+transformMap2XML(xml_gly, ...
     map_gly_ATP_ADP_RXNS, 'map_gly_ATP_ADP_RXNS_all_coloured.xml');
 %% 
 % 
@@ -352,7 +351,7 @@ map_subSystems = colorSubsystemCD(map_subSystems, ...
     model, 'Pyruvate metabolism', 'DARKMAGENTA' , 10);
 map_subSystems = colorSubsystemCD(map_subSystems, ...
     model, 'Glycolysis/gluconeogenesis', 'SPRINGGREEN', 10);
-transformMatStruct2XML(xml_gly, ...
+transformMap2XML(xml_gly, ...
     map_subSystems,'map_gly_subsystems_coloured.xml');
 %% 
 % 
@@ -367,7 +366,7 @@ load('mitocarta_humanGenes.mat')
 map_mitocarta = colorRxnsFromGenes(map_mitoMetab, model, ...
     MitocartaHuman_Genes, 'CRIMSON', 10);
 
-transformMatStruct2XML(xml_mitoMetab, ...
+transformMap2XML(xml_mitoMetab, ...
     map_mitocarta, 'map_mitocarta_human_genes.xml');
 %% 
 % 
@@ -397,7 +396,7 @@ mito_map_transport = changeRxnType(map_mitoMetab, transport_reactions, 'TRANSPOR
 
 mito_map_transport_coloured = colour_rxn_type(mito_map_transport, ...
     'TRANSPORT', 'DARKORCHID', 10);
-transformMatStruct2XML(xml_mitoMetab, mito_map_transport_coloured, ...
+transformMap2XML(xml_mitoMetab, mito_map_transport_coloured, ...
     'map_mitocarta_transport_coloured.xml');
 %% 
 % 
@@ -408,7 +407,7 @@ transformMatStruct2XML(xml_mitoMetab, mito_map_transport_coloured, ...
 % in the map. The measures given are: heigth 100 and width 80.
 %%
  map_nodesArea = changeNodesArea(map_gly, {'atp[m]'; 'adp[m]'}, 100, 80);
- transformMatStruct2XML(xml_gly, map_nodesArea, 'map_nodesArea.xml');
+ transformMap2XML(xml_gly, map_nodesArea, 'map_nodesArea.xml');
 %% 
 % 
 % 
@@ -489,7 +488,7 @@ load('mitochondrial_proteins_PDmap.mat')
 
 map_coloured_proteins = colorProtein(map_PPI, ...
     mitochondrial_proteins_PDmap(:,1), 'BLACK');
-transformFullMatStruct2XML(xml_PPI, ...
+transformFullMap2XML(xml_PPI, ...
     map_coloured_proteins, 'map_coloured_proteins.xml');
 %% 
 % 
@@ -503,7 +502,7 @@ transformFullMatStruct2XML(xml_PPI, ...
 % reverts to default reactions and nodes (colour and size).
 %%
 map2 = unifyMetabolicPPImapCD(map_PPI);
-transformFullMatStruct2XML(xml_PPI, map2, 'map_PPI_unified.xml');
+transformFullMap2XML(xml_PPI, map2, 'map_PPI_unified.xml');
 %% 
 % 
 %% Specific visualisation for model analysis:
@@ -531,14 +530,14 @@ FBAsolution = optimizeCbModel(model, 'max');
 
 map_general_ATP = addFluxFBA(map_mitoMetab, modelMito_3D, ...
     FBAsolution, 'MEDIUMAQUAMARINE');
-transformMatStruct2XML(xml_mitoMetab, map_general_ATP, 'FBA_flux.xml');
+transformMap2XML(xml_mitoMetab, map_general_ATP, 'FBA_flux.xml');
 %% 
 % * For a more specific visualisation including directionality of reactions, 
 % |addFluxFBAdirectionAndcolour| function can be used:
 
 map_specific_ATP = addFluxFBAdirectionAndcolour(map_mitoMetab, ...
     modelMito_3D, FBAsolution);
-transformMatStruct2XML(xml_mitoMetab, ...
+transformMap2XML(xml_mitoMetab, ...
     map_specific_ATP, 'FBA_flux_directionalyty.xml');
 %% Visualize gene expression
 % A Cytoscape plugin [6] is available to visualize gene expression on top of 
@@ -548,7 +547,7 @@ transformMatStruct2XML(xml_mitoMetab, ...
 % retrieved from the models and added to the CellDesigner map in notes.
 %%
 map_gly_corrected_notes = addNotes(model, map_gly_corrected);
-transformMatStruct2XML(xml_gly, map_gly_corrected_notes, 'map_gly_notes.xml');
+transformMap2XML(xml_gly, map_gly_corrected_notes, 'map_gly_notes.xml');
 %% 
 % 
 % 
