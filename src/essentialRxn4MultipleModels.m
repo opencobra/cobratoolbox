@@ -80,7 +80,7 @@ for j=1:size(field,1)
             end
         else
             essentialRxn4Models.(field{j}){i} = 'NotIncluded';
-            essential(i,j) = -100;            
+            essential(i,j) = -1;            
         end
     end
 end
