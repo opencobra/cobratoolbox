@@ -82,9 +82,9 @@ model = readCbModel(modelFileName);
 % # A small metabolic model representative of glycolysis and citric acid cycle. 
 % # A bigger metabolic map representative of the mitochondrial metabolism. 
 %%
-[xmlGly, mapGly] = transformXML2Map('Glycolysis_and_TCA.xml');
+[xmlGly, mapGly] = transformXML2Map('GlycolysisAndTCA.xml');
 [xmlMitoMetab, mapMitoMetab] = ...
-    transformXML2Map('metabolic_mitochondria.xml');
+    transformXML2Map('metabolicMitochondria.xml');
 %% 
 % 
 % 
@@ -99,7 +99,7 @@ model = readCbModel(modelFileName);
 % commonly stored in a metabolic map, plus extra information corresponding to 
 % proteins and complexes.
 %%
-[xmlPPI, mapPPI] = transformFullXML2Map('metabolic_PPI_mitochondria.xml');
+[xmlPPI, mapPPI] = transformFullXML2Map('metabolicPPIMitochondria.xml');
 %% 
 % _*NOTE! *The XML file to be parsed must be in the current folder in MATLAB 
 % when executing the function._
@@ -202,7 +202,7 @@ correctedFormula = mapFormula(mapGlyCorrected, ...
 % * *Anticipated results*
 % 
 % Before correcting formula's errors, run the control check again. Probably 
-% several errors in the output "|diff_formula|" have already been taken care of 
+% several errors in the output "|diffFormula|" have already been taken care of 
 % when correcting previous outputs.
 
 [diffReactions, diffMetabolites, diffReversibility, diffFormula] = ...
@@ -218,7 +218,7 @@ correctedFormula = mapFormula(mapGlyCorrected, ...
 % metabolic map) into a XML file.  In order to save the previous corrections made.
 %%
 transformMap2XML(xmlGly, ...
-    mapGlyCorrected,'Glycolysis_and_TCA_corrected.xml');
+    mapGlyCorrected,'GlycolysisAndTCACorrected.xml');
 %% B) Parse a metabolic MATLAB structure combined with PPI
 % As in the parsing from XML to a MATLAB structure, a different function will 
 % be used when proteins and complexes are present in the map "|transformFullMap2XML|".
@@ -254,7 +254,7 @@ open createColorsMap.m
 %%
 mapGlyColoured = changeRxnColorAndWidth(mapGlyCorrected, ...
     mapGlyCorrected.rxnName, 'LIGHTSALMON',10);
-transformMap2XML(xmlGly, mapGlyColoured,'map_gly_rxn_coloured.xml');
+transformMap2XML(xmlGly, mapGlyColoured,'mapGlyRxnColoured.xml');
 %% 
 % 
 % 
@@ -270,7 +270,7 @@ transformMap2XML(xmlGly, mapGlyColoured,'map_gly_rxn_coloured.xml');
 mapGlyColouredNodes = addColourNode(mapGlyColoured, ...
     mapGlyColoured.rxnName, 'LIGHTSTEELBLUE');
 transformMap2XML(xmlGly, ...
-    mapGlyColouredNodes,'map_gly_met_coloured.xml');
+    mapGlyColouredNodes,'mapGlyMetColoured.xml');
 %% 
 % 
 %% *3. Changing the colour of individual metabolite*
@@ -352,7 +352,7 @@ mapSubSystems = colorSubsystemCD(mapSubSystems, ...
 mapSubSystems = colorSubsystemCD(mapSubSystems, ...
     model, 'Glycolysis/gluconeogenesis', 'SPRINGGREEN', 10);
 transformMap2XML(xmlGly, ...
-    mapSubSystems,'map_gly_subsystems_coloured.xml');
+    mapSubSystems,'mapGlySubsystemsColoured.xml');
 %% 
 % 
 %% *7. Colour reactions associated to specific genes*
@@ -362,9 +362,9 @@ transformMap2XML(xmlGly, ...
 % like to know how many reactions in our metabolic map are associated to these 
 % genes. 
 %%
-load('mitocarta_humanGenes.mat')
+load('mitocartaHumanGenes.mat')
 mapMitocarta = colorRxnsFromGenes(mapMitoMetab, model, ...
-    MitocartaHuman_Genes, 'CRIMSON', 10);
+    MitocartaHumanGenes, 'CRIMSON', 10);
 
 transformMap2XML(xmlMitoMetab, ...
     mapMitocarta, 'mapMitocartaHumanGenes.xml');
@@ -394,7 +394,7 @@ mitoMapTransport = changeRxnType(mapMitoMetab, transportReactions, 'TRANSPORT');
 %% 
 % Furthermore, we would like to visualize these "transport" reactions: 
 
-mitoMapTransportColoured = colour_rxn_type(mitoMapTransport, ...
+mitoMapTransportColoured = colorRxnType(mitoMapTransport, ...
     'TRANSPORT', 'DARKORCHID', 10);
 transformMap2XML(xmlMitoMetab, mitoMapTransportColoured, ...
     'mapMitocartaTransportColoured.xml');
@@ -482,12 +482,12 @@ mitochondrialRxnsIndexList = findRxnFromCompartMap(mapGlyCorrected, '[m]');
 % 
 % First, we load the protein list. 
 %%
-load('mitochondrial_proteins_PDmap.mat')
+load('mitochondrialProteinsPDmap.mat')
 %% 
 %  Then, we would like to identify those proteins in our map. 
 
 mapColouredProteins = colorProtein(mapPPI, ...
-    mitochondrial_proteins_PDmap(:,1), 'BLACK');
+    mitochondrialProteinsPDmap(:,1), 'BLACK');
 transformFullMap2XML(xmlPPI, ...
     mapColouredProteins, 'mapColouredProteins.xml');
 %% 
@@ -516,8 +516,8 @@ transformFullMap2XML(xmlPPI, map2, 'mapPPIUnified.xml');
 % in the cell), we would maximize ATP production through complex V in the electron 
 % transport chain. 
 %%
-formulaATPS4m = printRxnFormula(modelMito_3D, 'ATPS4m');
-model = changeObjective(modelMito_3D, 'ATPS4m');
+formulaATPS4m = printRxnFormula(modelMito3D, 'ATPS4m');
+model = changeObjective(modelMito3D, 'ATPS4m');
 FBAsolution = optimizeCbModel(model, 'max');
 %% 
 % The output |FBAsolution| will be afterwards used as input. The width assigned 
@@ -528,7 +528,7 @@ FBAsolution = optimizeCbModel(model, 'max');
 % 
 % * For a basic visualisation of fluxes |addFluxFBA| can be used:  
 
-mapGeneralATP = addFluxFBA(mapMitoMetab, modelMito_3D, ...
+mapGeneralATP = addFluxFBA(mapMitoMetab, modelMito3D, ...
     FBAsolution, 'MEDIUMAQUAMARINE');
 transformMap2XML(xmlMitoMetab, mapGeneralATP, 'fbaFlux.xml');
 %% 
@@ -536,7 +536,7 @@ transformMap2XML(xmlMitoMetab, mapGeneralATP, 'fbaFlux.xml');
 % |addFluxFBAdirectionAndcolour| function can be used:
 
 mapSpecificATP = addFluxFBAdirectionAndcolour(mapMitoMetab, ...
-    modelMito_3D, FBAsolution);
+    modelMito3D, FBAsolution);
 transformMap2XML(xmlMitoMetab, ...
     mapSpecificATP, 'fbaFluxDirectionality.xml');
 %% Visualize gene expression
