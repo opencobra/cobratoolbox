@@ -10,7 +10,7 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
 %
 % INPUTS:
 %   map:            Matlab structure of the map obtained from the
-%                   function "transformXML2MatStruct".
+%                   function "transformXML2Map".
 %   rxnList:        List of reaction names as a string array
 %   metList:        List of metabolite names as a string array
 %   newColor:       Color chosen for reaction lines and metabolites
