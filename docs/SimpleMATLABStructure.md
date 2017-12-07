@@ -7,7 +7,7 @@ and create a particular structure containg these annotations, that would
 be later modified using various functions from the COBRA Toolbox.
 Using this function, the MATLAB structure contains the following fields:
 
-1. Molecules information (specific to each node in the map)
+1.  Molecules information (specific to each node in the map)
 
     - molAlias:               Alias of each molecules (no duplicates)
 
@@ -32,7 +32,7 @@ Using this function, the MATLAB structure contains the following fields:
                           with lowercases and "ff" in stead of "#' at
                           the beginning)
 
-2. Species info (specific to each entity in the map)
+2.  Species info (specific to each entity in the map)
 
     - specID:                 ID of each species (no duplicates)
 
@@ -45,7 +45,7 @@ Using this function, the MATLAB structure contains the following fields:
     - specNotes:              Notes of reach species (in the body of HTML
                           format?) (EMPTY if no info)
 
-3. Reactions info (with their corresponding modifications)
+3.  Reactions info (with their corresponding modifications)
 
     - rxnID:                  ID of each reactions (no duplicates)
 
@@ -102,14 +102,14 @@ Using this function, the MATLAB structure contains the following fields:
 	rxnNotes:               Notes of each reactions (in the body of
 	                        HTML format?) (EMPTY if no info)
 
-4. Compartment info (if existing in the map)
+4.  Compartment info (if existing in the map)
 
     - compartAlias:           Alias of each compartments
                           (EMPTY if no info)
     - compartName:            Name of each compartments
                           (EMPTY if no info)
 
-5. Matrices (specific for the map and comparable with the model)
+5.  Matrices (specific for the map and comparable with the model)
 
     - S_ID:                   Logical matrix with rows=species_ID and
                           columns=reactions_ID
