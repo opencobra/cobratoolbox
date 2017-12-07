@@ -6,13 +6,13 @@ function [newMap] = colorRxnType(map, type, color, width)
 %   [newMap] = createColorsMap(map, type, color);
 %
 % INPUTS:
-%   map:        Map from CD parsed to Matlab format
+%   map:        Map from CellDesigner parsed to MATLAB format
 %   type:       Type of reactions to be colored (as String)
 %   color:      Color used to color reactions (see createColorsMap.m)
 %   width:      Width size for reactions (default: 8)
 %
 % OUTPUT:
-%   newMap:     Matlab structure of new map with needed reactions type
+%   newMap:     MATLAB structure of new map with needed reactions type
 %               colored and width modified
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 20/10/2017
