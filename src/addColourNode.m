@@ -27,7 +27,7 @@ function [map] = addColourNode(map, rxnList, colour)
         colour = 'RED';
     end
 
-    Colors = createColorsMap();
+    colors = createColorsMap();
     index = find(ismember(map.rxnName,rxnList)); % find index of reactions
     
     % Change colour base reactants 
@@ -35,7 +35,7 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(baseR)
         a = baseR{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};
+        map.molColor(id) = {colors(colour)};
     end
     
     % Change colour of base products 
@@ -43,7 +43,7 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(baseP)
         a = baseP{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};
+        map.molColor(id) = {colors(colour)};
     end
     
     % Change color of secondary reactants 
@@ -51,7 +51,7 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(react)
         a = react{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};
+        map.molColor(id) = {colors(colour)};
     end
     
     % Change color of secondary products
@@ -59,7 +59,7 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(product)
         a = product{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};
+        map.molColor(id) = {colors(colour)};
     end
     
     % Change color of modificators
@@ -67,7 +67,7 @@ function [map] = addColourNode(map, rxnList, colour)
     for i = 1:length(modif)
         a = modif{i};
         id = ismember(map.molAlias,a);
-        map.molColor(id) = {Colors(colour)};
+        map.molColor(id) = {colors(colour)};
     end
 
 end 
