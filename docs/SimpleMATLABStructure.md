@@ -15,6 +15,7 @@ Using this function, the MATLAB structure contains the following fields:
 
 
 | Field name | Dimension | Data Type | Field description |
+|---|---|---|---|
 | map.molAlias | a x 1 | cell of char | Alias of each molecules (no duplicates) |
 | map.molID | a x 1 | cell of char | ID of each molecules (duplicates) |
 | map.molCompartAlias | a x 1 | cell of char | Corresponding compartment alias of each molecules (EMPTY if no info) |
