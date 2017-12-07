@@ -1,4 +1,4 @@
-function [ essentialRxn4Models, essential] = essentialRxn4MultipleModels(modelsDir, objFun, solver)
+function [ essentialRxn4Models, essential] = essentialRxn4MultipleModels(modelsFileName, modelsDir, objFun)
 
 %essentialRxn4MultipleModels.m
 %This funtion allows us to perform single reactions deletions to identify 
@@ -23,23 +23,21 @@ function [ essentialRxn4Models, essential] = essentialRxn4MultipleModels(modelsD
 % objFun = 'ATPM';
 
 %% Locate COBRA models
-initCobraToolbox
-changeCobraSolver(solver)
 
-allModels = dir(strcat(modelsDir,'*.mat'));
-numModels = size(allModels,1); 
+%allModels = dir(strcat(modelsDir,'/','*.mat'));
+numModels = size(modelsFileName,2); 
 sumRxnSubsystems = {};
 
 %% Load and perform singleRxnDeletion in all COBRA models
 
 for j=1:numModels
     match = {'_','.mat'};
-    filename = erase(allModels(j).name, match);
-    loadedFile = load(allModels(j).name);
+    filename = erase(modelsFileName{1,j}, match);
+    loadedFile = load(strcat(modelsDir,'/',modelsFileName{1,j}));
     fields = fieldnames(loadedFile);
     model = loadedFile.(fields{1,1});
     model = changeObjective(model, objFun);
-    fprintf(strcat(filename,'\n'))
+    fprintf(strcat(' \nAnalysing model: \n', modelsFileName{1,j},'\n'))
     [~ , grRateKO, ~ , ~ , delRxn, fluxSolution] = singleRxnDeletion(model);
     
     delRxnSubsystems(:,1) = model.rxns;
