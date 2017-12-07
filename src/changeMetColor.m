@@ -25,10 +25,10 @@ function [newMap] = changeMetColor(map, metList, color)
 
     newMap = map;
     
-    colors = createColorsnew_map;
+    colors = createColorsMap();
     % Index for specName is the same as for corresponding specID
-    spec_ID = newMap.specID(ismember(newMap.specName,metList));
-    index = find(ismember(newMap.molID,spec_ID));
+    specID = newMap.specID(ismember(newMap.specName,metList));
+    index = find(ismember(newMap.molID,specID));
 
     % Change color
     for i = index'
