@@ -1,26 +1,24 @@
-function map = transformToIrreversibleMap(map, rxnlist)
+function [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
+% Converts a map structure from irreversible format to
+% reversible format for a list of reaction names
+%
+% USAGE:
+%
+%   [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
+%
+% INPUTS:
+%   map:        Map from CellDesigner parsed to MATLAB format
+%   rxnlist:    List of reaction names to transform
+%
+% OUTPUT:
+%   mapIrrev:    Map with reactions in irreversible format
+%
+% .. Authors:
+%       - MOUSS Rouquaya 24/07/2017
+%       - N.Sompairac - Institut Curie, Paris 25/07/2017
 
-    % Converts a map structure from irreversible format to
-    % reversible format for a list of reaction names
-    %
-    % USAGE:
-    %
-    %   mapIrrev = transformToIrreversibleMap(map)
-    %
-    % INPUT:
-    %
-    %   map:    Map from CD parsed to matlab format
-    %
-    % OUTPUT:
-    %
-    %   map:    Map in irreversible format
-    %
-    % .. Authors:
-    % MOUSS RouquayaDate : 24/07/2017
-    % N.Sompairac - Institut Curie, Paris 25/07/2017 (Code checking)
-
-
-    index = find(ismember(map.rxnName,rxnlist));
-    map.rxnReversibility(index,1) = {'false'};
+    mapIrrev = map;
+    index = find(ismember(mapIrrev.rxnName,rxnlist));
+    mapIrrev.rxnReversibility(index,1) = {'false'};
 
 end
