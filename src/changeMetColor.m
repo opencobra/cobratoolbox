@@ -6,7 +6,7 @@ function [newMap] = changeMetColor(map, metList, color)
 %   [newMap] = changeMetColor(map, metList, color);
 %
 % INPUTS:
-%   map:            file from CD parsed to matlab format
+%   map:            file from CellDesigner parsed to MATLAB format
 %   metList:        List of metabolites names
 % 
 % OPTIONAL INPUT:
@@ -25,14 +25,14 @@ function [newMap] = changeMetColor(map, metList, color)
 
     newMap = map;
     
-    Colors = createColorsnew_map;
+    colors = createColorsnew_map;
     % Index for specName is the same as for corresponding specID
     spec_ID = newMap.specID(ismember(newMap.specName,metList));
     index = find(ismember(newMap.molID,spec_ID));
 
     % Change color
     for i = index'
-       newMap.molColor{i} = Colors(color); 
+       newMap.molColor{i} = colors(color); 
     end
 
 end 
