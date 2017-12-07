@@ -1,4 +1,4 @@
-function essentialInterest = plotEssentialRxns( essential, essentialityThreshold, numModelsPresent)
+function essentialInterest = plotEssentialRxns( essential, essentialRxn4Models, essentialityThreshold, numModelsPresent)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -29,12 +29,12 @@ for i=1:size(rxnInterest,1)
 end
 
 mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
-hm = HeatMap(essentialInterest,'ColumnLabels', modelNames2,'RowLabels',rxnInterest,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 10);
+hm = HeatMap(essentialInterest,'RowLabels',rxnInterest,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %'ColumnLabels', modelNames2,
 colormap(hm,mymap);
 
-
-cg = clustergram(essentialInterest,'ColumnLabels', modelNames2,'RowLabels',rxnInterest,'Colormap',redbluecmap);
-colormap(cg,mymap);
+% 
+% cg = clustergram(essentialInterest,'ColumnLabels', modelNames2,'RowLabels',rxnInterest,'Colormap',redbluecmap);
+% colormap(cg,mymap);
 
 
 end
