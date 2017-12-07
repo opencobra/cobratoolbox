@@ -6,7 +6,7 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 %   [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth);
 %
 % INPUTS:
-%   map:            File from CD parsed to matlab format
+%   map:            File from CellDesigner parsed to MATLAB format
 %   model:          COBRA model structure
 %   subsystem:      Name of a subsystem as a String
 %
@@ -15,7 +15,7 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 %   areaWidth:          Width desired for reactions
 %
 % OUTPUT:
-%   newMap          Matlab structure of map with reaction modifications
+%   newMap          MATLAB structure of map with reaction modifications
 %
 % .. Authors:
 %       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg
