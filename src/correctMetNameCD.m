@@ -19,8 +19,8 @@ function [map] = correctMetNameCD(map, metStructure, metList)
 % .. Author: - J.modamio 18/07/2017. Belval, Luxembourg, 18/07/2017.
 
     met = metStructure;
-    for i = 1:length(met.extra_mets_map)
-        index = find(ismember(map.specName,met.extra_mets_map{i}));
+    for i = 1:length(met.extraMetsMap)
+        index = find(ismember(map.specName,met.extraMetsMap{i}));
         map.specName(index,1) = metList(i);  
     end
     
