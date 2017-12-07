@@ -6,7 +6,7 @@ function [xmlStruct, map] = transformFullXML2Map(fileName)
 %
 % USAGE:
 %
-%   [xmlStruct, map] = transformFullXML2MatStruct(fileName)
+%   [xmlStruct, map] = transformFullXML2Map(fileName)
 %
 % INPUT:
 %   fileName:       Path to the XML file.

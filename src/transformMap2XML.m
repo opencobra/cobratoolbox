@@ -5,7 +5,7 @@ function transformMap2XML(xmlStruct, map, fileName)
 %
 % USAGE:
 %
-%   transformMatStruct2XML(xmlStruct, map, fileName)
+%   transformMap2XML(xmlStruct, map, fileName)
 %
 % INPUTS:
 %   xmlStruct:      XML structure obtained from the function
