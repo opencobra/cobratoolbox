@@ -19,8 +19,8 @@ function [map] = correctRxnNameCD(map, rxnStucture, rxnList)
 % .. Author: - J.modamio 18/07/2017. Belval, Luxembourg, 18/07/2017.
 
     rxn = rxnStucture;
-    for i = 1:length(rxn.extra_rxns_map) 
-        index = find(ismember(map.rxnName,rxn.extra_rxns_map{i}));
+    for i = 1:length(rxn.extraRxnMap) 
+        index = find(ismember(map.rxnName,rxn.extraRxnMap{i}));
         map.rxnName(index,1) = rxnList(i);
     end
     
