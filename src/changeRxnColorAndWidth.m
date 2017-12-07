@@ -6,7 +6,7 @@ function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
 %   [newMap] = changeRxnColorAndareaWidth(map, rxnList, color, areaWidth);
 %
 % INPUTS:
-%   map:            File from CD parsed to matlab format
+%   map:            File from CellDesigner parsed to MATLAB format
 %   rxnList:        List of reactions
 %
 % OPTIONAL INPUTS:
@@ -28,11 +28,11 @@ function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
     end
 
     newMap = map;
-    Colors = createColorsMap;
+    colors = createColorsMap;
 
     index = find(ismember(newMap.rxnName,rxnList));
     for j = index'
-        newMap.rxnColor{j,1} = Colors(color);
+        newMap.rxnColor{j,1} = colors(color);
         newMap.rxnWidth{j,1} = areaWidth;
         
         % Use the existence of reactant lines to check if the newMap has the
@@ -40,13 +40,13 @@ function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
         if any(strcmp('rxnReactantLineColor',fieldnames(newMap))) == 1
             if ~isempty(newMap.rxnReactantLineColor{j})
                 for k = 1:length(newMap.rxnReactantLineColor{j})
-                    newMap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
+                    newMap.rxnReactantLineColor{j,1}{k,1} = colors(color);
                     newMap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;
                 end
             end
             if ~isempty(newMap.rxnProductLineColor{j}) 
                 for m = 1:1:length(newMap.rxnProductLineColor{j})
-                    newMap.rxnProductLineColor{j,1}{m,1} = Colors(color);
+                    newMap.rxnProductLineColor{j,1}{m,1} = colors(color);
                     newMap.rxnProductLineWidth{j,1}{m,1} = areaWidth;
                 end
             end
