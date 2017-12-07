@@ -1,4 +1,4 @@
-Output of the function "transformFullXML2Map"
+# Output description of the function "transformFullXML2Map"
 
 To be able to modify maps containg Protein-Protein Interactions (PPI)
 created in CellDesigner from MATLAB, they have to be first parsed using the

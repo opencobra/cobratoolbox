@@ -1,4 +1,4 @@
-Output of the function "transformXML2Map"
+# Output of the function "transformXML2Map"
 
 To be able to modify metabolic maps created in CellDesigner from MATLAB,
 they have to be first parsed using the function "transformXML2Map".
