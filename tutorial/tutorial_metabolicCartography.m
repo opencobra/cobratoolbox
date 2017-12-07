@@ -82,7 +82,7 @@ model = readCbModel(modelFileName);
 % # A small metabolic model representative of glycolysis and citric acid cycle. 
 % # A bigger metabolic map representative of the mitochondrial metabolism. 
 %%
-[xmlGly, mapGly] = transformXML2Map('GlycolysisAndTCA.xml');
+[xmlGly, mapGly] = transformXML2Map('glycolysisAndTCA.xml');
 [xmlMitoMetab, mapMitoMetab] = ...
     transformXML2Map('metabolicMitochondria.xml');
 %% 
