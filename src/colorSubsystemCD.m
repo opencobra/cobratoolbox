@@ -30,11 +30,11 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 
     newMap = map;
     rxnList = model.rxns(ismember(model.subSystems,subsystem));
-    Colors = createColorsMap;
+    colors = createColorsMap;
 
     index = find(ismember(newMap.rxnName,rxnList));
     for j = index'
-        newMap.rxnColor{j,1} = Colors(color);
+        newMap.rxnColor{j,1} = colors(color);
         newMap.rxnWidth{j,1} = areaWidth;
     end
     
@@ -44,13 +44,13 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
         for j = index'
             if ~isempty(newMap.rxnReactantLineColor{j})
                 for k = 1:length(newMap.rxnReactantLineColor{j})
-                    newMap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
+                    newMap.rxnReactantLineColor{j,1}{k,1} = colors(color);
                     newMap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;
                 end
             end
             if ~isempty(newMap.rxnProductLineColor{j})
                 for m = 1:1:length(newMap.rxnProductLineColor{j})
-                    newMap.rxnProductLineColor{j,1}{m,1} = Colors(color);
+                    newMap.rxnProductLineColor{j,1}{m,1} = colors(color);
                     newMap.rxnProductLineWidth{j,1}{m,1} = areaWidth;
                 end
             end
