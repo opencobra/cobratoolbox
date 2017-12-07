@@ -1,4 +1,4 @@
-function [ essentialRxn4Models, essential] = essentialRxn4MultipleModels(modelsFileName, modelsDir, objFun)
+function [ essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(modelsFileName, modelsDir, objFun)
 
 %essentialRxn4MultipleModels.m
 %This funtion allows us to perform single reactions deletions to identify 
@@ -64,25 +64,6 @@ end
 
 % Find essential reaction accross all models
 essentialRxn4Models = cell2table(allRxns, 'VariableNames',{'rxn','subsystem'});
-field = fieldnames(dataStruct);
-
-
-for j=1:size(field,1)
-    for i=1:size(allRxns,1)
-        idx = find(strcmp(allRxns{i,1},dataStruct.(field{j}).rxnSubsystems(:,1)));
-        if idx ~= 0
-            essentialRxn4Models.(field{j}){i} = dataStruct.(field{j}).grRateKO(idx,1);
-            if ~isnan(dataStruct.(field{j}).grRateKO(idx,1))
-                essential(i,j) = dataStruct.(field{j}).grRateKO(idx,1);
-            else 
-                essential(i,j) = 0;
-            end
-        else
-            essentialRxn4Models.(field{j}){i} = 'NotIncluded';
-            essential(i,j) = -1;            
-        end
-    end
-end
 
 end
 
