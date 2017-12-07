@@ -32,8 +32,8 @@ function [map2] = changeNodesArea(map, metList, areaHeight, areaWidth)
     map2 = map;
     
     % Find mets in the map
-    ID = map2.specID(ismember(map2.specName,metList));
-    idx = find(ismember(map2.molID,ID));
+    id = map2.specID(ismember(map2.specName,metList));
+    idx = find(ismember(map2.molID,id));
     
     % Change areaHeight
     map2.molHeight(idx,1) = {areaHeight};
