@@ -7,7 +7,7 @@ function [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
 %   [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
 %
 % INPUTS:
-%   map:        Map from CD parsed to matlab format
+%   map:        Map from CellDesigner parsed to MATLAB format
 %   rxnlist:    List of reaction names to transform
 %
 % OUTPUT:
