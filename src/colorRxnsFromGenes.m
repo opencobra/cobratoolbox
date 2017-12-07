@@ -1,5 +1,5 @@
 function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
-% Color and change the areaWidth of reactions based on the imlicated gene
+% Color and change the areaWidth of reactions based on the implicated gene
 % given from a list of entezIDs.
 %
 % USAGE:
@@ -7,7 +7,7 @@ function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
 %   [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth);
 %
 % INPUTS:
-%   map:            map from CD parsed to matlab format
+%   map:            map from CellDesigner parsed to MATLAB format
 %   model:          COBRA model
 %   entrezList:     List of genes, given as entrezIDs. 
 %
@@ -17,7 +17,7 @@ function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
 %   areaWidth:      Preferred areaWidth of lines. (default: 8)
 %
 % OUTPUT:
-%   newmap          Matlab structure of new map with default look
+%   newmap          MATLAB structure of new map with default look
 %
 % .. Authors:
 %       - A.Danielsdottir 01/08/2017 
