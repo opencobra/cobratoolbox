@@ -1,12 +1,23 @@
-function modelNew = mergeModelFieldPositions(model,type,positions)
+function modelNew = mergeModelFieldPositions(model,type,positions,mergeFunctions)
 % USAGE:
 %    [modelNew] = mergeModelFieldPositions(model,type,positions)
 %
 % INPUTS:
 %    model:           The model with the fields to merge
 %    type:            the field type to merge ( rxns, mets, comps or genes)
-%    positions:       The positions in the given field type to merge.
+%    positions:       The positions in the given field type to merge either as indices or as logical array.
 %
+% OPTIONAL INPUTS:
+%    mergeFunctions:  A cell array of fieldNames and functions that can be
+%                     called on a larger array of the type used for the
+%                     field. e.g. {'metCharges',@(x) x(1); 'grRules', @(x)
+%                     strjoin(x,' or ');
+%                     by default, all numeric fields are added up, all
+%                     unique entries in cell arrays are concatenated with
+%                     ';', grRules and rules are assumed to be merged with
+%                     and (i.e. a batch reaction is assumed to need all
+%                     associated GPRs)
+%                 
 %
 % OUTPUT:
 %
@@ -19,10 +30,27 @@ function modelNew = mergeModelFieldPositions(model,type,positions)
 
 
 modelNew = model;
+
+if islogical(positions)
+    positions = find(positions);
+end
+
 if numel(positions) <= 1
     %If there is less than two positions to merge, we don't do anything.
     return;
 end
+
+%basic functions for merger
+basicFunctions = {'rules',@(x) strjoin(setdiff(x,''),' & ');...
+                  'grRules', @(x) strjoin(setdiff(x,''),' and ')};
+if ~exist('mergeFunctions','var')
+    mergeFunctions = basicFunctions;
+else
+    toRemove = ismember(basicFunctions(:,1),mergeFunctions(:,1));
+    mergeFunctions=[basicFunctions(~toRemove,:),mergeFunctions(:,:)];
+end
+
+              
 
 posToKeep = positions(1);
 posToMerge = positions(2:end);
@@ -35,8 +63,17 @@ origNames = modelNew.(type)(positions);
 
 
 for i = 1:numel(fields)
+    specialFieldPos = ismember(mergeFunctions(:,1),fields{i});
+    if any(specialFieldPos)
+        mergeFun = mergeFunctions{specialFieldPos,2};
+        data = mergeFun(getSlice(modelNew.(fields{i}),positions,dimensions(i)));
+        modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),data);        
+        continue;
+    end
+        
     %Lets assume, that we only have 2 dimensional fields.    
     if isnumeric(modelNew.(fields{i})) || islogical(modelNew.(fields{i}))
+        %There are exceptions.        
         modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),sum(getSlice(modelNew.(fields{i}),positions,dimensions(i)),dimensions(i)));        
     end
     % if its cell arrays, concatenate unique data, we will assume here, that
