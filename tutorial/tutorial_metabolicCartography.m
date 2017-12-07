@@ -382,8 +382,8 @@ transformMap2XML(xmlMitoMetab, ...
 % First, we obtain reactions associated to all transport subsystems in Recon2 
 % model: 
 %%
-transportMitochondria = strfind(model.subSystems, 'Transport');
-index=find(~cellfun(@isempty, transportMitochondria));
+transportMitochondria = ismember([model.subSystems{:}]', 'Transport');
+index=find(transportMitochondria);
 transportReactions = model.rxns(index,1);
 %% 
 % Afterwards, we use this list of reactions to change the reaction type 
