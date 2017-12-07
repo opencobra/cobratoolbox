@@ -25,7 +25,7 @@ function [newMap] = colorProtein(map, protList, color)
     end
     
     newMap = map;
-    Colors = createColorsMap;
+    colors = createColorsMap;
 
     id = find(ismember(newMap.specName,protList));
     ID = newMap.specMetaID(id,1); 
@@ -38,7 +38,7 @@ function [newMap] = colorProtein(map, protList, color)
         id3 = find(ismember(newMap.molID,IDmane));
         for j = 1:length(id3) 
             ID4 = id3(j); 
-            newMap.molColor{ID4,1} = Colors(color); 
+            newMap.molColor{ID4,1} = colors(color); 
         end
     end
     
