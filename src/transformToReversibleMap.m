@@ -7,8 +7,8 @@ function [mapRev] = transformToReversibleMap(map, rxnlist)
 %   [mapRev] = transformToReversibleMap(map, rxnlist)
 %
 % INPUTS:
-%   map:   Map from CD parsed to matlab format
-%   rxnlist: List of reaction names to transform
+%   map:        Map from CellDesigner parsed to MATLAB format
+%   rxnlist:    List of reaction names to transform
 %
 % OUTPUT:
 %   mapRev:   Map in reversible format
