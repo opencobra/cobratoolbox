@@ -30,14 +30,14 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.molHeight` | `a x 1` | cell of char or double | Height of each molecules (stored as string but can be changed to double) |
 | `map.molColor` | `a x 1` | cell of char | Color of each molecules (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
 | **Complexes info** |
-| `map.cplxAlias` | `c x 1` | cell of char | Alias of each complex (no duplicates) |
-| `map.cplxID` | `c x 1` | cell of char | ID of each complex (duplicates) |
-| `map.cplxCompartAlias` | `c x 1` | cell of char | Corresponding compartment alias of each complex (EMPTY if no info) |
-| `map.cplxXPos` | `c x 1` | cell of char or double | X position of each complex (stored as string but can be changed to double) |
-| `map.cplxYPos` | `c x 1` | cell of char or double | Y position of each complex (stored as string but can be changed to double) |
-| `map.cplxWidth` | `c x 1` | cell of char or double | Width of each complex (stored as string but can be changed to double) |
-| `map.cplxHeight` | `c x 1` | cell of char or double | Height of each complex (stored as string but can be changed to double) |
-| `map.cplxColor` | `c x 1` | cell of char | Color of each complex (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
+| `map.complexAlias` | `c x 1` | cell of char | Alias of each complex (no duplicates) |
+| `map.complexID` | `c x 1` | cell of char | ID of each complex (duplicates) |
+| `map.complexCompartAlias` | `c x 1` | cell of char | Corresponding compartment alias of each complex (EMPTY if no info) |
+| `map.complexXPos` | `c x 1` | cell of char or double | X position of each complex (stored as string but can be changed to double) |
+| `map.complexYPos` | `c x 1` | cell of char or double | Y position of each complex (stored as string but can be changed to double) |
+| `map.complexWidth` | `c x 1` | cell of char or double | Width of each complex (stored as string but can be changed to double) |
+| `map.complexHeight` | `c x 1` | cell of char or double | Height of each complex (stored as string but can be changed to double) |
+| `map.complexColor` | `c x 1` | cell of char | Color of each complex (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
 | **Included Species info** |
 | `map.specIncID` | `i x 1` | cell of char | ID of each included species (no duplicates) |
 | `map.specIncProtID` | `i x 1` | cell of char | Protein ID reference of each included species |
