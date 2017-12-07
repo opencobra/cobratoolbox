@@ -187,17 +187,17 @@ mapGlyCorrected = transformToReversibleMap(mapGlyCorrected, ...
 % printed from the map and model using different functions.
 
 wrongFormula = mapFormula(mapGly, ...
-    diffReversibility.wrongReversibleRxnsMap);
+    diffReversibility.wrongIrreversibleRxnsMap);
 %% 
 % Print the same formula in the model to see the corrected formula: 
 
 rightFormula = printRxnFormula(model, ...
-    diffReversibility.wrongReversibleRxnsMap);
+    diffReversibility.wrongIrreversibleRxnsMap);
 %% 
 % Print reaction formula from the corrected file mapGlyCorrected: 
 
 correctedFormula = mapFormula(mapGlyCorrected, ...
-    diffReversibility.wrongReversibleRxnsMap);
+    diffReversibility.wrongIrreversibleRxnsMap);
 %% 
 % * *Anticipated results*
 % 
@@ -364,7 +364,7 @@ transformMap2XML(xmlGly, ...
 %%
 load('mitocartaHumanGenes.mat')
 mapMitocarta = colorRxnsFromGenes(mapMitoMetab, model, ...
-    MitocartaHumanGenes, 'CRIMSON', 10);
+    mitocartaHumanGenes, 'CRIMSON', 10);
 
 transformMap2XML(xmlMitoMetab, ...
     mapMitocarta, 'mapMitocartaHumanGenes.xml');
@@ -422,8 +422,8 @@ transformMap2XML(xmlMitoMetab, mitoMapTransportColoured, ...
 % colour and size (a specific colour is given depending on metabolite type, moreover 
 % the size is also given depending on metabolite relevance). 
 %%
-mapDefault = defaultColourCD(map);
-mapDefaultAll = defaultLookMap(map);
+mapDefault = defaultColorCD(mapGly);
+mapDefaultAll = defaultLookMap(mapGly);
 %% Functions mimicking COBRA functions for model manipulation
 %% *1. Obtain logical matrices*
 % Based on the COBRA model structure of the S matrix, similar matrices can be 
@@ -450,16 +450,16 @@ mapGlyCorrected = getMapMatrices(mapGlyCorrected);
 %%
 transportReactionsIndexList = findRxnsPerType(mapGlyCorrected, 'TRANSPORT');
 %% 
-% The function |findMetIDs| finds the IDs of specific metabolites in |map.specName| 
+% The function |findMetsIDs| finds the IDs of specific metabolites in |map.specName| 
 % given a list of metabolites.  
 
-ATPADPIndexList = findMetIDs(mapGlyCorrected, ...
+ATPADPIndexList = findMetsIDs(mapGlyCorrected, ...
     {'atp[c]', 'adp[c]', 'atp[m]', 'adp[m]'});
 %% 
-% The function |findRxnIDs| finds the IDs of specific reactions in |map.rxnName| 
+% The function |findRxnsIDs| finds the IDs of specific reactions in |map.rxnName| 
 % given a list of reactions.
 
-rxnOfInterestIndexList = findRxnIDs(mapGlyCorrected, ...
+rxnOfInterestIndexList = findRxnsIDs(mapGlyCorrected, ...
     {'FBP', 'FBA', 'GAPD', 'PFK', 'ENO'});
 %% 
 % The function |findMetFromCompartMap| finds all metabolites in the map 
@@ -516,9 +516,10 @@ transformFullMap2XML(xmlPPI, map2, 'mapPPIUnified.xml');
 % in the cell), we would maximize ATP production through complex V in the electron 
 % transport chain. 
 %%
+load('mitomodels.mat')
 formulaATPS4m = printRxnFormula(modelMito3D, 'ATPS4m');
 model = changeObjective(modelMito3D, 'ATPS4m');
-FBAsolution = optimizeCbModel(model, 'max');
+fbaSolution = optimizeCbModel(model, 'max');
 %% 
 % The output |FBAsolution| will be afterwards used as input. The width assigned 
 % to each reaction in the map is directly related to the flux carried by the reaction 
@@ -529,14 +530,14 @@ FBAsolution = optimizeCbModel(model, 'max');
 % * For a basic visualisation of fluxes |addFluxFBA| can be used:  
 
 mapGeneralATP = addFluxFBA(mapMitoMetab, modelMito3D, ...
-    FBAsolution, 'MEDIUMAQUAMARINE');
+    fbaSolution, 'MEDIUMAQUAMARINE');
 transformMap2XML(xmlMitoMetab, mapGeneralATP, 'fbaFlux.xml');
 %% 
 % * For a more specific visualisation including directionality of reactions, 
 % |addFluxFBAdirectionAndcolour| function can be used:
 
 mapSpecificATP = addFluxFBAdirectionAndcolour(mapMitoMetab, ...
-    modelMito3D, FBAsolution);
+    modelMito3D, fbaSolution);
 transformMap2XML(xmlMitoMetab, ...
     mapSpecificATP, 'fbaFluxDirectionality.xml');
 %% Visualize gene expression
