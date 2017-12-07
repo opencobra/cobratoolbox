@@ -1,8 +1,9 @@
-# Output description of the function "transformFullXML2Map"
+# Output description of the function `transformFullXML2Map`
 
 To be able to modify maps containg Protein-Protein Interactions (PPI)
 created in CellDesigner from MATLAB, they have to be first parsed using the
-function "transformFullXML2Map".
+function "transformFullXML2Map". Compared to a simple Metabolic map, PPI maps
+contain Proteins and Complexes and must therefore be stored accordingly.
 This function will then extract the relevant annotations from the XML file
 and create a particular structure containg these annotations, that would
 be later modified using various functions from the COBRA Toolbox.
@@ -87,6 +88,7 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.idAlias` | `s x m` | logical | Logical matrix widh rows=speciesID and columns=speciesAlias |
 
 
-Attention: this logical matrix is disabled for the moment for PPI maps.
+### Note: 
+This logical matrix is disabled for the moment for PPI maps.
 To be structured as the model and to be comparable, the access to entities has
-to be adapted for PPI maps...
+to be adapted for PPI maps
