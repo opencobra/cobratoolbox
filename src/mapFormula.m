@@ -37,8 +37,8 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
     i = 1;
     for a = PresentRxns'
         R = strcmp(map.rxnName(:,1),a);
-        rxnIndex_list=find(R);
-        for rxnIndex = rxnIndex_list'
+        rxnIndexList=find(R);
+        for rxnIndex = rxnIndexList'
             left = {};
             % Base reactant
             basereact = map.rxnBaseReactantID{rxnIndex};
@@ -89,7 +89,7 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
         end
         
         % Check if the reaction name if actually a duplicate
-        if length(rxnIndex_list) > 1
+        if length(rxnIndexList) > 1
             duplicatedRxns = [duplicatedRxns, a];
         end
     end 
