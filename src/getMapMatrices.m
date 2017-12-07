@@ -1,18 +1,18 @@
 function [map] = getMapMatrices(map)
 % Adds 3 matrices to the map structure given as input.
-%   sID:       Stoechiometric matrix with rows=Metabolites_ID and
-%               columns=Reactions_ID in the same order as in the map
+%   sID:       Stoechiometric matrix with rows=MetabolitesID and
+%               columns=ReactionsID in the same order as in the map
 %               structure. Contains "-1" if the metabolite is a
 %               reactant/substract, "+1" if the metabolite is a product
 %               and "0" if it does not participate in the reaction.
-%   sAlias:    Stoechiometric matrix with rows=Metabolites_Alias and
-%               columns=Reactions_ID in the same order as in the map
+%   sAlias:    Stoechiometric matrix with rows=MetabolitesAlias and
+%               columns=ReactionsID in the same order as in the map
 %               structure. Contains "-1" if the metabolite is a
 %               reactant/substract, "+1" if the metabolite is a product
 %               and "0" if it does not participate in the reaction.
-%   idAlias:   Logical matrix with rows=Metabolites_ID and
-%               columns=Metabolites_Alias. Contains "+1" if the
-%               Metabolite_ID match with the Metabolite_Alias and "0"
+%   idAlias:   Logical matrix with rows=MetabolitesID and
+%               columns=MetabolitesAlias. Contains "+1" if the
+%               MetaboliteID match with the Metabolite_Alias and "0"
 %               if it doesn't.
 %
 % USAGE:

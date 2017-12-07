@@ -62,7 +62,7 @@ initCobraToolbox
 % 
 % Before proceeding with the simulations, load the model into the workspace: 
 
-modelFileName = 'Recon2.v04.mat';
+modelFileName = 'Recon2.0model.mat';
 modelDirectory = getDistributedModelFolder(modelFileName);
 modelFileName = [modelDirectory filesep modelFileName];
 model = readCbModel(modelFileName);

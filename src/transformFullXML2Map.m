@@ -69,29 +69,29 @@ function [xmlStruct, map] = transformFullXML2Map(fileName)
         % Loop over complexes to get the need information and store it in a
         % structure. Complexes refer to each individual complex name.
         for k = 1:(length(xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias))
-            map.cplxAlias{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.id;
-            map.cplxID{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.species;            
+            map.complexAlias{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.id;
+            map.complexID{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.species;            
             % Test if info on compartment exists
             if any(strcmp('compartmentAlias',fieldnames(xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes)))                
-                map.cplxCompartAlias{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.compartmentAlias;                
+                map.complexCompartAlias{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.compartmentAlias;                
             else                
-                map.cplxCompartAlias{k,1} = '';                
+                map.complexCompartAlias{k,1} = '';                
             end            
-            map.cplxXPos{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.x;
-            map.cplxYPos{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.y;
-            map.cplxWidth{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.w;
-            map.cplxHeight{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.h;            
-            map.cplxColor{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_usualView.celldesigner_colon_paint.Attributes.color;            
+            map.complexXPos{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.x;
+            map.complexYPos{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.y;
+            map.complexWidth{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.w;
+            map.complexHeight{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_bounds.Attributes.h;            
+            map.complexColor{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_usualView.celldesigner_colon_paint.Attributes.color;            
         end        
     else        
-        map.cplxAlias = '';
-        map.cplxID = '';
-        map.cplxCompartAlias = '';
-        map.cplxXPos = '';
-        map.cplxYPos = '';
-        map.cplxWidth = '';
-        map.cplxHeight = '';
-        map.cplxColor = '';        
+        map.complexAlias = '';
+        map.complexID = '';
+        map.complexCompartAlias = '';
+        map.complexXPos = '';
+        map.complexYPos = '';
+        map.complexWidth = '';
+        map.complexHeight = '';
+        map.complexColor = '';        
     end
     
     % Test if included species exist in the map

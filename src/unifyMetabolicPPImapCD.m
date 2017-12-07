@@ -29,8 +29,8 @@ function [map2] = unifyMetabolicPPImapCD(map)
         map2.molColor{j,1} = 'FFFFFFFF';
     end 
     % Change complex colour to white 
-    for c = 1:length(map2.cplxColor)
-        map2.cplxColor{c,1} = 'FFFFFFFF';
+    for c = 1:length(map2.complexColor)
+        map2.complexColor{c,1} = 'FFFFFFFF';
     end 
 
     % Change reactions secondary links to light grey (products)
