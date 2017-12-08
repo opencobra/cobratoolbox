@@ -398,6 +398,40 @@ newRuleBool = ['x(', num2str(find(ismember(model2.genes,'Gene1'))), ') | x(',...
 head = fp.parseFormula(newRuleBool);
 head2 = fp.parseFormula(model2.rules{20});
 assert(head.isequal(head2)); % We can't make a string comparison so we parse the two formulas and see if they are equal.
+%Test batch addition
+%For Mets
+metNames = {'A','b','c'};
+metFormulas = {'C','CO2','H2OKOPF'};
+modelBatch = addMetaboliteBatch(model,metNames,'metCharges', [ -1 1 0],...
+    'metFormulas', metFormulas, 'metKEGGID',{'C000012','C000023','C000055'});
+assert(all(ismember(metNames,modelBatch.mets)));
+[pres,pos] = ismember(metNames,modelBatch.mets);
+assert(isequal(modelBatch.metFormulas(pos(pres)),columnVector(metFormulas)));
+assert(isequal(modelBatch.metCharges(pos(pres)),[-1; 1;0]));
+assert(verifyModel(modelBatch,'simpleCheck',true));
+
+
+%For Reactions:
+rxnIDs = {'ExA','ATob','BToC'};
+modelBatch2 = addReactionBatch(modelBatch,rxnIDs,{'A','b','c'},[1 -1 0; 0,-2,-1;0,0,1],...
+                                   'lb',[-50,30,1],'ub',[0,60,15]);
+%Check that the reactions are in.                               
+assert(all(ismember(rxnIDs,modelBatch2.rxns)));
+%Check that lbs/ubs are properly updated.
+assert(modelBatch2.lb(ismember({'ExA'})) == -50);
+assert(modelBatch2.lb(ismember({'BToC'})) == 1);
+assert(modelBatch2.ub(ismember({'AToB'})) == 60);
+assert(modelBatch2.ub(ismember({'BToC'})) == 15);
+%Check that the metabolites were correctly assigned.
+assert(modelBatch2.mets(find(modelBatch2.S(:,ismember(modelBatch2.rxns,'ExA')))) == 'A');
+assert(isempty(setxor(modelBatch2.mets(find(modelBatch2.S(:,ismember(modelBatch2.rxns,'BToC')))),{'b','c'})));
+%Check the stoichiometry is correct
+assert(modelBatch2.S(ismember(modelBatch2.mets,'A'),ismember(modelBatch2.rxns,'ExA')) == 1);
+assert(modelBatch2.S(ismember(modelBatch2.mets,'B'),ismember(modelBatch2.rxns,'Atob')) == -2);
+
+%Now check proper addition of grRules (and updated fields).
+modelBatch3 = addReactionBatch(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
+                                   'grRules',{'G1 or G2', 'G3 and G4',''})
 
 % change the directory
 cd(currentDir)
