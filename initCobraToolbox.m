@@ -220,6 +220,11 @@ function initCobraToolbox()
             addpath(genpath(tmpDir));
         end
     end
+    
+    %Adapt the mac path depending on the mac version.
+    if ismac
+        adaptMacPath()
+    end
 
     % add the docs/source/notes folder
     addpath(genpath([CBTDIR filesep 'docs' filesep 'source' filesep 'notes']));
@@ -512,13 +517,7 @@ function initCobraToolbox()
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be restored.');
-    end
-    
-    %Handle odd macOS problems.
-    if ismac
-        adaptMacPath()
-    end
-    
+    end    
     
     % change back to the current directory
     cd(currentDir);
@@ -560,7 +559,7 @@ else
     end
 end
 
-macBinaryPath = [CBTDIR filesep 'binary' filesep 'maxi64' filesep 'bin'];
+macBinaryPath = [CBTDIR filesep 'binary' filesep 'maci64' filesep 'bin'];
 if oldMac
     addpath([macBinaryPath filesep 'preSierra']);
 else
