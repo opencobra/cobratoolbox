@@ -24,8 +24,7 @@ function newmodel = addReactionBatch(model,rxnIDs,metList,Stoichiometries,vararg
 %                       corresponding rules field
 %                       3. By providing a rules field, that directly refers
 %                       to the genes in the model.
-%                       If a rules field and a grRules field are provided,
-%                       the rules field will take precedence.
+%                       
 %
 % OUTPUTS:
 %
@@ -100,7 +99,7 @@ if isfield(model,'grRules') && ~any(ismember(varargin(1:2:end),'rules')) %There 
         %We have non Empty grRules in the input. Parse them.
         newgrRules = nRxns + find(rulesToUpdate);
         for i = 1:numel(newgrRules)
-            newmodel = changeGeneAssociation(newmodel,newmodel.rxns(newgrRules(i)),newmodel.grRules(newgrRules(i)));
+            newmodel = changeGeneAssociation(newmodel,newmodel.rxns{newgrRules(i)},newmodel.grRules{newgrRules(i)});
         end
     end
 end
