@@ -1,10 +1,15 @@
 # Output description of the function `transformXML2Map`
 
+### Specifics
+
 To be able to modify metabolic maps created in CellDesigner from MATLAB,
 they have to be first parsed using the function "transformXML2Map".
 A metabolic map contains only Simple molecules, such as Ions, Metabolites...
 When manipulating maps with Protein-Protein Interactions, please refer to the
 [`transformXML2Map` function's output description](fullMATLABStructure.md).
+
+### Content
+
 This function will extract the relevant annotations from the XML file
 and create a particular structure containg these annotations, that would
 be later modified using various functions from the COBRA Toolbox.
