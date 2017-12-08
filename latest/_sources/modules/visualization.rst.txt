@@ -10,6 +10,7 @@ Visualization
 
    cellDesigner
    maps
+   metabolicCartography
 
 .. automodule:: src.visualization
    :members:

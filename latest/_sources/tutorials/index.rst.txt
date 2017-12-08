@@ -20,6 +20,7 @@ Tutorials
    tutorialModelSanityChecks
    tutorialNumCharact
    tutorialModelManipulation
+   tutorialMetabolicCartography
    tutorialPaint4net
    tutorialRemoteVisualisation
    tutorialFVA
