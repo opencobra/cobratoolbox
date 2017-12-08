@@ -60,6 +60,10 @@ end
 assert(tested,sprintf('This method is only tested with gurobi and ibm_cplex but should work with other solvers as well.\n To test it please add your prefered solver to the list in this test and rerun the test'));
 % close the open windows
 close all
+
+%Remove the output, to keep the toolbox updateable.
+delete([fileDir filesep 'MILPProblem.mat']);
+
 fprintf('Done.\n');
 % change to old directory
 cd(currentDir);
