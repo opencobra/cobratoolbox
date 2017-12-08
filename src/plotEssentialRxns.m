@@ -1,4 +1,4 @@
-function rxnsOfInterest = plotEssentialRxns( essentialRxn4Models, dataStruct, essentialityThreshold, numModelsPresent)
+function rxnInterest4Models = plotEssentialRxns( essentialRxn4Models, essentialityThreshold, numModelsPresent)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -14,23 +14,22 @@ function rxnsOfInterest = plotEssentialRxns( essentialRxn4Models, dataStruct, es
 %     end
 % data = cell2mat(table2array(essentialRxn4Models(:,3:end)));
 
-allRxns = essentialRxn4Models.rxn(:);
-field = fieldnames(dataStruct);
+% Obtain rxn names
+allRxnNames = essentialRxn4Models.rxn(:);
 
-%% Build reaction essentiality matrix
-for j=1:size(field,1)
-    for i=1:size(allRxns,1)
-        idx = find(strcmp(allRxns{i,1},dataStruct.(field{j}).rxnSubsystems(:,1)));
-        if idx ~= 0
-            essentialRxn4Models.(field{j}){i} = dataStruct.(field{j}).grRateKO(idx,1);
-            if ~isnan(dataStruct.(field{j}).grRateKO(idx,1))
-                essential(i,j) = dataStruct.(field{j}).grRateKO(idx,1);
-            else 
-                essential(i,j) = 0;
-            end
+% Obtain model names
+modelNames = essentialRxn4Models.Properties.VariableNames(2:end);
+
+%% Build reaction essentiality matrix from essentialRxn4Models
+for j=1:size(modelNames,2)
+    for i=1:size(allRxnNames,1)
+        value = essentialRxn4Models.(modelNames{j}){i};
+        if strcmp(value,'NotIncluded')
+            essential(i,j) = -1;
+        elseif ~isnan(value)
+            essential(i,j) = value;
         else
-            essentialRxn4Models.(field{j}){i} = 'NotIncluded';
-            essential(i,j) = -1;            
+            essential(i,j) = 0;
         end
     end
 end
@@ -41,21 +40,28 @@ condition = essential>= 0  & essential<=essentialityThreshold;
 reactionsInterest = sum(condition,2)>=numModelsPresent;
 rxnsOfInterest = essential(reactionsInterest,:);
 
+rxnInterest4Models = table2cell(essentialRxn4Models(reactionsInterest,1));
+rxnInterestNames = allRxnNames(reactionsInterest,1);
 
-modelNames = essentialRxn4Models.Properties.VariableNames(1,3:end);
+%% Generate plot labels
+for i=1:size(rxnInterestNames,1)
+   rxnInterestNames(i,1) = strrep(rxnInterestNames(i,1),'_','-');
+end
 for i=1:size(modelNames,2)
-   modelNames2(i)  = strrep(modelNames(1,i), 'structure',{''});
-end
-rxnInterest = table2cell(essentialRxn4Models(reactionsInterest,1));
-for i=1:size(rxnInterest,1)
-   rxnInterest(i) = strrep(rxnInterest(i,1),'_','-');
+   modelNames(1,i) = strrep(modelNames(1,i),'_','-');
 end
 
+%% Compare essential reaction in a heatmap
+maxFluxUnits = max(max(rxnsOfInterest));
+if maxFluxUnits ~= 0
 mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
-hm = HeatMap(rxnsOfInterest,'RowLabels',rxnInterest,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %'ColumnLabels', modelNames2,
+hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', maxFluxUnits); %
 colormap(hm,mymap);
+else
+    fprintf('\n Attention: All non-essential reactions have flux above the threshold \n')
+end
 
-% 
+
 % cg = clustergram(essentialInterest,'ColumnLabels', modelNames2,'RowLabels',rxnInterest,'Colormap',redbluecmap);
 % colormap(cg,mymap);
 

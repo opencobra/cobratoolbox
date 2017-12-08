@@ -1,4 +1,4 @@
-function [ essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(modelsFileName, modelsDir, objFun)
+function [ essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
 
 %essentialRxn4MultipleModels.m
 %This funtion allows us to perform single reactions deletions to identify 
@@ -18,52 +18,81 @@ function [ essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(models
 % % Structure-specific models with sample-cutoff 50%:
 % modelsDir = '/hdd/work/sbgCloud/programReconstruction/projects/brainMetabolism/results/modelGeneration/models/cutoff_50/';
 % addpath(modelsDir);
-% 
+%
 % % Objective function to be used:
 % objFun = 'ATPM';
 
-%% Locate COBRA models
 
-%allModels = dir(strcat(modelsDir,'/','*.mat'));
-numModels = size(modelsFileName,2); 
+%% Locate COBRA models in a directory and load them into a structure:
+% allModels = '/home/oliveira/Dropbox/workRepos/cobratoolbox/test/models/mat'
+if isstr(allModels)
+    modelsDir = allModels;
+    clear allModels
+    allModelFilenames = dir(strcat(modelsDir,'/','*.mat'));
+    for i=1:size(allModelFilenames,1)
+        % Extract model name from filenames
+        match = {'.mat','.'};
+        str = allModelFilenames(i).name;
+        for j=1:size(match,2)
+            str = strrep(str, match{j},{''});
+        end
+        newFilename{1,i} = horzcat(str{1},'_model');
+        
+        loadedFile = load(strcat(modelsDir,'/',allModelFilenames(i).name));
+        fields = fieldnames(loadedFile);
+        model = loadedFile.(fields{1,1});
+        allModels.(newFilename{1,i}) = model;
+    end
+end
+
+%% Load structure with models and perform singleRxnDeletion in all COBRA models
+
+modelNames = fieldnames(allModels);
+numModels = size(modelNames,1); 
 sumRxnSubsystems = {};
 
-%% Load and perform singleRxnDeletion in all COBRA models
-
 for j=1:numModels
-    match = {'_','.mat'};
-    str = strrep(modelsFileName{1,j}, match{1},{''});
-    filename = strrep(str, match{2},{''});
-    loadedFile = load(strcat(modelsDir,'/',modelsFileName{1,j}));
-    fields = fieldnames(loadedFile);
-    model = loadedFile.(fields{1,1});
-    model = changeObjective(model, objFun);
-    fprintf(strcat(' \nAnalysing model: \n', modelsFileName{1,j},'\n'))
+    
+    model = changeObjective(allModels.(modelNames{j}), objFun);
+    fprintf(strcat(' \nAnalysing model: \n', modelNames{j},'\n'))
+    
     [~ , grRateKO, ~ , ~ , delRxn, fluxSolution] = singleRxnDeletion(model);
     
     delRxnSubsystems(:,1) = model.rxns;
-    delRxnSubsystems(:,2) = model.subSystems;
+    %delRxnSubsystems(:,2) = model.subSystems;
     test = setdiff(model.rxns,delRxn);
     if ~isempty(test)
-        fprintf ('Warning: different list of reactions found')
-        filename;
+        fprintf ('Warning: different list of reactions found for:')
+        modelNames{j};
     end
     sumRxnSubsystems = vertcat(sumRxnSubsystems,delRxnSubsystems);
-    dataStruct.(filename{1}).rxnSubsystems = delRxnSubsystems;
-    dataStruct.(filename{1}).grRateKO = grRateKO;
-    dataStruct.(filename{1}).fluxSolution = fluxSolution;
+    dataStruct.(modelNames{j}).rxnSubsystems = delRxnSubsystems;
+    dataStruct.(modelNames{j}).grRateKO = grRateKO;
+    dataStruct.(modelNames{j}).fluxSolution = fluxSolution;
     clear model
     clear delRxnSubsystems
 end
 
-% Identify unique reactions across models
+%% Identify unique reactions across all models
 uniqueRxns = unique(sumRxnSubsystems(:,1));
+allRxns = {};
 for i=1:size(uniqueRxns,1)
-    allRxns(i,1:2) = sumRxnSubsystems(find(strcmp(uniqueRxns{i,1},sumRxnSubsystems(:,1)),1),:);
+    allRxns(i,1) = sumRxnSubsystems(find(strcmp(uniqueRxns{i,1},sumRxnSubsystems(:,1)),1),:);
 end
 
-% Find essential reaction accross all models
-essentialRxn4Models = cell2table(allRxns, 'VariableNames',{'rxn','subsystem'});
+%% Build essential reaction table for all models
+essentialRxn4Models = cell2table(allRxns, 'VariableNames',{'rxn'}); %,'subsystem'
+
+for j=1:size(modelNames,1)
+    for i=1:size(allRxns,1)
+        idx = find(strcmp(allRxns{i,1},dataStruct.(modelNames{j}).rxnSubsystems(:,1)));
+        if idx ~= 0
+            essentialRxn4Models.(modelNames{j}){i} = dataStruct.(modelNames{j}).grRateKO(idx,1);
+        else
+            essentialRxn4Models.(modelNames{j}){i} = 'NotIncluded';
+        end
+    end
+end
 
 end
 
