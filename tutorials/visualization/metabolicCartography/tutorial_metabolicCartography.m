@@ -446,35 +446,37 @@ mapGlyCorrected = getMapMatrices(mapGlyCorrected);
 %% *2. Research of indexes in the map structure*
 % Basic functions were created to simplify the manipulation of maps. 
 % 
-% The function |findRxnsPerType| gives a list of desired reactions based 
+% The function |findRxnsPerTypeInMap| gives a list of desired reactions based 
 % on the reaction type (2nd colum), and the index for those reactions in |map.rxnName| 
 % (1st colum). 
 %%
-transportReactionsIndexList = findRxnsPerType(mapGlyCorrected, 'TRANSPORT');
+transportReactionsIndexList = findRxnsPerTypeInMap(mapGlyCorrected, 'TRANSPORT');
 %% 
-% The function |findMetsIDs| finds the IDs of specific metabolites in |map.specName| 
-% given a list of metabolites.  
+% The function |findMetsInMap| finds the IDs of specific metabolites in 
+% |map.specName| given a list of metabolites.  
 
-ATPADPIndexList = findMetsIDs(mapGlyCorrected, ...
+ATPADPIndexList = findMetsInMap(mapGlyCorrected, ...
     {'atp[c]', 'adp[c]', 'atp[m]', 'adp[m]'});
 %% 
-% The function |findRxnsIDs| finds the IDs of specific reactions in |map.rxnName| 
+% The function |findRxnsInMap| finds the IDs of specific reactions in |map.rxnName| 
 % given a list of reactions.
 
-rxnOfInterestIndexList = findRxnsIDs(mapGlyCorrected, ...
+rxnOfInterestIndexList = findRxnsInMap(mapGlyCorrected, ...
     {'FBP', 'FBA', 'GAPD', 'PFK', 'ENO'});
 %% 
-% The function |findMetFromCompartMap| finds all metabolites in the map 
+% The function |findMetsFromCompartInMap| finds all metabolites in the map 
 % associated to a specific compartment by looking at the composition of metabolite 
 % names (example: mitochondrial atp = atp*[m]*). 
 
 [mitochondrialMetsNameList,mitochondrialMetsIndexList] = ...
-    findMetFromCompartMap(mapGlyCorrected, '[m]');
+    findMetsFromCompartInMap(mapGlyCorrected, '[m]');
 %% 
-% The function |findRxnFromCompartMap| finds all reactions in the map associated 
-% to a specific compartment by looking at the composition of metabolite names. 
+% The function |findRxnsFromCompartInMap| finds all reactions in the map 
+% associated to a specific compartment by looking at the composition of metabolite 
+% names. 
 
-mitochondrialRxnsIndexList = findRxnFromCompartMap(mapGlyCorrected, '[m]');
+mitochondrialRxnsIndexList = ...
+    findRxnsFromCompartInMap(mapGlyCorrected, '[m]');
 %% Visualisation of Metabolic and PPI networks
 % Some of the aforementioned functions were addapted to be used in metabolic 
 % and PPi maps. Some examples are shown below:  
