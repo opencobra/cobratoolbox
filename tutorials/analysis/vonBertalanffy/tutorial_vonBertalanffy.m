@@ -28,15 +28,15 @@ initVonBertalanffy
 
 %% Select the model
 % This tutorial is tested for the E. coli model iAF1260 and the human metabolic 
-% model Recon3.0model. However, only the data for the former is provided within 
+% model Recon3D_Dec2017. However, only the data for the former is provided within 
 % the COBRA Toolbox as it is used for testing von Bertylanffy, while Recon3D is 
 % not yet published and the data is not yet available. Having said this, the figures 
-% generated below are most suited to plotting results for Recon3Dmodel, so they 
-% may not be so useful for iAF1260.  The Recon3Dmodel example uses values from 
-% literature for input variables where they are available.
+% generated below are most suited to plotting results for Recon3D, so they may 
+% not be so useful for iAF1260.  The Recon3D example uses values from literature 
+% for input variables where they are available.
 %%
 % modelName='iAF1260'; uncomment this line and comment the line below if you want to use the other model-  currently will not work without changes
-modelName='Recon3.0model'; 
+modelName='Recon3D_Dec2017'; 
 %% Load a model
 % Load a model, and save it as the original model in the workspace, unless it 
 % is already loaded into the workspace. 
@@ -55,8 +55,8 @@ switch modelName
         end
         model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
         
-    case 'Recon3.0model'
-      model = loadIdentifiedModel(modelName, modelDirectory);
+    case 'Recon3D_Dec2017'
+      model = readCbModel(modelFileName);
       model.csense(1:size(model.S,1),1)='E';
       %Hack for thermodynamics
       model.metFormulas{strcmp(model.mets,'h[i]')}='H';
@@ -77,7 +77,7 @@ switch modelName
         resultsPath=strrep(resultsPath,'/tutorial_vonBertalanffy.mlx','');
         resultsPath=[resultsPath filesep modelName '_results'];
         resultsBaseFileName=[resultsPath filesep modelName '_results'];
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         basePath='~/work/sbgCloud';
         resultsPath=[basePath '/programReconstruction/projects/recon2models/results/thermo/' modelName];
         resultsBaseFileName=[resultsPath filesep modelName '_' datestr(now,30) '_'];
@@ -89,7 +89,7 @@ end
 switch modelName
     case 'iAF1260'
         molfileDir = 'iAF1260Molfiles';
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         molfileDir = [basePath '/data/molFilesDatabases/explicitHMol'];
         %molfileDir = [basePath '/programModelling/projects/atomMapping/results/molFilesDatabases/DBimplicitHMol'];
         %molfileDir = [basePath '/programModelling/projects/atomMapping/results/molFilesDatabases/DBexplicitHMol'];
@@ -105,7 +105,7 @@ switch modelName
         ph = [7.7; 7.7; 7.7]; % Compartment specific pH
         is = [0.25; 0.25; 0.25]; % Compartment specific ionic strength in mol/L
         chi = [0; 90; 90]; % Compartment specific electrical potential relative to cytosol in mV
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         % Temperature in Kelvin
         T = 310.15; 
         % Cell compartment identifiers
@@ -126,7 +126,7 @@ switch modelName
         concMinDefault = 1e-5; % Lower bounds on metabolite concentrations in mol/L
         concMaxDefault = 0.02; % Upper bounds on metabolite concentrations in mol/L
         metBoundsFile=[];
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         concMinDefault=1e-5; % Lower bounds on metabolite concentrations in mol/L
         concMaxDefault=1e-2; % Upper bounds on metabolite concentrations in mol/L
         metBoundsFile=which('HumanCofactorConcentrations.txt');%already in the COBRA toolbox
@@ -141,7 +141,7 @@ switch modelName
     case 'iAF1260'
         confidenceLevel = 0.95; 
         DrGt0_Uncertainty_Cutoff = 20; %KJ/KMol
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         confidenceLevel = 0.95;
         DrGt0_Uncertainty_Cutoff = 20; %KJ/KMol
     otherwise
