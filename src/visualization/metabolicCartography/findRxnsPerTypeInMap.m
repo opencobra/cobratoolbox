@@ -1,4 +1,4 @@
-function [listRxns] = findRxnsPerType(map, rxnType)
+function [listRxns] = findRxnsPerTypeInMap(map, rxnType)
 % Finds reaction names based on the type of reactions in the map. Useful
 % to look for transport, catalysis or simple state_transition.
 %

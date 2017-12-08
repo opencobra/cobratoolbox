@@ -1,4 +1,4 @@
-function [rxnID, rxnIDref] = findRxnIDs(map, rxnList)
+function [rxnID, rxnIDref] = findRxnsInMap(map, rxnList)
 % Finds reaction indices in a CellDesigner map from a list of names
 %
 % USAGE:
@@ -18,10 +18,10 @@ function [rxnID, rxnIDref] = findRxnIDs(map, rxnList)
 %       - N.Sompairac - Institut Curie, Paris, 11/10/2017
 
     if (iscell(rxnList))
-        [~,rxnID] = ismember(rxnList,map.rxnName);
+        [~,rxnID] = ismember(rxnList, map.rxnName);
         rxnIDref = map.rxnID(rxnID);
     else
-        rxnID = find(strcmp(map.rxnName,rxnList));
+        rxnID = find(strcmp(map.rxnName, rxnList));
         if (isempty(rxnID))
             rxnID = 0;
             rxnIDref = {};

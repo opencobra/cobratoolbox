@@ -1,4 +1,4 @@
-function [mets, id] = findMetFromCompartMap(map, compartment)
+function [mets, id] = findMetsFromCompartInMap(map, compartment)
 % Finds all the metabolites and their names in the map structure for
 % a compartment of interest.
 %

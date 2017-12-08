@@ -1,4 +1,4 @@
-function [rxns, id] = findRxnFromCompartMap(map, compartment)
+function [rxns, id] = findRxnsFromCompartInMap(map, compartment)
 % Finds all the reactions and their names in the map structure for
 % a compartment of interest.
 %
@@ -11,7 +11,7 @@ function [rxns, id] = findRxnFromCompartMap(map, compartment)
 %    compartment:       Compartment of interest (e.g.: '[m]','[n]','[e]',etc.)
 %
 % OUTPUTS:
-%    mets:              List of reaction names
+%    rxns:              List of reaction names
 %    id:                Reactions indexes
 %
 % .. Authors:

@@ -1,4 +1,4 @@
-function [metID] = findMetIDs(map, metList)
+function [metID] = findMetsInMap(map, metList)
 % Finds metabolites indices in a CellDesigner map for a given list of names
 %
 % USAGE:
