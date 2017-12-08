@@ -42,7 +42,7 @@ function enabled = isEnabled(package)
 % assume not enabled
 enabled = 0;
 
-supported = {'fbc'};
+supported = {'fbc', 'qual', 'groups'};
 if ~ischar(package)
     disp('argument must be a string representing an SBML L3 package');
 elseif ~ismember(supported, package)
@@ -66,8 +66,8 @@ try
   
   delete(filename);
   
-catch
-  
+catch err
+  disp(err.identifier)
   delete(filename);
   
   return
@@ -82,7 +82,7 @@ fout = fopen(filename, 'w');
 
 fprintf(fout, '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n');
 fprintf(fout, '<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" ');
-fprintf(fout, strcat('xmlns:fbc=\"http://www.sbml.org/sbml/level3/version1/', package, '/version1\"\n'));
+fprintf(fout, strcat('xmlns:', package, '=\"http://www.sbml.org/sbml/level3/version1/', package, '/version1\"\n'));
 fprintf(fout, 'level=\"3\" version=\"1\"\n');
 fprintf(fout, strcat(package, ':required=\"false\">\n'));
 fprintf(fout, '  <model/>\n</sbml>\n');

@@ -1,4 +1,4 @@
-function installSBML_1(varargin)
+function installSBML(varargin)
 % Installs the MATLAB language interface for libSBML.
 %
 % This script assumes that the libsbml matlab binding executables files already
@@ -55,22 +55,12 @@ function installSBML_1(varargin)
  if (functioning == 0)
    if (located == 0)
      % we didnt find executables where we first looked
-     % try again with a different directory
-     if (isWindows() == 0)
-       if (strcmp(directory, '/usr/local/lib') == 0)
-         directory = '/usr/local/lib';
-         functioning = checkForExecutables(matlab_octave, directory, verbose);
-       end;
-     else
-       if (strcmp(directory, pwd) == 0)
-         directory = pwd;
-         functioning = checkForExecutables(matlab_octave, directory, verbose);
-       end;
-     end;
+     error('%s%s', 'Executables were not found.', ...
+     'Please make sure they are in the same directory as the installSBML and other scripts.'); 
    else
      % we found executables but they did not work
      error('%s%s%s\n%s%s', ...
-       'Executables were located at ', directory, ' but failed to execute', ...
+       'Executables were located at ', pwd(), ' but failed to execute', ...
        'Please contact the libSBML team libsbml-team@googlegroups.com ', ...
        'for further assistance');
    end;

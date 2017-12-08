@@ -171,8 +171,28 @@ function [found, fhandle] = getFields(typecode, pkg, extension)
         else
         [found, fhandle] = getFBCFieldnameFunction(typecode);
         end;
+    elseif strcmp(pkg, 'qual')
+      if (extension)
+        if (isQUALExtension(typecode))
+          [found, fhandle] = getQUALFieldnameFunction(typecode);
+        end;
+      else
+        [found, fhandle] = getQUALFieldnameFunction(typecode);
+      end;
+    elseif strcmp(pkg, 'groups')
+      if (extension)
+        if (isGROUPSExtension(typecode))
+          [found, fhandle] = getGROUPSFieldnameFunction(typecode);
+        end;
+      else
+        [found, fhandle] = getGROUPSFieldnameFunction(typecode);
+      end;
     end;
+%%%%% REMOVE END
+%%%%% ADD ADDITIONAL
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
 function extend = isFBCExtension(typecode)
    extend = 0;
    switch (typecode)
@@ -183,6 +203,23 @@ function extend = isFBCExtension(typecode)
         case {'SBML_FBC_REACTION', 'FBCReaction','SBML_REACTION', 'Reaction', 'reaction'}
             extend = 1;
    end;
+   
+function extend = isQUALExtension(typecode)
+  extend = 0;
+  switch (typecode)
+    case {'SBML_QUAL_MODEL', 'QUALModel', 'SBML_MODEL', 'Model', 'model'}
+      extend = 1;
+  end;
+
+function extend = isGROUPSExtension(typecode)
+  extend = 0;
+  switch (typecode)
+    case {'SBML_GROUPS_MODEL', 'GROUPSModel', 'SBML_MODEL', 'Model', 'model'}
+      extend = 1;
+  end;
+%%%% ADD isExtension
+%%%% ADD isExtension
+%%%% END isExtension
 
 function [found, fhandle] = getFBCFieldnameFunction(typecode)
     found = 1;
@@ -209,6 +246,45 @@ function [found, fhandle] = getFBCFieldnameFunction(typecode)
           fhandle = str2func('disp');
           found = 0;
     end;
+
+function [found, fhandle] = getQUALFieldnameFunction(typecode)
+  found = 1;
+  switch (typecode)
+    case {'SBML_QUAL_QUALITATIVE_SPECIES', 'QualitativeSpecies', 'qualitativeSpecies', 'qual_qualitativeSpecies'}
+      fhandle = str2func('getQualitativeSpeciesFieldnames');
+    case {'SBML_QUAL_TRANSITION', 'Transition', 'transition', 'qual_transition'}
+      fhandle = str2func('getTransitionFieldnames');
+    case {'SBML_QUAL_INPUT', 'Input', 'input', 'qual_input'}
+      fhandle = str2func('getInputFieldnames');
+    case {'SBML_QUAL_OUTPUT', 'Output', 'output', 'qual_output'}
+      fhandle = str2func('getOutputFieldnames');
+    case {'SBML_QUAL_DEFAULT_TERM', 'DefaultTerm', 'defaultTerm', 'qual_defaultTerm'}
+      fhandle = str2func('getDefaultTermFieldnames');
+    case {'SBML_QUAL_FUNCTION_TERM', 'FunctionTerm', 'functionTerm', 'qual_functionTerm'}
+      fhandle = str2func('getFunctionTermFieldnames');
+    case {'SBML_QUAL_MODEL', 'QUALModel', 'SBML_MODEL', 'Model', 'model'}
+      fhandle = str2func('getQUALModelFieldnames');
+    otherwise
+      fhandle = str2func('disp');
+      found = 0;
+  end;
+
+function [found, fhandle] = getGROUPSFieldnameFunction(typecode)
+  found = 1;
+  switch (typecode)
+    case {'SBML_GROUPS_GROUP', 'Group', 'group', 'groups_group'}
+      fhandle = str2func('getGroupFieldnames');
+    case {'SBML_GROUPS_MEMBER', 'Member', 'member', 'groups_member'}
+      fhandle = str2func('getMemberFieldnames');
+    case {'SBML_GROUPS_MODEL', 'GROUPSModel', 'SBML_MODEL', 'Model', 'model'}
+      fhandle = str2func('getGROUPSModelFieldnames');
+    otherwise
+      fhandle = str2func('disp');
+      found = 0;
+  end;
+%%%% ADD getFieldname
+%%%% ADD getFieldname
+%%%% END getFieldname
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -3297,7 +3373,334 @@ elseif (level == 3)
 end;
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getQUALModelFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
 
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'qual_version', ...
+        'qual_qualitativeSpecies', ...
+        'qual_transition', ...
+        };
+        nNumberFields = 3;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getQualitativeSpeciesFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_id', ...
+        'qual_name', ...
+        'qual_compartment', ...
+        'qual_constant', ...
+        'qual_initialLevel', ...
+        'qual_maxLevel', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 15;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getTransitionFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_id', ...
+        'qual_name', ...
+        'qual_input', ...
+        'qual_output', ...
+        'qual_functionTerm', ...
+        'qual_defaultTerm', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 14;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getInputFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_id', ...
+        'qual_name', ...
+        'qual_sign', ...
+        'qual_qualitativeSpecies', ...
+        'qual_transitionEffect', ...
+        'qual_thresholdLevel', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 15;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getOutputFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_id', ...
+        'qual_qualitativeSpecies', ...
+        'qual_transitionEffect', ...
+        'qual_name', ...
+        'qual_outputLevel', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 14;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getDefaultTermFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_resultLevel', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 10;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getFunctionTermFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'qual_resultLevel', ...
+        'math', ...
+        'level', ...
+        'version', ...
+        'qual_version', ...
+        };
+        nNumberFields = 11;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getGROUPSModelFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'groups_version', ...
+        'groups_group', ...
+        };
+        nNumberFields = 2;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getGroupFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'groups_id', ...
+        'groups_name', ...
+        'groups_kind', ...
+        'groups_member', ...
+        'level', ...
+        'version', ...
+        'groups_version', ...
+        };
+        nNumberFields = 13;
+      end;
+    end;
+  end;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [SBMLfieldnames, nNumberFields] = getMemberFieldnames(level, ...
+version, pkgVersion)
+  if (~isValidLevelVersionCombination(level, version))
+    error ('invalid level/version combination');
+  end;
+
+  SBMLfieldnames = [];
+  nNumberFields = 0;
+
+  if (level == 3)
+    if (version < 3)
+      if (pkgVersion == 1)
+        SBMLfieldnames = {
+        'typecode', ...
+        'metaid', ...
+        'notes', ...
+        'annotation', ...
+        'cvterms', ...
+        'sboTerm', ...
+        'groups_id', ...
+        'groups_name', ...
+        'groups_idRef', ...
+        'groups_metaIdRef', ...
+        'level', ...
+        'version', ...
+        'groups_version', ...
+        };
+        nNumberFields = 13;
+      end;
+    end;
+  end;
+
+%%%% ADD functions
+%%%% ADD functions
+
+%%%% END functions
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function valid = isValidLevelVersionCombination(level, version)
 valid = 1;
 
