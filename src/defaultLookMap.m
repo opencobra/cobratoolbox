@@ -92,14 +92,14 @@ function [newmap] = defaultLookMap(map)
 
     % Choose seperate color for each metabolite group. Avoid using bright red,
     % as that is default color for highlighting fluxes and moieties.
-    color{1} = 'fff0adbb'; %faded red/pink ;
-    color{2} = 'ff79adf5'; %blue
-    color{3} = 'ffb993ec'; %purple
-    color{4} = 'ff06f7e1'; %light blue
-    color{5} = 'fff0a10e'; %orange
-    color{6} = 'ff61f81b'; %green
-    color{7} = 'fff5f81b'; %yellow
-    color{8} = 'ff99edc5'; %sea green
+    clr{1} = 'fff0adbb'; %faded red/pink ;
+    clr{2} = 'ff79adf5'; %blue
+    clr{3} = 'ffb993ec'; %purple
+    clr{4} = 'ff06f7e1'; %light blue
+    clr{5} = 'fff0a10e'; %orange
+    clr{6} = 'ff61f81b'; %green
+    clr{7} = 'fff5f81b'; %yellow
+    clr{8} = 'ff99edc5'; %sea green
 
     for i = 1:8
         list = mets{i}; 
@@ -112,9 +112,9 @@ function [newmap] = defaultLookMap(map)
         specID = newmap.specID(index);
         % Find index of all aliases of each species
         index2 = find(ismember(newmap.molID,specID));
-        % Change color and size (same size for all metabolite groups, smaller than "main metabolites")
+        % Change clr and size (same size for all metabolite groups, smaller than "main metabolites")
         for k = index2'
-           newmap.molColor{k} = color{i}; 
+           newmap.molColor{k} = clr{i}; 
            newmap.molWidth{k} = '50.0';
            newmap.molHeight{k} = '20.0';
         end
@@ -128,7 +128,7 @@ function [newmap] = defaultLookMap(map)
             specIncID = newmap.specIncID(index3);
             index4 = find(ismember(newmap.molID,specIncID)); 
             for k = index4'
-               newmap.molColor{k} = color{i}; 
+               newmap.molColor{k} = clr{i}; 
                newmap.molWidth{k} = '50.0';
                newmap.molHeight{k} = '20.0';
             end

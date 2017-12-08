@@ -67,24 +67,24 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
 
             formula = sprintf('%s',left{1});
 
-            for x = 2:length(left) % add (+) in reactant list
+            for x = 2:length(left) % Add (+) in reactant list
                 formula = sprintf('%s + %s',formula,left{x});
             end
 
-            if strcmp(map.rxnReversibility{rxnIndex}, 'true') %add directionality of the reaction
-                formula = sprintf('%s <=> ',formula); %reversible (true) 
+            if strcmp(map.rxnReversibility{rxnIndex}, 'true') % Add directionality of the reaction
+                formula = sprintf('%s <=> ',formula); % Reversible (true) 
             else
-                formula = sprintf('%s -> ',formula); %irreversible (false)
+                formula = sprintf('%s -> ',formula); % Irreversible (false)
             end
 
             formula = sprintf('%s%s',formula,right{1});
 
-            for x = 2:length(right) % add (+) in product list
+            for x = 2:length(right) % Add (+) in product list
                 formula = sprintf('%s + %s',formula,right{x});
             end
             
             rxnsList(i,1) = a;
-            formulaList(i,1) = {formula}; %create a sumary of rxnsName and formula
+            formulaList(i,1) = {formula}; % Create a sumary of rxnsName and formula
             i = i+1;
         end
         

@@ -30,7 +30,7 @@ function [rxn, met, rev, form] = checkCDerrors(map, model)
     commonRxns = intersect(map.rxnName, model.rxns);
     extraRxnMap = setdiff(map.rxnName, model.rxns);
     extraRxnModel = setdiff(model.rxns, map.rxnName);
-    rxn = struct('common_rxns_map_and_model',{commonRxns},'extra_rxns_map',{extraRxnMap},'extra_rxn_model',{extraRxnModel});
+    rxn = struct('commonRxnsMapAndModel',{commonRxns},'extraRxnsMap',{extraRxnMap},'extraRxnModel',{extraRxnModel});
     
     % Avoid to obtain subsystems as metabolites (obtain just metabolites) 
     g=strfind(map.specName,'[');
@@ -41,7 +41,7 @@ function [rxn, met, rev, form] = checkCDerrors(map, model)
     extraMetsMap = setdiff(metsMap, model.mets);
     extraMetsModel = setdiff(model.mets, metsMap);
     
-    met = struct('common_mets_map_and_model',{commonMets},'extra_mets_map',{extraMetsMap},'extra_mets_model',{extraMetsModel});
+    met = struct('commonMetsMapAndModel',{commonMets},'extraMetsMap',{extraMetsMap},'extraMetsModel',{extraMetsModel});
     
     % Check reversibility 
     reversible =strfind(map.rxnReversibility,'true');
@@ -68,11 +68,11 @@ function [rxn, met, rev, form] = checkCDerrors(map, model)
     % Comparison between Recon3 and Cell Designer
     errorReversibleMap = setdiff(reversibleRxnsMap,rRxn(:,1)); %reactions are reversible in the map, but doesnt appear in the model 
     errorIrreversibleMap = setdiff(irreversibleRxnsMap,irRxn(:,1)); %reactions are reversible in the map, but doesnt appear in the model 
-    rev = struct('wrong_reversible_rxns_map',{errorReversibleMap},'wrong_irreversible_rxns_map',{errorIrreversibleMap});
+    rev = struct('wrongReversibleRxnsMap',{errorReversibleMap},'wrongIrreversibleRxnsMap',{errorIrreversibleMap});
 
     % Check formula errors (formula) 
     [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map);
 
-    form = struct('wrong_reaction_formula',{wrongTable}, 'reactions_in_map_not_in_model',{absentModelTable},'reactions_in_model_not_in_map',{absentMapTable}, 'duplicated_reactions',{duplicateTable});
+    form = struct('wrongReactionFormula',{wrongTable}, 'reactionsInMapNotInModel',{absentModelTable},'reactionsInModelNotInMap',{absentMapTable}, 'duplicatedReactions',{duplicateTable});
 
 end
