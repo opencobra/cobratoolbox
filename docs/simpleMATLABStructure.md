@@ -3,21 +3,23 @@
 To be able to modify metabolic maps created in CellDesigner from MATLAB,
 they have to be first parsed using the function "transformXML2Map".
 A metabolic map contains only Simple molecules, such as Ions, Metabolites...
-This function will then extract the relevant annotations from the XML file
+When manipulating maps with Protein-Protein Interactions, please refer to the
+[`transformXML2Map` function's output description](fullMATLABStructure.md).
+This function will extract the relevant annotations from the XML file
 and create a particular structure containg these annotations, that would
 be later modified using various functions from the COBRA Toolbox.
 Using this function, the MATLAB structure contains the following fields:
 
 1.  Molecules information (specific to each node in the map)
-2.  Species info (specific to each entity in the map)
-3.  Reactions info (with their corresponding modifications)
-4.  Compartment info (if existing in the map)
+2.  Species information (specific to each entity in the map)
+3.  Reactions information (with their corresponding modifications)
+4.  Compartment information (if existing in the map)
 5.  Matrices (specific for the map and comparable with the model)
 
 
 | **Field name** | **Dimension** | **Data Type** | **Field description** |
 |---|---|---|---|
-| **Molecules information** |
+| **Type of information** <td colspan=3> **Molecules** |
 | `map.molAlias` | `a x 1` | cell of char | Alias of each molecules (no duplicates) |
 | `map.molID` | `a x 1` | cell of char | ID of each molecules (duplicates) |
 | `map.molCompartAlias` | `a x 1` | cell of char | Corresponding compartment alias of each molecules (EMPTY if no info) |
@@ -26,13 +28,13 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.molWidth` | `a x 1` | cell of char or double | Width of each molecules (stored as string but can be changed to double) |
 | `map.molHeight` | `a x 1` | cell of char or double | Height of each molecules (stored as string but can be changed to double) |
 | `map.molColor` | `a x 1` | cell of char | Color of each molecules (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
-| **Species info** |
+| **Type of information** <td colspan=3> **Species** |
 | `map.specID` | `s x 1` | cell of char | ID of each species (no duplicates) |
 | `map.specMetaID` | `s x 1` | cell of char | MetaID of each species often related to ID (no ducplicates) |
 | `map.specName` | `s x 1` | cell of char | Name of each species |
 | `map.specType` | `s x 1` | cell of char | Type of each species (SIMPLE_MOLECULE/ION/PROTEIN...) |
 | `map.specNotes` | `s x 1` | cell of char | Notes of each species (EMPTY if no info) |
-| **Reactions info** |
+| **Type of information** <td colspan=3> **Reactions** |
 | `map.rxnID` | `r x 1` | cell of char | ID of each reactions (no duplicates) |
 | `map.rxnMetaID` | `r x 1` | cell of char | MetaID of each reactions |
 | `map.rxnName` | `r x 1` | cell of char | Name of each reactions |
@@ -60,10 +62,10 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.rxnColor` | `r x 1` | cell of char | Color of the main reaction (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) => later modified for the whole reaction's members |
 | `map.rxnWidth` | `r x 1` | cell of char | Width of the main reaction (stored as string but can be changed to double) => later modified for the whole reaction's members |
 | `map.rxnNotes` | `r x 1` | cell of char | Notes of each reactions (EMPTY if no info) |
-| **Compartment info** |
+| **Type of information** <td colspan=3> **Compartment** |
 | `map.compartAlias` | `c x 1` | cell of char | Alias of each compartments (EMPTY if no info) |
 | `map.compartName` | `c x 1` | cell of char | Name of each compartments (EMPTY if no info) |
-| **Matrices** |
+| **Type of information** <td colspan=3> **Matrices** |
 | `map.sID` | `s x r` | logical | Logical matrix with rows=speciesID and columns=reactionsID |
 | `map.sAlias` | `m x r` | logical | Logical matrix with rows=speciesAlias and columns=reactionsID |
 | `map.idAlias` | `s x m` | logical | Logical matrix widh rows=speciesID and columns=speciesAlias |
