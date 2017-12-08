@@ -6,12 +6,12 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
 %
 % USAGE:
 %
-%	[wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
+%   [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
 %
 % INPUTS:
-%	model:          COBRA structure of a model
+%   model:          COBRA structure of a model
 %   map:            MATLAB structure of the map obtained from the
-%                   function "transformXML2Map".
+%                   function `transformXML2Map`.
 %
 % OPTIONAL INPUT:
 %   excelName:      Name of the excel file in which to export the info
@@ -20,36 +20,37 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
 %   wrongTable:             Table containing the information on wrong
 %                           reactions. The fields are arranged as
 %                           followed:
-%                           rxnName:  Name of the reaction in the map
-%                           rxnID:    ID of the reaction in the map
-%                           modelFormula:  Formula of the reaction
-%                                           from the model
-%                           mapFormula:    Formula of the reaction
-%                                           from the map
+%
+%                            * rxnName - Name of the reaction in the map
+%                            * rxnID - ID of the reaction in the map
+%                            * modelFormula - Formula of the reaction from the model
+%                            * mapFormula - Formula of the reaction from the map
+%
 %   absentModelTable:       Table containing the information on
 %                           reactions present in the map but absent
 %                           from the model. The fields are arranged as
 %                           followed:
-%                           rxnName:  Name of the reaction in the map
-%                           rxnID:    ID of the reaction in the map
-%                           mapFormula:    Formula of the reaction
-%                                           from the map
+%
+%                            * rxnName - Name of the reaction in the map
+%                            * rxnID - ID of the reaction in the map
+%                            * mapFormula - Formula of the reaction from the map
+%
 %   absentMapTable:         Table containing the information on
 %                           reactions present in the model but absent
 %                           from the map. The fields are arranged as
 %                           followed:
-%                           rxnName:  Name of the reaction in the model
-%                           modelFormula:  Formula of the reaction
-%                                           from the model
+%
+%                            * rxnName - Name of the reaction in the model
+%                            * modelFormula - Formula of the reaction from the model
+%
 %   duplicateTable:         Table containing the information on
 %                           duplicated reactions in the map. The fields
 %                           are arranged as followed:
-%                           rxnName:  Name of the reaction in the model
-%                           rxnID:    ID of the reaction in the map
-%                           modelFormula:  Formula of the reaction
-%                                           from the model
-%                           mapFormula:    Formula of the reaction
-%                                           from the map
+%
+%                            * rxnName - Name of the reaction in the model
+%                            * rxnID - ID of the reaction in the map
+%                            * modelFormula - Formula of the reaction from the model
+%                            * mapFormula - Formula of the reaction from the map
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017.
 
@@ -70,7 +71,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
     duplicateList = [];
     abs = 1;
     absentMapList = [];
-    
+
     % Looping over the model's reaction names
     for rxn = 1:length(modelReactionNameList)
         % Test if the reaction name is contained in the map
@@ -98,7 +99,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
                     wrongList.mapFormula{wrong} = mapFormulasList{index};
                     wrong = wrong+1;
                 end
-            % Case where a reaction name is duplicated in the map    
+            % Case where a reaction name is duplicated in the map
             else
                 % Finding the IDs of the duplicated reactions in the map
                 duplicateIDs = map.rxnID(strcmp(modelReactionNameList{rxn}, map.rxnName));
@@ -120,33 +121,33 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
     end
 
     if ~isempty(wrongList)
-    
+
         wrongTable = table(wrongList.name', wrongList.ID', wrongList.modelFormula', wrongList.mapFormula');
         wrongTable.Properties.VariableNames = {'rxnName', 'rxnID', 'modelFormula', 'mapFormula'};
-    
+
     else
-        
+
         wrongTable = [];
-        
+
     end
-    
+
     if ~isempty(duplicateList)
         duplicateTable = table(duplicateList.name', duplicateList.ID', duplicateList.modelFormula', duplicateList.mapFormula');
         duplicateTable.Properties.VariableNames = {'rxnName', 'rxnID', 'modelFormula', 'mapFormula'};
     else
         duplicateTable = [];
     end
-    
+
     if ~isempty(absentMapList)
         absentMapTable = table(absentMapList.name', absentMapList.modelFormula');
         absentMapTable.Properties.VariableNames = {'rxnName', 'modelFormula'};
     else
         absentMapTable = [];
     end
-    
+
     % Finding reaction names in the map that are not present in the model
     differentMapRxnNamesList = setdiff(mapReactionNameList, modelReactionNameList);
-    
+
     if ~isempty(differentMapRxnNamesList)
         % Finding reaction names in the map in case of multiple presence
         differentMapRxnNamesList = map.rxnName(ismember(map.rxnName, differentMapRxnNamesList));
@@ -154,14 +155,14 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
         differentMapRxnIdList = map.rxnID(ismember(map.rxnName, differentMapRxnNamesList));
         % Finding reaction formulas in the map that are not present in the model
         differentMapRxnFormulasList = mapFormulasList(ismember(mapReactionNameList, differentMapRxnNamesList));
-        
+
         % Storing the relevant info on missing reactions in the model from the map
         absentModelTable = table(differentMapRxnNamesList, differentMapRxnIdList,differentMapRxnFormulasList);
         absentModelTable.Properties.VariableNames = {'rxnName', 'rxnID', 'mapFormula'};
-    else        
-        absentModelTable = []; 
+    else
+        absentModelTable = [];
     end
-    
+
     if nargin == 3
         % Commented part to use a possible Excel output.
         fileName = excelName;

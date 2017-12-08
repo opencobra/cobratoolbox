@@ -24,12 +24,11 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
 %   mapStruct:      Updated map structure with the changed areaWidth and
 %                   color of the reactions and their corresponding
 %                   metabolites.
-%                   
-% .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017 
+%
+% .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017
 
-    % Create a Color map with corresponding colors names and their HTML code
-    colors = createColorsMap;
-    
+    colors = createColorsMap; % Create a Color map with corresponding colors names and their HTML code
+
     mapStruct = map;
 
     % Get the indexes of the needed reactions to color
@@ -84,5 +83,5 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
     for x = molIndexList'
         mapStruct.molColor{x} = colors(newColor);
     end
-    
+
 end
