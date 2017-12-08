@@ -2,7 +2,7 @@ function [xmlStruct, map] = transformXML2Map(fileName)
 % Create a MATLAB structure from a given XML file.
 % The XML file is first parsed through the "xml2struct" function and
 % then transformed into a structure. The content of this structure can be
-% found in the [description document](docs/SimpleMATLABStructure.md)
+% found in the [description document](https://opencobra.github.io/cobratoolbox/docs/simpleMATLABStructure.html)
 %
 % USAGE:
 %
@@ -58,7 +58,7 @@ function [xmlStruct, map] = transformXML2Map(fileName)
             map.specNotes{spec,1} = '';
         end
     end
-    clearvars spec    
+    clearvars spec
 
     % Loop over reactions to get the need information and store it in a
     % structure. Reactions refer to each individual reaction name.
@@ -209,5 +209,5 @@ function [xmlStruct, map] = transformXML2Map(fileName)
     end
     map = getMapMatrices(map);
     toc
-    
+
 end
