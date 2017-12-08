@@ -12,6 +12,7 @@
 %     - Joseph Kang 04/16/09
 %     - Richard Que (12/16/09) Added testing of convertToIrrevsible/Reversible
 %     - CI integration: Laurent Heirendt January 2017
+%     - Batch addition Tests:  Thomas Pfau Dec 2017
 
 % save the current path
 currentDir = pwd;
@@ -418,20 +419,21 @@ modelBatch2 = addReactionBatch(modelBatch,rxnIDs,{'A','b','c'},[1 -1 0; 0,-2,-1;
 %Check that the reactions are in.                               
 assert(all(ismember(rxnIDs,modelBatch2.rxns)));
 %Check that lbs/ubs are properly updated.
-assert(modelBatch2.lb(ismember({'ExA'})) == -50);
-assert(modelBatch2.lb(ismember({'BToC'})) == 1);
-assert(modelBatch2.ub(ismember({'AToB'})) == 60);
-assert(modelBatch2.ub(ismember({'BToC'})) == 15);
+assert(modelBatch2.lb(ismember(modelBatch2.rxns,{'ExA'})) == -50);
+assert(modelBatch2.lb(ismember(modelBatch2.rxns,{'BToC'})) == 1);
+assert(modelBatch2.ub(ismember(modelBatch2.rxns,{'ATob'})) == 60);
+assert(modelBatch2.ub(ismember(modelBatch2.rxns,{'BToC'})) == 15);
 %Check that the metabolites were correctly assigned.
 assert(modelBatch2.mets(find(modelBatch2.S(:,ismember(modelBatch2.rxns,'ExA')))) == 'A');
 assert(isempty(setxor(modelBatch2.mets(find(modelBatch2.S(:,ismember(modelBatch2.rxns,'BToC')))),{'b','c'})));
 %Check the stoichiometry is correct
 assert(modelBatch2.S(ismember(modelBatch2.mets,'A'),ismember(modelBatch2.rxns,'ExA')) == 1);
-assert(modelBatch2.S(ismember(modelBatch2.mets,'B'),ismember(modelBatch2.rxns,'Atob')) == -2);
+assert(modelBatch2.S(ismember(modelBatch2.mets,'b'),ismember(modelBatch2.rxns,'ATob')) == -2);
 
 %Now check proper addition of grRules (and updated fields).
 modelBatch3 = addReactionBatch(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-                                   'grRules',{'G1 or G2', 'G3 and G4',''})
+                                   'grRules',{'b0002 or G2', 'b0008 and G4',''});
+assert(numel(modelBatch3.genes) == numel(model.genes)+2)
 
 % change the directory
 cd(currentDir)
