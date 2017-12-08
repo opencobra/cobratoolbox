@@ -51,7 +51,9 @@ initCobraToolbox
 % Although, for the analysis of large models it is recommended to use the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/installation/solvers.md 
 % GUROBI> package.
 
-%changeCobraSolver('gurobi6','all')
+if changeCobraSolver('gurobi', 'LP', 0)
+    changeCobraSolver('gurobi6','all')
+end
 %% Model setup. 
 % In this tutorial, we provided two exclusive metabolic models. A mitochondrial 
 % model and a small metabolic model specific for Glycolysis and Citric acid cycle. 
