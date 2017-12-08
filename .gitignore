@@ -113,6 +113,24 @@ tutorials/ecoliCoreModel/*.xls
 tutorials/steadyCom/POA/*.mat
 SubNetworkRecon.mat
 Test4Functions_diary.txt
+CobraMILPSolver.log
+GlycolysisAndTCACorrected.xml
+fbaFlux.xml
+fbaFluxDirectionality.xml
+mapATPADPColoured.xml
+mapATPADPRxnsColoured.xml
+mapColouredProteins.xml
+mapGlyATPADPRxnsAllColoured.xml
+mapGlyMetColoured.xml
+mapGlyNotes.xml
+mapGlyRxnColoured.xml
+mapGlySubsystemsColoured.xml
+mapGlyUnified.xml
+mapMitocartaHumanGenes.xml
+mapMitocartaTransportColoured.xml
+mapNodesArea.xml
+mapPPIUnified.xml
+
 
 # generated tutorial documentation
 docs/source/_static/tutorials/*.html
