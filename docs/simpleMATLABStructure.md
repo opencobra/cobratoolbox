@@ -40,25 +40,25 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.rxnName` | `r x 1` | cell of char | Name of each reactions |
 | `map.rxnType` | `r x 1` | cell of char | Type of each reactions |
 | `map.rxnReversibility` | `r x 1` | cell of char | Reversibility of each reactions (false or true) |
-| `map.rxnBaseReactantAlias` | `r x ? x 1` | cell of cell of char | Alias of the base reactant(s) |
-| `map.rxnBaseReactantID` | `r x ? x 1` | cell of cell of char | ID of the base reactant(s) |
-| `map.rxnBaseProductAlias` | `r x ? x 1` | cell of cell of char | Alias of the base product(s) |
-| `map.rxnBaseProductID` | `r x ? x 1` | cell of cell of char | ID of the base product(s) |
-| `map.rxnReactantAlias` | `r x ? x 1` | cell of cell of char | Alias of reactant(s) (EMPTY if not present) |
-| `map.rxnReactantID` | `r x ? x 1` | cell of cell of char | ID of reactant(s) (EMPTY if not present) |
-| `map.rxnReactantLineType` | `r x ? x 1` | cell of cell of char | Type of the reactant's reaction line ('Curve' or 'Straight') |
-| `map.rxnReactantLineColor` | `r x ? x 1` | cell of cell of char | Color of the reactant's reaction line (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
-| `map.rxnReactantLineWidth` | `r x ? x 1` | cell of cell of char or double | Width of the reactant's reaction line |
-| `map.rxnProductAlias` | `r x ? x 1` | cell of cell of char | Alias of product(s) (EMPTY if not present) |
-| `map.rxnProductID` | `r x ? x 1` | cell of cell of char | ID of product(s) (EMPTY if not present) |
-| `map.rxnProductLineType` | `r x ? x 1` | cell of cell of char | Type of the product's reaction line ('Curve' or 'Straight') |
-| `map.rxnProductLineColor` | `r x ? x 1` | cell of cell of char | Color of the product's reaction line (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
-| `map.rxnProductLineWidth` | `r x ? x 1` | cell of cell of char or double | Width of the product's reaction line |
-| `map.rxnModAlias` | `r x ? x 1` | cell of cell of char | Alias of modifiers metabolites of each reactions |
-| `map.rxnModID` | `r x ? x 1` | cell of cell of char | ID of modifiers metabolites of each reactions |
-| `map.rxnModType` | `r x ? x 1` | cell of cell of char | Type of the modification by the metabolite of each reactions |
-| `map.rxnModColor` | `r x ? x 1` | cell of cell of char | Color of the modification line of each reactions |
-| `map.rxnModWidth` | `r x ? x 1` | cell of cell of char or double | Width of the modification line of each reactions |
+| `map.rxnBaseReactantAlias` | `r x p x 1` | cell of cell of char | Alias of the base reactant(s) |
+| `map.rxnBaseReactantID` | `r x p x 1` | cell of cell of char | ID of the base reactant(s) |
+| `map.rxnBaseProductAlias` | `r x p x 1` | cell of cell of char | Alias of the base product(s) |
+| `map.rxnBaseProductID` | `r x p x 1` | cell of cell of char | ID of the base product(s) |
+| `map.rxnReactantAlias` | `r x p x 1` | cell of cell of char | Alias of reactant(s) (EMPTY if not present) |
+| `map.rxnReactantID` | `r x p x 1` | cell of cell of char | ID of reactant(s) (EMPTY if not present) |
+| `map.rxnReactantLineType` | `r x p x 1` | cell of cell of char | Type of the reactant's reaction line ('Curve' or 'Straight') |
+| `map.rxnReactantLineColor` | `r x p x 1` | cell of cell of char | Color of the reactant's reaction line (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
+| `map.rxnReactantLineWidth` | `r x p x 1` | cell of cell of char or double | Width of the reactant's reaction line |
+| `map.rxnProductAlias` | `r x p x 1` | cell of cell of char | Alias of product(s) (EMPTY if not present) |
+| `map.rxnProductID` | `r x p x 1` | cell of cell of char | ID of product(s) (EMPTY if not present) |
+| `map.rxnProductLineType` | `r x p x 1` | cell of cell of char | Type of the product's reaction line ('Curve' or 'Straight') |
+| `map.rxnProductLineColor` | `r x p x 1` | cell of cell of char | Color of the product's reaction line (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
+| `map.rxnProductLineWidth` | `r x p x 1` | cell of cell of char or double | Width of the product's reaction line |
+| `map.rxnModAlias` | `r x p x 1` | cell of cell of char | Alias of modifiers metabolites of each reactions |
+| `map.rxnModID` | `r x p x 1` | cell of cell of char | ID of modifiers metabolites of each reactions |
+| `map.rxnModType` | `r x p x 1` | cell of cell of char | Type of the modification by the metabolite of each reactions |
+| `map.rxnModColor` | `r x p x 1` | cell of cell of char | Color of the modification line of each reactions |
+| `map.rxnModWidth` | `r x p x 1` | cell of cell of char or double | Width of the modification line of each reactions |
 | `map.rxnColor` | `r x 1` | cell of char | Color of the main reaction (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) => later modified for the whole reaction's members |
 | `map.rxnWidth` | `r x 1` | cell of char | Width of the main reaction (stored as string but can be changed to double) => later modified for the whole reaction's members |
 | `map.rxnNotes` | `r x 1` | cell of char | Notes of each reactions (EMPTY if no info) |
@@ -66,6 +66,13 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.compartAlias` | `c x 1` | cell of char | Alias of each compartments (EMPTY if no info) |
 | `map.compartName` | `c x 1` | cell of char | Name of each compartments (EMPTY if no info) |
 | **Matrices** |
-| `map.sID` | `s x r` | logical | Logical matrix with rows=speciesID and columns=reactionsID |
-| `map.sAlias` | `m x r` | logical | Logical matrix with rows=speciesAlias and columns=reactionsID |
-| `map.idAlias` | `s x m` | logical | Logical matrix widh rows=speciesID and columns=speciesAlias |
+| `map.sID` | `s x r` | logical | Logical matrix with rows = speciesID and columns = reactionsID |
+| `map.sAlias` | `m x r` | logical | Logical matrix with rows = speciesAlias and columns = reactionsID |
+| `map.idAlias` | `s x m` | logical | Logical matrix widh rows = speciesID and columns = speciesAlias |
+
+*** Note:
+
+The dimension `p` is variable between reactions as each reaction can contain one
+or more Base Reactants or Products and the same is possible for Reactants,
+Products and Modifiers. Therefore, this value is not static and varies in all
+reactions.
