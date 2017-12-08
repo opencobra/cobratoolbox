@@ -233,7 +233,7 @@ transformMap2XML(xmlGly, ...
 % to give a code but a colour name in capitals (143 colors are recognized).
 %%
 % Check the list of available colours to use in Cell designer (retrieve 143 colors) 
-open createColorsMap.m
+% open createColorsMap.m
 %% 
 %% PROCEDURE
 % Several modification can be done in the maps. All attributes can be easily 
