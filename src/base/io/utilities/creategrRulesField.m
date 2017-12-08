@@ -38,10 +38,8 @@ else
     end
 end
 
-currentrules(pos) = model.rules(pos);
+currentrules = model.rules(pos);
 currentrules = strrep(currentrules,'&','and');
 currentrules = strrep(currentrules,'|','or');
-for i = 1:numel(model.genes)
-    currentrules = strrep(currentrules,['x(' num2str(i) ')'],['(' model.genes{i} ')']);
-end
+currentrules = regexprep(currentrules,'x\(([0-9]+)\)','${model.genes{str2num($1)}}');
 model.grRules(pos) = currentrules;

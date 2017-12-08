@@ -355,7 +355,7 @@ model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [],
 assert(verifyModel(model2b, 'simpleCheck', 1));
 nGene = numel(model2.genes);
 assert(isequal(model2, model2b) ...
-    & isequal(model2.genes(end-1:end), {'test1'; 'test2'}) & strcmp(model2.grRules{end}, 'test1 & test2') ...
+    & isequal(model2.genes(end-1:end), {'test1'; 'test2'}) & strcmp(model2.grRules{end}, 'test1 and test2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % geneNameList & systNameList
 fprintf('geneRule with geneNameList and systNameList\n');
@@ -368,7 +368,7 @@ model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [],
 assert(verifyModel(model2b, 'simpleCheck', 1));
 nGene = numel(model2.genes);
 assert(isequal(model2, model2b) ...
-    & isequal(model2.genes(end-1:end), {'testSystName1'; 'testSystName2'}) & strcmp(model2.grRules{end}, 'testSystName1 & testSystName2') ...
+    & isequal(model2.genes(end-1:end), {'testSystName1'; 'testSystName2'}) & strcmp(model2.grRules{end}, 'testSystName1 and testSystName2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % checkDuplicate
 fprintf('checkDuplicate\n');
@@ -383,7 +383,21 @@ assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', formula{1}, [], [], [], [], [], [], [], [], [], false);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b) & numel(model2.rxns) == numel(model.rxns) + 1)
-
+%Test changeGeneAssociation
+newRule = 'Gene1 or b0002 and(b0008 or Gene5)';
+model2 = changeGeneAssociation(model, model.rxns(20),newRule);
+adaptedNewRule = 'Gene1 or b0002 and ( b0008 or Gene5 )';
+assert(isequal(model2.grRules{20},adaptedNewRule));
+assert(numel(model.genes) == numel(model2.genes) -2);
+assert(all(ismember(model2.genes(end-1:end),{'Gene5','Gene1'})));
+fp = FormulaParser();
+newRuleBool = ['x(', num2str(find(ismember(model2.genes,'Gene1'))), ') | x(',...
+               num2str(find(ismember(model2.genes,'b0002'))), ') & ( x(',...
+               num2str(find(ismember(model2.genes,'b0008'))), ') | x(',...
+               num2str(find(ismember(model2.genes,'Gene5'))), ') )'];
+head = fp.parseFormula(newRuleBool);
+head2 = fp.parseFormula(model2.rules{20});
+assert(head.isequal(head2)); % We can't make a string comparison so we parse the two formulas and see if they are equal.
 
 % change the directory
 cd(currentDir)
