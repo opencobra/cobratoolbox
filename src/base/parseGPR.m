@@ -30,7 +30,7 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, curre
 totalGeneList = currentGenes;
 newGeneList = {};
 
-if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'ONCE'))
+if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
@@ -51,15 +51,11 @@ tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
 genes = regexp(tmp,'([^\(\)\|\&\s]+)','match');
 
 %We have a new Gene List (which can be empty).
-%keyboard
 for i = 1:length(genes)
     if ~any(strcmp(currentGenes, genes{i}))
         newGeneList{end+1} = genes{i};
     end
 end
-
-% this takes the longest
-%newGeneList = columnVector(setdiff(genes,currentGenes));
 
 %So generate the new gene list.
 if ~isempty(newGeneList)
