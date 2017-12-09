@@ -1,18 +1,16 @@
-function rxnInterest4Models = plotEssentialRxns( essentialRxn4Models, essentialityThreshold, numModelsPresent)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+function rxnInterest4Models = plotEssentialRxns( essentialRxn4Models, essentialityRange, numModelsPresent)
 
+%plotEssentialRxns.m
+%This funtion plots an heatmap using as inputs variables that allow a 
+%conditional search of reactions of interest
+%
+%by Dr. Miguel A.P. Oliveira{1}
 
-% data = essentialRxn4Models;
-% for j=1:size(data,2)
-%     for i=1:size(data,1)
-%         if strcmp('NotIncluded', data{i,j}) == 1
-%         elseif 
-%             strcmp(, data
-%             'NaN'
-%         end
-%     end
-% data = cell2mat(table2array(essentialRxn4Models(:,3:end)));
+%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg,
+%7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
+
+% 08/12/2017
+%% #########################################################\
 
 % Obtain rxn names
 allRxnNames = essentialRxn4Models.rxn(:);
@@ -25,7 +23,7 @@ for j=1:size(modelNames,2)
     for i=1:size(allRxnNames,1)
         value = essentialRxn4Models.(modelNames{j}){i};
         if strcmp(value,'NotIncluded')
-            essential(i,j) = -1;
+            essential(i,j) = -10;
         elseif ~isnan(value)
             essential(i,j) = value;
         else
@@ -34,9 +32,9 @@ for j=1:size(modelNames,2)
     end
 end
 
-%%
+%% Conditional search
 
-condition = essential>= 0  & essential<=essentialityThreshold;
+condition = essential>=essentialityRange(1) & essential>= 0  & essential<=essentialityRange(2);
 reactionsInterest = sum(condition,2)>=numModelsPresent;
 rxnsOfInterest = essential(reactionsInterest,:);
 
@@ -52,11 +50,26 @@ for i=1:size(modelNames,2)
 end
 
 %% Compare essential reaction in a heatmap
+
 maxFluxUnits = max(max(rxnsOfInterest));
-if maxFluxUnits ~= 0
-mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
-hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', maxFluxUnits); %
-colormap(hm,mymap);
+minFluxUnits = min(min(rxnsOfInterest));
+
+if maxFluxUnits ~= 0 && minFluxUnits==0
+    mymap = [ 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
+    hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
+    colormap(hm,mymap);
+elseif maxFluxUnits ~= 0 && minFluxUnits<0 && essentialityRange(1)<=0 
+    mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
+    hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
+    colormap(hm,mymap);    
+elseif maxFluxUnits ~= 0 && minFluxUnits==0 && essentialityRange(1)==0
+    mymap = [1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
+    hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
+    colormap(hm,mymap);
+elseif maxFluxUnits ~= 0 && essentialityRange(1)>=0
+    mymap = [ 1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
+    hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
+    colormap(hm,mymap);
 else
     fprintf('\n Attention: All non-essential reactions have flux above the threshold \n')
 end
