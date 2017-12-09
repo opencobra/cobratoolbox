@@ -1,5 +1,5 @@
 function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, currentGenes)
-% Convert a GPR rule in string format to a rule in logic format. 
+% Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
 % 2. A gene name does not contain any of the following characters:
@@ -8,8 +8,8 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, curre
 % 4. 'and' and 'or' operators as well as gene names have to be followed and preceded by either a
 % whitespace character or a opening or closing bracket, respectively. Gene
 % Names can also be at the beginning or the end of the string.
-% 
-% 
+%
+%
 % USAGE:
 %
 %    [newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,currentGenes)
@@ -25,17 +25,18 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, curre
 %    newGeneList:      A list of gene Names that were not present in
 %                      currentGenes
 %
-% .. Author: -  Thomas Pfau Okt 2017 
+% .. Author: -  Thomas Pfau Okt 2017
 
-if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$')) 
+totalGeneList = currentGenes;
+newGeneList = {};
+
+if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'ONCE'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
-    totalGeneList = currentGenes;
-    newGeneList = {};
     return
 end
-    
+
 tmp = regexprep(grRuleString, '[\]\}]',')'); %replace other brackets by parenthesis.
 tmp = regexprep(tmp, '[\[\{]','('); %replace other brackets by parenthesis.
 tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenthesis
@@ -48,10 +49,22 @@ tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
 %Now, genes are items which do not have brackets, operators or whitespace
 %characters
 genes = regexp(tmp,'([^\(\)\|\&\s]+)','match');
+
 %We have a new Gene List (which can be empty).
-newGeneList = columnVector(setdiff(genes,currentGenes));
+%keyboard
+for i = 1:length(genes)
+    if ~any(strcmp(currentGenes, genes{i}))
+        newGeneList{end+1} = genes{i};
+    end
+end
+
+% this takes the longest
+%newGeneList = columnVector(setdiff(genes,currentGenes));
+
 %So generate the new gene list.
-totalGeneList = [currentGenes;newGeneList];
+if ~isempty(newGeneList)
+    totalGeneList = [currentGenes; newGeneList];
+end
 convertGenes = @(x) sprintf('x(%d)', find(ismember(totalGeneList,x)));
 ruleString = regexprep(tmp, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
