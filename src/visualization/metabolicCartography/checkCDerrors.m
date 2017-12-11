@@ -26,53 +26,52 @@ function [rxn, met, rev, form] = checkCDerrors(map, model)
 %
 % .. Author: - J.modamio LCSB, Belval, Luxembourg 18/07/2017
 
-
-    commonRxns = intersect(map.rxnName, model.rxns); % Check reactions errors
+    commonRxns = intersect(map.rxnName, model.rxns);  % Check reactions errors
     extraRxnMap = setdiff(map.rxnName, model.rxns);
     extraRxnModel = setdiff(model.rxns, map.rxnName);
-    rxn = struct('commonRxnsMapAndModel',{commonRxns},'extraRxnsMap',{extraRxnMap},'extraRxnModel',{extraRxnModel});
+    rxn = struct('commonRxnsMapAndModel', {commonRxns}, 'extraRxnsMap', {extraRxnMap}, 'extraRxnModel', {extraRxnModel});
 
     % Avoid to obtain subsystems as metabolites (obtain just metabolites)
-    g=strfind(map.specName,'[');
-    in=find(~cellfun(@isempty, g));
-    metsMap=map.specName(in,:);
+    g = strfind(map.specName, '[');
+    in = find(~cellfun(@isempty, g));
+    metsMap = map.specName(in, :);
 
     commonMets = intersect(metsMap, model.mets);
     extraMetsMap = setdiff(metsMap, model.mets);
     extraMetsModel = setdiff(model.mets, metsMap);
 
-    met = struct('commonMetsMapAndModel',{commonMets},'extraMetsMap',{extraMetsMap},'extraMetsModel',{extraMetsModel});
+    met = struct('commonMetsMapAndModel', {commonMets}, 'extraMetsMap', {extraMetsMap}, 'extraMetsModel', {extraMetsModel});
 
     % Check reversibility
-    reversible =strfind(map.rxnReversibility,'true');
-    index=find(~cellfun(@isempty, reversible));
-    reversibleRxnsMap = map.rxnName(index,:) ;
+    reversible = strfind(map.rxnReversibility, 'true');
+    index = find(~cellfun(@isempty, reversible));
+    reversibleRxnsMap = map.rxnName(index, :);
 
-    irreversible =strfind(map.rxnReversibility,'false');
-    index2=find(~cellfun(@isempty, irreversible));
-    irreversibleRxnsMap = map.rxnName(index2,:) ;
+    irreversible = strfind(map.rxnReversibility, 'false');
+    index2 = find(~cellfun(@isempty, irreversible));
+    irreversibleRxnsMap = map.rxnName(index2, :);
 
     % Reversibility of reactions in Recon3
-    formula = [map.rxnName,printRxnFormula(model,map.rxnName)];
+    formula = [map.rxnName, printRxnFormula(model, map.rxnName)];
 
     % Found Irreversible reactions
-    irre=strfind(formula(:,2),'->');
-    index=find(~cellfun(@isempty, irre));
-    irRxn=formula(index,:);
+    irre = strfind(formula(:, 2), '->');
+    index = find(~cellfun(@isempty, irre));
+    irRxn = formula(index, :);
 
     % Found Reversible reactions
-    re=strfind(formula(:,2),'<=>');
-    index=find(~cellfun(@isempty, re));
-    rRxn=formula(index,:);
+    re = strfind(formula(:, 2), '<=>');
+    index = find(~cellfun(@isempty, re));
+    rRxn = formula(index, :);
 
     % Comparison between Recon3 and Cell Designer
-    errorReversibleMap = setdiff(reversibleRxnsMap,rRxn(:,1)); %reactions are reversible in the map, but doesnt appear in the model
-    errorIrreversibleMap = setdiff(irreversibleRxnsMap,irRxn(:,1)); %reactions are reversible in the map, but doesnt appear in the model
-    rev = struct('wrongReversibleRxnsMap',{errorReversibleMap},'wrongIrreversibleRxnsMap',{errorIrreversibleMap});
+    errorReversibleMap = setdiff(reversibleRxnsMap, rRxn(:, 1));  % reactions are reversible in the map, but doesnt appear in the model
+    errorIrreversibleMap = setdiff(irreversibleRxnsMap, irRxn(:, 1));  % reactions are reversible in the map, but doesnt appear in the model
+    rev = struct('wrongReversibleRxnsMap', {errorReversibleMap}, 'wrongIrreversibleRxnsMap', {errorIrreversibleMap});
 
     % Check formula errors (formula)
     [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map);
 
-    form = struct('wrongReactionFormula',{wrongTable}, 'reactionsInMapNotInModel',{absentModelTable},'reactionsInModelNotInMap',{absentMapTable}, 'duplicatedReactions',{duplicateTable});
+    form = struct('wrongReactionFormula', {wrongTable}, 'reactionsInMapNotInModel', {absentModelTable}, 'reactionsInModelNotInMap', {absentMapTable}, 'duplicatedReactions', {duplicateTable});
 
 end
