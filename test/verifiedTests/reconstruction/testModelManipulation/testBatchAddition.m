@@ -35,6 +35,9 @@ assert(isequal(modelBatch.metFormulas(pos(pres)),columnVector(metFormulas)));
 assert(isequal(modelBatch.metCharges(pos(pres)),[-1; 1;0]));
 assert(verifyModel(modelBatch,'simpleCheck',true));
 
+%Assert duplication check
+assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,model.mets(1:3))))
+assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,{'A','b','A'})))
 
 %For Reactions:
 fprintf('>> Testing Reaction Batch Addition...\n');
@@ -75,7 +78,7 @@ assert(head1.isequal(head2));
 
 %Also check logical format addition:              
 modelBatch3 = addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0002';'G1';'b0008'})
+                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0002';'G1';'b0008'});
 %The same addition as above but a different
 %format, so test the same things.
 assert(numel(modelBatch3.genes) == numel(model.genes)+2); %Only two genes were added, the others already existed.
@@ -88,20 +91,45 @@ ExAPos = ismember(modelBatch3.rxns,'ExA');
 G1pos = find(ismember(modelBatch3.genes,'G1'));
 b0002pos = find(ismember(modelBatch3.genes,'G1'));
 head1 = fp.parseFormula(Formula);
-head2 = fp.parseFormula(model.rules{ExAPos});
+head2 = fp.parseFormula(modelBatch3.rules{ExAPos});
 assert(head1.isequal(head2));
 
 %Now, test duplicate ID fails (duplicate in the reaction list
-verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','ExA'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1]));
-verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','CS'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1]));
+assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','ExA'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1])));
+assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','CS'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1])));
 
 %Also assert, that all metabolites are part of the Model (this is necessary
 %for quick addition).
-verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1]))
+assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1])));
 
 
+fprintf('>> Testing Gene Batch Addition...\n');
 
-                               
+genes = {'G1','Gene2','InterestingGene'}';
+proteinNames = {'Protein1','Protein B','Protein Alpha'}';
+modelWGenes = addGeneBatch(model,genes,...
+                            'proteins',proteinNames, 'geneField2',{'D','E','F'});
+assert(isequal(lastwarn, 'Field geneField2 is excluded.'));                       
+%three new genes.
+assert(size(modelWGenes.rxnGeneMat,2) == size(model.rxnGeneMat,2) + 3);
+assert(isfield(modelWGenes,'proteins'));
+[~,genepos] = ismember(genes,modelWGenes.genes);
+assert(isequal(modelWGenes.proteins(genepos),proteinNames));
+assert(~isfield(model,'geneField2'));
+
+%Init geneField 2
+gField2 = {'D';'E';'F'};
+model.geneField2 = cell(size(model.genes));
+model.geneField2(:) = {''};
+modelWGenes = addGeneBatch(model,genes,...
+                            'proteins',proteinNames, 'geneField2',gField2);
+[~,genepos] = ismember(genes,modelWGenes.genes);
+assert(isequal(modelWGenes.geneField2(genepos), gField2));
+assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGenes.genes,genes)))));
+
+%And finally test duplication errors.
+assert(verifyCobraFunctionError(@() addGeneBatch(model,{'b0008','G1'})));
+assert(verifyCobraFunctionError(@() addGeneBatch(model,{'G2','G1','G2'})));
                                
                                
 % change the directory
