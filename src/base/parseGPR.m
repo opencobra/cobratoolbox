@@ -29,14 +29,15 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, curre
 
 totalGeneList = currentGenes;
 newGeneList = {};
-
+%tic;
 if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
     return
 end
-
+%toc
+%tic
 tmp = regexprep(grRuleString, '[\]\}]',')'); %replace other brackets by parenthesis.
 tmp = regexprep(tmp, '[\[\{]','('); %replace other brackets by parenthesis.
 tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenthesis
@@ -45,23 +46,34 @@ tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(and)\s*?(\s?[\(]|\s)\s*', '$1&$3'); %R
 tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(or)\s*?(\s?[\(]|\s)\s*', '$1|$3'); %replace all ors
 tmp = regexprep(tmp, '[\s]?&[\s]?', ' & '); %introduce spaces around ands
 tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
-
 %Now, genes are items which do not have brackets, operators or whitespace
 %characters
+%tic
 genes = regexp(tmp,'([^\(\)\|\&\s]+)','match');
-
+%toc
 %We have a new Gene List (which can be empty).
+%tic
 for i = 1:length(genes)
     if ~any(strcmp(currentGenes, genes{i}))
         newGeneList{end+1} = genes{i};
     end
 end
-
+%toc
+%tic
 %So generate the new gene list.
 if ~isempty(newGeneList)
     totalGeneList = [currentGenes; newGeneList];
 end
-convertGenes = @(x) sprintf('x(%d)', find(ismember(totalGeneList,x)));
+%toc
+
+%tic
+%convertGenes = @(x) sprintf('x(%d)', find(ismember(totalGeneList,x)));
+convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
+%convertGenes = @(x) ['x(',num2str(find(ismember(totalGeneList,x))),')'];
+%toc
+%keyboard
+%tic
 ruleString = regexprep(tmp, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
 ruleString = strtrim(ruleString); %Remove leading and trailing spaces
+end
