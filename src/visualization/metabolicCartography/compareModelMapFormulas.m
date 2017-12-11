@@ -54,7 +54,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017.
 
-    modelReactionNameList = model.rxns; % Getting names from model and map
+    modelReactionNameList = model.rxns;  % Getting names from model and map
     mapReactionNameList = map.rxnName;
 
     % Getting the formulas from the model and the map for further comparison
@@ -76,7 +76,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
     for rxn = 1:length(modelReactionNameList)
         % Test if the reaction name is contained in the map
         if any(strcmp(modelReactionNameList{rxn}, mapReactionNameList))
-            %Getting the index of the model reaction name in the map list
+            % Getting the index of the model reaction name in the map list
             index = find(strcmp(modelReactionNameList{rxn}, mapReactionNameList));
             % Test if there is only one reaction with this name in the map
             if length(index) == 1
@@ -97,9 +97,9 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
                     wrongList.ID{wrong} = map.rxnID{strcmp(modelReactionNameList{rxn}, map.rxnName)};
                     wrongList.modelFormula{wrong} = modelFormulasList{rxn};
                     wrongList.mapFormula{wrong} = mapFormulasList{index};
-                    wrong = wrong+1;
+                    wrong = wrong + 1;
                 end
-            % Case where a reaction name is duplicated in the map
+                % Case where a reaction name is duplicated in the map
             else
                 % Finding the IDs of the duplicated reactions in the map
                 duplicateIDs = map.rxnID(strcmp(modelReactionNameList{rxn}, map.rxnName));
@@ -109,14 +109,14 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
                     duplicateList.modelFormula{dupl} = modelFormulasList{rxn};
                     duplicateList.mapFormula{dupl} = mapFormulasList{index(d)};
                     duplicateList.ID{dupl} = duplicateIDs{d};
-                    dupl = dupl+1;
+                    dupl = dupl + 1;
                 end
             end
-        % Case where reactions are absent in the map and present in the model
+            % Case where reactions are absent in the map and present in the model
         else
             absentMapList.name{abs} = modelReactionNameList{rxn};
             absentMapList.modelFormula{abs} = modelFormulasList{rxn};
-            abs = abs+1;
+            abs = abs + 1;
         end
     end
 
@@ -157,7 +157,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
         differentMapRxnFormulasList = mapFormulasList(ismember(mapReactionNameList, differentMapRxnNamesList));
 
         % Storing the relevant info on missing reactions in the model from the map
-        absentModelTable = table(differentMapRxnNamesList, differentMapRxnIdList,differentMapRxnFormulasList);
+        absentModelTable = table(differentMapRxnNamesList, differentMapRxnIdList, differentMapRxnFormulasList);
         absentModelTable.Properties.VariableNames = {'rxnName', 'rxnID', 'mapFormula'};
     else
         absentModelTable = [];
@@ -166,7 +166,7 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
     if nargin == 3
         % Commented part to use a possible Excel output.
         fileName = excelName;
-        warning('off','MATLAB:xlswrite:AddSheet');
+        warning('off', 'MATLAB:xlswrite:AddSheet');
         if ~isempty(wrongTable)
             writetable(wrongTable, fileName, 'Sheet', 'wrongReactions')
         end
