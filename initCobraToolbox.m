@@ -92,9 +92,10 @@ function initCobraToolbox()
     % retrieve the current directory
     currentDir = pwd;
 
-    % define the root path of The COBRA Toolbox
+    % define the root path of The COBRA Toolbox and change to it.
     CBTDIR = fileparts(which('initCobraToolbox'));
-
+    cd(CBTDIR);
+    
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
 

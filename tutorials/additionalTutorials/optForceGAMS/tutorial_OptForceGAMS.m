@@ -1,5 +1,5 @@
 %% OptForce Tutorial
-%% Author: Sebasti�n N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
 %% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), *Lin Wang *(Costas D. Maranas group)*
 %% *INTRODUCTION:*
 % In this tutorial we will run optForce. For a detailed description of the procedure, 
@@ -41,7 +41,7 @@
 % 4) Find must sets,  i.e, reactions that MUST increase or decrease their 
 % flux in order to achieve the phenotype in the mutant strain. 
 %% Figure 1.
-%  
+% 
 % 
 % 5) Find the interventions needed that will ensure a increased production 
 % of the target of interest
@@ -65,7 +65,11 @@ pathTutorial = which('tutorial_OptForceGAMS.mlx');
 pathstr = fileparts(pathTutorial);
 cd(pathstr)
 
-load('AntCore');
+modelFileName = 'AntCore.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
 model.c(strcmp(model.rxns,'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
@@ -135,13 +139,13 @@ disp([minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT]);
 % the folder defined by your run ID. Thus, if your runID is ''TestOptForce", the 
 % structure of the folders will be the following:
 % 
-% |??? CurrentFolder|
+% |├── CurrentFolder|
 % 
-% ||   ??? TestOptForce|
+% ||   ├── TestOptForce|
 % 
-% ||   |   ??? Inputs|
+% ||   |   ├── Inputs|
 % 
-% ||   |   ??? Outputs|
+% ||   |   └── Outputs|
 % 
 % To avoid the generation of inputs and outputs folders, set keepInputs = 
 % 0, printExcel = 0, printText = 0 and keepGamsOutputs = 0
@@ -378,33 +382,33 @@ disp(optForceSets)
 % In this case runID = 'TestOptForce', so inside this folder the following 
 % folders will be created:
 % 
-% |??? CurrentFolder|
+% |├── CurrentFolder|
 % 
-% ||   ??? TestOptForce|
+% ||   ├── TestOptForce|
 % 
-% ||   |   ??? InputsFindMustL|
+% ||   |   ├── InputsFindMustL|
 % 
-% ||   |   ??? OutputsFindMustL|
+% ||   |   ├── OutputsFindMustL|
 % 
-% ||   |   ??? InputsFindMustU|
+% ||   |   ├── InputsFindMustU|
 % 
-% ||   |   ??? OutputsFindMustU|
+% ||   |   ├── OutputsFindMustU|
 % 
-% ||   |   ??? InputsFindMustLL|
+% ||   |   ├── InputsFindMustLL|
 % 
-% ||   |   ??? OutputsFindMustLL|
+% ||   |   ├── OutputsFindMustLL|
 % 
-% ||   |   ??? InputsFindMustUU|
+% ||   |   ├── InputsFindMustUU|
 % 
-% ||   |   ??? OutputsFindMustUU|
+% ||   |   ├── OutputsFindMustUU|
 % 
-% ||   |   ??? InputsFindMustUL|
+% ||   |   ├── InputsFindMustUL|
 % 
-% ||   |   ??? OutputsFindMustUL|
+% ||   |   ├── OutputsFindMustUL|
 % 
-% ||   |   ??? InputsOptForce|
+% ||   |   ├── InputsOptForce|
 % 
-% ||   |   ??? OutputsOptForce|
+% ||   |   └── OutputsOptForce|
 % 
 % ||
 % 
@@ -434,7 +438,7 @@ disp(optForceSets)
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. 
 % PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.
 % 
-% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna Gonz�lez-Lergier, 
+% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, 
 % Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary 
 % system: Fed-batch fermentation of a high yielding strain of E. coli producing 
 % 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, 

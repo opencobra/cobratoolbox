@@ -25,7 +25,21 @@ load('point.mat', 'v0'); % load initial point
 % Note: the glpk solver is sufficient, no need to run multiple solvers
 fprintf('   Preparing the model using glpk ... ');
 
-changeCobraSolver('glpk');
+%The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
+
+solverPkgs = {'glpk', 'gurobi', 'ibm_cplex', 'tomlab_cplex'};
+
+solverAccepted = false;
+for k = 1:numel(solverPkgs)
+    solverAccepted = changeCobraSolver(solverPkgs{k});
+    if solverAccepted
+        break;
+    end
+end
+
+if ~solverAccepted
+    assert(false,'Could not run the test as none of the allowed solvers (%s) was present.\nThe function might still work with a different solver.');
+end
 
 generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
 expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)

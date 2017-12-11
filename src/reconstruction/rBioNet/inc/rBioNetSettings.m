@@ -96,7 +96,7 @@ else %File not found and has to be manually located or created
         rxn_path = '';
         met_path = '';
         comp_path = '';
-        pathname = strrep(rBioNet_path, '\rBioNetSettings.m', '');
+        pathname = fileparts(rBioNet_path);
         input_file = 'rBioNetSettingsDB.mat';
         save([pathname filesep input_file],...
             'rxn_path', 'met_path', 'comp_path');

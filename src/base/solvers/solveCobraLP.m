@@ -38,7 +38,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   without regularisation.
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
-%   
+%
 %    solverParams:  solver-specific parameter structure. Formats supported
 %                   are ILOG cplex and Tomlab parameter syntax. see example
 %                   for details.
@@ -120,11 +120,14 @@ end
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm', 'printLevel', 'primalOnly', 'saveInput', 'feasTol', ...
                  'optTol', 'solver', 'pdco_method', 'pdco_maxiter', 'pdco_xsize', ...
-                 'pdco_zsize'};
+                 'pdco_zsize','debug'};
 
 % Set default parameter values
 [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
     getCobraSolverParams('LP', optParamNames(1:6));
+
+%By default this is not debugging
+debug = false;
 
 % Set user specified parameter values
 solverParams.dummy = 3;
@@ -198,6 +201,10 @@ if ~isempty(varargin)
         if isfield(parameters, 'pdco_zsize')
             pdco_zsize = parameters.pdco_zsize;
             parameters = rmfield(parameters, 'pdco_zsize');
+        end
+        if isfield(parameters, 'debug')
+            debug = parameters.debug;
+            parameters = rmfield(parameters, 'debug');
         end
         % overwrite defaults
         [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
@@ -376,7 +383,9 @@ switch solver
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
-
+        if ~debug % IF debugging leave the files in case of an error.
+            cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
+        end
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
@@ -451,15 +460,6 @@ switch solver
         else
             stat = -1;  % Solution not optimal or solver problem
         end
-        % cleanup
-        rmdir([tmpPath filesep 'results'], 's');
-        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
-        for k = 1:length(fortFiles)
-            delete(['fort.', num2str(fortFiles(k))]);
-        end
-
-        % remove the temporary .mps model file
-        rmdir([tmpPath filesep 'MPS'], 's')
 
         % return to original directory
         cd(originalDirectory);
@@ -468,6 +468,7 @@ switch solver
         if ~isunix
             error('Minos and quadMinos can only be used on UNIX systems (macOS or Linux).')
         end
+        originalDirectory = pwd;
 
         % input precision
         precision = 'double';  % 'single'
@@ -481,9 +482,12 @@ switch solver
 
         % write out flat file to current folder
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
-
+        
+        if ~debug % IF debugging leave the files in case of an error.
+            cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
+        end
+        
         % change system to testFBA directory
-        originalDirectory = pwd;
         cd([MINOS_PATH]);
 
         % call minos
@@ -546,26 +550,6 @@ switch solver
         %     stat = 0; % Infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
-        end
-
-        % cleanup
-        fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
-        addFileName = {'', 'q'};
-
-        % remove temporary data directories
-        tmpFileName = [MINOS_PATH filesep 'data'];
-        if exist(tmpFileName, 'dir') == 7
-            rmdir(tmpFileName, 's')
-        end
-
-        % remove temporary solver files
-        for k = 1:length(fileEnding)
-            for q = 1:length(addFileName)
-                tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
-                if exist(tmpFileName, 'file') == 2
-                    delete(tmpFileName);
-                end
-            end
         end
 
         % return to original directory
@@ -1066,20 +1050,20 @@ switch solver
                matlabPrintLevel = 'iter-detailed';
            otherwise
                matlabPrintLevel = 'off';
-        end  
-        %Set the solver Options.        
+        end
+        %Set the solver Options.
         %Seems like matlab tends to ignore the optimalityTolerance (or at
         %least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
         %make this tolerance smaller...)
-        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);        
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
         if ~isempty(fieldnames(solverParams))
             solverParamFields = fieldnames(solverParams);
-            for fieldPos = 1:numel(solverParamFields)                
+            for fieldPos = 1:numel(solverParamFields)
                 linprogOptions.(solverParamFields{fieldPos}) = solverParams.(solverParamFields{fieldPos});
-            end              
-        end 
+            end
+        end
         if (isempty(csense))
             [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
         else
@@ -1099,8 +1083,8 @@ switch solver
         if (origStat > 0)
             stat = 1; % Optimal solution found
             f = f*osense;
-            y = lambda.eqlin;
-            w = lambda.lower-lambda.upper;
+            y = osense*lambda.eqlin;
+            w = osense*(lambda.upper-lambda.lower);
         elseif (origStat < 0)
             stat = 0; % Infeasible
         else
@@ -1126,7 +1110,7 @@ switch solver
 
         % set parameters (user parameters override defaults)
         tomlabProblem.MIP.cpxControl = solverParams;
-        
+
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
@@ -1144,7 +1128,7 @@ switch solver
         if exist('optTol','var') && ~ismember('EPOPT',fieldnames(solverParams))
             tomlabProblem.MIP.cpxControl.EPOPT = optTol;
         end
-        
+
         % solve
         Result = cplexTL(tomlabProblem);
 
@@ -1154,8 +1138,8 @@ switch solver
         %        [Result.f_k f]
 
         origStat = Result.Inform;
-        w = osense*Result.v_k(1:length(lb));
-        y = osense*Result.v_k((length(lb)+1):end);
+        w = Result.v_k(1:length(lb));
+        y = Result.v_k((length(lb)+1):end);
         basis = Result.MIP.basis;
         if (origStat == 1)
             stat = 1;
@@ -1769,3 +1753,50 @@ elseif (origStat == 184 || origStat == 6)
 else
     stat = -1; % Solution not optimal or solver problem
 end
+
+
+function DQQCleanup(tmpPath, originalDirectory)
+% perform cleanup after DQQ.
+try
+% cleanup        
+        rmdir([tmpPath filesep 'results'], 's');
+        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
+        for k = 1:length(fortFiles)
+            delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
+        end
+catch
+end
+try        % remove the temporary .mps model file
+        rmdir([tmpPath filesep 'MPS'], 's')
+catch
+end
+cd(originalDirectory);
+
+
+
+function minosCleanUp(MINOS_PATH,fname, originalDirectory)
+% CleanUp after Minos Solver.
+
+fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
+addFileName = {'', 'q'};
+
+% remove temporary data directories
+tmpFileName = [MINOS_PATH filesep 'data'];
+try
+    if exist(tmpFileName, 'dir') == 7
+        rmdir(tmpFileName, 's')
+    end
+catch
+end
+
+% remove temporary solver files
+for k = 1:length(fileEnding)
+    for q = 1:length(addFileName)
+        tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
+        if exist(tmpFileName, 'file') == 2
+            delete(tmpFileName);
+        end
+    end
+end
+
+cd(originalDirectory);

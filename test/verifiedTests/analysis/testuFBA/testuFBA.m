@@ -32,8 +32,8 @@ cd(fileDir);
 %   time            time points (in days)
 %   uFBAvariables   input for uFBA algorithm
 load([CBTDIR filesep 'tutorials' filesep 'dataIntegration' filesep 'uFBA' filesep 'sample_data.mat']);
-%ensure, that this model is up to date
-model = convertOldStyleModel(model);
+%Explicitly load the model to ensure it is compatible.
+model = readCbModel([CBTDIR filesep 'tutorials' filesep 'dataIntegration' filesep 'uFBA' filesep 'sample_data.mat'], 'modelName','model');
 
 % test that data is loaded correctly
 assert(size(met_data, 1) == 80 & size(met_data, 2) == 102, ...

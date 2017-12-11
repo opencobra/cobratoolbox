@@ -25,7 +25,7 @@ tol = 1e-6;
 
 if solverOK
     % read the model
-    model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep 'ecoli_core_model.mat']);
+    model = getDistributedModel('ecoli_core_model.mat');
 
     % obtain the solution with optimizeCbModel
     solOptCbModel = optimizeCbModel(model);

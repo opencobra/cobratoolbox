@@ -36,13 +36,13 @@
 %  where $$p,q\in\mathcal{R}^{n}$$ denote the relaxations of the lower and 
 % upper bounds on reaction rates of the reaction rates vector  v, and where $$r\in\mathcal{R}^{m}$$ 
 % denotes a relaxation of the mass balance constraint. Non-negative scalar parameters   
-% ?   and   $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext>?
+% λ   and   $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext> 
 % </mtext></mrow></math>$ can be used to trade off between relaxation of mass 
-% balance or bound constraints. A non-negative vector parameter   ?   can be used 
+% balance or bound constraints. A non-negative vector parameter   λ   can be used 
 % to prioritise relaxation of one mass balance constraint over another, e.g, to 
 % avoid relaxation of a mass balance constraint on a metabolite that is not desired 
 % to be exchanged across the boundary of the system. A non-negative vector parameter   
-% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext>?
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&alpha;</mi><mtext> 
 % </mtext></mrow></math>$  may be used to prioritise relaxation of bounds on some 
 % reactions rather than others, e.g., relaxation of bounds on exchange reactions 
 % rather than internal reactions. The optimal choice of parameters depends heavily 
@@ -77,24 +77,15 @@
 % 
 % Load Recon3.0model, unless it is already loaded into the workspace.
 
-clear model relaxOption
-if ~exist('modelOrig','var')
-    %select your own model, or use Recon2.0model instead
-    if 0
-        filename='Recon3.0model';
-        directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
-        model = loadIdentifiedModel(filename,directory);
-    else
-        filename2='Recon2.0model';
-        if exist('Recon2.0model.mat','file')==2
-            model = readCbModel(fileName);
-        end
-    end
-    model.csense(1:size(model.S,1),1)='E';
-    modelOrig = model;
-else
-    model=modelOrig;
-end
+global CBTDIR
+
+%Load the model if recon3 is available replace the model name.
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+modelOrig = model;
+
 %% 
 % Identify the exchange reactions and biomass reaction(s) heuristically 
 % and close (a subset) of them

@@ -29,16 +29,10 @@ changeCobraSolver ('glpk', 'all', 1);
 % Before proceeding with the simulations, the path for the model needs to be 
 % set up:
 
-% pathModel = '~/work/sbgCloud/data/models/unpublished/Recon3D_models/';
-% filename = '2017_04_28_Recon3d.mat';
-% load([pathModel, filename])
-% model = modelRecon3model;
-% modelName = filename;
-% clear modelRecon3model Table_csources
-global CBTDIR
-load([CBTDIR filesep 'test' filesep 'models' filesep 'Recon2.0model.mat']);
-model = Recon2model;
-clear Recon2model
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 tol = 1e-6;
 %% 
 % In this tutorial, the used model is the generic model of human metabolism, 

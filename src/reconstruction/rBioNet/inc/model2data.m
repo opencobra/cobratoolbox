@@ -103,13 +103,13 @@ for i = 1:length(Optional)
 
     % Recon had different names of fields, this is a quick fix.
     if strcmp(Optional{i},'ecNumbers')
-        if ismember('rxnECNumbers',names);
+        if ismember('rxnECNumbers',names)
             Optional{i} = 'rxnECNumbers';
             continue;
         end
 
     elseif strcmp(Optional{i},'subSystems')
-        if ismember('rxnSubSystems',names);
+        if ismember('rxnSubSystems',names)
             Optional{i} = 'rxnSubSystems';
             continue;
         end
@@ -121,19 +121,19 @@ for i = 1:length(Optional)
             continue;
         end
     elseif strcmp(Optional{i},'confidenceScores')
-        if ismember('rxnConfidenceScores',names);
+        if ismember('rxnConfidenceScores',names)
             Optional{i} = 'rxnConfidenceScores';
             continue;
         end
 
     elseif strcmp(Optional{i},'citations')
-        if ismember('rxnReferences',names);
+        if ismember('rxnReferences',names)
             Optional{i} = 'rxnReferences';
             continue;
         end
 
     elseif strcmp(Optional{i},'comments')
-        if ismember('rxnNotes',names);
+        if ismember('rxnNotes',names)
             Optional{i} = 'rxnNotes';
             continue;
         end
@@ -147,7 +147,7 @@ end
 %ecNumbers = 5, rxnKEGGID = 6, description = 7
 for i = 1:length(Optional)-1
     if isfield(model,Optional{i})
-        data(:,i+7) = model.(Optional{i});
+        data(:,i+7) = handles.model.(Optional{i});
     else %data missing
         data(:,i+7) = cell(S1(1),1);
     end
@@ -156,7 +156,7 @@ end
 
 %description
 if ~any(ismember(opt,7)) %data exist
-    if isa(handles.model.description,'char');
+    if isa(handles.model.description,'char')
 
         s_b = [NaN NaN];
         description{1} = handles.model.description;
@@ -167,7 +167,7 @@ if ~any(ismember(opt,7)) %data exist
         description{6} = '';
         description{7} = '';
         handles.description = description;
-    elseif isa(handles.model.description,'struct');
+    elseif isa(handles.model.description,'struct')
         b = fieldnames(handles.model.description);
         s_b = size(b);
     else

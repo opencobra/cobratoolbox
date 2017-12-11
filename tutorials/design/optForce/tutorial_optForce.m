@@ -49,12 +49,10 @@
 % sulfate, ammomium, citrate and glycerol.
 
 changeCobraSolver('gurobi', 'ALL');
-
-pathTutorial = which('tutorial_optForce.mlx');
-pathstr = fileparts(pathTutorial);
-cd(pathstr)
-
-load('AntCore.mat');
+modelFileName = 'AntCore.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
 model.c(strcmp(model.rxns, 'R75')) = 1;
 model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
 model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
