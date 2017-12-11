@@ -157,7 +157,7 @@ if ~isfield(model, 'rules')
     if isfield(model, 'grRules')
         model = generateRules(model);
     else
-       model.rules = cell(size(model.rxns),1);
+       model.rules = cell(size(model.rxns));
        model.rules(:) = {''};
     end
 end
