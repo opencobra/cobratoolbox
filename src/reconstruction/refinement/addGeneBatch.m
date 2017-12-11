@@ -2,7 +2,7 @@ function newmodel = addGeneBatch(model,geneIDs,varargin)
 %Add a batch of genes to the model.
 % USAGE:
 %
-%    model = addMetaboliteBatch(model,metIDs,varargin)
+%    model = addMetaboliteBatch(model,geneIDs,varargin)
 %
 % INPUTS:
 %    model:             The model to add the Metabolite batch to.
@@ -18,9 +18,11 @@ function newmodel = addGeneBatch(model,geneIDs,varargin)
 %
 % EXAMPLE:
 %
-%    To add metabolites, with charges, formulas and KEGG ids:
-%    model = addMetaboliteBatch(model,{'A','b','c'},'metCharges', [ -1 1
-%    0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
+%    To add genes with specific fields use:
+%    model = addGeneBatch(model,{'G1','Gene2','InterestingGene'}, 'proteins',{'Protein1','Protein B','Protein Alpha'}, 'geneField2',{'D','E','F')
+%    note, that all fields (geneField1/geneField2) have to be present in
+%    the model, or defined in the field definitions, otherwise they are
+%    ignored.
 %    
 
 
@@ -42,7 +44,7 @@ modelGeneFields = getModelFieldsForType(model,'genes');
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
     if any(ismember({'rxnGeneMat'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelGeneFields,cfield)))        
-        warning('Field %s is excluded.');
+        warning('Field %s is excluded.',cfield);
         continue;
     end    
     if ~isfield(model,cfield)

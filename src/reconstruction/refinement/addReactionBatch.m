@@ -76,7 +76,7 @@ modelRxnFields = getModelFieldsForType(model,'rxns');
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
     if any(ismember({'S','rxnGeneMat','rules','genes'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))
-        warning('Field %s is excluded.');
+        warning('Field %s is excluded.',cfield);
         continue;
     end
     if ~isfield(model,cfield)
