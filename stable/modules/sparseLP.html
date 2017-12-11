@@ -192,7 +192,7 @@
 <span id="id1"></span><h1>sparseLP<a class="headerlink" href="#sparselp" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.solvers.cardOpt.sparseLP"></span><dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.computeMutualCoherence">
-<code class="descname">computeMutualCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/computeMutualCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.computeMutualCoherence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeMutualCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/computeMutualCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.computeMutualCoherence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes mutual coherence</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -215,7 +215,7 @@ mutual coherence</li>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.optimizeCardinality">
-<code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
 The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
 <span class="math">\(min c'(x, y, z) + lambda*||x||_0 - delta*||y||_0\)</span>
@@ -281,7 +281,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP">
-<code class="descname">sparseLP</code><span class="sig-paren">(</span><em>approximation</em>, <em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP</code><span class="sig-paren">(</span><em>approximation</em>, <em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
@@ -352,7 +352,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_SCAD">
-<code class="descname">sparseLP_SCAD</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_SCAD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_SCAD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_SCAD</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_SCAD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_SCAD" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 The <cite>l0</cite> norm is approximated by SCAD function.
@@ -410,7 +410,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_cappedL1">
-<code class="descname">sparseLP_cappedL1</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_cappedL1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_cappedL1</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_cappedL1" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
@@ -468,7 +468,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_exp">
-<code class="descname">sparseLP_exp</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_exp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_exp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_exp</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_exp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_exp" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 The <cite>l0</cite> norm is approximated by exponential function.
@@ -526,7 +526,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_l1">
-<code class="descname">sparseLP_l1</code><span class="sig-paren">(</span><em>constraint</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_l1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_l1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_l1</code><span class="sig-paren">(</span><em>constraint</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_l1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_l1" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_1\)</span> subject to linear constraints</p>
 <p><strong>Usage</strong></p>
@@ -568,7 +568,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_log">
-<code class="descname">sparseLP_log</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_log.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_log" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_log</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_log.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 The <cite>l0</cite> norm is approximated by log function.
@@ -626,7 +626,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_lpNegative">
-<code class="descname">sparseLP_lpNegative</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_lpNegative.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpNegative" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_lpNegative</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_lpNegative.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpNegative" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constrainrts
 The <cite>l0</cite> norm is approximated by <cite>l_p norm</cite> with <cite>p &lt; 0</cite>
@@ -684,7 +684,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_lpPositive">
-<code class="descname">sparseLP_lpPositive</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/base/solvers/cardOpt/sparseLP/sparseLP_lpPositive.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpPositive" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP_lpPositive</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cardOpt/sparseLP/sparseLP_lpPositive.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpPositive" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 The <cite>l0</cite> norm is approximated by  <cite>l_p norm</cite> with <cite>0 &lt; p &lt; 1</cite>.

@@ -20,9 +20,11 @@ Tutorials
    tutorialModelSanityChecks
    tutorialNumCharact
    tutorialModelManipulation
+   tutorialMetabolicCartography
    tutorialPaint4net
    tutorialRemoteVisualisation
    tutorialFVA
+   tutorialGMCS
    tutorialSparseFBA_freeATPtest
    tutorialSparseFBA
    tutorialSparseFBA_protonShuttle

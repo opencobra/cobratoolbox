@@ -195,8 +195,47 @@
   <div class="section" id="basicphysicochemicaldata">
 <span id="id1"></span><h1>basicPhysicochemicalData<a class="headerlink" href="#basicphysicochemicaldata" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData"></span><dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getElementalWeightMatrix">
+<code class="descname">getElementalWeightMatrix</code><span class="sig-paren">(</span><em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/getElementalWeightMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getElementalWeightMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the symbols for all chemical elements and their atomic weights</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>elementalWeightMatrix = getElementalWeightMatrix(isotopeAbundance)</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>isotopeAbundance</strong> &#8211;
+* false to return standard atomic weights (default)
+* true to return the weights of naturally predominant isotopes for biological</p>
+<blockquote>
+<div><p>elements and standard weights for other elements.</p>
+</div></blockquote>
+<ul class="simple">
+<li><cite>m</cite> x 3 cell arrray with user defined isotope abundance:
+isotopeAbundance{i, 1} = &#8216;Atomic_Symbol&#8217;;
+isotopeAbundance{i, 2} = Mass_Number;
+isotopeAbundance{i, 3} = abundance;
+(where sum of abundances of all isotopes of an element must be one)</li>
+</ul>
+</li>
+<li><p class="first"><strong>printWarning</strong> &#8211;
+true to print warning if there are unknown elements in isotopeAbundance</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>elementalWeightMatrix</strong> &#8211;
+#elements x 2 cell array, the 1st coloumn being the symbols
+of chemial elements and the 2nd their standard atomic weights</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getMolecularMass">
-<code class="descname">getMolecularMass</code><span class="sig-paren">(</span><em>formulae</em>, <em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/getMolecularMass.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getMolecularMass" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getMolecularMass</code><span class="sig-paren">(</span><em>formulae</em>, <em>isotopeAbundance</em>, <em>generalFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/getMolecularMass.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getMolecularMass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets mono-isotopic exact molecular mass for a single formula or a cell array of
 formulae using the atomic weight for each element from NIST
 <a class="reference external" href="http://physics.nist.gov/PhysRefData/Compositions/">http://physics.nist.gov/PhysRefData/Compositions/</a></p>
@@ -208,12 +247,12 @@ specific nuclide (or isotope), while &#8220;atomic weight&#8221; is usually used
 weighted mean of the relative atomic mass over all the atoms in the
 sample (polyisotopic mass).</p>
 <p>If the ratio of the different isotopes are known exactly, this may be
-provided in the <cite>m</cite> x 2 cell array of m isotopes, i.e. <cite>isotopeAbundance</cite>.</p>
+provided in the <cite>m</cite> x 3 cell array of m isotopes, i.e. <cite>isotopeAbundance</cite>.</p>
 <p>By default, this script gives the molecular mass assuming monoisotopic
 exact mass.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>M = getMolecularMass(formulae, isotopeAbundance)</div></blockquote>
+<div>[Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(formulae, isotopeAbundance, generalFormula)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -221,7 +260,7 @@ exact mass.</p>
 single formula or a cell array of formulae</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>isotopeAbundance</strong> &#8211;
@@ -231,19 +270,40 @@ of each element.</p>
 <p>0 = polyisotopic inexact mass i.e. uses all isotopes of each element weighted
 by natural abundance</p>
 <p>or</p>
-<p><cite>m</cite> x 2 cell arrray with user defined isotope abundance:
+<p><cite>m</cite> x 3 cell arrray with user defined isotope abundance:
 isotopeAbundance{i, 1} = &#8216;Atomic_Symbol&#8217;;
 isotopeAbundance{i, 2} = Mass_Number;
 isotopeAbundance{i, 3} = abundance;
 (where sum of abundances of all isotopes of an element must be one)</p>
 </li>
+<li><p class="first"><strong>generalFormula       * (default) false to support formulae containing only biological elements.</strong> &#8211;</p>
+<blockquote>
+<div><p>Return Masses = 0 if a formula contains none of these elements.
+(C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)</p>
+</div></blockquote>
+<ul class="simple">
+<li>true to support formulae with brackets, decimal places and any chemical elements
+including undefined groups (e.g., &#8216;([H2O]2(CuSO4))2Generic_element0.5&#8217;).
+Return Masses = NaN for any formulae with chemical elements of unknown weights
+except the reserved formula &#8216;Mass0&#8217; for denoting truly massless metabolites (e.g., photon)</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>M</strong> &#8211;
+<li><strong>Masses</strong> &#8211;
 molecular mass(es) in (gram/Mol)</li>
+<li><strong>(the below are non-empty only if general = true)</strong></li>
+<li><strong>knownWeights</strong> &#8211;
+MWs for the part whose MW is computable ofr each of the formulae</li>
+<li><strong>unknownElements</strong> &#8211;
+cell arrary of elements without known atomic weights that appear in the formulae</li>
+<li><strong>Ematrix</strong> &#8211;
+elemental composition matrix (#formulae x #elements)</li>
+<li><strong>element</strong> &#8211;
+cell array of elements corresponding to the columns of Ematrix</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -277,7 +337,7 @@ with mass spec machines.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements">
-<code class="descname">parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/813a1b491bb46171b892e28ce878ba3f4d95b7af/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses NIST data on atomic weights</p>
 <p><strong>Usage</strong></p>
 <blockquote>
