@@ -18,18 +18,18 @@ function [newMap] = colorRxnType(map, type, color, width)
 % .. Author: - N.Sompairac - Institut Curie, Paris, 20/10/2017
 
     newMap = map;
-    
+
     % Setting the default width if not given in inputs
-    if nargin<4
+    if nargin < 4
         width = 8;
     end
-    
+
     % Create a Color map with corresponding colors names and their HTML code
     colors = createColorsMap;
-    
+
     % Getting reactions list based on the needed type
     rxnIndexList = find(ismember(newMap.rxnType, type));
-    
+
     % Looping over needed reactions
     for index = rxnIndexList'
         % Modify reaction's base color and width
@@ -37,32 +37,32 @@ function [newMap] = colorRxnType(map, type, color, width)
         newMap.rxnWidth{index} = width;
         % Check if reaction contains any reactants
         if ~isempty(newMap.rxnReactantID{index})
-            % Case where the reaction contains only 1 reactant
             if length(newMap.rxnReactantID{index}) == 1
-                newMap.rxnReactantLineColor{index,1}{1,1} = colors(color);
-                newMap.rxnReactantLineWidth{index,1}{1,1} = width;
-            % Case where the reaction contains several reactants
+                % Case where the reaction contains only 1 reactant
+                newMap.rxnReactantLineColor{index, 1}{1, 1} = colors(color);
+                newMap.rxnReactantLineWidth{index, 1}{1, 1} = width;
             else
+                % Case where the reaction contains several reactants
                 for react = 1:length(newMap.rxnReactantID{index})
-                    newMap.rxnReactantLineColor{index,1}{react,1} = colors(color);
-                    newMap.rxnReactantLineWidth{index,1}{react,1} = width;
+                    newMap.rxnReactantLineColor{index, 1}{react, 1} = colors(color);
+                    newMap.rxnReactantLineWidth{index, 1}{react, 1} = width;
                 end
             end
         end
         % Check if reaction contains any products
-        if ~isempty(newMap.rxnProductID{index}) 
-            % Case where the reaction contains only 1 product
+        if ~isempty(newMap.rxnProductID{index})
             if length(newMap.rxnProductID{index}) == 1
-                newMap.rxnProductLineColor{index,1}{1,1} = colors(color);
-                newMap.rxnProductLineWidth{index,1}{1,1} = width;
-            % Case where the reaction contains several products
+                % Case where the reaction contains only 1 product
+                newMap.rxnProductLineColor{index, 1}{1, 1} = colors(color);
+                newMap.rxnProductLineWidth{index, 1}{1, 1} = width;
             else
+                % Case where the reaction contains several products
                 for react = 1:length(newMap.rxnProductID{index})
-                    newMap.rxnProductLineColor{index,1}{react,1} = colors(color);
-                    newMap.rxnProductLineWidth{index,1}{react,1} = width; 
-                end 
-            end 
+                    newMap.rxnProductLineColor{index, 1}{react, 1} = colors(color);
+                    newMap.rxnProductLineWidth{index, 1}{react, 1} = width;
+                end
+            end
         end
     end
-    
+
 end
