@@ -52,7 +52,7 @@ modelMetFields = getModelFieldsForType(model,'mets');
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
-        warning('Field %s is excluded');
+        warning('Field %s is excluded',cfield);
         continue;
     end
     if ~isfield(model,cfield)
