@@ -28,21 +28,21 @@ function [newMap] = addNotes(model, map)
 
     % Find only metabolites (no subsystems added as a unknown metabolite)
     listmets = strfind(newMap.specName, ']');
-    index= ~cellfun(@isempty, listmets);
-    listmets=newMap.specName(index,1);
+    index = ~cellfun(@isempty, listmets);
+    listmets = newMap.specName(index, 1);
     % Obtain abbreviation of each metabolite (split the indicator of
     % compartment)
-    g = regexp(listmets,'[','split');
+    g = regexp(listmets, '[', 'split');
 
     for i = 1:length(g)
-        g2 = g{i,1};
-        abbreviation(i,1) = g2(1);
+        g2 = g{i, 1};
+        abbreviation(i, 1) = g2(1);
     end
 
     for i = 1:length(listmets)
         met = listmets(i);
-        idsModel = find(ismember(model.mets,met));
-        idsNewMap = find(ismember(newMap.specName,met));
+        idsModel = find(ismember(model.mets, met));
+        idsNewMap = find(ismember(newMap.specName, met));
 
         % Avoid possible errors. Have into account possible extra IDs
         % for same metabolite (this shouldn't be)...
@@ -54,7 +54,7 @@ function [newMap] = addNotes(model, map)
                 metFormula = char(model.metFormulas(idsModel));
                 metCharge = num2str(model.metCharge(idsModel));
                 summary = [a metName b metAbbreviation c metFormula d metCharge e f];
-                newMap.specNotes{idx,1} = [newMap.specNotes{idx} newline summary];
+                newMap.specNotes{idx, 1} = [newMap.specNotes{idx} newline summary];
             end
         else
             metAbbreviation = abbreviation{i};
@@ -62,7 +62,7 @@ function [newMap] = addNotes(model, map)
             metFormula = char(model.metFormulas(idsModel));
             metCharge = num2str(model.metCharge(idsModel));
             summary = [a metName b metAbbreviation c metFormula d num2str(metCharge) e f];
-            newMap.specNotes{idsNewMap,1} = [newMap.specNotes{idsNewMap} newline summary];
+            newMap.specNotes{idsNewMap, 1} = [newMap.specNotes{idsNewMap} newline summary];
         end
     end
 
@@ -75,20 +75,20 @@ function [newMap] = addNotes(model, map)
     n = 'Description: Type';
 
     listRxns = newMap.rxnName;
-    formula = printRxnFormula(model,listRxns);
+    formula = printRxnFormula(model, listRxns);
 
     for j = 1:length(listRxns)
         rxn = listRxns(j);
-        idsModel = find(ismember(model.rxns,rxn));
+        idsModel = find(ismember(model.rxns, rxn));
         formula2 = formula{j};
         score = char(model.rxnConfidenceScores(idsModel));
         lower = num2str(model.lb(idsModel));
         upper = num2str(model.ub(idsModel));
         sub = char(model.subSystems(idsModel));
         type = char(newMap.rxnType{j});
-        summary = [g,formula2,h,score,k,lower,l,upper,m,sub,n,type];
+        summary = [g, formula2, h, score, k, lower, l, upper, m, sub, n, type];
         disp(summary)
-        newMap.rxnNotes{j,1} = [newMap.rxnNotes{j},newline,summary];
+        newMap.rxnNotes{j, 1} = [newMap.rxnNotes{j}, newline, summary];
     end
 
 end
