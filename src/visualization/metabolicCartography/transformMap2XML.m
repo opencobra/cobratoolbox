@@ -184,5 +184,5 @@ function transformMap2XML(xmlStruct, map, fileName)
 
     struct2xml(xmlStruct, fileName);
     toc
-    
+
 end

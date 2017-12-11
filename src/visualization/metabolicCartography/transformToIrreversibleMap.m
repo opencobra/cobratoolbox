@@ -18,7 +18,7 @@ function [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
 %       - N.Sompairac - Institut Curie, Paris 25/07/2017
 
     mapIrrev = map;
-    index = find(ismember(mapIrrev.rxnName,rxnlist));
-    mapIrrev.rxnReversibility(index,1) = {'false'};
+    index = find(ismember(mapIrrev.rxnName, rxnlist));
+    mapIrrev.rxnReversibility(index, 1) = {'false'};
 
 end

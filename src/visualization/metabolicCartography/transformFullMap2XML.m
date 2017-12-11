@@ -57,8 +57,8 @@ function transformFullMap2XML(xmlStruct, map, fileName)
         % Loop over complexes to put the info back to the struct for XML
         % conversion
         for k = 1:length(map.complexAlias)
-            map.complexAlias{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.id;
-            map.complexID{k,1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.species;
+            map.complexAlias{k, 1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.id;
+            map.complexID{k, 1} = xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.species;
             % Test if info on compartment exists
             if ~isempty(map.complexCompartAlias{k})
                 xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.Attributes.compartmentAlias = map.complexCompartAlias{k};
@@ -70,7 +70,7 @@ function transformFullMap2XML(xmlStruct, map, fileName)
             xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfComplexSpeciesAliases.celldesigner_colon_complexSpeciesAlias{k}.celldesigner_colon_usualView.celldesigner_colon_paint.Attributes.color = map.complexColor{k};
         end
     end
-    
+
     % Test if included species exist in the map
     if ~isempty(map.specIncID)
         % Loop over included species to get the need information and
@@ -87,7 +87,7 @@ function transformFullMap2XML(xmlStruct, map, fileName)
             end
         end
     end
-        
+
     % Loop over reactions to put the info back to the struct for XML
     % conversion
     for react = 1:length(map.rxnID)
@@ -222,5 +222,5 @@ function transformFullMap2XML(xmlStruct, map, fileName)
 
     struct2xml(xmlStruct, fileName);
     toc
-    
+
 end
