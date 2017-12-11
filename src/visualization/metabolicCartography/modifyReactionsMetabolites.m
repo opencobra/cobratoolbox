@@ -27,7 +27,7 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017
 
-    colors = createColorsMap; % Create a Color map with corresponding colors names and their HTML code
+    colors = createColorsMap;  % Create a Color map with corresponding colors names and their HTML code
 
     mapStruct = map;
 

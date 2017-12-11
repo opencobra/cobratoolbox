@@ -21,7 +21,7 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
 %       - A.Danielsdottir  Belval, Luxembourg, 15/07/2017.
 %       - J.Modamio. LCSB, Belval, Luxembourg, 23/07/2017. (identify repeated rxns in the map)
 
-    absentRxns = setdiff(rxnList,map.rxnName); % Check what reactions are present in the list but not in the map
+    absentRxns = setdiff(rxnList, map.rxnName);  % Check what reactions are present in the list but not in the map
 
     if ~isempty(absentRxns)
         disp(sprintf('Attention : %d reaction(s) not present in the map!!!', length(absentRxns)))
@@ -35,56 +35,56 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
 
     i = 1;
     for a = PresentRxns'
-        R = strcmp(map.rxnName(:,1),a);
-        rxnIndexList=find(R);
+        R = strcmp(map.rxnName(:, 1), a);
+        rxnIndexList = find(R);
         for rxnIndex = rxnIndexList'
             left = {};
             % Base reactant
             basereact = map.rxnBaseReactantID{rxnIndex};
-            basereact = map.specName(ismember(map.specID,basereact));
+            basereact = map.specName(ismember(map.specID, basereact));
             left = [left; basereact];
 
             % Secondary reactants
             for reactant = 1:length(map.rxnReactantID{rxnIndex})
                 secreac = map.rxnReactantID{rxnIndex}{reactant};
-                secreac = map.specName(ismember(map.specID,secreac));
+                secreac = map.specName(ismember(map.specID, secreac));
                 left = [left; secreac];
             end
 
             right = {};
             % Base product
             baseprod = map.rxnBaseProductID{rxnIndex};
-            baseprod = map.specName(ismember(map.specID,baseprod));
+            baseprod = map.specName(ismember(map.specID, baseprod));
             right = [right; baseprod];
 
             % Secondary products
             for product = 1:length(map.rxnProductID{rxnIndex})
                 secprod = map.rxnProductID{rxnIndex}{product};
-                secprod = map.specName(ismember(map.specID,secprod));
+                secprod = map.specName(ismember(map.specID, secprod));
                 right = [right; secprod];
             end
 
-            formula = sprintf('%s',left{1});
+            formula = sprintf('%s', left{1});
 
-            for x = 2:length(left) % Add (+) in reactant list
-                formula = sprintf('%s + %s',formula,left{x});
+            for x = 2:length(left)  % Add (+) in reactant list
+                formula = sprintf('%s + %s', formula, left{x});
             end
 
-            if strcmp(map.rxnReversibility{rxnIndex}, 'true') % Add directionality of the reaction
-                formula = sprintf('%s <=> ',formula); % Reversible (true)
+            if strcmp(map.rxnReversibility{rxnIndex}, 'true')  % Add directionality of the reaction
+                formula = sprintf('%s <=> ', formula);  % Reversible (true)
             else
-                formula = sprintf('%s -> ',formula); % Irreversible (false)
+                formula = sprintf('%s -> ', formula);  % Irreversible (false)
             end
 
-            formula = sprintf('%s%s',formula,right{1});
+            formula = sprintf('%s%s', formula, right{1});
 
-            for x = 2:length(right) % Add (+) in product list
-                formula = sprintf('%s + %s',formula,right{x});
+            for x = 2:length(right)  % Add (+) in product list
+                formula = sprintf('%s + %s', formula, right{x});
             end
 
-            rxnsList(i,1) = a;
-            formulaList(i,1) = {formula}; % Create a sumary of rxnsName and formula
-            i = i+1;
+            rxnsList(i, 1) = a;
+            formulaList(i, 1) = {formula};  % Create a sumary of rxnsName and formula
+            i = i + 1;
         end
 
         % Check if the reaction name if actually a duplicate
