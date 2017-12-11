@@ -20,5 +20,5 @@ function [rxns, id] = findRxnsFromCompartInMap(map, compartment)
     index = strfind(map.rxnName, compartment);
     id = find(~cellfun(@isempty, index));
     rxns = map.rxnName(id);
-    
+
 end

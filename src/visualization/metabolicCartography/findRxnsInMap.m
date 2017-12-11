@@ -18,7 +18,7 @@ function [rxnID, rxnIDref] = findRxnsInMap(map, rxnList)
 %       - N.Sompairac - Institut Curie, Paris, 11/10/2017
 
     if (iscell(rxnList))
-        [~,rxnID] = ismember(rxnList, map.rxnName);
+        [~, rxnID] = ismember(rxnList, map.rxnName);
         rxnIDref = map.rxnID(rxnID);
     else
         rxnID = find(strcmp(map.rxnName, rxnList));

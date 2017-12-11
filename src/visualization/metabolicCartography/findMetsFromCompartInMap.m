@@ -22,5 +22,5 @@ function [mets, id] = findMetsFromCompartInMap(map, compartment)
     index = strfind(map.specName, compartment);
     id = find(~cellfun(@isempty, index));
     mets = map.specName(id);
-    
+
 end
