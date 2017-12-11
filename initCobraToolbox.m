@@ -549,7 +549,7 @@ else
     try
         macVer = strsplit(macVer,'\n');
         macVer = macVer{2};
-        macVer = strplit(macVer,':');
+        macVer = strsplit(macVer,':');
         macVer = str2double(macVer{2});
         if macVer < 10.12 %Lower than Sierra
             oldMac = true;
@@ -560,10 +560,14 @@ else
 end
 
 macBinaryPath = [CBTDIR filesep 'binary' filesep 'maci64' filesep 'bin'];
-if oldMac
+
+%Set the current and remove the other path. 
+if oldMac    
     addpath([macBinaryPath filesep 'preSierra']);
+    rmpath([macBinaryPath filesep 'postSierra']);
 else
     addpath([macBinaryPath filesep 'postSierra']);
+    rmpath([macBinaryPath filesep 'preSierra']);
 end
 end
 
