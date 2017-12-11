@@ -21,26 +21,26 @@ function [newmap] = defaultColorCD(map)
     areaWidth = 1.0;
 
     for j = 1:length(newmap.rxnName)
-        newmap.rxnColor{j,1} = color;
-        newmap.rxnWidth{j,1} = areaWidth;
+        newmap.rxnColor{j, 1} = color;
+        newmap.rxnWidth{j, 1} = areaWidth;
     end
     % Use the existence of reactant lines to check if the map has the
     % complete structure, and if so change also secondary lines.
     for j = 1:length(newmap.rxnName)
-        if any(strcmp('rxnReactantLineColor',fieldnames(newmap))) == 1
+        if any(strcmp('rxnReactantLineColor', fieldnames(newmap))) == 1
             if ~isempty(newmap.rxnReactantLineColor{j})
                 for k = 1:length(newmap.rxnReactantLineColor{j})
-                    newmap.rxnReactantLineColor{j,1}{k,1} = Colors(color);
-                    newmap.rxnReactantLineWidth{j,1}{k,1} = areaWidth;
+                    newmap.rxnReactantLineColor{j, 1}{k, 1} = Colors(color);
+                    newmap.rxnReactantLineWidth{j, 1}{k, 1} = areaWidth;
                 end
             end
             if ~isempty(newmap.rxnProductLineColor{j})
                 for m = 1:1:length(newmap.rxnProductLineColor{j})
-                    newmap.rxnProductLineColor{j,1}{m,1} = Colors(color);
-                    newmap.rxnProductLineWidth{j,1}{m,1} = areaWidth;   
+                    newmap.rxnProductLineColor{j, 1}{m, 1} = Colors(color);
+                    newmap.rxnProductLineWidth{j, 1}{m, 1} = areaWidth;
                 end
             end
         end
     end
-    
+
 end
