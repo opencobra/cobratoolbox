@@ -53,6 +53,10 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
 |`model.rxnSBOTerms`| `n x 1` | Column Cell Array of Strings | The SBO Identifier associated with the reaction | 
 |`model.subSystems`| `n x 1` | Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
+|`model.ctrs`| `ctrs x 1` | Column Cell Array of Strings | Names for non metabolic constraints (e.g. coupling constraints) | 
+|`model.C`| `ctrs x n` | Sparse or Full Matrix of Double | Coefficients of the non metabolic constraints | 
+|`model.d`| `ctrs x 1` | Column Vector of Doubles | Right hand side of the non metabolic constraints | 
+|`model.dsense`| `ctrs x 1` | Column Vector of Chars | Sense of the non metabolic constraints. | 
 ### Model Specific Fields
 Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices). 
 

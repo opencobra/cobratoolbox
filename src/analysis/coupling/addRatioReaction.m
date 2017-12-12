@@ -20,17 +20,5 @@ function modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
 %
 % .. Author: - Ines Thiele 02/09
 
-modelNew = model;
-
-[rows, cols] = size(model.S);
-
-[A, Loc] = ismember(listOfRxns,model.rxns);
-
-modelNew = addMetabolite(model,strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2}),strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2}));
-modelNew.S(end,Loc) = [-ratioCoeff(1) ratioCoeff(2)];
-
-if isfield(modelNew,'note')
-    modelNew.note = strcat(modelNew.note,listOfRxns{1},' and ',listOfRxns{2}, 'are set to have a ratio of',ratioCoeff(1),' to ' ,ratioCoeff(2),'.');
-else
-    modelNew.note = strcat(listOfRxns{1},' and ',listOfRxns{2}, 'are set to have a ratio of ',num2str(ratioCoeff(1)),':' ,num2str(ratioCoeff(2)),'.');
-end
+ConstraintName = ['Ratio_',listOfRxns{1},'_',listOfRxns{2}];
+modelNew = addCOBRAConstraint(model,listOfRxns, 0, 'c', [-ratioCoeff(1) ratioCoeff(2)], 'dsense', 'E', 'ConstraintID', ConstraintName);

@@ -237,3 +237,26 @@ end
 if isfield(model,'comps') && ischar(model.comps)
     model.comps = columnVector(arrayfun(@(x) {x},model.comps));
 end
+
+%Further, if there is a C matrix, check, whether csense contains both
+%dsense and csense and replace accordingly.
+if isfield(model,'C') % we assume, that d is present.
+    %Crete the ctrs field.
+    if ~isfield(model,'ctrs')
+        model = createEmptyFields(model,'ctrs',{'ctrs','d',1,'iscell(x)','[''Constraint'' num2str(i)]',0,'cell'});
+    end
+    if isfield(model,'csense')
+        if length(model.csense) == size(model.S,1) + size(model.C,1)
+            model.dsense = model.csense(size(model.S,1)+1:end);
+            model.csense = model.csense(1:size(model.S,1));
+        elseif length(model.csense) == size(model.S,1)
+            %This is odd. 
+            %lets create the dsense vector.
+            model = createEmptyFields(model,'dsense');            
+        end
+    else
+        %create csense and dsense
+        model = createEmptyFields(model,'csense');
+        model = createEmptyFields(model,'dsense');
+    end
+end

@@ -204,42 +204,13 @@ end
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
 
-%make sure C is present if d is present
-if ~isfield(model,'C') && isfield(model,'d')
-    error('For the constraints C*v <= d, both must be present')
-end
-
-if isfield(model,'C')
-    [nIneq,nltC]=size(model.C);
-    [nIneq2,nltd]=size(model.d);
-    if nltC~=nRxns
-        error('For the constraints C*v <= d the number of columns of S and C are inconsisent')
-    end
-    if nIneq~=nIneq2
-        error('For the constraints C*v <= d, the number of rows of C and d are inconsisent')
-    end
-    if nltd~=1
-        error('For the constraints C*v <= d, d must have only one column')
-    end
-else
-    nIneq=0;
-end
-
 if ~isfield(model,'dxdt')
     if isfield(model,'b')
         %old style model
         if length(model.b)==nMets
             model.dxdt=model.b;
-            %model=rmfield(model,'b'); %tempting to do this
         else
-            if isfield(model,'C')
-                %new style model, b must be rhs for [S;C]*v {=,<=,>=} [dxdt,d] == b
-                if length(model.b)~=nMets+nIneq
-                    error('model.b must equal the number of rows of [S;C]')
-                end
-            else
-                error('model.b must equal the number of rows of S or [S;C]')
-            end
+            error('model.b must equal the number of rows of S or [S;C]')
         end
     else
         fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
@@ -252,66 +223,39 @@ else
 end
 
 %check the csense and make sure it is consistent
-if isfield(model,'C')
-    if ~isfield(model,'csense')
-        if printLevel>1
-            fprintf('%s\n','No defined csense.')
-            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
-        end
-        model.csense(1:nMets,1) = 'E';
-        model.csense(nMets+1:nMets+nIneq,1) = 'L';
-    else 
-        if length(model.csense)~=nMets+nIneq
-            error('Length of csense is invalid! Defaulting to equality constraints.')
-        else
-            model.csense = columnVector(model.csense);
-        end
+if ~isfield(model,'csense')
+    % If csense is not declared in the model, assume that all constraints are equalities.
+    if printLevel>1
+        fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
     end
-else   
-    if ~isfield(model,'csense')
-        % If csense is not declared in the model, assume that all constraints are equalities.
-        if printLevel>1
-            fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
-        end
+    model.csense(1:nMets,1) = 'E';
+else % if csense is in the model, move it to the lp problem structure
+    if length(model.csense)~=nMets
+        error('The length of csense does not match the number of rows of model.S.')
         model.csense(1:nMets,1) = 'E';
-    else % if csense is in the model, move it to the lp problem structure
-        if length(model.csense)~=nMets
-            error('The length of csense does not match the number of rows of model.S.')
-            model.csense(1:nMets,1) = 'E';
-        else
-            model.csense = columnVector(model.csense);
-        end
+    else
+        model.csense = columnVector(model.csense);
     end
 end
 
 %now build the equality and inequality constraint matrices
-if isfield(model,'d')    
-    LPproblem.b = [model.dxdt;model.d];
-else
-    LPproblem.b = model.dxdt;
-end
-
-if isfield(model,'C')    
-    LPproblem.A = [model.S;model.C];
-else
-    LPproblem.A = model.S;
-end
-
-%copy over the constraint sense also
+LPproblem.b = model.dxdt;
+LPproblem.A = model.S;
 LPproblem.csense=model.csense;
-
 %linear objective coefficient
 LPproblem.c = model.c;
 
 %box constraints
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
+BasicLP = LPproblem;
+
+%and add any C*v dsense d constraints
+LPproblem = addCConstraintsToLPProblem(LPproblem,model);
 
 %Double check that all inputs are valid:
 if ~(verifyCobraProblem(LPproblem, [], [], false) == 1)
-    warning('invalid problem');
-    return;
+    error('invalid problem'); %This should be an error, not a warning... If the problem is invalid, code should never proceed
 end
 
 %%
@@ -356,28 +300,16 @@ if strcmp(minNorm, 'one')
     % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
     %
     % delta+,delta- >= 0
-    LPproblem2.A = [model.S sparse(nMets,2*nRxns);
+    LPproblem2.A = [BasicLP.A sparse(nMets,2*nRxns);
         speye(nRxns,nRxns) speye(nRxns,nRxns) sparse(nRxns,nRxns);
         -speye(nRxns,nRxns) sparse(nRxns,nRxns) speye(nRxns,nRxns);
-        model.c' sparse(1,2*nRxns)];
+        BasicLP.c' sparse(1,2*nRxns)];
     LPproblem2.c  = [zeros(nRxns,1);ones(2*nRxns,1)];
-    LPproblem2.lb = [model.lb;zeros(2*nRxns,1)];
-    LPproblem2.ub = [model.ub;Inf*ones(2*nRxns,1)];
-    LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
-    if ~isfield(model,'csense')
-        % If csense is not declared in the model, assume that all
-        % constraints are equalities.
-        LPproblem2.csense(1:nMets) = 'E';
-    else % if csense is in the model, move it to the lp problem structure
-        if length(model.csense)~=nMets,
-            warning('Length of csense is invalid! Defaulting to equality constraints.')
-            LPproblem2.csense(1:nMets) = 'E';
-        else
-            LPproblem2.csense = columnVector(model.csense);
-        end
-    end
-    LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';
-
+    LPproblem2.lb = [BasicLP.lb;zeros(2*nRxns,1)];
+    LPproblem2.ub = [BasicLP.ub;Inf*ones(2*nRxns,1)];
+    LPproblem2.b  = [BasicLP.b;zeros(2*nRxns,1);solution.obj];
+    LPproblem2.csense = BasicLP.csense;    
+    LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';    
     % constrain the optimal value according to the original problem
     if LPproblem.osense==-1
         LPproblem2.csense(nMets+2*nRxns+1) = 'G';
@@ -385,14 +317,16 @@ if strcmp(minNorm, 'one')
         LPproblem2.csense(nMets+2*nRxns+1) = 'L';
     end
     LPproblem2.csense = columnVector(LPproblem2.csense);
-    LPproblem2.osense = 1;
+    LPproblem2.osense = 1;    
     % Re-solve the problem
     if allowLoops
+        LPproblem2 = addCConstraintsToLPProblem(LPproblem2,model);
         solution = solveCobraLP(LPproblem2);
         solution.dual = []; % slacks and duals will not be valid for this computation.
         solution.rcost = [];
     else
         MILPproblem2 = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+        MILPproblem2 = addCConstraintsToLPProblem(MILPproblem2,model);
         solution = solveCobraMILP(MILPproblem2);
     end
 elseif strcmp(minNorm, 'zero')
@@ -403,12 +337,13 @@ elseif strcmp(minNorm, 'zero')
     %                   lb <= v <= ub
 
     % Define the constraints structure
-    constraint.A = [LPproblem.A ; LPproblem.c'];
-    constraint.b = [LPproblem.b ; solution.obj];
-    constraint.csense = [LPproblem.csense;'E'];
-    constraint.lb = LPproblem.lb;
-    constraint.ub = LPproblem.ub;
-
+    constraint.A = [BasicLP.A ; BasicLP.c'];
+    constraint.b = [BasicLP.b ; solution.obj];
+    constraint.csense = [BasicLP.csense;'E'];
+    constraint.lb = BasicLP.lb;
+    constraint.ub = BasicLP.ub;
+    constraint = addCConstraintsToLPProblem(constraint,model);
+    
     % Call the sparse LP solver
     solutionL0 = sparseLP(zeroNormApprox,constraint);
 
@@ -436,11 +371,11 @@ elseif length(minNorm)> 1 || minNorm > 0
 
     % quadratic minimization of the norm.
     % set previous optimum as constraint.
-    LPproblem.A = [LPproblem.A;LPproblem.c'];
-    LPproblem.b = [LPproblem.b;LPproblem.c'*solution.full];
+    LPproblem.A = [BasicLP.A;BasicLP.c'];
+    LPproblem.b = [BasicLP.b;BasicLP.c'*solution.full];
     LPproblem.csense(end+1) = 'E';
 
-    LPproblem.c = zeros(size(LPproblem.c)); % no need for c anymore.
+    LPproblem.c = zeros(size(BasicLP.c)); % no need for c anymore.
     %Minimise Euclidean norm using quadratic programming
     if length(minNorm)==1
         minNorm=ones(nRxns,1)*minNorm;
@@ -452,6 +387,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
         %part of a loop. By definition, exchange reactions are not part of these loops, more
         %properly called stoichiometrically balanced cycles.
+        LPproblem = addCConstraintsToLPProblem(LPproblem,model);
         solution = solveCobraQP(LPproblem);
 
         if isfield(solution,'dual')
@@ -463,6 +399,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
         %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
         MIQPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+        MIQPproblem = addCConstraintsToLPProblem(MIQPproblem,model);
         solution = solveCobraMIQP(MIQPproblem);
     end
 end

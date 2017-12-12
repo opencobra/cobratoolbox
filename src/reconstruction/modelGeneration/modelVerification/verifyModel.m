@@ -27,7 +27,8 @@ function results = verifyModel(model, varargin)
 %                     be produced, or consumed) (Default: false)
 %                   * 'simpleCheck' returns false if this is not a valid model
 %                     and true if it is a valid model, ignored if any other
-%                     option is selected. (Default: false)
+%                     option is selected (except restrictToFields and silentCheck).
+%                     (Default: false)
 %                   * 'requiredFields' sets the fields which are required,
 %                     the argument must be firectly followed by the list of
 %                     required fields.
