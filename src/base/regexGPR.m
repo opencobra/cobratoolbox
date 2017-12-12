@@ -1,4 +1,4 @@
-function preParsedGrRules = regexGPR(grRule)
+function preParsedGrRules = preparseGPR(grRule)
 
     preParsedGrRules = regexprep(grRule, '[\]\}]',')'); %replace other brackets by parenthesis.
     preParsedGrRules = regexprep(preParsedGrRules, '[\[\{]','('); %replace other brackets by parenthesis.
