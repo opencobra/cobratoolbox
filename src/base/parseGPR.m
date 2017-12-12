@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList,newGeneList] = parseGPR( grRuleString, currentGenes)
+function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, currentGenes, newGenes)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -38,6 +38,7 @@ if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 
 end
 %toc
 %tic
+%{
 tmp = regexprep(grRuleString, '[\]\}]',')'); %replace other brackets by parenthesis.
 tmp = regexprep(tmp, '[\[\{]','('); %replace other brackets by parenthesis.
 tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenthesis
@@ -48,14 +49,16 @@ tmp = regexprep(tmp, '[\s]?&[\s]?', ' & '); %introduce spaces around ands
 tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
 %Now, genes are items which do not have brackets, operators or whitespace
 %characters
+%if ~exist(newGenes, 'var')
 %tic
-genes = regexp(tmp,'([^\(\)\|\&\s]+)','match');
+newGenes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
+%end
 %toc
 %We have a new Gene List (which can be empty).
 %tic
-for i = 1:length(genes)
-    if ~any(strcmp(currentGenes, genes{i}))
-        newGeneList{end+1} = genes{i};
+for i = 1:length(newGenes)
+    if ~any(strcmp(currentGenes, newGenes{i}))
+        newGeneList{end+1} = newGenes{i};
     end
 end
 %toc
@@ -73,7 +76,7 @@ convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
 %toc
 %keyboard
 %tic
-ruleString = regexprep(tmp, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
+ruleString = regexprep(grRuleString, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
 ruleString = strtrim(ruleString); %Remove leading and trailing spaces
 end

@@ -16,10 +16,12 @@ function [model] = generateRules(model)
 %            -  Uri David Akavia 6-Aug-2017, bug fixes and speedup
 %            -  Diana El Assal 30/8/2017
 
+tmp = regexGPR(model.grRules);
+
 model.rules={};
-    for i = 1:length(model.grRules)
-        if ~isempty(model.grRules{i})
-            [rule,~,newGenes] = parseGPR(model.grRules{i},model.genes);
+    for i = 1:length(tmp)
+        if ~isempty(tmp{i})
+            [rule,~,newGenes] = parseGPR(tmp{i},model.genes);
             if ~isempty(newGenes)
                 warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
                 model.genes = [model.genes ; newGenes];
