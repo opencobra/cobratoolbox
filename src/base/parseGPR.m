@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, currentGenes, newGenes)
+function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, totalGeneList, newGenes)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -12,22 +12,21 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, curren
 %
 % USAGE:
 %
-%    [newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,currentGenes)
+%    [newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,totalGeneList)
 %
 % INPUT:
 %    grRuleString:     The rule string in textual format.
-%    currentGenes:     Names of all currently known genes. Encountered
+%    totalGeneList:     Names of all currently known genes. Encountered
 %                      genes (column cell Array of Strings)
 % OUTPUT:
 %    ruleString:       The logical formula representing the grRuleString.
 %                      Any position refers to the totalGeneList returned.
-%    totalGeneList:    The concatenation of currentGenes and newGeneList
+%    totalGeneList:    The concatenation of totalGeneList and newGeneList
 %    newGeneList:      A list of gene Names that were not present in
-%                      currentGenes
+%                      totalGeneList
 %
 % .. Author: -  Thomas Pfau Okt 2017
 
-totalGeneList = currentGenes;
 newGeneList = {};
 %tic;
 if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
@@ -38,34 +37,28 @@ if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 
 end
 %toc
 %tic
-%{
-tmp = regexprep(grRuleString, '[\]\}]',')'); %replace other brackets by parenthesis.
-tmp = regexprep(tmp, '[\[\{]','('); %replace other brackets by parenthesis.
-tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenthesis
-tmp = regexprep(tmp,'\s*([\)])','$1'); %replace all spaces before closing paranthesis.
-tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(and)\s*?(\s?[\(]|\s)\s*', '$1&$3'); %Replace all ands
-tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(or)\s*?(\s?[\(]|\s)\s*', '$1|$3'); %replace all ors
+% preparse all model.grRules
+if ~iscell(grRuleString)
+    grRuleString = preparseGPR(grRuleString);
+end
 tmp = regexprep(tmp, '[\s]?&[\s]?', ' & '); %introduce spaces around ands
 tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
-%Now, genes are items which do not have brackets, operators or whitespace
-%characters
-%if ~exist(newGenes, 'var')
+%Now, genes are items which do not have brackets, operators or whitespace characters
 %tic
 newGenes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
-%end
 %toc
 %We have a new Gene List (which can be empty).
 %tic
 for i = 1:length(newGenes)
-    if ~any(strcmp(currentGenes, newGenes{i,1}))
-        newGeneList{end+1} = newGenes{i,1};
+    if ~any(strcmp(totalGeneList, newGenes{i}))
+        newGeneList{end+1} = newGenes{i};
     end
 end
 %toc
 %tic
 %So generate the new gene list.
 if ~isempty(newGeneList)
-    totalGeneList = [currentGenes; newGeneList];
+    totalGeneList = [totalGeneList; newGeneList];
 end
 %toc
 
@@ -74,7 +67,6 @@ end
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
 %convertGenes = @(x) ['x(',num2str(find(ismember(totalGeneList,x))),')'];
 %toc
-%keyboard
 %tic
 ruleString = regexprep(grRuleString, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
