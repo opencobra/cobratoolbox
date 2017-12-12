@@ -27,7 +27,7 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     echo " > Remote set"
 
     # clone submodules
-    git submodule update --init --recursive --remote --depth 1
+    git submodule update --init --remote --depth 1
     echo " > Submodules cloned"
 
     # retrieve the SHA1 of the detached head
