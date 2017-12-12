@@ -160,25 +160,15 @@ if isempty(fileName)
     if fileNameFull
         [folder, fileName, extension] = fileparts([filePath filesep fileNameFull]);
         fileName = [folder filesep fileName extension];
-        switch extension
-            case '.MPS'
-                format = 'mps';
-            case {'.xls', '.xlsx'}
-                format = 'xls';
-            case '.txt'
-                format = 'text';
-            case '.xml'
-                format = 'sbml';
-            case '.mat'
-                format = 'mat';
-            case '.expa'
-                format = 'expa';
-            otherwise
-                format = 'unknown';
-        end
+        format = getFormatFromExtension(extension);
     else
         return;
     end
+else
+    if strcmp(format,'toselect') % no format was given. try to detect from fileName.
+        [~, ~, extension] = fileparts(fileName);
+        format = getFormatFromExtension(extension);
+    end        
 end
 % Use lower case
 format = lower(format);
@@ -239,3 +229,33 @@ for i = 1:length(geneNames)
     geneStr = [geneStr ' ' geneNames{i}];
 end
 geneStr = strtrim(geneStr);
+
+
+
+function format = getFormatFromExtension(extension)
+%Get the format from the file extension.
+%
+% INPUT: 
+%
+%    extension:     The file extension
+%
+% OUTPUT:
+%    
+%    format:        The file format
+
+switch extension
+    case '.MPS'
+        format = 'mps';
+    case {'.xls', '.xlsx'}
+        format = 'xls';
+    case '.txt'
+        format = 'text';
+    case '.xml'
+        format = 'sbml';
+    case '.mat'
+        format = 'mat';
+    case '.expa'
+        format = 'expa';
+    otherwise
+        format = 'unknown';
+end

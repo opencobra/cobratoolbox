@@ -221,6 +221,11 @@ function initCobraToolbox()
             addpath(genpath(tmpDir));
         end
     end
+    
+    %Adapt the mac path depending on the mac version.
+    if ismac
+        adaptMacPath()
+    end
 
     % add the docs/source/notes folder
     addpath(genpath([CBTDIR filesep 'docs' filesep 'source' filesep 'notes']));
@@ -513,8 +518,8 @@ function initCobraToolbox()
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be restored.');
-    end
-
+    end    
+    
     % change back to the current directory
     cd(currentDir);
 
@@ -523,6 +528,8 @@ function initCobraToolbox()
     if ENV_VARS.printLevel
         clearvars
     end
+        
+    
 end
 
 function checkGit()
