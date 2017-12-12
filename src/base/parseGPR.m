@@ -57,8 +57,8 @@ newGenes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
 %We have a new Gene List (which can be empty).
 %tic
 for i = 1:length(newGenes)
-    if ~any(strcmp(currentGenes, newGenes{i}))
-        newGeneList{end+1} = newGenes{i};
+    if ~any(strcmp(currentGenes, newGenes{i,1}))
+        newGeneList{end+1} = newGenes{i,1};
     end
 end
 %toc
