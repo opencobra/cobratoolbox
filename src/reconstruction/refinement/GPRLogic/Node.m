@@ -167,6 +167,17 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         end
         
         function tf = isequal(self,otherNode)
+            % Get all functional gene sets useable for this node
+            % USAGE:
+            %    tf = Node.isequal(otherNode)
+            %
+            % INPUTS:
+            %    otherNode:   The node to compare this node with            
+            %
+            % OUTPUTS:
+            %    tf:          true, if this node is equal to the other
+            %                 node, i.e. it represents the same boolean truth table.
+            %
             list= cellfun(@str2num , self.getLiterals());
             otherlist = cellfun(@str2num , otherNode.getLiterals());
             if ~isempty(setxor(list,otherlist))
@@ -199,21 +210,21 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
                             setFound = true;
                             break
                         end
-                    end                                        
+                    end
                 end
                 if ~setFound
                     tf = false;
                     return
-                end               
+                end
             end
             while ~isempty(otherGeneSets)
                 setFound = false;
                 for i = 1:numel(presentsets)
-                        if isempty(setxor(geneSets{1},presentsets{i}))
-                            geneSets(1) = [];
-                            setFound = true;
-                            break
-                        end
+                    if isempty(setxor(geneSets{1},presentsets{i}))
+                        geneSets(1) = [];
+                        setFound = true;
+                        break
+                    end
                 end
                 if ~setFound
                     tf = false;
