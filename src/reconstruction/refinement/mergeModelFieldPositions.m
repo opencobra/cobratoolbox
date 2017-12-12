@@ -47,7 +47,11 @@ if ~exist('mergeFunctions','var')
     mergeFunctions = basicFunctions;
 else
     toRemove = ismember(basicFunctions(:,1),mergeFunctions(:,1));
-    mergeFunctions=[basicFunctions(~toRemove,:),mergeFunctions(:,:)];
+    if all(toRemove)        
+        mergeFunctions=mergeFunctions(:,:);
+    else
+        mergeFunctions=[basicFunctions(~toRemove,:);mergeFunctions(:,:)];
+    end
 end
 
               
