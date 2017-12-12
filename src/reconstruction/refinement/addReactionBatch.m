@@ -145,11 +145,13 @@ if any(ismember(varargin(1:2:end),'rules'))
     %create the grRules
     rulesToUpdate = nRxns + find(~cellfun(@isempty, model.rules(nRxns+1:end)));
     if ~isempty(rulesToUpdate)
-        cGrRules = newmodel.grRules(nRxns+1:end);
-        cGrRules = strrep(cGrRules,'|','or');
-        cGrRules = strrep(cGrRules,'&','and');
-        cGrRules = regexprep(cGrRules,'x\(([0-9]+)\)','${model.genes{str2num($1)}}');
-        newmodel.grRules(nRxns+1:end) = cGrRules;
+        if isfield(newmodel,'grRules')
+            cGrRules = newmodel.grRules(nRxns+1:end);
+            cGrRules = strrep(cGrRules,'|','or');
+            cGrRules = strrep(cGrRules,'&','and');
+            cGrRules = regexprep(cGrRules,'x\(([0-9]+)\)','${model.genes{str2num($1)}}');
+            newmodel.grRules(nRxns+1:end) = cGrRules;
+        end
         %Also update the rxnGeneMat, if present
         if isfield(model,'rxnGeneMat')
             nGenes = length(newmodel.genes);
