@@ -17,7 +17,7 @@ function [model] = generateRules(model)
 %            -  Diana El Assal 30/8/2017
 
 % preparse all model.grRules
-preParsedGrRules = regexGPR(model.grRules);
+preParsedGrRules = preparseGPR(model.grRules);
 
 % determine the number of rules
 nRules = length(model.grRules);

@@ -1,6 +1,6 @@
-function preParsedGrRules = preparseGPR(grRule)
+function preParsedGrRules = preparseGPR(grRules)
 
-    preParsedGrRules = regexprep(grRule, '[\]\}]',')'); %replace other brackets by parenthesis.
+    preParsedGrRules = regexprep(grRules, '[\]\}]',')'); %replace other brackets by parenthesis.
     preParsedGrRules = regexprep(preParsedGrRules, '[\[\{]','('); %replace other brackets by parenthesis.
     preParsedGrRules = regexprep(preParsedGrRules,'([\(])\s*','$1'); %replace all spaces after opening parenthesis
     preParsedGrRules = regexprep(preParsedGrRules,'\s*([\)])','$1'); %replace all spaces before closing paranthesis.
