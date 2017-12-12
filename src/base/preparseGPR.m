@@ -1,4 +1,18 @@
 function preParsedGrRules = preparseGPR(grRules)
+% preparse model.grRules before parsing the remaining part
+% and transforming model.grRules into model.rules
+%
+% USAGE:
+%
+%    preParsedGrRules = preparseGPR(grRules)
+%
+% INPUT:
+%    grRules:           grRules cell or single grRule
+%
+% OUTPUT:
+%    preParsedGrRules:  preparsed grRules cell or single grRule
+%
+% .. Author: -  Laurent Heirendt - December 2017
 
     preParsedGrRules = regexprep(grRules, '[\]\}]',')'); %replace other brackets by parenthesis.
     preParsedGrRules = regexprep(preParsedGrRules, '[\[\{]','('); %replace other brackets by parenthesis.
