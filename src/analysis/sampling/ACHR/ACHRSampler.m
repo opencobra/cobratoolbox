@@ -1,4 +1,4 @@
-function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime, printLevel)
+function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime, printLevel, minFlux, maxFlux)
 % Artificial Centering Hit-and-Run sampler
 %
 % USAGE:
@@ -19,6 +19,8 @@ function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, steps
 %    fileBaseNo:       Base file number for continuing previous sampler run
 %                      (Default = 0)
 %    maxTime:          Maximum time limit (Default = 36000 s)
+%    minFlux:          Lower bound of the solution space given by FVA
+%    maxFlux:          Upper bound of the solution space given by FVA
 %
 % .. Authors: -
 %       - Markus Herrgard 4/14/06
@@ -36,6 +38,10 @@ if (nargin < 9) || isempty(maxTime)
 end
 if nargin<10
    printLevel=1; 
+end
+if nargin<12
+    minFlux = model.lb;
+    maxFlux = model.ub;
 end
 N = null(full(model.S));
 
@@ -91,8 +97,8 @@ for i = 1:nFiles
             u = u/norm(u);
 
             % Figure out the distances to upper and lower bounds
-            distUb = (model.ub - prevPoint);
-            distLb = (prevPoint - model.lb);
+            distUb = (maxFlux - prevPoint);
+            distLb = (prevPoint - minFlux);
 
             % Figure out if we are too close to a boundary
             validDir = ((distUb > dTol) & (distLb > dTol));
@@ -139,7 +145,7 @@ for i = 1:nFiles
 
             % Print out errors
             if (mod(totalStepCount,2000)==0)
-              fprintf(fidErr,'%10.8f\t%10.8f\t',max(curPoint-model.ub),max(model.lb-curPoint));
+              fprintf(fidErr,'%10.8f\t%10.8f\t',max(curPoint-maxFlux),max(minFlux-curPoint));
             end
 
             timeElapsed = cputime-t0;
@@ -152,13 +158,13 @@ for i = 1:nFiles
               end
             end
 
-            overInd = find(curPoint > model.ub);
-            underInd = find(curPoint < model.lb);
+            overInd = find(curPoint > maxFlux);
+            underInd = find(curPoint < minFlux);
 
-            if (any((model.ub-curPoint) < 0) | any((curPoint-model.lb) ...
+            if (any((maxFlux-curPoint) < 0) | any((curPoint-minFlux) ...
                                                    < 0))
-              curPoint(overInd) = model.ub(overInd);
-              curPoint(underInd) = model.lb(underInd);
+              curPoint(overInd) = maxFlux(overInd);
+              curPoint(underInd) = minFlux(underInd);
 
             end
 
