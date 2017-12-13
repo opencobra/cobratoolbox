@@ -27,7 +27,7 @@ function [P,model] = chrrParseModel(model)
 %               * .b - Right hand side of inequality constraints (`[lb; -ub]`)
 %
 % .. Authors:
-%       - Ben Cousins and Hulda Haraldsdóttir, 10/2017
+%       - Ben Cousins and Hulda Haraldsdóttir, 10/2016
 %       - Ben Cousins, 12/2017, Moved objective function handling to preprocess function
 
 dim = length(model.lb);

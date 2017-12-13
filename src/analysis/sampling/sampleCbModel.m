@@ -61,6 +61,7 @@ nFilesSkipped = 2;
 maxTime = 10 * 3600;
 toRound = 1;
 useFastFVA = false;
+optPercentage = 100;
 % Default options above
 if ~exist('sampleFile','var')
     samplerName = 'sampleFile.mat';
@@ -104,6 +105,9 @@ if exist('options','var')
     end
     if (isfield(options,'useFastFVA'))
         useFastFVA = options.useFastFVA;
+    end
+    if (isfield(options,'optPercentage'))
+        optPercentage = options.optPercentage;
     end
 end
 
@@ -155,7 +159,7 @@ switch samplerName
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
     case 'CHRR'
-        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, useFastFVA);
+        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, useFastFVA,optPercentage);
 
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
