@@ -309,17 +309,25 @@ having cell arrays with chars.</dd>
 
 <dl class="function">
 <dt id="src.base.io.utilities.creategrRulesField">
-<code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
+<code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em>, <em>positions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the grRules optional model field from the required rules and gene fields.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>modelWithField = creategrRulesField(model)</div></blockquote>
+<div>modelWithField = creategrRulesField(model, positions)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 The COBRA Model structure to generate the grRules Field for
 an existing grRules field will be overwritten</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>positions</strong> &#8211;
+The positions to update. Can be supplied either as
+logical array, double indices, or reaction names (Default: model.rxns)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>

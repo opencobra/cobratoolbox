@@ -1,7 +1,7 @@
 .. _tutorialSparseFBA_freeATPtest:
 
-Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis
-===========================================================================================================
+tutorialNoName
+==============
 
 
 .. raw:: html

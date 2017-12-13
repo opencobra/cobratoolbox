@@ -1,7 +1,7 @@
 .. _tutorialModelATPYield:
 
-Test physiologically relevant ATP yields from different carbon sources for a metabolic model 
-=============================================================================================
+tutorialNoName
+==============
 
 
 .. raw:: html

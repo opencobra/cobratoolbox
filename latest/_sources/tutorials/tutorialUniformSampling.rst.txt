@@ -1,7 +1,7 @@
 .. _tutorialUniformSampling:
 
-Uniform sampling
-================
+tutorialNoName
+==============
 
 
 .. raw:: html

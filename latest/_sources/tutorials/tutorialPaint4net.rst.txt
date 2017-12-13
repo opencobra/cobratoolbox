@@ -1,7 +1,7 @@
 .. _tutorialPaint4net:
 
-Paint4Net: visualisation toolbox for COBRA
-==========================================
+tutorialNoName
+==============
 
 
 .. raw:: html

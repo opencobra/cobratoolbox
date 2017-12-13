@@ -1,7 +1,7 @@
 .. _tutorialRelaxedFBABounds:
 
-Relaxed Flux Balance Analysis: Toy model
-========================================
+tutorialNoName
+==============
 
 
 .. raw:: html

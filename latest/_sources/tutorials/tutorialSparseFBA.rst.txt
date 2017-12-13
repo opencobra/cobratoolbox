@@ -1,7 +1,7 @@
 .. _tutorialSparseFBA:
 
-Sparse Flux Balance Analysis 
-=============================
+tutorialNoName
+==============
 
 
 .. raw:: html
