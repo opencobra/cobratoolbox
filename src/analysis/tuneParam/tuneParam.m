@@ -8,12 +8,10 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 %
 % USAGE
 %
-%    cpxControl = CPLEXParamSet('ILOGcomplex');
-%    load ecoli_core_model;
-%    optimalParameters = tuneParam(model,cpxControl,1000,1000,0);
+%    optimalParameters = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel);
 %
 % INPUT:
-%         LPProblem:     MILP as COBRA model structure
+%         LPProblem:     MILP as COBRA LP problem structure
 %         contFunctName: Parameters structure containing the name and value.
 %                        A set of routine parameters will be added by the solver
 %                        but won't be reported.
@@ -23,7 +21,7 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 %                        sets the CPX_PARAM_TUNINGREPEAT parameter
 %                        High values of nrepeat would require consequent
 %                        memory and swap.
-%         printLevel:    0/1/2/3
+%         printLevel:    0/(1)/2/3
 %
 % OUTPUT:
 %         optimParam: structure of optimal parameter values directly usable as
@@ -33,6 +31,11 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 if ~changeCobraSolver('ibm_cplex')
     error('This function requires IBM ILOG CPLEX');
 end
+
+if ~exist('printLevel','var')
+    printLevel = 1;
+end
+
 if exist('timelimit','var')
     contFunctName.tune.timelimit = timelimit;
 end
@@ -42,6 +45,7 @@ end
 if exist('printLevel','var')
     contFunctName.tune.display = printLevel;
 end
+
 
 %read parameters
 if isstruct(contFunctName)
