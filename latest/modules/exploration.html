@@ -386,6 +386,35 @@ exchange reactions are exchange reactions with negative lower bounds.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.exploration.findGPRFromRxns">
+<code class="descname">findGPRFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnIDs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/exploration/findGPRFromRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.findGPRFromRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Textual representations of the GPR rules for the indicated
+reactions.
+<strong>Usage</strong></p>
+<blockquote>
+<div>gprs = findGPRFromRxns(model,rxnIDs)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model to retrieve the GPR rules from</li>
+<li><strong>rxnIDs</strong> &#8211;
+The reaction IDs to obtain the GPR rules for</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>gprs</strong> &#8211;
+The textual GPR Rules</li>
+</ul>
+</div></blockquote>
+<p>Authors:</p>
+<blockquote>
+<div>Thomas Pfau Dec 2017</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.exploration.findGeneIDs">
 <code class="descname">findGeneIDs</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/exploration/findGeneIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.findGeneIDs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds gene numbers in a model</p>
@@ -1070,6 +1099,43 @@ Header (Default = [])</li>
 Print reaction formulas (Default = false)</li>
 </ul>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.exploration.printGPRForRxns">
+<code class="descname">printGPRForRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnIDs</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/exploration/printGPRForRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.printGPRForRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the GPRs (in textual format) for the given RxnIDs
+<strong>Usage</strong></p>
+<blockquote>
+<div>gprs = printGPRForRxns(model,rxnID)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model to retrieve the GPR rules from</li>
+<li><strong>rxnIDs</strong> &#8211;
+The reaction IDs to obtain the GPR rules for</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> &#8211;
+Whether to print out the GPRs. If printLevel is 0,
+the function will only return the Strings in a cell
+array.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>gprs</strong> &#8211;
+The textual GPR Rules</li>
+</ul>
+</div></blockquote>
+<p>Authors:</p>
+<blockquote>
+<div>Thomas Pfau Dec 2017</div></blockquote>
 </dd></dl>
 
 <dl class="function">

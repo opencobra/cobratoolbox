@@ -1260,7 +1260,7 @@ COBRA model with reactions in the specified compartmetns</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.mergeModelFieldPositions">
-<code class="descname">mergeModelFieldPositions</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>positions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/reconstruction/refinement/mergeModelFieldPositions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeModelFieldPositions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mergeModelFieldPositions</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>positions</em>, <em>mergeFunctions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/reconstruction/refinement/mergeModelFieldPositions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeModelFieldPositions" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelNew] = mergeModelFieldPositions(model,type,positions)</div></blockquote>
@@ -1272,7 +1272,22 @@ The model with the fields to merge</li>
 <li><strong>type</strong> &#8211;
 the field type to merge ( rxns, mets, comps or genes)</li>
 <li><strong>positions</strong> &#8211;
-The positions in the given field type to merge.</li>
+The positions in the given field type to merge either as indices or as logical array.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mergeFunctions</strong> &#8211;
+A cell array of fieldNames and functions that can be
+called on a larger array of the type used for the
+field. e.g. {&#8216;metCharges&#8217;,&#64;(x) x(1); &#8216;grRules&#8217;, &#64;(x)
+strjoin(x,&#8217; or &#8216;);
+by default, all numeric fields are added up, all
+unique entries in cell arrays are concatenated with
+&#8216;;&#8217;, grRules and rules are assumed to be merged with
+and (i.e. a batch reaction is assumed to need all
+associated GPRs)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
