@@ -161,10 +161,15 @@ try
 
     sumFailed = 0;
     sumIncomplete = 0;
-
+    resulttable = result.table;
+    resulttable(:,'Details') = {''};
     for i = 1:size(result, 2)
         sumFailed = sumFailed + result(i).Failed;
         sumIncomplete = sumIncomplete + result(i).Incomplete;
+        if result(i).Failed
+            Message = result(i).Details.DiagnosticRecord.Exception.message;
+            resulttable{i,'Details'} = {Message};            
+        end
     end
 
     fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
@@ -201,8 +206,8 @@ try
     end
 
     % print out a summary table
-    table(result)
-
+    resulttable
+    
     % restore the original path
     restoredefaultpath;
     addpath(originalUserPath);
