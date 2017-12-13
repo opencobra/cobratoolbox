@@ -69,24 +69,24 @@ dimensions = [];
 if fieldSize == 1 || fieldSize == 0
     %This is special. We will only check the first dimension in this
     %instance, and we will check the field properties of S and
-    %rxnGeneMat, Also, we will ONLY return defined fields...
+    %rxnGeneMat, Also, we will ONLY return defined fields, or fields with a clear starting ID...
     if isfield(model, 'rxnGeneMat') 
         if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == fieldSize) 
-            possibleFields{end+1} = 'rxnGeneMat';
+            possibleFields{end+1,1} = 'rxnGeneMat';
             dimensions(end+1,1) = 2;
         end
         if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == fieldSize)
-            possibleFields{end+1} = 'rxnGeneMat';
+            possibleFields{end+1,1} = 'rxnGeneMat';
             dimensions(end+1,1) = 1;
         end
     end
     if isfield(model, 'S') 
         if (strcmp(type,'mets') && size(model.S,1) == fieldSize) 
-            possibleFields{end+1} = 'S';
+            possibleFields{end+1,1} = 'S';
             dimensions(end+1,1) = 1;
         end
         if (strcmp(type,'rxns') && size(model.S,2) == fieldSize)
-            possibleFields{end+1} = 'S';
+            possibleFields{end+1,1} = 'S';
             dimensions(end+1,1) = 2;
         end        
     end
@@ -100,6 +100,9 @@ if fieldSize == 1 || fieldSize == 0
     %This is a New empty model, we only look at defined fields.
     fields = getDefinedFieldProperties();
     fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
+    %modelFields with the "correct" startingID
+    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,3),modelFields));
+    fields = columnVector(union(fields,relModelFields));    
     posFields = ismember(possibleFields,fields);
     possibleFields = possibleFields(posFields);
     dimensions = dimensions(posFields);
