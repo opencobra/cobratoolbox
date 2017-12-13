@@ -42,6 +42,8 @@ tmp = regexprep(tmp,'([\(])\s*','$1'); %replace all spaces after opening parenth
 tmp = regexprep(tmp,'\s*([\)])','$1'); %replace all spaces before closing paranthesis.
 tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(and)\s*?(\s?[\(]|\s)\s*', '$1&$3'); %Replace all ands
 tmp = regexprep(tmp, '([\)]\s?|\s)\s*(?i)(or)\s*?(\s?[\(]|\s)\s*', '$1|$3'); %replace all ors
+tmp = regexprep(tmp, '[\s]?&[\s]?', ' & '); %introduce spaces around ands
+tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
 
 %Now, genes are items which do not have brackets, operators or whitespace
 %characters
@@ -52,3 +54,5 @@ newGeneList = columnVector(setdiff(genes,currentGenes));
 totalGeneList = [currentGenes;newGeneList];
 convertGenes = @(x) sprintf('x(%d)', find(ismember(totalGeneList,x)));
 ruleString = regexprep(tmp, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
+ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
+ruleString = strtrim(ruleString); %Remove leading and trailing spaces
