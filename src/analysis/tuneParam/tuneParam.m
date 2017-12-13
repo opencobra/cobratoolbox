@@ -1,4 +1,4 @@
-function optimParam = tuneParam(model,contFunctName,timelimit,nrepeat,printLevel)
+function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel)
 % Optimizes cplex parameters to make model resolution faster.
 % Particularly interetsing for large-scale MILP models and repeated runs of
 % optimisation.
@@ -13,7 +13,7 @@ function optimParam = tuneParam(model,contFunctName,timelimit,nrepeat,printLevel
 %    optimalParameters = tuneParam(model,cpxControl,1000,1000,0);
 %
 % INPUT:
-%         model:         MILP as COBRA model structure
+%         LPProblem:     MILP as COBRA model structure
 %         contFunctName: Parameters structure containing the name and value.
 %                        A set of routine parameters will be added by the solver
 %                        but won't be reported.
@@ -57,7 +57,57 @@ else
     end
 end
 
-LPProblem=buildLPproblemFromModel(model);
+if ~isfield(LPProblem,'A')
+    if ~isfield(LPProblem,'S')
+            error('Equality constraint matrix must either be a field denoted A or S.')
+    end
+    LPProblem.A=LPProblem.S;
+end
+
+if ~isfield(LPProblem,'csense')
+    nMet=size(LPProblem.A);
+    if printLevel>0
+        fprintf('%s\n','Assuming equality constraints, i.e. S*v=b');
+    end
+    %assuming equality constraints
+    LPProblem.csense(1:nMet,1)='E';
+end
+
+if ~isfield(LPProblem,'osense')
+    %assuming maximisation
+    LPProblem.osense=-1;
+    if printLevel>0
+        fprintf('%s\n','Assuming maximisation of objective');
+    end
+end
+
+if size(LPProblem.A,2)~=length(LPProblem.c)
+    error('dimensions of A & c are inconsistent');
+end
+
+if size(LPProblem.A,2)~=length(LPProblem.lb) || size(LPProblem.A,2)~=length(LPProblem.ub)
+    error('dimensions of A & bounds are inconsistent');
+end
+
+%get data
+[c,x_L,x_U,b,csense,osense] = deal(LPProblem.c,LPProblem.lb,LPProblem.ub,...
+    LPProblem.b,LPProblem.csense,LPProblem.osense);
+%modify objective to correspond to osense
+c=full(c*osense);
+
+%cplex expects it dense
+b=full(b);
+
+%complex ibm ilog cplex interface
+if ~isempty(csense)
+    %set up constant vectors for CPLEX
+    b_L(csense == 'E',1) = b(csense == 'E');
+    b_U(csense == 'E',1) = b(csense == 'E');
+    b_L(csense == 'G',1) = b(csense == 'G');
+    b_U(csense == 'G',1) = Inf;
+    b_L(csense == 'L',1) = -Inf;
+    b_U(csense == 'L',1) = b(csense == 'L');
+end
 
 % Initialize the CPLEX object
 try
@@ -69,12 +119,12 @@ end
 ILOGcplex.Model.sense = 'minimize';
 
 % Now populate the problem with the data
-ILOGcplex.Model.obj   = LPProblem.c;
-ILOGcplex.Model.lb    = LPProblem.lb;
-ILOGcplex.Model.ub    = LPProblem.ub;
+ILOGcplex.Model.obj   = c;
+ILOGcplex.Model.lb    = x_L;
+ILOGcplex.Model.ub    = x_U;
 ILOGcplex.Model.A     = LPProblem.A;
-ILOGcplex.Model.lhs   = LPProblem.b;
-ILOGcplex.Model.rhs   = LPProblem.b;
+ILOGcplex.Model.lhs   = b_L;
+ILOGcplex.Model.rhs   = b_U;
 
 %loop through parameters
 ILOGcplex = setCplexParam(ILOGcplex, cpxControl, 1);
