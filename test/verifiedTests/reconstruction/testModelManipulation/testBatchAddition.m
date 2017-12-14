@@ -23,7 +23,7 @@ fprintf('>> Starting Batch Addition Test:\n');
 model = getDistributedModel('ecoli_core_model.mat');
 
 %Test batch addition
-%% For Mets
+% For Mets
 fprintf('>> Testing Metabolite Batch Addition...\n');
 metNames = {'A','b','c'};
 metFormulas = {'C','CO2','H2OKOPF'};
@@ -40,7 +40,7 @@ assert(isfield(modelBatch,'metKEGGID'));
 assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,model.mets(1:3))))
 assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,{'A','b','A'})))
 
-%% For Reactions:
+% For Reactions:
 fprintf('>> Testing Reaction Batch Addition...\n');
 rxnIDs = {'ExA','ATob','BToC'};
 modelBatch2 = addReactionBatch(modelBatch,rxnIDs,{'A','b','ac[c]'},[1 -1 0; 0,-2,-1;0,0,1],...
@@ -104,7 +104,7 @@ assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','CS'},{
 %for quick addition).
 assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1])));
 
-%% For Genes
+% For Genes
 fprintf('>> Testing Gene Batch Addition...\n');
 
 genes = {'G1','Gene2','InterestingGene'}';
