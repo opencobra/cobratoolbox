@@ -9,14 +9,14 @@ echo " > Architecture:   $ARCH"
 echo " > MATLAB version: $MATLAB_VER"
 echo " > Branch:         $GIT_BRANCH"
 
-if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "origin/generate-zip" ]; then
+if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "origin/master" ]; then
 
     # make a clean local temporary release directory
     rm -rf /tmp/releaseCT && mkdir /tmp/releaseCT
     echo " > New temporary folder created: /tmp/releaseCT"
 
     # clone from local repository
-    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
+    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
     echo " > Workspace cloned"
 
     # change to the local temporary release directory
