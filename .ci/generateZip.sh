@@ -16,7 +16,7 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     echo " > New temporary folder created: /tmp/releaseCT"
 
     # clone from local repository
-    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-branches-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
+    git clone file:///mnt/prince-data/jenkins/workspace/COBRAToolbox-ci-auto-linux/MATLAB_VER/$MATLAB_VER/label/linux /tmp/releaseCT --depth 1
     echo " > Workspace cloned"
 
     # change to the local temporary release directory
