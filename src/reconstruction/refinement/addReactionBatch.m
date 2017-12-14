@@ -124,7 +124,7 @@ if any(ismember(varargin(1:2:end),'rules'))
         %Find all genes (and their positions) which are already in the model.
         [genePres,genePos] = ismember(genes,newmodel.genes);
         additionalGenes = sum(~genePres);
-        newmodel.genes = addGeneBatch(model,genes(~genePres));
+        newmodel = addGeneBatch(model,genes(~genePres));
         genePos(~genePres) = nGenes+(1:additionalGenes);
         %now, replace the ids.
         genePos = cellfun(@(x) strcat('x(', num2str(x),')'), num2cell(genePos),'Uniformoutput',false);

@@ -40,7 +40,3 @@ rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDesc
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'	cell
 rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	rxns	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'	cell
 subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))				{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell
-ctrs	ctrs	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))				['Constraint' num2str(i)]		Column Cell Array of Strings	Names for non metabolic constraints (e.g. coupling constraints)	'false(1)'	cell
-C	ctrs	rxns	isnumeric(x) || issparse(x)				0		Sparse or Full Matrix of Double	Coefficients of the non metabolic constraints	'false(1)'	sparse
-d	ctrs	1	isnumeric(x)				0		Column Vector of Doubles	Right hand side of the non metabolic constraints	'false(1)'	numeric
-dsense	ctrs	1	ischar(x)				E		Column Vector of Chars	Sense of the non metabolic constraints.	'false(1)'	char
