@@ -101,7 +101,7 @@ if fieldSize == 1 || fieldSize == 0
     fields = getDefinedFieldProperties();
     fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
     %modelFields with the "correct" startingID
-    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,3),modelFields));
+    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,length(type-1)),modelFields)); %Remove the s from the type for this
     fields = columnVector(union(fields,relModelFields));    
     posFields = ismember(possibleFields,fields);
     possibleFields = possibleFields(posFields);
