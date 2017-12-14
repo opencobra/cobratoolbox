@@ -12,7 +12,6 @@
 %     - Joseph Kang 04/16/09
 %     - Richard Que (12/16/09) Added testing of convertToIrrevsible/Reversible
 %     - CI integration: Laurent Heirendt January 2017
-%     - Batch addition Tests:  Thomas Pfau Dec 2017
 
 % save the current path
 currentDir = pwd;
@@ -399,6 +398,5 @@ newRuleBool = ['x(', num2str(find(ismember(model2.genes,'Gene1'))), ') | x(',...
 head = fp.parseFormula(newRuleBool);
 head2 = fp.parseFormula(model2.rules{20});
 assert(head.isequal(head2)); % We can't make a string comparison so we parse the two formulas and see if they are equal.
-assert(numel(modelBatch3.genes) == numel(model.genes)+2)
 % change the directory
 cd(currentDir)
