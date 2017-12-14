@@ -105,14 +105,6 @@ function initCobraToolbox()
     % check if git is installed
     checkGit();
 
-    % temporary disable ssl verification
-    [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
-
-    if status_setSSLVerify ~= 0
-        fprintf(strrep(result_setSSLVerify, '\', '\\'));
-        warning('Your global git configuration could not be changed.');
-    end
-
     % change to the root of The COBRA Tooolbox
     cd(CBTDIR);
 
@@ -163,6 +155,14 @@ function initCobraToolbox()
         fprintf(' Done.\n');
     end
 
+    % temporary disable ssl verification
+    [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
+
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be changed.');
+    end
+
     % check curl
     [status_curl, result_curl] = checkCurlAndRemote(false);
 
@@ -181,7 +181,7 @@ function initCobraToolbox()
         end
 
         % Update/initialize submodules
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --remote --depth 1');
 
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));

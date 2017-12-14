@@ -1,4 +1,4 @@
-# <img src="../../docs/source/_static/images/icon_reconstruction.png" height="22px">&nbsp;&nbsp;Tutorials - reconstruction
+# <img src="https://prince.lcsb.uni.lu/img/icon_reconstruction.png" height="22px">&nbsp;&nbsp;Tutorials - reconstruction
 
 - [Reconstruction: create a generic subnetwork from Recon3D (createSubnetworkRecon)](createSubnetworkRecon)
 - [Gap Filling (fastGapFill)](fastGapFill)
