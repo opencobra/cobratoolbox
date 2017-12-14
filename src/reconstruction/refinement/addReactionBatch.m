@@ -138,7 +138,7 @@ if any(ismember(varargin(1:2:end),'rules'))
         if ~any(size(varargin{rulesPos}) == numel(rxnIDs)) %something must fit
             error('Size of field rules does not fit to the rxnList size');
         end
-        newmodel.rules = [newmodel.rules; columnVector(varargin{rulesPos})];
+        newmodel.rules((nRxns+1):end) = columnVector(varargin{rulesPos});
     end
     
     %Update the corresponding grRules fields and rxnGeneMat fields.
