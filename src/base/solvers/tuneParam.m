@@ -6,7 +6,7 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 % infeasibilities, tuneParam will provide the optimal set of solver
 % parameters for feasbile models. It requires IBM ILOG cplex (for now).
 %
-% USAGE
+% USAGE:
 %
 %    optimalParameters = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel);
 %
@@ -26,6 +26,7 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 % OUTPUT:
 %         optimParam: structure of optimal parameter values directly usable as
 %                     contFunctName argument in solveCobraLP function
+%
 % .. Author: Marouen Ben Guebila 24/07/2017
 
 if ~changeCobraSolver('ibm_cplex')
@@ -138,7 +139,7 @@ optimParam=cpxControl;
 if ~ILOGcplex.tuneParam()
     fprintf('Optimal parameters found. \n');
     [paramList, paramPath] = getParamList(cpxControl, 1);
-     for i=1:length(paramPath)     
+     for i=1:length(paramPath)
          try
              eval(['optimParam.' paramPath{i} '=ILOGcplex.Param.' paramPath{i} '.Cur;']);
          catch ME

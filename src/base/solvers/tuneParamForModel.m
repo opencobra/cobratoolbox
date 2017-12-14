@@ -1,4 +1,4 @@
-function optimParam = tuneParamForModel(model,varargin) 
+function optimParam = tuneParamForModel(model,varargin)
 % Optimizes cplex parameters to make model resolution faster.
 % Particularly interetsing for large-scale MILP models and repeated runs of
 % optimisation.
@@ -6,7 +6,7 @@ function optimParam = tuneParamForModel(model,varargin)
 % infeasibilities, tuneParam will provide the optimal set of solver
 % parameters for feasbile models. It requires IBM ILOG cplex (for now).
 %
-% USAGE
+% USAGE:
 %
 %    optimalParameters = tuneParam(model,contFunctName,1000,1000,0);
 %
@@ -26,9 +26,12 @@ function optimParam = tuneParamForModel(model,varargin)
 % OUTPUT:
 %         optimParam: structure of optimal parameter values directly usable as
 %                     contFunctName argument in solveCobraLP function
-% .. Author: Thomas Pfau Dec 2017
 %
-% NOTE: This is just a wrapper function that calls the tuneParam function
-% by Marouen Ben Guebila using a Cobra model structure converted to a LP
-% problem. 
+% NOTE:
+%       This is just a wrapper function that calls the tuneParam function
+%       by Marouen Ben Guebila using a Cobra model structure converted to a LP
+%       problem.
+%
+% .. Author: Thomas Pfau Dec 2017
+
 optimParam = tuneParam(buildLPproblemFromModel(model),varargin{:});
