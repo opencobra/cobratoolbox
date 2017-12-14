@@ -29,8 +29,7 @@ function optimParam = tuneParamForModel(model,varargin)
 %
 % NOTE:
 %       This is just a wrapper function that calls the tuneParam function
-%       by Marouen Ben Guebila using a Cobra model structure converted to a LP
-%       problem.
+%       using a Cobra model structure converted to a LP problem.
 %
 % .. Author: Thomas Pfau Dec 2017
 
