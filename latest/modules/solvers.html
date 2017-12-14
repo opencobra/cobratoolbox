@@ -822,56 +822,6 @@ default = 0, verbose level</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.solvers.cpxcb_INCUMBENT">
-<code class="descname">cpxcb_INCUMBENT</code><span class="sig-paren">(</span><em>x</em>, <em>f</em>, <em>Prob</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/cpxcb_INCUMBENT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cpxcb_INCUMBENT" title="Permalink to this definition">¶</a></dt>
-<dd><p>CPLEX MIP Incumbent callback</p>
-<p>Called from TOMLAB /CPLEX during mixed integer optimization when a new integer
-solution has been found but before this solution has replaced the current best known integer solution.</p>
-<p>This file can be used to perform any desired analysis of the new integer
-solution and return a status flag to the solver deciding whether to stop
-or continue the optimization, and also whether to accept or discard the newly
-found solution.</p>
-<p>This callback is enabled by setting <cite>callback(14) = 1</cite> in the call to
-<cite>cplex.m</cite>, or <cite>Prob.MIP.callback(14) = 1</cite> if using <cite>tomRun(&#8216;cplex&#8217;, ...)</cite></p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>ret = cpxcb_INCUMBENT(x, f, Prob)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>x</strong> &#8211;
-the new integer solution</li>
-<li><strong>f</strong> &#8211;
-the objective value at <cite>x</cite></li>
-<li><strong>Prob</strong> &#8211;
-the Tomlab problem structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>ret</strong> &#8211;
-return value:</p>
-<blockquote>
-<div><ul class="simple">
-<li>0 - Continue optimization and accept new integer solution</li>
-<li>1 - Continue optimization but discard new integer solution</li>
-<li>2 - Stop optimization and accept new integer solution</li>
-<li>3 - Stop optimization adn discard new integer solution</li>
-</ul>
-</div></blockquote>
-<p>Any other return value will be interpreted as <cite>0</cite>.</p>
-</li>
-</ul>
-</div></blockquote>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If modifying this file, it is recommended to make a copy of it which
-is placed before the original file in the MATLAB path.</p>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.base.solvers.getAvailableGAMSSolvers">
 <code class="descname">getAvailableGAMSSolvers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/getAvailableGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableGAMSSolvers" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function return the GAMS solvers which are available in your system
