@@ -5,25 +5,25 @@ Analysis
 
 .. toctree::
 
-   FBA
-   FVA
-   MOMA
-   coupling
-   deletion
-   exploration
-   multiSpecies
-   rFBA
-   relaxedFBA
-   sampling
-   sparseFBA
-   subspaces
-   thermo
-   topology
-   transport
-   rumba
-   coupling
-   mdFBA
-   uFBA
+   FBA/index
+   FVA/index
+   MOMA/index
+   coupling/index
+   deletion/index
+   exploration/index
+   multiSpecies/index
+   rFBA/index
+   relaxedFBA/index
+   sampling/index
+   sparseFBA/index
+   subspaces/index
+   thermo/index
+   topology/index
+   transport/index
+   rumba/index
+   coupling/index
+   mdFBA/index
+   uFBA/index
 
 .. automodule:: src.analysis
    :members:
