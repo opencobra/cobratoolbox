@@ -32,7 +32,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 
 
 
-PossibleTypes = {'rxns','mets','comps','genes','ctrs'};
+PossibleTypes = {'rxns','mets','comps','genes'};
 
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));
