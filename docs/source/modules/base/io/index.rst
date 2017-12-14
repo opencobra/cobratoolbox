@@ -7,9 +7,9 @@ IO
 
 .. toctree::
 
-   BiGG
-   KEGG
-   utilities
+   BiGG/index
+   KEGG/index
+   utilities/index
 
 .. automodule:: src.base.io
    :members:

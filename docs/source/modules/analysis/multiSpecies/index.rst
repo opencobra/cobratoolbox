@@ -7,7 +7,7 @@ MultiSpecies
 
 .. toctree::
 
-   SteadyCom
+   SteadyCom/index
 
 .. automodule:: src.analysis.multiSpecies
    :members:

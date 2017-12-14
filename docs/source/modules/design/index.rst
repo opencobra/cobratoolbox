@@ -7,8 +7,8 @@ Design
 
 .. toctree::
 
-   optForce
-   optForceGAMS
+   optForce/index
+   optForceGAMS/index
 
 .. automodule:: src.design
    :members:

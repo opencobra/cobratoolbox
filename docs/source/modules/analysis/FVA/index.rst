@@ -7,7 +7,7 @@ FVA
 
 .. toctree::
 
-   fastFVA
+   fastFVA/index
 
 .. automodule:: src.analysis.FVA
    :members:

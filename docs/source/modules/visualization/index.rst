@@ -8,9 +8,9 @@ Visualization
 .. toctree::
    :maxdepth: 2
 
-   cellDesigner
-   maps
-   metabolicCartography
+   cellDesigner/index
+   maps/index
+   metabolicCartography/index
 
 .. automodule:: src.visualization
    :members:

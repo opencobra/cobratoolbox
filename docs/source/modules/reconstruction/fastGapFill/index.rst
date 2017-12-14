@@ -7,7 +7,7 @@ fastGapFill
 
 .. toctree::
 
-   AuxillaryFiles
+   AuxillaryFiles/index
 
 .. automodule:: src.reconstruction.fastGapFill
    :members:

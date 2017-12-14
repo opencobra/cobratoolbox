@@ -7,7 +7,7 @@ lrs
 
 .. toctree::
 
-   lrsInterface
+   lrsInterface/index
 
 .. automodule:: src.analysis.topology.extremeRays.lrs
    :members:

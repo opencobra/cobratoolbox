@@ -8,7 +8,7 @@ Maps
 .. toctree::
    :maxdepth: 2
 
-   ReconMap
+   ReconMap/index
 
 .. automodule:: src.visualization.maps
    :members:

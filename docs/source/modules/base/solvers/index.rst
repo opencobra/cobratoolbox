@@ -7,8 +7,8 @@ Solvers
 
 .. toctree::
 
-   cardOpt
-   varKin
+   cardOpt/index
+   varKin/index
 
 .. automodule:: src.base.solvers
    :members:

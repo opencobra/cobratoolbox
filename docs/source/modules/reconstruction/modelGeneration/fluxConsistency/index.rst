@@ -7,8 +7,8 @@ fluxConsistency
 
 .. toctree::
 
-   DCA
-   GREEDY
+   DCA/index
+   GREEDY/index
 
 .. automodule:: src.reconstruction.modelGeneration.fluxConsistency
    :members:

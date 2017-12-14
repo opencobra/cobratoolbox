@@ -7,10 +7,10 @@ modelGeneration
 
 .. toctree::
 
-   fluxConsistency
-   massBalance
-   modelVerification
-   stoichConsistency
+   fluxConsistency/index
+   massBalance/index
+   modelVerification/index
+   stoichConsistency/index
 
 .. automodule:: src.reconstruction.modelGeneration
    :members:

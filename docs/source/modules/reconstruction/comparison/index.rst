@@ -7,7 +7,7 @@ Comparison
 
 .. toctree::
 
-   modelBorgifier
+   modelBorgifier/index
 
 .. automodule:: src.reconstruction.comparison
    :members:

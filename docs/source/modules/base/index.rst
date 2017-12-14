@@ -7,10 +7,10 @@ Base
 
 .. toctree::
 
-   io
-   print
-   solvers
-   install
+   io/index
+   print/index
+   solvers/index
+   install/index
 
 .. automodule:: src.base
    :members:

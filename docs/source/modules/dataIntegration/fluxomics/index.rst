@@ -5,8 +5,8 @@ Fluxomics
 
 .. toctree::
 
-   atomTransition
-   c13solver
+   atomTransition/index
+   c13solver/index
 
 .. automodule:: src.dataIntegration.fluxomics
    :members:

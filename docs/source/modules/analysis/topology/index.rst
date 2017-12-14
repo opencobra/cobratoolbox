@@ -7,11 +7,11 @@ Topology
 
 .. toctree::
 
-   circuits
-   conservedMoieties
-   extremeRays
-   FR
-   graphHypergraphConversion 
+   circuits/index
+   conservedMoieties/index
+   extremeRays/index
+   FR/index
+   graphHypergraphConversion/index
 
 .. automodule:: src.analysis.topology
    :members:

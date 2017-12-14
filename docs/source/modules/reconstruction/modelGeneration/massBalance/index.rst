@@ -7,7 +7,7 @@ massBalance
 
 .. toctree::
 
-   basicPhysicochemicalData
+   basicPhysicochemicalData/index
 
 .. automodule:: src.reconstruction.modelGeneration.massBalance
    :members:

@@ -7,8 +7,8 @@ cardOpt
 
 .. toctree::
 
-   sparseLP
-   tangiCode
+   sparseLP/index
+   tangiCode/index
 
 .. automodule:: src.base.solvers.cardOpt
    :members:
