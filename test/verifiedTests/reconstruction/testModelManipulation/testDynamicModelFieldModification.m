@@ -24,6 +24,7 @@ model.genes{end+1,1} = 'gene1';
 
 %extend all relevant fields (the original size was 0.
 %get all Model fields for genes
+fprintf('Testing getModelFieldsForType and extendModelFielsForType ...\n');
 [matchingGeneFields,dimensions] = getModelFieldsForType(model,'genes','fieldSize',0);
 assert(dimensions == 2);
 assert(isequal(matchingGeneFields,{'rxnGeneMat'}));
@@ -106,6 +107,7 @@ model = extendModelFieldsForType(model,'mets');
 assert(isempty(setxor(matchingMetFields,{'mets','b','metNames','csense','S'})) && numel(matchingMetFields) == 5);
 assert(length(model.something) == 8) %This field was not modified, as it could not be clearly associated with mets.
 
+fprintf('Testing removeFieldEntriesForType ...\n');
 %Also, test the removeFieldEntries method now
 %To be able to check whether the right fields are removed, we will create a
 %random s matrix:
