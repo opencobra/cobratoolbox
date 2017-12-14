@@ -23,7 +23,7 @@ fprintf('>> Starting Batch Addition Test:\n');
 model = getDistributedModel('ecoli_core_model.mat');
 
 %Test batch addition
-%For Mets
+%% For Mets
 fprintf('>> Testing Metabolite Batch Addition...\n');
 metNames = {'A','b','c'};
 metFormulas = {'C','CO2','H2OKOPF'};
@@ -34,16 +34,17 @@ assert(all(ismember(metNames,modelBatch.mets)));
 assert(isequal(modelBatch.metFormulas(pos(pres)),columnVector(metFormulas)));
 assert(isequal(modelBatch.metCharges(pos(pres)),[-1; 1;0]));
 assert(verifyModel(modelBatch,'simpleCheck',true));
+assert(isfield(modelBatch,'metKEGGID'));
 
 %Assert duplication check
 assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,model.mets(1:3))))
 assert(verifyCobraFunctionError(@() addMetaboliteBatch(model,{'A','b','A'})))
 
-%For Reactions:
+%% For Reactions:
 fprintf('>> Testing Reaction Batch Addition...\n');
 rxnIDs = {'ExA','ATob','BToC'};
 modelBatch2 = addReactionBatch(modelBatch,rxnIDs,{'A','b','ac[c]'},[1 -1 0; 0,-2,-1;0,0,1],...
-                                   'lb',[-50,30,1],'ub',[0,60,15]);
+                                   'lb',[-50,30,1],'ub',[0,60,15],'rxnKEGGID',{'R01','R02','R03'});                              
 %Check that the reactions are in.                               
 assert(all(ismember(rxnIDs,modelBatch2.rxns)));
 %Check that lbs/ubs are properly updated.
@@ -57,8 +58,8 @@ assert(isempty(setxor(modelBatch2.mets(find(modelBatch2.S(:,ismember(modelBatch2
 %Check the stoichiometry is correct
 assert(modelBatch2.S(ismember(modelBatch2.mets,'A'),ismember(modelBatch2.rxns,'ExA')) == 1);
 assert(modelBatch2.S(ismember(modelBatch2.mets,'b'),ismember(modelBatch2.rxns,'ATob')) == -2);
-
-
+assert(verifyModel(modelBatch2,'simpleCheck',true));
+assert(isfield(modelBatch2,'rxnKEGGID'));
 %Now check proper addition of grRules (and updated fields).
 modelBatch3 = addReactionBatch(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
                                    'grRules',{'G1 or b0721', 'b0008 and G4',''});
@@ -77,8 +78,8 @@ head2 = fp.parseFormula(modelBatch3.rules{ExAPos});
 assert(head1.isequal(head2));
 
 %Also check logical format addition:              
-modelBatch3 = addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0002';'G1';'b0008'});
+modelBatch3 = addReactionBatch(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
+                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0727';'G1';'b0008'});
 %The same addition as above but a different
 %format, so test the same things.
 assert(numel(modelBatch3.genes) == numel(model.genes)+2); %Only two genes were added, the others already existed.
@@ -89,7 +90,8 @@ assert(all(ismember(union(model.genes,{'G1','G4'}),modelBatch3.genes)));
 %we will use ExA to test.
 ExAPos = ismember(modelBatch3.rxns,'ExA');
 G1pos = find(ismember(modelBatch3.genes,'G1'));
-b0002pos = find(ismember(modelBatch3.genes,'G1'));
+b0727pos = find(ismember(modelBatch3.genes,'b0727'));
+Formula = ['x(' num2str(G1pos) ,') | x(' num2str(b0727pos) ')'];
 head1 = fp.parseFormula(Formula);
 head2 = fp.parseFormula(modelBatch3.rules{ExAPos});
 assert(head1.isequal(head2));
@@ -102,7 +104,7 @@ assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','CS'},{
 %for quick addition).
 assert(verifyCobraFunctionError(@() addReactionBatch(model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1])));
 
-
+%% For Genes
 fprintf('>> Testing Gene Batch Addition...\n');
 
 genes = {'G1','Gene2','InterestingGene'}';
