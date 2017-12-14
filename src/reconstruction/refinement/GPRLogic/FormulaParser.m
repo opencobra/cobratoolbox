@@ -40,6 +40,10 @@ classdef FormulaParser < handle
             id = 1;
             %Lets replace our rules (x([0-9])) by the corresponding number
             formula = regexprep(formula,'x\(([0-9]+)\)','$1');
+            %For workability with grRules, we will also replace any version
+            %of " and " by & and any version of " or " by |
+            formula = regexprep(formula,'([ \)])and([ \(])','$1&$2','ignorecase');
+            formula = regexprep(formula,'([ \)])or([ \(])','$1|$2','ignorecase');
             exp = regexp(formula,self.pat,'match');
             newf = formula;
             if not(isempty(exp))
