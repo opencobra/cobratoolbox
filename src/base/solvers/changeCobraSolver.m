@@ -310,28 +310,28 @@ end
 % add the solver path for GUROBI, MOSEK or CPLEX
 if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
     TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
-    tmpFolder = strrep(TOMLAB_PATH, '\\', '\');
-    addSolverDir(tmpFolder, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
+    installDir = strrep(TOMLAB_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
     GUROBI_PATH = strrep(GUROBI_PATH, '~', getenv('HOME'));
-    tmpFolder = strrep(GUROBI_PATH, '\\', '\');
-    addSolverDir(tmpFolder, printLevel, 'Gurobi', 'GUROBI_PATH', GUROBI_PATH, false);
+    installDir = strrep(GUROBI_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'Gurobi', 'GUROBI_PATH', GUROBI_PATH, false);
 end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
     % add the solver path
     ILOG_CPLEX_PATH = strrep(ILOG_CPLEX_PATH, '~', getenv('HOME'));
-    tmpFolder = strrep(ILOG_CPLEX_PATH, '\\', '\');
-    addSolverDir(tmpFolder, printLevel, 'IBM ILOG CPLEX', 'ILOG_CPLEX_PATH', ILOG_CPLEX_PATH, false);
+    installDir = strrep(ILOG_CPLEX_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'IBM ILOG CPLEX', 'ILOG_CPLEX_PATH', ILOG_CPLEX_PATH, false);
 end
 
 if  ~isempty(strfind(solverName, 'mosek')) && ~isempty(MOSEK_PATH)
     MOSEK_PATH = strrep(MOSEK_PATH, '~', getenv('HOME'));
-    tmpFolder = strrep(MOSEK_PATH, '\\', '\');
-    addSolverDir(tmpFolder, printLevel, 'MOSEK', 'MOSEK_PATH', MOSEK_PATH, true);
+    installDir = strrep(MOSEK_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'MOSEK', 'MOSEK_PATH', MOSEK_PATH, true);
 end
 
 solverOK = false;
@@ -434,14 +434,14 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
     end
 end
 
-function addSolverDir(tmpFolder, printLevel, capsName, varName, globaVarPath, subFolders)
+function addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
 % Adds the solver installation path to the MATLAB path
 %
 % Usage:
-%     addSolverDir(tmpFolder, printLevel, capsName, varName, globaVarPath, subFolders)
+%     addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
 %
 % Inputs:
-%     tmpFolder:      Solver installation path
+%     installDir:     Solver installation directory
 %     printLevel:     Verbose level
 %     capsName:       Name of solver in capital letters
 %     varName:        Name of global variable associated with the solver path
@@ -449,12 +449,12 @@ function addSolverDir(tmpFolder, printLevel, capsName, varName, globaVarPath, su
 %     subFolders:     Boolean to add the subfolders
 %
 
-    if exist(tmpFolder, 'dir')
+    if exist(installDir, 'dir')
         % add the solver installation folder
         if subFolders
-            addpath(genpath(tmpFolder));
+            addpath(genpath(installDir));
         else
-            addpath(tmpFolder);
+            addpath(installDir);
         end
 
         % print out a status message
