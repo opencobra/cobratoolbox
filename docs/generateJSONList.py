@@ -10,7 +10,7 @@ def path_to_list(path):
                 website_url += "?highlight=" + filename[:-2]
                 website_url += "#" + '.'.join(['src'] + root[9:].split(os.path.sep) + [filename[:-2]])
                 d.append({'name': filename[:-2], 
-                          'website-url': website_url})
+                          'website_url': website_url})
                 print root, filename
     return d
 
