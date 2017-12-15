@@ -43,7 +43,9 @@
 
   
   <script src="_static/js/modernizr.min.js"></script>
-
+  <link href="_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -63,7 +65,7 @@
 
           
             
-            <img src="_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -73,9 +75,39 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -166,48 +198,50 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/dataIntegration.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/analysis.html">Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/reconstruction.html">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization/index.html">Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialOptForce.html">OptForce Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialInitializeAndVerify.html">Initialise and verify The COBRA Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialIO.html">Input and output of reconstructions and models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialEngaging.html">Engaging with The COBRA Toolbox community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialReconstructionSOP.html">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRBioNet.html">Generation and manipulation of reconstructions with rBioNet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialCreateSubnetworkRecon.html">Create a generic subnetwork from Recon 3D</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFastGapFill.html">FastGapFill tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialReconToFBAmodel.html">Convert a reconstruction into a flux balance analysis model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFidelityTesting.html">Testing chemical and biochemical fidelity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelATPYield.html">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelSanityChecks.html">Testing basic properties of a metabolic model (aka sanity checks)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialNumCharact.html">Numerical properties of a reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialPaint4net.html">Paint4Net: visualisation toolbox for COBRA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRemoteVisualisation.html">Metabolic visualisation in ReconMap (Minerva)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFVA.html">Flux Variability analysis (FVA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA_freeATPtest.html">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA.html">Sparse Flux Balance Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA_protonShuttle.html">Proton shuttle testing with sparse flux balance analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseLP.html">Sparse Linear Optimisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialVariationalKinetics.html">Variational Kinetics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialVonBertalanffy.html">Thermodynamically constrain a metabololic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMinSpan.html">Determining MinSpan vectors of COBRA model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialUniformSampling.html">Uniform sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFBA.html">Flux Balance Analysis (FBA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialAtomicallyResolveReconstruction.html">Atomically resolve a metabolic reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRelaxedFBABounds.html">Relaxed Flux Balance Analysis: Toy model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRelaxedFBA.html">Relaxed Flux Balance Analysis: Recon 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMetabotoolsI.html">Metabotools tutorial I</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMetabotoolsII.html">Metabotools tutorial II - Integration of quantitative metabolomic data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialExtraction_transcriptomic.html">Extraction of context-specific models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialUFBA.html">unsteady-state Flux Balance Analysis (uFBA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialOptForce.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialInitializeAndVerify.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialIO.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialEngaging.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialReconstructionSOP.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRBioNet.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialCreateSubnetworkRecon.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFastGapFill.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialReconToFBAmodel.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFidelityTesting.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelATPYield.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelSanityChecks.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialNumCharact.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialModelManipulation.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMetabolicCartography.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialPaint4net.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRemoteVisualisation.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFVA.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialGMCS.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA_freeATPtest.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseFBA_protonShuttle.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialSparseLP.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialVariationalKinetics.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialVonBertalanffy.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMinSpan.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialUniformSampling.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialFBA.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialAtomicallyResolveReconstruction.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRelaxedFBABounds.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialRelaxedFBA.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMetabotoolsI.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialMetabotoolsII.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialExtraction_transcriptomic.html">tutorialNoName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/tutorialUFBA.html">tutorialNoName</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>

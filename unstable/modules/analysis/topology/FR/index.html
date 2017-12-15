@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FR &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Topology" href="../index.html"/>
+        <link rel="next" title="graphHypergraphConversion" href="../graphHypergraphConversion/index.html"/>
+        <link rel="prev" title="optimalRays" href="../extremeRays/optimalRays/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Topology</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../circuits/index.html">Circuits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conservedMoieties/index.html">conservedMoieties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../extremeRays/index.html">extremeRays</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">FR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphHypergraphConversion/index.html">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="../index.html">Topology</a> &raquo;</li>
+        
+      <li>FR</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fr">
+<span id="id1"></span><h1>FR<a class="headerlink" href="#fr" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.topology.FR"></span><dl class="function">
+<dt id="src.analysis.topology.FR.bilinearDecomposition">
+<code class="descname">bilinearDecomposition</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/bilinearDecomposition.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.bilinearDecomposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a stoichiometric matrix into a bilinear form.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[A, B, C] = bilinearDecomposition(S)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+<cite>m x n</cite> stoichiometric matrix</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+<cite>m x (m + k)</cite> matrix selecting rows such that <span class="math">\(S = A B C\)</span></li>
+<li><strong>B</strong> &#8211;
+<cite>(m + k) x (n + k)</cite> bilinear stoichiometric matrix</li>
+<li><strong>C</strong> &#8211;
+<cite>(n + k) x n</cite> matrix adding columns to form net reaction stoichiometry such that <span class="math">\(S = A B C\)</span></li>
+</ul>
+</div></blockquote>
+<p>An example &#8220;bilinearisation&#8221; of the reaction</p>
+<div class="math">
+\[\begin{split}~&amp;~ A + B + C \leftrightarrow D + E\\\end{split}\]</div>
+<p>is</p>
+<div class="math">
+\[\begin{split}~&amp;~ A + B \leftrightarrow P \\
+~&amp;~ P + C \leftrightarrow Q \\
+~&amp;~ Q \leftrightarrow D + E\end{split}\]</div>
+<p>where <cite>P</cite> and <cite>Q</cite> are faux molecular species.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.checkRankFR">
+<code class="descname">checkRankFR</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/checkRankFR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.checkRankFR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the rank of <cite>[F R]</cite> and <cite>[F; R]</cite>, when restricted to certain
+rows and columns</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(model, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rankFR</strong> &#8211;
+rank of [<cite>F R</cite>], when using only <cite>FRrows</cite></li>
+<li><strong>rankFRV</strong> &#8211;
+rank of [<cite>F; R</cite>], when using only <cite>FRVcols</cite></li>
+<li><strong>rankFRvanilla</strong> &#8211;
+rank of [<cite>F R</cite>], when using all rows</li>
+<li><strong>rankFRVvanilla</strong> &#8211;
+rank of [<cite>F; R</cite>], when using all cols</li>
+<li><strong>model</strong> &#8211;
+structure with fields:<ul>
+<li>.FRrows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are nonzero,
+unique upto positive scaling and part of the
+maximal conservation vector</li>
+<li>.FRVcols - <cite>n x 1</cite> boolean of cols of [<cite>F; R</cite>] that are nonzero,
+unique upto positive scaling and part of the
+maximal conservation vector</li>
+<li>.FRirows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are independent</li>
+<li>.FRdrows - <cite>m x 1</cite> boolean of rows of [<cite>F R</cite>] that are dependent</li>
+<li>.FRwrows - <cite>m x 1</cite> boolean of independent rows of [<cite>F R</cite>] that
+have dependent rows amongst <cite>model.FRdrows</cite></li>
+<li>.FRVdcols - <cite>n x 1</cite> boolean of cols of [<cite>F; R</cite>] that are dependent</li>
+<li>model.SConsistentMetBool - <cite>m x 1</cite> boolean vector indicating metabolites involved
+in the maximal consistent vector</li>
+<li>.SConsistentRxnBool - <cite>n x 1</cite> boolean vector indicating metabolites involved
+in the maximal consistent vector</li>
+<li>.FRnonZeroBool - <cite>m x 1</cite> boolean vector indicating metabolites involved
+in at least one internal reaction</li>
+<li>.FRuniqueBool - <cite>m x 1</cite> boolean vector indicating metabolites with
+reaction stoichiometry unique upto scalar multiplication</li>
+<li>.SIntRxnBool - <cite>n x 1</cite> boolean vector indicating the non exchange reactions</li>
+<li>.FRVnonZeroBool - <cite>n x 1</cite> boolean vector indicating non exchange reactions
+with at least one metabolite involved</li>
+<li>.FRVuniqueBool - <cite>n x 1</cite> boolean vector indicating non exchange reactions
+with stoichiometry unique upto scalar multiplication</li>
+<li>.connectedRowsFRBool - <cite>m x 1</cite> boolean vector indicating metabolites in connected rows of [<cite>F R</cite>]</li>
+<li>.connectedRowsFRVBool - <cite>n x 1</cite> boolean vector indicating complexes in connected columns of [<cite>F; R</cite>]</li>
+<li>.V - <span class="math">\(S V = 0\)</span>; <span class="math">\(1^T |V| &gt; 1\)</span> for all flux consistent reactions</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.connectedFR">
+<code class="descname">connectedFR</code><span class="sig-paren">(</span><em>F</em>, <em>R</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/connectedFR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.connectedFR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the connected sets of rows of [<cite>F, R</cite>] and the largest
+connected set of columns of [<cite>F; R</cite>] using gamic</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[connectedRowsFRBool, connectedColsFRVBool] = connectedFR(F, R)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>F</strong> &#8211;
+<cite>m x n</cite></li>
+<li><strong>R</strong> &#8211;
+<cite>m x n</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>connectedRowsFRBool</strong> &#8211;
+<cite>m x z</cite> boolean vector indicating z sets of connected rows</li>
+<li><strong>connectedColsFRVBool</strong> &#8211;
+<cite>n x z</cite> boolean vector indicating z sets of connected cols</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.largestConnectedFR">
+<code class="descname">largestConnectedFR</code><span class="sig-paren">(</span><em>F</em>, <em>R</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/largestConnectedFR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.largestConnectedFR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the largest connected set of rows of [<cite>F, R</cite>] and the largest
+connected set of columns of [<cite>F; R</cite>] using gamic</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[connectedRowsFRBool, connectedColsFRVBool] = largestConnectedFR(F, R, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>F</strong> &#8211;
+<cite>m x n</cite></li>
+<li><strong>R</strong> &#8211;
+<cite>m x n</cite></li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>connectedRowsFRBool</strong> &#8211;
+<cite>m x 1</cite> boolean vector indicating largests set of connected rows</li>
+<li><strong>connectedColsFRVBool</strong> &#8211;
+<cite>n x 1</cite> boolean vector indicating largests set of connected cols</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.makeFRresultsTable">
+<code class="descname">makeFRresultsTable</code><span class="sig-paren">(</span><em>FRresults</em>, <em>resultsDirectory</em>, <em>resultsFileName</em>, <em>modelMetaData</em>, <em>tableFilename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/makeFRresultsTable.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.makeFRresultsTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a table of FR results</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[FRresultsTable, FRresults] = makeFRresultsTable(FRresults, resultsDirectory, resultsFileName, modelMetaData, tableFilename)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FRresults</strong> &#8211;
+output of <cite>checkRankFRdriver</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resultsDirectory</strong> &#8211;
+directory where output of <cite>checkRankFRdriver</cite> has been saved</li>
+<li><strong>resultsFileName</strong> &#8211;
+filename where output of <cite>checkRankFRdriver</cite> has been saved</li>
+<li><strong>modelMetaData</strong> &#8211;
+Cell array, where each row is metadata for one model
+with five columns: <cite>species</cite>, <cite>version</cite>, <cite>fileName</cite>, <cite>PMID</cite>, <cite>doi</cite>.
+See function <cite>modelMetaData = modelCitations()</cite></li>
+<li><strong>tableFilename</strong> &#8211;
+If provided, a the table of results is written out
+to a csv file, with specified filename</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FRresultsTable</strong> &#8211;
+table displaying the results of <cite>checkRankFRdriver</cite></li>
+<li><strong>FRresults</strong> &#8211;
+output of <cite>checkRankFRdriver</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.plotFRresults">
+<code class="descname">plotFRresults</code><span class="sig-paren">(</span><em>FRresults</em>, <em>nRows</em>, <em>nCols</em>, <em>resultsDirectory</em>, <em>resultsFileName</em>, <em>schematicFlag</em>, <em>modelMetaData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/plotFRresults.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.plotFRresults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots FR results in the same order as the <cite>FRresultsTable</cite> using <cite>FRresults</cite>
+structure or by loading the <cite>FRresults</cite> structure</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>plotFRresults(FRresults, nRows, nCols, resultsDirectory, resultsFileName, schematicFlag, modelMetaData)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FRresults</strong> &#8211;
+output of <cite>checkRankFRdriver</cite></li>
+<li><strong>nRows</strong> &#8211;
+number of rows in the subplot</li>
+<li><strong>nCols</strong> &#8211;
+number of rows in the subplot (<span class="math">\(nRows*nCols \geq length(FRresults)\)</span>)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resultsDirectory</strong> &#8211;
+directory where output of <cite>checkRankFRdriver</cite> has been saved</li>
+<li><strong>resultsFileName</strong> &#8211;
+filename where output of <cite>checkRankFRdriver</cite> has been saved</li>
+<li><strong>schematicFlag</strong> &#8211;
+default = 1</li>
+<li><strong>modelMetaData</strong> &#8211;
+metadata of model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.FR.printFRdependencies">
+<code class="descname">printFRdependencies</code><span class="sig-paren">(</span><em>model</em>, <em>filePathName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/FR/printFRdependencies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.FR.printFRdependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports on the dependencies between rows of [<cite>F, R</cite>], either to the command
+line (default) or to a specified text file</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printFRdependencies(model, filePathName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model output from <cite>checkRankFR</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>filePathName</strong> &#8211;
+full file name for printing dependencies to file</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../graphHypergraphConversion/index.html" class="btn btn-neutral float-right" title="graphHypergraphConversion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../extremeRays/optimalRays/index.html" class="btn btn-neutral" title="optimalRays" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

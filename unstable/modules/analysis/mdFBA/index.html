@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mdFBA &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="uFBA" href="../uFBA/index.html"/>
+        <link rel="prev" title="rumba" href="../rumba/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../index.html">Analysis</a> &raquo;</li>
+        
+      <li>mdFBA</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mdfba">
+<span id="id1"></span><h1>mdFBA<a class="headerlink" href="#mdfba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.mdFBA"></span><dl class="function">
+<dt id="src.analysis.mdFBA.buildMDFBAProblem">
+<code class="descname">buildMDFBAProblem</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/mdFBA/buildMDFBAProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.mdFBA.buildMDFBAProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a MDFBA problem from the provided model.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>MDFBAProblem = buildMDFBAProblem(model, varargin)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA style model with the following fields:<ul>
+<li>S       - Stoichiometric Matrix</li>
+<li>lb      - lower bounds</li>
+<li>ub      - upper bounds</li>
+<li>b       - metabolic constraints</li>
+<li>c       - objective coefficients</li>
+<li>csense  - Constraint senses (optional, default Equality)</li>
+<li>osense  - Optimisation sense (optional, default maximisation)</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargin</strong> &#8211;
+Variable arguments as parameter/value pairs:<ul>
+<li>&#8216;ignoredMets&#8217; - Metabolites that do not need to be
+produced, even if used.</li>
+<li>&#8216;minProd&#8217; - the minimal production, if a
+metabolite is used, default(max(ub,abs(lb))/10000)</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>MDFBAProblem</strong> &#8211;
+The MILPproblem structure representing the MDFBA
+problem</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Implementation based on description in:
+<cite>Benyamini et al. &#8220;Flux balance analysis accounting for metabolite
+dilution.&#8221; Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43</cite></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.mdFBA.mdFBA">
+<code class="descname">mdFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/mdFBA/mdFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.mdFBA.mdFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves an metabolic dilution FBA problem based on the given model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[sol, newActives] = buildMDFBAProblem(model, varargin)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA style model with the following fields:<ul>
+<li>S       - Stoichiometric Matrix</li>
+<li>lb      - lower bounds</li>
+<li>ub      - upper bounds</li>
+<li>b       - metabolic constraints</li>
+<li>c       - objective coefficients</li>
+<li>csense  - Constraint senses (optional, default Equality)</li>
+<li>osense  - Optimisation sense (optional, default maximisation)</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargin</strong> &#8211;
+Variable arguments as parameter/value pairs<ul>
+<li>&#8216;ignoredMets&#8217; - Metabolites that do not need to be
+produced, even if used.</li>
+<li>&#8216;minProd&#8217; - the minimal production, if a
+metabolite is used, default(max(ub,abs(lb))/10000)</li>
+<li>&#8216;getInvalidSolution&#8217; - whether to return an invalid
+solution, or retrieve an invalid solution that was
+obtained in an earlier run. If there is a solution
+from a previous run, no calculation will be performed!  (default false)</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sol</strong> &#8211;
+The solution of the MDFBA MILP with the following fields:<ul>
+<li>obj       - objective value</li>
+<li>solver    - solver used</li>
+<li>stat      - the COBRA status</li>
+<li>origStat  - the original solver status</li>
+<li>time      - the time needed to solve the problem</li>
+<li>full      - the solution of the problem</li>
+<li>additional field depending on the solver used, and
+whether an invalid solution is returned.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>newActives</strong> &#8211;
+Reactions that are only active in mdFBA</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Implementation based on description in:
+<cite>Benyamini et al. &#8220;Flux balance analysis accounting for metabolite
+dilution.&#8221; Genome Biol. 2010;11(4):R43. doi: 10.1186/gb-2010-11-4-r43</cite></p>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../uFBA/index.html" class="btn btn-neutral float-right" title="uFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../rumba/index.html" class="btn btn-neutral" title="rumba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

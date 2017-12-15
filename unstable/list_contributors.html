@@ -42,7 +42,9 @@
 
   
   <script src="_static/js/modernizr.min.js"></script>
-
+  <link href="_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -62,7 +64,7 @@
 
           
             
-            <img src="_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -72,9 +74,39 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -164,13 +196,13 @@
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/syarra"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/816318?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/syarra">syarra</a></p>
+        <a href="https://github.com/tpfau"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/9972778?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/tpfau">tpfau</a></p>
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/tpfau"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/9972778?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/tpfau">tpfau</a></p>
+        <a href="https://github.com/syarra"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/816318?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/syarra">syarra</a></p>
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
@@ -179,8 +211,18 @@
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
+        <a href="https://github.com/NicolasSompairac"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/22714537?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/NicolasSompairac">NicolasSompairac</a></p>
+    </div>
+
+    <div class="col-lg-4 col-sm-6 text-center">
         <a href="https://github.com/rmtfleming"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/2146874?v=4" alt="" width="90px"></a>
         <p><a href="https://github.com/rmtfleming">rmtfleming</a></p>
+    </div>
+
+    <div class="col-lg-4 col-sm-6 text-center">
+        <a href="https://github.com/marouenbg"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/7914548?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/marouenbg">marouenbg</a></p>
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
@@ -189,8 +231,8 @@
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/marouenbg"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/7914548?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/marouenbg">marouenbg</a></p>
+        <a href="https://github.com/shjchan"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/6303462?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/shjchan">shjchan</a></p>
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
@@ -204,18 +246,8 @@
     </div>
 
     <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/shjchan"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/6303462?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/shjchan">shjchan</a></p>
-    </div>
-
-    <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/longfeimao"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/9161887?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/longfeimao">longfeimao</a></p>
-    </div>
-
-    <div class="col-lg-4 col-sm-6 text-center">
-        <a href="https://github.com/stefaniamagg"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/10771604?v=4" alt="" width="90px"></a>
-        <p><a href="https://github.com/stefaniamagg">stefaniamagg</a></p>
+        <a href="https://github.com/jennmodamio"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/25226568?v=4" alt="" width="90px"></a>
+        <p><a href="https://github.com/jennmodamio">jennmodamio</a></p>
     </div>
 </div>
 

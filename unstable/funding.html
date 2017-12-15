@@ -43,7 +43,9 @@
 
   
   <script src="_static/js/modernizr.min.js"></script>
-
+  <link href="_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -63,7 +65,7 @@
 
           
             
-            <img src="_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -73,9 +75,39 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -175,10 +207,10 @@
 <table width="100%" class="noBorder">
      <tr class="noBorder">
      <td class="noBorderImg" width="30%">
-         <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="_static/images/logos/sysmedpd.png" alt="" width="80%"></a></div>
+         <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://prince.lcsb.uni.lu/img/logos/sysmedpd.png" alt="" width="80%"></a></div>
      </td>
      <td class="noBorderImg" width="30%">
-          <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="_static/images/logos/eu.svg" alt="" width="80%"></a></div>
+          <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://prince.lcsb.uni.lu/img/logos/eu.svg" alt="" width="80%"></a></div>
      </td>
      <td class="noBorder" width="40%">
      European Union’s Horizon 2020 research and innovation programme under grant agreement No 668738.
@@ -189,10 +221,10 @@
   <table width="100%" class="noBorder">
      <tr class="noBorder">
      <td class="noBorderImg" width="30%">
-         <div style="align-center;"><a href="http://www.ncer-pd.lu/index.php/en/"><img src="_static/images/logos/ncer.png" alt="" width="80%"></a></div>
+         <div style="align-center;"><a href="http://www.ncer-pd.lu/index.php/en/"><img src="https://prince.lcsb.uni.lu/img/logos/ncer.png" alt="" width="80%"></a></div>
      </td>
      <td class="noBorderImg" width="30%">
-          <div style="align-center;"><a href="http://www.ncer-pd.lu/index.php/en/"><img src="_static/images/logos/fnr.png" alt="" width="80%"></a></div>
+          <div style="align-center;"><a href="http://www.ncer-pd.lu/index.php/en/"><img src="https://prince.lcsb.uni.lu/img/logos/fnr.png" alt="" width="80%"></a></div>
      </td>
      <td class="noBorder" width="40%">
      National Centre of Excellence in Research (NCER) on Parkinson’s disease.
@@ -203,7 +235,7 @@
   <table width="100%" class="noBorder">
       <tr class="noBorder">
       <td class="noBorderImg" width="60%">
-          <div style="align-center;"><a href="https://energy.gov"><img src="_static/images/logos/doe.png" alt="" width="80%"></a></div>
+          <div style="align-center;"><a href="https://energy.gov"><img src="https://prince.lcsb.uni.lu/img/logos/doe.png" alt="" width="80%"></a></div>
       </td>
       <td class="noBorder" width="40%">
       U.S. Department of Energy, Offices of Advanced Scientific Computing Research and the Biological and Environmental Research as part of the Scientific Discovery Through Advanced Computing program, grant no. DE-SC0010429
@@ -223,10 +255,10 @@
   <br><br>
   <ul class="featureslogo">
      <li>
-         <div style="align-center;"><a href="http://wwwen.uni.lu/lcsb/"><img src="_static/images/logos/largelcsb.png" alt="" width="100%"></a></div>
+         <div style="align-center;"><a href="http://wwwen.uni.lu/lcsb/"><img src="https://prince.lcsb.uni.lu/img/logos/largelcsb.png" alt="" width="100%"></a></div>
      </li>
      <li>
-         <div style="align-center;"><a href="http://www.uni.lu"><img src="_static/images/logos/largeul.png" alt="" width="100%"></a></div>
+         <div style="align-center;"><a href="http://www.uni.lu"><img src="https://prince.lcsb.uni.lu/img/logos/largeul.png" alt="" width="100%"></a></div>
      </li>
   </ul>
  </p></div>

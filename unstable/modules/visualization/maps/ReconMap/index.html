@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ReconMaps &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Maps" href="../index.html"/>
+        <link rel="next" title="MetabolicCartography" href="../../metabolicCartography/index.html"/>
+        <link rel="prev" title="Maps" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Visualization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">cellDesigner</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Maps</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ReconMaps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">MetabolicCartography</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Visualization</a> &raquo;</li>
+        
+          <li><a href="../index.html">Maps</a> &raquo;</li>
+        
+      <li>ReconMaps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="reconmaps">
+<span id="id1"></span><h1>ReconMaps<a class="headerlink" href="#reconmaps" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.visualization.maps.ReconMap"></span><dl class="function">
+<dt id="src.visualization.maps.ReconMap.buildFluxDistLayout">
+<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a layout for MINERVA from a flux distribution. If a dictionary
+of identifiers is not provided it is assumed that the map and the COBRA
+model&#8217;s nomenclature is coherent. Sends the layout to the remote MINERVA
+instance</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, rxnList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minerva</strong> &#8211;
+Struct with the information of minerva instance:
+address, login, password and model (map)</li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>solution.v</strong> &#8211;
+optimizeCb solution structure with a flux vector</li>
+<li><strong>identifier</strong> &#8211;
+Name for the layout in MINERVA</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>hexColour          colour of overlay (hex color format)</strong> &#8211;</p>
+<p>e.g. &#8216;#009933&#8217; corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a></p>
+</li>
+<li><p class="first"><strong>thickness</strong> &#8211;
+maximum thickness</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>serverResponse</strong> &#8211;
+Response of the MINERVA</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.visualization.maps.ReconMap.generateSubsystemLayouts">
+<code class="descname">generateSubsystemLayouts</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/visualization/maps/ReconMap/generateSubsystemLayouts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates subsystem layouts</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>generateSubsystemLayouts( minerva, cobra_model, color )</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minerva</strong> &#8211;
+Struct with the information of minerva instance:
+address, login, password and model (map)</li>
+<li><strong>cobra_model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>color</strong> &#8211;
+Color</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.visualization.maps.ReconMap.generateSubsytemsLayout">
+<code class="descname">generateSubsytemsLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>subsystem</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/visualization/maps/ReconMap/generateSubsytemsLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates subsystem layouts</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>generateSubsytemsLayout(minerva, cobra_model, subsystem, color)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minerva</strong> &#8211;
+Struct with the information of minerva instance:
+address, login, password and model (map)</li>
+<li><strong>cobra_model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>subsystem</strong> &#8211;
+Subsystem</li>
+<li><strong>color</strong> &#8211;
+Color</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.visualization.maps.ReconMap.postMINERVArequest">
+<code class="descname">postMINERVArequest</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>map</em>, <em>identifier</em>, <em>content</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a new layout to a MINERVA instance</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[response] = postMINERVArequest(minerva_servlet, login, password, map, identifier, content)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minerva_servlet</strong> &#8211;
+URL</li>
+<li><strong>login</strong> &#8211;
+MINERVA username</li>
+<li><strong>password</strong> &#8211;
+MINERVA password</li>
+<li><strong>map</strong> &#8211;
+MINERVA map</li>
+<li><strong>identifier</strong> &#8211;
+Layout name</li>
+<li><strong>content</strong> &#8211;
+Content of the layout</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>response</strong> &#8211;
+MINERVA&#8217;s response - cell array index 1 - 0/1
+whether the overlay was successfully uploaded.
+index 2 - success or error message</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../metabolicCartography/index.html" class="btn btn-neutral float-right" title="MetabolicCartography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

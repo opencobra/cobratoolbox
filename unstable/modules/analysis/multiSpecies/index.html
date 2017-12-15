@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MultiSpecies &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="SteadyCom" href="SteadyCom/index.html"/>
+        <link rel="prev" title="Exploration" href="../exploration/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MultiSpecies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SteadyCom/index.html">SteadyCom</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../index.html">Analysis</a> &raquo;</li>
+        
+      <li>MultiSpecies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multispecies">
+<span id="id1"></span><h1>MultiSpecies<a class="headerlink" href="#multispecies" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SteadyCom/index.html">SteadyCom</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SteadyCom/subroutines/index.html">Subroutines</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.multiSpecies"></span><dl class="function">
+<dt id="src.analysis.multiSpecies.analyzePairwiseInteractions">
+<code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/multiSpecies/analyzePairwiseInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function evaluates the outcome of pairwise growth of two organisms
+compared with the two organisms separately. There are six possible
+outcomes of the interaction, and nine possible outcomes from the
+perspective of each organism.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(pairedGrowthOrg1, pairedGrowthOrg2, singleGrowthOrg1, singleGrowthOrg2, sigD)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>pairedGrowthOrg1</strong> &#8211;
+first organism&#8217;s growth rate in co-growth</li>
+<li><strong>pairedGrowthOrg2</strong> &#8211;
+second organism&#8217;s growth rate in co-growth</li>
+<li><strong>singleGrowthOrg1</strong> &#8211;
+first organism&#8217;s growth rate when grown separately</li>
+<li><strong>singleGrowthOrg2</strong> &#8211;
+second organism&#8217;s growth rate when grown separately</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sigD</strong> &#8211;
+the difference between co-growth and single growth that is considered significant (10% =0.1 by default)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>iAFirstOrg</strong> &#8211;
+the consequence of the interaction of the first organism</li>
+<li><strong>iASecondOrg</strong> &#8211;
+the consequence of the interaction of the second organism</li>
+<li><strong>iATotal</strong> &#8211;
+the overall type of interaction between the two organisms
+(six possible interactions in total)</li>
+</ul>
+</div></blockquote>
+<p>Below is a description of all possible consequences for the two joined
+organisms. Please note that the outcomes depend on the two genome-scale
+reconstructions joined and are highly dependent on the applied
+constraints.</p>
+<ul class="simple">
+<li>Competition: both organisms grow slower in co-growth than separately
+(same outcome for both).</li>
+<li>Parasitism: one organism grows faster in co-growth than separately, while
+the other grows slower in co-growth than separately. Outcome for
+faster-growing organism: ParasitismTaker, for slower-growing organism:
+ParasitismGiver</li>
+<li>Amensalism: one organism&#8217;s growth is unaffected by co-growth,  while
+the other grows slower in co-growth than separately. Outcome for
+unaffected organism: AmensalismUnaff, for slower-growing organism:
+AmensalismNegAff</li>
+<li>Neutralism: both organisms&#8217; growths are unaffected by co-growth (same
+outcome for both)</li>
+<li>Commensalism: one organism&#8217;s growth is unaffected by co-growth,  while
+the other grows fatser in co-growth than separately. Outcome for
+unaffected organism: CommensalismGiver, for slower-growing organism:
+CommensalismTaker</li>
+<li>Mutualism: both organisms growth faster in co-growth than separately
+(same outcome for both)</li>
+</ul>
+<p>Please cite <cite>Magnusdottir, Heinken et al., Nat Biotechnol. 2017
+35(1):81-89</cite> if you use this script for your own analysis.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.createMultipleSpeciesModel">
+<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.
+The present implementation has been used in <em>PMID 23022739</em>, <em>PMID 25841013</em>,
+<em>PMID 25901891</em>, <em>PMID 27893703</em>.</p>
+<p>Joins one or more COBRA models with or without another COBRA model
+representing the host.</p>
+<p>Creates a common space u (lumen) through which all cells can feed and exchange metabolites,
+and separate extracellular spaces for all joined models.
+If a host model is entered, a separate compartment <cite>b</cite> (body fluids) which has no
+connection to extracellular space is created for the host. Metabolites can be transported from
+the lumen to <cite>e</cite>, from <cite>e</cite> to the cytosol and from the cytosol to <cite>b</cite>,
+but not from body fluids to the lumen.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelJoint] = createMultipleSpeciesModel(models, nameTagsModels, modelHost, nameTagHost)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>models</strong> &#8211;
+cell array of COBRA models(at least one).
+Format</p>
+<blockquote>
+<div><ul class="simple">
+<li>models{1,1} = model 1</li>
+<li>models{2,1} = model 2...</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nameTagsModels</strong> &#8211;
+cell array of tags for reaction/metabolite abbreviation
+corresponding to each model.
+Format</p>
+<blockquote>
+<div><ul class="simple">
+<li>nameTagsModels{1,1} = &#8216;name tag 1&#8217;</li>
+<li>nameTagsModels{2,1} = &#8216;name tag 2&#8217;...</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>modelHost</strong> &#8211;
+COBRA model for host</p>
+</li>
+<li><p class="first"><strong>nameTagHost</strong> &#8211;
+string of tag for reaction/metabolite abbreviation of host model</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelJoint</strong> &#8211;
+model structure for joint model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.getMultiSpeciesModelId">
+<code class="descname">getMultiSpeciesModelId</code><span class="sig-paren">(</span><em>modelJoint</em>, <em>nameTagsModels</em>, <em>nameTagHost</em>, <em>metTagRe</em>, <em>rxnTagRe</em>, <em>compCom</em>, <em>compHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/multiSpecies/getMultiSpeciesModelId.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.getMultiSpeciesModelId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get names and IDs for metabolites and exchange reactions in the [u] and [b] space</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[names, ids] = getMultiSpeciesModelId(modelJoint, nameTagsModels, nameTagHost, metTagRe, rxnTagRe, compCom, compHost)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelJoint</strong> &#8211;
+COBRA multi-organism model</li>
+<li><strong>nameTagsModels</strong> &#8211;
+cell array of tags for species to identify the respective
+reactions and metabolites from <cite>modelJoint.rxns</cite> and <cite>.mets</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>nameTagHost</strong> &#8211;
+string of tag for the host model if exist. Input [] if no host is present</li>
+<li><strong>metTagRe</strong> &#8211;
+a regular expression to identify the tag in nameTagsModels from <cite>modelJoint.mets</cite>.
+Use &#8216;%s&#8217; for the tag in <cite>nameTagsModels</cite> for each species.
+Default &#8216;^%s&#8217;, the beginning of the string. In this case, if the tag for species 1 is
+&#8216;SP1&#8217;, then mets with id &#8216;SP1glc-D[e]&#8217; will be identified as belonging to species 1.
+E.g., &#8216;met[compartment_SP1]&#8217; where &#8216;SP1&#8217; is the tag for species 1, input &#8216;[[^_]+_%s]$&#8217;.</li>
+<li><strong>rxnTagRe</strong> &#8211;
+a regular expression to idenify the tag in <cite>nameTagsModels</cite> from <cite>modelJoint.rxns</cite>.
+Default &#8216;^%s&#8217;, the beginning of the string</li>
+<li><strong>compCom</strong> &#8211;
+compartment Id for the community exchange compartment. Default &#8216;u&#8217;</li>
+<li><strong>compHost</strong> &#8211;
+compartment Id for the exchange compartment specific to the host. Default &#8216;b&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>names</strong> &#8211;
+structure of reaction/metabolite name (.rxns/.mets) with the following fields:<ul>
+<li>spAbbr - species abbreviation (= <cite>nameTags</cite>). Host put at the end</li>
+<li>EXcom - #met[u]-by-1 cell. Exchange reactions for community metabolites <cite>met[u]</cite></li>
+<li>EXhost - #met[b]-by-1 cell. Exchange reactions for host-specific exchange metabolites <cite>met[b]</cite></li>
+<li>EXsp - #met[u]-by-#species cell. <cite>EXsp(i,j)</cite> is the species-community exchange reactions
+for the i-th met[u] and the j-th species</li>
+<li>Mcom - #met[u]-by-1 cell. All community metabolites <cite>met[u]</cite></li>
+<li>Mhost - #met[u]-by-1 cell. Host-specific exchange metabolites <cite>met[b]</cite></li>
+<li>Msp - #met[u]-by-#species cell. <cite>Msp(i,j)</cite> is the metabolite in <cite>met[e]</cite> of the <cite>j</cite>-th species
+participating in reaction <cite>EXsp(i,j)</cite></li>
+<li>rxnSps - #rxns-by-1 cell. <cite>rxnSps(i)</cite> would be <cite>spAbbr(j)</cite> if the <cite>i</cite>-th reaction belongs to the <cite>j</cite>-th species</li>
+<li>metSps - #mets-by-1 cell. <cite>metSps(i)</cite> would be <cite>spAbbr(j)</cite> if the i-th metabolite belongs to the <cite>j</cite>-th species</li>
+</ul>
+</li>
+<li><strong>ids</strong> &#8211;
+structure of reaction/metabolite index with the same fields as names except without <cite>spAbbr</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.printUptakeBoundCom">
+<code class="descname">printUptakeBoundCom</code><span class="sig-paren">(</span><em>model</em>, <em>SpFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/multiSpecies/printUptakeBoundCom.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.printUptakeBoundCom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the uptake bounds of the whole community and individual species for a community COBRA model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>rxnIDs = printUptakeBoundCom(model, SpFlag, metFlag)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the community model with field <cite>.infoCom</cite> or <cite>.indCom</cite> indicating the indicies of
+community exchange reactions/metabolites. Can be obtained from <cite>getMultiSpeciesModelId.m</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>SpFlag</strong> &#8211;
+true to show individual uptake rates though community uptake is not allowed (default false)</li>
+<li><strong>metFlag</strong> &#8211;
+true to print with <cite>model.metNames</cite> (default false)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.useDiet_AGORA_pairedModels">
+<code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/multiSpecies/useDiet_AGORA_pairedModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns a diet for the 773 AGORA microbes</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelOut] = useDiet_AGORA_pairedModels(modelIn, diet)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelIn</strong> &#8211;
+original model</li>
+<li><strong>diet</strong> &#8211;
+string that specifies the diet to be used (&#8216;Western&#8217; or &#8216;HighFiber&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelOut</strong> &#8211;
+model with applied constraints</li>
+</ul>
+</div></blockquote>
+<p>Please cite <em>Magnusdottir, Heinken et al., Nat Biotechnol. 2017
+35(1):81-89</em> if you use this script for your own analysis.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="SteadyCom/index.html" class="btn btn-neutral float-right" title="SteadyCom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../exploration/index.html" class="btn btn-neutral" title="Exploration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

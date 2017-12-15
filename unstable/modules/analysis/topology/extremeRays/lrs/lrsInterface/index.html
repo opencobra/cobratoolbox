@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lrsInterface &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../../index.html"/>
+        <link rel="up" title="lrs" href="../index.html"/>
+        <link rel="next" title="optimalRays" href="../../optimalRays/index.html"/>
+        <link rel="prev" title="lrs" href="../index.html"/> 
+
+  
+  <script src="../../../../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html">Topology</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../circuits/index.html">Circuits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../conservedMoieties/index.html">conservedMoieties</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">extremeRays</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html">lrs</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">lrsInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../optimalRays/index.html">optimalRays</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../FR/index.html">FR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../graphHypergraphConversion/index.html">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Topology</a> &raquo;</li>
+        
+          <li><a href="../../index.html">extremeRays</a> &raquo;</li>
+        
+          <li><a href="../index.html">lrs</a> &raquo;</li>
+        
+      <li>lrsInterface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-src.analysis.topology.extremeRays.lrs.lrsInterface">
+<span id="lrsinterface"></span><span id="lrsinterfaces"></span><h1>lrsInterface<a class="headerlink" href="#module-src.analysis.topology.extremeRays.lrs.lrsInterface" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="src.analysis.topology.extremeRays.lrs.lrsInterface.lrsInputHalfspace">
+<code class="descname">lrsInputHalfspace</code><span class="sig-paren">(</span><em>A</em>, <em>D</em>, <em>filename</em>, <em>positivity</em>, <em>inequality</em>, <em>a</em>, <em>d</em>, <em>f</em>, <em>sh</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.lrsInterface.lrsInputHalfspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs a file for lrs to convert an H-representation (half-space) of a
+polyhedron to a V-representation (vertex / ray) via vertex enumeration</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+matrix of linear equalities <span class="math">\(A x =(a)\)</span></li>
+<li><strong>D</strong> &#8211;
+matrix of linear inequalities <span class="math">\(D x \geq (d)\)</span></li>
+<li><strong>filename</strong> &#8211;
+base name of output file</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>positivity</strong> &#8211;
+{0, (1)} if positivity == 1, then positive orthant base</p>
+</li>
+<li><p class="first"><strong>inequality</strong> &#8211;
+{0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy</p>
+</li>
+<li><p class="first"><strong>a</strong> &#8211;
+boundary values for matrix of linear equalities <span class="math">\(A x = a\)</span></p>
+</li>
+<li><p class="first"><strong>d</strong> &#8211;
+boundary values for matrix of linear inequalities <span class="math">\(D x \geq d\)</span></p>
+</li>
+<li><p class="first"><strong>f</strong> &#8211;
+linear objective for a linear optimization problem in rational arithmetic</p>
+<p>minimise <span class="math">\(f^T x\)</span>,
+subject to <span class="math">\(A x = (a)\)</span>, <span class="math">\(D x \geq (d)\)</span></p>
+</li>
+<li><p class="first"><strong>sh</strong> &#8211;
+{(0), 1} if <cite>sh == 1</cite>, output a shell script for submitting qsub job</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.topology.extremeRays.lrs.lrsInterface.lrsOutputReadRay">
+<code class="descname">lrsOutputReadRay</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.lrsInterface.lrsOutputReadRay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads into matlab a vertex representation output from lrs</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[R, V] = lrsOutputReadRay(filename)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>filename</strong> &#8211;
+name of .ext file from lrs</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>R</strong> &#8211;
+<cite>nDim</cite> by <cite>nRay</cite> matrix of extreme rays</li>
+<li><strong>V</strong> &#8211;
+<cite>nDim</cite> by <cite>nVertex</cite> matrix of vertices</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../optimalRays/index.html" class="btn btn-neutral float-right" title="optimalRays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="lrs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

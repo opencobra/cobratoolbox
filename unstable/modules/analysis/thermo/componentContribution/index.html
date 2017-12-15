@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>componentContribution &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Thermo" href="../index.html"/>
+        <link rel="next" title="directionalityReport" href="../directionalityReport/index.html"/>
+        <link rel="prev" title="Thermo" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+			match: {
+					enabled: true,
+			}
+		},
+
+        template: {
+            type: "links",
+            fields: {
+                link: function(item) {
+                    return "../../../../_static/../" + item.website_url
+                },
+            }
+        },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Thermo</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">componentContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../directionalityReport/index.html">directionalityReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalDesign/index.html">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalData/index.html">experimentalData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../groupContribution/index.html">groupContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFiles/index.html">molFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../protons/index.html">protons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactantContribution/index.html">reactantContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoFBA/index.html">thermoFBA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../vonBertalanffy/index.html">vonBertalanffy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="../index.html">Thermo</a> &raquo;</li>
+        
+      <li>componentContribution</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="componentcontribution">
+<span id="id1"></span><h1>componentContribution<a class="headerlink" href="#componentcontribution" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.componentContribution"></span><dl class="function">
+<dt id="src.analysis.thermo.componentContribution.Transform">
+<code class="descname">Transform</code><span class="sig-paren">(</span><em>pseudoisomers</em>, <em>pH</em>, <em>I</em>, <em>T</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/Transform.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.Transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate pseudoisomer group standard transformed Gibbs energy of
+formation at specified pH, ionic strength and temperature.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>dG0_prime = Transform(pseudoisomers, pH, I, T)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>pseudoisomers</strong> &#8211;
+<cite>p x 3</cite> matrix with a row for each of the p pseudoisomers
+in the group, and the following columns:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Standard Gibbs energy of formation,</li>
+<li>Number of hydrogen atoms,</li>
+<li>Charge.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>pH</strong> &#8211;
+pH.</p>
+</li>
+<li><p class="first"><strong>I</strong> &#8211;
+Ionic strength in mol/L.</p>
+</li>
+<li><p class="first"><strong>T</strong> &#8211;
+Temperature in Kelvin.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>dG0_prime</strong> &#8211;
+Pseudoisomer group standard transformed Gibbs energy of
+formation in kJ/mol.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.addThermoToModel">
+<code class="descname">addThermoToModel</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/addThermoToModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.addThermoToModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a standard COBRA model, add thermodynamic data to it using
+the Component Contribution method</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = addThermoToModel(model, params, printLevel)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>params.use_cached_kegg_inchis</strong></li>
+<li><strong>params.use_model_pKas_by_default</strong></li>
+<li><strong>params.uf</strong> &#8211;
+maximum uncertainty</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with fields:<ul>
+<li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
+standard Gibbs energies of formation.</li>
+<li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
+Gibbs energies of formation.</li>
+<li>.uf - <cite>m x 1</cite> array of uncertainty in estimated standard
+Gibbs energies of formation. uf will be large for
+metabolites that are not covered by component contributions.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.checkForMissingStereo">
+<code class="descname">checkForMissingStereo</code><span class="sig-paren">(</span><em>model</em>, <em>nist</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/checkForMissingStereo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.checkForMissingStereo" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>missingStereo = checkForMissingStereo(model, nist)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with fields:<ul>
+<li>model.mets</li>
+<li>model.inchi.standard</li>
+<li>model.inchi.standardWithStereo</li>
+</ul>
+</li>
+<li><strong>nist</strong> &#8211;
+structure with fields:<ul>
+<li>nist.std_inchi</li>
+<li>nist.std_inchi_stereo</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>missingStereo</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.componentContribution">
+<code class="descname">componentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>trainingData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/componentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.componentContribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the component contribution method</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[model, params] = componentContribution(model, trainingData)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA structure</li>
+<li><strong>trainingData</strong> &#8211;
+structure from <cite>prepareTrainingData</cite> with the following fields:<ul>
+<li>.S - the stoichiometric matrix of measured reactions</li>
+<li>.G - the group incidence matrix</li>
+<li>.dG0 - the observation vector (standard Gibbs energy of reactions)</li>
+<li>.weights - the weight vector for each reaction in <cite>S</cite></li>
+<li>.Model2TrainingMap</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with the following fields:<ul>
+<li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
+standard Gibbs energies of formation.</li>
+<li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
+Gibbs energies of formation.</li>
+<li>.DfG0_Uncertainty - <cite>m x 1</cite> array of uncertainty in estimated standard
+Gibbs energies of formation. Will be large for
+metabolites that are not covered by component
+contributions.</li>
+<li>.DrG0_Uncertainty - <cite>n x 1</cite> array of uncertainty in standard reaction
+Gibbs energy estimates.  Will be large for
+reactions that are not covered by component
+contributions.</li>
+</ul>
+</li>
+<li><strong>params</strong> &#8211;
+structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.createGroupIncidenceMatrix">
+<code class="descname">createGroupIncidenceMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.createGroupIncidenceMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize <cite>G</cite> matrix, and then use the python script &#8220;inchi2gv.py&#8221; to decompose each of the
+compounds that has an &#8216;InChI&#8217; and save the decomposition as a row in the <cite>G</cite> matrix.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>training_data = createGroupIncidenceMatrix(model, training_data)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong></li>
+<li><strong>training_data</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>training_data</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI">
+<code class="descname">getFormulaAndChargeFromInChI</code><span class="sig-paren">(</span><em>inchi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/getFormulaAndChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div><blockquote>
+<div>[formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>inchi:      Nonstandard IUPAC InChI for a particular pseudoisomer of a</dt>
+<dd>metabolite</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>formula:    The chemical formula for the input pseudoisomer
+nH:         The number of total Hydrogen in the actual protonation form
+charge:    The charge on the input pseudoisomer (excluding the protonation state)</dd>
+</dl>
+</div></blockquote>
+<p>Get the Formula and the number of protons</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.getGroupVectorFromInchi">
+<code class="descname">getGroupVectorFromInchi</code><span class="sig-paren">(</span><em>inchi</em>, <em>silent</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/getGroupVectorFromInchi.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getGroupVectorFromInchi" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>group_def = getGroupVectorFromInchi(inchi, silent)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>inchi</strong> &#8211;
+inchi key</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>silent</strong> &#8211;
+default = true</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>group_def</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.getMappingScores">
+<code class="descname">getMappingScores</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/getMappingScores.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMappingScores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the best mapping between the model compounds and the training data (KEGG) compounds</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>mappingScore = getMappingScores(model, training_data)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA structure</li>
+<li><strong>training_data</strong> &#8211;
+training data</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mappingScore</strong> &#8211;
+best mapping</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.getMolecularWeight">
+<code class="descname">getMolecularWeight</code><span class="sig-paren">(</span><em>inchis</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/getMolecularWeight.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMolecularWeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes molecular weight and elemental matrix of compounds</p>
+<p>[MW, Ematrix] = computeMW(model, metList, warnings)</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure
+(must define .mets and .metFormulas)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metList</strong> &#8211;
+Cell array of which metabolites to search for.
+(Default = all metabolites in model)</li>
+<li><strong>warnings</strong> &#8211;
+Display warnings if there are errors with the
+formula. (Default = true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>MW</strong> &#8211;
+Vector of molecular weights</li>
+<li><strong>Ematrix</strong> &#8211;
+<cite>m x 8</cite> matrix of order [H, C, N, O, P, S, e-]
+Note that the number of electrons (e-) is counted only for these 6
+common elements (i.e. we assume all other elements are not involved
+in redox reactions anyway).</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.invertProjection">
+<code class="descname">invertProjection</code><span class="sig-paren">(</span><em>A</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/invertProjection.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.invertProjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverts a general matrix A using the pseudoinverse</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[inv_A, r, P_R, P_N] = invertProjection(A, epsilon)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+general matrix</li>
+<li><strong>epsilon</strong> &#8211;
+default = 1e-10</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>inv_A</strong> &#8211;
+the pseudoinverse of <cite>A</cite></li>
+<li><strong>r</strong> &#8211;
+the rank of <cite>A</cite></li>
+<li><strong>P_R</strong> &#8211;
+the projection matrix onto the <cite>range(A)</cite></li>
+<li><strong>P_N</strong> &#8211;
+the projection matrix onto the <cite>null(A&#8217;)</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.loadTrainingData">
+<code class="descname">loadTrainingData</code><span class="sig-paren">(</span><em>formation_weight</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/loadTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.loadTrainingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the structure that contains all the training data needed for
+Component Contribution.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>training_data = loadTrainingData(formation_weight)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>formation_weight</strong> &#8211;
+the relative weight to give the formation energies (Alberty&#8217;s data)
+compared to the reaction measurements (TECRDB)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>training_data</strong> &#8211;
+structure with data for Component Contribution</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.thermo.componentContribution.prepareTrainingData">
+<code class="descname">prepareTrainingData</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/thermo/componentContribution/prepareTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.prepareTrainingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a standard COBRA model, adds thermodynamic data to it using
+the Component Contribution method</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>training_data = prepareTrainingData(model, printLevel, params)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> &#8211;
+verbose level, default = 0</li>
+<li><strong>params.use_cached_kegg_inchis</strong></li>
+<li><strong>params.use_model_pKas_by_default</strong></li>
+<li><strong>params.uf</strong> &#8211;
+maximum uncertainty</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>training_data</strong> &#8211;
+strucutre with fields<ul>
+<li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
+standard Gibbs energies of formation.</li>
+<li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
+Gibbs energies of formation.</li>
+<li>.uf - <cite>m x 1</cite> array of uncertainty in estimated standard
+Gibbs energies of formation. uf will be large for
+metabolites that are not covered by component contributions.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../directionalityReport/index.html" class="btn btn-neutral float-right" title="directionalityReport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Thermo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
