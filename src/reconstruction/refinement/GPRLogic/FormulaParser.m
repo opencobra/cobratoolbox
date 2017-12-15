@@ -40,6 +40,10 @@ classdef FormulaParser < handle
             id = 1;
             %Lets replace our rules (x([0-9])) by the corresponding number
             formula = regexprep(formula,'x\(([0-9]+)\)','$1');
+            %For workability with grRules, we will also replace any version
+            %of " and " by & and any version of " or " by |
+            formula = regexprep(formula,'([ \)])and([ \(])','$1&$2','ignorecase');
+            formula = regexprep(formula,'([ \)])or([ \(])','$1|$2','ignorecase');
             exp = regexp(formula,self.pat,'match');
             newf = formula;
             if not(isempty(exp))
@@ -84,16 +88,16 @@ classdef FormulaParser < handle
             if self.subformulas.isKey(finalid)
                 currentstring = self.subformulas(finalid);
                 currentstring = currentstring{1};
-                pos = find(regexp(currentstring,'( or )|( OR )|( Or )| \| | \|\|'));
+                pos = find(regexp(currentstring,'( or )|( OR )|( Or )| ?\| ?| ?\|\|'));
                 if not(isempty(pos))
                     HeadNode = OrNode();
-                    literals = strsplit(regexprep(currentstring,'( or )|( OR )|( Or )|( \| )|( \|\| )', '$$'),'$$');
+                    literals = strsplit(regexprep(currentstring,'( or )|( OR )|( Or )|( ?\| ?)|( ?\|\| ?)', '$$'),'$$');
                     for i=1:numel(literals)
-                        pos = find(regexp(currentstring,'( and )|( AND )|( And )|( \& )|( \&\& )'));
+                        pos = find(regexp(currentstring,'( and )|( AND )|( And )|( ?\& ?)|( ?\&\& ?)'));
                         if not(isempty(pos))
                             NewNode = AndNode();
                             HeadNode.addChild(NewNode);
-                            andliterals = strsplit(regexprep(literals{i},'( and )|( AND )|( And )|( \& )|( \&\& )', '$$'),'$$');
+                            andliterals = strsplit(regexprep(literals{i},'( and )|( AND )|( And )|( ?\& ?)|( ?\&\& ?)', '$$'),'$$');
                             for j = 1:numel(andliterals)
                                 literal = andliterals{j};
                                 literal = regexprep(literal,'\[|\]|\{|\}|\(|\)|\s','');
@@ -109,11 +113,11 @@ classdef FormulaParser < handle
                         
                     end
                 else
-                    pos = find(regexp(currentstring,'( and )|( AND )|( And )|( \& )|( \&\& )'));
+                    pos = find(regexp(currentstring,'( and )|( AND )|( And )|( ?\& ?)|( ?\&\& ?)'));
                     if not(isempty(pos))
                         %there are only Ands in this node
                         HeadNode = AndNode();
-                        literals = strsplit(regexprep(currentstring,'( and )|( AND )|( And )|( \& )|( \&\& )', '$$'),'$$');
+                        literals = strsplit(regexprep(currentstring,'( and )|( AND )|( And )|( ?\& ?)|( ?\&\& ?)', '$$'),'$$');
                         for i=1:numel(literals)
                             literal = literals{i};
                             literal = regexprep(literal,'\[|\]|\{|\}|\(|\)|\s','');
