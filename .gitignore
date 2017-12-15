@@ -152,3 +152,4 @@ tutorials/additionalTutorials/optKnock/Results/
 
 # .documenter file
 docs/.documenter
+docs/source/_static/json/functions.json
