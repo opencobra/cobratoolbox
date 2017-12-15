@@ -28,46 +28,36 @@ function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, totalG
 % .. Author: -  Thomas Pfau Okt 2017
 
 newGeneList = {};
-%tic;
+
 if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
     return
 end
-%toc
-%tic
+
 % preparse all model.grRules
 if ~iscell(grRuleString)
     grRuleString = preparseGPR(grRuleString);
 end
-tmp = regexprep(tmp, '[\s]?&[\s]?', ' & '); %introduce spaces around ands
-tmp = regexprep(tmp, '[\s]?\|[\s]?', ' | '); %introduce spaces around ors.
+
 %Now, genes are items which do not have brackets, operators or whitespace characters
-%tic
 newGenes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
-%toc
+
 %We have a new Gene List (which can be empty).
-%tic
 for i = 1:length(newGenes)
     if ~any(strcmp(totalGeneList, newGenes{i}))
         newGeneList{end+1} = newGenes{i};
     end
 end
-%toc
-%tic
+
 %So generate the new gene list.
 if ~isempty(newGeneList)
     totalGeneList = [totalGeneList; newGeneList];
 end
-%toc
 
-%tic
-%convertGenes = @(x) sprintf('x(%d)', find(ismember(totalGeneList,x)));
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
-%convertGenes = @(x) ['x(',num2str(find(ismember(totalGeneList,x))),')'];
-%toc
-%tic
+
 ruleString = regexprep(grRuleString, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.
 ruleString = strtrim(ruleString); %Remove leading and trailing spaces
