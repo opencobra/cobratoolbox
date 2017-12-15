@@ -7,7 +7,8 @@ where:
     -f  name of a folder of a tutorial
     -h  show this help text
     -t  check if the triggering file is present
-    -m  mode (all,html,md,pdf,png,rst)"
+    -m  mode (all,html,md,pdf,png,rst)
+    -e  matlab executable path"
 
 echo_time() {
             echo `date +\%Y-\%m-\%d\ \%H:\%M:\%S` " $*"
@@ -30,23 +31,30 @@ buildTutorialList(){
                 fi
                 let "nTutorial+=1"
                 tutorials[$nTutorial]="$tutorial"
-                # echo_time " - ${tutorials[$nTutorial]}"
+                echo_time " - ${tutorials[$nTutorial]}"
             done
         done
     else
+        echo here
         for d in $(find $cobraToolBoxPath/tutorials -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
-                singleTutorial="$d/tutorial_$(basename $specificTutorial).nlx"
+                singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
+                echo here
                 if [[ -f "$singleTutorial" ]]; then
                     let "nTutorial+=1"
                     tutorials[$nTutorial]="$singleTutorial"
-                    # echo_time " - ${tutorials[$nTutorial]}"
+                    echo_time " - ${tutorials[$nTutorial]}"
                 else
-                    echo_time "> the supplied tutorial does not exist: ""$singleTutorial"; echo_time; echo_time "$usage"; exit 1;
+                    echo_time "> the supplied tutorial does not exist: ""$singleTutorial";
                 fi
             fi
         done
+    fi
+    if [[ nTutorial == 0 ]]; then
+        echo_time;
+        echo_time "List of tutorial is empty."
+        echo_time "$usage"; exit 1;
     fi
 }
 
@@ -79,7 +87,7 @@ createLocalVariables(){
 }
 
 buildHTMLTutorials(){
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -90,7 +98,7 @@ buildHTMLTutorials(){
 
 buildHTMLSpecificTutorial(){
     specificTutorial=$1
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
     createLocalVariables $specificTutorial
     # create html file
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
@@ -103,6 +111,7 @@ buildPDF=false
 buildRST=false
 buildMD=false
 buildPNG=false
+matlab=/Applications/MATLAB_R2016b.app/bin/matlab
 
 for i in "$@"
 do
@@ -121,6 +130,9 @@ do
         ;;
         -t=*)
         triggeringFile="${i#*=}"
+        ;;
+        -e=*)
+        matlab="${i#*=}"
         ;;
         *)
         echo_time "$usage" # unknown argument
@@ -180,9 +192,7 @@ if ! [[ -z "$triggeringFile" ]]; then
 fi
 
 # build list of tutorial if parameter '-f' is not set.
-if [[ -z "$specificTutorial" ]]; then
-    buildTutorialList
-fi
+buildTutorialList
 
 tutorialPath="../tutorials"
 tutorialDestination="$cobraToolBoxPath/docs/source/_static/tutorials"
@@ -215,6 +225,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
     fi
 
     echo_time "Creating requested files for tutorial(s):"
+    echo  ${tutorials[@]}
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
