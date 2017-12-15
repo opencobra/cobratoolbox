@@ -1,7 +1,7 @@
-% The COBRAToolbox: testtuneParam.m
+% The COBRAToolbox: testTuneParam.m
 %
 % Purpose:
-%     - testtuneParam tests the CPLEX parameter tuning tool of IBM CPLEX
+%     - testTuneParam tests the CPLEX parameter tuning tool of IBM CPLEX
 %
 % Author:
 %     - Marouen BEN GUEBILA 04/12/2017
@@ -13,7 +13,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testtuneParam'));
+fileDir = fileparts(which('testTuneParam'));
 cd(fileDir);
 
 % change the solver to IBM CPLEX
