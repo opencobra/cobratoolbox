@@ -5,10 +5,11 @@ function adaptMacPath()
 % USAGE:
 %     adaptMacPath();
 %
+
 global CBTDIR;
 oldMac = false;
 
-[status,macVer] = system('sw_vers')
+[status,macVer] = system('sw_vers');
 if status ~= 0
     oldMac = true;
 else
@@ -27,8 +28,8 @@ end
 
 macBinaryPath = [CBTDIR filesep 'binary' filesep 'maci64' filesep 'bin'];
 
-%Set the current and remove the other path. 
-if oldMac    
+% set the current and remove the other path.
+if oldMac
     addpath([macBinaryPath filesep 'preSierra']);
     rmpath([macBinaryPath filesep 'postSierra']);
 else
