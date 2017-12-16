@@ -16,3 +16,6 @@
 [submodule "test/models"]
 	path = test/models
 	url = https://github.com/cobrabot/COBRA.models
+[submodule "external/Volume-and-Sampling"]
+	path = external/Volume-and-Sampling
+	url = https://github.com/Bounciness/Volume-and-Sampling.git
