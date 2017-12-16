@@ -310,36 +310,28 @@ end
 % add the solver path for GUROBI, MOSEK or CPLEX
 if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
     TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
-    addpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
-    if printLevel > 0
-        fprintf('\n > Tomlab interface added to MATLAB path.\n');
-    end
+    installDir = strrep(TOMLAB_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
     GUROBI_PATH = strrep(GUROBI_PATH, '~', getenv('HOME'));
-    addpath(strrep(GUROBI_PATH, '\\', '\'));
-    if printLevel > 0
-        fprintf('\n > Gurobi interface added to MATLAB path.\n');
-    end
+    installDir = strrep(GUROBI_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'Gurobi', 'GUROBI_PATH', GUROBI_PATH, false);
 end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
     % add the solver path
     ILOG_CPLEX_PATH = strrep(ILOG_CPLEX_PATH, '~', getenv('HOME'));
-    addpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
-    if printLevel > 0
-        fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
-    end
+    installDir = strrep(ILOG_CPLEX_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'IBM ILOG CPLEX', 'ILOG_CPLEX_PATH', ILOG_CPLEX_PATH, false);
 end
 
 if  ~isempty(strfind(solverName, 'mosek')) && ~isempty(MOSEK_PATH)
     MOSEK_PATH = strrep(MOSEK_PATH, '~', getenv('HOME'));
-    addpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
-    if printLevel > 0
-        fprintf('\n > MOSEK interface added to MATLAB path.\n');
-    end
+    installDir = strrep(MOSEK_PATH, '\\', '\');
+    addSolverDir(installDir, printLevel, 'MOSEK', 'MOSEK_PATH', MOSEK_PATH, true);
 end
 
 solverOK = false;
@@ -404,18 +396,18 @@ if compatibleStatus == 1 || compatibleStatus == 2
 end
 
 % set solver related global variables
-if solverOK    
+if solverOK
     cwarn = warning;
     warning('off');
     eval(['oldval = CBT_', solverType, '_SOLVER;']);
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
-    Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);    
+    Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
     try
         evalc(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
     catch ME
         solverOK = false;
         eval(['CBT_', solverType, '_SOLVER = oldval;']);
-    end    
+    end
     warning(cwarn)
 end
 end
@@ -439,5 +431,40 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
         solverOK = true;
     elseif printLevel > 0
         error(['Solver ', solverName, ' is not installed. Please follow ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'these instructions', 'the instructions on '), ' in order to install the solver properly.'])
+    end
+end
+
+function addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
+% Adds the solver installation path to the MATLAB path
+%
+% Usage:
+%     addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
+%
+% Inputs:
+%     installDir:     Solver installation directory
+%     printLevel:     Verbose level
+%     capsName:       Name of solver in capital letters
+%     varName:        Name of global variable associated with the solver path
+%     globaVarPath:   Name of the path variable associated with the solver path
+%     subFolders:     Boolean to add the subfolders
+%
+
+    if exist(installDir, 'dir')
+        % add the solver installation folder
+        if subFolders
+            addpath(genpath(installDir));
+        else
+            addpath(installDir);
+        end
+
+        % print out a status message
+        if printLevel > 0
+            fprintf(['\n > ', capsName, ' interface added to MATLAB path.\n']);
+        end
+    else
+        % print out a warning message
+        if printLevel > 0
+            warning([' > The directory defined in ', varName, ' (', globaVarPath, ') does not exist.']);
+        end
     end
 end
