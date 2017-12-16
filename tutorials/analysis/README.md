@@ -1,4 +1,4 @@
-# <img src="../../docs/source/_static/images/icon_analysis.png" height="22px">&nbsp;&nbsp;Tutorials - analysis
+# <img src="https://prince.lcsb.uni.lu/img/icon_analysis.png" height="22px">&nbsp;&nbsp;Tutorials - analysis
 
 - [Flux balance analysis and its variants (FBA)](FBA)
 - [Flux Variability Analysis (FVA)](FVA)

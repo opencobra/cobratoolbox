@@ -11,7 +11,7 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    - bash .ci/runtests.sh
+    #- bash .ci/runtests.sh
 
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
@@ -22,5 +22,6 @@ after_success:
       export here=`pwd`;
       python ~/github_stats.py $here/docs/source/list_contributors.rst;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins'); doc.deploy()";
+      bash .ci/generateZip.sh;
       fi
       fi
