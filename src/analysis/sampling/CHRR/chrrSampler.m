@@ -1,4 +1,4 @@
-function [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA,optPercentage)
+function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA,optPercentage)
 % Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
 % chrrSampler will generate numSamples samples from model, taking `numSkip` steps of a random walk between each sample.
 % Rounding the polytope is a potentially expensive step. If you generate multiple rounds
@@ -32,6 +32,7 @@ function [samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, to
 %    samples:          `n x numSamples` matrix of random flux samples
 %    roundedPolytope:  The rounded polytope. Save for use in subsequent
 %                      rounds of sampling.
+%    minFlux, maxFlux:    flux minima and maxima
 %
 % .. Authors:
 %       - Ben Cousins and Hulda S. Haraldsdóttir, 03/2017, Original code
@@ -107,6 +108,8 @@ if toPreprocess
     options.useFastFVA = useFastFVA;
     options.optPercentage = optPercentage;
     [roundedPolytope] = preprocess(P,options);
+    minFlux = roundedPolytope.minFlux;
+    maxFlux = roundedPolytope.maxFlux;
 end
 
 fprintf('Generating samples...\n');
