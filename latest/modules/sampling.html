@@ -40,7 +40,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Analysis" href="analysis.html"/>
-        <link rel="next" title="sparseFBA" href="sparseFBA.html"/>
+        <link rel="next" title="ACHR" href="ACHR.html"/>
         <link rel="prev" title="relaxedFBA" href="relaxedFBA.html"/> 
 
   
@@ -137,7 +137,11 @@
 <li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="relaxedFBA.html">relaxedFBA</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Sampling</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sampling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ACHR.html">ACHR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="CHRR.html">CHRR</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermo</a></li>
@@ -226,6 +230,12 @@
             
   <div class="section" id="sampling">
 <span id="id1"></span><h1>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ACHR.html">ACHR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHRR.html">CHRR</a></li>
+</ul>
+</div>
 <span class="target" id="module-src.analysis.sampling"></span><dl class="function">
 <dt id="src.analysis.sampling.calcSampleDifference">
 <code class="descname">calcSampleDifference</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/calcSampleDifference.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.calcSampleDifference" title="Permalink to this definition">¶</a></dt>
@@ -605,6 +615,7 @@ in parenthesis).</p>
 <li>.nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.</li>
 <li>.maxTime - Maximum time limit (Default = 36000 s). ACHR only.</li>
 <li>.toRound - Option to round the model before sampling (true). CHRR only.</li>
+<li>.lambda - the bias vector for exponential sampling. CHRR_EXP only.</li>
 </ul>
 </div></blockquote>
 </li>
@@ -695,7 +706,7 @@ Optional second set of reaction names</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sparseFBA.html" class="btn btn-neutral float-right" title="sparseFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ACHR.html" class="btn btn-neutral float-right" title="ACHR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="relaxedFBA.html" class="btn btn-neutral" title="relaxedFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
