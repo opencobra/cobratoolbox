@@ -398,6 +398,5 @@ newRuleBool = ['x(', num2str(find(ismember(model2.genes,'Gene1'))), ') | x(',...
 head = fp.parseFormula(newRuleBool);
 head2 = fp.parseFormula(model2.rules{20});
 assert(head.isequal(head2)); % We can't make a string comparison so we parse the two formulas and see if they are equal.
-
 % change the directory
 cd(currentDir)
