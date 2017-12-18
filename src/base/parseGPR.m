@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList,newGeneList] = parseGPR(grRuleString, totalGeneList, newGenes)
+function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, totalGeneList)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -50,12 +50,17 @@ for i = 1:length(newGenes)
         newGeneList{end+1} = newGenes{i};
     end
 end
+% make sure that the list is a column list
+if length(newGeneList) > 0
+    newGeneList = columnVector(newGeneList);
+end
 
 %So generate the new gene list.
 if ~isempty(newGeneList)
-    totalGeneList = [totalGeneList; newGeneList];
+    totalGeneList{end+1} = newGeneList;
 end
 
+% define the internal function for convertGenes
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
 
 ruleString = regexprep(grRuleString, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
