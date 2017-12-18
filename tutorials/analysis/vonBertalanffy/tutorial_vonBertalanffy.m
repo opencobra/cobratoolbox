@@ -1,8 +1,7 @@
-% Thermodynamically constrain a metabololic model
-% *Author: Ronan Fleming, University of Luxembourg*
-% *Reviewers: *
-%
-% INTRODUCTION
+%% Thermodynamically constrain a metabololic model
+%% *Author: Ronan Fleming, University of Luxembourg*
+%% *Reviewers: *
+%% INTRODUCTION
 % In flux balance analysis of genome scale stoichiometric models of metabolism,
 % the principal constraints are uptake or secretion rates, the steady state mass
 % conservation assumption and reaction directionality. Von Bertylanffy [1,4] is
@@ -14,25 +13,30 @@
 % context, and (iv) thermodynamically constrained flux balance analysis. The theoretical
 % basis for each of these methods is detailed within the cited papers.
 %
-% PROCEDURE
-% Configure the environment
-% With all dependencies installed correctly, we configure our environment, verfy
-% all dependencies, and add required fields and directories to the matlab path.
+% **
+%% PROCEDURE
+%% Configure the environment
+% All the installation instructions are in a separate .md file named vonBertalanffy.md
+% in docs/source/installation
+%
+% With all dependencies installed correctly, we configure our environment,
+% verfy all dependencies, and add required fields and directories to the matlab
+% path.
+%%
 
-if 1
-    initVonBertalanffy
-end
+initVonBertalanffy
+
 %% Select the model
 % This tutorial is tested for the E. coli model iAF1260 and the human metabolic
-% model Recon3.0model. However, only the data for the former is provided within
+% model Recon3D_Dec2017. However, only the data for the former is provided within
 % the COBRA Toolbox as it is used for testing von Bertylanffy, while Recon3D is
 % not yet published and the data is not yet available. Having said this, the figures
-% generated below are most suited to plotting results for Recon3Dmodel, so they
-% may not be so useful for iAF1260.  The Recon3Dmodel example uses values from
-% literature for input variables where they are available.
-
-modelName='iAF1260';
-% modelName='Recon3.0model'; uncomment this line and comment the line above if you want to use Recon3D
+% generated below are most suited to plotting results for Recon3D, so they may
+% not be so useful for iAF1260.  The Recon3D example uses values from literature
+% for input variables where they are available.
+%%
+% modelName='iAF1260'; uncomment this line and comment the line below if you want to use the other model-  currently will not work without changes
+modelName='Recon3D_Dec2017';
 %% Load a model
 % Load a model, and save it as the original model in the workspace, unless it
 % is already loaded into the workspace.
@@ -42,17 +46,26 @@ global CBTDIR
 modelFileName = [modelName '.mat']
 modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
 modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
-model = readCbModel(modelFileName);
+
 switch modelName
     case 'iAF1260'
+        model = readCbModel(modelFileName);
         if model.S(952, 350)==0
             model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
         end
         model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing charge balancing
 
-    case 'Recon3.0model'
-        model.metFormulas{strcmp(model.mets,'h[i]')}='H';
-        model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
+    case 'Recon3D_Dec2017'
+      model = readCbModel(modelFileName);
+      model.csense(1:size(model.S,1),1)='E';
+      %Hack for thermodynamics
+      model.metFormulas{strcmp(model.mets,'h[i]')}='H';
+      model.metFormulas(cellfun('isempty',model.metFormulas)) = {'R'};
+      if isfield(model,'metCharge')
+          model.metCharges = double(model.metCharge);
+          model=rmfield(model,'metCharge');
+      end
+      modelOrig = model;
     otherwise
             error('setup specific parameters for your model')
 end
@@ -64,7 +77,7 @@ switch modelName
         resultsPath=strrep(resultsPath,'/tutorial_vonBertalanffy.mlx','');
         resultsPath=[resultsPath filesep modelName '_results'];
         resultsBaseFileName=[resultsPath filesep modelName '_results'];
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         basePath='~/work/sbgCloud';
         resultsPath=[basePath '/programReconstruction/projects/recon2models/results/thermo/' modelName];
         resultsBaseFileName=[resultsPath filesep modelName '_' datestr(now,30) '_'];
@@ -72,11 +85,11 @@ switch modelName
         error('setup specific parameters for your model')
 end
 %% Set the directory containing molfiles
-
+%%
 switch modelName
     case 'iAF1260'
         molfileDir = 'iAF1260Molfiles';
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         molfileDir = [basePath '/data/molFilesDatabases/explicitHMol'];
         %molfileDir = [basePath '/programModelling/projects/atomMapping/results/molFilesDatabases/DBimplicitHMol'];
         %molfileDir = [basePath '/programModelling/projects/atomMapping/results/molFilesDatabases/DBexplicitHMol'];
@@ -84,7 +97,7 @@ switch modelName
         error('setup specific parameters for your model')
 end
 %% Set the thermochemical parameters for the model
-
+%%
 switch modelName
     case 'iAF1260'
         T = 310.15; % Temperature in Kelvin
@@ -92,7 +105,7 @@ switch modelName
         ph = [7.7; 7.7; 7.7]; % Compartment specific pH
         is = [0.25; 0.25; 0.25]; % Compartment specific ionic strength in mol/L
         chi = [0; 90; 90]; % Compartment specific electrical potential relative to cytosol in mV
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         % Temperature in Kelvin
         T = 310.15;
         % Cell compartment identifiers
@@ -107,13 +120,13 @@ switch modelName
         error('setup specific parameters for your model')
 end
 %% Set the default range of metabolite concentrations
-
+%%
 switch modelName
     case 'iAF1260'
         concMinDefault = 1e-5; % Lower bounds on metabolite concentrations in mol/L
         concMaxDefault = 0.02; % Upper bounds on metabolite concentrations in mol/L
         metBoundsFile=[];
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         concMinDefault=1e-5; % Lower bounds on metabolite concentrations in mol/L
         concMaxDefault=1e-2; % Upper bounds on metabolite concentrations in mol/L
         metBoundsFile=which('HumanCofactorConcentrations.txt');%already in the COBRA toolbox
@@ -123,19 +136,19 @@ end
 %% Set the desired confidence level for estimation of thermochemical parameters
 % The confidence level for estimated standard transformed reaction Gibbs energies
 % is used to quantitatively assign reaction directionality.
-
+%%
 switch modelName
     case 'iAF1260'
         confidenceLevel = 0.95;
         DrGt0_Uncertainty_Cutoff = 20; %KJ/KMol
-    case 'Recon3.0model'
+    case 'Recon3D_Dec2017'
         confidenceLevel = 0.95;
         DrGt0_Uncertainty_Cutoff = 20; %KJ/KMol
     otherwise
         error('setup specific parameters for your model')
 end
 %% Prepare folder for results
-
+%%
 if ~exist(resultsPath,'dir')
     mkdir(resultsPath)
 end
@@ -143,18 +156,15 @@ cd(resultsPath)
 %% Set the print level and decide to record a diary or not (helpful for debugging)
 
 printLevel=2;
-if 1
-    diary([resultsPath filesep 'diary.txt'])
-end
+
+diary([resultsPath filesep 'diary.txt'])
 %% Setup a thermodynamically constrained model
 %% Read in the metabolite bounds
 
-if 1
-    setDefaultConc=1;
-    setDefaultFlux=0;
-    rxnBoundsFile=[];
-    model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel);
-end
+setDefaultConc=1;
+setDefaultFlux=0;
+rxnBoundsFile=[];
+model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel);
 %% Check inputs
 
 model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel);
@@ -208,18 +218,17 @@ if ~exist('massImbalance','var')
     end
 end
 %% Check that the input data necessary for the component contribution method is in place
-
-if 1 %isfield(model,'pseudoisomers')
+%%
+% if isfield(model,'pseudoisomers')
     model = setupComponentContribution(model,molfileDir);
-end
+% end
 %% Prepare the training data for the component contribution method
-
-
-%if ~exist('training_data','var')
+%%
+% if ~exist('training_data','var')
     training_data = prepareTrainingData(model,printLevel);
-%end
+% end
 %% Call the component contribution method
-
+%%
 if ~isfield(model,'DfG0')
     [model,~] = componentContribution(model,training_data);
 end
@@ -229,21 +238,21 @@ if ~isfield(model,'DfGt0')
     model = setupThermoModel(model,confidenceLevel);
 end
 %% Generate a model with reactants instead of major microspecies
-
+%%
 if ~isfield(model,'Srecon')
     printLevel_pHbalanceProtons=-1;
 
     model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
 end
 %% Determine quantitative directionality assignments
-
+%%
 if ~exist('directions','var')
     fprintf('Quantitatively assigning reaction directionality.\n');
     [modelThermo, directions] = thermoConstrainFluxBounds(model,confidenceLevel,DrGt0_Uncertainty_Cutoff,printLevel);
 end
 %% Analyse thermodynamically constrained model
 % Choose the cutoff for probablity that reaction is reversible
-
+%%
 cumNormProbCutoff=0.2;
 %%
 % Build Boolean vectors with reaction directionality statistics
@@ -282,18 +291,14 @@ cumNormProbCutoff=0.2;
 % Write out reports on directionality changes for individual reactions to
 % the results folder.
 
-if 1
-    fprintf('%s\n','directionalityChangeReport...');
-    directionalityChangeReport(modelThermo,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
-end
+fprintf('%s\n','directionalityChangeReport...');
+directionalityChangeReport(modelThermo,directions,cumNormProbCutoff,printLevel,resultsBaseFileName)
 %%
 % Generate pie charts with proportions of reaction directionalities and
 % changes in directionality
 
-if 1
-    fprintf('%s\n','directionalityStatFigures...');
-    directionalityStatsFigures(directions,resultsBaseFileName)
-end
+fprintf('%s\n','directionalityStatFigures...');
+directionalityStatsFigures(directions,resultsBaseFileName)
 %%
 % Generate figures to interpret the overall reasons for reaction directionality
 % changes for the qualitatively forward now quantiatiavely reversible reactions
