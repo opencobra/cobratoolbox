@@ -30,10 +30,8 @@ end
 basePath='~/work/sbgCloud';
 molfileDir = [basePath '/data/molFilesDatabases/explicitHMol'];
 
-% reference data
-
 % function outputs
-model = setupComponentContribution(model, molfileDir);
+model = setupComponentContribution(model, molfileDir)
 
 % tests
 assert(isstruct(model.inchi))
