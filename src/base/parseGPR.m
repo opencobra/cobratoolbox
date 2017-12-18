@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, totalGeneList)
+function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -28,13 +28,15 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, total
 % .. Author: -  Thomas Pfau Okt 2017
 
 newGeneList = {};
-
+totalGeneList = {};
 if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
+    %totalGeneList = currentGenes;
     return
 end
+totalGeneList = currentGenes;
 
 % preparse all model.grRules
 if ~iscell(grRuleString)
@@ -42,23 +44,29 @@ if ~iscell(grRuleString)
 end
 
 %Now, genes are items which do not have brackets, operators or whitespace characters
-newGenes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
+genes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
 
 %We have a new Gene List (which can be empty).
-for i = 1:length(newGenes)
-    if ~any(strcmp(totalGeneList, newGenes{i}))
-        newGeneList{end+1} = newGenes{i};
+for i = 1:length(genes)
+    if ~any(strcmp(genes{i}, currentGenes))
+        newGeneList{end+1} = genes{i};
     end
 end
+%newGeneList
+%newGeneList_old = setdiff(genes,currentGenes)
+
 % make sure that the list is a column list
-if length(newGeneList) > 0
+if ~isempty(newGeneList)
     newGeneList = columnVector(newGeneList);
 end
 
 %So generate the new gene list.
-if ~isempty(newGeneList)
-    totalGeneList{end+1} = newGeneList;
-end
+%if ~isempty(newGeneList)
+%    totalGeneList{end+1} = newGeneList;
+%end
+
+%So generate the new gene list.
+totalGeneList = [currentGenes;newGeneList]
 
 % define the internal function for convertGenes
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
