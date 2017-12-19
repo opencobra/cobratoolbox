@@ -28,15 +28,13 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, curre
 % .. Author: -  Thomas Pfau Okt 2017
 
 newGeneList = {};
-totalGeneList = {};
-if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$', 'once'))
+if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
     %If the provided string is empty or consists only of whitespaces or
     %brackets, i.e. it does not contain a rule
     ruleString = '';
-    %totalGeneList = currentGenes;
+    totalGeneList = currentGenes;
     return
 end
-totalGeneList = currentGenes;
 
 % preparse all model.grRules
 if ~iscell(grRuleString)
@@ -52,7 +50,6 @@ for i = 1:length(genes)
         newGeneList{end+1} = genes{i};
     end
 end
-%newGeneList = setdiff(genes,currentGenes);
 
 % make sure that the list is a column list
 if ~isempty(newGeneList)
@@ -60,14 +57,7 @@ if ~isempty(newGeneList)
 end
 
 %So generate the new gene list.
-%if ~isempty(newGeneList)
-%    totalGeneList{end+1} = newGeneList;
-%end
-
-%So generate the new gene list.
-if ~isempty(newGeneList)
-    totalGeneList = [currentGenes;newGeneList];
-end
+totalGeneList = [currentGenes;newGeneList];
 
 % define the internal function for convertGenes
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
