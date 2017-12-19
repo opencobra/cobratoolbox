@@ -18,6 +18,11 @@ if status ~= 0
     setenv('LD_LIBRARY_PATH',['/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')]);
 end
 
+[status,result] = system('babel'); %if after path change no babel detected - finish test - needs to be installed
+if status ~= 0
+  disp('No babel installed, test cannot proceed - for babel installation see docs/source/installation/vonBertalanffy.md')
+  return
+end
 % test variables
 model = getDistributedModel('Recon3D_Dec2017.mat');
 model.csense(1:size(model.S,1),1)='E';
