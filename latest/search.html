@@ -85,19 +85,24 @@
 		getValue: "name",
 
 		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 10,
 			match: {
 					enabled: true,
-			}
+			},
+            sort: {
+			    enabled: true
+		    }
 		},
 
-        template: {
-            type: "links",
-            fields: {
-                link: function(item) {
-                    return "_static/../" + item.website_url
-                },
-            }
-        },
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<a href='#?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='_static/../" + item.website_url + "' ><img src='_static/link.svg'/></a>";
+		    }
+	    },
 
 		theme: "square"
 
