@@ -52,12 +52,11 @@ for i = 1:length(genes)
         newGeneList{end+1} = genes{i};
     end
 end
-%newGeneList
-%newGeneList_old = setdiff(genes,currentGenes)
+%newGeneList = setdiff(genes,currentGenes);
 
 % make sure that the list is a column list
 if ~isempty(newGeneList)
-    newGeneList = columnVector(newGeneList);
+    newGeneList = columnVector(unique(newGeneList));
 end
 
 %So generate the new gene list.
@@ -66,7 +65,9 @@ end
 %end
 
 %So generate the new gene list.
-totalGeneList = [currentGenes;newGeneList]
+if ~isempty(newGeneList)
+    totalGeneList = [currentGenes;newGeneList];
+end
 
 % define the internal function for convertGenes
 convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
