@@ -190,7 +190,7 @@ if isfield(model, 'metCharges')
         end
     end
 
-    imBalancedCharge=model.S' * double(model.metCharges);
+    imBalancedCharge=model.S' * double(model.metCharges); % Matlab does not support this operation on two int values - one needs to be converted to double. The smaller matrix is selected.
 end
 
 if printLevel==-1 && isfield(model,'SIntRxnBool')
