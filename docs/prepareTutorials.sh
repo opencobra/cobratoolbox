@@ -91,7 +91,8 @@ buildHTMLTutorials(){
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
-        # create html file
+        # create PDF file
+        /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
         sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     done
 }
@@ -100,7 +101,8 @@ buildHTMLSpecificTutorial(){
     specificTutorial=$1
     $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
     createLocalVariables $specificTutorial
-    # create html file
+    # create PDF file
+    /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
 }
 
@@ -211,14 +213,13 @@ fi
 # now loop through the above array
 if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
-    echo_time "Creating index.rst"
-    echo >> $rstPath/index.rst
-    echo >> $rstPath/index.rst
-    echo ".. toctree::" >> $rstPath/index.rst
-    echo >> $rstPath/index.rst
-
     # clean destination folder for the RST and HTML tutorial files
     if [ $buildRST = true ]; then
+        echo_time "Creating index.rst"
+        echo >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
+        echo ".. toctree::" >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
         echo_time "Cleaning destination folders for html and rst files"
         find "$tutorialDestination" -name "tutorial*.html" -exec rm -f {} \;
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
@@ -277,6 +278,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux://mnt/isilon-dat/.
 fi
 
