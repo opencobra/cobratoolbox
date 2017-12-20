@@ -12,18 +12,18 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, curre
 %
 % USAGE:
 %
-%    [newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,totalGeneList)
+%    [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes)
 %
 % INPUT:
 %    grRuleString:     The rule string in textual format.
-%    totalGeneList:     Names of all currently known genes. Encountered
+%    currentGenes:     Names of all currently known genes. Encountered
 %                      genes (column cell Array of Strings)
 % OUTPUT:
 %    ruleString:       The logical formula representing the grRuleString.
 %                      Any position refers to the totalGeneList returned.
-%    totalGeneList:    The concatenation of totalGeneList and newGeneList
+%    totalGeneList:    The concatenation of currentGenes and newGeneList
 %    newGeneList:      A list of gene Names that were not present in
-%                      totalGeneList
+%                      currentGenes
 %
 % .. Author: -  Thomas Pfau Okt 2017
 
