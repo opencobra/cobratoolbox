@@ -2,12 +2,12 @@
 
 Tutorials are here to get you started with using [The COBRA Toolbox](https://opencobra.github.io/cobratoolbox/latest/index.html). The tutorials are grouped according to the `src/` folder structure:
 
-- <img src="../docs/source/_static/images/icon_analysis.png" height="14px">&nbsp;&nbsp;[analysis](analysis/)
-- <img src="../docs/source/_static/images/icon_base.png" height="14px">&nbsp;&nbsp;[base](base/)
-- <img src="../docs/source/_static/images/icon_di.png" height="14px">&nbsp;&nbsp;[dataIntegration](dataIntegration/)
-- <img src="../docs/source/_static/images/icon_design.png" height="14px">&nbsp;&nbsp;[design](design/)
-- <img src="../docs/source/_static/images/icon_reconstruction.png" height="14px">&nbsp;&nbsp;[reconstruction](reconstruction/)
-- <img src="../docs/source/_static/images/icon_visualization.png" height="14px">&nbsp;&nbsp;[visualization](visualization/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_analysis.png" height="14px">&nbsp;&nbsp;[analysis](analysis/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_base.png" height="14px">&nbsp;&nbsp;[base](base/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_di.png" height="14px">&nbsp;&nbsp;[dataIntegration](dataIntegration/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_design.png" height="14px">&nbsp;&nbsp;[design](design/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_reconstruction.png" height="14px">&nbsp;&nbsp;[reconstruction](reconstruction/)
+- <img src="https://prince.lcsb.uni.lu/img/icon_visualization.png" height="14px">&nbsp;&nbsp;[visualization](visualization/)
 
 All tutorials are provided in 4 formats: `.mlx`, `.m`, `.pdf`, and `.html`.
 
