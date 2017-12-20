@@ -5551,16 +5551,6 @@ div[class^='highlight'] pre {
     border-color: #2472a4
 }
 
-.wy-side-nav-search img {
-    display: block;
-    margin: auto auto 0.809em auto;
-    height: 45px;
-    width: 45px;
-    background-color: #2980B9;
-    padding: 5px;
-    border-radius: 100%
-}
-
 .wy-side-nav-search>a,
 .wy-side-nav-search .wy-dropdown>a {
     color: #fcfcfc;
@@ -5585,6 +5575,7 @@ div[class^='highlight'] pre {
     border-radius: 0;
     max-width: 100%;
     background: transparent
+    text-align: left !important;
 }
 
 .wy-side-nav-search>a.icon img.logo,
@@ -6491,11 +6482,12 @@ body,
 }
 
 .wy-side-nav-search img {
-    width: 158px;
-    height: 106px;
+    width: 16px;
+    height: 16px;
     border-radius: 0;
-    margin: 1em;
+    margin: 4px;
     padding: 0;
+    display: inline;
 }
 
 .wy-menu a:hover {
@@ -6728,4 +6720,12 @@ blockquote {
    .wy-table-responsive {
       overflow: visible !important;
    }
+}
+
+.easy-autocomplete a {
+    display: inline;
+}
+
+.easy-autocomplete-container ul li div {
+    text-align: left;
 }
