@@ -5551,16 +5551,6 @@ div[class^='highlight'] pre {
     border-color: #2472a4
 }
 
-.wy-side-nav-search img {
-    display: block;
-    margin: auto auto 0.809em auto;
-    height: 45px;
-    width: 45px;
-    background-color: #2980B9;
-    padding: 5px;
-    border-radius: 100%
-}
-
 .wy-side-nav-search>a,
 .wy-side-nav-search .wy-dropdown>a {
     color: #fcfcfc;
@@ -5585,6 +5575,7 @@ div[class^='highlight'] pre {
     border-radius: 0;
     max-width: 100%;
     background: transparent
+    text-align: left !important;
 }
 
 .wy-side-nav-search>a.icon img.logo,
@@ -6460,8 +6451,7 @@ span[id*='MathJax-Span'] {
 body,
 .wy-body-for-nav,
 .wy-nav-side,
-.wy-side-nav-search,
-.wy-side-nav-search img {
+.wy-side-nav-search{
     background: #fcfcfc;
 }
 
@@ -6491,11 +6481,12 @@ body,
 }
 
 .wy-side-nav-search img {
-    width: 158px;
-    height: 106px;
+    width: 14px;
+    height: 14px;
     border-radius: 0;
-    margin: 1em;
+    margin: 0 0 2px 6px;
     padding: 0;
+    display: inline;
 }
 
 .wy-menu a:hover {
@@ -6729,3 +6720,13 @@ blockquote {
       overflow: visible !important;
    }
 }
+
+.easy-autocomplete a {
+    display: inline;
+}
+
+.easy-autocomplete-container ul li div {
+    text-align: left;
+}
+
+//.easy-autocomplete-container { max-height: 160px; overflow: auto; overflow-y: auto; overflow-x:hidden; }
