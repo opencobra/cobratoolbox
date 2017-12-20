@@ -1,7 +1,7 @@
 .. _tutorialSparseFBA_protonShuttle:
 
-tutorialNoName
-==============
+Proton shuttle testing with sparse flux balance analysis
+========================================================
 
 
 .. raw:: html

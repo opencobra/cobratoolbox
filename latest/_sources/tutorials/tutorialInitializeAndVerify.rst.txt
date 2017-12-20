@@ -1,7 +1,7 @@
 .. _tutorialInitializeAndVerify:
 
-tutorialNoName
-==============
+Initialise and verify The COBRA Toolbox
+=======================================
 
 
 .. raw:: html
