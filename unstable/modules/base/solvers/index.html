@@ -2193,6 +2193,97 @@ Structure containing the following fields describing a QP solution<ul>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.tuneParam">
+<code class="descname">tuneParam</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>contFunctName</em>, <em>timelimit</em>, <em>nrepeat</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/tuneParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes cplex parameters to make model resolution faster.
+Particularly interetsing for large-scale MILP models and repeated runs of
+optimisation.
+While, it won&#8217;t optimize memory space nor model constraints for numerical
+infeasibilities, tuneParam will provide the optimal set of solver
+parameters for feasbile models. It requires IBM ILOG cplex (for now).</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>optimalParameters = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel);</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LPProblem</strong> &#8211;
+MILP as COBRA LP problem structure</li>
+<li><strong>contFunctName</strong> &#8211;
+Parameters structure containing the name and value.
+A set of routine parameters will be added by the solver
+but won&#8217;t be reported.</li>
+<li><strong>timelimit</strong> &#8211;
+default is 10000 second</li>
+<li><strong>nrepeat</strong> &#8211;
+number of row/column permutation of the original
+problem, reports robust results.
+sets the CPX_PARAM_TUNINGREPEAT parameter
+High values of nrepeat would require consequent
+memory and swap.</li>
+<li><strong>printLevel</strong> &#8211;
+0/(1)/2/3</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>optimParam</strong> &#8211;
+structure of optimal parameter values directly usable as
+contFunctName argument in solveCobraLP function</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.tuneParamForModel">
+<code class="descname">tuneParamForModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/tuneParamForModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParamForModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes cplex parameters to make model resolution faster.
+Particularly interetsing for large-scale MILP models and repeated runs of
+optimisation.
+While, it won&#8217;t optimize memory space nor model constraints for numerical
+infeasibilities, tuneParam will provide the optimal set of solver
+parameters for feasbile models. It requires IBM ILOG cplex (for now).</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>optimalParameters = tuneParam(model,contFunctName,1000,1000,0);</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA model struct.</li>
+<li><strong>contFunctName</strong> &#8211;
+Parameters structure containing the name and value.
+A set of routine parameters will be added by the solver
+but won&#8217;t be reported.</li>
+<li><strong>timelimit</strong> &#8211;
+default is 10000 second</li>
+<li><strong>nrepeat</strong> &#8211;
+number of row/column permutation of the original
+problem, reports robust results.
+sets the CPX_PARAM_TUNINGREPEAT parameter
+High values of nrepeat would require consequent
+memory and swap.</li>
+<li><strong>printLevel</strong> &#8211;
+0/1/2/3</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>optimParam</strong> &#8211;
+structure of optimal parameter values directly usable as
+contFunctName argument in solveCobraLP function</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is just a wrapper function that calls the tuneParam function
+using a Cobra model structure converted to a LP problem.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.verifyCobraProblem">
 <code class="descname">verifyCobraProblem</code><span class="sig-paren">(</span><em>XPproblem</em>, <em>x</em>, <em>tol</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/solvers/verifyCobraProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verifies dimensions of fields in <cite>XPproblem</cite> and determines if they are

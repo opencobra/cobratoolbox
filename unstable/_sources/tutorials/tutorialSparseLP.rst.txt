@@ -1,7 +1,7 @@
 .. _tutorialSparseLP:
 
-tutorialNoName
-==============
+Sparse Linear Optimisation
+==========================
 
 
 .. raw:: html
