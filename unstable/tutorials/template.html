@@ -89,7 +89,7 @@
             onKeyEnterEvent: function(item) {
                     return "_static/../" + item.website_url
             },
-            maxNumberOfElements: 10,
+            maxNumberOfElements: 25,
 			match: {
 					enabled: true,
 			},
@@ -101,7 +101,7 @@
     	template: {
 	    	type: "custom",
 		    method: function(value, item) {
-                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.png'/></a></span>";
+                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
 		    }
 	    },
 

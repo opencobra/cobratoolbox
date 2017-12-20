@@ -6482,10 +6482,10 @@ body,
 }
 
 .wy-side-nav-search img {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border-radius: 0;
-    margin: 4px;
+    margin: 0 0 2px 6px;
     padding: 0;
     display: inline;
 }
@@ -6729,3 +6729,5 @@ blockquote {
 .easy-autocomplete-container ul li div {
     text-align: left;
 }
+
+//.easy-autocomplete-container { max-height: 160px; overflow: auto; overflow-y: auto; overflow-x:hidden; }

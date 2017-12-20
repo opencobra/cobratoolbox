@@ -91,7 +91,7 @@
             onKeyEnterEvent: function(item) {
                     return "_static/../" + item.website_url
             },
-            maxNumberOfElements: 10,
+            maxNumberOfElements: 25,
 			match: {
 					enabled: true,
 			},
@@ -103,7 +103,7 @@
     	template: {
 	    	type: "custom",
 		    method: function(value, item) {
-                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.png'/></a></span>";
+                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
 		    }
 	    },
 
@@ -323,7 +323,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reconstruction/index.html">Reconstruction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reconstruction/rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/rBioNet/inc/index.html">rBioNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction/fastGapFill/index.html">fastGapFill</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="reconstruction/fastGapFill/AuxillaryFiles/index.html">AuxillaryFiles</a></li>
 </ul>
