@@ -6451,8 +6451,7 @@ span[id*='MathJax-Span'] {
 body,
 .wy-body-for-nav,
 .wy-nav-side,
-.wy-side-nav-search,
-.wy-side-nav-search img {
+.wy-side-nav-search{
     background: #fcfcfc;
 }
 
