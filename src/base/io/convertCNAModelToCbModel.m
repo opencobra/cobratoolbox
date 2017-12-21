@@ -1,18 +1,19 @@
-function model = convertCNAModelToCbModel(cnaModel)
+function model = convertCNAModelToCbModel(cnaModel, printLevel)
 % Function uses the CNAcna2cobra from CellNetAnalyzer to
 % convert a CNA model to a COBRA model
 %
 % USAGE:
 %
-%    model = convertCNAModelToCbModel(cnaModel)
+%    model = convertCNAModelToCbModel(cnaModel, printLevel)
 %
 % INPUT:
 %
-%    cnaModel:   cnap is a CNA mass-flow project structure
+%    cnaModel:     CNA mass-flow project structure
+%    printLevel:   verbose level (default: 1)
 %
 % OUTPUT:
 %
-%    model:      COBRA model structure
+%    model:        COBRA model structure
 %
 % NOTE:
 %
@@ -20,6 +21,14 @@ function model = convertCNAModelToCbModel(cnaModel)
 %    which can be downloaded from https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html
 %
 
-    model = CNAcna2cobra(cnaModel);
+    if nargin < 2  % set default printLevel
+        printLevel = 1;
+    end
 
+    % check if CNA is properly installed
+    status = checkCNAinstallation(printLevel);
+
+    if status
+        model = CNAcna2cobra(cnaModel);
+    end
 end
