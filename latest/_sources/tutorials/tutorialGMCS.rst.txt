@@ -1,7 +1,7 @@
 .. _tutorialGMCS:
 
-tutorialNoName
-==============
+genetic Minimal Cut Sets - gMCSs
+================================
 
 
 .. raw:: html

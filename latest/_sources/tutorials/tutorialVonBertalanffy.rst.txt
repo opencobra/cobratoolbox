@@ -1,7 +1,7 @@
 .. _tutorialVonBertalanffy:
 
-Thermodynamically constrain a metabololic model
-===============================================
+Thermodynamically constrain a metabolic model
+=============================================
 
 
 .. raw:: html
