@@ -193,8 +193,8 @@ compatibility
 `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
 For convenience, we provide
-```glpk_mex`` <https://github.com/blegat/glpkmex>`__ and
-```libSBML-5.15+`` <http://sbml.org/Software/libSBML>`__ in
+`glpk_mex <https://github.com/blegat/glpkmex>`__ and
+`libSBML-5.15+ <http://sbml.org/Software/libSBML>`__ in
 ``/external``.
 
 `Binaries <https://github.com/opencobra/COBRA.binary>`__ for these
@@ -256,7 +256,7 @@ holder.*
    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" width="20px" alt="tada">
 
 
-.. |thumbup| raw:: html
+.. |thumbsup| raw:: html
 
    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
