@@ -37,7 +37,7 @@ if statusCNA
     assert(isequal(model_new.c, model.c));
     assert(isequal(model_new.metNames, model.metNames));
     assert(isequal(model_new.b, model.b));
-    % Note: is different
+    % Note: rxnNames is different
 end
 
 % change the directory
