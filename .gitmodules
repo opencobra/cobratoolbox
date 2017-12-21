@@ -22,3 +22,6 @@
 [submodule "external/CnaCobraInterface"]
 	path = external/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
+[submodule "COBRA.tutorials"]
+	path = COBRA.tutorials
+	url = https://github.com/opencobra/COBRA.tutorials.git
