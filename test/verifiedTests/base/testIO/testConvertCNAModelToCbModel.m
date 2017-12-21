@@ -1,7 +1,7 @@
 % The COBRAToolbox: testConvertCNAModelToCbModel.m
 %
 % Purpose:
-%     - convert a CNA model to a COBRA model
+%     - convert a CNA model to a COBRA model and vice versa
 %
 
 % save the current path
@@ -37,8 +37,7 @@ if statusCNA
     assert(isequal(model_new.c, model.c));
     assert(isequal(model_new.metNames, model.metNames));
     assert(isequal(model_new.b, model.b));
-
-    % rxnNames and rev are different
+    % Note: is different
 end
 
 % change the directory
