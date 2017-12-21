@@ -23,8 +23,6 @@ if isfield(model,'metCharge')
   model=rmfield(model,'metCharge');
 end
 
-% reference data
-
 % function outputs
 model = configureSetupThermoModelInputs(model);
 
