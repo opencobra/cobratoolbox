@@ -1,7 +1,0 @@
-HCO3E	co2[c] + h2o[c]  <=> h[c] + hco3[c] 	22.1	47.7	2.5	67.3
-
-Cytoplasmic metabolites only:
-1	co2	co2[c]	-386.0	4.5	
-1	h2o	h2o[c]	-145.9	1.2	
-1	h	h[c]	45.7	0.0	
-1	hco3	hco3[c]	-542.7	2.1	

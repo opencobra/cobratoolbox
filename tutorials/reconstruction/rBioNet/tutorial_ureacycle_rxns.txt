@@ -1,5 +1,0 @@
-CBPSam	carbamoyl-phosphate synthase (ammonia) (mitochondria)	2 atp[m] + hco3[m] + nh4[m] -> 2 adp[m] + cbp[m] + 2 h[m] + pi[m]	0	4			6.3.4.16
-OCBTm	ornithine carbamoyltransferase, irreversible	cbp[m] + orn[m] -> citr-L[m] + h[m] + pi[m]	0	4			2.1.3.3
-ARGSS	argininosuccinate synthase	asp-L[c] + atp[c] + citr-L[c] -> amp[c] + argsuc[c] + h[c] + ppi[c]	0	4			6.3.4.5
-ARGSL	argininosuccinate lyase	argsuc[c] <=> arg-L[c] + fum[c]	1	4			4.3.2.1
-ARGN	arginase	arg-L[c] + h2o[c] -> orn[c] + urea[c]	0	4			3.5.3.1
