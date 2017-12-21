@@ -43,7 +43,7 @@ function model = setupComponentContribution(model, molFileDir, cid, printLevel)
 %                          levels of structural detail.
 %                        * .pKa - `m x 1` structure containing metabolite pKa values
 %                          estimated with ChemAxon's Calculator Plugins.
-%                        * .pseudoisomers - `p x 4` matrix with the following columns:
+%                        * .pseudoisomers - `struct with the following fields as columns:
 %
 %                          1. Metabolite index.
 %                          2. Estimated pseudoisomer standard Gibbs energy.
