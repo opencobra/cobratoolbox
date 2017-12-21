@@ -1,4 +1,4 @@
-function cnaModel = convertCNAModelToCbModel(model)
+function cnaModel = convertCbModelToCNAModel(model)
 % Function uses the CNAcobra2cna from CellNetAnalyzer to
 % convert a COBRA model to a CNA model
 %
@@ -14,10 +14,10 @@ function cnaModel = convertCNAModelToCbModel(model)
 %
 %    cnaModel:   cnaModel is a CNA mass-flow project structure
 %
-% Note:
+% NOTE:
 %
-% This functions requires a working installation of CellNetAnalyzer
-% which can be downloaded from https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html
+%    This functions requires a working installation of CellNetAnalyzer
+%    which can be downloaded from https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html
 %
 
     cnaModel = CNAcobra2cna(model);

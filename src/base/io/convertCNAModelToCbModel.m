@@ -14,10 +14,10 @@ function model = convertCNAModelToCbModel(cnaModel)
 %
 %    model:      COBRA model structure
 %
-% Note:
+% NOTE:
 %
-% This functions requires a working installation of CellNetAnalyzer
-% which can be downloaded from https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html
+%    This functions requires a working installation of CellNetAnalyzer
+%    which can be downloaded from https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html
 %
 
     model = CNAcna2cobra(cnaModel);
