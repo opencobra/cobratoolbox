@@ -29,10 +29,11 @@ The COBRA Toolbox  COnstraint-Based Reconstruction and Analysis Toolbox
    </table>
    <br>
 
-.. requirements-marker
 
 System Requirements and Solver Installation
 -------------------------------------------
+
+.. begin-requirements-marker
 
 |warning| Please follow `this guide <https://opencobra.github.io/cobratoolbox/docs/requirements.html>`__ in order to configure your system properly.
 
@@ -40,9 +41,12 @@ System Requirements and Solver Installation
 
 You may install ``TOMLAB``, ``IBM ILOG CPLEX``, ``GUROBI``, or ``MOSEK`` by following these `detailed instructions <https://opencobra.github.io/cobratoolbox/docs/solvers.html>`__.
 
+.. end-requirements-marker
 
 Installation
 ------------
+
+.. begin-installation-marker
 
 1. Download this repository (the folder ``./cobratoolbox/`` will be
    created). You can clone the repository using:
@@ -67,35 +71,39 @@ Installation
    
       >> testAll
 
+.. end-installation-marker
+
 
 Tutorials, Documentation, and Support
 -------------------------------------
 
--  Consult all tutorials in the section. All tutorials can be run from
+-  Consult all tutorials in the section |tutorials|. All tutorials can be run from
    the
    `/tutorials <https://github.com/opencobra/cobratoolbox/tree/master/tutorials>`__
    directory.
 
--  All functions are documentd in the .
+-  All functions are documented in the |latest|.
 
--  If you need support, please feel free to post your question in our .
+-  If you need support, please feel free to post your question in our |forum|.
 
 -  Answers to Frequently Asked Questions (**FAQ**) are
    `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`__.
 
+
 How to contribute
 -----------------
 
- First off, thanks for taking the time to contribute to `The COBRA
-Toolbox <https://github.com/opencobra/cobratoolbox>`__!
+.. begin-how-to-contribute-marker
+
+|thumbsup| |tada| First off, thanks for taking the time to contribute to `The COBRA
+Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 
 .. raw:: html
 
    <p align="center">
-
-.. raw:: html
-
+   <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
    </p>
+
 
 You can install the
 `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ from
@@ -105,9 +113,7 @@ within MATLAB by typing:
 
     >> installDevTools()
 
- **Check out the
-`MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ - and
-contribute the smart way!**
+|bulb| Check out the `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart way!
 
 -  Please follow the `Style
    Guide <https://opencobra.github.io/cobratoolbox/docs/styleGuide.html>`__.
@@ -130,10 +136,12 @@ guide <https://help.github.com/articles/creating-a-pull-request/>`__
 also come in handy.
 
 
-.. how-to-cite-marker
+.. end-how-to-contribute-marker
 
 How to cite the COBRA Toolbox
 -----------------------------
+
+.. begin-how-to-cite-marker
 
 When citing the COBRA Toolbox, it is important to cite the original
 paper where an algorithm was first reported, as well as its
@@ -173,10 +181,14 @@ implemented in The COBRA Toolbox v3.0 [2], was employed.*
     v3.0** (submitted), 2017,
     `arXiv:1710.04038 <https://arxiv.org/abs/1710.04038>`__.
 
+.. end-how-to-cite-marker
+
 Binaries and Compatibility
 --------------------------
 
- Please make sure you install a compatible solver. Check the
+.. begin-binaries-marker
+
+|warning| Please make sure you install a compatible solver. Check the
 compatibility
 `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
@@ -196,6 +208,8 @@ instructions
 Read more on the compatibility with SBML-FBCv2
 `here <https://opencobra.github.io/cobratoolbox/docs/notes.html>`__.
 
+.. end-binaries-marker
+
 Disclaimer
 ----------
 
@@ -208,45 +222,60 @@ it is solely the user’s responsibility to license any patents that may
 exist and respond in full to any legal actions taken by the patent
 holder.*
 
+
 .. icon-marker
 
-.. |macos| image:: https://prince.lcsb.uni.lu/jenkins/userContent/apple.png
-   :height: 20px
-   :width: 20px
-   :alt: macos
 
-.. |linux| image:: https://prince.lcsb.uni.lu/jenkins/userContent/linux.png
-   :height: 20px
-   :width: 20px
-   :alt: linux
+.. |macos| raw:: html
 
-.. |windows| image:: https://prince.lcsb.uni.lu/jenkins/userContent/windows.png
-   :height: 20px
-   :width: 20px
-   :alt: windows
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">
 
-.. |matlab| image:: https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png
-   :height: 20px
-   :width: 20px
-   :alt: matlab
 
-.. |warning| image:: https://prince.lcsb.uni.lu/jenkins/userContent/warning.png
-   :height: 20px
-   :width: 20px
-   :alt: warning
+.. |linux| raw:: html
 
-.. |thumbsup| image:: https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png
-   :height: 20px
-   :width: 20px
-   :alt: thumbsup
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">
 
-.. |tada| image:: https://prince.lcsb.uni.lu/jenkins/userContent/tada.png
-   :height: 20px
-   :width: 20px
-   :alt: tada
 
-.. |bulb| image:: https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png
-   :height: 20px
-   :width: 20px
-   :alt: bulb
+.. |windows| raw:: html
 
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="windows">
+
+
+.. |warning| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning">
+
+
+.. |matlab| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab">
+
+
+.. |tada| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" width="20px" alt="tada">
+
+
+.. |thumbup| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+
+
+.. |bulb| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" width="20px" alt="bulb">
+
+
+.. |tutorials| raw:: html
+
+   <a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
+
+
+.. |latest| raw:: html
+
+   <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
+   
+
+.. |forum| raw:: html
+
+   <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>
