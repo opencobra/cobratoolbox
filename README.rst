@@ -61,13 +61,13 @@ Installation
 
 2. Change to the folder ``cobratoolbox/`` and run from |matlab|
 
-   .. code-block:: console
+   .. code-block:: matlab
 
       >> initCobraToolbox
 
 3. You can test your installation by running from |matlab|
    
-   .. code-block:: console
+   .. code-block:: matlab
    
       >> testAll
 
@@ -109,7 +109,7 @@ You can install the
 `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ from
 within MATLAB by typing:
 
-.. code:: matlab
+.. code-block:: matlab
 
     >> installDevTools()
 
