@@ -1,16 +1,63 @@
 How to contribute
 =================
 
-.. raw:: html
+.. include:: ../../README.rst
+   :start-after: begin-how-to-contribute-marker
+   :end-before: end-how-to-contribute-marker 
 
-   <p><a href="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" target="_blank"><img src="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" height="20px" alt="+1" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" style="max-width:100%;"></a>  <a href="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" height="20px" alt="tada" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" style="max-width:100%;"></a> First off, thanks for taking the time to contribute to <a href="https://github.com/opencobra/cobratoolbox">The COBRA Toolbox</a>! <a href="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" height="20px" alt="tada" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" style="max-width:100%;"></a> <a href="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" target="_blank"><img src="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" height="20px" alt="+1" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" style="max-width:100%;"></a></p>
-   <p align="center">
-   <a href="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" target="_blank"><img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px" style="max-width:100%;"></a>
-   </p>
-   <p><a href="https://camo.githubusercontent.com/f1f4e83e3a6695a8167251cd8f0b2cb6d9f5b757/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f62756c622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/f1f4e83e3a6695a8167251cd8f0b2cb6d9f5b757/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f62756c622e706e67" height="20px" alt="bulb" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" style="max-width:100%;"></a> <strong>Check out the <a href="https://github.com/opencobra/MATLAB.devTools">MATLAB.devTools</a> - and contribute the smart way!</strong></p>
-   <ul>
-   <li>Please follow the <a href="https://opencobra.github.io/cobratoolbox/docs/styleGuide.html">Style Guide</a>.</li>
-   <li>More information on writing a <strong>test</strong> is <a href="https://opencobra.github.io/cobratoolbox/docs/testGuide.html">here</a> and a template is <a href="https://opencobra.github.io/cobratoolbox/docs/testTemplate.html">here</a>.</li>
-   <li>A guide for reporting an <strong>issue</strong> or submitting a <strong>pull request (PR)</strong> is <a href="https://opencobra.github.io/cobratoolbox/docs/issueGuide.html">here</a>.</li>
-   </ul>
-   <p>If you want to use <code>git</code> via the command line interface and need help, these <a href="https://uni-lu.github.io/slides/">training slides</a> will get you started. This <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github">guide</a> or the official <a href="https://help.github.com/articles/creating-a-pull-request/">GitHub guide</a> also come in handy.</p>
+
+.. |macos| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">
+
+
+.. |linux| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">
+
+
+.. |windows| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="windows">
+
+
+.. |warning| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning">
+
+
+.. |matlab| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab">
+
+
+.. |tada| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" width="20px" alt="tada">
+
+
+.. |thumbsup| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+
+
+.. |bulb| raw:: html
+
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" width="20px" alt="bulb">
+
+
+.. |tutorials| raw:: html
+
+   <a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
+
+
+.. |latest| raw:: html
+
+   <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
+   
+
+.. |forum| raw:: html
+
+   <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>
+
+
