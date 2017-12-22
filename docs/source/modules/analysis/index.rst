@@ -13,6 +13,7 @@ Analysis
    dynamicFBA/index
    exploration/index
    geometricFBA/index
+   gMCS/index
    KLdistance/index
    multiSpecies/index
    parsimoniousFBA/index
