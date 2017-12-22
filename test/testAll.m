@@ -47,6 +47,9 @@ if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USER
 
     % add CellNetAnalyzer for testing purposes
     addpath(genpath(getenv('CNA_PATH')));
+
+    % check the CNA installation
+    checkCNAinstallation(0);
 else
     WAITBAR_TYPE = 1;
 end
