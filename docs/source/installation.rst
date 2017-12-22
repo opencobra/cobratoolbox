@@ -8,7 +8,7 @@ Installation
 System Requirements
 -------------------
 
-.. include:: intallation/requirements.rst
+.. include:: installation/requirements.rst
    :start-after: begin-requirements-marker
    :end-before: end-requirements-marker
 
@@ -17,9 +17,9 @@ System Requirements
 Solver Installation
 -------------------
 
-.. include:: ../../README.rst
-   :start-after: begin-requirements-marker
-   :end-before: end-requirements-marker
+.. include:: installation/solvers.rst
+   :start-after: begin-solver-installation-marker
+   :end-before: end-solver-installation-marker
 
 
 Download and installation
