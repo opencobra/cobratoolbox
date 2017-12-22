@@ -16,6 +16,7 @@ Analysis
    multiSpecies/index
    rFBA/index
    relaxedFBA/index
+   robustnessAnalysis/index
    sampling/index
    sparseFBA/index
    subspaces/index
