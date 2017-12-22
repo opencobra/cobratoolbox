@@ -1,7 +1,7 @@
 Installation
 ============
 
-|br| |br|
+|br|
 
 System Requirements
 -------------------
