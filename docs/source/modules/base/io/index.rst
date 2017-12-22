@@ -8,6 +8,7 @@ IO
 .. toctree::
 
    BiGG/index
+   definitions/index
    KEGG/index
    utilities/index
 
