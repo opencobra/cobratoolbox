@@ -10,6 +10,7 @@ Analysis
    MOMA/index
    coupling/index
    deletion/index
+   dynamicFBA/index
    exploration/index
    multiSpecies/index
    rFBA/index
