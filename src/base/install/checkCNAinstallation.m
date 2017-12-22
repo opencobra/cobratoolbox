@@ -28,6 +28,14 @@ function status = checkCNAinstallation(printLevel)
 
     % check if CNA is available and convert the model
     if ~isempty(which('startcna'))
+        % remove the external libSBML folder from CNA and use COBRA.binary
+        cnaPath = fileparts(which('startcna'));
+        cnaLibSBMLdir = [cnaPath filesep 'code' filesep 'ext' filesep 'libSBML'];
+        if exist(cnaLibSBMLdir, 'dir') == 7
+            rmpath(genpath(cnaLibSBMLdir));
+        end
+
+        % print a sucess message
         if printLevel > 0
             fprintf(' > CellNetAnalyzer is installed properly.\n');
         end
