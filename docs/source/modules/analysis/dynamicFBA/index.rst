@@ -5,5 +5,5 @@
 FBA
 ---
 
-.. automodule:: src.analysis.FBA
+.. automodule:: src.analysis.dynamicFBA
    :members:
