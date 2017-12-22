@@ -6729,4 +6729,8 @@ blockquote {
     text-align: left;
 }
 
+.highlight, div[class^="highlight-"] {
+    border: none;
+}
+
 //.easy-autocomplete-container { max-height: 160px; overflow: auto; overflow-y: auto; overflow-x:hidden; }

@@ -7,9 +7,9 @@ Functions
 .. toctree::
    :maxdepth: 6
 
-   base
-   dataIntegration
-   design
-   analysis
-   reconstruction
-   visualization
+   base/index
+   dataIntegration/index
+   design/index
+   analysis/index
+   reconstruction/index
+   visualization/index

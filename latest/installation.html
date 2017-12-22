@@ -124,10 +124,33 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="index.html">The COBRA Toolbox</a></li>
+                  <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#can-i-check-if-everything-is-properly-set-up-before-i-start">Can I check if everything is properly set up before I start?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#matlab">MATLAB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git">git</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#curl">curl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#what-if-my-system-is-not-properly-configured">What if my system is not properly configured?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux-ubuntu-or-debian">Linux (Ubuntu or Debian)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#macos">macOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#windows">Windows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#solver-installation">Solver Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tomlab">TOMLAB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ibm-ilog-cplex">IBM ILOG CPLEX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gurobi">GUROBI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mosek">MOSEK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#binaries-and-compatibility">Binaries and Compatibility</a></li>
 </ul>
 </li>
@@ -201,36 +224,409 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<br>
-<div class="alert alert-danger">
-  <strong>System Requirements:</strong>
-  Please follow <a href="https://opencobra.github.io/cobratoolbox/docs/requirements.html">this guide</a> in order to configure your system properly.
+<p><br></p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p><br></p>
+<div class="section" id="can-i-check-if-everything-is-properly-set-up-before-i-start">
+<h3>Can I check if everything is properly set up before I start?<a class="headerlink" href="#can-i-check-if-everything-is-properly-set-up-before-i-start" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="matlab">
+<h4>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h4>
+<p>Please ensure that you have a working <code class="docutils literal"><span class="pre">MATLAB</span></code>
+<a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.</p>
 </div>
+<div class="section" id="git">
+<h4>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h4>
+<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">git</span></code> by typing in
+the <code class="docutils literal"><span class="pre">Terminal</span></code> (on <code class="docutils literal"><span class="pre">linux</span></code> and <code class="docutils literal"><span class="pre">macOS</span></code>) or <code class="docutils literal"><span class="pre">cmd</span></code> (in
+<code class="docutils literal"><span class="pre">Windows</span></code>, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git --version
+</pre></div>
+</div>
+<p>If installed properly, this will return <code class="docutils literal"><span class="pre">git</span> <span class="pre">version</span> <span class="pre">2.13.1</span> <span class="pre">[...]</span></code> or
+similar with another version number.</p>
+</div>
+<div class="section" id="curl">
+<h4>curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h4>
+<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">curl</span></code> by typing
+in the terminal (<code class="docutils literal"><span class="pre">cmd</span></code> on Windows, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> curl --version
+</pre></div>
+</div>
+<p>which will return <code class="docutils literal"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
+number if installed properly.</p>
+</div>
+</div>
+<div class="section" id="what-if-my-system-is-not-properly-configured">
+<h3>What if my system is not properly configured?<a class="headerlink" href="#what-if-my-system-is-not-properly-configured" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linux-ubuntu-or-debian">
+<h4>Linux (Ubuntu or Debian)<a class="headerlink" href="#linux-ubuntu-or-debian" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
+</pre></div>
+</div>
+</div>
+<div class="section" id="macos">
+<h4>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h4>
+<p>In order to install <code class="docutils literal"><span class="pre">git</span></code>, install the <a class="reference external" href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">Xcode Command Line
+Tools</a>.
+For <code class="docutils literal"><span class="pre">curl</span></code>, follow the instructions
+<a class="reference external" href="http://macappstore.org/curl/">here</a>.</p>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
+<p>Please download the <code class="docutils literal"><span class="pre">git</span></code> tools for Windows from
+<a class="reference external" href="https://git-scm.com/download/win">here</a>. During the installation
+process, please ensure that you select <strong>Use Git Bash and optional Unix
+tools from the Windows Command prompt</strong>. In addition, please make sure
+that you select <strong>Checkout as-is, commit Unix-style line endings</strong>.</p>
+<div align="center">
+<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_0.png" height="280px">&nbsp;&nbsp;&nbsp;<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_1.png" height="280px">.
+</div><p><br></p>
+</div>
+</div>
+</div>
+<div class="section" id="solver-installation">
+<h2>Solver Installation<a class="headerlink" href="#solver-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="#tomlab">TOMLAB</a></li>
+<li><a class="reference external" href="#ibm-ilog-cplex">IBM ILOG CPLEX</a></li>
+<li><a class="reference external" href="#gurobi">GUROBI</a></li>
+<li><a class="reference external" href="#mosek">MOSEK</a></li>
+</ul>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Please make sure that you install a compatible solver. Check the
+compatibility
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
+<p>Platform-specific instructions are marked with</p>
+<ul class="simple">
+<li><strong>Windows</strong> - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"></li>
+<li><strong>macOS</strong> - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"></li>
+<li><strong>linux</strong> - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"></li>
+</ul>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Most steps require superuser or administrator rights (<code class="docutils literal"><span class="pre">sudo</span></code>).</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/pencil.png" height="20px" width="20px" alt="pencil"> Make sure that you replace <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> with the respective
+<code class="docutils literal"><span class="pre">version</span></code> of the installed solver when setting the environment
+variables.</p>
+<div class="section" id="tomlab">
+<h3>TOMLAB<a class="headerlink" href="#tomlab" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Download <code class="docutils literal"><span class="pre">TOMLAB/CPLEX</span></code> from
+<a class="reference external" href="http://tomopt.com/scripts/register.php">here</a>, where you can also
+download <code class="docutils literal"><span class="pre">TOMLAB/SNOPT</span></code>. You must purchase the <code class="docutils literal"><span class="pre">tomlab.lic</span></code>
+license separately.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> In a terminal window, navigate to the download directory of
+<code class="docutils literal"><span class="pre">Tomlab</span></code> and do the following:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;filename&gt;.bin
+<span class="gp">$</span> sudo ./&lt;filename&gt;.bin
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Run the <code class="docutils literal"><span class="pre">tomlab-win64-setup_&lt;ver&gt;.exe</span></code> as an administrator.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Double-click on <code class="docutils literal"><span class="pre">tomlab-osx64-setup.app</span></code>.</p>
+</li>
+<li><p class="first">Follow the installation instructions and install <code class="docutils literal"><span class="pre">tomlab</span></code> in:</p>
+<ul class="simple">
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">: <code class="docutils literal"><span class="pre">/opt</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code>.</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows">: <code class="docutils literal"><span class="pre">C:\</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>.</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">: <code class="docutils literal"><span class="pre">/Applications</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</li>
+</ul>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code> and
+change its permissions (you must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">644</span> tomlab.lic
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>. <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the
+folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+</pre></div>
+</div>
+<p>Append the following lines, hit the
+<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export TOMLAB_PATH=&quot;/opt/tomlab&quot;</span>
+</pre></div>
+</div>
+<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> In order to set the
+environment variables on Windows, please follow the instructions
+<a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="ibm-ilog-cplex">
+<h3>IBM ILOG CPLEX<a class="headerlink" href="#ibm-ilog-cplex" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Download the <code class="docutils literal"><span class="pre">CPLEX</span></code> installation binary. The limited community
+edition is
+<a class="reference external" href="https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/">here</a>.
+CPLEX is free for students (and academics) and further information
+how to register and download is
+<a class="reference external" href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en">here</a>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Add <code class="docutils literal"><span class="pre">execute</span></code> permission to binary</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;cplexbinary&gt;.bin
+</pre></div>
+</div>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Run the installer binary as superuser, follow the installation
+procedure, and accept the default installation path.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./&lt;cplexbinary&gt;.bin
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Run
+<code class="docutils literal"><span class="pre">cplex_studio&lt;ver&gt;.win-x86-64.exe</span></code> as an administrator. Follow the
+installation instructions and install <code class="docutils literal"><span class="pre">CPLEX</span></code> in
+<code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\IBM\ILOG\CPLEX_Studio&lt;ver&gt;</span></code>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+</pre></div>
+</div>
+<p>Append the following lines, hit the
+<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<p>On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/opt/ibm/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
+</pre></div>
+</div>
+<p>On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/Applications/IBM/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
+</pre></div>
+</div>
+<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
+also follow the instructions
+<a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="gurobi">
+<h3>GUROBI<a class="headerlink" href="#gurobi" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Register and log in <a class="reference external" href="http://www.gurobi.com/">here</a></p>
+</li>
+<li><p class="first">Request license from the <a class="reference external" href="http://www.gurobi.com/downloads/download-center">download
+center</a> and
+retrieve <code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code></p>
+</li>
+<li><p class="first">Download the <code class="docutils literal"><span class="pre">Gurobi</span></code> optimizer from
+<a class="reference external" href="http://www.gurobi.com/downloads/gurobi-optimizer">here</a></p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Navigate to the directory where <code class="docutils literal"><span class="pre">Gurobi</span></code> was downloaded and enter</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> tar -xvzf &lt;archive&gt;.tar.gz
+<span class="gp">$</span> sudo mv gurobi&lt;ver&gt; /opt/.
+<span class="gp">$</span> <span class="nb">cd</span> /opt/gurobi&lt;ver&gt;/linux64/bin/
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">Gurobi-&lt;ver&gt;-win64.msi</span></code> and follow the installation
+instructions. Accept the default path <code class="docutils literal"><span class="pre">C:\gurobi&lt;ver&gt;\</span></code>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Run <code class="docutils literal"><span class="pre">gurobi&lt;ver&gt;_mac64.pkg</span></code> and follow the installation instructions.
+Accept the default path <code class="docutils literal"><span class="pre">/Applications/gurobi&lt;ver&gt;/</span></code>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Edit the <code class="docutils literal"><span class="pre">bash</span></code> settings to include paths</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+</pre></div>
+</div>
+<p>Append the following lines, hit the
+<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export GUROBI_HOME=&quot;/opt/gurobi&lt;ver&gt;/linux64&quot;</span>
+<span class="go">export PATH=&quot;${PATH}:${GUROBI_HOME}/bin&quot;</span>
+<span class="go">export LD_LIBRARY_PATH=&quot;${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib&quot;</span>
+<span class="go">export GUROBI_PATH=&quot;${GUROBI_HOME}&quot;</span>
+</pre></div>
+</div>
+<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> In order to set the environment variables on Windows, please follow the
+instructions <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Activate your license by running:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> grbgetkey YOUR-LICENSE-KEY-FROM-SITE
+</pre></div>
+</div>
+<p>You will be prompted</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>In which directory would you like to store the Gurobi license key file?
+[hit Enter to store it in /home/&lt;userid&gt;]:
+</pre></div>
+</div>
+<p>Hit <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Browse to
+<code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.
+This should prompt to enter the license key
+<code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code>. Enter this key and hiter <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">Gurobi</span></code> is successfully installed by launching the
+<code class="docutils literal"><span class="pre">Gurobi</span></code> prompt:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> gurobi.sh
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Browse to
+<code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code>and double-click on <code class="docutils literal"><span class="pre">Gurobi&lt;ver&gt;</span></code> to
+start the Gurobi shell.</p>
+<p>This command should give you the prompt for <code class="docutils literal"><span class="pre">Gurobi</span></code>. Exit by
+entering <code class="docutils literal"><span class="pre">exit()</span></code> or hitting <code class="docutils literal"><span class="pre">CTRL-D</span></code> on your keyboard.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="mosek">
+<h3>MOSEK<a class="headerlink" href="#mosek" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Download <code class="docutils literal"><span class="pre">MOSEK</span></code> as an archive
+<a class="reference external" href="https://mosek.com/resources/downloads">here</a></p>
+</li>
+<li><p class="first">Apply for a license
+<a class="reference external" href="https://mosek.com/resources/trial-license">here</a>. A free academic
+license is <a class="reference external" href="https://license.mosek.com/academic/">here</a>. You will
+receive an email with your <code class="docutils literal"><span class="pre">mosek.lic</span></code> file.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Save (or move) the downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/opt/.</span></code> (you
+must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Save (or move) the
+downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/Applications/.</span></code> (you must have
+superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Navigate to <code class="docutils literal"><span class="pre">/opt</span></code> and extract the archive</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd /opt</span>
+<span class="gp">$</span> tar xvjf &lt;filename&gt;.tar.bz2
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal"><span class="pre">Typical</span></code> installation. This
+will install <code class="docutils literal"><span class="pre">mosek</span></code> in <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Mosek</span></code>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> It is important to run the script <code class="docutils literal"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
+which makes important updates to the installation.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Configure the <code class="docutils literal"><span class="pre">PATH</span></code> and <code class="docutils literal"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
+variables in <code class="docutils literal"><span class="pre">~/.bashrc</span></code> by editing your <code class="docutils literal"><span class="pre">bashrc</span></code> file</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+</pre></div>
+</div>
+<p>Append the following lines, hit the
+<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting
+<code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<p>On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export PATH=/opt/mosek/&lt;ver&gt;/:$PATH</span>
+<span class="go">export MOSEKLM_LICENSE_FILE=/opt/mosek/</span>
+</pre></div>
+</div>
+<p>On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export MOSEK_PATH=/Applications/mosek/&lt;ver&gt;</span>
+<span class="go">export PATH=$MOSEK_PATH:$PATH</span>
+<span class="go">export MOSEKLM_LICENSE_FILE=/Applications/mosek/</span>
+</pre></div>
+</div>
+<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> In order to
+set the environment variables on Windows, please follow the
+instructions
+<a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/opt/mosek/</span></code>. <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> Copy the
+license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">C:\Users\&lt;yourUsername&gt;\mosek\</span></code>.
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/Applications/mosek/</span></code>.</p>
+</li>
+<li><p class="first"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">MOSEK</span></code> is correctly installed by using the following
+command in your terminal</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /opt/mosek/&lt;ver&gt;/tools/platform/linux64x86/bin/./msktestlic
+</pre></div>
+</div>
+<p>This command should give an output similar to this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Problem</span>
+  <span class="n">Name</span>                   <span class="p">:</span>
+  <span class="n">Objective</span> <span class="n">sense</span>        <span class="p">:</span> <span class="nb">min</span>
+  <span class="n">Type</span>                   <span class="p">:</span> <span class="n">LO</span> <span class="p">(</span><span class="n">linear</span> <span class="n">optimization</span> <span class="n">problem</span><span class="p">)</span>
+  <span class="n">Constraints</span>            <span class="p">:</span> <span class="mi">1</span>
+  <span class="n">Cones</span>                  <span class="p">:</span> <span class="mi">0</span>
+  <span class="n">Scalar</span> <span class="n">variables</span>       <span class="p">:</span> <span class="mi">5000</span>
+  <span class="n">Matrix</span> <span class="n">variables</span>       <span class="p">:</span> <span class="mi">0</span>
+  <span class="n">Integer</span> <span class="n">variables</span>      <span class="p">:</span> <span class="mi">0</span>
 
-<div class="alert alert-warning">
-    <strong>Solver Installation:</strong>
-    The default solver is <code>glpk</code> (for <code>LP</code> and <code>MILP</code>). You can install <code>TOMLAB</code>, <code>IBM ILOG CPLEX</code>, <code>GUROBI</code>, or <code>MOSEK</code> by following these <strong><a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">detailed instructions</a></strong>.
+<span class="n">Optimizer</span> <span class="n">started</span><span class="o">.</span>
+<span class="n">Mosek</span> <span class="n">license</span> <span class="n">manager</span><span class="p">:</span> <span class="n">License</span> <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">mosek</span><span class="o">/</span><span class="n">mosek</span><span class="o">.</span><span class="n">lic</span>
+<span class="n">Mosek</span> <span class="n">license</span> <span class="n">manager</span><span class="p">:</span>  <span class="n">Checkout</span> <span class="n">license</span> <span class="n">feature</span> <span class="s1">&#39;PTS&#39;</span> <span class="kn">from</span> <span class="nn">flexlm.</span>
+<span class="n">Mosek</span> <span class="n">license</span> <span class="n">manager</span><span class="p">:</span>  <span class="n">Checkout</span> <span class="n">time</span> <span class="mf">0.01</span><span class="o">.</span> <span class="n">r</span><span class="p">:</span> <span class="mi">0</span> <span class="n">status</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Interior</span><span class="o">-</span><span class="n">point</span> <span class="n">optimizer</span> <span class="n">started</span><span class="o">.</span>
+<span class="n">Presolve</span> <span class="n">started</span><span class="o">.</span>
+<span class="n">Eliminator</span> <span class="n">started</span><span class="o">.</span>
+<span class="n">Freed</span> <span class="n">constraints</span> <span class="ow">in</span> <span class="n">eliminator</span> <span class="p">:</span> <span class="mi">0</span>
+<span class="n">Eliminator</span> <span class="n">terminated</span><span class="o">.</span>
+<span class="n">Eliminator</span> <span class="o">-</span> <span class="n">tries</span>                  <span class="p">:</span> <span class="mi">1</span>                 <span class="n">time</span>                   <span class="p">:</span> <span class="mf">0.00</span>
+<span class="n">Lin</span><span class="o">.</span> <span class="n">dep</span><span class="o">.</span>  <span class="o">-</span> <span class="n">tries</span>                  <span class="p">:</span> <span class="mi">0</span>                 <span class="n">time</span>                   <span class="p">:</span> <span class="mf">0.00</span>
+<span class="n">Lin</span><span class="o">.</span> <span class="n">dep</span><span class="o">.</span>  <span class="o">-</span> <span class="n">number</span>                 <span class="p">:</span> <span class="mi">0</span>
+<span class="n">Presolve</span> <span class="n">terminated</span><span class="o">.</span> <span class="n">Time</span><span class="p">:</span> <span class="mf">0.00</span>
+<span class="n">Interior</span><span class="o">-</span><span class="n">point</span> <span class="n">optimizer</span> <span class="n">terminated</span><span class="o">.</span> <span class="n">Time</span><span class="p">:</span> <span class="mf">0.00</span><span class="o">.</span>
+
+<span class="n">Optimizer</span> <span class="n">terminated</span><span class="o">.</span> <span class="n">Time</span><span class="p">:</span> <span class="mf">0.02</span>
+<span class="o">************************************</span>
+<span class="n">A</span> <span class="n">license</span> <span class="n">was</span> <span class="n">checked</span> <span class="n">out</span> <span class="n">correctly</span><span class="o">.</span>
+<span class="o">************************************</span>
+</pre></div>
 </div>
-<ol>
-<li>
-<p>Download this repository (the folder <code>./cobratoolbox/</code> will be created). You can clone the repository using:</p>
-<code class="descname"><pre>$ git clone https://github.com/opencobra/cobratoolbox.git</pre></code>
-<p><a href="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" target="_blank"><img src="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" height="20px" alt="warning" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" style="max-width:100%;"></a> Run this command in <code>Terminal</code> (on <a href="https://camo.githubusercontent.com/e1c96fa2107f13c0f25763a0302c0a0c3b59dfea/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6170706c652e706e67" target="_blank"><img src="https://camo.githubusercontent.com/e1c96fa2107f13c0f25763a0302c0a0c3b59dfea/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6170706c652e706e67" height="20px" alt="macOS" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" style="max-width:100%;"></a> and <a href="https://camo.githubusercontent.com/0bd50b2b51b258e8420c3180783088dcc6ff150d/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6c696e75782e706e67" target="_blank"><img src="https://camo.githubusercontent.com/0bd50b2b51b258e8420c3180783088dcc6ff150d/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6c696e75782e706e67" height="20px" alt="Linux" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" style="max-width:100%;"></a>) or in <code>Git Bash</code> (on <a href="https://camo.githubusercontent.com/cea93e91cf579569bd40fbae0eaee6b2be007b66/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f77696e646f77732e706e67" target="_blank"><img src="https://camo.githubusercontent.com/cea93e91cf579569bd40fbae0eaee6b2be007b66/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f77696e646f77732e706e67" height="20px" alt="Windows" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" style="max-width:100%;"></a>) - <strong>not</strong> in <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a>. Although not recommended, you can download the repository as a <a href="https://github.com/opencobra/cobratoolbox/archive/master.zip">compressed archive</a>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> By browsing to <cite>Start &gt; All Programs &gt; Mosek Optimization Tools</cite>, you can run <cite>Test license system</cite>. This should open a window and display the output as shown above.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> In a terminal, run:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /Applications/mosek//tools/platform/osx64x86/bin/./msktestlic
+</pre></div>
+</div>
+<p>This should produce an output as shown above.</p>
 </li>
-<li>
-<p>Change to the folder <code>cobratoolbox/</code> and run from <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a></p>
-<code class="descname"><pre>&gt;&gt; initCobraToolbox</pre></code>
+</ol>
+</div>
+</div>
+<div class="section" id="download-and-installation">
+<h2>Download and installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Download this repository (the folder <code class="docutils literal"><span class="pre">./cobratoolbox/</span></code> will be
+created). You can clone the repository using:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+</pre></div>
+</div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Run this command in <code class="docutils literal"><span class="pre">Terminal</span></code> (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">) or in <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code> (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows">) -
+<strong>not</strong> in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab">. Although not recommended, you can download the
+repository as a <a class="reference external" href="https://github.com/opencobra/cobratoolbox/archive/master.zip">compressed archive</a>.</p>
 </li>
-<li>
-<p>You can test your installation by running from <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a></p>
-<code class="descname"><pre>&gt;&gt; testAll</pre></code>
+<li><p class="first">Change to the folder <code class="docutils literal"><span class="pre">cobratoolbox/</span></code> and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab"></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">initCobraToolbox</span>
+</pre></div>
+</div>
 </li>
-</ol><div class="section" id="binaries-and-compatibility">
+<li><p class="first">You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab"></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="binaries-and-compatibility">
 <h2>Binaries and Compatibility<a class="headerlink" href="#binaries-and-compatibility" title="Permalink to this headline">¶</a></h2>
-<p>For convenience, we provide <a href="https://github.com/blegat/glpkmex"><code>glpk_mex</code></a> and <a href="http://sbml.org/Software/libSBML"><code>libSBML-5.15+</code></a> in <code>/external</code>.</p>
-<p><a href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+ (64-bit).<br>
-For unsupported OS, please refer to their respective building instructions (<a href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source"><code>glpk_mex</code></a>, <a href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html"><code>libSBML</code></a>).</p>
-<p>Read more on the compatibility with SBML-FBCv2 <a href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p></div>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Please make sure you install a compatible solver. Check the
+compatibility
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
+<p>For convenience, we provide
+<a class="reference external" href="https://github.com/blegat/glpkmex">glpk_mex</a> and
+<a class="reference external" href="http://sbml.org/Software/libSBML">libSBML-5.15+</a> in
+<code class="docutils literal"><span class="pre">/external</span></code>.</p>
+<p><a class="reference external" href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these
+libraries are provided in a submodule for Mac OS X 10.6 or later
+(64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+
+(64-bit). For unsupported OS, please refer to their respective building
+instructions
+(<a class="reference external" href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source">glpk_mex</a>,
+<a class="reference external" href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html">libSBML</a>).</p>
+<p>Read more on the compatibility with SBML-FBCv2
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p>
+</div>
 </div>
 
 

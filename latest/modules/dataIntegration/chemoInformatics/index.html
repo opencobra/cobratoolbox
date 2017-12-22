@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ChemoInformatics &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Data integration" href="../index.html"/>
+        <link rel="next" title="Fluxomics" href="../fluxomics/index.html"/>
+        <link rel="prev" title="Data integration" href="../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Data integration</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ChemoInformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../index.html">Data integration</a> &raquo;</li>
+        
+      <li>ChemoInformatics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chemoinformatics">
+<span id="id1"></span><h1>ChemoInformatics<a class="headerlink" href="#chemoinformatics" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.chemoInformatics"></span><dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.acsendingAtomMaps">
+<code class="descname">acsendingAtomMaps</code><span class="sig-paren">(</span><em>rxnFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/acsendingAtomMaps.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.acsendingAtomMaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reassign the atom mapping numbers to be ascending in the RXN file V2000</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>balanced = acsendingAtomMaps(rxnFile)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnFile</strong> &#8211;
+Name and path of the RXN file to asign ascending atom
+mappings.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>balanced</strong> &#8211;
+Logical value indicating if the RXN file is balanced
+or not (true, or false).</li>
+<li><strong>A RXN file with ascending atom mappings.</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnFile</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rxnFileDir&#39;</span> <span class="n">filesep</span> <span class="s1">&#39;DOPACNNL.rxn&#39;</span><span class="p">];</span>
+<span class="n">balanced</span> <span class="o">=</span> <span class="n">acsendingAtomMaps</span><span class="p">(</span><span class="n">rxnFile</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.canonicalRxn">
+<code class="descname">canonicalRxn</code><span class="sig-paren">(</span><em>rxnFile</em>, <em>mappedDir</em>, <em>standardDir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/canonicalRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.canonicalRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standarize atom mapped RXNS files into a canonical format. ChemAxon
+installed is required (needed to compute the atom transition network)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>standardised = canonicalRxn(rxnFile, mappedDir, standardDir)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnFile</strong> &#8211;
+Name of the RXN file to standarize.</li>
+<li><strong>mappedDir</strong> &#8211;
+Path to directory containg the RXN files with atom
+mappings.</li>
+<li><strong>standardDir</strong> &#8211;
+Path to directory containg the standard RXN files
+(generated by obtainAtomMappingsRDT function).</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>standardised</strong> &#8211;
+Logical value indicating if the RXN file is balanced
+or not (true, or false).</li>
+<li><strong>A standarised RXN file in</strong> &#8211;
+&#8216;mappedDir/rxnFile.rxn&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnFile</span> <span class="o">=</span> <span class="s1">&#39;DOPACCL.rxn&#39;</span><span class="p">;</span>
+<span class="n">mappedDir</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mapped&#39;</span> <span class="n">filesep</span><span class="p">];</span>
+<span class="n">standardDir</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;standard&#39;</span> <span class="n">filesep</span><span class="p">];</span>
+<span class="n">standardised</span> <span class="o">=</span> <span class="n">canonicalRxn</span><span class="p">(</span><span class="n">rxnFile</span><span class="p">,</span> <span class="n">mappedDir</span><span class="p">,</span> <span class="n">standardDir</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.deleteProtons">
+<code class="descname">deleteProtons</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/deleteProtons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.deleteProtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to delete the protons in the metabolic network</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>newModel = deleteProtons(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>newModel</strong> &#8211;
+COBRA model without protons nor protons trasport
+reactions.</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">newModel</span> <span class="o">=</span> <span class="n">deleteProtons</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.obtainAtomMappingsRDT">
+<code class="descname">obtainAtomMappingsRDT</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>outputDir</em>, <em>maxTime</em>, <em>standariseRxn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/obtainAtomMappingsRDT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.obtainAtomMappingsRDT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute atom mappings for reactions with implicit hydrogens in a
+metabolic network using RDT algorithm</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>unmappedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnDir, maxTime, standariseRxn)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model with following fields:<ul>
+<li><dl class="first docutils">
+<dt>.S - The m x n stoichiometric matrix for the</dt>
+<dd>metabolic network.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>.mets - An m x 1 array of metabolite identifiers.</dt>
+<dd>Should match metabolite identifiers in
+RXN.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>.metFormulas - An m x 1 array of metabolite</dt>
+<dd>identifiers. Should match metabolite
+identifiers in RXN.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>.rxns - An n x 1 array of reaction identifiers.</dt>
+<dd>Should match rxnfile names in rxnFileDir.</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><strong>molFileDir</strong> &#8211;
+Path to the directory containing MOL files for
+metabolites in S. File names should correspond to
+reaction identifiers in input mets.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnDir</strong> &#8211;
+Path to directory that will contain the RXN files with
+atom mappings (default current directory).</li>
+<li><strong>maxTime</strong> &#8211;
+Maximum time assigned to compute atom mapping (default
+1800s).</li>
+<li><strong>standariseRxn</strong> &#8211;
+Logic value for standardising the atom mapped RXN file.
+ChemAxon license is required (default TRUE).</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>balancedRxns</strong> &#8211;
+List of standadised atom mapped reactions.</li>
+<li><strong>A directory with standardised RXN files.</strong></li>
+<li><strong>A directory with atom mapped RXN files.</strong></li>
+<li><strong>A directory images for atom mapped reactions.</strong></li>
+<li><strong>A directory with txt files with data of the atom mappings (SMILES,</strong></li>
+<li><strong>REACTANT INPUT ATOM INDEX, PRODUCT INPUT ATOM INDEX).</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="mi">1</span><span class="p">:</span>
+<span class="n">molFileDir</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;data&#39;</span> <span class="n">filesep</span><span class="p">]</span>
+<span class="n">standariseRxn</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<span class="n">unmappedRxns</span> <span class="o">=</span> <span class="n">obtainAtomMappingsRDT</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">molFileDir</span><span class="p">,</span> <span class="n">pwd</span><span class="p">,</span> <span class="mi">1800</span><span class="p">,</span> <span class="n">standariseRxn</span><span class="p">)</span>
+<span class="n">example</span> <span class="mi">2</span><span class="p">:</span>
+<span class="n">molFileDir</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;data&#39;</span> <span class="n">filesep</span><span class="p">]</span>
+<span class="n">standariseRxn</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+<span class="n">standardisedRxns</span> <span class="o">=</span> <span class="n">obtainAtomMappingsRDT</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">molFileDir</span><span class="p">,</span> <span class="n">pwd</span><span class="p">,</span> <span class="mi">1800</span><span class="p">,</span> <span class="n">standariseRxn</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.readAtomMappingFromRxnFile">
+<code class="descname">readAtomMappingFromRxnFile</code><span class="sig-paren">(</span><em>rxnfileName</em>, <em>rxnfileDirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/readAtomMappingFromRxnFile.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.readAtomMappingFromRxnFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read atom mappings from a rxnfile (Accelrys, San Diego, CA), written with
+<cite>writeRxnfile.m</cite>.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[mets, elements, metNrs, rxnNrs, isSubstrate, instances] = readAtomMappingFromRxnFile(rxnfileName, rxnfileDirectory)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnfileName</strong> &#8211;
+The file name.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnfileDirectory</strong> &#8211;
+Path to directory containing the rxnfile. Defaults
+to current directory.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mets</strong> &#8211;
+A <cite>p</cite> x 1 cell array of metabolite identifiers for atoms.</li>
+<li><strong>elements</strong> &#8211;
+A <cite>p</cite> x 1 cell array of element symbols for atoms.</li>
+<li><strong>metNrs</strong> &#8211;
+A <cite>p</cite> x 1 vector containing the numbering of atoms within
+each metabolite molfile.</li>
+<li><strong>rxnNrs</strong> &#8211;
+A <cite>p</cite> x 1 vector of atom mappings, i.e., the numbering of
+atoms within the reaction.</li>
+<li><strong>isSubstrate</strong> &#8211;
+A <cite>p</cite> x 1 logical array. True for substrates, false for
+products in the reaction.</li>
+<li><strong>instances</strong> &#8211;
+A <cite>p</cite> x 1 vector indicating which instance of a repeated metabolite atom <cite>i</cite> belongs to.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.sortRDTfiles">
+<code class="descname">sortRDTfiles</code><span class="sig-paren">(</span><em>rxnFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/sortRDTfiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.sortRDTfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the molecules in the RXN file acording to the chemical formula
+in the 4th line of the RXN file.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>sortRDTfiles(rxnFile)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnFile</strong> &#8211;
+Name and path of the RXN file to sort.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A RXN file with sorted molecules.</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnFile</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rxnFileDir&#39;</span> <span class="n">filesep</span> <span class="s1">&#39;DOPACNNL.rxn&#39;</span><span class="p">];</span>
+<span class="n">sortRDTfiles</span><span class="p">(</span><span class="n">rxnFile</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.writeRxnfile">
+<code class="descname">writeRxnfile</code><span class="sig-paren">(</span><em>s</em>, <em>mets</em>, <em>molfileNames</em>, <em>molfileDirectory</em>, <em>rxnfileName</em>, <em>rxnfileDirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/dataIntegration/chemoInformatics/writeRxnfile.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.writeRxnfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a rxnfile (Accelrys, San Diego, CA) for a metabolic reaction.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>writeRxnfile(s, mets, molfileNames, molfileDirectory, rxnfileName, rxnfileDirectory)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>s</strong> &#8211;
+An <cite>m</cite> x 1 vector of stoichiometric coefficients.</li>
+<li><strong>mets</strong> &#8211;
+An <cite>m</cite> x 1 cell array of metabolite identifiers.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>molfileNames</strong> &#8211;
+An <cite>m</cite> x 1 cell array of molfile names for
+metabolites in mets. Defaults to mets.</li>
+<li><strong>molfileDirectory</strong> &#8211;
+Path to directory containing input molfiles.
+Defaults to current directory.</li>
+<li><strong>rxnfileName</strong> &#8211;
+A name for the output rxnfile. Defaults to
+&#8216;rxn.rxn&#8217;.</li>
+<li><strong>rxnfileDirectory</strong> &#8211;
+Path to directory where the output rxnfile should
+be saved. Defaults to current directory.</li>
+</ul>
+</div></blockquote>
+<p>Produces the file &#8216;rxnfileDirectory/rxnfileName.rxn&#8217;</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../fluxomics/index.html" class="btn btn-neutral float-right" title="Fluxomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Data integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
