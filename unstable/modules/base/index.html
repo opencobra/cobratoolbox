@@ -442,7 +442,7 @@ whitespace character or a opening or closing bracket, respectively. Gene
 Names can also be at the beginning or the end of the string.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[newGeneList,totalGeneList,ruleString] = generateRules(grRuleString,currentGenes)</div></blockquote>
+<div>[ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -542,6 +542,30 @@ Indicates whether the reaction is reversible (true) or not (false)</li>
 <span class="o">%</span><span class="n">revFlag</span> <span class="o">=</span> <span class="n">false</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.preparseGPR">
+<code class="descname">preparseGPR</code><span class="sig-paren">(</span><em>grRules</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/base/preparseGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.preparseGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>preparse model.grRules before parsing the remaining part
+and transforming model.grRules into model.rules</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>preParsedGrRules = preparseGPR(grRules)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>grRules</strong> &#8211;
+grRules cell or single grRule</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>preParsedGrRules</strong> &#8211;
+preparsed grRules cell or single grRule</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
