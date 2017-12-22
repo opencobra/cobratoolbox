@@ -2,12 +2,13 @@
 .. _io-utilities:
 
 
-IO-utilities
-------------
+Utilities
+---------
 
 .. toctree::
     
-    utilities/SBML/index
+    SBML/index
+
 
 .. automodule:: src.base.io.utilities
    :members:
