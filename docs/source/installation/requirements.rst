@@ -42,20 +42,23 @@ number if installed properly.
 What if my system is not properly configured?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Linux (Ubuntu or Debian)**
+Linux (Ubuntu or Debian)
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: console
 
     $ sudo apt-get install git-all curl
 
-**macOS**
+macOS
+^^^^^
 
 In order to install ``git``, install the `Xcode Command Line
 Tools <http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/>`__.
 For ``curl``, follow the instructions
 `here <http://macappstore.org/curl/>`__.
 
-**Windows**
+Windows
+^^^^^^^
 
 Please download the ``git`` tools for Windows from
 `here <https://git-scm.com/download/win>`__. During the installation
