@@ -26,7 +26,8 @@ def path_to_list(path):
     path_length = len(path)
     for root, directories, filenames in os.walk(path):
         for filename in filenames:
-            if filename[-2:] == '.m':
+            print os.path.join('source', 'modules', root[path_length+1:], 'index.rst')
+            if filename[-2:] == '.m' and os.path.isfile(os.path.join('source', 'modules', root[path_length+1:], 'index.rst')):
                 website_url = os.path.join("modules", root[path_length+1:], "index.html")
                 website_url += "?highlight=" + filename[:-2]
                 website_url += "#" + '.'.join(['src'] + root[path_length+1:].split(os.path.sep) + [filename[:-2]])
