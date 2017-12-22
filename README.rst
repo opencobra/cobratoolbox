@@ -8,7 +8,7 @@
    </p>
 
 
-The COBRA Toolbox  COnstraint-Based Reconstruction and Analysis Toolbox
+The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
 ======================================================================
 
 .. raw:: html
@@ -279,3 +279,8 @@ holder.*
 .. |forum| raw:: html
 
    <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>
+
+
+.. |br| raw:: html
+    
+   <br>
