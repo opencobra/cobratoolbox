@@ -34,7 +34,7 @@ if statusCNA
     assert(isequal(model_new.S, model.S));
     assert(isequal(model_new.lb, model.lb));
     assert(isequal(model_new.ub, model.ub));
-    assert(isequal(model_new.c, model.c));
+    assert(isequal(model_new.osense*model_new.c, model.osense*model.c));
     assert(isequal(model_new.metNames, model.metNames));
     assert(isequal(model_new.b, model.b));
     % Note: rxnNames is different
