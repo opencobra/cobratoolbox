@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes)
+function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes, preparsed)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -12,7 +12,7 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, curre
 %
 % USAGE:
 %
-%    [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes)
+%    [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes, preparsed)
 %
 % INPUT:
 %    grRuleString:     The rule string in textual format.
@@ -27,6 +27,10 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, curre
 %
 % .. Author: -  Thomas Pfau Okt 2017
 
+if nargin < 3 %This is faster than checking exist)
+    preparsed = false;
+end
+
 newGeneList = {};
 if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
     %If the provided string is empty or consists only of whitespaces or
@@ -37,7 +41,7 @@ if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
 end
 
 % preparse all model.grRules
-if ~iscell(grRuleString)
+if ~preparsed
     grRuleString = preparseGPR(grRuleString);
 end
 

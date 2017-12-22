@@ -28,7 +28,7 @@ function [model] = generateRules(model)
     % loop through all the grRules
     for i = 1:nRules
         if ~isempty(preParsedGrRules{i})
-            [rule,~,newGenes] = parseGPR(preParsedGrRules{i}, model.genes);
+            [rule,~,newGenes] = parseGPR(preParsedGrRules{i}, model.genes,true);
             if ~isempty(newGenes)
                 warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
                 model.genes = [model.genes ; newGenes];
