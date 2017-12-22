@@ -12,6 +12,7 @@ Analysis
    deletion/index
    dynamicFBA/index
    exploration/index
+   geometricFBA/index
    KLdistance/index
    multiSpecies/index
    parsimoniousFBA/index
