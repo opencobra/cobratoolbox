@@ -106,7 +106,7 @@ Contributors
     </div>
 
     <br><br>
-    <h1>Authors of the COBRAToolbox v3.0</h1>
+    <h1>Authors of the COBRA Toolbox v3.0</h1>
     <br><br>
     <div class="row">
         <div class="col-lg-2 text-center">
@@ -133,13 +133,13 @@ Contributors
             <p>Hulda S. Haraldsdottir</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
+            <p>Jacek Wachowiak</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
             <p>Sarah M. Keating</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>Vanja Vlasov</p>
-        </div>
-            <div class="col-lg-4 col-sm-6 text-center">
-            <p>Jacek Wachowiak</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>Stefania Magnusdottir</p>
@@ -181,6 +181,12 @@ Contributors
             <p>Diana C. El Assal</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
+            <p>Luis V. Valcarcel</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+            <p>Inigo Apaolaza</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
             <p>Susan Ghaderi</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
@@ -190,10 +196,10 @@ Contributors
             <p>Marouen Ben Guebila</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
-            <p>Inigo Apaolaza</p>
+            <p>Andrejs Kostromins</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
-            <p>Andrejs Kostromins</p>
+            <p>Nicolas Sompairac</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>Hoai M. Le</p>
@@ -205,13 +211,13 @@ Contributors
             <p>Yuekai Sun</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
-            <p>Luis V. Valcarcel</p>
-        </div>
-            <div class="col-lg-4 col-sm-6 text-center">
             <p>Lin Wang</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>James T. Yurkovich</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+            <p>Miguel A.P. Oliveira</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>Phan T. Vuong</p>
@@ -220,7 +226,13 @@ Contributors
             <p>Lemmer P. El Assal</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
-            <p>Scott Hinton</p>
+            <p>Inna Kuperstein</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+            <p>Andrei Zinovyev</p>
+        </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+            <p>H. Scott Hinton</p>
         </div>
             <div class="col-lg-4 col-sm-6 text-center">
             <p>William A. Bryant</p>

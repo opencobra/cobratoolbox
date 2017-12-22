@@ -1,4 +1,4 @@
-function dist = KLdistance(data1, data2, num_iter, parameters);
+function dist = KLdistance(data1, data2, num_iter, parameters)
 % This function calculates the Kullback-Leibler Distance (KLD) between two
 % distributions then runs a certain number of iterations where the labels
 % are randomised and the KLD is calculated. Then, the distribution of the

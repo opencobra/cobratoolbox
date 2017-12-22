@@ -6,6 +6,8 @@ open(OUT, ">slvrCumomer_fast.m") or die;
 
 my $line;
 while(($line = <IN>) !~ /^\% level: 1/){
+    $line =~ s/slvrCumomer/slvrCumomer_fast/;
+ 
     print OUT $line;
 }
 
