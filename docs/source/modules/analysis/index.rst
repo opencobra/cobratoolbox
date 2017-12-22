@@ -12,6 +12,7 @@ Analysis
    deletion/index
    dynamicFBA/index
    exploration/index
+   findMIIS/index
    fluxEnrichmentAnalysis/index
    geometricFBA/index
    gMCS/index
