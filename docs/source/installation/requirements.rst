@@ -19,7 +19,7 @@ You can check if you have a working installation of ``git`` by typing in
 the ``Terminal`` (on ``linux`` and ``macOS``) or ``cmd`` (in
 ``Windows``, not ``Git Bash``):
 
-.. code:: bash
+.. code-block:: console
 
     $ git --version
 
@@ -32,7 +32,7 @@ curl
 You can check if you have a working installation of ``curl`` by typing
 in the terminal (``cmd`` on Windows, not ``Git Bash``):
 
-.. code:: bash
+.. code-block:: console
 
     $ curl --version
 
@@ -44,7 +44,7 @@ What if my system is not properly configured?
 
 **Linux (Ubuntu or Debian)**
 
-.. code:: bash
+.. code-block:: console
 
     $ sudo apt-get install git-all curl
 
