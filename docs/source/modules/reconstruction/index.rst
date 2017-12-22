@@ -7,12 +7,12 @@ Reconstruction
 
 .. toctree::
 
-   rBioNet/inc/index
-   fastGapFill/index
-   growthExpMatch/index
-   modelGeneration/index
-   refinement/index
-   comparison/index
+   rBioNet
+   fastGapFill
+   growthExpMatch
+   modelGeneration
+   refinement
+   comparison
 
 .. automodule:: src.reconstruction
    :members:
