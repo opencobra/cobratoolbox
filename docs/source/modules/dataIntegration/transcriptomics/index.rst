@@ -11,6 +11,7 @@ Transcriptomics
    GIMME/index
    INIT/index
    iMAT/index
+   preprocessing/index
 
 .. automodule:: src.dataIntegration.transcriptomics
    :members:
