@@ -82,8 +82,8 @@ createLocalVariables(){
     pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
     pngHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.png"
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
-    mlxHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.mlx"
-    mHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.m"
+    mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
+    mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
 }
 
 buildHTMLTutorials(){
@@ -253,7 +253,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             echo "</p>" >> $readmePath/README.md
 
             echo "<p align=\"center\">" >> $readmePath/README.md
-            echo "  <a href=\"https://github.com/opencobra/cobratoolbox/blob/master/tutorials/$tutorialFolder/README.md\"><img src=\"$pngHyperlink\" width=\"100%\"/></a>" >> $readmePath/README.md
+            echo "  <a href=\"https://github.com/opencobra/COBRA.tutorials/blob/master/$tutorialFolder/README.md\"><img src=\"$pngHyperlink\" width=\"100%\"/></a>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
         fi
 
