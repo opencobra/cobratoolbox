@@ -16,14 +16,14 @@ Relaxed Flux Balance Analysis: Recon 3
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class6 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/analysis/relaxedFBA/tutorial_relaxedFBA.mlx">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/COBRA.tutorials/raw/master/analysis/relaxedFBA/tutorial_relaxedFBA.mlx">
                 <img src="https://prince.lcsb.uni.lu/img/icon6.png" height="90px">
                 </a>
                   <div>Download live Script</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class7 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/analysis/relaxedFBA/tutorial_relaxedFBA.m">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/COBRA.tutorials/raw/master/analysis/relaxedFBA/tutorial_relaxedFBA.m">
                 <img src="https://prince.lcsb.uni.lu/img/icon7.png" height="90px">
                 </a>
                   <div>Download m file</div>

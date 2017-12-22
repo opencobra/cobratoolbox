@@ -16,14 +16,14 @@ genetic Minimal Cut Sets - gMCSs
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class6 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/analysis/gMCS/tutorial_gMCS.mlx">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/COBRA.tutorials/raw/master/analysis/gMCS/tutorial_gMCS.mlx">
                 <img src="https://prince.lcsb.uni.lu/img/icon6.png" height="90px">
                 </a>
                   <div>Download live Script</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class7 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/analysis/gMCS/tutorial_gMCS.m">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://github.com/opencobra/COBRA.tutorials/raw/master/analysis/gMCS/tutorial_gMCS.m">
                 <img src="https://prince.lcsb.uni.lu/img/icon7.png" height="90px">
                 </a>
                   <div>Download m file</div>
