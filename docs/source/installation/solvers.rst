@@ -39,15 +39,15 @@ TOMLAB
       $ chmod +x <filename>.bin 
       $ sudo ./<filename>.bin
       
-   |windows| Run the ``tomlab-win64-setup_<ver>.exe`` as an administrator. |macos| Double-click on
-   ``tomlab-osx64-setup.app``.
+   |windows| Run the ``tomlab-win64-setup_<ver>.exe`` as an administrator.
+   
+   |macos| Double-click on ``tomlab-osx64-setup.app``.
 
 3) Follow the installation instructions and install ``tomlab`` in:
 
    - |linux|: ``/opt`` such that you will have a folder ``/opt/tomlab``.
    - |windows|: ``C:\`` such that you will have a folder ``C:\tomlab``.
-   - |macos|: ``/Applications`` such that you will have a folder
-      ``/Applications/tomlab``
+   - |macos|: ``/Applications`` such that you will have a folder ``/Applications/tomlab``.
 
 4) |linux| Copy the ``tomlab.lic`` license to the folder ``/opt/tomlab`` and
    change its permissions (you must have superuser or ``sudo`` rights):
