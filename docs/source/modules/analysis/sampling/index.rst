@@ -7,8 +7,8 @@ Sampling
 
 .. toctree::
 
-   ACHR
-   CHRR
+   ACHR/index
+   CHRR/index
 
 .. automodule:: src.analysis.sampling
    :members:
