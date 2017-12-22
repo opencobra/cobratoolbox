@@ -7,7 +7,7 @@ Reconstruction
 
 .. toctree::
 
-   rBioNet/inc/index
+   rBioNet/index
    fastGapFill/index
    growthExpMatch/index
    modelGeneration/index
