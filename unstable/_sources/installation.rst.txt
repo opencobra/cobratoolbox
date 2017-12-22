@@ -13,6 +13,7 @@ System Requirements
    :end-before: end-requirements-marker
 
 
+|br|
 
 Solver Installation
 -------------------
