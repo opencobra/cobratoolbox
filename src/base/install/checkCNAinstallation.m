@@ -28,11 +28,18 @@ function status = checkCNAinstallation(printLevel)
 
     % check if CNA is available and convert the model
     if ~isempty(which('startcna'))
-        % remove the external libSBML folder from CNA and use COBRA.binary
         cnaPath = fileparts(which('startcna'));
+
+        % remove the external libSBML folder from CNA and use COBRA.binary
         cnaLibSBMLdir = [cnaPath filesep 'code' filesep 'ext' filesep 'libSBML'];
-        if exist(cnaLibSBMLdir, 'dir') == 7
+        if ~isempty(strfind(path, [cnaLibSBMLdir, pathsep]))
             rmpath(genpath(cnaLibSBMLdir));
+        end
+
+        % remove the external efmtool folder from CNA
+        cnaEFMtoolDir = [cnaPath filesep 'code' filesep 'ext' filesep 'efmtool'];
+        if ~isempty(strfind(path, [cnaEFMtoolDir, pathsep]))
+            rmpath(genpath(cnaEFMtoolDir));
         end
 
         % print a sucess message
