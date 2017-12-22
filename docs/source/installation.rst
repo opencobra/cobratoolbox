@@ -1,12 +1,12 @@
 Installation
 ============
 
-.. raw:: html
-
-   <br><br>
+|br| |br|
 
 System Requirements
 -------------------
+
+|br|
 
 .. include:: installation/requirements.rst
    :start-after: begin-requirements-marker
@@ -50,7 +50,7 @@ Binaries and Compatibility
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="windows">
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
@@ -92,3 +92,6 @@ Binaries and Compatibility
 
    <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>
 
+.. |br| raw:: html
+    
+   <br>
