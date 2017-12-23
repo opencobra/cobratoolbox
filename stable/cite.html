@@ -14,11 +14,15 @@
   
   
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   
@@ -29,7 +33,7 @@
 
   
   
-    <link rel="stylesheet" href="_static/cobra.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/cobra.css" type="text/css" />
   
 
   
@@ -44,7 +48,6 @@
 
   
   <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -64,7 +67,7 @@
 
           
             
-            <img src="_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -74,9 +77,44 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='_static/../" + item.website_url + "' ><img src='_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -86,7 +124,7 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="index.html">The COBRA Toolbox</a></li>
+                  <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -160,12 +198,40 @@
             
   <div class="section" id="how-to-cite">
 <h1>How to cite<a class="headerlink" href="#how-to-cite" title="Permalink to this headline">¶</a></h1>
-<br><p>When citing the COBRA Toolbox, it is important to cite the original paper where an algorithm was first reported, as well as its implementation in the COBRA Toolbox. This is important, because the objective of the COBRA Toolbox is to amalgamate and integrate the functionality of a wide range of COBRA algorithms and this will be undermined if contributors of new algorithms do not get their fair share of citations. The following is one example how to approach this within the methods section of a paper (<strong>not</strong> the supplemental material please):</p>
-<p><em>To generate a context-specific model the FASTCORE algorithm [1], implemented in the COBRA Toolbox v3.0 [2], was employed.</em></p>
+<p>When citing the COBRA Toolbox, it is important to cite the original
+paper where an algorithm was first reported, as well as its
+implementation in the COBRA Toolbox. This is important, because the
+objective of the COBRA Toolbox is to amalgamate and integrate the
+functionality of a wide range of COBRA algorithms and this will be
+undermined if contributors of new algorithms do not get their fair share
+of citations. The following is one example how to approach this within
+the methods section of a paper (<strong>not</strong> the supplemental material
+please):</p>
+<p><em>To generate a context-specific model the FASTCORE algorithm [1],
+implemented in The COBRA Toolbox v3.0 [2], was employed.</em></p>
 <blockquote>
-<div><p>[1] = Vlassis N, Pacheco MP, Sauter T (2014) Fast Reconstruction of Compact Context-Specific Metabolic Network Models. PLoS Comput Biol 10(1): e1003424.</p>
-<p>[2] Laurent Heirendt &amp; Sylvain Arreckx, Thomas Pfau, Sebastian N. Mendoza, Anne Richelle, Almut Heinken, Hulda S. Haraldsdottir, Sarah M. Keating, Vanja Vlasov, Jacek Wachowiak, Stefania Magnusdottir, Chiam Yu Ng, German Preciat, Alise Zagare, Siu H.J. Chan, Maike K. Aurich, Catherine M. Clancy, Jennifer Modamio, John T. Sauls, Alberto Noronha, Aarash Bordbar, Benjamin Cousins, Diana C. El Assal, Susan Ghaderi, Masoud Ahookhosh, Marouen Ben Guebila, Inigo Apaolaza, Andrejs Kostromins, Hoai M. Le, Ding Ma, Yuekai Sun, Luis V. Valcarcel, Lin Wang, James T. Yurkovich, Phan T. Vuong, Lemmer P. El Assal, Scott Hinton, William A. Bryant, Francisco J. Aragon Artacho, Francisco J. Planes, Egils Stalidzans, Alejandro Maass, Santosh Vempala, Michael Hucka, Michael A. Saunders, Costas D. Maranas, Nathan E. Lewis, Thomas Sauter, Bernhard Ø. Palsson, Ines Thiele, Ronan M.T. Fleming, <strong>Creation and analysis of biochemical constraint-based models: the COBRA Toolbox v3.0</strong> (submitted), 2017.</p>
-</div></blockquote>
+<div>[1] = Vlassis N, Pacheco MP, Sauter T (2014) Fast Reconstruction of
+Compact Context-Specific Metabolic Network Models. PLoS Comput Biol
+10(1): e1003424.</div></blockquote>
+<blockquote>
+<div>[2] Laurent Heirendt &amp; Sylvain Arreckx, Thomas Pfau, Sebastian N.
+Mendoza, Anne Richelle, Almut Heinken, Hulda S. Haraldsdottir, Jacek
+Wachowiak, Sarah M. Keating, Vanja Vlasov, Stefania Magnusdottir,
+Chiam Yu Ng, German Preciat, Alise Zagare, Siu H.J. Chan, Maike K.
+Aurich, Catherine M. Clancy, Jennifer Modamio, John T. Sauls,
+Alberto Noronha, Aarash Bordbar, Benjamin Cousins, Diana C. El
+Assal, Luis V. Valcarcel, Inigo Apaolaza, Susan Ghaderi, Masoud
+Ahookhosh, Marouen Ben Guebila, Andrejs Kostromins, Nicolas
+Sompairac, Hoai M. Le, Ding Ma, Yuekai Sun, Lin Wang, James T.
+Yurkovich, Miguel A.P. Oliveira, Phan T. Vuong, Lemmer P. El Assal,
+Inna Kuperstein, Andrei Zinovyev, H. Scott Hinton, William A.
+Bryant, Francisco J. Aragon Artacho, Francisco J. Planes, Egils
+Stalidzans, Alejandro Maass, Santosh Vempala, Michael Hucka, Michael
+A. Saunders, Costas D. Maranas, Nathan E. Lewis, Thomas Sauter,
+Bernhard Ø. Palsson, Ines Thiele, Ronan M.T. Fleming, <strong>Creation and
+analysis of biochemical constraint-based models: the COBRA Toolbox
+v3.0</strong> (submitted), 2017,
+<a class="reference external" href="https://arxiv.org/abs/1710.04038">arXiv:1710.04038</a>.</div></blockquote>
 </div>
 
 
@@ -218,12 +284,13 @@
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
+
 
   
   

@@ -14,11 +14,15 @@
   
   
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   
@@ -29,7 +33,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
   
 
   
@@ -39,12 +43,11 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="next" title="Base" href="base.html"/>
+        <link rel="next" title="Base" href="base/index.html"/>
         <link rel="prev" title="Installation" href="../installation.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -64,7 +67,7 @@
 
           
             
-            <img src="../_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -74,9 +77,44 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -86,17 +124,17 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
               </ul>
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization/index.html">Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -170,156 +208,176 @@
 <span id="modules-functions"></span><h1>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="base.html">Base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="BiGG.html">BiGG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KEGG.html">KEGG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cardOpt.html">cardOpt</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="sparseLP.html">sparseLP</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tangiCode.html">tangiCode</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="varKin.html">varKin</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="BDCAmethods.html">BDCAmethods</a></li>
-<li class="toctree-l4"><a class="reference internal" href="derFreeMethods.html">derFreeMethods</a></li>
-<li class="toctree-l4"><a class="reference internal" href="levMarMethods.html">levMarMethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base/index.html">Base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base/install/index.html">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/io/index.html">IO</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base/io/BiGG/index.html">BiGG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/io/definitions/index.html">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/io/KEGG/index.html">KEGG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/io/utilities/index.html">Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="base/io/utilities/SBML/index.html">SBML-utilities</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/solvers/index.html">Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base/solvers/cardOpt/index.html">cardOpt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="base/solvers/cardOpt/sparseLP/index.html">sparseLP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="base/solvers/cardOpt/tangiCode/index.html">tangiCode</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dataIntegration.html">Data integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fluxomics.html">Fluxomics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="atomTransition.html">atomTransition</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transcriptomics.html">Transcriptomics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="FASTCORE.html">FASTCORE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MBA.html">MBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GIMME.html">GIMME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="INIT.html">INIT</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iMAT.html">iMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/solvers/varKin/index.html">varKin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="base/solvers/varKin/BDCAmethods/index.html">BDCAmethods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="base/solvers/varKin/derFreeMethods/index.html">derFreeMethods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="base/solvers/varKin/levMarMethods/index.html">levMarMethods</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="design.html">Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="optForce.html">optForce</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optForceGAMS.html">optForceGAMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/utilities/index.html">Utilities</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FBA.html">FBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FVA.html">FVA</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fastFVA.html">fastFVA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataIntegration/index.html">Data integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration/chemoInformatics/index.html">ChemoInformatics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration/fluxomics/index.html">Fluxomics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/fluxomics/atomTransition/index.html">atomTransition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/fluxomics/c13solver/index.html">c13solver</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="MOMA.html">MOMA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coupling.html">Coupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deletion.html">Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exploration.html">Exploration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="SteadyCom.html">SteadyCom</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="subroutines.html">Subroutines</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="relaxedFBA.html">relaxedFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="subspaces.html">Subspaces</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rank.html">Rank</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rowReduce.html">rowReduce</a></li>
-<li class="toctree-l3"><a class="reference internal" href="subspaceProjection.html">subspaceProjection</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="thermo.html">Thermo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="componentContribution.html">componentContribution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="directionalityReport.html">directionalityReport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="experimentalDesign.html">experimentalDesign</a></li>
-<li class="toctree-l3"><a class="reference internal" href="experimentalData.html">experimentalData</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="alberty2006.html">alberty2006</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="groupContribution.html">groupContribution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="inchi.html">inchi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molFiles.html">molFiles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="protons.html">protons</a></li>
-<li class="toctree-l3"><a class="reference internal" href="reactantContribution.html">reactantContribution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="thermoFBA.html">thermoFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transport_thermo.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="utilities_thermo.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vonBertalanffy.html">vonBertalanffy</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topology.html">Topology</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="circuits.html">Circuits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="extremeRays.html">extremeRays</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="lrs.html">lrs</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="lrsInterface.html">lrsInterface</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="optimalRays.html">optimalRays</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="FR.html">FR</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="transport.html">Transport</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rumba.html">rumba</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coupling.html">Coupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mdFBA.html">mdFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uFBA.html">uFBA</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reconstruction.html">Reconstruction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fastGapFill.html">fastGapFill</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="AuxillaryFiles.html">AuxillaryFiles</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="growthExpMatch.html">growthExpMatch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modelGeneration.html">modelGeneration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fluxConsistency.html">fluxConsistency</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="DCA.html">DCA</a></li>
-<li class="toctree-l4"><a class="reference internal" href="GREEDY.html">GREEDY</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="massBalance.html">massBalance</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="basicPhysicochemicalData.html">basicPhysicochemicalData</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="modelVerification.html">modelVerification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="stoichConsistency.html">stoichConsistency</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="refinement.html">Refinement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="comparison.html">Comparison</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modelBorgifier.html">modelBorgifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration/metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration/transcriptomics/index.html">Transcriptomics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/FASTCORE/index.html">FASTCORE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/MBA/index.html">MBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/GIMME/index.html">GIMME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/INIT/index.html">INIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/iMAT/index.html">iMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataIntegration/transcriptomics/preprocessing/index.html">Preprocessing</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cellDesigner.html">cellDesigner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maps.html">Maps</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ReconMap.html">ReconMaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design/index.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design/optForce/index.html">optForce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/optForceGAMS/index.html">optForceGAMS</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metabolicCartography.html">MetabolicCartography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis/index.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis/FBA/index.html">FBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/FVA/index.html">FVA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/FVA/fastFVA/index.html">fastFVA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/MOMA/index.html">MOMA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/coupling/index.html">Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/deletion/index.html">Deletion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/dynamicFBA/index.html">FBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/exploration/index.html">Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/gMCS/index.html">gMCS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/multiSpecies/index.html">MultiSpecies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/multiSpecies/SteadyCom/index.html">SteadyCom</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analysis/multiSpecies/SteadyCom/subroutines/index.html">Subroutines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/rFBA/index.html">rFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/sampling/index.html">Sampling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/sampling/ACHR/index.html">ACHR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/sampling/CHRR/index.html">CHRR</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/subspaces/index.html">Subspaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/subspaces/lsqr/index.html">Lsqr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/subspaces/nullspace/index.html">Nullspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/subspaces/rank/index.html">Rank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/subspaces/rowReduce/index.html">rowReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/subspaces/subspaceProjection/index.html">subspaceProjection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/thermo/index.html">Thermo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/componentContribution/index.html">componentContribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/directionalityReport/index.html">directionalityReport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/experimentalDesign/index.html">experimentalDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/experimentalData/index.html">experimentalData</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analysis/thermo/experimentalData/alberty2006/index.html">alberty2006</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/groupContribution/index.html">groupContribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/inchi/index.html">inchi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/molFiles/index.html">molFiles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/protons/index.html">protons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/reactantContribution/index.html">reactantContribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/thermoFBA/index.html">thermoFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/thermo/vonBertalanffy/index.html">vonBertalanffy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/topology/index.html">Topology</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/topology/circuits/index.html">Circuits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/topology/conservedMoieties/index.html">conservedMoieties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/topology/extremeRays/index.html">extremeRays</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analysis/topology/extremeRays/lrs/index.html">lrs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="analysis/topology/extremeRays/lrs/lrsInterface/index.html">lrsInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="analysis/topology/extremeRays/optimalRays/index.html">optimalRays</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/topology/FR/index.html">FR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/topology/graphHypergraphConversion/index.html">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/transport/index.html">Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/rumba/index.html">rumba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/coupling/index.html">Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reconstruction/index.html">Reconstruction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/fastGapFill/index.html">fastGapFill</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/fastGapFill/AuxillaryFiles/index.html">AuxillaryFiles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/growthExpMatch/index.html">growthExpMatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/modelGeneration/index.html">modelGeneration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/modelGeneration/fluxConsistency/index.html">fluxConsistency</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="reconstruction/modelGeneration/fluxConsistency/DCA/index.html">DCA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reconstruction/modelGeneration/fluxConsistency/GREEDY/index.html">GREEDY</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/modelGeneration/massBalance/index.html">massBalance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/index.html">basicPhysicochemicalData</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/modelGeneration/modelVerification/index.html">modelVerification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/modelGeneration/stoichConsistency/index.html">stoichConsistency</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/refinement/index.html">Refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction/comparison/index.html">Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reconstruction/comparison/modelBorgifier/index.html">modelBorgifier</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualization/index.html">Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="visualization/cellDesigner/index.html">cellDesigner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization/maps/index.html">Maps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="visualization/maps/ReconMap/index.html">ReconMaps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="visualization/metabolicCartography/index.html">MetabolicCartography</a></li>
 </ul>
 </li>
 </ul>
@@ -336,7 +394,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="base.html" class="btn btn-neutral float-right" title="Base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="base/index.html" class="btn btn-neutral float-right" title="Base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -376,12 +434,13 @@
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
+
 
   
   

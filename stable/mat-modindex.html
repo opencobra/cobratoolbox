@@ -14,11 +14,15 @@
   
   
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   
@@ -29,7 +33,7 @@
 
   
   
-    <link rel="stylesheet" href="_static/cobra.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/cobra.css" type="text/css" />
   
 
   
@@ -45,7 +49,6 @@
 
   
   <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -65,7 +68,7 @@
 
           
             
-            <img src="_static/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -75,9 +78,44 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='_static/../" + item.website_url + "' ><img src='_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
   </form>
 </div>
 
@@ -87,7 +125,7 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="index.html">The COBRA Toolbox</a></li>
+                  <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -179,482 +217,552 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/analysis.html#module-src.analysis"><code class="xref">src.analysis</code></a></td><td>
+       <a href="modules/analysis/index.html#module-src.analysis"><code class="xref">src.analysis</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/coupling.html#module-src.analysis.coupling"><code class="xref">src.analysis.coupling</code></a></td><td>
+       <a href="modules/analysis/coupling/index.html#module-src.analysis.coupling"><code class="xref">src.analysis.coupling</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/deletion.html#module-src.analysis.deletion"><code class="xref">src.analysis.deletion</code></a></td><td>
+       <a href="modules/analysis/deletion/index.html#module-src.analysis.deletion"><code class="xref">src.analysis.deletion</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/exploration.html#module-src.analysis.exploration"><code class="xref">src.analysis.exploration</code></a></td><td>
+       <a href="modules/analysis/dynamicFBA/index.html#module-src.analysis.dynamicFBA"><code class="xref">src.analysis.dynamicFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/FBA.html#module-src.analysis.FBA"><code class="xref">src.analysis.FBA</code></a></td><td>
+       <a href="modules/analysis/exploration/index.html#module-src.analysis.exploration"><code class="xref">src.analysis.exploration</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/FVA.html#module-src.analysis.FVA"><code class="xref">src.analysis.FVA</code></a></td><td>
+       <a href="modules/analysis/FBA/index.html#module-src.analysis.FBA"><code class="xref">src.analysis.FBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/fastFVA.html#module-src.analysis.FVA.fastFVA"><code class="xref">src.analysis.FVA.fastFVA</code></a></td><td>
+       <a href="modules/analysis/findMIIS/index.html#module-src.analysis.findMIIS"><code class="xref">src.analysis.findMIIS</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/mdFBA.html#module-src.analysis.mdFBA"><code class="xref">src.analysis.mdFBA</code></a></td><td>
+       <a href="modules/analysis/fluxEnrichmentAnalysis/index.html#module-src.analysis.fluxEnrichmentAnalysis"><code class="xref">src.analysis.fluxEnrichmentAnalysis</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/MOMA.html#module-src.analysis.MOMA"><code class="xref">src.analysis.MOMA</code></a></td><td>
+       <a href="modules/analysis/FVA/index.html#module-src.analysis.FVA"><code class="xref">src.analysis.FVA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/multiSpecies.html#module-src.analysis.multiSpecies"><code class="xref">src.analysis.multiSpecies</code></a></td><td>
+       <a href="modules/analysis/FVA/fastFVA/index.html#module-src.analysis.FVA.fastFVA"><code class="xref">src.analysis.FVA.fastFVA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/SteadyCom.html#module-src.analysis.multiSpecies.SteadyCom"><code class="xref">src.analysis.multiSpecies.SteadyCom</code></a></td><td>
+       <a href="modules/analysis/geometricFBA/index.html#module-src.analysis.geometricFBA"><code class="xref">src.analysis.geometricFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/subroutines.html#module-src.analysis.multiSpecies.SteadyCom.subroutines"><code class="xref">src.analysis.multiSpecies.SteadyCom.subroutines</code></a></td><td>
+       <a href="modules/analysis/gMCS/index.html#module-src.analysis.gMCS"><code class="xref">src.analysis.gMCS</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/relaxedFBA.html#module-src.analysis.relaxedFBA"><code class="xref">src.analysis.relaxedFBA</code></a></td><td>
+       <a href="modules/analysis/KLdistance/index.html#module-src.analysis.KLdistance"><code class="xref">src.analysis.KLdistance</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rFBA.html#module-src.analysis.rFBA"><code class="xref">src.analysis.rFBA</code></a></td><td>
+       <a href="modules/analysis/mdFBA/index.html#module-src.analysis.mdFBA"><code class="xref">src.analysis.mdFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rumba.html#module-src.analysis.rumba"><code class="xref">src.analysis.rumba</code></a></td><td>
+       <a href="modules/analysis/MOMA/index.html#module-src.analysis.MOMA"><code class="xref">src.analysis.MOMA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/sampling.html#module-src.analysis.sampling"><code class="xref">src.analysis.sampling</code></a></td><td>
+       <a href="modules/analysis/multiSpecies/index.html#module-src.analysis.multiSpecies"><code class="xref">src.analysis.multiSpecies</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/sparseFBA.html#module-src.analysis.sparseFBA"><code class="xref">src.analysis.sparseFBA</code></a></td><td>
+       <a href="modules/analysis/multiSpecies/SteadyCom/index.html#module-src.analysis.multiSpecies.SteadyCom"><code class="xref">src.analysis.multiSpecies.SteadyCom</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/subspaces.html#module-src.analysis.subspaces"><code class="xref">src.analysis.subspaces</code></a></td><td>
+       <a href="modules/analysis/multiSpecies/SteadyCom/subroutines/index.html#module-src.analysis.multiSpecies.SteadyCom.subroutines"><code class="xref">src.analysis.multiSpecies.SteadyCom.subroutines</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lsqr.html#module-src.analysis.subspaces.lsqr"><code class="xref">src.analysis.subspaces.lsqr</code></a></td><td>
+       <a href="modules/analysis/parsimoniousFBA/index.html#module-src.analysis.parsimoniousFBA"><code class="xref">src.analysis.parsimoniousFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/nullspace.html#module-src.analysis.subspaces.nullspace"><code class="xref">src.analysis.subspaces.nullspace</code></a></td><td>
+       <a href="modules/analysis/relaxedFBA/index.html#module-src.analysis.relaxedFBA"><code class="xref">src.analysis.relaxedFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rank.html#module-src.analysis.subspaces.rank"><code class="xref">src.analysis.subspaces.rank</code></a></td><td>
+       <a href="modules/analysis/rFBA/index.html#module-src.analysis.rFBA"><code class="xref">src.analysis.rFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rowReduce.html#module-src.analysis.subspaces.rowReduce"><code class="xref">src.analysis.subspaces.rowReduce</code></a></td><td>
+       <a href="modules/analysis/robustnessAnalysis/index.html#module-src.analysis.robustnessAnalysis"><code class="xref">src.analysis.robustnessAnalysis</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/subspaceProjection.html#module-src.analysis.subspaces.subspaceProjection"><code class="xref">src.analysis.subspaces.subspaceProjection</code></a></td><td>
+       <a href="modules/analysis/rumba/index.html#module-src.analysis.rumba"><code class="xref">src.analysis.rumba</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/thermo.html#module-src.analysis.thermo"><code class="xref">src.analysis.thermo</code></a></td><td>
+       <a href="modules/analysis/sampling/index.html#module-src.analysis.sampling"><code class="xref">src.analysis.sampling</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/componentContribution.html#module-src.analysis.thermo.componentContribution"><code class="xref">src.analysis.thermo.componentContribution</code></a></td><td>
+       <a href="modules/analysis/sampling/ACHR/index.html#module-src.analysis.sampling.ACHR"><code class="xref">src.analysis.sampling.ACHR</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/directionalityReport.html#module-src.analysis.thermo.directionalityReport"><code class="xref">src.analysis.thermo.directionalityReport</code></a></td><td>
+       <a href="modules/analysis/sampling/CHRR/index.html#module-src.analysis.sampling.CHRR"><code class="xref">src.analysis.sampling.CHRR</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/experimentalData.html#module-src.analysis.thermo.experimentalData"><code class="xref">src.analysis.thermo.experimentalData</code></a></td><td>
+       <a href="modules/analysis/sparseFBA/index.html#module-src.analysis.sparseFBA"><code class="xref">src.analysis.sparseFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/alberty2006.html#module-src.analysis.thermo.experimentalData.alberty2006"><code class="xref">src.analysis.thermo.experimentalData.alberty2006</code></a></td><td>
+       <a href="modules/analysis/subspaces/index.html#module-src.analysis.subspaces"><code class="xref">src.analysis.subspaces</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/experimentalDesign.html#module-src.analysis.thermo.experimentalDesign"><code class="xref">src.analysis.thermo.experimentalDesign</code></a></td><td>
+       <a href="modules/analysis/subspaces/lsqr/index.html#module-src.analysis.subspaces.lsqr"><code class="xref">src.analysis.subspaces.lsqr</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/groupContribution.html#module-src.analysis.thermo.groupContribution"><code class="xref">src.analysis.thermo.groupContribution</code></a></td><td>
+       <a href="modules/analysis/subspaces/nullspace/index.html#module-src.analysis.subspaces.nullspace"><code class="xref">src.analysis.subspaces.nullspace</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/inchi.html#module-src.analysis.thermo.inchi"><code class="xref">src.analysis.thermo.inchi</code></a></td><td>
+       <a href="modules/analysis/subspaces/rank/index.html#module-src.analysis.subspaces.rank"><code class="xref">src.analysis.subspaces.rank</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/molFiles.html#module-src.analysis.thermo.molFiles"><code class="xref">src.analysis.thermo.molFiles</code></a></td><td>
+       <a href="modules/analysis/subspaces/rowReduce/index.html#module-src.analysis.subspaces.rowReduce"><code class="xref">src.analysis.subspaces.rowReduce</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/protons.html#module-src.analysis.thermo.protons"><code class="xref">src.analysis.thermo.protons</code></a></td><td>
+       <a href="modules/analysis/subspaces/subspaceProjection/index.html#module-src.analysis.subspaces.subspaceProjection"><code class="xref">src.analysis.subspaces.subspaceProjection</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/reactantContribution.html#module-src.analysis.thermo.reactantContribution"><code class="xref">src.analysis.thermo.reactantContribution</code></a></td><td>
+       <a href="modules/analysis/thermo/index.html#module-src.analysis.thermo"><code class="xref">src.analysis.thermo</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/thermoFBA.html#module-src.analysis.thermo.thermoFBA"><code class="xref">src.analysis.thermo.thermoFBA</code></a></td><td>
+       <a href="modules/analysis/thermo/componentContribution/index.html#module-src.analysis.thermo.componentContribution"><code class="xref">src.analysis.thermo.componentContribution</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/transport_thermo.html#module-src.analysis.thermo.transport"><code class="xref">src.analysis.thermo.transport</code></a></td><td>
+       <a href="modules/analysis/thermo/directionalityReport/index.html#module-src.analysis.thermo.directionalityReport"><code class="xref">src.analysis.thermo.directionalityReport</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/utilities_thermo.html#module-src.analysis.thermo.utilities"><code class="xref">src.analysis.thermo.utilities</code></a></td><td>
+       <a href="modules/analysis/thermo/experimentalData/index.html#module-src.analysis.thermo.experimentalData"><code class="xref">src.analysis.thermo.experimentalData</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/vonBertalanffy.html#module-src.analysis.thermo.vonBertalanffy"><code class="xref">src.analysis.thermo.vonBertalanffy</code></a></td><td>
+       <a href="modules/analysis/thermo/experimentalData/alberty2006/index.html#module-src.analysis.thermo.experimentalData.alberty2006"><code class="xref">src.analysis.thermo.experimentalData.alberty2006</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/topology.html#module-src.analysis.topology"><code class="xref">src.analysis.topology</code></a></td><td>
+       <a href="modules/analysis/thermo/experimentalDesign/index.html#module-src.analysis.thermo.experimentalDesign"><code class="xref">src.analysis.thermo.experimentalDesign</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/circuits.html#module-src.analysis.topology.circuits"><code class="xref">src.analysis.topology.circuits</code></a></td><td>
+       <a href="modules/analysis/thermo/groupContribution/index.html#module-src.analysis.thermo.groupContribution"><code class="xref">src.analysis.thermo.groupContribution</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/conservedMoieties.html#module-src.analysis.topology.conservedMoieties"><code class="xref">src.analysis.topology.conservedMoieties</code></a></td><td>
+       <a href="modules/analysis/thermo/inchi/index.html#module-src.analysis.thermo.inchi"><code class="xref">src.analysis.thermo.inchi</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/extremeRays.html#module-src.analysis.topology.extremeRays"><code class="xref">src.analysis.topology.extremeRays</code></a></td><td>
+       <a href="modules/analysis/thermo/molFiles/index.html#module-src.analysis.thermo.molFiles"><code class="xref">src.analysis.thermo.molFiles</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lrs.html#module-src.analysis.topology.extremeRays.lrs"><code class="xref">src.analysis.topology.extremeRays.lrs</code></a></td><td>
+       <a href="modules/analysis/thermo/protons/index.html#module-src.analysis.thermo.protons"><code class="xref">src.analysis.thermo.protons</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lrsInterface.html#module-src.analysis.topology.extremeRays.lrs.lrsInterface"><code class="xref">src.analysis.topology.extremeRays.lrs.lrsInterface</code></a></td><td>
+       <a href="modules/analysis/thermo/reactantContribution/index.html#module-src.analysis.thermo.reactantContribution"><code class="xref">src.analysis.thermo.reactantContribution</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/optimalRays.html#module-src.analysis.topology.extremeRays.optimalRays"><code class="xref">src.analysis.topology.extremeRays.optimalRays</code></a></td><td>
+       <a href="modules/analysis/thermo/thermoFBA/index.html#module-src.analysis.thermo.thermoFBA"><code class="xref">src.analysis.thermo.thermoFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/FR.html#module-src.analysis.topology.FR"><code class="xref">src.analysis.topology.FR</code></a></td><td>
+       <a href="modules/analysis/thermo/transport/index.html#module-src.analysis.thermo.transport"><code class="xref">src.analysis.thermo.transport</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/graphHypergraphConversion.html#module-src.analysis.topology.graphHypergraphConversion"><code class="xref">src.analysis.topology.graphHypergraphConversion</code></a></td><td>
+       <a href="modules/analysis/thermo/utilities/index.html#module-src.analysis.thermo.utilities"><code class="xref">src.analysis.thermo.utilities</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/transport.html#module-src.analysis.transport"><code class="xref">src.analysis.transport</code></a></td><td>
+       <a href="modules/analysis/thermo/vonBertalanffy/index.html#module-src.analysis.thermo.vonBertalanffy"><code class="xref">src.analysis.thermo.vonBertalanffy</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/uFBA.html#module-src.analysis.uFBA"><code class="xref">src.analysis.uFBA</code></a></td><td>
+       <a href="modules/analysis/topology/index.html#module-src.analysis.topology"><code class="xref">src.analysis.topology</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/base.html#module-src.base"><code class="xref">src.base</code></a></td><td>
+       <a href="modules/analysis/topology/conservedMoieties/index.html#module-src.analysis.topology.conservedMoieties"><code class="xref">src.analysis.topology.conservedMoieties</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/install.html#module-src.base.install"><code class="xref">src.base.install</code></a></td><td>
+       <a href="modules/analysis/topology/extremeRays/index.html#module-src.analysis.topology.extremeRays"><code class="xref">src.analysis.topology.extremeRays</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/io.html#module-src.base.io"><code class="xref">src.base.io</code></a></td><td>
+       <a href="modules/analysis/topology/extremeRays/lrs/index.html#module-src.analysis.topology.extremeRays.lrs"><code class="xref">src.analysis.topology.extremeRays.lrs</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/BiGG.html#module-src.base.io.BiGG"><code class="xref">src.base.io.BiGG</code></a></td><td>
+       <a href="modules/analysis/topology/extremeRays/lrs/lrsInterface/index.html#module-src.analysis.topology.extremeRays.lrs.lrsInterface"><code class="xref">src.analysis.topology.extremeRays.lrs.lrsInterface</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/KEGG.html#module-src.base.io.KEGG"><code class="xref">src.base.io.KEGG</code></a></td><td>
+       <a href="modules/analysis/topology/extremeRays/optimalRays/index.html#module-src.analysis.topology.extremeRays.optimalRays"><code class="xref">src.analysis.topology.extremeRays.optimalRays</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/utilities.html#module-src.base.io.utilities"><code class="xref">src.base.io.utilities</code></a></td><td>
+       <a href="modules/analysis/topology/FR/index.html#module-src.analysis.topology.FR"><code class="xref">src.analysis.topology.FR</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/solvers.html#module-src.base.solvers"><code class="xref">src.base.solvers</code></a></td><td>
+       <a href="modules/analysis/topology/graphHypergraphConversion/index.html#module-src.analysis.topology.graphHypergraphConversion"><code class="xref">src.analysis.topology.graphHypergraphConversion</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/cardOpt.html#module-src.base.solvers.cardOpt"><code class="xref">src.base.solvers.cardOpt</code></a></td><td>
+       <a href="modules/analysis/transport/index.html#module-src.analysis.transport"><code class="xref">src.analysis.transport</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/sparseLP.html#module-src.base.solvers.cardOpt.sparseLP"><code class="xref">src.base.solvers.cardOpt.sparseLP</code></a></td><td>
+       <a href="modules/analysis/uFBA/index.html#module-src.analysis.uFBA"><code class="xref">src.analysis.uFBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/tangiCode.html#module-src.base.solvers.cardOpt.tangiCode"><code class="xref">src.base.solvers.cardOpt.tangiCode</code></a></td><td>
+       <a href="modules/base/index.html#module-src.base"><code class="xref">src.base</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/varKin.html#module-src.base.solvers.varKin"><code class="xref">src.base.solvers.varKin</code></a></td><td>
+       <a href="modules/base/install/index.html#module-src.base.install"><code class="xref">src.base.install</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/BDCAmethods.html#module-src.base.solvers.varKin.BDCAmethods"><code class="xref">src.base.solvers.varKin.BDCAmethods</code></a></td><td>
+       <a href="modules/base/io/index.html#module-src.base.io"><code class="xref">src.base.io</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/derFreeMethods.html#module-src.base.solvers.varKin.derFreeMethods"><code class="xref">src.base.solvers.varKin.derFreeMethods</code></a></td><td>
+       <a href="modules/base/io/BiGG/index.html#module-src.base.io.BiGG"><code class="xref">src.base.io.BiGG</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/levMarMethods.html#module-src.base.solvers.varKin.levMarMethods"><code class="xref">src.base.solvers.varKin.levMarMethods</code></a></td><td>
+       <a href="modules/base/io/definitions/index.html#module-src.base.io.definitions"><code class="xref">src.base.io.definitions</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/fluxomics.html#module-src.dataIntegration.fluxomics"><code class="xref">src.dataIntegration.fluxomics</code></a></td><td>
+       <a href="modules/base/io/KEGG/index.html#module-src.base.io.KEGG"><code class="xref">src.base.io.KEGG</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/atomTransition.html#module-src.dataIntegration.fluxomics.atomTransition"><code class="xref">src.dataIntegration.fluxomics.atomTransition</code></a></td><td>
+       <a href="modules/base/utilities/index.html#module-src.base.io.utilities"><code class="xref">src.base.io.utilities</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/metabotools.html#module-src.dataIntegration.metabotools"><code class="xref">src.dataIntegration.metabotools</code></a></td><td>
+       <a href="modules/base/io/utilities/SBML/index.html#module-src.base.io.utilities.SBML"><code class="xref">src.base.io.utilities.SBML</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/transcriptomics.html#module-src.dataIntegration.transcriptomics"><code class="xref">src.dataIntegration.transcriptomics</code></a></td><td>
+       <a href="modules/base/solvers/index.html#module-src.base.solvers"><code class="xref">src.base.solvers</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/FASTCORE.html#module-src.dataIntegration.transcriptomics.FASTCORE"><code class="xref">src.dataIntegration.transcriptomics.FASTCORE</code></a></td><td>
+       <a href="modules/base/solvers/cardOpt/index.html#module-src.base.solvers.cardOpt"><code class="xref">src.base.solvers.cardOpt</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/GIMME.html#module-src.dataIntegration.transcriptomics.GIMME"><code class="xref">src.dataIntegration.transcriptomics.GIMME</code></a></td><td>
+       <a href="modules/base/solvers/cardOpt/sparseLP/index.html#module-src.base.solvers.cardOpt.sparseLP"><code class="xref">src.base.solvers.cardOpt.sparseLP</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/iMAT.html#module-src.dataIntegration.transcriptomics.iMAT"><code class="xref">src.dataIntegration.transcriptomics.iMAT</code></a></td><td>
+       <a href="modules/base/solvers/cardOpt/tangiCode/index.html#module-src.base.solvers.cardOpt.tangiCode"><code class="xref">src.base.solvers.cardOpt.tangiCode</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/INIT.html#module-src.dataIntegration.transcriptomics.INIT"><code class="xref">src.dataIntegration.transcriptomics.INIT</code></a></td><td>
+       <a href="modules/base/solvers/varKin/index.html#module-src.base.solvers.varKin"><code class="xref">src.base.solvers.varKin</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/MBA.html#module-src.dataIntegration.transcriptomics.MBA"><code class="xref">src.dataIntegration.transcriptomics.MBA</code></a></td><td>
+       <a href="modules/base/solvers/varKin/BDCAmethods/index.html#module-src.base.solvers.varKin.BDCAmethods"><code class="xref">src.base.solvers.varKin.BDCAmethods</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/design.html#module-src.design"><code class="xref">src.design</code></a></td><td>
+       <a href="modules/base/solvers/varKin/derFreeMethods/index.html#module-src.base.solvers.varKin.derFreeMethods"><code class="xref">src.base.solvers.varKin.derFreeMethods</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/optForce.html#module-src.design.optForce"><code class="xref">src.design.optForce</code></a></td><td>
+       <a href="modules/base/solvers/varKin/levMarMethods/index.html#module-src.base.solvers.varKin.levMarMethods"><code class="xref">src.base.solvers.varKin.levMarMethods</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/optForceGAMS.html#module-src.design.optForceGAMS"><code class="xref">src.design.optForceGAMS</code></a></td><td>
+       <a href="modules/dataIntegration/chemoInformatics/index.html#module-src.dataIntegration.chemoInformatics"><code class="xref">src.dataIntegration.chemoInformatics</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/reconstruction.html#module-src.reconstruction"><code class="xref">src.reconstruction</code></a></td><td>
+       <a href="modules/dataIntegration/fluxomics/index.html#module-src.dataIntegration.fluxomics"><code class="xref">src.dataIntegration.fluxomics</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/comparison.html#module-src.reconstruction.comparison"><code class="xref">src.reconstruction.comparison</code></a></td><td>
+       <a href="modules/dataIntegration/fluxomics/atomTransition/index.html#module-src.dataIntegration.fluxomics.atomTransition"><code class="xref">src.dataIntegration.fluxomics.atomTransition</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/modelBorgifier.html#module-src.reconstruction.comparison.modelBorgifier"><code class="xref">src.reconstruction.comparison.modelBorgifier</code></a></td><td>
+       <a href="modules/dataIntegration/fluxomics/c13solver/index.html#module-src.dataIntegration.fluxomics.c13solver"><code class="xref">src.dataIntegration.fluxomics.c13solver</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/fastGapFill.html#module-src.reconstruction.fastGapFill"><code class="xref">src.reconstruction.fastGapFill</code></a></td><td>
+       <a href="modules/dataIntegration/metabotools/index.html#module-src.dataIntegration.metabotools"><code class="xref">src.dataIntegration.metabotools</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/AuxillaryFiles.html#module-src.reconstruction.fastGapFill.AuxillaryFiles"><code class="xref">src.reconstruction.fastGapFill.AuxillaryFiles</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/index.html#module-src.dataIntegration.transcriptomics"><code class="xref">src.dataIntegration.transcriptomics</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/growthExpMatch.html#module-src.reconstruction.growthExpMatch"><code class="xref">src.reconstruction.growthExpMatch</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/FASTCORE/index.html#module-src.dataIntegration.transcriptomics.FASTCORE"><code class="xref">src.dataIntegration.transcriptomics.FASTCORE</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/modelGeneration.html#module-src.reconstruction.modelGeneration"><code class="xref">src.reconstruction.modelGeneration</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/GIMME/index.html#module-src.dataIntegration.transcriptomics.GIMME"><code class="xref">src.dataIntegration.transcriptomics.GIMME</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/fluxConsistency.html#module-src.reconstruction.modelGeneration.fluxConsistency"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/iMAT/index.html#module-src.dataIntegration.transcriptomics.iMAT"><code class="xref">src.dataIntegration.transcriptomics.iMAT</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/DCA.html#module-src.reconstruction.modelGeneration.fluxConsistency.DCA"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency.DCA</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/INIT/index.html#module-src.dataIntegration.transcriptomics.INIT"><code class="xref">src.dataIntegration.transcriptomics.INIT</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/GREEDY.html#module-src.reconstruction.modelGeneration.fluxConsistency.GREEDY"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency.GREEDY</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/MBA/index.html#module-src.dataIntegration.transcriptomics.MBA"><code class="xref">src.dataIntegration.transcriptomics.MBA</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/massBalance.html#module-src.reconstruction.modelGeneration.massBalance"><code class="xref">src.reconstruction.modelGeneration.massBalance</code></a></td><td>
+       <a href="modules/dataIntegration/transcriptomics/preprocessing/index.html#module-src.dataIntegration.transcriptomics.preprocessing"><code class="xref">src.dataIntegration.transcriptomics.preprocessing</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/basicPhysicochemicalData.html#module-src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData"><code class="xref">src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData</code></a></td><td>
+       <a href="modules/design/index.html#module-src.design"><code class="xref">src.design</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/modelVerification.html#module-src.reconstruction.modelGeneration.modelVerification"><code class="xref">src.reconstruction.modelGeneration.modelVerification</code></a></td><td>
+       <a href="modules/design/optForce/index.html#module-src.design.optForce"><code class="xref">src.design.optForce</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/stoichConsistency.html#module-src.reconstruction.modelGeneration.stoichConsistency"><code class="xref">src.reconstruction.modelGeneration.stoichConsistency</code></a></td><td>
+       <a href="modules/design/optForceGAMS/index.html#module-src.design.optForceGAMS"><code class="xref">src.design.optForceGAMS</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rBioNet.html#module-src.reconstruction.rBioNet.inc"><code class="xref">src.reconstruction.rBioNet.inc</code></a></td><td>
+       <a href="modules/reconstruction/index.html#module-src.reconstruction"><code class="xref">src.reconstruction</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/refinement.html#module-src.reconstruction.refinement"><code class="xref">src.reconstruction.refinement</code></a></td><td>
+       <a href="modules/reconstruction/comparison/index.html#module-src.reconstruction.comparison"><code class="xref">src.reconstruction.comparison</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/visualization.html#module-src.visualization"><code class="xref">src.visualization</code></a></td><td>
+       <a href="modules/reconstruction/comparison/modelBorgifier/index.html#module-src.reconstruction.comparison.modelBorgifier"><code class="xref">src.reconstruction.comparison.modelBorgifier</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/cellDesigner.html#module-src.visualization.cellDesigner"><code class="xref">src.visualization.cellDesigner</code></a></td><td>
+       <a href="modules/reconstruction/fastGapFill/index.html#module-src.reconstruction.fastGapFill"><code class="xref">src.reconstruction.fastGapFill</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/maps.html#module-src.visualization.maps"><code class="xref">src.visualization.maps</code></a></td><td>
+       <a href="modules/reconstruction/fastGapFill/AuxillaryFiles/index.html#module-src.reconstruction.fastGapFill.AuxillaryFiles"><code class="xref">src.reconstruction.fastGapFill.AuxillaryFiles</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/ReconMap.html#module-src.visualization.maps.ReconMap"><code class="xref">src.visualization.maps.ReconMap</code></a></td><td>
+       <a href="modules/reconstruction/growthExpMatch/index.html#module-src.reconstruction.growthExpMatch"><code class="xref">src.reconstruction.growthExpMatch</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/metabolicCartography.html#module-src.visualization.metabolicCartography"><code class="xref">src.visualization.metabolicCartography</code></a></td><td>
+       <a href="modules/reconstruction/modelGeneration/index.html#module-src.reconstruction.modelGeneration"><code class="xref">src.reconstruction.modelGeneration</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/fluxConsistency/index.html#module-src.reconstruction.modelGeneration.fluxConsistency"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/fluxConsistency/DCA/index.html#module-src.reconstruction.modelGeneration.fluxConsistency.DCA"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency.DCA</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/fluxConsistency/GREEDY/index.html#module-src.reconstruction.modelGeneration.fluxConsistency.GREEDY"><code class="xref">src.reconstruction.modelGeneration.fluxConsistency.GREEDY</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/massBalance/index.html#module-src.reconstruction.modelGeneration.massBalance"><code class="xref">src.reconstruction.modelGeneration.massBalance</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/index.html#module-src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData"><code class="xref">src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/modelVerification/index.html#module-src.reconstruction.modelGeneration.modelVerification"><code class="xref">src.reconstruction.modelGeneration.modelVerification</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/modelGeneration/stoichConsistency/index.html#module-src.reconstruction.modelGeneration.stoichConsistency"><code class="xref">src.reconstruction.modelGeneration.stoichConsistency</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/rBioNet/index.html#module-src.reconstruction.rBioNet"><code class="xref">src.reconstruction.rBioNet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/reconstruction/refinement/index.html#module-src.reconstruction.refinement"><code class="xref">src.reconstruction.refinement</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/visualization/index.html#module-src.visualization"><code class="xref">src.visualization</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/visualization/cellDesigner/index.html#module-src.visualization.cellDesigner"><code class="xref">src.visualization.cellDesigner</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/visualization/maps/index.html#module-src.visualization.maps"><code class="xref">src.visualization.maps</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/visualization/maps/ReconMap/index.html#module-src.visualization.maps.ReconMap"><code class="xref">src.visualization.maps.ReconMap</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="modules/visualization/metabolicCartography/index.html#module-src.visualization.metabolicCartography"><code class="xref">src.visualization.metabolicCartography</code></a></td><td>
        <em></em></td></tr>
    </table>
 
@@ -699,12 +807,13 @@
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
+
 
   
   

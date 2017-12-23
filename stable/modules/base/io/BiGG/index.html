@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BiGG &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="IO" href="../index.html"/>
+        <link rel="next" title="Definitions" href="../definitions/index.html"/>
+        <link rel="prev" title="IO" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">IO</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">BiGG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">KEGG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Base</a> &raquo;</li>
+        
+          <li><a href="../index.html">IO</a> &raquo;</li>
+        
+      <li>BiGG</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bigg">
+<span id="id1"></span><h1>BiGG<a class="headerlink" href="#bigg" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.base.io.BiGG"></span><dl class="function">
+<dt id="src.base.io.BiGG.listBiGGModels">
+<code class="descname">listBiGGModels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/BiGG/listBiGGModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.BiGG.listBiGGModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[str] = listBiGGModels()</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>str</strong> &#8211;
+result of url read</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.io.BiGG.loadBiGGModel">
+<code class="descname">loadBiGGModel</code><span class="sig-paren">(</span><em>model_ids</em>, <em>format</em>, <em>multichoice</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/BiGG/loadBiGGModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.BiGG.loadBiGGModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = listBiGGModel(model_ids)</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model_ids</strong> &#8211;
+The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui
+will ask for the model to load.</li>
+<li><strong>format</strong> &#8211;
+The format from Bigg to load. Either &#8216;sbml&#8217; or (&#8216;mat&#8217;).
+Default(&#8216;mat&#8217;)</li>
+<li><strong>multichoice</strong> &#8211;
+Whether multiple models can be loaded if no ids are
+given. (Default: true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargout</strong> &#8211;
+The models in the order of the selected ids. If
+multiple models are selected in the dialog, a struct
+is provided with the models being fields of that
+struct.</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span> <span class="n">Load</span> <span class="n">a</span> <span class="n">specific</span> <span class="n">model</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">mat</span> <span class="n">file</span> <span class="n">of</span> <span class="n">the</span> <span class="n">BiGG</span> <span class="n">database</span>
+       <span class="n">model</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">(</span><span class="s1">&#39;e_coli_core&#39;</span><span class="p">);</span>
+
+<span class="mi">2</span><span class="p">)</span> <span class="n">Load</span> <span class="n">several</span> <span class="n">models</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">BiGG</span> <span class="n">database</span> <span class="n">at</span> <span class="n">once</span>
+       <span class="p">[</span><span class="n">model1</span><span class="p">,</span> <span class="n">model2</span><span class="p">,</span> <span class="o">...</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">({</span><span class="s1">&#39;bigg_id1&#39;</span><span class="p">,</span><span class="s1">&#39;bigg_id2&#39;</span><span class="p">,</span><span class="o">...</span><span class="p">});</span>
+
+<span class="mi">3</span><span class="p">)</span> <span class="n">Load</span> <span class="n">model</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">BiGG</span> <span class="n">database</span> <span class="n">sbml</span> <span class="n">files</span>
+       <span class="n">model</span> <span class="o">=</span> <span class="n">loadBiGGModel</span><span class="p">(</span><span class="s1">&#39;iJR904&#39;</span><span class="p">,</span><span class="s1">&#39;sbml&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../definitions/index.html" class="btn btn-neutral float-right" title="Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="IO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

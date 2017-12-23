@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Coupling &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="Deletion" href="../deletion/index.html"/>
+        <link rel="prev" title="MOMA" href="../MOMA/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../index.html">Analysis</a> &raquo;</li>
+        
+      <li>Coupling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="coupling">
+<span id="id1"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.coupling"></span><dl class="function">
+<dt id="src.analysis.coupling.addRatioReaction">
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds ratio reaction.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>listOfRxns</strong> &#8211;
+List of 2 Reactions</li>
+<li><strong>ratioCoeff</strong> &#8211;
+Array of ratio coefficient between the 2 reactions</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelNew</strong> &#8211;
+COBRA model structure containing the ratio</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span> <span class="n">v_EX_ac</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">v_EX_for</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+<span class="n">modelNew</span> <span class="o">=</span> <span class="n">addRatioReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_ac(e)&#39;</span> <span class="s1">&#39;EX_for(e)&#39;</span><span class="p">},</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.coupling.constrainRxnListAboveBound">
+<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
+Appends to existing inequality constraints if they are present</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>rxnList</strong> &#8211;
+cell array of reaction names</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>c</strong> &#8211;
+<cite>k x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
+<li><strong>d</strong> &#8211;
+<cite>n x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
+<li><strong>ineqSense</strong> &#8211;
+<cite>k x 1</cite> inequality sense {&#8216;L&#8217;,&#8217;G&#8217;}</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelConstrained</strong> &#8211;
+constrained model:<ul>
+<li>S - Stoichiometric matrix</li>
+<li>b - Right hand side = dx/dt</li>
+<li>C - Inequality constraint matrix</li>
+<li>d - Inequality constraint right hand side
+<span class="math">\([S; C] * v {=, \leq, \geq } [dxdt, d]\)</span></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PCHOLP_hs_f&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_f&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_f&#39;</span><span class="p">,</span><span class="s1">&#39;PCHOLP_hs_b&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_b&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_b&#39;</span><span class="p">};</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">ineqSense</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span><span class="p">;</span>
+<span class="n">modelConstrained</span> <span class="o">=</span> <span class="n">constrainRxnListAboveBound</span><span class="p">(</span><span class="n">modelIrrev</span><span class="p">,</span> <span class="n">rxnList</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ineqSense</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.coupling.coupleRxnList2Rxn">
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
+(<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
+reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
+For all reactions, a threshold <cite>u</cite> on flux is set (default value: 0.01).</p>
+<p>To add a coupling constraint to a reaction, a coupling vector <cite>c</cite> is
+determined (default value 1000). <cite>c</cite> is multiplied by <cite>vrxnC</cite>, so that for
+all irreversible reactions in <cite>RxnList vi - c * vrxnC &lt;= u</cite>.</p>
+<p>For all reversible reactions, the following equation holds true for the
+reverse direction: <cite>vi + c * vrxnC &gt;= u</cite>.</p>
+<p>The output is a coupled model (<cite>modelCoupled</cite>), in which for every new
+entry in <cite>modelCoupled.b</cite> a &#8220;slack&#8221; variable has been added
+to <cite>modelCoupled.mets</cite>.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>rxnList</strong> &#8211;
+array of reaction names</li>
+<li><strong>rxnC</strong> &#8211;
+reaction that should be coupled with each reaction in the
+reaction list</li>
+<li><strong>c</strong> &#8211;
+vector of coupling factors for each rxn in rxnList (default c = 1000)</li>
+<li><strong>u</strong> &#8211;
+vector of lower bounds one reaction couples (default u = 0.01)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelCoupled</strong> &#8211;
+coupled model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../deletion/index.html" class="btn btn-neutral float-right" title="Deletion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../MOMA/index.html" class="btn btn-neutral" title="MOMA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
