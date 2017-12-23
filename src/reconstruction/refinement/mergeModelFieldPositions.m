@@ -1,12 +1,23 @@
-function modelNew = mergeModelFieldPositions(model,type,positions)
+function modelNew = mergeModelFieldPositions(model,type,positions,mergeFunctions)
 % USAGE:
 %    [modelNew] = mergeModelFieldPositions(model,type,positions)
 %
 % INPUTS:
 %    model:           The model with the fields to merge
 %    type:            the field type to merge ( rxns, mets, comps or genes)
-%    positions:       The positions in the given field type to merge.
+%    positions:       The positions in the given field type to merge either as indices or as logical array.
 %
+% OPTIONAL INPUTS:
+%    mergeFunctions:  A cell array of fieldNames and functions that can be
+%                     called on a larger array of the type used for the
+%                     field. e.g. {'metCharges',@(x) x(1); 'grRules', @(x)
+%                     strjoin(x,' or ');
+%                     by default, all numeric fields are added up, all
+%                     unique entries in cell arrays are concatenated with
+%                     ';', grRules and rules are assumed to be merged with
+%                     and (i.e. a batch reaction is assumed to need all
+%                     associated GPRs)
+%                 
 %
 % OUTPUT:
 %
@@ -19,10 +30,27 @@ function modelNew = mergeModelFieldPositions(model,type,positions)
 
 
 modelNew = model;
+
+if islogical(positions)
+    positions = find(positions);
+end
+
 if numel(positions) <= 1
     %If there is less than two positions to merge, we don't do anything.
     return;
 end
+
+%basic functions for merger
+basicFunctions = {'rules',@(x) {strjoin(cellfun(@(x) strcat('(',x,')'), setdiff(x,''),'UniformOutput',false),' & ')};...
+                  'grRules', @(x) {strjoin(cellfun(@(x) strcat('(',x,')'), setdiff(x,''),'UniformOutput',false),' and ')}};
+if ~exist('mergeFunctions','var')
+    mergeFunctions = basicFunctions;
+else
+    toRemove = ismember(basicFunctions(:,1),mergeFunctions(:,1));
+    mergeFunctions=[basicFunctions(~toRemove,:),mergeFunctions(:,:)];
+end
+
+              
 
 posToKeep = positions(1);
 posToMerge = positions(2:end);
@@ -35,8 +63,17 @@ origNames = modelNew.(type)(positions);
 
 
 for i = 1:numel(fields)
+    specialFieldPos = ismember(mergeFunctions(:,1),fields{i});
+    if any(specialFieldPos)
+        mergeFun = mergeFunctions{specialFieldPos,2};
+        data = mergeFun(getSlice(modelNew.(fields{i}),positions,dimensions(i)));
+        modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),data);        
+        continue;
+    end
+        
     %Lets assume, that we only have 2 dimensional fields.    
     if isnumeric(modelNew.(fields{i})) || islogical(modelNew.(fields{i}))
+        %There are exceptions.        
         modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),sum(getSlice(modelNew.(fields{i}),positions,dimensions(i)),dimensions(i)));        
     end
     % if its cell arrays, concatenate unique data, we will assume here, that
@@ -46,31 +83,8 @@ for i = 1:numel(fields)
     %arrays, or its all cell arrays.
     if iscell(modelNew.(fields{i}))
         data = getSlice(modelNew.(fields{i}),positions,dimensions(i));
-        if ischar([data{:}])
-            %We have cell arrays with individual char arrays, So we will
-            %take the concatenation of the unique values.
-            %We have two exceptions for this: grRules and rules. All parts
-            %of the old rules need to be present together.
-            newData = {strjoin(unique(data),';')};
-            if strcmp(fields{i}, 'rules')
-                clauses = unique(data);
-                clauses = setdiff(clauses,{''}); % remove empty clauses
-                if ~isempty(clauses)
-                    newData = {strjoin( strcat('(',unique(data),')'),' & ')};
-                else
-                    newData = {''};
-                end
-                    
-            end
-            if strcmp(fields{i}, 'grRules')
-                clauses = unique(data);
-                clauses = setdiff(clauses,{''}); % remove empty clauses
-                if ~isempty(clauses)
-                    newData = {strjoin( strcat('(',unique(data),')'),' and ')};
-                else
-                    newData = {''};
-                end
-            end
+        if ischar([data{:}])            
+            newData = {strjoin(unique(data),';')};            
             modelNew.(fields{i}) = setSlice(modelNew.(fields{i}),posToKeep,dimensions(i),newData);     
         else
             dataconcatenation = unique([data{:}]);
@@ -86,7 +100,7 @@ for i = 1:numel(fields)
     if ischar(modelNew.(fields{i}))
         %This is a problem. as this is VERY dependent on the type of char
         %we have. We will simple not handle it for now... (as it is
-        %currently only present in csense and whoever is doing it should
+        %currently only present in csense and dsense and whoever is doing it should
         %take care not to screw around when merging mets....
     end
     %now, having done this, we need to check whether we modified genes. If
@@ -106,7 +120,7 @@ for i = 1:numel(fields)
                 %First, replace all occurences, which only contain the
                 %name.                
                 modelNew.grRules = regexprep(modelNew.grRules,['^' regexptranslate('escape',origNames{j}) '$'],modelNew.genes{posToKeep});            
-                %The replace all occurences which are at the beginning or
+                %Then replace all occurences which are at the beginning or
                 %end of a formula.
                 modelNew.grRules = regexprep(modelNew.grRules,['^' regexptranslate('escape',origNames{j}) '([\) ]+)'],[ modelNew.genes{posToKeep} '$1']);                                
                 modelNew.grRules = regexprep(modelNew.grRules,['([\( ]+)' regexptranslate('escape',origNames{j}) '$'],['$1' modelNew.genes{posToKeep} ]);                                

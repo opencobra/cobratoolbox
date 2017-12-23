@@ -27,7 +27,7 @@ warning('off', 'all')
   assert(length(lastwarn()) > 0)
 warning('on', 'all')
 % test
-assert(isequal(sbmlModel, sbmlModel_2));
+assert(isequaln(sbmlModel, sbmlModel_2));
 
 % change to old directory
 cd(currentDir);

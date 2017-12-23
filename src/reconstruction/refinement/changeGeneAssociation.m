@@ -70,9 +70,7 @@ if addRxnGeneMat
     model.rxnGeneMat(rxnID,pos) = true;
 end
 
-model.grRules{rxnID,1} = regexprep(model.rules{rxnID},'x\(([0-9]+)\)','${getGene($1)}');
-model.grRules = columnVector(model.grRules);
-
+model = creategrRulesField(model,rxnID);
 
 %make sure variables are column vectors
 model.rules = columnVector(model.rules);

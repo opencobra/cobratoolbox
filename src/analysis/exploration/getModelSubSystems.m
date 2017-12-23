@@ -22,6 +22,9 @@ function [subSystems]  = getModelSubSystems(model)
 if isfield(model, 'subSystems')
     orderedSubs = cellfun(@(x) columnVector(x),model.subSystems,'UniformOUtput',false);
     subSystems = setdiff(vertcat(orderedSubs{:}),'');
+    if isempty(subSystems)
+        subSystems = {};
+    end
 else
     subSystems = {};
 end

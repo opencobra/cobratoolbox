@@ -1,7 +1,0 @@
-1373.2	CBPSam					
-1373.1	CBPSam					
-5009.1	OCBTm					
-445.2	ARGSS					
-445.1	ARGSS					
-435.1	ARGSL					
-383.1	ARGN					

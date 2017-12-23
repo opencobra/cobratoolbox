@@ -85,7 +85,7 @@ for pos = 1:size(fieldentries,1)
             if isempty(model.(knownExistentFields{fieldid,3}){position})
                 continue
             end
-            ids = strsplit(model.(knownExistentFields{fieldid,3}){position},';');
+            ids = strtrim(strsplit(model.(knownExistentFields{fieldid,3}){position},';'));
             correctids = ~cellfun(@isempty, regexp(ids,knownExistentFields{fieldid,5}));            
             %If we have correct ids, we will annotate those.
             if any(correctids)

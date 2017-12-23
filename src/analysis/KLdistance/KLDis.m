@@ -1,4 +1,4 @@
-function dist = KLDis(P, Q);
+function dist = KLDis(P, Q)
 % Calculates the Kullback-Leibler Distance of two discrete
 % probability distributions. P and Q  are automatically normalised to have
 % the sum of one on rows have the length of one at each.

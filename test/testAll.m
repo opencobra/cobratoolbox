@@ -44,6 +44,12 @@ initCobraToolbox;
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
+
+    % add CellNetAnalyzer for testing purposes
+    addpath(genpath(getenv('CNA_PATH')));
+
+    % check the CNA installation
+    checkCNAinstallation(0);
 else
     WAITBAR_TYPE = 1;
 end
@@ -161,10 +167,15 @@ try
 
     sumFailed = 0;
     sumIncomplete = 0;
-
+    resulttable = result.table;
+    resulttable(:,'Details') = {''};
     for i = 1:size(result, 2)
         sumFailed = sumFailed + result(i).Failed;
         sumIncomplete = sumIncomplete + result(i).Incomplete;
+        if result(i).Failed
+            Message = result(i).Details.DiagnosticRecord.Exception.message;
+            resulttable{i,'Details'} = {Message};
+        end
     end
 
     fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
@@ -201,7 +212,7 @@ try
     end
 
     % print out a summary table
-    table(result)
+    resulttable
 
     % restore the original path
     restoredefaultpath;

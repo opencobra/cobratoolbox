@@ -341,6 +341,22 @@ else
     end
 end
 
+if isfield(modelSBML,'groups_version') && modelSBML.groups_version == 1 
+    %There is a groups field, we will override existing information for all
+    %elements in groups if its non empty.
+    if isfield(modelSBML,'groups_group') && ~isempty(modelSBML.groups_group)
+        group_ids = {modelSBML.groups_group.groups_id};
+        group_names = {modelSBML.groups_group.groups_name};
+        group_member_set = {modelSBML.groups_group.groups_member};
+        group_members = cellfun(@(x) {x.groups_idRef},group_member_set,'Uniformoutput',false);
+        groups = cellfun(@(x) getMembersForGroup(x,group_ids,group_members),group_ids,'UniformOutput',false);
+        %For now, we only assign groups to reactions.
+        for i = 1:size(group_names,2)
+            model = addSubSystemsToReactions(model,model.rxns(ismember(model.rxns,groups{i})),group_names{i});
+        end
+    end
+end
+    
 
 %% Some finishing touches (e.g. check for naming schemes, and compartment
 %ids.
@@ -484,3 +500,22 @@ if ~isfield(startstruct,fieldname)
 end
 field = {startstruct.(fieldname)};
 end
+
+
+function members = getMembersForGroup(groupID, groupIDs, groupMembers, groupsDone)
+%Get all members from a list of groups, which can reference themselves.
+if ~exist('groupsDone','var')
+    groupsDone = {groupID};    
+end
+currentMembers = groupMembers{ismember(groupIDs,groupID)};
+groupsInMembers = ismember(groupIDs,currentMembers);
+currentGroups = setdiff(groupIDs(groupsInMembers),groupsDone);
+groupsDone = union(currentGroups,groupsDone);
+
+members = cellfun(@(x) getMembersForGroup(x,groupIDs,groupMembers,groupsDone),currentGroups,'UniformOutput',false);
+
+members = setdiff(union(currentMembers,vertcat(members{:})),groupsDone);
+
+end
+
+

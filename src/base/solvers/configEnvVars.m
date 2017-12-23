@@ -129,6 +129,7 @@ function [] = configEnvVars(printLevel)
                         tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['IBM' filesep 'ILOG' filesep]);
                         tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['ibm' filesep 'ilog' filesep]);
                         tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['ibm' filesep 'ILOG' filesep]);
+                        tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect);
                     end
                     if k == 4 % MOSEK
                         tmpFolderNameVect(end+1:end+len) = strcat(folderNameVect, ['mosek' filesep]);

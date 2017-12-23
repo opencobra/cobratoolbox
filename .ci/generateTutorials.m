@@ -45,7 +45,6 @@ function generateTutorials(destinationFolder, varargin)
             fullFileName = fullfile(mlxFiles(k).folder, mlxFiles(k).name);
             [~, ~, ~] = mkdir([destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '')]);
             openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.html'])
-            openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.pdf'])
             showprogress(k / totalNumberOfFiles);
         end
     else

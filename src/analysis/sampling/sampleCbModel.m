@@ -14,8 +14,8 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
-%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to 
-%                   sample the solution.  
+%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to
+%                   sample the solution.
 %    options:       Options for sampling and pre/postprocessing (default values
 %                   in parenthesis).
 %
@@ -27,6 +27,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                     * .nFilesSkipped - Number of output files skipped when loading points to avoid potentially biased initial samples (2) loops (true). ACHR only.
 %                     * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
 %                     * .toRound - Option to round the model before sampling (true). CHRR only.
+%                     * .lambda - the bias vector for exponential sampling. CHRR_EXP only.
 %    modelSampling: From a previous round of sampling the same
 %                   model. Input to avoid repeated preprocessing.
 %
@@ -60,6 +61,7 @@ nFilesSkipped = 2;
 maxTime = 10 * 3600;
 toRound = 1;
 useFastFVA = false;
+optPercentage = 100;
 % Default options above
 if ~exist('sampleFile','var')
     samplerName = 'sampleFile.mat';
@@ -103,6 +105,9 @@ if exist('options','var')
     end
     if (isfield(options,'useFastFVA'))
         useFastFVA = options.useFastFVA;
+    end
+    if (isfield(options,'optPercentage'))
+        optPercentage = options.optPercentage;
     end
 end
 
@@ -153,11 +158,22 @@ switch samplerName
 
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
-    case 'CHRR'        
-        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, [], [], useFastFVA);
+    case 'CHRR'
+        [samples, modelSampling] = chrrSampler(model, nStepsPerPoint, nPointsReturned, toRound, modelSampling, useFastFVA,optPercentage);
 
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
 
+    case 'CHRR_EXP'
+        %get the bias vector
+        if isfield(options,'lambda')
+            lambda = options.lambda;
+        elseif isfield(model,'c')
+            lambda = model.c;
+        end
+
+        [samples, modelSampling] = chrrExpSampler(model, nStepsPerPoint, nPointsReturned, lambda, toRound, modelSampling, useFastFVA);
+
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
     case 'MFE'
         %[volume,T,steps] = Volume(P,E,eps,p,flags)
         %This function is a randomized algorithm to approximate the volume of a convex

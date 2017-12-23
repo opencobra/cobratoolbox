@@ -7,7 +7,8 @@ where:
     -f  name of a folder of a tutorial
     -h  show this help text
     -t  check if the triggering file is present
-    -m  mode (all,html,md,pdf,png,rst)"
+    -m  mode (all,html,md,pdf,png,rst)
+    -e  matlab executable path"
 
 echo_time() {
             echo `date +\%Y-\%m-\%d\ \%H:\%M:\%S` " $*"
@@ -30,28 +31,35 @@ buildTutorialList(){
                 fi
                 let "nTutorial+=1"
                 tutorials[$nTutorial]="$tutorial"
-                # echo_time " - ${tutorials[$nTutorial]}"
+                echo_time " - ${tutorials[$nTutorial]}"
             done
         done
     else
+        echo here
         for d in $(find $cobraToolBoxPath/tutorials -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
-                singleTutorial="$d/tutorial_$(basename $specificTutorial).nlx"
+                singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
+                echo here
                 if [[ -f "$singleTutorial" ]]; then
                     let "nTutorial+=1"
                     tutorials[$nTutorial]="$singleTutorial"
-                    # echo_time " - ${tutorials[$nTutorial]}"
+                    echo_time " - ${tutorials[$nTutorial]}"
                 else
-                    echo_time "> the supplied tutorial does not exist: ""$singleTutorial"; echo_time; echo_time "$usage"; exit 1;
+                    echo_time "> the supplied tutorial does not exist: ""$singleTutorial";
                 fi
             fi
         done
     fi
+    if [[ nTutorial == 0 ]]; then
+        echo_time;
+        echo_time "List of tutorial is empty."
+        echo_time "$usage"; exit 1;
+    fi
 }
 
 createLocalVariables(){
-    tutorial=$1    
+    tutorial=$1
     tutorialDir=${tutorial%/*}
     tutorialName=${tutorial##*/}
     tutorialName="${tutorialName%.*}"
@@ -61,38 +69,40 @@ createLocalVariables(){
     else
         tutorialTitle="tutorialNoName"
     fi
- 
+
     echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder"
- 
+
     foo="${tutorialName:9}"
     tutorialLongTitle="${tutorialName:0:8}${foo^}"
     readmePath="$cobraToolBoxPath/tutorials/$tutorialFolder"
     htmlPath="$cobraToolBoxPath/docs/source/_static/tutorials"
     rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
     pngPath="$pdfPath/tutorials/$tutorialFolder"
- 
+
     pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
     pngHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.png"
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
-    mlxHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.mlx"
-    mHyperlink="https://github.com/opencobra/cobratoolbox/raw/master/tutorials/$tutorialFolder/$tutorialName.m"
+    mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
+    mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
 }
 
 buildHTMLTutorials(){
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
-        # create html file
+        # create PDF file
+        /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
         sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     done
 }
 
 buildHTMLSpecificTutorial(){
     specificTutorial=$1
-    /Applications/MATLAB_R2016b.app/bin/matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
     createLocalVariables $specificTutorial
-    # create html file
+    # create PDF file
+    /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
 }
 
@@ -103,6 +113,7 @@ buildPDF=false
 buildRST=false
 buildMD=false
 buildPNG=false
+matlab=/Applications/MATLAB_R2016b.app/bin/matlab
 
 for i in "$@"
 do
@@ -121,6 +132,9 @@ do
         ;;
         -t=*)
         triggeringFile="${i#*=}"
+        ;;
+        -e=*)
+        matlab="${i#*=}"
         ;;
         *)
         echo_time "$usage" # unknown argument
@@ -180,9 +194,7 @@ if ! [[ -z "$triggeringFile" ]]; then
 fi
 
 # build list of tutorial if parameter '-f' is not set.
-if [[ -z "$specificTutorial" ]]; then
-    buildTutorialList
-fi
+buildTutorialList
 
 tutorialPath="../tutorials"
 tutorialDestination="$cobraToolBoxPath/docs/source/_static/tutorials"
@@ -201,20 +213,20 @@ fi
 # now loop through the above array
 if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
-    echo_time "Creating index.rst"
-    echo >> $rstPath/index.rst
-    echo >> $rstPath/index.rst
-    echo ".. toctree::" >> $rstPath/index.rst
-    echo >> $rstPath/index.rst
-
     # clean destination folder for the RST and HTML tutorial files
     if [ $buildRST = true ]; then
+        echo_time "Creating index.rst"
+        echo >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
+        echo ".. toctree::" >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
         echo_time "Cleaning destination folders for html and rst files"
         find "$tutorialDestination" -name "tutorial*.html" -exec rm -f {} \;
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
     fi
 
     echo_time "Creating requested files for tutorial(s):"
+    echo  ${tutorials[@]}
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -233,14 +245,15 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
         # create markdowm README
         if [ $buildMD = true ]; then
+            echo $readmePath
             mkdir -p $readmePath
             echo "<p align=\"center\">" > $readmePath/README.md
-            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_pdf.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_mlx.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_m.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://cdn.rawgit.com/opencobra/cobratoolbox/master/docs/source/_static/images/icon_tut.png\" height=\"90px\"></a>" >> $readmePath/README.md
+            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\"></a>" >> $readmePath/README.md
             echo "<br><br>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
 
             echo "<p align=\"center\">" >> $readmePath/README.md
-            echo "  <a href=\"https://github.com/opencobra/cobratoolbox/blob/master/tutorials/$tutorialFolder/README.md\"><img src=\"$pngHyperlink\" width=\"100%\"/></a>" >> $readmePath/README.md
+            echo "  <a href=\"https://github.com/opencobra/COBRA.tutorials/blob/master/$tutorialFolder/README.md\"><img src=\"$pngHyperlink\" width=\"100%\"/></a>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
         fi
 
@@ -265,6 +278,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux://mnt/isilon-dat/.
 fi
 

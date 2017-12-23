@@ -482,11 +482,11 @@ switch solver
 
         % write out flat file to current folder
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
-        
+
         if ~debug % IF debugging leave the files in case of an error.
             cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
         end
-        
+
         % change system to testFBA directory
         cd([MINOS_PATH]);
 
@@ -1097,8 +1097,8 @@ switch solver
             b_L(csense == 'E') = b(csense == 'E');
             b_U(csense == 'E') = b(csense == 'E');
             b_L(csense == 'G') = b(csense == 'G');
-            b_U(csense == 'G') = 1e6;
-            b_L(csense == 'L') = -1e6;
+            b_U(csense == 'G') = Inf;
+            b_L(csense == 'L') = -Inf;
             b_U(csense == 'L') = b(csense == 'L');
         else
             b_L = b;
@@ -1758,7 +1758,7 @@ end
 function DQQCleanup(tmpPath, originalDirectory)
 % perform cleanup after DQQ.
 try
-% cleanup        
+% cleanup
         rmdir([tmpPath filesep 'results'], 's');
         fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
         for k = 1:length(fortFiles)
