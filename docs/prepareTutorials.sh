@@ -1,8 +1,8 @@
 #!/usr/local/bin/bash
-usage="$(basename $0) -p=pdfPath -c=cobraToolBoxPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
+usage="$(basename $0) -p=pdfPath -c=COBRATutorialsPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
 
 where:
-    -c  path of the COBRA Toolbox
+    -c  path of the COBRA.tutorials local clone
     -p  path of the PDFs
     -f  name of a folder of a tutorial
     -h  show this help text
@@ -17,7 +17,7 @@ echo_time() {
 buildTutorialList(){
     nTutorial=0
     if [[ -z "$specificTutorial" ]]; then
-        for d in $(find $cobraToolBoxPath/tutorials -maxdepth 7 -type d)
+        for d in $(find $cobraToolBoxPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *additionalTutorials* ]]; then
                 continue  # if not a directory, skip
@@ -36,7 +36,7 @@ buildTutorialList(){
         done
     else
         echo here
-        for d in $(find $cobraToolBoxPath/tutorials -maxdepth 7 -type d)
+        for d in $(find $cobraToolBoxPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
                 singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
@@ -63,7 +63,7 @@ createLocalVariables(){
     tutorialDir=${tutorial%/*}
     tutorialName=${tutorial##*/}
     tutorialName="${tutorialName%.*}"
-    tutorialFolder=${tutorialDir#$cobraToolBoxPath/tutorials/}
+    tutorialFolder=${tutorialDir#$cobraToolBoxPath/}
     if [[ -f "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" ]]; then
         tutorialTitle=`awk '/<title>/ { show=1 } show; /<\/title>/ { show=0 }' $pdfPath/tutorials/$tutorialFolder/$tutorialName.html | sed -e 's#.*<title>\(.*\)</title>.*#\1#'`
     else
@@ -74,7 +74,7 @@ createLocalVariables(){
 
     foo="${tutorialName:9}"
     tutorialLongTitle="${tutorialName:0:8}${foo^}"
-    readmePath="$cobraToolBoxPath/tutorials/$tutorialFolder"
+    readmePath="$cobraToolBoxPath/$tutorialFolder"
     htmlPath="$cobraToolBoxPath/docs/source/_static/tutorials"
     rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
     pngPath="$pdfPath/tutorials/$tutorialFolder"
