@@ -1,12 +1,12 @@
 #!/usr/local/bin/bash
-usage="$(basename $0) -p=pdfPath -c=COBRATutorialsPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
+usage="$(basename $0) -p=pdfPath -t=COBRATutorialsPath -c=COBRAToolBoxPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
 
 where:
-    -c  path of the COBRA.tutorials local clone
     -p  path of the PDFs
+    -c  path of the COBRAToolbox local clone
+    -t  path of the COBRA.tutorials local clone
     -f  name of a folder of a tutorial
     -h  show this help text
-    -t  check if the triggering file is present
     -m  mode (all,html,md,pdf,png,rst)
     -e  matlab executable path"
 
@@ -17,7 +17,7 @@ echo_time() {
 buildTutorialList(){
     nTutorial=0
     if [[ -z "$specificTutorial" ]]; then
-        for d in $(find $cobraToolBoxPath -maxdepth 7 -type d)
+        for d in $(find $COBRATutorialsPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *additionalTutorials* ]]; then
                 continue  # if not a directory, skip
@@ -36,7 +36,7 @@ buildTutorialList(){
         done
     else
         echo here
-        for d in $(find $cobraToolBoxPath -maxdepth 7 -type d)
+        for d in $(find $COBRATutorialsPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
                 singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
@@ -63,7 +63,7 @@ createLocalVariables(){
     tutorialDir=${tutorial%/*}
     tutorialName=${tutorial##*/}
     tutorialName="${tutorialName%.*}"
-    tutorialFolder=${tutorialDir#$cobraToolBoxPath/}
+    tutorialFolder=${tutorialDir#$COBRATutorialsPath/}
     if [[ -f "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" ]]; then
         tutorialTitle=`awk '/<title>/ { show=1 } show; /<\/title>/ { show=0 }' $pdfPath/tutorials/$tutorialFolder/$tutorialName.html | sed -e 's#.*<title>\(.*\)</title>.*#\1#'`
     else
@@ -74,9 +74,9 @@ createLocalVariables(){
 
     foo="${tutorialName:9}"
     tutorialLongTitle="${tutorialName:0:8}${foo^}"
-    readmePath="$cobraToolBoxPath/$tutorialFolder"
-    htmlPath="$cobraToolBoxPath/docs/source/_static/tutorials"
-    rstPath="$cobraToolBoxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
+    readmePath="$COBRATutorialsPath/$tutorialFolder"
+    htmlPath="$COBRAToolboxPath/docs/source/_static/tutorials"
+    rstPath="$COBRAToolboxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
     pngPath="$pdfPath/tutorials/$tutorialFolder"
 
     pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
@@ -119,7 +119,7 @@ for i in "$@"
 do
     case $i in
         -c=*)
-        cobraToolBoxPath="${i#*=}"
+        COBRAToolboxPath="${i#*=}"
         ;;
         -p=*)
         pdfPath="${i#*=}"
@@ -131,7 +131,7 @@ do
         specificTutorial="${i#*=}"
         ;;
         -t=*)
-        triggeringFile="${i#*=}"
+        COBRATutorialsPath="${i#*=}"
         ;;
         -e=*)
         matlab="${i#*=}"
@@ -146,8 +146,12 @@ done
 mode=${mode,,} # lowercase the mode
 
 # input checking
-if [[ -z "$cobraToolBoxPath" ]]; then
-    echo_time "> cobraToolBoxPath is empty"; echo_time; echo_time "$usage"; exit 1;
+if [[ -z "$COBRAToolboxPath" ]]; then
+    echo_time "> COBRAToolboxPath is empty"; echo_time; echo_time "$usage"; exit 1;
+fi
+
+if [[ -z "$COBRATutorialsPath" ]]; then
+    echo_time "> COBRATutorialsPath is empty"; echo_time; echo_time "$usage"; exit 1;
 fi
 
 if [[ -z "$pdfPath" ]]; then
@@ -176,8 +180,11 @@ if [[ $mode = *"png"* ]]; then
 fi
 
 pdfPath="${pdfPath/#\~/$HOME}"
-cobraToolBoxPath="${cobraToolBoxPath/#\~/$HOME}"
-echo_time "Path to the COBRAToolBox: " $cobraToolBoxPath
+COBRATutorialsPath="${COBRATutorialsPath/#\~/$HOME}"
+COBRAToolboxPath="${COBRAToolboxPath/#\~/$HOME}"
+
+echo_time "Path to the COBRAToolBox: " $COBRAToolboxPath
+echo_time "Path to the COBRA.Tutorials: " $COBRATutorialsPath
 echo_time "Path of the generated files: " $pdfPath
 echo_time
 echo_time "Building: PDF:$buildPDF, HTML:$buildHTML, RST:$buildRST, MD:$buildMD, PNG:$buildPNG"
@@ -197,12 +204,11 @@ fi
 buildTutorialList
 
 tutorialPath="../tutorials"
-tutorialDestination="$cobraToolBoxPath/docs/source/_static/tutorials"
-rstPath="$cobraToolBoxPath/docs/source/tutorials"
+rstPath="$COBRATutorialsPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
 
 if [[ $buildHTML = true ]]; then
-    cd $cobraToolBoxPath
+    cd $COBRATutorialsPath
     if [[ -z "$specificTutorial" ]]; then
         buildHTMLTutorials;
     else
@@ -220,8 +226,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         echo >> $rstPath/index.rst
         echo ".. toctree::" >> $rstPath/index.rst
         echo >> $rstPath/index.rst
-        echo_time "Cleaning destination folders for html and rst files"
-        find "$tutorialDestination" -name "tutorial*.html" -exec rm -f {} \;
+        echo_time "Cleaning destination folders for rst files"
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
     fi
 

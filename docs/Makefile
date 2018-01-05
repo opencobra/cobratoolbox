@@ -51,7 +51,7 @@ clean:
 .PHONY: html
 html:
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -c=$(here) -p=~/tmp -m=rst
+	bash prepareTutorials.sh -t=~/tmp/COBRA.tutorials -c=$(here) -p=~/tmp -m=rst
 	@echo "Generating list of suggestions for the websearch."
 	python generateJSONList.py
 	@echo
