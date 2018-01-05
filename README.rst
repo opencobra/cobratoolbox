@@ -57,9 +57,8 @@ Installation
 
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
       
-   Please note the **--depth=1** in the clone command.
    
-   |warning| Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
+   |warning| Please note the ``--depth=1`` in the clone command. Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
    **not** in |matlab|. Although not recommended, you can download the
    repository as a `compressed archive <https://github.com/opencobra/cobratoolbox/archive/master.zip>`__.
 
