@@ -35,22 +35,22 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
     echo " > Last commit determined as $lastCommit"
 
     # zip the entire directory
-    zip -qr /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip .
+    zip -qr /mnt/prince-data/releases/theCOBRAToolbox-$lastCommit.zip .
     echo " > Workspace zipped"
 
     # move the zip file to /mnt/isilon-dat/releases
-    scp -P 8022 /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/releases
+    scp -P 8022 /mnt/prince-data/releases/theCOBRAToolbox-$lastCommit.zip jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/releases
     echo " > .zip file sent to prince-server"
 
     # update the symbolic link
-    ssh -p8022 jenkins@prince-server.lcsb.uni.lux -o TCPKeepAlive=no "cd /mnt/isilon-dat/releases && rm the_COBRA_Toolbox.zip && ln -s the_COBRA_Toolbox-$lastCommit.zip the_COBRA_Toolbox.zip"
+    ssh -p8022 jenkins@prince-server.lcsb.uni.lux -o TCPKeepAlive=no "cd /mnt/isilon-dat/releases && rm theCOBRAToolbox.zip && ln -s theCOBRAToolbox-$lastCommit.zip theCOBRAToolbox.zip"
     echo " > .zip alias set on prince-server"
 
     # remove the local zip file
-    rm /mnt/prince-data/releases/the_COBRA_Toolbox-$lastCommit.zip
+    rm /mnt/prince-data/releases/theCOBRAToolbox-$lastCommit.zip
 
     # provide an output message
     echo " > Local .zip file removed"
-    echo "-- Done. The zip file can be downloaded from https://prince.lcsb.uni.lu/releases/the_COBRA_Toolbox-$lastCommit.zip --"
+    echo "-- Done. The zip file can be downloaded from https://prince.lcsb.uni.lu/releases/theCOBRAToolbox-$lastCommit.zip --"
 
 fi
