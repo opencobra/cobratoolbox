@@ -1,7 +1,7 @@
 .. raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/MaintenanceNotice.pdf">
-     <img src="https://prince.lcsb.uni.lu/note_maintenance.png" width="100%">
+     <img src="https://prince.lcsb.uni.lu/note_maintenance_end.png" width="100%">
    </a>
    <br>
    
