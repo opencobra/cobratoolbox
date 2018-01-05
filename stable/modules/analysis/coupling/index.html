@@ -139,7 +139,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
@@ -242,7 +242,7 @@
 <span id="id1"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.coupling"></span><dl class="function">
 <dt id="src.analysis.coupling.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds ratio reaction.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -274,7 +274,7 @@ COBRA model structure containing the ratio</li>
 
 <dl class="function">
 <dt id="src.analysis.coupling.constrainRxnListAboveBound">
-<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
+<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
 Appends to existing inequality constraints if they are present</p>
 <p><strong>Usage</strong></p>
@@ -326,7 +326,7 @@ constrained model:<ul>
 
 <dl class="function">
 <dt id="src.analysis.coupling.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
 (<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
 reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.

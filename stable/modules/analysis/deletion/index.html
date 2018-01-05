@@ -44,7 +44,7 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
-        <link rel="next" title="FBA" href="../dynamicFBA/index.html"/>
+        <link rel="next" title="Dynamic FBA" href="../dynamicFBA/index.html"/>
         <link rel="prev" title="Coupling" href="../coupling/index.html"/> 
 
   
@@ -139,7 +139,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
@@ -242,7 +242,7 @@
 <span id="id1"></span><h1>Deletion<a class="headerlink" href="#deletion" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.deletion"></span><dl class="function">
 <dt id="src.analysis.deletion.deleteModelGenes">
-<code class="descname">deleteModelGenes</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>downRegFraction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/deletion/deleteModelGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.deleteModelGenes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">deleteModelGenes</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>downRegFraction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/deletion/deleteModelGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.deleteModelGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes one or more genes and constrain the reactions
 affected to zero and appends &#8216;_deleted&#8217; to the gene(s)</p>
 <p><strong>Usage</strong></p>
@@ -284,7 +284,7 @@ The list of genes removed from the model.</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.doubleGeneDeletion">
-<code class="descname">doubleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList1</em>, <em>geneList2</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/deletion/doubleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.doubleGeneDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doubleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList1</em>, <em>geneList2</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/deletion/doubleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.doubleGeneDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs double gene deletion analysis using FBA, MOMA or linear MOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -325,7 +325,7 @@ Wild type growth rate (1/h)</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.singleGeneDeletion">
-<code class="descname">singleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList</em>, <em>verbFlag</em>, <em>uniqueGene</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/deletion/singleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleGeneDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList</em>, <em>verbFlag</em>, <em>uniqueGene</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/deletion/singleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleGeneDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs single gene deletion analysis using FBA, MOMA or linearMOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -372,7 +372,7 @@ FBA/MOMA/lMOMA fluxes for <cite>KO</cite> strains</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.singleRxnDeletion">
-<code class="descname">singleRxnDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>rxnList</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/analysis/deletion/singleRxnDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleRxnDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleRxnDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>rxnList</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/deletion/singleRxnDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleRxnDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs single reaction deletion analysis using FBA, MOMA or linearMOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -426,7 +426,7 @@ FBA/MOMA/lMOMA fluxes for <cite>KO</cite> strains</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../dynamicFBA/index.html" class="btn btn-neutral float-right" title="FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../dynamicFBA/index.html" class="btn btn-neutral float-right" title="Dynamic FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../coupling/index.html" class="btn btn-neutral" title="Coupling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

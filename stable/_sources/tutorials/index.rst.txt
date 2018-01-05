@@ -41,42 +41,38 @@ Tutorials
    tutorialIO
    tutorialInitializeAndVerify
    tutorialEngaging
-
-
-.. toctree::
-
-   tutorialOptForce
-   tutorialInitializeAndVerify
-   tutorialIO
-   tutorialEngaging
-   tutorialReconstructionSOP
-   tutorialRBioNet
-   tutorialCreateSubnetworkRecon
-   tutorialFastGapFill
-   tutorialReconToFBAmodel
-   tutorialFidelityTesting
-   tutorialModelATPYield
-   tutorialModelSanityChecks
-   tutorialNumCharact
-   tutorialModelManipulation
-   tutorialMetabolicCartography
-   tutorialPaint4net
-   tutorialRemoteVisualisation
-   tutorialFVA
-   tutorialGMCS
+   tutorialVariationalKinetics
+   tutorialUniformSampling
+   tutorialFBA
    tutorialSparseFBA_freeATPtest
    tutorialSparseFBA
    tutorialSparseFBA_protonShuttle
    tutorialSparseLP
-   tutorialVariationalKinetics
-   tutorialVonBertalanffy
+   tutorialFVA
    tutorialMinSpan
-   tutorialUniformSampling
-   tutorialFBA
    tutorialAtomicallyResolveReconstruction
+   tutorialVonBertalanffy
    tutorialRelaxedFBABounds
    tutorialRelaxedFBA
-   tutorialMetabotoolsI
-   tutorialMetabotoolsII
+   tutorialGMCS
+   tutorialOptForce
    tutorialExtraction_transcriptomic
    tutorialUFBA
+   tutorialMetabotoolsI
+   tutorialMetabotoolsII
+   tutorialMetabolicCartography
+   tutorialRemoteVisualisation
+   tutorialPaint4net
+   tutorialReconToFBAmodel
+   tutorialModelATPYield
+   tutorialFastGapFill
+   tutorialReconstructionSOP
+   tutorialModelSanityChecks
+   tutorialCreateSubnetworkRecon
+   tutorialFidelityTesting
+   tutorialNumCharact
+   tutorialModelManipulation
+   tutorialRBioNet
+   tutorialIO
+   tutorialEngaging
+   tutorialInitializeAndVerify
