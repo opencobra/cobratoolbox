@@ -168,6 +168,7 @@ global GUROBI_PATH;
 global MINOS_PATH;
 global ILOG_CPLEX_PATH;
 
+
 if nargin < 3
     printLevel = 1;
 end
@@ -197,6 +198,10 @@ if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     initCobraToolbox;
     ENV_VARS.printLevel = true;
 end
+
+%Clean up, after changing the solver, this happens only if CBTDIR is
+%actually set i.e. initCobraToolbox is called before).
+finish = onCleanup(@() removeNewLogsFromDir(pwd, dir(pwd)));
 
 % configure the environment variables
 configEnvVars();
