@@ -1,10 +1,13 @@
-function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)
+function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx,printLevel,rowBool,colBool)
 % Projects flux, net flux, potential and logarithmic concentration onto
-% their respective subspaces of the internal reaction stoichiometric matrix
-% using projection matrices generated using the Moore-Penrose pseudoinverse
+% their respective subspaces of A using projection matrices generated either 
+% derived from SVD, or by using the Moore-Penrose pseudoinverse
 %
-% Let `M` denote the Moore-Penrose pseudoinverse of the internal reaction
-% stoichiometric matrix and the subscripts are the following
+% Optionally, a subset of the matrix A may be chosen by using A(rowBool,colBool)
+% but then only the true rows of u, u0, lnx, and true columns of vf,vr,vnet are
+% projected and the remaining rows and columns are not affected
+%
+% Let `M` denote the Moore-Penrose pseudoinverse of A and the subscripts are the following
 % `_R` row space,
 % `_N` nullspace,
 % `_C` column space,
@@ -16,8 +19,8 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %
 % .. math::
 %      vf   &= vf_R + vf_N \\
-%      vf_R &= M S vf = PR vf \\
-%      vf_N &= (I - M S) vf = PN vf
+%      vf_R &= M A vf = PR vf \\
+%      vf_N &= (I - M A) vf = PN vf
 %
 % Example for potential or logarithmic concentration
 %
@@ -25,25 +28,24 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %
 % .. math::
 %      u   &= u_C + u_L \\
-%      u_C &= S M u = PC u \\
-%      u_L &= (I - S M) u = PL u
+%      u_C &= A M u = PC u \\
+%      u_L &= (I - A M) u = PL u
 %
 % USAGE:
 %
 %    [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)
 %
 % INPUTS:
-%    modelT:    structure with:
-%
-%                 * modelT.S - `m x n` matrix
-%                 * modelT.SIntRxnBool - Boolean vector defining the `nIntRxn` internal reactions
-%
-%    vf:        `nIntRxn x 1` - forward flux for internal reactions
-%    vr:        `nIntRxn x 1` - reverse flux for internal reactions
-%    vnet:      `n x 1` - net flux for all reactions
+%    A          `m x n` matrix
+%    vf:        `n x 1` - forward flux
+%    vr:        `n x 1` - reverse flux
+%    vnet:      `n x 1` - net flux
 %    u:         `m x 1` - chemical potential
 %    u0:        `m x 1` - standard chemical potential
 %    lnx:       `m x 1` - logarithmic concentration
+% OPTIONAL INPUTS
+%    rowBool    `m x 1` - boolean indicating the subset of rows of A
+%    colBool    'n x 1' - boolean indicating the subset of cols of A
 %
 % OUTPUTS:
 %    vfN:       forward flux - nullspace
@@ -57,43 +59,112 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %    lnxL:      logarithmic concentration - left nullspace
 %    lnxC:      logarithmic concentration - column space
 
-if any((vnet(modelT.SIntRxnBool)- vf +vr)>1e-12) %sanity check
+if ~isempty(vf)
+    if any((vnet(colBool)- vf +vr)>1e-12) %sanity check
     error('Net flux does not equal the difference between forward and reverse flux')
+    end
 end
+
 if ~isempty(lnx)
     if any((u - u0 - lnx)>1e-12)
         error('Chemical potential does not equal standard chemical potential plus logarithmic conc.')
     end
 end
 
+if ~exist('printLevel','var')
+    printLevel=0;
+end
+
+[m,n]=size(A);
+
+if ~exist('rowBool','var')
+    rowBool=true(m,1);
+end
+
+if ~exist('colBool','var')
+    colBool=true(m,1);
+end
+
+%generate fake outputs, or populate with unprojected vectors, part of which
+%will be overwritten with the projected vectos further below.
+if ~exist('u','var')
+    uL=NaN*ones(m,1);
+    uC=NaN*ones(m,1);
+else
+    uL=u;
+    uC=u;
+end
+if ~exist('u0','var')
+    u0L=NaN*ones(m,1);
+    u0C=NaN*ones(m,1);
+else
+    u0L=u0;
+    u0C=u0;
+end
+if ~exist('lnx','var')
+    lnxL=NaN*ones(m,1);
+    lnxC=NaN*ones(m,1);
+else
+    lnxL=lnx;
+    lnxC=lnx;
+end
+if ~exist('vf','var')
+    vfN=NaN*ones(n,1);
+    vfR=NaN*ones(n,1);
+else
+    vfN=vf;
+    vfR=vf;
+end
+if ~exist('vr','var')
+    vrN=NaN*ones(n,1);
+    vrR=NaN*ones(n,1);
+else
+    vrN=vr;
+    vrR=vr;
+end
+if ~exist('vnet','var')
+    vnetN=NaN*ones(n,1);
+    vnetR=NaN*ones(n,1);
+else
+    vnetN=vnet;
+    vnetR=vnet;
+end
+
 %generate projection matrices
-[PR,PN,PC,PL]=subspaceProjector(modelT);
+sub_space='all';
+
+[PR,PN,PC,PL]=subspaceProjector(A(rowBool,colBool),printLevel,sub_space);
 
 %potential
-uL=PL*u;
-uC=PC*u;
+if ~isempty(u)
+    %concentration
+    uC(rowBool)=PC*u(rowBool);
+    uL(rowBool)=PL*u(rowBool);
+end
 
-%standard potential
-u0L=PL*u0;
-u0C=PC*u0;
+if ~isempty(u0)
+    %standard potential
+    u0L(rowBool)=PL*u0(rowBool);
+    u0C(rowBool)=PC*u0(rowBool);
+end
 
 if ~isempty(lnx)
     %concentration
-    lnxC=PC*lnx;
-    lnxL=PL*lnx;
-else
-    lnxC=NaN*ones(size(u,1),1);
-    lnxL=NaN*ones(size(u,1),1);
+    lnxC(rowBool)=PC*lnx(rowBool);
+    lnxL(rowBool)=PL*lnx(rowBool);
 end
 
-%net flux
-vnetN=vnet;
-vnetN(modelT.SIntRxnBool)=PN*vnet(modelT.SIntRxnBool);
-vnetR=vnet;
-vnetR(modelT.SIntRxnBool)=PR*vnet(modelT.SIntRxnBool);
+%flux
+if ~isempty(vnet)
+    vnetN(colBool)=PN*vnet(colBool);
+    vnetR(colBool)=PR*vnet(colBool);
+end
+if ~isempty(vf)
+    vfN(colBool)=PN*vf(colBool);
+    vrR(colBool)=PR*vr(colBool);
+end
+if ~isempty(vr)
+    vrN(colBool)=PN*vr(colBool);
+    vrR(colBool)=PR*vr(colBool);
+end
 
-%unidirectional flux
-vfN=PN*vf;
-vfR=PR*vf;
-vrN=PN*vr;
-vrR=PR*vr;

@@ -55,25 +55,28 @@ switch archstr
         gmscale=1;
 
         %lusol
-        nullS   = nullspaceLUSOLform(S,gmscale,printLevel);
+        %nullS   = nullspaceLUSOLform(S,gmscale,printLevel);
+        nullS = nullSpaceOperator(S,gmscale,printLevel);        % forms a structure nullS.
         p       = nullS.p;
         q       = nullS.q;
         rankS   = nullS.rank;
 
         %nullspace basis
         V     = speye(n-rankS,n-rankS);       % is a sparse I of order n-rankS.
-        N     = nullspaceLUSOLapply(nullS,V); % satisfies S*Z = 0.
-
+        N     = nullSpaceOperatorApply(nullS,V); % satisfies S*N = 0.
+        
         %rowspace basis
         R = S(q(1:rankS),:)';
 
-
         %left nullspace basis
-        %TODO -Michael
-        L = [];
+        nullSt = nullSpaceOperator(S',gmscale,printLevel);        % forms a structure nullS.
+
+        %nullspace basis
+        V     = speye(m-rankS,m-rankS);       % is a sparse I of order n-rankS.
+        L     = nullSpaceOperatorApply(nullSt,V)'; % satisfies L*S = 0.
 
         %columnspace basis
-        C = S(:,p(1:rankS))';
+        C = S(:,nullSt.q(1:rankS))';
 
     otherwise
             [U,E,V] = svd(full(S));
