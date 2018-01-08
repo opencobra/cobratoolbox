@@ -139,7 +139,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
@@ -248,7 +248,7 @@
 <span id="id1"></span><h1>ACHR<a class="headerlink" href="#achr" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sampling.ACHR"></span><dl class="function">
 <dt id="src.analysis.sampling.ACHR.ACBSampler">
-<code class="descname">ACBSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>nMixPts</em>, <em>nWarmupNeeded</em>, <em>saveMatFlag</em>, <em>biasOpt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/ACBSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACBSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ACBSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>nMixPts</em>, <em>nWarmupNeeded</em>, <em>saveMatFlag</em>, <em>biasOpt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACBSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACBSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial centering boundary sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -285,7 +285,7 @@ Options for biasing sampler (Default = no bias)</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.ACHRSampler">
-<code class="descname">ACHRSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>stepsPerPoint</em>, <em>initPoint</em>, <em>fileBaseNo</em>, <em>maxTime</em>, <em>printLevel</em>, <em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/ACHRSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ACHRSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>stepsPerPoint</em>, <em>initPoint</em>, <em>fileBaseNo</em>, <em>maxTime</em>, <em>printLevel</em>, <em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACHRSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial Centering Hit-and-Run sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -329,7 +329,7 @@ Upper bound of the solution space given by FVA</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.ACHRSamplerParallelGeneral">
-<code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point management</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -367,7 +367,7 @@ Sampling structure with sample points</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.convRevSamples">
-<code class="descname">convRevSamples</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/convRevSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.convRevSamples" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convRevSamples</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/convRevSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.convRevSamples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts signs for reactions that are only running in
 reverse direction</p>
 <p><strong>Usage</strong></p>
@@ -400,7 +400,7 @@ Sample set with negative-direction fluxes reversed</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.createHRWarmup">
-<code class="descname">createHRWarmup</code><span class="sig-paren">(</span><em>model</em>, <em>nPoints</em>, <em>verbFlag</em>, <em>bias</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/createHRWarmup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.createHRWarmup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createHRWarmup</code><span class="sig-paren">(</span><em>model</em>, <em>nPoints</em>, <em>verbFlag</em>, <em>bias</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/createHRWarmup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.createHRWarmup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a warmup point set for hit-and-run sampling by
 combining orthogonal and random points</p>
 <p><strong>Usage</strong></p>
@@ -440,7 +440,7 @@ Set of warmup points</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.gpSampler">
-<code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.gpSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.gpSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples an arbitrary linearly constrained space using a fixed
 number of points that are moved in parallel
 The space is defined by</p>
@@ -518,7 +518,7 @@ means not mixed at all.  A value of .5 means completely mixed.</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.mixFraction">
-<code class="descname">mixFraction</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>fixed</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/mixFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.mixFraction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mixFraction</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>fixed</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/mixFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.mixFraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two sets of sampled points and determines how mixed
 they are.</p>
 <p><strong>Usage</strong></p>
@@ -561,7 +561,7 @@ perfectly mixed.</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.removeCorrelRxns">
-<code class="descname">removeCorrelRxns</code><span class="sig-paren">(</span><em>model</em>, <em>R</em>, <em>correlCutoff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/removeCorrelRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeCorrelRxns</code><span class="sig-paren">(</span><em>model</em>, <em>R</em>, <em>correlCutoff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/removeCorrelRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes fully or almost fully correlated reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -599,7 +599,7 @@ Filtered <cite>R</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.ACHR.verifyPoints">
-<code class="descname">verifyPoints</code><span class="sig-paren">(</span><em>sampleStruct</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/19c17262396eceb51036c86aec13e8c59b51d0fe/src/analysis/sampling/ACHR/verifyPoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.verifyPoints" title="Permalink to this definition">¶</a></dt>
+<code class="descname">verifyPoints</code><span class="sig-paren">(</span><em>sampleStruct</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/verifyPoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.verifyPoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that a set of points are in the solutoin space of <cite>sampleStruct</cite>.
 Typically, this method would be called to check a set of warmup points or
 points generated via <cite>gpSampler</cite>. Also verifies if points moved from
