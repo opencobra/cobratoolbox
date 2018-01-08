@@ -96,6 +96,12 @@ function initCobraToolbox()
     CBTDIR = fileparts(which('initCobraToolbox'));
     cd(CBTDIR);
     
+    %get the current content of the init Folder
+    CobraContent = dir(CBTDIR);
+    
+    %clean up after init
+    finishing = onCleanup(@() cleanDir(CobraContent));
+    
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
 
@@ -630,4 +636,32 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
+end
+
+
+function cleanDir(content)
+% Removes all log files from the cobra base folder that were not present
+% in the content
+%
+% USAGE:
+%     cleanDir(content)
+%
+% INPUT:
+%     content:   a directory structure as obtained by dir
+%
+global CBTDIR
+
+%Get the Content of the CBTDIR
+newContent = dir(CBTDIR);
+
+%Get all .log files that were present only after initCobraToolbox was
+%called.
+diffContent = setdiff({newContent.name},{content.name});
+matching = cellfun(@(x) ~isempty(regexp(x,'\.log$','ONCE')),diffContent);
+LogFiles = diffContent(matching);
+%Attach the CBTDirectory to delete the right files.
+LogFiles = strcat(CBTDIR, filesep, LogFiles);
+if ~isempty(LogFiles)
+    delete(LogFiles{:});
+end
 end
