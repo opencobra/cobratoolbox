@@ -55,44 +55,119 @@ originalSize = parser.Results.originalSize;
 targetSize = parser.Results.targetSize;
 excludeFields = parser.Results.excludeFields;
 
-fields = getModelFieldsForType(model, type, originalSize);
-
+[originalFields,dimensions] = getModelFieldsForType(model, type, originalSize);
+fields = originalFields;
 fields = setdiff(fields,excludeFields);
 
-fieldDefinitions = getDefinedFieldProperties('SpecificFields',fields);
+fieldDefinitions = getDefinedFieldProperties();
 %fields, dependent on two dimensions (different) should always be handled
 %separately. Currently, those are: S and rxnGeneMat.
-fields = setdiff(fields,{'S','rxnGeneMat'});
+%fields = setdiff(fields,{'S','rxnGeneMat'});
+
 fields = [intersect(PossibleTypes,fields);setdiff(fields,PossibleTypes)];
+[Pres,Pos] = ismember(fields,originalFields);
+dimensions = dimensions(Pos(Pres));
+
 for field = 1:numel(fields)
-    fieldPos = ismember(fieldDefinitions(:,1),fields{field});
-    if any(fieldPos)        
-        %If we have a definition for this field, use the default value.
-        if iscell(model.(fields{field}))
-            for i = (originalSize+1):targetSize                
-                eval(['model.(fields{field}){i,1} = ' fieldDefinitions{fieldPos,5} ';']);
-            end
-        elseif isnumeric(model.(fields{field})) || ischar(model.(fields{field}))            
-                model.(fields{field})((originalSize+1):targetSize,1) = fieldDefinitions{fieldPos,5};
-        elseif islogical(model.(fields{field}))
-                model.(fields{field})(originalSize+1:targetSize,1) = logical(fieldDefinitions{fieldPos,5});
+    cfield = fields{field,1};
+    cfieldDef = fieldDefinitions(ismember(fieldDefinitions(:,1),cfield),:);
+    if isempty(cfieldDef)
+        %this indicates, that no clear field Definition exists. So lets
+        %make some assumptions:
+        fieldType = 'numeric';
+        defaultValue = 0;
+        if ischar(model.(cfield))
+            fieldType = 'char';
+            defaultValue = ' ';
         end
-    else        
-        %We don't have definitions. we will assume, that cell arrays are
-        %annotations (i.e. default ''), number defaults are NaN -> this most likely will notify wrong things
-        %and that we don't have additional char arrays. logicals are 0 by
-        %default.
-        if iscell(model.(fields{field}))
-                model.(fields{field})(originalSize+1:targetSize,1) = {''};
-        elseif isnumeric(model.(fields{field})) 
-                model.(fields{field})(originalSize+1:targetSize,1) = NaN;
-        elseif islogical(model.(fields{field}))
-                model.(fields{field})(originalSize+1:targetSize,1) = false;
+        if iscell(model.(cfield))
+            fieldType = 'cell';
+            defaultValue = ''''''; %Assume this to be an empty string
+        end
+        if isnumeric(model.(cfield))
+            fieldType = 'numeric';
+            defaultValue = 0;
+        end
+        if islogical(model.(cfield))
+            fieldType = 'sparselogical';
+            defaultvalue = false;
+        end                
+    else
+        fieldType = cfieldDef{7};
+        defaultValue = cfieldDef{5};
+    end
+    cdim = dimensions(field);
+    fieldDims = size(model.(cfield));    
+    %Matlab will screw up multi-dimensional arrays when the are of size 1
+    %or zero in a dimension... So for now, we only handle two dimensional
+    %arrays.
+    %We need to handle completely empty arrays differently.
+    if(all(fieldDims == 0))
+        %This can only ever happen with numeric, logical or character fields!
+        %However, it is only relevant for numeric fields...
+        if isnumeric(model.(cfield))
+            if issparse(model.(cfield))
+                if cdim == 1
+                    model.(cfield) = sparse(targetSize,0);
+                else
+                    model.(cfield) = sparse(0,targetSize);
+                end
+            else
+                if cdim == 1
+                    model.(cfield) = zeros(targetSize,0);
+                else
+                    model.(cfield) = zeros(0,targetSize);
+                end
+            end
+            continue;
         end
     end
+    switch fieldType
+        case 'sparse'
+            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
+        case 'cell'
+            newValues = cell(0,1);
+            for i = originalSize+1:targetSize
+                eval(['currentvalue = ' defaultValue ';']);
+                newValues{end+1,1} = currentvalue;
+            end
+            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,newValues, targetSize-originalSize);
+        case 'sparselogical'            
+            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,logical(defaultValue), targetSize-originalSize);                        
+        case 'numeric'
+            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
+        case 'char'
+            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
+    end
 end
-
 end
 
         
         
+
+function added = extendIndicesInDimenion(input,dimension,value, sizeIncrease)
+% Remove the indices in a specified field in the given dimension
+% USAGE:
+%    added = extendIndicesInDimenion(input,dimension,indices)
+%
+% INPUTS:
+%
+%    input:              The input matrix or array
+%    dimension:          The dimension in which to add values for the given
+%                        indices
+%    value:              The value to append in the given dimension.
+%    sizeIncrease:       How many entries to add.
+%
+% OUTPUT:
+%    added:              The Array/Matrix with the given indices set to the
+%                        default values.
+%
+% .. Authors: 
+%                   - Thomas Pfau Sept 2017, adapted to merge all fields.
+
+inputDimensions = ndims(input);
+S.subs = repmat({':'},1,inputDimensions);
+S.subs{dimension} = (size(input,dimension)+1):(size(input,dimension)+sizeIncrease);
+S.type = '()';
+added = subsasgn(input,S,value);
+end
