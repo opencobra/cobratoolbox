@@ -17,7 +17,7 @@
 % four simulation conditions-set
 
 conditions = {
-    %'WesternDiet_NoOxygen'
+    'WesternDiet_NoOxygen'
     'WesternDiet_WithOxygen'
     'HighFiberDiet_NoOxygen'
     'HighFiberDiet_WithOxygen'
