@@ -10,16 +10,26 @@ function removeTempCOBRAFilesFromFolder(folder, oldcontent)
 %
 
 
-newContent = dir(folder);%Get the Content of the CBTDIR
+newContent = rdir([folder filesep '**' filesep '*']);%Get the new Content of the folder.
 
 %Get all .log files that were present only after initCobraToolbox was
 %called.
 diffContent = setdiff({newContent.name},{oldcontent.name});
-matching = cellfun(@(x) ~isempty(regexp(x,'\.log$','ONCE')),diffContent);
+
+%Get all Files that are ignored by git. Those are temporary files which
+%should be cleaned up.
+ignoredFiles = regexptranslate('wildcard',getIgnoredFiles());
+
+matching = false(size(diffContent));
+
+for i = 1:numel(ignoredFiles)
+    matching = matching | ~cellfun(@(x) isempty(regexp(x,ignoredFiles{i},'ONCE')),diffContent);
+end
+
 LogFiles = diffContent(matching);
-%Attach the CBTDirectory to delete the right files.
-LogFiles = strcat(folder, filesep, LogFiles);
+%By adding the folder, we already have the correct path.
 if ~isempty(LogFiles)
     delete(LogFiles{:});
 end
+
 end

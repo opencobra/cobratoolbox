@@ -66,7 +66,12 @@ profile on;
 
 if COVERAGE
     % Get the ignored Files from gitIgnore
-    ignoreFiles = getIgnoredFiles();
+    % only retain the lines that end with .txt and .m and 
+    %are not comments and point to files in the /src folder
+    ignoredPatterns = {'^.{0,3}$',... % Is smaller than four.
+                       ['^[^s][^r][^c][^' regexptranslate('escape',filesep) ']']}; % does not start with src/
+    filterPatterns = {'\.txt$','\.m$'}; % Is either a .m file or a .txt file.
+    ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
     
     
     % check the code quality

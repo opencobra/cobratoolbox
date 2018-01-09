@@ -104,8 +104,8 @@ function initCobraToolbox()
 
     %create the Cleanup function    
     %get the current content of the init Folder
-    dirContent = dir(CBTDIR);
-    finishup = onCleanup(@() removeNewLogsFromDir(CBTDIR,dirContent));
+    dirContent = rdir([CBTDIR filesep '**' filesep '*']);
+    finishup = onCleanup(@() removeTempCOBRAFilesFromFolder(CBTDIR,dirContent));
     
     
     % check if git is installed
