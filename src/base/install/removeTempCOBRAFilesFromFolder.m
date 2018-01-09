@@ -1,4 +1,4 @@
-function removeNewLogsFromDir(folder, oldcontent)
+function removeTempCOBRAFilesFromFolder(folder, oldcontent)
 % Removes all log files from the cobra base folder that were not present
 % in the content
 %
