@@ -201,7 +201,7 @@ end
 
 %Clean up, after changing the solver, this happens only if CBTDIR is
 %actually set i.e. initCobraToolbox is called before).
-finish = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd, rdir([pwd filesep '**' filesep '*'])));
+finish = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd, rdir(['**' filesep '*'])));
 
 % configure the environment variables
 configEnvVars();

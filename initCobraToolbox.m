@@ -100,13 +100,7 @@ function initCobraToolbox()
     addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
 
     % add the install folder
-    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
-
-    %create the Cleanup function    
-    %get the current content of the init Folder
-    dirContent = rdir([CBTDIR filesep '**' filesep '*']);
-    finishup = onCleanup(@() removeTempCOBRAFilesFromFolder(CBTDIR,dirContent));
-    
+    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));   
     
     % check if git is installed
     checkGit();
@@ -206,7 +200,12 @@ function initCobraToolbox()
             fprintf(' Done.\n');
         end
     end
-
+    
+    %create the Cleanup function    
+    %get the current content of the init Folder
+    dirContent = rdir(['**' filesep '*']);
+    finishup = onCleanup(@() removeTempCOBRAFilesFromFolder(CBTDIR,dirContent));
+    
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
 

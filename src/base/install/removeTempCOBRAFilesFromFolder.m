@@ -9,8 +9,9 @@ function removeTempCOBRAFilesFromFolder(folder, oldcontent)
 %     content:   a directory structure as obtained by dir
 %
 
+orig = cd(folder);
 
-newContent = rdir([folder filesep '**' filesep '*']);%Get the new Content of the folder.
+newContent = rdir(['**' filesep '*']);%Get the new Content of the folder.
 
 %Get all .log files that were present only after initCobraToolbox was
 %called.
@@ -32,4 +33,5 @@ if ~isempty(LogFiles)
     delete(LogFiles{:});
 end
 
+cd(orig);
 end
