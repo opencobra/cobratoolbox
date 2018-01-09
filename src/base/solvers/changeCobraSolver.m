@@ -224,7 +224,7 @@ end
 if validationLevel == 1
     finish = onCleanup(@() removeGitIgnoredNewFiles(pwd, rdir(['**' filesep '*'])));
 end
-    % configure the environment variables
+% configure the environment variables
 configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
