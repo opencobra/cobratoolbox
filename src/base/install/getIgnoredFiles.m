@@ -1,8 +1,14 @@
-function ignoredFiles = getIgnoredFiles()
+function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 % Get all files/patterns which are ignored by git in the COBRA Toolbox directory..
 % USAGE:
 %
 %    ignoreFiles = getIgnoredFiles()
+%
+% OPTIONAL INPUTS:
+%    ignorePatterns:    A cell array of regexp patterns indicating files
+%                       which are not to be listed 
+%    filterpatterns:    A cell array of regexp patterns identifying those
+%                       files which should be returned after ignoring.
 %
 % OUTPUTS:
 %
@@ -16,18 +22,29 @@ function ignoredFiles = getIgnoredFiles()
 global CBTDIR
 
 fid = fopen([CBTDIR filesep '.gitignore']);
+emptyAndCommentLines = {'^#','^$'};
+if ~exist('ignorepatterns','var')
+    ignorepatterns = emptyAndCommentLines;
+else
+    ignorepatterns = union(ignorepatterns,emptyAndCommentLines);
+end
+
+if ~exist('filterpatterns','var')
+    filterpatterns = {'.*'};
+end
 
 % initialise
 counter = 1;
 ignoredFiles = {};
 
+
 % loop through the file names of the .gitignore file
 while ~feof(fid)
-    lineOfFile = strtrim(char(fgetl(fid)));
-    
-    % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
-    if length(lineOfFile) > 4
-        if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end - 3:end), '.txt') || strcmp(lineOfFile(end - 1:end), '.m'))
+    lineOfFile = strtrim(char(fgetl(fid)));    
+    %remove lines that match any ignore pattern and do not match any
+    %filterpattern
+    if ~any(~cellfun(@(x) isempty(regexp(lineOfFile,x,'ONCE')),ignorepatterns))        
+        if any(~cellfun(@(x) isempty(regexp(lineOfFile,x,'ONCE')),filterpatterns))
             ignoredFiles{counter} = lineOfFile;
             counter = counter + 1;
         end
