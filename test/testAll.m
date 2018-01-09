@@ -4,7 +4,6 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
-cleanup = onCleanup(removeTempCOBRAFilesFromFolder([CBTDIR filesep 'test'],rdir([CBTDIR filesep 'test' filesep '**' filesep '*'])));
 fprintf('The COBRAToolbox testing suite\n')
 fprintf('------------------------------\n')
 
@@ -34,6 +33,11 @@ else
     CBTDIR = fileparts(which('initCobraToolbox.m'));
     cd(CBTDIR);
 end
+
+%Init the cleanup:
+orig = cd('test');
+cleanup = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd,rdir(['**' filesep '*'])));
+cd(orig);
 % include the root folder and all subfolders.
 addpath(genpath([pwd filesep 'test']));
 
@@ -160,7 +164,12 @@ try
         sumFailed = sumFailed + result(i).Failed;
         sumIncomplete = sumIncomplete + result(i).Incomplete;
         if result(i).Failed
-            Message = result(i).Details.DiagnosticRecord.Exception.message;
+            try
+                Message = result(i).details.DiagnosticRecord.Exception.message;
+            catch
+                %Older Matlab versions might fail here
+                Message = 'Unknown Error, please check the log';
+            end
             resulttable{i,'Details'} = {Message};
         end
     end
