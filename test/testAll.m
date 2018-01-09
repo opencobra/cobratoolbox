@@ -36,7 +36,8 @@ end
 
 %Init the cleanup:
 orig = cd('test');
-cleanup = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd,rdir(['**' filesep '*'])));
+testDirContent = rdir(['**' filesep '*']);
+testDirPath = pwd;
 cd(orig);
 % include the root folder and all subfolders.
 addpath(genpath([pwd filesep 'test']));
@@ -234,6 +235,8 @@ catch ME
         rethrow(ME);
     end
 end
+
+removeTempCOBRAFilesFromFolder(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)
