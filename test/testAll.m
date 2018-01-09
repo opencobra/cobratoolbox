@@ -4,6 +4,7 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
+cleanup = onCleanup(removeTempCOBRAFilesFromFolder([CBTDIR filesep 'test'],rdir([CBTDIR filesep 'test' filesep '**' filesep '*'])));
 fprintf('The COBRAToolbox testing suite\n')
 fprintf('------------------------------\n')
 
