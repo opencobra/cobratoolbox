@@ -65,29 +65,10 @@ exit_code = 0;
 profile on;
 
 if COVERAGE
-    % open the .gitignore file
-    fid = fopen([CBTDIR filesep '.gitignore']);
-
-    % initialise
-    counter = 1;
-    ignoreFiles = {};
-
-    % loop through the file names of the .gitignore file
-    while ~feof(fid)
-        lineOfFile = strtrim(char(fgetl(fid)));
-
-        % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
-        if length(lineOfFile) > 4
-            if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end - 3:end), '.txt') || strcmp(lineOfFile(end - 1:end), '.m'))
-                ignoreFiles{counter} = lineOfFile;
-                counter = counter + 1;
-            end
-        end
-    end
-
-    % close the .gitignore file
-    fclose(fid);
-
+    % Get the ignored Files from gitIgnore
+    ignoreFiles = getIgnoredFiles();
+    
+    
     % check the code quality
     listFiles = rdir(['./src', '/**/*.m']);
 
