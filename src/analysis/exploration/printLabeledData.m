@@ -17,7 +17,6 @@ function printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRo
 % .. Authors: Markus Herrgard 6/9/06
 
 tol = 1e-9;
-%format = '%g\t';
 format = '%12.4g';
 
 [n, m] = size(data);
