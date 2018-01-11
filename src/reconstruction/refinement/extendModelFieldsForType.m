@@ -141,33 +141,3 @@ for field = 1:numel(fields)
     end
 end
 end
-
-        
-        
-
-function added = extendIndicesInDimenion(input,dimension,value, sizeIncrease)
-% Remove the indices in a specified field in the given dimension
-% USAGE:
-%    added = extendIndicesInDimenion(input,dimension,indices)
-%
-% INPUTS:
-%
-%    input:              The input matrix or array
-%    dimension:          The dimension in which to add values for the given
-%                        indices
-%    value:              The value to append in the given dimension.
-%    sizeIncrease:       How many entries to add.
-%
-% OUTPUT:
-%    added:              The Array/Matrix with the given indices set to the
-%                        default values.
-%
-% .. Authors: 
-%                   - Thomas Pfau Sept 2017, adapted to merge all fields.
-
-inputDimensions = ndims(input);
-S.subs = repmat({':'},1,inputDimensions);
-S.subs{dimension} = (size(input,dimension)+1):(size(input,dimension)+sizeIncrease);
-S.type = '()';
-added = subsasgn(input,S,value);
-end
