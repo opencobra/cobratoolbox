@@ -28,12 +28,10 @@ Pools = [0     0     0     1     0     0     1;...
 
 fprintf('%s\n','Testing Extreme pools')
 %calculates the matrix of extreme pools
-if isunix
-    [CalculatedPools]=extremePools(model);    
-    assert(isequal(full(CalculatedPools),Pools));
-else
-    %Does not work on windows os.
-    assert(verifyCobraFunctionError(@(extremePools(model))));
-end
+[status, result] = system('which lrs');
+assert( ~isempty(strfind(result, '/lrs')),'lrs was not properly installed on your system'); %Which returns the path with / !
+
+[CalculatedPools]=extremePools(model);    
+assert(isequal(full(CalculatedPools),Pools));
 
 cd(currentDir);
