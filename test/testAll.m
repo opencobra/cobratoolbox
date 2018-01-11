@@ -34,11 +34,6 @@ else
     cd(CBTDIR);
 end
 
-%Init the cleanup:
-orig = cd('test');
-testDirContent = rdir(['**' filesep '*']);
-testDirPath = pwd;
-cd(orig);
 % include the root folder and all subfolders.
 addpath(genpath([pwd filesep 'test']));
 
@@ -47,6 +42,13 @@ cd(CBTDIR);
 
 % run the official initialisation script
 initCobraToolbox;
+
+%Init the cleanup:
+orig = cd('test');
+testDirContent = rdir(['**' filesep '*']);
+testDirPath = pwd;
+cd(orig);
+
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
