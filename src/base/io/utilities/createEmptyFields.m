@@ -1,6 +1,6 @@
 function model = createEmptyFields(model,fieldNames, fieldDefinitions)
-%Create the specified model field with its default values. Works only for
-%fields defined in the toolbox if fieldDefinitions are not supplied.
+% Create the specified model field with its default values. Works only for
+% fields defined in the toolbox if fieldDefinitions are not supplied.
 %
 % USAGE:
 %    model = createEmptyFields(model,fieldName, fieldDefinitions)
@@ -44,6 +44,8 @@ for field = 1:length(fieldNames)
         xdim = 1;
     end
     
+    %If its listed as a char, it refers to a field (and the first dimension
+    %of that field)
     if ischar(xdim)
         if isfield(model,xdim)
             xdim = size(model.(xdim),1);
@@ -56,6 +58,8 @@ for field = 1:length(fieldNames)
         ydim = 1;
     end
     
+    %If its listed as a char, it refers to a field (and the first dimension
+    %of that field)
     if ischar(ydim)
         if isfield(model,ydim)
             ydim = size(model.(ydim),1);
@@ -64,6 +68,7 @@ for field = 1:length(fieldNames)
         end
     end
     
+    %Get the field definitions
     fieldType = fieldDefinitions{field,7};
     defaultValue = fieldDefinitions{field,5};
     
