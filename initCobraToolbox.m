@@ -520,9 +520,12 @@ function initCobraToolbox()
         warning('Your global git configuration could not be restored.');
     end    
     
+    %Finally set up the COBRA System path
+    setupCOBRASystemPath();
+        
     % change back to the current directory
     cd(currentDir);
-
+    
     % clear all temporary variables
     % Note: global variables are kept in memory - DO NOT clear all the variables!
     if ENV_VARS.printLevel
