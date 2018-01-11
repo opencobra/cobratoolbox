@@ -155,5 +155,21 @@ end
 
 
 
+function model = normalizeRules(model)
+% Normalizes the rules by removing surplus parenthesis around gene
+% references
+% USAGE:
+%    model = normalizeRules(model)
+% INPUT:
+%    model:     A COBRA model structure containing the rules field.
+%
+% OUTPUT:
+%    model:     A COBRA model structure with with a normalized rules field.
 
+origrules = model.rules;
+model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+while ~all(strcmp(origrules,model.rules))
+    origrules = model.rules;
+    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+end
         

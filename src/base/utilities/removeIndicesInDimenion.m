@@ -24,12 +24,3 @@ S.subs = repmat({':'},1,inputDimensions);
 S.subs{dimension} = indices;
 S.type = '()';
 removed = subsref(input,S);
-
-        
-function model = normalizeRules(model)
-origrules = model.rules;
-model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
-while ~all(strcmp(origrules,model.rules))
-    origrules = model.rules;
-    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
-end
