@@ -34,4 +34,8 @@ assert( ~isempty(strfind(result, '/lrs')),'lrs was not properly installed on you
 [CalculatedPools]=extremePools(model);    
 assert(isequal(full(CalculatedPools),Pools));
 
+% delete generated files
+delete('*.ine');
+delete('*.ext');
+
 cd(currentDir);
