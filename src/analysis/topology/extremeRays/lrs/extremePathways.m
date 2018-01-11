@@ -99,20 +99,16 @@ sh = 0;
 lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh);
 
 % pause(eps)
-if isunix
-    [status, result] = system('which lrs');
-    if ~isempty(strfind(result, '/lrs'))
-        % call lrs and wait until extreme pathways have been calculated
-        systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
-        [status, result] = system(systemCallText);
-        if status == 1
-            error(['lsr failed on file ', pwd filesep filename '_' suffix '.ine']);
-        end
-    else
-        error('lrs is not installed on your machine or not in the path. Refer to http://cgm.cs.mcgill.ca/~avis/C/lrs.html to install lrs.');
+[status, result] = system('which lrs');
+if ~isempty(strfind(result, '/lrs'))
+    % call lrs and wait until extreme pathways have been calculated
+    systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
+    [status, result] = system(systemCallText);
+    if status == 1
+        error(['lsr failed on file ', pwd filesep filename '_' suffix '.ine']);
     end
 else
-    error('non unix machines not yet supported')
+    error('lrs is not installed on your machine or not in the path. Refer to http://cgm.cs.mcgill.ca/~avis/C/lrs.html to install lrs.');
 end
 
 [R, V] = lrsOutputReadRay([filename '_' suffix '.ext']);
