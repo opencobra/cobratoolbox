@@ -18,7 +18,7 @@ buildTutorialList(){
             fi
             let "nTutorial+=1"
             tutorials[$nTutorial]="$tutorial"
-            echo_time " - ${tutorials[$nTutorial]}"
+            echo " - ${tutorials[$nTutorial]}"
         done
     done
 }
