@@ -7,7 +7,7 @@ function setupCOBRASystemPath()
 
 global CBTDIR
 
-arch = lower(computer);
+arch = computer('arch');
 
 %Set thefolders
 binaryDir = [CBTDIR filesep 'binary' filesep arch filesep 'bin'];
