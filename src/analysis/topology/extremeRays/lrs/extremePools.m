@@ -31,7 +31,7 @@ if nnz(A - round(A))
     error('Stoichiometric coefficients must be all integers')
 end
 
-a = zeros(size(A, 1));
+a = zeros(size(A, 1),1);
 
 if isfield(model, 'description')
     filename = model.description;
