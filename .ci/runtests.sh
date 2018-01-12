@@ -1,6 +1,9 @@
 #!/bin/sh
 
-commitMst=$(git log -1 --pretty=%B)
+lastCommitMsg=$(git log -1 --pretty=%B 2>&1)
+echo $lastCommitMsg
+
+
 
 # Exit if commit message contains the string: [documentation]
 if [[ $commitMsg == *"[documentation]"* ]]; then
