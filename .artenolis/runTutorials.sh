@@ -48,21 +48,24 @@ nTutorial=0
 nPassed=0
 for tutorial in "${tutorials[@]}"
 do
-    msg="| Starting $tutorial |"
+    tutorialDir=${tutorial%/*}
+    tutorialName=${tutorial##*/}
+    tutorialName="${tutorialName%.*}"
+
+    msg="| Starting $tutorialName |"
     chrlen=${#msg}
     underline=`printf '=%.0s' $(seq 1 $chrlen);`
     echo "$underline"
     echo "$msg"
     echo "$underline"
 
-    #/mnt/data/MATLAB/$MATLAB_VER/bin/./
     # Time a process
     SECONDS=0;
-    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash -r "addpath([pwd filesep '.ci']);runTutorial('$tutorial')"
+    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash -r "addpath([pwd filesep '.ci']);runTutorial('$tutorialName')"
     CODE=$?
     procTime=$SECONDS
 
-    msg="| Done executing $tutorial! |"
+    msg="| Done executing $tutorialName! |"
     chrlen=${#msg}
     underline=`printf '=%.0s' $(seq 1 $chrlen);`
     echo "$underline"
