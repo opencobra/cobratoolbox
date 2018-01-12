@@ -63,7 +63,7 @@ if (printToFileFlag)
 else
     fid = 1;
     format = '%12.4g';
-    stringHeaderFormat = '%-20s';
+    stringHeaderFormat = '%-20s\t'; %Keep a definite separation between header and data
     stringRowFormat = '%20s';
 end
 
