@@ -22,7 +22,7 @@ function [AA, aa, pp, rankA, p] = rowReduce(A, a)
 % .. Author: - Ronan Fleming, with linear algebra advice from Michael Saunders
 %            Dept of Management Science and Engineering (MS&E) Stanford University
 
-if ~exist('a') %create a if not provided
+if ~exist('a','var') %create a if not provided
     a=sparse(size(A,1),1);
 else
     if size(A,1)~=length(a)
@@ -33,7 +33,7 @@ end
 [mlt,nlt]=size(A);
 archstr = computer('arch');
 archstr = upper(archstr);
-archstr='';%bypass until issue with lusol tolerance sorted.
+%archstr='';%bypass until issue with lusol tolerance sorted.
 switch archstr
     case {'GLNX86','GLNXA64'}
         %Eliminate dependent rows

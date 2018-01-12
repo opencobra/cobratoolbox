@@ -17,7 +17,9 @@ function printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRo
 % .. Authors: Markus Herrgard 6/9/06
 
 tol = 1e-9;
-format = '%g\t';
+
+
+
 
 [n, m] = size(data);
 
@@ -49,17 +51,26 @@ if (nargin < 7)
     sortMode = 'ascend';
 end
 
+
+
 if (printToFileFlag)
     if (~isempty(fileName))
         fid = fopen(fileName, 'w');
     end
+    format = '%g\t';
+    stringHeaderFormat = '%-s\t';
+    stringRowFormat = '%s\t';
 else
     fid = 1;
+    format = '%12.4g';
+    stringHeaderFormat = '%-20s\t'; %Keep a definite separation between header and data
+    stringRowFormat = '%20s';
 end
 
 if (printHeaderFlag)
+    fprintf(fid,stringHeaderFormat,''); %print the header
     for i = 1:length(headerRow)
-        fprintf(fid, [headerRow{i} '\t']);
+        fprintf(fid, stringRowFormat, headerRow{i});
     end
     fprintf(fid, '\n');
 end
@@ -74,18 +85,20 @@ elseif(sortCol > 0)
     labels = labels(sortInd, :);
 end
 
+data=full(data); %so it will print
+
 [n, nLab] = size(labels);
 
 for i = 1:n
     if ~(nonzeroFlag & ((sum(abs(data(i, :))) < tol) | all(isnan(data(i, :)))))  % Print only nonzeros
         for j = 1:nLab
-            fprintf(fid, '%-s\t', labels{i, j});
+            fprintf(fid, stringHeaderFormat, labels{i, j});
         end
         for j = 1:m
             if (~isnan(data(i, j)))
                 fprintf(fid, format, data(i, j));
             else
-                fprintf(fid, '%s\t\t', 'NA');
+                fprintf(fid, stringRowFormat, 'NA');
             end
         end
         fprintf(fid, '\n');
