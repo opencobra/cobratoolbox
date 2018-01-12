@@ -14,8 +14,8 @@
 % save the current path
 currentDir = pwd;
 
-% initialize the test
-cd(fileparts(which(mfilename)));
+% Switch to Test Folder
+cd(fileparts(which('testExtremePools.m')));
 
 %Generate the test model an set up the fields.
 model = createExtremePathwayModel();
