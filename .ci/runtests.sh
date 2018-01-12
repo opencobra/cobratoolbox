@@ -1,4 +1,16 @@
 #!/bin/sh
+
+commitMst=$(git log -1 --pretty=%B)
+
+# Exit if commit message contains the string: [documentation]
+if [[ $commitMsg == *"[documentation]"* ]]; then
+    echo "Test suite should not be ran."
+    exit;
+fi
+
+
+
+
 if [ "$ARCH" == "Linux" ]; then
     /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
