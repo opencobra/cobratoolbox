@@ -1,9 +1,10 @@
-function removeTempCOBRAFilesFromFolder(folder, oldcontent)
-% Removes all log files from the cobra base folder that were not present
-% in the content
+function removeGitIgnoredNewFiles(folder, oldcontent)
+% Removes all files that are part of the specified folder but not part of
+% the oldcontent if they match any file indicated by the gitignored files
+% of the COBRA Toolbox .gitignore file.
 %
 % USAGE:
-%     removeNewLogsFromDir(folder, content)
+%     removeGitIgnoredNewFiles(folder, content)
 %
 % INPUT:
 %     content:   a directory structure as obtained by dir

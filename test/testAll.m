@@ -238,7 +238,7 @@ catch ME
     end
 end
 
-removeTempCOBRAFilesFromFolder(testDirPath,testDirContent);
+removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)
