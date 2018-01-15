@@ -25,3 +25,6 @@
 [submodule "COBRA.tutorials"]
 	path = tutorials
 	url = https://github.com/opencobra/COBRA.tutorials.git
+[submodule "COBRA.papers"]
+	path = COBRA.papers
+	url = https://github.com/opencobra/COBRA.papers
