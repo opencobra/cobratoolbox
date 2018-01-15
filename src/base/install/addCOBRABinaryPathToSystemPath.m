@@ -1,8 +1,8 @@
-function setupCOBRASystemPath()
+function addCOBRABinaryPathToSystemPath()
 % Sets up the path to system executables shipped by the toolbox.
 %
 % USAGE:
-%     setupCOBRASystemPath()
+%     addCOBRABinaryPathToSystemPath()
 %
 
 global CBTDIR

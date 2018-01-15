@@ -521,7 +521,7 @@ function initCobraToolbox()
     end    
     
     %Finally set up the COBRA System path
-    setupCOBRASystemPath();
+    addCOBRABinaryPathToSystemPath();
         
     % change back to the current directory
     cd(currentDir);
