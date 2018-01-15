@@ -37,7 +37,7 @@ function status = checkCNAinstallation(printLevel)
         end
 
         % remove the external efmtool folder from CNA
-        cnaEFMtoolDir = [cnaPath filesep 'code' filesep 'ext' filesep 'efmtool'];
+        cnaEFMtoolDir = [cnaPath filesep 'code' filesep 'ext' filesep 'efmtool' filesep 'lib'];
         if ~isempty(strfind(path, [cnaEFMtoolDir, pathsep]))
             rmpath(genpath(cnaEFMtoolDir));
         end
