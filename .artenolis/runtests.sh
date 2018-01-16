@@ -67,7 +67,7 @@ elif [ "$ARCH" == "macOS" ]; then
 elif [ "$ARCH" == "windows" ]; then
     # change to the build directory
     echo " -- changing to the build directory --"
-    cd "D:\\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$label"
+    cd "D:\\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCHVERSION"
 
     echo " -- launching MATLAB --"
     unset Path
