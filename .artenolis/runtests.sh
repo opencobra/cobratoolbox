@@ -71,7 +71,7 @@ elif [ "$ARCH" == "windows" ]; then
 
     echo " -- launching MATLAB --"
     unset Path
-    nohup "D:\\MATLAB\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "restoredefaultpath; pwd; cd test; testAll;" & PID=$!
+    nohup "D:\\MATLAB\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "restoredefaultpath; cd D:\\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCHVERSION; cd test; testAll;" & PID=$!
 
     # follow the log file
     tail -n0 -F --pid=$! output.log 2>/dev/null
