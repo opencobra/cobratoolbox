@@ -131,8 +131,8 @@ assert(abs(min(all_obj) - max(all_obj)) < tol)
 
 clear model
 % test constraints with csense 'G'
-% max x 
-% s.t. -x >= -1,  
+% max x
+% s.t. -x >= -1,
 %      0 <= x <= 100
 model.S = -1;
 model.b = -1;
@@ -142,7 +142,7 @@ model.ub = 100;
 model.c = 1;
 model.osense = -1;
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
-assert(abs(min(all_obj) - 1) < tol & abs(max(all_obj) - 1) < tol)
+assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 
 % change the directory
 cd(currentDir)
