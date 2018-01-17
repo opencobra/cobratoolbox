@@ -255,34 +255,46 @@ switch testIndex
     case 'max'
         % pick a large entry in each dual vector, to check the signs
         randrcost = find(max(solution{1}.rcost) == solution{1}.rcost);
-        randrcost = randrcost(1);
+        if ~isempty(randrcost)
+            randrcost = randrcost(1);
+        end
         randdual = find(max(solution{1}.dual) == solution{1}.dual);
-        randdual = randdual(1);
+        if ~isempty(randdual)
+            randdual = randdual(1);
+        end
 
     case 'min'
         % pick a small entry in each dual vector, to check the signs
         randrcost = find(min(solution{1}.rcost) == solution{1}.rcost);
-        randrcost = randrcost(1);
+        if ~isempty(randrcost)
+            randrcost = randrcost(1);
+        end
         randdual = find(min(solution{1}.dual) == solution{1}.dual);
-        randdual = randdual(1);
+        if ~isempty(randdual)
+            randdual = randdual(1);
+        end
 
     case 'rand'
         % pick a random entry in each dual vector, to check the signs
         randrcost = ceil(rand * n);
-        randrcost = randrcost(1);
+        if ~isempty(randrcost)
+            randrcost = randrcost(1);
+        end
         randdual = ceil(rand * m);
-        randdual = randdual(1);
+        if ~isempty(randdual)
+            randdual = randdual(1);
+        end
 end
 
 for i = 1:ilt
-    if solution{1}.stat == 1
-        if length(solution{i}.dual) == 0
+    if isfield(solution{1}, 'stat') && solution{1}.stat == 1
+        if isempty(solution{i}.dual)
             tmp_dual = NaN;
         else
             tmp_dual = solution{i}.dual(randdual);
         end
 
-        if length(solution{i}.rcost) == 0
+        if isempty(solution{i}.rcost)
             tmp_rcost = NaN;
         else
             tmp_rcost = solution{i}.rcost(randrcost);
@@ -291,7 +303,7 @@ for i = 1:ilt
         all_obj(i) = solution{i}.obj;
     else
         fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, NaN, NaN, solution{i}.solver, solution{i}.algorithm)
-        all_obj(i) = NaN;
+        all_obj(i) = 0.0;
     end
 end
 
