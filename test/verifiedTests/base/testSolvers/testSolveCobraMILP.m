@@ -111,9 +111,9 @@ for k = 1:length(solverPkgs)
                 delete(['testIBMcplexMILPparam' num2str(jTest) '.log']);
             end
         end
-        
+
         if strcmp(solverPkgs{k}, 'gurobi6')
-            % check additional parameters for Gurobi 
+            % check additional parameters for Gurobi
             % temporarily shut down warning
             warning_stat = warning;
             warning off
@@ -122,7 +122,7 @@ for k = 1:length(solverPkgs)
             assert(strcmp(sol.origStat, 'TIME_LIMIT'))
             % restore previous warning state
             warning(warning_stat)
-            
+
             % check user-supplied x0
             MILPproblem.A = rand(10,20);
             MILPproblem.b = 1000 * ones(10,1);
@@ -131,17 +131,17 @@ for k = 1:length(solverPkgs)
             MILPproblem.ub = ones(20,1);
             MILPproblem.vartype = char(['C'*ones(1,10), 'B'*ones(1,10)]);
             MILPproblem.csense = char('L' * ones(1, 10));
-            
+
             % no objective function. The supplied should be the returned
             % (if not everything becomes zero after presolve)
             MILPproblem.x0 = zeros(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
             MILPproblem.x0 = ones(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
         end
     end
 
@@ -163,7 +163,7 @@ if solverOK
     assert(isequal(l, -1))
     fclose(f);
     delete('test_ibm_cplex_output_to_console1.txt')
-    
+
     % solve wit logToFile = 1
     diary test_ibm_cplex_output_to_console2.txt
     sol = solveCobraMILP(MILPproblem, 'logFile', 1);
@@ -189,7 +189,9 @@ if exist(fullFileNamePath, 'file') == 2
 end
 
 % change back to the original solver
-changeCobraSolver(orig_solver, 'MILP', 0);
+if ~isempty(orig_solver)
+    changeCobraSolver(orig_solver, 'MILP', 0);
+end
 
 % change the directory
 cd(currentDir)
