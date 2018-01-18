@@ -1,4 +1,4 @@
-function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
+function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked, validateSolver)
 % Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
@@ -15,7 +15,9 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %                   thrown. (default: 1)
 %
 % OPTIONAL INPUT:
-%    unchecked:     default = 0, if exists `solverType` is checked and `solverName` is assigned to a local variable
+%    unchecked:          default = false, if exists `solverType` is checked and `solverName` is assigned to a local variable
+%    validateSolver:     Whether to run a small test problem on the solver, (default: false) .
+%    
 %
 % OUTPUT:
 %     solverOK:     true if solver can be accessed, false if not
@@ -174,7 +176,11 @@ if nargin < 3
 end
 
 if ~exist('unchecked' , 'var')
-    unchecked = 0;
+    unchecked = false;
+end
+
+if ~exist('validateSolver' , 'var')
+    validateSolver = false;
 end
 
 if unchecked
@@ -200,8 +206,11 @@ if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
 end
 
 %Clean up, after changing the solver, this happens only if CBTDIR is
-%actually set i.e. initCobraToolbox is called before).
-finish = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd, rdir(['**' filesep '*'])));
+%actually set i.e. initCobraToolbox is called before). This is only
+%necessary, if the solver is being validated.
+if validateSolver
+    finish = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd, rdir(['**' filesep '*'])));
+end
 
 % configure the environment variables
 configEnvVars();
@@ -401,7 +410,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
 end
 
 % set solver related global variables
-if solverOK
+if solverOK && validateSolver
     cwarn = warning;
     warning('off');
     eval(['oldval = CBT_', solverType, '_SOLVER;']);

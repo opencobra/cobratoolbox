@@ -353,7 +353,7 @@ function initCobraToolbox()
     supportedSolversNames = fieldnames(SOLVERS);
     catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
     for i = 1:length(supportedSolversNames)
-        SOLVERS.(supportedSolversNames{i}).installed = 0;
+        SOLVERS.(supportedSolversNames{i}).installed = false;
         types = SOLVERS.(supportedSolversNames{i}).type;
         for j = 1:length(types)
             catSolverNames.(types{j}){end + 1} = supportedSolversNames{i};
@@ -362,9 +362,13 @@ function initCobraToolbox()
 
     % check the installation of the solver
     for i = 1:length(supportedSolversNames)
-        solverOK = changeCobraSolver(supportedSolversNames{i}, SOLVERS.(supportedSolversNames{i}).type{1}, 0);
+        %We will validate all solvers in init. After this, all solvers are
+        %checked, whether they actually work and the SOLVERS field is set. 
+        solverOK = changeCobraSolver(supportedSolversNames{i},...
+                                     SOLVERS.(supportedSolversNames{i}).type{1},...
+                                     0, false, true);
         if solverOK
-            SOLVERS.(supportedSolversNames{i}).installed = 1;
+            SOLVERS.(supportedSolversNames{i}).installed = true;        
         end
     end
 
