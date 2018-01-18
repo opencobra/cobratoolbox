@@ -207,7 +207,7 @@ function initCobraToolbox()
     %create the Cleanup function    
     %get the current content of the init Folder
     dirContent = rdir(['**' filesep '*']);
-    finishup = onCleanup(@() removeTempCOBRAFilesFromFolder(CBTDIR,dirContent));
+    finishup = onCleanup(@() removeGitIgnoredNewFiles(CBTDIR,dirContent));
     
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};

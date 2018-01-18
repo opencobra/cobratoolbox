@@ -44,10 +44,10 @@ cd(CBTDIR);
 initCobraToolbox;
 
 %Init the cleanup:
-orig = cd('test');
+currentDir = cd('test');
 testDirContent = rdir(['**' filesep '*']);
 testDirPath = pwd;
-cd(orig);
+cd(currentDir);
 
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
@@ -238,7 +238,7 @@ catch ME
     end
 end
 
-removeTempCOBRAFilesFromFolder(testDirPath,testDirContent);
+removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)
