@@ -281,6 +281,9 @@ else
     %is installed according to the solver field, and if not return false.
     if ~validateSolver
         if ~SOLVERS.(solverName).installed
+            if printLevel > 0
+                fprintf([' > Solver ', solverName, ' is not installed'.\n']);
+            end
             solverOK = false;
             return
         end
