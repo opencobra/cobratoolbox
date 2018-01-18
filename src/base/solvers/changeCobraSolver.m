@@ -211,8 +211,7 @@ end
 if validateSolver
     finish = onCleanup(@() removeTempCOBRAFilesFromFolder(pwd, rdir(['**' filesep '*'])));
 end
-
-% configure the environment variables
+    % configure the environment variables
 configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
@@ -276,6 +275,16 @@ end
 supportedSolversNames = fieldnames(SOLVERS);
 if ~any(strcmp(supportedSolversNames, solverName))
     error('The solver %s is not supported. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
+else
+    %If we don't validate the solver, at which point it could be, that it is not yet set up,
+    % we can actually just check whether it
+    %is installed according to the solver field, and if not return false.
+    if ~validateSolver
+        if ~SOLVERS.(solverName).installed
+            solverOK = false;
+            return
+        end
+    end
 end
 
 % Attempt to set the user provided solver for all optimization problem types
