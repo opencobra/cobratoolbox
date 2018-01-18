@@ -282,7 +282,7 @@ else
     if ~validateSolver
         if ~SOLVERS.(solverName).installed
             if printLevel > 0
-                fprintf([' > Solver ', solverName, ' is not installed'.\n']);
+                fprintf([' > Solver ', solverName, ' is not installed.\n']);
             end
             solverOK = false;
             return
@@ -415,7 +415,12 @@ if compatibleStatus == 1 || compatibleStatus == 2
             end
         case 'matlab'
             v = ver;
-            solverOK = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+            %Now, this depends a lot on the matlab version.            
+            if  verLessThan('matlab', '8.5')
+                solverOK = any(strcmp('Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
+            else
+                solverOK = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Global_Optimization_Toolbox');
+            end            
         otherwise
             error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
     end
