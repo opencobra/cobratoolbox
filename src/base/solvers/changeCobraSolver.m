@@ -422,19 +422,23 @@ if compatibleStatus == 1 || compatibleStatus == 2
 end
 
 % set solver related global variables
-if solverOK && validateSolver
-    cwarn = warning;
-    warning('off');
-    eval(['oldval = CBT_', solverType, '_SOLVER;']);
-    eval(['CBT_', solverType, '_SOLVER = solverName;']);
-    Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
-    try
-        evalc(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
-    catch ME
-        solverOK = false;
-        eval(['CBT_', solverType, '_SOLVER = oldval;']);
+if solverOK 
+    if validateSolver
+        cwarn = warning;
+        warning('off');
+        eval(['oldval = CBT_', solverType, '_SOLVER;']);
+        eval(['CBT_', solverType, '_SOLVER = solverName;']);
+        Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        try
+            evalc(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
+        catch ME
+            solverOK = false;
+            eval(['CBT_', solverType, '_SOLVER = oldval;']);
+        end
+        warning(cwarn)
+    else
+        eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
-    warning(cwarn)
 end
 end
 
