@@ -1,4 +1,4 @@
-function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked, validateSolver)
+function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, unchecked, validationLevel)
 % Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
@@ -16,11 +16,16 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchec
 %
 % OPTIONAL INPUT:
 %    unchecked:          default = false, if exists `solverType` is checked and `solverName` is assigned to a local variable
-%    validateSolver:     Whether to run a small test problem on the solver, (default: false) .
-%    
+%    validationLevel:    how much validation to use. 
+%                        0: no validation (default)
+%                        1: validate but remove outputs
+%                        2: validate and keep any outputs    
 %
 % OUTPUT:
-%     solverOK:     true if solver can be accessed, false if not
+%     solverOK:             true if solver can be accessed, false if not
+%     solverInstalled:      true, if the solver is installed (not
+%                           necessarily working), if running unchecked,
+%                           will always return true.
 %
 % Currently allowed LP solvers:
 %
@@ -179,9 +184,11 @@ if ~exist('unchecked' , 'var')
     unchecked = false;
 end
 
-if ~exist('validateSolver' , 'var')
-    validateSolver = false;
+if ~exist('validationLevel' , 'var')
+    validationLevel = 0;
 end
+
+solverInstalled = true;
 
 if unchecked
     switch solverType
@@ -199,6 +206,10 @@ if unchecked
     return
 end
 
+%Now we actually change the solver, so we will set the solverInstalled to
+%false (and reset it later)
+solverInstalled = false;
+
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
     initCobraToolbox;
@@ -208,7 +219,7 @@ end
 %Clean up, after changing the solver, this happens only if CBTDIR is
 %actually set i.e. initCobraToolbox is called before). This is only
 %necessary, if the solver is being validated.
-if validateSolver
+if validationLevel == 1
     finish = onCleanup(@() removeGitIgnoredNewFiles(pwd, rdir(['**' filesep '*'])));
 end
     % configure the environment variables
@@ -279,11 +290,20 @@ else
     %If we don't validate the solver, at which point it could be, that it is not yet set up,
     % we can actually just check whether it
     %is installed according to the solver field, and if not return false.
-    if ~validateSolver
+    if validationLevel == 0 
         if ~SOLVERS.(solverName).installed
             if printLevel > 0
                 fprintf([' > Solver ', solverName, ' is not installed.\n']);
             end
+            solverInstalled = SOLVERS.(solverName).installed;
+            solverOK = false;
+            return
+        end
+        if ~SOLVERS.(solverName).working;
+            if printLevel > 0
+                fprintf([' > Solver ', solverName, ' is installed but not working properly.\n']);
+            end
+            solverInstalled = SOLVERS.(solverName).installed;
             solverOK = false;
             return
         end
@@ -294,7 +314,7 @@ end
 if strcmpi(solverType, 'all')
     solvedProblems = SOLVERS.(solverName).type;
     for i = 1:length(solvedProblems)
-        changeCobraSolver(solverName, solvedProblems{i}, printLevel);
+        [solverOK,solverInstalled] = changeCobraSolver(solverName, solvedProblems{i}, printLevel);
         if printLevel > 0
             fprintf([' > Solver for ', solvedProblems{i}, ' problems has been set to ', solverName, '.\n']);
         end
@@ -317,6 +337,9 @@ end
 % check if the given solver is able to solve the given problem type.
 solverOK = false;
 if isempty(strmatch(solverType, OPT_PROB_TYPES))
+    %This is not done during init, so at this point, the solver is already
+    %checked for installation
+    solverInstalled = SOLVERS.(solverName).installed;
     if printLevel > 0
         error('%s problems cannot be solved in The COBRA Toolbox', solverType);
     else
@@ -326,6 +349,9 @@ end
 
 % check if the given solver is able to solve the given problem type.
 if isempty(strmatch(solverType, SOLVERS.(solverName).type))
+    %This is not done during init, so at this point, the solver is already
+    %checked for installation
+    solverInstalled = SOLVERS.(solverName).installed;
     if printLevel > 0
         error('Solver %s cannot solve %s problems', solverName, solverType);
     else
@@ -415,12 +441,8 @@ if compatibleStatus == 1 || compatibleStatus == 2
             end
         case 'matlab'
             v = ver;
-            %Now, this depends a lot on the matlab version.            
-            if  verLessThan('matlab', '8.5')
-                solverOK = any(strcmp('Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
-            else
-                solverOK = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Global_Optimization_Toolbox');
-            end            
+            %Both linprog and fmincon are part of the optimization toolbox.
+            solverOK = any(strcmp('Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');            
         otherwise
             error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
     end
@@ -428,7 +450,8 @@ end
 
 % set solver related global variables
 if solverOK 
-    if validateSolver
+    solverInstalled = true;
+    if validationLevel > 0
         cwarn = warning;
         warning('off');
         eval(['oldval = CBT_', solverType, '_SOLVER;']);
@@ -436,7 +459,7 @@ if solverOK
         Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
         try
             evalc(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
-        catch ME
+        catch ME            
             solverOK = false;
             eval(['CBT_', solverType, '_SOLVER = oldval;']);
         end

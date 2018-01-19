@@ -302,7 +302,14 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-
+    %Lets define a order of the solvers fields. Starting with the most
+    %common solvers others will be added as needed. 
+    SOLVERS = struct('gurobi',struct(),...
+                     'ibm_cplex',struct(),...
+                     'tomlab_cplex',struct(),...                     
+                     'glpk',struct(),...
+                     'mosek',struct(),...
+                     'matlab',struct());
     % active support - supported solvers
     SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.dqqMinos.type = {'LP'};
@@ -354,6 +361,7 @@ function initCobraToolbox()
     catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
     for i = 1:length(supportedSolversNames)
         SOLVERS.(supportedSolversNames{i}).installed = false;
+        SOLVERS.(supportedSolversNames{i}).working = false;
         types = SOLVERS.(supportedSolversNames{i}).type;
         for j = 1:length(types)
             catSolverNames.(types{j}){end + 1} = supportedSolversNames{i};
@@ -364,12 +372,13 @@ function initCobraToolbox()
     for i = 1:length(supportedSolversNames)
         %We will validate all solvers in init. After this, all solvers are
         %checked, whether they actually work and the SOLVERS field is set. 
-        solverOK = changeCobraSolver(supportedSolversNames{i},...
+        [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
                                      SOLVERS.(supportedSolversNames{i}).type{1},...
-                                     0, false, true);
-        if solverOK
-            SOLVERS.(supportedSolversNames{i}).installed = true;        
+                                     0, false, 2);
+        if solverOK            
+            SOLVERS.(supportedSolversNames{i}).working = true;        
         end
+        SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;        
     end
 
     if ENV_VARS.printLevel
