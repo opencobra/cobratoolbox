@@ -366,6 +366,14 @@ if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cpl
     addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
+% add the matlab path (in case someone had the great idea to overwrite the
+% matlab path).
+if (~isempty(strfind(solverName, 'matlab'))) 
+    MATLAB_PATH = [matlabroot filesep 'shared' filesep 'optimlib'];
+    addSolverDir(MATLAB_PATH, printLevel, 'matlab', 'MATLAB_PATH', MATLAB_PATH, true);
+end
+
+
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
     GUROBI_PATH = strrep(GUROBI_PATH, '~', getenv('HOME'));
