@@ -32,7 +32,7 @@ try
     executefile(fileName);
 catch ME
     %Catch errors and interpret them
-    clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE    
+    clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS
     result = struct('status','failed','failed',true,'passed',false,'fileName',...
         COBRA_TESTSUITE_TESTFILE,'time',NaN, 'statusMessage', 'fail', 'Error',ME);    
     if strcmp(ME.identifier,CBT_MISSING_REQUIREMENTS)
