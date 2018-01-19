@@ -7,8 +7,11 @@
 %     - Original file: Jan Schellenberger
 %     - CI integration: Laurent Heirendt March 2017
 %
-% Note:
-%     - The tomlab_snopt solver must be tested with a valid license
+
+
+%Check Requirements
+solvers = COBRARequisitesFullfilled('needsLP',true,'needsNLP',true);
+
 
 % save the current path
 currentDir = pwd;
@@ -22,24 +25,10 @@ model = readCbModel('model.mat'); % loads modelWT
 load('expdata.mat', 'expdata'); % load data
 load('point.mat', 'v0'); % load initial point
 
-% Note: the glpk solver is sufficient, no need to run multiple solvers
-fprintf('   Preparing the model using glpk ... ');
-
 %The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
 
-solverPkgs = {'glpk', 'gurobi', 'ibm_cplex', 'tomlab_cplex'};
-
-solverAccepted = false;
-for k = 1:numel(solverPkgs)
-    solverAccepted = changeCobraSolver(solverPkgs{k});
-    if solverAccepted
-        break;
-    end
-end
-
-if ~solverAccepted
-    assert(false,'Could not run the test as none of the allowed solvers (%s) was present.\nThe function might still work with a different solver.');
-end
+changeCobraSolver(solvers.NLP,'NLP',0);
+changeCobraSolver(solvers.LP,'LP',0);
 
 generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
 expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)
@@ -67,35 +56,17 @@ catch
     disp('Trying Non Parallel')
 end
 
-% define the solver packages to be used to run this test
-solverPkgs = {'matlab'}; % tomlab_snopt
+fprintf('   Testing fitC13Data ... \n');
 
-if ~all(ismember(solverPkgs,'matlab'))
-    %Test this only if matlab is the only solver set here.
-    v = ver;
-    optPres = any(strcmp('Global Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');    
-    assert(optPres,sprintf('The Optimization Toolbox is not installed or not licensed on your system.\nThis function might work with other non linear solvers, but they are not tested.'))
-end
+[vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit);
 
-for k = 1:length(solverPkgs)
+output = scoreC13Fit(vout, expdata, model);
+final_score = output.error;
 
-    % change the COBRA solver (NLP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'NLP');
-    
-    if solverOK == 1
-        fprintf('   Testing fitC13Data using %s ... ', solverPkgs{k});
+assert(final_score < initial_score)
 
-        [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit);
-
-        output = scoreC13Fit(vout, expdata, model);
-        final_score = output.error;
-
-        assert(final_score < initial_score)
-
-        % output a success message
-        fprintf('Done.\n');
-    end
-end
+% output a success message
+fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)
