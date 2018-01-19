@@ -6,11 +6,8 @@ normal=$(tput sgr0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 
-env > env.txt
+env
 
-for (String i : readFile('env.txt').split("\r?\n")) {
-    println i
-}
 
 echo "Guessing if the tests should be run..."
 if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
