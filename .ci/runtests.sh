@@ -6,7 +6,7 @@ normal=$(tput sgr0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 
-sh 'env > env.txt'
+env > env.txt
 
 for (String i : readFile('env.txt').split("\r?\n")) {
     println i
