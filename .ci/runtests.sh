@@ -45,7 +45,7 @@ if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
        echo "> Tests will be ${green}ran${normal} as modified files (since last previous successful commit) are ${green}not only${normal} documentation files."
    fi
 else
-    echo "> Tests will be ${green}ran${normal} as variable $GIT_PREVIOUS_SUCCESSFUL_COMMIT is not set."
+    echo "> Tests will be ${green}ran${normal} as variable `GIT_PREVIOUS_SUCCESSFUL_COMMIT` is not set."
 fi
 
 if [ "$ARCH" == "Linux" ]; then
