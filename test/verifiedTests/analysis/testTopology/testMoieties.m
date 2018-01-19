@@ -11,9 +11,10 @@
 %
 
 %Test presence of required toolboxes.
-v = ver;
-bioPres = any(strcmp('Bioinformatics Toolbox', {v.Name})) && license('test','bioinformatics_toolbox');
-assert(bioPres,sprintf('The Bioinformatics Toolbox required for this function is not installed or not licensed on your system.'))
+requiredToolboxes = {'bioinformatics_toolbox'};
+requiredSolvers = {'gurobi'};
+COBRARequisitesFullfilled('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
+
 
 
 % define global paths
@@ -61,7 +62,7 @@ rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
 mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
 N = model.S(mbool, rbool);
 
-solverOK = changeCobraSolver('gurobi6', 'MILP', 0);
+solverOK = changeCobraSolver('gurobi', 'MILP', 0);
 if solverOK
     fprintf(' -- Running testMoieties using the solver interface: gurobi6 ... ');
 
