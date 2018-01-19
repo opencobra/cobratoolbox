@@ -1,4 +1,4 @@
-function results = runCOBRATestSuite()
+function [results, resultTable] = runCOBRATestSuite()
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
@@ -6,18 +6,19 @@ function results = runCOBRATestSuite()
 %
 % OUTPUTS:
 %
-%    results:   A structure array with one entry per test and the following fields:
-%               .passed - true if the test passed otherwise false
-%               .skipped - true if the test was skipped otherwise false
-%               .failed - true if the test failed, or was skipped,
-%                         otherwise false
-%               .status - a string representing the status of the test
-%                         ('failed','skipped' or'passed')
-%               .fileName - the fileName of the test 
-%               .time - the duration of the test (if passed otherwise NaN)
-%               .statusMessage - Informative string about potential
-%                                problems.
-%               .Error - The Error message received from a failed or skipped test 
+%    results:       A structure array with one entry per test and the following fields:
+%                   .passed - true if the test passed otherwise false
+%                   .skipped - true if the test was skipped otherwise false
+%                   .failed - true if the test failed, or was skipped,
+%                             otherwise false
+%                   .status - a string representing the status of the test
+%                             ('failed','skipped' or'passed')
+%                   .fileName - the fileName of the test 
+%                   .time - the duration of the test (if passed otherwise NaN)
+%                   .statusMessage - Informative string about potential
+%                                    problems.
+%                   .Error - The Error message received from a failed or skipped test 
+%    resultTable:   A Table with details of the results. 
 %
 % Author:
 %    - Thomas Pfau Jan 2018.
@@ -33,8 +34,6 @@ currentDir = cd(testDir);
 %Get all names of test files
 testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
-
-testFileNames = testFileNames(1:5);
 
 %Run the tests and show outputs.
 for i = 1:numel(testFileNames)
@@ -57,6 +56,13 @@ for i = 1:numel(testFileNames)
     end
     fprintf('\n\n****************************************************\n');
 end
+
+%Now, create a table from the fields
+
+resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
+                            [results.failed]',[results.time]',{results.statusMessage}',...
+                            'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
+                        
 
 %Change back to the original directory.
 cd(currentDir)
