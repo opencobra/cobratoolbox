@@ -28,7 +28,7 @@ for i = 1:numel(solverNames)
    if SOLVERS.(solverNames{i}).working
        availableTypes = SOLVERS.(solverNames{i}).type;
        for j = 1:numel(availableTypes)
-           solvers.(availableTypes{j}) = union(solvers.(availableTypes{j}), solverNames{i});
+           solvers.(availableTypes{j}) = [solvers.(availableTypes{j}), solverNames{i}];
        end
    end
 end
