@@ -6,7 +6,8 @@ global TOMLAB_PATH
 
 fprintf('The COBRAToolbox testing suite\n')
 fprintf('------------------------------\n')
-
+setenv('MOCOV_PATH','/home/thomas/cobra_devel/MOcov');
+setenv('JSONLAB_PATH','/home/thomas/cobra_devel/jsonlab-1.5');
 if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
     addpath(genpath(getenv('MOCOV_PATH')))
     addpath(genpath(getenv('JSONLAB_PATH')))
@@ -151,27 +152,12 @@ try
     originalUserPath = path;
 
     % run the tests in the subfolder verifiedTests/ recursively
-    result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
+    [result,resultTable] = runCOBRATestSuite();
 
-    sumFailed = 0;
-    sumIncomplete = 0;
-    resulttable = result.table;
-    resulttable(:,'Details') = {''};
-    for i = 1:size(result, 2)
-        sumFailed = sumFailed + result(i).Failed;
-        sumIncomplete = sumIncomplete + result(i).Incomplete;
-        if result(i).Failed
-            try
-                Message = result(i).details.DiagnosticRecord.Exception.message;
-            catch
-                %Older Matlab versions might fail here
-                Message = 'Unknown Error, please check the log';
-            end
-            resulttable{i,'Details'} = {Message};
-        end
-    end
-
-    fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumIncomplete), ' tests are incomplete.\n\n']);
+    sumSkipped = sum(resultTable.Skipped);    
+    sumFailed = sum(resultTable.Failed) - sumSkipped;    
+    
+    fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
 
     % count the number of covered lines of code
     if COVERAGE
@@ -205,13 +191,13 @@ try
     end
 
     % print out a summary table
-    resulttable
+    resultTable
 
     % restore the original path
     restoredefaultpath;
     addpath(originalUserPath);
 
-    if sumFailed > 0 || sumIncomplete > 0
+    if sumFailed > 0 
         exit_code = 1;
     end
 
