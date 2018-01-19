@@ -6,6 +6,12 @@ normal=$(tput sgr0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 
+sh 'env > env.txt'
+
+for (String i : readFile('env.txt').split("\r?\n")) {
+    println i
+}
+
 echo "Guessing if the tests should be run..."
 if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
    commitHashs=($(git cherry $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
