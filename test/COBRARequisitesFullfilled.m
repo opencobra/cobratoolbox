@@ -5,16 +5,18 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 %
 % USAGE:
 %    [tf,solversToUse] = COBRARequisitesFullfilled(varargin)
-% 
+%
 % INPUTS:
 %    varagin:       'ParameterName',value pairs with the following
 %                   Parameter options:
 %                   * 'Toolboxes'      - Names of toolboxes (the license
 %                                        feature name) (Default: {})
 %                   * 'ReqSolvers'     - Names of all solvers which MUST be
-%                                        available (Default: {})
+%                                        available. If not empty, the resulting
+%                                        solvers struct will contain cell arrays (Default: {})
 %                   * 'UseIfAvailable' - Names of solvers which should be
-%                                        used if they are available (will
+%                                        used if they are available. If not empty, the resulting
+%                                        solvers struct will contain cell arrays (will
 %                                        not throw an error if not).
 %                   * 'NeedsLP'        - Whether a LP solver is required.
 %                                       (Default = false);
@@ -29,28 +31,39 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 %                   * 'NeedsUnix'      - Whether the test only works on a
 %                                        Unix system (mac or linux)
 %                                        (Default = false);
-%                   * 'NeedsWindows'   - Whether the test only works on a Windows system 
+%                   * 'NeedsWindows'   - Whether the test only works on a Windows system
 %                                        (Default = false);
-%                   * 'NeedsMac'       - Whether the test only works on a Mac system 
+%                   * 'NeedsMac'       - Whether the test only works on a Mac system
 %                                        (Default = false);
-%                   * 'NeedsLinux'     - Whether the test only works on a Linux system 
+%                   * 'NeedsLinux'     - Whether the test only works on a Linux system
 %                                        (Default = false);
+%
+% OUTPUTS:
+%
+%    solversToUse:         A struct with one field per solver type listing
+%                          the solvers To use for that type of problem.
+%                          If neither the useIfAvailable nor the reqSolvers
+%                          paramter is provided, only at most one solver
+%                          per type will be returned (an empty string if
+%                          none is present). If either is provided, the
+%                          returned struct will contain cell arrays of
+%                          solver names.
 
 %Do some precomputation.
 global CBT_MISSING_REQUIREMENTS;
 global OPT_PROB_TYPES
 persistent availableSolvers
 
-%Some Matlab Toolboxes currently in use in the COBRA Toolbox. 
-%This might have to be extended in the future. 
+%Some Matlab Toolboxes currently in use in the COBRA Toolbox.
+%This might have to be extended in the future.
 toolboxInfo = struct('statistics_toolbox',{{'Statistics and Machine Learning Toolbox','Statistics Toolbox'}},...
-                     'bioinformatics_toolbox',{{'Bioinformatics Toolbox'}},...
-                     'distrib_computing_toolbox',{{'Parallel Computing Toolbox'}},...
-                     'optimization_toolbox',{{'Optimization Toolbox'}},...
-                     'global_optimization_toolbox',{{'Global Optimization Toolbox'}},...
-                     'image_toolbox',{{'Image Processing Toolbox'}},...
-                     'gads_toolbox',{{'Global Optimization Toolbox'}});
-                
+    'bioinformatics_toolbox',{{'Bioinformatics Toolbox'}},...
+    'distrib_computing_toolbox',{{'Parallel Computing Toolbox'}},...
+    'optimization_toolbox',{{'Optimization Toolbox'}},...
+    'global_optimization_toolbox',{{'Global Optimization Toolbox'}},...
+    'image_toolbox',{{'Image Processing Toolbox'}},...
+    'gads_toolbox',{{'Global Optimization Toolbox'}});
+
 if isempty(availableSolvers)
     availableSolvers = getAvailableSolversByType();
     fieldsWithSolvers = fieldnames(availableSolvers);
@@ -92,9 +105,9 @@ linuxOnly = parser.Results.NeedsLinux;
 
 
 
-Toolboxes = parser.Results.Toolboxes;
-RequiredSolvers = parser.Results.ReqSolvers;
-PreferredSolvers = parser.Results.UseIfAvailable;
+toolboxes = parser.Results.Toolboxes;
+requiredSolvers = parser.Results.ReqSolvers;
+preferredSolvers = parser.Results.UseIfAvailable;
 
 errorMessage = {};
 
@@ -130,80 +143,105 @@ end
 
 
 %Then, check the required Solvers
-if ~isempty(RequiredSolvers) && ~all(ismember(RequiredSolvers,availableSolvers.ALL))
+if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers,availableSolvers.ALL))
     %We have required solvers and some are missing
-    missing = ~ismember(RequiredSolvers,availableSolvers.ALL);
-    errorMessage{end+1} = sprintf('%s are missing required solvers for the test.', strjoin(RequiredSolvers(missing),' and '));
+    missing = ~ismember(requiredSolvers,availableSolvers.ALL);
+    errorMessage{end+1} = sprintf('%s are missing required solvers for the test.', strjoin(requiredSolvers(missing),' and '));
+else
+    %Otherwise add the required Solvers to the preferred solvers.
+    preferredSolvers = union(preferredSolvers,requiredSolvers);
 end
 
 %Now, Check the Toolboxes
 res = ver;
 missingTBs = struct('License',{{}},'Installation',{{}});
-for i = 1:numel(Toolboxes)
-    tbstring = lower(Toolboxes{i});
+for i = 1:numel(toolboxes)
+    tbstring = lower(toolboxes{i});
     licpres = license('test',tbstring);
     if any(ismember(tbstring,fieldnames(toolboxInfo)))
-        tbpres = any(ismember(toolboxInfo.(lower(Toolboxes{i})),{res.Name}));
+        tbpres = any(ismember(toolboxInfo.(lower(toolboxes{i})),{res.Name}));
     else
         %We will rely on the license....
         tbpres = licpres;
-    end        
+    end
     if ~tbpres
-        missingTBs.Installation{end+1} = tbstring;       
+        missingTBs.Installation{end+1} = tbstring;
     end
     if ~licpres
-        missingTBs.License{end+1} = tbstring;       
+        missingTBs.License{end+1} = tbstring;
     end
 end
 
 
 %Append the error message.
 if ~isempty(missingTBs.License)
-    errorMessage{end+1} = sprintf('The test requires licenses for the following Toolboxes: %s', strjoin(missingTBs.License,' and '));     
+    errorMessage{end+1} = sprintf('The test requires licenses for the following Toolboxes: %s', strjoin(missingTBs.License,' and '));
 end
 if ~isempty(missingTBs.Installation)
-    errorMessage{end+1} = sprintf('The test the following Toolboxes to be installed: %s', strjoin(missingTBs.Installation,' and '));     
+    errorMessage{end+1} = sprintf('The test the following Toolboxes to be installed: %s', strjoin(missingTBs.Installation,' and '));
 end
 
 %Set up default solvers. And test whether the test is useable.
-if isempty(availableSolvers.LP)    
+if isempty(availableSolvers.LP)
     if UseLP
         errorMessage{end+1} = 'The test requires at least one LP solver but no solver is installed';
-    end    
+    end
 else
-    defaultLPSolver = availableSolvers.LP{1};     
+    if ~isempty(availableSolvers.LP)
+        defaultLPSolver = availableSolvers.LP{1};
+    else
+        defaultLPSolver = '';
+    end
 end
 
-if isempty(availableSolvers.QP)    
+if isempty(availableSolvers.QP)
     if UseQP
         errorMessage{end+1} = 'The test requires at least one QP solver but no solver is installed';
-    end    
+    end
 else
-    defaultQPSolver = availableSolvers.QP{1};     
+    if ~isempty(availableSolvers.QP)
+        defaultQPSolver = availableSolvers.QP{1};
+    else
+        defaultQPSolver = '';
+    end
 end
 
-if isempty(availableSolvers.MILP)    
+if isempty(availableSolvers.MILP)
     if UseMILP
         errorMessage{end+1} = 'The test requires at least one MILP solver but no solver is installed';
-    end    
+    end
 else
-    defaultMILPSolver = availableSolvers.MILP{1};     
+    if ~isempty(availableSolvers.MILP)
+        defaultMILPSolver = availableSolvers.MILP{1};
+    else
+        defaultMILPSolver = '';
+    end
+    
 end
 
-if isempty(availableSolvers.MIQP)    
+if isempty(availableSolvers.MIQP)
     if UseMIQP
         errorMessage{end+1} = 'The test requires at least one MIQP solver but no solver is installed';
-    end    
+    end
 else
-    defaultMIQPSolver = availableSolvers.MIQP{1};     
+    if ~isempty(availableSolvers.MIQP)
+        defaultMIQPSolver = availableSolvers.MIQP{1};
+    else
+        defaultMIQPSolver = '';
+    end
+    
 end
 
-if isempty(availableSolvers.NLP)    
+if isempty(availableSolvers.NLP)
     if UseNLP
         errorMessage{end+1} = 'The test requires at least one NLP solver but no solver is installed';
-    end    
+    end
 else
-    defaultNLPSolver = availableSolvers.NLP{1};     
+    if ~isempty(availableSolvers.NLP)
+        defaultNLPSolver = availableSolvers.NLP{1};
+    else
+        defaultNLPSolver = '';
+    end
 end
 
 
@@ -216,8 +254,18 @@ end
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
 for i = 1:numel(problemTypes)
-    solversToUse.(problemTypes{i}) = intersect(PreferredSolvers,availableSolvers.(problemTypes{i}));
+    solversToUse.(problemTypes{i}) = intersect(preferredSolvers,availableSolvers.(problemTypes{i}));
     if isempty(solversToUse.(problemTypes{i})) && ~isempty(availableSolvers.(problemTypes{i}))
-        eval(['solversToUse.' problemTypes{i} ' = default' problemTypes{i} 'Solver;']);
+        if isempty(preferredSolvers)
+            eval(['solversToUse.' problemTypes{i} ' = default' problemTypes{i} 'Solver;']);
+        else
+            if isempty(availableSolvers.(problemTypes{i}))
+                %No solver exists, the cell array is empty.
+                solversToUse.(problemTypes{i}) = {};
+            else
+                %A Solver exists, provide it.
+                eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
+            end
+        end
     end
 end
