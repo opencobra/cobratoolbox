@@ -444,9 +444,9 @@ switch solver
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
         f = c'* x;
-        %MPS Considers the objective as additional constraint (first
-        %constraint. therefore it has a suplus dual which needs to be
-        %removed.
+        %dqqMinos uses a constraint to represent the objective. 
+        %This is exported as the first variable thus, y = sol.y(2:end)
+        y = sol.y(2:end);
         y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
@@ -538,9 +538,9 @@ switch solver
         x = sol.x;
 
         f = c' * x;
-        %MPS Considers the objective as additional constraint (first
-        %constraint. therefore it has a suplus dual which needs to be
-        %removed.
+        %Minos uses a constraint to represent the objective. 
+        %This is exported as the first variable thus, y = sol.y(2:end)
+        y = sol.y(2:end);
         y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
@@ -1053,7 +1053,7 @@ switch solver
            case 1
                matlabPrintLevel = 'final';
            case 2
-               matlabPrintLevel = 'iter-detailed';
+               matlabPrintLevel = 'iter';
            otherwise
                matlabPrintLevel = 'off';
         end
