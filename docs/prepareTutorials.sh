@@ -204,7 +204,7 @@ fi
 buildTutorialList
 
 tutorialPath="../tutorials"
-rstPath="$COBRATutorialsPath/docs/source/tutorials"
+rstPath="$COBRAToolboxPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
 
 if [[ $buildHTML = true ]]; then
@@ -221,7 +221,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
     # clean destination folder for the RST and HTML tutorial files
     if [ $buildRST = true ]; then
-        echo_time "Creating index.rst"
+        echo_time "Creating $rstPath/index.rst"
         echo >> $rstPath/index.rst
         echo >> $rstPath/index.rst
         echo ".. toctree::" >> $rstPath/index.rst
@@ -277,7 +277,6 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
             echo "   $tutorialLongTitle" >> $rstPath/index.rst
-
         fi
     done
 fi
