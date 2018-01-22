@@ -369,8 +369,10 @@ end
 % add the matlab path (in case someone had the great idea to overwrite the
 % matlab path).
 if (~isempty(strfind(solverName, 'matlab'))) 
-    MATLAB_PATH = [matlabroot filesep 'shared' filesep 'optimlib'];
-    addSolverDir(MATLAB_PATH, printLevel, 'matlab', 'MATLAB_PATH', MATLAB_PATH, true);
+    FMINCON_PATH = [matlabroot filesep 'shared' filesep 'optimlib'];
+    addSolverDir(FMINCON_PATH, printLevel, 'matlab', 'FMINCON_PATH', FMINCON_PATH, true);
+    LINPROG_PATH = [matlabroot filesep 'optim' ];
+    addSolverDir(LINPROG_PATH, printLevel, 'matlab', 'LINPROG_PATH', LINPROG_PATH, true);
 end
 
 
