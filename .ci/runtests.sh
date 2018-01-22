@@ -9,47 +9,56 @@ green=$(tput setaf 2)
 env
 
 
-echo "Guessing if the tests should be run..."
+echo "Checking if the test suite should be run..."
 if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
    commitHashs=($(git cherry $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
-
-   # check if all commit messages contains only [documentation]
-   allDocumentationLabel=true
-   for s in "${commitHashs[@]}"
-   do
-       if  [[ $s != "+" ]]; then
-           commitHash=$s
-           commitMsg=$(git show $commitHash -q --pretty=%B 2>&1)
-
-           # Exit if commit message contains the string: [documentation]
-           if [[ ! $commitMsg == *"[documentation]"* ]]; then
-               allDocumentationLabel=false;
-               echo "-- at least one commit message ($commitHash) does not contain the label [documentation]."
-               break;
-           fi
-       fi
-   done
-
-   modifiedFiles=($(git diff --name-only $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
-   onlyDocFiles=true
-   for f in "${modifiedFiles[@]}"
-   do
-       if  [[ ! $f == *"docs/"* ]]; then
-           onlyDocFiles=false
-           echo "-- at least one modified file ($f) is not stored under the docs/ folder."
-           break;
-       fi
-   done
-
-   if [ "$allDocumentationLabel" = true ] || [ "$onlyDocFiles" = true ]; then
-       echo "> Tests will be ${green}skipped${normal} as modified files (since last previous successful commit) are ${green}only${normal} documentation files."
-       exit;
-   else
-       echo "> Tests will be ${green}ran${normal} as modified files (since last previous successful commit) are ${green}not only${normal} documentation files."
-   fi
 else
-    echo "> Tests will be ${green}ran${normal} as variable `GIT_PREVIOUS_SUCCESSFUL_COMMIT` is not set."
+   commitHashs=($(git log develop..HEAD -q --pretty=%H 2>&1))
 fi
+
+
+# check if all commit messages contains only [documentation]
+allDocumentationLabel=true
+for s in "${commitHashs[@]}"
+do
+    if  [[ $s != "+" ]]; then
+        commitHash=$s
+        commitMsg=$(git show $commitHash -q --pretty=%B 2>&1)
+
+        # Exit if commit message contains the string: [documentation]
+        if [[ ! $commitMsg == *"[documentation]"* ]]; then
+            allDocumentationLabel=false;
+            echo " -- at least one commit message ($commitHash) does not contain the label [documentation]."
+            break;
+        fi
+    fi
+done
+
+if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
+   modifiedFiles=($(git diff --name-only $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
+else
+   modifiedFiles=($(git log develop..HEAD -q --pretty=%H | tail -1 2>&1))
+fi
+
+onlyDocFiles=true
+for f in "${modifiedFiles[@]}"
+do
+    if  [[ ! $f == *"docs/"* ]]; then
+        onlyDocFiles=false
+        echo " -- at least one modified file ($f) is not stored under the docs/ folder."
+        break;
+    fi
+done
+
+if [[ ${#commitHashs[@]} > 0 ]]; then
+    if [ "$allDocumentationLabel" = true ] || [ "$onlyDocFiles" = true ]; then
+        echo "> Tests will be ${green}skipped${normal} as modified files are ${green}only${normal} documentation files."
+        exit;
+    fi
+fi
+
+echo "> Tests will be ${green}ran${normal} as modified files are ${green}not only${normal} documentation files."
+
 
 if [ "$ARCH" == "Linux" ]; then
     /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
