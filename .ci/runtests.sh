@@ -6,16 +6,13 @@ normal=$(tput sgr0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 
-env
-
-
 echo "Checking if the test suite should be run..."
 if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
    commitHashs=($(git cherry $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
 else
+   echo " -- environment variable GIT_PREVIOUS_SUCCESSFUL_COMMIT is not set (or empty)."
    commitHashs=($(git log develop..HEAD -q --pretty=%H 2>&1))
 fi
-
 
 # check if all commit messages contains only [documentation]
 allDocumentationLabel=true
