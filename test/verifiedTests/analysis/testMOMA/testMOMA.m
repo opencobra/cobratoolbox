@@ -37,7 +37,7 @@ QPtol = 0.02;
 LPtol = 0.0001;
 
 for k = 1:length(solverPkgs)
-    fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
+    fprintf(' -- Running testMOMA using the solver interface: %s ... ', solverPkgs{k});
 
     solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
