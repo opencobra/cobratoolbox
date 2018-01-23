@@ -3,6 +3,10 @@
 Tutorials
 =========
 
+
+
+.. toctree::
+
    tutorialVariationalKinetics
    tutorialUniformSampling
    tutorialFBA
