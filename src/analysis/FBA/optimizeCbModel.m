@@ -165,8 +165,10 @@ end
 % Figure out objective sense
 if strcmpi(osenseStr,'max')
     LPproblem.osense = -1;
-else
+elseif strcmpi(osenseStr,'min')
     LPproblem.osense = +1;
+else
+    error('%s is not a valid osenseStr. Use either ''min'' or ''max''' ,osenseStr);
 end
 
 if exist('minNorm', 'var')

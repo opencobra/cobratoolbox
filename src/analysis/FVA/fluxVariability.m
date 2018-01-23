@@ -56,11 +56,14 @@ global CBT_LP_PARAMS
 if nargin < 2
     optPercentage = 100;
 end
-if nargin < 3
-    if isfield(model, 'osenseStr')
-        osenseStr = model.osenseStr;
-    else
+if nargin < 3 || isempty(osenseStr)
+    if ~isfield(model,'osenseStr')
         osenseStr = 'max';
+    else
+        osenseStr = model.osenseStr;
+    end
+    if ~(strcmpi(osenseStr,'min') || strcmpi(osenseStr,'max'))
+        error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
     end
 end
 if nargin < 4
@@ -146,6 +149,15 @@ if ~isfield(model,'b')
 end
 % Set up the general problem
 rxnListFull = model.rxns;
+
+if strcmpi(osenseStr,'max')
+    LPproblem.osense = -1;
+elseif strcmpi(osenseStr,'min')    
+    LPproblem.osense = 1;
+else
+    error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
+end
+
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
@@ -164,11 +176,7 @@ LPproblem.A = model.S;
 LPproblem.b = model.b;
 
 %solve to get the original model optimal objective
-if ~isfield(model,'osense')
-    LPproblem.osense = -1;
-else
-    LPproblem.osense = model.osense;
-end
+
 
 % Solve initial (normal) LP
 if allowLoops

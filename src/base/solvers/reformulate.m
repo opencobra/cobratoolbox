@@ -53,9 +53,11 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   x_L    = LPproblem.lb;
   x_U    = LPproblem.ub;
   csense = char(LPproblem.csense);
-  mets   = LPproblem.mets;
-  rxns   = LPproblem.rxns;
-  nrxn   = length(rxns);
+  %mets   = LPproblem.mets;
+  %rxns   = LPproblem.rxns;
+  %nrxn   = length(rxns);
+  [nmet,nrxn] = size(A);
+  
   if isfield(LPproblem,'modelID')
       modelID=LPproblem.modelID;
   else

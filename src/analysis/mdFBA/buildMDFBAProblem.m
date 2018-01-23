@@ -78,8 +78,14 @@ c = [model.c;zeros(nRxns,1);zeros(3*nRelMets,1)];
 
 %Osense and csense might be missing, if osense is missing, we assume
 %maximisation.
-if isfield(model,'osense')
-    osense = model.osense;
+if isfield(model,'osenseStr')
+    if strcmpi(model.osenseStr,'min') 
+        osense = 1;
+    elseif strcmpi(model.osenseStr,'max')
+        osense = -1;
+    else
+        error('%s is not a valid objective sense. Use either ''min'' or ''max''.',model.osenseStr);
+    end    
 else
     osense = -1;
 end

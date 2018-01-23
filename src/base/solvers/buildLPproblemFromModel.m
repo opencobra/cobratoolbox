@@ -45,8 +45,14 @@ else
     LPproblem.b = repmat(0,size(model.mets));
 end
 
-if isfield(model,'osense')
-    LPproblem.osense = model.osense;
+if isfield(model,'osenseStr')
+    if strcmpi(model.osenseStr,'min') 
+        LPproblem.osense = 1;
+    elseif strcmpi(model.osenseStr,'max')
+        LPproblem.osense = -1;
+    else
+        error('%s is not a valid value of model.osenseStr. Use either ''min'' or ''max''.',model.osenseStr);
+    end    
 else
     LPproblem.osense = -1;
 end
