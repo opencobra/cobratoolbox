@@ -139,7 +139,10 @@ IBM ILOG CPLEX
       
    |windows| |#ff0000| Make sure that you select ``Yes, update the PATH variable.``. You can
    also follow the instructions
-   `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.
+   `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.  
+   
+   |windows| |#ff0000| If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable ``ILOG_CPLEX_PATH`` pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a `startup.m` file as detailed here `here <https://nl.mathworks.com/help/matlab/ref/startup.html>`__.
+   In this startup file add the following command (replacing ``X:\YOUR\CPLEX\MATLAB\FOLDER`` with the actual directory): ``setenv('ILOG_CPLEX_PATH','X:\YOUR\CPLEX\MATLAB\FOLDER')``
 
 GUROBI
 ~~~~~~
