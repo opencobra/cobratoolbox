@@ -1,4 +1,4 @@
-function [ convertedstr ] = convertSBMLID( convertedstr, toSBML )
+function [ convertedstr ] = convertSBMLID( str, toSBML )
 %CONVERTSBMLID converts the given str to a valid SBML ID 
 % USAGE:
 %
