@@ -127,6 +127,12 @@ end
 %there
 pttoolboxPath = which('parpool');
 if ~isempty(pttoolboxPath)
+    %We also have to shut down the parallel pool, as otherwise problems
+    %occur with the pool.
+    poolobj = gcp('nocreate');
+    delete(poolobj);
+    %Now, lets remove the parallel processing stuff from the path. and
+    %reintroduce it in the end.
     cpath = fileparts(pttoolboxPath);
     rmpath(cpath);
     for k = 1:length(solverPkgs)
