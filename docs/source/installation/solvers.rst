@@ -141,7 +141,7 @@ IBM ILOG CPLEX
    also follow the instructions
    `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.  
    
-   |windows| |#ff0000| If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable ``ILOG_CPLEX_PATH`` pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a `startup.m` file as detailed here `here <https://nl.mathworks.com/help/matlab/ref/startup.html>`__.
+   |windows| |warning| If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable ``ILOG_CPLEX_PATH`` pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a `startup.m` file as detailed here `here <https://nl.mathworks.com/help/matlab/ref/startup.html>`__.
    In this startup file add the following command: 
    ``setenv('ILOG_CPLEX_PATH','C:\<yourCPLEXPath>\CPLEX_Studio<ver>\cplex\matlab\<arch>')``
    where ``<yourCPLEXPath>`` is the path to cplex, ``<ver>`` is the installed version and ``<arch>`` is the architecture identifier.
