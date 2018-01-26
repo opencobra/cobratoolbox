@@ -95,7 +95,7 @@ end
 [L,xi,xj] = unique(L,'rows','stable'); % Retain only unique atom conservation relations. Identical atom conservation relations belong to the same moiety conservation relation.
 L = L'; % Moiety vectors to columns
 
-leftNullBool = ~any(S'*L); % Indicates vectors in the left null space of S.
+leftNullBool = ~any(S'*L,1); % Indicates vectors in the left null space of S.
 E = L(:,~leftNullBool);
 L = L(:,leftNullBool);
 xi = xi(leftNullBool);
@@ -107,7 +107,7 @@ end
 % Construct incidence matrix for moiety supergraph
 nVectors = size(L,2); % Number of moiety conservation relations (unique moiety vectors)
 nMoieties = sum(sum(L)); % Total number of nodes in moiety supergraph
-nEdges = sum(any(A([components{xi}],:))); % Total number of edges in moiety supergraph
+nEdges = sum(any(A([components{xi}],:),1)); % Total number of edges in moiety supergraph
 
 moietyFormulas = cell(nVectors,1); % Cell array with chemical formulas of moieties
 instances2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to metabolites (rows of S)
@@ -122,7 +122,7 @@ for i = 1:nVectors
 
     % Add moiety graph to moiety supergraph
     comp1 = components{xi(i)};
-    mgraph1 = A(comp1,any(A(comp1,:)));
+    mgraph1 = A(comp1,any(A(comp1,:),1));
     [nrows,ncols] = size(mgraph1);
     rowidx = firstrow:(firstrow + nrows - 1);
     colidx = firstcol:(firstcol + ncols - 1);
@@ -135,7 +135,7 @@ for i = 1:nVectors
     instances2mets(rowidx) = mets1;
 
     % Map edges in first component to reactions
-    rxns1 = trans2rxns(xt(any(A(comp1,:))));
+    rxns1 = trans2rxns(xt(any(A(comp1,:),1)));
 
     % Map moieties to moiety vectors
     instances2moieties(rowidx) = i;
@@ -152,9 +152,9 @@ for i = 1:nVectors
 
         for j = idx' % Loop through other atom components in current moiety conservation relation
             comp2 = components{j};
-            mgraph2 = A(comp2,any(A(comp2,:)));
+            mgraph2 = A(comp2,any(A(comp2,:),1));
             mets2 = atoms2mets(comp2); % map atoms to metabolites
-            rxns2 = trans2rxns(xt(any(A(comp2,:)))); % map edges to reactions
+            rxns2 = trans2rxns(xt(any(A(comp2,:),1))); % map edges to reactions
             e = [e; unique(elements(comp2))];
 
             if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))

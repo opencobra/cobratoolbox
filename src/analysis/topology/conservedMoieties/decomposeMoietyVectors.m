@@ -30,7 +30,7 @@ while rp > 0 % Iterate since decomposed moiety vectors might themselves be decom
         % not contain moiety k
         c = l;
         mbool = c ~= 0;
-        rbool = any(N(mbool,:));
+        rbool = any(N(mbool,:),1);
         c = c(mbool);
 
         % Formulate MILP problem
