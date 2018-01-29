@@ -59,7 +59,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 10)
 % 
 % .. Authors:
-%       - I�igo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Iñigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 18/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 21/11/2017, University of Navarra, TECNUN School of Engineering.
 
