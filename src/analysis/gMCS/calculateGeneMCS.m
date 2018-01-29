@@ -59,7 +59,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 10)
 % 
 % .. Authors:
-%       - Iñigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Iï¿½igo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 18/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 21/11/2017, University of Navarra, TECNUN School of Engineering.
 
@@ -189,6 +189,7 @@ if isempty(KO)
         cons.relations = cons.linkM(end)+1:cons.linkM(end)+n_relations;    
         n_cons = cons.relations(end);
     else
+        cons.relations = [];
         n_cons = cons.linkM(end);
     end
 
@@ -326,9 +327,9 @@ else
         cons.relations = cons.link_z_eps_del(end)+1:cons.link_z_eps_del(end)+n_relations;    
         n_cons = cons.relations(end);
     else
+        cons.relations = [];
         n_cons = cons.link_z_eps_del(end);
     end
-
 % A matrix
     A = sparse(zeros(cons.link_z_eps_del(end), var.x(end)));
     A(cons.Ndual, var.u) = S';
