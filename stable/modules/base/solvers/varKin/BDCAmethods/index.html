@@ -232,7 +232,7 @@
 <span id="id1"></span><h1>BDCAmethods<a class="headerlink" href="#bdcamethods" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.solvers.varKin.BDCAmethods"></span><dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.BDCA">
-<code class="descname">BDCA</code><span class="sig-paren">(</span><em>mapp</em>, <em>x0</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/BDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.BDCA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">BDCA</code><span class="sig-paren">(</span><em>mapp</em>, <em>x0</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/BDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.BDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>BDCA is a derivative-free algorithm for solving systems of nonlinear
 equations <span class="math">\(f(x) = 0\)</span>, <cite>x</cite> in <span class="math">\(R^m\)</span> using the nonlinear unconstrained minimization
 <span class="math">\(\textrm{min}\ \psi(x) = 1/2 ||f(x)||^2\)</span> s.t. <cite>x</cite> in <span class="math">\(R^m\)</span>.</p>
@@ -299,7 +299,7 @@ structure including more output information<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.DCA">
-<code class="descname">DCA</code><span class="sig-paren">(</span><em>mapp</em>, <em>x0</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/DCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.DCA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DCA</code><span class="sig-paren">(</span><em>mapp</em>, <em>x0</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/DCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.DCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>DCA is a derivative-free algorithm for solving systems of nonlinear
 equations <span class="math">\(f(x) = 0\)</span>, <cite>x</cite> in <span class="math">\(R^m\)</span> using the nonlinear unconstrained minimization
 <span class="math">\(min psi(x) = 1/2 ||f(x)||^2\)</span> s.t. <cite>x</cite> in <span class="math">\(R^m\)</span>.</p>
@@ -366,7 +366,7 @@ structure including more output information<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.FuncGradHessSub">
-<code class="descname">FuncGradHessSub</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>F</em>, <em>R</em>, <em>kin</em>, <em>rho</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.FuncGradHessSub" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FuncGradHessSub</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>F</em>, <em>R</em>, <em>kin</em>, <em>rho</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.FuncGradHessSub" title="Permalink to this definition">¶</a></dt>
 <dd><p><cite>SubGradHess</cite> provides the function value, the gradient, and the Hessian
 of the subproblem of DCA and BDCA to be used in <cite>fminunc</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -400,7 +400,7 @@ Hessian</li>
 
 <dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.InitialBDCA">
-<code class="descname">InitialBDCA</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/InitialBDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.InitialBDCA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">InitialBDCA</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/InitialBDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.InitialBDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p><cite>InitialBDCA</cite> is a function for initializing the parameters of BDCA and
 DCA. If some parameters specified by the user <cite>InitialDuplo</cite> uses these
 parameters. Otherwise, the default values will be used.</p>
@@ -471,7 +471,7 @@ stopping criterion</li>
 
 <dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.Rate_function">
-<code class="descname">Rate_function</code><span class="sig-paren">(</span><em>opt</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/Rate_function.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.Rate_function" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Rate_function</code><span class="sig-paren">(</span><em>opt</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/Rate_function.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.Rate_function" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>fxk = Rate_function(opt, varargin)</div></blockquote>
@@ -500,7 +500,7 @@ structure includes required parameters:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.varKin.BDCAmethods.StopCritBDCA">
-<code class="descname">StopCritBDCA</code><span class="sig-paren">(</span><em>nfxk</em>, <em>Niter</em>, <em>Nmap</em>, <em>T</em>, <em>MaxNumIter</em>, <em>MaxNumMapEval</em>, <em>TimeLimit</em>, <em>epsilon</em>, <em>Stopping_Crit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.StopCritBDCA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">StopCritBDCA</code><span class="sig-paren">(</span><em>nfxk</em>, <em>Niter</em>, <em>Nmap</em>, <em>T</em>, <em>MaxNumIter</em>, <em>MaxNumMapEval</em>, <em>TimeLimit</em>, <em>epsilon</em>, <em>Stopping_Crit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.StopCritBDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function checking that one of the stopping criteria
 holds to terminate LLM and GLM. It perepare the status determining why
 the algorithm is stopped.</p>

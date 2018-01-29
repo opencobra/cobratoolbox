@@ -251,12 +251,14 @@
 <span id="id1"></span><h1>subspaceProjection<a class="headerlink" href="#subspaceprojection" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.subspaceProjection"></span><dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectOntoSubspace">
-<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>modelT</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Projects flux, net flux, potential and logarithmic concentration onto
-their respective subspaces of the internal reaction stoichiometric matrix
-using projection matrices generated using the Moore-Penrose pseudoinverse</p>
-<p>Let <cite>M</cite> denote the Moore-Penrose pseudoinverse of the internal reaction
-stoichiometric matrix and the subscripts are the following
+their respective subspaces of A using projection matrices generated either
+derived from SVD, or by using the Moore-Penrose pseudoinverse</p>
+<p>Optionally, a subset of the matrix A may be chosen by using A(rowBool,colBool)
+but then only the true rows of u, u0, lnx, and true columns of vf,vr,vnet are
+projected and the remaining rows and columns are not affected</p>
+<p>Let <cite>M</cite> denote the Moore-Penrose pseudoinverse of A and the subscripts are the following
 <cite>_R</cite> row space,
 <cite>_N</cite> nullspace,
 <cite>_C</cite> column space,
@@ -265,38 +267,40 @@ stoichiometric matrix and the subscripts are the following
 <p>Let</p>
 <div class="math">
 \[\begin{split}vf   &amp;= vf_R + vf_N \\
-vf_R &amp;= M S vf = PR vf \\
-vf_N &amp;= (I - M S) vf = PN vf\end{split}\]</div>
+vf_R &amp;= M A vf = PR vf \\
+vf_N &amp;= (I - M A) vf = PN vf\end{split}\]</div>
 <p>Example for potential or logarithmic concentration</p>
 <p>Let</p>
 <div class="math">
 \[\begin{split}u   &amp;= u_C + u_L \\
-u_C &amp;= S M u = PC u \\
-u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
+u_C &amp;= A M u = PC u \\
+u_L &amp;= (I - A M) u = PL u\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelT</strong> &#8211;
-structure with:<ul>
-<li>modelT.S - <cite>m x n</cite> matrix</li>
-<li>modelT.SIntRxnBool - Boolean vector defining the <cite>nIntRxn</cite> internal reactions</li>
-</ul>
-</li>
+<li><strong>A          `m x n` matrix</strong></li>
 <li><strong>vf</strong> &#8211;
-<cite>nIntRxn x 1</cite> - forward flux for internal reactions</li>
+<cite>n x 1</cite> - forward flux</li>
 <li><strong>vr</strong> &#8211;
-<cite>nIntRxn x 1</cite> - reverse flux for internal reactions</li>
+<cite>n x 1</cite> - reverse flux</li>
 <li><strong>vnet</strong> &#8211;
-<cite>n x 1</cite> - net flux for all reactions</li>
+<cite>n x 1</cite> - net flux</li>
 <li><strong>u</strong> &#8211;
 <cite>m x 1</cite> - chemical potential</li>
 <li><strong>u0</strong> &#8211;
 <cite>m x 1</cite> - standard chemical potential</li>
 <li><strong>lnx</strong> &#8211;
 <cite>m x 1</cite> - logarithmic concentration</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rowBool    `m x 1` - boolean indicating the subset of rows of A</strong></li>
+<li><strong>colBool    &#8216;n x 1&#8217; - boolean indicating the subset of cols of A</strong></li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -328,7 +332,7 @@ logarithmic concentration - column space</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectSVD">
-<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assumes that <cite>U1</cite> has orthonormal columns
 so that <span class="math">\(U1 U1^T\)</span> is a projector.
 It returns the projections</p>
@@ -349,54 +353,45 @@ u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceProjector">
-<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>sub_space</em>, <em>fullS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the matrix for projection onto the sub_space of the internal
 reaction stoichiometric matrix specified by <cite>sub_space</cite>
 If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
 <p>Let M denote the Moore-Penrose pseudoinverse of the internal reaction
-stoichiometric matrix and the subscripts are the following
-<cite>_R</cite> row space
-<cite>_N</cite> nullspace
-<cite>_C</cite> column space
-<cite>_L</cite> left nullspace</p>
+stoichiometric matrix S and the subscripts are the following
+<cite>_R</cite> row space        i.e. range(A&#8217;)
+<cite>_N</cite> nullspace        i.e. null(A)
+<cite>_C</cite> column space     i.e. range(A)
+<cite>_L</cite> left nullspace   i.e. null(A&#8217;)</p>
 <p>Let</p>
 <div class="math">
 \[\begin{split}v   &amp;= v_R + v_N \\
-v_R &amp;= M S v = PR v \\
-v_N &amp;= (I - M S) v = PN v\end{split}\]</div>
+v_R &amp;= M A v = PR v \\
+v_N &amp;= (I - M A) v = PN v\end{split}\]</div>
 <p>Let</p>
 <div class="math">
 \[\begin{split}u   &amp;= u_C + u_L \\
-u_C &amp;= S M u = PC u \\
-u_L &amp;= (I - S M) u = PL u\end{split}\]</div>
+u_C &amp;= A M u = PC u \\
+u_L &amp;= (I - A M) u = PL u\end{split}\]</div>
 <p>Examples:</p>
-<p>Given <span class="math">\(S v = b\)</span>, then <span class="math">\(v_R = M b\)</span></p>
-<p>Given <span class="math">\(S^Tu = q\)</span>, then <span class="math">\(u_C = M^T q\)</span></p>
+<p>Given <span class="math">\(A v = b\)</span>, then <span class="math">\(v_R = M b\)</span></p>
+<p>Given <span class="math">\(A^Tu = q\)</span>, then <span class="math">\(u_C = M^T q\)</span></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, fullS)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-structure with:</p>
-<ul class="simple">
-<li>model.S - <cite>m x n</cite> Stoichiometric matrix</li>
-<li>model.SIntRxnBool - <cite>n x 1</cite> Boolean of reactions though to be mass balanced.</li>
-</ul>
-<p>By default, projectors only provided for the matrix: <cite>model.S(:, model.SIntRxnBool)</cite></p>
-</li>
+<div><ul class="simple">
+<li><strong>A          `m x n` matrix</strong></li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-{(1), 0}, 1 = print diagnostics, 0 = silent</p>
-</li>
-<li><p class="first"><strong>sub_space</strong> &#8211;
-returns projection matrices onto all or one select</p>
-<ul class="simple">
+<div><ul class="simple">
+<li><strong>printLevel</strong> &#8211;
+{(1), 0}, 1 = print diagnostics, 0 = silent</li>
+<li><strong>sub_space</strong> &#8211;
+returns projection matrices onto all or one select<ul>
 <li>sub_space</li>
 <li>&#8216;all&#8217;</li>
 <li>&#8216;R&#8217; row space</li>
@@ -405,24 +400,21 @@ returns projection matrices onto all or one select</p>
 <li>&#8216;L&#8217; left nullspace</li>
 </ul>
 </li>
-<li><p class="first"><strong>fullS</strong> &#8211;</p>
-<p>0 = uses only those columns given by <cite>model.SIntRxnBool</cite></p>
-<p>1 = uses full <cite>m x n</cite> Stoichiometric matrix (all columns)</p>
-</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>[PR, PN, PC, PL]</strong> &#8211;
-projection matrices</li>
+matrices for projection onto the row, null,
+column and left nullspace of A, respectively</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceSVD">
-<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6f54872d0fd019dcfa8aa95ccc381be17656c86a/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
 where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
 and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
