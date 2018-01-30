@@ -225,7 +225,7 @@
 <span id="id1"></span><h1>c13solver<a class="headerlink" href="#c13solver" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.fluxomics.c13solver"></span><dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.Combination">
-<code class="descname">Combination</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/Combination.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.Combination" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Combination</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/Combination.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.Combination" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces the array of combinations possible picking k from n
 adapted from Combinadics
 <a class="reference external" href="http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx">http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx</a></p>
@@ -252,7 +252,7 @@ array of combinations</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.cdv2idv">
-<code class="descname">cdv2idv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/cdv2idv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.cdv2idv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cdv2idv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/cdv2idv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.cdv2idv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformation matrix to transform cumomers to idv&#8217;s.
 <cite>idv = cdv2idv(log2(length(cdv)))*cdv</cite>;
 Employs memoization.</p>
@@ -277,7 +277,7 @@ idv</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver">
-<code class="descname">generateIsotopomerSolver</code><span class="sig-paren">(</span><em>model</em>, <em>inputMet</em>, <em>experiment</em>, <em>FVAflag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateIsotopomerSolver</code><span class="sig-paren">(</span><em>model</em>, <em>inputMet</em>, <em>experiment</em>, <em>FVAflag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints a file which looks like BiosyntheticMappingFile except that it has the
 indexes of every reaction in there as well.
 After that it calls converter.pl, optimizer.pl and validator.pl but I can
@@ -303,7 +303,7 @@ default = false, if true then additinoal operations involving fluxVariability in
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.idv2cdv">
-<code class="descname">idv2cdv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2cdv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2cdv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">idv2cdv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/idv2cdv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2cdv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns transformation to go from idv to cumomers.
 <cite>cdv = idv2cdv(log2(length(idv)))*idv</cite>;</p>
 <p><strong>Usage</strong></p>
@@ -327,7 +327,7 @@ cdv</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.idv2idv">
-<code class="descname">idv2idv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2idv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2idv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">idv2idv</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/idv2idv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2idv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outputs a transformation matrix for changing from forward to reverse order.</p>
 <p>order 1 (Jennie&#8217;s)</p>
 <p>000, 001, 010, 011, 100, 101, 110, 111</p>
@@ -354,7 +354,7 @@ transforamtion matrix</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.idv2mdv">
-<code class="descname">idv2mdv</code><span class="sig-paren">(</span><em>n</em>, <em>fragment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2mdv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2mdv" title="Permalink to this definition">¶</a></dt>
+<code class="descname">idv2mdv</code><span class="sig-paren">(</span><em>n</em>, <em>fragment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/idv2mdv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2mdv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns transofmation matrix from idv&#8217;s (either Jennie&#8217;s or Jan&#8217;s order).
 <cite>MDV = idv2mdv(log2(length(idv)))*idv</cite>;</p>
 <p><strong>Usage</strong></p>
@@ -385,7 +385,7 @@ transformation matrix</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.c13solver.scoreC13Fit">
-<code class="descname">scoreC13Fit</code><span class="sig-paren">(</span><em>flux</em>, <em>expdata</em>, <em>model</em>, <em>namesset</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.scoreC13Fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scoreC13Fit</code><span class="sig-paren">(</span><em>flux</em>, <em>expdata</em>, <em>model</em>, <em>namesset</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.scoreC13Fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function (1) computes the theoretical mdv distribution vector for
 a given flux vector, <cite>v</cite>, (2) and then computes an error score by taking a
 running sum of the squared difference between the theortical and
@@ -431,30 +431,6 @@ contains fields:<ul>
 <span class="n">glc_cdv</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">sugar</span> <span class="n">distribution</span> <span class="ow">in</span> <span class="n">cumomer</span> <span class="nb">format</span> <span class="p">(</span><span class="n">see</span> <span class="n">idv2cdv</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.dataIntegration.fluxomics.c13solver.slvrCumomer">
-<code class="descname">slvrCumomer</code><span class="sig-paren">(</span><em>v_in</em>, <em>xglcDe</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/slvrCumomer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.slvrCumomer" title="Permalink to this definition">¶</a></dt>
-<dd><p>input:  v has size unknown
-input:  xglcDe has size 64
-dividing symmetric fluxes</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.dataIntegration.fluxomics.c13solver.slvrCumomer_fast">
-<code class="descname">slvrCumomer_fast</code><span class="sig-paren">(</span><em>v_in</em>, <em>xglcDe</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/slvrCumomer_fast.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.slvrCumomer_fast" title="Permalink to this definition">¶</a></dt>
-<dd><p>input:  v has size unknown
-input:  xglcDe has size 64
-dividing symmetric fluxes</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.dataIntegration.fluxomics.c13solver.slvrEMU">
-<code class="descname">slvrEMU</code><span class="sig-paren">(</span><em>v_in</em>, <em>xglcDe</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/slvrEMU.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.slvrEMU" title="Permalink to this definition">¶</a></dt>
-<dd><p>input:  v has size unknown
-input:  xglcDe has size 64
-dividing symmetric fluxes</p>
 </dd></dl>
 
 </div>

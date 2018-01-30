@@ -13,7 +13,7 @@ Contributors
         <div class="col-lg-2 text-center">
         </div>
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistryt"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="" width="90px"></a>
+            <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="" width="90px"></a>
             <p><a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry">Ronan Fleming</a></p>
         </div>
 
