@@ -27,7 +27,7 @@ TOMLAB
 ~~~~~~
 
 1) Download ``TOMLAB/CPLEX`` from
-   `here <http://tomopt.com/scripts/register.php>`__, where you can also
+   `here <https://tomopt.com/scripts/register.php>`__, where you can also
    download ``TOMLAB/SNOPT``. You must purchase the ``tomlab.lic``
    license separately.
 
@@ -87,7 +87,7 @@ IBM ILOG CPLEX
 
 1) Download the ``CPLEX`` installation binary. The limited community
    edition is
-   `here <https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/>`__.
+   `here <https://www.ibm.com/products/ilog-cplex-optimization-studio>`__.
    CPLEX is free for students (and academics) and further information
    how to register and download is
    `here <https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en>`__.
@@ -233,10 +233,10 @@ MOSEK
 ~~~~~
 
 1) Download ``MOSEK`` as an archive
-   `here <https://mosek.com/resources/downloads>`__
+   `here <https://mosek.com/downloads>`__
 
 2) Apply for a license
-   `here <https://mosek.com/resources/trial-license>`__. A free academic
+   `here <https://mosek.com/products/trial/>`__. A free academic
    license is `here <https://license.mosek.com/academic/>`__. You will
    receive an email with your ``mosek.lic`` file.
 
