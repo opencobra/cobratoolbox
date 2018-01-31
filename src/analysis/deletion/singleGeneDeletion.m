@@ -52,8 +52,10 @@ end
 if (uniqueGene == 1)
 
     % detect whether there are alternate transcripts
-    if ~isempty(strfind(model.genes{1},'.'))
-        [geneList,rem] = strtok(model.genes,'.');
+    transcriptsPresent = false;
+    if any(~cellfun(@isempty, regexp(model.genes,'\.[0-9]+$'))) %If there are any genes that end on a transcript.
+        transcriptsPresent = true;
+        [geneList,rem] = strtok(geneList,'.');
         geneList = unique(geneList);
         nGenes = length(geneList);
         nDelGenes = length(geneList);
@@ -76,7 +78,7 @@ if (uniqueGene == 1)
     showprogress(0,'Single gene deletion analysis in progress ...');
     for i = 1:nDelGenes
         showprogress(i/nDelGenes);
-        if ~isempty(strfind(model.genes{1},'.'))
+        if transcriptsPresent
             % delete all alternate transcripts
             delGenes = model.genes(strmatch(geneList{i},model.genes));
             [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,delGenes);

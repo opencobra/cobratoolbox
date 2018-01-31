@@ -28,6 +28,8 @@ model = getDistributedModel('ecoli_core_model.mat');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+%Load reference data. 
+load('rxnDeletionData.mat');
 
 for k = 1:length(solverPkgs)
 
@@ -37,62 +39,78 @@ for k = 1:length(solverPkgs)
 
     if solverLPOK
 
-        fprintf('\n*** Test basic single gene deletion: ***\n\n');
-        fprintf('\n*** Deleting gene for ENO: ***\n\n');
+        fprintf('\n*** Test basic single gene deletion: ***\n\n');        
 
         %deleting gene for 'ENO')
-        [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion(model, 'FBA', {'b2779'});
+        [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion(model, 'FBA', {model.genes{1:4},'b2779'});
 
         % check if correct hasEffect value
-        assert(hasEffect == 1)
+        assert(isequal(hasEffect,hasEffectSD))
 
         % check if correctly deleted reactions
-        assert(strcmp(delRxns{1}, 'ENO'))
+        assert(isequal(delRxns,delRxnsSD))
 
         % check if correct grRateKO value
-        assert(abs(grRateKO) < tol)
+        assert(all(abs(grRateKO-grRateSdKO) < tol))
 
         % check if correct grRateWT value
-        assert(abs(grRateWT) > tol)
+        assert(abs(grRateWT-grRateWTRef) < tol)
+        
+        %Now, we combine gene 1 and two. 1 has no effect, so 1 and 2 should
+        %yield the same as 2.
+        modelForUTest = model;
+        modelForUTest.genes([1,5]) = strcat(model.genes(1),{'.1','.2'});
+        targetValues = [1 2 3 4 ];        
+        %Check functionality of uniqueGene Flag       
+        [grRatio, grRateKO, grRateWT, hasEffect, delRxns] = singleGeneDeletion(modelForUTest,'FBA',modelForUTest.genes([1 2 3 4]),true,true);
+                % check if correct hasEffect value
+        assert(isequal(hasEffect,hasEffectSD(targetValues)))
 
-        [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, 'FBA', {'b2779'}, {'b2287'});
+        % check if correctly deleted reactions
+        assert(isequal(delRxns,delRxnsSD(targetValues)))
 
+        % check if correct grRateKO value
+        assert(all(abs(grRateKO-grRateSdKO(targetValues)) < tol))
+
+        % check if correct grRateWT value
+        assert(abs(grRateWT-grRateWTRef) < tol)
+
+        [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, 'FBA', model.genes(1:4), {'b2779','b2287'});
+        %Check against reference
+        assert(all(all(abs(grRatioDble-grRatioDbRef) < tol)));
+        
         % check if correct grRateDble value
-        assert(abs(grRatioDble) < tol)
-
-        % check if correct grRateKO value
-        assert(abs(grRateKO) < tol)
+        assert(all(all(abs(grRateKO-grRateDbKO) < tol)));        
 
         % check if correct grRateWT value
-        assert(abs(grRateWT) > tol)
+        assert(abs(grRateWT - grRateWTRef) < tol);
 
         %% singleRxnDeletion Test
         fprintf('\n\nStarting singleRxnDeletion test:\n');
 
-        [test_grRatio, test_grRateKO, test_grRateWT, test_hasEffect, test_delRxn]= singleRxnDeletion(model, 'FBA');
-        load('rxnDeletionData.mat');
+        [test_grRatio, test_grRateKO, test_grRateWT, test_hasEffect, test_delRxn]= singleRxnDeletion(model, 'FBA');        
 
-        grRatio(isnan(grRatio)) = -1;
+        grRatio_Rxn_Ref(isnan(grRatio_Rxn_Ref)) = -1;
         test_grRatio(isnan(test_grRatio)) = -1;
 
         % check if correct grRatio values
-        for i = 1:length(grRatio)
-            assert(abs(grRatio(i) - test_grRatio(i)) < tol)
+        for i = 1:length(grRatio_Rxn_Ref)
+            assert(abs(grRatio_Rxn_Ref(i) - test_grRatio(i)) < tol)
         end
 
-        grRateKO(isnan(grRateKO)) = -1;
+        grRateKO_Rxn_Ref(isnan(grRateKO_Rxn_Ref)) = -1;
         test_grRateKO(isnan(test_grRateKO)) = -1;
 
         % check if correct grRateKO values
-        for i = 1:length(grRateKO)
-            assert(abs(grRateKO(i) - test_grRateKO(i)) < tol)
+        for i = 1:length(grRateKO_Rxn_Ref)
+            assert(abs(grRateKO_Rxn_Ref(i) - test_grRateKO(i)) < tol)
         end
 
         % check if correct grRateWT values
-        assert(abs(grRateWT - test_grRateWT) < tol)
+        assert(abs(grRateWTRef - test_grRateWT) < tol)
 
         % check if correct delRxn values
-        assert(isequal(delRxn, test_delRxn))
+        assert(isequal(delRxn_Rxn_Ref, test_delRxn))
     end
 
     % output a success message
