@@ -54,8 +54,20 @@ for k = 1:length(solverPkgs)
                     break
                 end
             end
-        end
+        end        
         assert(sum(~logical(gmcsIsTrue))==0);
+        %Now, test with a gene_set 
+        options = struct();
+        options.gene_set = model.genes([1 2 4 5 6]);                
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        %Assert that all correct solutions are there 
+        assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),gmcs)), {{'g5'},{'g1','g4'}})))
+        %and, that there are no surplus solutions
+        assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),{{'g5'},{'g1','g4'}})), gmcs)))
+        %Finally test this for gMCS containing a specific knockout.
+        options.KO = 'g5';
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        assert(isequal(gmcs,{{'g5'}}));
     else
         warning('The test testGeneMCS cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
     end
