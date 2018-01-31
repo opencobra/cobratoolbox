@@ -332,6 +332,10 @@ installation instructions and install <code class="docutils literal"><span class
 <p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
 also follow the instructions
 <a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
+In this startup file add the following command:
+<code class="docutils literal"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
+where <code class="docutils literal"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
 </li>
 </ol>
 </div>

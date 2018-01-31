@@ -376,6 +376,46 @@ having cell arrays with chars.</dd>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.createEmptyFields">
+<code class="descname">createEmptyFields</code><span class="sig-paren">(</span><em>model</em>, <em>fieldNames</em>, <em>fieldDefinitions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/io/utilities/createEmptyFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.createEmptyFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the specified model field with its default values. Works only for
+fields defined in the toolbox if fieldDefinitions are not supplied.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = createEmptyFields(model,fieldName, fieldDefinitions)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The model to add a field to</li>
+<li><strong>fieldNames</strong> &#8211;
+The names of the fields to add.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldDefinitions</strong> &#8211;
+The Specifications of the field. Only necessary
+if a field which is not defined yet should be
+added.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The original model struct with the specified
+field added.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd>Thomas Pfau Nov 2017</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.creategrRulesField">
 <code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em>, <em>positions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the grRules optional model field from the required rules and gene fields.</p>
