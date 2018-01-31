@@ -14,13 +14,20 @@ classdef (HandleCompatible) LiteralNode < Node
             obj.id = id;
         end
         
-        function dnfNode = convertToDNF(self)
-            dnfNode = LiteralNode(self.id);
+        function dnfNode = convertToDNF(self)            
+            dnfNode = AndNode();
+            litnode = LiteralNode(self.id);
+            dnfNode.addChild(litnode);
         end
         
-        function res = evaluate(self,assignment)
+        function res = evaluate(self,assignment, printLevel)
+            if ~exist('printLevel','var')
+                printLevel = 0;
+            end
             res = assignment(self.id);
-            fprintf('%s : %i\n',self.id,res);
+            if printLevel >= 1
+                fprintf('%s : %i\n',self.id,res);
+            end
         end
         
         function id = getID(self)
@@ -40,9 +47,9 @@ classdef (HandleCompatible) LiteralNode < Node
         
         function res = contains(self,literal)
             if strcmp(self.id,literal)
-                res = 1;
+                res = true;
             else
-                res = 0;
+                res = false;
             end
         end
         function literals = getLiterals(self)
