@@ -255,7 +255,12 @@ if ~allowLoops
 else
     sol = solveCobraLP(QuickProblem);
 end
+if sol.stat~=1
+    error('Maximization of the sum of all fluxes failed, even though the first FBA was optimal. Possible cause of error: unbounded fluxes');
+end
+    
 relSol = sol.full(Order(Presence));
+
 %Obtain fluxes at their boundaries
 maxSolved = model.ub(Order(Presence)) == relSol;
 minSolved = model.lb(Order(Presence)) == relSol;
@@ -271,6 +276,10 @@ if ~allowLoops
 else
     sol = solveCobraLP(QuickProblem);
 end
+if sol.stat~=1
+    error('Minimization of the sum of all fluxes failed, even though the first FBA was optimal. Possible cause of error: unbounded fluxes');
+end
+
 relSol = sol.full(Order(Presence));
 %Again obtain fluxes at their boundaries
 maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
