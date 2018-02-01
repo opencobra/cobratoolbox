@@ -32,7 +32,7 @@ catch
     %No pool
 end
 
-fprintf('   Testing sampleCbModel ... \n', );
+fprintf('   Testing sampleCbModel ... \n' );
 
 % set the solver
 solverOK = changeCobraSolver(solvers.LP, 'LP', 0);
