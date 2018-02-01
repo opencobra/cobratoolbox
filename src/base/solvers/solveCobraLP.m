@@ -444,7 +444,10 @@ switch solver
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
         f = c'* x;
-        y = sol.y;
+        %MPS Considers the objective as additional constraint (first
+        %constraint. therefore it has a suplus dual which needs to be
+        %removed.
+        y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
 
@@ -535,7 +538,10 @@ switch solver
         x = sol.x;
 
         f = c' * x;
-        y = sol.y;
+        %MPS Considers the objective as additional constraint (first
+        %constraint. therefore it has a suplus dual which needs to be
+        %removed.
+        y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
 
