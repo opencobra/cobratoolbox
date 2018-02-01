@@ -4,7 +4,7 @@
      <img src="https://prince.lcsb.uni.lu/note_maintenance_end.png" width="100%">
    </a>
    <br>
-   
+
    <p align="center">
      <img class="readme_logo" src="https://prince.lcsb.uni.lu/img/logos/logo.png" height="160px"/>
    </p>
@@ -56,8 +56,8 @@ Installation
    .. code-block:: console
 
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
-      
-   
+
+
    |warning| Please note the ``--depth=1`` in the clone command. Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
    **not** in |matlab|. Although not recommended, you can download the
    repository as a `compressed archive <https://github.com/opencobra/cobratoolbox/archive/master.zip>`__.
@@ -69,9 +69,9 @@ Installation
       >> initCobraToolbox
 
 3. You can test your installation by running from |matlab|
-   
+
    .. code-block:: matlab
-   
+
       >> testAll
 
 .. end-installation-marker
@@ -104,7 +104,7 @@ Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 .. raw:: html
 
    <p align="center">
-   <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
+   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px"/>
    </p>
 
 
@@ -277,7 +277,7 @@ holder.*
 .. |latest| raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-   
+
 
 .. |forum| raw:: html
 
@@ -285,5 +285,5 @@ holder.*
 
 
 .. |br| raw:: html
-    
+
    <br>
