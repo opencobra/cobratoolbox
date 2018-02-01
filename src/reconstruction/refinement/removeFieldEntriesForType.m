@@ -114,6 +114,8 @@ if strcmp(type,'genes')
                 end
             end              
         end
+        % Fix rules that now have more than one continuous "|"
+        model.rules = regexprep(model.rules, '\|{2,}', '|');
         %Now, replace all remaining indices.
         oldIndices = find(~indicesToRemove);
         for i = 1:numel(oldIndices)
@@ -149,7 +151,7 @@ if isfield(model, 'grRules') && exist('modifiedRules','var')
     currentrules = strrep(model.rules(modifiedRules),'&','and');
     currentrules = strrep(currentrules,'|','or');
     getGeneName = @(pos) model.genes{str2num(pos)};
-    currentrules = regexprep(currentrules,'x\(([0-9])\)','${getGeneName($1)}');
+    currentrules = regexprep(currentrules,'x\(([0-9]+)\)','${getGeneName($1)}');
     model.grRules(modifiedRules) = currentrules;
 end
 
