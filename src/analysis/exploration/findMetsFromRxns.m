@@ -20,7 +20,8 @@ function [metList, stoichiometries] = findMetsFromRxns(model, reactions)
 %    stoichiometries:   this is a Cell array of double arrays of the
 %                       stoichiometric coefficients corresponding to the
 %                       reactions in the order of provided reaction ids.
-%
+%                       If reactions not in the model are provided, those
+%                       will be represented by empty arrays.
 % .. Author: - Thomas Pfau Jan 2018
 
 if ~isnumeric(reactions)
