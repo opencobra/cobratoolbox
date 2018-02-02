@@ -88,4 +88,34 @@ assert(Rule5.evaluate(assignment))
 assert(~Rule5.contains('20'))
 assert(Rule5.contains('5'))
 
-
+%Finally, test the deletion of a literal
+head = fp.parseFormula(model.rules{5});
+head.deleteLiteral('1');
+%Delete all unnecessary rules (makes this faster)
+modelNorm.rules(:) = {''};
+modelNorm = rmfield(modelNorm,'grRules');
+modelNorm.rules{5} = head.toString(true);
+modelNorm = NormaliseGPRs(modelNorm);
+%now, if we remove the first gene, the clauses should be as follows:
+%(Essentially the first clauses minus the 1)
+clauses = {[2,3],[2,4],[2,5],[4,5,6],[4,5],[2,4,5]};
+%We will therefore check, whether all of those and only those clauses
+%exist)
+clausesToCheck = clauses;
+%Now, lets extract the clauses from the rules string
+clausesInModel = strsplit(modelNorm.rules{5},'|');
+%now, extract the numbers from the clauses
+positions = regexp(clausesInModel,'^|[\( ]x\((?<pos>[0-9]+)\)[ \)]|$','names'); %This simultaneously checks, that the format was adapted.
+for i = 1:numel(positions)
+    cpos = cellfun(@str2num, {positions{i}.pos});    
+    clauseFound = false;
+    for j = 1:numel(clausesToCheck)
+        if isempty(setxor(cpos,clausesToCheck{j}))
+            clausesToCheck(j) = [];
+            clauseFound = true;
+            break;
+        end
+    end
+    assert(clauseFound);
+end   
+assert(isempty(clausesToCheck));
