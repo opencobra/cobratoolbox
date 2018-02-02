@@ -82,18 +82,15 @@ if strcmp(type,'genes')
             errormessage = ['Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given ' includedLink];
             error(errormessage);
         end
-        %Store all modified rules
-        modifiedRules = [];
-        %However, we first normalize the rules.        
-        model = normalizeRules(model);
         %obtain the relevant rules
-        relrules = cellfun(@(y) cellfun(@(x) ~isempty(strfind(y,x)),strcat('x(',cellfun(@num2str,num2cell(genePos),'UniformOutput',0),')')),model.rules,'UniformOutput',0);        
-        %
-        checkrules = find(cellfun(@any,relrules));
+        relrules = cellfun(@(y) cellfun(@(x) ~isempty(strfind(y,x)),strcat('x(',cellfun(@num2str,num2cell(genePos),'UniformOutput',0),')')),model.rules,'UniformOutput',0);                
+        matchingRules = find(cellfun(@any,relrules));
+        %Define modified rules.
+        modifiedRules = matchingRules;
         fp = FormulaParser();
-        for crule = 1:numel(checkrules)
-            rule = fp.parseFormula(model.rules{checkrules(crule)});
-            rulegenes = relrules{checkrules(crule)};
+        for crule = 1:numel(matchingRules)
+            rule = fp.parseFormula(model.rules{matchingRules(crule)});
+            rulegenes = relrules{matchingRules(crule)};
             for g = 1:numel(genePos)
                 if rulegenes(g)
                     rule.deleteLiteral(num2str(genePos(g)));
@@ -101,8 +98,21 @@ if strcmp(type,'genes')
         % Fix rules that now have more than one continuous "|"
         model.rules = regexprep(model.rules, '\|{2,}', '|');
             end
-            model.rules{checkrules(crule)} = rule.toString(1);
+            model.rules{matchingRules(crule)} = rule.toString(1);
         end
+        
+        %Now, replace all remaining indices.
+        oldIndices = find(~indicesToRemove);
+        for i = 1:numel(oldIndices)
+            if i ~= oldIndices(i)
+                %replace by new with an indicator that this is new.
+                model.rules = strrep(model.rules,['x(' num2str(oldIndices(i)) ')'],['x(' num2str(i) '$)']);
+            end
+        end
+        %remove the indicator.       
+        model.rules = strrep(model.rules,'$','');
+        
+        model = normalizeRules(model,modifiedRules);
     end
     if removeRulesField
         model = rmfield(model,'rules');
@@ -132,21 +142,22 @@ end
 
 
 
-function model = normalizeRules(model)
+function model = normalizeRules(model,rxns)
 % Normalizes the rules by removing surplus parenthesis around gene
 % references
 % USAGE:
-%    model = normalizeRules(model)
+%    model = normalizeRules(model,rxns)
 % INPUT:
 %    model:     A COBRA model structure containing the rules field.
+%    rxns:      Positions to normalize
 %
 % OUTPUT:
 %    model:     A COBRA model structure with with a normalized rules field.
 
-origrules = model.rules;
-model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
-while ~all(strcmp(origrules,model.rules))
-    origrules = model.rules;
-    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+origrules = model.rules(rxns);
+model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
+while ~all(strcmp(origrules,model.rules(rxns)))
+    origrules = model.rules(rxns);
+    model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
 end
         
