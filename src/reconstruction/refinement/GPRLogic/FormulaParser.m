@@ -180,8 +180,10 @@ classdef FormulaParser < handle
                         %thus we will remove any whitespace, and any brackets and
                         %create a literal node.
                         literalstring = regexprep(finalid,'\[|\]|\{|\}|\(|\)|\s','');
-                        %literalstring = literalstring{1};
-                        HeadNode = LiteralNode(literalstring);
+                        %We will create an AND Node with a single literal
+                        %child.
+                        HeadNode = AndNode();
+                        HeadNode.addChild(LiteralNode(literalstring));                        
                     end
                     
                 end
