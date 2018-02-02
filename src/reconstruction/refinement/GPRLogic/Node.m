@@ -59,6 +59,19 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         %    Node:    The Node is modified in this process.
         %
         
+        deleteLiteral(self,literalID)
+        % Delete a literal from this Node and all children
+        % USAGE:
+        %    newHead = node.deleteLiteral(literalID)
+        % 
+        % INPUT:
+        %    literalID: The LiteralID (As string or number)
+        %        
+        % NOTE:
+        %    The Node will no longer contain the corresponding literal
+        %
+        
+        
     end
     methods
         function obj = Node()
@@ -82,6 +95,8 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %
             id = class(self);
         end
+        
+        
         
         function addChild(self,childNode)
             % Add A Child to the node
