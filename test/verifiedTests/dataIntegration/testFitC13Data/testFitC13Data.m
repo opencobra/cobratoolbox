@@ -26,21 +26,6 @@ load('expdata.mat', 'expdata'); % load data
 load('point.mat', 'v0'); % load initial point
 
 %The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
-
-changeCobraSolver(solvers.NLP,'NLP',0);
-changeCobraSolver(solvers.LP,'LP',0);
-
-generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
-expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)
-
-% start from a different point
-output = scoreC13Fit(v0.^2,expdata,model);
-
-initial_score = output.error;
-
-% output a success message
-fprintf('Done.\n');
-
 % create a parallel pool
 try
     minWorkers = 2;
@@ -55,6 +40,21 @@ try
 catch
     disp('Trying Non Parallel')
 end
+
+
+changeCobraSolver(solvers.NLP,'NLP',0);
+changeCobraSolver(solvers.LP,'LP',0);
+
+generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
+expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)
+
+% start from a different point
+output = scoreC13Fit(v0.^2,expdata,model);
+
+initial_score = output.error;
+
+% output a success message
+fprintf('Done.\n');
 
 fprintf('   Testing fitC13Data ... \n');
 
