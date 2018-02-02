@@ -1,8 +1,12 @@
-function [results, resultTable] = runCOBRATestSuite()
+function [results, resultTable] = runCOBRATestSuite(testNames)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
 % to be skipped if it throws a COBRA:RequirementsNotMet error.
+%
+% INPUTS: 
+%
+%    testNames:     only run tests matching the regexp given in testNames.
 %
 % OUTPUTS:
 %
@@ -26,6 +30,9 @@ function [results, resultTable] = runCOBRATestSuite()
 
 global CBTDIR
 
+if ~exist('testNames','var')
+    testNames = '.*';
+end
 
 %Go to the test directory.
 testDir = [CBTDIR filesep 'test'];
@@ -34,6 +41,7 @@ currentDir = cd(testDir);
 %Get all names of test files
 testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
+testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
 %Run the tests and show outputs.
 for i = 1:numel(testFileNames)
