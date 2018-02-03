@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability2(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
 % Performs flux variablity analysis
 %
 % USAGE:
@@ -50,7 +50,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %                         to the value and sign of the coefficient
 %       - Ronan Fleming   27/09/10 Vmin, Vmax
 %       - Marouen Ben Guebila 22/02/2017 Vmin,Vmax method
-%       - Claudio Delpino 02/02/18 Support for some (but not all) unbounded fluxes + small fixes.   
+%       - Claudio Delpino 02/02/18 Support for some (but not all) unbounded fluxes, small fixes.   
 
 global CBT_LP_PARAMS
 
@@ -98,6 +98,11 @@ end
 if any(~ismember(rxnNameList,model.rxns))
     presence = ismember(rxnNameList,model.rxns);
     error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
+end
+
+%rxnNameList can come as a row cell, but code assumes it is column cell. 
+if(size(rxnNameList,2)>size(rxnNameList,1))
+    rxnNameList=transpose(rxnNameList);
 end
 
 % Set up the problem size
@@ -220,6 +225,7 @@ solutionPool = zeros(length(model.lb), 0);
 
 %Small optimization opportunity, move the opening of the pool after we
 %actually know that there are maximizations/minimizations to make.
+
 v=ver;
 PCT = 'Parallel Computing Toolbox';
 
@@ -246,8 +252,8 @@ preCompMinSols = cell(nRxns,1);
 QuickProblem = LPproblem;
 [Presence,Order] = ismember(rxnNameList,model.rxns);
 %assumes model.lb and model.ub always come as columns
-isNegUnb=transpose(model.lb(Order(Presence))==-Inf);
-isPosUnb=transpose(model.ub(Order(Presence))==Inf);
+isNegUnb=model.lb(Order(Presence))==-Inf;
+isPosUnb=model.ub(Order(Presence))==Inf;
 
 %Maximise sum of requested, bounded, reactions
 QuickProblem.c(:) = 0;
@@ -290,8 +296,8 @@ if minNorm
 end
 %Restrict the reactions to test only those which are not at their boundariestestFv.
 %isNegUnb/isPosUnb were row vectors to match origPresence
-rxnListMin = rxnNameList(~minSolved & transpose(~isNegUnb));
-rxnListMax = rxnNameList(~maxSolved & transpose(~isPosUnb));
+rxnListMin = rxnNameList(~minSolved & ~isNegUnb);
+rxnListMax = rxnNameList(~maxSolved & ~isPosUnb);
 
 Vmax=zeros(nRxns,length(rxnNameList));
 Vmin=zeros(nRxns,length(rxnNameList));
