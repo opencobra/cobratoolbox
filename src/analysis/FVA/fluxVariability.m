@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability2(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
 % Performs flux variablity analysis
 %
 % USAGE:
