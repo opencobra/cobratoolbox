@@ -13,6 +13,26 @@
 
   
   
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -259,7 +279,7 @@
 <span id="id1"></span><h1>thermoFBA<a class="headerlink" href="#thermofba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.thermoFBA"></span><dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.addLoopLawConstraints">
-<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em>, <em>method</em>, <em>reduce_vars</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/thermo/thermoFBA/addLoopLawConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em>, <em>method</em>, <em>reduce_vars</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/thermoFBA/addLoopLawConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds loop law constraints to LP problem or MILP problem.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -314,7 +334,7 @@ Problem structure containing the following fields describing an MILP problem:<ul
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.checkThermodynamicConsistency">
-<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>v = checkThermodynamicConsistency(model, q)</div></blockquote>
@@ -335,7 +355,7 @@ Problem structure containing the following fields describing an MILP problem:<ul
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.consistentPotentials">
-<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/thermo/thermoFBA/consistentPotentials.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
+<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/thermoFBA/consistentPotentials.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a consistent set of potentials for each metabolite in a biochemical
 network, given the directions specified by the bounds on each reaction
 i.e. find y0, such that <span class="math">\(S^T y_0 &lt; 0\)</span> for a forward reaction and the opposite
@@ -368,7 +388,7 @@ consistent set of chemical potentials</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot">
-<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots the top N reactions producing and consuming a metabolite in a flux solution</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -390,7 +410,7 @@ Number of reactions to include for production/consumption</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.printDirectionalityFromBounds">
-<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the directionality for each reaction depending on the bounds for
 each reaction. Defaults to using <cite>model.lb</cite> &amp;  <cite>model.ub</cite> if none provided</p>
 <p><strong>Usage</strong></p>

@@ -13,6 +13,26 @@
 
   
   
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -251,7 +271,7 @@
 <span id="id1"></span><h1>subspaceProjection<a class="headerlink" href="#subspaceprojection" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.subspaceProjection"></span><dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectOntoSubspace">
-<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Projects flux, net flux, potential and logarithmic concentration onto
 their respective subspaces of A using projection matrices generated either
 derived from SVD, or by using the Moore-Penrose pseudoinverse</p>
@@ -332,7 +352,7 @@ logarithmic concentration - column space</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectSVD">
-<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assumes that <cite>U1</cite> has orthonormal columns
 so that <span class="math">\(U1 U1^T\)</span> is a projector.
 It returns the projections</p>
@@ -353,7 +373,7 @@ u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceProjector">
-<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the matrix for projection onto the sub_space of the internal
 reaction stoichiometric matrix specified by <cite>sub_space</cite>
 If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
@@ -414,7 +434,7 @@ column and left nullspace of A, respectively</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceSVD">
-<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
 where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
 and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>

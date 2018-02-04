@@ -13,6 +13,26 @@
 
   
   
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -219,7 +239,7 @@ variables.</p>
 <h2>TOMLAB<a class="headerlink" href="#tomlab" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p class="first">Download <code class="docutils literal"><span class="pre">TOMLAB/CPLEX</span></code> from
-<a class="reference external" href="http://tomopt.com/scripts/register.php">here</a>, where you can also
+<a class="reference external" href="https://tomopt.com/scripts/register.php">here</a>, where you can also
 download <code class="docutils literal"><span class="pre">TOMLAB/SNOPT</span></code>. You must purchase the <code class="docutils literal"><span class="pre">tomlab.lic</span></code>
 license separately.</p>
 </li>
@@ -271,7 +291,7 @@ environment variables on Windows, please follow the instructions
 <ol class="arabic">
 <li><p class="first">Download the <code class="docutils literal"><span class="pre">CPLEX</span></code> installation binary. The limited community
 edition is
-<a class="reference external" href="https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/">here</a>.
+<a class="reference external" href="https://www.ibm.com/products/ilog-cplex-optimization-studio">here</a>.
 CPLEX is free for students (and academics) and further information
 how to register and download is
 <a class="reference external" href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en">here</a>.</p>
@@ -312,6 +332,10 @@ installation instructions and install <code class="docutils literal"><span class
 <p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
 also follow the instructions
 <a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</p>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
+In this startup file add the following command:
+<code class="docutils literal"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
+where <code class="docutils literal"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
 </li>
 </ol>
 </div>
@@ -390,10 +414,10 @@ entering <code class="docutils literal"><span class="pre">exit()</span></code> o
 <h2>MOSEK<a class="headerlink" href="#mosek" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p class="first">Download <code class="docutils literal"><span class="pre">MOSEK</span></code> as an archive
-<a class="reference external" href="https://mosek.com/resources/downloads">here</a></p>
+<a class="reference external" href="https://mosek.com/downloads">here</a></p>
 </li>
 <li><p class="first">Apply for a license
-<a class="reference external" href="https://mosek.com/resources/trial-license">here</a>. A free academic
+<a class="reference external" href="https://mosek.com/products/trial/">here</a>. A free academic
 license is <a class="reference external" href="https://license.mosek.com/academic/">here</a>. You will
 receive an email with your <code class="docutils literal"><span class="pre">mosek.lic</span></code> file.</p>
 </li>
