@@ -31,7 +31,7 @@ if nnz(A - round(A))
     error('Stoichiometric coefficients must be all integers')
 end
 
-a = zeros(size(A, 1));
+a = zeros(size(A, 1),1);
 
 if isfield(model, 'description')
     filename = model.description;
@@ -85,17 +85,13 @@ sh = 0;
 lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh);
 
 % pause(eps)
-if isunix
-    [status, result] = system('which lrs');
-    if ~isempty(result)
-        % call lrs and wait until extreme pathways have been calculated
-        systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
-        [status, result] = system(systemCallText);
-    else
-        error('lrs not installed or not in path')
-    end
+[status, result] = system('which lrs');
+if ~isempty(result)
+    % call lrs and wait until extreme pathways have been calculated
+    systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
+    [status, result] = system(systemCallText);
 else
-    error('non unix machines not yet supported')
+    error('lrs not installed or not in path')
 end
 
 [P, V] = lrsOutputReadRay([filename '_' suffix '.ext']);

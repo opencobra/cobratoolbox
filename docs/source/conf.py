@@ -173,6 +173,12 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
                 'theme_logo_only': True,
+                'favicon_apple_touch': 'img/apple-touch-icon.png',
+                'favicon32x32': 'img/favicon-32x32.png',
+                'favicon16x16': 'img/favicon-16x16.png',
+                'favicon_safari_pinned_tab': 'img/safari-pinned-tab.svg',
+                'manifest': 'json/manifest.json',
+                'browserconfig': 'browserconfig.xml',
                 'show_source': False}
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.

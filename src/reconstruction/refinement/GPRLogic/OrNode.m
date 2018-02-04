@@ -8,25 +8,55 @@ classdef (HandleCompatible) OrNode < Node
     end
     
     methods
-        function res = evaluate(self,assignment) 
+        function res = evaluate(self,assignment, printLevel) 
+            if ~exist('printLevel','var')
+                printLevel = 0;
+            end
             res = false;
             for i=1:numel(self.children)
                 child = self.children(i);
-                if child.evaluate(assignment)
+                if child.evaluate(assignment,printLevel)
                     res = true;
                     break;
                 end
             end        
-            %fprintf('%s : %i\n',self.toString(),res);
+            if printLevel >= 1
+                fprintf('%s : %i\n',self.toString(),res);
+            end
         end
         
                 
         function dnfNode = convertToDNF(self)            
             dnfNode = OrNode();
-            for c=1:numel(self.children)
+            for c=1:numel(self.children)                
                 child = self.children(c);
-                dnfNode.addChild(child.convertToDNF());
-            end                       
+                %If the child is again an or node, we need to add all
+                %children of that child directly to this node.
+                if isa(child,'OrNode')
+                    DNFChild = child.convertToDNF();
+                    for cc = 1:numel(DNFChild.children)
+                        dnfNode.addChild(DNFChild.children(cc))
+                    end
+                else
+                    dnfNode.addChild(child.convertToDNF());
+                end
+            end
+                        %finally, remove all duplicate literal nodes from this node.
+            for c = 1:numel(dnfNode.children)
+                literals = {};
+                childrenToRemove = [];
+                childNode = dnfNode.children(c);
+                for i = 1 : numel(childNode.children)
+                    if isa(childNode.children(i),'LiteralNode')
+                        if ~any(~cellfun(@isempty, strfind(literals,childNode.children(i).toString())))
+                            literals{end+1} = childNode.children(i).toString();
+                        else
+                            childrenToRemove(end+1) = i;
+                        end
+                    end
+                end
+                childNode.children(childrenToRemove) = [];
+            end
         end
         
         function removeDNFduplicates(self)
@@ -74,44 +104,26 @@ classdef (HandleCompatible) OrNode < Node
         end
         
         function reduce(self)
-           child = 1;            
-            delchilds = [];
-            while child <= numel(self.children)
-                cchild = self.children(child);                
-                %Merge Nodes from the same class.
-                if strcmp(class(self.children(child)),class(self))                                        
-                    %reduce the child, merging and removing "singular
-                    %nodes"
-                    cchild.reduce();
-                    for cc = 1:numel(cchild.children)
-                        cchildchild = cchild.children(cc);                        
-                        self.children(end+1) = cchildchild;
-                        cchildchild.parent = self;
-                    end
-                    delchilds(end+1) = child;
-                %If a child is not a literal but has only one child, move
-                %that child up.
+            mergeNode.children = [];
+            for i = 1:numel(self.children)
+                cchild = self.children(i);                
+                cchild.reduce()              
+                %Check if the child has exactly one child. I
+                if numel(cchild.children) == 1
+                    %If there is only one child, we can directly add the
+                    %child to this node.
+                    mergeNode.children = [mergeNode.children,cchild.children];
+                elseif isa(cchild,'OrNode')
+                    %If its an OR node, we can directly add all children to
+                    %this node.
+                    mergeNode.children = [mergeNode.children,cchild.children];
                 else
-                    while ( numel(cchild.children) <= 1 && ~(isa(cchild,'LiteralNode')) )
-                        cchildchild = cchild.children(1);                        
-                        self.children(child) = cchildchild;
-                        cchildchild.parent = self;
-                        %we can't continue yet, as this child could now be
-                        %an AND node. 
-                        cchild = cchildchild;
-                    end
-                end   
-                child = child + 1;
-            end
-            %Remove Merged childs
-            self.children(delchilds)  = [];
-            %And reduce all non literal and non same class children,
-            %everything else should already be reduced.
-            for child = 1:numel(self.children)
-                if ~(strcmp(class(self.children(child)),class(self)) && ~(isa(cchild,'LiteralNode')) ) 
-                    cchild = self.children(child);
-                    cchild.reduce();
+                    mergeNode.children = [mergeNode.children,cchild];
                 end
+            end
+            self.children = mergeNode.children;
+            for i = 1:numel(self.children)
+                self.children(i).parent = self;
             end
         end
         

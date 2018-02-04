@@ -9,7 +9,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
     end
     
     methods(Abstract)
-        res = evaluate(self,assignment);
+        res = evaluate(self,assignment,printLevel);
         % evaluate the node with the current GPR assignment
         % USAGE:
         %    res = Node.evaluate(assignment)
@@ -17,8 +17,13 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         % INPUTS:
         %    assignment:    a containers.Map of the assignment of
         %                   true/false values for each literal. The
-        %                   literals are assumed to be the numbers from the
+        %                   literals are assumed to be the string numbers from the
         %                   parsed formula.
+        %
+        % OPTIONAL INPUTS:
+        %
+        %    printLevel:    whether to rpint out result for individual
+        %                   nodes (default 0)
         %
         % OUTPUTS:
         %    res:           The evaluation of the Node (true or false)
@@ -85,13 +90,25 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %
             % INPUTS:
             %    childNode:   The child to add to the node.
-            %
-            if isempty(self.children)
-                self.children = childNode;
+            %   
+            
+            if isa(childNode,class(self)) %if the nodes are of the same class, we just add the children.
+                for i=1:numel(childNode.children)
+                    if isempty(self.children)
+                        self.children = childNode.children(i);
+                    else                  
+                        self.children(end+1) = childNode.children(i);
+                    end
+                    childNode.children(i).parent = self.parent;
+                end
             else
-                self.children(end+1) = childNode;
-            end
-            childNode.parent = self;
+                if isempty(self.children)
+                    self.children = childNode;
+                else
+                    self.children(end+1) = childNode;
+                end
+                childNode.parent = self;
+            end            
         end
         function res = contains(self,literal)
             % Check whether the given literal is part of this node.

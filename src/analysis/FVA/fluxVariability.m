@@ -222,13 +222,12 @@ solutionPool = zeros(length(model.lb), 0);
 v=ver;
 PCT = 'Parallel Computing Toolbox';
 if  any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
-    p = gcp('nocreate');
-    if isempty(p)
-        poolsize = 0;
-    else
-        poolsize = p.NumWorkers;
+    try
+        p = gcp('nocreate');
+        PCT_status=1;
+    catch
+        PCT_status = 0;
     end
-    PCT_status=1;
 else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
@@ -285,7 +284,7 @@ rxnListMin = rxnNameList(~minSolved);
 rxnListMax = rxnNameList(~maxSolved);
 
 
-if ~PCT_status && (~exist('parpool') || poolsize == 0)  %aka nothing is active
+if ~PCT_status %aka nothing is active
     if minNorm
         for i = 1:length(rxnNameList)
         

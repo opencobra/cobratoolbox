@@ -61,7 +61,7 @@ for i = 1:numel(distinctfields)
 end
 
 modelFields = fieldnames(model);
-
+definedFields = getDefinedFieldProperties();
 
 %Collect all fields of the given size
 possibleFields = {};
@@ -69,24 +69,24 @@ dimensions = [];
 if fieldSize == 1 || fieldSize == 0
     %This is special. We will only check the first dimension in this
     %instance, and we will check the field properties of S and
-    %rxnGeneMat, Also, we will ONLY return defined fields...
+    %rxnGeneMat, Also, we will ONLY return defined fields, or fields with a clear starting ID...
     if isfield(model, 'rxnGeneMat') 
         if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == fieldSize) 
-            possibleFields{end+1} = 'rxnGeneMat';
+            possibleFields{end+1,1} = 'rxnGeneMat';
             dimensions(end+1,1) = 2;
         end
         if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == fieldSize)
-            possibleFields{end+1} = 'rxnGeneMat';
+            possibleFields{end+1,1} = 'rxnGeneMat';
             dimensions(end+1,1) = 1;
         end
     end
     if isfield(model, 'S') 
         if (strcmp(type,'mets') && size(model.S,1) == fieldSize) 
-            possibleFields{end+1} = 'S';
+            possibleFields{end+1,1} = 'S';
             dimensions(end+1,1) = 1;
         end
         if (strcmp(type,'rxns') && size(model.S,2) == fieldSize)
-            possibleFields{end+1} = 'S';
+            possibleFields{end+1,1} = 'S';
             dimensions(end+1,1) = 2;
         end        
     end
@@ -98,14 +98,26 @@ if fieldSize == 1 || fieldSize == 0
         end
     end
     %This is a New empty model, we only look at defined fields.
-    fields = getDefinedFieldProperties();
-    fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);
+    fields = definedFields;
+    fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);    
+    %modelFields with the "correct" startingID
+    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,length(type-1)),modelFields)); %Remove the s from the type for this
+    fields = columnVector(union(fields,relModelFields));    
     posFields = ismember(possibleFields,fields);
     possibleFields = possibleFields(posFields);
     dimensions = dimensions(posFields);
 else
+    knownfields = definedFields;
+    firstdim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),1) == fieldSize),knownfields(:,2), knownfields(:,1));
+    seconddim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),2) == fieldSize),knownfields(:,3), knownfields(:,1));
+    %Remove the known fields.
+    unknownModelFields = setdiff(modelFields,knownfields(:,1));
+    %And get all matching fields
+    knownMatchingFields = knownfields((firstdim|seconddim),1);
+    %Only look at known fields which are defined, or undefined fields
+    modelFields = union(unknownModelFields,knownMatchingFields);
     for i = 1:numel(modelFields)
-        matchingsizes = size(model.(modelFields{i})) == fieldSize;
+        matchingsizes = size(model.(modelFields{i})) == fieldSize;        
         if any(matchingsizes) && ~(sum(matchingsizes) > 1) %A size > 1 should only happen if we have conflicting field sizes...
             possibleFields{end+1,1} = modelFields{i};            
             dimensions(end+1,1) = find(matchingsizes);                    
@@ -116,8 +128,8 @@ else
             %resort to using the defined properties (i.e. we will add it
             %with a dimension of -1 (that we can replace by the definition
             %later)
-            if sameSizeExists
-                possibleFields{end+1,1} = modelFields{i};
+            if sameSizeExists                
+                possibleFields{end+1,1} = modelFields{i};                
                 dimensions(end+1,1) = -1;
             else
                 %Otherwise, we add both dimensions, as it seems like this
@@ -133,33 +145,39 @@ else
     end
 end
 
-if sameSizeExists
+if sameSizeExists    
     %we restrict the possibleFields to those which start with the
     %indicator, along with those fields, which are part of the defined
-    %fields.
-    
-    fields = getDefinedFieldProperties();
-    firstdim = cellfun(@(x) isequal(x,type),fields(:,2));
-    seconddim = cellfun(@(x) isequal(x,type),fields(:,3));
+    %fields.    
+    fields = definedFields;
+    firstdim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),1) == fieldSize),fields(:,2), fields(:,1));
+    seconddim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),2) == fieldSize),fields(:,3), fields(:,1));        
+    definedFieldDims = ones(numel(fields(:,1)),1);
+    definedFieldDims(seconddim) = 2;    
     fields = fields( firstdim | seconddim ,1);
-    definedFieldDims = ones(numel(fields),1);
-    definedFieldDims(seconddim) = 2;
-    definedPossibles = ismember(fields,possibleFields);
+    definedFieldDims = definedFieldDims(firstdim | seconddim);
+    definedPossibles = ismember(fields,possibleFields);    
     %Reduce the fields to those which match the size AND are defined.
     definedFieldDims = definedFieldDims(definedPossibles);    
     fields = fields(definedPossibles);        
+    %Now, check again the if the sizes fit...
+    actualFieldDimsMatch = arrayfun(@(x) size(model.(fields{x}),definedFieldDims(x)) == fieldSize, 1:numel(fields));
+    definedFieldDims = definedFieldDims(actualFieldDimsMatch);
+    fields = fields(actualFieldDimsMatch);        
     %Now check the relevant field positions in the possible fields, i.e.
     %those starting with the respective id (e.g. rxn).
-    relevantPossibles = cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);    
-    dimensions = dimensions(relevantPossibles);
-    possibleFields = possibleFields(relevantPossibles);            
-    %Now, remove those fields which are in both sets from the fields and
-    %definedFieldDims and concatenate the results.
-    duplicates = ismember(fields,possibleFields);
-    fields = fields(~duplicates);
-    definedFieldDims = definedFieldDims(~duplicates);
-    dimensions = [dimensions;definedFieldDims];
-    possibleFields = [possibleFields; fields];
+    %However, we should only include those which are not defined.
+    %i.e. everything with field... and not defined.
+    undefinedFields = ~(ismember(possibleFields,definedFields(:,1))) & cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);
+    undefDims = dimensions(undefinedFields);
+    undefpossibleFieldNames = possibleFields(undefinedFields);        
+    dimensions = [definedFieldDims;undefDims];
+    possibleFields = [fields; undefpossibleFieldNames];
+    %Now, we also need to take care of rxnGeneMat and S, otherwise we could
+    %end up in a critical spot.
+    
 end
 
 matchingFields = possibleFields;
+end
+    
