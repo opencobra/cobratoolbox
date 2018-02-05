@@ -178,7 +178,7 @@ if ~isempty(missingTBs.License)
     errorMessage{end+1} = sprintf('The test requires licenses for the following Toolboxes: %s', strjoin(missingTBs.License,' and '));
 end
 if ~isempty(missingTBs.Installation)
-    errorMessage{end+1} = sprintf('The test the following Toolboxes to be installed: %s', strjoin(missingTBs.Installation,' and '));
+    errorMessage{end+1} = sprintf('The test requires the following Toolboxes to be installed: %s', strjoin(missingTBs.Installation,' and '));
 end
 
 %Set up default solvers. And test whether the test is useable.
