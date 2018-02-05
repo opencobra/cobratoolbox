@@ -12,6 +12,13 @@
 %Check Requirements
 solvers = COBRARequisitesFullfilled('needsLP',true,'needsNLP',true);
 
+%For some odd reason, this fails on 2015b under certain conditions. so we
+%will skip the test on 2015b.
+matver = ver('MATLAB');
+global CBT_MISSING_REQUIREMENTS
+if isequal(matver,'8.6')
+    error(CBT_MISSING_REQUIREMENTS,'ParPool is likely to fail on 2015b. Skipping this test');
+end
 
 % save the current path
 currentDir = pwd;
@@ -28,6 +35,7 @@ load('point.mat', 'v0'); % load initial point
 %The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
 % create a parallel pool
 try
+    %Shut down any existing pool
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
 
@@ -40,7 +48,6 @@ try
 catch
     disp('Trying Non Parallel')
 end
-
 
 changeCobraSolver(solvers.NLP,'NLP',0);
 changeCobraSolver(solvers.LP,'LP',0);
