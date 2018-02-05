@@ -30,6 +30,9 @@ function installDevTools()
     localDir = [CBTDIR filesep '..'];
     cd(localDir);
 
+    % add the public key from github.com to the known hosts
+    addKeyToKnownHosts();
+
     installFlag = false;
 
     % check if the devTools already exist
