@@ -5,7 +5,7 @@ function keyAdded = addKeyToKnownHosts(siteName)
 %
 % USAGE:
 %
-%   addKeyToKnownHosts()
+%   keyAdded = addKeyToKnownHosts()
 %
 % INPUT:
 %   siteName:   Name of the site for which the public key shall be added
