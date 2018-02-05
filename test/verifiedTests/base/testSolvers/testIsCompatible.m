@@ -30,7 +30,7 @@ if isunix && ~ismac
 
     for i = 1:length(solverNames)
         solverOK = changeCobraSolver(solverNames{i});
-
+        
         % define a compatibility status with default printLevel
         compatibleStatus = isCompatible(solverNames{i});
 
@@ -38,8 +38,16 @@ if isunix && ~ismac
         compatibleStatus2 = isCompatible(solverNames{i}, 1);
 
         % evalute the compatibility status as
-        assert(solverOK == compatibleStatus);
-        assert(solverOK == compatibleStatus2);
+        if solverOK %If solver is not ok, then compatibleStatus can be anything...
+            assert(solverOK == compatibleStatus);
+            assert(solverOK == compatibleStatus2);
+        else
+            if ~compatibleStatus
+                assert(solverOK == 0); %If it is not compatible, than the status has to be 0;                
+            end
+            %Otherwise, anything can be true... it can be installed or
+            %not...
+        end
     end
 end
 
