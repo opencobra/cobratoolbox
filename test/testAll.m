@@ -6,8 +6,7 @@ global TOMLAB_PATH
 
 fprintf('The COBRAToolbox testing suite\n')
 fprintf('------------------------------\n')
-setenv('MOCOV_PATH','/home/thomas/cobra_devel/MOcov');
-setenv('JSONLAB_PATH','/home/thomas/cobra_devel/jsonlab-1.5');
+
 if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
     addpath(genpath(getenv('MOCOV_PATH')))
     addpath(genpath(getenv('JSONLAB_PATH')))
