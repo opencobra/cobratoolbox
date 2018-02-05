@@ -14,6 +14,9 @@
 % save the current path
 currentDir = pwd;
 
+%For windows systems, the LU implementation in sparseNull unfortunately does not provide the same accuracy as LU. We therefore skip the test on Windows.
+COBRARequisitesFullfilled('needsUnix',true);
+
 % initialize the test
 fileDir = fileparts(which('testNullspace'));
 cd(fileDir);
