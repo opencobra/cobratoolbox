@@ -77,7 +77,7 @@ function installDevTools()
         % install the devTools properly speaking
         fprintf('\n > Installing the MATLAB.devTools (might take some time) ... ');
 
-        [status_gitClone, result_gitClone] = system(['git clone -c http.sslVerify=false git@github.com:opencobra/MATLAB.devTools.git']);
+        [status_gitClone, result_gitClone] = system(['git clone -c http.sslVerify=false --depth=1 git@github.com:opencobra/MATLAB.devTools.git']);
 
         if status_gitClone == 0
 
