@@ -85,22 +85,27 @@ classdef (HandleCompatible) OrNode < Node
                 PipeAnd = 0;
             end
             res = '(';
+            cstring = '';
             for i=1:numel(self.children)
                 child = self.children(i);
                 if PipeAnd
-                    res = [res child.toString(PipeAnd) ' | '];
+                    cstring = [cstring child.toString(PipeAnd) ' | '];
                 else
-                    res = [res child.toString(PipeAnd) ' or '];
+                    cstring = [cstring child.toString(PipeAnd) ' or '];
                 end
             end
-            if length(res) > 2
+            if length(cstring) > 1
                 if PipeAnd
-                    res = res(1:end-3);
+                    cstring = cstring(1:end-3);
                 else
-                    res = res(1:end-4);
+                    cstring = cstring(1:end-4);
                 end
             end
-            res = [res ')'];
+            if ~isempty(cstring)
+                res = [res cstring ')'];
+            else
+                res = '';
+            end
         end
         
         function deleteLiteral(self,literalID)
