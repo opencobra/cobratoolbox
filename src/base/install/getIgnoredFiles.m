@@ -4,14 +4,13 @@ function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 %
 %    ignoreFiles = getIgnoredFiles()
 %
-% OPTIONAL INPUTS:
+% OPTIONAL INPUT:
 %    ignorePatterns:    A cell array of regexp patterns indicating files
 %                       which are not to be listed 
 %    filterpatterns:    A cell array of regexp patterns identifying those
 %                       files which should be returned after ignoring.
 %
 % OUTPUTS:
-%
 %    ignoredFiles:      All files (and patterns) indicated as ignored in
 %                       the gitignore file.
 %
