@@ -95,13 +95,16 @@ function initCobraToolbox()
     % define the root path of The COBRA Toolbox and change to it.
     CBTDIR = fileparts(which('initCobraToolbox'));
     cd(CBTDIR);
-    
+            
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
+    
+    %And the rdir directory
+    addpath(genpath([CBTDIR filesep 'external' filesep 'rdir']));
 
     % add the install folder
-    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
-
+    addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));   
+    
     % check if git is installed
     checkGit();
 
@@ -200,7 +203,12 @@ function initCobraToolbox()
             fprintf(' Done.\n');
         end
     end
-
+    
+    %create the Cleanup function    
+    %get the current content of the init Folder
+    dirContent = rdir(['**' filesep '*']);
+    finishup = onCleanup(@() removeGitIgnoredNewFiles(CBTDIR,dirContent));
+    
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
 
@@ -294,7 +302,14 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-
+    %Lets define a order of the solvers fields. Starting with the most
+    %common solvers others will be added as needed. 
+    SOLVERS = struct('gurobi',struct(),...
+                     'ibm_cplex',struct(),...
+                     'tomlab_cplex',struct(),...                     
+                     'glpk',struct(),...
+                     'mosek',struct(),...
+                     'matlab',struct());
     % active support - supported solvers
     SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.dqqMinos.type = {'LP'};
@@ -345,7 +360,8 @@ function initCobraToolbox()
     supportedSolversNames = fieldnames(SOLVERS);
     catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
     for i = 1:length(supportedSolversNames)
-        SOLVERS.(supportedSolversNames{i}).installed = 0;
+        SOLVERS.(supportedSolversNames{i}).installed = false;
+        SOLVERS.(supportedSolversNames{i}).working = false;
         types = SOLVERS.(supportedSolversNames{i}).type;
         for j = 1:length(types)
             catSolverNames.(types{j}){end + 1} = supportedSolversNames{i};
@@ -354,10 +370,15 @@ function initCobraToolbox()
 
     % check the installation of the solver
     for i = 1:length(supportedSolversNames)
-        solverOK = changeCobraSolver(supportedSolversNames{i}, SOLVERS.(supportedSolversNames{i}).type{1}, 0);
-        if solverOK
-            SOLVERS.(supportedSolversNames{i}).installed = 1;
+        %We will validate all solvers in init. After this, all solvers are
+        %checked, whether they actually work and the SOLVERS field is set. 
+        [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
+                                     SOLVERS.(supportedSolversNames{i}).type{1},...
+                                     0, false, 2);
+        if solverOK            
+            SOLVERS.(supportedSolversNames{i}).working = true;        
         end
+        SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;        
     end
 
     if ENV_VARS.printLevel
