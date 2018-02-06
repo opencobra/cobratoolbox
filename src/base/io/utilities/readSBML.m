@@ -307,11 +307,6 @@ if isfield(modelSBML,'fbc_objective')
     if ~isempty(modelSBML.fbc_objective)
         osenseStr = modelSBML.fbc_objective(1).fbc_type;
         model.osenseStr = lower(osenseStr(1:3)); %should be either min or max
-        %if ~strcmp(osenseStr , 'maximize')
-        %    model.osense = 1;
-        %end
-        %since only one reaction can be a fluxobjective in a model, we will
-        %simply use that
         objReac = {modelSBML.fbc_objective(1).fbc_fluxObjective.fbc_reaction};
         coef = 1;
         coefsset = [modelSBML.fbc_objective(1).fbc_fluxObjective.isSetfbc_coefficient];        
