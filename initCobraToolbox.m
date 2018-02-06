@@ -305,8 +305,9 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-    %Lets define a order of the solvers fields. Starting with the most
-    %common solvers others will be added as needed.
+    
+    %Define a set of "use first" solvers, other supported solvers will also be added to the struct. 
+    %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
     SOLVERS = struct('gurobi',struct(),...
                      'ibm_cplex',struct(),...
                      'tomlab_cplex',struct(),...
