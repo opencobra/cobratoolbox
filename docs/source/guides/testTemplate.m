@@ -20,16 +20,14 @@ requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
 %below)
 requiredSolvers = {'dqqMinos','matlab'};
 
-%These solvers will be used if available. Use to run the test on different
-%solvers but only if they are present without requiring it to be run on
-%all.
-useIfAvailable = {'gurobi','glpk','ibm_cplex'};
 %Now, check if the specified requirements are fullFilled. 
 %You can also require solvers for a specific type of problem by
-%'needXYZ',true where XYZ is the type of problem. 
+%e.g. using COBRARequisitesFullfilled('needLP', true)  to declare that a LP solver is required for the test. 
+%For other problem types (NLP,MILP,MIQP,QP) replace LP by the respective problem type.
 %You can further specify that the test only runs on windows/mac/linux/unix
 %by specifying 'needsWindows',true
-%Here are a few examples:
+%For more details and examples please have a look at this guide:
+%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/guides/testGuide.md
 
 %Require the bioinformatics and optimization toolbox (specified above),
 %along with dqqMinos and matlab as solvers (also specified above)
