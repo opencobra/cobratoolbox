@@ -30,12 +30,12 @@ else
     rxnInd = reactions;
 end
 
-RxnNotInModel = rxnInd==0;
-if any(RxnNotInModel)
-    warning('The following reactions are not in the model:\n%s',strjoin(reactions(RxnNotInModel),'; '));
+rxnNotInModel = (rxnInd == 0);
+if any(rxnNotInModel)
+    warning('The following reactions are not in the model:\n%s',strjoin(reactions(rxnNotInModel),'; '));
 end
 
-rxnInd = rxnInd(~RxnNotInModel);
+rxnInd = rxnInd(~rxnNotInModel);
 reactionStoich = model.S(:,rxnInd);
 
 %if only metabolites are requested
@@ -54,8 +54,8 @@ else
         relMetList{i} = model.mets(relpos);
         relStoichiometries{i} = reactionStoich(relpos,i);
     end
-    metList(~RxnNotInModel) = relMetList;
-    metList(RxnNotInModel) = {{}};
-    stoichiometries(~RxnNotInModel) = relStoichiometries;
+    metList(~rxnNotInModel) = relMetList;
+    metList(rxnNotInModel) = {{}};
+    stoichiometries(~rxnNotInModel) = relStoichiometries;
 end
 

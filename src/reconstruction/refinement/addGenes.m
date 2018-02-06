@@ -1,10 +1,10 @@
 function newmodel = addGenes(model,geneIDs,varargin)
 % Add Genes (or a single gene) to the model 
-% USAGE:
 %
+% USAGE:
 %    model = addGenes(model,geneIDs,varargin)
 %
-% INPUTS:
+% INPUT:
 %    model:             The model to add the Metabolite batch to.
 %    geneIDs:           The IDs of the genes that shall be added.
 %    varargin:          fieldName, Value pairs. The given fields will be set
@@ -12,14 +12,12 @@ function newmodel = addGenes(model,geneIDs,varargin)
 %                       used. The following fields will be ignored (as they
 %                       are dependent on the existing model structure):
 %                       rxnGeneMat - The size will be extended, but no associations will be set. 
-% OUTPUTS:
-%
+% OUTPUT:
 %    newmodel:     The model structure with the additional reactions.
 %
 % EXAMPLE:
-%
 %    To add genes with specific fields use:
-%    model = addGenes(model,{'G1','Gene2','InterestingGene'}, 'proteins',{'Protein1','Protein B','Protein Alpha'}, 'geneField2',{'D','E','F')
+%    `model = addGenes(model, {'G1', 'Gene2', 'InterestingGene'}, 'proteins', {'Protein1','Protein B','Protein Alpha'}, 'geneField2', {'D','E','F'})`
 %    note, that all fields (geneField1/geneField2) have to be present in
 %    the model, or defined in the field definitions, otherwise they are
 %    ignored.

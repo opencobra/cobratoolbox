@@ -29,8 +29,8 @@ assert(isequal(metsFromNames,metsFromIDs));
 
 %Assert that a warning is thrown, but that the output is the same (as all
 % other reactions are ignored)
-invalidReacs = {'A',model.rxns{4},'B',model.rxns{8},'D'};
-metsFromInvalidNames = findMetsFromRxns(model,invalidReacs);
+invalidRxns = {'A',model.rxns{4},'B',model.rxns{8},'D'};
+metsFromInvalidNames = findMetsFromRxns(model,invalidRxns);
 assert(isequal(lastwarn, sprintf('The following reactions are not in the model:\n%s',strjoin({'A','B','D'},'; '))));                       
 
 %Now, add two reactions and check that the outputs for those are fine.
@@ -63,7 +63,7 @@ end
 [returnedMets,returnedStoich] = findMetsFromRxns(model,{'R2','A','B','R1','C'});
 assert(all(cellfun(@(x,y) isempty(setxor(x,y)),mets,returnedMets([4,1]))));
 reacpos = [4,1];
-for i = [1 2]
+for i = 1:2
     [pres,pos] = ismember(returnedMets{reacpos(i)},mets{i});
     cstoich = stoich{i};
     assert(isequal(cstoich(pos),returnedStoich{reacpos(i)}));
