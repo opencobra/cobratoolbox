@@ -197,6 +197,38 @@ try
 
     % print out a summary table
     resultTable
+    
+    % Print some information on failed and skipped tests.
+    skippedTests = find(resultTable.Skipped);
+    if sum(skippedTests > 0)
+        fprintf('The following tests were skipped:\n%s\n\n', strjoin(resultTable.TestName(skippedTests),'\n'));        
+        fprintf('The reasons were as follows:\n')
+        for i = 1:numel(skippedTests)
+            fprintf('------------------------------------------------\n')
+            fprintf('%s:\n',resultTable.TestName{skippedTests(i)});
+            fprintf('%s\n',resultTable.Details{skippedTests(i)});
+            fprintf('------------------------------------------------\n')
+        end
+        fprintf('\n\n')
+    end
+    
+    failedTests = find(resultTable.Failed & ~resultTable.Skipped);
+    if sum(failedTests > 0)
+        fprintf('The following tests failed:\n%s\n\n', strjoin(resultTable.TestName(failedTests),'\n'));        
+        fprintf('The reasons were as follows:\n')
+        for i = 1:numel(failedTests)
+            fprintf('------------------------------------------------\n')
+            fprintf('%s:\n',resultTable.TestName{failedTests(i)});
+            trace = result(failedTests(i)).Error.getReport();
+            tracePerLine = strsplit(trace,'\n');
+            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x,'runCOBRATestSuite')),tracePerLine));
+            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.                        
+            fprintf('%s\n',trace);
+            fprintf('------------------------------------------------\n')
+        end
+        fprintf('\n\n')
+    end
+    
 
     % restore the original path
     restoredefaultpath;
