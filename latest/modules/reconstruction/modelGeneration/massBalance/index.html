@@ -257,7 +257,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.modelGeneration.massBalance"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.checkBalance">
-<code class="descname">checkBalance</code><span class="sig-paren">(</span><em>model</em>, <em>element</em>, <em>printLevel</em>, <em>fileName</em>, <em>missingFormulaeBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/checkBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkBalance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkBalance</code><span class="sig-paren">(</span><em>model</em>, <em>element</em>, <em>printLevel</em>, <em>fileName</em>, <em>missingFormulaeBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/checkBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkBalance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a set of reactions is elementally balanced.
 Note that exchange reactions are not elementally balanced.</p>
 <p><strong>Usage</strong></p>
@@ -309,7 +309,7 @@ boolean variable for missing formulae</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.checkFormulaValidty">
-<code class="descname">checkFormulaValidty</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkFormulaValidty" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkFormulaValidty</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkFormulaValidty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assesses whether metabolites in model are likely to be documented in databases.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -337,7 +337,7 @@ are not likely to be documented in any database.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance">
-<code class="descname">checkMassChargeBalance</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkMassChargeBalance</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests for a list of reactions if these reactions are
 mass-balanced by adding all elements on left hand side and comparing them
 with the sums of elements on the right hand side of the reaction.
@@ -399,7 +399,7 @@ boolean vector indicating metabolites exclusively involved in balanced reactions
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.computeElementalMatrix">
-<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes elemental matrix</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -445,7 +445,7 @@ cell array of elements corresponding to the columns of Ematrix</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.computeMW">
-<code class="descname">computeMW</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em>, <em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/computeMW.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMW" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeMW</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em>, <em>generalFormula</em>, <em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/computeMW.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes molecular weight and elemental matrix of compounds</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -520,7 +520,7 @@ cell arrary of elements without known atomic weights that appear in the formulae
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.computeMetFormulae">
-<code class="descname">computeMetFormulae</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/computeMetFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMetFormulae" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeMetFormulae</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/computeMetFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMetFormulae" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the chemical formulas for metabolites without formulas using a set of metabolites with
 known formulae by minimizing the overall inconsistency in elemental balance. They are combined with the
 conserved moiety vectors identified from the left null space of S-matrix to return the general formulae.
@@ -647,7 +647,7 @@ LP problem structure for solveCobraLP (#components x 1)</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae">
-<code class="descname">elementalMatrixToFormulae</code><span class="sig-paren">(</span><em>Ematrix</em>, <em>elements</em>, <em>dMax</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae" title="Permalink to this definition">¶</a></dt>
+<code class="descname">elementalMatrixToFormulae</code><span class="sig-paren">(</span><em>Ematrix</em>, <em>elements</em>, <em>dMax</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the elemental composition matrix into chemical formulae</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -673,7 +673,7 @@ the maximum number of decimal places for the stoichiometry (default 12)</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.findSExRxnInd">
-<code class="descname">findSExRxnInd</code><span class="sig-paren">(</span><em>model</em>, <em>nRealMet</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.findSExRxnInd" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findSExRxnInd</code><span class="sig-paren">(</span><em>model</em>, <em>nRealMet</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.findSExRxnInd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
 Finds the reactions in the model which export/import from the model boundary</p>
 <p>e.g. Exchange reactions,
@@ -724,7 +724,7 @@ structure with:<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.getChargeFromInChI">
-<code class="descname">getChargeFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/getChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getChargeFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/getChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getChargeFromInChI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the charge from a given InChI string</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -756,7 +756,7 @@ charge</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.getElementalComposition">
-<code class="descname">getElementalComposition</code><span class="sig-paren">(</span><em>formulae</em>, <em>elements</em>, <em>chargeInFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/getElementalComposition.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getElementalComposition" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getElementalComposition</code><span class="sig-paren">(</span><em>formulae</em>, <em>elements</em>, <em>chargeInFormula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/getElementalComposition.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getElementalComposition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the complete elemental composition matrix. It supports formulae with
 generic elements, parentheses and decimal places</p>
 <p><strong>Usage</strong></p>
@@ -803,7 +803,7 @@ Ematrix = [ 2,   1,    0,   0,   0;</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.getFormulaFromInChI">
-<code class="descname">getFormulaFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/getFormulaFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getFormulaFromInChI" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getFormulaFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/getFormulaFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getFormulaFromInChI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts the chemical formula of a given compound from
 the InChI string provided</p>
 <p><strong>Usage</strong></p>
@@ -830,7 +830,7 @@ The total number of protons</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.ispolymer">
-<code class="descname">ispolymer</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/ispolymer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.ispolymer" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ispolymer</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/ispolymer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.ispolymer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks to see if a formula corresponds to a polymer</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -846,7 +846,7 @@ formula to be checked</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula">
-<code class="descname">numAtomsOfElementInFormula</code><span class="sig-paren">(</span><em>formula</em>, <em>element</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula" title="Permalink to this definition">¶</a></dt>
+<code class="descname">numAtomsOfElementInFormula</code><span class="sig-paren">(</span><em>formula</em>, <em>element</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of atoms of a single element in a formula</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -873,7 +873,7 @@ number of atoms of this element in the formula provided</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.massBalance.pHbalanceProtons">
-<code class="descname">pHbalanceProtons</code><span class="sig-paren">(</span><em>model</em>, <em>massImbalance</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7b92e46b476cfaf1cd377cc8099b759ce222dd57/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.pHbalanceProtons" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pHbalanceProtons</code><span class="sig-paren">(</span><em>model</em>, <em>massImbalance</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.pHbalanceProtons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</p>
 <p>For each non transport reaction the proton stoichiometric coefficient for each
 reaction is given by the difference between the sum of the average number
