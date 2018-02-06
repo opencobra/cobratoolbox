@@ -9,33 +9,33 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 % INPUTS:
 %    varagin:       'ParameterName',value pairs with the following
 %                   Parameter options:
-%                   * 'Toolboxes'      - Names of toolboxes (the license
+%                   * 'toolboxes'      - Names of toolboxes (the license
 %                                        feature name) (Default: {})
-%                   * 'ReqSolvers'     - Names of all solvers which MUST be
+%                   * 'reqSolvers'     - Names of all solvers which MUST be
 %                                        available. If not empty, the resulting
 %                                        solvers struct will contain cell arrays (Default: {})
-%                   * 'UseIfAvailable' - Names of solvers which should be
+%                   * 'useIfAvailable' - Names of solvers which should be
 %                                        used if they are available. If not empty, the resulting
 %                                        solvers struct will contain cell arrays (will
 %                                        not throw an error if not).
-%                   * 'NeedsLP'        - Whether a LP solver is required.
+%                   * 'needsLP'        - Whether a LP solver is required.
 %                                       (Default = false);
-%                   * 'NeedsMILP'      - Whether a MILP solver is required.
+%                   * 'needsMILP'      - Whether a MILP solver is required.
 %                                       (Default = false);
-%                   * 'NeedsQP'        - Whether a QP solver is required.
+%                   * 'needsQP'        - Whether a QP solver is required.
 %                                       (Default = false);
-%                   * 'NeedsMIQP'      - Whether a MIQP solver is required.
+%                   * 'needsMIQP'      - Whether a MIQP solver is required.
 %                                       (Default = false);
-%                   * 'NeedsNLP'       - Whether a NLP solver is required.
+%                   * 'needsNLP'       - Whether a NLP solver is required.
 %                                       (Default = false);
-%                   * 'NeedsUnix'      - Whether the test only works on a
+%                   * 'needsUnix'      - Whether the test only works on a
 %                                        Unix system (mac or linux)
 %                                        (Default = false);
-%                   * 'NeedsWindows'   - Whether the test only works on a Windows system
+%                   * 'needsWindows'   - Whether the test only works on a Windows system
 %                                        (Default = false);
-%                   * 'NeedsMac'       - Whether the test only works on a Mac system
+%                   * 'needsMac'       - Whether the test only works on a Mac system
 %                                        (Default = false);
-%                   * 'NeedsLinux'     - Whether the test only works on a Linux system
+%                   * 'needsLinux'     - Whether the test only works on a Linux system
 %                                        (Default = false);
 %
 % OUTPUTS:
@@ -91,11 +91,11 @@ parser.addParamValue('NeedsMac',false,@(x) islogical(x) || x == 1 || x == 0 );
 
 parser.parse(varargin{:});
 
-UseQP = parser.Results.NeedsQP;
-UseLP = parser.Results.NeedsLP;
-UseMIQP = parser.Results.NeedsMIQP;
-UseNLP = parser.Results.NeedsNLP;
-UseMILP = parser.Results.NeedsMILP;
+useQP = parser.Results.NeedsQP;
+useLP = parser.Results.NeedsLP;
+useMIQP = parser.Results.NeedsMIQP;
+useNLP = parser.Results.NeedsNLP;
+useMILP = parser.Results.NeedsMILP;
 
 
 macOnly = parser.Results.NeedsMac;
@@ -188,7 +188,7 @@ end
 
 %Set up default solvers. And test whether the test is useable.
 if isempty(availableSolvers.LP)
-    if UseLP
+    if useLP
         errorMessage{end+1} = 'The test requires at least one LP solver but no solver is installed';
     end
 else
@@ -200,7 +200,7 @@ else
 end
 
 if isempty(availableSolvers.QP)
-    if UseQP
+    if useQP
         errorMessage{end+1} = 'The test requires at least one QP solver but no solver is installed';
     end
 else
@@ -212,7 +212,7 @@ else
 end
 
 if isempty(availableSolvers.MILP)
-    if UseMILP
+    if useMILP
         errorMessage{end+1} = 'The test requires at least one MILP solver but no solver is installed';
     end
 else
@@ -225,7 +225,7 @@ else
 end
 
 if isempty(availableSolvers.MIQP)
-    if UseMIQP
+    if useMIQP
         errorMessage{end+1} = 'The test requires at least one MIQP solver but no solver is installed';
     end
 else
@@ -238,7 +238,7 @@ else
 end
 
 if isempty(availableSolvers.NLP)
-    if UseNLP
+    if useNLP
         errorMessage{end+1} = 'The test requires at least one NLP solver but no solver is installed';
     end
 else
