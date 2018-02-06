@@ -57,14 +57,7 @@ if nargin < 2
     optPercentage = 100;
 end
 if nargin < 3 || isempty(osenseStr)
-    if ~isfield(model,'osenseStr')
-        osenseStr = 'max';
-    else
-        osenseStr = model.osenseStr;
-    end
-    if ~(strcmpi(osenseStr,'min') || strcmpi(osenseStr,'max'))
-        error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
-    end
+    [osenseStr,~] = getObjectiveSense(model);
 end
 if nargin < 4
     rxnNameList = model.rxns;
@@ -86,9 +79,6 @@ if nargin < 9
 end
 if isempty(optPercentage)
     optPercentage = 100;
-end
-if isempty(osenseStr)
-    osenseStr = 'max';
 end
 if isempty(rxnNameList)
     rxnNameList = model.rxns;
@@ -174,8 +164,6 @@ end
 LPproblem.csense = columnVector(LPproblem.csense);
 LPproblem.A = model.S;
 LPproblem.b = model.b;
-
-%solve to get the original model optimal objective
 
 
 % Solve initial (normal) LP
