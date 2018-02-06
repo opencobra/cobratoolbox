@@ -54,5 +54,6 @@ if status_keyscan == 1 && ~isempty(strfind(result_keyscan, 'usage:'))
     fprintf(' > Test to add a key passed.\n');
 end
 
+currentDir
 % change the directory
 cd(currentDir)
