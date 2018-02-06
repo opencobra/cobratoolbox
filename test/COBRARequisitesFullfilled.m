@@ -146,7 +146,12 @@ end
 if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers,availableSolvers.ALL))
     %We have required solvers and some are missing
     missing = ~ismember(requiredSolvers,availableSolvers.ALL);
-    errorMessage{end+1} = sprintf('%s are missing required solvers for the test.', strjoin(requiredSolvers(missing),' and '));
+    if sum(missing) == 1
+        misssolver = requiredSolvers{missing};
+         errorMessage{end+1} = sprintf('%s is a required solver for the test and not available on your system.', misssolver);
+    else
+        errorMessage{end+1} = sprintf('%s are missing solvers required for the test but not available on your system.', strjoin(requiredSolvers(missing),' and '));
+    end
 else
     %Otherwise add the required Solvers to the preferred solvers.
     preferredSolvers = union(preferredSolvers,requiredSolvers);
