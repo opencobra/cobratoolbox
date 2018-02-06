@@ -10,7 +10,9 @@
 global CBTDIR
 
 % save the current path
-currentDir = pwd;
+currentDir = pwd
+
+fileparts(which(mfilename))
 
 % initialize the test
 cd(fileparts(which(mfilename)));
