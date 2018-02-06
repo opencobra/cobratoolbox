@@ -22,13 +22,18 @@ global CBT_MILP_SOLVER;
 orig_solver = CBT_MILP_SOLVER;
 
 % test solver packages
-solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
+
+global SOLVERS 
+
+%Do this test for all available MIQP solvers
+UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
+solvers = COBRARequisitesFullfilled('needsMILP',true,'UseIfAvailable',UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;
 
-for k = 1:length(solverPkgs)
-    fprintf('   Running solveCobraMILP using %s ... ', solverPkgs{k});
+for k = 1:length(solvers.MILP)
+    fprintf('   Running solveCobraMILP using %s ... ', solvers.MILP{k});
 
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
@@ -110,9 +115,38 @@ for k = 1:length(solverPkgs)
                 % delete the log files
                 delete(['testIBMcplexMILPparam' num2str(jTest) '.log']);
             end
+            fprintf('Test ibm_cplex output to command window ...\n')
+            % solve without logToFile = 1
+            diary test_ibm_cplex_output_to_console1.txt
+            sol = solveCobraMILP(MILPproblem);
+            diary off
+            % read the diary, which should be empty
+            f = fopen('test_ibm_cplex_output_to_console1.txt', 'r');
+            l = fgets(f);
+            assert(isequal(l, -1))
+            fclose(f);
+            delete('test_ibm_cplex_output_to_console1.txt')
+            
+            % solve wit logToFile = 1
+            diary test_ibm_cplex_output_to_console2.txt
+            sol = solveCobraMILP(MILPproblem, 'logFile', 1);
+            diary off
+            % read the diary, which should be non-empty
+            f = fopen('test_ibm_cplex_output_to_console2.txt', 'r');
+            l = fgets(f);
+            line = 0;
+            while ~isequal(l, -1)
+                line = line + 1;
+                l = fgets(f);
+            end
+            fclose(f);
+            assert(line > 3)
+            delete('test_ibm_cplex_output_to_console2.txt')
+            fprintf('Test ibm_cplex output to command window ... Done\n')
+
         end
         
-        if strcmp(solverPkgs{k}, 'gurobi6')
+        if strcmp(solverPkgs{k}, 'gurobi')
             % check additional parameters for Gurobi 
             % temporarily shut down warning
             warning_stat = warning;
@@ -147,39 +181,6 @@ for k = 1:length(solverPkgs)
 
     % output a success message
     fprintf('Done.\n');
-end
-
-% test ibm_cplex output to command window
-solverOK = changeCobraSolver('ibm_cplex', 'MILP', 0);
-if solverOK
-    fprintf('Test ibm_cplex output to command window ...\n')
-    % solve without logToFile = 1
-    diary test_ibm_cplex_output_to_console1.txt
-    sol = solveCobraMILP(MILPproblem);
-    diary off
-    % read the diary, which should be empty
-    f = fopen('test_ibm_cplex_output_to_console1.txt', 'r');
-    l = fgets(f);
-    assert(isequal(l, -1))
-    fclose(f);
-    delete('test_ibm_cplex_output_to_console1.txt')
-    
-    % solve wit logToFile = 1
-    diary test_ibm_cplex_output_to_console2.txt
-    sol = solveCobraMILP(MILPproblem, 'logFile', 1);
-    diary off
-    % read the diary, which should be non-empty
-    f = fopen('test_ibm_cplex_output_to_console2.txt', 'r');
-    l = fgets(f);
-    line = 0;
-    while ~isequal(l, -1)
-        line = line + 1;
-        l = fgets(f);
-    end
-    fclose(f);
-    assert(line > 3)
-    delete('test_ibm_cplex_output_to_console2.txt')
-    fprintf('Test ibm_cplex output to command window ... Done\n')
 end
 
 % remove the generated file
