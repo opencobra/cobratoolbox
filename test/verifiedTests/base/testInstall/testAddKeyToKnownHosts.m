@@ -10,12 +10,7 @@
 global CBTDIR
 
 % save the current path
-currentDir = pwd
-
-fileparts(which(mfilename))
-
-% initialize the test
-cd(fileparts(which(mfilename)));
+currentDir = pwd;
 
 % test for a failure of an unknown host
 assert(verifyCobraFunctionError(@() addKeyToKnownHosts('github123.co')));
@@ -56,6 +51,5 @@ if status_keyscan == 1 && ~isempty(strfind(result_keyscan, 'usage:'))
     fprintf(' > Test to add a key passed.\n');
 end
 
-currentDir
 % change the directory
 cd(currentDir)
