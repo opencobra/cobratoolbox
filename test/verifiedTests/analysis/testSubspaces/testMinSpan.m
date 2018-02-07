@@ -30,6 +30,24 @@ assert(m == 72 & n == 94, 'Unable to setup input for MinSpan determination');
 % Setup parameters and run detMinSpan
 params.saveIntV = 0; % Do not save intermediate output
 
+%This test runs fluxVariability. So we have to start te parallel pool
+%before the solver is set.
+%The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
+% create a parallel pool
+try
+    %Shut down any existing pool
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
+
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
+    end
+catch
+    disp('Trying Non Parallel')
+end
 
 
 changeCobraSolver('gurobi', 'all', 0);

@@ -21,6 +21,24 @@ cd(fileparts(which('testPaint4Net')))
 load('testPaint4Net.mat');
 model = readCbModel('testPaint4Net.mat','modelName','model');
 
+%Paint4Net uses fluxVariability therefore start the parpool if available.
+%The following can be done with any allowed solver, but e.g. pdco will fail, so we will run a few others.
+% create a parallel pool
+try
+    %Shut down any existing pool
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
+
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
+    end
+catch
+    disp('Trying Non Parallel')
+end
+
 
 for k = 1:length(solvers.LP)
     fprintf(' -- Running testPaint4Net using the solver interface: %s ... ', solvers.LP{k});
