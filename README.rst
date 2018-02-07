@@ -121,9 +121,7 @@ within MATLAB by typing:
    `here <https://opencobra.github.io/cobratoolbox/docs/testTemplate.html>`__.
 -  More information on formatting the documentation is
    `here <https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html>`__
--  A guide for reporting an **issue** or submitting a **pull request
-   (PR)** is
-   `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
+-  A guide for reporting an **issue** is `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
 
 If you want to use ``git`` via the command line interface and need help,
 these `training slides <https://uni-lu.github.io/slides/>`__ will get
