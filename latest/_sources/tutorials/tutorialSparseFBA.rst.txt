@@ -29,6 +29,13 @@ Sparse Flux Balance Analysis
                   <div>Download m file</div>
             </li>
             &nbsp;&nbsp;&nbsp;&nbsp;
+            <li class="small-tile-text color_class8 scale-10">
+                <a class="tile" style="width: 90px; height: 90px;" href="">
+                <img src="https://prince.lcsb.uni.lu/img/icon8.png" height="90px">
+                </a>
+                  <div>View on GitHub</div>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <li class="small-tile-text color_class2 scale-10">
                 <a class="tile" style="width: 90px; height: 90px;" href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html">
                 <img src="https://prince.lcsb.uni.lu/img/icon2.png" height="90px">

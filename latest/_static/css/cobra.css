@@ -7,6 +7,7 @@ ul.metro li.color_class4 a.tile { background-color: #829E3C; border-radius: 50%;
 ul.metro li.color_class5 a.tile { background-color: #36A2D1; border-radius: 50%; width: 110px; height: 110px;} /*#36A2D1*/
 ul.metro li.color_class6 a.tile { background-color: #EC4A75; border-radius: 50%; width: 110px; height: 110px;} /*#EC4A75*/
 ul.metro li.color_class7 a.tile { background-color: #EBAE20; border-radius: 50%; width: 110px; height: 110px;} /*#EBAE20*/
+ul.metro li.color_class8 a.tile { background-color: #808285; border-radius: 50%; width: 110px; height: 110px;} /*#808285*/
 
 ul.metro li.nocolor_class a.tile { background-color: #FFFFFF; border-radius: 50%; width: 110px; height: 110px;}
 ul.metro:before, ul.metro:after {content: none !important;}
