@@ -30,6 +30,9 @@ function installDevTools()
     localDir = [CBTDIR filesep '..'];
     cd(localDir);
 
+    % add the public key from github.com to the known hosts
+    addKeyToKnownHosts();
+
     installFlag = false;
 
     % check if the devTools already exist
@@ -38,24 +41,27 @@ function installDevTools()
         reply = input([' > There is already a copy of the MATLAB.devTools installed in the default location.\n   Do you want to enter another location to install the MATLAB.devTools? Y/N [Y]: '], 's');
         localDir = '';
 
-        if isempty(reply) || strcmpi(reply, 'y') || strcmpi(reply, 'yes')
         % enter another location for the MATLAB.devTools
-
+        if isempty(reply) || strcmpi(reply, 'y') || strcmpi(reply, 'yes')
             dirReply = '';
             while isempty(dirReply)
                 dirReply = input(['\n -> Please define the installation path of the MATLAB.devTools\n    Enter the path: '], 's');
 
                 if exist([dirReply filesep 'MATLAB.devTools'], 'dir') == 7
-                    fprintf('\n   The directory ', [dirReply filesep 'MATLAB.devTools'], ' already exists. Please enter a different directory.\n');
+                    fprintf(['\n   The directory ', [dirReply filesep 'MATLAB.devTools'], ' already exists. Please enter a different directory.\n']);
                     dirReply = '';
                 end
 
-                if ~isempty(dirReply) && exist(dirReply, 'dir') == 7
-                    localDir = dirReply;
-                    break;
-                else
-                    fprintf('\n   -> The directory does not exist. Please try again.\n');
-                    dirReply = '';
+                % if the entered directory is not empty, try to add it to the path
+                if ~isempty(dirReply)
+                    addpath(dirReply);
+                    if exist(dirReply, 'dir') == 7
+                        localDir = dirReply;
+                        break;
+                    else
+                        fprintf('\n   -> The directory does not exist. Please try again.\n');
+                        dirReply = '';
+                    end
                 end
             end
 
@@ -75,17 +81,14 @@ function installDevTools()
         cd(localDir);
 
         % install the devTools properly speaking
-        fprintf('\n > Installing the MATLAB.devTools (might take some time) ... ');
+        fprintf(['\n > Installing the MATLAB.devTools into ' localDir ' (might take some time) ... ']);
 
-        [status_gitClone, result_gitClone] = system(['git clone -c http.sslVerify=false git@github.com:opencobra/MATLAB.devTools.git']);
+        [status_gitClone, result_gitClone] = system(['git clone -c http.sslVerify=false --depth=1 git@github.com:opencobra/MATLAB.devTools.git']);
 
         if status_gitClone == 0
 
             if ~isempty(localDir)
-                indexDir = strfind(CBTDIR, filesep);
-                devToolsDir = [CBTDIR(1:indexDir(end)), 'MATLAB.devTools'];
-            else
-                devToolsDir = dirReply;
+                devToolsDir = localDir;
             end
 
             fprintf(['Done.\n > Location of the MATLAB.devTools: ', strrep(devToolsDir, '\', '\\'), '\n\n']);
