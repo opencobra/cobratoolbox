@@ -49,8 +49,8 @@ catch
     disp('Trying Non Parallel')
 end
 
-changeCobraSolver(solvers.NLP,'NLP',0);
-changeCobraSolver(solvers.LP,'LP',0);
+changeCobraSolver(solvers.NLP{1},'NLP',0);
+changeCobraSolver(solvers.LP{1},'LP',0);
 
 generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
 expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)

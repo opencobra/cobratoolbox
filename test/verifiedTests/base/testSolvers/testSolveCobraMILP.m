@@ -27,16 +27,16 @@ global SOLVERS
 
 %Do this test for all available MIQP solvers
 UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solvers = COBRARequisitesFullfilled('needsMILP',true,'UseIfAvailable',UseIfAvailable);
+solverPkgs = COBRARequisitesFullfilled('needsMILP',true,'UseIfAvailable',UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;
 
-for k = 1:length(solvers.MILP)
-    fprintf('   Running solveCobraMILP using %s ... ', solvers.MILP{k});
+for k = 1:length(solverPkgs.MILP)
+    fprintf('   Running solveCobraMILP using %s ... ', solverPkgs.MILP{k});
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
+    solverOK = changeCobraSolver(solverPkgs.MILP{k}, 'MILP', 0);
 
     if solverOK
         % MILP Solver test: chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
@@ -56,7 +56,7 @@ for k = 1:length(solvers.MILP)
         pass = 1;
 
         % solve MILP problem setting the relative MIP gap tolerance and integrality tolerance to 1e-12 using parameters structure.
-        if strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'tomlab_cplex')
+        if strcmp(solverPkgs.MILP{k}, 'cplex_direct') || strcmp(solverPkgs.MILP{k}, 'tomlab_cplex')
             parameters.relMipGapTol = 1e-12;
             parameters.intTol = 1e-12;
             MILPsolution = solveCobraMILP(MILPproblem, parameters);
@@ -73,7 +73,7 @@ for k = 1:length(solvers.MILP)
         assert(abs(MILPsolution.obj - 554) < tol)
         assert(abs(MILPsolution2.obj - 554) < tol)
 
-        if strcmp(solverPkgs{k}, 'ibm_cplex')
+        if strcmp(solverPkgs.MILP{k}, 'ibm_cplex')
             % test IBM-Cplex-specific parameters. Solve with the below parameters changed
             cplexParams = struct();
             cplexParams.emphasis.mip = 0;  % MIP emphasis: balance optimality and integer feasibility
@@ -146,7 +146,7 @@ for k = 1:length(solvers.MILP)
 
         end
         
-        if strcmp(solverPkgs{k}, 'gurobi')
+        if strcmp(solverPkgs.MILP{k}, 'gurobi')
             % check additional parameters for Gurobi 
             % temporarily shut down warning
             warning_stat = warning;

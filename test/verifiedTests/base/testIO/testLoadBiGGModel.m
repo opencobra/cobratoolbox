@@ -12,7 +12,7 @@
 global CBTDIR
 
 %Check the requirements (a LP solver is necessary)
-solvers = COBRARequisitesFullfilled('needsLP',true);
+solverPkgs = COBRARequisitesFullfilled('needsLP',true);
 
 % save the current path
 currentDir = pwd;
@@ -50,30 +50,32 @@ for i = 1:size(modelArr,1)
     assert(isSameCobraModel(model1,model3));
     
     if ~isnan(modelArr{i,5})
-        changeCobraSolver(solvers.LP, 'LP', 0);
-        
-        fprintf('   Testing loaded model ... \n');
-        
-        
-        % solve the maximisation problem
-        FBA = optimizeCbModel(model2, 'max');
-        
-        % test the maximisation solution
-        assert(FBA.stat == 1);
-        assert(abs(FBA.f - modelArr{i,6}) < tol);
-        assert(norm(model2.S * FBA.x) < tol);
-        
-        % solve the minimisation problem
-        FBA = optimizeCbModel(model2, 'min');
-        
-        % test the minimisation solution
-        assert(FBA.stat == 1);
-        assert(abs(FBA.f - modelArr{i,5}) < tol);
-        assert(norm(model2.S * FBA.x) < tol);
-        
-        % print a line for success of loop i
-        fprintf(' Done.\n');
-        
+        for k = 1:length(solverPkgs.LP)
+            fprintf(' -- Running testLoadBiGGModel using the solver interface: %s ... ', solverPkgs.LP{k});
+            changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
+            
+            fprintf('   Testing loaded model ... \n');
+            
+            
+            % solve the maximisation problem
+            FBA = optimizeCbModel(model2, 'max');
+            
+            % test the maximisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelArr{i,6}) < tol);
+            assert(norm(model2.S * FBA.x) < tol);
+            
+            % solve the minimisation problem
+            FBA = optimizeCbModel(model2, 'min');
+            
+            % test the minimisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelArr{i,5}) < tol);
+            assert(norm(model2.S * FBA.x) < tol);
+            
+            % print a line for success of loop i
+            fprintf(' Done.\n');
+        end
     end
 end
 % change the directory
