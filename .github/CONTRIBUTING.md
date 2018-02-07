@@ -4,7 +4,7 @@ How to contribute
 :+1::tada: First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
+<img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px"/>
 </p>
 
 :bulb: **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
