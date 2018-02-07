@@ -10,7 +10,7 @@
 global CBTDIR
 
 %Test Requirements
-requiredSolvers = {'matlab'};
+requiredSolvers = {'matlab','glpk'};
 COBRARequisitesFullfilled('ReqSolvers',requiredSolvers);
 
 

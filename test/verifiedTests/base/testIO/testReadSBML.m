@@ -44,48 +44,50 @@ for i = 1:length(modelArr)
     % load the model (actually supply the full filename of the path
     % where the model is found)
     model = getDistributedModel(modelArr{i});
-    
-    solverOK = changeCobraSolver(solvers.LP, 'LP', 0);
-    
-    fprintf('   Testing loaded model ... \n');
-    
-    % set the tolerance
-    tol = 1e-6;
-    
-    
-    % define the maximum objective values calculated from pre-converted .mat files
-    modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487];
-    
-    % define the minimum objective values
-    modelFBAf_min = [0.0; 0.0; 0.0];
-    
-    % solve the maximisation problem
-    FBA = optimizeCbModel(model, 'max');
-    
-    % test the maximisation solution
-    assert(FBA.stat == 1);
-    assert(abs(FBA.f - modelFBAf_max(i)) < tol);
-    assert(norm(model.S * FBA.x) < tol);
-    
-    % solve the minimisation problem
-    FBA = optimizeCbModel(model, 'min');
-    
-    % test the minimisation solution
-    assert(FBA.stat == 1);
-    assert(abs(FBA.f - modelFBAf_min(i)) < tol);
-    assert(norm(model.S * FBA.x) < tol);
-    
-    % print a line for success of loop i
-    fprintf(' Done.\n');
-    
-    
-    % test that gene rules are generated correctly
-    % needs testing on model with large number of genes, i.e.,
-    % 'Abiotrophia_defectiva_ATCC_49176.xml'
-    if strcmp(modelArr{i}, 'Abiotrophia_defectiva_ATCC_49176.xml')
-        % test that rules are correctly generated, i.e. no gene partially matched
-        % no indication of x(1)23 instead of x(123).
-        assert(~any(~cellfun(@isempty, regexp(model.rules, '\(\d+\)\d+')))) %incorrect
+    for k = 1:length(solvers.LP)
+        fprintf(' -- Running testReadSBML using the solver interface: %s ... ', solvers.LP{k});
+        solverOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
+        
+        fprintf('   Testing loaded model ... \n');
+        
+        % set the tolerance
+        tol = 1e-6;
+        
+        
+        % define the maximum objective values calculated from pre-converted .mat files
+        modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487];
+        
+        % define the minimum objective values
+        modelFBAf_min = [0.0; 0.0; 0.0];
+        
+        % solve the maximisation problem
+        FBA = optimizeCbModel(model, 'max');
+        
+        % test the maximisation solution
+        assert(FBA.stat == 1);
+        assert(abs(FBA.f - modelFBAf_max(i)) < tol);
+        assert(norm(model.S * FBA.x) < tol);
+        
+        % solve the minimisation problem
+        FBA = optimizeCbModel(model, 'min');
+        
+        % test the minimisation solution
+        assert(FBA.stat == 1);
+        assert(abs(FBA.f - modelFBAf_min(i)) < tol);
+        assert(norm(model.S * FBA.x) < tol);
+        
+        % print a line for success of loop i
+        fprintf(' Done.\n');
+        
+        
+        % test that gene rules are generated correctly
+        % needs testing on model with large number of genes, i.e.,
+        % 'Abiotrophia_defectiva_ATCC_49176.xml'
+        if strcmp(modelArr{i}, 'Abiotrophia_defectiva_ATCC_49176.xml')
+            % test that rules are correctly generated, i.e. no gene partially matched
+            % no indication of x(1)23 instead of x(123).
+            assert(~any(~cellfun(@isempty, regexp(model.rules, '\(\d+\)\d+')))) %incorrect
+        end
     end
 end
 
