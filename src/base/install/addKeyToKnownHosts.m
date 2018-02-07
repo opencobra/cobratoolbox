@@ -59,6 +59,6 @@ function keyAdded = addKeyToKnownHosts(siteName)
         end
     else
         fprintf(result_keyscan);
-        error(' > ssh-keyscan is not installed.');
+        error(' > ssh-keyscan is not installed. Please follow the installation instructions here: https://opencobra.github.io/cobratoolbox/stable/installation.html');
     end
 end
