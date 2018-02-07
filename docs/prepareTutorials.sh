@@ -84,6 +84,7 @@ createLocalVariables(){
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
+    dirHyperLink="https://github.com/opencobra/COBRA.tutorials/tree/master/$tutorialFolder"
 }
 
 buildHTMLTutorials(){
@@ -248,12 +249,12 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             /usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
         fi
 
-        # create markdowm README
+        # create markdown README
         if [ $buildMD = true ]; then
             echo $readmePath
             mkdir -p $readmePath
             echo "<p align=\"center\">" > $readmePath/README.md
-            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\"></a>" >> $readmePath/README.md
+            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_view.png\" height=\"90px\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\"></a>" >> $readmePath/README.md
             echo "<br><br>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
 
@@ -273,6 +274,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed -i.bak "s~#PDFtutorialPath#~$pdfHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MLXtutorialPath#~$mlxHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MtutorialPath#~$mHyperlink~g"     "$rstPath/$tutorialLongTitle.rst"
+            sed -i.bak "s~#DIRtutorialPath#~$dirHyperlink~g"   "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#IFRAMEtutorialPath#~$htmlHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
