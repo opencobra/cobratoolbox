@@ -22,7 +22,7 @@ else
     osenseStr = 'max'; %Default is maximisation
 end
 
-if ~strcmpi(osenseStr,'max') || strcmpi(osenseStr,'min')
+if ~strcmpi(osenseStr,'max') && ~strcmpi(osenseStr,'min')
     error('Objective Sense must be either ''min'' or ''max'' ');
 else
     if strcmpi(osenseStr,'max')
