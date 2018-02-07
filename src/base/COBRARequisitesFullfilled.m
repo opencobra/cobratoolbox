@@ -41,12 +41,11 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 % OUTPUTS:
 %
 %    solversToUse:         A struct with one field per solver type listing
-%                          the solvers To use for that type of problem.
+%                          the solvers to use for that type of problem in a cell array.
 %                          If neither the useIfAvailable nor the reqSolvers
 %                          paramter is provided, only at most one solver
-%                          per type will be returned (an empty string if
-%                          none is present). If either is provided, the
-%                          returned struct will contain cell arrays of
+%                          per type will be returned.
+%                          If either is provided, the returned struct will contain cell arrays of
 %                          solver names.
 
 %Do some precomputation.
@@ -262,7 +261,7 @@ for i = 1:numel(problemTypes)
     solversToUse.(problemTypes{i}) = intersect(preferredSolvers,availableSolvers.(problemTypes{i}));
     if isempty(solversToUse.(problemTypes{i})) && ~isempty(availableSolvers.(problemTypes{i}))
         if isempty(preferredSolvers)
-            eval(['solversToUse.' problemTypes{i} ' = default' problemTypes{i} 'Solver;']);
+            eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
         else
             if isempty(availableSolvers.(problemTypes{i}))
                 %No solver exists, the cell array is empty.
