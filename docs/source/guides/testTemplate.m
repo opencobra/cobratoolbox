@@ -32,7 +32,7 @@ requiredSolvers = {'dqqMinos','matlab'};
 %Require the bioinformatics and optimization toolbox (specified above),
 %along with dqqMinos and matlab as solvers (also specified above)
 %solvers will contain a cell arrays of solver names.
-solvers = COBRARequisitesFullfilled('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
+solversPkgs = COBRARequisitesFullfilled('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
 
 
 
@@ -45,9 +45,6 @@ cd(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
-
-% define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 % load the model
 %Either:
@@ -77,10 +74,10 @@ if parTest
 % if parallel toolbox has to be present (if not, this can be left out).
 %}
 
-for k = 1:length(solverPkgs)
-    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
+for k = 1:length(solverPkgs.LP)
+    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs.LP{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
 
     if solverLPOK
         % <your test goes here>
