@@ -43,8 +43,26 @@ testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
+pathForTests = path;
+%save the current globals (all tests should have the same environment when
+%starting)
+globals = getGlobals();
+
 %Run the tests and show outputs.
 for i = 1:numel(testFileNames)
+    %Shut down any existing parpool. 
+    try
+        %Test if there is a parpool that we should shut down before the
+        %next test.
+        p = gcp('nocreate');
+        delete(p);
+    catch
+        %Do nothing
+    end
+    %reset the globals
+    resetGlobals(globals);
+    %reset the path
+    path(pathForTests);    
     [~,file,ext] = fileparts(testFileNames{i});
     testName = file;
     fprintf('****************************************************\n\n');
@@ -74,3 +92,47 @@ resultTable= table({results.fileName}',{results.status}',[results.passed]',[resu
 
 %Change back to the original directory.
 cd(currentDir)
+end
+
+
+function globals = getGlobals()
+% Get all values of current globals in a struct.
+% USAGE:
+%    globals = getGlobals()
+%
+% OUTPUT:
+%
+%    globals:   a struct of all global variables 
+someOddNameThatSureLyNoGlobalVarHas = struct();
+globalvars = who('global');
+for i = 1:numel(globalvars)
+    eval(['global ' globalvars{i}]);
+    eval(['someOddNameThatSureLyNoGlobalVarHas.' globalvars{i} ' = ' globalvars{i}, ';']);
+end
+globals = someOddNameThatSureLyNoGlobalVarHas;
+end
+
+function resetGlobals(someOddNameThatSureLyNoGlobalVarHas)
+% Reset all global variables to a value stored in the input struct (all
+% variables not present will be deleted.
+% USAGE:
+%    resetGlobals(someOddNameThatSureLyNoGlobalVarHas)
+%
+% INPUT:
+%    someOddNameThatSureLyNoGlobalVarHas:   A struct with 1 field per
+%                                           global variable.
+
+globalvars = who('global');
+globalsToDelete = setdiff(globalvars,fieldnames(someOddNameThatSureLyNoGlobalVarHas));
+
+for i = 1:numel(globalsToDelete)
+    clearvars('-global',globalsToDelete{i});
+end
+%And for everything else, check, if it changed
+globalNames = fieldnames(someOddNameThatSureLyNoGlobalVarHas);
+for i = 1:numel(globalNames)
+    eval(['global ' globalNames{i}]);
+    %Set it to the old value.
+    eval([globalNames{i} ' = someOddNameThatSureLyNoGlobalVarHas.' globalNames{i} ';']);
+end
+end
