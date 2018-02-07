@@ -35,12 +35,7 @@ function keyAdded = addKeyToKnownHosts(siteName)
     if status_keyscan == 1 && ~isempty(strfind(result_keyscan, 'usage:'))
 
         % try to create the directory
-        try
-            w = warning ('off','all');
-            mkdir([homeDir filesep '.ssh']);
-            w = warning ('on','all');
-        catch
-        end
+        [status_createDir, ~, ~] = mkdir([homeDir filesep '.ssh']);
 
         % touch the file first
         system(['touch ', homeDir, filesep, '.ssh', filesep, 'known_hosts']);
