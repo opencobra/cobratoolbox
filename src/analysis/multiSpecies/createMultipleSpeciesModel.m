@@ -1,4 +1,4 @@
-function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHost,nameTagHost)
+function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,mergeGenesFlag,modelHost,nameTagHost)
 % Based on the implementation from *Klitgord and Segre 2010, PMID 21124952*.
 % The present implementation has been used in *PMID 23022739*, *PMID 25841013*,
 % *PMID 25901891*, *PMID 27893703*.
@@ -31,6 +31,9 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %
 %                         * nameTagsModels{1,1} = 'name tag 1'
 %                         * nameTagsModels{2,1} = 'name tag 2'...
+%    mergeGenesFlag     If true, the gene associations in both models are
+%    included in the joined model. If false, empty field are created
+%    instead (default:false). Note: merging genes is time-consuming and may crash certain models.
 %    modelHost:         COBRA model for host
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
 %
@@ -38,7 +41,9 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %    modelJoint:        model structure for joint model
 %
 % .. Authors:
-%       - Ines Thiele and Almut Heinken, 2011-2017 Last edited by A.H., 01.03.2017
+%       - Ines Thiele and Almut Heinken, 2011-2018 
+% Last edited by A.H., 07.02.2018-included option whether or not genes are
+% merged
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -56,12 +61,16 @@ else
         error('Number of name tags and joint models needs to be identical!')
     end
 end
+if nargin < 3
+    % by default, genes are not merged
+    mergeGenesFlag=false;
+end
 
-if nargin == 3
+if nargin == 4
     % assign default name tag for host
     nameTagHost = 'Host_';
 end
-
+    
 %% define some variables
 eTag = 'u';
 exTag = 'e';
@@ -91,7 +100,7 @@ for i = 1:modelNumber
     modelStorage{i, 1} = model;
 end
 
-if nargin >= 3
+if nargin >= 4
     %% with a host
     exmod = modelHost.rxns(strmatch('EX', modelHost.rxns));
 
@@ -145,10 +154,10 @@ if nargin >= 3
     if modelNumber > 1
         for i = 2:modelNumber
             model = modelStorage{i, 1};
-            [modelJoint] = mergeTwoModels(modelJoint, model, 1);
+            [modelJoint] = mergeTwoModels(modelJoint, model, 1, mergeGenesFlag);
         end
     end
-    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1);
+    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1, mergeGenesFlag);
 
     modelJoint = addExchangeRxn(modelJoint, unique(MexGJoint));
 
@@ -171,7 +180,7 @@ else
      if modelNumber > 1
         for i = 2:modelNumber
             model = modelStorage{i, 1};
-            [modelJoint] = mergeTwoModels(modelJoint, model, 1);
+            [modelJoint] = mergeTwoModels(modelJoint, model, 1, mergeGenesFlag);
         end
      end
 
