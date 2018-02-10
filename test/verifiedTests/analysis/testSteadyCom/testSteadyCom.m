@@ -156,7 +156,8 @@ for jTest = 1:2
                 feasTol = 1e-4;  % feasibility tolerance
                 tol = 1e-2;  % tolerance for comparing results
         end
-
+        tolPercent = 0.05;  % tolerance for percentage difference
+        
         % TEST SteadyCom
         % test different algoirthms
         data = load('refData_SteadyCom', 'result');
@@ -248,7 +249,7 @@ for jTest = 1:2
         diary off;
         % check max. growth rate and sum of absolute fluxes
         assert(abs(resultNVarg.GRmax - 0.142857) < tol);
-        assert(abs(sum(abs(resultNVarg.flux)) - 53.6493) / 53.6493 < tol)
+        assert(abs(sum(abs(resultNVarg.flux)) - 53.6493) / 53.6493 < tolPercent)
         % check that nothing is printed
         text1 = importdata('SteadyCom_saveModel.txt');
         assert(isempty(text1));
@@ -290,10 +291,10 @@ for jTest = 1:2
         data = load('refData_SteadyComFVA', 'minFlux', 'maxFlux', 'GRvector');
 
         % Different solvers may give slightly different results. Give a percentage tolerance
-        assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
-        assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
-        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-
+        assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tolPercent)
+        assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tolPercent)
+        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
+        
         % test with an infeasible model
         [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelTest);
         assert(all(isnan(minFlux)) & all(isnan(maxFlux)) & isnan(GRvector));
@@ -303,21 +304,21 @@ for jTest = 1:2
         [minFlux, maxFlux] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
         minFluxRef = [0.2856653; 0.3749391];
         maxFluxRef = [0.6250234; 0.7143061];
-        assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tol)
-
+        assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tolPercent)
+        
         % test the sub-function without given growth rate
         [minFlux, maxFlux, ~, ~, ~, gr] = SteadyComFVAgr(modelJoint, struct('GRtol', 1e-6), [], 'feasTol', feasTol);
-        assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
+        assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tolPercent)
         assert(abs(gr - 0.142857) < tol)
 
         % test loading Cplex model
         if jTest == 1
             options = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', 'GRmax', 0.142857, 'optGRpercent', 100);
             [minFlux, maxFlux] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
-            assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
+            assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tolPercent)
             options = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', 'GR', 0.142857);
             [minFlux, maxFlux] = SteadyComFVAgr(modelJoint, options, [], 'feasTol', feasTol);
-            assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
+            assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tolPercent)
         end
 
         % test saving results
@@ -340,7 +341,7 @@ for jTest = 1:2
                     if abs(vRef(j3)) < 1e-5
                         assert(abs(vRef(j3) - v(j3)) < 1e-5)
                     else
-                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                     end
                 end
             end
@@ -364,7 +365,7 @@ for jTest = 1:2
                     if abs(vRef(j3)) < 1e-5
                         assert(abs(vRef(j3) - v(j3)) < 1e-5)
                     else
-                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                     end
                 end
             end
@@ -404,7 +405,7 @@ for jTest = 1:2
                     if abs(vRef(j3)) < 1e-5
                         assert(abs(vRef(j3) - v(j3)) < 1e-5)
                     else
-                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                        assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                     end
                 end
             end
@@ -442,7 +443,7 @@ for jTest = 1:2
                             if abs(vRef(j3)) < 1e-5
                                 assert(abs(vRef(j3) - v(j3)) < 1e-5)
                             else
-                                assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                                assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                             end
                         end
                     end
@@ -474,7 +475,7 @@ for jTest = 1:2
                             if abs(vRef(j3)) < 1e-5
                                 assert(abs(vRef(j3) - v(j3)) < 1e-5)
                             else
-                                assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tol)
+                                assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                             end
                         end
                     end
@@ -509,11 +510,11 @@ for jTest = 1:2
                 end
             end
         end
-        assert(devPOA < tol)
-        assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
+        assert(devPOA < tolPercent)
+        assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tolPercent)
         assert(devSt < tol)
-        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-
+        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
+        
         % test loading Cplex model
         if jTest == 1
             optionsLoad = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', ...
@@ -539,11 +540,11 @@ for jTest = 1:2
                     end
                 end
             end
-            assert(devPOA2 < tol)
-            assert(max(max(max(abs(fluxRange2 - data.fluxRange(:, :, 1)) ./ abs(data.fluxRange(:, :, 1))))) < tol)
+            assert(devPOA2 < tolPercent)
+            assert(max(max(max(abs(fluxRange2 - data.fluxRange(:, :, 1)) ./ abs(data.fluxRange(:, :, 1))))) < tolPercent)
             assert(devSt2 < tol)
-            assert(devPOA3 < tol)
-            assert(max(max(max(abs(fluxRange3 - data.fluxRange(:,:, 1)) ./ abs(data.fluxRange(:, :, 1))))) < tol)
+            assert(devPOA3 < tolPercent)
+            assert(max(max(max(abs(fluxRange3 - data.fluxRange(:,:, 1)) ./ abs(data.fluxRange(:, :, 1))))) < tolPercent)
             assert(devSt3 < tol)
             delete('testSteadyComSaveModel.bas', 'testSteadyComSaveModel.mps', 'testSteadyComSaveModel.prm')
         end
@@ -570,12 +571,12 @@ for jTest = 1:2
                 end
             end
         end
-        assert(devPOA < tol)
-        assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
+        assert(devPOA < tolPercent)
+        assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tolPercent)
         assert(devSt < tol)
-        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-
-        % test parallel computation
+        assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
+        
+        % test parallel computation        
         rmdir([pwd filesep 'testSteadyComPOA'], 's')
         if parWorks
             options.threads = 2;
@@ -591,10 +592,10 @@ for jTest = 1:2
                     end
                 end
             end
-            assert(devPOA < tol)
-            assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
+            assert(devPOA < tolPercent)
+            assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tolPercent)
             assert(devSt < tol)
-            assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
+            assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
             % delete created files
             rmdir([pwd filesep 'testSteadyComPOA'], 's')
         else
