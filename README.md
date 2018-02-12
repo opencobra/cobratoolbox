@@ -39,35 +39,28 @@ The following files are supplied
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| Input.m                                        | *Input files to be modified by the user containing all the variables * |
-| normCoverage.R                                 | *Script to format abundances (inserting abundance thresholds) to be processed into matlab*|
-| After_Eugen.R                                  | *Code to create abundance tables without NA and in binary form*       |
-| minimalRxnFlux.m                               | *function to enforce a minimal flux through a set of specific functions*|
-| coupleRxnList2Rxn.m                            | *function to couple constraints: edited by fede*                       |
-| FatSetupCreator.m                              | *function to create setup: parallelized and fast*                      |
-| addMicrobeCommunityBiomass.m                   | *function to add community biomass: edited by fede*                     |
-| createHostMicrobeModelDietFecalCompartments.m  | *function to create setup: edited by fede*                             |
-| ImportSetDiet.m                                | *function to load and impose to a model a specific diet*               |
-| Pipeline.m                                     | *Pipeline*                                                             |
+| StartMgPipe.m                                  | *Input files to be modified by the user containing all the variables * |
+| FastSetupCreator.m                             | *function to create setup: parallelized and fast*                      |
+| addMicrobeCommunityBiomass.m                   | *function to add community biomass: edited by fede*                    |
+| MgPipe.m                                       | *Pipeline*                                                             |
+| parsave.m                                      | *function to allow object saving in parallel loops*                    |
+| makeDummyModel.m                               | *function to create a dummy model*                                     |
+| setDietConstraints.m                           | *function to set specific constraints as diet to microbiota models*    |
 | README.md                                      | *this file*                                                            |
-| todo.txt                                       | *indications on the status of the implementation*                     |
 | **Old Pipeline**                               | *Folder for storing old pipeline code*                                 |
-| prepareCoverageFiles.R                         | *Script to format abundances to be processed into matlab*             |
-| Genomic_analysis.m                             | *pipeline for analysis on genomic data(1/3)*                           |
+| MgSetup_simulator.m                            | *Script to simulate under different models the created models (called from MGPipe)*|
+| MgResCollect.m                                 | *script to collect and output simulation results*                      |
 | Create_specific_setups_temporary.m             | *pipeline for analysis on genomic data(2/3)*                           |
-| evaluateSystemFluxes.m                         | *STILL TO TEST!!!*                                                     |
 | **results**                                    | *Results folder*                                                       |
 | ***compfile***                                 | *Results subfolder: contains object saved in open format*              |
-| **fast setup**                                 | *Folder containing modified scripts to built fast setup*               |
-| mergeTwoModels_AH_f.m                          | *function to merge models: fast version without genes info*            |
-|createHostMicrobeModelDietFecalCompartments_f1.m| *function to create setup: fast version without genes info*            |
-
 
 
 Usage
 =====
 
-Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file. Outputs are, as well, really interesting.  
+Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file. Outputs are, as well, really interesting.
+The pipeline can be stopped in every moment as all the results are saved as soon as they are computed. 
+In case of accidental or volunteer halt in the execution, the pipeline can be simply restarted without loss of time: already saved results (from previous runs) are automatically detected and not recomputed.    
 
 ## Inputs
 
@@ -75,33 +68,25 @@ Some specific information files needs to be loaded by the pipeline. For this rea
 
 | File                   | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
-| coverage2bas_all.csv   | table with mapping info (formatted by R script)                                              |
-| Patients_status.csv    |  table of same length of number of patients (0 means patient with disease 1 means helthy)    |
-|  **Aboundances**       |  folder containing abundance files                                                          |
-| normCoverage.csv       |  table with abundances for each species (normalized to 1 with minimal threshold to define presence)|
+| normCoverage.csv       |  table with abundances for each species (normalized to 1, with minimal threshold to define presence)|
+| Patients_status.csv    |  optional: table of same length of number of individuals (0 means patient with disease 1 means helthy)|
 
-Some variables, in the input file, needs to be created/modified to specify as for example paths of directories containing organisms’ models. The variables which needs to be created or changed from default are
+Some variables, in the input file, needs to be created/modified to specify inputs (as for example paths of directories containing organisms’ models). The variables which needs to be created or changed from default are
 
 | Variables    | Description                          |
 | -------------|--------------------------------------|
-| modpath      | path to microbiota models            |
-| hostpath     | path to the host model               |
-| csvpath      | path to csv files (where input files are stored)|
-| abundancepath| path to the abundances files (where abundance files are stored)|
-| resepath     |path to the directory to contain results|
-| dietpath     |path from where to read the diet      |
-| hostnam      | name that the host cell will have    |
-| patnumb      | number of patients in the study      |
+| modPath      | path to microbes models              |
+| infoPath     | path to csv files (where input files are stored)|
+| resePath     | path to the directory containing results|
+| patnumb      | number of individuals in the study      |
 | objre        | name of objective function of microbes|
-| dietnam      | name of the diet (csv file name without extension)|
-| dietcomp     | name of the diet compartment        |
+| rdiet        | if to simulate also a rich diet (rdiet=1)|
+| sdiet        | which type of diet to apply to the microbiota models|
 | patnumb      | number of patients in the study      |
 | nwok         | number of cores dedicated for parallelization|
-| fwok         | number of cores dedicated for parallelization of fastFVA|
-| comobj       | community objective function          |
-| reid         | identifier for set of reactions of which to run FVA (default fecal Exchanges)|
-| modbuild     | if part 2.1 (pan model construction)needs to be executed|
-| newFVA       | weather to use the new fastFVA (=1) or the old one (=0)|
+| cobrajl      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
+| autofix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
+| newFVA       | whichFVA function to use (fastFVA =1) |
 | compmod      | if outputs in open format should be produced for each section (1=T)|
 | patstat      | if documentations on patient status is provided (0 not 1 yes)|
 | figform      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
@@ -110,38 +95,39 @@ Some variables, in the input file, needs to be created/modified to specify as fo
 
 ## Outputs
 
-Patients' plots of metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on patients reaction repertoire are outputs of the first part; they are directly saved into the current MATLAB folder as png files. Moreover a series of objects created by the first part cab be of interest of the user: they can be the object of further data analysis. For this reason the MATLAB workspace is saved into a file called “MapInfo.mat”. The saved variables are:
+Individuals' plots of metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on patients reaction repertoire are outputs of the first part; they are directly saved into the current MATLAB folder as figure files. Moreover a series of objects created by the first part can be of interest of the user as they could be object of further analysis. For this reason the MATLAB workspace is saved into a file called “MapInfo.mat”. The saved variables are:
 
 | Object                 | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
 | reac                   | cell array with all the unique set of reactions contained in the models                      |
 | MicRea                 | binary matrix assessing presence of set of unique reactions for each of the microbes          |
-| cleantab               |  binary matrix asessing presence of specific strains in different patients                   |
-|  ReacPat               |  matrix with number of reactions per patients (species resolved)                             |
-| Reacset                | matrix with names of reactions that each patient has                                         |
-| reacTab                | matrix with presence/absence of reaction per patient: to compare different patients          |
+| cleantab               |  binary matrix asessing presence of specific strains in different individuals                   |
+| ReacPat                |  matrix with number of reactions per individual (species resolved)                             |
+| reacset                | matrix with names of reactions that each individual has                                         |
+| reacTab                | matrix with presence/absence of reaction per individual: to compare different individuals   |
+| out                    | matrix with abundance of reaction per individual: to compare different individuals         |
 
 
-[PART 2] creates, first, a global metabolic model of host and microbiota, secondly patients' specific models (personalized) are created with their specific objective function and coupling constrains. 
-[PART 3] runs simulations (FVAs) and detect differences between personalized models.
+[PART 2] creates, first, a global microbiota metabolic model, secondly individuals' specific models (personalized) are created with their specific objective function and coupling constrains. 
+[PART 3] runs simulations (FVAs) and detects metabolic differences between personalized models.
 The outputs are: 
 
 | File                       | Description                                                                                  |
 | ---------------------------|----------------------------------------------------------------------------------------------|
 | Setup_allbacs.mat          | setup object containing all the models joined                                                |
-| All_patients.mat           | cell array containing all the personalized modes                                             |
-| FVAres.mat                 | object containing all the FVAs results                                                       |
+| microbiota_model_XXX.mat   | mat.file containing the personalized model                                                   |
+| simRes.mat                 | object containing NMPCs (FVAct), all the FVAs results (NSct), values of objective function (Presol), names of infeasible models (InFesMat)|
 
-If the specific option is enabled in the input file, most of the outputs are saved also in open format (xml, csv, rtf) in the dedicated folder. 
+If the specific option is enabled in the input file, most of the outputs are saved also in open format (xml, csv) in the dedicated folder. 
 
 ## Special uses
 
-Data should be formatted as specified (see also “Examples” section).  The input files should have the names listed in the input section. To do this, running the R scripts is essential.
-The first part of [part 2] is meant to be run only once to create a global host microbiota model. A fastest version of this part is available using scripts contained in the “fast setup folder”. The major drawback of this, is the loss of genetic information in the model. 
-The user can decide to use the new fastFVA in section 3.
-However he should be careful calculating the number of cores that would be needed. 
+Data should be formatted as specified (see also “Examples” section).  The input files should have names as listed in the input section.
+The first part of [part 2] is meant to be run only once to create a global microbiota model. 
+The user can decide to use different FVA functions in part 3.
+The user  should be careful calculating the number of cores to allocate. 
 Priority should be given in assigning cores for each personalized model simulation (one core for patient), then, if more cores are available (ex. user running the pipeline on the HPC) the use of the new fastFVA is suggested. 
-Please take note that if the specific option is enabled in the input file most of the outputs are saved also in open format (xml, csv, rtf) in the dedicated folder. 
+Please take note that if the specific option is enabled in the input file most of the outputs are saved also in open format (xml, csv) in the dedicated folder. 
 This might substantially slow down computations.
 
 Status of implementation
@@ -149,23 +135,19 @@ Status of implementation
 
 [Part 1, 2, 3] are implemented structured and tested. Refinement and expansion of these sections is always possible but it is not on the priority (todo) list.  
 
-[Part 0] will be implemented and it will take care of the metagenomic mapping: from reads trimming to creation of abundance tables. 
-
-In the next future [PART 4] will also be implemented: it will be hybrid modeling of patient specific scenario. Simulations will be done in VisL-BacArena. 
-
 A file “todo.txt” contains more specific indications on the status of the implementation. It can be modified to point out suggestions and it synthetizes what still needs to be implemented.
 
 A tutorial showing how to use the pipeline will also be created. 
 
-Also data and result export in open formats (.csv, .xml, .rtf, .tsv) will be soon available, with the idea of making the pipeline more flexible and connected with soft wares other than MATLAB 
+Data and result export in open formats (.csv, .xml) has to be better tested, the final aim is to make the pipeline more flexible and connected with softwares other than MATLAB 
 
-Please report any problem opening threads in the issue section. Also any kind of suggestions concerning the direction to follow with the pipeline implementation are welcome.   
+Please report any problem opening threads in the issue section. Also any kind of suggestions concerning future directions to follow with the pipeline implementation are welcome.   
 
 
 Examples
 ========
 
-Examples of input and output data [part 1] are contained in the Koala folder.
+Examples of input and output data [part 1] are contained in the MgPipe folder.
 
 
 Spin offs
@@ -175,9 +157,8 @@ The following functions can result useful for the community and be used for othe
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| minimalRxnFlux.m                               | *function to enforce a minimal flux trough a set of specific functions*|
-| FatSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
-| ImportSetDiet.m                                | *function to load and impose to a model a specific diet*               |
+| FastSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
+| addMicrobeCommunityBiomass.m                    | *function to add community biomass: edited by fede*                    |
 
 
 Benchmark
@@ -188,4 +169,5 @@ To be inplemented
 
 Toutorial
 =========
-To be inplemented: A Jupyter toutorial will be implemented as soon as possible. 
+To be inplemented: A livescript toutorial will be implemented as soon as possible. 
+
