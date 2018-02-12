@@ -292,6 +292,9 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             # Create sections for tutorials
             if ! [[ $previousSection = $section ]]; then
                 if [ $firstSection = false ]; then
+                    echo >> $rstPath/index.rst
+                    echo ".. raw:: html" >> $rstPath/index.rst
+                    echo >> $rstPath/index.rst
                     echo "        </ul>" >> $rstPath/index.rst
                     echo "      </div>" >> $rstPath/index.rst
                     echo "    </div>" >> $rstPath/index.rst
@@ -302,16 +305,21 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                 echo "" >> $rstPath/index.rst
                 echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
-                echo "    <div class=\"title_box\" id=\"tutorial$section\">" >> $rstPath/index.rst
+                echo "    <div class=\"tutorialSectionBox\" id=\"tutorial$section\">" >> $rstPath/index.rst
                 echo "      <div class=\"sectionTitle\">$section</div>" >> $rstPath/index.rst
                 echo "      <div class=\"sectionContent\">" >> $rstPath/index.rst
-                echo "        <ul>" >> $rstPath/index.rst
+                # echo "        <ul>" >> $rstPath/index.rst
+                echo >> $rstPath/index.rst
+                echo ".. toctree::" >> $rstPath/index.rst
+                echo >> $rstPath/index.rst
+
                 # echo ".. rst-class:: tutorial$section" >> $rstPath/index.rst
                 # echo "" >> $rstPath/index.rst
                 # echo ".. toctree::" >> $rstPath/index.rst
                 # echo >> $rstPath/index.rst
             fi
-            echo "           <li class=\"individualtutorial\">$tutorialLongTitle</li>" >> $rstPath/index.rst
+            # echo "           <li class=\"individualtutorial\">$tutorialLongTitle</li>" >> $rstPath/index.rst
+            echo "    $tutorialLongTitle" >> $rstPath/index.rst
         fi
     done
 fi
