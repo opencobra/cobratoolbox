@@ -243,7 +243,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
     echo_time "Creating requested files for tutorial(s):"
     echo  ${tutorials[@]}
-    section=""
+    firstSection=true
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -291,14 +291,27 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             rm "$rstPath/$tutorialLongTitle.rst.bak"
             # Create sections for tutorials
             if ! [[ $previousSection = $section ]]; then
+                if [ $firstSection = false ]; then
+                    echo "        </ul>" >> $rstPath/index.rst
+                    echo "      </div>" >> $rstPath/index.rst
+                    echo "    </div>" >> $rstPath/index.rst
+                fi
+
+                firstSection=false
                 echo "" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
-                echo ".. rst-class:: tutorial$section" >> $rstPath/index.rst
+                echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
-                echo ".. toctree::" >> $rstPath/index.rst
-                echo >> $rstPath/index.rst
+                echo "    <div class=\"title_box\" id=\"tutorial$section\">" >> $rstPath/index.rst
+                echo "      <div class=\"sectionTitle\">$section</div>" >> $rstPath/index.rst
+                echo "      <div class=\"sectionContent\">" >> $rstPath/index.rst
+                echo "        <ul>" >> $rstPath/index.rst
+                # echo ".. rst-class:: tutorial$section" >> $rstPath/index.rst
+                # echo "" >> $rstPath/index.rst
+                # echo ".. toctree::" >> $rstPath/index.rst
+                # echo >> $rstPath/index.rst
             fi
-            echo "   $tutorialLongTitle" >> $rstPath/index.rst
+            echo "           <li class=\"individualtutorial\">$tutorialLongTitle</li>" >> $rstPath/index.rst
         fi
     done
 fi
