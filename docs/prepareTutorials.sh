@@ -35,7 +35,6 @@ buildTutorialList(){
             done
         done
     else
-        echo here
         for d in $(find $COBRATutorialsPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
@@ -51,11 +50,17 @@ buildTutorialList(){
             fi
         done
     fi
+
     if [[ nTutorial == 0 ]]; then
         echo_time;
         echo_time "List of tutorial is empty."
         echo_time "$usage"; exit 1;
     fi
+
+    # sort tutorial by ascending alphabetical order
+    IFS=$'\n'
+    tutorials=($(sort <<<"${tutorials[*]}"))
+    unset IFS
 }
 
 createLocalVariables(){
@@ -70,8 +75,6 @@ createLocalVariables(){
         tutorialTitle="tutorialNoName"
     fi
 
-    echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder"
-
     foo="${tutorialName:9}"
     tutorialLongTitle="${tutorialName:0:8}${foo^}"
     readmePath="$COBRATutorialsPath/$tutorialFolder"
@@ -85,6 +88,15 @@ createLocalVariables(){
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
     dirHyperLink="https://github.com/opencobra/COBRA.tutorials/tree/master/$tutorialFolder"
+
+    previousSection=""
+    if [[ -n $section ]]; then
+        previousSection=$section
+    fi
+
+    section=${tutorialFolder%%/*}
+
+    echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder - $section ($previousSection)"
 }
 
 buildHTMLTutorials(){
@@ -225,14 +237,13 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         echo_time "Creating $rstPath/index.rst"
         echo >> $rstPath/index.rst
         echo >> $rstPath/index.rst
-        echo ".. toctree::" >> $rstPath/index.rst
-        echo >> $rstPath/index.rst
         echo_time "Cleaning destination folders for rst files"
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
     fi
 
     echo_time "Creating requested files for tutorial(s):"
     echo  ${tutorials[@]}
+    section=""
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -278,6 +289,15 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed -i.bak "s~#IFRAMEtutorialPath#~$htmlHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
+            # Create sections for tutorials
+            if ! [[ $previousSection = $section ]]; then
+                echo "" >> $rstPath/index.rst
+                echo "" >> $rstPath/index.rst
+                echo ".. rst-class:: tutorial$section" >> $rstPath/index.rst
+                echo "" >> $rstPath/index.rst
+                echo ".. toctree::" >> $rstPath/index.rst
+                echo >> $rstPath/index.rst
+            fi
             echo "   $tutorialLongTitle" >> $rstPath/index.rst
         fi
     done
