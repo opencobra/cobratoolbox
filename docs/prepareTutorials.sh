@@ -39,7 +39,7 @@ buildTutorialList(){
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
                 singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
-                echo here
+
                 if [[ -f "$singleTutorial" ]]; then
                     let "nTutorial+=1"
                     tutorials[$nTutorial]="$singleTutorial"
@@ -215,6 +215,24 @@ fi
 
 # build list of tutorial if parameter '-f' is not set.
 buildTutorialList
+
+# gather tutorial long names.
+nTutorial=0
+for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
+do
+    createLocalVariables $tutorial
+    let "nTutorial+=1"
+    tutorialLongNames[$nTutorial]="$tutorial $section $tutorialTitle"
+done
+
+# printf '%s\n' "${tutorialLongNames[@]}"
+
+# sort tutorial by ascending alphabetical order of section and then name.
+IFS=$'\n'
+tutorials=($(sort -f -k2 -k3 <<<"${tutorialLongNames[*]}" | awk  '{print $1}'))
+unset IFS
+
+# printf '%s\n' "${tutorialLongNames[@]}"
 
 tutorialPath="../tutorials"
 rstPath="$COBRAToolboxPath/docs/source/tutorials"
