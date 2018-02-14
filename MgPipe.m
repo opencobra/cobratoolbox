@@ -480,8 +480,8 @@ parfor k = 2:(patnumb+1)
         BTRxns=strmatch(presBac(i,1),finam.rxns);%finding indixes of specific reactions 
         finam=coupleRxnList2Rxn(finam,finam.rxns(BTRxns(1:length(finam.rxns(BTRxns(:,1)))-1,1)),strcat(presBac(i,1),{'_biomass0'}),400,0.01); %couple the specific reactions 
     end
-    finam.name=sampname((k-1),1); 
-    allmod(k,1)={finam};
+    %finam.name=sampname((k-1),1); 
+    %allmod(k,1)={finam};
     microbiota_model=finam;
     microbiota_model.name=sampname((k-1),1) ;
     pp=cell2mat(sampname((k-1),1));
@@ -503,8 +503,8 @@ modelrm.description=[];
 modelrm.description=strcat('setup_model_patient',k-1);
 writeCbToSBML(modelrm, strcat(resPath,'Setup_',k-1,'.xml'));
 end
-poolobj = gcp('nocreate');
-delete(poolobj);
+%poolobj = gcp('nocreate');
+%delete(poolobj);
 end  
 
 %%
