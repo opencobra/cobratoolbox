@@ -71,13 +71,13 @@ for k = 1:length(solverPkgs)
                 [modelJoint] = createMultipleSpeciesModel(microbeModels);
 
                 % one microbe model with host
-                [modelJointHost] = createMultipleSpeciesModel(microbeModels, [], host);
+                [modelJointHost] = createMultipleSpeciesModel(microbeModels, [], host, [], false);
             else
                 % three microbe models with host
-                [modelJointHost] = createMultipleSpeciesModel(microbeModels, microbeNameTags, host, hostNameTag);
+                [modelJointHost] = createMultipleSpeciesModel(microbeModels, microbeNameTags, host, hostNameTag, false);
 
                 % three microbe models without host
-                [modelJoint] = createMultipleSpeciesModel(microbeModels, microbeNameTags);
+                [modelJoint] = createMultipleSpeciesModel(microbeModels, microbeNameTags, [], [], false);
             end
 
             for i = 1:j
