@@ -322,18 +322,18 @@ constraints.</p>
 (same outcome for both).</li>
 <li>Parasitism: one organism grows faster in co-growth than separately, while
 the other grows slower in co-growth than separately. Outcome for
-faster-growing organism: ParasitismTaker, for slower-growing organism:
-ParasitismGiver</li>
+faster-growing organism: Parasitism_Taker, for slower-growing organism:
+Parasitism_Giver</li>
 <li>Amensalism: one organism&#8217;s growth is unaffected by co-growth,  while
 the other grows slower in co-growth than separately. Outcome for
-unaffected organism: AmensalismUnaff, for slower-growing organism:
-AmensalismNegAff</li>
+unaffected organism: Amensalism_Unaffected, for slower-growing organism:
+Amensalism_Affected</li>
 <li>Neutralism: both organisms&#8217; growths are unaffected by co-growth (same
 outcome for both)</li>
 <li>Commensalism: one organism&#8217;s growth is unaffected by co-growth,  while
 the other grows fatser in co-growth than separately. Outcome for
-unaffected organism: CommensalismGiver, for slower-growing organism:
-CommensalismTaker</li>
+unaffected organism: Commensalism_Giver, for slower-growing organism:
+Commensalism_Taker</li>
 <li>Mutualism: both organisms growth faster in co-growth than separately
 (same outcome for both)</li>
 </ul>
@@ -343,7 +343,7 @@ CommensalismTaker</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.createMultipleSpeciesModel">
-<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em>, <em>mergeGenesFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.
 The present implementation has been used in <em>PMID 23022739</em>, <em>PMID 25841013</em>,
 <em>PMID 25901891</em>, <em>PMID 27893703</em>.</p>
@@ -393,6 +393,13 @@ COBRA model for host</p>
 <li><p class="first"><strong>nameTagHost</strong> &#8211;
 string of tag for reaction/metabolite abbreviation of host model</p>
 </li>
+<li><p class="first"><strong>mergeGenesFlag     If true, the gene associations in both models are</strong></p>
+</li>
+<li><p class="first"><strong>included in the joined model. If false, empty field are created</strong></p>
+</li>
+<li><p class="first"><strong>instead (default</strong> &#8211;
+false). Note: merging genes is time-consuming and may crash certain models.</p>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -402,6 +409,8 @@ string of tag for reaction/metabolite abbreviation of host model</p>
 model structure for joint model</li>
 </ul>
 </div></blockquote>
+<p>Last edited by A.H., 07.02.2018-included option whether or not genes are
+merged</p>
 </dd></dl>
 
 <dl class="function">
