@@ -6735,3 +6735,22 @@ blockquote {
 }
 
 //.easy-autocomplete-container { max-height: 160px; overflow: auto; overflow-y: auto; overflow-x:hidden; }
+
+.tutorialSectionBox {
+    margin-top: 2em;
+    border: #3c5a86 1px solid;
+    border-radius: 4px;
+}
+
+.tutorialSectionBox .sectionTitle {
+    position: relative;
+    top: -0.9em;
+    margin-left: 1em;
+    display: inline;
+    background-color: white;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.tutorialSectionBox .sectionContent {
+}
