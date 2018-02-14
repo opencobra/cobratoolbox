@@ -441,8 +441,8 @@ models={[]}; %empty cell array to be filled with models
     models(i,1)={prova};
    end
 
-%Creating global model
-setup=FatSetupCreator(models, orglist, {})
+%Creating global model -> setup creator will be called
+setup=FastSetupCreator(models, orglist, {})
 setup.name='Global reconstruction with lumen / fecal compartments no host'
 setup.recon=0
 save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
