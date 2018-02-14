@@ -30,27 +30,29 @@ Requirements
 ============
 
 MgPipe requires Matrix Laboratory as well as the Cobra Toolbox to be installed with ILOG CPLEX as solver.
-All toolboxes/solvers/files should be in the MATLAB path.  
+All toolboxes/solvers/files should be in the MATLAB path.
+MgPipe was created (and tested) for AGORA 1.0 please first download AGORA version 1.0 from https://vmh.uni.lu/#downloadview 
+and place the mat files into a dedicated folder.  
 
-Folder Structure and Files
+Main Folder Structure and Files
 ==========================
 
 The following files are supplied
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| StartMgPipe.m                                  | *Input files to be modified by the user containing all the variables * |
+| StartMgPipe.m                                  | *Input files to be modified by the user containing all the variables*  |
 | FastSetupCreator.m                             | *function to create setup: parallelized and fast*                      |
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass: edited by fede*                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
-| setDietConstraints.m                           | *function to set specific constraints as diet to microbiota models*    |
-| README.md                                      | *this file*                                                            |
-| **Old Pipeline**                               | *Folder for storing old pipeline code*                                 |
-| MgSetup_simulator.m                            | *Script to simulate under different models the created models (called from MGPipe)*|
+| MgSetup_simulator.m                            | *Script to simulate under different diets the created models (called from MGPipe)*|
 | MgResCollect.m                                 | *script to collect and output simulation results*                      |
-| Create_specific_setups_temporary.m             | *pipeline for analysis on genomic data(2/3)*                           |
+| README.md                                      | *this file*                                                            |
+| **setConstraints**                             | *Folder containing diets and related scripts*                          |
+| setDietConstraints.m                           | *script to impose a specific diet and add essential elements to microbiota models*|
+| **examples**                                   | *folder containing necessary files to replicate the pipeline tutorial* |
 | **results**                                    | *Results folder*                                                       |
 | ***compfile***                                 | *Results subfolder: contains object saved in open format*              |
 
@@ -122,13 +124,15 @@ If the specific option is enabled in the input file, most of the outputs are sav
 
 ## Special uses
 
-Data should be formatted as specified (see also “Examples” section).  The input files should have names as listed in the input section.
+Data should be formatted exactly as specified (see also “Examples” section).  The input files should have names as listed in the input section.
 The first part of [part 2] is meant to be run only once to create a global microbiota model. 
 The user can decide to use different FVA functions in part 3.
 The user  should be careful calculating the number of cores to allocate. 
 Priority should be given in assigning cores for each personalized model simulation (one core for patient), then, if more cores are available (ex. user running the pipeline on the HPC) the use of the new fastFVA is suggested. 
 Please take note that if the specific option is enabled in the input file most of the outputs are saved also in open format (xml, csv) in the dedicated folder. 
 This might substantially slow down computations.
+
+**WARNING :**MgPipe was created (and tested) for AGORA 1.0. The use of models from any different source was not tested and it is not guaranteed to work. 
 
 Status of implementation
 ========================
@@ -139,15 +143,15 @@ A file “todo.txt” contains more specific indications on the status of the implem
 
 A tutorial showing how to use the pipeline will also be created. 
 
-Data and result export in open formats (.csv, .xml) has to be better tested, the final aim is to make the pipeline more flexible and connected with softwares other than MATLAB 
+Data and result export in open formats (.csv, .xml) has to be better tested and further developed, the final aim is to make the pipeline more flexible and connected with softwares other than MATLAB 
 
-Please report any problem opening threads in the issue section. Also any kind of suggestions concerning future directions to follow with the pipeline implementation are welcome.   
+Please report any problem opening threads in the issue section. Also any kind of suggestions with the pipeline implementation are also welcome.   
 
 
 Examples
 ========
 
-Examples of input and output data [part 1] are contained in the MgPipe folder.
+Examples of input and output data [part 1] are contained in the examples folder.
 
 
 Spin offs
@@ -158,7 +162,7 @@ The following functions can result useful for the community and be used for othe
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
 | FastSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
-| addMicrobeCommunityBiomass.m                    | *function to add community biomass: edited by fede*                    |
+| addMicrobeCommunityBiomass.m                    | *function to add community biomass*                    |
 
 
 Benchmark
@@ -171,3 +175,9 @@ Toutorial
 =========
 To be inplemented: A livescript toutorial will be implemented as soon as possible. 
 
+
+Author & Documentation Date
+===========================
+*Federico Baldini, 14.02.18*
+
+*[federico.baldini@uni.lu](federico.baldini@uni.lu)*
