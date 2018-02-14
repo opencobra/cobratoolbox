@@ -11,7 +11,8 @@
 - [Examples](#examples)  
 - [Spin offs](#Spin offs)
 - [Benchmark](#benchmark)  
-- [Toutorial](#toutorial)   
+- [Toutorial](#toutorial) 
+- [Author & Documentation Date](#Author_&_Documentation_Date)  
 
 <!-- /MDTOC -->
 
@@ -93,6 +94,10 @@ Some variables, in the input file, needs to be created/modified to specify input
 | patstat      | if documentations on patient status is provided (0 not 1 yes)|
 | figform      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
 
+The ‘autorun’ variable controls the behavior of the pipeline. The autorun functionality is automatically on. 
+This functionality enables the pipeline to automatically run and detect outputs. By changing ‘autorun’ variables to 0 it is possible to enter in manual / debug mode.   
+
+**WARNING :**you should not change the ‘autorun’ variable value. Manual mode is strongly discouraged and should be used only for debugging purposes.
 
 
 ## Outputs
@@ -131,6 +136,8 @@ The user  should be careful calculating the number of cores to allocate.
 Priority should be given in assigning cores for each personalized model simulation (one core for patient), then, if more cores are available (ex. user running the pipeline on the HPC) the use of the new fastFVA is suggested. 
 Please take note that if the specific option is enabled in the input file most of the outputs are saved also in open format (xml, csv) in the dedicated folder. 
 This might substantially slow down computations.
+By setting ‘autorun’=0 autorun function will be disabled. You are now running in manual / debug mode. Please note that the usage in manual mode is strongly discouraged and should be used only for 
+debugging purposes.
 
 **WARNING :**MgPipe was created (and tested) for AGORA 1.0. The use of models from any different source was not tested and it is not guaranteed to work. 
 
