@@ -42,6 +42,8 @@ for j=1:size(models,1)
     exch=union(exch,model.mets(find(sum(model.S(:,strncmp('EX_',model.rxns,3)),2)~=0)));
 end
 
+%The biomass 'biomass[c]' should not be inserted in the list of exchanges. Hence it will be removed
+exch=setdiff(exch,'biomass[c]');
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns
@@ -153,7 +155,7 @@ parfor j=1:size(models,1)
         dummyMicEU.lb(k)=-1000;
         dummyMicEU.ub(k)=1000;
     end
-    model = removeRxns(model, exmod, false, false);%remove exchange reactions% to avoid extra metabolite problem
+    model = removeRxns(model, exmod) 
     model.rxns=strcat(strcat(microbeNames{j,1},'_'),model.rxns);
     model.mets=strcat(strcat(microbeNames{j,1},'_'),regexprep(model.mets,'\[e\]','\[u\]'));%replace [e] with [u]
     [model] = mergeTwoModels(dummyMicEU,model,2,false);
