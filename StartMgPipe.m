@@ -8,23 +8,21 @@
 
 %REQUIRED INPUT VARIABLES
 modPath='Y:\Federico\Eldermet\191017\models\'; %path to microbiota models
-infoPath='Y:\Federico\HMP\Run_Almut_17_03_31_with10_new_strains\'; %path to the aboundance files
-resPath='Y:\Federico\HMP\Run_Almut_17_03_31_with10_new_strains\'; %path to results directory 
-patnumb = 149; %number of individuals to process (<=total individuals in the study) 
-nwok = 3; %number of cores dedicated for parallelisation 
+infoPath='Y:\Federico\HMP\Run_Almut_17_03_31_with10_new_strains\'; %path to the information files
+resPath='Y:\Federico\testingMgPipe\'; %path to results directory 
+objre={'EX_biomass(e)'}; %name of objective function of organisms
+sdiet='EUAverageDiet' %standard diet type
+figform = '-depsc' %the output is vectorized picture, change to '-dpng' for .png
+nwok = 3; %number of cores dedicated for parallelization 
+autofix = 1 %autofix for names mismatch
 compmod = 0; % if outputs in open formats should be produced for each section (1=T)
 patstat = 0; %if documentations on patient health status is provided (0 not 1 yes)
-autofix=1 %autofix for names mismatch
-figform = '-depsc' %the output is vectorised picture, change to '-dpng' for .png
-objre={'EX_biomass(e)'}; %name of objective function of organism
-rdiet=0 %to enable rich simulations also 
-sdiet='EUAverageDiet' %diet type
-cobrajl=0 
+rdiet = 0 %to enable also rich diet simulations 
+cobrajl = 0 
 newFVA = 0;
 %END OF REQUIRED INPUT VARIABLES
-
 %%
-%Start warning section
+%Start warning section -> Please don't modify this section !
 if compmod == 1
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')    
 else
@@ -38,7 +36,7 @@ if patstat==0
     disp('Individuals health status not declared. Analysis will ignore that.')
 end
 %end of warning section
-
+%%
 %PIPELINE LAUNCHER -> Please don't modify this section !
 autorun = 1
 if autorun==1
@@ -46,10 +44,9 @@ if autorun==1
     disp('Well done! Pipeline successfully activated and running!')
     MgPipe
 else
-    warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted change back to ‘autorun’=1. Please note that the usage in manual mode is strongly discouraged and should be used only for debugging pourposes.')
+    warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ‘autorun’=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
     edit('MgPipe.m')
 end
-
 %%
 
 
