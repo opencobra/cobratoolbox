@@ -61,7 +61,11 @@ The following files are supplied
 Usage
 =====
 
-Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file. Outputs are, as well, really interesting.
+Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file. 
+Outputs are, as well, really interesting.
+
+Running the script called “StartMgPipe.m” (after having changed the necessary inputs) is the only action required from the user to start the pipeline.
+
 The pipeline can be stopped in every moment as all the results are saved as soon as they are computed. 
 In case of accidental or volunteer halt in the execution, the pipeline can be simply restarted without loss of time: already saved results (from previous runs) are automatically detected and not recomputed.    
 
@@ -90,7 +94,7 @@ Some variables, in the input file, needs to be created/modified to specify input
 | patstat      | if documentations on patient status is provided (0 not 1 yes)|
 | rdiet        | if to simulate also a rich diet (rdiet=1)|
 | cobrajl      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
-| newFVA       | whichFVA function to use (fastFVA =1) |
+| FVAtype      | whichFVA function to use (fastFVA =1) |
 
 
 
