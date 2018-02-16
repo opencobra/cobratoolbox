@@ -16,10 +16,10 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % OPTIONAL INPUT:
 %    unchecked:          default = false, if exists `solverType` is checked and `solverName` is assigned to a local variable
-%    validationLevel:    how much validation to use. 
+%    validationLevel:    how much validation to use.
 %                        0: no validation (default)
 %                        1: validate but remove outputs
-%                        2: validate and keep any outputs    
+%                        2: validate and keep any outputs
 %
 % OUTPUT:
 %     solverOK:             true if solver can be accessed, false if not
@@ -290,7 +290,7 @@ else
     %If we don't validate the solver, at which point it could be, that it is not yet set up,
     % we can actually just check whether it
     %is installed according to the solver field, and if not return false.
-    if validationLevel == 0 
+    if validationLevel == 0
         if ~SOLVERS.(solverName).installed
             if printLevel > 0
                 fprintf([' > Solver ', solverName, ' is not installed.\n']);
@@ -368,7 +368,7 @@ end
 
 % add the matlab path (in case someone had the great idea to overwrite the
 % matlab path).
-if (~isempty(strfind(solverName, 'matlab'))) 
+if (~isempty(strfind(solverName, 'matlab')))
     FMINCON_PATH = [matlabroot filesep 'toolbox' filesep 'shared' filesep 'optimlib'];
     addSolverDir(FMINCON_PATH, printLevel, 'matlab', 'FMINCON_PATH', FMINCON_PATH, true);
     LINPROG_PATH = [matlabroot filesep 'toolbox' filesep 'optim' ];
@@ -452,14 +452,14 @@ if compatibleStatus == 1 || compatibleStatus == 2
         case 'matlab'
             v = ver;
             %Both linprog and fmincon are part of the optimization toolbox.
-            solverOK = any(strcmp('Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');            
+            solverOK = any(strcmp('Optimization Toolbox', {v.Name})) && license('test','Optimization_Toolbox');
         otherwise
             error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
     end
 end
 
 % set solver related global variables
-if solverOK 
+if solverOK
     solverInstalled = true;
     if validationLevel > 0
         cwarn = warning;
@@ -468,8 +468,8 @@ if solverOK
         eval(['CBT_', solverType, '_SOLVER = solverName;']);
         Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
         try
-            evalc(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
-        catch ME            
+            eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
+        catch ME
             solverOK = false;
             eval(['CBT_', solverType, '_SOLVER = oldval;']);
         end
