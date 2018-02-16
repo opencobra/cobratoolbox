@@ -206,8 +206,8 @@ function initCobraToolbox()
 
     %create the Cleanup function
     %get the current content of the init Folder
-    dirContent = rdir(['**' filesep '*']);
-    finishup = onCleanup(@() removeGitIgnoredNewFiles(CBTDIR,dirContent));
+    [~, content] = system('git ls-files');
+    dirContent = strsplit(content, '\n');
 
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
@@ -541,19 +541,20 @@ function initCobraToolbox()
         warning('Your global git configuration could not be restored.');
     end
 
-    %Finally set up the COBRA System path
+    % set up the COBRA System path
     addCOBRABinaryPathToSystemPath();
 
     % change back to the current directory
     cd(currentDir);
+
+    % cleanup at the end of the successful run
+    removeGitIgnoredNewFiles(CBTDIR, dirContent);
 
     % clear all temporary variables
     % Note: global variables are kept in memory - DO NOT clear all the variables!
     if ENV_VARS.printLevel
         clearvars
     end
-
-
 end
 
 function checkGit()
