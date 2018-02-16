@@ -55,7 +55,7 @@ The following files are supplied
 | setDietConstraints.m                           | *script to impose a specific diet and add essential elements to microbiota models*|
 | **examples**                                   | *folder containing necessary files to replicate the pipeline tutorial* |
 | **results**                                    | *Results folder*                                                       |
-| ***compfile***                                 | *Results subfolder: contains object saved in open format*              |
+| ***compfile***                                 | *Results subfolder: contains objects saved in open format*             |
 
 
 Usage
@@ -81,38 +81,39 @@ Some variables, in the input file, needs to be created/modified to specify input
 | modPath      | path to microbes models              |
 | infoPath     | path to csv files (where input files are stored)|
 | resePath     | path to the directory containing results|
-| patnumb      | number of individuals in the study      |
 | objre        | name of objective function of microbes|
-| rdiet        | if to simulate also a rich diet (rdiet=1)|
 | sdiet        | which type of diet to apply to the microbiota models|
-| patnumb      | number of patients in the study      |
+| figform      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
 | nwok         | number of cores dedicated for parallelization|
-| cobrajl      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
 | autofix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
-| newFVA       | whichFVA function to use (fastFVA =1) |
 | compmod      | if outputs in open format should be produced for each section (1=T)|
 | patstat      | if documentations on patient status is provided (0 not 1 yes)|
-| figform      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
+| rdiet        | if to simulate also a rich diet (rdiet=1)|
+| cobrajl      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
+| newFVA       | whichFVA function to use (fastFVA =1) |
+
+
+
 
 The ‘autorun’ variable controls the behavior of the pipeline. The autorun functionality is automatically on. 
-This functionality enables the pipeline to automatically run and detect outputs. By changing ‘autorun’ variables to 0 it is possible to enter in manual / debug mode.   
+This functionality enables the pipeline to automatically run and detect outputs. By changing ‘autorun’ variable to 0 it is possible to enter in manual / debug mode.   
 
 **WARNING :**you should not change the ‘autorun’ variable value. Manual mode is strongly discouraged and should be used only for debugging purposes.
 
 
 ## Outputs
 
-Individuals' plots of metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on patients reaction repertoire are outputs of the first part; they are directly saved into the current MATLAB folder as figure files. Moreover a series of objects created by the first part can be of interest of the user as they could be object of further analysis. For this reason the MATLAB workspace is saved into a file called “MapInfo.mat”. The saved variables are:
+Individuals' plots of metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on patients reaction repertoire are outputs of the first part [PART 1]; they are directly saved into the current MATLAB folder as figure files. Moreover a series of objects created by the first part can be of interest of the user as they could be object of further analysis. For this reason the MATLAB workspace is saved into a file called “MapInfo.mat”. The saved variables are:
 
 | Object                 | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
 | reac                   | cell array with all the unique set of reactions contained in the models                      |
 | MicRea                 | binary matrix assessing presence of set of unique reactions for each of the microbes          |
-| cleantab               |  binary matrix asessing presence of specific strains in different individuals                   |
+| BinOrg                 |  binary matrix asessing presence of specific strains in different individuals                   |
 | ReacPat                |  matrix with number of reactions per individual (species resolved)                             |
-| reacset                | matrix with names of reactions that each individual has                                         |
-| reacTab                | matrix with presence/absence of reaction per individual: to compare different individuals   |
-| out                    | matrix with abundance of reaction per individual: to compare different individuals         |
+| ReacSet                | matrix with names of reactions that each individual has                                         |
+| ReacTab                | binary matrix with presence/absence of reaction per individual: to compare different individuals   |
+| ReacAbun               | matrix with abundance of reaction per individual: to compare different individuals         |
 
 
 [PART 2] creates, first, a global microbiota metabolic model, secondly individuals' specific models (personalized) are created with their specific objective function and coupling constrains. 
@@ -171,6 +172,7 @@ The following functions can result useful for the community and be used for othe
 | FastSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
 | addMicrobeCommunityBiomass.m                    | *function to add community biomass*                    |
 
+The correct functioning of this functions outside the functionalities used in the pipeline is not assured. The users can report related issues on the dedicated page.
 
 Benchmark
 =========
@@ -185,6 +187,6 @@ To be inplemented: A livescript toutorial will be implemented as soon as possibl
 
 Author & Documentation Date
 ===========================
-*Federico Baldini, 14.02.18*
+*Federico Baldini, 15.02.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*
