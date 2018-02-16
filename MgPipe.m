@@ -389,30 +389,30 @@ end
 %end of trigger for Autoload
 
 if modbuild == 1
-%Preparing models (removing constrains, imposing a minimal growth) and inserting models in a array
-models={[]}; %empty cell array to be filled with models 
-   for i = 1:length(strains)
-   %reading the models   
-    a=strcat(modPath,strains(i,1),{'.mat'});%complete path from which to read the models  
-    b=char(a);%conversion of the path in character
-    prova=load(b);
-    prova=prova.model;
-    %removing possible constraints of the bacs
-    [selExc,selUpt] = findExcRxns(prova);
-    Reactions2 = prova.rxns(find(selExc));
-    allex=Reactions2(strmatch('EX',Reactions2));
-    biomass=allex(strmatch(objre,allex));
-    finrex=setdiff(allex,biomass);
-    prova = changeRxnBounds(prova, finrex, -1000,'l');
-    %creating array with models as required as imput from the following functions 
-    models(i,1)={prova};
+%Preparing models (removing constrains) and inserting models in an array
+   models={[]}; %empty cell array to be filled with models 
+   parfor i = 1:length(strains)
+       %reading the models   
+       pn=strcat(modPath,strains(i,1),{'.mat'});%complete path from which to read the models  
+       cpn=char(pn);%conversion of the path in character
+       ldm=load(cpn);
+       ldm=ldm.model;
+       %removing possible constraints of the bacs
+       [selExc,selUpt] = findExcRxns(ldm);
+       Reactions2 = ldm.rxns(find(selExc));
+       allex=Reactions2(strmatch('EX',Reactions2));
+       biomass=allex(strmatch(objre,allex));
+       finrex=setdiff(allex,biomass);
+       ldm = changeRxnBounds(ldm, finrex, -1000,'l');
+       %creating array with models as required as input from the following functions 
+       models(i,1)={ldm};
    end
 
-%Creating global model -> setup creator will be called
-setup=FastSetupCreator(models, orglist, {})
-setup.name='Global reconstruction with lumen / fecal compartments no host'
-setup.recon=0
-save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
+   %Creating global model -> setup creator will be called
+   setup=FastSetupCreator(models, orglist, {})
+   setup.name='Global reconstruction with lumen / fecal compartments no host'
+   setup.recon=0
+   save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
 end
 
 if modbuild==0
@@ -424,7 +424,7 @@ end
 allmod={[]};
 
 parfor k = 2:(patnumb+1)
-    finam=setup
+    mgmodel=setup
     filename=strcat(infoPath,{'normCoverage.csv'});
     filename=cell2mat(filename);
     [abundance]=readtable(filename);
@@ -439,68 +439,65 @@ parfor k = 2:(patnumb+1)
     fnames = dir('*.mat');
     numfids = length(fnames);
     vals = cell(1,numfids);
-     for K = 1:numfids
-          vals{K} = fnames(K).name;
-     end
+    for K = 1:numfids
+        vals{K} = fnames(K).name;
+    end
     vals=vals';
 
     mapP = strmatch(mId, vals, 'exact');
     if isempty(mapP)
-    %end of trigger
-    pp=cell2mat(sampname((k-1),1));
-    %parsave(sprintf(strcat(pp,'%d.mat')),id)
-
-    %code to find which  bacteria has aboundance of 0
-    noab={};
-    abne=num2cell(abundance);
-    abtab=[orglist,abne];
-    cnt=1;
-    for i = 1:length(orglist)
-        cane=cell2mat(abtab(i,2));
-        if cane == 0
-            noab(cnt)=abtab(i,1);
-            cnt=cnt+1;
-        end
-    end
-    noab=noab';
-    %Setting to 0 the Exchange reactions of a bacteria whose aboundance is 0 in
-    %the patient and the biomass
-    for i = 1:length(noab)
-        BTRxns=strmatch(noab(i,1),finam.rxns);%finding indixes of specific reactions
-        old_ex=finam.rxns(BTRxns);
-        finam=removeRxns(finam,old_ex); %compatible with new cobra
-    end
-   
-    %Preparing vectors with aboundances and bacteria in a way to eliminte the
-    %ones not present (abundance =0)
-
-    presBac=setdiff(orglist,noab,'stable');
-    abval={};
-    index=1;
-    for i = 1:length(abundance)
-        if ~abundance(i)== 0
+       %end of trigger
+       idInfo=cell2mat(sampname((k-1),1))
+       %parsave(sprintf(strcat(idInfo,'%d.mat')),id)
+       %code lines to find which  bacteria has abundance of 0
+       noab={};
+       abcel=num2cell(abundance);
+       abtab=[orglist,abcel];
+       cnt=1;
+       for i = 1:length(orglist)
+            celabtab=cell2mat(abtab(i,2));
+            if celabtab == 0
+               noab(cnt)=abtab(i,1);
+               cnt=cnt+1;
+            end
+       end
+       noab=noab';
+       %Setting to 0 the Exchange reactions of a bacteria whose abundance is 0 in
+       %the individual and in the biomass
+       for i = 1:length(noab)
+           IndRxns=strmatch(noab(i,1),mgmodel.rxns);%finding indixes of specific reactions
+           RmRxns=mgmodel.rxns(IndRxns);
+           mgmodel=removeRxns(mgmodel,RmRxns); 
+       end
+      %Preparing vectors with abundances and bacteria in a way to eliminate the
+      %ones not present (abundance =0)
+      presBac=setdiff(orglist,noab,'stable');
+      abval={};
+      index=1;
+      for i = 1:length(abundance)
+          if ~abundance(i)== 0
             abval(index) = num2cell(abundance(i));
             index=index+1;
-       end
-    end
-    abval=abval';
-    abval=cell2mat(abval);
-    finam=addMicrobeCommunityBiomass(finam,presBac,abval);
+          end
+      end
+     abval=abval';
+     abval=cell2mat(abval);
+     mgmodel=addMicrobeCommunityBiomass(mgmodel,presBac,abval);
   
     %Coupling constraints for bacteria 
     for i = 1:length(presBac)
-        BTRxns=strmatch(presBac(i,1),finam.rxns);%finding indixes of specific reactions 
-        finam=coupleRxnList2Rxn(finam,finam.rxns(BTRxns(1:length(finam.rxns(BTRxns(:,1)))-1,1)),strcat(presBac(i,1),{'_biomass0'}),400,0.01); %couple the specific reactions 
+        IndRxns=strmatch(presBac(i,1),mgmodel.rxns);%finding indixes of specific reactions 
+        mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),strcat(presBac(i,1),{'_biomass0'}),400,0.01); %couple the specific reactions 
     end
     %finam.name=sampname((k-1),1); 
     %allmod(k,1)={finam};
-    microbiota_model=finam;
-    microbiota_model.name=sampname((k-1),1) ;
-    pp=cell2mat(sampname((k-1),1));
+    microbiota_model=mgmodel;
+    microbiota_model.name=sampname((k-1),1);
+    idInfo=cell2mat(sampname((k-1),1));
     lw=length(resPath);
-    sresPath=resPath(1:(length(resPath)-1))
+    sresPath=resPath(1:(length(resPath)-1));
     cd(sresPath) 
-    parsave(sprintf(strcat('microbiota_model_samp_',pp,'%d.mat')),microbiota_model)
+    parsave(sprintf(strcat('microbiota_model_samp_',idInfo,'%d.mat')),microbiota_model)
     
 else
    s= 'microbiota model file found: skipping model creation for this sample';
@@ -515,8 +512,6 @@ modelrm.description=[];
 modelrm.description=strcat('setup_model_patient',k-1);
 writeCbToSBML(modelrm, strcat(resPath,'Setup_',k-1,'.xml'));
 end
-%poolobj = gcp('nocreate');
-%delete(poolobj);
 end  
 
 %%
