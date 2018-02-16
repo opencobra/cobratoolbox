@@ -19,7 +19,7 @@ compmod = 0; % if outputs in open formats should be produced for each section (1
 patstat = 0; %if documentations on patient health status is provided (0 not 1 yes)
 rdiet = 0 %to enable also rich diet simulations 
 cobrajl = 0 
-newFVA = 0;
+FVAtype = 0;
 %END OF REQUIRED INPUT VARIABLES
 %%
 %Start warning section -> Please don't modify this section !
