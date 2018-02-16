@@ -14,6 +14,18 @@
 
 % Federico Baldini, 2017-2018
 
+%Automatic detection of number of samples in the study 
+filename=strcat(infoPath,{'normCoverage.csv'});
+filename=cell2mat(filename);
+[sampname]=readtable(filename,'ReadVariableNames',false);
+s=size(sampname);
+s=s(1,2);
+sampname=sampname(1,3:s);
+sampname=table2cell(sampname);
+sampname=sampname'; 
+patnumb=length(sampname);%number of individuals
+
+
 %Auto load for PART1 -> if PART1 was already computed and is alreday
 %present in results folder its execution is skipped else its execution starts
 
@@ -26,7 +38,6 @@ vals = cell(1,numfids);
        vals{K} = fnames(K).name;
    end
 vals=vals';
-extrastrains=strtok(vals(:,1),'.');
 mapP = strmatch('mapInfo.mat', vals, 'exact');
 
  %[PART 1] 
@@ -41,16 +52,17 @@ s=size(sampname);
 s=s(1,2);
 sampname=sampname(1,3:s);
 sampname=table2cell(sampname);
-sampname=sampname'
+sampname=sampname'; %extracted names of samples 
 
 %Reading models names
 filename=strcat(infoPath,{'normCoverage.csv'});
 filename=cell2mat(filename);
 [strains]=readtable(filename);
 strains=strains(:,2);
-strains=table2cell(strains);
+strains=table2cell(strains); %extracted names of models 
 
-%Loading names matching with agora strains 
+%Loading names of models not present in the study but in folder: the vector
+%containing the name is called extrastrains
 
 modPathc=modPath(1:(length(modPath)-1));
 cd(modPathc)
@@ -61,40 +73,44 @@ for K = 1:numfids
    vals{K} = fnames(K).name;
 end
 vals=vals';
-extrastrains=strtok(vals(:,1),'.');
+extrastrains=strtok(vals(:,1),'.'); 
 
 %Loading all the models and putting them into a vector
 
 models={[]}; %empty cell array to be filled with models 
  for i = 1:length(strains)
     %reading the models   
-    a=strcat(modPath,strains(i,1),{'.mat'});%complete path from which to read the model  
-    b=char(a);%conversion of the path in character
-    prova=load(b);
-    prova=prova.model;
-    %creating array with models as required as imput from the later functions 
-    models(i,1)={prova};
+    pn=strcat(modPath,strains(i,1),{'.mat'});%complete path from which to read the model  
+    cpn=char(pn);%conversion of the path in character
+    ldm=load(cpn);
+    ldm=ldm.model;
+    %creating array with models as required as input from the later functions 
+    models(i,1)={ldm};
 end
     
-%find the unique se of all the reactions contained in the models
+%find the unique set of all the reactions contained in the models
     
  reac={}; %array with unique set of all the reactions present in the models
 for i = 1:(length(models)-1)
-    prova=models{i,1};
-    allreac=prova.rxns;
+    smd=models{i,1};
+    allreac=smd.rxns;
     i=i+1;
-    prova=models{i,1};
-    allreac1=prova.rxns;
+    smd=models{i,1};
+    allreac1=smd.rxns;
     reaclist=unique(union(allreac,allreac1));
     reac=union(reac,reaclist);
 end
 
-%Code to detect reaction presence in each model
+%Code to detect reaction presence in each model and create inary matrix 
+%assessing presence of set of unique reactions for each of the microbes
 
 MicRea = zeros(length(models),length(reac));
-for i = 1:length(models)
+
+mdlt=length(models);
+rclt=length(reac);
+parfor i = 1:mdlt 
     model=models{i,1};
-    for j = 1:length(reac)
+    for j = 1:rclt
         if ismember(reac(j),model.rxns)
         MicRea(i,j)= 1;
         end
@@ -108,67 +124,68 @@ filename=cell2mat(filename);
 [binary]=readtable(filename);
 s=size(binary);
 s=s(1,2);
-binary=binary(:,3:s);
+binary=binary(:,3:s); %removing model info and others 
 binar=table2cell(binary);
 
-for i=1:length(binar(:,1))
-    for j=1:length(binar(1,:))
+lgi=length(binar(:,1));
+lgj=length(binar(1,:));
+parfor i=1:lgi
+    for j=1:lgj
         if table2array(binary(i,j))~=0
            binary{i,j}=1;
         end
     end
 end
 
-cleantab=binary;
+BinOrg=binary;
 
 %Compute number of reactions per individual (species resolved)
 
-ReacPat=zeros(length(table2cell(cleantab(:,1))),length(table2cell(cleantab(1,:))));
-cleantabc=table2cell(cleantab);
-for j = 1:length(table2cell(cleantab(1,:)))
-    for i = 1:length(table2cell(cleantab(:,1)))
-        b=cell2mat(cleantabc(i,j));
-        if b == 1 
+ReacPat=zeros(length(table2cell(BinOrg(:,1))),length(table2cell(BinOrg(1,:))));
+cleantabc=table2cell(BinOrg);
+for j = 1:length(table2cell(BinOrg(1,:)))
+    for i = 1:length(table2cell(BinOrg(:,1)))
+        temp=cell2mat(cleantabc(i,j));
+        if temp == 1 
             ReacPat(i,j)=sum(MicRea(i,:));
         end
     end
 end
 
-%Computing overall number of reactions per individual
+%Computing overall (non unique) number of reactions per individual
 
 totReac=[];
 for i = 1:length(ReacPat(1,:))
     totReac(i,1)= sum(ReacPat(:,i));
 end
 
-%Computing number of reactions per bacteria species
+%Computing number of reactions per organism
 
 reacNumb=[];
 for i = 1:length(MicRea(:,1))
-%sum(MicRea(2,:))
     reacNumb(i,1)=sum(MicRea(i,:));
 end
 
-%Computing number of species per individual
+%Computing number of organism per individual
 
-patNumb=[];
+patOrg=[];
 for i = 1:length(cleantabc(1,:))
-    patNumb(i,1) = sum(table2array(cleantab(:,i)));
+    patOrg(i,1) = sum(table2array(BinOrg(:,i)));
 end
-patNumb=patNumb';
+patOrg=patOrg';
 
 %number and names of UNIQUE reactions patient
 filename=strcat(infoPath,{'normCoverage.csv'});
 filename=cell2mat(filename);
 [abundance]=readtable(filename);
-reacset={};
+ReacSet={};
 reacnumber=[];
 
-for j = 1 : length(table2cell(cleantab(1,:)))
+for j = 1 : length(table2cell(BinOrg(1,:)))
     abunvec=[];
     reacvec=[];
-    for i = 1 : length(table2cell(cleantab(:,1)))
-        if (cell2mat(table2cell(cleantab(i,j)))) == 1
+    for i = 1 : length(table2cell(BinOrg(:,1)))
+        if (cell2mat(table2cell(BinOrg(i,j)))) == 1
             model=models{i,1};
             reacvec= vertcat(reacvec,model.rxns);
             abunvec((length(abunvec)+1) : ((length(abunvec))+ length(model.rxns)))=  table2array(abundance(i,j+2));
@@ -177,64 +194,60 @@ for j = 1 : length(table2cell(cleantab(1,:)))
     
     completeset(1:length(reacvec),j)=  reacvec; %to get lists of reactions per each individual
     completeabunorm(1:length(reacvec),j) = abunvec';%matrix with abundance coefficients for normalization 
-    reacset(1:length(unique(reacvec)),j)= unique(reacvec); %to get lists of reactions per each individual
+    ReacSet(1:length(unique(reacvec)),j)= unique(reacvec); %to get lists of reactions per each individual
     reacnumber(j)= length(unique(reacvec));
 end
 
-till=length(reac);
+reacLng=length(reac);
 
 parfor j=1:patnumb
-    for i=1:till
-        x = find(strncmp(reac(i,1), completeset(:,j), length(char(reac(i,1)))));
-        numbtab(i,j)=sum(completeabunorm(x));
+    for i=1:reacLng
+        indrxn = find(strncmp(reac(i,1), completeset(:,j), length(char(reac(i,1)))));
+        numbtab(i,j)=sum(completeabunorm(indrxn));
     end
 end
 
-out = [reac,num2cell(numbtab)];
-writetable(cell2table(out),strcat(resPath,'reactions.csv'))
+ReacAbun = [reac,num2cell(numbtab)];
+writetable(cell2table(ReacAbun),strcat(resPath,'reactions.csv'))
 
 %presence/absence of reaction per patient: to compare different patients
 %with pCoA
-reacTab = zeros(length(reac),length(ReacPat(1,:)));
+ReacTab = zeros(length(reac),length(ReacPat(1,:)));
 
 
 parfor k = 1 : length(ReacPat(1,:))
- a= []
+ match= []
     for i = 1 : length(reac)
-        for j = 1 : length(reacset(:,1))
-            if strcmp(reac(i),reacset(j,k)) == 1 %the 2 reactions are equal
-            a(i) = 1;
+        for j = 1 : length(ReacSet(:,1))
+            if strcmp(reac(i),ReacSet(j,k)) == 1 %the 2 reactions are equal
+               match(i) = 1;
             end
         end
     end
-    reacTab(:,k)= a
+ ReacTab(:,k)= match
 end
 
 if compmod==1
-  mkdir(strcat(resPath,'compfile'))
-  csvwrite(strcat(resPath,'compfile/reacTab.csv'),reacTab)
-  writetable(cell2table(reacset),strcat(resPath,'compfile/reacset.csv'))
-  csvwrite(strcat(resPath,'compfile/reacNumb.csv'),reacNumb)
-  csvwrite(strcat(resPath,'compfile/ReacPat.csv'),ReacPat)
+   mkdir(strcat(resPath,'compfile'))
+   csvwrite(strcat(resPath,'compfile/reacTab.csv'),ReacTab)
+   writetable(cell2table(ReacSet),strcat(resPath,'compfile/reacset.csv'))
+   csvwrite(strcat(resPath,'compfile/reacNumb.csv'),reacNumb)
+   csvwrite(strcat(resPath,'compfile/ReacPat.csv'),ReacPat)
 end
 
 %%
 % Genomic Analysis section ->  Plotting section
-% clustergram(ReacPat,'Standardize','none')
+
 imagesc(ReacPat);
 colorbar
-% yax=[1:(length(ReacPat)-1)];
-% xax=[1:(length(ReacPat(1,:))-1)];
-% set(gca,'YTick',yax)
-% set(gca,'XTick',xax)
 xlabel('Individuals'); % x-axis label
 ylabel('Organisms'); % y-axis label
 title('Heatmap individuals | organisms reactions')
 print(strcat(resPath,'Heatmap'),figform)
 
 if patstat == 0
-%Plot: number of species | number of reactions  patient resolved
-scatter(patNumb,reacnumber,60,jet(length(patNumb)),'filled')   
+%Plot:metabolic diversity
+scatter(patOrg,reacnumber,60,jet(length(patOrg)),'filled')   
 xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
 title('Metabolic Diversity') 
@@ -244,7 +257,7 @@ else
 %Patients status: cellarray of same lenght of number of patients 0 means patient with disease 1 means helthy
 patTab=readtable(strcat(infoPath,'Patients_status.csv'))
 patients=table2array(patTab(2,:))
-patients=patients(1:length(patNumb))
+patients=patients(1:length(patOrg))
 N = length(patients(1,:))
 colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
     for k = 1 : length(patients(1,:))
@@ -261,34 +274,33 @@ scatter(patNumb,reacnumber,24* ones(length(reacnumber), 1), colorMap, 'filled');
 xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
 title('Metabolic Diversity | health resolved')
-%text(patNumb,reacnumber,'HorizontalAlignment','left');%to insert numbers
-%text(patNumb,reacnumber,labels,'HorizontalAlignment','left');%to insert numbers
-%print('Patients  strains disease resolved','-dpng')
 print(strcat(resPath,'Metabolic Diversity | health resolved'),figform)
 end
 
 % PCoA -> different reactions per individual
-D = pdist(reacTab','jaccard');
+D = pdist(ReacTab','jaccard');
 [Y,eigvals] = cmdscale(D);
-P = [eigvals eigvals/max(abs(eigvals))]
+P = [eigvals eigvals/max(abs(eigvals))];
 plot(Y(:,1),Y(:,2),'bx')
 P = [eigvals eigvals/sum(eigvals)]
 plot(Y(:,1),Y(:,2),'bx')
 %build numbers of patients
-a = 1:length(Y(:,1)) ;
-b = strread(num2str(a),'%s');
-labels = b';
+%lab = 1:length(Y(:,1)) ;
+%lab = strread(num2str(a),'%s');
+%labels = lab';
 %text(Y(:,1),Y(:,2),labels,'HorizontalAlignment','left');%to insert numbers
 title('PCoA of reaction presence');
 print(strcat(resPath,'PCoA reactions'),figform)
 
-plot(1:length(eigvals),eigvals,'bo-');
-line([1,length(eigvals)],[0 0],'LineStyle',':','XLimInclude','off',...
+%Plot Eigen number value: diasbled by default
+%plot(1:length(eigvals),eigvals,'bo-');
+%line([1,length(eigvals)],[0 0],'LineStyle',':','XLimInclude','off',...
      'Color',[.7 .7 .7])
-axis([1,length(eigvals),min(eigvals),max(eigvals)*1.1]);
-xlabel('Eigenvalue number');
-ylabel('Eigenvalue');
+%axis([1,length(eigvals),min(eigvals),max(eigvals)*1.1]);
+%xlabel('Eigenvalue number');
+%ylabel('Eigenvalue');
 %print(strcat(resPath,'Eigen number value'),figform)
+
 %3D PCoA plot
 scatter3(Y(:,1),Y(:,2),Y(:,3))
 print(strcat(resPath,'3D PCoA reactions'),figform)
