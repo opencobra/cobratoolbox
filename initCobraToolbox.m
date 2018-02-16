@@ -204,7 +204,6 @@ function initCobraToolbox()
         end
     end
 
-    %create the Cleanup function
     %get the current content of the init Folder
     [~, content] = system('git ls-files');
     dirContent = strsplit(content, '\n');
