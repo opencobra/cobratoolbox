@@ -83,7 +83,7 @@ master_doc = 'contents'
 
 # General information about the project.
 project = u'The COBRA Toolbox'
-copyright = u'2017, The COBRA Toolbox developers'
+copyright = u'2017-2018, The COBRA Toolbox developers'
 author = u'The COBRA Toolbox developers'
 
 # The version info for the project you're documenting, acts as replacement for
