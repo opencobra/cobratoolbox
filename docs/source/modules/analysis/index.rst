@@ -3,35 +3,38 @@
 Analysis
 --------
 
+.. begin-toc-marker
+
 .. toctree::
 
-   FBA/index
-   FVA/index
-   MOMA/index
    coupling/index
    deletion/index
    dynamicFBA/index
    exploration/index
+   FBA/index
    findMIIS/index
    fluxEnrichmentAnalysis/index
+   FVA/index
    geometricFBA/index
    gMCS/index
    KLdistance/index
+   mdFBA/index
+   MOMA/index
    multiSpecies/index
    parsimoniousFBA/index
-   rFBA/index
    relaxedFBA/index
+   rFBA/index
    robustnessAnalysis/index
+   rumba/index
    sampling/index
    sparseFBA/index
    subspaces/index
    thermo/index
    topology/index
    transport/index
-   rumba/index
-   coupling/index
-   mdFBA/index
    uFBA/index
+
+.. end-toc-marker
 
 .. automodule:: src.analysis
    :members:
