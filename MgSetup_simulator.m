@@ -199,6 +199,7 @@ end
 
 %Saving all output of simulations 
 if cobrajl==0
-  save(strcat(resPath,'simRes.mat'),'FVAct','Presol','InFesMat', 'NSct')  
+  save(strcat(resPath,'simRes.mat'),'FVAct','Presol','InFesMat', 'NSct')
+  MgResCollect
 end
 
