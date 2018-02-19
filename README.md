@@ -19,11 +19,11 @@
 
 Introduction
 ============
-MgPipe is a MATLAB based pipeline to integrate microbial abundances (coming from metagenomic data) with constraint based modeling, creating individuals' personalized models. Almost all the pipeline is parallelized and the outputs saved in open format.   
+MgPipe is a MATLAB based pipeline to integrate microbial abundances (coming from metagenomic data) with constraint based modeling, creating individuals' personalized models. Almost all the pipeline is parallelized and the output can be saved in open format.   
 The pipeline is divided in 3 parts:
 [PART 1] Analysis on individuals' specific microbes abundances are computed. Individuals’ metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on individuals' reaction repertoire are examples.
-[PART 2]: 1 Constructing a global metabolic model (setup) containig all the microbes listed in the study. 2 Building individuals' specific models integrating abundance data retrieved from metagenomics. For each organism, reactions are coupled to objective function. 
-[PART 3] Simulations under different diet regimes. Set of standard analysis to apply to the personalized models. PCA of computed MNPCs of patients as for example.
+[PART 2]: 1 Constructing a global metabolic model (setup) containing all the microbes listed in the study. 2 Building individuals' specific models integrating abundance data retrieved from metagenomics. For each organism, reactions are coupled to their objective function. 
+[PART 3] Simulations under different diet regimes. Set of standard analysis to apply to the personalized models. PCA of computed MNPCs of individuals as for example.
 
 **WARNING :**Please take into consideration only the files listed in this document. Everything present in the folder but not listed and explained in this document is to be considered not relevant or obsolete.
 
@@ -42,9 +42,9 @@ The following files are supplied
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| StartMgPipe.m                                  | *Input files to be modified by the user containing all the variables*  |
+| StartMgPipe.m                                  | *input file, containing all the variables, to be modified by the user* |
 | FastSetupCreator.m                             | *function to create setup: parallelized and fast*                      |
-| addMicrobeCommunityBiomass.m                   | *function to add community biomass: edited by fede*                    |
+| addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
@@ -61,7 +61,7 @@ The following files are supplied
 Usage
 =====
 
-Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file. 
+Once installed the necessary dependences the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file (StartMgPipe.m). 
 Outputs are, as well, really interesting.
 
 Running the script called “StartMgPipe.m” (after having changed the necessary inputs) is the only action required from the user to start the pipeline.
@@ -76,7 +76,7 @@ Some specific information files needs to be loaded by the pipeline. For this rea
 | File                   | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
 | normCoverage.csv       |  table with abundances for each species (normalized to 1, with minimal threshold to define presence)|
-| Patients_status.csv    |  optional: table of same length of number of individuals (0 means patient with disease 1 means helthy)|
+| Patients_status.csv    |  optional: table of same length of number of individuals (0 means patient with disease 1 means healthy)|
 
 Some variables, in the input file, needs to be created/modified to specify inputs (as for example paths of directories containing organisms’ models). The variables which needs to be created or changed from default are
 
@@ -137,8 +137,8 @@ If the specific option is enabled in the input file, most of the outputs are sav
 Data should be formatted exactly as specified (see also “Examples” section).  The input files should have names as listed in the input section.
 The first part of [part 2] is meant to be run only once to create a global microbiota model. 
 The user can decide to use different FVA functions in part 3.
-The user  should be careful calculating the number of cores to allocate. 
-Priority should be given in assigning cores for each personalized model simulation (one core for patient), then, if more cores are available (ex. user running the pipeline on the HPC) the use of the new fastFVA is suggested. 
+The user should be careful calculating the number of cores to allocate. 
+Priority should be given in assigning cores for each personalized model simulation (one core for patient), then, if more cores are available (ex. user running the pipeline on the HPC) the use of fastFVA is suggested. 
 Please take note that if the specific option is enabled in the input file most of the outputs are saved also in open format (xml, csv) in the dedicated folder. 
 This might substantially slow down computations.
 By setting ‘autorun’=0 autorun function will be disabled. You are now running in manual / debug mode. Please note that the usage in manual mode is strongly discouraged and should be used only for 
@@ -151,13 +151,11 @@ Status of implementation
 
 [Part 1, 2, 3] are implemented structured and tested. Refinement and expansion of these sections is always possible but it is not on the priority (todo) list.  
 
-A file “todo.txt” contains more specific indications on the status of the implementation. It can be modified to point out suggestions and it synthetizes what still needs to be implemented.
-
 A tutorial showing how to use the pipeline will also be created. 
 
 Data and result export in open formats (.csv, .xml) has to be better tested and further developed, the final aim is to make the pipeline more flexible and connected with softwares other than MATLAB 
 
-Please report any problem opening threads in the issue section. Also any kind of suggestions with the pipeline implementation are also welcome.   
+Please report any problem opening threads in the issue section. Also any  suggestion with the pipeline implementation is also welcome.   
 
 
 Examples
@@ -191,6 +189,6 @@ To be inplemented: A livescript toutorial will be implemented as soon as possibl
 
 Author & Documentation Date
 ===========================
-*Federico Baldini, 15.02.18*
+*Federico Baldini, 19.02.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*
