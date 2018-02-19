@@ -1,4 +1,30 @@
-function[reac,MicRea,BinOrg,patOrg,ReacPat,reacNumb,ReacSet,ReacTab,ReacAbun,patNumb,reacnumber]=getMappingInfo(models,infoPath,filename,patnumb)
+function[reac,MicRea,BinOrg,patOrg,ReacPat,ReacSet,ReacTab,ReacAbun,reacnumber]=getMappingInfo(models,infoPath,filename,patnumb)
+%This function automatically Extracts information from strain abundances in 
+%different individuals and combines this information into different tables. 
+%
+%INPUT 
+% models             nx1 cell array that contains n microbe models in
+%                    COBRA model structure format
+% infoPath           char with path of directory from where to retreive information
+% filename           char with name of file from which to to retreive information
+% patnumb            number of individuals in the study
+%                     
+%OUTPUT               
+% reac               cell array with all the unique set of reactions 
+%                    contained in the models
+% MicRea             binary matrix assessing presence of set of unique 
+%                    reactions for each of the microbes 
+% BinOrg             binary matrix asessing presence of specific strains in 
+%                    different individuals
+% ReacPat            matrix with number of reactions per individual 
+%                    (organism resolved) 
+% ReacSet            matrix with names of reactions of each individual
+% ReacTab            char with names of individuals in the study 
+% ReacAbun           binary matrix with presence/absence of reaction per 
+%                    individual: to compare different individuals
+% reacnumber         number of unique reactions of each individual 
+%
+% Federico Baldini 2017-2018
 
 %find the unique set of all the reactions contained in the models
     
@@ -139,5 +165,3 @@ parfor k = 1 : length(ReacPat(1,:))
 end
 end
 
-
-%writetable(cell2table(ReacAbun),strcat(resPath,'reactions.csv'))
