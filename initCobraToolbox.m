@@ -79,9 +79,10 @@ function initCobraToolbox()
             docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
         end
 
+        c = clock;
         fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
         fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
-        fprintf('     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n');
+        fprintf(['     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - ' num2str(c(1)) '\n']);
         fprintf('     | |     | | | | |  _  { |  _  /  |  ___  |   |\n');
         fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n');
         fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   ', docLink, '\n']);
