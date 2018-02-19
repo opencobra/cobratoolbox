@@ -42,7 +42,8 @@ for j=1:size(models,1)
     exch=union(exch,model.mets(find(sum(model.S(:,strncmp('EX_',model.rxns,3)),2)~=0)));
 end
 
-%The biomass 'biomass[c]' should not be inserted in the list of exchanges. Hence it will be removed
+%The biomass 'biomass[c]' should not be inserted in the list of exchanges.
+%Hence it will be removed.
 exch=setdiff(exch,'biomass[c]');
 %% Create additional compartments for dietary compartment and fecal secretion.
 
@@ -52,7 +53,7 @@ dummy.mets=unique([strrep(exch,'[e]','[d]');strrep(exch,'[e]','[u]');strrep(exch
 cnt=0;
 for j=1:size(exch,1)
     mdInd=find(ismember(dummy.mets,strrep(exch{j,1},'[e]','[d]')));
-    muInd=find(ismember(dummy.mets,strrep(exch{j,1},'[e]','[u]'))); %finding indexes for elements of all ecxhange 
+    muInd=find(ismember(dummy.mets,strrep(exch{j,1},'[e]','[u]'))); %finding indexes for elements of all exchange 
     mfeInd=find(ismember(dummy.mets,strrep(exch{j,1},'[e]','[fe]')));
     %diet exchange
     cnt=cnt+1;
@@ -105,7 +106,7 @@ host = removeRxns(host, exRxns);
 host.mets=strcat({'Host_'},host.mets);
 host.rxns=strcat({'Host_'},host.rxns);
 
-% use mergeToModels without combining genes-AH 02.06.17
+% use mergeToModels without combining genes
 [host] = mergeTwoModels(dummyHostB,host,2,false);
 
 %Change remaining [e] (transporters) to [u] to transport diet metabolites
@@ -126,11 +127,7 @@ for j=1:size(exMets2,1)
     dummyHostEU.lb(j)=-1000;
     dummyHostEU.ub(j)=1000;
 end
-
-% use mergeToModels without combining genes-AH 02.06.17
 [host] = mergeTwoModels(dummyHostEU,host,2,false);
-
-% [host] = mergeTwoModels_AH_f(dummyHostEU,host,2);%FEDELINE
 end
 
 
@@ -138,8 +135,8 @@ end
 %% create a new extracellular space [u] for microbes, code runs in parallel
 modelStorage=cell(size(models)); 
 %MexGJoined=MexGHost;
-parfor j=1:size(models,1)
-    %for j=1:size(models,1)
+parfor j=1:size(models,1) 
+    %for j=1:size(models,1)%to enable sequential mode 
     model=models{j,1};
     exmod = model.rxns(strncmp('EX_', model.rxns,3));%find exchange reactions
     eMets=model.mets(~cellfun(@isempty,strfind(model.mets,'[e]')));%exchanged metabolites
@@ -162,54 +159,64 @@ parfor j=1:size(models,1)
     modelStorage{j,1}=model;%store model
 end
 
-%% Merge the models in a parralel way
+%% Merge the models in a parallel way
 
-%Find the base 2 log of the number of models (how many branches are needed), and merge the models two by two  
-pos={} 
+%% Merge the models in a parallel way
+ 
+%Find the base 2 log of the number of models (how many branches are needed), and merge the models two by two:
+%In each column of model storage the number of models decreases of half
+%(because they have been pairwise merged) till the last column where only
+%one big model is contained. The models that are not pairwise merged
+%(because number of rows is not even ) are stored and then merged
+%sequentially to the big model. 
+
+
+pos={} %array where the position of models that cannot be merged pairwise (because their number in that iter is not 
+%even) in the original modelStorage vector is stored
 dim = size(models,1);
 for j=2:(floor(log2(size(models,1)))+1)  %+1 because it starts with one column shifted
-	if mod(dim,2) == 1 %check if nuber is even or not
-		nit = dim - 1;
-		pos{1,j}= nit + 1; 
-		nit=nit/2;
+	if mod(dim,2) == 1 %check if number is even or not
+		halfdim = dim - 1; %approximated half dimension (needed to find how many iters to do 
+        %for the pairwise merging
+		pos{1,j}= halfdim + 1; %find index of extramodel 
+		halfdim=halfdim/2;
 	else
-		nit = dim/2;
+		halfdim = dim/2; %no need for approximation
     end
-    a=modelStorage(:,(j-1));
-    b=modelStorage(:,(j-1));
-    parfor k=1:nit
-    f = k;	
-	f=f+(k-1);
-    y=a(f);
-    z=b(f+1);
-    modelStorage{k,j} = mergeTwoModels(y{1},z{1},1,false)	
+    FirstSaveStore=modelStorage(:,(j-1));
+    SecondSaveStore=modelStorage(:,(j-1));
+    parfor k=1:halfdim
+        parind = k;	
+        parind=parind+(k-1);
+        FirstMod=FirstSaveStore(parind);
+        SecondMod=SecondSaveStore(parind+1);
+        modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)	
     end
-	dim = nit;
+	dim = halfdim;
 end
 
-%Merging the models remained alone and non pairwise matched
-if isempty(pos)== 1 %all the models were pairwise merged
+%Merging the models remained alone and non-pairwise matched
+if isempty(pos)== 1 %all the models were pairwise-merged
 [model] = modelStorage{1,(floor(log2(size(models,1)))+1)};
 else
-    aa = pos(1,:);
+    position = pos(1,:); %finding positions of non merged models
     nexmod = find(~cellfun(@isempty,pos(1,:)));
-    xmod = cell2mat(aa(nexmod)); 
-    if (length(xmod)) > 1 %more then 1 model was not pairwise merged
-        xmod;
-        (length(xmod)+1);
-        for k=2:(length(xmod)+1)
+    toMerge = cell2mat(position(nexmod));%list of models still to merge 
+    if (length(toMerge)) > 1 %more than 1 model was not pairwise merged
+        for k=2:(length(toMerge)+1)
             if k==2
-               [model] = mergeTwoModels(modelStorage{xmod(1,k-1),(nexmod(k-1))-1},modelStorage{xmod(1,k),(nexmod(k))-1},1,false);                   
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},modelStorage{toMerge(1,k),(nexmod(k))-1},1,false);                   
             elseif k > 3       
-               [model] = mergeTwoModels(modelStorage{xmod(1,k-1),(nexmod(k-1))-1},model,1,false);
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false);
             end
         end
       [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(models,1)))+1)},model,1,false);
     end
-    if (length(xmod)) == 1 %1 model was not pairwise merged
-        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(models,1)))+1)},modelStorage{xmod(1,1),(nexmod-1)},1,false);
+    if (length(toMerge)) == 1 %1 model was not pairwise merged
+        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(models,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false);
     end
 end
+
 
 %Merging with host if present 
 if ~isempty(host)
