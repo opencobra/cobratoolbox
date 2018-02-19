@@ -1,10 +1,10 @@
-function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances, E] = identifyConservedMoieties(model, ATN)
+function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances] = identifyConservedMoieties(model, ATN)
 % Identifies conserved moieties in a metabolic network (model) by graph
 % theoretical analysis of the corresponding atom transition network (ATN).
 %
 % USAGE:
 %
-%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances, E] = identifyConservedMoieties(model, ATN)
+%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances] = identifyConservedMoieties(model, ATN)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -40,54 +40,47 @@ function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instan
 %                           moiety vectors (columns of `L`)
 %    atoms2instances:       `p x 1` vector mapping atoms (rows of `A`) to moieties
 %                           (rows of `M`)
-%    E:                     Moiety vectors that are not in the left null space of
-%                           `S`. Should be empty.
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 
 rbool = ismember(model.rxns,ATN.rxns); % True for reactions included in ATN
 mbool = any(model.S(:,rbool),2); % True for metabolites in ATN reactions
 
-S = sparse(model.S(mbool,rbool));
+N = sparse(model.S(mbool,rbool)); % The stoichiometric matrix of internal reactions
+
 [~,atoms2mets] = ismember(ATN.mets,model.mets(mbool));
-[~,trans2rxns] = ismember(ATN.rxns,model.rxns(rbool));
+[~,trans2rxns0] = ismember(ATN.rxns,model.rxns(rbool));
+
+[nMets] = size(N,1);
 
 clear model
 
-A = sparse(ATN.A);
-elements = ATN.elements;
+% convert ATN structure to directed graph
+[inc,o2n] = unique(sparse(ATN.A'),'rows','stable');
+inc = inc';
+trans2rxns = trans2rxns0(o2n);
+[nAtoms,nTrans] = size(inc);
 
-clear ATN
+[h,~] = find(inc == -1);
+[t,~] = find(inc == 1);
+edges = table([h t],trans2rxns,(1:nTrans)','VariableNames',{'EndNodes' 'Rxn' 'Transitions'});
+nodes = table(atoms2mets,(1:nAtoms)',ATN.elements,'VariableNames',{'Met' 'Atom' 'Element'});
+G = digraph(edges,nodes);
 
-[nMets] = size(S,1);
-[nAtoms] = size(A,1);
+clear ATN inc
 
-xt = 1:size(A,2);
-
-% Convert incidence matrix to adjacency matrix
-[row1,col1] = find(A == 1);
-[row2,col2] = find(A == -1);
-adj = sparse([row1;row2],[row2;row1],ones(size([row1;row2]))); % Convert incidence matrix to adjacency matrix
-
-% Find connected components. Each component corresponds to an "atom conservation relation".
-if license('test','Bioinformatics_Toolbox')
-    [nComps,a2c] = graphconncomp(adj,'DIRECTED',false);
-    components = cell(nComps,1);
-    for i = 1:nComps
-        components{i} = find(a2c == i);
-    end
-else
-    % components = connectedComponents(adj); % Matlab implementation of Tarjan's algorithm. Does not work for large networks due to Matlab limitations on stack size.
-    components = find_conn_comp(adj);
-    nComps = length(components);
-end
+% Find connected components of underlying undirected graph.
+% Each component corresponds to an "atom conservation relation".
+adj = adjacency(G);
+components = conncomp(graph(adj+adj'));
 
 clear adj % conserve memory
 
 % Construct moiety matrix
+nComps = max(components);
 L = sparse(nComps,nMets); % Initialize moiety matrix.
 for i = 1:nComps
-    metIdx = atoms2mets(components{i});
+    metIdx = atoms2mets(components == i);
     t = tabulate(metIdx);
     L(i,t(:,1)) = t(:,2); % One vector per atom conservation relation.
 end
@@ -95,19 +88,18 @@ end
 [L,xi,xj] = unique(L,'rows','stable'); % Retain only unique atom conservation relations. Identical atom conservation relations belong to the same moiety conservation relation.
 L = L'; % Moiety vectors to columns
 
-leftNullBool = ~any(S'*L,1); % Indicates vectors in the left null space of S.
-E = L(:,~leftNullBool);
+leftNullBool = ~any(N'*L,1); % Indicates vectors in the left null space of S.
 L = L(:,leftNullBool);
 xi = xi(leftNullBool);
 
-if ~isempty(E)
+if any(~leftNullBool)
     warning('Not all moiety vectors are in the left null space of S. Check that atom transitions in A match the stoichiometry in S.');
 end
 
 % Construct incidence matrix for moiety supergraph
 nVectors = size(L,2); % Number of moiety conservation relations (unique moiety vectors)
 nMoieties = sum(sum(L)); % Total number of nodes in moiety supergraph
-nEdges = sum(any(A([components{xi}],:),1)); % Total number of edges in moiety supergraph
+nEdges = numedges(subgraph(G,find(ismember(components,xi)))); % Total number of edges in moiety supergraph
 
 moietyFormulas = cell(nVectors,1); % Cell array with chemical formulas of moieties
 instances2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to metabolites (rows of S)
@@ -119,64 +111,46 @@ firstrow = 1;
 firstcol = 1;
 
 for i = 1:nVectors
-
+    
+    % construct digraph of first component
+    comp1 = find(components == xi(i));
+    g1 = subgraph(G,comp1);
+    
     % Add moiety graph to moiety supergraph
-    comp1 = components{xi(i)};
-    mgraph1 = A(comp1,any(A(comp1,:),1));
+    mgraph1 = incidence(g1);
     [nrows,ncols] = size(mgraph1);
     rowidx = firstrow:(firstrow + nrows - 1);
     colidx = firstcol:(firstcol + ncols - 1);
     M(rowidx,colidx) = mgraph1;
     firstrow = firstrow + nrows;
     firstcol = firstcol + ncols;
-
-    % Map moieties to metabolites
-    mets1 = atoms2mets(comp1);
-    instances2mets(rowidx) = mets1;
-
-    % Map edges in first component to reactions
-    rxns1 = trans2rxns(xt(any(A(comp1,:),1)));
-
-    % Map moieties to moiety vectors
-    instances2moieties(rowidx) = i;
-
-    % Map atoms to moieties
-    atoms2instances(comp1) = rowidx; % Map atoms in first atom component of current moiety conservation relation to rows of lambda
-
-    % Initialize element array for moiety
-    e = unique(elements(comp1));
-
-    idx = setdiff(find(xj == i),xi(i)); % Indices of other atom components in current moiety conservation relation
-
+    
+    instances2mets(rowidx) = g1.Nodes.Met; % Map moieties to metabolites
+    instances2moieties(rowidx) = i; % Map moieties to moiety vectors
+    atoms2instances(g1.Nodes.Atom) = rowidx; % Map atoms to moieties
+    e = unique(g1.Nodes.Element); % Initialize element array for moiety
+    
+    idx = setdiff(find(xj == i),xi(i)); % Indices of isomorphic components
+    
     if ~isempty(idx)
-
-        for j = idx' % Loop through other atom components in current moiety conservation relation
-            comp2 = components{j};
-            mgraph2 = A(comp2,any(A(comp2,:),1));
-            mets2 = atoms2mets(comp2); % map atoms to metabolites
-            rxns2 = trans2rxns(xt(any(A(comp2,:),1))); % map edges to reactions
-            e = [e; unique(elements(comp2))];
-
-            if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))
-                atoms2instances(comp2) = rowidx; % map atoms to moieties
-            else % isomorphic atoms may not be in the same order in both components
-                [~,row1] = sort(mets1);
-                [~,row2] = sort(mets2);
-                row2row = sortrows([row2 row1],1); % mets2 = mets1(row2row)
-
-                [~,col1] = sort(rxns1);
-                [~,col2] = sort(rxns2);
-                col2col = sortrows([col2 col1],1); % rxns2 = rxns1(col2col)
-
-                if all(all(mgraph2 == mgraph1(row2row,col2col)))
-                    atoms2instances(comp2) = rowidx(row2row); % map atoms to moieties
-                else
-                    warning('atom graphs not isomorphic'); % Hopefully we never get here. Complicates things.
-                end
+        
+        for j = idx' % Loop through isomorphic components
+            comp2 = find(components == j);
+            g2 = subgraph(G,comp2);
+            
+            % find isomorphism that conserves metabolite and reaction
+            % attributes of nodes and edges
+            p = isomorphism(g1,g2,'NodeVariables','Met','EdgeVariables','Rxn');
+            
+            if ~isempty(p)
+                g2 = reordernodes(g2,p);
+                atoms2instances(g2.Nodes.Atom) = rowidx; % map atoms to moieties
+            else
+                warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
             end
         end
     end
-
+    
     % Format chemical formula of moiety
     f = tabulate(e);
     f([f{:,2}]'==1,2) = {''};
