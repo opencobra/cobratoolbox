@@ -1,16 +1,18 @@
 function [indnumb,sampname,organisms]=getIndividualSizeName(infoPath,modPath, filename)
 %This function automatically detects name and number of individuals present 
 %in the study. 
-
+%
 %INPUT 
 % path                char with path of directory from where to retreive information
 % filename            char with name of file from which to to retreive information
 %                     
 %OUTPUT               
 % indnumb             number of individuals in the study  
-% sampname            char with names of individuals in the study 
+% sampname            cell array with names of individuals in the study
+% organisms           cell array with names of organisms in the study
 %
-% Federico Baldini 19/02/18
+% Federico Baldini 2017-2018
+
 filename=strcat(infoPath,{filename});
 filename=cell2mat(filename);
 [sampname]=readtable(filename,'ReadVariableNames',false);
