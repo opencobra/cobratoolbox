@@ -190,7 +190,8 @@ end
 %% [PART 2.2]
 
 %Create microbiota models -> Integrate metagenomic data to create individualized models 
-allmod={[]};
+%allmod={[]};
+[createdModels]=createPersonalizedModel(infoPath,resPath,setup,sampname,orglist,patnumb)
 
 parfor k = 2:(patnumb+1)
     mgmodel=setup
