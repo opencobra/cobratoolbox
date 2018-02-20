@@ -6,22 +6,6 @@
 
 % Federico Baldini, 2017-2018
 
-%%Analyzing results from simulations
-if cobrajl==1
-% for k=2:patnumb+1
-%     pp=cell2mat(sampname((k-1),1))
-%     load(strcat(resPath,dietT,'\','microbiota_model_richD_',pp,'.mat'))
-%     load(strcat(resPath,dietT,'\','results\','summary_microbiota_model_richD_',pp,'.mat'))
-%     FVAct{1,(k-1)}=ID
-%     for i=1:length(ID)
-%         find=strmatch(microbiota_model.rxns(i),ID(i))
-%     if find ==1
-%         FVAct{1,(k-1)}{i,2}=sumResults(i,2)
-%         FVAct{1,(k-1)}{i,3}=sumResults(i,3)
-%     end
-%     end
-% end   
-end
 
 %Exporting set of simulated reactions 
 
