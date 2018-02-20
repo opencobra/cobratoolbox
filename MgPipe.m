@@ -14,6 +14,23 @@
 
 % Federico Baldini, 2017-2018
 
+
+%%
+%Start warning section -> Please don't modify this section !
+if compmod == 1
+    warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')    
+else
+    warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
+end
+
+if nwok<2
+   warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify nwok option.')
+end
+if patstat==0
+    disp('Individuals health status not declared. Analysis will ignore that.')
+end
+%end of warning section
+%%
 %Automatic detection of number of samples in the study 
 
 [patnumb,sampname,strains]=getIndividualSizeName(infoPath,modPath,'normCoverage.csv');
@@ -195,7 +212,12 @@ end
 
 %%
 %[PART 3]
-disp('Framework for fecal diet compartments microbiota models in use')
-MgSetup_simulator
+disp('Framework for fecal diet compartments microbiota model in use')
+
+[ID,FVAct,NSct,Presol,InFesMat]=microbiotaModelSimulator(resPath,setup,sampname,sdiet,rdiet,0,cobrajl,patnumb,FVAtype)
+
+[Fsp,Y]= mgSimResCollect(resPath,ID,rdiet,0,patnumb,FVAct,figform)
+
+
 
 
