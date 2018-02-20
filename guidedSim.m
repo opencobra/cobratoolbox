@@ -13,10 +13,10 @@ function [minFlux,maxFlux]= guidedSim(model,FVAtype,rl)
 % rl            nx1 vector with the reactions of interest.
 %
 %OUTPUTS
-%minFlux:      Minimum flux for each reaction
-%maxFlux:      Maximum flux for each reaction
+% minFlux:      Minimum flux for each reaction
+% maxFlux:      Maximum flux for each reaction
 %
-% Author: - Federico Baldini - 7/02/18
+% Author: - Federico Baldini,  2017-2018
 if FVAtype == 1 
       cpxControl.PARALLELMODE=1;
       cpxControl.THREADS=1;
@@ -26,7 +26,7 @@ if FVAtype == 1
 
  end
  if FVAtype == 0 
-     warning('fast FVAex function usedconsider using fastFVA  > newFVA=1')
+     warning('fast FVAex function used consider using fastFVA  > newFVA=1')
      [minFlux,maxFlux] = fastFVAex(model,99.99,'max','cplex',rl)
  end 
  if FVAtype == 3 
