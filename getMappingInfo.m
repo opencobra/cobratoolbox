@@ -1,20 +1,20 @@
 function[reac,MicRea,BinOrg,patOrg,ReacPat,ReacSet,ReacTab,ReacAbun,reacnumber]=getMappingInfo(models,infoPath,filename,patnumb)
-%This function automatically Extracts information from strain abundances in 
-%different individuals and combines this information into different tables. 
+% This function automatically Extracts information from strain abundances in 
+% different individuals and combines this information into different tables. 
 %
-%INPUT 
-% models             nx1 cell array that contains n microbe models in
-%                    COBRA model structure format
-% infoPath           char with path of directory from where to retreive information
-% filename           char with name of file from which to to retreive information
-% patnumb            number of individuals in the study
+% INPUT 
+%   models             nx1 cell array that contains n microbe models in
+%                      COBRA model structure format
+%   infoPath           char with path of directory from where to retreive information
+%   filename           char with name of file from which to to retreive information
+%   patnumb            number of individuals in the study
 %                     
-%OUTPUT               
-% reac               cell array with all the unique set of reactions 
-%                    contained in the models
-% MicRea             binary matrix assessing presence of set of unique 
-%                    reactions for each of the microbes 
-% BinOrg             binary matrix asessing presence of specific strains in 
+% OUTPUT               
+%   reac               cell array with all the unique set of reactions 
+%                     contained in the models
+%   MicRea            binary matrix assessing presence of set of unique 
+%                     reactions for each of the microbes 
+%   BinOrg             binary matrix asessing presence of specific strains in 
 %                    different individuals
 % ReacPat            matrix with number of reactions per individual 
 %                    (organism resolved) 
