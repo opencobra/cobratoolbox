@@ -7,9 +7,9 @@
 
 
 %REQUIRED INPUT VARIABLES
-modPath='Y:\Federico\Eldermet\191017\models\'; %path to microbiota models
-infoPath='Y:\Federico\HMP\Run_Almut_17_03_31_with10_new_strains\'; %path to the information files
-resPath='Y:\Federico\testingMgPipe\'; %path to results directory 
+modPath='\'; %path to microbiota models: to end with slash
+infoPath='\'; %path to the information files: to end with slash
+resPath='\'; %path to results directory:  to end with slash
 objre={'EX_biomass(e)'}; %name of objective function of organisms
 sdiet='EUAverageDiet' %standard diet type
 figform = '-depsc' %the output is vectorized picture, change to '-dpng' for .png
@@ -21,21 +21,7 @@ rdiet = 0 %to enable also rich diet simulations
 cobrajl = 0 
 FVAtype = 0;
 %END OF REQUIRED INPUT VARIABLES
-%%
-%Start warning section -> Please don't modify this section !
-if compmod == 1
-    warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')    
-else
-    warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
-end
 
-if nwok<2
-   warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify nwok option.')
-end
-if patstat==0
-    disp('Individuals health status not declared. Analysis will ignore that.')
-end
-%end of warning section
 %%
 %PIPELINE LAUNCHER -> Please don't modify this section !
 autorun = 1
@@ -47,7 +33,5 @@ else
     warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ‘autorun’=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
     edit('MgPipe.m')
 end
-%%
-
 
 
