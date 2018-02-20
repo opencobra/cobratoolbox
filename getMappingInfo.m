@@ -11,25 +11,23 @@ function[reac,MicRea,BinOrg,patOrg,ReacPat,ReacSet,ReacTab,ReacAbun,reacnumber]=
 %                     
 % OUTPUT               
 %   reac               cell array with all the unique set of reactions 
-%                     contained in the models
-%   MicRea            binary matrix assessing presence of set of unique 
-%                     reactions for each of the microbes 
+%                      contained in the models
+%   MicRea             binary matrix assessing presence of set of unique 
+%                      reactions for each of the microbes 
 %   BinOrg             binary matrix asessing presence of specific strains in 
-%                    different individuals
-% ReacPat            matrix with number of reactions per individual 
-%                    (organism resolved) 
-% ReacSet            matrix with names of reactions of each individual
-% ReacTab            char with names of individuals in the study 
-% ReacAbun           binary matrix with presence/absence of reaction per 
-%                    individual: to compare different individuals
-% reacnumber         number of unique reactions of each individual 
+%                      different individuals
+%   ReacPat            matrix with number of reactions per individual 
+%                     (organism resolved) 
+%   ReacSet            matrix with names of reactions of each individual
+%   ReacTab            char with names of individuals in the study 
+%   ReacAbun           binary matrix with presence/absence of reaction per 
+%                      individual: to compare different individuals
+%   reacnumber         number of unique reactions of each individual 
 %
-% Federico Baldini 2017-2018
+% Author: Federico Baldini 2017-2018
 
-%find the unique set of all the reactions contained in the models
-    
  reac={}; %array with unique set of all the reactions present in the models
-for i = 1:(length(models)-1)
+for i = 1:(length(models)-1)%find the unique set of all the reactions contained in the models
     smd=models{i,1};
     allreac=smd.rxns;
     i=i+1;
