@@ -42,14 +42,17 @@ The following files are supplied
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| StartMgPipe.m                                  | *input file, containing all the variables, to be modified by the user* |
-| FastSetupCreator.m                             | *function to create setup: parallelized and fast*                      |
+| StartMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
+| FastSetupCreator.m                             | *function to create setup*                                             |
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
+| getMappingInfo.m                               | *function to extract further information from the mapping*             |
+| plotMappingInfo.m                              | *function plot extracted information from the mapping*                 |
+| createPersonalizedModel.m                      | *function to create personalized models*                               |
+| microbiotaModelSimulator.m                     | *function to simulate under different diets the created models (called from MGPipe)*|
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
-| MgSetup_simulator.m                            | *Script to simulate under different diets the created models (called from MGPipe)*|
-| MgResCollect.m                                 | *script to collect and output simulation results*                      |
+| mgSimResCollect.m                              | *function to collect and output simulation results*                    |
 | README.md                                      | *this file*                                                            |
 | **setConstraints**                             | *Folder containing diets and related scripts*                          |
 | setDietConstraints.m                           | *script to impose a specific diet and add essential elements to microbiota models*|
