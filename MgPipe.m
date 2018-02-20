@@ -195,7 +195,7 @@ if modbuild == 1
    end
 
    %Creating global model -> setup creator will be called
-   setup=FastSetupCreator(models, orglist, {})
+   setup=fastSetupCreator(models, orglist, {})
    setup.name='Global reconstruction with lumen / fecal compartments no host'
    setup.recon=0
    save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
