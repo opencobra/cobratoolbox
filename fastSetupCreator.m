@@ -1,11 +1,11 @@
-function model = FastSetupCreator(models,microbeNames,host)
-%creates a microbiota model (min 1 microbe) that can be coupled with a host
-%model. Microbes and host are connected with a lumen compartment [u], host
-%can secrete metabolites into body fluids [b]. Diet is simulated as uptake
-%through the compartment [d], transporters are unidirectional from [d] to
-%[u]. Secretion goes through the fecal compartment [fe], transporters are
-%unidirectional from [u] to [fe].
-%Reaction types
+function model = fastSetupCreator(models,microbeNames,host)
+% creates a microbiota model (min 1 microbe) that can be coupled with a host
+% model. Microbes and host are connected with a lumen compartment [u], host
+% can secrete metabolites into body fluids [b]. Diet is simulated as uptake
+% through the compartment [d], transporters are unidirectional from [d] to
+% [u]. Secretion goes through the fecal compartment [fe], transporters are
+% unidirectional from [u] to [fe].
+% Reaction types
 % Diet exchange: 'EX_met[d]': 'met[d] <=>'
 % Diet transporter: 'DUt_met': 'met[d] -> met[u]'
 % Fecal transporter: 'UFEt_met': 'met[u] -> met[fe]'
@@ -14,25 +14,24 @@ function model = FastSetupCreator(models,microbeNames,host)
 % Host uptake/secretion lumen: 'Host_IEX_met[c]tr': 'Host_met[c] <=> met[u]'
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
-%INPUT
-% models         nx1 cell array that contains n microbe models in
+% INPUT
+%   models              nx1 cell array that contains n microbe models in
 %                       COBRA model structure format
-% microbeNames          nx1 cell array of n unique strings that represent
+%   microbeNames        nx1 cell array of n unique strings that represent
 %                       each microbe model. Reactions and metabolites of
 %                       each microbe will get the corresponding
 %                       microbeNames (e.g., 'Ecoli') prefix. Reactions
 %                       will be named 'Ecoli_RxnAbbr' and metabolites 
 %                       'Ecoli_MetAbbr[c]').
-% host             Host COBRA model structure, can be left empty if
+%   host                Host COBRA model structure, can be left empty if
 %                       there is no host model
 %
-%OUTPUT
-% model                 COBRA model structure with all models combined
+% OUTPUT
+%   model               COBRA model structure with all models combined
 %
-% Stefania Magnusdottir and Federico Baldini 07/02/18
+% .. Author: -Stefania Magnusdottir and Federico Baldini, 2016-2018
 
-%% Get list of all exchanged metabolites
-if ~isempty(host)
+if ~isempty(host)%% Get list of all exchanged metabolites
     exch=host.mets(find(sum(host.S(:,strncmp('EX_',host.rxns,3)),2)~=0));
 else
     exch={};
@@ -158,8 +157,6 @@ parfor j=1:size(models,1)
     [model] = mergeTwoModels(dummyMicEU,model,2,false);
     modelStorage{j,1}=model;%store model
 end
-
-%% Merge the models in a parallel way
 
 %% Merge the models in a parallel way
  

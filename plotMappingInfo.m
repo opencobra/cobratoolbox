@@ -1,33 +1,32 @@
 function [Y]=plotMappingInfo(resPath,patOrg,ReacPat,ReacTab,reacnumber,patstat,figform)
+% This function computes and automatically plots in a specified format 
+% information coming from the mapping data as metabolic diversity and 
+% classical multidimensional scaling of individuals' reactions repertoire 
 %
-%This function computes and automatically plots in a specified format 
-%information coming from the mapping data as metabolic diversity and 
-%classical multidimensional scaling of individuals' reactions repertoire 
+% INPUT 
+%   resPath            char with path of directory where results are saved              
+%   reac               cell array with all the unique set of reactions 
+%                      contained in the models
+%   MicRea             binary matrix assessing presence of set of unique 
+%                      reactions for each of the microbes 
+%   BinOrg             binary matrix asessing presence of specific strains in 
+%                      different individuals
+%   ReacPat            matrix with number of reactions per individual 
+%                      (organism resolved) 
+%   ReacSet            matrix with names of reactions of each individual
+%   ReacTab            char with names of individuals in the study 
+%   ReacAbun           binary matrix with presence/absence of reaction per 
+%                      individual: to compare different individuals
+%   reacnumber         number of unique reactions of each individual
+%   patstat            logical indicating if documentation on health status 
+%                      is available  
+%   figform            format to use for saving figures
 %
-%INPUT 
-% resPath            char with path of directory where results are saved              
-% reac               cell array with all the unique set of reactions 
-%                    contained in the models
-% MicRea             binary matrix assessing presence of set of unique 
-%                    reactions for each of the microbes 
-% BinOrg             binary matrix asessing presence of specific strains in 
-%                    different individuals
-% ReacPat            matrix with number of reactions per individual 
-%                    (organism resolved) 
-% ReacSet            matrix with names of reactions of each individual
-% ReacTab            char with names of individuals in the study 
-% ReacAbun           binary matrix with presence/absence of reaction per 
-%                    individual: to compare different individuals
-% reacnumber         number of unique reactions of each individual
-% patstat            logical indicating if documentation on health status 
-%                    is available  
-% figform            format to use for saving figures
+% OUTPUT
+%   Y                 classical multidimensional scaling of individuals' 
+%                     reactions repertoire 
 %
-%OUTPUT
-% Y                 classical multidimensional scaling of individuals' 
-%                   reactions repertoire 
-%
-% Federico Baldini 2017-2018
+% ..Author: - Federico Baldini, 2017-2018
 
 imagesc(ReacPat);
 colorbar

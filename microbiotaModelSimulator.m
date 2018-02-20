@@ -1,10 +1,9 @@
 function [ID,FVAct,NSct,Presol,InFesMat]=microbiotaModelSimulator(resPath,setup,sampname,sdiet,rdiet,pdiet,cobrajl,patnumb,FVAtype)
-
-%This function is called from the MgPipe pipeline. Its purpose is to apply 
-%different diets (according to the user’s input) to the microbiota models 
-%and run simulations computing FVAs on exchanges reactions of the microbiota 
-%models. The output is saved in multiple .mat objects. Intermediate saving 
-%checkpoints are present. 
+% This function is called from the MgPipe pipeline. Its purpose is to apply 
+% different diets (according to the user’s input) to the microbiota models 
+% and run simulations computing FVAs on exchanges reactions of the microbiota 
+% models. The output is saved in multiple .mat objects. Intermediate saving 
+% checkpoints are present. 
 %
 % INPUTS
 %    resPath            char with path of directory where results are saved
@@ -225,6 +224,5 @@ end
 %Saving all output of simulations 
 if cobrajl==0
   save(strcat(resPath,'simRes.mat'),'FVAct','Presol','InFesMat', 'NSct')
-  %MgResCollect
 end
 end

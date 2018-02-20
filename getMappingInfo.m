@@ -1,4 +1,4 @@
-function[reac,MicRea,BinOrg,patOrg,ReacPat,ReacSet,ReacTab,ReacAbun,reacnumber]=getMappingInfo(models,infoPath,filename,patnumb)
+function[reac,MicRea,BinOrg,patOrg,ReacPat,reacNumb,ReacSet,ReacTab,ReacAbun,reacnumber]=getMappingInfo(models,infoPath,filename,patnumb)
 % This function automatically Extracts information from strain abundances in 
 % different individuals and combines this information into different tables. 
 %

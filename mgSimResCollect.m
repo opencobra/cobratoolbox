@@ -1,16 +1,27 @@
 function [Fsp,Y]= mgSimResCollect(resPath,ID,rdiet,pdiet,patnumb,FVAct,figform)
-%This function is called from the MgPipe pipeline. Its purpose is to compute 
-%NMPCs from simulations with different diet on multiple microbiota models. 
-%Results are outputted as .csv and a PCoA on NMPCs to group microbiota 
-%models of individuals for similar metabolic profile is also 
-%computed and outputted. 
+% This function is called from the MgPipe pipeline. Its purpose is to compute 
+% NMPCs from simulations with different diet on multiple microbiota models. 
+% Results are outputted as .csv and a PCoA on NMPCs to group microbiota 
+% models of individuals for similar metabolic profile is also 
+% computed and outputted. 
+%
+% INPUTS
+%    resPath            char with path of directory where results are saved
+%    ID                 cell arry with list of all unique Exchanges to diet/
+%                       fecal compartment
+%    rdiet              number (double) indicating if to simulate a rich diet
+%    pdiet              number (double) indicating if a personalized diet
+%                       is available and should be simulated
+%    patnumb            number (double) of individuals in the study
+%    FVAct              cell array containing FVA values for maximal uptake 
+%    figform            char indicating the format of figures
+%
+% OUTPUTS
+%   Fsp                cell array with computed NMPCs
+%   Y                  classical multidimensional scaling
+% ..Author: Federico Baldini, 2017-2018
 
-% Federico Baldini, 2017-2018
-
-
-%Exporting set of simulated reactions 
-
- fid = fopen('ID.csv','wt');
+ fid = fopen('ID.csv','wt'); %Exporting set of simulated reactions 
  if fid>0
      for k=1:size(ID,1)
          fprintf(fid,'%s,%f\n',ID{k,:});
@@ -56,7 +67,7 @@ else
         x=FVAct{j,(k-1)}{i,3};
         e=isempty(x);
         if e == 0;
-            sp(i,1)=abs(FVAct{j,(k-1)}{i,3}+FVAct{j,(k-1)}{i,2}); %for setup 1/2
+            sp(i,1)=abs(FVAct{j,(k-1)}{i,3}+FVAct{j,(k-1)}{i,2});
         end
     end
     Fsp(:,k-1)=sp;

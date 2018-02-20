@@ -1,19 +1,19 @@
 function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampname,orglist,patnumb)
-%This function creates personalized models from integration of given 
-%organisms abundances into the previously built “global” setup. Coupling 
-%constraints are also added for each organism. All the operations are
-%parallelized and the generated personalized models directly saved in .mat
-%format.
+% This function creates personalized models from integration of given 
+% organisms abundances into the previously built “global” setup. Coupling 
+% constraints are also added for each organism. All the operations are
+% parallelized and the generated personalized models directly saved in .mat
+% format.
 %
-%INPUT 
-% infoPath           char with path of directory from where to retreive information
-% resPath            char with path of directory where results are saved
-% model              "global setup" model in COBRA model structure format
-% sampname           cell array with names of individuals in the study
-% orglist            cell array with names of organisms in the study
-% patnumb            number (double) of individuals in the study
+% INPUT 
+%   infoPath           char with path of directory from where to retreive information
+%   resPath            char with path of directory where results are saved
+%   model              "global setup" model in COBRA model structure format
+%   sampname           cell array with names of individuals in the study
+%   orglist            cell array with names of organisms in the study
+%   patnumb            number (double) of individuals in the study
 %                     
-% Federico Baldini 2017-2018
+% Author:Federico Baldini 2017-2018
 
 createdModels={};
 parfor k = 2:(patnumb+1)    
