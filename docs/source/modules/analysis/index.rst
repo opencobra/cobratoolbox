@@ -1,5 +1,18 @@
 .. _analysis:
 
+.. raw:: html
+
+   <style>
+     h1 {font-size:0px;}
+   </style>
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox analysis">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png"></div>
+     <div class="sectionTitle"><h3>Analysis</h3></div>
+
 Analysis
 --------
 
@@ -35,6 +48,12 @@ Analysis
    uFBA/index
 
 .. end-toc-marker
+
+.. raw:: html
+
+   </div>
+
+
 
 .. automodule:: src.analysis
    :members:
