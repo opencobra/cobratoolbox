@@ -43,7 +43,7 @@ The following files are supplied
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
 | StartMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
-| FastSetupCreator.m                             | *function to create setup*                                             |
+| fastSetupCreator.m                             | *function to create setup*                                             |
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
@@ -89,15 +89,15 @@ Some variables, in the input file, needs to be created/modified to specify input
 | infoPath     | path to csv files (where input files are stored)|
 | resePath     | path to the directory containing results|
 | objre        | name of objective function of microbes|
-| sdiet        | which type of diet to apply to the microbiota models|
-| figform      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
-| nwok         | number of cores dedicated for parallelization|
-| autofix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
-| compmod      | if outputs in open format should be produced for each section (1=T)|
-| patstat      | if documentations on patient status is provided (0 not 1 yes)|
-| rdiet        | if to simulate also a rich diet (rdiet=1)|
-| cobrajl      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
-| FVAtype      | whichFVA function to use (fastFVA =1) |
+| sDiet        | which type of diet to apply to the microbiota models|
+| figForm      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
+| nWok         | number of cores dedicated for parallelization|
+| autoFix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
+| compMod      | if outputs in open format should be produced for each section (1=T)|
+| patStat      | if documentations on patient status is provided (0 not 1 yes)|
+| rDiet        | if to simulate also a rich diet (rdiet=1)|
+| extSolve      | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
+| fvaType      | whichFVA function to use (fastFVA =1) |
 
 
 
@@ -115,12 +115,12 @@ Individuals' plots of metabolic diversity in relation to microbiota size and dis
 | Object                 | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
 | reac                   | cell array with all the unique set of reactions contained in the models                      |
-| MicRea                 | binary matrix assessing presence of set of unique reactions for each of the microbes          |
-| BinOrg                 |  binary matrix asessing presence of specific strains in different individuals                   |
-| ReacPat                |  matrix with number of reactions per individual (species resolved)                             |
-| ReacSet                | matrix with names of reactions that each individual has                                         |
-| ReacTab                | binary matrix with presence/absence of reaction per individual: to compare different individuals   |
-| ReacAbun               | matrix with abundance of reaction per individual: to compare different individuals         |
+| micRea                 | binary matrix assessing presence of set of unique reactions for each of the microbes          |
+| binOrg                 |  binary matrix asessing presence of specific strains in different individuals                   |
+| reacPat                |  matrix with number of reactions per individual (species resolved)                             |
+| reacSet                | matrix with names of reactions that each individual has                                         |
+| reacTab                | binary matrix with presence/absence of reaction per individual: to compare different individuals   |
+| reacAbun               | matrix with abundance of reaction per individual: to compare different individuals         |
 
 
 [PART 2] creates, first, a global microbiota metabolic model, secondly individuals' specific models (personalized) are created with their specific objective function and coupling constrains. 
@@ -174,7 +174,7 @@ The following functions can result useful for the community and be used for othe
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| FastSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
+| fastSetupCreator.m                              | *function to create setup: parallelized (models merging)*              |
 | addMicrobeCommunityBiomass.m                    | *function to add community biomass*                    |
 
 The correct functioning of this functions outside the functionalities used in the pipeline is not assured. The users can report related issues on the dedicated page.
@@ -192,6 +192,6 @@ To be inplemented: A livescript toutorial will be implemented as soon as possibl
 
 Author & Documentation Date
 ===========================
-*Federico Baldini, 19.02.18*
+*Federico Baldini, 21.02.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*
