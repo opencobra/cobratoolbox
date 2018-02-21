@@ -7,19 +7,19 @@
 
 
 %REQUIRED INPUT VARIABLES
-modPath='\'; %path to microbiota models: to end with slash
-infoPath='\'; %path to the information files: to end with slash
-resPath='\'; %path to results directory:  to end with slash
+modPath='\'; %path to microbiota models
+infoPath='\'; %path to the information files
+resPath='\'; %path to results directory 
 objre={'EX_biomass(e)'}; %name of objective function of organisms
-sdiet='EUAverageDiet' %standard diet type
-figform = '-depsc' %the output is vectorized picture, change to '-dpng' for .png
-nwok = 3; %number of cores dedicated for parallelization 
-autofix = 1 %autofix for names mismatch
-compmod = 0; % if outputs in open formats should be produced for each section (1=T)
-patstat = 0; %if documentations on patient health status is provided (0 not 1 yes)
-rdiet = 0 %to enable also rich diet simulations 
-cobrajl = 0 
-FVAtype = 0;
+sDiet='EUAverageDiet' %standard diet type
+figForm = '-depsc' %the output is vectorized picture, change to '-dpng' for .png
+nWok = 3; %number of cores dedicated for parallelization 
+autoFix = 1 %autofix for names mismatch
+compMod = 0; % if outputs in open formats should be produced for each section (1=T)
+patStat = 0; %if documentations on patient health status is provided (0 not 1 yes)
+rDiet = 0 %to enable also rich diet simulations 
+extSolve = 0 
+fvaType = 0;
 %END OF REQUIRED INPUT VARIABLES
 
 %%
