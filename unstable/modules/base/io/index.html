@@ -13,6 +13,26 @@
 
   
   
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -68,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -130,6 +150,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">IO</a><ul>
@@ -145,7 +166,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -218,7 +238,7 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="io">
@@ -236,7 +256,7 @@
 </div>
 <span class="target" id="module-src.base.io"></span><dl class="function">
 <dt id="src.base.io.convertCNAModelToCbModel">
-<code class="descname">convertCNAModelToCbModel</code><span class="sig-paren">(</span><em>cnaModel</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/convertCNAModelToCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCNAModelToCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCNAModelToCbModel</code><span class="sig-paren">(</span><em>cnaModel</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/convertCNAModelToCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCNAModelToCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function uses the CNAcna2cobra from CellNetAnalyzer to
 convert a CNA model to a COBRA model</p>
 <p><strong>Usage</strong></p>
@@ -267,7 +287,7 @@ which can be downloaded from <a class="reference external" href="https://www2.mp
 
 <dl class="function">
 <dt id="src.base.io.convertCbModelToCNAModel">
-<code class="descname">convertCbModelToCNAModel</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/convertCbModelToCNAModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCbModelToCNAModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCbModelToCNAModel</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/convertCbModelToCNAModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCbModelToCNAModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function uses the CNAcobra2cna from CellNetAnalyzer to
 convert a COBRA model to a CNA model</p>
 <p><strong>Usage</strong></p>
@@ -298,7 +318,7 @@ which can be downloaded from <a class="reference external" href="https://www2.mp
 
 <dl class="function">
 <dt id="src.base.io.convertCobraLP2mps">
-<code class="descname">convertCobraLP2mps</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>name</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/convertCobraLP2mps.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCobraLP2mps" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCobraLP2mps</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>name</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/convertCobraLP2mps.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCobraLP2mps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an MPS (Mathematical Programming System) format ascii file
 representing the Linear Programming problem given by LPProblem.</p>
 <p><strong>Usage</strong></p>
@@ -339,7 +359,7 @@ string giving name of LP problem</li>
 
 <dl class="function">
 <dt id="src.base.io.convertCobraToSBML">
-<code class="descname">convertCobraToSBML</code><span class="sig-paren">(</span><em>model</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/convertCobraToSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCobraToSBML" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCobraToSBML</code><span class="sig-paren">(</span><em>model</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/convertCobraToSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertCobraToSBML" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a cobra structure to an sbml structure - kept for backward Compatability</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -381,7 +401,7 @@ versions.</p>
 
 <dl class="function">
 <dt id="src.base.io.convertModelToEX">
-<code class="descname">convertModelToEX</code><span class="sig-paren">(</span><em>model</em>, <em>filename</em>, <em>rxnzero</em>, <em>EXrxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/convertModelToEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertModelToEX" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertModelToEX</code><span class="sig-paren">(</span><em>model</em>, <em>filename</em>, <em>rxnzero</em>, <em>EXrxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/convertModelToEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.convertModelToEX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a Matlab Model to XPA format</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -418,7 +438,7 @@ that are not used in the uncommented reactions</li>
 
 <dl class="function">
 <dt id="src.base.io.readCbModel">
-<code class="descname">readCbModel</code><span class="sig-paren">(</span><em>fileName</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/readCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readCbModel</code><span class="sig-paren">(</span><em>fileName</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/readCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -528,7 +548,7 @@ COBRA model, others are not.</p>
 
 <dl class="function">
 <dt id="src.base.io.readMinosSolution">
-<code class="descname">readMinosSolution</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/readMinosSolution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readMinosSolution</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/readMinosSolution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads MINOS solution information from file fname.
 The file is created by MINOS with the run-time option
 Report file 81.
@@ -580,7 +600,7 @@ Structure<ul>
 
 <dl class="function">
 <dt id="src.base.io.readMixedData">
-<code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/readMixedData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readMixedData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/readMixedData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readMixedData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read floating point data with row identifiers (text) in the first <cite>n</cite> columns
 and <cite>m</cite> headerlines (text)</p>
 <p><strong>Usage</strong></p>
@@ -616,7 +636,7 @@ Headers</li>
 
 <dl class="function">
 <dt id="src.base.io.sbmlTestModelToMat">
-<code class="descname">sbmlTestModelToMat</code><span class="sig-paren">(</span><em>originFolder</em>, <em>destFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/sbmlTestModelToMat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.sbmlTestModelToMat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sbmlTestModelToMat</code><span class="sig-paren">(</span><em>originFolder</em>, <em>destFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/sbmlTestModelToMat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.sbmlTestModelToMat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to translate a batch of sbml files in .xml format within an <cite>originFolder</cite>,
 into COBRA toolbox compatible models, saving each as a .mat file in <cite>destFolder</cite>
 containing one &#8216;model&#8217; structure derived from the corresponding .xml file</p>
@@ -638,7 +658,7 @@ filename of the corresponding input name.xml file</li>
 
 <dl class="function">
 <dt id="src.base.io.writeCbModel">
-<code class="descname">writeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/writeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/writeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes out COBRA models in various formats</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -696,7 +716,7 @@ SBML toolbox (<a class="reference external" href="http://sbml.org/Software/SBMLT
 
 <dl class="function">
 <dt id="src.base.io.writeGDXFromCOBRA">
-<code class="descname">writeGDXFromCOBRA</code><span class="sig-paren">(</span><em>cobraStruct</em>, <em>fileName</em>, <em>small</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/writeGDXFromCOBRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeGDXFromCOBRA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeGDXFromCOBRA</code><span class="sig-paren">(</span><em>cobraStruct</em>, <em>fileName</em>, <em>small</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/writeGDXFromCOBRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeGDXFromCOBRA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes a GDX file with the stoichiometric matrix and
 the reversibility information. If small is set to true, it writes a
 smaller GDX . Requires <cite>wgdx</cite> to be on path, which is provided by a GAMS installation.</p>
@@ -734,7 +754,7 @@ writeGDXFromCOBRA(cobraStruct, fileName, true)   % uses provided filename, gdx d
 
 <dl class="function">
 <dt id="src.base.io.writeLPProblem">
-<code class="descname">writeLPProblem</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/writeLPProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeLPProblem" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeLPProblem</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/writeLPProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeLPProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an MPS (Mathematical Programming System) format ascii file representing the Linear Programming problem given by LPProblem.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -789,7 +809,7 @@ true), will be ignored if solver params are provided</li>
 
 <dl class="function">
 <dt id="src.base.io.writeMinosProblem">
-<code class="descname">writeMinosProblem</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>precision</em>, <em>modelName</em>, <em>directory</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8362c0cc802e805a6cb97d83c9141894aa8a7685/src/base/io/writeMinosProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeMinosProblem" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeMinosProblem</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>precision</em>, <em>modelName</em>, <em>directory</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/writeMinosProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeMinosProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs a COBRA LPproblem Matlab structure and outputs
 a file that can be input to an F90 main program
 for solution by SQOPT or MINOS.</p>
@@ -868,10 +888,10 @@ A <cite>s</cite> is appended to name if format==2 (single precision),
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="BiGG/index.html" class="btn btn-neutral float-right" title="BiGG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="BiGG/index.html" class="btn btn-default float-right" title="BiGG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../install/index.html" class="btn btn-neutral" title="Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../install/index.html" class="btn btn-default" title="Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -880,11 +900,11 @@ A <cite>s</cite> is appended to name if format==2 (single precision),
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

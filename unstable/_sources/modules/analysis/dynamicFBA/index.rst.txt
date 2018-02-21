@@ -1,9 +1,9 @@
 
-.. _FBA:
+.. _dynamicFBA:
 
 
-FBA
----
+Dynamic FBA
+-----------
 
 .. automodule:: src.analysis.dynamicFBA
    :members:

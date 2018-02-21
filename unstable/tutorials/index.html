@@ -13,6 +13,26 @@
 
   
   
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -43,7 +63,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="next" title="Visualisation and map manipulation in Cell Designer" href="tutorialMetabolicCartography.html"/>
+        <link rel="next" title="How to contribute" href="../contributing.html"/>
         <link rel="prev" title="MetabolicCartography" href="../modules/visualization/metabolicCartography/index.html"/> 
 
   
@@ -67,7 +87,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -130,76 +150,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Functions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabolicCartography.html">Visualisation and map manipulation in Cell Designer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRemoteVisualisation.html">Metabolic visualisation in ReconMap (Minerva)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialPaint4net.html">Paint4Net: visualisation toolbox for COBRA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialOptForce.html">OptForce Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialVonBertalanffy.html">Thermodynamically constrain a metabolic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialGMCS.html">genetic Minimal Cut Sets - gMCSs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA.html">Sparse Flux Balance Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html">Proton shuttle testing with sparse flux balance analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseLP.html">Sparse Linear Optimisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFVA.html">Flux Variability analysis (FVA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRelaxedFBA.html">Relaxed Flux Balance Analysis: Recon 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRelaxedFBABounds.html">Relaxed Flux Balance Analysis: Toy model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMinSpan.html">Determining MinSpan vectors of COBRA model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFBA.html">Flux Balance Analysis (FBA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html">Atomically resolve a metabolic reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialVariationalKinetics.html">Variational Kinetics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabotoolsI.html">Metabotools tutorial I</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabotoolsII.html">Metabotools tutorial II - Integration of quantitative metabolomic data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialExtraction_transcriptomic.html">Extraction of context-specific models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialUFBA.html">unsteady-state Flux Balance Analysis (uFBA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialNumCharact.html">Numerical properties of a reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialCreateSubnetworkRecon.html">Create a generic subnetwork from Recon 3D</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialReconstructionSOP.html">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialReconToFBAmodel.html">Convert a reconstruction into a flux balance analysis model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRBioNet.html">Generation and manipulation of reconstructions with rBioNet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelATPYield.html">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFastGapFill.html">FastGapFill tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelSanityChecks.html">Testing basic properties of a metabolic model (aka sanity checks)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFidelityTesting.html">Testing chemical and biochemical fidelity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialIO.html">Input and output of reconstructions and models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialInitializeAndVerify.html">Initialise and verify The COBRA Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialEngaging.html">Engaging with The COBRA Toolbox community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialOptForce.html">OptForce Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialInitializeAndVerify.html">Initialise and verify The COBRA Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialIO.html">Input and output of reconstructions and models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialEngaging.html">Engaging with The COBRA Toolbox community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialReconstructionSOP.html">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRBioNet.html">Generation and manipulation of reconstructions with rBioNet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialCreateSubnetworkRecon.html">Create a generic subnetwork from Recon 3D</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFastGapFill.html">FastGapFill tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialReconToFBAmodel.html">Convert a reconstruction into a flux balance analysis model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFidelityTesting.html">Testing chemical and biochemical fidelity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelATPYield.html">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelSanityChecks.html">Testing basic properties of a metabolic model (aka sanity checks)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialNumCharact.html">Numerical properties of a reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabolicCartography.html">Visualisation and map manipulation in Cell Designer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialPaint4net.html">Paint4Net: visualisation toolbox for COBRA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRemoteVisualisation.html">Metabolic visualisation in ReconMap (Minerva)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFVA.html">Flux Variability analysis (FVA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialGMCS.html">genetic Minimal Cut Sets - gMCSs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA.html">Sparse Flux Balance Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html">Proton shuttle testing with sparse flux balance analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialSparseLP.html">Sparse Linear Optimisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialVariationalKinetics.html">Variational Kinetics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialVonBertalanffy.html">Thermodynamically constrain a metabolic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMinSpan.html">Determining MinSpan vectors of COBRA model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialFBA.html">Flux Balance Analysis (FBA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html">Atomically resolve a metabolic reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRelaxedFBABounds.html">Relaxed Flux Balance Analysis: Toy model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialRelaxedFBA.html">Relaxed Flux Balance Analysis: Recon 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabotoolsI.html">Metabotools tutorial I</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialMetabotoolsII.html">Metabotools tutorial II - Integration of quantitative metabolomic data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialExtraction_transcriptomic.html">Extraction of context-specific models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorialUFBA.html">unsteady-state Flux Balance Analysis (uFBA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-integration">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reconstruction">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
@@ -265,89 +227,191 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="tutorials">
 <span id="id1"></span><h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabolicCartography.html">Visualisation and map manipulation in Cell Designer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRemoteVisualisation.html">Metabolic visualisation in ReconMap (Minerva)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialPaint4net.html">Paint4Net: visualisation toolbox for COBRA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialOptForce.html">OptForce Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialVonBertalanffy.html">Thermodynamically constrain a metabolic model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialGMCS.html">genetic Minimal Cut Sets - gMCSs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA.html">Sparse Flux Balance Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html">Proton shuttle testing with sparse flux balance analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseLP.html">Sparse Linear Optimisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFVA.html">Flux Variability analysis (FVA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRelaxedFBA.html">Relaxed Flux Balance Analysis: Recon 3</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRelaxedFBABounds.html">Relaxed Flux Balance Analysis: Toy model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMinSpan.html">Determining MinSpan vectors of COBRA model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFBA.html">Flux Balance Analysis (FBA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html">Atomically resolve a metabolic reconstruction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialVariationalKinetics.html">Variational Kinetics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabotoolsI.html">Metabotools tutorial I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabotoolsII.html">Metabotools tutorial II - Integration of quantitative metabolomic data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialExtraction_transcriptomic.html">Extraction of context-specific models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialUFBA.html">unsteady-state Flux Balance Analysis (uFBA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialNumCharact.html">Numerical properties of a reconstruction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialCreateSubnetworkRecon.html">Create a generic subnetwork from Recon 3D</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialReconstructionSOP.html">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialReconToFBAmodel.html">Convert a reconstruction into a flux balance analysis model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRBioNet.html">Generation and manipulation of reconstructions with rBioNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelATPYield.html">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFastGapFill.html">FastGapFill tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelSanityChecks.html">Testing basic properties of a metabolic model (aka sanity checks)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFidelityTesting.html">Testing chemical and biochemical fidelity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialIO.html">Input and output of reconstructions and models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialInitializeAndVerify.html">Initialise and verify The COBRA Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialEngaging.html">Engaging with The COBRA Toolbox community</a></li>
+<style>h2 {font-size:0px;}</style><div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox analysis">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png" alt="analysis"></div>
+  <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html"><span class="doc">Atomically resolve a metabolic reconstruction</span></a></li>
+<li><a class="reference internal" href="tutorialMinSpan.html"><span class="doc">Determining MinSpan vectors of COBRA model</span></a></li>
+<li><a class="reference internal" href="tutorialFBA.html"><span class="doc">Flux Balance Analysis (FBA)</span></a></li>
+<li><a class="reference internal" href="tutorialFVA.html"><span class="doc">Flux Variability analysis (FVA)</span></a></li>
+<li><a class="reference internal" href="tutorialGMCS.html"><span class="doc">genetic Minimal Cut Sets - gMCSs</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html"><span class="doc">Proton shuttle testing with sparse flux balance analysis</span></a></li>
+<li><a class="reference internal" href="tutorialRelaxedFBA.html"><span class="doc">Relaxed Flux Balance Analysis: Recon 3</span></a></li>
+<li><a class="reference internal" href="tutorialRelaxedFBABounds.html"><span class="doc">Relaxed Flux Balance Analysis: Toy model</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA.html"><span class="doc">Sparse Flux Balance Analysis</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html"><span class="doc">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</span></a></li>
+<li><a class="reference internal" href="tutorialSparseLP.html"><span class="doc">Sparse Linear Optimisation</span></a></li>
+<li><a class="reference internal" href="tutorialVonBertalanffy.html"><span class="doc">Thermodynamically constrain a metabolic model</span></a></li>
+<li><a class="reference internal" href="tutorialUniformSampling.html"><span class="doc">Uniform sampling</span></a></li>
+<li><a class="reference internal" href="tutorialVariationalKinetics.html"><span class="doc">Variational Kinetics</span></a></li>
 </ul>
 </div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorialOptForce.html">OptForce Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialInitializeAndVerify.html">Initialise and verify The COBRA Toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialIO.html">Input and output of reconstructions and models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialEngaging.html">Engaging with The COBRA Toolbox community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialReconstructionSOP.html">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRBioNet.html">Generation and manipulation of reconstructions with rBioNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialCreateSubnetworkRecon.html">Create a generic subnetwork from Recon 3D</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFastGapFill.html">FastGapFill tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialReconToFBAmodel.html">Convert a reconstruction into a flux balance analysis model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFidelityTesting.html">Testing chemical and biochemical fidelity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelATPYield.html">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelSanityChecks.html">Testing basic properties of a metabolic model (aka sanity checks)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialNumCharact.html">Numerical properties of a reconstruction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialModelManipulation.html">Model manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabolicCartography.html">Visualisation and map manipulation in Cell Designer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialPaint4net.html">Paint4Net: visualisation toolbox for COBRA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRemoteVisualisation.html">Metabolic visualisation in ReconMap (Minerva)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFVA.html">Flux Variability analysis (FVA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialGMCS.html">genetic Minimal Cut Sets - gMCSs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA.html">Sparse Flux Balance Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html">Proton shuttle testing with sparse flux balance analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialSparseLP.html">Sparse Linear Optimisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialVariationalKinetics.html">Variational Kinetics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialVonBertalanffy.html">Thermodynamically constrain a metabolic model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMinSpan.html">Determining MinSpan vectors of COBRA model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialUniformSampling.html">Uniform sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialFBA.html">Flux Balance Analysis (FBA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html">Atomically resolve a metabolic reconstruction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRelaxedFBABounds.html">Relaxed Flux Balance Analysis: Toy model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialRelaxedFBA.html">Relaxed Flux Balance Analysis: Recon 3</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabotoolsI.html">Metabotools tutorial I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialMetabotoolsII.html">Metabotools tutorial II - Integration of quantitative metabolomic data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialExtraction_transcriptomic.html">Extraction of context-specific models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorialUFBA.html">unsteady-state Flux Balance Analysis (uFBA)</a></li>
+</div></div>
+<div class="section" id="base">
+<h2>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox base">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_base.png" alt="base"></div>
+  <div class="sectionTitle"><h3>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialEngaging.html"><span class="doc">Engaging with The COBRA Toolbox community</span></a></li>
+<li><a class="reference internal" href="tutorialInitializeAndVerify.html"><span class="doc">Initialise and verify The COBRA Toolbox</span></a></li>
+<li><a class="reference internal" href="tutorialIO.html"><span class="doc">Input and output of reconstructions and models</span></a></li>
 </ul>
 </div>
+</div></div>
+<div class="section" id="data-integration">
+<h2>Data integration<a class="headerlink" href="#data-integration" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox dataIntegration">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_dataIntegration.png" alt="dataIntegration"></div>
+  <div class="sectionTitle"><h3>Data integration<a class="headerlink" href="#dataIntegration" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialExtraction_transcriptomic.html"><span class="doc">Extraction of context-specific models</span></a></li>
+<li><a class="reference internal" href="tutorialMetabotoolsI.html"><span class="doc">Metabotools tutorial I</span></a></li>
+<li><a class="reference internal" href="tutorialMetabotoolsII.html"><span class="doc">Metabotools tutorial II - Integration of quantitative metabolomic data</span></a></li>
+<li><a class="reference internal" href="tutorialUFBA.html"><span class="doc">unsteady-state Flux Balance Analysis (uFBA)</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox design">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_design.png" alt="design"></div>
+  <div class="sectionTitle"><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialOptForce.html"><span class="doc">OptForce Tutorial</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="reconstruction">
+<h2>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox reconstruction">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction.png" alt="reconstruction"></div>
+  <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialReconToFBAmodel.html"><span class="doc">Convert a reconstruction into a flux balance analysis model</span></a></li>
+<li><a class="reference internal" href="tutorialCreateSubnetworkRecon.html"><span class="doc">Create a generic subnetwork from Recon 3D</span></a></li>
+<li><a class="reference internal" href="tutorialReconstructionSOP.html"><span class="doc">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</span></a></li>
+<li><a class="reference internal" href="tutorialFastGapFill.html"><span class="doc">FastGapFill tutorial</span></a></li>
+<li><a class="reference internal" href="tutorialRBioNet.html"><span class="doc">Generation and manipulation of reconstructions with rBioNet</span></a></li>
+<li><a class="reference internal" href="tutorialModelManipulation.html"><span class="doc">Model manipulation</span></a></li>
+<li><a class="reference internal" href="tutorialNumCharact.html"><span class="doc">Numerical properties of a reconstruction</span></a></li>
+<li><a class="reference internal" href="tutorialModelATPYield.html"><span class="doc">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</span></a></li>
+<li><a class="reference internal" href="tutorialModelSanityChecks.html"><span class="doc">Testing basic properties of a metabolic model (aka sanity checks)</span></a></li>
+<li><a class="reference internal" href="tutorialFidelityTesting.html"><span class="doc">Testing chemical and biochemical fidelity</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox visualization">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_visualization.png" alt="visualization"></div>
+  <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialRemoteVisualisation.html"><span class="doc">Metabolic visualisation in ReconMap (Minerva)</span></a></li>
+<li><a class="reference internal" href="tutorialPaint4net.html"><span class="doc">Paint4Net: visualisation toolbox for COBRA</span></a></li>
+<li><a class="reference internal" href="tutorialMetabolicCartography.html"><span class="doc">Visualisation and map manipulation in Cell Designer</span></a></li>
+</ul>
+  </div>
+</div>
+<br><style>h2 {font-size:0px;}</style></div>
+<div class="section" id="id2">
+<h2>Analysis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox analysis">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png" alt="analysis"></div>
+  <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialAtomicallyResolveReconstruction.html"><span class="doc">Atomically resolve a metabolic reconstruction</span></a></li>
+<li><a class="reference internal" href="tutorialMinSpan.html"><span class="doc">Determining MinSpan vectors of COBRA model</span></a></li>
+<li><a class="reference internal" href="tutorialFBA.html"><span class="doc">Flux Balance Analysis (FBA)</span></a></li>
+<li><a class="reference internal" href="tutorialFVA.html"><span class="doc">Flux Variability analysis (FVA)</span></a></li>
+<li><a class="reference internal" href="tutorialGMCS.html"><span class="doc">genetic Minimal Cut Sets - gMCSs</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA_protonShuttle.html"><span class="doc">Proton shuttle testing with sparse flux balance analysis</span></a></li>
+<li><a class="reference internal" href="tutorialRelaxedFBA.html"><span class="doc">Relaxed Flux Balance Analysis: Recon 3</span></a></li>
+<li><a class="reference internal" href="tutorialRelaxedFBABounds.html"><span class="doc">Relaxed Flux Balance Analysis: Toy model</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA.html"><span class="doc">Sparse Flux Balance Analysis</span></a></li>
+<li><a class="reference internal" href="tutorialSparseFBA_freeATPtest.html"><span class="doc">Sparse flux balance analysis test for a minimial stoichiometrically balanced cycle involving ATP hydrolysis</span></a></li>
+<li><a class="reference internal" href="tutorialSparseLP.html"><span class="doc">Sparse Linear Optimisation</span></a></li>
+<li><a class="reference internal" href="tutorialVonBertalanffy.html"><span class="doc">Thermodynamically constrain a metabolic model</span></a></li>
+<li><a class="reference internal" href="tutorialUniformSampling.html"><span class="doc">Uniform sampling</span></a></li>
+<li><a class="reference internal" href="tutorialVariationalKinetics.html"><span class="doc">Variational Kinetics</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="id3">
+<h2>Base<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox base">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_base.png" alt="base"></div>
+  <div class="sectionTitle"><h3>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialEngaging.html"><span class="doc">Engaging with The COBRA Toolbox community</span></a></li>
+<li><a class="reference internal" href="tutorialInitializeAndVerify.html"><span class="doc">Initialise and verify The COBRA Toolbox</span></a></li>
+<li><a class="reference internal" href="tutorialIO.html"><span class="doc">Input and output of reconstructions and models</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="id4">
+<h2>Data integration<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox dataIntegration">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_dataIntegration.png" alt="dataIntegration"></div>
+  <div class="sectionTitle"><h3>Data integration<a class="headerlink" href="#dataIntegration" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialExtraction_transcriptomic.html"><span class="doc">Extraction of context-specific models</span></a></li>
+<li><a class="reference internal" href="tutorialMetabotoolsI.html"><span class="doc">Metabotools tutorial I</span></a></li>
+<li><a class="reference internal" href="tutorialMetabotoolsII.html"><span class="doc">Metabotools tutorial II - Integration of quantitative metabolomic data</span></a></li>
+<li><a class="reference internal" href="tutorialUFBA.html"><span class="doc">unsteady-state Flux Balance Analysis (uFBA)</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="id5">
+<h2>Design<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox design">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_design.png" alt="design"></div>
+  <div class="sectionTitle"><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialOptForce.html"><span class="doc">OptForce Tutorial</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="id6">
+<h2>Reconstruction<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox reconstruction">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction.png" alt="reconstruction"></div>
+  <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialReconToFBAmodel.html"><span class="doc">Convert a reconstruction into a flux balance analysis model</span></a></li>
+<li><a class="reference internal" href="tutorialCreateSubnetworkRecon.html"><span class="doc">Create a generic subnetwork from Recon 3D</span></a></li>
+<li><a class="reference internal" href="tutorialReconstructionSOP.html"><span class="doc">Example use of functions listed in the Standard operating procedure for metabolic reconstruction.</span></a></li>
+<li><a class="reference internal" href="tutorialFastGapFill.html"><span class="doc">FastGapFill tutorial</span></a></li>
+<li><a class="reference internal" href="tutorialRBioNet.html"><span class="doc">Generation and manipulation of reconstructions with rBioNet</span></a></li>
+<li><a class="reference internal" href="tutorialModelManipulation.html"><span class="doc">Model manipulation</span></a></li>
+<li><a class="reference internal" href="tutorialNumCharact.html"><span class="doc">Numerical properties of a reconstruction</span></a></li>
+<li><a class="reference internal" href="tutorialModelATPYield.html"><span class="doc">Test physiologically relevant ATP yields from different carbon sources for a metabolic model</span></a></li>
+<li><a class="reference internal" href="tutorialModelSanityChecks.html"><span class="doc">Testing basic properties of a metabolic model (aka sanity checks)</span></a></li>
+<li><a class="reference internal" href="tutorialFidelityTesting.html"><span class="doc">Testing chemical and biochemical fidelity</span></a></li>
+</ul>
+</div>
+</div></div>
+<div class="section" id="id7">
+<h2>Visualization<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="tutorialSectionBox visualization">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_visualization.png" alt="visualization"></div>
+  <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
+  <div class="sectionContent"><ul class="simple">
+<li><a class="reference internal" href="tutorialRemoteVisualisation.html"><span class="doc">Metabolic visualisation in ReconMap (Minerva)</span></a></li>
+<li><a class="reference internal" href="tutorialPaint4net.html"><span class="doc">Paint4Net: visualisation toolbox for COBRA</span></a></li>
+<li><a class="reference internal" href="tutorialMetabolicCartography.html"><span class="doc">Visualisation and map manipulation in Cell Designer</span></a></li>
+</ul>
+  </div>
+</div>
+<br></div>
 </div>
 
 
@@ -360,10 +424,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tutorialMetabolicCartography.html" class="btn btn-neutral float-right" title="Visualisation and map manipulation in Cell Designer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../contributing.html" class="btn btn-default float-right" title="How to contribute" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../modules/visualization/metabolicCartography/index.html" class="btn btn-neutral" title="MetabolicCartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modules/visualization/metabolicCartography/index.html" class="btn btn-default" title="MetabolicCartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -372,11 +436,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
