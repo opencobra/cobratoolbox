@@ -10,7 +10,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox analysis">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png" alt="analysis"></div>
      <div class="sectionTitle"><h3>Analysis</h3></div>
 
 Analysis
