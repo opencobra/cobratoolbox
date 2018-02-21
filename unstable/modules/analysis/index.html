@@ -255,11 +255,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <style>
+  <script src="../../_static/js/json-menu.js"></script>
+<style>
   h1 {font-size:0px;}
 </style><div class="tutorialSectionBox analysis">
   <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png" alt="analysis"></div>
-  <div class="sectionTitle"><h3>Analysis</h3></div><div class="section" id="id1">
+  <div class="sectionTitle"><h3>Analysis</h3></div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div><div class="section" id="id1">
 <h1>Analysis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
@@ -343,7 +347,24 @@
 <li class="toctree-l1"><a class="reference internal" href="uFBA/index.html">uFBA</a></li>
 </ul>
 </div>
-</div><span class="target" id="module-src.analysis"></span></div>
+      </div>
+    </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="dropdown dropdown-cobra">
+        <a href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width: 100%;">
+          Function list
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu analysis-menu dropdown-scrollable">
+        </ul>
+      </div>
+      <script> buildList("https://opencobra.github.io/cobratoolbox/unstable/modules/analysisfunctions.json", "analysis") </script>
+    </div>
+  </div>
+</div>
+
+<br><span class="target" id="module-src.analysis"></span></div>
 
 
            </div>
