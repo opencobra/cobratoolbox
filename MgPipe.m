@@ -17,23 +17,23 @@
 
 %%
 %Start warning section -> Please don't modify this section !
-if compmod == 1
+if compMod == 1
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')    
 else
     warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
 end
 
-if nwok<2
+if nWok<2
    warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify nwok option.')
 end
-if patstat==0
+if patStat==0
     disp('Individuals health status not declared. Analysis will ignore that.')
 end
 %end of warning section
 %%
 %Automatic detection of number of samples in the study 
 
-[patnumb,sampname,strains]=getIndividualSizeName(infoPath,modPath,'normCoverage.csv');
+[patNumb,sampName,strains]=getIndividualSizeName(infoPath,'normCoverage.csv');
 
 %Auto load for PART1 -> if PART1 was already computed and is alreday
 %present in results folder its execution is skipped else its execution starts
@@ -82,18 +82,18 @@ models={[]}; %empty cell array to be filled with models
  end
 
 
-[reac,MicRea,BinOrg,patOrg,ReacPat,reacNumb,ReacSet,ReacTab,ReacAbun,reacnumber]=getMappingInfo(models,infoPath,'normCoverage.csv',patnumb)
-writetable(cell2table(ReacAbun),strcat(resPath,'reactions.csv'))
+[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,'normCoverage.csv',patNumb)
+writetable(cell2table(reacAbun),strcat(resPath,'reactions.csv'))
 
 % Genomic Analysis section ->  Plotting section
-[PCoA]=plotMappingInfo(resPath,patOrg,ReacPat,ReacTab,reacnumber,patstat,figform) 
+[PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,figForm) 
 
-if compmod==1
+if compMod==1
    mkdir(strcat(resPath,'compfile'))
-   csvwrite(strcat(resPath,'compfile/reacTab.csv'),ReacTab)
-   writetable(cell2table(ReacSet),strcat(resPath,'compfile/reacset.csv'))
+   csvwrite(strcat(resPath,'compfile/reacTab.csv'),reacTab)
+   writetable(cell2table(reacSet),strcat(resPath,'compfile/reacset.csv'))
    csvwrite(strcat(resPath,'compfile/reacNumb.csv'),reacNumb)
-   csvwrite(strcat(resPath,'compfile/ReacPat.csv'),ReacPat)
+   csvwrite(strcat(resPath,'compfile/ReacPat.csv'),reacPat)
    csvwrite(strcat(resPath,'compfile/PCoA_tab.csv'),Y)
 end
 
@@ -116,7 +116,7 @@ orglist=strains;
 %msg if inconsistences are detected, otherwise it really tries hard to fix 
 %the problem and continues execution when possible. 
 
-if autofix == 0
+if autoFix == 0
 
     for i=1:length(orglist)
     check=strmatch(orglist(i,1),orglist);
@@ -208,15 +208,15 @@ end
 
 %Create microbiota models -> Integrate metagenomic data to create individualized models 
 
-[createdModels]=createPersonalizedModel(infoPath,resPath,setup,sampname,orglist,patnumb)
+[createdModels]=createPersonalizedModel(infoPath,resPath,setup,sampName,orglist,patNumb)
 
 %%
 %[PART 3]
 disp('Framework for fecal diet compartments microbiota model in use')
 
-[ID,FVAct,NSct,Presol,InFesMat]=microbiotaModelSimulator(resPath,setup,sampname,sdiet,rdiet,0,cobrajl,patnumb,FVAtype)
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,sdiet,rDiet,0,extSolve,patNumb,fvaType)
 
-[Fsp,Y]= mgSimResCollect(resPath,ID,rdiet,0,patnumb,FVAct,figform)
+[Fsp,Y]= mgSimResCollect(resPath,ID,rDiet,0,patNumb,fvaCt,figForm)
 
 
 
