@@ -14,7 +14,7 @@ function [output] = getBinsOfFluxes(samp, numfluxes, numbins)
 %
 %
 % OUTPUT:
-%    output:       structure with ``.samps` field
+%    output:       structure with `.samps` field
 %
 % .. Author: Wing Choi 3/7/08
 
