@@ -57,7 +57,7 @@ do
     echo "           <ul class=\"dropdown-menu $section-menu dropdown-scrollable\">" >> $rstFunctionPath
     echo "           </ul>" >> $rstFunctionPath
     echo "         </div>" >> $rstFunctionPath
-    echo "         <script> buildList(\"../_static/json/${section}functions.json\", \"$section\") </script>" >> $rstFunctionPath
+    echo "         <script> buildList(\"${section}functions.json\", \"$section\") </script>" >> $rstFunctionPath
     echo "       </div>" >> $rstFunctionPath
     echo "     </div>" >> $rstFunctionPath
     echo "   </div>" >> $rstFunctionPath
