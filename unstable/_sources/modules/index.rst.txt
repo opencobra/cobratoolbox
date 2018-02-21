@@ -5,7 +5,7 @@ Functions
 
 .. raw:: html
 
-   <script src="json-menu.js"></script>
+   <script src="../_static/js/json-menu.js"></script>
    <style>
      h2 {font-size:0px;}
    </style>
