@@ -1,10 +1,13 @@
 function solution = optimizeCardinality(problem, params)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by capped-`l1` function.
-% :math:`min c'(x, y, z) + lambda*||x||_0 - delta*||y||_0`
-% s.t. :math:`A*(x, y, z) <= b`
-% :math:`l <= (x,y,z) <= u`
-% :math:`x in R^p, y in R^q, z in R^r`
+%
+% .. math::
+%
+%    min  ~&~ c^T (x, y, z) + \lambda ||x||_0 - \delta ||y||_0 \\
+%    s.t. ~&~ A(x, y, z) \leq b \\
+%         ~&~ l \leq (x,y,z) \leq u \\
+%         ~&~ x \in \mathbb{R}^p, y \in \mathbb{R}^q, z \in \mathbb{R}^r
 %
 % USAGE:
 %
@@ -24,7 +27,7 @@ function solution = optimizeCardinality(problem, params)
 %                   * .csense - `s x 1` Constraint senses, a string containting the constraint sense for
 %                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %                   * .lb - `(p+q+r) x 1` Lower bound vector
-%                   * .ub - ``(p+q+r) x 1` Upper bound vector
+%                   * .ub - `(p+q+r) x 1` Upper bound vector
 %
 % OPTIONAL INPUTS:
 %    params:      Parameters structure:
