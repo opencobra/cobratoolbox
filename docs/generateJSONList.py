@@ -56,7 +56,7 @@ with open(os.path.join(destination_dir, 'functions.json'), 'w') as f:
     json.dump(d, f)
 
 for section in ["analysis", "base", "dataIntegration", "design", "reconstruction", "visualization"]:
-    destination_dir = os.path.join('source', 'modules')
+    destination_dir = os.path.join('build', 'html', 'modules')
     mkdir_p(destination_dir)
     with open(os.path.join(destination_dir, section + 'functions.json'), 'w') as f:
         d = path_to_list('../src/' + section + '/.', section)
