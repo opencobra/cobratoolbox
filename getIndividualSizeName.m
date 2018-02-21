@@ -1,31 +1,31 @@
-function [indnumb,sampname,organisms]=getIndividualSizeName(infoPath,modPath, filename)
-%This function automatically detects name and number of individuals present 
-%in the study. 
+function [indNumb,sampName,organisms]=getIndividualSizeName(infoPath, fileName)
+% This function automatically detects name and number of individuals present 
+% in the study. 
 %
-%INPUT 
-% path                char with path of directory from where to retreive information
-% filename            char with name of file from which to to retreive information
+% INPUTS 
+%   infoPath:            char with path of directory from where to retreive information
+%   fileName:            char with name of file from which to to retreive information
 %                     
-%OUTPUT               
-% indnumb             number of individuals in the study  
-% sampname            cell array with names of individuals in the study
-% organisms           cell array with names of organisms in the study
+% OUTPUTS               
+%   indNumb:             number of individuals in the study  
+%   sampName:            nx1 cell array cell array with names of individuals in the study
+%   organisms:           nx1 cell array cell array with names of organisms in the study
 %
-% Federico Baldini 2017-2018
+% ..Author: Federico Baldini 2017-2018
 
-filename=strcat(infoPath,{filename});
-filename=cell2mat(filename);
-[sampname]=readtable(filename,'ReadVariableNames',false);
-s=size(sampname);
+fileName=strcat(infoPath,{fileName});
+fileName=cell2mat(fileName);
+[sampName]=readtable(fileName,'ReadVariableNames',false);
+s=size(sampName);
 s=s(1,2);
-sampname=sampname(1,3:s);
-sampname=table2cell(sampname);
-sampname=sampname'; 
-indnumb=length(sampname);%number of individuals
+sampName=sampName(1,3:s);
+sampName=table2cell(sampName);
+sampName=sampName'; 
+indNumb=length(sampName);%number of individuals
 
 %getting info on present strains
 %Reading models names
-[strains]=readtable(filename);
+[strains]=readtable(fileName);
 strains=strains(:,2);
 organisms=table2cell(strains); %extracted names of models 
 end

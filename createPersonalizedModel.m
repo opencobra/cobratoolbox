@@ -1,29 +1,29 @@
-function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampname,orglist,patnumb)
+function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampName,orglist,patNumb)
 % This function creates personalized models from integration of given 
 % organisms abundances into the previously built “global” setup. Coupling 
 % constraints are also added for each organism. All the operations are
 % parallelized and the generated personalized models directly saved in .mat
 % format.
 %
-% INPUT 
-%   infoPath           char with path of directory from where to retreive information
-%   resPath            char with path of directory where results are saved
-%   model              "global setup" model in COBRA model structure format
-%   sampname           cell array with names of individuals in the study
-%   orglist            cell array with names of organisms in the study
-%   patnumb            number (double) of individuals in the study
+% INPUTS: 
+%   infoPath:           char with path of directory from where to retrieve information
+%   resPath:            char with path of directory where results are saved
+%   model:              "global setup" model in COBRA model structure format
+%   sampName:           cell array with names of individuals in the study
+%   orglist:            cell array with names of organisms in the study
+%   patNumb:            number (double) of individuals in the study
 %                     
-% Author:Federico Baldini 2017-2018
+% ..Author: Federico Baldini 2017-2018
 
 createdModels={};
-parfor k = 2:(patnumb+1)    
+parfor k = 2:(patNumb+1)    
     mgmodel=model
     filename=strcat(infoPath,{'normCoverage.csv'});
     filename=cell2mat(filename);
     [abundance]=readtable(filename);
     abundance = table2array(abundance(:,k+1));
     %retrieving current model ID
-    id=sampname((k-1),1);
+    id=sampName((k-1),1);
     mId=strcat('microbiota_model_samp_',id,'.mat');
     
     %Autoload for already created models 
@@ -40,7 +40,7 @@ parfor k = 2:(patnumb+1)
     mapP = strmatch(mId, vals, 'exact');
     if isempty(mapP)
        %end of trigger
-       idInfo=cell2mat(sampname((k-1),1))
+       idInfo=cell2mat(sampName((k-1),1))
        %parsave(sprintf(strcat(idInfo,'%d.mat')),id)
        %code lines to find which  bacteria has abundance of 0
        noab={};
@@ -85,8 +85,8 @@ parfor k = 2:(patnumb+1)
     %finam.name=sampname((k-1),1); 
     %allmod(k,1)={finam};
     microbiota_model=mgmodel;
-    microbiota_model.name=sampname((k-1),1);
-    idInfo=cell2mat(sampname((k-1),1));
+    microbiota_model.name=sampName((k-1),1);
+    idInfo=cell2mat(sampName((k-1),1));
     lw=length(resPath);
     sresPath=resPath(1:(length(resPath)-1));
     cd(sresPath) 

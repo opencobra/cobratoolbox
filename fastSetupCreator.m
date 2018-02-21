@@ -14,22 +14,22 @@ function model = fastSetupCreator(models,microbeNames,host)
 % Host uptake/secretion lumen: 'Host_IEX_met[c]tr': 'Host_met[c] <=> met[u]'
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
-% INPUT
-%   models              nx1 cell array that contains n microbe models in
-%                       COBRA model structure format
-%   microbeNames        nx1 cell array of n unique strings that represent
-%                       each microbe model. Reactions and metabolites of
-%                       each microbe will get the corresponding
-%                       microbeNames (e.g., 'Ecoli') prefix. Reactions
-%                       will be named 'Ecoli_RxnAbbr' and metabolites 
-%                       'Ecoli_MetAbbr[c]').
-%   host                Host COBRA model structure, can be left empty if
-%                       there is no host model
+% INPUTS:
+%    models:              nx1 cell array that contains n microbe models in
+%                         COBRA model structure format
+%    microbeNames:        nx1 cell array of n unique strings that represent
+%                         each microbe model. Reactions and metabolites of
+%                         each microbe will get the corresponding
+%                         microbeNames (e.g., 'Ecoli') prefix. Reactions
+%                         will be named 'Ecoli_RxnAbbr' and metabolites 
+%                         'Ecoli_MetAbbr[c]').
+%    host:                Host COBRA model structure, can be left empty if
+%                         there is no host model
 %
-% OUTPUT
-%   model               COBRA model structure with all models combined
+% OUTPUT:
+%    model:               COBRA model structure with all models combined
 %
-% .. Author: -Stefania Magnusdottir and Federico Baldini, 2016-2018
+% .. Author: Stefania Magnusdottir and Federico Baldini 2016-2018
 
 if ~isempty(host)%% Get list of all exchanged metabolites
     exch=host.mets(find(sum(host.S(:,strncmp('EX_',host.rxns,3)),2)~=0));
