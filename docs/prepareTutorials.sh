@@ -14,6 +14,15 @@ echo_time() {
             echo `date +\%Y-\%m-\%d\ \%H:\%M:\%S` " $*"
         }
 
+declare -A subs
+subs[analysis]="Analysis"
+subs[base]="Base"
+subs[dataIntegration]="Data integration"
+subs[design]="Design"
+subs[reconstruction]="Reconstruction"
+subs[visualization]="Visualization"
+
+
 buildTutorialList(){
     nTutorial=0
     if [[ -z "$specificTutorial" ]]; then
@@ -224,15 +233,19 @@ do
     let "nTutorial+=1"
     tutorialLongNames[$nTutorial]="$tutorial $section $tutorialTitle"
 done
-
 # printf '%s\n' "${tutorialLongNames[@]}"
 
 # sort tutorial by ascending alphabetical order of section and then name.
 IFS=$'\n'
 tutorials=($(sort -f -k2 -k3 <<<"${tutorialLongNames[*]}" | awk  '{print $1}'))
 unset IFS
-
 # printf '%s\n' "${tutorialLongNames[@]}"
+
+# gather section names
+IFS=$'\n'
+sections=($(sort -f -k2 <<<"${tutorialLongNames[*]}" | awk  '{print $2}' | sort -u))
+unset IFS
+# printf '%s\n' "${sections[@]}"
 
 tutorialPath="../tutorials"
 rstPath="$COBRAToolboxPath/docs/source/tutorials"
@@ -255,6 +268,11 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         echo_time "Creating $rstPath/index.rst"
         echo >> $rstPath/index.rst
         echo >> $rstPath/index.rst
+        echo ".. raw:: html" >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
+        echo "   <style>h2 {font-size:0px;}</style>" >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
+
         echo_time "Cleaning destination folders for rst files"
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
     fi
@@ -313,33 +331,41 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                     echo >> $rstPath/index.rst
                     echo ".. raw:: html" >> $rstPath/index.rst
                     echo >> $rstPath/index.rst
-                    echo "        </ul>" >> $rstPath/index.rst
-                    echo "      </div>" >> $rstPath/index.rst
-                    echo "    </div>" >> $rstPath/index.rst
+                    echo "   </div>" >> $rstPath/index.rst
+                    echo "   </div>" >> $rstPath/index.rst
+                    echo "" >> $rstPath/index.rst
+                    echo "" >> $rstPath/index.rst
                 fi
 
-                firstSection=false
+                chrlen=${#section}
+                underline=`printf -- '-%.0s' $(seq 1 $chrlen);`
+
+                echo "${subs[$section]}" >> $rstPath/index.rst
+                echo "$underline" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
+
                 echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
-                echo "    <div class=\"tutorialSectionBox\" id=\"tutorial$section\">" >> $rstPath/index.rst
-                echo "      <div class=\"sectionTitle\">$section</div>" >> $rstPath/index.rst
-                echo "      <div class=\"sectionContent\">" >> $rstPath/index.rst
-                # echo "        <ul>" >> $rstPath/index.rst
-                echo >> $rstPath/index.rst
-                echo ".. toctree::" >> $rstPath/index.rst
+                echo "   <div class=\"tutorialSectionBox $section\">" >> $rstPath/index.rst
+                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/img/icon_$section.png\"></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}<a class=\"headerlink\" href=\"#$section\" title=\"Permalink to this headline\">¶</a></h3></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionContent\">" >> $rstPath/index.rst
                 echo >> $rstPath/index.rst
 
-                # echo ".. rst-class:: tutorial$section" >> $rstPath/index.rst
-                # echo "" >> $rstPath/index.rst
-                # echo ".. toctree::" >> $rstPath/index.rst
-                # echo >> $rstPath/index.rst
+                firstSection=false
             fi
-            # echo "           <li class=\"individualtutorial\">$tutorialLongTitle</li>" >> $rstPath/index.rst
-            echo "    $tutorialLongTitle" >> $rstPath/index.rst
+            echo "* :doc:\`$tutorialLongTitle\`" >> $rstPath/index.rst
         fi
     done
+    echo >> $rstPath/index.rst
+    echo ".. raw:: html" >> $rstPath/index.rst
+    echo >> $rstPath/index.rst
+    echo "     </div>" >> $rstPath/index.rst
+    echo "   </div>" >> $rstPath/index.rst
+    echo "   <br>" >> $rstPath/index.rst
+    echo >> $rstPath/index.rst
+
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
