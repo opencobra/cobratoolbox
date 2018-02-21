@@ -15,7 +15,7 @@
      <div class="sectionTitle"><h3>Analysis</h3></div>
      <div class="row">
        <div class="col-xs-6">
-         <div class="sectionContent">
+         <div>
 
 
 Analysis
@@ -65,12 +65,12 @@ Analysis
            <ul class="dropdown-menu analysis-menu dropdown-scrollable">
            </ul>
          </div>
-         <script> buildList("analysisfunctions.json", "analysis") </script>
+         <script> buildList("https://opencobra.github.io/cobratoolbox/unstable/modules/analysisfunctions.json", "analysis") </script>
        </div>
      </div>
    </div>
 
-
+   <br>
 
 
 .. automodule:: src.analysis
