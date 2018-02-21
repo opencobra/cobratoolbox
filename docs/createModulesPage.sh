@@ -17,7 +17,7 @@ echo "=========" >> $rstFunctionPath
 echo "" >> $rstFunctionPath
 echo ".. raw:: html" >> $rstFunctionPath
 echo "" >> $rstFunctionPath
-echo "   <script src=\"json-menu.js\"></script>" >> $rstFunctionPath
+echo "   <script src=\"../_static/js/json-menu.js\"></script>" >> $rstFunctionPath
 echo "   <style>" >> $rstFunctionPath
 echo "     h2 {font-size:0px;}" >> $rstFunctionPath
 echo "   </style>" >> $rstFunctionPath
