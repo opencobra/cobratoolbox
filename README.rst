@@ -85,7 +85,7 @@ Tutorials, Documentation, and Support
 -  If you need support, please feel free to post your question in our |forum|.
 
 -  Answers to Frequently Asked Questions (**FAQ**) are
-   `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`__.
+   `here <https://opencobra.github.io/cobratoolbox/stable/faq.html>`__.
 
 
 How to contribute
