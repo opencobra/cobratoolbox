@@ -2,11 +2,11 @@ function [indNumb,sampName,organisms]=getIndividualSizeName(infoPath, fileName)
 % This function automatically detects name and number of individuals present 
 % in the study. 
 %
-% INPUTS 
-%   infoPath:            char with path of directory from where to retreive information
-%   fileName:            char with name of file from which to to retreive information
+% INPUTS: 
+%   infoPath:            char with path of directory from where to retrieve information
+%   fileName:            char with name of file from which to retreive information
 %                     
-% OUTPUTS               
+% OUTPUTS:               
 %   indNumb:             number of individuals in the study  
 %   sampName:            nx1 cell array cell array with names of individuals in the study
 %   organisms:           nx1 cell array cell array with names of organisms in the study

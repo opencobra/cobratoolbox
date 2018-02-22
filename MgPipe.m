@@ -2,11 +2,11 @@
 %(coming from metagenomic data) with constraint based modeling, creating 
 %individuals' personalized models.
 %The pipeline is divided in 3 parts:
-%[PART 1] Analysis on individuals' specific microbes abundances are computed.
+%[PART 1] Analysis of individuals' specific microbes abundances are computed.
 %[PART 2]: 1 Constructing a global metabolic model (setup) containing all the 
 %microbes listed in the study. 2 Building individuals' specific models 
 %integrating abundance data retrieved from metagenomics. For each organism,
-%reactions are coupled to objective function.
+%reactions are coupled to the objective function.
 %[PART 3] Simulations under different diet regimes.
 %MgPipe was created (and tested) for AGORA 1.0 please first download AGORA 
 %version 1.0 from https://vmh.uni.lu/#downloadview and place the mat files 

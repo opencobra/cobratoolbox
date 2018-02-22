@@ -17,7 +17,7 @@ function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,
 %                        not run in matlab but externally (models with imposed 
 %                        constraints are saved)
 %    patNumb:            number (double) of individuals in the study
-%    fvaType:            number (double) whichFVA function to use(fastFVA =1)
+%    fvaType:            number (double) which FVA function to use(fastFVA =1)
 %  
 % OUTPUTS:    
 %    ID:                 cell array with list of all unique Exchanges to diet/

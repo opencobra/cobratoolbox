@@ -17,8 +17,8 @@ function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,fvaCt,figForm)
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
-%   fSp:                cell array with computed NMPCs
-%   Y:                  classical multidimensional scaling
+%    fSp:                cell array with computed NMPCs
+%    Y:                  classical multidimensional scaling
 %
 % ..Author: Federico Baldini, 2017-2018
 

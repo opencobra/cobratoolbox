@@ -1,6 +1,6 @@
 function [minFlux,maxFlux]= guidedSim(model,fvaType,rl)
-% This function is part of the MgPipe pipeline and runs FVA on a series of 
-% selected reactions with different possible FVAfunctions. Solver is 
+% This function is part of the MgPipe pipeline and runs FVAs on a series of 
+% selected reactions with different possible FVA functions. Solver is 
 % automatically set to 'cplex', objective function is maximized, and 
 % optPercentage set to 99.99.  
 %

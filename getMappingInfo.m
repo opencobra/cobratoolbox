@@ -1,12 +1,12 @@
 function[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,filename,patNumb)
-% This function automatically Extracts information from strain abundances in 
+% This function automatically extracts information from strain abundances in 
 % different individuals and combines this information into different tables. 
 %
 % INPUTS: 
 %   models:            nx1 cell array that contains n microbe models in
 %                      COBRA model structure format
-%   infoPath:          char with path of directory from where to retreive information
-%   filename:          char with name of file from which to to retreive information
+%   infoPath:          char with path of directory from where to retrieve information
+%   filename:          char with name of file from which to retrieve information
 %   patNumb:           number of individuals in the study
 %                     
 % OUTPUTS:               
@@ -14,7 +14,7 @@ function[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,rea
 %                      contained in the models
 %   micRea:            binary matrix assessing presence of set of unique 
 %                      reactions for each of the microbes 
-%   binOrg:            binary matrix asessing presence of specific strains in 
+%   binOrg:            binary matrix assessing presence of specific strains in 
 %                      different individuals
 %   reacPat:           matrix with number of reactions per individual 
 %                      (organism resolved) 

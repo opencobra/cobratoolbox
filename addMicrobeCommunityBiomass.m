@@ -1,24 +1,24 @@
 function model = addMicrobeCommunityBiomass(model,microbeNames,abundances)
-%Adds a community biomass reaction to a model structure with multiple
-%microbes based on their relative abundances. If no abundance values are
-%provided, all n microbes get equal weights (1/n). Assumes a lumen
-%compartment [u] and a fecal secretion comparment [fe]. Creates a community
-%biomass metabolite 'microbeBiomass' that is secreted from [u] to [fe] and
-%exchanged from fecal compartment.
+% Adds a community biomass reaction to a model structure with multiple
+% microbes based on their relative abundances. If no abundance values are
+% provided, all n microbes get equal weights (1/n). Assumes a lumen
+% compartment [u] and a fecal secretion comparment [fe]. Creates a community
+% biomass metabolite 'microbeBiomass' that is secreted from [u] to [fe] and
+% exchanged from fecal compartment.
 %
-%INPUT
-% model         COBRA model structure with n joined microbes with biomass
-%               metabolites 'Microbe_biomass[c]'.
-% microbeNames  nx1 cell array of n unique strings that represent
-%               each microbe in the model.
+% INPUTs:
+%   model:           COBRA model structure with n joined microbes with biomass
+%                    metabolites 'Microbe_biomass[c]'.
+%   microbeNames:    nx1 cell array of n unique strings that represent
+%                    each microbe in the model.
 %
-%OPTIONAL INPUT
-% abundances    nx1 vector with the relative abundance of each microbe.
+% OPTIONAL INPUT:
+%   abundances:      nx1 vector with the relative abundance of each microbe.
 %
-%OUTPUT
-% model         COBRA model structure
+% OUTPUT:
+%   model:           COBRA model structure
 %
-% SM June 2016
+% .. Author: Stefania Magnusdottir June 2016
 
 dummy=makeDummyModel(length(microbeNames)+2,3);
 dummy.mets=[strcat(microbeNames,'_biomass[c]');'microbeBiomass[u]';'microbeBiomass[fe]'];

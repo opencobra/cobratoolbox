@@ -1,7 +1,7 @@
 function [Y]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,figForm)
-% This function computes and automatically plots in a specified format 
-% information coming from the mapping data as metabolic diversity and 
-% classical multidimensional scaling of individuals' reactions repertoire 
+% This function computes and automatically plots information coming from 
+% the mapping data as metabolic diversity and classical multidimensional 
+% scaling of individuals' reactions repertoire 
 %
 % INPUTS: 
 %   resPath:            char with path of directory where results are saved              
@@ -9,22 +9,18 @@ function [Y]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,f
 %                       contained in the models
 %   micRea:             binary matrix assessing presence of set of unique 
 %                       reactions for each of the microbes 
-%   BinOrg:             binary matrix assessing presence of specific strains in 
-%                       different individuals
-%   reacPat:            matrix with number of reactions per individual 
-%                      (organism resolved) 
 %   reacSet:            matrix with names of reactions of each individual
-%   reacTab:            char with names of individuals in the study 
-%   reacAbun:           binary matrix with presence/absence of reaction per 
-%                       individual: to compare different individuals
+%   reacTab:            binary matrix with presence/absence of reaction per 
+%                       individual.
+%   reacAbun:           matrix with abundance of reaction per individual
 %   reacNumber:         number of unique reactions of each individual
 %   patStat:            logical indicating if documentation on health status 
 %                       is available  
 %   figForm:            format to use for saving figures
 %
 % OUTPUTS:
-%   Y:                 classical multidimensional scaling of individuals' 
-%                      reactions repertoire 
+%   Y:                  classical multidimensional scaling of individuals' 
+%                       reactions repertoire 
 %
 % ..Author: - Federico Baldini, 2017-2018
 
