@@ -13,17 +13,16 @@ function removeGitIgnoredNewFiles(directory, oldcontent)
 %                rdir(['**' filesep '*'])
 %
 
-
 currentDir = cd(directory);
 
-newContent = rdir(['**' filesep '*']);%Get the new Content of the folder.
+% get the new Content of the folder.
+[~, newContent] = system('git ls-files');
+newContent = strsplit(newContent, '\n');
 
-%Get all .log files that were present only after initCobraToolbox was
-%called.
-diffContent = setdiff({newContent.name},{oldcontent.name});
+% get all .log files that were present only after initCobraToolbox was called.
+diffContent = setdiff(newContent, oldcontent);
 
-%Get all Files that are ignored by git. Those are temporary files which
-%should be cleaned up.
+% get all Files that are ignored by git. Those are temporary files
 ignoredFiles = regexptranslate('wildcard',getIgnoredFiles());
 
 matching = false(size(diffContent));
@@ -32,10 +31,10 @@ for i = 1:numel(ignoredFiles)
     matching = matching | ~cellfun(@(x) isempty(regexp(x,ignoredFiles{i},'ONCE')),diffContent);
 end
 
-LogFiles = diffContent(matching);
-%By adding the folder, we already have the correct path.
-if ~isempty(LogFiles)
-    delete(LogFiles{:});
+logFiles = diffContent(matching);
+% by adding the folder, we already have the correct path.
+if ~isempty(logFiles)
+    delete(logFiles{:});
 end
 
 cd(currentDir);
