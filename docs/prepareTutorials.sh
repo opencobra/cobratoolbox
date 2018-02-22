@@ -331,6 +331,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                     echo >> $rstPath/index.rst
                     echo ".. raw:: html" >> $rstPath/index.rst
                     echo >> $rstPath/index.rst
+                    echo "   <br>" >> $rstPath/index.rst
                     echo "   </div>" >> $rstPath/index.rst
                     echo "   </div>" >> $rstPath/index.rst
                     echo "" >> $rstPath/index.rst

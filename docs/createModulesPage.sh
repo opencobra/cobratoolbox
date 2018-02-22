@@ -60,6 +60,7 @@ do
     echo "         <script> buildList(\"${section}functions.json\", \"$section\") </script>" >> $rstFunctionPath
     echo "       </div>" >> $rstFunctionPath
     echo "     </div>" >> $rstFunctionPath
+    echo "     <br>" >> $rstFunctionPath
     echo "   </div>" >> $rstFunctionPath
     echo "" >> $rstFunctionPath
     echo "" >> $rstFunctionPath
