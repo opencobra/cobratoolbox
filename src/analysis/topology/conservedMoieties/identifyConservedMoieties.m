@@ -1,10 +1,10 @@
-function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances] = identifyConservedMoieties(model, ATN)
+function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances,E] = identifyConservedMoieties(model, ATN)
 % Identifies conserved moieties in a metabolic network (model) by graph
 % theoretical analysis of the corresponding atom transition network (ATN).
 %
 % USAGE:
 %
-%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances] = identifyConservedMoieties(model, ATN)
+%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances,E] = identifyConservedMoieties(model, ATN)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -40,6 +40,8 @@ function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instan
 %                           moiety vectors (columns of `L`)
 %    atoms2instances:       `p x 1` vector mapping atoms (rows of `A`) to moieties
 %                           (rows of `M`)
+%    E:                     Moiety vectors that are not in left null space.
+%                           Should be empty.
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 
