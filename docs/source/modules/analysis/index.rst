@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox analysis">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis.png" alt="analysis"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis_wb.png" alt="analysis"></div>
      <div class="sectionTitle"><h3>Analysis</h3></div>
      <div class="row">
        <div class="col-xs-6">

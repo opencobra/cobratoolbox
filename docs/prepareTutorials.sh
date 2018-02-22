@@ -348,7 +348,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                 echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
                 echo "   <div class=\"tutorialSectionBox $section\">" >> $rstPath/index.rst
-                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/img/icon_$section.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/img/icon_${section}_wb.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}<a class=\"headerlink\" href=\"#$section\" title=\"Permalink to this headline\">¶</a></h3></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionContent\">" >> $rstPath/index.rst
                 echo >> $rstPath/index.rst
