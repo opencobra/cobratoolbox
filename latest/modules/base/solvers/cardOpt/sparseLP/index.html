@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,6 +150,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../io/index.html">IO</a></li>
@@ -167,7 +168,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -244,7 +244,7 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="sparselp">
@@ -276,11 +276,12 @@ mutual coherence</li>
 <dt id="src.base.solvers.cardOpt.sparseLP.optimizeCardinality">
 <code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
-The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
-<span class="math">\(min c'(x, y, z) + lambda*||x||_0 - delta*||y||_0\)</span>
-s.t. <span class="math">\(A*(x, y, z) &lt;= b\)</span>
-<span class="math">\(l &lt;= (x,y,z) &lt;= u\)</span>
-<span class="math">\(x in R^p, y in R^q, z in R^r\)</span></p>
+The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.</p>
+<div class="math">
+\[\begin{split}min  ~&amp;~ c^T (x, y, z) + \lambda ||x||_0 - \delta ||y||_0 \\
+s.t. ~&amp;~ A(x, y, z) \leq b \\
+     ~&amp;~ l \leq (x,y,z) \leq u \\
+     ~&amp;~ x \in \mathbb{R}^p, y \in \mathbb{R}^q, z \in \mathbb{R}^r\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>solution = optimizeCardinality(problem, params)</div></blockquote>
@@ -300,7 +301,7 @@ Structure containing the following fields describing the problem:<ul>
 <li>.csense - <cite>s x 1</cite> Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
 <li>.lb - <cite>(p+q+r) x 1</cite> Lower bound vector</li>
-<li>.ub - <a href="#id2"><span class="problematic" id="id3">``</span></a>(p+q+r) x 1` Upper bound vector</li>
+<li>.ub - <cite>(p+q+r) x 1</cite> Upper bound vector</li>
 </ul>
 </li>
 </ul>
@@ -811,10 +812,10 @@ Structure containing the following fields:<ul>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../tangiCode/index.html" class="btn btn-neutral float-right" title="tangiCode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tangiCode/index.html" class="btn btn-default float-right" title="tangiCode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="cardOpt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="cardOpt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -823,11 +824,11 @@ Structure containing the following fields:<ul>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

@@ -64,8 +64,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../index.html"/>
         <link rel="up" title="Functions" href="../index.html"/>
-        <link rel="next" title="FBA" href="FBA/index.html"/>
-        <link rel="prev" title="optForceGAMS" href="../design/optForceGAMS/index.html"/> 
+        <link rel="next" title="Coupling" href="coupling/index.html"/>
+        <link rel="prev" title="Functions" href="../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,39 +150,38 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Functions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../dataIntegration/index.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletion/index.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FBA/index.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA/index.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="geometricFBA/index.html">geometricFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gMCS/index.html">gMCS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiSpecies/index.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA/index.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="subspaces/index.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="thermo/index.html">Thermo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="uFBA/index.html">uFBA</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../visualization/index.html">Visualization</a></li>
 </ul>
@@ -253,28 +252,37 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="analysis">
-<span id="id1"></span><h1>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h1>
+  <script src="../../_static/js/json-menu.js"></script>
+<style>
+  h1 {font-size:0px;}
+</style><div class="tutorialSectionBox analysis">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis_wb.png" alt="analysis"></div>
+  <div class="sectionTitle"><h3>Analysis</h3></div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div><div class="section" id="id1">
+<h1>Analysis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="FBA/index.html">FBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FVA/index.html">FVA</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FVA/fastFVA/index.html">fastFVA</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="MOMA/index.html">MOMA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coupling/index.html">Coupling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deletion/index.html">Deletion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exploration/index.html">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FBA/index.html">FBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FVA/index.html">FVA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FVA/fastFVA/index.html">fastFVA</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="geometricFBA/index.html">geometricFBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gMCS/index.html">gMCS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MOMA/index.html">MOMA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multiSpecies/index.html">MultiSpecies</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="multiSpecies/SteadyCom/index.html">SteadyCom</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="multiSpecies/SteadyCom/subroutines/index.html">Subroutines</a></li>
@@ -283,9 +291,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rFBA/index.html">rFBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rFBA/index.html">rFBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rumba/index.html">rumba</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sampling/index.html">Sampling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sampling/ACHR/index.html">ACHR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sampling/CHRR/index.html">CHRR</a></li>
@@ -335,13 +344,27 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="transport/index.html">Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rumba/index.html">rumba</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coupling/index.html">Coupling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uFBA/index.html">uFBA</a></li>
 </ul>
 </div>
-<span class="target" id="module-src.analysis"></span></div>
+      </div>
+    </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="dropdown dropdown-cobra">
+        <a href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width: 100%;">
+          Function list
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu analysis-menu dropdown-scrollable">
+        </ul>
+      </div>
+      <script> buildList("https://opencobra.github.io/cobratoolbox/unstable/modules/analysisfunctions.json", "analysis") </script>
+    </div>
+  </div>
+</div>
+
+<br><span class="target" id="module-src.analysis"></span></div>
 
 
            </div>
@@ -353,10 +376,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FBA/index.html" class="btn btn-neutral float-right" title="FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="coupling/index.html" class="btn btn-default float-right" title="Coupling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../design/optForceGAMS/index.html" class="btn btn-neutral" title="optForceGAMS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -365,11 +388,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
