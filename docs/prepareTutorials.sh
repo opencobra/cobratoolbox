@@ -116,6 +116,9 @@ buildHTMLTutorials(){
         # create PDF file
         /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
         sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        rm "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html.bak"
     done
 }
 
@@ -126,6 +129,10 @@ buildHTMLSpecificTutorial(){
     # create PDF file
     /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    rm "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html.bak"
+
 }
 
 # default vallues
