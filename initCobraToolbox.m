@@ -79,9 +79,10 @@ function initCobraToolbox()
             docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
         end
 
+        c = clock;
         fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
         fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
-        fprintf('     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n');
+        fprintf(['     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - ' num2str(c(1)) '\n']);
         fprintf('     | |     | | | | |  _  { |  _  /  |  ___  |   |\n');
         fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n');
         fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   ', docLink, '\n']);
@@ -95,9 +96,12 @@ function initCobraToolbox()
     % define the root path of The COBRA Toolbox and change to it.
     CBTDIR = fileparts(which('initCobraToolbox'));
     cd(CBTDIR);
-    
+
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
+
+    %And the rdir directory
+    addpath(genpath([CBTDIR filesep 'external' filesep 'rdir']));
 
     % add the install folder
     addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
@@ -181,7 +185,7 @@ function initCobraToolbox()
         end
 
         % Update/initialize submodules
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --remote --depth 1');
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --remote --no-fetch --depth 1');
 
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));
@@ -200,6 +204,10 @@ function initCobraToolbox()
             fprintf(' Done.\n');
         end
     end
+
+    %get the current content of the init Folder
+    [~, content] = system('git ls-files');
+    dirContent = strsplit(content, '\n');
 
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
@@ -221,7 +229,7 @@ function initCobraToolbox()
             addpath(genpath(tmpDir));
         end
     end
-    
+
     %Adapt the mac path depending on the mac version.
     if ismac
         adaptMacPath()
@@ -256,7 +264,7 @@ function initCobraToolbox()
     end
 
     % define xml test file
-    xmlTestModel = 'Ec_iAF1260_flux1.xml';
+    xmlTestModel = 'ecoli_core_model.xml';
     xmlTestFile = [getDistributedModelFolder(xmlTestModel) filesep xmlTestModel];
 
     % save the userpath
@@ -294,7 +302,14 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-
+    %Lets define a order of the solvers fields. Starting with the most
+    %common solvers others will be added as needed.
+    SOLVERS = struct('gurobi',struct(),...
+                     'ibm_cplex',struct(),...
+                     'tomlab_cplex',struct(),...
+                     'glpk',struct(),...
+                     'mosek',struct(),...
+                     'matlab',struct());
     % active support - supported solvers
     SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.dqqMinos.type = {'LP'};
@@ -345,7 +360,8 @@ function initCobraToolbox()
     supportedSolversNames = fieldnames(SOLVERS);
     catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
     for i = 1:length(supportedSolversNames)
-        SOLVERS.(supportedSolversNames{i}).installed = 0;
+        SOLVERS.(supportedSolversNames{i}).installed = false;
+        SOLVERS.(supportedSolversNames{i}).working = false;
         types = SOLVERS.(supportedSolversNames{i}).type;
         for j = 1:length(types)
             catSolverNames.(types{j}){end + 1} = supportedSolversNames{i};
@@ -354,10 +370,15 @@ function initCobraToolbox()
 
     % check the installation of the solver
     for i = 1:length(supportedSolversNames)
-        solverOK = changeCobraSolver(supportedSolversNames{i}, SOLVERS.(supportedSolversNames{i}).type{1}, 0);
+        %We will validate all solvers in init. After this, all solvers are
+        %checked, whether they actually work and the SOLVERS field is set.
+        [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
+                                     SOLVERS.(supportedSolversNames{i}).type{1},...
+                                     0, false, 2);
         if solverOK
-            SOLVERS.(supportedSolversNames{i}).installed = 1;
+            SOLVERS.(supportedSolversNames{i}).working = true;
         end
+        SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;
     end
 
     if ENV_VARS.printLevel
@@ -518,21 +539,22 @@ function initCobraToolbox()
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be restored.');
-    end    
-    
-    %Finally set up the COBRA System path
+    end
+
+    % set up the COBRA System path
     addCOBRABinaryPathToSystemPath();
-        
+
     % change back to the current directory
     cd(currentDir);
-    
+
+    % cleanup at the end of the successful run
+    removeGitIgnoredNewFiles(CBTDIR, dirContent);
+
     % clear all temporary variables
     % Note: global variables are kept in memory - DO NOT clear all the variables!
     if ENV_VARS.printLevel
         clearvars
     end
-        
-    
 end
 
 function checkGit()

@@ -1061,7 +1061,22 @@ switch solver
         %Seems like matlab tends to ignore the optimalityTolerance (or at
         %least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
         %make this tolerance smaller...)
-        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,'OptimalityTolerance',optTol*0.01,'ConstraintTolerance',feasTol);
+        if verLessThan('matlab','9.0')
+            optToleranceParam = 'TolFun';
+            constTolParam = 'TolCon';            
+        else
+            optToleranceParam = 'OptimalityTolerance';
+            constTolParam = 'ConstraintTolerance';
+        end
+        
+        %For whatever 
+        if verLessThan('matlab','9.1')
+            clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,[],options);
+        else
+            clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
+        end
+        
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,optTol*0.01,constTolParam,feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
         if ~isempty(fieldnames(solverParams))
@@ -1071,7 +1086,7 @@ switch solver
             end
         end
         if (isempty(csense))
-            [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
+            [x,f,origStat,output,lambda] = clinprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
         else
             Aeq = A(csense == 'E',:);
             beq = b(csense == 'E');
@@ -1083,7 +1098,7 @@ switch solver
             A = [Al;-Ag];
             clear b;
             b = [bl;-bg];
-            [x,f,origStat,output,lambda] = linprog(c*osense,A,b,Aeq,beq,lb,ub,linprogOptions);
+            [x,f,origStat,output,lambda] = clinprog(c*osense,A,b,Aeq,beq,lb,ub,linprogOptions);
         end
         y = [];
         if (origStat > 0)

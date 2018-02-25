@@ -5,10 +5,10 @@ function [] = configEnvVars(printLevel)
 % Then, there will be 4 methods marked that can be used to define the global
 % variables:
 %
-%   - 1: solver is on the path and at a standard location (*---)
-%   - 2: solver is on path but at a non-standard location (-*--)
-%   - 3: solver path is defined through environment variables (--*-)
-%   - 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (---*)
+%   - 1: solver is on the path and at a standard location (`*---`)
+%   - 2: solver is on path but at a non-standard location (`-*--`)
+%   - 3: solver path is defined through environment variables (`--*-`)
+%   - 4: solver is not already on the path and the environment variable is not set, but the standard directory exists (`---*`)
 %
 % If none of these 4 methods applies, the global solver path variable is not set and an appropriate message is returned
 %

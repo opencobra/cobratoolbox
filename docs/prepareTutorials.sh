@@ -14,6 +14,15 @@ echo_time() {
             echo `date +\%Y-\%m-\%d\ \%H:\%M:\%S` " $*"
         }
 
+declare -A subs
+subs[analysis]="Analysis"
+subs[base]="Base"
+subs[dataIntegration]="Data integration"
+subs[design]="Design"
+subs[reconstruction]="Reconstruction"
+subs[visualization]="Visualization"
+
+
 buildTutorialList(){
     nTutorial=0
     if [[ -z "$specificTutorial" ]]; then
@@ -35,12 +44,11 @@ buildTutorialList(){
             done
         done
     else
-        echo here
         for d in $(find $COBRATutorialsPath -maxdepth 7 -type d)
         do
             if [[ "${d}" == *"$(basename $specificTutorial)"* ]]; then
                 singleTutorial="$d/tutorial_$(basename $specificTutorial).mlx"
-                echo here
+
                 if [[ -f "$singleTutorial" ]]; then
                     let "nTutorial+=1"
                     tutorials[$nTutorial]="$singleTutorial"
@@ -51,11 +59,17 @@ buildTutorialList(){
             fi
         done
     fi
+
     if [[ nTutorial == 0 ]]; then
         echo_time;
         echo_time "List of tutorial is empty."
         echo_time "$usage"; exit 1;
     fi
+
+    # sort tutorial by ascending alphabetical order
+    IFS=$'\n'
+    tutorials=($(sort <<<"${tutorials[*]}"))
+    unset IFS
 }
 
 createLocalVariables(){
@@ -70,8 +84,6 @@ createLocalVariables(){
         tutorialTitle="tutorialNoName"
     fi
 
-    echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder"
-
     foo="${tutorialName:9}"
     tutorialLongTitle="${tutorialName:0:8}${foo^}"
     readmePath="$COBRATutorialsPath/$tutorialFolder"
@@ -84,6 +96,16 @@ createLocalVariables(){
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
+    dirHyperLink="https://github.com/opencobra/COBRA.tutorials/tree/master/$tutorialFolder"
+
+    previousSection=""
+    if [[ -n $section ]]; then
+        previousSection=$section
+    fi
+
+    section=${tutorialFolder%%/*}
+
+    echo_time "  - $tutorialTitle ($tutorialName) $tutorialFolder - $section ($previousSection)"
 }
 
 buildHTMLTutorials(){
@@ -94,6 +116,9 @@ buildHTMLTutorials(){
         # create PDF file
         /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
         sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+        rm "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html.bak"
     done
 }
 
@@ -104,6 +129,10 @@ buildHTMLSpecificTutorial(){
     # create PDF file
     /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.rawgit.com/opencobra/cobratoolbox/gh-pages/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
+    rm "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html.bak"
+
 }
 
 # default vallues
@@ -203,6 +232,28 @@ fi
 # build list of tutorial if parameter '-f' is not set.
 buildTutorialList
 
+# gather tutorial long names.
+nTutorial=0
+for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
+do
+    createLocalVariables $tutorial
+    let "nTutorial+=1"
+    tutorialLongNames[$nTutorial]="$tutorial $section $tutorialTitle"
+done
+# printf '%s\n' "${tutorialLongNames[@]}"
+
+# sort tutorial by ascending alphabetical order of section and then name.
+IFS=$'\n'
+tutorials=($(sort -f -k2 -k3 <<<"${tutorialLongNames[*]}" | awk  '{print $1}'))
+unset IFS
+# printf '%s\n' "${tutorialLongNames[@]}"
+
+# gather section names
+IFS=$'\n'
+sections=($(sort -f -k2 <<<"${tutorialLongNames[*]}" | awk  '{print $2}' | sort -u))
+unset IFS
+# printf '%s\n' "${sections[@]}"
+
 tutorialPath="../tutorials"
 rstPath="$COBRAToolboxPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
@@ -224,14 +275,18 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
         echo_time "Creating $rstPath/index.rst"
         echo >> $rstPath/index.rst
         echo >> $rstPath/index.rst
-        echo ".. toctree::" >> $rstPath/index.rst
+        echo ".. raw:: html" >> $rstPath/index.rst
         echo >> $rstPath/index.rst
+        echo "   <style>h2 {font-size:0px;}</style>" >> $rstPath/index.rst
+        echo >> $rstPath/index.rst
+
         echo_time "Cleaning destination folders for rst files"
         find "$rstPath" -name "tutorial*.rst" -exec rm -f {} \;
     fi
 
     echo_time "Creating requested files for tutorial(s):"
     echo  ${tutorials[@]}
+    firstSection=true
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -248,12 +303,12 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             /usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
         fi
 
-        # create markdowm README
+        # create markdown README
         if [ $buildMD = true ]; then
             echo $readmePath
             mkdir -p $readmePath
             echo "<p align=\"center\">" > $readmePath/README.md
-            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\"></a>&nbsp;&nbsp;&nbsp;<a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\"></a>" >> $readmePath/README.md
+            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\" alt=\"pdf\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\" alt=\"MLX\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\" alt=\"M file\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_view.png\" height=\"90px\" alt=\"view\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\" alt=\"tutorials\"></a>" >> $readmePath/README.md
             echo "<br><br>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
 
@@ -273,12 +328,52 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             sed -i.bak "s~#PDFtutorialPath#~$pdfHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MLXtutorialPath#~$mlxHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#MtutorialPath#~$mHyperlink~g"     "$rstPath/$tutorialLongTitle.rst"
+            sed -i.bak "s~#DIRtutorialPath#~$dirHyperlink~g"   "$rstPath/$tutorialLongTitle.rst"
             sed -i.bak "s~#IFRAMEtutorialPath#~$htmlHyperlink~g" "$rstPath/$tutorialLongTitle.rst"
 
             rm "$rstPath/$tutorialLongTitle.rst.bak"
-            echo "   $tutorialLongTitle" >> $rstPath/index.rst
+            # Create sections for tutorials
+            if ! [[ $previousSection = $section ]]; then
+                if [ $firstSection = false ]; then
+                    echo >> $rstPath/index.rst
+                    echo ".. raw:: html" >> $rstPath/index.rst
+                    echo >> $rstPath/index.rst
+                    echo "   <br>" >> $rstPath/index.rst
+                    echo "   </div>" >> $rstPath/index.rst
+                    echo "   </div>" >> $rstPath/index.rst
+                    echo "" >> $rstPath/index.rst
+                    echo "" >> $rstPath/index.rst
+                fi
+
+                chrlen=${#section}
+                underline=`printf -- '-%.0s' $(seq 1 $chrlen);`
+
+                echo "${subs[$section]}" >> $rstPath/index.rst
+                echo "$underline" >> $rstPath/index.rst
+                echo "" >> $rstPath/index.rst
+                echo "" >> $rstPath/index.rst
+
+                echo ".. raw:: html" >> $rstPath/index.rst
+                echo "" >> $rstPath/index.rst
+                echo "   <div class=\"tutorialSectionBox $section\">" >> $rstPath/index.rst
+                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/img/icon_${section}_wb.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}<a class=\"headerlink\" href=\"#$section\" title=\"Permalink to this headline\">¶</a></h3></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionContent\">" >> $rstPath/index.rst
+                echo >> $rstPath/index.rst
+
+                firstSection=false
+            fi
+            echo "* :doc:\`$tutorialLongTitle\`" >> $rstPath/index.rst
         fi
     done
+    echo >> $rstPath/index.rst
+    echo ".. raw:: html" >> $rstPath/index.rst
+    echo >> $rstPath/index.rst
+    echo "     </div>" >> $rstPath/index.rst
+    echo "   </div>" >> $rstPath/index.rst
+    echo "   <br>" >> $rstPath/index.rst
+    echo >> $rstPath/index.rst
+
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then

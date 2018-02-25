@@ -8,7 +8,7 @@ function [formula, protons] = getFormulaFromInChI(InChI)
 %
 % INPUT:
 %    InChI:      The Inchi String of the chemical formula (e.g. InChI=
-%                extract formula from `InChI = 1S/C3H4O3/c1-2(4)3(5)6/h1H3, (H,5,6)/p-1' for pyruvate
+%                extract formula from `InChI = 1S/C3H4O3/c1-2(4)3(5)6/h1H3, (H,5,6)/p-1` for pyruvate
 %
 % OUTPUTS:
 %    formula:    The chemical formula (including the protonation state
@@ -42,7 +42,7 @@ if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p
     Coefficients = [];
     for i = 1:numel(CoefLists)
         if isempty(CoefLists{i})
-            %This should only happen, if there was no actual formula. 
+            %This should only happen, if there was no actual formula.
             continue
         end
         currentForm = CoefLists{i};
@@ -63,7 +63,7 @@ if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p
     formula = strjoin([Elements , {''}],Coefs);
 else
     %had to add this for some inchi, e.g.
-    %InChI=1/C21H30O4/c1-19-8-5-14(23)11-13(19)3-4-15-16(19)6-9-20(2)17(15)7-10-21(20,25)18(24)12-22/h11,15-17,22,25H,3-10,12H2,1-2H3/t15-,16+,17+,19+,20+,21+/m1/s1 
+    %InChI=1/C21H30O4/c1-19-8-5-14(23)11-13(19)3-4-15-16(19)6-9-20(2)17(15)7-10-21(20,25)18(24)12-22/h11,15-17,22,25H,3-10,12H2,1-2H3/t15-,16+,17+,19+,20+,21+/m1/s1
     protons = numAtomsOfElementInFormula(formula, 'H',0);
 end
 

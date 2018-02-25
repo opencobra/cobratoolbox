@@ -16,8 +16,8 @@ function outmodel = writeCbModel(model, varargin)
 %                         xls is restricted to the fields defined in the xls io documentation.
 %                         expa will print all reactions with Exchangers being detected by findExcRxns
 %                       * fileName: File name for output file (optional, default opens dialog box)
-%                       * compSymbolList: List of compartment symbols (Cell array)
-%                       * compNameList:   List of compartment names corresponding to `compSymbolList` (Cell array)
+%                       * compSymbols: List of compartment symbols (Cell array)
+%                       * compNames:   List of compartment names corresponding to `compSymbolList` (Cell array)
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
@@ -42,7 +42,7 @@ function outmodel = writeCbModel(model, varargin)
 %    FBCv2 file. The current version of the `writeSBML.m` does not require the
 %    SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
-newKeyWords = {'format', 'fileName', 'compSymbolList', 'compNameList'};
+newKeyWords = {'format', 'fileName', 'compSymbols', 'compNames'};
 
 supportedSBML = 3;
 supportedSBMLv = 1;

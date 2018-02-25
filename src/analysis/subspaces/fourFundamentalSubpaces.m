@@ -29,7 +29,7 @@ function [N, R, L, C, p, q, rankS] = fourFundamentalSubpaces(S, printLevel)
 %                   time and are combinations of concentration variables.
 %
 %    C:             `m  x r` column space basis:
-%                   The column space of `S `contains all the possible time
+%                   The column space of `S` contains all the possible time
 %                   derivatives of the concentration vector, and thus how the thermodynamic
 %                   driving forces move the concentration state of the network.
 %
@@ -64,7 +64,7 @@ switch archstr
         %nullspace basis
         V     = speye(n-rankS,n-rankS);       % is a sparse I of order n-rankS.
         N     = nullSpaceOperatorApply(nullS,V); % satisfies S*N = 0.
-        
+
         %rowspace basis
         R = S(q(1:rankS),:)';
 

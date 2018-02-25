@@ -5,4 +5,9 @@ FAQ
 
     <br>
 
-Answers to Frequently Asked Questions (**FAQ**) are `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`_.
+Answers to Frequently Asked Questions (**FAQ**) are listed below.
+
+.. include:: notes/faq.rst
+   :start-after: begin-faq-marker
+   :end-before: end-faq-marker
+

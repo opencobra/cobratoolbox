@@ -85,7 +85,7 @@ Tutorials, Documentation, and Support
 -  If you need support, please feel free to post your question in our |forum|.
 
 -  Answers to Frequently Asked Questions (**FAQ**) are
-   `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`__.
+   `here <https://opencobra.github.io/cobratoolbox/stable/faq.html>`__.
 
 
 How to contribute
@@ -99,7 +99,7 @@ Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 .. raw:: html
 
    <p align="center">
-   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px"/>
+   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
    </p>
 
 
@@ -121,9 +121,7 @@ within MATLAB by typing:
    `here <https://opencobra.github.io/cobratoolbox/docs/testTemplate.html>`__.
 -  More information on formatting the documentation is
    `here <https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html>`__
--  A guide for reporting an **issue** or submitting a **pull request
-   (PR)** is
-   `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
+-  A guide for reporting an **issue** is `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
 
 If you want to use ``git`` via the command line interface and need help,
 these `training slides <https://uni-lu.github.io/slides/>`__ will get

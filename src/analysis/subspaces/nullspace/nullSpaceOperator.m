@@ -32,7 +32,7 @@ function nullS = nullSpaceOperator(S, scale, printLevel)
 %
 %    Requires Nick Henderson's 64 bit LUSOL interface to be intalled and added
 %    to the matlab path. See https://github.com/nwh/lusol
-%    see also http://www.stanford.edu/group/SOL/software/lusol.html
+%    see also https://web.stanford.edu/group/SOL/software/lusol/
 %
 % .. Authors:
 %       - Michael Saunders 02 May 2008: First version of nullspaceLUSOLform.m.
