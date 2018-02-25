@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,39 +150,38 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">gMCS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -255,14 +254,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="gmcs">
 <span id="id1"></span><h1>gMCS<a class="headerlink" href="#gmcs" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.gMCS"></span><dl class="function">
 <dt id="src.analysis.gMCS.GPR2models">
-<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Each GPR rule is converted into a network where the reaction and genes
 involved are interconnected.</p>
 <p><strong>Usage</strong></p>
@@ -305,7 +304,7 @@ rule for each reaction.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.buildGmatrix">
-<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>separate_transcript</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>separate_transcript</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the G matrices required for the calculation of genetic Minimal Cut
 Sets (gMCSs).</p>
 <p><strong>Usage</strong></p>
@@ -345,7 +344,7 @@ Calculation times for each of the steps.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateGeneMCS">
-<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Genetic Minimal Cut Sets (gMCSs): Calculate Minimal Cut Sets at
 the gene level (minimal gene knockout interventions), with or without
 selecting a given knockout, among all the genes included in the model or
@@ -443,7 +442,7 @@ the algorithm.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateMCS">
-<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Minimal Cut Sets (MCSs): Calculate Minimal Cut Sets at the
 reaction level (minimal reaction knockout interventions), with or without
 selecting a given knockout, among all the reactions included in the model
@@ -527,10 +526,10 @@ the algorithm.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../KLdistance/index.html" class="btn btn-neutral float-right" title="KLdistance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../KLdistance/index.html" class="btn btn-default float-right" title="KLdistance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../geometricFBA/index.html" class="btn btn-neutral" title="geometricFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../geometricFBA/index.html" class="btn btn-default" title="geometricFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -539,11 +538,11 @@ the algorithm.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

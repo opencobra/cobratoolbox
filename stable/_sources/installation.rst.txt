@@ -3,25 +3,6 @@ Installation
 
 |br|
 
-System Requirements
--------------------
-
-|br|
-
-.. include:: installation/requirements.rst
-   :start-after: begin-requirements-marker
-   :end-before: end-requirements-marker
-
-
-|br|
-
-Solver Installation
--------------------
-
-.. include:: installation/solvers.rst
-   :start-after: begin-solver-installation-marker
-   :end-before: end-solver-installation-marker
-
 
 Download and installation
 --------------------------
@@ -30,6 +11,19 @@ Download and installation
    :start-after: begin-installation-marker
    :end-before: end-installation-marker
 
+Solver Installation
+-------------------
+
+.. include:: installation/solvers.rst
+   :start-after: begin-solver-installation-marker
+   :end-before: end-solver-installation-marker
+
+System Requirements
+-------------------
+
+.. include:: installation/requirements.rst
+   :start-after: begin-requirements-marker
+   :end-before: end-requirements-marker
 
 Binaries and Compatibility
 --------------------------
@@ -87,12 +81,12 @@ Binaries and Compatibility
 .. |latest| raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-   
+
 
 .. |forum| raw:: html
 
    <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>
 
 .. |br| raw:: html
-    
+
    <br>

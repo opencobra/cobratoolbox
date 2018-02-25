@@ -64,8 +64,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="fastGapFill" href="../fastGapFill/index.html"/>
-        <link rel="prev" title="Reconstruction" href="../index.html"/> 
+        <link rel="next" title="Refinement" href="../refinement/index.html"/>
+        <link rel="prev" title="stoichConsistency" href="../modelGeneration/stoichConsistency/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,17 +150,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">growthExpMatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">rBioNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -234,14 +234,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="rbionet">
 <span id="id1"></span><h1>rBioNet<a class="headerlink" href="#rbionet" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.rBioNet"></span><dl class="function">
 <dt id="src.reconstruction.rBioNet.BalancePrep">
-<code class="descname">BalancePrep</code><span class="sig-paren">(</span><em>meta_meta</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/BalancePrep.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
+<code class="descname">BalancePrep</code><span class="sig-paren">(</span><em>meta_meta</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/BalancePrep.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Balances the reactions, used in <cite>ReactionChecks</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -264,7 +264,7 @@ matrix from <cite>ReconstructionTool</cite></li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.CreateGPR">
-<code class="descname">CreateGPR</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/CreateGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.CreateGPR" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CreateGPR</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/CreateGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.CreateGPR" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for CreateGPR.fig
 CreateGPR, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -308,7 +308,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.GPR2Genes">
-<code class="descname">GPR2Genes</code><span class="sig-paren">(</span><em>GPR</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/GPR2Genes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GPR2Genes</code><span class="sig-paren">(</span><em>GPR</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/GPR2Genes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input is a list of GPRs and output is a unique list of genes.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -331,7 +331,7 @@ unique list of genes</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.GenesAndReactions">
-<code class="descname">GenesAndReactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/GenesAndReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesAndReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GenesAndReactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/GenesAndReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesAndReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for GenesAndReactions.fig
 GenesAndReactions, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -375,7 +375,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.GenesReactions">
-<code class="descname">GenesReactions</code><span class="sig-paren">(</span><em>genelist</em>, <em>rxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/GenesReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GenesReactions</code><span class="sig-paren">(</span><em>genelist</em>, <em>rxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/GenesReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns genes in model and the associative reactions.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -400,7 +400,7 @@ genes in model and the associative reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.Keep_reactions">
-<code class="descname">Keep_reactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/Keep_reactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.Keep_reactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Keep_reactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/Keep_reactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.Keep_reactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for Keep_reactions.fig
 Keep_reactions, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -444,7 +444,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.LegalRxnFormula">
-<code class="descname">LegalRxnFormula</code><span class="sig-paren">(</span><em>formula</em>, <em>abbreviation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/LegalRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LegalRxnFormula</code><span class="sig-paren">(</span><em>formula</em>, <em>abbreviation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/LegalRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if all reactions are legal</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -474,7 +474,7 @@ Add more tests in near future.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.LoadReaction">
-<code class="descname">LoadReaction</code><span class="sig-paren">(</span><em>rxnline</em>, <em>metab</em>, <em>meta_compartment</em>, <em>rxn_line</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/LoadReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LoadReaction</code><span class="sig-paren">(</span><em>rxnline</em>, <em>metab</em>, <em>meta_compartment</em>, <em>rxn_line</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/LoadReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -503,7 +503,7 @@ input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cit
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.ReactionChecks">
-<code class="descname">ReactionChecks</code><span class="sig-paren">(</span><em>rxn</em>, <em>metab</em>, <em>meta_compartment</em>, <em>newrxns</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/ReactionChecks.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionChecks" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReactionChecks</code><span class="sig-paren">(</span><em>rxn</em>, <em>metab</em>, <em>meta_compartment</em>, <em>newrxns</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/ReactionChecks.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionChecks" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is an start to simplefying the balancing and similarity
 checking of reactions process.</p>
 <p><strong>Usage</strong></p>
@@ -540,7 +540,7 @@ if everything is okay<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.ReactionEq">
-<code class="descname">ReactionEq</code><span class="sig-paren">(</span><em>react</em>, <em>rxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/ReactionEq.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReactionEq</code><span class="sig-paren">(</span><em>react</em>, <em>rxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/ReactionEq.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares reactions for equality</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -565,7 +565,7 @@ abbreviation name for exact reaction match</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.ReconstructionCreator">
-<code class="descname">ReconstructionCreator</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/ReconstructionCreator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionCreator" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReconstructionCreator</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/ReconstructionCreator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionCreator" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for ReconstructionCreator.fig
 ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -609,7 +609,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.ReconstructionTool">
-<code class="descname">ReconstructionTool</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/ReconstructionTool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionTool" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ReconstructionTool</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/ReconstructionTool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionTool" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for ReconstructionTool.fig
 ReconstructionTool by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -653,7 +653,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.addmetabolites">
-<code class="descname">addmetabolites</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/addmetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmetabolites" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addmetabolites</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/addmetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmetabolites" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for addmetabolites.fig
 addmetabolites, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -696,7 +696,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.addmissing">
-<code class="descname">addmissing</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/addmissing.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmissing" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addmissing</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/addmissing.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmissing" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for addmissing.fig
 addmissing, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -741,7 +741,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.addreactions">
-<code class="descname">addreactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/addreactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addreactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addreactions</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/addreactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addreactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for addreactions.fig
 addreactions, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -785,7 +785,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.balancecheck">
-<code class="descname">balancecheck</code><span class="sig-paren">(</span><em>meta_meta</em>, <em>output</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/balancecheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
+<code class="descname">balancecheck</code><span class="sig-paren">(</span><em>meta_meta</em>, <em>output</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/balancecheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns balance - if empty it means that balance checks out, otherwise the output is a cell matrix</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -812,7 +812,7 @@ cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;<
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.closeGUI">
-<code class="descname">closeGUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/closeGUI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
+<code class="descname">closeGUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/closeGUI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>closeGUI()</div></blockquote>
@@ -820,7 +820,7 @@ cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;<
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.compartment">
-<code class="descname">compartment</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/compartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.compartment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compartment</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/compartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.compartment" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for compartment.fig
 compartment, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -865,7 +865,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.data2model">
-<code class="descname">data2model</code><span class="sig-paren">(</span><em>data</em>, <em>description</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
+<code class="descname">data2model</code><span class="sig-paren">(</span><em>data</em>, <em>description</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in data from <cite>rbionet</cite> to create a complete reconstruction</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -890,7 +890,7 @@ creates a complete reconstruction</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.formula2mets">
-<code class="descname">formula2mets</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/formula2mets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">formula2mets</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/formula2mets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a rxn formula and produces a list of metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -917,7 +917,7 @@ list of metabolites</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.getgenelist">
-<code class="descname">getgenelist</code><span class="sig-paren">(</span><em>input_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/getgenelist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.getgenelist" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getgenelist</code><span class="sig-paren">(</span><em>input_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/getgenelist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.getgenelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads gene-list text file and returns data.
 Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
 a tab.</p>
@@ -942,7 +942,7 @@ data</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.load_reaction">
-<code class="descname">load_reaction</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/load_reaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.load_reaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_reaction</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/load_reaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.load_reaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for load_reaction.fig
 load_reaction, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -986,7 +986,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.met_charge_formula">
-<code class="descname">met_charge_formula</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/met_charge_formula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.met_charge_formula" title="Permalink to this definition">¶</a></dt>
+<code class="descname">met_charge_formula</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/met_charge_formula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.met_charge_formula" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for met_charge_formula.fig
 met_charge_formula, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1030,7 +1030,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.metabolites_in_database">
-<code class="descname">metabolites_in_database</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/metabolites_in_database.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.metabolites_in_database" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metabolites_in_database</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/metabolites_in_database.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.metabolites_in_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for metabolites_in_database.fig
 metabolites_in_database, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1074,7 +1074,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.mets2str">
-<code class="descname">mets2str</code><span class="sig-paren">(</span><em>str</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/mets2str.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mets2str</code><span class="sig-paren">(</span><em>str</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/mets2str.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates strings for message boxes</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1097,7 +1097,7 @@ struct of names</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.model2data">
-<code class="descname">model2data</code><span class="sig-paren">(</span><em>model</em>, <em>fordb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/model2data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">model2data</code><span class="sig-paren">(</span><em>model</em>, <em>fordb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/model2data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load complete reconstructions and output format for rBioNets ReconstructionCreator.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1121,7 +1121,7 @@ model</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.model2text">
-<code class="descname">model2text</code><span class="sig-paren">(</span><em>data</em>, <em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/model2text.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">model2text</code><span class="sig-paren">(</span><em>data</em>, <em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/model2text.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2text" title="Permalink to this definition">¶</a></dt>
 <dd><p>This script takes in a reconstruction model and prints it out into a text
 file. It can be used standalone from the <cite>rBioNet</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -1140,7 +1140,7 @@ true if data is a model, false if RC table.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.model_description">
-<code class="descname">model_description</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/model_description.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_description" title="Permalink to this definition">¶</a></dt>
+<code class="descname">model_description</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/model_description.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for model_description.fig
 model_description, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -1185,7 +1185,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.model_stats">
-<code class="descname">model_stats</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/model_stats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_stats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">model_stats</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/model_stats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for model_stats.fig
 model_stats, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1229,7 +1229,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.neighborRxn2data">
-<code class="descname">neighborRxn2data</code><span class="sig-paren">(</span><em>model</em>, <em>rxn_numb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/neighborRxn2data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.neighborRxn2data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">neighborRxn2data</code><span class="sig-paren">(</span><em>model</em>, <em>rxn_numb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/neighborRxn2data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.neighborRxn2data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Program used to get neigbor reactions and set up correct format for the
 Reconstruction analyzer.</p>
 <p><strong>Usage</strong></p>
@@ -1254,7 +1254,7 @@ number of reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.rBioNetAbout">
-<code class="descname">rBioNetAbout</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/rBioNetAbout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetAbout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rBioNetAbout</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/rBioNetAbout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetAbout" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for rBioNetAbout.fig
 rBioNetAbout, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1298,7 +1298,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.rBioNetSaveLoad">
-<code class="descname">rBioNetSaveLoad</code><span class="sig-paren">(</span><em>mode</em>, <em>type</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/rBioNetSaveLoad.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSaveLoad" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rBioNetSaveLoad</code><span class="sig-paren">(</span><em>mode</em>, <em>type</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/rBioNetSaveLoad.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSaveLoad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Through here the metabolite and reaction databases are loaded and saved.
 This script makes it possible to store databases in any path set in matlab.
 Missing for compartments, thats for later.</p>
@@ -1327,7 +1327,7 @@ if &#8216;load&#8217; then data else 1 if succes by save, 0 if empty or failed</
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.rBioNetSettings">
-<code class="descname">rBioNetSettings</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/rBioNetSettings.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSettings" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rBioNetSettings</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/rBioNetSettings.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSettings" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for rBioNetSettings.fig
 rBioNetSettings, by itself, creates a new object or raises the existing
 singleton*.</p>
@@ -1372,7 +1372,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.rBioNet_search">
-<code class="descname">rBioNet_search</code><span class="sig-paren">(</span><em>table</em>, <em>column</em>, <em>str</em>, <em>exact</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/rBioNet_search.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rBioNet_search</code><span class="sig-paren">(</span><em>table</em>, <em>column</em>, <em>str</em>, <em>exact</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/rBioNet_search.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs simple searches in rBioNet tables.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1401,7 +1401,7 @@ Array containing results.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.sim_general">
-<code class="descname">sim_general</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/sim_general.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.sim_general" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sim_general</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/sim_general.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.sim_general" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for sim_general.fig
 sim_general, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1445,7 +1445,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.similarities">
-<code class="descname">similarities</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/similarities.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarities" title="Permalink to this definition">¶</a></dt>
+<code class="descname">similarities</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/similarities.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarities" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for similarities.fig
 similarities, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1489,7 +1489,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.similarity">
-<code class="descname">similarity</code><span class="sig-paren">(</span><em>formula</em>, <em>data</em>, <em>bar</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/similarity.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">similarity</code><span class="sig-paren">(</span><em>formula</em>, <em>data</em>, <em>bar</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/similarity.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the reaction lines with similarities</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1516,7 +1516,7 @@ numbers of rxn lines that share similarity</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.unbalanced">
-<code class="descname">unbalanced</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/unbalanced.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.unbalanced" title="Permalink to this definition">¶</a></dt>
+<code class="descname">unbalanced</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/unbalanced.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.unbalanced" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for unbalanced.fig
 unbalanced, by itself, creates a new object or raises the existing singleton*.</p>
 <p><strong>Usage</strong></p>
@@ -1560,7 +1560,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.webDatabases">
-<code class="descname">webDatabases</code><span class="sig-paren">(</span><em>db</em>, <em>str</em>, <em>type</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/webDatabases.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
+<code class="descname">webDatabases</code><span class="sig-paren">(</span><em>db</em>, <em>str</em>, <em>type</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/webDatabases.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to major databases.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1585,7 +1585,7 @@ ID of metabolite / reaction</li>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.webKeggMapper">
-<code class="descname">webKeggMapper</code><span class="sig-paren">(</span><em>id</em>, <em>str</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/rBioNet/webKeggMapper.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
+<code class="descname">webKeggMapper</code><span class="sig-paren">(</span><em>id</em>, <em>str</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/rBioNet/webKeggMapper.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to kegg mapper.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1613,10 +1613,10 @@ ID of themetabolite / reaction</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../fastGapFill/index.html" class="btn btn-neutral float-right" title="fastGapFill" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../refinement/index.html" class="btn btn-default float-right" title="Refinement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Reconstruction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modelGeneration/stoichConsistency/index.html" class="btn btn-default" title="stoichConsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1625,11 +1625,11 @@ ID of themetabolite / reaction</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,17 +150,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">growthExpMatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -234,14 +234,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="growthexpmatch">
 <span id="id1"></span><h1>growthExpMatch<a class="headerlink" href="#growthexpmatch" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.growthExpMatch"></span><dl class="function">
 <dt id="src.reconstruction.growthExpMatch.growthExpMatch">
-<code class="descname">growthExpMatch</code><span class="sig-paren">(</span><em>model</em>, <em>KEGGFilename</em>, <em>compartment</em>, <em>iterations</em>, <em>dictionary</em>, <em>logFile</em>, <em>threshold</em>, <em>KEGGBlackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/growthExpMatch/growthExpMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">growthExpMatch</code><span class="sig-paren">(</span><em>model</em>, <em>KEGGFilename</em>, <em>compartment</em>, <em>iterations</em>, <em>dictionary</em>, <em>logFile</em>, <em>threshold</em>, <em>KEGGBlackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/growthExpMatch/growthExpMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the <cite>growthExpMatch</cite> algorithm</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -308,7 +308,7 @@ generateSUXMatrix(model, dictionary, KEGGFilename, compartment)</cite></li>
 
 <dl class="function">
 <dt id="src.reconstruction.growthExpMatch.printSolutionGEM">
-<code class="descname">printSolutionGEM</code><span class="sig-paren">(</span><em>MatricesSUX</em>, <em>solution</em>, <em>logFile</em>, <em>itNum</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printSolutionGEM</code><span class="sig-paren">(</span><em>MatricesSUX</em>, <em>solution</em>, <em>logFile</em>, <em>itNum</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays the solution for <cite>growthExpMatch</cite> iterations</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -343,10 +343,10 @@ number of iterations</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../modelGeneration/index.html" class="btn btn-neutral float-right" title="modelGeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../modelGeneration/index.html" class="btn btn-default float-right" title="modelGeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../fastGapFill/AuxillaryFiles/index.html" class="btn btn-neutral" title="AuxillaryFiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../fastGapFill/AuxillaryFiles/index.html" class="btn btn-default" title="AuxillaryFiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -355,11 +355,11 @@ number of iterations</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

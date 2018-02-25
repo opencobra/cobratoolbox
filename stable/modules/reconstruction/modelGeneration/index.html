@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,12 +150,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">growthExpMatch</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">modelGeneration</a><ul>
@@ -165,8 +165,8 @@
 <li class="toctree-l4"><a class="reference internal" href="stoichConsistency/index.html">stoichConsistency</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -240,7 +240,7 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="modelgeneration">
@@ -262,7 +262,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.modelGeneration"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkCobraModelUnique">
-<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks uniqueness of reaction and metabolite names</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -293,7 +293,7 @@ COBRA model structure</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
-<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks model for duplicate reactions and removes them.
 By default, it detects the columns of <cite>S</cite> that are identical upto scalar
 multiplication</p>
@@ -332,7 +332,7 @@ Reaction numbers in model that were (should be) kept</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkObjective">
-<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out the Stoichiometric Coefficients for each
 Metabolite, with the name of the objective</p>
 <p><strong>Usage</strong></p>
@@ -356,7 +356,7 @@ Objective reaction abbreviation</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.detectDeadEnds">
-<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of indices of metabolites which either participate in only
 one reaction or can only be produced or consumed (i.e. all reactions involving
 the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds).</p>
@@ -391,7 +391,7 @@ only be produced or consumed.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.fastLeakTest">
-<code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests if any metabolites in a model are leaking. A metabolite is leaking
 if the exchange reaction can carry secretion flux in the closed model (no
 uptake flux through any exchange reactions is permitted).</p>
@@ -425,7 +425,7 @@ Flux vector for computed exchange reactions in the closed model</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.removeDeadEnds">
-<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes all dead end metabolites and reactions from the
 model</p>
 <p><strong>Usage</strong></p>
@@ -454,7 +454,7 @@ List of removed reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.setConstraintsIrrevModel">
-<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets constraints for a subset of <cite>rxns</cite> while
 converting reversible to irreversible reaction names and handling the
 constraint directions correctly</p>
@@ -498,7 +498,7 @@ Constraint options in irrev model<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.test4HumanFctExt">
-<code class="descname">test4HumanFctExt</code><span class="sig-paren">(</span><em>model</em>, <em>test</em>, <em>optionSinks</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">test4HumanFctExt</code><span class="sig-paren">(</span><em>model</em>, <em>test</em>, <em>optionSinks</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
 <dd><p>test for the ~288 human functions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -531,7 +531,7 @@ array containing the names  for the different tests</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.testATPYieldFromCsources">
-<code class="descname">testATPYieldFromCsources</code><span class="sig-paren">(</span><em>model</em>, <em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">testATPYieldFromCsources</code><span class="sig-paren">(</span><em>model</em>, <em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
 <dd><p>computes the ATP yield from various carbon sources in Recon2 or Recon3.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -569,10 +569,10 @@ Fraction that tested reactions make up compared with all reactions in model</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="fluxConsistency/index.html" class="btn btn-neutral float-right" title="fluxConsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="fluxConsistency/index.html" class="btn btn-default float-right" title="fluxConsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../growthExpMatch/index.html" class="btn btn-neutral" title="growthExpMatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../growthExpMatch/index.html" class="btn btn-default" title="growthExpMatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -581,11 +581,11 @@ Fraction that tested reactions make up compared with all reactions in model</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

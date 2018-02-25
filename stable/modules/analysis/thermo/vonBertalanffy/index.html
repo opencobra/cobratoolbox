@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,27 +150,26 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">geometricFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">gMCS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
@@ -192,12 +191,12 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -272,14 +271,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="vonbertalanffy">
 <span id="id1"></span><h1>vonBertalanffy<a class="headerlink" href="#vonbertalanffy" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.vonBertalanffy"></span><dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.assignQuantDir">
-<code class="descname">assignQuantDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/assignQuantDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.assignQuantDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignQuantDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/assignQuantDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.assignQuantDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Quantitatively assigns reaction directionality based on estimated bounds
 on transformed reaction Gibbs energies</p>
 <p><strong>Usage</strong></p>
@@ -317,7 +316,7 @@ direction, and 0 for reversible reactions.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs">
-<code class="descname">configureSetupThermoModelInputs</code><span class="sig-paren">(</span><em>model</em>, <em>T</em>, <em>compartments</em>, <em>ph</em>, <em>is</em>, <em>chi</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">configureSetupThermoModelInputs</code><span class="sig-paren">(</span><em>model</em>, <em>T</em>, <em>compartments</em>, <em>ph</em>, <em>is</em>, <em>chi</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures inputs to <cite>setupThermoModel</cite> (sets defaults etc.). All optional inputs are empty by default.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -351,7 +350,7 @@ direction, and 0 for reversible reactions.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDG_temp">
-<code class="descname">estimateDG_temp</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/estimateDG_temp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDG_temp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDG_temp</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/estimateDG_temp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDG_temp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed Gibbs energies of formation for metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -405,7 +404,7 @@ energies of formation in kJ/mol.<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDfGt0">
-<code class="descname">estimateDfGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/estimateDfGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDfGt0" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDfGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/estimateDfGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDfGt0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed Gibbs energies of formation for metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -472,7 +471,7 @@ energies of formation in kJ/mol.<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDrGt0">
-<code class="descname">estimateDrGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/estimateDrGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDrGt0" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDrGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/estimateDrGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDrGt0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates bounds on transformed Gibbs energies for metabolites and
 reactions in model.</p>
 <p><strong>Usage</strong></p>
@@ -524,7 +523,7 @@ energies in kJ/mol.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimate_pKa">
-<code class="descname">estimate_pKa</code><span class="sig-paren">(</span><em>mets</em>, <em>inchi</em>, <em>npKas</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/estimate_pKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimate_pKa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimate_pKa</code><span class="sig-paren">(</span><em>mets</em>, <em>inchi</em>, <em>npKas</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/estimate_pKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimate_pKa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates pKa values with ChemAxon&#8217;s Calculator plugins and determines
 all physiologically relevant pseudoisomers.</p>
 <p><strong>Usage</strong></p>
@@ -585,7 +584,7 @@ cxcalc is part of Marvin Beans, available by academic licence from ChemAxon</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.getCompartment">
-<code class="descname">getCompartment</code><span class="sig-paren">(</span><em>mets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/getCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.getCompartment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCompartment</code><span class="sig-paren">(</span><em>mets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/getCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.getCompartment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the compartment for each metabolite, and the unique compartments</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -611,7 +610,7 @@ cell array of unique compartment identifiers</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.setupComponentContribution">
-<code class="descname">setupComponentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>cid</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/setupComponentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupComponentContribution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setupComponentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>cid</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/setupComponentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupComponentContribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed reaction Gibbs energy and directionality
 at in vivo conditions in multicompartmental metabolic reconstructions.
 Has external dependencies on the COBRA toolbox, the component
@@ -683,7 +682,7 @@ component contribution method for estimation of standard Gibbs energies.</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.setupThermoModel">
-<code class="descname">setupThermoModel</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/setupThermoModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupThermoModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setupThermoModel</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/setupThermoModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupThermoModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed reaction Gibbs energy and directionality
 at in vivo conditions in multicompartmental metabolic reconstructions.
 Has external dependencies on the COBRA toolbox, the component
@@ -781,7 +780,7 @@ component contribution method for estimation of standard Gibbs energies.</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds">
-<code class="descname">thermoConstrainFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em>, <em>DrGt0_Uncertainty_Cutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/vonBertalanffy/thermoConstrainFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">thermoConstrainFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em>, <em>DrGt0_Uncertainty_Cutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/vonBertalanffy/thermoConstrainFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thermodynamically constrain reaction bounds.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -859,10 +858,10 @@ thermodynamic data is lacking:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../topology/index.html" class="btn btn-neutral float-right" title="Topology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../topology/index.html" class="btn btn-default float-right" title="Topology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../utilities/index.html" class="btn btn-neutral" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../utilities/index.html" class="btn btn-default" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -871,11 +870,11 @@ thermodynamic data is lacking:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

@@ -64,8 +64,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../index.html"/>
         <link rel="up" title="Functions" href="../index.html"/>
-        <link rel="next" title="rBioNet" href="rBioNet/index.html"/>
-        <link rel="prev" title="uFBA" href="../analysis/uFBA/index.html"/> 
+        <link rel="next" title="Comparison" href="comparison/index.html"/>
+        <link rel="prev" title="optForceGAMS" href="../design/optForceGAMS/index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,17 +150,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fastGapFill/index.html">fastGapFill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="growthExpMatch/index.html">growthExpMatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modelGeneration/index.html">modelGeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rBioNet/index.html">rBioNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="comparison/index.html">Comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../visualization/index.html">Visualization</a></li>
@@ -232,14 +232,25 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="reconstruction">
-<span id="id1"></span><h1>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h1>
+  <script src="../../_static/js/json-menu.js"></script>
+<style>
+  h1 {font-size:0px;}
+</style><div class="tutorialSectionBox reconstruction">
+  <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction_wb.png" alt="reconstruction"></div>
+  <div class="sectionTitle"><h3>Reconstruction</h3></div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div><div class="section" id="id1">
+<h1>Reconstruction<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparison/index.html">Comparison</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comparison/modelBorgifier/index.html">modelBorgifier</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="fastGapFill/index.html">fastGapFill</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="fastGapFill/AuxillaryFiles/index.html">AuxillaryFiles</a></li>
 </ul>
@@ -259,16 +270,30 @@
 <li class="toctree-l2"><a class="reference internal" href="modelGeneration/stoichConsistency/index.html">stoichConsistency</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="rBioNet/index.html">rBioNet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refinement/index.html">Refinement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="comparison/index.html">Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="comparison/modelBorgifier/index.html">modelBorgifier</a></li>
-</ul>
-</li>
 </ul>
 </div>
-<span class="target" id="module-src.reconstruction"></span><dl class="function">
+      </div>
+    </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="dropdown dropdown-cobra">
+        <a href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width: 100%;">
+          Function list
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu reconstruction-menu dropdown-scrollable">
+        </ul>
+      </div>
+      <script> buildList("https://opencobra.github.io/cobratoolbox/unstable/modules/reconstructionfunctions.json", "reconstruction") </script>
+    </div>
+  </div>
+</div>
+
+<br><span class="target" id="module-src.reconstruction"></span><dl class="function">
 <dt id="src.reconstruction.gapFind">
-<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies all blocked metabolites (anything downstream of a gap)
 in a model.  MILP algorithm that finds gaps that may be missed by simple
 inspection of the S matrix. To find every gap in a model, change the rxn
@@ -309,7 +334,7 @@ all downstream gaps</li>
 
 <dl class="function">
 <dt id="src.reconstruction.testPathway">
-<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
+<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows the user to see if given one metabolite <cite>A</cite>,
 downstream metabolite <cite>B</cite> can be made made. Additional sinks can be added
 for co-factors if needed
@@ -366,10 +391,10 @@ COBRA model with sinks in it</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="rBioNet/index.html" class="btn btn-neutral float-right" title="rBioNet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="comparison/index.html" class="btn btn-default float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../analysis/uFBA/index.html" class="btn btn-neutral" title="uFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../design/optForceGAMS/index.html" class="btn btn-default" title="optForceGAMS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -378,11 +403,11 @@ COBRA model with sinks in it</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

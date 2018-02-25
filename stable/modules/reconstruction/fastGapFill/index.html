@@ -65,7 +65,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
         <link rel="next" title="AuxillaryFiles" href="AuxillaryFiles/index.html"/>
-        <link rel="prev" title="rBioNet" href="../rBioNet/index.html"/> 
+        <link rel="prev" title="modelBorgifier" href="../comparison/modelBorgifier/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,20 +150,20 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">fastGapFill</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="AuxillaryFiles/index.html">AuxillaryFiles</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">growthExpMatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -237,7 +237,7 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="fastgapfill">
@@ -249,7 +249,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.fastGapFill"></span><dl class="function">
 <dt id="src.reconstruction.fastGapFill.fastGapFill">
-<code class="descname">fastGapFill</code><span class="sig-paren">(</span><em>consistMatricesSUX</em>, <em>epsilon</em>, <em>weights</em>, <em>weightsPerReaction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/fastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.fastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastGapFill</code><span class="sig-paren">(</span><em>consistMatricesSUX</em>, <em>epsilon</em>, <em>weights</em>, <em>weightsPerReaction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/fastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.fastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function requires the fastCORE algorithm (Vlassis et al., 2013, <a class="reference external" href="http://arxiv.org/abs/1304.7992">http://arxiv.org/abs/1304.7992</a>) as
 well as the output from <cite>prepareFastGapFill</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -295,7 +295,7 @@ Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></li
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.generateSUXMatrix">
-<code class="descname">generateSUXMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>dictionary</em>, <em>KEGGFilename</em>, <em>KEGGBlackList</em>, <em>compartment</em>, <em>addModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/generateSUXMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.generateSUXMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateSUXMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>dictionary</em>, <em>KEGGFilename</em>, <em>KEGGBlackList</em>, <em>compartment</em>, <em>addModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/generateSUXMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.generateSUXMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the matrices for matlab smiley &#8211; &gt; combines <cite>S</cite>, <cite>U</cite>, (<cite>KEGG</cite>), <cite>X</cite> (transport)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -334,7 +334,7 @@ model naming. Also, the list should be unique.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.identifyBlockedRxns">
-<code class="descname">identifyBlockedRxns</code><span class="sig-paren">(</span><em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/identifyBlockedRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.identifyBlockedRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">identifyBlockedRxns</code><span class="sig-paren">(</span><em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/identifyBlockedRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.identifyBlockedRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function computes all blocked reactions using the approach described
 in <cite>The FASTCORE algorithm for context-specific metabolic network reconstructions, Vlassis et
 al., 2013, PLoS Comp Biol.`</cite></p>
@@ -364,7 +364,7 @@ Structure containing all blocked reactions and their reaction formula that were 
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.postProcessGapFillSolutions">
-<code class="descname">postProcessGapFillSolutions</code><span class="sig-paren">(</span><em>AddedRxns</em>, <em>model</em>, <em>BlockedRxns</em>, <em>IdentifyPW</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/postProcessGapFillSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.postProcessGapFillSolutions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">postProcessGapFillSolutions</code><span class="sig-paren">(</span><em>AddedRxns</em>, <em>model</em>, <em>BlockedRxns</em>, <em>IdentifyPW</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/postProcessGapFillSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.postProcessGapFillSolutions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function uses the output from <cite>fastGapFill</cite> and signs generalized
 function to the identified solutions from the universal database (e.g.,
 &#8216;Metabolic reaction&#8217;, &#8216;Transport reaction&#8217;, &#8216;Exchange reaction&#8217;). It also
@@ -402,7 +402,7 @@ the flux vectors.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.prepareFastGapFill">
-<code class="descname">prepareFastGapFill</code><span class="sig-paren">(</span><em>model</em>, <em>listCompartments</em>, <em>epsilon</em>, <em>filename</em>, <em>dictionary_file</em>, <em>blackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/prepareFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.prepareFastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">prepareFastGapFill</code><span class="sig-paren">(</span><em>model</em>, <em>listCompartments</em>, <em>epsilon</em>, <em>filename</em>, <em>dictionary_file</em>, <em>blackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/prepareFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.prepareFastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function generate the input file (consistMatricesSUX) for
 <cite>fastGapFill.m</cite>. Please refer to Thiele et al, 2013 for more details.
 This function is based on the fastCORE algorithm (<cite>Vlassis et al., 2013</cite>).</p>
@@ -449,7 +449,7 @@ Blocked reactions in mode%</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.submitFastGapFill">
-<code class="descname">submitFastGapFill</code><span class="sig-paren">(</span><em>modelFile</em>, <em>dbFile</em>, <em>dictionaryFile</em>, <em>prepareFGFResults</em>, <em>weightsPerRxnFile</em>, <em>forceRerun</em>, <em>epsilon</em>, <em>blackList</em>, <em>listCompartments</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/reconstruction/fastGapFill/submitFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.submitFastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">submitFastGapFill</code><span class="sig-paren">(</span><em>modelFile</em>, <em>dbFile</em>, <em>dictionaryFile</em>, <em>prepareFGFResults</em>, <em>weightsPerRxnFile</em>, <em>forceRerun</em>, <em>epsilon</em>, <em>blackList</em>, <em>listCompartments</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/reconstruction/fastGapFill/submitFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.submitFastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>A test function for both <cite>prepareFastGapFill</cite> and
 <cite>fastGapFill</cite>, allowing all files to be optionally specified and not
 requiring <cite>prepareFastGapFill</cite> to be rerun (if relevant variables are saved
@@ -527,10 +527,10 @@ Reactions that have been added from UX matrix to <cite>S</cite></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="AuxillaryFiles/index.html" class="btn btn-neutral float-right" title="AuxillaryFiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="AuxillaryFiles/index.html" class="btn btn-default float-right" title="AuxillaryFiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../rBioNet/index.html" class="btn btn-neutral" title="rBioNet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../comparison/modelBorgifier/index.html" class="btn btn-default" title="modelBorgifier" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -539,11 +539,11 @@ Reactions that have been added from UX matrix to <cite>S</cite></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

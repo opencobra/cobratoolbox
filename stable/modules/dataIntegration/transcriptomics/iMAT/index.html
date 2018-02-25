@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,6 +150,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Data integration</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">ChemoInformatics</a></li>
@@ -167,7 +168,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -242,14 +242,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="imat">
 <span id="id1"></span><h1>iMAT<a class="headerlink" href="#imat" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.iMAT"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.iMAT.iMAT">
-<code class="descname">iMAT</code><span class="sig-paren">(</span><em>model</em>, <em>expressionRxns</em>, <em>threshold_lb</em>, <em>threshold_ub</em>, <em>tol</em>, <em>core</em>, <em>logfile</em>, <em>runtime</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/transcriptomics/iMAT/iMAT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.iMAT.iMAT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">iMAT</code><span class="sig-paren">(</span><em>model</em>, <em>expressionRxns</em>, <em>threshold_lb</em>, <em>threshold_ub</em>, <em>tol</em>, <em>core</em>, <em>logfile</em>, <em>runtime</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/transcriptomics/iMAT/iMAT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.iMAT.iMAT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses the iMAT algorithm (<cite>Zur et al., 2010</cite>) to extract a context
 specific model using data. iMAT algorithm find the optimal trade-off
 between inluding high-expression reactions and removing low-expression reactions.</p>
@@ -312,10 +312,10 @@ extracted model</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../preprocessing/index.html" class="btn btn-neutral float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../preprocessing/index.html" class="btn btn-default float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../INIT/index.html" class="btn btn-neutral" title="INIT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../INIT/index.html" class="btn btn-default" title="INIT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -324,11 +324,11 @@ extracted model</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

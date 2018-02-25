@@ -5,40 +5,155 @@ Tutorials
 
 
 
-.. toctree::
+.. raw:: html
 
-   tutorialVariationalKinetics
-   tutorialUniformSampling
-   tutorialFBA
-   tutorialSparseFBA_freeATPtest
-   tutorialSparseFBA
-   tutorialSparseFBA_protonShuttle
-   tutorialSparseLP
-   tutorialFVA
-   tutorialMinSpan
-   tutorialAtomicallyResolveReconstruction
-   tutorialVonBertalanffy
-   tutorialRelaxedFBABounds
-   tutorialRelaxedFBA
-   tutorialGMCS
-   tutorialOptForce
-   tutorialExtraction_transcriptomic
-   tutorialUFBA
-   tutorialMetabotoolsI
-   tutorialMetabotoolsII
-   tutorialMetabolicCartography
-   tutorialRemoteVisualisation
-   tutorialPaint4net
-   tutorialReconToFBAmodel
-   tutorialModelATPYield
-   tutorialFastGapFill
-   tutorialReconstructionSOP
-   tutorialModelSanityChecks
-   tutorialCreateSubnetworkRecon
-   tutorialFidelityTesting
-   tutorialNumCharact
-   tutorialModelManipulation
-   tutorialRBioNet
-   tutorialIO
-   tutorialEngaging
-   tutorialInitializeAndVerify
+   <style>h2 {font-size:0px;}</style>
+
+Analysis
+--------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox analysis">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis_wb.png" alt="analysis"></div>
+     <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialAtomicallyResolveReconstruction`
+* :doc:`tutorialMinSpan`
+* :doc:`tutorialFBA`
+* :doc:`tutorialFVA`
+* :doc:`tutorialGMCS`
+* :doc:`tutorialSparseFBA_protonShuttle`
+* :doc:`tutorialRelaxedFBA`
+* :doc:`tutorialRelaxedFBABounds`
+* :doc:`tutorialSparseFBA`
+* :doc:`tutorialSparseFBA_freeATPtest`
+* :doc:`tutorialSparseLP`
+* :doc:`tutorialVonBertalanffy`
+* :doc:`tutorialUniformSampling`
+* :doc:`tutorialVariationalKinetics`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+Base
+----
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox base">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_base_wb.png" alt="base"></div>
+     <div class="sectionTitle"><h3>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialEngaging`
+* :doc:`tutorialInitializeAndVerify`
+* :doc:`tutorialIO`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+Data integration
+---------------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox dataIntegration">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_dataIntegration_wb.png" alt="dataIntegration"></div>
+     <div class="sectionTitle"><h3>Data integration<a class="headerlink" href="#dataIntegration" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialExtraction_transcriptomic`
+* :doc:`tutorialMetabotoolsI`
+* :doc:`tutorialMetabotoolsII`
+* :doc:`tutorialUFBA`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+Design
+------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox design">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_design_wb.png" alt="design"></div>
+     <div class="sectionTitle"><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialOptForce`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+Reconstruction
+--------------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox reconstruction">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction_wb.png" alt="reconstruction"></div>
+     <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialReconToFBAmodel`
+* :doc:`tutorialCreateSubnetworkRecon`
+* :doc:`tutorialReconstructionSOP`
+* :doc:`tutorialFastGapFill`
+* :doc:`tutorialRBioNet`
+* :doc:`tutorialModelManipulation`
+* :doc:`tutorialNumCharact`
+* :doc:`tutorialModelSanityChecks`
+* :doc:`tutorialFidelityTesting`
+* :doc:`tutorialModelATPYield`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+Visualization
+-------------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox visualization">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_visualization_wb.png" alt="visualization"></div>
+     <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialRemoteVisualisation`
+* :doc:`tutorialPaint4net`
+* :doc:`tutorialMetabolicCartography`
+
+.. raw:: html
+
+     </div>
+   </div>
+   <br>
+

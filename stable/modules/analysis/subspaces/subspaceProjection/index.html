@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,27 +150,26 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamic FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">findMIIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">geometricFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">gMCS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Subspaces</a><ul class="current">
@@ -184,12 +183,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -264,14 +263,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="subspaceprojection">
 <span id="id1"></span><h1>subspaceProjection<a class="headerlink" href="#subspaceprojection" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.subspaceProjection"></span><dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectOntoSubspace">
-<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Projects flux, net flux, potential and logarithmic concentration onto
 their respective subspaces of A using projection matrices generated either
 derived from SVD, or by using the Moore-Penrose pseudoinverse</p>
@@ -352,7 +351,7 @@ logarithmic concentration - column space</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectSVD">
-<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assumes that <cite>U1</cite> has orthonormal columns
 so that <span class="math">\(U1 U1^T\)</span> is a projector.
 It returns the projections</p>
@@ -373,7 +372,7 @@ u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceProjector">
-<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the matrix for projection onto the sub_space of the internal
 reaction stoichiometric matrix specified by <cite>sub_space</cite>
 If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
@@ -434,7 +433,7 @@ column and left nullspace of A, respectively</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceSVD">
-<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
 where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
 and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
@@ -474,10 +473,10 @@ numerical rank of <cite>D1</cite></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../thermo/index.html" class="btn btn-neutral float-right" title="Thermo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../thermo/index.html" class="btn btn-default float-right" title="Thermo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../rowReduce/index.html" class="btn btn-neutral" title="rowReduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rowReduce/index.html" class="btn btn-default" title="rowReduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -486,11 +485,11 @@ numerical rank of <cite>D1</cite></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,6 +150,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Data integration</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">ChemoInformatics</a></li>
@@ -163,7 +164,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -236,7 +236,7 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="fluxomics">
@@ -249,7 +249,7 @@
 </div>
 <span class="target" id="module-src.dataIntegration.fluxomics"></span><dl class="function">
 <dt id="src.dataIntegration.fluxomics.C13ConfidenceInterval">
-<code class="descname">C13ConfidenceInterval</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>max_score</em>, <em>directions</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/C13ConfidenceInterval.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
+<code class="descname">C13ConfidenceInterval</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>max_score</em>, <em>directions</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/C13ConfidenceInterval.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>[vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)</div></blockquote>
@@ -292,7 +292,7 @@ as in input</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.compareBinsOfFluxes">
-<code class="descname">compareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>sammin</em>, <em>sammax</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/compareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>sammin</em>, <em>sammax</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/compareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes the overall sammin and sammax samples, bins them into
 separate bin sizes and compares them, then compares the
 results to the largest bin size.
@@ -332,7 +332,7 @@ result of comparison</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.compareMultSamp">
-<code class="descname">compareMultSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samps</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/compareMultSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareMultSamp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareMultSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samps</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/compareMultSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareMultSamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the multiple sets of samples</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -377,7 +377,7 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.compareTwoMDVs">
-<code class="descname">compareTwoMDVs</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/compareTwoMDVs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoMDVs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareTwoMDVs</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/compareTwoMDVs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoMDVs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares the 2 sets of mdvs</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -409,7 +409,7 @@ calculated difference for each mdv element distributed across all the points</li
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.compareTwoSamp">
-<code class="descname">compareTwoSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samp1</em>, <em>samp2</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/compareTwoSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoSamp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareTwoSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samp1</em>, <em>samp2</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/compareTwoSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoSamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the 2 sets of samples</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -454,7 +454,7 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.fitC13Data">
-<code class="descname">fitC13Data</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/fitC13Data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fitC13Data</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/fitC13Data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>[vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)</div></blockquote>
@@ -492,7 +492,7 @@ cell, result of NLPsolution</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.getBinsOfFluxes">
-<code class="descname">getBinsOfFluxes</code><span class="sig-paren">(</span><em>samp</em>, <em>numfluxes</em>, <em>numbins</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/getBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getBinsOfFluxes</code><span class="sig-paren">(</span><em>samp</em>, <em>numfluxes</em>, <em>numbins</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/getBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a <cite>samp.points</cite> fluxes and bin them by numfluxes (remainder not used)
 or divide up in to bins of fluxes by numbins (remainder not used)
 sample each bin of fluxes and compare the differences between them.</p>
@@ -514,14 +514,14 @@ default = []</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>output</strong> &#8211;
-structure with <a href="#id2"><span class="problematic" id="id3">``</span></a>.samps` field</li>
+structure with <cite>.samps</cite> field</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.getCompareBinsOfFluxes">
-<code class="descname">getCompareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samplo</em>, <em>samphi</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/getCompareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getCompareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCompareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samplo</em>, <em>samphi</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/getCompareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getCompareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares the bins of fluxes between <cite>samplo</cite> and <cite>samphi</cite>,
 calls <cite>compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites).
 `samplo</cite> and <cite>samphi</cite> each contain samples in <cite>x.points</cite></p>
@@ -559,7 +559,7 @@ result of comparison</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.getRandGlc">
-<code class="descname">getRandGlc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/getRandGlc.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getRandGlc" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getRandGlc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/getRandGlc.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getRandGlc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates random glucose in isotopomer format</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -575,7 +575,7 @@ random glucose</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.goodInitialPoint">
-<code class="descname">goodInitialPoint</code><span class="sig-paren">(</span><em>model</em>, <em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/goodInitialPoint.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.goodInitialPoint" title="Permalink to this definition">¶</a></dt>
+<code class="descname">goodInitialPoint</code><span class="sig-paren">(</span><em>model</em>, <em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/goodInitialPoint.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.goodInitialPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates <cite>4*length(model.lb)</cite> random points,
 takes linear combinations of them so that all points are in the interior.</p>
 <p><strong>Usage</strong></p>
@@ -601,7 +601,7 @@ random points with linear combinations</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.isotopomerViewer">
-<code class="descname">isotopomerViewer</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em>, <em>names</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/isotopomerViewer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.isotopomerViewer" title="Permalink to this definition">¶</a></dt>
+<code class="descname">isotopomerViewer</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em>, <em>names</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/isotopomerViewer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.isotopomerViewer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in an &#8220;experiment&#8221; and views the isotopomer as distributions
 between <cite>mdv1</cite> and <cite>mdv2</cite>. No output.</p>
 <p><strong>Usage</strong></p>
@@ -620,7 +620,7 @@ names in the plot</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.naturallabel">
-<code class="descname">naturallabel</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/naturallabel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.naturallabel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">naturallabel</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/naturallabel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.naturallabel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a natural label <cite>idv</cite> of <cite>n</cite> carbons.
 Assumes 1.1% C13</p>
 <p><strong>Usage</strong></p>
@@ -644,7 +644,7 @@ natural label idv of n carbons</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.runHiLoExp">
-<code class="descname">runHiLoExp</code><span class="sig-paren">(</span><em>experiment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/runHiLoExp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.runHiLoExp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">runHiLoExp</code><span class="sig-paren">(</span><em>experiment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/runHiLoExp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.runHiLoExp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an experiment with the following structure
 and splits the sample space at the median of a target flux
 solves the two spaces with a given sugar and compares the
@@ -726,7 +726,7 @@ the experiment array.</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.score_KS">
-<code class="descname">score_KS</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/score_KS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_KS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score_KS</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/score_KS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_KS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates KS score</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -758,7 +758,7 @@ score</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.fluxomics.score_ridge">
-<code class="descname">score_ridge</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em>, <em>crossval</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/fluxomics/score_ridge.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_ridge" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score_ridge</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em>, <em>crossval</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/fluxomics/score_ridge.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_ridge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates ridge score</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -803,10 +803,10 @@ score</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="atomTransition/index.html" class="btn btn-neutral float-right" title="atomTransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="atomTransition/index.html" class="btn btn-default float-right" title="atomTransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../chemoInformatics/index.html" class="btn btn-neutral" title="ChemoInformatics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../chemoInformatics/index.html" class="btn btn-default" title="ChemoInformatics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -815,11 +815,11 @@ score</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 

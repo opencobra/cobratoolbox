@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" />
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -150,6 +150,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">IO</a></li>
@@ -159,7 +160,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
 </ul>
@@ -232,14 +232,14 @@
   
   <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="install">
 <span id="id1"></span><h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.install"></span><dl class="function">
 <dt id="src.base.install.adaptMacPath">
-<code class="descname">adaptMacPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/adaptMacPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.adaptMacPath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">adaptMacPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/adaptMacPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.adaptMacPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adapts the path for binaries on a mac with Sierra/High Sierra or higher
 and Anything below.</p>
 <p><strong>Usage</strong></p>
@@ -249,7 +249,7 @@ and Anything below.</p>
 
 <dl class="function">
 <dt id="src.base.install.addCOBRABinaryPathToSystemPath">
-<code class="descname">addCOBRABinaryPathToSystemPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/addCOBRABinaryPathToSystemPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addCOBRABinaryPathToSystemPath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addCOBRABinaryPathToSystemPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/addCOBRABinaryPathToSystemPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addCOBRABinaryPathToSystemPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up the path to system executables shipped by the toolbox.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -257,8 +257,35 @@ and Anything below.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.install.addKeyToKnownHosts">
+<code class="descname">addKeyToKnownHosts</code><span class="sig-paren">(</span><em>siteName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/addKeyToKnownHosts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addKeyToKnownHosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the public key to <cite>site.ext</cite> exists
+If the public key of the <cite>site.ext</cite> does not exist,
+adds the public key to the known hosts</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>keyAdded = addKeyToKnownHosts()</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>siteName</strong> &#8211;
+Name of the site for which the public key shall be added
+(default: <cite>github.com</cite>)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>keyAdded</strong> &#8211;
+Boolean (true if key has been added successfully or exists)</li>
+</ul>
+</div></blockquote>
+<p>set the default site name</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.install.checkCNAinstallation">
-<code class="descname">checkCNAinstallation</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/checkCNAinstallation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.checkCNAinstallation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkCNAinstallation</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/checkCNAinstallation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.checkCNAinstallation" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks the installation of CellNetAnalyzer</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -281,7 +308,7 @@ Boolean if CellNetAnalyzer is installed properly</li>
 
 <dl class="function">
 <dt id="src.base.install.getGitBashVersion">
-<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Windows, this function determines the version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -299,8 +326,40 @@ Integer of <cite>installedVersion</cite>, e.g. <cite>2132</cite></li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.install.getIgnoredFiles">
+<code class="descname">getIgnoredFiles</code><span class="sig-paren">(</span><em>ignorepatterns</em>, <em>filterpatterns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/getIgnoredFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getIgnoredFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all files/patterns which are ignored by git in the COBRA Toolbox directory..
+<strong>Usage</strong></p>
+<blockquote>
+<div>ignoreFiles = getIgnoredFiles()</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>ignorePatterns</strong> &#8211;
+A cell array of regexp patterns indicating files
+which are not to be listed</li>
+<li><strong>filterpatterns</strong> &#8211;
+A cell array of regexp patterns identifying those
+files which should be returned after ignoring.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>ignoredFiles</strong> &#8211;
+All files (and patterns) indicated as ignored in
+the gitignore file.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Authors:      Original Code: Laurent Heirandt</dt>
+<dd>Move to function: Thomas Pfau, Jan 2018</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.install.installDevTools">
-<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if the MATLAB.devTools are already present and installs the
 MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <p><strong>Usage</strong></p>
@@ -315,7 +374,7 @@ configured properly as explained <a class="reference external" href="https://ope
 
 <dl class="function">
 <dt id="src.base.install.installGitBash">
-<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function wraps the installer for PortableGit and checks for available updates.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -325,7 +384,7 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 
 <dl class="function">
 <dt id="src.base.install.portableGitSetup">
-<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function downloads the latest version of PortableGit on Windows (archive), extracts the folder
 and moves the contents to the hidden .tmp folder in a folder called <cite>PortableGit-a.bc.c</cite>
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
@@ -348,8 +407,30 @@ Flag to remove old versions from the path or not<ul>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.install.removeGitIgnoredNewFiles">
+<code class="descname">removeGitIgnoredNewFiles</code><span class="sig-paren">(</span><em>directory</em>, <em>oldcontent</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/removeGitIgnoredNewFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.removeGitIgnoredNewFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all files that are in the specified directory but not part of
+the oldcontent if they match any file indicated by the gitignored files
+of the COBRA Toolbox .gitignore file.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>removeGitIgnoredNewFiles(directory, content)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>directory</strong> &#8211;
+The directory which should be checked for changing files.</li>
+<li><strong>content</strong> &#8211;
+The directory structure obtained by rdir called in the
+directory indicated (i.e. cd(directory); content =
+rdir([&#8216;**&#8217; filesep &#8216;*&#8217;])</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.install.updateCobraToolbox">
-<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks new commits exist on the master branch of the openCOBRA repository
 and asks the user to update The COBRA Toolbox (updates the develop and master branches)</p>
 <p><strong>Usage</strong></p>
@@ -366,7 +447,7 @@ if set to true, the repository is not updated but only new commits are fetched (
 
 <dl class="function">
 <dt id="src.base.install.updateGitBash">
-<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>On windows, this function updates the already existing version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -393,10 +474,10 @@ if set to <cite>true</cite>, gitBash is not updated, but only a check is made (d
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../io/index.html" class="btn btn-neutral float-right" title="IO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../io/index.html" class="btn btn-default float-right" title="IO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -405,11 +486,11 @@ if set to <cite>true</cite>, gitBash is not updated, but only a check is made (d
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
