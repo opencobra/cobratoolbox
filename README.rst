@@ -113,9 +113,9 @@ within MATLAB by typing:
 
 |bulb| Check out the `MATLAB.devTools
 <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
-way! The official documentation is `here <https://opencobra.github.com/MATLAB.devTools>`__.
+way! The **official documentation** is `here <https://opencobra.github.com/MATLAB.devTools>`__.
 
-Contribute to the `opencobra/cobratoolbox` repository by following `these
+|thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
 instructions
 <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
 
@@ -123,7 +123,7 @@ instructions
 
     >> contribute('opencobra/cobratoolbox');
 
-Contribute to the `opencobra/COBRA.tutorials` repository by following `these
+|thumbsup| Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
 instructions
 <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#cobra-tutorials>`__:
 
