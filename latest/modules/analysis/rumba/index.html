@@ -261,7 +261,7 @@
 <span id="id1"></span><h1>rumba<a class="headerlink" href="#rumba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.rumba"></span><dl class="function">
 <dt id="src.analysis.rumba.addMissingReactions">
-<code class="descname">addMissingReactions</code><span class="sig-paren">(</span><em>SampledModel</em>, <em>completeModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/addMissingReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.addMissingReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addMissingReactions</code><span class="sig-paren">(</span><em>SampledModel</em>, <em>completeModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/addMissingReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.addMissingReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify the consistency between the sampled model and the
 complete reference model by checking that all reactions from complete
 model are in the sampled model</p>
@@ -288,7 +288,7 @@ Consistent sampled model wrt the complete model</li>
 
 <dl class="function">
 <dt id="src.analysis.rumba.classifyRxns">
-<code class="descname">classifyRxns</code><span class="sig-paren">(</span><em>completeModel</em>, <em>sampledModel</em>, <em>maxMetConn</em>, <em>maxNumPnts</em>, <em>verboseTag</em>, <em>LoopRxnsToIgnore</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/classifyRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.classifyRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">classifyRxns</code><span class="sig-paren">(</span><em>completeModel</em>, <em>sampledModel</em>, <em>maxMetConn</em>, <em>maxNumPnts</em>, <em>verboseTag</em>, <em>LoopRxnsToIgnore</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/classifyRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.classifyRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function get all incoming and outgoing reaction for each metabolite
 of the &#8216;sampledModel&#8217;and score them (fraction of all incoming/outgoing flux that passes
 through the metabolite).</p>
@@ -359,7 +359,7 @@ List of metabolites described in</p>
 
 <dl class="function">
 <dt id="src.analysis.rumba.compareConditions">
-<code class="descname">compareConditions</code><span class="sig-paren">(</span><em>MetConnectivity1</em>, <em>ConnectedMet1</em>, <em>MetConnectivity2</em>, <em>ConnectedMet2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/compareConditions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.compareConditions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compareConditions</code><span class="sig-paren">(</span><em>MetConnectivity1</em>, <em>ConnectedMet1</em>, <em>MetConnectivity2</em>, <em>ConnectedMet2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/compareConditions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.compareConditions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function compare reaction score of both sampling condition
 and identify metabolites that change significantly</p>
 <p><strong>Usage</strong></p>
@@ -426,7 +426,7 @@ sampled under the second condition</li>
 
 <dl class="function">
 <dt id="src.analysis.rumba.normalizePoints">
-<code class="descname">normalizePoints</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>NormalizePointsParam</em>, <em>LoopRxnsToIgnore</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/normalizePoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.normalizePoints" title="Permalink to this definition">¶</a></dt>
+<code class="descname">normalizePoints</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>NormalizePointsParam</em>, <em>LoopRxnsToIgnore</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/normalizePoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.normalizePoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize the sampled points by the net network flux
 (<cite>NormalizePointsParam</cite> = 1) or by growth rate (<cite>NormalizePointsParam</cite> = 2)</p>
 <p><strong>Usage</strong></p>
@@ -462,7 +462,7 @@ Normalized sampled model under second condition</li>
 
 <dl class="function">
 <dt id="src.analysis.rumba.pValDistForModelOverlap">
-<code class="descname">pValDistForModelOverlap</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/pValDistForModelOverlap.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.pValDistForModelOverlap" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pValDistForModelOverlap</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/pValDistForModelOverlap.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.pValDistForModelOverlap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute for each reaction in common in both sampled modelw
 the magnitude of median flux value change</p>
 <p><strong>Usage</strong></p>
@@ -491,7 +491,7 @@ each reaction listed in &#8216;rxnsInCommon&#8217;</li>
 
 <dl class="function">
 <dt id="src.analysis.rumba.rumba">
-<code class="descname">rumba</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>completeModel</em>, <em>sampling</em>, <em>maxMetConn</em>, <em>RxnsOfInterest</em>, <em>GenesOfInterest</em>, <em>NormalizePointsOption</em>, <em>PValCuttoff</em>, <em>MaxNumPoints</em>, <em>LoopRxnsToIgnore</em>, <em>verboseTag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/rumba/rumba.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.rumba" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rumba</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>completeModel</em>, <em>sampling</em>, <em>maxMetConn</em>, <em>RxnsOfInterest</em>, <em>GenesOfInterest</em>, <em>NormalizePointsOption</em>, <em>PValCuttoff</em>, <em>MaxNumPoints</em>, <em>LoopRxnsToIgnore</em>, <em>verboseTag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/rumba/rumba.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rumba.rumba" title="Permalink to this definition">¶</a></dt>
 <dd><p>RUMBA predicts which reactions significantly change their
 flux at metabolic branch points under two conditions</p>
 <p><strong>Usage</strong></p>

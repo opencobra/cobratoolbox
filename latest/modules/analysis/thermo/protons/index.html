@@ -278,7 +278,7 @@
 <span id="protons"></span><h1>protons<a class="headerlink" href="#module-src.analysis.thermo.protons" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.analysis.thermo.protons.assignpKasToSpecies">
-<code class="descname">assignpKasToSpecies</code><span class="sig-paren">(</span><em>mets</em>, <em>neutralMolfileDir</em>, <em>msDistrDir</em>, <em>pKaDir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/assignpKasToSpecies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.assignpKasToSpecies" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignpKasToSpecies</code><span class="sig-paren">(</span><em>mets</em>, <em>neutralMolfileDir</em>, <em>msDistrDir</em>, <em>pKaDir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/assignpKasToSpecies.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.assignpKasToSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use each metabolite&#8217;s InChI and ChemAxon&#8217;s cxcalc (calculator plugin) to
 get <cite>pKas(I = 0)</cite>, charges and numbers of protons for all microspecies
 present at pH 5-9.</p>
@@ -337,7 +337,7 @@ were included in speciespKas. Should include all metabolites that had molfiles i
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.getMetaboliteMsDistr">
-<code class="descname">getMetaboliteMsDistr</code><span class="sig-paren">(</span><em>mets</em>, <em>molfiledir</em>, <em>msdistrdir</em>, <em>phs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/getMetaboliteMsDistr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.getMetaboliteMsDistr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getMetaboliteMsDistr</code><span class="sig-paren">(</span><em>mets</em>, <em>molfiledir</em>, <em>msdistrdir</em>, <em>phs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/getMetaboliteMsDistr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.getMetaboliteMsDistr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate microspecies distributions at all pH values in phs using
 ChemAxon&#8217;s cxcalc. Metabolite mol files in molfiledir are input to cxcalc. Mol file names
 should correspond to the metabolite ID in mets (it is assumed that
@@ -364,7 +364,7 @@ pH values</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.getMetabolitepKa">
-<code class="descname">getMetabolitepKa</code><span class="sig-paren">(</span><em>mets</em>, <em>molfiledir</em>, <em>pkadir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/getMetabolitepKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.getMetabolitepKa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getMetabolitepKa</code><span class="sig-paren">(</span><em>mets</em>, <em>molfiledir</em>, <em>pkadir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/getMetabolitepKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.getMetabolitepKa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute pKas of the metabolites listed in mets using ChemAxon&#8217;s cxcalc.
 Metabolite mol files in molfiledir are input to cxcalc. Mol file names
 should correspond to the metabolite ID in mets (it is assumed that
@@ -388,7 +388,7 @@ directory with text files with <cite>pKas</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.inchi2mol">
-<code class="descname">inchi2mol</code><span class="sig-paren">(</span><em>inchis</em>, <em>filenames</em>, <em>outputdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/inchi2mol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.inchi2mol" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inchi2mol</code><span class="sig-paren">(</span><em>inchis</em>, <em>filenames</em>, <em>outputdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/inchi2mol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.inchi2mol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert InChI strings to mol files using OpenBabel. Compatible with
 Windows and Unix.</p>
 <p><strong>Usage</strong></p>
@@ -419,7 +419,7 @@ inchis that were successfully converted to mol files and 0 elsewhere.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.moleFraction">
-<code class="descname">moleFraction</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>pHa</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/moleFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.moleFraction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">moleFraction</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>pHa</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/moleFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.moleFraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mole fraction of different metabolite species that make up a reactant</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -463,7 +463,7 @@ mole fraction at equilibrium</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.moleFractionStats">
-<code class="descname">moleFractionStats</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/moleFractionStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.moleFractionStats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">moleFractionStats</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/moleFractionStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.moleFractionStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots of mole fraction statistics.</p>
 <p>Plot a histogram of the number of metabolite species relevant between pH 5
 and 9, and a stacked bar chart of the mole fractions of reactants with
@@ -487,7 +487,7 @@ structure with fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.plotActivityCoefficients">
-<code class="descname">plotActivityCoefficients</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/plotActivityCoefficients.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.plotActivityCoefficients" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plotActivityCoefficients</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/plotActivityCoefficients.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.plotActivityCoefficients" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots statistics on activity coefficients.</p>
 <p>Plots a histogram of the distribution of activity coefficients
 also a curve of  activity coefficients for different charges at a range of
@@ -518,7 +518,7 @@ structure with fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.plotMoleFraction">
-<code class="descname">plotMoleFraction</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>PHmin</em>, <em>PHmax</em>, <em>ISmin</em>, <em>ISmax</em>, <em>CHImin</em>, <em>CHImax</em>, <em>TEMPmin</em>, <em>TEMPmax</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/plotMoleFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.plotMoleFraction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plotMoleFraction</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>PHmin</em>, <em>PHmax</em>, <em>ISmin</em>, <em>ISmax</em>, <em>CHImin</em>, <em>CHImax</em>, <em>TEMPmin</em>, <em>TEMPmax</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/plotMoleFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.plotMoleFraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -562,7 +562,7 @@ temperature maximum</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.protons.realpH">
-<code class="descname">realpH</code><span class="sig-paren">(</span><em>pHa</em>, <em>temp</em>, <em>is</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/thermo/protons/realpH.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.realpH" title="Permalink to this definition">¶</a></dt>
+<code class="descname">realpH</code><span class="sig-paren">(</span><em>pHa</em>, <em>temp</em>, <em>is</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/thermo/protons/realpH.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.protons.realpH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apparent glass electrode pH is not the same as real pH for thermodynamic calculations.</p>
 <p>Given the experimental glass electrode measurement of pH, this function returns
 the pH to be used for thermodynamic calculations, <cite>pHc = -log10[H+]</cite>,
