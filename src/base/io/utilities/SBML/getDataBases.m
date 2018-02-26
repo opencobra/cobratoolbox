@@ -7,21 +7,21 @@ function [databases,ids,qualifiers] = getDataBases(Ressources,qualifier)
 % INPUT:
 %
 %    Ressources:    The Ressource String(s) as a cell array
-%    qualifier:     The bio-qualifier of the ressource    
+%    qualifier:     The bio-qualifier of the ressource
 %
 % OUTPUT:
 %
 %    databases:    The databases of the ressources
 %    ids:          The identifiers of the ressource strings
 %    qualifier:    The bio-qualifiers associated (the same as the input)
-%    
+%
 % .. Authors:
-%       - Thomas Pfau May 2017 
+%       - Thomas Pfau May 2017
 %
 % NOTE:
-%  Currently two different schemes are accepted: 
+%  Currently two different schemes are accepted:
 %  urn:miriam:DatabaeID:EntryID
-%  http://identifiers.org/databaseid/EntryID
+%  https://identifiers.org/databaseid/EntryID
 %  The correctness of the entries is NOT checked!
 
 try
@@ -36,7 +36,7 @@ if isempty(tokens)
         %Try parsing urn.miriam IDs. if this doesn't work leave them empty.
         tokens = cellfun(@(x) regexp(x,'urn:miriam:([^:]*):(.*)','tokens'),Ressources);
     catch
-        tokens = {};        
+        tokens = {};
     end
 end
 databases = {};

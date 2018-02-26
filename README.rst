@@ -85,7 +85,7 @@ Tutorials, Documentation, and Support
 -  If you need support, please feel free to post your question in our |forum|.
 
 -  Answers to Frequently Asked Questions (**FAQ**) are
-   `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`__.
+   `here <https://opencobra.github.io/cobratoolbox/stable/faq.html>`__.
 
 
 How to contribute
@@ -99,7 +99,7 @@ Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 .. raw:: html
 
    <p align="center">
-   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px"/>
+   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
    </p>
 
 

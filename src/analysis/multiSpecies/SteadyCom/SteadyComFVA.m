@@ -24,11 +24,11 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %
 %                  * optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])
 %                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%                  * rxnNameList - List of reactions (index row vector or subset of *.rxns) for which FVA is performed.
+%                  * rxnNameList - List of reactions (index row vector or subset of `*.rxns`) for which FVA is performed.
 %                    (Default = biomass reaction of each species)
 %                    Or a :math:`(N_{rxns} + N_{organism}) x K` matrix for FVA of `K` linear combinations of fluxes and/or abundances
 %                    e.g., `[1; -2; 0]` for finding the max/min of :math:`1 v_1 - 2 v_2 + 0 v_3`
-%                  * rxnFluxList - List of reactions (index vector or subset of *.rxns) whose fluxes are
+%                  * rxnFluxList - List of reactions (index vector or subset of `*.rxns`) whose fluxes are
 %                    also returned along with the FVA result of each entry in `rxnNameList`
 %                    (Default = biomass reaction of each species)
 %                  * GRmax - maximum growth rate of the model (default to be found `SteadyCom.m`)

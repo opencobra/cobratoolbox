@@ -28,7 +28,7 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list
 %                          COBRA model structure.
 %                       2. 'id' indicates that 'infix'
 %                          contains a list of IDs used in `CellDesigner` such as 're32'.
-%    miriam_path:     the file path of the miriam registry's dataset (*.mat).
+%    miriam_path:     the file path of the miriam registry's dataset (`*.mat`).
 %
 % OPTIONAL OUTPUT:
 %    fname_out:       the name of an output XML file.
