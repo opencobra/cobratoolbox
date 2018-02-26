@@ -11,7 +11,7 @@ function installDevTools(repoName)
 % NOTE:
 %    In order to install the devTools, please make sure that the SSH key is
 %    configured properly as explained `here <https://opencobra.github.io/MATLAB.devTools/stable/installation.html>`__.
-%    Detailed instructions are given `here <https://opencobra.github.io/MATLAB.devTools>`__.
+%    The full documentation of the MATLAB.devTools is `here <https://opencobra.github.io/MATLAB.devTools>`__.
 %
 % .. Author: Laurent Heirendt, June 2017
 
