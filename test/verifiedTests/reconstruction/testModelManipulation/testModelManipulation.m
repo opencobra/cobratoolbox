@@ -399,5 +399,36 @@ head = fp.parseFormula(newRuleBool);
 head2 = fp.parseFormula(model2.rules{20});
 assert(head.isequal(head2)); % We can't make a string comparison so we parse the two formulas and see if they are equal.
 
+
+fprintf('>> Testing Gene Batch Addition...\n');
+
+genes = {'G1','Gene2','InterestingGene'}';
+proteinNames = {'Protein1','Protein B','Protein Alpha'}';
+modelWGenes = addGenes(model,genes,...
+                            'proteins',proteinNames, 'geneField2',{'D','E','F'});
+assert(isequal(lastwarn, 'Field geneField2 is excluded.'));                       
+%three new genes.
+assert(size(modelWGenes.rxnGeneMat,2) == size(model.rxnGeneMat,2) + 3);
+assert(isfield(modelWGenes,'proteins'));
+[~,genepos] = ismember(genes,modelWGenes.genes);
+assert(isequal(modelWGenes.proteins(genepos),proteinNames));
+assert(~isfield(model,'geneField2'));
+
+%Init geneField 2
+gField2 = {'D';'E';'F'};
+model.geneField2 = cell(size(model.genes));
+model.geneField2(:) = {''};
+modelWGenes = addGenes(model,genes,...
+                            'proteins',proteinNames, 'geneField2',gField2);
+[~,genepos] = ismember(genes,modelWGenes.genes);
+assert(isequal(modelWGenes.geneField2(genepos), gField2));
+assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGenes.genes,genes)))));
+
+%And finally test duplication errors.
+assert(verifyCobraFunctionError(@() addGenes(model,{'b0008','G1'})));
+assert(verifyCobraFunctionError(@() addGenes(model,{'G2','G1','G2'})));
+
+
+
 % change the directory
 cd(currentDir)
