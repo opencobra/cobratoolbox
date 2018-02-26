@@ -69,12 +69,24 @@ xt = 1:size(A,2);
 [h,~] = find(A == -1);
 [t,~] = find(A == 1);
 adj = sparse([t;h],[h;t],ones(size([t;h]))); % Convert incidence matrix to adjacency matrix
-components = conncomp(graph(adj));
+
+if ~verLessThan('matlab','8.6')
+    components = conncomp(graph(adj)); % Use built-in matlab algorithm. Introduced in R2015b.
+    nComps = max(components);
+elseif license('test','Bioinformatics_Toolbox')
+    [nComps,components] = graphconncomp(adj,'DIRECTED',false);
+else
+    components_cell = find_conn_comp(adj); % Slow.
+    nComps = length(components_cell);
+    components = zeros(nAtoms,1);
+    for i = 1:nComps
+        components(components_cell{i}) = i;
+    end
+end
 
 clear adj % conserve memory
 
 % Construct moiety matrix
-nComps = max(components);
 L = sparse(nComps,nMets); % Initialize moiety matrix.
 for i = 1:nComps
     metIdx = atoms2mets(components == i);
@@ -175,36 +187,60 @@ for i = 1:nVectors
                 continue;
             end
             
-            % use Matlab's built in isomorphism algorithm (last resort because it's slow, should only need it in rare cases)
-            [g1,o2n1,n2o1] = unique(mgraph1','rows','stable'); % Matlab graphs do not support replicate edges
-            g1 = g1';
-            urxns1 = rxns1(o2n1);
-            utrans1 = trans1(o2n1);
-            [h1,~] = find(g1 < 0);
-            [t1,~] = find(g1 >0);
-            edges1 = table([h1 t1],urxns1,utrans1,'VariableNames',{'EndNodes' 'Rxn' 'Transition'});
-            nodes1 = table(mets1,comp1,'VariableNames',{'Met' 'Atom'});
-            d1 = digraph(edges1,nodes1);
-            
-            [g2,o2n2,n2o2] = unique(mgraph2','rows','stable');
-            g2 = g2';
-            urxns2 = rxns2(o2n2);
-            utrans2 = trans2(o2n2);
-            [h2,~] = find(g2 < 0);
-            [t2,~] = find(g2 >0);
-            edges2 = table([h2 t2],urxns2,utrans2,'VariableNames',{'EndNodes' 'Rxn' 'Transition'});
-            nodes2 = table(mets2,comp2,'VariableNames',{'Met' 'Atom'});
-            d2 = digraph(edges2,nodes2);
-            
-            % find isomorphism that conserves metabolite and reaction
-            % attributes of nodes and edges
-            p = isomorphism(d1,d2,'NodeVariables','Met','EdgeVariables','Rxn');
-            
-            if ~isempty(p)
-                d2 = reordernodes(d2,p);
-                atoms2instances(d2.Nodes.Atom) = rowidx; % map atoms to moieties
+            if ~verLessThan('matlab','9.1')
+                % Use Matlab's built in isomorphism algorithm. Introduced in R2016b
+                % Last resort because it's slow. Should only need it in rare cases.
+                [g1,o2n1,n2o1] = unique(mgraph1','rows','stable'); % Matlab graphs do not support replicate edges
+                g1 = g1';
+                urxns1 = rxns1(o2n1);
+                utrans1 = trans1(o2n1);
+                [h1,~] = find(g1 < 0);
+                [t1,~] = find(g1 >0);
+                edges1 = table([h1 t1],urxns1,utrans1,'VariableNames',{'EndNodes' 'Rxn' 'Transition'});
+                nodes1 = table(mets1,comp1,'VariableNames',{'Met' 'Atom'});
+                d1 = digraph(edges1,nodes1);
+                
+                [g2,o2n2,n2o2] = unique(mgraph2','rows','stable');
+                g2 = g2';
+                urxns2 = rxns2(o2n2);
+                utrans2 = trans2(o2n2);
+                [h2,~] = find(g2 < 0);
+                [t2,~] = find(g2 >0);
+                edges2 = table([h2 t2],urxns2,utrans2,'VariableNames',{'EndNodes' 'Rxn' 'Transition'});
+                nodes2 = table(mets2,comp2,'VariableNames',{'Met' 'Atom'});
+                d2 = digraph(edges2,nodes2);
+                
+                % find isomorphism that conserves metabolite and reaction
+                % attributes of nodes and edges
+                p = isomorphism(d1,d2,'NodeVariables','Met','EdgeVariables','Rxn');
+                
+                if ~isempty(p)
+                    d2 = reordernodes(d2,p);
+                    atoms2instances(d2.Nodes.Atom) = rowidx; % map atoms to moieties
+                else
+                    warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
+                end
+                
+            elseif license('test','Bioinformatics_Toolbox')
+                [h1,~] = find(mgraph1 < 0);
+                [t1,~] = find(mgraph1 >0);
+                g1 = sparse([t1;h1],[h1;t1],ones(size([t1;h1])));
+                
+                [h2,~] = find(mgraph2 < 0);
+                [t2,~] = find(mgraph2 >0);
+                g2 = sparse([t2;h2],[h2;t2],ones(size([t2;h2])));
+                
+                [isIsomorphic, p] = graphisomorphism(g1, g2);
+                
+                if isIsomorphic
+                    comp2 = comp2(p);
+                    atoms2instances(comp2) = rowidx;
+                else
+                    warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
+                end
+                
             else
-                warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
+                warning('Could not compute graph isomorphism');
             end
         end
     end
