@@ -446,8 +446,7 @@ switch solver
         f = c'* x;
         %dqqMinos uses a constraint to represent the objective. 
         %This is exported as the first variable thus, y = sol.y(2:end)
-        y = sol.y(2:end);
-        y = sol.y(2:end);
+        y = sol.y(2:end);        
         w = sol.rc;
         origStat = sol.inform;
 
@@ -540,7 +539,6 @@ switch solver
         f = c' * x;
         %Minos uses a constraint to represent the objective. 
         %This is exported as the first variable thus, y = sol.y(2:end)
-        y = sol.y(2:end);
         y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;

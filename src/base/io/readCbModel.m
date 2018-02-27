@@ -277,7 +277,7 @@ if ~isfield(model,'genes')
 end
 
 if ~isfield(model,'osenseStr')
-    model.osense = 'max';
+    model.osenseStr = 'max';
 end
 
 if ~isfield(model,'csense')
