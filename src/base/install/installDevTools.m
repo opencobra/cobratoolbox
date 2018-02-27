@@ -5,7 +5,7 @@ function installDevTools(repoName)
 % USAGE:
 %    installDevTools(repoName)
 %
-% INPUT:
+% OPTIONAL INPUT:
 %    repoName:     Name of the repository (default: 'opencobra/cobratoolbox')
 %
 % NOTE:
