@@ -4,7 +4,8 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 % *PMID 25901891*, *PMID 27893703*.
 %
 % Joins one or more COBRA models with or without another COBRA model
-% representing the host.
+% representing the host. The created setup when a host is entered is
+% depicted schematically in Figures 1 and 2 in *PMID 27893703*.
 %
 % Creates a common space u (lumen) through which all cells can feed and exchange metabolites,
 % and separate extracellular spaces for all joined models.
@@ -28,22 +29,24 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
 %                       corresponding to each model.
 %                       Format
-%
 %                         * nameTagsModels{1,1} = 'name tag 1'
 %                         * nameTagsModels{2,1} = 'name tag 2'...
 %    modelHost:         COBRA model for host
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
 %    mergeGenesFlag     If true, the gene associations in both models are
-%    included in the joined model. If false, empty field are created
-%    instead (default:false). Note: merging genes is time-consuming and may crash certain models.
+%                       included in the joined model. If false, empty fields are created
+%                       instead (default:false). Note: merging genes is time-consuming 
+%                       and may crash certain models.
 %
 % OUTPUT:
 %    modelJoint:        model structure for joint model
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 2011-2018 
-% Last edited by A.H., 07.02.2018-included option whether or not genes are
-% merged
+%       - Almut Heinken, 07.02.2018-included option whether or not genes are
+%         merged
+%       - Almut Heinken, 21.02.2018-fixed compatibility issue with reconstructions 
+%         from BIGG Models database that have _e instead of [e] as compartment IDs
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -71,6 +74,18 @@ if nargin < 5
     mergeGenesFlag=false;
 end
     
+%% ensure compatibility with reconstructions from BIGG Models database
+for i = 1:modelNumber
+    model=models{i,1};
+    metIndices=~cellfun(@isempty,regexp(model.mets,'_e$'));
+    model.mets(metIndices)=strrep(model.mets(metIndices),'_e','[e]');
+    models{i,1}=model;
+end
+if nargin >= 3 && ~isempty(modelHost)
+metIndices=~cellfun(@isempty,regexp(modelHost.mets,'_e$'));
+modelHost.mets(metIndices)=strrep(modelHost.mets(metIndices),'_e','[e]');
+end
+
 %% define some variables
 eTag = 'u';
 exTag = 'e';
