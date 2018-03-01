@@ -33,7 +33,7 @@ end
 %%
 %Automatic detection of number of samples in the study 
 
-[patNumb,sampName,strains]=getIndividualSizeName(infoPath,'normCoverage.csv');
+[patNumb,sampName,strains]=getIndividualSizeName(infoPath,abunFileName);
 
 %Auto load for PART1 -> if PART1 was already computed and is alreday
 %present in results folder its execution is skipped else its execution starts
@@ -82,7 +82,8 @@ models={[]}; %empty cell array to be filled with models
  end
 
 
-[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,'normCoverage.csv',patNumb)
+%[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,'normCoverage.csv',patNumb)
+[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,abunFileName,patNumb)
 writetable(cell2table(reacAbun),strcat(resPath,'reactions.csv'))
 
 % Genomic Analysis section ->  Plotting section
@@ -109,7 +110,7 @@ end
 
 
 %Importing names of models from reformatted coverages files
-orglist=strains;
+%orglist=strains;
 
 %Autofix part 
 %Checking consistence of inputs: if autofix == 0 halts execution with error 
@@ -118,33 +119,33 @@ orglist=strains;
 
 if autoFix == 0
 
-    for i=1:length(orglist)
-    check=strmatch(orglist(i,1),orglist);
+    for i=1:length(strains)
+    check=strmatch(strains(i,1),strains);
         if length(check) > 1
-        vecErr=orglist(check)
+        vecErr=strains(check)
         msg = 'Nomenclature error: one or more organisms have ambiguous ID. Ambiguity indexes stored in check vector';
         error(msg)
         end
     end
 else
-    for i=1:length(orglist)
-    check=strmatch(orglist(i,1),orglist);
+    for i=1:length(strains)
+    check=strmatch(strains(i,1),strains);
         if length(check) > 1
-        vecErr=orglist(check)
+        vecErr=strains(check)
         %Autodebug, suffix '_extended' is added to solve ambiguity: 
-        orglist(i)
-        fixVec(i)=orglist(i)
-        fixNam= strcat(orglist(i),'_extended')
-        orglist(i)=fixNam
+        strains(i)
+        fixVec(i)=strains(i)
+        fixNam= strcat(strains(i),'_extended')
+        strains(i)=fixNam
         autostat=1
         end
     end
         
 %Second cycle: checking multiple times is always better idea 
-    for i=1:length(orglist)
-    check=strmatch(orglist(i,1),orglist);
+    for i=1:length(strains)
+    check=strmatch(strains(i,1),strains);
         if length(check) > 1
-        vecErr=orglist(check)
+        vecErr=strains(check)
         msg = 'Nomenclature error: one or more organisms have ambiguous ID. Ambiguity indexes stored in check vector';
         error(msg)
         end
@@ -195,7 +196,7 @@ if modbuild == 1
    end
 
    %Creating global model -> setup creator will be called
-   setup=fastSetupCreator(models, orglist, {})
+   setup=fastSetupCreator(models, strains, {})
    setup.name='Global reconstruction with lumen / fecal compartments no host'
    setup.recon=0
    save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
@@ -208,13 +209,13 @@ end
 
 %Create microbiota models -> Integrate metagenomic data to create individualized models 
 
-[createdModels]=createPersonalizedModel(infoPath,resPath,setup,sampName,orglist,patNumb)
+[createdModels]=createPersonalizedModel(infoPath,resPath,abunFileName,setup,sampName,strains,patNumb)
 
 %%
 %[PART 3]
 disp('Framework for fecal diet compartments microbiota model in use')
 
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,sdiet,rDiet,0,extSolve,patNumb,fvaType)
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,sDiet,rDiet,0,extSolve,patNumb,fvaType)
 
 [Fsp,Y]= mgSimResCollect(resPath,ID,rDiet,0,patNumb,fvaCt,figForm)
 
