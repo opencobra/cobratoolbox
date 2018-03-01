@@ -1,4 +1,4 @@
-function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampName,orglist,patNumb)
+function [createdModels]=createPersonalizedModel(infoPath,resPath,fileName,model,sampName,orglist,patNumb)
 % This function creates personalized models from integration of given 
 % organisms abundances into the previously built “global” setup. Coupling 
 % constraints are also added for each organism. All the operations are
@@ -8,6 +8,7 @@ function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampName
 % INPUTS: 
 %   infoPath:           char with path of directory from where to retrieve information
 %   resPath:            char with path of directory where results are saved
+%   fileName:           char with name of file from which to retrieve information
 %   model:              "global setup" model in COBRA model structure format
 %   sampName:           cell array with names of individuals in the study
 %   orglist:            cell array with names of organisms in the study
@@ -18,7 +19,7 @@ function [createdModels]=createPersonalizedModel(infoPath,resPath,model,sampName
 createdModels={};
 parfor k = 2:(patNumb+1)    
     mgmodel=model
-    filename=strcat(infoPath,{'normCoverage.csv'});
+    filename=strcat(infoPath,{fileName});
     filename=cell2mat(filename);
     [abundance]=readtable(filename);
     abundance = table2array(abundance(:,k+1));
