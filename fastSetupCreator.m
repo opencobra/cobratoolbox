@@ -181,12 +181,15 @@ for j=2:(floor(log2(size(models,1)))+1)  %+1 because it starts with one column s
 		halfdim = dim/2; %no need for approximation
     end
     FirstSaveStore=modelStorage(:,(j-1));
-    SecondSaveStore=modelStorage(:,(j-1));
+    %SecondSaveStore=modelStorage(:,(j-1)); %changes 010318
+    
     parfor k=1:halfdim
         parind = k;	
         parind=parind+(k-1);
         FirstMod=FirstSaveStore(parind);
-        SecondMod=SecondSaveStore(parind+1);
+        %SecondMod=SecondSaveStore(parind+1);%changes 010318
+        SecondMod=FirstSaveStore(parind+1);%changes 010318
+        %modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)%changes 010318
         modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)	
     end
 	dim = halfdim;
