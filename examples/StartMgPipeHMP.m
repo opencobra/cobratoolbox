@@ -9,6 +9,8 @@
 %REQUIRED INPUT VARIABLES
 modPath='Y:\Federico\Eldermet\191017\models\'; %path to microbiota models
 infoPath='P:\Documenti\GitLab\Microbiome_Toolbox\MgPipe\examples\'; %path to the information files
+resPath='Y:\Federico\testingMgPipe\fede\fede2\'
+abunFileName='normCoverage.csv'
 resPath='Y:\Federico\testingMgPipe\fede\'; %path to results directory 
 objre={'EX_biomass(e)'}; %name of objective function of organisms
 sDiet='EUAverageDiet' %standard diet type
