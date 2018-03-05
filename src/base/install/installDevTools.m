@@ -1,15 +1,17 @@
-function installDevTools()
+function installDevTools(repoName)
 % checks if the MATLAB.devTools are already present and installs the
 % MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)
 %
 % USAGE:
-%    installDevTools()
+%    installDevTools(repoName)
+%
+% OPTIONAL INPUT:
+%    repoName:     Name of the repository (default: 'opencobra/cobratoolbox')
 %
 % NOTE:
 %    In order to install the devTools, please make sure that the SSH key is
-%    configured properly as explained `here`_.
-%
-% .. _here: https://opencobra.github.io/cobratoolbox/docs/solvers.html
+%    configured properly as explained `here <https://opencobra.github.io/MATLAB.devTools/stable/installation.html>`__.
+%    The full documentation of the MATLAB.devTools is `here <https://opencobra.github.io/MATLAB.devTools>`__.
 %
 % .. Author: Laurent Heirendt, June 2017
 
@@ -29,6 +31,11 @@ function installDevTools()
     % change to the local directory
     localDir = [CBTDIR filesep '..'];
     cd(localDir);
+
+    % set the default repoName
+    if ~exist('repoName', 'var')
+        repoName = 'opencobra/cobratoolbox';
+    end
 
     % add the public key from github.com to the known hosts
     addKeyToKnownHosts();
@@ -99,7 +106,7 @@ function installDevTools()
             % removing .git folder
             rmpath(genpath([devToolsDir filesep '.git']));
 
-            fprintf([' > In order to start contributing, you can now run:\n\n >> contribute\n\n']);
+            fprintf([' > In order to start contributing, you can now run:\n\n >> contribute(''' repoName '''); \n\n']);
         else
             fprintf(result_gitClone);
             error(['The MATLAB.devTools could not be cloned. Please make sure that your SSH key is configured correctly.']);
