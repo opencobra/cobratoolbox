@@ -45,12 +45,7 @@ else
     LPproblem.b = repmat(0,size(model.mets));
 end
 
-if isfield(model,'osense')
-    LPproblem.osense = model.osense;
-else
-    LPproblem.osense = -1;
-end
-
+[~,LPproblem.osense] = getObjectiveSense(model);
 if isfield(model,'csense')
     LPproblem.csense = model.csense;
 else
