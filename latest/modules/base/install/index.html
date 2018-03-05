@@ -359,16 +359,24 @@ the gitignore file.</li>
 
 <dl class="function">
 <dt id="src.base.install.installDevTools">
-<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installDevTools</code><span class="sig-paren">(</span><em>repoName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if the MATLAB.devTools are already present and installs the
 MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>installDevTools()</div></blockquote>
+<div>installDevTools(repoName)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>repoName</strong> &#8211;
+Name of the repository (default: &#8216;opencobra/cobratoolbox&#8217;)</li>
+</ul>
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">In order to install the devTools, please make sure that the SSH key is
-configured properly as explained <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">here</a>.</p>
+configured properly as explained <a class="reference external" href="https://opencobra.github.io/MATLAB.devTools/stable/installation.html">here</a>.
+The full documentation of the MATLAB.devTools is <a class="reference external" href="https://opencobra.github.io/MATLAB.devTools">here</a>.</p>
 </div>
 </dd></dl>
 

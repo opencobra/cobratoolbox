@@ -495,9 +495,10 @@ options to select from.
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Returns a model in the COBRA format with at least the following fields:<ul>
+<div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+Returns a model in the COBRA format with at least the following fields:</p>
+<ul class="simple">
 <li>.description - Description of model contents</li>
 <li>.rxns - Reaction names</li>
 <li>.mets - Metabolite names</li>
@@ -505,10 +506,14 @@ Returns a model in the COBRA format with at least the following fields:<ul>
 <li>.lb - Lower bounds</li>
 <li>.ub - Upper bounds</li>
 <li>.c - Objective coefficients</li>
-<li>.osense - the objective sense (-1
-maximisation, 1 minimisation)</li>
-<li>.csense - the constraint senses (&#8216;L&#8217; for
-lower than, &#8216;G&#8217; - greated than, &#8216;E&#8217; - equal)</li>
+<li>.osenseStr - the objective sense (&#8216;max&#8217; or</li>
+</ul>
+<p>&#8216;min&#8217;)
+* .csense - the constraint senses (&#8216;L&#8217; for</p>
+<blockquote>
+<div><p>lower than, &#8216;G&#8217; - greated than, &#8216;E&#8217; - equal)</p>
+</div></blockquote>
+<ul class="simple">
 <li>.rules - Gene-reaction association rule in computable form</li>
 <li>.genes - List of all genes</li>
 </ul>

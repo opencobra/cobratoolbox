@@ -314,11 +314,11 @@ merged into new fields, with the data of new fields taking precedence
 (i.e. if not data is present in the new field at any position, the old
 field data replaces it, otherwise the new field data is kept.
 Furthermore, fields deemed to be required for Flux Balance analysis are generated if not present:
-osense: Objective Sense.</p>
+osenseStr: Objective Sense.</p>
 <blockquote>
-<div>By default this field is initialized as -1 (maximisation)
-If the osenseStr field is present, that field will be
-interpreted and if it is &#8216;min&#8217; osense will be initialized to 1</div></blockquote>
+<div>By default this field is initialized as &#8216;max&#8217;. If osense is
+present, a -1 will be translates as &#8216;max&#8217; and a 1 will be
+translated as &#8216;min&#8217;</div></blockquote>
 <dl class="docutils">
 <dt>csense: Constraint sense.</dt>
 <dd>This field indicates the sense of the b matrix, i.e. if b
