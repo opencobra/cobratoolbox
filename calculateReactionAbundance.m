@@ -24,10 +24,10 @@ function [ReactionAbundance]=calculateReactionAbundance(abundance,modelFolder,ta
 %
 % OUTPUT
 % ReactionAbundance          Structure with abundance for each microbiome
-%                            and reaction in total and if desired on taxon levels
+%                            and reaction in total and on taxon levels
 
 % define reaction list if not entered
-if nargin <4 || isempty(rxnsList)
+if ~exist(rxnsList,'var')
     fprintf('No reaction list entered. Abundances will be calculated for all reactions in all models. \n')
     % get model list from abundance input file
     for i=2:size(abundance,1)
@@ -40,7 +40,7 @@ end
 % load the models found in the individuals and extract which reactions are
 % in which model
 for i=2:size(abundance,1)
-    load(strcat(modelFolder,abundance{i,1},'.mat'));
+    model = getDistributedModel([modelFolder abundance{i,1} '.mat']);
     ReactionPresence{i,1}=abundance{i,1};
     for j=1:length(rxnsList)
         ReactionPresence{1,j+1}=rxnsList{j};
@@ -50,7 +50,9 @@ for i=2:size(abundance,1)
             ReactionPresence{i,j+1}=0;
         end
     end
-end% put together a Matlab structure of the results
+end
+
+% put together a Matlab structure of the results
 ReactionAbundance=struct;
 
 % prepare table for the total abundance
@@ -64,6 +66,7 @@ end
         'Order'
         'Family'
         'Genus'
+        'Species'
         };
 % extract the list of entries on each taxonomical level
 for t=1:size(TaxonomyLevels,1)
@@ -87,10 +90,6 @@ for t=1:size(TaxonomyLevels,1)
     end
 end
 
-if nargin >4 && ~isempty(numWorkers)
-    parpool(numWorkers)
-end
-
 for i=2:size(abundance,2)
     %% calculate reaction abundance for the samples one by one
     fprintf(['Calculating reaction abundance for sample ',num2str(i-1),' of ' num2str(size(abundance,2)-1) '.. \n'])
@@ -101,7 +100,11 @@ for i=2:size(abundance,2)
         end
     end
     % use parallel pool if workers specified as input
-    if ~isempty(numWorkers)
+    if  exist(numWorkers,'var')
+        poolobj=gcp('nocreate');
+        if isempty(poolobj)
+            parpool(numWorkers)
+        end
         % create tables in which abundances for each individual for
         % all reactions/taxa are stored
         totalAbun=zeros(length(rxnsList),1);
