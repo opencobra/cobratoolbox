@@ -24,21 +24,12 @@ parfor k = 2:(patNumb+1)
     [abundance]=readtable(filename);
     abundance = table2array(abundance(:,k+1));
     %retrieving current model ID
-    id=sampName((k-1),1);
+    id=sampName((k-1),1)
+    createdModels(k,1)=id
     mId=strcat('microbiota_model_samp_',id,'.mat');
     
     %Autoload for already created models 
-    resPathc=resPath(1:(length(resPath)-1));
-    cd(resPathc);
-    fnames = dir('*.mat');
-    numfids = length(fnames);
-    vals = cell(1,numfids);
-    for K = 1:numfids
-        vals{K} = fnames(K).name;
-    end
-    vals=vals';
-
-    mapP = strmatch(mId, vals, 'exact');
+    mapP=detectOutput(resPath,mId)
     if isempty(mapP)
        %end of trigger
        idInfo=cell2mat(sampName((k-1),1))
