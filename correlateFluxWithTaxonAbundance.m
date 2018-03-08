@@ -1,41 +1,36 @@
-function [FluxCorrelations]=correlateFluxWithTaxonAbundance(abundance,fluxes,taxonomy,corrMethod,rxnsList)
-% This function calculates the total abundance of reactions of interest in
-% a given microbiome sample based on the strain-level composition.
+function [FluxCorrelations,PValues]=correlateFluxWithTaxonAbundance(abundance,fluxes,taxonomy,corrMethod)
+% Part of the Microbiome Modeling Toolbox. This function calculates and 
+% plots the correlations between fluxes for one or more reactions of 
+% interest in a number of microbiome samples and the relative microbe 
+% abundance on different taxonomical levels in the same samples.
 %
 % USAGE
-% [FluxCorrelations]=calculateFluxCorrelations(abundance,modelFolder,taxonomy,rxnsList,numWorkers)
-%
-% Reaction presence or absence in each strain is derived from the reaction content
-% of the respective AGORA model. Two outputs are given: the total abundance,
-% and optionally the abundance on different taxonomical levels.
+% [FluxCorrelations,PValues]=correlateFluxWithTaxonAbundance(abundance,fluxes,taxonomy,corrMethod)
 %
 % INPUTS
 % abundance            Table of relative abundances with AGORA model IDs
 %                      of the strains as rows and sample IDs as columns
-% fluxes               Table with reaction IDs in microbiome 
-%                      community models as rows and sample IDs as columns
+% fluxes               Table of fluxes for reactions of interest with 
+%                      reaction IDs in microbiome community models as rows 
+%                      and sample IDs as columns
 % taxonomy             Table with information on the taxonomy of each
 %                      AGORA model strain
 % OPTIONAL INPUTS
-% corrMethod           String of method to compute the linear correlation
-%                      coefficient. Allowed inputs: Pearson (default),
-%                      Kendall, Spearman.
-% rxnsList             List of reactions in the flux table for which
-%                      correlations with taxon abundance should be
-%                      calculated (if left empty: all fluxes in table)
+% corrMethod           Method to compute the linear correlation
+%                      coefficient. Allowed inputs: 'Pearson' (default),
+%                      'Kendall', 'Spearman'.
 %
 % OUTPUT
 % FluxCorrelations     Structure with correlations between fluxes for each
 %                      reaction and abundances on taxon levels
-
-% define reaction list if not entered
-if ~exist(rxnsList,'var')
-    % get reaction ID list from fluxes input file
-    rxnsList=fluxes(2:end,1);
-end
+% PValues              p-values corresponding to each calculated
+%                      correlation
+%
+% AUTHOR:
+% - Almut Heinken, 03/2018
 
 % Define correlation coefficient method if not entered
-if ~exist(corrMethod,'var')
+if ~exist('corrMethod','var')
     corrMethod='Pearson';
 end
 
@@ -48,7 +43,9 @@ TaxonomyLevels={
     'Genus'
     'Species'
     };
-% extract the list of entries on each taxonomical level
+% extract the list of entries on each taxonomical level and prepare the
+% summarized abundance table
+fprintf('Calculating the relative abundances on all taxon levels. \n')
 for t=1:size(TaxonomyLevels,1)
     % find the columns corresponding to each taxonomy level and the list of
     % unique taxa
@@ -57,21 +54,35 @@ for t=1:size(TaxonomyLevels,1)
     taxa=unique(taxonomy(2:end,taxonCol));
     % exclude unclassified entries
     taxa(strncmp('unclassified',taxa,taxonCol))=[];
+    TaxonomyLevels{t,2}=taxa;
     for i=1:length(taxa)
         SampleAbundance.(TaxonomyLevels{t}){1,i+1}=taxa{i};
         for j=2:size(abundance,2)
             SampleAbundance.(TaxonomyLevels{t}){j,1}=abundance{1,j};
             SampleAbundance.(TaxonomyLevels{t}){j,i+1}=0;
-            % summarize the abundances of all strains belonging to the
-            % respective taxon
-            for k=2:size(abundance,1)
-                if strcmp(taxa{i},taxonomy(find(strcmp(abundance{k,1},taxonomy(:,1)))),taxonCol)
-                    SampleAbundance.(TaxonomyLevels{t}){j,i+1}=SampleAbundance.(TaxonomyLevels{t}){j,i+1}+abundance{k,j};
-                end
+        end
+    end
+end
+% Go through the abundance data and summarize taxon abundances for each
+% strain in at least one sample
+for i=2:size(abundance,2)
+    for j=2:size(abundance,1)
+        for t=1:size(TaxonomyLevels,1)
+            % find the taxon for the current strain
+            taxonCol=find(strcmp(taxonomy(1,:),TaxonomyLevels{t}));
+            findTax=taxonomy(find(strcmp(abundance{j,1},taxonomy(:,1))),taxonCol);
+            if isempty(strfind(findTax{1},'unclassified'))
+                % find the taxon for the current strain in the sample abundance
+                % variable
+                findinSampleAbun=find(strcmp(findTax,SampleAbundance.(TaxonomyLevels{t})(1,:)));
+                % sum up the relative abundance
+                SampleAbundance.(TaxonomyLevels{t}){i,findinSampleAbun}=SampleAbundance.(TaxonomyLevels{t}){i,findinSampleAbun}+abundance{j,i};
             end
         end
     end
-    % remove the taxa not present in samples or only present in small abundances
+end
+% remove the taxa not present in samples or only present in small abundances
+for t=1:size(TaxonomyLevels,1)
     delArray=[];
     cnt=1;
     for i=2:size(SampleAbundance.(TaxonomyLevels{t}),2)
@@ -79,37 +90,68 @@ for t=1:size(TaxonomyLevels,1)
             abun(j-1,1)=SampleAbundance.(TaxonomyLevels{t}){j,i};
         end
         if sum(abun) <0.005
-            delArray(cnt)=i;
+            delArray(cnt,1)=i;
             cnt=cnt+1;
         end
     end
-    SampleAbundance.(TaxonomyLevels{t})(delArray)=[];
+    SampleAbundance.(TaxonomyLevels{t})(:,delArray)=[];
 end
-
 % find the flux data for each reaction
+fprintf('Calculating the correlations between fluxes and abundances. \n')
 for i=2:size(fluxes,1)
     data=[];
-    for j=2:size(fluxes,2)
-        data(j,1)=str2double(string(fluxes{i,j}));
+    for m=2:size(fluxes,2)
+        data(m-1,1)=str2double(string(fluxes{i,m}));
     end
     for t=1:size(TaxonomyLevels,1)
         FluxCorrelations.(TaxonomyLevels{t}){1,i}=fluxes{i,1};
+        PValues.(TaxonomyLevels{t}){1,i}=fluxes{i,1};
         % find the abundance data for each taxon
         for j=2:size(SampleAbundance.(TaxonomyLevels{t}),2)
             FluxCorrelations.(TaxonomyLevels{t}){j,1}=SampleAbundance.(TaxonomyLevels{t}){1,j};
+            PValues.(TaxonomyLevels{t}){j,1}=SampleAbundance.(TaxonomyLevels{t}){1,j};
             % find the abundance data for each sample
+            dataTaxa=data;
             for k=2:size(SampleAbundance.(TaxonomyLevels{t}),1)
                 % match with correct individual in flux table
                 sampleInFluxes=find(strcmp(fluxes(1,:),SampleAbundance.(TaxonomyLevels{t}){k,1}));
-                data(j,sampleInFluxes)=str2double(string(SampleAbundance.(TaxonomyLevels{t}){k,1}));
+                dataTaxa(sampleInFluxes-1,2)=SampleAbundance.(TaxonomyLevels{t}){k,j};
             end
-            % first row is empty
-            data(1,:)=[];
             % calculate the correlation with the given correlation coefficient method
-            [RHO,PVAL] = corr(data(:,1),data(:,2),'type',corrMethod);
+            [RHO,PVAL] = corr(dataTaxa(:,1),dataTaxa(:,2),'type',corrMethod);
+            if isnan(RHO)
+                RHO=0;
+            end
+            if abs(RHO) < 0.0000000001
+                RHO=0;
+            end
             FluxCorrelations.(TaxonomyLevels{t}){j,i}=RHO;
+            PValues.(TaxonomyLevels{t}){j,i}=PVAL;
         end
     end
+end
+
+% Plot the calculated correlations.
+for t=1:length(TaxonomyLevels)
+    xlabels=FluxCorrelations.(TaxonomyLevels{t})(1,2:end);
+    ylabels=FluxCorrelations.(TaxonomyLevels{t})(2:end,1);
+    data=string(FluxCorrelations.(TaxonomyLevels{t})(2:end,2:end));
+    data=str2double(data);
+    figure;
+    imagesc(data)
+    colormap('cool')
+    colorbar
+    if length(xlabels)<50
+    set(gca,'xtick',1:length(xlabels));
+    xticklabels(xlabels);
+    xtickangle(90)
+    end
+     if length(ylabels)<50
+    set(gca,'ytick',1:length(ylabels));
+    yticklabels(ylabels);
+     end
+    set(gca,'TickLabelInterpreter', 'none');
+    title(TaxonomyLevels{t})
 end
 
 end

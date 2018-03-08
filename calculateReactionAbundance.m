@@ -1,37 +1,43 @@
-function [ReactionAbundance]=calculateReactionAbundance(abundance,modelFolder,taxonomy,rxnsList,numWorkers)
-% This function calculates the total abundance of reactions of interest in
-% a given microbiome sample based on the strain-level composition. 
+function [ReactionAbundance]=calculateReactionAbundance(abundance,modelPath,taxonomy,rxnsList,numWorkers)
+% Part of the Microbiome Modeling Toolbox. This function calculates and 
+% plots the total abundance of reactions of interest in a given microbiome 
+% sample based on the strain-level composition.
 %
 % USAGE
-% [ReactionAbundance]=calculateReactionAbundance(abundance,modelFolder,taxonomy,rxnsList,numWorkers)
+% [ReactionAbundance]=calculateReactionAbundance(abundance,modelPath,taxonomy,rxnsList,numWorkers)
 %
-% Reaction presence or absence in each strain is derived from the reaction content 
+% Reaction presence or absence in each strain is derived from the reaction content
 % of the respective AGORA model. Two outputs are given: the total abundance,
 % and optionally the abundance on different taxonomical levels.
 %
 % INPUT
-% abundance                  Table of relative abundances with AGORA model 
+% abundance                  Table of relative abundances with AGORA model
 %                            IDs of the strains as rows and sample IDs as columns
-% modelFolder                Folder containing the strain-specific AGORA models
+% modelPath                  Folder containing the strain-specific AGORA models
 % taxonomy                   Table with information on the taxonomy of each
 %                            AGORA model strain
 % OPTIONAL INPUTS
 % rxnsList                   List of reactions for which the abundance
-%                            should be calculated (if left empty: all reactions in all models)
+%                            should be calculated (if left empty: all
+%                            reactions in all models)
 % numWorkers                 Number of workers used for parallel pool. If
-%                            left empty, the parallel pool will not be started. Parallellization is 
-%                            recommended if all reactions are computed.
+%                            left empty, the parallel pool will not be
+%                            started. Parallellization is recommended if
+%                            all reactions are computed.
 %
 % OUTPUT
 % ReactionAbundance          Structure with abundance for each microbiome
 %                            and reaction in total and on taxon levels
+%
+% AUTHOR:
+% - Almut Heinken, 03/2018
 
 % define reaction list if not entered
-if ~exist(rxnsList,'var')
+if ~exist('rxnsList','var')
     fprintf('No reaction list entered. Abundances will be calculated for all reactions in all models. \n')
     % get model list from abundance input file
     for i=2:size(abundance,1)
-        load(strcat(modelFolder,abundance{i,1}));
+        load(strcat(modelPath,abundance{i,1}));
         rxnsList=vertcat(model.rxns,rxnsList);
     end
     rxnsList=unique(rxnsList);
@@ -40,7 +46,7 @@ end
 % load the models found in the individuals and extract which reactions are
 % in which model
 for i=2:size(abundance,1)
-    model = getDistributedModel([modelFolder abundance{i,1} '.mat']);
+    load(strcat(modelPath,abundance{i,1}));
     ReactionPresence{i,1}=abundance{i,1};
     for j=1:length(rxnsList)
         ReactionPresence{1,j+1}=rxnsList{j};
@@ -60,14 +66,14 @@ for j=1:length(rxnsList)
     ReactionAbundance.('Total'){1,j+1}=rxnsList{j};
 end
 
-    TaxonomyLevels={
-        'Phylum'
-        'Class'
-        'Order'
-        'Family'
-        'Genus'
-        'Species'
-        };
+TaxonomyLevels={
+    'Phylum'
+    'Class'
+    'Order'
+    'Family'
+    'Genus'
+    'Species'
+    };
 % extract the list of entries on each taxonomical level
 for t=1:size(TaxonomyLevels,1)
     % find the columns corresponding to each taxonomy level and the list of
@@ -100,7 +106,7 @@ for i=2:size(abundance,2)
         end
     end
     % use parallel pool if workers specified as input
-    if  exist(numWorkers,'var')
+    if  exist('numWorkers','var') && numWorkers>0
         poolobj=gcp('nocreate');
         if isempty(poolobj)
             parpool(numWorkers)
@@ -114,6 +120,7 @@ for i=2:size(abundance,2)
             orderAbun=zeros(length(rxnsList),length(TaxonomyLevels{3,2}));
             familyAbun=zeros(length(rxnsList),length(TaxonomyLevels{4,2}));
             genusAbun=zeros(length(rxnsList),length(TaxonomyLevels{5,2}));
+            speciesAbun=zeros(length(rxnsList),length(TaxonomyLevels{6,2}));
         end
         parfor j=1:length(rxnsList)
             % store the abundance for each reaction and taxon separately in a
@@ -124,6 +131,7 @@ for i=2:size(abundance,2)
                 tmpOrder=zeros(length(rxnsList),length(TaxonomyLevels{3,2}));
                 tmpFamily=zeros(length(rxnsList),length(TaxonomyLevels{4,2}));
                 tmpGenus=zeros(length(rxnsList),length(TaxonomyLevels{5,2}));
+                tmpSpecies=zeros(length(rxnsList),length(TaxonomyLevels{6,2}));
             end
             for k=2:size(abundance,1)
                 % check if the reaction is present in the strain
@@ -159,12 +167,19 @@ for i=2:size(abundance,2)
                             taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
                             tmpFamily(1,taxonCol)=tmpFamily(1,taxonCol)+abundance{k,i};
                         end
-                        % calculate class abundance
+                        % calculate genus abundance
                         t=5;
                         findTax=taxonomy(find(strcmp(abundance{k,1},taxonomy(:,1))),TaxonomyLevels{t,3});
                         if any(strcmp(findTax,TaxonomyLevels{t,2}))
                             taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
                             tmpGenus(1,taxonCol)=tmpGenus(1,taxonCol)+abundance{k,i};
+                        end
+                        % calculate species abundance
+                        t=6;
+                        findTax=taxonomy(find(strcmp(abundance{k,1},taxonomy(:,1))),TaxonomyLevels{t,3});
+                        if any(strcmp(findTax,TaxonomyLevels{t,2}))
+                            taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
+                            tmpSpecies(1,taxonCol)=tmpSpecies(1,taxonCol)+abundance{k,i};
                         end
                     end
                 end
@@ -175,6 +190,7 @@ for i=2:size(abundance,2)
                 orderAbun(j,:)=tmpOrder(1,:);
                 familyAbun(j,:)=tmpFamily(1,:);
                 genusAbun(j,:)=tmpGenus(1,:);
+                speciesAbun(j,:)=tmpSpecies(1,:);
             end
         end
     else
@@ -188,6 +204,7 @@ for i=2:size(abundance,2)
             orderAbun=zeros(length(rxnsList),length(TaxonomyLevels{3,2}));
             familyAbun=zeros(length(rxnsList),length(TaxonomyLevels{4,2}));
             genusAbun=zeros(length(rxnsList),length(TaxonomyLevels{5,2}));
+            speciesAbun=zeros(length(rxnsList),length(TaxonomyLevels{6,2}));
         end
         for j=1:length(rxnsList)
             for k=2:size(abundance,1)
@@ -224,12 +241,19 @@ for i=2:size(abundance,2)
                             taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
                             familyAbun(j,taxonCol)=familyAbun(j,taxonCol)+abundance{k,i};
                         end
-                        % calculate class abundance
+                        % calculate genus abundance
                         t=5;
                         findTax=taxonomy(find(strcmp(abundance{k,1},taxonomy(:,1))),TaxonomyLevels{t,3});
                         if any(strcmp(findTax,TaxonomyLevels{t,2}))
                             taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
                             genusAbun(j,taxonCol)=genusAbun(j,taxonCol)+abundance{k,i};
+                        end
+                        % calculate species abundance
+                        t=6;
+                        findTax=taxonomy(find(strcmp(abundance{k,1},taxonomy(:,1))),TaxonomyLevels{t,3});
+                        if any(strcmp(findTax,TaxonomyLevels{t,2}))
+                            taxonCol=find(strcmp(findTax,TaxonomyLevels{t,2}));
+                            speciesAbun(j,taxonCol)=speciesAbun(j,taxonCol)+abundance{k,i};
                         end
                     end
                 end
@@ -287,6 +311,15 @@ for i=2:size(abundance,2)
                 cnt=cnt+1;
             end
         end
+        % species abundance
+        t=6;
+        cnt=2;
+        for j=1:length(rxnsList)
+            for l=1:length(TaxonomyLevels{t,2})
+                ReactionAbundance.(TaxonomyLevels{t}){i,cnt}=speciesAbun(j,l);
+                cnt=cnt+1;
+            end
+        end
     end
 end
 
@@ -306,8 +339,31 @@ for i=1:length(fNames)
         end
     end
     if ~isempty(delArray)
-    ReactionAbundance.(fNames{i})(:,delArray)=[];
+        ReactionAbundance.(fNames{i})(:,delArray)=[];
     end
+end
+
+% Plot the calculated reaction abundances.
+for i=1:length(fNames)
+    xlabels=ReactionAbundance.(fNames{i})(1,2:end);
+    ylabels=ReactionAbundance.(fNames{i})(2:end,1);
+    data=string(ReactionAbundance.(fNames{i})(2:end,2:end));
+    data=str2double(data);
+    figure;
+    imagesc(data)
+    colormap('hot')
+    colorbar
+    if length(xlabels)<50
+        set(gca,'xtick',1:length(xlabels));
+        xticklabels(xlabels);
+        xtickangle(90)
+    end
+    if length(ylabels)<50
+        set(gca,'ytick',1:length(ylabels));
+        yticklabels(ylabels);
+    end
+    set(gca,'TickLabelInterpreter', 'none');
+    title(fNames{i})
 end
 
 end
