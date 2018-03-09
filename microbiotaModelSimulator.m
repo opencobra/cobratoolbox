@@ -104,6 +104,7 @@ for k=startIter:(patNumb+1)
     model.rxns(RxnInd)=EXrxn;
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',0.4,'l');
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',1,'u');
+    changeCobraSolver(solver)
     solution_allOpen=solveCobraLP(model);
     %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0); 
     if isnan(solution_allOpen.obj)
