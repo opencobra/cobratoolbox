@@ -23,7 +23,7 @@ function [Y]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,f
 %                       reactions repertoire 
 %
 % ..Author: - Federico Baldini, 2017-2018
-
+figure(1)
 imagesc(reacPat);
 colorbar
 xlabel('Individuals'); % x-axis label
@@ -31,8 +31,10 @@ ylabel('Organisms'); % y-axis label
 title('Heatmap individuals | organisms reactions')
 print(strcat(resPath,'Heatmap'),figForm)
 
+
 if patStat == 0
 %Plot:metabolic diversity
+figure(2)
 scatter(patOrg,reacNumber,60,jet(length(patOrg)),'filled')   
 xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
@@ -55,7 +57,7 @@ colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
         end
     end
 
-
+figure(2)
 scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');
 xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
@@ -66,10 +68,10 @@ end
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
 [Y,eigvals] = cmdscale(D);
+figure(3)
 P = [eigvals eigvals/max(abs(eigvals))];
 plot(Y(:,1),Y(:,2),'bx')
-P = [eigvals eigvals/sum(eigvals)]
-plot(Y(:,1),Y(:,2),'bx')
+
 %build numbers of patients
 %lab = 1:length(Y(:,1)) ;
 %lab = strread(num2str(a),'%s');
@@ -77,6 +79,7 @@ plot(Y(:,1),Y(:,2),'bx')
 %text(Y(:,1),Y(:,2),labels,'HorizontalAlignment','left');%to insert numbers
 title('PCoA of reaction presence');
 print(strcat(resPath,'PCoA reactions'),figForm)
+
 
 %Plot Eigen number value: diasbled by default
 %plot(1:length(eigvals),eigvals,'bo-');
@@ -88,8 +91,8 @@ print(strcat(resPath,'PCoA reactions'),figForm)
 %print(strcat(resPath,'Eigen number value'),figform)
 
 %3D PCoA plot
-scatter3(Y(:,1),Y(:,2),Y(:,3))
-print(strcat(resPath,'3D PCoA reactions'),figForm)
+%scatter3(Y(:,1),Y(:,2),Y(:,3))
+%print(strcat(resPath,'3D PCoA reactions'),figForm)
 %text(Y(:,1),Y(:,2),Y(:,3),labels,'HorizontalAlignment','left');%to insert numbers
 
 end
