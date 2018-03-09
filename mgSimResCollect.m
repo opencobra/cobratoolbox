@@ -63,6 +63,7 @@ if isempty(fvaCt{fl,(k-1)})==1
     fSp(:,k-1)=sp;
     noPcoa=1
 else
+    noPcoa=0
     sp=NaN(length(ID),1);%consider to remove preallocation
     for i = 1:length(ID)
         x=fvaCt{j,(k-1)}{i,3};
