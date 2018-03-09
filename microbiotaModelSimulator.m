@@ -37,22 +37,33 @@ ID = regexprep(allex,'\[d\]','\[fe\]');
 ID=unique(ID,'stable');
 ID=setdiff(ID,'EX_biomass[fe]','stable');
 
+
+
+mapP=detectOutput(resPath,'simRes.mat')
+if  ~isempty(mapP)
+    s= 'simulations already done, file found: loading from resPath';
+    disp(s)
+    load(strcat(resPath,'simRes.mat'))
+else
 %Cell array to store results
 fvaCt=cell(3,patNumb);
 nsCt=cell(3,patNumb); 
+inFesMat={}
+presol={}
 
 %Auto load for crashed simulations 
-resPathc=resPath(1:(length(resPath)-1));
-cd(resPathc);
-fnames = dir('*.mat');
-numfids = length(fnames);
-vals = cell(1,numfids);
-for K = 1:numfids
-    vals{K} = fnames(K).name;
-end
-vals=vals';
-
-mapP = strmatch('intRes.mat', vals, 'exact');
+mapP=detectOutput(resPath,'intRes.mat')
+%resPathc=resPath(1:(length(resPath)-1));
+% cd(resPathc);
+% fnames = dir('*.mat');
+% numfids = length(fnames);
+% vals = cell(1,numfids);
+% for K = 1:numfids
+%     vals{K} = fnames(K).name;
+% end
+% vals=vals';
+% 
+% mapP = strmatch('intRes.mat', vals, 'exact');
 if isempty(mapP)
     startIter=2
 else
@@ -66,7 +77,11 @@ else
             t=o 
         end
     end
+%     if t==patNumb %in this case simulation crashed at the last iter
+%         startIter=t+1
+%     else
     startIter=t+2
+%    end
 end
 %End of Auto load for crashed simulations 
 
@@ -89,7 +104,8 @@ for k=startIter:(patNumb+1)
     model.rxns(RxnInd)=EXrxn;
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',0.4,'l');
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',1,'u');
-    solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0); 
+    solution_allOpen=solveCobraLP(model);
+    %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0); 
     if isnan(solution_allOpen.obj)
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
         inFesMat{k,1}= model.name
@@ -132,12 +148,14 @@ for k=startIter:(patNumb+1)
 %Using standard diet
 
 model_sd=model;
-model_sd = setDietConstraints(model_sd,sDiet);
+[adaptedDiet] = adaptVMHDietToAGORA(sDiet,'Microbiota')
+[model_sd] = useDiet(model_sd, adaptedDiet)
     if exist('unfre') ==1 %option to directly add other essential nutrients 
        warning('Feasibility forced with addition of essential nutrients')
        model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')
     end
-solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
+solution_sDiet=solveCobraLP(model_sd);    
+%solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
 presol{k,2}=solution_sDiet.obj
  if isnan(solution_sDiet.obj) 
     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
@@ -170,7 +188,8 @@ presol{k,2}=solution_sDiet.obj
   end
 
 if extSolve==0
-   save(strcat(resPath,'intRes.mat'),'FVAct')  
+   save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
+    %save(strcat(resPath,'intRes.mat'),'fvaCt')  
 end  
   
   
@@ -223,6 +242,7 @@ end
 
 %Saving all output of simulations 
 if extSolve==0
-  save(strcat(resPath,'simRes.mat'),'FVAct','Presol','InFesMat', 'NSct')
+  save(strcat(resPath,'simRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
+end
 end
 end
