@@ -8,12 +8,13 @@
 
 %REQUIRED INPUT VARIABLES
 modPath='\'; %path to microbiota models
-infoPath='\'; %path to the information files
+dietFilePath='AverageEuropeanDiet'; %path to and name of the text file with dietary information
+% path to and name of the csv file with abundance information
+abunFilePath='normCoverageReduced.csv';
 resPath='\'; %path to results directory 
 objre={'EX_biomass(e)'}; %name of objective function of organisms
-sDiet='EUAverageDiet' %standard diet type
 figForm = '-depsc' %the output is vectorized picture, change to '-dpng' for .png
-nWok = 3; %number of cores dedicated for parallelization 
+numWorkers = 3; %number of cores dedicated for parallelization 
 autoFix = 1 %autofix for names mismatch
 compMod = 0; % if outputs in open formats should be produced for each section (1=T)
 patStat = 0; %if documentations on patient health status is provided (0 not 1 yes)
@@ -26,7 +27,7 @@ fvaType = 0;
 %PIPELINE LAUNCHER -> Please don't modify this section !
 autorun = 1
 if autorun==1
-    parpool(nwok)
+    parpool(numWorkers)
     disp('Well done! Pipeline successfully activated and running!')
     MgPipe
 else

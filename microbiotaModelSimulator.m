@@ -1,4 +1,4 @@
-function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,sDiet,rDiet,pDiet,extSolve,patNumb,fvaType)
+function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,pDiet,extSolve,patNumb,fvaType)
 % This function is called from the MgPipe pipeline. Its purpose is to apply 
 % different diets (according to the user’s input) to the microbiota models 
 % and run simulations computing FVAs on exchanges reactions of the microbiota 
@@ -9,7 +9,7 @@ function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,
 %    resPath:            char with path of directory where results are saved
 %    model:              "global setup" model in COBRA model structure format
 %    sampName:           cell array with names of individuals in the study
-%    sDiet:              char with name of standard diet to apply to all models
+%    dietFilePath:       path to and name of the text file with dietary information
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
@@ -104,7 +104,12 @@ for k=startIter:(patNumb+1)
     model.rxns(RxnInd)=EXrxn;
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',0.4,'l');
     model=changeRxnBounds(model,'EX_microbeBiomass[fe]',1,'u');
-    changeCobraSolver(solver)
+    % set a solver if not done yet
+    global CBT_LP_SOLVER
+    solver = CBT_LP_SOLVER;
+    if isempty(solver)
+        initCobraToolbox;
+    end
     solution_allOpen=solveCobraLP(model);
     %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0); 
     if isnan(solution_allOpen.obj)
@@ -149,7 +154,7 @@ for k=startIter:(patNumb+1)
 %Using standard diet
 
 model_sd=model;
-[adaptedDiet] = adaptVMHDietToAGORA(sDiet,'Microbiota')
+[adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota')
 [model_sd] = useDiet(model_sd, adaptedDiet)
     if exist('unfre') ==1 %option to directly add other essential nutrients 
        warning('Feasibility forced with addition of essential nutrients')

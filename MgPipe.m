@@ -23,8 +23,8 @@ else
     warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
 end
 
-if nWok<2
-   warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify nwok option.')
+if numWorkers<2
+   warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify numWorkers option.')
 end
 if patStat==0
     disp('Individuals health status not declared. Analysis will ignore that.')
@@ -33,7 +33,7 @@ end
 %%
 %Automatic detection of number of samples in the study 
 
-[patNumb,sampName,strains]=getIndividualSizeName(infoPath,abunFileName);
+[patNumb,sampName,strains]=getIndividualSizeName(infoPath,abunFilePath);
 
 %Auto load for PART1 -> if PART1 was already computed and is alreday
 %present in results folder its execution is skipped else its execution starts
@@ -83,7 +83,7 @@ models={[]}; %empty cell array to be filled with models
 
 
 %[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,'normCoverage.csv',patNumb)
-[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,abunFileName,patNumb)
+[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,infoPath,abunFilePath,patNumb)
 writetable(cell2table(reacAbun),strcat(resPath,'reactions.csv'))
 
 % Genomic Analysis section ->  Plotting section
@@ -209,7 +209,7 @@ end
 
 %Create microbiota models -> Integrate metagenomic data to create individualized models 
 
-[createdModels]=createPersonalizedModel(infoPath,resPath,abunFileName,setup,sampName,strains,patNumb)
+[createdModels]=createPersonalizedModel(infoPath,resPath,abunFilePath,setup,sampName,strains,patNumb)
 
 %%
 %[PART 3]

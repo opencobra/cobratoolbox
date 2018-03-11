@@ -137,6 +137,7 @@ modelStorage=cell(size(models));
 parfor j=1:size(models,1) 
     %for j=1:size(models,1)%to enable sequential mode 
     model=models{j,1};
+    model=convertOldStyleModel(model);
     exmod = model.rxns(strncmp('EX_', model.rxns,3));%find exchange reactions
     eMets=model.mets(~cellfun(@isempty,strfind(model.mets,'[e]')));%exchanged metabolites
     dummyMicEU=makeDummyModel(2*size(eMets,1),size(eMets,1));

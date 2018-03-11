@@ -1,4 +1,4 @@
-function [createdModels]=createPersonalizedModel(infoPath,resPath,fileName,model,sampName,orglist,patNumb)
+function [createdModels]=createPersonalizedModel(abunFilePath,resPath,model,sampName,orglist,patNumb)
 % This function creates personalized models from integration of given 
 % organisms abundances into the previously built “global” setup. Coupling 
 % constraints are also added for each organism. All the operations are
@@ -6,9 +6,8 @@ function [createdModels]=createPersonalizedModel(infoPath,resPath,fileName,model
 % format.
 %
 % INPUTS: 
-%   infoPath:           char with path of directory from where to retrieve information
+%   infoPath:           char with path of directory and file name from where to retrieve abundance information
 %   resPath:            char with path of directory where results are saved
-%   fileName:           char with name of file from which to retrieve information
 %   model:              "global setup" model in COBRA model structure format
 %   sampName:           cell array with names of individuals in the study
 %   orglist:            cell array with names of organisms in the study
@@ -17,11 +16,9 @@ function [createdModels]=createPersonalizedModel(infoPath,resPath,fileName,model
 % ..Author: Federico Baldini 2017-2018
 
 createdModels={};
-parfor k = 2:(patNumb+1)    
+for k = 2:(patNumb+1)    
     mgmodel=model
-    filename=strcat(infoPath,{fileName});
-    filename=cell2mat(filename);
-    [abundance]=readtable(filename);
+    [abundance]=readtable(abunFilePath);
     abundance = table2array(abundance(:,k+1));
     %retrieving current model ID
     id=sampName((k-1),1)
@@ -72,7 +69,9 @@ parfor k = 2:(patNumb+1)
     %Coupling constraints for bacteria 
     for i = 1:length(presBac)
         IndRxns=strmatch(presBac(i,1),mgmodel.rxns);%finding indixes of specific reactions 
-        mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),strcat(presBac(i,1),{'_biomass0'}),400,0.01); %couple the specific reactions 
+        % find the name of biomass reacion in the microbe model
+        bioRxn=mgmodel.rxns(find(strncmp(mgmodel.rxns,strcat(presBac(i,1),'_biomass'),length(char(strcat(presBac(i,1),'_biomass'))))));
+        mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0.01); %couple the specific reactions 
     end
     %finam.name=sampname((k-1),1); 
     %allmod(k,1)={finam};

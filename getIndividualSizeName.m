@@ -1,10 +1,9 @@
-function [indNumb,sampName,organisms]=getIndividualSizeName(infoPath, fileName)
+function [indNumb,sampName,organisms]=getIndividualSizeName(abunFilePath)
 % This function automatically detects name and number of individuals present 
 % in the study. 
 %
 % INPUTS: 
-%   infoPath:            char with path of directory from where to retrieve information
-%   fileName:            char with name of file from which to retreive information
+%   abunFilePath:        char with path and name of file from which to retrieve information
 %                     
 % OUTPUTS:               
 %   indNumb:             number of individuals in the study  
@@ -13,9 +12,7 @@ function [indNumb,sampName,organisms]=getIndividualSizeName(infoPath, fileName)
 %
 % ..Author: Federico Baldini 2017-2018
 
-fileName=strcat(infoPath,{fileName});
-fileName=cell2mat(fileName);
-[sampName]=readtable(fileName,'ReadVariableNames',false);
+[sampName]=readtable(abunFilePath,'ReadVariableNames',false);
 s=size(sampName);
 s=s(1,2);
 sampName=sampName(1,3:s);
@@ -25,7 +22,7 @@ indNumb=length(sampName);%number of individuals
 
 %getting info on present strains
 %Reading models names
-[strains]=readtable(fileName);
+[strains]=readtable(abunFilePath);
 strains=strains(:,2);
 organisms=table2cell(strains); %extracted names of models 
 end
