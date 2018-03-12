@@ -39,7 +39,7 @@ ID=setdiff(ID,'EX_biomass[fe]','stable');
 
 
 
-mapP=detectOutput(resPath,'simRes.mat')
+mapP=detectOutput(resPath,'simRes.mat');
 if  ~isempty(mapP)
     s= 'simulations already done, file found: loading from resPath';
     disp(s)

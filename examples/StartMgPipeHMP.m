@@ -25,13 +25,5 @@ fvaType = 0;
 %END OF REQUIRED INPUT VARIABLES
 
 %%
-%PIPELINE LAUNCHER -> Please don't modify this section !
-autorun = 1
-if autorun==1
-    parpool(nWok)
-    disp('Well done! Pipeline successfully activated and running!')
-    MgPipe
-else
-    warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ‘autorun’=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
-    edit('MgPipe.m')
-end
+%PIPELINE LAUNCHER 
+[init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figForm,solver,numWorkers,autoFix,compMod,patStat,rDiet,extSolve,fvaType,autorun]= initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet,extSolve,fvaType,autorun);

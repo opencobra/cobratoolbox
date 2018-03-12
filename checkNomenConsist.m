@@ -36,7 +36,9 @@ else
         organisms(i)=fixNam
         autoStat=1
         else
-            disp('No potential problems found in checking organisms’ nomenclature')
+            if i==length(organisms)
+                disp('No potential problems found in checking organisms’ nomenclature');
+            end
             autoStat=0;
             fixVec={};
         end

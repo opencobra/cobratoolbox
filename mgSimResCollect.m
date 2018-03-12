@@ -41,18 +41,18 @@ function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,fvaCt,figForm)
 %the simulation object.
 
 if rDiet ==0
-    init=2
+    init=2;
 else
-    init=1
+    init=1;
 end
 
 if pDiet==0
-    fl=2
+    fl=2;
 else
-    fl=3
+    fl=3;
 end
 
-names={'rich','standard','personalized'}
+names={'rich','standard','personalized'};
 for j=init:fl
 
 for k=2:patNumb+1
@@ -61,9 +61,9 @@ if isempty(fvaCt{fl,(k-1)})==1
     warning('NAN rows in fluxes matrix, no PCoA will be plotted')
     sp=NaN(length(ID),1);
     fSp(:,k-1)=sp;
-    noPcoa=1
+    noPcoa=1;
 else
-    noPcoa=0
+    noPcoa=0;
     sp=NaN(length(ID),1);%consider to remove preallocation
     for i = 1:length(ID)
         x=fvaCt{j,(k-1)}{i,3};
@@ -82,7 +82,7 @@ if noPcoa==1
 else
     JD = pdist(fSp','euclidean');
     [Y,eigvals] = cmdscale(JD);
-    P = [eigvals eigvals/max(abs(eigvals))]
+    P = [eigvals eigvals/max(abs(eigvals))];
     plot(Y(:,1),Y(:,2),'bx') 
     print(strcat(resPath,'PCoA_individuals_fluxes_',names{1,j}),figForm)
 end
