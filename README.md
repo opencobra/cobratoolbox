@@ -91,7 +91,7 @@ Some variables, in the input file, needs to be created/modified to specify input
 | objre        | name of objective function of microbes|
 | sDiet        | which type of diet to apply to the microbiota models|
 | figForm      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
-| nWok         | number of cores dedicated for parallelization|
+| nmbWok         | number of cores dedicated for parallelization|
 | autoFix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
 | compMod      | if outputs in open format should be produced for some sections (1=T)|
 | patStat      | if documentation on patient status is provided (0 not 1 yes)|
