@@ -32,6 +32,7 @@ if ~isempty(mapP)
     load(strcat(resPath,'mapInfo.mat'))
 end
 
+[mapP]=detectOutput(resPath,'mapInfo.mat')
 if isempty(mapP)
 % Loading models 
 models=loadUncModels(modPath,strains,objre);
