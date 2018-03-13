@@ -16,7 +16,7 @@ function [createdModels]=createPersonalizedModel(abunFilePath,resPath,model,samp
 % ..Author: Federico Baldini 2017-2018
 
 createdModels={};
-for k = 2:(patNumb+1)    
+parfor k = 2:(patNumb+1)    
     mgmodel=model
     [abundance]=readtable(abunFilePath);
     abundance = table2array(abundance(:,k+1));
