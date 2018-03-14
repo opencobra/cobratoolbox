@@ -68,8 +68,7 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
         FBAsolution = optimizeCbModel(modelIrrev);
         if (FBAsolution.stat ~= 1)
             not_solved=1;
-            display('Failed to solve initial FBA problem');
-            return
+            error('Failed to solve initial FBA problem');
         end
         maxObjective(i)=FBAsolution.f;
     end

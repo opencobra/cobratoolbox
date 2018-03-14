@@ -34,7 +34,6 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %       - Ronan Fleming, commenting of code and inputs/outputs
 %       - Anne Richelle, code adaptation to fit with createTissueSpecificModel
 
-
     if nargin < 4 || ~exist('printLevel','var')
         printlevel = 0;
     end
@@ -68,8 +67,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon);
     
     if ~isempty(setdiff(J, Supp))
-      fprintf ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
-      return;
+      error ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
     end
     
     A = Supp;
@@ -111,8 +109,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
             end
             if flipped || isempty(JiRev)
                 if singleton
-                    fprintf('\n fastcore.m Error: Global network is not consistent.\n');
-                    return
+                    error('\n fastcore.m Error: Global network is not consistent.\n');
                 else
                   flipped = false;
                   singleton = true;

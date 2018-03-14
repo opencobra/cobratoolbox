@@ -27,8 +27,7 @@ function [totalz, zscore, mdv1, mdv2] = compareTwoSamp(xglc, model, samp1, samp2
 % .. Author: - Wing Choi 2/11/08
 
 if (nargin < 4)
-    disp '[totalz,zscore,mdv1,mdv2] = compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)';
-    return;
+    error '[totalz,zscore,mdv1,mdv2] = compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)';
 end
 
 if (nargin < 5)

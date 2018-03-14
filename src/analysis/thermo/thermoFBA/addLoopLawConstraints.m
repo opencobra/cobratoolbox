@@ -64,6 +64,9 @@ if any(rxnIndex > size(LPproblem.A,2))
     return;
 end
 
+% Perhaps this should be moved before the "different ways of doing this" -
+% line 47, so the function will not crash retuning an undefined value?
+% Either that, or change the display/return to error?
 MILPproblem = LPproblem;
 
 S = model.S;

@@ -31,8 +31,7 @@ if nargin == 1
 end
 
 if length(fragment) ~= n
-    display('error in fragment length');
-    return;
+    error('error in fragment length');
 end
 
 ncarbons = sum(fragment)+1;

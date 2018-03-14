@@ -17,6 +17,7 @@ function [B, L] = greedyExtremePoolBasis(model)
 [inform,molecularVector]=checkStoichiometricConsistency(model,0); %check stoichiometric consistency
 if inform~=1 %check if positive vector in left nullspace
     B=[];
+    L=[]; % Returning empty vector for left nullspace so if it is expected matlab will keep running
     return;
 end
 
