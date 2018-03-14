@@ -43,7 +43,12 @@ The following files are supplied
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
 | StartMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
+| initMgPipe.m                                   | *function containing all the input variables launching the pipeline* |
+| loadUncModels.m                                | *function to load and unconstraint the models*                                             |
 | fastSetupCreator.m                             | *function to create "global" setup*                                             |
+| checkNomenConsist.m                            | *function to check that microbes have the right nomenclature *                                             |
+| detectOutput.m                                 | *function to check if a specific file was already created and saved *                                             |
+| getIndividualSizeName.m                        | *get information on number and ID of organisms and individuals*|
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
