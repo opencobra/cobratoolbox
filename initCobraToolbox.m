@@ -206,8 +206,7 @@ function initCobraToolbox()
     end
 
     %get the current content of the init Folder
-    [~, content] = system('git ls-files');
-    dirContent = strsplit(content, '\n');
+    dirContent = getFilesInDir('gitFileType','ignored');    
 
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
