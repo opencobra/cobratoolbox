@@ -137,14 +137,14 @@ for i=1:length(reducedGenesRxn1)
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
     sol=solveCobraLP(modelDel);
     fluxesKO.(strcat('JoinedModel_',Rxn1))(i) =sol;
-        OptSolKO.(strcat('JoinedModel_',Rxn1))(i,1) = string(reducedGenesRxn1{i});
-    OptSolRatio.(strcat('JoinedModel_',Rxn1))(i,1) = string(reducedGenesRxn1{i});
+        OptSolKO.(strcat('JoinedModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
+    OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
     if sol.stat ==1
-        OptSolKO.(strcat('JoinedModel_',Rxn1))(i,2) = fluxesKO.(strcat('JoinedModel_',Rxn1))(i).obj;
-        OptSolRatio.(strcat('JoinedModel_',Rxn1))(i,2) = str2double(OptSolKO.(strcat('JoinedModel_',Rxn1))(i,2))/ OptSolWT.(strcat('JoinedModel_',Rxn1));
+        OptSolKO.(strcat('JoinedModel_',Rxn1)){i,2} = fluxesKO.(strcat('JoinedModel_',Rxn1))(i).obj;
+        OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,2} = OptSolKO.(strcat('JoinedModel_',Rxn1)){i,2}/ OptSolWT.(strcat('JoinedModel_',Rxn1));
     else
-        OptSolKO.(strcat('JoinedModel_',Rxn1))(i,2) = 'Infeasible';
-        OptSolRatio.(strcat('JoinedModel_',Rxn1))(i,2) = 'Infeasible';
+        OptSolKO.(strcat('JoinedModel_',Rxn1)){i,2} = 'Infeasible';
+        OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,2} = 'Infeasible';
     end
     
     % For first model single
@@ -152,14 +152,14 @@ for i=1:length(reducedGenesRxn1)
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
     sol=solveCobraLP(modelDel);
     fluxesKO.(strcat('SingleModel_',Rxn1))(i) =sol;
-        OptSolKO.(strcat('SingleModel_',Rxn1))(i,1) = string(reducedGenesRxn1{i});
-    OptSolRatio.(strcat('SingleModel_',Rxn1))(i,1) = string(reducedGenesRxn1{i});
+        OptSolKO.(strcat('SingleModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
+    OptSolRatio.(strcat('SingleModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
     if sol.stat ==1
-        OptSolKO.(strcat('SingleModel_',Rxn1))(i,2) = fluxesKO.(strcat('SingleModel_',Rxn1))(i).obj;
-        OptSolRatio.(strcat('SingleModel_',Rxn1))(i,2) = str2double(OptSolKO.(strcat('SingleModel_',Rxn1))(i,2))/ OptSolWT.(strcat('SingleModel_',Rxn1));
+        OptSolKO.(strcat('SingleModel_',Rxn1)){i,2} = fluxesKO.(strcat('SingleModel_',Rxn1))(i).obj;
+        OptSolRatio.(strcat('SingleModel_',Rxn1)){i,2} = OptSolKO.(strcat('SingleModel_',Rxn1)){i,2}/ OptSolWT.(strcat('SingleModel_',Rxn1));
     else
-        OptSolKO.(strcat('SingleModel_',Rxn1))(i,2) = 'Infeasible';
-        OptSolRatio.(strcat('SingleModel_',Rxn1))(i,2) = 'Infeasible';
+        OptSolKO.(strcat('SingleModel_',Rxn1)){i,2} = 'Infeasible';
+        OptSolRatio.(strcat('SingleModel_',Rxn1)){i,2} = 'Infeasible';
     end
 end
 
@@ -195,14 +195,14 @@ for i=1:length(reducedGenesRxn2)
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
     sol=solveCobraLP(modelDel);
     fluxesKO.(strcat('JoinedModel_',Rxn2))(i) =sol;
-        OptSolKO.(strcat('JoinedModel_',Rxn2))(i,1) = string(reducedGenesRxn2{i});
-    OptSolRatio.(strcat('JoinedModel_',Rxn2))(i,1) = string(reducedGenesRxn2{i});
+        OptSolKO.(strcat('JoinedModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
+    OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
     if sol.stat ==1
-        OptSolKO.(strcat('JoinedModel_',Rxn2))(i,2) = fluxesKO.(strcat('JoinedModel_',Rxn2))(i).obj;
-        OptSolRatio.(strcat('JoinedModel_',Rxn2))(i,2) = str2double(OptSolKO.(strcat('JoinedModel_',Rxn2))(i,2))/ OptSolWT.(strcat('JoinedModel_',Rxn2));
+        OptSolKO.(strcat('JoinedModel_',Rxn2)){i,2} = fluxesKO.(strcat('JoinedModel_',Rxn2))(i).obj;
+        OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,2} = OptSolKO.(strcat('JoinedModel_',Rxn2)){i,2}/ OptSolWT.(strcat('JoinedModel_',Rxn2));
     else
-        OptSolKO.(strcat('JoinedModel_',Rxn2))(i,2) = 'Infeasible';
-        OptSolRatio.(strcat('JoinedModel_',Rxn2))(i,2) = 'Infeasible';
+        OptSolKO.(strcat('JoinedModel_',Rxn2)){i,2} = 'Infeasible';
+        OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,2} = 'Infeasible';
     end
     
     % For second model single
@@ -210,14 +210,14 @@ for i=1:length(reducedGenesRxn2)
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
     sol=solveCobraLP(modelDel);
     fluxesKO.(strcat('SingleModel_',Rxn2))(i) =sol;
-            OptSolKO.(strcat('SingleModel_',Rxn2))(i,1) = string(reducedGenesRxn2{i});
-    OptSolRatio.(strcat('SingleModel_',Rxn2))(i,1) = string(reducedGenesRxn2{i});
+            OptSolKO.(strcat('SingleModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
+    OptSolRatio.(strcat('SingleModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
     if sol.stat ==1
-        OptSolKO.(strcat('SingleModel_',Rxn2))(i,2) = fluxesKO.(strcat('SingleModel_',Rxn2))(i).obj;
-        OptSolRatio.(strcat('SingleModel_',Rxn2))(i,2) = str2double(OptSolKO.(strcat('SingleModel_',Rxn2))(i,2))/ OptSolWT.(strcat('SingleModel_',Rxn2));
+        OptSolKO.(strcat('SingleModel_',Rxn2)){i,2} = fluxesKO.(strcat('SingleModel_',Rxn2))(i).obj;
+        OptSolRatio.(strcat('SingleModel_',Rxn2)){i,2} = OptSolKO.(strcat('SingleModel_',Rxn2)){i,2}/ OptSolWT.(strcat('SingleModel_',Rxn2));
     else
-        OptSolKO.(strcat('SingleModel_',Rxn2))(i,2) = 'Infeasible';
-        OptSolRatio.(strcat('SingleModel_',Rxn2))(i,2) = 'Infeasible';
+        OptSolKO.(strcat('SingleModel_',Rxn2)){i,2} = 'Infeasible';
+        OptSolRatio.(strcat('SingleModel_',Rxn2)){i,2} = 'Infeasible';
     end
 end
 
@@ -226,45 +226,45 @@ end
 RescuedGenes=struct;
 % Original model 1
 rescue100cnt=1;
-rescue50cnt=1;
+rescuecnt=1;
 for i=1:length(reducedGenesRxn1)
-    if ~strcmp(OptSolRatio.(strcat('JoinedModel_',Rxn1))(i,2),'Infeasible') && ~strcmp(OptSolRatio.(strcat('SingleModel_',Rxn1))(i,2),'Infeasible')
+    if ~strcmp(OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,2},'Infeasible') && ~strcmp(OptSolRatio.(strcat('SingleModel_',Rxn1)){i,2},'Infeasible')
         % get the KO to WT ratio with paired species present
-        grRatioPaired=str2double(OptSolRatio.(strcat('JoinedModel_',Rxn1))(i,2));
+        grRatioPaired=OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,2};
         % get the KO to WT ratio without paired species present
-        grRatioSingle=str2double(OptSolRatio.(strcat('SingleModel_',Rxn1))(i,2));
+        grRatioSingle=OptSolRatio.(strcat('SingleModel_',Rxn1)){i,2};
         % find the genes for which deletion was lethal in single but not in
         % pairwise model
         if grRatioSingle<0.00001 && grRatioPaired>0.00001
-            RescuedGenes.(Rxn1).('RescuedLethalGenes'){rescue100cnt,1}=string(reducedGenesRxn1{i});
+            RescuedGenes.(Rxn1).('RescuedLethalGenes'){rescue100cnt,1}=char(reducedGenesRxn1{i});
             rescue100cnt=rescue100cnt+1;
-        elseif grRatioSingle<1 && grRatioSingle>0 && grRatioPaired>0.9
+        elseif grRatioSingle<0.9 && grRatioSingle>0 && grRatioPaired>0.99
             % find the genes for which growth was reduced in single but
             % not in pairwise model
-            RescuedGenes.(Rxn1).('RescuedGrowthImpairedGenes'){rescue50cnt,1}=string(reducedGenesRxn1{i});
-            rescue50cnt=rescue50cnt+1;
+            RescuedGenes.(Rxn1).('RescuedGrowthImpairedGenes'){rescuecnt,1}=char(reducedGenesRxn1{i});
+            rescuecnt=rescuecnt+1;
         end
     end
 end
 % Original model 2
 rescue100cnt=1;
-rescue50cnt=1;
+rescuecnt=1;
 for i=1:length(reducedGenesRxn2)
-    if ~strcmp(OptSolRatio.(strcat('JoinedModel_',Rxn2))(i,2),'Infeasible') && ~strcmp(OptSolRatio.(strcat('SingleModel_',Rxn2))(i,2),'Infeasible')
+    if ~strcmp(OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,2},'Infeasible') && ~strcmp(OptSolRatio.(strcat('SingleModel_',Rxn2)){i,2},'Infeasible')
         % get the KO to WT ratio with paired species present
-        grRatioPaired=str2double(OptSolRatio.(strcat('JoinedModel_',Rxn2))(i,2));
+        grRatioPaired=OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,2};
         % get the KO to WT ratio without paired species present
-        grRatioSingle=str2double(OptSolRatio.(strcat('SingleModel_',Rxn2))(i,2));
+        grRatioSingle=OptSolRatio.(strcat('SingleModel_',Rxn2)){i,2};
         % find the genes for which deletion was lethal in single but not in
         % pairwise model
         if grRatioSingle<0.00001 && grRatioPaired>0.00001
-            RescuedGenes.(Rxn2).('RescuedLethalGenes'){rescue100cnt,1}=string(reducedGenesRxn2{i});
+            RescuedGenes.(Rxn2).('RescuedLethalGenes'){rescue100cnt,1}=char(reducedGenesRxn2{i});
             rescue100cnt=rescue100cnt+1;
-        elseif grRatioSingle<1 && grRatioSingle>0 && grRatioPaired>0.9
+        elseif grRatioSingle<0.9 && grRatioSingle>0 && grRatioPaired>0.99
             % find the genes for which growth was reduced in single but
             % not in pairwise model
-            RescuedGenes.(Rxn2).('RescuedGrowthImpairedGenes'){rescue50cnt,1}=string(reducedGenesRxn2{i});
-            rescue50cnt=rescue50cnt+1;
+            RescuedGenes.(Rxn2).('RescuedGrowthImpairedGenes'){rescuecnt,1}=char(reducedGenesRxn2{i});
+            rescuecnt=rescuecnt+1;
         end
     end
 end
