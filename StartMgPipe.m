@@ -8,30 +8,38 @@
 
 %REQUIRED INPUT VARIABLES
 
-%path to microbiota models
-modPath='\';
-%path to and name of the text file with dietary information
-dietFilePath='AverageEuropeanDiet'; 
-% path to and name of the csv file with abundance information
-abunFilePath='normCoverageReduced.csv';
-%path to results directory 
-resPath='\'; 
-%name of objective function of organisms
+% path to microbiota models
+modPath='YOUR_PATH_TO_AGORA\';
+% path to where the Microbiome Modeling Toolbox is located
+toolboxPath='YOUR_PATH_TO_Microbiome_Modeling_Toolbox\'
+% path where to save results
+resPath='YOUR PATH TO RESULT FOLDER\' ;
+% path to and name of the file with dietary information.
+dietFilePath=strcat(toolboxPath,'DietImplementation/AverageEuropeanDiet');
+% path to and name of the file with abundance information.
+abunFilePath=strcat(toolboxPath,'Resources/normCoverage.csv');
+% name of objective function of organisms
 objre={'EX_biomass(e)'};
 %the output is vectorized picture, change to '-dpng' for .png
-figForm = '-depsc' 
-%number of cores dedicated for parallelization 
+figForm = '-depsc'
+% which solver (and interface) to use
+solver = 'tomlab_cplex'
+% number of cores dedicated for parallelization 
 numWorkers = 3;
-%autofix for names mismatch
+% autofix for names mismatch
 autoFix = 1 
 % if outputs in open formats should be produced for each section (1=T)
 compMod = 0; 
-%if documentations on patient health status is provided (0 not 1 yes)
-patStat = 0;
-%to enable also rich diet simulations 
-rDiet = 0 
-extSolve = 0 
-fvaType = 0;
+% if documentations on patient health status is provided (0 not 1 yes)
+patStat = 0; 
+% to enable also rich diet simulations 
+rDiet = 0; 
+% if if to use an external solver and save models with diet
+extSolve = 0; 
+% the type of FVA function to use to solve
+fvaType = 1; 
+% Additionally we will tourn off the autorun to be able to manually execute each part of the pipeline.
+autorun=0; 
 %END OF REQUIRED INPUT VARIABLES
 
 %%
