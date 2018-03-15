@@ -150,9 +150,9 @@ end
 
 % plot the resulting Pareto frontier and save the plot
 figure;
-fluxes1=str2double(string(ParetoFrontier(2:end,2)));
-fluxes2=str2double(string(ParetoFrontier(2:end,3)));
-scatter(fluxes1,fluxes2,'b','full');
+fluxes1=cell2mat(ParetoFrontier(2:end,2));
+fluxes2=cell2mat(ParetoFrontier(2:end,3));
+scatter(fluxes1,fluxes2);
 h=xlabel(rxn1);
 set(h,'interpreter','none');
 h=ylabel(rxn2);
