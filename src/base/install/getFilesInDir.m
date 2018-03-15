@@ -2,7 +2,9 @@ function files = getFilesInDir(varargin)
 % List all files in the supplied (git tracked) Directory with their absolute path name
 % based on the git ls-file command. This command will never list git
 % specific files (i.e. files in .git folders or the git specific attribute
-% files e.g. .gitignore)
+% files e.g. .gitignore) if the directory is not git controlled, the
+% gitTypeFlag is assumed to be 'all' and all files (except for .git files
+% will be returned.
 %
 % USAGE:
 %    files = getFilesInDir(varargin)
@@ -21,6 +23,9 @@ function files = getFilesInDir(varargin)
 %                                              and not tracked. (new files)
 %                                'all'  - all files except for the git
 %                                         specific files (e.g. .git, .gitignore etc).                               
+%                                'COBRAIgnored' - use the COBRA gitIgnore
+%                                                 file to determine the
+%                                                 ignored files.
 %                                (Default: 'all')   
 %                  restrictToPattern - give a regexp pattern to filter the
 %                                      files, this option is ignored if
@@ -36,7 +41,13 @@ function files = getFilesInDir(varargin)
 %    Get only the gitIgnored files in the current folder
 %    files = getFilesInDir('gitTypeFlag', 'ignored');
 
-gitFileTypes = {'tracked','all','untracked','ignored'};
+persistent COBRAIgnored
+
+if isempty(COBRAIgnored)
+    COBRAIgnored = regexptranslate('wildcard',getIgnoredFiles());
+end
+
+gitFileTypes = {'tracked','all','untracked','ignored','COBRAIgnored'};
 parser = inputParser();
 parser.addParamValue('dirToList',pwd,@(x) exist(x,'file') == 7);
 parser.addParamValue('gitTypeFlag','all',@(x) ischar(x) && any(strcmpi(x,gitFileTypes)));
@@ -50,26 +61,56 @@ currentDir = cd(parser.Results.dirToList);
 absPath = pwd;
 %get all files in the directory.
 gitType = lower(parser.Results.gitTypeFlag);
+
+%test, whether the folder is git controlled
+[gitStatus,~] = system('git status');
+if gitStatus ~= 0 && ~strcmpi(gitType,'cobraignored')
+    gitType = 'all';
+end
+
 switch gitType
     case 'all'
-        [~, trackedfiles] = system('git ls-files');
-        trackedfiles = strsplit(trackedfiles, '\n');
-        [~, untrackedfiles] = system('git ls-files -o');
-        untrackedfiles = strsplit(untrackedfiles, '\n');
-        files = [trackedfiles,untrackedfiles];
+        if gitStatus == 0
+            [status, trackedfiles] = system('git ls-files');             
+            [status, untrackedfiles] = system('git ls-files -o');        
+            trackedfiles = strsplit(trackedfiles, '\n');
+            untrackedfiles = strsplit(untrackedfiles, '\n');
+            files = [trackedfiles,untrackedfiles];
+        else
+           files = rdir(['**' filesep '*']); 
+           files = {files.name}'; %Need to transpose to give consistent results.
+        end
+            
     case 'tracked'
-        [~, files] = system('git ls-files');
+        [status, files] = system('git ls-files');
         files = strsplit(files, '\n');
     case 'untracked'
         %Files, which are not tracked but are not ignored.
-        [~, files] = system('git ls-files -o -exclude-standard');
+        [status, files] = system('git ls-files -o -exclude-standard');
         files = strsplit(files, '\n');
     case 'ignored'
         [~, files] = system('git ls-files -o -i --exclude-standard');        
         files = strsplit(files, '\n');
+    case 'cobraignored'
+        if gitStatus == 0
+            [status, trackedfiles] = system('git ls-files');             
+            [status, untrackedfiles] = system('git ls-files -o');        
+            trackedfiles = strsplit(trackedfiles, '\n');
+            untrackedfiles = strsplit(untrackedfiles, '\n');
+            files = [trackedfiles,untrackedfiles];
+        else
+           files = rdir(['**' filesep '*']); 
+           files = {files.name}'; %Need to transpose to give consistent results.
+        end  
+        matching = false(size(files));
+        for i = 1:numel(COBRAIgnored)
+            matching = matching | ~cellfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
+        end
+        files = files(matching);
+        
 end
 
-files = strcat(absPath, files);
+files = strcat(absPath, filesep, files);
 
 %Filter according to the restriction pattern.
 if ~isempty(parser.Results.restrictToPattern)
@@ -77,3 +118,7 @@ if ~isempty(parser.Results.restrictToPattern)
 end
 
 cd(currentDir);
+end
+
+
+

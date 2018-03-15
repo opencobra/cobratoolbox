@@ -547,7 +547,7 @@ function initCobraToolbox()
     cd(currentDir);
 
     % cleanup at the end of the successful run
-    removeGitIgnoredNewFiles(CBTDIR, dirContent);
+    removeTempFiles(CBTDIR, dirContent);
 
     % clear all temporary variables
     % Note: global variables are kept in memory - DO NOT clear all the variables!
