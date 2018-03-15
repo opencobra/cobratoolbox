@@ -45,8 +45,7 @@ initCobraToolbox;
 
 %Init the cleanup:
 currentDir = cd('test');
-[~, testDirContent] = system('git ls-files');
-testDirContent = strsplit(testDirContent, '\n');
+testDirContent = getFilesInDir('gitTypeFlag','ignored');
 testDirPath = pwd;
 cd(currentDir);
 
@@ -83,8 +82,8 @@ if COVERAGE
     ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
     
     
-    % check the code quality
-    listFiles = rdir(['./src', '/**/*.m']);
+    % check the code quality    
+    listFiles = getFilesInDir('gitFileType','tracked','restrictToPattern','*.m$');
 
     % count the number of failed code quality checks per file
     nMsgs = 0;
@@ -93,18 +92,12 @@ if COVERAGE
     nCommentLines = 0;
 
     for i = 1:length(listFiles)
-        nMsgs = nMsgs + length(checkcode(listFiles(i).name));
+        nMsgs = nMsgs + length(checkcode(listFiles(i)));
 
-        fid = fopen(listFiles(i).name);
+        fid = fopen(listFiles(i));
 
         % check if the file is on the ignored list
         countFlag = true;
-        for k = 1:length(ignoreFiles)
-            if ~isempty(strfind(listFiles(i).name, ignoreFiles{k}))
-                countFlag = false;
-            end
-        end
-
         while ~feof(fid) && countFlag
             lineOfFile = strtrim(char(fgetl(fid)));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
