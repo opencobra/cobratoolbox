@@ -223,12 +223,17 @@ try
     end
 
     fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
+    
+    %clean up temporary files.
+    removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         exit(exit_code);
     end
 catch ME
+    %Also clean up temporary files in case of an error.
+    removeGitIgnoredNewFiles(testDirPath,testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         % only exit on jenkins.
         exit(1);
@@ -239,7 +244,6 @@ catch ME
     end
 end
 
-removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)
