@@ -11,7 +11,4 @@ There are six possible interactions between bacteria that can be predicted with 
 
 This method was used to join the AGORA resource, consisting of 773 gut microbial metabolic reconstructions, in every possible combination (~300,000 total) and predict the interactions between each pair on two diets in the absence and presence of oxygen. Please see Magnusdottir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89 (PMID:27893703) for a detailed description of the simulation results.
 
-The LiveScript runMicrobeInteractionAnalysis.mlx located in the Tutorials folder provides an example application using the AGORA resource (PMID:27893703). The script may be adapted to users' own genome-scale reconstructions and/or simulation conditions as convenient.The tutorial consists of three steps:
-1. Creation of pairwise microbe models in all possible combinations from a given list of microbe reconstructions.
-2. Simulation of the pairwise interactions for the created microbe-microbe models on four dietary conditions.
-3. Visualization of interactions displayed in total and on the genus, family, order, class, and phylum level.
+The LiveScripts MicrobeMicrobeInteractions.mlx and HostMicrobeInteractions.mlx located in the Tutorials folder provide examples application using the AGORA resource (PMID:27893703).
