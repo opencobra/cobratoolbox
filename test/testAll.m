@@ -45,7 +45,8 @@ initCobraToolbox;
 
 %Init the cleanup:
 currentDir = cd('test');
-testDirContent = rdir(['**' filesep '*']);
+[~, testDirContent] = system('git ls-files');
+testDirContent = strsplit(testDirContent, '\n');
 testDirPath = pwd;
 cd(currentDir);
 
