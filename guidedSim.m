@@ -8,9 +8,9 @@ function [minFlux,maxFlux]= guidedSim(model,fvaType,rl)
 %    model:         COBRA model structure with n joined microbes with biomass
 %                   metabolites 'Microbe_biomass[c]'.
 %    fvaType:       double indicating what FVA function to use 
-%                   fvaType=1 for fastFVA; fvaType=0 for fastFVAex; fvaType=3 
-%                   for fluxVariability
+%                   fvaType=1 for fastFVA; fvaType=0 for fluxVariability.
 %    rl:            nx1 vector with the reactions of interest.
+%    solver:        char with slver name to use.
 %
 % OUTPUTS:
 %   minFlux:      Minimum flux for each reaction
@@ -33,14 +33,9 @@ if fvaType == 1
  if fvaType == 0 
      warning('Normal FVA in use with CPLEX solver: consider using fastFVA  > fvaType=1')
      model.S=model.A
-     changeCobraSolver('cplex','all')
+     %changeCobraSolver(solver,'all')
      [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl)
  end 
- if fvaType == 3 
-     warning('Normal FVA in use with GLPK solver: consider using fastFVA  > fvaType=1')
-     model.S=model.A
-     changeCobraSolver('glpk','all')
-     [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl)
- end
+
 end
  
