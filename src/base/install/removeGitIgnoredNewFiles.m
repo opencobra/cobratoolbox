@@ -14,7 +14,7 @@ function removeGitIgnoredNewFiles(directory, oldcontent)
 currentDir = cd(directory);
 
 % get the new Content of the folder.
-newContent = getFilesInDir('gitFileType','ignored');
+newContent = getFilesInDir('gitTypeFlag','ignored');
 
 % get all .log files that were present only after initCobraToolbox was called.
 newIgnoredFiles = setdiff(newContent, oldcontent);
