@@ -53,17 +53,6 @@ presol={}
 
 %Auto load for crashed simulations 
 mapP=detectOutput(resPath,'intRes.mat')
-%resPathc=resPath(1:(length(resPath)-1));
-% cd(resPathc);
-% fnames = dir('*.mat');
-% numfids = length(fnames);
-% vals = cell(1,numfids);
-% for K = 1:numfids
-%     vals{K} = fnames(K).name;
-% end
-% vals=vals';
-% 
-% mapP = strmatch('intRes.mat', vals, 'exact');
 if isempty(mapP)
     startIter=2
 else
@@ -77,11 +66,7 @@ else
             t=o 
         end
     end
-%     if t==patNumb %in this case simulation crashed at the last iter
-%         startIter=t+1
-%     else
     startIter=t+2
-%    end
 end
 %End of Auto load for crashed simulations 
 
@@ -195,7 +180,7 @@ presol{k,2}=solution_sDiet.obj
 
 if extSolve==0
    save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
-    %save(strcat(resPath,'intRes.mat'),'fvaCt')  
+   
 end  
   
   
