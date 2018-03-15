@@ -717,6 +717,7 @@ switch solver
 %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
 %             pasue(eps)
         end
+        % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
         if (isfield(res, 'sol'))
             if isfield(res.sol, 'itr')
                 origStat = res.sol.itr.solsta;
@@ -726,7 +727,30 @@ switch solver
                     stat = 1; % Optimal solution found
                     x=res.sol.itr.xx; % primal solution.
                     y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
+                    
                     w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+                                        
+                    %slack for blc <= A*x <= buc
+                    s = zeros(size(csense,1),1);
+                    if ~isempty(csense)
+                        %slack for A*x <= b
+                        s_U =  blc - A*x;
+                        s(csense == 'L') = s_U(csense == 'L');
+                        %slack for b <= A*x
+                        s_L =  buc + A*x;%TODO, needs testing
+                        s(csense == 'G') = s_L(csense == 'G');
+               
+                    end
+                    
+                    %debugging
+                    if 0
+                        norm(osense*c -A'*y -w)
+                        y2=res.sol.itr.slc-res.sol.itr.suc;
+                        norm(osense*c -A'*y2 -w)
+                        norm(A*x + s -b)
+                        pause
+                    end
+                    
                     % TODO  -work this out with Erling
                     % override if specific solver selected
                     if isfield(param,'MSK_IPAR_OPTIMIZER')
@@ -995,7 +1019,7 @@ switch solver
         switch resultgurobi.status
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
-                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc);
+                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc,resultgurobi.slack);
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
@@ -1489,14 +1513,29 @@ if stat == -1
     end
 end
 
+%TODO  pull out slack variable from every solver interface
+if ~exist('s','var')
+    s = zeros(size(A,1),1);
+end
+
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     %% Assign solution
     t = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
-    [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
-        deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
+    [solution.full,solution.obj,solution.rcost,solution.dual,solution.slack,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
+        deal(x,f,w,y,s,solver,algorithm,stat,origStat,t,basis);
 elseif strcmp(solver,'mps')
     solution = [];
+end
+
+if solution.stat==1 && ~strcmp(solver,'matlab')%TODO check for matlab
+    %TODO slacks
+    res=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
+    tmp=norm(res(strcmp(LPproblem.csense,'E')));
+    if tmp > optTol*10
+        disp(solution.origStat)
+        error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp) ', while optTol = ' num2str(optTol)])
+    end
 end
 
 function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)

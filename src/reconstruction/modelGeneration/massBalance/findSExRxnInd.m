@@ -13,10 +13,12 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %
 % INPUT:
 %    model:         structure with:
-%
-%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
+%                           
+%                     * S - m x n stoichiometric matrix
 %
 % OPTIONAL INPUT:
+%    model:         structure with:             
+%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
 %    nRealMet:      specified in case extra rows in `S` which dont correspond to metabolties
 %    printLevel:    verbose level
 %

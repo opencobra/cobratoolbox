@@ -1,15 +1,7 @@
 function solution = optimizeCardinality(problem, params)
-% DC programming for solving the weighted cardinality optimization problem
-% 
-% In general, the `l0` norm is approximated by capped-`l1` function.
-% :math:`min c'(x, y, z) + diag(lambda)*||x||_0 - diag(delta)*||y||_0`
-% s.t. :math:`A*(x, y, z) <= b`
-% :math:`l <= (x,y,z) <= u`
-% :math:`x in R^p, y in R^q, z in R^r`
-%
-% In the particular case where the problem is sparse minimisation, then a
-% variety of approximations to the 'l0' norm are available.
-% :math:`min diag(lambda)*||x||_0
+% DC programming for solving the cardinality optimization problem
+% The `l0` norm is approximated by capped-`l1` function.
+% :math:`min c'(x, y, z) + lambda*||x||_0 - delta*||y||_0`
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -26,9 +18,7 @@ function solution = optimizeCardinality(problem, params)
 %                   * .r - size of vector `z`
 %                   * .c - `(p+q+r) x 1` linear objective function vector
 %                   * .lambda - trade-off parameter of `||x||_0`
-%                             - scalar, or size of vector `x`
 %                   * .delta - trade-off parameter of `||y||_0`
-%                             - scalar, or size of vector `y`
 %                   * .A - `s x (p+q+r)` LHS matrix
 %                   * .b - `s x 1` RHS vector
 %                   * .csense - `s x 1` Constraint senses, a string containting the constraint sense for
@@ -56,9 +46,7 @@ function solution = optimizeCardinality(problem, params)
 %                     * 0 =  Infeasible
 %                     * -1=  Invalid input
 %
-
 % .. Author: - Hoai Minh Le, 07/03/2016
-%              Ronan Fleming, 08/03/2016 - weighted zero norm
 
 stop = false;
 solution.x = [];
@@ -122,52 +110,12 @@ else
     end
 end
 
-if isfield(problem,'lambda') == 0
-    if problem.p==0
-        problem.lambda=0;
-    else
-        problem.lambda = ones(problem.p,1);
-    end
-else
-    problem.lambda = columnVector(problem.lambda);
-    pActual=size(problem.lambda,1);
-    switch pActual
-        case 1
-            if problem.p==0
-                problem.lambda=0;
-            else
-                problem.lambda = ones(problem.p,1);
-            end
-        case problem.p
-            problem.lambda=problem.lambda;
-        otherwise
-            solution.stat = -1;
-            error(['lambda must be a scalar or have the same dimensions as px 1, but it''s dim = ' size(params.p)])
-    end
+if isfield(problem,'delta') == 0
+    problem.delta = 1;
 end
 
-if isfield(problem,'delta') == 0
-    if problem.q==0
-        problem.delta=0;
-    else
-        problem.delta = ones(problem.q,1);
-    end
-else
-    problem.delta = columnVector(problem.delta);
-    pActual=size(problem.delta,1);
-    switch pActual
-        case 1
-            if problem.q==0
-                problem.delta=0;
-            else
-                problem.delta = ones(problem.q,1);
-            end
-        case problem.q
-            problem.delta=problem.delta;
-        otherwise
-            solution.stat = -1;
-            error(['delta must be a scalar or have the same dimensions as q x 1, but it''s dim = ' size(params.q)])
-    end
+if isfield(problem,'lambda') == 0
+    problem.lambda = 1;
 end
 
 if isfield(problem,'A') == 0
@@ -236,7 +184,6 @@ else
     end
 end
 
-
 [nbMaxIteration,epsilon,theta] = deal(params.nbMaxIteration,params.epsilon,params.theta);
 [p,q,r] = deal(problem.p,problem.q,problem.r);
 [c,lambda,delta] = deal(problem.c,problem.lambda,problem.delta);
@@ -258,7 +205,7 @@ y_bar   = zeros(q,1);
 %           l <= (x,y,z) <=u
 %           x in R^p, y in R^q, z in R^r
 
-obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);diag(lambda)*ones(p,1)];
+obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);lambda*ones(p,1)];
 % Constraints
 % A*[x;y;z] <=b
 % w >= x
@@ -303,7 +250,7 @@ end
 %objective function changes, the constraints set remains.
 % Define objective - variable (x,y,z,w,t)
 %obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda*theta*ones(p,1);delta*ones(q,1)];
-obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);theta*diag(lambda)*ones(p,1);-diag(delta)*ones(q,1)];%was missing negative sign
+obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda*theta*ones(p,1);-delta*ones(q,1)];%was missing negative sign
 
 % Constraints
 % A*[x;y;z] <=b
@@ -340,19 +287,13 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     %Compute (x_bar,y_bar,z_bar) in subgradient of second DC component (z_bar = 0)
     x(abs(x) < 1/theta) = 0;
-    x_bar = diag(lambda)*sign(x)*theta;
-    y_bar = diag(delta)*sign(y)*theta;
+    x_bar = sign(x)*theta*lambda;
+    y_bar = sign(y)*theta*delta;
 
     %Solve the linear sub-program to obtain new x
     [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,p,q,r,c,x_bar,y_bar,lb,ub,theta,lambda,delta);
 
     switch LPsolution.stat
-        case -1
-            solution.x = [];
-            solution.y = [];
-            solution.z = [];
-            solution.stat = -1;
-            error(['No solution reported (timelimit, numerical problem etc). Solver original status is: ' LPsolution.origStat]);
         case 0
             solution.x = [];
             solution.y = [];
@@ -380,18 +321,10 @@ while nbIteration < nbMaxIteration && stop ~= true,
                 theta = theta * 1.5;
             end
             nbIteration = nbIteration + 1;
-            if 0
-            disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-            disp(strcat('Obj:',num2str(obj_new)));
-            disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
-            disp('=================================');
-            end
-        otherwise
-            solution.x = [];
-            solution.y = [];
-            solution.z = [];
-            solution.stat = -1;
-            error(['No solution reported (timelimit, numerical problem etc). Solver original status is: ' LPsolution.origStat]);
+%             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
+%             disp(strcat('Obj:',num2str(obj_new)));
+%             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
+%             disp('=================================');
     end
 end
 if solution.stat == 1
@@ -407,11 +340,41 @@ function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLP
 
     % Change the objective - variable (x,y,z,w,t)
     %subLPproblem.obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda*theta*ones(p,1);delta*ones(q,1)];
-    subLPproblem.obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);diag(lambda)*theta*ones(p,1);-diag(delta)*ones(q,1)];%was missing negative sign
+    subLPproblem.obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda*theta*ones(p,1);-delta*ones(q,1)];%was missing negative sign
     subLPproblem.ub  = [ub;max(abs(lb(1:p)),abs(ub(1:p)));theta*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];
 
+    %debugging problematic example
+    if 0
+        A=subLPproblem.A;
+        [mlt,nlt]=size(A);
+        % determine the vector with all singular values (including zeros)
+        svVectAll = svds(A, min(mlt, nlt));
+        The singular values and their cut-off can be illustrated as follows:
+        % plot the singular values
+        figure;
+        
+        % plot the singular values up to rankS
+        semilogy(linspace(1, length(svVect), length(svVect)), svVect, '*');
+        
+        % plot all singular values
+        hold on;
+        semilogy(linspace(1, length(svVectAll), length(svVectAll)), svVectAll, 'ro');
+        
+        % set the font size of the current figure axes, show a legend and minor grid axes
+        set(gca, 'fontsize', 14);
+        legend('svds (up to rankS)', 'svds (all)')
+        grid minor;
+        
+        % set the label
+        xlabel('Number of the singular value');
+        ylabel('Magnitude of the singular value');
+        
+        hold off;
+    end
+    
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
+
 
     if LPsolution.stat == 1
         x = LPsolution.full(1:p);
@@ -429,5 +392,5 @@ end
 function obj = optimizeCardinality_cappedL1_obj(x,y,z,c,lambda,delta,theta)
     p = length(x);
     q = length(y);
-    obj = c'*[x;y;z] + ones(p,1)'*diag(lambda)*min(ones(p,1),theta*abs(x)) - ones(q,1)'*diag(delta)*min(ones(q,1),theta*abs(y));%note the negative sign here
+    obj = c'*[x;y;z] + lambda*ones(p,1)'*min(ones(p,1),theta*abs(x)) - delta*ones(q,1)'*min(ones(q,1),theta*abs(y));%note the negative sign here
 end

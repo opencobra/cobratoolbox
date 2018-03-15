@@ -44,7 +44,7 @@ feasTol = getCobraSolverParams('LP', 'feasTol');
 % Format inputs
 if ~exist('params','var')
     params.nbMaxIteration = 1000;
-    params.eta = feasTol*100;
+    params.eta = feasTol*1000;%changed to 1000
     params.zeta = 1e-6;
     params.theta   = 0.5;    %parameter of capped l1 approximation
     params.epsilon = 1e-4;

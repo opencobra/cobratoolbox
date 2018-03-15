@@ -369,7 +369,7 @@ if strcmp(minNorm, 'one')
         % constraints are equalities.
         LPproblem2.csense(1:nMets) = 'E';
     else % if csense is in the model, move it to the lp problem structure
-        if length(model.csense)~=nMets,
+        if length(model.csense)~=nMets
             warning('Length of csense is invalid! Defaulting to equality constraints.')
             LPproblem2.csense(1:nMets) = 'E';
         else
