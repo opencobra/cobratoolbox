@@ -99,7 +99,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %                     get rid of net flux around loops
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
-%     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+%     mosek           Mosek QP solver with Matlab API
 %     pdco            PDCO solver
 %     tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
 %     ============    ============================================================
