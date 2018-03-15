@@ -55,11 +55,11 @@ variables) are not properly set.
 
 .. code::
 
-    global CBT_SOLVER_LP
-    solver = CBT_SOLVER_LP
-    parfor 1:2
-        changeCobraSolver(solver,'LP');
-        %additional code in the parfor loop will now use the currently set solver
+    global CBT_LP_SOLVER
+    solver = CBT_LP_SOLVER
+    parfor i = 1:2
+        changeCobraSolver(solver, 'LP', 0, -1); %third argument is printLevel, fourth argument is validation Level.
+        % additional code in the parfor loop will now use the currently set solver
         optimizeCbModel(model);
     end
 

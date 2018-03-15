@@ -1,4 +1,4 @@
-function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHost,nameTagHost,mergeGenesFlag)
+function [modelJoint] = createMultipleSpeciesModel(models,varargin)
 % Based on the implementation from *Klitgord and Segre 2010, PMID 21124952*.
 % The present implementation has been used in *PMID 23022739*, *PMID 25841013*,
 % *PMID 25901891*, *PMID 27893703*.
@@ -47,6 +47,23 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %         merged
 %       - Almut Heinken, 21.02.2018-fixed compatibility issue with reconstructions 
 %         from BIGG Models database that have _e instead of [e] as compartment IDs
+%       - Almut Heinken, 06.03.2018-changed to parameter-input pairs
+
+% Define default input parameters if not specified
+parser = inputParser();
+parser.addRequired('models',@iscell);
+parser.addParameter('nameTagsModels',{},@iscell);
+parser.addParameter('modelHost',{},@isstruct);
+parser.addParameter('nameTagHost','',@(x) ischar(x) || iscell(x))
+parser.addParameter('mergeGenesFlag',false,@(x) isnumeric(x) || islogical(x))
+
+parser.parse(models,varargin{:});
+
+models = parser.Results.models;
+nameTagsModels = parser.Results.nameTagsModels;
+modelHost = parser.Results.modelHost;
+nameTagHost = parser.Results.nameTagHost;
+mergeGenesFlag = parser.Results.mergeGenesFlag;
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -54,7 +71,7 @@ end
 % prepare the model structures and assign name tags for each model structure if not provided
 modelNumber = size(models, 1);
 
-if nargin < 2 || nargin >=2 && isempty(nameTagsModels)
+if isempty(nameTagsModels)
     % assign default name tags for microbes
     for i = 1:modelNumber
         nameTagsModels{i, 1} = strcat('model', num2str(i), '_');
@@ -65,13 +82,9 @@ else
     end
 end
 
-if nargin == 3 || nargin >=4 && isempty(nameTagHost)
+if isempty(nameTagHost)
     % assign default name tag for host
     nameTagHost = 'Host_';
-end
-if nargin < 5
-    % by default, genes are not merged
-    mergeGenesFlag=false;
 end
     
 %% ensure compatibility with reconstructions from BIGG Models database
@@ -81,7 +94,7 @@ for i = 1:modelNumber
     model.mets(metIndices)=strrep(model.mets(metIndices),'_e','[e]');
     models{i,1}=model;
 end
-if nargin >= 3 && ~isempty(modelHost)
+if ~isempty(modelHost)
 metIndices=~cellfun(@isempty,regexp(modelHost.mets,'_e$'));
 modelHost.mets(metIndices)=strrep(modelHost.mets(metIndices),'_e','[e]');
 end
@@ -115,7 +128,7 @@ for i = 1:modelNumber
     modelStorage{i, 1} = model;
 end
 
-if nargin >= 3 && ~isempty(modelHost)
+if ~isempty(modelHost)
     %% with a host
     exmod = modelHost.rxns(strmatch('EX', modelHost.rxns));
 

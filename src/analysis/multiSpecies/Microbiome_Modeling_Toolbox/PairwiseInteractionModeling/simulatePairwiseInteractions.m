@@ -1,9 +1,9 @@
-function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(inputModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
+function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,varargin)
 % This script simulates pairwise interactions in a given number of
 % microbe-microbe models.
 %
 % USAGE
-% [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(inputModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
+% [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
 %
 % This script predicts the outcomes of pairwise simulations in every
 % combination from a given list of pairwise models. The pairwise models
@@ -41,12 +41,13 @@ function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(i
 %   (same outcome for both)
 %
 % INPUTS
-% inputModels          Array of pairwise model structures to be simulated
+% pairedModels          Array of pairwise model structures to be simulated
 % pairedModelInfo      Information on species joined in the pairwise models
 %
 % OPTIONAL INPUTS
-% inputDiet            Cell array of three columns containing exchange reaction
-%                      model abbreviations, lower bounds, and upper bounds. 
+% inputDiet            Cell array of strings with three columns containing 
+%                      exchange reaction model abbreviations, lower bounds,
+%                      and upper bounds. 
 %                      If no diet is input then the input pairwise models 
 %                      will be used with unchanged constraints.
 % saveSolutionsFlag    If true, flux solutions are stored (may result in 
@@ -64,28 +65,29 @@ function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(i
 % .. Authors:
 %       - Almut Heinken, 02/2018 
 
-% if no diet was entered
-if nargin <2
-    inputDiet=[];
-end
+% Parse input parameters
+parser = inputParser();
+parser.addRequired('pairedModels',@iscell);
+parser.addRequired('pairedModelInfo',@iscell);
+parser.addParameter('inputDiet',{},@iscell)
+parser.addParameter('saveSolutionsFlag',false,@(x) isnumeric(x) || islogical(x))
+parser.addParameter('numWorkers',0,@(x) isnumeric(x))
+parser.addParameter('sigD',0.1,@(x) isnumeric(x))
 
-if nargin >3 && saveSolutionsFlag==true
+parser.parse(pairedModels,pairedModelInfo,varargin{:});
+
+pairedModels = parser.Results.pairedModels;
+pairedModelInfo = parser.Results.pairedModelInfo;
+inputDiet = parser.Results.inputDiet;
+saveSolutionsFlag = parser.Results.saveSolutionsFlag;
+numWorkers = parser.Results.numWorkers;
+sigD = parser.Results.sigD;
+
+if saveSolutionsFlag==true
     pairwiseSolutions{1,1}='pairedModelID';
     pairwiseSolutions{1,2}='PairwiseSolution';
     pairwiseSolutions{1,3}='SingleModel1Solution';
     pairwiseSolutions{1,4}='SingleModel2Solution';
-end
-
-if nargin>4 && numWorkers>0
-    poolobj=gcp('nocreate');
-    if isempty(poolobj)
-        parpool(numWorkers)
-    end
-end
-
-% if sigD was not entered
-if nargin<6
-    sigD=0.1;
 end
 
 pairwiseSolutions={};
@@ -100,20 +102,25 @@ pairwiseInteractions{1, 8} = 'Outcome_Model1';
 pairwiseInteractions{1, 9} = 'Outcome_Model2';
 pairwiseInteractions{1, 10} = 'Total_Outcome';
 
-if nargin>4 && numWorkers>0
+if numWorkers>0
     % with parallelization
+    poolobj=gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+    global CBT_LP_SOLVER
+    solver = CBT_LP_SOLVER;
+    
     solutionPairedTemp={};
     solutionSingle1Temp={};
     solutionSingle2Temp={};
     iAFirstTemp={};
     iASecondTemp={};
     iABothTemp={};
-    global CBT_LP_SOLVER
-    solver = CBT_LP_SOLVER;
     parfor i = 1:size(pairedModelInfo, 1)
         changeCobraSolver(solver,'LP');
         % load the model
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -135,7 +142,7 @@ if nargin>4 && numWorkers>0
         % separate growth
         % silence model 2 and optimize model 1
         % load the model again to avoid errors
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -148,7 +155,7 @@ if nargin>4 && numWorkers>0
         solutionSingle1Temp{i}=solutionSingle1;
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -170,7 +177,7 @@ if nargin>4 && numWorkers>0
     end
     for i = 1:size(pairedModelInfo, 1)
         %% fill in all results
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         biomass1 = strcat(pairedModelInfo{i, 2}, '_', pairedModelInfo{i, 3});
         biomass2 = strcat(pairedModelInfo{i, 4}, '_', pairedModelInfo{i, 5});
         model1biomass = find(ismember(pairedModel.rxns, biomass1));
@@ -207,7 +214,7 @@ else
     % without parallization
     for i = 1:size(pairedModelInfo, 1)
         % load the model
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -228,7 +235,7 @@ else
         % separate growth
         % silence model 2 and optimize model 1
         % load the model again to avoid errors
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -240,7 +247,7 @@ else
         solutionSingle1 = solveCobraLP(pairedModel);
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
-        pairedModel=inputModels{i};
+        pairedModel=pairedModels{i};
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);

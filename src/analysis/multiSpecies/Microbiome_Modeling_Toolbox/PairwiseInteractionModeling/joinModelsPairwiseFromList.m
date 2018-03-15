@@ -1,4 +1,4 @@
-function [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels,c,u,mergeGenes,numWorkers)
+function [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels,varargin)
 % Joins a list of COBRA model structures in all possible combinations.
 %
 % USAGE:
@@ -40,32 +40,35 @@ function [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,i
 % Author: 
 %   - Almut Heinken, 02/2018
 
-if nargin <3
-    c=400;
-end
+% Define default input parameters if not specified
+parser = inputParser();
+parser.addRequired('modelList',@iscell);
+parser.addRequired('inputModels',@iscell);
+parser.addParameter('c',400,@(x) isnumeric(x))
+parser.addParameter('u',0, @(x) isnumeric(x))
+parser.addParameter('numWorkers',0,@(x) isnumeric(x))
+parser.addParameter('mergeGenesFlag',false,@(x) isnumeric(x) || islogical(x))
 
-if nargin <4
-    u=0;
-end
+parser.parse(modelList,inputModels,varargin{:})
 
-if nargin<5
-    mergeGenes=false;
-end
-
-if nargin>5 && numWorkers>0
-    poolobj=gcp('nocreate');
-    if isempty(poolobj)
-        parpool(numWorkers)
-    end
-end
+modelList = parser.Results.modelList;
+inputModels = parser.Results.inputModels;
+c = parser.Results.c;
+u = parser.Results.u;
+numWorkers = parser.Results.numWorkers;
+mergeGenesFlag = parser.Results.mergeGenesFlag;
 
 pairedModelInfo={};
 cnt=1;
 
 % then join all models in modelList
 for i=1:size(modelList,1)
-    if nargin>5 && numWorkers>0
+    if numWorkers>0
         % with parallelization
+        poolobj=gcp('nocreate');
+        if isempty(poolobj)
+            parpool(numWorkers)
+        end
         pairedModelsTemp={};
         parfor k=i+1:size(modelList,1)
             model1=inputModels{i};
@@ -78,7 +81,7 @@ for i=1:size(modelList,1)
                 strcat(modelList{i}, '_')
                 strcat(modelList{k}, '_')
                 };
-            [pairedModel] = createMultipleSpeciesModel(models, nameTagsModels,[],[],mergeGenes);
+            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels);
             [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(nameTagsModels{1,1},pairedModel.rxns)),strcat(nameTagsModels{1,1},model1.rxns(find(strncmp(model1.rxns,'biomass',7)))),c,u);
             [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(nameTagsModels{2,1},pairedModel.rxns)),strcat(nameTagsModels{2,1},model2.rxns(find(strncmp(model2.rxns,'biomass',7)))),c,u);
             pairedModelsTemp{k}=pairedModel;
@@ -109,7 +112,7 @@ for i=1:size(modelList,1)
                 strcat(modelList{i}, '_')
                 strcat(modelList{j}, '_')
                 };
-            [pairedModel] = createMultipleSpeciesModel(models, nameTagsModels,[],[],mergeGenes);
+            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels);
             [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(nameTagsModels{1,1},pairedModel.rxns)),strcat(nameTagsModels{1,1},model1.rxns(find(strncmp(model1.rxns,'biomass',7)))),c,u);
             [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(nameTagsModels{2,1},pairedModel.rxns)),strcat(nameTagsModels{2,1},model2.rxns(find(strncmp(model2.rxns,'biomass',7)))),c,u);
             % keep track of the generated models and populate the output file with

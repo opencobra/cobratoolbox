@@ -111,7 +111,25 @@ within MATLAB by typing:
 
     >> installDevTools()
 
-|bulb| Check out the `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart way!
+|bulb| Check out the `MATLAB.devTools
+<https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
+way! The **official documentation** is `here <https://opencobra.github.com/MATLAB.devTools>`__.
+
+|thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
+instructions
+<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+
+.. code-block:: matlab
+
+    >> contribute('opencobra/cobratoolbox');
+
+|thumbsup| Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
+instructions
+<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#cobra-tutorials>`__:
+
+.. code-block:: matlab
+
+    >> contribute('opencobra/COBRA.tutorials');
 
 -  Please follow the `Style
    Guide <https://opencobra.github.io/cobratoolbox/docs/styleGuide.html>`__.

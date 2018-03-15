@@ -530,7 +530,7 @@ end
 %the model.
 objectiveSense = 'maximize';
 
-if isfield(model,'osense') && model.osense == 1
+if isfield(model,'osenseStr') && strcmpi(model.osenseStr,'min')
     objectiveSense = 'minimize';
 end
 

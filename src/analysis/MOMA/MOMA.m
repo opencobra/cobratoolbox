@@ -86,7 +86,7 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 if (nargin <3 || isempty(osenseStr))
     osenseStr = 'max';
     if isfield(modelWT,'osenseStr')
-        osenseStr = model.osenseStr;
+        osenseStr = modelWT.osenseStr;
     end
 end
 if (nargin < 4)

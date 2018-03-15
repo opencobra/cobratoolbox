@@ -34,7 +34,7 @@ if ~exist('pairedModelInfo', 'var')
         'Acinetobacter_calcoaceticus_PHEA_2'
         };
     for i=1:length(modelList)
-        load(modelList{i});
+        model = getDistributedModel([modelList{i} '.mat']);
         inputModels{i,1}=model;
     end
     [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels);

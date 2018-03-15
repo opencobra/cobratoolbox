@@ -173,7 +173,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
 end
 fields = CBT_PROG_FIELD_PROPS;
 
-if ~isempty(spec)
+if ~any(ismember(parser.UsingDefaults,{'SpecificFields'}))
     [fieldPres,fieldpos] = ismember(spec,fields(:,1));
     if ~all(fieldPres)
         error('The following requesteds fields have no Specifications:\n%s\n',strjoin(spec(~fieldPres),',\n'));

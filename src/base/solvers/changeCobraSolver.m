@@ -1,31 +1,33 @@
-function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, unchecked, validationLevel)
+function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
 % Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
 %
-%    solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
+%    solverOK = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
 %
 % INPUTS:
-%    solverName:    Solver name
-%    solverType:    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
-%                   'LP', 'all').  'all' attempts to change all applicable
-%                   solvers to solverName.  This is purely a shorthand
-%                   convenience.
-%    printLevel:    if 0, warnings and errors are silenced and if > 0, they are
-%                   thrown. (default: 1)
+%    solverName:           Solver name
+%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` (opt, default
+%                          `LP`, `all`).  'all' attempts to change all applicable
+%                          solvers to solverName.  This is purely a shorthand
+%                          convenience.
+%    printLevel:           verbose level
+%
+%                           *   if `0`, warnings and errors are silenced
+%                           *   if `> 0`, warnings and errors are thrown. (default: 1)
 %
 % OPTIONAL INPUT:
-%    unchecked:          default = false, if exists `solverType` is checked and `solverName` is assigned to a local variable
-%    validationLevel:    how much validation to use.
-%                        0: no validation (default)
-%                        1: validate but remove outputs
-%                        2: validate and keep any outputs
+%    validationLevel:      how much validation to use
+%
+%                           *   `-1`: assign only the global variable. Do not assign any path.
+%                           *   `0`: adjust solver paths but don't validate the solver (default)
+%                           *   `1`: validate but remove outputs
+%                           *   `2`: validate and keep any outputs
 %
 % OUTPUT:
-%     solverOK:             true if solver can be accessed, false if not
-%     solverInstalled:      true, if the solver is installed (not
-%                           necessarily working), if running unchecked,
-%                           will always return true.
+%     solverOK:             `true` if solver can be accessed, `false` if not
+%     solverInstalled:      `true` if the solver is installed (not
+%                           necessarily working)
 %
 % Currently allowed LP solvers:
 %
@@ -190,7 +192,7 @@ end
 
 solverInstalled = true;
 
-if unchecked
+if validationLevel == -1
     switch solverType
         case 'LP'
             CBT_LP_SOLVER = solverName;

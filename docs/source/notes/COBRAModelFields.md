@@ -20,7 +20,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.lb`| `n x 1` | Column Vector of Doubles | The lower bounds for fluxes through the reactions. | 
 |`model.ub`| `n x 1` | Column Vector of Doubles | The upper bounds for fluxes through the reactions. | 
 |`model.c`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
-|`model.osense`| `1 x 1` | Double | The objective sense either -1 for maximisation or 1 for minimisation | 
+|`model.osenseStr`| `` | String | The objective sense either `'max'` for maximisation or `'min'` for minimisation | 
 |`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
 |`model.rules`| `n x 1` | Column Cell Array of Strings | GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux | 
 |`model.geneNames`| `g x 1` | Column Cell Array of Strings | Full names of each corresponding genes. | 

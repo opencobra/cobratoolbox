@@ -31,7 +31,8 @@ function [InteractionsByTaxon]=calculateInteractionsByTaxon(pairwiseInteractions
 % if taxon information is missing for at least one microbe in
 % the pairwise interactions input file
 microbes=unique(pairwiseInteractions(2:end,2:3));
-if any(~ismember(microbes,taxonInformation(:,1)))
+[present,position] = ismember(microbes,taxonInformation(:,1));
+if any(~present)
     error('Taxon information for analyzed microbes is missing!')
 end
 

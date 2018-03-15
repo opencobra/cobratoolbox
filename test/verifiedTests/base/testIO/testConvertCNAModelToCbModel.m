@@ -34,7 +34,12 @@ if statusCNA
     assert(isequal(model_new.S, model.S));
     assert(isequal(model_new.lb, model.lb));
     assert(isequal(model_new.ub, model.ub));
-    assert(isequal(model_new.osense*model_new.c, model.osense*model.c));
+    %Osense is no longer a model field, so we need to check, whether the
+    %generated LPproblems are the same (or we have to make a lot of if
+    %statements...)
+    LPproblemA = buildLPproblemFromModel(model_new);    
+    LPproblemB = buildLPproblemFromModel(model);
+    assert(isequal(LPproblemA.osense*LPproblemA.c, LPproblemB.osense*LPproblemB.c));
     assert(isequal(model_new.metNames, model.metNames));
     assert(isequal(model_new.b, model.b));
     % Note: rxnNames is different

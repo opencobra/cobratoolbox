@@ -1,6 +1,8 @@
 %%% Microbiome Modeling Toolbox-a COBRA Toolbox extension enabling the interrogation and analysis of microbial communities %%%
 Authors: Federico Baldini, Almut Heinken, and Ines Thiele
+
 Luxembourg Centre for Systems Biomedicine, University of Luxembourg
+
 
 
 The module Microbiome Modeling Toolbox/PairwiseInteractionModeling enables the simulation of microbial pairwise interactions with COBRA Toolbox functions. 

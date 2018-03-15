@@ -29,7 +29,7 @@ if ~exist('pairedModelInfo', 'var')
         'Acinetobacter_calcoaceticus_PHEA_2'
         };
     for i=1:length(modelList)
-        load(modelList{i});
+        model = getDistributedModel([modelList{i} '.mat']);
         inputModels{i,1}=model;
     end
     [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels);
@@ -38,7 +38,7 @@ end
 for i = 2:size(pairedModelInfo, 1)
     pairedModel=pairedModels{i};
     for p = [2, 4]
-        load(pairedModelInfo{i, p});
+        model = getDistributedModel([pairedModelInfo{i, p} '.mat']);
         tmpStr = [pairedModelInfo{i, p}, '_'];
         assert(length(model.mets) == length(find(strncmp(tmpStr, pairedModel.mets, length(tmpStr)))));
         assert(length(model.rxns) == length(find(strncmp(tmpStr, pairedModel.rxns, length(tmpStr)))));
@@ -46,11 +46,7 @@ for i = 2:size(pairedModelInfo, 1)
 end
 
 % test the diet call without entering any dietary constraints
-try
-    useDiet(pairedModel, [])
-catch ME
-    assert(length(ME.message) > 0)
-end
+assert(verifyCobraFunctionError(@() useDiet(pairedModel,[])))
 
 % change to the current directory
 cd(currentDir)
