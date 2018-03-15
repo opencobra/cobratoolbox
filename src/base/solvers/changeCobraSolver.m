@@ -222,7 +222,8 @@ end
 %actually set i.e. initCobraToolbox is called before). This is only
 %necessary, if the solver is being validated.
 if validationLevel == 1
-    finish = onCleanup(@() removeGitIgnoredNewFiles(pwd, rdir(['**' filesep '*'])));
+    origFiles = getFilesInDir('gitTypeFlag','all');
+    finish = onCleanup(@() removeTempFiles(pwd, origFiles));
 end
     % configure the environment variables
 configEnvVars();
