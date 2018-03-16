@@ -1,11 +1,5 @@
 function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,varargin)
-% This script simulates pairwise interactions in a given number of
-% microbe-microbe models.
-%
-% USAGE
-% [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
-%
-% This script predicts the outcomes of pairwise simulations in every
+% This function predicts the outcome of pairwise simulations in every
 % combination from a given list of pairwise models. The pairwise models
 % need to be created first with the function joinModelsPairwiseFromList.
 % This script requires the COBRA Toolbox function solveCobraLP. Due to the
@@ -40,33 +34,37 @@ function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(p
 % * Mutualism: both organisms growth faster in co-growth than separately
 %   (same outcome for both)
 %
-% INPUTS
-% pairedModels          Array of pairwise model structures to be simulated
-% pairedModelInfo      Information on species joined in the pairwise models
+% USAGE:
+%     [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
 %
-% OPTIONAL INPUTS
-% inputDiet            Cell array of strings with three columns containing 
-%                      exchange reaction model abbreviations, lower bounds,
-%                      and upper bounds. 
-%                      If no diet is input then the input pairwise models 
-%                      will be used with unchanged constraints.
-% saveSolutionsFlag    If true, flux solutions are stored (may result in 
-%                      large output files)
-% numWorkers           Number of workers in parallel pool if desired
-% sigD                 Difference in growth rate that counts as significant
-%                      change (by default: 10%)
-% OUTPUTS
-% pairwiseInteractions     Table with computed pairwise and single growth
-%                          rates for all entered microbe-microbe models
-% OPTIONAL OUTPUT
-% pairwiseSolutions        Table with all computed flux solutions saved
-%                         (may result in large output files)
+% INPUTS:
+%     pairedModels:            Array of pairwise model structures to be simulated
+%     pairedModelInfo:         Information on species joined in the pairwise models
+%
+% OPTIONAL INPUTS:
+%     inputDiet:               Cell array of strings with three columns containing
+%                              exchange reaction model abbreviations, lower bounds,
+%                              and upper bounds.
+%                              If no diet is input then the input pairwise models
+%                              will be used with unchanged constraints.
+%     saveSolutionsFlag:       If true, flux solutions are stored (may result in
+%                              large output files)
+%     numWorkers:              Number of workers in parallel pool if desired
+%     sigD:                    Difference in growth rate that counts as significant
+%                              change (by default: 10%)
+%
+% OUTPUTS:
+%     pairwiseInteractions:    Table with computed pairwise and single growth
+%                              rates for all entered microbe-microbe models
+%
+% OPTIONAL OUTPUT:
+%     pairwiseSolutions:       Table with all computed flux solutions saved
+%                              (may result in large output files)
 %
 % .. Authors:
-%       - Almut Heinken, 02/2018 
+%       - Almut Heinken, 02/2018
 
-% Parse input parameters
-parser = inputParser();
+parser = inputParser(); % Parse input parameters
 parser.addRequired('pairedModels',@iscell);
 parser.addRequired('pairedModelInfo',@iscell);
 parser.addParameter('inputDiet',{},@iscell)
@@ -110,7 +108,7 @@ if numWorkers>0
     end
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
-    
+
     solutionPairedTemp={};
     solutionSingle1Temp={};
     solutionSingle2Temp={};
@@ -166,7 +164,7 @@ if numWorkers>0
         % calculate single biomass
         solutionSingle2 = solveCobraLP(pairedModel);
         solutionSingle2Temp{i}=solutionSingle2;
-        
+
         % interpret computed growth rates-only if solutions are feasible
         if solutionPaired.stat ~= 0 && solutionSingle1.stat ~= 0 && solutionSingle2.stat ~= 0
             [iAFirstModelTemp, iASecondModelTemp, iATotalTemp] = analyzePairwiseInteractions(solutionPaired.full(model1biomass), solutionPaired.full(model2biomass), solutionSingle1.full(model1biomass), solutionSingle2.full(model2biomass), sigD);
@@ -257,12 +255,12 @@ else
         pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
         % calculate single biomass
         solutionSingle2 = solveCobraLP(pairedModel);
-        
+
         % interpret computed growth rates-only if solutions are feasible
         if solutionPaired.stat ~= 0 && solutionSingle1.stat ~= 0 && solutionSingle2.stat ~= 0
             [iAFirstModel, iASecondModel, iATotal] = analyzePairwiseInteractions(solutionPaired.full(model1biomass), solutionPaired.full(model2biomass), solutionSingle1.full(model1biomass), solutionSingle2.full(model2biomass), sigD);
         end
-        
+
         %% list all results
         % fill out the results table with the model information
         pairwiseInteractions{i+1, 1} = pairedModelInfo{i, 1};

@@ -1,11 +1,7 @@
-
 function [ParetoFrontier,fluxSolutions,minFluxes,maxFluxes] = computeParetoOptimality(model,rxn1,rxn2,varargin)
-%
-% USAGE
-% [ParetoFrontier,fluxSolutions,minFluxes,maxFluxes] = computeParetoOptimality(model,rxn1,rxn2,dinc,FVAflag)
 % Performs Pareto optimality analysis for two objective functions by
 % simultaneously optimizing two reactions (e.g., the biomass objective
-% functions of two joined organisms). The result is a depiction of the 
+% functions of two joined organisms). The result is a depiction of the
 % tradeoff between the two competing objectives.
 %
 % Multiobjective analysis of two reactions is performed by using the
@@ -13,33 +9,39 @@ function [ParetoFrontier,fluxSolutions,minFluxes,maxFluxes] = computeParetoOptim
 % "Metabolic network analysis of Pseudomonas aeruginosa during chronic
 % cystic fibrosis lung infection." J Bacteriol 192(20): 5534-5548. One
 % reaction is fixed at different intervals and the other reaction is
-% optimized. 
+% optimized.
 %
-% INPUTs
-% model             COBRA metabolic reconstruction
-% rxn1              Reaction ID of the first reaction to be optimized
-% rxn2              Reaction ID of the second reaction to be optimized
-% OPTIONAL INPUT
-% dinc              An index which indicates the distance between steps at
-%                   which the flux of each reaction is fixed (default=0.001).
-% FVAflag           If true, flux variability analysis is performed at each
-%                   step.
-%  
-% OUTPUT
-% ParetoFrontier    Lists the objective values for both reactions next to 
-%                   the interval step. Column 1:the interval step. Column 2
-%                   and 3: the flux values of rxn1 in and rxn2, 
-%                   respectively, at the interval step.
-% OPTIONAL OUTPUTS
-% fluxSolutions     Contains the flux solutions every interval step as a 
-%                   matrix of structures
-% minFluxes         Reports fastFVA results for every step (minFlux) with 
-%                   one column for each interval step
-% maxFluxes         Reports fastFVA results for every step (maxFlux) with 
-%                   one column for each interval step
+% USAGE:
 %
-% Author
-% - Almut Heinken, 2011-2018. Last modified 03/2018
+%     [ParetoFrontier,fluxSolutions,minFluxes,maxFluxes] = computeParetoOptimality(model,rxn1,rxn2,dinc,FVAflag)
+%
+% INPUTS:
+%     model:            COBRA metabolic reconstruction
+%     rxn1:             Reaction ID of the first reaction to be optimized
+%     rxn2:             Reaction ID of the second reaction to be optimized
+%
+% OPTIONAL INPUTS:
+%     dinc:             An index which indicates the distance between steps at
+%                       which the flux of each reaction is fixed (default=0.001).
+%     FVAflag:          If true, flux variability analysis is performed at each
+%                       step.
+%
+% OUTPUTS:
+%     ParetoFrontier:   Lists the objective values for both reactions next to
+%                       the interval step. Column 1:the interval step. Column 2
+%                       and 3: the flux values of rxn1 in and rxn2,
+%                       respectively, at the interval step.
+%
+% OPTIONAL OUTPUTS:
+%     fluxSolutions:    Contains the flux solutions every interval step as a
+%                       matrix of structures
+%     minFluxes:        Reports fastFVA results for every step (minFlux) with
+%                       one column for each interval step
+%     maxFluxes:        Reports fastFVA results for every step (maxFlux) with
+%                       one column for each interval step
+%
+% .. Author:
+%    - Almut Heinken, 2011-2018. Last modified 03/2018
 
 % Define default input parameters if not specified
 parser = inputParser();
@@ -66,7 +68,7 @@ end
 
 % Find the range of possible optimal values for both objective functions
 model=changeObjective(model,rxn1);
-model.osense=-1;      
+model.osense=-1;
 [solution]=solveCobraLP(model);
 dmaxRxn1=solution.obj;
 model=changeObjective(model,rxn2);
@@ -74,7 +76,7 @@ model.osense=1;
 [solution]=solveCobraLP(model);
 dminRxn1=solution.obj;
 model=changeObjective(model,rxn2);
-model.osense=-1;      
+model.osense=-1;
 [solution]=solveCobraLP(model);
 dmaxRxn2=solution.obj;
 model=changeObjective(model,rxn2);

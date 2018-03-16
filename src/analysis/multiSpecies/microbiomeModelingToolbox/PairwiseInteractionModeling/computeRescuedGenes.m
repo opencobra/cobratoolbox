@@ -1,49 +1,47 @@
 function [OptSolKO,OptSolWT,OptSolRatio,RescuedGenes,fluxesKO]=computeRescuedGenes(varargin)
-%
-% USAGE
-% [OptSolKO,OptSolWT,OptSolRatio,fluxesKO]=computeRescuedGenes(modelJoint,Rxn1,Rxn2,nameTag1,nameTag2,OriModel1,OriModel2)
-%
-% Part of the Microbiome Modeling Toolbox. This function determines the 
+% Part of the Microbiome Modeling Toolbox. This function determines the
 % effect of the presence of another species on gene deletions in a species.
 % A joint model consisting of two species is entered. For each gene
 % deletion that has an effect in each single model, the function conputes
-% whether the presence of the other species can rescue the flux through the 
+% whether the presence of the other species can rescue the flux through the
 % objective function (e.g., biomass).
 %
-% INPUTS
-% modelJoint     Joint model structure consisting of two COBRA models
-% Rxn1           Reaction in the first joined COBRA model for which the 
-%                effect of gene deletions is calculated
-% Rxn2           Reaction in the second joined COBRA model for the effect 
-%                of gene deletions is calculated
-% nameTag1       Species identifier for reactions of the first model
-% nameTag2       Species identifier for reactions of the second model
-% OriModel1      Original COBRA model structure of first model
-%                (needed to determine reactions to be constrained)
-% OriModel2      Original COBRA model structure of second model
-%                (needed to determine reactions to be constrained)
+% USAGE:
 %
-% OUTPUTS
+%     [OptSolKO,OptSolWT,OptSolRatio,fluxesKO]=computeRescuedGenes(modelJoint,Rxn1,Rxn2,nameTag1,nameTag2,OriModel1,OriModel2)
 %
-% OptSolKO       Matlab structure containing the computed optimal solutions
-%                for the gene deletions that had an effect on the two
-%                reactions
-% OptSolRatio    Matlab structure containing all knockout to wildtype
-%                optimal solution ratios for the gene deletions that had 
-%                an effect on the two reactions
-% OptSolWT       Matlab structure containing wildtype flux values for both
-%                reactions in the two models
-% RescuedGenes   List of genes for which deletion is lethal or causes >50%
-%                growth reduction in single but not pairwise model
-% fluxesKO       Matlab structure containing all solutions for all gene
-%                deletions and for both reactions in the two models. Can be
-%                used to identify mechanisms for rescued genes.
+% INPUTS:
+%     modelJoint:    Joint model structure consisting of two COBRA models
+%     Rxn1:          Reaction in the first joined COBRA model for which the
+%                    effect of gene deletions is calculated
+%     Rxn2:          Reaction in the second joined COBRA model for the effect
+%                    of gene deletions is calculated
+%     nameTag1:      Species identifier for reactions of the first model
+%     nameTag2:      Species identifier for reactions of the second model
+%     OriModel1:     Original COBRA model structure of first model
+%                    (needed to determine reactions to be constrained)
+%     OriModel2:     Original COBRA model structure of second model
+%                    (needed to determine reactions to be constrained)
 %
-% AUTHOR:
-% - Almut Heinken 2012-2018. Last modified 03/2018.
+% OUTPUTS:
+%     OptSolKO:      Matlab structure containing the computed optimal solutions
+%                    for the gene deletions that had an effect on the two
+%                    reactions
+%     OptSolRatio:   Matlab structure containing all knockout to wildtype
+%                    optimal solution ratios for the gene deletions that had
+%                    an effect on the two reactions
+%     OptSolWT:      Matlab structure containing wildtype flux values for both
+%                    reactions in the two models
+%     RescuedGenes:  List of genes for which deletion is lethal or causes >50%
+%                    growth reduction in single but not pairwise model
+%     fluxesKO:      Matlab structure containing all solutions for all gene
+%                    deletions and for both reactions in the two models. Can be
+%                    used to identify mechanisms for rescued genes.
+%
+% .. Author:
+%        - Almut Heinken 2012-2018. Last modified 03/2018.
 
-% Parse input parameters
-parser = inputParser();
+parser = inputParser(); %  Parse input parameters
 parser.addParameter('modelJoint',@isstruct);
 parser.addParameter('OriModel1',@isstruct);
 parser.addParameter('OriModel2',@isstruct);
@@ -146,7 +144,7 @@ for i=1:length(reducedGenesRxn1)
         OptSolKO.(strcat('JoinedModel_',Rxn1)){i,2} = 'Infeasible';
         OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,2} = 'Infeasible';
     end
-    
+
     % For first model single
     modelDel=FirstModelSingle;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
@@ -204,7 +202,7 @@ for i=1:length(reducedGenesRxn2)
         OptSolKO.(strcat('JoinedModel_',Rxn2)){i,2} = 'Infeasible';
         OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,2} = 'Infeasible';
     end
-    
+
     % For second model single
     modelDel=SecondModelSingle;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');

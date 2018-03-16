@@ -54,7 +54,7 @@ end
 if nargin < 4 || isempty(metTagRe)
     metTagRe = '^%s';
 end
-metCompartment = getCompartment(modelJoint.mets); 
+metCompartment = getCompartment(modelJoint.mets);
 % mets in the common exchange space ([u]) or the biomass (use biomass[c] to be consistent with createMultipleSpeciesModel)
 metCom = strcmp(metCompartment, compCom) | strcmp(modelJoint.mets, 'biomass[c]');
 % mets in exchange space accessible only by the host ([b])

@@ -13,7 +13,7 @@ function [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions
 %   pairwiseInteractions:    a table with pairwise interactions computed
 %                            for a number of analyzed microbe models (output of the function
 %                            simulatePairwiseInteractions)
-%   taxonInformation         a table with taxonomical information on the
+%   taxonInformation:        a table with taxonomical information on the
 %                            analyzed microbes. Needs to contain at least six columns:
 %                            1. The names of the analyzed model structures
 %                            in the first column
@@ -21,22 +21,20 @@ function [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions
 %                            and the header
 %                            'Genus','Family','Order','Class','Phylum'
 %                            respectively.
-%  OUTPUT:
-%  interactionsByTaxon       a structure with the outcomes predicted for
+% OUTPUT:
+%   interactionsByTaxon:     a structure with the outcomes predicted for
 %                            all taxa on each taxonomical level.
 %
 % .. Author:
 %       - Almut Heinken, 02/2018
 
-% if taxon information is missing for at least one microbe in
-% the pairwise interactions input file
-microbes=unique(pairwiseInteractions(2:end,2:3));
+microbes=unique(pairwiseInteractions(2:end,2:3)); % if taxon information is missing for at least one microbe in the pairwise interactions input file
 [present,position] = ismember(microbes,taxonInformation(:,1));
 if any(~present)
     error('Taxon information for analyzed microbes is missing!')
 end
 
-  % first reduce the taxon information to only the taxa contained in the
+% first reduce the taxon information to only the taxa contained in the
 % analyzed subset of microbes.
 subArray(1,1)=1;
 cnt=2;

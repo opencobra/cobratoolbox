@@ -1,17 +1,13 @@
 function [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels,varargin)
-% Joins a list of COBRA model structures in all possible combinations.
-%
-% USAGE:
-% [pairedModels,pairedModelInfo]=joinModelsPairwiseFromList(modelList,inputModels,c,u,mergeGenes,numWorkers)
-% This function joins a list of microbial genome-scale reconstructions in 
-% all combinations. Models are not paired with themselves and pairs are 
+% This function joins a list of microbial genome-scale reconstructions in
+% all combinations. Models are not paired with themselves and pairs are
 % only created once (model1+model2 = model2+model1). The reactions in each
-% joined reconstruction structure receive a suffix (entered as input 
+% joined reconstruction structure receive a suffix (entered as input
 % parameter model list).
-% Coupling constraints are created in which the flux through all reactions 
+% Coupling constraints are created in which the flux through all reactions
 % of each individual microbe is coupled to the flux through its own biomass
 % objective function. By default, coupling constraints are implemented with
-% a coupling factor c of 400 and a threshold u of 0. The coupling 
+% a coupling factor c of 400 and a threshold u of 0. The coupling
 % parameters can be changed by entering the input parameters c and u.
 % By default, the gene-protein-reaction associations of the joined models
 % are not merged as the gene associations are not needed for the simulation
@@ -19,29 +15,33 @@ function [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,i
 % creation.  If merging of genes is desired, please set the input
 % parameter mergeGenes to true.
 %
-% INPUTS
-% modelList           Cell array with names of reconstruction structures to be 
-%                     joined
-% inputModels         Array with COBRA model structures to be joined (needs to
-%                     have same length as modelList)
-% OPTIONAL INPUTS
-% c                   Coupling factor by which reactions in each joined model are 
-%                     coupled to its biomass reaction (default: 400)  
-% u                   Threshold representing minimal flux allowed when flux 
-%                     through biomass reaction in zero (default: 0)
-% mergeGenes          If true, genes in the joined models are merged and included
-%                     in the joined model structure (default: false)
-% numWorkers          Number of workers in parallel pool if desired
-% OUTPUTS
-% pairedModels        Structue containing created pairwise models in all
-%                     combinations
-% pairedModelInfo     Table with information on created pairwise models
+% USAGE:
+%     [pairedModels,pairedModelInfo]=joinModelsPairwiseFromList(modelList,inputModels,c,u,mergeGenes,numWorkers)
+%
+% INPUTS:
+%     modelList:          Cell array with names of reconstruction structures to be
+%                         joined
+%     inputModels:        Array with COBRA model structures to be joined (needs to
+%                         have same length as modelList)
+%
+% OPTIONAL INPUTS:
+%     c:                  Coupling factor by which reactions in each joined model are
+%                         coupled to its biomass reaction (default: 400)
+%     u:                  Threshold representing minimal flux allowed when flux
+%                         through biomass reaction in zero (default: 0)
+%     mergeGenes:         If true, genes in the joined models are merged and included
+%                         in the joined model structure (default: false)
+%     numWorkers:         Number of workers in parallel pool if desired
+%
+% OUTPUTS:
+%     pairedModels:       Structue containing created pairwise models in all
+%                         combinations
+%     pairedModelInfo:    Table with information on created pairwise models
+%
+% .. Author:
+%      - Almut Heinken, 02/2018
 
-% Author: 
-%   - Almut Heinken, 02/2018
-
-% Define default input parameters if not specified
-parser = inputParser();
+parser = inputParser(); % Define default input parameters if not specified
 parser.addRequired('modelList',@iscell);
 parser.addRequired('inputModels',@iscell);
 parser.addParameter('c',400,@(x) isnumeric(x))

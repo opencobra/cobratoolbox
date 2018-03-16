@@ -33,7 +33,7 @@ function [modelJoint] = createMultipleSpeciesModel(models,varargin)
 %                         * nameTagsModels{2,1} = 'name tag 2'...
 %    modelHost:         COBRA model for host
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
-%    mergeGenesFlag     If true, the gene associations in both models are
+%    mergeGenesFlag:    If true, the gene associations in both models are
 %                       included in the joined model. If false, empty fields are created
 %                       instead (default:false). Note: merging genes is time-consuming
 %                       and may crash certain models.

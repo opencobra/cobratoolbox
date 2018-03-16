@@ -11,7 +11,7 @@ function printUptakeBoundCom(model, SpFlag, metFlag)
 %
 % OPTIONAL INPUTS:
 %    SpFlag:   true to show individual uptake rates though community uptake is not allowed (default false)
-%    metFlag:  true to print with `model.metNames` (default false) 
+%    metFlag:  true to print with `model.metNames` (default false)
 
 if nargin < 2 || isempty(SpFlag)
     SpFlag = false;

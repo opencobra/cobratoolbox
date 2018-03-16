@@ -1,13 +1,14 @@
 function [modelOut] = useDiet(modelIn, dietConstraints)
 % Implements diet constraints in a COBRA model structure.
+%
 % USAGE:
 %
 %    [modelOut] = useDiet(modelIn, dietConstraints)
 %
 % INPUTS:
-%    modelIn:     original model
-%    dietConstraints:        cell array of three columns containing 
-% exchanges, lower bounds, and  upper bounds respectively
+%    modelIn:                original model
+%    dietConstraints:        cell array of three columns containing
+%                            exchanges, lower bounds, and  upper bounds respectively
 %
 % OUTPUT:
 %    modelOut:    model with applied constraints
@@ -15,8 +16,7 @@ function [modelOut] = useDiet(modelIn, dietConstraints)
 % .. Authors:
 %       - Almut Heinken 16.03.2017
 %       - Laurent Heirendt March 2017
-%       - Almut Heinken 02/2018: Generalized script for any dietary
-%       constraints as input.
+%       - Almut Heinken 02/2018: Generalized script for any dietary constraints as input.
 
 if isempty(dietConstraints) || size(dietConstraints,2)<2
     error('No dietary constraints entered.')
