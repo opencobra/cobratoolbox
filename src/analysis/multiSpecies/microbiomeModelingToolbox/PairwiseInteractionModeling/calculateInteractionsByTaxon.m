@@ -1,13 +1,13 @@
-function [InteractionsByTaxon]=calculateInteractionsByTaxon(pairwiseInteractions,taxonInformation)
+function [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions,taxonInformation)
 % Part of the Microbiome Modeling Toolbox. This script analyzes computed pairwise
 % interactions on different taxonomical levels to yield the interactions
 % that each taxon (genus, family, order, class, phylum) displayed in total.
-% The computed pairwise interactions and the taxnomical information for each 
+% The computed pairwise interactions and the taxnomical information for each
 % analyzed strain are required as inputs.
 %
 % USAGE:
 %
-%   [InteractionsByTaxon]=calculateInteractionsByTaxon(pairwiseInteractions,taxonInfo)
+%   [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions,taxonInfo)
 %
 % INPUTS:
 %   pairwiseInteractions:    a table with pairwise interactions computed
@@ -15,18 +15,18 @@ function [InteractionsByTaxon]=calculateInteractionsByTaxon(pairwiseInteractions
 %                            simulatePairwiseInteractions)
 %   taxonInformation         a table with taxonomical information on the
 %                            analyzed microbes. Needs to contain at least six columns:
-%                            1. The names of the analyzed model structures 
+%                            1. The names of the analyzed model structures
 %                            in the first column
 %                            2-6. A column with the appropriate information
 %                            and the header
 %                            'Genus','Family','Order','Class','Phylum'
 %                            respectively.
 %  OUTPUT:
-%  InteractionsByTaxon       a structure with the outcomes predicted for
+%  interactionsByTaxon       a structure with the outcomes predicted for
 %                            all taxa on each taxonomical level.
 %
 % .. Author:
-%       - Almut Heinken, 02/2018 
+%       - Almut Heinken, 02/2018
 
 % if taxon information is missing for at least one microbe in
 % the pairwise interactions input file
@@ -37,7 +37,7 @@ if any(~present)
 end
 
   % first reduce the taxon information to only the taxa contained in the
-% analyzed subset of microbes.  
+% analyzed subset of microbes.
 subArray(1,1)=1;
 cnt=2;
 for i=1:length(taxonInformation)
@@ -73,7 +73,7 @@ TaxonomyLevels={
 
 for t=1:length(TaxonomyLevels)
     for i=1:length(outcomes)
-        InteractionsByTaxon.(TaxonomyLevels{t}){1,i+1}=outcomes{i};
+        interactionsByTaxon.(TaxonomyLevels{t}){1,i+1}=outcomes{i};
     end
 end
 
@@ -114,5 +114,5 @@ for t=1:length(TaxonomyLevels)
         end
     end
     % save the table in the output structure
-    InteractionsByTaxon.(TaxonomyLevels{t})=interactions;
+    interactionsByTaxon.(TaxonomyLevels{t})=interactions;
 end
