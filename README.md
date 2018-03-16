@@ -52,24 +52,26 @@ The following files are supplied
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
-| getMappingInfo.m                               | *function to extract further information from the mapping*             |
+| getMappingInfo.m                               | *function to extract information from the mapping*             |
 | plotMappingInfo.m                              | *function plot extracted information from the mapping*                 |
 | createPersonalizedModel.m                      | *function to create personalized models*                               |
 | microbiotaModelSimulator.m                     | *function to simulate under different diets the created models (called from MGPipe)*|
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
 | mgSimResCollect.m                              | *function to collect and output simulation results*                    |
 | README.md                                      | *this file*                                                            |
-| **setConstraints**                             | *Folder containing diets and related scripts*                          |
-| setDietConstraints.m                           | *script to impose a specific diet and add essential elements to microbiota models*|
+| **DietImplementation**                         | *Folder containing diets and related scripts*                          |
+| useDiet.m                                      | *function to impose a specific diet and add essential elements to microbiota models*|
+| adaptVMHDietToAGORA.m                          | *function to convert a specific diet from VMH into an AGORA compatible one*|
 | **examples**                                   | *folder containing necessary files to replicate the pipeline tutorial* |
-| **results**                                    | *Results folder*                                                       |
+| StartMgPipeHMP.m                               | *driver, containing all the input variables of the HMP study *         |
+| StartMgPipeHMP.m                               | *file containing mapped abundances from the HMP study*                 |
 | ***compfile***                                 | *Results subfolder: contains objects saved in open format*             |
 
 
 Usage
 =====
 
-Once installed the necessary dependencies the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file (StartMgPipe.m). 
+Once installed the necessary dependencies the pipeline is ready to be used at the condition that some input variables are inserted or changed from the default input file (StartMgPipe.m) or directly in the input function (initMgPipe.m). 
 
 
 Running the script called “StartMgPipe.m” (after having changed the necessary inputs) is the only action required from the user to start the pipeline.
