@@ -8,7 +8,7 @@ function [OptSolKO,OptSolWT,OptSolRatio,RescuedGenes,fluxesKO]=computeRescuedGen
 %
 % USAGE:
 %
-%     [OptSolKO,OptSolWT,OptSolRatio,fluxesKO]=computeRescuedGenes(modelJoint,Rxn1,Rxn2,nameTag1,nameTag2,OriModel1,OriModel2)
+%     [OptSolKO,OptSolWT,OptSolRatio,fluxesKO]=computeRescuedGenes(varargin)
 %
 % INPUTS:
 %     modelJoint:    Joint model structure consisting of two COBRA models

@@ -35,7 +35,7 @@ function [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(p
 %   (same outcome for both)
 %
 % USAGE:
-%     [pairwiseInteractions,pairwiseSolutions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,inputDiet,saveSolutionsFlag,numWorkers,sigD)
+%     [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairedModels, pairedModelInfo, varargin)
 %
 % INPUTS:
 %     pairedModels:            Array of pairwise model structures to be simulated

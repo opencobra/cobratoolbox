@@ -1,4 +1,4 @@
-function [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions,taxonInformation)
+function [interactionsByTaxon]=calculateInteractionsByTaxon(pairwiseInteractions,taxonInformation)
 % Part of the Microbiome Modeling Toolbox. This script analyzes computed pairwise
 % interactions on different taxonomical levels to yield the interactions
 % that each taxon (genus, family, order, class, phylum) displayed in total.
