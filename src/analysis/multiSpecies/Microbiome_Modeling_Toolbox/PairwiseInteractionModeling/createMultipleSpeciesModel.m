@@ -16,7 +16,7 @@ function [modelJoint] = createMultipleSpeciesModel(models,varargin)
 %
 % USAGE:
 %
-%    [modelJoint] = createMultipleSpeciesModel(models, nameTagsModels, modelHost, nameTagHost)
+%    [modelJoint] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels, 'modelHost', modelHost, 'nameTagHost', nameTagHost)
 %
 % INPUTS:
 %    models:            cell array of COBRA models(at least one).
@@ -35,19 +35,34 @@ function [modelJoint] = createMultipleSpeciesModel(models,varargin)
 %    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
 %    mergeGenesFlag     If true, the gene associations in both models are
 %                       included in the joined model. If false, empty fields are created
-%                       instead (default:false). Note: merging genes is time-consuming 
+%                       instead (default:false). Note: merging genes is time-consuming
 %                       and may crash certain models.
 %
 % OUTPUT:
 %    modelJoint:        model structure for joint model
 %
 % .. Authors:
-%       - Ines Thiele and Almut Heinken, 2011-2018 
+%       - Ines Thiele and Almut Heinken, 2011-2018
 %       - Almut Heinken, 07.02.2018-included option whether or not genes are
 %         merged
-%       - Almut Heinken, 21.02.2018-fixed compatibility issue with reconstructions 
+%       - Almut Heinken, 21.02.2018-fixed compatibility issue with reconstructions
 %         from BIGG Models database that have _e instead of [e] as compartment IDs
 %       - Almut Heinken, 06.03.2018-changed to parameter-input pairs
+%       - Laurent Heirendt, 16/3/2018 - backward compatibility
+
+oldOptionalOrder = {'nameTagsModels', 'modelHost', 'nameTagHost', 'mergeGenesFlag'};
+
+% ensure backward compatibility
+if numel(varargin) > 0 && ~ischar(varargin{1})
+    tempargin = cell(0);
+    for i = 1:numel(varargin)
+        if ~isempty(varargin{i})
+            tempargin{end+1} = oldOptionalOrder{i};
+            tempargin{end+1} = varargin{i};
+        end
+    end
+    varargin = tempargin;
+end
 
 % Define default input parameters if not specified
 parser = inputParser();
@@ -86,7 +101,7 @@ if isempty(nameTagHost)
     % assign default name tag for host
     nameTagHost = 'Host_';
 end
-    
+
 %% ensure compatibility with reconstructions from BIGG Models database
 for i = 1:modelNumber
     model=models{i,1};
