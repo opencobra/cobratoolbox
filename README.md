@@ -86,7 +86,7 @@ Some specific information files need to be loaded by the pipeline. For this reas
 | File                   | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
 | normCoverage.csv       |  table with abundances for each species (normalized to 1, with a minimal value as threshold to define presence)|
-| Patients_status.csv    |  optional: table of the same length of the number of individuals (0 means patient with disease 1 means healthy)|
+| sampInfo.csv           |  optional: table of the same length of the number of individuals (0 means patient with disease 1 means healthy)|
 
 Some variables, in the input file, needs to be created/modified to specify inputs (as for example paths of directories containing organisms models). The variables which need to be created or changed from default are
 
