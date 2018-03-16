@@ -44,16 +44,16 @@ end
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 for p = 1:length(solverPkgs)
-    
+
     solverOK = changeCobraSolver(solverPkgs{p}, 'LP', 0);
-    
+
     if solverOK == 1
-        
+
         fprintf('   Testing simulation of pairwise interactions using %s ... ', solverPkgs{p});
         sigD = 0.1;
         % launch the simulation for pairwise interactions
-        [pairwiseInteractions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,[],false,0,sigD);
-        
+        [pairwiseInteractions]=simulatePairwiseInteractions(pairedModels,pairedModelInfo,'sigD',sigD);
+
         for i = 2:size(pairwiseInteractions, 1)
             if strcmp(pairwiseInteractions{i, 8}, 'Competition')
                 assert((abs(pairwiseInteractions{i, 6} / pairwiseInteractions{i, 4})) - 1 > sigD)
