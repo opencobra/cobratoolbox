@@ -44,9 +44,10 @@ nutrient conditions.
 This method was used to join the AGORA resource, consisting of 773 gut
 microbial metabolic reconstructions, in every possible combination (~300,000
 total) and predict the interactions between each pair on two diets in
-the absence and presence of oxygen. Please see Magnusdottir, Heinken et al.,
-Nat Biotechnol. 2017 35(1):81-89 (PMID:27893703) for a detailed description
-of the simulation results.
+the absence and presence of oxygen. Please see [Magnusdottir, Heinken et al.,
+Nat Biotechnol. 2017 35(1):81-89
+(PMID:27893703)](https://www.ncbi.nlm.nih.gov/pubmed/27893703)
+for a detailed description of the simulation results.
 
 The LiveScripts `MicrobeMicrobeInteractions.mlx` and `HostMicrobeInteractions.mlx`
 located in the `/tutorials` folder provide examples application using the AGORA
