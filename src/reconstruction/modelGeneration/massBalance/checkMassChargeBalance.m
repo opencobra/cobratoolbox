@@ -90,7 +90,7 @@ E=full(E);
 
 % A reaction is considered elementally imbalanced if any of the molecular
 % species involved is missing a chemical formula.
-imBalancedRxnBool=any(massImbalance, 2) | any(model.S(missingFormulaeBool, :))';
+imBalancedRxnBool=any(massImbalance, 2) | any(model.S(missingFormulaeBool, :),1)';
 
 imBalancedMass=cell(nRxn, 1);
 for i = 1 : nRxn
