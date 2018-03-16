@@ -12,7 +12,6 @@ function [init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figFo
 %    abunFilePath           char with path and name of file from which to retrieve abundance information
 %    objre                  char with reaction name of objective function of organisms
 %    figForm                format to use for saving figures
-%    solver                 char indicating the solver to use for simulations 
 %    numWorkers             logical indicating the number of cores to use for parallelization
 %    autoFix                double indicating if to try to automatically fix inconsistencies 
 %    compMod                logical indicating if outputs in open format should be produced for each section (1=T)
@@ -35,7 +34,6 @@ dietFilePath=dietFilePath;
 abunFilePath=abunFilePath;
 objre=objre;
 figForm=figForm;
-solver=solver;
 numWorkers=numWorkers;
 autoFix=autoFix;
 compMod=compMod;

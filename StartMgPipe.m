@@ -22,8 +22,6 @@ abunFilePath=strcat(toolboxPath,'Resources/normCoverage.csv');
 objre={'EX_biomass(e)'};
 %the output is vectorized picture, change to '-dpng' for .png
 figForm = '-depsc'
-% which solver (and interface) to use
-solver = 'tomlab_cplex'
 % number of cores dedicated for parallelization 
 numWorkers = 3;
 % autofix for names mismatch
@@ -38,12 +36,12 @@ rDiet = 0;
 extSolve = 0; 
 % the type of FVA function to use to solve
 fvaType = 1; 
-% Additionally we will tourn off the autorun to be able to manually execute each part of the pipeline.
-autorun=0; 
+% To tourn off the autorun to be able to manually execute each part of the pipeline.
+autorun=1; 
 %END OF REQUIRED INPUT VARIABLES
 
 %%
 %PIPELINE LAUNCHER 
-[init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figForm,solver,numWorkers,autoFix,compMod,patStat,rDiet,extSolve,fvaType,autorun]= initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet,extSolve,fvaType,autorun);
+[init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figForm,numWorkers,autoFix,compMod,patStat,rDiet,extSolve,fvaType,autorun]= initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet,extSolve,fvaType,autorun);
 
 
