@@ -25,12 +25,13 @@ for reactions and metabolites matches for any joined
 genome-scale-reconstructions. It is the responsibility of the user to ensure
 uniform nomenclature. There are six possible interactions between bacteria
 that can be predicted with the present method:
-    - competition
-    - parasitism
-    - amensalism
-    - neutralism
-    - commensalism
-    - mutualism
+    * competition
+    * parasitism
+    * amensalism
+    * neutralism
+    * commensalism
+    * mutualism
+
 Please see the
 function `simulatePairwiseInteractions` for a brief description of these
 interactions. Note that the predicted interaction depends on the reactions
