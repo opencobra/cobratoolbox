@@ -1,4 +1,4 @@
-function [OptSolKO,OptSolWT,OptSolRatio,RescuedGenes,fluxesKO]=computeRescuedGenes(varargin)
+function [OptSolKO, OptSolWT, OptSolRatio, RescuedGenes, fluxesKO] = computeRescuedGenes(varargin)
 % Part of the Microbiome Modeling Toolbox. This function determines the
 % effect of the presence of another species on gene deletions in a species.
 % A joint model consisting of two species is entered. For each gene
@@ -41,14 +41,14 @@ function [OptSolKO,OptSolWT,OptSolRatio,RescuedGenes,fluxesKO]=computeRescuedGen
 % .. Author:
 %        - Almut Heinken 2012-2018. Last modified 03/2018.
 
-parser = inputParser(); %  Parse input parameters
-parser.addParameter('modelJoint',@isstruct);
-parser.addParameter('OriModel1',@isstruct);
-parser.addParameter('OriModel2',@isstruct);
-parser.addParameter('Rxn1',@ischar);
-parser.addParameter('Rxn2',@ischar);
-parser.addParameter('nameTag1',@ischar);
-parser.addParameter('nameTag2',@ischar);
+parser = inputParser();  % Parse input parameters
+parser.addParameter('modelJoint', @isstruct);
+parser.addParameter('OriModel1', @isstruct);
+parser.addParameter('OriModel2', @isstruct);
+parser.addParameter('Rxn1', @ischar);
+parser.addParameter('Rxn2', @ischar);
+parser.addParameter('nameTag1', @ischar);
+parser.addParameter('nameTag2', @ischar);
 
 parser.parse(varargin{:});
 
@@ -70,64 +70,64 @@ end
 % Start the gene deletion analysis.
 
 % Relax any constraints on ATP maintenance reactions
-modelJoint=changeRxnBounds(modelJoint,strcat(nameTag1,'ATPM'),0,'l');
-modelJoint=changeRxnBounds(modelJoint,strcat(nameTag2,'ATPM'),0,'l');
-modelJoint=changeRxnBounds(modelJoint,strcat(nameTag1,'DM_atp_c_'),0,'l');
-modelJoint=changeRxnBounds(modelJoint,strcat(nameTag2,'DM_atp_c_'),0,'l');
+modelJoint = changeRxnBounds(modelJoint, strcat(nameTag1, 'ATPM'), 0, 'l');
+modelJoint = changeRxnBounds(modelJoint, strcat(nameTag2, 'ATPM'), 0, 'l');
+modelJoint = changeRxnBounds(modelJoint, strcat(nameTag1, 'DM_atp_c_'), 0, 'l');
+modelJoint = changeRxnBounds(modelJoint, strcat(nameTag2, 'DM_atp_c_'), 0, 'l');
 
-%store the original joint model to go back to it after changing constraints
-modelJointOri=modelJoint;
+% store the original joint model to go back to it after changing constraints
+modelJointOri = modelJoint;
 
 % Determine the wild-type solutions in joint model.
 % First reaction
-modelJoint=modelJointOri;
-modelJoint=changeObjective(modelJoint,Rxn1);
-solutionWT=solveCobraLP(modelJoint);
-OptSolWT.(strcat('JoinedModel_',Rxn1)) = solutionWT.obj;
+modelJoint = modelJointOri;
+modelJoint = changeObjective(modelJoint, Rxn1);
+solutionWT = solveCobraLP(modelJoint);
+OptSolWT.(strcat('JoinedModel_', Rxn1)) = solutionWT.obj;
 % Second reaction
-modelJoint=modelJointOri;
-modelJoint=changeObjective(modelJoint,Rxn2);
-solutionWT=solveCobraLP(modelJoint);
-OptSolWT.(strcat('JoinedModel_',Rxn2)) = solutionWT.obj;
+modelJoint = modelJointOri;
+modelJoint = changeObjective(modelJoint, Rxn2);
+solutionWT = solveCobraLP(modelJoint);
+OptSolWT.(strcat('JoinedModel_', Rxn2)) = solutionWT.obj;
 
 % Define the different model scenarios that will be tested.
-modelJointRxn1=changeObjective(modelJointOri,Rxn1);
-FirstModelSingle=changeRxnBounds(modelJointRxn1,modelJointRxn1.rxns(strmatch(nameTag2,modelJointRxn1.rxns)),0,'b');
-modelJointRxn2=changeObjective(modelJointOri,Rxn2);
-SecondModelSingle=changeRxnBounds(modelJointRxn2,modelJointRxn2.rxns(strmatch(nameTag1,modelJointRxn2.rxns)),0,'b');
+modelJointRxn1 = changeObjective(modelJointOri, Rxn1);
+FirstModelSingle = changeRxnBounds(modelJointRxn1, modelJointRxn1.rxns(strmatch(nameTag2, modelJointRxn1.rxns)), 0, 'b');
+modelJointRxn2 = changeObjective(modelJointOri, Rxn2);
+SecondModelSingle = changeRxnBounds(modelJointRxn2, modelJointRxn2.rxns(strmatch(nameTag1, modelJointRxn2.rxns)), 0, 'b');
 
 % Determine the wild-type solutions in single models.
 % First reaction
-solutionWT_Rxn1=solveCobraLP(FirstModelSingle);
-OptSolWT.(strcat('SingleModel_',Rxn1)) = solutionWT_Rxn1.obj;
+solutionWT_Rxn1 = solveCobraLP(FirstModelSingle);
+OptSolWT.(strcat('SingleModel_', Rxn1)) = solutionWT_Rxn1.obj;
 % Second reaction
-solutionWT_Rxn2=solveCobraLP(SecondModelSingle);
-OptSolWT.(strcat('SingleModel_',Rxn2)) = solutionWT_Rxn2.obj;
+solutionWT_Rxn2 = solveCobraLP(SecondModelSingle);
+OptSolWT.(strcat('SingleModel_', Rxn2)) = solutionWT_Rxn2.obj;
 
 % Perform gene deletion for all genes in the first original model structure
 % to find the ones that have an effect.
 % Find the gene deletions that result in reduced or no flux in the first
 % model.
-reducedGenesRxn1={};
-cnt=1;
+reducedGenesRxn1 = {};
+cnt = 1;
 for i = 1:length(OriModel1.genes)
-    model=OriModel1;
-    [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,model.genes(i));
+    model = OriModel1;
+    [model, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, model.genes(i));
     if hasEffect
-        constrRxnNames = strcat(nameTag1,constrRxnNames);
-        modelDel=FirstModelSingle;
-        modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-        sol=solveCobraLP(modelDel);
-        if sol.obj<solutionWT_Rxn1.obj
-            reducedGenesRxn1{cnt,1}=OriModel1.genes(i);
-            cnt=cnt+1;
+        constrRxnNames = strcat(nameTag1, constrRxnNames);
+        modelDel = FirstModelSingle;
+        modelDel = changeRxnBounds(modelDel, constrRxnNames, 0, 'b');
+        sol = solveCobraLP(modelDel);
+        if sol.obj < solutionWT_Rxn1.obj
+            reducedGenesRxn1{cnt, 1} = OriModel1.genes(i);
+            cnt = cnt + 1;
         end
     end
 end
 % Compare the gene deletions that had an effect in the single and in the
 % joined model.
-for i=1:length(reducedGenesRxn1)
-     model=OriModel1;
+for i = 1:length(reducedGenesRxn1)
+     model = OriModel1;
     [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,reducedGenesRxn1{i});
     constrRxnNames = strcat(nameTag1,constrRxnNames);
     % For joined model, reaction 1

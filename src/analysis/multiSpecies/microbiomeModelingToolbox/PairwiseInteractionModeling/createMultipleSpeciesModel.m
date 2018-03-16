@@ -1,4 +1,4 @@
-function [modelJoint] = createMultipleSpeciesModel(models,varargin)
+function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 % Based on the implementation from *Klitgord and Segre 2010, PMID 21124952*.
 % The present implementation has been used in *PMID 23022739*, *PMID 25841013*,
 % *PMID 25901891*, *PMID 27893703*.
@@ -57,8 +57,8 @@ if numel(varargin) > 0 && ~ischar(varargin{1})
     tempargin = cell(0);
     for i = 1:numel(varargin)
         if ~isempty(varargin{i})
-            tempargin{end+1} = oldOptionalOrder{i};
-            tempargin{end+1} = varargin{i};
+            tempargin{end + 1} = oldOptionalOrder{i};
+            tempargin{end + 1} = varargin{i};
         end
     end
     varargin = tempargin;
@@ -66,13 +66,13 @@ end
 
 % Define default input parameters if not specified
 parser = inputParser();
-parser.addRequired('models',@iscell);
-parser.addParameter('nameTagsModels',{},@iscell);
-parser.addParameter('modelHost',{},@isstruct);
-parser.addParameter('nameTagHost','',@(x) ischar(x) || iscell(x))
-parser.addParameter('mergeGenesFlag',false,@(x) isnumeric(x) || islogical(x))
+parser.addRequired('models', @iscell);
+parser.addParameter('nameTagsModels', {}, @iscell);
+parser.addParameter('modelHost', {}, @isstruct);
+parser.addParameter('nameTagHost', '', @(x) ischar(x) || iscell(x))
+parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
 
-parser.parse(models,varargin{:});
+parser.parse(models, varargin{:});
 
 models = parser.Results.models;
 nameTagsModels = parser.Results.nameTagsModels;
@@ -104,14 +104,14 @@ end
 
 %% ensure compatibility with reconstructions from BIGG Models database
 for i = 1:modelNumber
-    model=models{i,1};
-    metIndices=~cellfun(@isempty,regexp(model.mets,'_e$'));
-    model.mets(metIndices)=strrep(model.mets(metIndices),'_e','[e]');
-    models{i,1}=model;
+    model = models{i, 1};
+    metIndices =~cellfun(@isempty, regexp(model.mets, '_e$'));
+    model.mets(metIndices) = strrep(model.mets(metIndices), '_e', '[e]');
+    models{i, 1} = model;
 end
 if ~isempty(modelHost)
-metIndices=~cellfun(@isempty,regexp(modelHost.mets,'_e$'));
-modelHost.mets(metIndices)=strrep(modelHost.mets(metIndices),'_e','[e]');
+metIndices =~cellfun(@isempty, regexp(modelHost.mets, '_e$'));
+modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '_e', '[e]');
 end
 
 %% define some variables
@@ -119,17 +119,17 @@ eTag = 'u';
 exTag = 'e';
 % find exchange reactions for models, but leaves demand and sink reactions
 % do this for all models to be added, remove exchange reactions from host while leaving demand and sink reactions
-%First, find the minimal number of fields common to all models.
+% First, find the minimal number of fields common to all models.
 presentinallModels = fieldnames(models{1});
 missingFields = {};
 for i = 2:modelNumber
     cfields = fieldnames(models{i});
-    missingFields = union(missingFields,setxor(cfields,presentinallModels));
-    presentinallModels = intersect(presentinallModels,cfields);
+    missingFields = union(missingFields, setxor(cfields, presentinallModels));
+    presentinallModels = intersect(presentinallModels, cfields);
 end
 fprintf('The following fields are missing in several models, they will not be merged:\n');
 disp(missingFields);
-models = restrictModelsToFields(models,presentinallModels);
+models = restrictModelsToFields(models, presentinallModels);
 
 modelStorage = cell(modelNumber, 1);
 for i = 1:modelNumber
@@ -137,7 +137,7 @@ for i = 1:modelNumber
     model = models{i, 1};
     % find exchange reactions and external metabolites
     exmod = model.rxns(strmatch('EX', model.rxns));
-    %remove all previously defined exchange reactions
+    % remove all previously defined exchange reactions
     model = removeRxns(model, exmod);
     % make sure the exchange reactions and changed model are saved under correct name
     modelStorage{i, 1} = model;
@@ -160,7 +160,7 @@ if ~isempty(modelHost)
             ERxnForm = printRxnFormula(modelHost, modelHost.rxns(ERxnind), false);
             ERxnForm = regexprep(ERxnForm, '\[e\]', '\[b\]');
             for j = 1:length(ERxnForm)
-                [modelHost,rxnIDexists] = addReaction(modelHost,...
+                [modelHost, rxnIDexists] = addReaction(modelHost, ...
                                                       strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.lb(ERxnind(j)) < 0, ...
                                                       modelHost.lb(ERxnind(j)), modelHost.ub(ERxnind(j)), modelHost.c(ERxnind(j)), 'Host exchange', '', '', '', false);
             end
