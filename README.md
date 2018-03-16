@@ -43,9 +43,9 @@ The following files are supplied
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
 | StartMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
-| initMgPipe.m                                   | *function containing all the input variables launching the pipeline* |
-| loadUncModels.m                                | *function to load and unconstraint the models*                                             |
-| fastSetupCreator.m                             | *function to create "global" setup*                                             |
+| initMgPipe.m                                   | *function containing all the input variables launching the pipeline*   |
+| loadUncModels.m                                | *function to load and unconstraint the models*                         |
+| fastSetupCreator.m                             | *function to create "global" setup*                                    |
 | checkNomenConsist.m                            | *function to check that microbes have the right nomenclature *                                             |
 | detectOutput.m                                 | *function to check if a specific file was already created and saved *                                             |
 | getIndividualSizeName.m                        | *get information on number and ID of organisms and individuals*|
@@ -91,20 +91,20 @@ Some variables, in the input file, needs to be created/modified to specify input
 | Variables    | Description                          |
 | -------------|--------------------------------------|
 | modPath      | path to microbes models              |
+| toolboxPath  | path to where the Microbiome Modeling Toolbox is located|
 | infoPath     | path to csv files (where input files are stored)|
 | resePath     | path to the directory containing results|
+| dietFilePath | path to and name of the file with dietary information|
+| abunFilePath | path to and name of the file with abundance information|
 | objre        | name of objective function of microbes|
-| sDiet        | which type of diet to apply to the microbiota models|
 | figForm      | the output is vectorized picture ('-depsc'), change to '-dpng' for .png|
-| nmbWok         | number of cores dedicated for parallelization|
+| numWorkers   | number of cores dedicated for parallelization|
 | autoFix      | option to automatically solve possible issues (autofix=1 means on, =0 off)   |
 | compMod      | if outputs in open format should be produced for some sections (1=T)|
 | patStat      | if documentation on patient status is provided (0 not 1 yes)|
 | rDiet        | if to simulate also a rich diet (rdiet=1)|
 | extSolve     | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
 | fvaType      | which FVA function to use (fastFVA =1) |
-
-
 
 
 The ‘autorun’ variable controls the behavior of the pipeline. The autorun functionality is automatically on. 
@@ -191,11 +191,11 @@ To be implemented
 
 Toutorial
 =========
-To be inplemented: A livescript toutorial will be implemented as soon as possible. 
+A livescript toutorial is available in the tutorial folder. 
 
 
 Author & Documentation Date
 ===========================
-*Federico Baldini, 22.02.18*
+*Federico Baldini, 16.03.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*

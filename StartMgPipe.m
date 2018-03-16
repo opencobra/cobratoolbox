@@ -8,7 +8,7 @@
 
 %REQUIRED INPUT VARIABLES
 
-% path to microbiota models
+% path to microbe models
 modPath='YOUR_PATH_TO_AGORA\';
 % path to where the Microbiome Modeling Toolbox is located
 toolboxPath='YOUR_PATH_TO_Microbiome_Modeling_Toolbox\'
