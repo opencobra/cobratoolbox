@@ -40,30 +40,6 @@ xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
 title('Metabolic Diversity') 
 print(strcat(resPath,'Metabolic Diversity'),figForm)
-else
-%Plot: number of species | number of reactions  disease resolved
-%Patients status: cellarray of same lenght of number of patients 0 means patient with disease 1 means helthy
-patTab=readtable(strcat(infoPath,'Patients_status.csv'))
-patients=table2array(patTab(2,:))
-patients=patients(1:length(patOrg))
-N = length(patients(1,:))
-colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
-    for k = 1 : length(patients(1,:))
-        if patients(1,k) == 1
-           colorMap(k, :) = [1,0,0]; % Red
-        end
-        if patients(1,k) == 2
-           colorMap(k, :) = [0,1,0]; % Green
-        end
-    end
-
-figure(2)
-scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');
-xlabel('Microbiota Size') % x-axis label
-ylabel('Number of unique reactions') % y-axis label
-title('Metabolic Diversity | health resolved')
-print(strcat(resPath,'Metabolic Diversity | health resolved'),figForm)
-end
 
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
@@ -80,6 +56,39 @@ plot(Y(:,1),Y(:,2),'bx')
 title('PCoA of reaction presence');
 print(strcat(resPath,'PCoA reactions'),figForm)
 
+else
+%Plot: number of species | number of reactions  disease resolved
+%Patients status: cellarray of same lenght of number of patients 0 means patient with disease 1 means helthy
+patTab=readtable(strcat(toolboxPath,'Resources\sampInfo.csv'));
+patients=table2array(patTab(2,:));
+patients=patients(1:length(patOrg));
+N = length(patients(1,:));
+colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
+    for k = 1 : length(patients(1,:))
+        if str2double(patients(1,k)) == 1
+           colorMap(k, :) = [1,0,0]; % Red
+        end
+        if str2double(patients(1,k)) == 0
+           colorMap(k, :) = [0,1,0]; % Green
+        end
+    end
+
+figure(2)
+scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');
+xlabel('Microbiota Size') % x-axis label
+ylabel('Number of unique reactions') % y-axis label
+title('Metabolic Diversity | health resolved')
+print(strcat(resPath,'Metabolic Diversity | health resolved'),figForm)
+
+% PCoA -> different reactions per individual
+D = pdist(reacTab','jaccard');
+[Y,eigvals] = cmdscale(D);
+figure(3)
+P = [eigvals eigvals/max(abs(eigvals))];
+scatter(Y(:,1),Y(:,2),24* ones(length(reacNumber), 1), colorMap, 'filled')
+title('PCoA of reaction presence');
+print(strcat(resPath,'PCoA reactions'),figForm)
+end
 
 %Plot Eigen number value: diasbled by default
 %plot(1:length(eigvals),eigvals,'bo-');

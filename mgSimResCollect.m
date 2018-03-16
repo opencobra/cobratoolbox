@@ -83,8 +83,27 @@ else
     JD = pdist(fSp','euclidean');
     [Y,eigvals] = cmdscale(JD);
     P = [eigvals eigvals/max(abs(eigvals))];
-    plot(Y(:,1),Y(:,2),'bx') 
-    print(strcat(resPath,'PCoA_individuals_fluxes_',names{1,j}),figForm)
+    if patStat == 0
+        plot(Y(:,1),Y(:,2),'bx') 
+        print(strcat(resPath,'PCoA_individuals_fluxes_',names{1,j}),figForm)
+        title('PCoA of NMPCs');
+    else
+        patTab=readtable(strcat(toolboxPath,'Resources\sampInfo.csv'));
+        patients=table2array(patTab(2,:));
+        patients=patients(1:length(patOrg));
+        N = length(patients(1,:));
+        colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
+                for k = 1 : length(patients(1,:))
+                    if str2double(patients(1,k)) == 1
+                        colorMap(k, :) = [1,0,0]; % Red
+                    end
+                    if str2double(patients(1,k)) == 0
+                       colorMap(k, :) = [0,1,0]; % Green
+                    end
+                end
+       scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');
+       title('PCoA of NMPCs');
+    end
 end
 end
 end
