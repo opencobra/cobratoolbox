@@ -25,19 +25,21 @@ for reactions and metabolites matches for any joined
 genome-scale-reconstructions. It is the responsibility of the user to ensure
 uniform nomenclature. There are six possible interactions between bacteria
 that can be predicted with the present method:
-    * competition
-    * parasitism
-    * amensalism
-    * neutralism
-    * commensalism
-    * mutualism
 
-Please see the
-function `simulatePairwiseInteractions` for a brief description of these
-interactions. Note that the predicted interaction depends on the reactions
-and metabolites encoded in each individual genome-scale reconstruction as
-well as on the imposed constraints. For one pairwise model, different
-interactions may be predicted on different simulated nutrient conditions.
+* competition
+* parasitism
+* amensalism
+* neutralism
+* commensalism
+* mutualism
+
+Please see the if taxon information is missing for at least one microbe in the
+pairwise interactions input file function `simulatePairwiseInteractions` for a
+brief description of these interactions. Note that the predicted interaction
+depends on the reactions and metabolites encoded in each individual
+genome-scale reconstruction as well as on the imposed constraints. For one
+pairwise model, different interactions may be predicted on different simulated
+nutrient conditions.
 
 This method was used to join the AGORA resource, consisting of 773 gut
 microbial metabolic reconstructions, in every possible combination (~300,000
