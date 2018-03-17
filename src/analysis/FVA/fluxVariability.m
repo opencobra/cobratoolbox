@@ -56,12 +56,8 @@ global CBT_LP_PARAMS
 if nargin < 2
     optPercentage = 100;
 end
-if nargin < 3
-    if isfield(model, 'osenseStr')
-        osenseStr = model.osenseStr;
-    else
-        osenseStr = 'max';
-    end
+if nargin < 3 || isempty(osenseStr)
+    [osenseStr,~] = getObjectiveSense(model);
 end
 if nargin < 4
     rxnNameList = model.rxns;
@@ -83,9 +79,6 @@ if nargin < 9
 end
 if isempty(optPercentage)
     optPercentage = 100;
-end
-if isempty(osenseStr)
-    osenseStr = 'max';
 end
 if isempty(rxnNameList)
     rxnNameList = model.rxns;
@@ -146,6 +139,15 @@ if ~isfield(model,'b')
 end
 % Set up the general problem
 rxnListFull = model.rxns;
+
+if strcmpi(osenseStr,'max')
+    LPproblem.osense = -1;
+elseif strcmpi(osenseStr,'min')    
+    LPproblem.osense = 1;
+else
+    error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
+end
+
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
 LPproblem.ub = model.ub;
@@ -163,12 +165,6 @@ LPproblem.csense = columnVector(LPproblem.csense);
 LPproblem.A = model.S;
 LPproblem.b = model.b;
 
-%solve to get the original model optimal objective
-if ~isfield(model,'osense')
-    LPproblem.osense = -1;
-else
-    LPproblem.osense = model.osense;
-end
 
 % Solve initial (normal) LP
 if allowLoops
@@ -328,9 +324,9 @@ else % parallel job.  pretty much does the same thing.
     milpsolver = CBT_MILP_SOLVER;
     if minNorm        
         parfor i = 1:length(rxnNameList)
-            changeCobraSolver(qpsolver,'QP',0,1);
-            changeCobraSolver(lpsolver,'LP',0,1);
-            changeCobraSolver(milpsolver,'MILP',0,1);                
+            changeCobraSolver(qpsolver,'QP',0,-1);
+            changeCobraSolver(lpsolver,'LP',0,-1);
+            changeCobraSolver(milpsolver,'MILP',0,-1);                
             parLPproblem = LPproblem;        
             parLPproblem.osense = 1;
             [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
@@ -341,9 +337,9 @@ else % parallel job.  pretty much does the same thing.
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
         parfor i = 1:length(rxnListMin)    
-            changeCobraSolver(qpsolver,'QP',0,1);
-            changeCobraSolver(lpsolver,'LP',0,1);
-            changeCobraSolver(milpsolver,'MILP',0,1);
+            changeCobraSolver(qpsolver,'QP',0,-1);
+            changeCobraSolver(lpsolver,'LP',0,-1);
+            changeCobraSolver(milpsolver,'MILP',0,-1);
             parLPproblem = LPproblem;
             [mins(i)] = calcSolForEntry(model,rxnListMin,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
@@ -353,8 +349,9 @@ else % parallel job.  pretty much does the same thing.
         maxs = inf*ones(length(rxnListMax),1);
         LPproblem.osense = -1;
         parfor i = 1:length(rxnListMax)        
-            changeCobraSolver(qpsolver,'QP',0,1);
-            changeCobraSolver(lpsolver,'LP',0,1);
+            changeCobraSolver(qpsolver,'QP',0,-1);
+            changeCobraSolver(lpsolver,'LP',0,-1);
+            changeCobraSolver(milpsolver,'MILP',0,-1);            
             parLPproblem = LPproblem;
             [maxs(i)] = calcSolForEntry(model,rxnListMax,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end

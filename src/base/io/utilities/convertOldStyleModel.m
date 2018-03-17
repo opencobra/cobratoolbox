@@ -38,10 +38,10 @@ function model = convertOldStyleModel(model, printLevel)
 %    (i.e. if not data is present in the new field at any position, the old
 %    field data replaces it, otherwise the new field data is kept.
 %    Furthermore, fields deemed to be required for Flux Balance analysis are generated if not present:
-%    osense: Objective Sense.
-%            By default this field is initialized as -1 (maximisation)
-%            If the osenseStr field is present, that field will be
-%            interpreted and if it is 'min' osense will be initialized to 1
+%    osenseStr: Objective Sense.
+%            By default this field is initialized as 'max'. If osense is
+%            present, a -1 will be translates as 'max' and a 1 will be
+%            translated as 'min'
 %    csense: Constraint sense.
 %            This field indicates the sense of the b matrix, i.e. if b
 %            stands for lower than ('L') or greater than ('G') or equality constraints ('E'). It
@@ -127,15 +127,19 @@ for i = 1:numel(oldFields)
     end
 end
 
-if ~isfield(model,'osense')
-    if isfield(model,'osenseStr')
-        if strcmpi(model.osenseStr,'min')
-            model.osense = 1;
-        else
-            model.osense = -1;
+if isfield(model,'osense')
+   if ~isfield(model,'osenseStr')       
+        if model.osense == -1
+            model.osenseStr = 'max';
         end
-    else
-        model.osense = -1;
+        if model.osense == 1
+            model.osenseStr = 'min';
+        end
+   end
+   model = rmfield(model,'osense');    
+else
+    if ~isfield(model,'osenseStr')
+        model.osenseStr = 'max';
     end
 end
 

@@ -147,7 +147,12 @@ end
 %ecNumbers = 5, rxnKEGGID = 6, description = 7
 for i = 1:length(Optional)-1
     if isfield(model,Optional{i})
-        data(:,i+7) = handles.model.(Optional{i});
+        if isnumeric(handles.model.(Optional{i}))
+            %Confidence Scores are numeric values....
+            data(:,i+7) = num2cell(handles.model.(Optional{i}));
+        else
+            data(:,i+7) = handles.model.(Optional{i});
+        end
     else %data missing
         data(:,i+7) = cell(S1(1),1);
     end

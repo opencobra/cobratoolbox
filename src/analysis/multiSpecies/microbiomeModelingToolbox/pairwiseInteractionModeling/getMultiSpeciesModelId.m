@@ -45,16 +45,16 @@ end
 if nargin < 6 || isempty(compCom)
     compCom = 'u';
 end
-compHost = regexprep(compHost,'^\[(.*)\]$','$1');
-compCom = regexprep(compCom,'^\[(.*)\]$','$1');
-%regular expression for identifying species
+compHost = regexprep(compHost, '^\[(.*)\]$', '$1');
+compCom = regexprep(compCom, '^\[(.*)\]$', '$1');
+% regular expression for identifying species
 if nargin < 5 || isempty(rxnTagRe)
     rxnTagRe = '^%s';
 end
 if nargin < 4 || isempty(metTagRe)
     metTagRe = '^%s';
 end
-metCompartment = getCompartment(modelJoint.mets); 
+metCompartment = getCompartment(modelJoint.mets);
 % mets in the common exchange space ([u]) or the biomass (use biomass[c] to be consistent with createMultipleSpeciesModel)
 metCom = strcmp(metCompartment, compCom) | strcmp(modelJoint.mets, 'biomass[c]');
 % mets in exchange space accessible only by the host ([b])
@@ -68,16 +68,16 @@ if ischar(nameTagsModels)
 end
 % get the regular expression of identifiers for species-specific mets and rxns
 nSp = numel(nameTagsModels);
-[metTagReSp, rxnTagReSp] = deal(repmat({''}, nSp + hostExist,1));
+[metTagReSp, rxnTagReSp] = deal(repmat({''}, nSp + hostExist, 1));
 for jSp = 1:nSp
-    metTagReSp{jSp} = strrep(metTagRe,'%s',nameTagsModels{jSp});
-    rxnTagReSp{jSp} = strrep(rxnTagRe,'%s',nameTagsModels{jSp});
+    metTagReSp{jSp} = strrep(metTagRe, '%s', nameTagsModels{jSp});
+    rxnTagReSp{jSp} = strrep(rxnTagRe, '%s', nameTagsModels{jSp});
 end
 metHost = find(metHost);
 if hostExist
     % add regular expression for host
-    metTagReSp{nSp + 1} = strrep(metTagRe,'%s',nameTagHost);
-    rxnTagReSp{nSp + 1} = strrep(rxnTagRe,'%s',nameTagHost);
+    metTagReSp{nSp + 1} = strrep(metTagRe, '%s', nameTagHost);
+    rxnTagReSp{nSp + 1} = strrep(rxnTagRe, '%s', nameTagHost);
     % try to sort metHost to have the same order as metCom by comparing met names
     metHostName = regexprep(modelJoint.mets(metHost), metTagReSp{nSp + 1}, '');
     metHostName = strrep(metHostName, ['[' compHost ']'], '');
@@ -100,15 +100,15 @@ EXhost = rxnEX(EXhost);
 
 % Get the species number for each met and rxn. 0 for those in [u]
 [nMets, nRxns] = size(modelJoint.S);
-metSps = zeros(nMets,1);
-rxnSps = zeros(nRxns,1);
+metSps = zeros(nMets, 1);
+rxnSps = zeros(nRxns, 1);
 for jSp = 1:nSp
     metSps(~cellfun(@isempty, regexp(modelJoint.mets, metTagReSp{jSp}, 'once')) & ~metCom) = jSp;
     rxnSps(~cellfun(@isempty, regexp(modelJoint.rxns, rxnTagReSp{jSp}, 'once'))) = jSp;
     %     metSps(strncmp(modelJoint.mets, nameTagsModels{j}, numel(nameTagsModels{j})) & ~metCom) = j;
     %     rxnSps(strncmp(modelJoint.rxns, nameTagsModels{j}, numel(nameTagsModels{j}))) = j;
-    rxnSps(EXcom) = 0;%in case some mets or exchange rxns in [u] have prefix equal to the name tags
-    %check if the model is properly compartmentalized.
+    rxnSps(EXcom) = 0;  % in case some mets or exchange rxns in [u] have prefix equal to the name tags
+    % check if the model is properly compartmentalized.
     if nnz(modelJoint.S(metSps == jSp, rxnSps ~= jSp)) > 0 ...
             || nnz(modelJoint.S(metSps ~= jSp & metSps > 0, rxnSps == jSp)) > 0
         error('The model for species %s is not correctly compartmentalized. Check the name tags.');
@@ -121,7 +121,7 @@ if hostExist
     %     rxnSps(strncmp(modelJoint.rxns, nameTagHost, numel(nameTagHost))) = nSp + 1;
 end
 
-%species-community exchange rxns (between members' [e] and [u])
+% species-community exchange rxns (between members' [e] and [u])
 EXeu = any(modelJoint.S(metCom, :), 1);
 EXeu(EXcom) = false;  % exclude system input/output exchange rxns
 EXeu = find(EXeu);

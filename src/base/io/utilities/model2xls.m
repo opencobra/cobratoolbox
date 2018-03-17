@@ -84,8 +84,12 @@ ReactionModelFields = {'rxns','rxnNames','formulas','grRules','lb','ub',...
 if isfield(model,'rules')
     model = creategrRulesField(model);
 end
-if isfield(model,'osense')
-    model.c = model.c * (-model.osense);
+if isfield(model,'osenseStr')
+    %Only do something if minimisation is requested. Assume that osenseStr
+    %is valid.
+    if strcmpi(model.osenseStr,'min')
+        model.c = model.c*-1;
+    end
 end
 
 %Explicit handling of subSystems:

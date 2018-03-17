@@ -62,6 +62,7 @@ html:
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 	git checkout -- source/tutorials/index.rst
 	git checkout -- source/modules/index.rst
+	git checkout -- source/list_contributors.rst
 
 .PHONY: dirhtml
 dirhtml:
