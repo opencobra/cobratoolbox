@@ -237,7 +237,7 @@
 <span id="id1"></span><h1>optForceGAMS<a class="headerlink" href="#optforcegams" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.design.optForceGAMS"></span><dl class="function">
 <dt id="src.design.optForceGAMS.exportInputsMustOrder2ToGAMS">
-<code class="descname">exportInputsMustOrder2ToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustOrder2ToGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">exportInputsMustOrder2ToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustOrder2ToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function exports all the inputs needed to run the GAMS functions to
 find second order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite>, <cite>MustUL</cite>). The inputs will
 be stored in inputFolder. Some inputs will be exported using GDXMRW and
@@ -346,7 +346,7 @@ and the values for contrained reactions)</li>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.exportInputsMustToGAMS">
-<code class="descname">exportInputsMustToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/exportInputsMustToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustToGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">exportInputsMustToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/exportInputsMustToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsMustToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function export all the inputs needed to run the GAMS functions to
 find first order Must Sets (<cite>MustU</cite>, <cite>MustL</cite>). The inputs will
 be stored in inputFolder. Some inputs will be exported using GDXMRW and
@@ -431,7 +431,7 @@ the values for contrained reactions)</li>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.exportInputsOptForceToGAMS">
-<code class="descname">exportInputsOptForceToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>n_sets</em>, <em>constrOpt</em>, <em>excludedURxns</em>, <em>excludedLRxns</em>, <em>excludedKRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/exportInputsOptForceToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsOptForceToGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">exportInputsOptForceToGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>n_sets</em>, <em>constrOpt</em>, <em>excludedURxns</em>, <em>excludedLRxns</em>, <em>excludedKRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/exportInputsOptForceToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportInputsOptForceToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function export the inputs required by GAMS to run <cite>optForce</cite>. Some
 inputs will be exported to plain text (.txt files) and others will be
 exported using GDXMRW. Inputs will be stored in inputFolder</p>
@@ -585,7 +585,7 @@ the values for contrained reactions)</li>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.exportSetToGAMS">
-<code class="descname">exportSetToGAMS</code><span class="sig-paren">(</span><em>set</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/exportSetToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportSetToGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">exportSetToGAMS</code><span class="sig-paren">(</span><em>set</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/exportSetToGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.exportSetToGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function exports the information in &#8220;set&#8221; to a .txt file which can be
 read by GAMS. &#8220;set&#8221; must be a cell array of strings.</p>
 <p><strong>Usage</strong></p>
@@ -621,7 +621,7 @@ the set of elements, one for row.</li>
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustLLWithGAMS">
-<code class="descname">findMustLLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/findMustLLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLLWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustLLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/findMustLLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLLWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming problem to find a second order
 <cite>MustLL</cite> set.</p>
@@ -832,7 +832,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustLWithGAMS">
-<code class="descname">findMustLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/findMustLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustLWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/findMustLWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustLWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
 <cite>MustL</cite> set.</p>
@@ -1036,7 +1036,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustULWithGAMS">
-<code class="descname">findMustULWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/findMustULWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustULWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustULWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/findMustULWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustULWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 MustUL set.</p>
@@ -1246,7 +1246,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustUUWithGAMS">
-<code class="descname">findMustUUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/findMustUUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUUWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustUUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>mustSetFirstOrder</em>, <em>solverName</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/findMustUUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUUWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 <cite>MustUU</cite> set.</p>
@@ -1456,7 +1456,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.findMustUWithGAMS">
-<code class="descname">findMustUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/findMustUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustUWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/findMustUWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.findMustUWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
 <cite>MustU</cite> set.</p>
@@ -1661,7 +1661,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForceGAMS.optForceWithGAMS">
-<code class="descname">optForceWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>nSets</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>solverName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/design/optForceGAMS/optForceWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.optForceWithGAMS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optForceWithGAMS</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>nSets</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>runID</em>, <em>outputFolder</em>, <em>outputFileName</em>, <em>solverName</em>, <em>printExcel</em>, <em>printText</em>, <em>printReport</em>, <em>keepInputs</em>, <em>keepGamsOutputs</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6c5e94061d7aeed1bd94f3a9f68ab183e4b77da6/src/design/optForceGAMS/optForceWithGAMS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForceGAMS.optForceWithGAMS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the third step of <cite>optForce</cite> that is to solve a
 bilevel mixed integer linear programming problem to find sets of
 interventions that lead to an increased production of a particular target</p>

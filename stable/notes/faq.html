@@ -256,11 +256,11 @@ workers of a parallel pool.</div>
 reinitialize the global variables on each worker. The easiest way to
 do this is as follows:</div>
 </div>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBT_SOLVER_LP</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">CBT_SOLVER_LP</span>
-<span class="n">parfor</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span>
-    <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span><span class="s1">&#39;LP&#39;</span><span class="p">);</span>
-    <span class="o">%</span><span class="n">additional</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">parfor</span> <span class="n">loop</span> <span class="n">will</span> <span class="n">now</span> <span class="n">use</span> <span class="n">the</span> <span class="n">currently</span> <span class="nb">set</span> <span class="n">solver</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBT_LP_SOLVER</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">CBT_LP_SOLVER</span>
+<span class="n">parfor</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span>
+    <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="o">%</span><span class="n">third</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">printLevel</span><span class="p">,</span> <span class="n">fourth</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">validation</span> <span class="n">Level</span><span class="o">.</span>
+    <span class="o">%</span> <span class="n">additional</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">parfor</span> <span class="n">loop</span> <span class="n">will</span> <span class="n">now</span> <span class="n">use</span> <span class="n">the</span> <span class="n">currently</span> <span class="nb">set</span> <span class="n">solver</span>
     <span class="n">optimizeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 <span class="n">end</span>
 </pre></div>
