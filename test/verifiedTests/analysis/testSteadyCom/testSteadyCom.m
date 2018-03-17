@@ -1,8 +1,8 @@
 % The COBRAToolbox: testSteadyCom.m
 %
 % Purpose:
-%    - This script aims to test the SteadyCom module and compare the results 
-%      with the expected data. All functions involved will be called explicitly or implicitly. 
+%    - This script aims to test the SteadyCom module and compare the results
+%      with the expected data. All functions involved will be called explicitly or implicitly.
 %
 % Authors:
 %    - Siu Hung Joshua Chan July 2017
@@ -39,7 +39,7 @@ org1 = changeRxnBounds(model, 'A2B', 0);
 org2 = changeRxnBounds(model, 'A2C', 0);
 
 % construct a community model
-modelJoint = createMultipleSpeciesModel({org1; org2}, {'Org1'; 'Org2'});
+modelJoint = createMultipleSpeciesModel({org1; org2}, 'nameTagsModels', {'Org1'; 'Org2'});
 
 % TEST getMultiSpeciesModelId to retreive reaction/metabolite IDs
 [modelJoint.infoCom, modelJoint.indCom] = getMultiSpeciesModelId(modelJoint, {'Org1'; 'Org2'});
@@ -69,7 +69,7 @@ delete('printUptakeBoundCom.txt');  % remove the generated file
 
 % TEST createMultipleSpeciesModel and printUptakeBoundCom with a model with host organism
 % build a model with host
-modelWtHost = createMultipleSpeciesModel({org1; org2}, {'Org1'; 'Org2'}, org1, 'Org3');
+modelWtHost = createMultipleSpeciesModel({org1; org2}, 'nameTagsModels', {'Org1'; 'Org2'}, 'modelHost', org1, 'nameTagHost', 'Org3');
 % get IDs
 [modelWtHost.infoCom, modelWtHost.indCom] = getMultiSpeciesModelId(modelWtHost, {'Org1'; 'Org2'}, 'Org3');
 % change some uptake bounds
@@ -93,7 +93,7 @@ delete('printUptakeBoundCom_wt_host.txt');  % remove the generated file
 rxnEqs{end} = ['30 b[c] + 20 c[c] -> ' metBm];
 model = createModel([rxns; {'EX_biomass(c)'}], [rxnNames; {'biomass export'}], [rxnEqs; {[metBm ' ->']}], ...
     'lowerBoundList', [-1; 0; 0; -1000; -1000; -1000; 0; 0; 0; 0]);
-modelWtBiomass = createMultipleSpeciesModel({model; model}, nameTags);
+modelWtBiomass = createMultipleSpeciesModel({model; model}, 'nameTagsModels', nameTags);
 [modelWtBiomass.infoCom, modelWtBiomass.indCom] = getMultiSpeciesModelId(modelWtBiomass, nameTags);
 % biomass community exchange reaction and metabolite Ids unchanged
 bmCom = strcmp(modelWtBiomass.infoCom.EXcom, regexprep(rxnExBm, '\(([^\)]+)\)', '\[$1\]'));
@@ -123,7 +123,7 @@ for jTest = 1:2
             cont = changeCobraSolver('ibm_cplex', 'LP');
         end
     else  % test any one of the other LP solvers
-        solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'}; 
+        solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'};
         jSolver = 1;
         cont = 0;
         while jSolver <= numel(solverPrefer)
@@ -179,10 +179,10 @@ for jTest = 1:2
         assert(resultAddConstr.BM(1) >= 0.2 - feasTol & resultAddConstr.BM(2) <= 0.3 + feasTol)
         % check the maximum growth rate
         assert(abs(resultAddConstr.GRmax - 0.071427) < tol)
-        % check that organism 2's growth rate really fixed at 0.1    
+        % check that organism 2's growth rate really fixed at 0.1
         assert(abs(resultAddConstr.vBM(2) / resultAddConstr.BM(2) - 0.1) < tol)
-        
-        % 2: general constraint: 
+
+        % 2: general constraint:
         options = struct();
         [options.MC, options.MCmode] = deal(zeros(size(modelJoint.S, 2) + 2, 1));
         % 2A: system exchange of A >= -0.8, constraint on the original variable
@@ -191,19 +191,19 @@ for jTest = 1:2
         [~, resultAddConstr] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
         % check the constraints and max. growth rate
         assert(resultAddConstr.Ut(aCom) <= 0.8 + feasTol & abs(resultAddConstr.GRmax - 0.0114286) < tol)
-        
+
         % 2B: total organism-specific export  <= 1, constraint only on the +ve parts of the variables
         options.MC(:) = 0;
         options.MC(modelJoint.indCom.EXsp(:)) = 1;
         % set MCmode = 1 to constrain only the +vee parts
-        options.MCmode(modelJoint.indCom.EXsp(:)) = 1;  
+        options.MCmode(modelJoint.indCom.EXsp(:)) = 1;
         options.MCrhs = 1;
         [~, resultAddConstr] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
         osExport = resultAddConstr.flux(modelJoint.indCom.EXsp(:));
         osExport(osExport < 0) = 0;  % only look at export reactions
         % check the constraints and max. growth rate
         assert(sum(osExport) <= 1 + feasTol & abs(resultAddConstr.GRmax - 0.046362) < tol)
-        
+
         % 2C: total organism-specific uptake  >= -1, constraint only on the -ve parts of the variables
         % flux V is decomposed as V^pos - V^neg, the latter is the -ve
         % part, therefore the constraint becomes sum(V^neg_ex) <= 1
@@ -214,11 +214,11 @@ for jTest = 1:2
         osUptake(osUptake > 0) = 0;  % only look at uptake reactions
         % check the constraints and max. growth rate
         assert(sum(osUptake) >= -1 - feasTol & abs(resultAddConstr.GRmax - 0.011059) < tol)
-        
+
         % 2D: total intracellular specific activity for each organism <= 5, constraint on the absolute fluxes
         [options.MC, options.MCmode] = deal(zeros(size(modelJoint.S, 2) + 2, 2));
         for jSp = 1:2
-            % sum of all absolute fluxes of the intracellular reactions <= 5 X 
+            % sum of all absolute fluxes of the intracellular reactions <= 5 X
             % (flux / X = specific activity or specific rate)
             options.MC(modelJoint.indCom.rxnSps == jSp, jSp) = 1;  % all reactions belonging to organism jSp
             options.MC(modelJoint.indCom.EXsp(:), jSp) = 0;  % exclude organism-community exchange reactions
@@ -231,13 +231,13 @@ for jTest = 1:2
             assert(resultAddConstr.flux' * options.MC(1:numel(modelJoint.rxns), jSp) <= 5 * resultAddConstr.BM(jSp) + feasTol)
         end
         assert(abs(resultAddConstr.GRmax - 0.026035) < tol)
-        
-        % test another feasibility criteria implemented 
+
+        % test another feasibility criteria implemented
         % (total biomass production rate instead of total biomass amount)
         options = struct('feasCrit', 2, 'solveGR0', true);
         [~, resultFC] = SteadyCom(modelJoint, options, 'feasTol', feasTol);
         assert(abs(resultFC.GRmax - 0.166663) < tol);
-        
+
         % test options given by name-value arguments
         diary('SteadyCom_saveModel.txt');
         [~, resultNVarg] = SteadyCom(modelJoint, [], 'printLevel', 0, 'minNorm', 1, 'saveInput', 'testSteadyComSaveModel');
@@ -257,7 +257,7 @@ for jTest = 1:2
             assert(logical(exist('testSteadyComSaveModel.mat', 'file')))
             delete('testSteadyComSaveModel.mat')
         end
-        
+
         % test a model unable to growth but still feasible for maintenance (i.e., zero growth rate)
         % require export of C by organism 1 and export of B by organism 2
         % but knockout the biomass reaction of organism 1
@@ -270,14 +270,14 @@ for jTest = 1:2
         assert(strcmp(resultMaintenance.stat, 'maintenance') & resultMaintenance.GRmax == 0 ...
             & all(resultMaintenance.vBM <= 1e-5) & abs(resultMaintenance.BM(1) - 1) < tol ...
             & abs(resultMaintenance.BM(2) - 98) < tol)
-        
+
         % test an infeasible model
         % require export of B by organism 1 and export of C by organism 2
         modelTest = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom, 1), 0.1, 'l');
         modelTest = changeRxnBounds(modelTest, modelTest.infoCom.EXsp(cCom, 2), 0.1, 'l');
         [~, resultInfeas] = SteadyCom(modelTest, options);
         assert(strcmp(resultInfeas.stat, 'infeasible'))
-        
+
         % TEST SteadyComFVA
         options = struct('GRtol', 1e-6);
         options.optGRpercent = [100 90 80];
@@ -289,23 +289,23 @@ for jTest = 1:2
         assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tol)
         assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-        
+
         % test with an infeasible model
         [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelTest);
         assert(all(isnan(minFlux)) & all(isnan(maxFlux)) & isnan(GRvector));
-        
+
         % test with given growth rate
         options = struct('GRtol', 1e-6, 'GRmax', 0.1);
         [minFlux, maxFlux] = SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
         minFluxRef = [0.2856653; 0.3749391];
         maxFluxRef = [0.6250234; 0.7143061];
         assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tol)
-        
+
         % test the sub-function without given growth rate
         [minFlux, maxFlux, ~, ~, ~, gr] = SteadyComFVAgr(modelJoint, struct('GRtol', 1e-6), [], 'feasTol', feasTol);
         assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
         assert(abs(gr - 0.142857) < tol)
-        
+
         % test loading Cplex model
         if jTest == 1
             options = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', 'GRmax', 0.142857, 'optGRpercent', 100);
@@ -315,7 +315,7 @@ for jTest = 1:2
             [minFlux, maxFlux] = SteadyComFVAgr(modelJoint, options, [], 'feasTol', feasTol);
             assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tol)
         end
-        
+
         % test saving results
         options = struct('GRtol', 1e-6);
         options.rxnNameList = modelJoint.rxns;
@@ -323,7 +323,7 @@ for jTest = 1:2
         options.saveFVA = ['testSteadyComFVAsave' filesep 'test'];
         SteadyComFVA(modelJoint, options, 'feasTol', feasTol);
         % check existence of saved files
-        assert(exist([options.saveFVA, '_model.mat'], 'file') & ... 
+        assert(exist([options.saveFVA, '_model.mat'], 'file') & ...
             exist([options.saveFVA, '_GR0.14.mat'], 'file') & exist([options.saveFVA, '_GR0.13.mat'], 'file'))
         % check values
         refDataSaveFVA = load('refData_SteadyComFVAsave.mat');
@@ -483,8 +483,8 @@ for jTest = 1:2
         else
             disp('Skipping Parallel Test, No Parallel toolbox installed');
         end
-        
-        
+
+
         % TEST SteadyComPOA
         options = struct('GRtol', 1e-6);
         options.optGRpercent = [100 90 80];
@@ -509,7 +509,7 @@ for jTest = 1:2
         assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
         assert(devSt < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-        
+
         % test loading Cplex model
         if jTest == 1
             optionsLoad = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', ...
@@ -541,15 +541,15 @@ for jTest = 1:2
             assert(devPOA3 < tol)
             assert(max(max(max(abs(fluxRange3 - data.fluxRange(:,:, 1)) ./ abs(data.fluxRange(:, :, 1))))) < tol)
             assert(devSt3 < tol)
-            delete('testSteadyComSaveModel.bas', 'testSteadyComSaveModel.mps', 'testSteadyComSaveModel.prm') 
+            delete('testSteadyComSaveModel.bas', 'testSteadyComSaveModel.mps', 'testSteadyComSaveModel.prm')
         end
-        
+
         % test with an infeasible model
         optionsInfeas = struct();
         optionsInfeas.rxnNameList = options.rxnNameList;
         [POAtable, fluxRange, ~, GRvector] = SteadyComPOA(modelTest, optionsInfeas);
         assert(all(all(cellfun(@isempty, POAtable))) & all(all(isnan(fluxRange))) & isnan(GRvector));
-        
+
         % test contination from interrupted run (same for both parallel and single-thread computation)
         file2delete = strcat(options.savePOA, '_GR0.11', '_j1_k', {'2'; '3'}, '.mat');
         delete([options.savePOA, '_GR0.11.mat'], file2delete{:})
@@ -570,8 +570,8 @@ for jTest = 1:2
         assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tol)
         assert(devSt < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tol)
-        
-        % test parallel computation        
+
+        % test parallel computation
         rmdir([pwd filesep 'testSteadyComPOA'], 's')
         if parWorks
             options.threads = 2;
