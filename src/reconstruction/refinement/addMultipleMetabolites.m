@@ -49,6 +49,7 @@ nMets = numel(model.mets);
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,3)));
 modelMetFields = getModelFieldsForType(model,'mets');
+model.mets = [model.mets;columnVector(metIDs)];
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
@@ -60,7 +61,6 @@ for field = 1:2:numel(varargin)
     end    
     model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];    
 end       
-model.mets = [model.mets;columnVector(metIDs)];
 
 newmodel = extendModelFieldsForType(model,'mets','originalSize',nMets);
 
