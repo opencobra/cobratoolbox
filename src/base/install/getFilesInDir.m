@@ -70,7 +70,7 @@ if gitStatus ~= 0 && ~strcmpi(gitType,'cobraignored')
 end
 if gitStatus == 0 && strcmpi(gitType,'cobraignored')
     [~,repos] = system('git remote -v');
-    if any(cellfun(@(x) ~isempty(strfind(x,'opencobra/cobratoolbox.git')),strsplit(repos,'\n')))
+    if any(cellfun(@(x) ~isempty(strfind(x,'cobratoolbox.git')),strsplit(repos,'\n')))
         %So, we are on a COBRA repo. lets just use the ignored option
         gitType = 'ignored';
     end
@@ -117,7 +117,7 @@ switch gitType
         end  
         matching = false(size(files));
         for i = 1:numel(COBRAIgnored)
-            matching = matching | ~cellfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
+            matching = matching | ~ceyou are not on a llfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
         end
         files = files(matching);
         
