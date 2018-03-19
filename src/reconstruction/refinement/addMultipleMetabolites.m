@@ -49,8 +49,17 @@ nMets = numel(model.mets);
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,3)));
 modelMetFields = getModelFieldsForType(model,'mets');
+
+%First, check which fields already exist, and create those which don't
+%exist yet.
+
 model.mets = [model.mets;columnVector(metIDs)];
+
 for field = 1:2:numel(varargin)
+    cfield = varargin{field};
+    if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
+        continue;
+    end
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
         warning('Field %s is excluded',cfield);
@@ -58,10 +67,13 @@ for field = 1:2:numel(varargin)
     end
     if ~isfield(model,cfield)
         model = createEmptyFields(model,cfield);    
+        model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});    
+    else
+        model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];    
     end    
-    model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];    
+    
 end       
 
+%Extend the remaining fields.
 newmodel = extendModelFieldsForType(model,'mets','originalSize',nMets);
-
     
