@@ -23,12 +23,12 @@ parser.addParamValue('COBRAGitIgnoredOnly',true,@(x) islogical(x) || isnumeric(x
 parser.addParamValue('checkSubFolders',true,@(x) islogical(x) || isnumeric(x) && (x == 0 || x == 1));
 
 parser.parse(varargin{:});
-COBRAGitIgnoredOnly = parser.Results.COBRAGitIgnoredOnly;
+cobraGitIgnoredOnly = parser.Results.COBRAGitIgnoredOnly;
 checkSubFolders = parser.Results.checkSubFolders;
 
 currentDir = cd(directory);
 
-if COBRAGitIgnoredOnly
+if cobraGitIgnoredOnly
     gitTypeFlag = 'COBRAIgnored';
 else
     gitTypeFlag = 'all';
