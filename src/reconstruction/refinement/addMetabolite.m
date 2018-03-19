@@ -92,129 +92,21 @@ parser.addParamValue('csense',defaultCsense, @(x) ischar(x));
 
 parser.parse(model,metID,varargin{:});
 
-usedParameters = setdiff(parser.Parameters,parser.UsingDefaults);
-
-metName = parser.Results.metName;
-if ~iscell(metName)
-    metName = {metName};
+nonDefaults = setdiff(setdiff(parser.Parameters,parser.UsingDefaults),{'model','metID'}); %Non Defaults without the originals.
+translation = {'b','b';...
+               'csense','csense';...
+               'metName','metNames';...
+               'metFormula','metFormulas';...
+               'ChEBIID','metChEBIID';...
+               'KEGGId','metKEGGID';...
+               'PubChemID','metPubChemID';...
+               'InChi','metInChIString';...
+               'Charge','metCharges'};
+multiArgs = {};          
+for i = 1:numel(nonDefaults)
+    multiArgs((2*(i-1)+1):(2*i)) = {translation{ismember(translation(:,1),nonDefaults{i}),2},parser.Results.(nonDefaults{i})};
 end
 
-formula = parser.Results.metFormula;
-if ~iscell(formula)
-    formula = {formula};
-end
-
-ChEBIID = parser.Results.ChEBIID;
-if ~iscell(ChEBIID)
-    ChEBIID = {ChEBIID};
-end
-KEGGId = parser.Results.KEGGId;
-if ~iscell(KEGGId)
-    KEGGId = {KEGGId};
-end
-PubChemID = parser.Results.PubChemID;
-if ~iscell(PubChemID)
-    PubChemID = {PubChemID};
-end
-InChi= parser.Results.InChi;
-if ~iscell(InChi)
-    InChi = {InChi};
-end
-Charge= parser.Results.Charge;
-b= parser.Results.b;
-csense= parser.Results.csense;
-
-
-for i = 1:numel(metID)
-    cmetID = metID{i};
-    if ~any(ismember(model.mets,cmetID))
-        %this needs an explicit 1:end as otherwise a zero size gets set to
-        %1...
-        model.S(end+1,1:end) = 0;
-        model.mets{end+1,1} = cmetID;
-        if ~isfield(model,'csense')
-            model.csense = repmat('E',size(model.mets));
-        else
-            model.csense(end+1,1) = 'E';
-        end
-
-
-        if (isfield(model,'metNames'))      %Prompts to add missing info if desired
-            cmetName = metName{i};
-            if strcmp(cmetName,'')
-                model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;
-                warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
-            else
-                model.metNames{end+1,1} = metName{i} ;
-            end
-        else
-            if ~isempty(metName{i}) && ~any(ismember(parser.UsingDefaults,'metName')) && ~all(cellfun(@isempty, metName))
-                model.metNames = cell(numel(model.mets),1);
-                model.metNames(:) = {''};
-                model.metNames{end} = metName{i};
-            end
-        end
-        if (isfield(model,'b'))      %Prompts to add missing info if desired
-            model.b(end+1,1) = b(i,1);
-        end
-        if (isfield(model,'metFormulas'))
-            model.metFormulas{end+1,1} = formula{i};
-        else
-            if ~isempty(formula{i}) && ~any(ismember(parser.UsingDefaults,'metFormula')) && ~all(cellfun(@isempty, formula))
-                model.metFormulas = cell(numel(model.mets),1);
-                model.metFormulas(:) = {''};
-                model.metFormulas{end} = formula{i};
-            end
-        end
-        if isfield(model,'metChEBIID')
-            model.metChEBIID{end+1,1} = ChEBIID{i};
-        else
-            if ~isempty(ChEBIID{i}) && ~any(ismember(parser.UsingDefaults,'ChEBIID')) && ~all(cellfun(@isempty, ChEBIID))
-                model.metChEBIID = cell(numel(model.mets),1);
-                model.metChEBIID(:) = {''};
-                model.metChEBIID{end} = ChEBIID{i};
-            end
-        end
-        if isfield(model,'metKEGGID')
-            model.metKEGGID{end+1,1} = KEGGId{i};
-        else
-            if ~isempty(KEGGId{i})  && ~any(ismember(parser.UsingDefaults,'KEGGId')) && ~all(cellfun(@isempty, KEGGId))
-                model.metKEGGID = cell(numel(model.mets),1);
-                model.metKEGGID(:) = {''};
-                model.metKEGGID{end} = KEGGId{i};
-            end
-        end
-        if isfield(model,'metPubChemID')
-            model.metPubChemID{end+1,1} = PubChemID{i};
-        else
-            if ~isempty(PubChemID{i}) && ~any(ismember(parser.UsingDefaults,'PubChemID')) && ~all(cellfun(@isempty, PubChemID))
-                model.metPubChemID = cell(numel(model.mets),1);
-                model.metPubChemID(:) = {''};
-                model.metPubChemID{end} = PubChemID{i};
-            end
-        end
-        if isfield(model,'metInChIString')
-            model.metInChIString{end+1,1} = InChi{i};
-        else
-            if ~isempty(InChi{i}) && ~any(ismember(parser.UsingDefaults,'InChi')) && ~all(cellfun(@isempty, InChi))
-                model.metInChIString = cell(numel(model.mets),1);
-                model.metInChIString(:) = {''};
-                model.metInChIString{end} = InChi{i};
-            end
-        end
-        if isfield(model,'metCharges')
-            model.metCharges(end+1,1) = Charge(i);
-        else
-            %We only add the field, if the new metabolites contain actual
-            %values for the charges.
-            if ~isempty(Charge(i)) && ~any(ismember(parser.UsingDefaults,'Charge')) && ~all(isnan(Charge))
-                model.metCharges = NaN(numel(model.mets),1);
-                model.metCharges(end) = Charge(i);
-            end
-        end
-    end
-end
-
-newmodel = extendModelFieldsForType(model,'mets');
+newmodel = addMultipleMetabolites(model,metID,multiArgs{:});
 
 end
