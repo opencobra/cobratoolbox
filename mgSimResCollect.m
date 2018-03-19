@@ -1,4 +1,4 @@
-function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,fvaCt,figForm)
+function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,patStat,fvaCt,figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute 
 % NMPCs from simulations with different diet on multiple microbiota models. 
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota 
@@ -13,6 +13,8 @@ function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,fvaCt,figForm)
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
 %    patNumb:            number (double) of individuals in the study
+%    patStat:            logical indicating if documentation on health status 
+%                        is available  
 %    fvaCt:              cell array containing FVA values for maximal uptake 
 %    figForm:            char indicating the format of figures
 %
