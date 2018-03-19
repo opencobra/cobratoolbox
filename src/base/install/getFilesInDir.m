@@ -117,7 +117,7 @@ switch gitType
         end  
         matching = false(size(files));
         for i = 1:numel(COBRAIgnored)
-            matching = matching | ~ceyou are not on a llfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
+            matching = matching | ~cellfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
         end
         files = files(matching);
         
