@@ -9,8 +9,7 @@
 	- [Special uses](#Special-uses)
 - [Status of implementation](#status-of-implementation)   
 - [Examples](#examples)  
-- [Spin offs](#Spin offs)
-- [Benchmark](#benchmark)  
+- [Spin offs](#Spin offs)  
 - [Toutorial](#toutorial) 
 - [Author & Documentation Date](#Author_&_Documentation_Date)  
 
@@ -19,7 +18,7 @@
 
 Introduction
 ============
-MgPipe is a MATLAB based pipeline to integrate microbial abundances (coming from metagenomic data) with constraint based modeling, creating individuals' personalized models. Almost all the pipeline is parallelized.   
+MgPipe is a MATLAB based pipeline to integrate microbial abundances (coming from metagenomic data) with constraint based modeling, creating individuals' personalized models.
 The pipeline is divided in 3 parts:
 [PART 1] Analysis of individuals' specific microbes abundances is computed. Individuals’ metabolic diversity in relation to microbiota size and disease presence as well as Classical multidimensional scaling (PCoA) on individuals' reaction repertoire are examples.
 [PART 2]: 1 Constructing a global metabolic model (setup) containing all the microbes listed in the study. 2 Building individuals' specific models integrating abundance data retrieved from metagenomics. For each organism, reactions are coupled to their objective function. 
@@ -46,8 +45,8 @@ The following files are supplied
 | initMgPipe.m                                   | *function containing all the input variables launching the pipeline*   |
 | loadUncModels.m                                | *function to load and unconstraint the models*                         |
 | fastSetupCreator.m                             | *function to create "global" setup*                                    |
-| checkNomenConsist.m                            | *function to check that microbes have the right nomenclature *                                             |
-| detectOutput.m                                 | *function to check if a specific file was already created and saved *                                             |
+| checkNomenConsist.m                            | *function to check that microbes have the right nomenclature*          |
+| detectOutput.m                                 | *function to check if a specific file was already created and saved*   |
 | getIndividualSizeName.m                        | *get information on number and ID of organisms and individuals*|
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
 | MgPipe.m                                       | *Pipeline*                                                             |
@@ -63,8 +62,7 @@ The following files are supplied
 | useDiet.m                                      | *function to impose a specific diet and add essential elements to microbiota models*|
 | adaptVMHDietToAGORA.m                          | *function to convert a specific diet from VMH into an AGORA compatible one*|
 | **examples**                                   | *folder containing necessary files to replicate the pipeline tutorial* |
-| StartMgPipeHMP.m                               | *driver, containing all the input variables of the HMP study *         |
-| StartMgPipeHMP.m                               | *file containing mapped abundances from the HMP study*                 |
+| StartMgPipeHMP.m                               | *driver, containing all the input variables of the HMP study*         |
 | ***compfile***                                 | *Results subfolder: contains objects saved in open format*             |
 
 
@@ -160,7 +158,7 @@ Status of implementation
 
 [Part 1, 2, 3] are implemented structured and tested. Refinement and expansion of these sections is always possible but it is not on the priority (todo) list.  
 
-A tutorial showing how to use the pipeline will also be created. 
+A tutorial showing how to use the pipeline was created. 
 
 Data and result export in open formats (.csv) has to be better tested and further developed, the final aim is to make the pipeline more flexible and connected with software other than MATLAB 
 
@@ -170,7 +168,7 @@ Please report any problem opening threads in the issue section. Also, any sugges
 Examples
 ========
 
-Examples of input and output data [part 1] are contained in the examples folder.
+Examples of input are contained in the examples folder.
 
 
 Spin offs
@@ -185,15 +183,10 @@ The following functions can result useful for the community and be used for othe
 
 The correct functioning of this functions outside the functionalities used in the pipeline is not assured. The users can report related issues on the dedicated page.
 
-Benchmark
-=========
-
-To be implemented
-
 
 Toutorial
 =========
-A livescript toutorial is available in the tutorial folder. 
+A livescript toutorial "MgPipeTutorial.mlx"is available in the /tutorial folder. 
 
 
 Author & Documentation Date
