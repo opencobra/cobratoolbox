@@ -1,4 +1,4 @@
-function model = addMicrobeCommunityBiomass(model,microbeNames,abundances)
+function model = addMicrobeCommunityBiomass(model, microbeNames, abundances)
 % Adds a community biomass reaction to a model structure with multiple
 % microbes based on their relative abundances. If no abundance values are
 % provided, all n microbes get equal weights (1/n). Assumes a lumen
@@ -24,18 +24,18 @@ function model = addMicrobeCommunityBiomass(model,microbeNames,abundances)
 %
 % .. Author: Stefania Magnusdottir June 2016
 
-dummy=makeDummyModel(length(microbeNames)+2,3);
-dummy.mets=[strcat(microbeNames,'_biomass[c]');'microbeBiomass[u]';'microbeBiomass[fe]'];
-dummy.rxns={'communityBiomass';'UFEt_microbeBiomass';'EX_microbeBiomass[fe]'};
+dummy = makeDummyModel(length(microbeNames) + 2, 3);
+dummy.mets = [strcat(microbeNames, '_biomass[c]'); 'microbeBiomass[u]'; 'microbeBiomass[fe]'];
+dummy.rxns = {'communityBiomass'; 'UFEt_microbeBiomass'; 'EX_microbeBiomass[fe]'};
 if ~isempty(abundances)
-    dummy.S(:,1)=[-abundances;1;0];
+    dummy.S(:, 1) = [-abundances; 1; 0];
 else
-    dummy.S(:,1)=[-ones(size(microbeNames))/length(microbeNames);1;0];
+    dummy.S(:, 1) = [-ones(size(microbeNames)) / length(microbeNames); 1; 0];
 end
-dummy.S(end-1:end,2)=[-1;1];
-dummy.S(end,3)=-1;
-dummy.rev(end,1)=1;
-dummy.lb(end,1)=-1000;
-dummy.ub=ones(size(dummy.ub))*1000;
-%join models
-model=mergeTwoModels(dummy,model,2,0);
+dummy.S(end - 1:end, 2) = [-1; 1];
+dummy.S(end, 3) = -1;
+dummy.rev(end, 1) = 1;
+dummy.lb(end, 1) = -1000;
+dummy.ub = ones(size(dummy.ub)) * 1000;
+% join models
+model = mergeTwoModels(dummy, model, 2, 0);

@@ -1,4 +1,4 @@
-function [init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figForm,solver,numWorkers,autoFix,compMod,patStat,rDiet,extSolve,fvaType,autorun]= initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet,extSolve,fvaType,autorun)
+function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -41,12 +41,12 @@ function [init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figFo
 %
 % .. Author: Federico Baldini 2018
 
-init=0;
+init = 0;
 
 % Here we go on with the warning section and the autorun
-if autorun==1
+if autorun == 1
     if numWorkers >= 2
-        poolobj=gcp('nocreate');
+        poolobj = gcp('nocreate');
         if isempty(poolobj)
             parpool(numWorkers)
         end
@@ -55,7 +55,7 @@ if autorun==1
     MgPipe
 else
     if numWorkers >= 2
-        poolobj=gcp('nocreate');
+        poolobj = gcp('nocreate');
         if isempty(poolobj)
             parpool(numWorkers)
         end
@@ -69,10 +69,10 @@ else
     warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
 end
 
-if numWorkers<2
-   warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify numWorkers option.')
+if numWorkers < 2
+    warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify numWorkers option.')
 end
-if patStat==0
+if patStat == 0
     disp('Individuals health status not declared. Analysis will ignore that.')
 end
 

@@ -1,4 +1,4 @@
-function mapP = detectOutput(resPath,objNam)
+function mapP = detectOutput(resPath, objNam)
 % This function checks the existence of a specific file in the results folder.
 %
 % USAGE:
@@ -14,14 +14,14 @@ function mapP = detectOutput(resPath,objNam)
 %
 % .. Author: Federico Baldini 2017-2018
 
-resPathc=resPath(1:(length(resPath)-1));
+resPathc = resPath(1:(length(resPath) - 1));
 cd(resPathc);
 fnames = dir('*.mat');
 numfids = length(fnames);
-vals = cell(1,numfids);
-   for K = 1:numfids
-       vals{K} = fnames(K).name;
-   end
-vals=vals';
+vals = cell(1, numfids);
+    for K = 1:numfids
+        vals{K} = fnames(K).name;
+    end
+vals = vals';
 mapP = strmatch(objNam, vals, 'exact');
 end

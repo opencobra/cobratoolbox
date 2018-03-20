@@ -15,22 +15,22 @@ function models = loadUncModels(modPath, organisms, objre)
 %
 % .. Author: Federico Baldini 2017-2018
 
-models={[]}; %empty cell array to be filled with models
-   parfor i = 1:length(organisms)
-       %reading the models
-       pn=strcat(modPath,organisms(i,1),{'.mat'});%complete path from which to read the models
-       cpn=char(pn);%conversion of the path in character
-       ldm=load(cpn);
-       ldm=ldm.model;
-       %removing possible constraints of the bacs
-       [selExc,selUpt] = findExcRxns(ldm);
-       Reactions2 = ldm.rxns(find(selExc));
-       allex=Reactions2(strmatch('EX',Reactions2));
-       biomass=allex(strmatch(objre,allex));
-       finrex=setdiff(allex,biomass);
-       ldm = changeRxnBounds(ldm, finrex, -1000,'l');
-       %creating array with models as required as input from the following functions
-       models(i,1)={ldm};
-   end
+models = {[]};  % empty cell array to be filled with models
+    parfor i = 1:length(organisms)
+    % reading the models
+        pn = strcat(modPath, organisms(i, 1), {'.mat'});  % complete path from which to read the models
+        cpn = char(pn);  % conversion of the path in character
+        ldm = load(cpn);
+        ldm = ldm.model;
+        % removing possible constraints of the bacs
+        [selExc, selUpt] = findExcRxns(ldm);
+        Reactions2 = ldm.rxns(find(selExc));
+        allex = Reactions2(strmatch('EX', Reactions2));
+        biomass = allex(strmatch(objre, allex));
+        finrex = setdiff(allex, biomass);
+        ldm = changeRxnBounds(ldm, finrex, -1000, 'l');
+        % creating array with models as required as input from the following functions
+        models(i, 1) = {ldm};
+    end
 
 end

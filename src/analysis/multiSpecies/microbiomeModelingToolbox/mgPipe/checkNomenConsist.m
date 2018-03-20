@@ -1,4 +1,4 @@
-function [autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix)
+function [autoStat, fixVec, organisms] = checkNomenConsist(organisms, autoFix)
 % This function checks consistence of inputs (organisms names). If the parameter
 % autoFix == 0 the function halts execution with error msg when inconsistences are
 % detected, otherwise it really tries hard to fix the problem and continues execution.
@@ -20,44 +20,44 @@ function [autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix)
 
 if autoFix == 0
 
-    for i=1:length(organisms)
-    check=strmatch(organisms(i,1),organisms);
+    for i = 1:length(organisms)
+    check = strmatch(organisms(i, 1), organisms);
         if length(check) > 1
-        vecErr=organisms(check)
+        vecErr = organisms(check)
         msg = 'Nomenclature error: one or more organisms have ambiguous ID. Ambiguity indexes stored in check vector';
         error(msg)
         end
     end
 else
-    for i=1:length(organisms)
-    check=strmatch(organisms(i,1),organisms);
+    for i = 1:length(organisms)
+    check = strmatch(organisms(i, 1), organisms);
         if length(check) > 1
-        vecErr=organisms(check)
-        %Autodebug, suffix '_extended' is added to solve ambiguity:
+        vecErr = organisms(check)
+        % Autodebug, suffix '_extended' is added to solve ambiguity:
         organisms(i)
-        fixVec(i)=organisms(i)
-        fixNam= strcat(organisms(i),'_extended')
-        organisms(i)=fixNam
-        autoStat=1
+        fixVec(i) = organisms(i)
+        fixNam = strcat(organisms(i), '_extended')
+        organisms(i) = fixNam
+        autoStat = 1
         else
-            if i==length(organisms)
+            if i == length(organisms)
                 disp('No potential problems found in checking organisms? nomenclature');
             end
-            autoStat=0;
-            fixVec={};
+            autoStat = 0;
+            fixVec = {};
         end
     end
 
-%Second cycle: checking multiple times is always better idea
-    for i=1:length(organisms)
-    check=strmatch(organisms(i,1),organisms);
+% Second cycle: checking multiple times is always better idea
+    for i = 1:length(organisms)
+    check = strmatch(organisms(i, 1), organisms);
         if length(check) > 1
-        vecErr=organisms(check)
+        vecErr = organisms(check)
         msg = 'Nomenclature error: one or more organisms have ambiguous ID. Ambiguity indexes stored in check vector';
         error(msg)
         end
     end
 end
-%end of Autofix part
+% end of Autofix part
 
 end

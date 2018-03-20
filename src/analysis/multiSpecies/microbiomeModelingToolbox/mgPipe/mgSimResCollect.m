@@ -1,4 +1,4 @@
-function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,patStat,fvaCt,figForm)
+function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat, fvaCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -28,83 +28,83 @@ function [fSp,Y]= mgSimResCollect(resPath,ID,rDiet,pDiet,patNumb,patStat,fvaCt,f
 %
 % .. Author: Federico Baldini, 2017-2018
 
- fid = fopen('ID.csv','wt'); %Exporting set of simulated reactions
- if fid>0
-     for k=1:size(ID,1)
-         fprintf(fid,'%s,%f\n',ID{k,:});
+ fid = fopen('ID.csv', 'wt');  % Exporting set of simulated reactions
+ if fid > 0
+     for k = 1:size(ID, 1)
+         fprintf(fid, '%s,%f\n', ID{k, :});
      end
      fclose(fid);
  end
 
-%Extract results from fluxes matrix and analyze: NMPCs will be computed for
-%rich (if enabled) and standard diet. NMPCs are computed under the assumption
-%that the community maximizes its uptakes and secretions. NMPCs are computed
-%and saved in .csv format and a PCoA which aims to group individuals for
-%similarity in their metabolic profile is also computed.
+% Extract results from fluxes matrix and analyze: NMPCs will be computed for
+% rich (if enabled) and standard diet. NMPCs are computed under the assumption
+% that the community maximizes its uptakes and secretions. NMPCs are computed
+% and saved in .csv format and a PCoA which aims to group individuals for
+% similarity in their metabolic profile is also computed.
 
-%In this section NMPCs are automatically computed for all types of diets.
-%Number of different diets are automatically computed from the dimensions of
-%the simulation object.
+% In this section NMPCs are automatically computed for all types of diets.
+% Number of different diets are automatically computed from the dimensions of
+% the simulation object.
 
-if rDiet ==0
-    init=2;
+if rDiet == 0
+    init = 2;
 else
-    init=1;
+    init = 1;
 end
 
-if pDiet==0
-    fl=2;
+if pDiet == 0
+    fl = 2;
 else
-    fl=3;
+    fl = 3;
 end
 
-names={'rich','standard','personalized'};
-for j=init:fl
+names = {'rich', 'standard', 'personalized'};
+for j = init:fl
 
-for k=2:patNumb+1
-if isempty(fvaCt{fl,(k-1)})==1
+for k = 2:patNumb + 1
+if isempty(fvaCt{fl, (k - 1)}) == 1
     disp('Jumping not feasible model')
     warning('NAN rows in fluxes matrix, no PCoA will be plotted')
-    sp=NaN(length(ID),1);
-    fSp(:,k-1)=sp;
-    noPcoa=1;
+    sp = NaN(length(ID), 1);
+    fSp(:, k - 1) = sp;
+    noPcoa = 1;
 else
-    noPcoa=0;
-    sp=NaN(length(ID),1);%consider to remove preallocation
+    noPcoa = 0;
+    sp = NaN(length(ID), 1);  % consider to remove preallocation
     for i = 1:length(ID)
-        x=fvaCt{j,(k-1)}{i,3};
-        e=isempty(x);
+        x = fvaCt{j, (k - 1)}{i, 3};
+        e = isempty(x);
         if e == 0;
-            sp(i,1)=abs(fvaCt{j,(k-1)}{i,3}+fvaCt{j,(k-1)}{i,2});
+            sp(i, 1) = abs(fvaCt{j, (k - 1)}{i, 3} + fvaCt{j, (k - 1)}{i, 2});
         end
     end
-    fSp(:,k-1)=sp;
+    fSp(:, k - 1) = sp;
 end
 end
 
-csvwrite(strcat(resPath,names{1,j},'.csv'),fSp)
-if noPcoa==1
+csvwrite(strcat(resPath, names{1, j}, '.csv'), fSp)
+if noPcoa == 1
     disp('Jump plotting')
 else
     JD = pdist(fSp','euclidean');
-    [Y,eigvals] = cmdscale(JD);
-    P = [eigvals eigvals/max(abs(eigvals))];
+    [Y, eigvals] = cmdscale(JD);
+    P = [eigvals eigvals / max(abs(eigvals))];
     if patStat == 0
-        plot(Y(:,1),Y(:,2),'bx')
-        print(strcat(resPath,'PCoA_individuals_fluxes_',names{1,j}),figForm)
+        plot(Y(:, 1), Y(:, 2), 'bx')
+        print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
         title('PCoA of NMPCs');
     else
-        patTab=readtable(strcat(toolboxPath,'Resources\sampInfo.csv'));
-        patients=table2array(patTab(2,:));
-        patients=patients(1:length(patOrg));
-        N = length(patients(1,:));
-        colorMap = [zeros(N, 1), zeros(N, 1), ones(N,1)];
-                for k = 1 : length(patients(1,:))
-                    if str2double(patients(1,k)) == 1
-                        colorMap(k, :) = [1,0,0]; % Red
+        patTab = readtable(strcat(toolboxPath, 'Resources\sampInfo.csv'));
+        patients = table2array(patTab(2, :));
+        patients = patients(1:length(patOrg));
+        N = length(patients(1, :));
+        colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
+                for k = 1: length(patients(1, :))
+                    if str2double(patients(1, k)) == 1
+                        colorMap(k, :) = [1, 0, 0];  % Red
                     end
-                    if str2double(patients(1,k)) == 0
-                       colorMap(k, :) = [0,1,0]; % Green
+                    if str2double(patients(1, k)) == 0
+                       colorMap(k, :) = [0, 1, 0];  % Green
                     end
                 end
        scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');

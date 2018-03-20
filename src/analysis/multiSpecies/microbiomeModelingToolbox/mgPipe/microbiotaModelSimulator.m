@@ -1,4 +1,4 @@
-function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,pDiet,extSolve,patNumb,fvaType)
+function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -36,77 +36,76 @@ function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,
 %
 % .. Author: Federico Baldini, 2017-2018
 
-allex=setup.rxns(strmatch('EX',setup.rxns)); %Creating list of all unique Exchanges to diet/fecal compartment
-ID = regexprep(allex,'\[d\]','\[fe\]');
-ID=unique(ID,'stable');
-ID=setdiff(ID,'EX_biomass[fe]','stable');
+allex = setup.rxns(strmatch('EX', setup.rxns));  % Creating list of all unique Exchanges to diet/fecal compartment
+ID = regexprep(allex, '\[d\]', '\[fe\]');
+ID = unique(ID, 'stable');
+ID = setdiff(ID, 'EX_biomass[fe]', 'stable');
 
 
-
-mapP=detectOutput(resPath,'simRes.mat');
-if  ~isempty(mapP)
-    s= 'simulations already done, file found: loading from resPath';
+mapP = detectOutput(resPath, 'simRes.mat');
+if ~isempty(mapP)
+    s = 'simulations already done, file found: loading from resPath';
     disp(s)
-    load(strcat(resPath,'simRes.mat'))
+    load(strcat(resPath, 'simRes.mat'))
 else
-%Cell array to store results
-fvaCt=cell(3,patNumb);
-nsCt=cell(3,patNumb);
-inFesMat={}
-presol={}
+% Cell array to store results
+fvaCt = cell(3, patNumb);
+nsCt = cell(3, patNumb);
+inFesMat = {}
+presol = {}
 
-%Auto load for crashed simulations
-mapP=detectOutput(resPath,'intRes.mat')
+% Auto load for crashed simulations
+mapP = detectOutput(resPath, 'intRes.mat')
 if isempty(mapP)
-    startIter=2
+    startIter = 2
 else
-    s= 'simulation checkpoint file found: recovering crashed simulation';
+    s = 'simulation checkpoint file found: recovering crashed simulation';
     disp(s)
-    load(strcat(resPath,'intRes.mat'))
+    load(strcat(resPath, 'intRes.mat'))
 
-%Detecting when execution halted
-    for o=1:length(fvaCt(2,:))
-        if isempty(fvaCt{2,o})==0
-            t=o
+% Detecting when execution halted
+    for o = 1:length(fvaCt(2, :))
+        if isempty(fvaCt{2, o}) == 0
+            t = o
         end
     end
-    startIter=t+2
+    startIter = t + 2
 end
-%End of Auto load for crashed simulations
+% End of Auto load for crashed simulations
 
 
-%Starting personalized simulations
-for k=startIter:(patNumb+1)
- idInfo=cell2mat(sampName((k-1),1))
- load(strcat('microbiota_model_samp_',idInfo,'.mat'))
- model=microbiota_model;
- for j=1:length(model.rxns)
-    if strfind(model.rxns{j},'biomass')
-       model.lb(j)=0;
+% Starting personalized simulations
+for k = startIter:(patNumb + 1)
+ idInfo = cell2mat(sampName((k - 1), 1))
+ load(strcat('microbiota_model_samp_', idInfo, '.mat'))
+ model = microbiota_model;
+ for j = 1:length(model.rxns)
+    if strfind(model.rxns{j}, 'biomass')
+       model.lb(j) = 0;
     end
  end
-    model=changeObjective(model,'EX_microbeBiomass[fe]');
+    model = changeObjective(model, 'EX_microbeBiomass[fe]');
     AllRxn = model.rxns;
-    RxnInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
-    EXrxn=model.rxns(RxnInd);
-    EXrxn= regexprep(EXrxn,'EX_','Diet_EX_');
-    model.rxns(RxnInd)=EXrxn;
-    model=changeRxnBounds(model,'EX_microbeBiomass[fe]',0.4,'l');
-    model=changeRxnBounds(model,'EX_microbeBiomass[fe]',1,'u');
+    RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));
+    EXrxn = model.rxns(RxnInd);
+    EXrxn = regexprep(EXrxn, 'EX_', 'Diet_EX_');
+    model.rxns(RxnInd) = EXrxn;
+    model = changeRxnBounds(model, 'EX_microbeBiomass[fe]', 0.4, 'l');
+    model = changeRxnBounds(model, 'EX_microbeBiomass[fe]', 1, 'u');
     % set a solver if not done yet
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
     if isempty(solver)
         initCobraToolbox;
     end
-    solution_allOpen=solveCobraLP(model);
-    %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
+    solution_allOpen = solveCobraLP(model);
+    % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
     if isnan(solution_allOpen.obj)
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-        inFesMat{k,1}= model.name
+        inFesMat{k, 1} = model.name
     else
-    presol{k,1}=solution_allOpen.obj;
-    model=changeRxnBounds(model,{'DUt_h2o','UFEt_h2o','EX_h2o[fe]'},1000000,'u');
+    presol{k, 1} = solution_allOpen.obj;
+    model = changeRxnBounds(model, {'DUt_h2o', 'UFEt_h2o', 'EX_h2o[fe]'}, 1000000, 'u');
   if extSolve==0
       AllRxn = model.rxns;
       FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
@@ -140,7 +139,7 @@ for k=startIter:(patNumb+1)
   end
 
 
-%Using standard diet
+% Using standard diet
 
 model_sd=model;
 [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota')
@@ -150,7 +149,7 @@ model_sd=model;
        model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')
     end
 solution_sDiet=solveCobraLP(model_sd);
-%solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
+% solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
 presol{k,2}=solution_sDiet.obj
  if isnan(solution_sDiet.obj)
     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
@@ -188,7 +187,7 @@ if extSolve==0
 end
 
 
-%Using personalized diet not documented in MgPipe and bug checked yet!!!!
+% Using personalized diet not documented in MgPipe and bug checked yet!!!!
 
 if pDiet==1
   model_pd=model;
@@ -235,7 +234,7 @@ if pDiet==1
     end
 end
 
-%Saving all output of simulations
+% Saving all output of simulations
 if extSolve==0
   save(strcat(resPath,'simRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
 end
