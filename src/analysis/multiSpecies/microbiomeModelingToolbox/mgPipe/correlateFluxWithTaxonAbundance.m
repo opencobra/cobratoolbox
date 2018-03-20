@@ -1,36 +1,36 @@
 function [FluxCorrelations,PValues]=correlateFluxWithTaxonAbundance(abundance,fluxes,taxonomy,corrMethod)
-% Part of the Microbiome Modeling Toolbox. This function calculates and 
-% plots the correlations between fluxes for one or more reactions of 
-% interest in a number of microbiome samples and the relative microbe 
+% Part of the Microbiome Modeling Toolbox. This function calculates and
+% plots the correlations between fluxes for one or more reactions of
+% interest in a number of microbiome samples and the relative microbe
 % abundance on different taxonomical levels in the same samples.
 %
 % USAGE
-% [FluxCorrelations,PValues]=correlateFluxWithTaxonAbundance(abundance,fluxes,taxonomy,corrMethod)
 %
-% INPUTS
-% abundance            Table of relative abundances with AGORA model IDs
-%                      of the strains as rows and sample IDs as columns
-% fluxes               Table of fluxes for reactions of interest with 
-%                      reaction IDs in microbiome community models as rows 
-%                      and sample IDs as columns
-% taxonomy             Table with information on the taxonomy of each
-%                      AGORA model strain
-% OPTIONAL INPUTS
-% corrMethod           Method to compute the linear correlation
-%                      coefficient. Allowed inputs: 'Pearson' (default),
-%                      'Kendall', 'Spearman'.
+%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)
 %
-% OUTPUT
-% FluxCorrelations     Structure with correlations between fluxes for each
-%                      reaction and abundances on taxon levels
-% PValues              p-values corresponding to each calculated
-%                      correlation
+% INPUTS:
+%     abundance:        Table of relative abundances with AGORA model IDs
+%                       of the strains as rows and sample IDs as columns
+%     fluxes:           Table of fluxes for reactions of interest with
+%                       reaction IDs in microbiome community models as rows
+%                       and sample IDs as columns
+%     taxonomy:         Table with information on the taxonomy of each
+%                       AGORA model strain
 %
-% AUTHOR:
-% - Almut Heinken, 03/2018
+% OPTIONAL INPUTS:
+%     corrMethod:       Method to compute the linear correlation
+%                       coefficient. Allowed inputs: 'Pearson' (default),
+%                       'Kendall', 'Spearman'.
+%
+% OUTPUTS:
+%     FluxCorrelations: Structure with correlations between fluxes for each
+%                       reaction and abundances on taxon levels
+%     PValues:          p-values corresponding to each calculated
+%                       correlation
+%
+% .. Author: Almut Heinken, 03/2018
 
-% Define correlation coefficient method if not entered
-if ~exist('corrMethod','var')
+if ~exist('corrMethod','var') % Define correlation coefficient method if not entered
     corrMethod='Pearson';
 end
 

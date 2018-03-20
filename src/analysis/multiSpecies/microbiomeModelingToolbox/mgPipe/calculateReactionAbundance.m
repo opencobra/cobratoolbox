@@ -1,39 +1,37 @@
-function [ReactionAbundance]=calculateReactionAbundance(abundance,modelPath,taxonomy,rxnsList,numWorkers)
-% Part of the Microbiome Modeling Toolbox. This function calculates and 
-% plots the total abundance of reactions of interest in a given microbiome 
+function ReactionAbundance =calculateReactionAbundance(abundance,modelPath,taxonomy,rxnsList,numWorkers)
+% Part of the Microbiome Modeling Toolbox. This function calculates and
+% plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
-%
-% USAGE
-% [ReactionAbundance]=calculateReactionAbundance(abundance,modelPath,taxonomy,rxnsList,numWorkers)
-%
 % Reaction presence or absence in each strain is derived from the reaction content
 % of the respective AGORA model. Two outputs are given: the total abundance,
 % and optionally the abundance on different taxonomical levels.
 %
-% INPUT
-% abundance                  Table of relative abundances with AGORA model
+% USAGE
+%
+%    ReactionAbundance =calculateReactionAbundance(abundance, modelPath, taxonomy, rxnsList, numWorkers)
+%
+% INPUTS:
+%    abundance:              Table of relative abundances with AGORA model
 %                            IDs of the strains as rows and sample IDs as columns
-% modelPath                  Folder containing the strain-specific AGORA models
-% taxonomy                   Table with information on the taxonomy of each
+%    modelPath:              Folder containing the strain-specific AGORA models
+%    taxonomy:               Table with information on the taxonomy of each
 %                            AGORA model strain
-% OPTIONAL INPUTS
-% rxnsList                   List of reactions for which the abundance
+% OPTIONAL INPUTS:
+%    rxnsList:               List of reactions for which the abundance
 %                            should be calculated (if left empty: all
 %                            reactions in all models)
-% numWorkers                 Number of workers used for parallel pool. If
+%    numWorkers:             Number of workers used for parallel pool. If
 %                            left empty, the parallel pool will not be
 %                            started. Parallellization is recommended if
 %                            all reactions are computed.
 %
-% OUTPUT
-% ReactionAbundance          Structure with abundance for each microbiome
+% OUTPUT:
+%    ReactionAbundance       Structure with abundance for each microbiome
 %                            and reaction in total and on taxon levels
 %
-% AUTHOR:
-% - Almut Heinken, 03/2018
+% .. Author: - Almut Heinken, 03/2018
 
-% define reaction list if not entered
-if ~exist('rxnsList','var')
+if ~exist('rxnsList','var') % define reaction list if not entered
     fprintf('No reaction list entered. Abundances will be calculated for all reactions in all models. \n')
     % get model list from abundance input file
     for i=2:size(abundance,1)
