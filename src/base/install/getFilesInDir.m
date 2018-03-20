@@ -16,14 +16,24 @@ function files = getFilesInDir(varargin)
 %                                'tracked' - Only tracked files
 %                                'ignored' - Only git ignored files
 %                                            including files that are tracked but
-%                                            ignored (specified in .gitignore)
+%                                            ignored (specified in
+%                                            .gitignore). If the folder is
+%                                            not controlled by git, 'all'
+%                                            will be used. 
 %                                'untracked' - anything that is not ignored
 %                                              and not tracked. (new files)
 %                                'all'  - all files except for the git
 %                                         specific files (e.g. .git, .gitignore etc).                               
-%                                'COBRAIgnored' - use the COBRA gitIgnore
-%                                                 file to determine the
-%                                                 ignored files.
+%                                'COBRAIgnored' - use the COBRA Toolbox .gitignore
+%                                                 file to determine the ignored files. 
+%                                                 Slower than 'ignored',
+%                                                 since all files have to
+%                                                 be manually checked
+%                                                 against the expressions
+%                                                 specified in the
+%                                                 gitignored file, but
+%                                                 available on all folders
+%                                                 
 %                                (Default: 'all')   
 %                  restrictToPattern - give a regexp pattern to filter the
 %                                      files, this option is ignored if
