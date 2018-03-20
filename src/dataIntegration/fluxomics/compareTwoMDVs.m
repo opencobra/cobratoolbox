@@ -22,8 +22,7 @@ function [totalz, zscore] = compareTwoMDVs(mdv1, mdv2)
 
 
 if (nargin < 2)
-    disp '[totalz,zscore] = compareTwoMDVs(mdv1,mdv2)';
-    return;
+    error '[totalz,zscore] = compareTwoMDVs(mdv1,mdv2)';
 end
 
 %Compute the mean and standard deviation of each mdv and then get a z-score

@@ -124,12 +124,11 @@ for i = 1:length(generxnList)
     if(~ ismember(generxnList{i}, model.genes)),geneok = 0; end
 end
 if geneok
-    display('assuming list is genes');
+    disp('assuming list is genes');
 elseif rxnok
-    display('assuming list is reactions');
+    disp('assuming list is reactions');
 else
-    display('list appears to be neither genes nor reactions:  aborting');
-    return;
+    error('list appears to be neither genes nor reactions:  aborting');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

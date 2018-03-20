@@ -286,8 +286,7 @@ end
 
 %Double check that all inputs are valid:
 if ~(verifyCobraProblem(LPproblem, [], [], false) == 1)
-    warning('invalid problem');
-    return;
+    error('invalid problem');
 end
 
 if nnz(model.c)~=0

@@ -58,8 +58,7 @@ function [experiment] = runHiLoExp(experiment)
 % .. Author: - Wing Choi 3/14/08
 
 if (nargin < 1)
-    disp '[experiment] = runHiLoExp(experiment,target,threshold)';
-    return;
+    error '[experiment] = runHiLoExp(experiment,target,threshold)';
 end
 
 runzscore = true;      %binary flag for z-scores
