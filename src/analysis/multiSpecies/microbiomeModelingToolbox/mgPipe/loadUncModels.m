@@ -1,19 +1,24 @@
-function[models]=loadUncModels(modPath,organisms,objre)
+function models = loadUncModels(modPath, organisms, objre)
 % This function loads and unconstrains metabolic models from a specific folder
 %
-% INPUTS: 
+% USAGE:
+%
+%   models = loadUncModels(modPath, organisms, objre)
+%
+% INPUTS:
 %   organisms:           nx1 cell array cell array with names of organisms in the study
 %   modPath:             char with path of directory where models are stored
 %   objre:               char with reaction name of objective function of organisms
-% OUTPUTS:               
-%   models:              double indicating if object was found in the result folder 
 %
-% ..Author: Federico Baldini 2017-2018
+% OUTPUT:
+%   models:              double indicating if object was found in the result folder
+%
+% .. Author: Federico Baldini 2017-2018
 
-models={[]}; %empty cell array to be filled with models 
+models={[]}; %empty cell array to be filled with models
    parfor i = 1:length(organisms)
-       %reading the models   
-       pn=strcat(modPath,organisms(i,1),{'.mat'});%complete path from which to read the models  
+       %reading the models
+       pn=strcat(modPath,organisms(i,1),{'.mat'});%complete path from which to read the models
        cpn=char(pn);%conversion of the path in character
        ldm=load(cpn);
        ldm=ldm.model;
@@ -24,7 +29,7 @@ models={[]}; %empty cell array to be filled with models
        biomass=allex(strmatch(objre,allex));
        finrex=setdiff(allex,biomass);
        ldm = changeRxnBounds(ldm, finrex, -1000,'l');
-       %creating array with models as required as input from the following functions 
+       %creating array with models as required as input from the following functions
        models(i,1)={ldm};
    end
 

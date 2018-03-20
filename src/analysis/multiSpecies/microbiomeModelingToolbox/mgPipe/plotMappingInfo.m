@@ -1,28 +1,33 @@
-function [Y]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,figForm)
-% This function computes and automatically plots information coming from 
-% the mapping data as metabolic diversity and classical multidimensional 
-% scaling of individuals' reactions repertoire 
+function Y = plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,patStat,figForm)
+% This function computes and automatically plots information coming from
+% the mapping data as metabolic diversity and classical multidimensional
+% scaling of individuals' reactions repertoire
 %
-% INPUTS: 
-%   resPath:            char with path of directory where results are saved              
-%   reac:               nx1 cell array with all the unique set of reactions 
+% USAGE:
+%
+%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, patStat, figForm)
+%
+% INPUTS:
+%   resPath:            char with path of directory where results are saved
+%   reac:               nx1 cell array with all the unique set of reactions
 %                       contained in the models
-%   micRea:             binary matrix assessing presence of set of unique 
-%                       reactions for each of the microbes 
+%   micRea:             binary matrix assessing presence of set of unique
+%                       reactions for each of the microbes
 %   reacSet:            matrix with names of reactions of each individual
-%   reacTab:            binary matrix with presence/absence of reaction per 
+%   reacTab:            binary matrix with presence/absence of reaction per
 %                       individual.
 %   reacAbun:           matrix with abundance of reaction per individual
 %   reacNumber:         number of unique reactions of each individual
-%   patStat:            logical indicating if documentation on health status 
-%                       is available  
+%   patStat:            logical indicating if documentation on health status
+%                       is available
 %   figForm:            format to use for saving figures
 %
 % OUTPUTS:
-%   Y:                  classical multidimensional scaling of individuals' 
-%                       reactions repertoire 
+%   Y:                  classical multidimensional scaling of individuals'
+%                       reactions repertoire
 %
-% ..Author: - Federico Baldini, 2017-2018
+% .. Author: - Federico Baldini, 2017-2018
+
 figure(1)
 imagesc(reacPat);
 colorbar
@@ -35,10 +40,10 @@ print(strcat(resPath,'Heatmap'),figForm)
 if patStat == 0
 %Plot:metabolic diversity
 figure(2)
-scatter(patOrg,reacNumber,60,jet(length(patOrg)),'filled')   
+scatter(patOrg,reacNumber,60,jet(length(patOrg)),'filled')
 xlabel('Microbiota Size') % x-axis label
 ylabel('Number of unique reactions') % y-axis label
-title('Metabolic Diversity') 
+title('Metabolic Diversity')
 print(strcat(resPath,'Metabolic Diversity'),figForm)
 
 % PCoA -> different reactions per individual

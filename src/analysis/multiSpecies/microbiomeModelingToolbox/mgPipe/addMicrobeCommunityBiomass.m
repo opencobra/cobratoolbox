@@ -6,7 +6,11 @@ function model = addMicrobeCommunityBiomass(model,microbeNames,abundances)
 % biomass metabolite 'microbeBiomass' that is secreted from [u] to [fe] and
 % exchanged from fecal compartment.
 %
-% INPUTs:
+% USAGE:
+%
+%   model = addMicrobeCommunityBiomass(model, microbeNames, abundances)
+%
+% INPUTS:
 %   model:           COBRA model structure with n joined microbes with biomass
 %                    metabolites 'Microbe_biomass[c]'.
 %   microbeNames:    nx1 cell array of n unique strings that represent

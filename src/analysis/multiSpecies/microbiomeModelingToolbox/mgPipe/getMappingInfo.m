@@ -1,31 +1,35 @@
-function[reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,abunFilePath,patNumb)
-% This function automatically extracts information from strain abundances in 
-% different individuals and combines this information into different tables. 
+function [reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,abunFilePath,patNumb)
+% This function automatically extracts information from strain abundances in
+% different individuals and combines this information into different tables.
 %
-% INPUTS: 
+% USAGE:
+%
+%    [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(models, abunFilePath, patNumb)
+%
+% INPUTS:
 %   models:            nx1 cell array that contains n microbe models in
 %                      COBRA model structure format
 %   abunFilePath:      char with path and name of file from which to retrieve abundance information
 %   patNumb:           number of individuals in the study
-%                     
-% OUTPUTS:               
-%   reac:              cell array with all the unique set of reactions 
-%                      contained in the models
-%   micRea:            binary matrix assessing presence of set of unique 
-%                      reactions for each of the microbes 
-%   binOrg:            binary matrix assessing presence of specific strains in 
-%                      different individuals
-%   reacPat:           matrix with number of reactions per individual 
-%                      (organism resolved) 
-%   reacSet:           matrix with names of reactions of each individual
-%   reacTab:           char with names of individuals in the study 
-%   reacAbun:          binary matrix with presence/absence of reaction per 
-%                      individual: to compare different individuals
-%   reacNumber:        number of unique reactions of each individual 
 %
-% ..Author: Federico Baldini 2017-2018
+% OUTPUTS:
+%   reac:              cell array with all the unique set of reactions
+%                      contained in the models
+%   micRea:            binary matrix assessing presence of set of unique
+%                      reactions for each of the microbes
+%   binOrg:            binary matrix assessing presence of specific strains in
+%                      different individuals
+%   reacPat:           matrix with number of reactions per individual
+%                      (organism resolved)
+%   reacSet:           matrix with names of reactions of each individual
+%   reacTab:           char with names of individuals in the study
+%   reacAbun:          binary matrix with presence/absence of reaction per
+%                      individual: to compare different individuals
+%   reacNumber:        number of unique reactions of each individual
+%
+% .. Author: Federico Baldini 2017-2018
 
- reac={}; %array with unique set of all the reactions present in the models
+reac={}; %array with unique set of all the reactions present in the models
 for i = 1:(length(models)-1)%find the unique set of all the reactions contained in the models
     smd=models{i,1};
     allreac=smd.rxns;
@@ -36,14 +40,14 @@ for i = 1:(length(models)-1)%find the unique set of all the reactions contained 
     reac=union(reac,reaclist);
 end
 
-%Code to detect reaction presence in each model and create inary matrix 
+%Code to detect reaction presence in each model and create inary matrix
 %assessing presence of set of unique reactions for each of the microbes
 
 micRea = zeros(length(models),length(reac));
 
 mdlt=length(models);
 rclt=length(reac);
-parfor i = 1:mdlt 
+parfor i = 1:mdlt
     model=models{i,1};
     for j = 1:rclt
         if ismember(reac(j),model.rxns)
@@ -56,7 +60,7 @@ end
 [binary]=readtable(abunFilePath);
 s=size(binary);
 s=s(1,2);
-binary=binary(:,3:s); %removing model info and others 
+binary=binary(:,3:s); %removing model info and others
 binar=table2cell(binary);
 
 lgi=length(binar(:,1));
@@ -78,7 +82,7 @@ cleantabc=table2cell(binOrg);
 for j = 1:length(table2cell(binOrg(1,:)))
     for i = 1:length(table2cell(binOrg(:,1)))
         temp=cell2mat(cleantabc(i,j));
-        if temp == 1 
+        if temp == 1
             reacPat(i,j)=sum(micRea(i,:));
         end
     end
@@ -122,9 +126,9 @@ for j = 1 : length(table2cell(binOrg(1,:)))
             abunvec((length(abunvec)+1) : ((length(abunvec))+ length(model.rxns)))=  table2array(abundance(i,j+2));
         end
     end
-    
+
     completeset(1:length(reacvec),j)=  reacvec; %to get lists of reactions per each individual
-    completeabunorm(1:length(reacvec),j) = abunvec';%matrix with abundance coefficients for normalization 
+    completeabunorm(1:length(reacvec),j) = abunvec';%matrix with abundance coefficients for normalization
     reacSet(1:length(unique(reacvec)),j)= unique(reacvec); %to get lists of reactions per each individual
     reacNumber(j)= length(unique(reacvec));
 end

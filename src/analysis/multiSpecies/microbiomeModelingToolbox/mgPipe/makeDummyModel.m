@@ -2,6 +2,10 @@ function dummy = makeDummyModel(numMets,numRxns)
 % Makes an empty model with numMets rows for metabolites and numRxns columns
 % for reactions. Includes all fields that are necessary to join models.
 %
+% USAGE:
+%
+%   dummy = makeDummyModel(numMets, numRxns)
+%
 % INPUTS:
 %   numMets:       Number of metabolites
 %   numRxns:       Number of reactions
@@ -9,7 +13,7 @@ function dummy = makeDummyModel(numMets,numRxns)
 % OUTPUT:
 %   dummy:         Empty COBRA model structure
 %
-% Author: SM June 2016
+% .. Authors: SM June 2016
 
 dummy.mets=cell(numMets,1);
 dummy.rxns=cell(numRxns,1);

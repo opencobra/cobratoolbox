@@ -1,9 +1,13 @@
 function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,pDiet,extSolve,patNumb,fvaType)
-% This function is called from the MgPipe pipeline. Its purpose is to apply 
-% different diets (according to the user’s input) to the microbiota models 
-% and run simulations computing FVAs on exchanges reactions of the microbiota 
-% models. The output is saved in multiple .mat objects. Intermediate saving 
-% checkpoints are present. 
+% This function is called from the MgPipe pipeline. Its purpose is to apply
+% different diets (according to the user?s input) to the microbiota models
+% and run simulations computing FVAs on exchanges reactions of the microbiota
+% models. The output is saved in multiple .mat objects. Intermediate saving
+% checkpoints are present.
+%
+% USAGE:
+%
+%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -14,25 +18,25 @@ function [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
 %    extSolve:           number (double) indicating if simulations will be
-%                        not run in matlab but externally (models with imposed 
+%                        not run in matlab but externally (models with imposed
 %                        constraints are saved)
 %    patNumb:            number (double) of individuals in the study
 %    fvaType:            number (double) which FVA function to use(fastFVA =1)
-%  
-% OUTPUTS:    
+%
+% OUTPUTS:
 %    ID:                 cell array with list of all unique Exchanges to diet/
 %                        fecal compartment
-%    fvaCt:              cell array containing FVA values for maximal uptake 
+%    fvaCt:              cell array containing FVA values for maximal uptake
 %                        and secretion for setup lumen / diet exchanges
 %    nsCt:               cell array containing FVA values for minimal uptake
 %                        and secretion for setup lumen / diet exchanges
-%    presol              array containing values of microbiota models 
+%    presol              array containing values of microbiota models
 %                        objective function
 %    inFesMat            cell array with names of infeasible microbiota models
 %
-% ..Author: Federico Baldini, 2017-2018
- 
-allex=setup.rxns(strmatch('EX',setup.rxns)); %Creating list of all unique Exchanges to diet/fecal compartment  
+% .. Author: Federico Baldini, 2017-2018
+
+allex=setup.rxns(strmatch('EX',setup.rxns)); %Creating list of all unique Exchanges to diet/fecal compartment
 ID = regexprep(allex,'\[d\]','\[fe\]');
 ID=unique(ID,'stable');
 ID=setdiff(ID,'EX_biomass[fe]','stable');
@@ -47,11 +51,11 @@ if  ~isempty(mapP)
 else
 %Cell array to store results
 fvaCt=cell(3,patNumb);
-nsCt=cell(3,patNumb); 
+nsCt=cell(3,patNumb);
 inFesMat={}
 presol={}
 
-%Auto load for crashed simulations 
+%Auto load for crashed simulations
 mapP=detectOutput(resPath,'intRes.mat')
 if isempty(mapP)
     startIter=2
@@ -59,20 +63,20 @@ else
     s= 'simulation checkpoint file found: recovering crashed simulation';
     disp(s)
     load(strcat(resPath,'intRes.mat'))
-    
-%Detecting when execution halted  
+
+%Detecting when execution halted
     for o=1:length(fvaCt(2,:))
         if isempty(fvaCt{2,o})==0
-            t=o 
+            t=o
         end
     end
     startIter=t+2
 end
-%End of Auto load for crashed simulations 
+%End of Auto load for crashed simulations
 
 
-%Starting personalized simulations 
-for k=startIter:(patNumb+1) 
+%Starting personalized simulations
+for k=startIter:(patNumb+1)
  idInfo=cell2mat(sampName((k-1),1))
  load(strcat('microbiota_model_samp_',idInfo,'.mat'))
  model=microbiota_model;
@@ -96,7 +100,7 @@ for k=startIter:(patNumb+1)
         initCobraToolbox;
     end
     solution_allOpen=solveCobraLP(model);
-    %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0); 
+    %solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
     if isnan(solution_allOpen.obj)
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
         inFesMat{k,1}= model.name
@@ -110,17 +114,17 @@ for k=startIter:(patNumb+1)
       FecalRxn = AllRxn(FecalInd);
       FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
       DietRxn = AllRxn(DietInd);
-       if rDiet==1 
-          [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn); 
+       if rDiet==1
+          [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn);
            sma=maxFlux;
-           sma2=minFlux 
+           sma2=minFlux
           [minFlux,maxFlux]=guidedSim(model,fvaType,DietRxn);
           smi=minFlux;
           smi2=maxFlux
-          maxFlux=sma; 
+          maxFlux=sma;
           minFlux=smi;
-          fvaCt{1,(k-1)}=ID; 
-          nsCt{1,(k-1)}=ID; 
+          fvaCt{1,(k-1)}=ID;
+          nsCt{1,(k-1)}=ID;
           for i =1:length(FecalRxn)
             [truefalse, index] = ismember(FecalRxn(i), ID);
             fvaCt{1,(k-1)}{index,2}=minFlux(i,1);
@@ -132,7 +136,7 @@ for k=startIter:(patNumb+1)
   else
        microbiota_model=model
        mkdir(strcat(resPath,'Rich'))
-       save(strcat(resPath,'Rich\','microbiota_model_richD_',idInfo,'.mat'),'microbiota_model') 
+       save(strcat(resPath,'Rich\','microbiota_model_richD_',idInfo,'.mat'),'microbiota_model')
   end
 
 
@@ -141,14 +145,14 @@ for k=startIter:(patNumb+1)
 model_sd=model;
 [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota')
 [model_sd] = useDiet(model_sd, adaptedDiet)
-    if exist('unfre') ==1 %option to directly add other essential nutrients 
+    if exist('unfre') ==1 %option to directly add other essential nutrients
        warning('Feasibility forced with addition of essential nutrients')
        model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')
     end
-solution_sDiet=solveCobraLP(model_sd);    
+solution_sDiet=solveCobraLP(model_sd);
 %solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
 presol{k,2}=solution_sDiet.obj
- if isnan(solution_sDiet.obj) 
+ if isnan(solution_sDiet.obj)
     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
     inFesMat{k,2}= model.name
  else
@@ -156,15 +160,15 @@ presol{k,2}=solution_sDiet.obj
   if extSolve==0
       [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
        sma=maxFlux;
-       sma2=minFlux 
+       sma2=minFlux
        [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
        smi=minFlux;
        smi2=maxFlux
-       maxFlux=sma; 
+       maxFlux=sma;
        minFlux=smi;
-       
+
        fvaCt{2,(k-1)}=ID;
-       nsCt{2,(k-1)}=ID; 
+       nsCt{2,(k-1)}=ID;
         for i =1:length(FecalRxn)
             [truefalse, index] = ismember(FecalRxn(i), ID);
             fvaCt{2,(k-1)}{index,2}=minFlux(i,1);
@@ -172,7 +176,7 @@ presol{k,2}=solution_sDiet.obj
             nsCt{2,(k-1)}{index,2}=smi2(i,1);
             nsCt{2,(k-1)}{index,3}=sma2(i,1);
         end
-  else 
+  else
   microbiota_model=model_sd;
   mkdir(strcat(resPath,'Standard'))
   save(strcat(resPath,'Standard\','microbiota_model_standardD_',idInfo,'.mat'),'microbiota_model')
@@ -180,10 +184,10 @@ presol{k,2}=solution_sDiet.obj
 
 if extSolve==0
    save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
-   
-end  
-  
-  
+
+end
+
+
 %Using personalized diet not documented in MgPipe and bug checked yet!!!!
 
 if pDiet==1
@@ -192,7 +196,7 @@ if pDiet==1
  usedIDs = Strings(1,2:end)';
  % diet exchange reactions
  DietNames = Strings(2:end,1);
-% Diet exchanges for all individuals 
+% Diet exchanges for all individuals
  Diets(:,k-1) = cellstr(num2str((Numbers(1:end,k-1))));
  DietID = {DietNames{:,1} ; Diets{:,k-1}}';
  DietID = regexprep(DietID,'EX_','Diet_EX_');
@@ -218,8 +222,8 @@ if pDiet==1
  fvaCt{3,(k-1)}{index,2}=minFlux(i,1);
  fvaCt{3,(k-1)}{index,3}=maxFlux(i,1);
   end
-  else 
-  microbiota_model=model_pd  
+  else
+  microbiota_model=model_pd
     mkdir(strcat(resPath,'Personalized'))
     save(strcat(resPath,'Personalized\','microbiota_model_personalizedD_',idInfo,'.mat'),'microbiota_model')
   end
@@ -231,7 +235,7 @@ if pDiet==1
     end
 end
 
-%Saving all output of simulations 
+%Saving all output of simulations
 if extSolve==0
   save(strcat(resPath,'simRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
 end

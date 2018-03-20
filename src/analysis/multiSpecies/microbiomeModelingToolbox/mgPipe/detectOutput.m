@@ -1,14 +1,18 @@
-function [mapP]=detectOutput(resPath,objNam)
+function mapP = detectOutput(resPath,objNam)
 % This function checks the existence of a specific file in the results folder.
 %
-% INPUTS: 
-%   resPath:             char with path of directory where results are saved
-%   objNam:              char with name of object to find in the results folder  
-%                     
-% OUTPUTS:               
-%   mapP:                double indicating if object was found in the result folder 
+% USAGE:
 %
-% ..Author: Federico Baldini 2017-2018
+%   mapP = detectOutput(resPath, objNam)
+%
+% INPUTS:
+%   resPath:    char with path of directory where results are saved
+%   objNam:     char with name of object to find in the results folder
+%
+% OUTPUTS:
+%   mapP:       double indicating if object was found in the result folder
+%
+% .. Author: Federico Baldini 2017-2018
 
 resPathc=resPath(1:(length(resPath)-1));
 cd(resPathc);
