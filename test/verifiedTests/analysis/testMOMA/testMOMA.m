@@ -30,7 +30,7 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi6'};  %,'ILOGcomplex'};
+solverPkgs = {'mosek', 'ibm_cplex', 'tomlab_cplex', 'gurobi'};  %,'ILOGcomplex'};
 
 % define solver tolerances
 QPtol = 0.02;
@@ -56,7 +56,7 @@ for k = 1:length(solverPkgs)
 
         assert(abs(0.8608 - sol.f) < LPtol)
     else
-        fprintf('MOMA requires a QP solver to be installed. QPNG does not work.');
+        fprintf('MOMA requires a QP solver to be installed. QPNG does not work.\n');
     end
 
     % output a success message
