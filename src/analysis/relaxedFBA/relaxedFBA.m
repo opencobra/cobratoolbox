@@ -163,15 +163,15 @@ end
 %                      * v - reaction rate
 
 %set global parameters on zero norm if they do not exist
-if ~isfield(param,'alpha')
+if ~isfield(param,'alpha') && ~isfield(param,'alpha0')
     param.alpha = 10; %weight on relaxation of bounds of reactions
 end
-if ~isfield(param,'lambda')
+if ~isfield(param,'lambda') && ~isfield(param,'lambda0')
     param.lambda = 10;  %weight on relaxation of steady state constraints
 end
-if ~isfield(param,'gamma')
+if ~isfield(param,'gamma') && ~isfield(param,'gamma0')
     %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining 
-    param.gamma = 1;  %weight on zero norm of reaction rate
+    param.gamma = 0;  %weight on zero norm of reaction rate  
 end
 
 %set local paramters on zero norm for capped L1
@@ -182,7 +182,7 @@ if ~isfield(param,'lambda0')
     param.lambda0 = param.lambda;    
 end
 if ~isfield(param,'gamma0')
-    param.gamma0 = param.gamma;   
+    param.gamma0 = param.gamma;       
 end
 
 %set local paramters on one norm for capped L1
@@ -193,7 +193,9 @@ if ~isfield(param,'lambda1')
     param.lambda1 = param.lambda0/10;    
 end
 if ~isfield(param,'gamma1')
-    param.gamma1 = param.gamma0/10;   
+    %always include some regularisation on the flux rates to keep it well
+    %behaved
+    param.gamma1 = 1e-6 + param.gamma0/10;   
 end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
@@ -223,7 +225,7 @@ end
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
 % Call the solver
-if 0
+if 1
     param
 end
 solution = relaxFBA_cappedL1(model,param);

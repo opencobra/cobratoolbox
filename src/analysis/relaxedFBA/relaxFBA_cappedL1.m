@@ -79,7 +79,10 @@ if exist('param','var')
     end
 
     if isfield(param,'gamma1') == 0
-        param.gamma1 = 0;     %trade-off parameter of l1 part v
+        %Small positive penalty seems to be important to ensure algorithm
+        %is numerically stable for small networks.
+        %TODO: why?
+        param.gamma1 = 1e-6;     %trade-off parameter of l1 part v
     end
 
     if isfield(param,'lambda0') == 0
@@ -107,7 +110,7 @@ if exist('param','var')
     end
 end
 
-if 1
+if 0
     param
 end
 
@@ -151,13 +154,15 @@ while nbIteration < nbMaxIteration && stop ~= true
     x_old = [v;r;p;q];
 
     %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
-    v_bar  = sign(v)*(gamma1 + gamma0*theta);%Ronan: was minimisation by Minh
-    %v_bar  = -sign(v)*(gamma1 + gamma0*theta);%Ronan - switched sign of gamma
-
-    %Ronan- mimic other variables
-%     v_bar  = -sign(v)*gamma1;
-%     v(abs(v) < one_over_theta) = 0;
-%     v_bar = v_bar + sign(v)*gamma0*theta;
+    if 1
+        %Minh
+        v_bar  = sign(v)*(gamma1 + gamma0*theta);
+    else
+        %Ronan- mimic other variables
+        v_bar  = -sign(v)*gamma1;
+        v(abs(v) < one_over_theta) = 0;
+        v_bar = v_bar + sign(v)*gamma0*theta;
+    end
     
     r_bar  = -sign(r)*lambda1;
     r(abs(r) < one_over_theta) = 0;
@@ -353,8 +358,8 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
         p = solution.full(n+m+1:n+m+n);
         q = solution.full(n+m+n+1:n+m+n+n);
         if 0
-        disp([v,p,q])
-        disp('-')
+            disp([v,p,q])
+            disp('-')
         end
     else
         warning(['solveCobraLP solution status is ' num2str(solution.stat)])
@@ -363,7 +368,6 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
         p = [];
         q = [];
     end
-
 end
 
 function obj = relaxFBA_cappedL1_obj(model,v,r,p,q,param)
