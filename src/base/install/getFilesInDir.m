@@ -1,7 +1,7 @@
 function files = getFilesInDir(varargin)
 % List all files in the supplied (git tracked) Directory with their absolute path name
 % based on the git ls-file command. If the directory is not git controlled, the
-% gitTypeFlag is assumed to be 'all' and all files (except for .git files
+% type is assumed to be 'all' and all files (except for .git files
 % will be returned).
 %
 % USAGE:
@@ -12,7 +12,7 @@ function files = getFilesInDir(varargin)
 %                  options are:
 %                  dirToList -  the directory to list the files for, 
 %                               (Default: The current working directory)
-%                  gitTypeFlag - Git type of files to return
+%                  type      -  Git type of files to return
 %                                'tracked' - Only tracked files
 %                                'ignored' - Only git ignored files
 %                                            including files that are tracked but
@@ -24,8 +24,10 @@ function files = getFilesInDir(varargin)
 %                                              and not tracked. (new files)
 %                                'all'  - all files except for the git
 %                                         specific files (e.g. .git, .gitignore etc).                               
-%                                'COBRAIgnored' - use the COBRA Toolbox .gitignore
-%                                                 file to determine the ignored files. 
+%                                'ignoredByCOBRA' - use the COBRA Toolbox .gitignore
+%                                                 file. Only return those
+%                                                 files which match
+%                                                 patterns specified there.
 %                                                 Slower than 'ignored',
 %                                                 since all files have to
 %                                                 be manually checked
@@ -40,16 +42,21 @@ function files = getFilesInDir(varargin)
 %                                      empty. (Default: '', i.e. ignored)
 %                  checkSubFolders - check the subfolders of the current
 %                                    directory. (Default: true)
+%
+%
+% OUTPUTS:
+%    files:         A Cell Array of files with absolute file pathes.
+%                   present in this folder matching the options choosen.
 % 
 % EXAMPLES:
 %    Get all m files in the source folder:
 %    files = getFilesInDir('dirToList', [CBTDIR filesep 'src'], 'restrictToPattern', '\.m$');
 %    Get the git tracked files in the test Directory.
-%    files = getFilesInDir('dirToList', [CBTDIR filesep 'test'], 'gitTypeFlag', 'tracked');
+%    files = getFilesInDir('dirToList', [CBTDIR filesep 'test'], 'type', 'tracked');
 %    Get all git tracked files  which start with "MyFile" in the current directory
-%    files = getFilesInDir('gitTypeFlag', 'tracked', 'restrictToPattern', '^MyFile');
+%    files = getFilesInDir('type', 'tracked', 'restrictToPattern', '^MyFile');
 %    Get only the gitIgnored files in the current folder
-%    files = getFilesInDir('gitTypeFlag', 'ignored');
+%    files = getFilesInDir('type', 'ignored');
 
 persistent COBRAIgnored
 
@@ -57,36 +64,38 @@ if isempty(COBRAIgnored)
     COBRAIgnored = regexptranslate('wildcard',getIgnoredFiles());
 end
 
-gitFileTypes = {'tracked','all','untracked','ignored','COBRAIgnored'};
+gitFileTypes = {'tracked','all','untracked','ignored','ignoredByCOBRA'};
 parser = inputParser();
 parser.addParamValue('dirToList',pwd,@(x) exist(x,'file') == 7);
-parser.addParamValue('gitTypeFlag','all',@(x) ischar(x) && any(strcmpi(x,gitFileTypes)));
+parser.addParamValue('type','all',@(x) ischar(x) && any(strcmpi(x,gitFileTypes)));
 parser.addParamValue('restrictToPattern','',@(x) ischar(x));
 parser.addParamValue('checkSubFolders','',@(x) islogical(x) || (isnumeric(x) && x == 0 || x == 1));
 
 parser.parse(varargin{:});
 
 %get the absolute path of the files that are listed
-
 currentDir = cd(parser.Results.dirToList);
+
+%get the absolute path to the folder to be listed.
 absPath = pwd;
+
 %get all files in the directory.
-gitType = lower(parser.Results.gitTypeFlag);
+selectedType = parser.Results.type;
 
 %test, whether the folder is git controlled
 [gitStatus,~] = system('git status');
-if gitStatus ~= 0 && ~strcmpi(gitType,'cobraignored')
-    gitType = 'all';
+if gitStatus ~= 0 && ~strcmpi(selectedType,'ignoredByCOBRA')
+    selectedType = 'all';
 end
-if gitStatus == 0 && strcmpi(gitType,'cobraignored')
+if gitStatus == 0 && strcmpi(selectedType,'ignoredByCOBRA')
     [~,repos] = system('git remote -v');
     if any(cellfun(@(x) ~isempty(strfind(x,'cobratoolbox.git')),strsplit(repos,'\n')))
         %So, we are on a COBRA repo. lets just use the ignored option
-        gitType = 'ignored';
+        selectedType = 'ignored';
     end
 end
 
-switch gitType
+switch selectedType
     case 'all'
         if gitStatus == 0
             [status, trackedfiles] = system('git ls-files');             

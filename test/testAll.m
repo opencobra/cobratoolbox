@@ -45,7 +45,7 @@ initCobraToolbox;
 
 %Init the cleanup:
 currentDir = cd('test');
-testDirContent = getFilesInDir('gitTypeFlag','all'); %Get all currently present files in the folder.
+testDirContent = getFilesInDir('type','all'); %Get all currently present files in the folder.
 testDirPath = pwd;
 cd(currentDir);
 

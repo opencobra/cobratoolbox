@@ -1,9 +1,10 @@
-function removeTempFiles(directory, oldcontent, varargin)
+function status = removeTempFiles(directory, oldcontent, varargin)
 % Removes all files that are in the specified directory but not part of
 % the oldcontent. By default only removes those files which match files
 % mentioned in the COBRA .gitignore file.
+%
 % USAGE:
-%    removeTempFiles(directory, oldcontent, varargin)
+%    status = removeTempFiles(directory, oldcontent, varargin)
 %
 % INPUT:
 %    directory: The directory which should be checked for changing files.
@@ -35,7 +36,7 @@ else
 end
 
 % get the new Content of the folder.
-newContent = getFilesInDir('gitTypeFlag',gitTypeFlag,'checkSubFolders',checkSubFolders);
+newContent = getFilesInDir('type',gitTypeFlag,'checkSubFolders',checkSubFolders);
 
 % get all .log files that were present only after initCobraToolbox was called.
 newIgnoredFiles = setdiff(newContent, oldcontent);
