@@ -12,17 +12,14 @@ function newmodel = addMultipleMetabolites(model,metIDs,varargin)
 %               and no ID may be present in the supplied model.
 %
 % OPTIONAL INPUTS:
-%    varargin:  fieldName, Value pairs. 
-%               The given fields will be set according to the values. 
-%               Only defined COBRA fields may be used. The S matrix will 
-%               always be extended by the number of metabolites, but cannot 
-%               be updated in this function. 
+%    varargin:  fieldName, Value pairs with additional properties for the
+%               added metabolites.
+%               The given values fields will be set according to the values. 
+%               Only fields associated with mets defined in the COBRA definitions (except S) 
+%               or fields already in the model may be used. 
 %               Examples: 
 %               'metNames',{'Glucose';'Pyruvate'}            
 %               'metCharges',[0;-2]
-%               or any field name associated with mets 
-%               (except for S ) as defined in the COBRA
-%               Model field definitions or present in the model.
 % OUTPUTS:
 %
 %    newmodel:     The model structure with the additional metabolites.
