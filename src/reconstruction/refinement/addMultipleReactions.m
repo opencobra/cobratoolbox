@@ -1,5 +1,7 @@
 function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,varargin)
-%Add a batch of reactions to the model.
+% Add multiple Reactions to the model. In contrast to addReaction, this
+% function allows the addition of multiple reactions at once but requires
+% all used metabolites to be already present in the model. 
 % USAGE:
 %
 %    newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,varargin)
@@ -10,6 +12,7 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %    metList:           A list of metabolites for which stoichiometric coefficients are given
 %    Stoichiometries:   A Stoichiometric matrix of dimension
 %                       numel(metList) x numel(rxnID).
+% OPTIONAL INPUTS:
 %    varargin:          fieldName, Value pairs. The given fields will be set
 %                       according to the values. Only defined COBRA fields may be
 %                       used. The following fields will be ignored (as they
@@ -24,6 +27,14 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %                       corresponding rules field
 %                       3. By providing a rules field, that directly refers
 %                       to the genes in the model.
+%                       Examples of parameters are:
+%                       'rxnNames',{'RuBisCo','Transketloase'}
+%                       'rxnKEGGID,{'R00024','R01641'}
+%                       'lb',[0,-1000]
+%                       or any field name associated with reactions (except
+%                       for S and rxnGeneMat) as defined in the COBRA
+%                       Model field definitions.
+%                       
 %                       
 %
 % OUTPUTS:

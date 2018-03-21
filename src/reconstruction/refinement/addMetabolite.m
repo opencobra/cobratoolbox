@@ -92,7 +92,15 @@ parser.addParamValue('csense',defaultCsense, @(x) ischar(x));
 
 parser.parse(model,metID,varargin{:});
 
+%Get all properties, which were kept at their default values. We do not
+%need to update those.
 nonDefaults = setdiff(setdiff(parser.Parameters,parser.UsingDefaults),{'model','metID'}); %Non Defaults without the originals.
+
+%Define a translation between input parameters and model fields including
+%an indicator, whether the field is a cell array or a non cell array field.
+%Since both cell arrays and non characters are allowed as input into this
+%function, we need to potentially convert character arrays into cell arrays
+%of characters.
 translation = {'b','b',false;...
                'csense','csense',false;...
                'metName','metNames',true;...
@@ -102,13 +110,18 @@ translation = {'b','b',false;...
                'PubChemID','metPubChemID',true;...
                'InChi','metInChIString',true;...
                'Charge','metCharges',false};
-multiArgs = {};          
+multiArgs = {};
+%For all values which are not default values, create the input for
+%addMultipleMetabolites (i.e. Parameter/value pairs).
 for i = 1:numel(nonDefaults)
+    %Get the position in the traslation vectorand the corresponding value
     argpos = ismember(translation(:,1),nonDefaults{i});
     val = parser.Results.(nonDefaults{i});
     if translation{argpos,3} && ~iscell(val)
+        %Convert to Cell if indicated by the translation vector
         val = {val};
     end        
+    %extend the varargins for the addMultipleMetabolites call.
     multiArgs((2*(i-1)+1):(2*i)) = {translation{argpos,2},val};
 end
 
