@@ -78,14 +78,17 @@ end
 
 nRxns = numel(model.rxns);
 
-%We have make sure, that the new fields are in sync, so we create those
-%first.
+%We extract those fields which are either associated with the rxns field
+%(2nd or 3rd column contains 'rxns' in the definitions), and we also look up which fields are in the model and
+%associated with the rxns field (from the sizes and definitions)
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,3)));
 modelRxnFields = getModelFieldsForType(model,'rxns');
 
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
+    %Anything thats not a model field or not a specialised field is
+    %ignored.
     if any(ismember({'S','rxnGeneMat','rules','genes'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))
         warning('Field %s is excluded.',cfield);
         continue;

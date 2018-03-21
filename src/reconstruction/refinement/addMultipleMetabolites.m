@@ -39,19 +39,21 @@ end
 
 nMets = numel(model.mets);
 
-%We have make sure, that the new fields are in sync, so we create those
-%first.
+%We extract those fields which are either associated with the mets field
+%(2nd or 3rd column contains 'mets' in the definitions), and we also look up which fields are in the model and
+%associated with the mets field (from the sizes)
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,3)));
 modelMetFields = getModelFieldsForType(model,'mets');
 
-%First, add the metabolite IDs
+%Then we add the ids.
 model.mets = [model.mets;columnVector(metIDs)];
 
-%Now, add the the data from the additional supplied fields
+%Now, add the the data from the additional supplied fields, and check that
+%they are in sync
 for field = 1:2:numel(varargin)
     %If the field does not exist and is not defined, we will not add that
-    %information, as we don't know how th field should look.
+    %information, as we don't know how the field should look.
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
         warning('Field %s is excluded',cfield);
@@ -70,6 +72,6 @@ for field = 1:2:numel(varargin)
     
 end       
 
-%Extend the remaining fields.
+%Extend the remaining fields, to keep the fields in sync
 newmodel = extendModelFieldsForType(model,'mets','originalSize',nMets);
     
