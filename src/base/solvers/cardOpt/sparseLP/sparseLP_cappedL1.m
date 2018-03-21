@@ -192,7 +192,8 @@ function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,t
     n = length(x_bar);
 
     % Change the objective - variable (x,t)
-    subLPproblem.obj = [-x_bar;theta*ones(n,1)];
+    %subLPproblem.obj = [-x_bar;theta*ones(n,1)]; %Minh's version
+    subLPproblem.c = [-x_bar;theta*ones(n,1)];
 
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem,'optTol',optTol,'feasTol',feasTol);
