@@ -18,6 +18,9 @@ function status = removeTempFiles(directory, oldcontent, varargin)
 %                                                (Default: true)
 %                          checkSubFolders -     Whether to check subFolder (Default: true)
 %
+% OUTPUT:
+%
+%    status:        Whether the deletion was successfull (
 
 parser = inputParser();
 parser.addParamValue('COBRAGitIgnoredOnly',true,@(x) islogical(x) || isnumeric(x) && (x == 0 || x == 1));
@@ -41,10 +44,28 @@ newContent = getFilesInDir('type',gitTypeFlag,'checkSubFolders',checkSubFolders)
 % get all .log files that were present only after initCobraToolbox was called.
 newIgnoredFiles = setdiff(newContent, oldcontent);
 
+% get the warning status
+cwarn = warning();
+%Turn off the warnings, to avoid warnings being shown for this
+warning off
+warning('PlaceHolder') %create a placeholder to test if the delete call throws a warning.
+lwarn = lastwarn;
+
 % by adding the folder, we already have the correct path.
-if ~isempty(newIgnoredFiles)
+if ~isempty(newIgnoredFiles)    
     delete(newIgnoredFiles{:});
 end
+newlwarn = lastwarn;
+%Restore the warning settings
+warning(cwarn)
 
+%Set the status
+if strcmpi(lwarn,newlwarn)
+    status = true;
+else
+    status = false;
+end
+    
 cd(currentDir);
+
 end

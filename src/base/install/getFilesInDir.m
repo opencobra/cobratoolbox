@@ -15,7 +15,7 @@ function files = getFilesInDir(varargin)
 %                  type      -  Git type of files to return
 %                                'tracked' - Only tracked files
 %                                'ignored' - Only git ignored files
-%                                            including files that are tracked but
+%                                            excluding files that are tracked but
 %                                            ignored (specified in
 %                                            .gitignore). If the folder is
 %                                            not controlled by git, 'all'
@@ -42,6 +42,8 @@ function files = getFilesInDir(varargin)
 %                                      empty. (Default: '', i.e. ignored)
 %                  checkSubFolders - check the subfolders of the current
 %                                    directory. (Default: true)
+%                  printLevel -     0 - No print out (default)
+%                                   1 - Print Information.
 %
 %
 % OUTPUTS:
@@ -70,8 +72,11 @@ parser.addParamValue('dirToList',pwd,@(x) exist(x,'file') == 7);
 parser.addParamValue('type','all',@(x) ischar(x) && any(strcmpi(x,gitFileTypes)));
 parser.addParamValue('restrictToPattern','',@(x) ischar(x));
 parser.addParamValue('checkSubFolders','',@(x) islogical(x) || (isnumeric(x) && x == 0 || x == 1));
+parser.addParamValue('printLevel',0,@(x) isnumeric(x));
 
 parser.parse(varargin{:});
+
+printLevel = parser.Results.printLevel;
 
 %get the absolute path of the files that are listed
 currentDir = cd(parser.Results.dirToList);
@@ -95,6 +100,12 @@ if gitStatus == 0 && strcmpi(selectedType,'ignoredByCOBRA')
     end
 end
 
+if status == 0 && printLevel > 0 && strcmp(selectedType,'ignored')
+    [status,folder] = system('git rev-parse --show-toplevel');
+    fprintf('Using the .gitignore files as specified in the repository under:\n%s\n',folder);
+end
+
+
 switch selectedType
     case 'all'
         if gitStatus == 0
@@ -107,7 +118,7 @@ switch selectedType
            if parser.Results.checkSubFolders
                rdircall = ['**' filesep '*'];
            else
-               rdircall = ['*']
+               rdircall = ['*'];
            end
            files = rdir(rdircall); 
            files = {files.name}'; %Need to transpose to give consistent results.
@@ -118,7 +129,7 @@ switch selectedType
         files = strsplit(strtrim(files), '\n');
     case 'untracked'
         %Files, which are not tracked but are not ignored.
-        [status, files] = system('git ls-files -o -exclude-standard');
+        [status, files] = system('git ls-files -o --exclude-standard');
         files = strsplit(strtrim(files), '\n');
     case 'ignored'
         [~, files] = system('git ls-files -o -i --exclude-standard');        
