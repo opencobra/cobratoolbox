@@ -1,4 +1,4 @@
-function model = fastSetupCreator(models, microbeNames, host)
+function model = fastSetupCreator(models, microbeNames, host, objre)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -38,12 +38,18 @@ else
 end
 for j = 1:size(models, 1)
     model = models{j, 1};
-    exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
+    model = findSExRxnInd(model);
+    mod_exch=model.rxns(model.ExchRxnBool);
+    mod_exch=strrep(mod_exch, 'EX_', '');
+    mod_exch=strrep(mod_exch, '(e)', '[e]');
+    exch = union(exch,mod_exch);
 end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
-exch = setdiff(exch, 'biomass[c]');
+rmBio=strrep(objre, 'EX_', '');
+rmBio=strrep(rmBio, '(e)', '[e]');
+exch = setdiff(exch, rmBio);
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns
