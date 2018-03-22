@@ -36,7 +36,7 @@ if fvaType == 1
 
  end
  if fvaType == 0
-     warning('Normal FVA in use with CPLEX solver: consider using fastFVA  > fvaType=1')
+     warning('Normal FVA in use with your available solver: consider using fastFVA  > fvaType=1')
      model.S=model.A
      % changeCobraSolver(solver,'all')
      [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl)
