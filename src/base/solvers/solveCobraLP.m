@@ -444,9 +444,9 @@ switch solver
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
         f = c'* x;
-        %dqqMinos uses a constraint to represent the objective. 
+        %dqqMinos uses a constraint to represent the objective.
         %This is exported as the first variable thus, y = sol.y(2:end)
-        y = sol.y(2:end);        
+        y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
 
@@ -537,7 +537,7 @@ switch solver
         x = sol.x;
 
         f = c' * x;
-        %Minos uses a constraint to represent the objective. 
+        %Minos uses a constraint to represent the objective.
         %This is exported as the first variable thus, y = sol.y(2:end)
         y = sol.y(2:end);
         w = sol.rc;
@@ -710,7 +710,7 @@ switch solver
         %              respectively. The same interpretation is used for
         %              blx and bux. Note -inf is allowed in blc and blx.
         %              Similarly, inf is allowed in buc and bux.
-
+keyboard
         if (isempty(csense))
             % assumes all equality constraints
             %[res] = msklpopt(      c,a,blc,buc,blx,bux,param,cmd)
@@ -737,10 +737,10 @@ switch solver
                     stat = 1; % Optimal solution found
                     x=res.sol.itr.xx; % primal solution.
                     y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                    
+
                     w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-                                        
-                                        
+
+
                     % TODO  -work this out with Erling
                     % override if specific solver selected
                     if isfield(param,'MSK_IPAR_OPTIMIZER')
@@ -776,7 +776,8 @@ switch solver
                     y=[];
                     w=[];
                 end
-            elseif ( isfield(res.sol,'bas') )
+            end
+            if ( isfield(res.sol,'bas') )
                 if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
@@ -812,9 +813,9 @@ switch solver
                     w=[];
                 end
             end
-            
 
-                    
+
+
             %debugging
             if printLevel>2
                 res1=A*x + s -b;
@@ -826,7 +827,7 @@ switch solver
                 norm(s(csense == 'E'),inf)
                 res1(~isfinite(res1))=0;
                 norm(res1,inf)
-                
+
                 norm(osense*c -A'*y -w,inf)
                 y2=res.sol.itr.slc-res.sol.itr.suc;
                 norm(osense*c -A'*y2 -w,inf)
@@ -840,7 +841,7 @@ switch solver
             w=[];
         end
 
-        
+
         if isfield(param,'MSK_IPAR_OPTIMIZER')
             algorithm=param.MSK_IPAR_OPTIMIZER;
         end
@@ -1015,6 +1016,7 @@ switch solver
         end
 
         LPproblem.A = deal(sparse(LPproblem.A));
+        LPproblem.modelsense = LPproblem.osense;
         %gurobi wants a dense double vector as an objective
         [LPproblem.rhs,LPproblem.obj,LPproblem.sense] = deal(LPproblem.b,double(LPproblem.c)+0,LPproblem.csense);
 
@@ -1027,14 +1029,14 @@ switch solver
 
         % call the solver
         resultgurobi = gurobi(LPproblem,param);
-        
+
         %switch back to numeric
         if strcmp(LPproblem.osense,'max')
             LPproblem.osense = -1;
         else
             LPproblem.osense = 1;
         end
-        
+
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
         switch resultgurobi.status
@@ -1102,19 +1104,19 @@ switch solver
         %make this tolerance smaller...)
         if verLessThan('matlab','9.0')
             optToleranceParam = 'TolFun';
-            constTolParam = 'TolCon';            
+            constTolParam = 'TolCon';
         else
             optToleranceParam = 'OptimalityTolerance';
             constTolParam = 'ConstraintTolerance';
         end
-        
-        %For whatever 
+
+        %For whatever
         if verLessThan('matlab','9.1')
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,[],options);
         else
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
         end
-        
+
         linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,optTol*0.01,constTolParam,feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
@@ -1574,7 +1576,7 @@ if solution.stat==1 && ~strcmp(solver,'matlab')%TODO check for matlab
             disp(solution.origStat)
             error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
         end
-        
+
         res2=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
         tmp2=norm(res2(strcmp(LPproblem.csense,'E')),inf);
         if tmp2 > feasTol*100
