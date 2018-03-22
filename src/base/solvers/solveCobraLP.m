@@ -1565,20 +1565,22 @@ elseif strcmp(solver,'mps')
 end
 
 if solution.stat==1 && ~strcmp(solver,'matlab')%TODO check for matlab
-    %TODO slacks
-    res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
-    res1(~isfinite(res1))=0;
-    tmp1=norm(res1,inf);
-    if tmp1 > feasTol*1000
-        disp(solution.origStat)
-        error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
-    end
-    
-    res2=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
-    tmp2=norm(res2(strcmp(LPproblem.csense,'E')),inf);
-    if tmp2 > feasTol*100
-        disp(solution.origStat)
-        error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(feasTol)])
+    %TODO slacks for other solvers
+    if any(strcmp(solver,{'gurobi','mosek'}))
+        res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
+        res1(~isfinite(res1))=0;
+        tmp1=norm(res1,inf);
+        if tmp1 > feasTol*1000
+            disp(solution.origStat)
+            error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
+        end
+        
+        res2=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
+        tmp2=norm(res2(strcmp(LPproblem.csense,'E')),inf);
+        if tmp2 > feasTol*100
+            disp(solution.origStat)
+            error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(feasTol)])
+        end
     end
 end
 

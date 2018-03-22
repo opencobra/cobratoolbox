@@ -2,7 +2,7 @@ function solution = optimizeCardinality(problem, param)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by capped-`l1` function.
 % :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0 
-%            + lambda_1*||x||_1 - delta_1*||y||_1` 
+%                        + lambda_1*||x||_1 - delta_1*||y||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -447,7 +447,7 @@ while nbIteration < nbMaxIteration && stop ~= true
 end
 if solution.stat == 1
     if param.printLevel>0
-        fprintf('%s\n','     Optimise cardinality met stopping criterion. Finished.')
+        fprintf('%s\n','     Optimise cardinality reached the stopping criterion. Finished.')
     end
     solution.obj=obj_new;
     solution.x = x;

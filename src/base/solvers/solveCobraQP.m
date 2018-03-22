@@ -517,10 +517,13 @@ solution.dual = y;
 solution.rcost = w;
 
 if solution.stat==1
-    tmp=norm(QPproblem.osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost);
-    %tmp=norm(QPproblem.osense*(QPproblem.c  - QPproblem.A'*solution.dual - solution.rcost) + QPproblem.F*solution.full);
-    if tmp > feasTol*100%optTol/10
-        error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
+    %TODO slacks for other solvers
+    if any(strcmp(solver,{'gurobi','mosek'}))
+        tmp=norm(QPproblem.osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost);
+        %tmp=norm(QPproblem.osense*(QPproblem.c  - QPproblem.A'*solution.dual - solution.rcost) + QPproblem.F*solution.full);
+        if tmp > feasTol*100%optTol/10
+            error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
+        end
     end
 end
 
