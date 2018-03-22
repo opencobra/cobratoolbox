@@ -191,7 +191,7 @@ switch solver
         % Set IBM-Cplex-specific parameters
         parameters = rmfield(parameters, intersect(fieldnames(parameters), optParamNames));
         CplexQPProblem = setCplexParam(CplexQPProblem, parameters, printLevel);
-        
+
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = saveInput;
@@ -304,7 +304,7 @@ switch solver
 
                     %dual to lower and upper bounds
                     w = (res.sol.itr.slx - res.sol.itr.sux);
-                    
+
                     %slack for blc <= A*x <= buc
                     s = zeros(size(csense,1),1);
                     if ~isempty(csense)
@@ -476,9 +476,11 @@ switch solver
 
         if QPproblem.osense == -1
             QPproblem.osense = 'max';
+            osense = -1;
         else
             QPproblem.osense = 'min';
-        end
+            osense = 1;
+       end
 
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
@@ -490,7 +492,7 @@ switch solver
             %Ronan: I changed the signs of the dual variables to make it
             %consistent with the way solveCobraLP returns the dual
             %variables
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc,resultgurobi.slack);
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
@@ -519,7 +521,7 @@ solution.rcost = w;
 if solution.stat==1
     %TODO slacks for other solvers
     if any(strcmp(solver,{'gurobi','mosek'}))
-        tmp=norm(QPproblem.osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost);
+        tmp=norm(osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost, inf);
         %tmp=norm(QPproblem.osense*(QPproblem.c  - QPproblem.A'*solution.dual - solution.rcost) + QPproblem.F*solution.full);
         if tmp > feasTol*100%optTol/10
             error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
