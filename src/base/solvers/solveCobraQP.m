@@ -492,7 +492,7 @@ switch solver
             %Ronan: I changed the signs of the dual variables to make it
             %consistent with the way solveCobraLP returns the dual
             %variables
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
