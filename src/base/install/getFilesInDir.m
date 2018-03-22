@@ -84,15 +84,15 @@ currentDir = cd(parser.Results.dirToList);
 %get the absolute path to the folder to be listed.
 absPath = pwd;
 
-%get all files in the directory.
-selectedType = parser.Results.type;
+%get the type of files to obtain.
+selectedType = lower(parser.Results.type);
 
 %test, whether the folder is git controlled
 [gitStatus,~] = system('git status');
-if gitStatus ~= 0 && ~strcmpi(selectedType,'ignoredByCOBRA')
+if gitStatus ~= 0 && ~strcmpi(selectedType,'ignoredbycobra')
     selectedType = 'all';
 end
-if gitStatus == 0 && strcmpi(selectedType,'ignoredByCOBRA')
+if gitStatus == 0 && strcmpi(selectedType,'ignoredbycobra')
     [~,repos] = system('git remote -v');
     if any(cellfun(@(x) ~isempty(strfind(x,'cobratoolbox.git')),strsplit(repos,'\n')))
         %So, we are on a COBRA repo. lets just use the ignored option
@@ -134,7 +134,7 @@ switch selectedType
     case 'ignored'
         [~, files] = system('git ls-files -o -i --exclude-standard');        
         files = strsplit(strtrim(files), '\n');
-    case 'cobraignored'
+    case 'ignoredbycobra'
         if gitStatus == 0
             [status, trackedfiles] = system('git ls-files');             
             [status, untrackedfiles] = system('git ls-files -o');        
