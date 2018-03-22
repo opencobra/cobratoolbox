@@ -1,4 +1,4 @@
-function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
+function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
