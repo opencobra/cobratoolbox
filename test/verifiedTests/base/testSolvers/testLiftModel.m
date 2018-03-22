@@ -43,7 +43,7 @@ for k = 1:length(solverPkgs)
 
     if solverOK == 1
         fprintf('   Testing model lifting using %s ... \n', solverPkgs{k});
-        sol = optimizeCbModel(toy)
+        sol = optimizeCbModel(toy);
         if sol.stat == 1
                 assert(abs(sol.f-1e6) < tol);
         else
@@ -52,7 +52,7 @@ for k = 1:length(solverPkgs)
             sol.v = DefaultValues;
         end
         %Without coupling the max objective is 1e6
-        solLifted = solveCobraLP(liftedLPProblem)
+        solLifted = solveCobraLP(liftedLPProblem);
 
         assert(all(abs(solLifted.full(NecessarilyEqual) - sol.v(NecessarilyEqual)) < tol));
 
