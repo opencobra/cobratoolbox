@@ -710,7 +710,7 @@ switch solver
         %              respectively. The same interpretation is used for
         %              blx and bux. Note -inf is allowed in blc and blx.
         %              Similarly, inf is allowed in buc and bux.
-keyboard
+
         if (isempty(csense))
             % assumes all equality constraints
             %[res] = msklpopt(      c,a,blc,buc,blx,bux,param,cmd)
