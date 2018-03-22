@@ -1042,7 +1042,7 @@ switch solver
         switch resultgurobi.status
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
-                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);
+                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc,resultgurobi.slack);
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
@@ -1577,7 +1577,7 @@ if solution.stat==1 && ~strcmp(solver,'matlab')%TODO check for matlab
             error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
         end
 
-        res2=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
+        res2=LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
         tmp2=norm(res2(strcmp(LPproblem.csense,'E')),inf);
         if tmp2 > feasTol*100
             disp(solution.origStat)
