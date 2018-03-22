@@ -672,6 +672,12 @@ switch solver
                 cmd = 'minimize';
             end
         end
+        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
+            param.MSK_DPAR_INTPNT_TOL_PFEAS=feasTol;
+        end
+        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
+            param.MSK_DPAR_INTPNT_TOL_DFEAS=feasTol;
+        end
 
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
@@ -721,6 +727,7 @@ switch solver
 %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
 %             pasue(eps)
         end
+        % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
         if (isfield(res, 'sol'))
             if isfield(res.sol, 'itr')
                 origStat = res.sol.itr.solsta;
@@ -730,7 +737,10 @@ switch solver
                     stat = 1; % Optimal solution found
                     x=res.sol.itr.xx; % primal solution.
                     y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
+                    
                     w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+                                        
+                                        
                     % TODO  -work this out with Erling
                     % override if specific solver selected
                     if isfield(param,'MSK_IPAR_OPTIMIZER')
@@ -755,6 +765,8 @@ switch solver
                         w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
                     end
                     f=c'*x;
+                    %slack for blc <= A*x <= buc
+                    s = b - A*x;
                 elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
@@ -788,6 +800,8 @@ switch solver
                         end
                     end
                     f=c'*x;
+                    %slack for blc <= A*x <= buc
+                    s = b - A*x;
                 elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
@@ -798,7 +812,27 @@ switch solver
                     w=[];
                 end
             end
+            
+
+                    
+            %debugging
+            if printLevel>2
+                res1=A*x + s -b;
+                norm(res1(csense == 'G'),inf)
+                norm(s(csense == 'G'),inf)
+                norm(res1(csense == 'L'),inf)
+                norm(s(csense == 'L'),inf)
+                norm(res1(csense == 'E'),inf)
+                norm(s(csense == 'E'),inf)
+                res1(~isfinite(res1))=0;
+                norm(res1,inf)
+                
+                norm(osense*c -A'*y -w,inf)
+                y2=res.sol.itr.slc-res.sol.itr.suc;
+                norm(osense*c -A'*y2 -w,inf)
+            end
         else
+            disp(res)
             origStat=[];
             stat=-1;
             x=[];
@@ -806,6 +840,7 @@ switch solver
             w=[];
         end
 
+        
         if isfield(param,'MSK_IPAR_OPTIMIZER')
             algorithm=param.MSK_IPAR_OPTIMIZER;
         end
@@ -980,7 +1015,6 @@ switch solver
         end
 
         LPproblem.A = deal(sparse(LPproblem.A));
-        LPproblem.modelsense = LPproblem.osense;
         %gurobi wants a dense double vector as an objective
         [LPproblem.rhs,LPproblem.obj,LPproblem.sense] = deal(LPproblem.b,double(LPproblem.c)+0,LPproblem.csense);
 
@@ -993,13 +1027,20 @@ switch solver
 
         % call the solver
         resultgurobi = gurobi(LPproblem,param);
-
+        
+        %switch back to numeric
+        if strcmp(LPproblem.osense,'max')
+            LPproblem.osense = -1;
+        else
+            LPproblem.osense = 1;
+        end
+        
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
         switch resultgurobi.status
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
-                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc);
+                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc,resultgurobi.slack);
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
@@ -1508,14 +1549,37 @@ if stat == -1
     end
 end
 
+%TODO  pull out slack variable from every solver interface
+if ~exist('s','var')
+    s = zeros(size(A,1),1);
+end
+
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     %% Assign solution
     t = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
-    [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
-        deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
+    [solution.full,solution.obj,solution.rcost,solution.dual,solution.slack,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
+        deal(x,f,w,y,s,solver,algorithm,stat,origStat,t,basis);
 elseif strcmp(solver,'mps')
     solution = [];
+end
+
+if solution.stat==1 && ~strcmp(solver,'matlab')%TODO check for matlab
+    %TODO slacks
+    res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
+    res1(~isfinite(res1))=0;
+    tmp1=norm(res1,inf);
+    if tmp1 > feasTol*1000
+        disp(solution.origStat)
+        error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
+    end
+    
+    res2=LPproblem.osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
+    tmp2=norm(res2(strcmp(LPproblem.csense,'E')),inf);
+    if tmp2 > feasTol*100
+        disp(solution.origStat)
+        error(['Optimality conditions in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(feasTol)])
+    end
 end
 
 function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)

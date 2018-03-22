@@ -296,7 +296,9 @@ for i = 1:length(metaboliteList)
     if (isInModel(i))
         Scolumn(metID(i),1) = stoichCoeffList(i);
     else
-        warning(['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
+        if printLevel>1
+            fprintf('%s\n',['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
+        end
         model = addMetabolite(model,metaboliteList{i},metaboliteList{i});
         Scolumn(end+1,1) = stoichCoeffList(i);
     end
