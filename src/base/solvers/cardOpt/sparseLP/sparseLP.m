@@ -1,4 +1,4 @@
-function solution = sparseLP(approximation, constraint, params)
+function solution = sparseLP(model, approximation, params)
 % DC programming for solving the sparse LP
 % :math:`min ||x||_0` subject to linear constraints
 % See `Le Thi et al., DC approximation approaches for sparse optimization,
@@ -7,9 +7,19 @@ function solution = sparseLP(approximation, constraint, params)
 %
 % USAGE:
 %
-%    solution = sparseLP(approximation, constraint, params)
+%    solution = sparseLP(approximation, model, params)
 %
 % INPUTS:
+%    model:       Structure containing the following fields describing the linear constraints:
+%
+%                        * .A - `m x n` LHS matrix
+%                        * .b - `m x 1` RHS vector
+%                        * .lb - `n x 1` Lower bound vector
+%                        * .ub - `n x 1` Upper bound vector
+%                        * .csense - `m x 1` Constraint senses, a string containting the model sense for
+%                          each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%
+% OPTIONAL INPUTS
 %    approximation:    appoximation type of zero-norm. Available approximations:
 %
 %                        * 'cappedL1' : Capped-L1 norm
@@ -20,14 +30,7 @@ function solution = sparseLP(approximation, constraint, params)
 %                        * 'lp+'      : `L_p` norm with `0 < p < 1`
 %                        * 'l1'       : `l_1` norm
 %                        * 'all'      : try all approximations and return the best result
-%    constraint:       Structure containing the following fields describing the linear constraints:
 %
-%                        * .A - `m x n` LHS matrix
-%                        * .b - `m x 1` RHS vector
-%                        * .lb - `n x 1` Lower bound vector
-%                        * .ub - `n x 1` Upper bound vector
-%                        * .csense - `m x 1` Constraint senses, a string containting the constraint sense for
-%                          each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
 %    params:           Parameters structure:
@@ -49,12 +52,18 @@ function solution = sparseLP(approximation, constraint, params)
 %                          * 0 =  Infeasible
 %                          * -1=  Invalid input
 %
+
 % .. Author: - Hoai Minh Le,	20/10/2015
+%              Ronan Fleming,    2017
 
 stop = false;
 solution.x = [];
 solution.stat = 1;
 availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','l1','all'};
+
+if ~exist('approximation','var')
+    approximation='cappedL1';
+end
 
 % Check inputs
 if nargin < 3
@@ -100,27 +109,27 @@ else
 
 end
 
-if isfield(constraint,'A') == 0
+if isfield(model,'A') == 0
     error('Error:LHS matrix is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(constraint,'b') == 0
+if isfield(model,'b') == 0
     error('RHS vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(constraint,'lb') == 0
+if isfield(model,'lb') == 0
     error('Lower bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(constraint,'ub') == 0
+if isfield(model,'ub') == 0
     error('Upper bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(constraint,'csense') == 0
+if isfield(model,'csense') == 0
     error('Constraint sense vector is not defined');
     solution.stat = -1;
     return;
@@ -134,26 +143,26 @@ end
 
 switch approximation
     case 'cappedL1'
-        solution = sparseLP_cappedL1(constraint,params);
+        solution = sparseLP_cappedL1(model,params);
     case 'exp'
-        solution = sparseLP_exp(constraint,params);
+        solution = sparseLP_exp(model,params);
     case 'log'
-        solution = sparseLP_log(constraint,params);
+        solution = sparseLP_log(model,params);
     case 'SCAD'
-        solution = sparseLP_SCAD(constraint,params);
+        solution = sparseLP_SCAD(model,params);
     case 'lp-'
-        solution = sparseLP_lpNegative(constraint,params);
+        solution = sparseLP_lpNegative(model,params);
     case 'lp+'
-        solution = sparseLP_lpPositive(constraint,params);
+        solution = sparseLP_lpPositive(model,params);
     case 'l1'
-        solution = sparseLP_l1(constraint);
+        solution = sparseLP_l1(model);
     case 'all'
         approximations = {'cappedL1','exp','log','SCAD','lp+','lp-'};
-        bestResult = size(constraint.A,2);
+        bestResult = size(model.A,2);
         bestAprox = '';
         for i=1:length(approximations)
             %disp(approximations(i))
-            solutionL0 = sparseLP(char(approximations(i)),constraint,params);
+            solutionL0 = sparseLP(char(approximations(i)),model,params);
             if solutionL0.stat == 1
                 if bestResult > nnz(solutionL0.x)
                     bestResult = nnz(solutionL0.x);

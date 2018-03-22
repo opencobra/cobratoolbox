@@ -6,6 +6,10 @@ function solution = sparseLP_cappedL1(constraint, params)
 % European Journal of Operational Research, 2014`;
 % http://dx.doi.org/10.1016/j.ejor.2014.11.031
 %
+%  Capped-1 (Peleg & Meir,2008)
+%  l0-approximation function: rcap(t) = min{1, θ|t|}
+%     First DC decomposition:       ϕ = θ|t|
+%
 % USAGE:
 %
 %    solution = sparseLP_cappedL1(constraint, params)
@@ -62,7 +66,7 @@ else
         params.theta   = 0.5;
     end
 
-        if isfield(params,'feasTol') == 0
+    if isfield(params,'feasTol') == 0
         params.feasTol = 1e-9;
     end
 
@@ -188,7 +192,8 @@ function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,t
     n = length(x_bar);
 
     % Change the objective - variable (x,t)
-    subLPproblem.obj = [-x_bar;theta*ones(n,1)];
+    %subLPproblem.obj = [-x_bar;theta*ones(n,1)]; %Minh's version
+    subLPproblem.c = [-x_bar;theta*ones(n,1)];
 
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem,'optTol',optTol,'feasTol',feasTol);

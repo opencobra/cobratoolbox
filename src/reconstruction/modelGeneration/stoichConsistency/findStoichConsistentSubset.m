@@ -43,7 +43,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %   .unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
 %   .SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
 %   .SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-% .. Author: - Ronan Fleming 2016
+% .. Author: - Ronan Fleming 2017
 
 if ~exist('printLevel','var')
     printLevel=1;

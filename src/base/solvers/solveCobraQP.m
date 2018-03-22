@@ -24,7 +24,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .lb - Lower bound vector
 %                       * .ub - Upper bound vector
 %                       * .osense - Objective sense (-1 max, +1 min)
-%                       * .csense - Constraint senses, a string containting the constraint sense for
+%                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % Optional parameters can be entered using parameters structure or as
@@ -41,6 +41,9 @@ function solution = solveCobraQP(QPproblem, varargin)
 %    solution:        Structure containing the following fields describing a QP solution
 %
 %                       * .full:        Full QP solution vector
+%                       * .rcost:       Reduced costs, dual solution to :math:`lb <= x <= ub`
+%                       * .dual:        dual solution to :math:`A*x <=/=/>= b`
+%                       * .slack:       slack variable such that :math:`A*x + s = b`
 %                       * .obj:         Objective value
 %                       * .solver:      Solver used to solve QP problem
 %                       * .origStat:    Original status returned by the specific solver
@@ -67,7 +70,7 @@ else
     error('No solver found');
 end
 
-optParamNames = {'printLevel','saveInput'};
+optParamNames = {'printLevel','saveInput','optTol','feasTol'};
 parameters = struct();
 if nargin ~=1
     if mod(length(varargin),2)==0
@@ -94,13 +97,14 @@ x = [];
 y = [];
 w = [];
 f = [];
+s = [];%todo, implement slack variable return for all solvers (gurboi and mosek done)
 xInt = [];
 xCont = [];
 stat = -99;
 solStat = -99;
 
 %parameters
-[printLevel, saveInput] = getCobraSolverParams('QP',optParamNames,parameters);
+[printLevel, saveInput,optTol,feasTol] = getCobraSolverParams('QP',optParamNames,parameters);
 
 [A,b,F,c,lb,ub,csense,osense] = ...
     deal(QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
@@ -187,7 +191,7 @@ switch solver
         % Set IBM-Cplex-specific parameters
         parameters = rmfield(parameters, intersect(fieldnames(parameters), optParamNames));
         CplexQPProblem = setCplexParam(CplexQPProblem, parameters, printLevel);
-        
+
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = saveInput;
@@ -261,12 +265,12 @@ switch solver
         %%
     case 'mosek'
         if (~isempty(csense))
-            b_L(csense == 'E') = b(csense == 'E');
-            b_U(csense == 'E') = b(csense == 'E');
-            b_L(csense == 'G') = b(csense == 'G');
-            b_U(csense == 'G') = inf;
-            b_L(csense == 'L') = -inf;
-            b_U(csense == 'L') = b(csense == 'L');
+            b_L(csense == 'E',1) = b(csense == 'E');
+            b_U(csense == 'E',1) = b(csense == 'E');
+            b_L(csense == 'G',1) = b(csense == 'G');
+            b_U(csense == 'G',1) = inf;
+            b_L(csense == 'L',1) = -inf;
+            b_U(csense == 'L',1) = b(csense == 'L');
         else
             b_L = b;
             b_U = b;
@@ -296,16 +300,29 @@ switch solver
                     f = 0.5*x'*F*x + c'*x;
 
                     %dual to equality
-                    y=res.sol.itr.y;
+                    y= res.sol.itr.y;
 
                     %dual to lower and upper bounds
-                    w=res.sol.itr.slx - res.sol.itr.sux;
+                    w = (res.sol.itr.slx - res.sol.itr.sux);
+
+                    %slack for blc <= A*x <= buc
+                    s = zeros(size(csense,1),1);
+                    if ~isempty(csense)
+                        %slack for A*x <= b
+                        s_U =  b_L - A*x;
+                        s(csense == 'L') = s_U(csense == 'L');
+                        %slack for b <= A*x
+                        s_L =  b_U + A*x;%TODO, needs testing
+                        s(csense == 'G') = s_L(csense == 'G');
+                        %norm(A*x + s -b)
+                        %pause
+                    end
                 else
                     stat=3;
                 end
             else
                 stat=3;
-                origStat=res.rmsg;
+                origStat=[res.rmsg , res.rcodestr];
             end
         end
         % stat   Solver status
@@ -459,9 +476,11 @@ switch solver
 
         if QPproblem.osense == -1
             QPproblem.osense = 'max';
+            osense = -1;
         else
             QPproblem.osense = 'min';
-        end
+            osense = 1;
+       end
 
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
@@ -470,7 +489,10 @@ switch solver
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
             stat = 1; % Optimal solution found
-            [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
+            %Ronan: I changed the signs of the dual variables to make it
+            %consistent with the way solveCobraLP returns the dual
+            %variables
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
@@ -492,8 +514,20 @@ solution.stat = stat;
 solution.origStat = origStat;
 solution.time = t;
 solution.full = x;
+solution.slack = s;
 solution.dual = y;
 solution.rcost = w;
+
+if solution.stat==1
+    %TODO slacks for other solvers
+    if any(strcmp(solver,{'gurobi','mosek'}))
+        tmp=norm(osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost, inf);
+        %tmp=norm(QPproblem.osense*(QPproblem.c  - QPproblem.A'*solution.dual - solution.rcost) + QPproblem.F*solution.full);
+        if tmp > feasTol*100%optTol/10
+            error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
+        end
+    end
+end
 
 %Helper function for pdco
 %%
