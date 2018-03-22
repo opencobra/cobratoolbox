@@ -25,6 +25,7 @@ function model = fastSetupCreator(models, microbeNames, host, objre)
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
+%    objre:               char with reaction name of objective function of organisms
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
