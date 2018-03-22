@@ -263,14 +263,14 @@ if isfield(model,'C')
         end
         model.csense(1:nMets,1) = 'E';
         model.csense(nMets+1:nMets+nIneq,1) = 'L';
-    else 
+    else
         if length(model.csense)~=nMets+nIneq
             error('Length of csense is invalid! Defaulting to equality constraints.')
         else
             model.csense = columnVector(model.csense);
         end
     end
-else   
+else
     if ~isfield(model,'csense')
         % If csense is not declared in the model, assume that all constraints are equalities.
         if printLevel>1
@@ -288,13 +288,13 @@ else
 end
 
 %now build the equality and inequality constraint matrices
-if isfield(model,'d')    
+if isfield(model,'d')
     LPproblem.b = [model.dxdt;model.d];
 else
     LPproblem.b = model.dxdt;
 end
 
-if isfield(model,'C')    
+if isfield(model,'C')
     LPproblem.A = [model.S;model.C];
 else
     LPproblem.A = model.S;
@@ -412,7 +412,7 @@ elseif strcmp(minNorm, 'zero')
     constraint.ub = LPproblem.ub;
 
     % Call the sparse LP solver
-    solutionL0 = sparseLP(zeroNormApprox,constraint);
+    solutionL0 = sparseLP(constraint, zeroNormApprox);
 
     %Store results
     solution.stat   = solutionL0.stat;
@@ -511,3 +511,10 @@ solution.origStat = solution.origStat;
 solution.solver = solution.solver;
 solution.time = etime(clock, t1);
 solution.v = solution.x;%eventually we should depreciate solution.x
+
+%remove fields from solveCobraLP
+solution   = rmfield(solution,'obj');
+solution   = rmfield(solution,'full');
+solution   = rmfield(solution,'rcost');
+solution   = rmfield(solution,'dual');
+solution   = rmfield(solution,'slack');
