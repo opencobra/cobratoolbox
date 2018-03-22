@@ -64,14 +64,14 @@ for k = 1:length(solverPkgs)
                 fprintf('   -- testCase %i with approximation: %s ... ', testCase, approxVect{i});
 
                 if testCase == 1
-                    solution = sparseLP(approxVect{i}, constraint, params);
+                    solution = sparseLP(constraint, approxVect{i}, params);
                     x_0 = length(find(abs(solution.x) > 1e-6));
 
                     assert(norm(constraint.A * solution.x - constraint.b, 2) < tol);
                     assert(x_0 == 50);
                 elseif testCase == 2
                     try
-                        solution = sparseLP(approxVect{i}, constraint, params);
+                        solution = sparseLP(constraint, approxVect{i}, params);
                     catch ME
                         assert(length(ME.message) > 0)
                     end

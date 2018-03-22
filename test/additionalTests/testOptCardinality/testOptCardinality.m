@@ -75,8 +75,8 @@ end
 param.lambda=0;
 param.delta=1;
 
-if 0
-    if 1
+if 1
+    if 0
         solution = optimizeCardinality(cardProblem,param);
         boolx=solution.x>=param.eta;
         booly=solution.y>=param.eta;
@@ -89,8 +89,8 @@ if 0
                 boolx=solution.x>=param.eta;
                 booly=solution.y>=param.eta;
                 reactionDifference=nnz(booly)-nnz(boolx);
-                disp(reactionDifference)
-                
+                %disp(reactionDifference)
+                assert(reactionDifference==19)
             else
                 error('optimizeCardinality failed')
             end
@@ -107,7 +107,7 @@ end
 %                   * .k - `p x 1` strictly positive weight vector of `x`
 %                   * .d - `q x 1` strictly positive weight vector of `y`
 
-if 1
+if 0
     cardProblem.k = rand(p,1);
     cardProblem.d  = rand(q,1);
     
@@ -117,7 +117,7 @@ if 1
         boolx=solution.x>=param.eta;
         booly=solution.y>=param.eta;
         reactionDifference=nnz(booly)-nnz(boolx);
-        disp(reactionDifference)
+        %disp(reactionDifference)
     else
         clear
         error('weighted optimizeCardinality failed')
@@ -137,7 +137,8 @@ else
             boolx=solution.x>=param.eta;
             booly=solution.y>=param.eta;
             reactionDifference=nnz(booly)-nnz(boolx);
-            disp(reactionDifference)
+            %disp(reactionDifference)
+            assert(reactionDifference==19)
         else
             clear
             error('weighted optimizeCardinality failed')
