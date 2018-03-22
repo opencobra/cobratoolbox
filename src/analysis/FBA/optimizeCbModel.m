@@ -513,8 +513,10 @@ solution.time = etime(clock, t1);
 solution.v = solution.x;%eventually we should depreciate solution.x
 
 %remove fields from solveCobraLP
+%{
 solution   = rmfield(solution,'obj');
 solution   = rmfield(solution,'full');
 solution   = rmfield(solution,'rcost');
 solution   = rmfield(solution,'dual');
 solution   = rmfield(solution,'slack');
+%}
