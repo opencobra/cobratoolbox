@@ -100,8 +100,8 @@ if gitStatus == 0 && strcmpi(selectedType,'ignoredByCOBRA')
     end
 end
 
-if status == 0 && printLevel > 0 && strcmp(selectedType,'ignored')
-    [status,folder] = system('git rev-parse --show-toplevel');
+if gitStatus == 0 && printLevel > 0 && strcmp(selectedType,'ignored')
+    [~,folder] = system('git rev-parse --show-toplevel');
     fprintf('Using the .gitignore files as specified in the repository under:\n%s\n',folder);
 end
 
