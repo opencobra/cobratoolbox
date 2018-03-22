@@ -29,15 +29,10 @@ function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, rea
 %
 % .. Author: Federico Baldini 2017-2018
 
-reac = {};  % array with unique set of all the reactions present in the models
-for i = 1:(length(models) - 1)  % find the unique set of all the reactions contained in the models
-    smd = models{i, 1};
-    allreac = smd.rxns;
-    i = i + 1;
-    smd = models{i, 1};
-    allreac1 = smd.rxns;
-    reaclist = unique(union(allreac, allreac1));
-    reac = union(reac, reaclist);
+reac = {}; % array with unique set of all the reactions present in the models
+for i = 1:length(models) % find the unique set of all the reactions contained in the models
+    smd = models{i,1};
+    reac = union(reac,smd.rxns);
 end
 
 % Code to detect reaction presence in each model and create inary matrix
@@ -46,14 +41,9 @@ end
 micRea = zeros(length(models), length(reac));
 
 mdlt = length(models);
-rclt = length(reac);
 parfor i = 1:mdlt
     model = models{i, 1};
-    for j = 1:rclt
-        if ismember(reac(j), model.rxns)
-        micRea(i, j) = 1;
-        end
-    end
+    micRea(i,:) = ismember(reac,model.rxns)
 end
 
 % creating binary table for abundances
@@ -61,19 +51,9 @@ end
 s = size(binary);
 s = s(1, 2);
 binary = binary(:, 3:s);  % removing model info and others
-binar = table2cell(binary);
-
-lgi = length(binar(:, 1));
-lgj = length(binar(1, :));
-parfor i = 1:lgi
-    for j = 1:lgj
-        if table2array(binary(i, j)) ~= 0
-            binary{i, j} = 1;
-        end
-    end
-end
-
+binary{:,:} = double(binary{:,:}~=0);
 binOrg = binary;
+
 
 % Compute number of reactions per individual (species resolved)
 
