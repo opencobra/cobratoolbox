@@ -64,7 +64,6 @@ for j = 1:size(exch, 1)
     cnt = cnt + 1;
     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[d]'));
     dummy.S(mdInd, cnt) = -1;
-    dummy.rev(cnt, 1) = 1;
     dummy.lb(cnt, 1) = -1000;
     dummy.ub(cnt, 1) = 1000;
     % diet-lumen transport
@@ -83,7 +82,6 @@ for j = 1:size(exch, 1)
     cnt = cnt + 1;  % counts rxns
     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[fe]'));
     dummy.S(mfeInd, cnt) = -1;
-    dummy.rev(cnt, 1) = 1;
     dummy.lb(cnt, 1) = -1000;
     dummy.ub(cnt, 1) = 1000;
 end
