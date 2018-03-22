@@ -20,8 +20,7 @@ models = {[]};  % empty cell array to be filled with models
     % reading the models
         pn = strcat(modPath, organisms(i, 1), {'.mat'});  % complete path from which to read the models
         cpn = char(pn);  % conversion of the path in character
-        ldm = load(cpn);
-        ldm = ldm.model;
+        ldm = readCbModel(cpn)
         % removing possible constraints of the bacs
         [selExc, selUpt] = findExcRxns(ldm);
         Reactions2 = ldm.rxns(find(selExc));
