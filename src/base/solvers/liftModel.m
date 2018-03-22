@@ -11,7 +11,7 @@ function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %    LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %
 % INPUTS:
-%    LPproblem:     COBRA LPproblem Structure containing the original LP to be solved. The format of
+%    model:     COBRA LPproblem Structure containing the original LP to be solved. The format of
 %                   this struct is described in the documentation for `solveCobraLP.m`
 %
 % OPTIONAL INPUTS:
@@ -24,7 +24,7 @@ function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %
 %
 % OUTPUTS:
-%    model:         COBRA Structure contain the reformulated LP to be solved.
+%    LPproblem:         COBRA Structure contain the reformulated LP to be solved.
 %
 % .. Authors:
 %       - Michael Saunders, saunders@stanford.edu
@@ -44,35 +44,36 @@ if exist('fileName','var') && exist('directory','var') && isempty(model)
 end
 
 %save original model
-origModel=model;
+LPproblem = buildLPproblemFromModel(model);
+
 
 % Assume constraint matrix is S if no A provided.
-if ~isfield(model,'A')
-    if isfield(model,'S')
-        model.A = model.S;
+if ~isfield(LPproblem,'A')
+    if isfield(LPproblem,'S')
+        LPproblem.A = LPproblem.S;
     end
 end
 
 % Assume constraint S*v = b if csense not provided
-if ~isfield(model,'csense')
+if ~isfield(LPproblem,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
-    model.csense(:,1) = 'E';
+    LPproblem.csense(:,1) = 'E';
 end
 
 % Assume constraint S*v = 0 if b not provided
-if ~isfield(model,'b')
+if ~isfield(LPproblem,'b')
     warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
-    model.b=zeros(size(model.A,1),1);
+    LPproblem.b=zeros(size(LPproblem.A,1),1);
 end
 
 % Assume max c'v s.t. S v = b if osense not provided
-if ~isfield(model,'osense')
-    model.osense = -1;
+if ~isfield(LPproblem,'osense')
+    LPproblem.osense = -1;
 end
 
 %call the LP reformulate script by Michael and Yuekai
-LPproblem = reformulate(model, BIG, printLevel);
+LPproblem = reformulate(LPproblem, BIG, printLevel);
 
 if exist('fileName','var') && exist('directory','var')
     save([directory filesep 'L_' fileName '.mat'],'LPproblem');

@@ -30,14 +30,12 @@ if (nargin < 3)||isempty(verbFlag), verbFlag = false; end
 if (nargin < 4), bias = []; end
 if (nargin < 5)||isempty(nPointsCheck), nPointsCheck = true; end
 
-if isfield(model,'A')
-    [nMets,nRxns] = size(model.A);
-else
-    [nMets,nRxns] = size(model.S);
-    model.A=model.S;
-end
-if ~isfield(model,'csense')
-    model.csense(1:size(model.S,1)) = 'E';
+LPproblem = buildLPproblemFromModel(model);
+
+[nMets,nRxns] = size(LPproblem.A);
+
+if ~isfield(LPproblem,'csense')
+    LPproblem.csense(1:size(LPproblem.S,1)) = 'E';
 end
 
 if nPointsCheck && (nPoints < nRxns*2)
@@ -55,13 +53,13 @@ if ~isempty(bias)
         ind = bias.index(k);
         % Find upper & lower bounds for bias rxns to ensure that no
         % problems arise with values out of bounds
-        model.c = zeros(nRxns,1);
-        model.c(ind) = 1;
-        model.osense = -1;
-        sol = solveCobraLP(model);
+        LPproblem.c = zeros(nRxns,1);
+        LPproblem.c(ind) = 1;
+        LPproblem.osense = -1;
+        sol = solveCobraLP(LPproblem);
         maxFlux = sol.obj;
-        model.osense = 1;
-        sol = solveCobraLP(model);
+        LPproblem.osense = 1;
+        sol = solveCobraLP(LPproblem);
         minFlux = sol.obj;
 
         if strcmp(bias.method, 'uniform')
@@ -110,23 +108,23 @@ while i <= nPoints/2
                     end
                 end
             end
-            model.lb(ind) = 0.99999999*fluxVal;
-            model.ub(ind) = 1.00000001*fluxVal;
+            LPproblem.lb(ind) = 0.99999999*fluxVal;
+            LPproblem.ub(ind) = 1.00000001*fluxVal;
         end
     end
     % Create random objective function
-    model.c = rand(nRxns,1)-0.5;
+    LPproblem.c = rand(nRxns,1)-0.5;
 
     for maxMin = [1, -1]
         % Set the objective function
         if i <= nRxns
-            model.c = zeros(nRxns,1);
-            model.c(i) = 1;
+            LPproblem.c = zeros(nRxns,1);
+            LPproblem.c(i) = 1;
         end
-        model.osense = maxMin;
+        LPproblem.osense = maxMin;
 
         % Determine the max or min for the rxn
-        sol = solveCobraLP(model);
+        sol = solveCobraLP(LPproblem);
         x = sol.full;
         status = sol.stat;
         if status == 1
@@ -141,8 +139,8 @@ while i <= nPoints/2
         % Continue if optimal solution is found
 
         % Move points to within bounds
-        x(x > model.ub) = model.ub(x > model.ub);
-        x(x < model.lb) = model.lb(x < model.lb);
+        x(x > LPproblem.ub) = LPproblem.ub(x > LPproblem.ub);
+        x(x < LPproblem.lb) = LPproblem.lb(x < LPproblem.lb);
 
         % Store point
         if (maxMin == 1)

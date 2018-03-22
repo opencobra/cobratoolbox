@@ -27,8 +27,7 @@ function [totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMe
 % .. Author: - Wing Choi 2/11/08
 
 if (nargin < 3)
-    disp '[totalz,zscore,mdvs] = compareMultSamp(xglc,model,samps,measuredMetabolites)';
-    return;
+    error '[totalz,zscore,mdvs] = compareMultSamp(xglc,model,samps,measuredMetabolites)';
 end
 
 if (nargin < 4)

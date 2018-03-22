@@ -7,15 +7,20 @@ classdef (HandleCompatible) AndNode < Node
     end
     
     methods
-        function res = evaluate(self,assignment)
+        function res = evaluate(self,assignment, printLevel)
+            if ~exist('printLevel','var')
+                printLevel = 0;
+            end
             res = true;
             for i=1:numel(self.children)
                 child = self.children(i);
-                if not(child.evaluate(assignment))
+                if not(child.evaluate(assignment,printLevel))
                     res = false;
                 end
             end
-            fprintf('%s : %i\n',self.toString(0),res);
+            if printLevel >= 1
+                fprintf('%s : %i\n',self.toString(0),res);
+            end
         end
         
         function res = toString(self,PipeAnd)
@@ -53,13 +58,7 @@ classdef (HandleCompatible) AndNode < Node
                     childNodes(end+1) = child.convertToDNF();
                 end
                 convNode = childNodes(end);
-                if strcmp(class(convNode),'LiteralNode')
-                    sizes(end+1) = 1;
-                else
-                    sizes(end+1) = numel(convNode.children);
-                end
-                
-                
+                sizes(end+1) = numel(convNode.children);                               
             end
             %Now make and combinations of all items in the children
             step = ones(numel(sizes),1);
@@ -74,10 +73,25 @@ classdef (HandleCompatible) AndNode < Node
                     end
                 end
                 dnfNode.addChild(nextNode);
-                step = self.nextcombination(sizes,step);
-                
+                step = self.nextcombination(sizes,step);                
             end
+            %finally, remove all duplicate literal nodes from this node.
             
+            for c = 1:numel(dnfNode.children)
+                literals = {};
+                childrenToRemove = [];
+                childNode = dnfNode.children(c);
+                for i = 1 : numel(childNode.children)
+                    if isa(childNode.children(i),'LiteralNode')
+                        if ~any(~cellfun(@isempty, strfind(literals,childNode.children(i).toString())))
+                            literals{end+1} = childNode.children(i).toString();
+                        else
+                            childrenToRemove(end+1) = i;
+                        end
+                    end
+                end
+                childNode.children(childrenToRemove) = [];
+            end
         end
         
         function res = isValid(self,sizes,step)
@@ -126,44 +140,25 @@ classdef (HandleCompatible) AndNode < Node
         
         
         function reduce(self)
-            child = 1;
-            delchilds = [];
-            while child <= numel(self.children)
-                cchild = self.children(child);
-                %Merge Nodes from the same class.
-                if strcmp(class(self.children(child)),class(self))
-                    %reduce the child, merging and removing "singular
-                    %nodes"
-                    cchild.reduce();
-                    for cc = 1:numel(cchild.children)
-                        cchildchild = cchild.children(cc);
-                        self.children(end+1) = cchildchild;
-                        cchildchild.parent = self;
-                    end
-                    delchilds(end+1) = child;
-                    %If a child is not a literal but has only one child, move
-                    %that child up.
+            %we can merge any children of and nodes directly.
+            mergeNode.children = [];
+            for i = 1:numel(self.children)
+                cchild = self.children(i);                
+                cchild.reduce()              
+                %Check if the child has exactly one child. I
+                if numel(cchild.children) == 1
+                    %If there is only one child, we can directly add the
+                    %child to this node.
+                    mergeNode.children = [mergeNode.children,cchild.children];
+                elseif isa(cchild,'AndNode')
+                    mergeNode.children = [mergeNode.children,cchild.children];
                 else
-                    while ( numel(cchild.children) <= 1 && ~(isa(cchild,'LiteralNode')) )
-                        cchildchild = cchild.children(1);
-                        self.children(child) = cchildchild;
-                        cchildchild.parent = self;
-                        %we can't continue yet, as this child could now be
-                        %an AND node.
-                        cchild = cchildchild;
-                    end
+                    mergeNode.children = [mergeNode.children,cchild];
                 end
-                child = child + 1;
             end
-            %Remove Merged childs
-            self.children(delchilds)  = [];
-            %And reduce all non literal and non same class children,
-            %everything else should already be reduced.
-            for child = 1:numel(self.children)
-                if (strcmp(class(self.children(child)),class(self)) && ~(isa(cchild,'LiteralNode')) )
-                    cchild = self.children(child);
-                    cchild.reduce();
-                end
+            self.children = mergeNode.children;
+            for i = 1:numel(self.children)
+                self.children(i).parent = self;
             end
         end
     end

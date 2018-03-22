@@ -46,7 +46,7 @@ if sum(x) == 0
             '--sub-',char(substrateRxn),'--KOs-0-no_solution_better_than_WT'...
             ), 'optGeneSol')
     end
-    return;
+    error('No genes or reactions found\n');
 end
 
 % from OptGene

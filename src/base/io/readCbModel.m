@@ -51,8 +51,8 @@ function model = readCbModel(fileName, varargin)
 %                           * .lb - Lower bounds
 %                           * .ub - Upper bounds
 %                           * .c - Objective coefficients
-%                           * .osense - the objective sense (-1
-%                             maximisation, 1 minimisation)
+%                           * .osenseStr - the objective sense ('max' or
+%                           'min')
 %                           * .csense - the constraint senses ('L' for
 %                             lower than, 'G' - greated than, 'E' - equal)
 %                           * .rules - Gene-reaction association rule in computable form
@@ -276,8 +276,8 @@ if ~isfield(model,'genes')
     model.genes = {};
 end
 
-if ~isfield(model,'osense')
-    model.osense = -1;
+if ~isfield(model,'osenseStr')
+    model.osenseStr = 'max';
 end
 
 if ~isfield(model,'csense')

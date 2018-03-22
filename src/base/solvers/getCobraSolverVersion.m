@@ -73,9 +73,10 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
             % add the tomlab path
             addpath(genpath(TOMLAB_PATH));
             tmpV = ver('tomlab');
-
-            % reset the path
-            restoredefaultpath;
+            % Remove it again.
+            rmpath(genpath(TOMLAB_PATH))
+            
+            %And potentially readd it if it was on the path.
             addpath(originalUserPath);
 
             % replace the version dot

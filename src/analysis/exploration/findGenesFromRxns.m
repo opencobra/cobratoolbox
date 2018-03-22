@@ -25,6 +25,12 @@ if ~isempty(RxnNotInModel)
 end
 rxnInd(RxnNotInModel) = [];
 reactions(RxnNotInModel) = [];
+
+%Create the rxnGeneMat field if not present
+if ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 %Initialize geneList, as non associated reactions otherwise throw an error.
 geneList = {};
 for i = 1:length(rxnInd)

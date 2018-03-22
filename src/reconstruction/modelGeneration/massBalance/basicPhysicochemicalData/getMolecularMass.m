@@ -41,10 +41,10 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 %                         isotopeAbundance{i, 2} = Mass_Number;
 %                         isotopeAbundance{i, 3} = abundance;
 %                         (where sum of abundances of all isotopes of an element must be one)
-%    generalFormula       * (default) false to support formulae containing only biological elements. 
+%    generalFormula       * (default) false to support formulae containing only biological elements.
 %                           Return Masses = 0 if a formula contains none of these elements.
 %                           (C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)
-%                         * true to support formulae with brackets, decimal places and any chemical elements 
+%                         * true to support formulae with brackets, decimal places and any chemical elements
 %                           including undefined groups (e.g., '([H2O]2(CuSO4))2Generic_element0.5').
 %                           Return Masses = NaN for any formulae with chemical elements of unknown weights
 %                           except the reserved formula 'Mass0' for denoting truly massless metabolites (e.g., photon)
@@ -76,7 +76,7 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 %    If you want to double check that the mass given by this script is correct
 %    then compare it to either
 %
-%      1. OpenBabel: echo "InChIstring"|babel -iinchi -  -oreport or
+%      1. OpenBabel: `echo "InChIstring" | babel -iinchi -  -oreport`  or
 %      2. http://www.sisweb.com/referenc/tools/exactmass.htm
 %    Please report any errors as these are critical for use of this script
 %    with mass spec machines.
@@ -121,7 +121,7 @@ else
     eleMW = nan(numel(elements), 1);
     [yn, id] = ismember(elements, elementalWeightMatrix(:, 1));
     eleMW(yn) = cell2mat(elementalWeightMatrix(id(yn), 2));
-    % elements without identified atomic mass. 
+    % elements without identified atomic mass.
     eleWoWeight = isnan(eleMW);
     unknownElements = elements(eleWoWeight);
     if all(eleWoWeight)

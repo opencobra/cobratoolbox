@@ -82,7 +82,7 @@ if ~exist('rowBool','var')
 end
 
 if ~exist('colBool','var')
-    colBool=true(m,1);
+    colBool=true(n,1);
 end
 
 %generate fake outputs, or populate with unprojected vectors, part of which

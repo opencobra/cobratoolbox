@@ -91,21 +91,23 @@ else
         formulas = extractfield(sbmlSpecies, 'fbc_chemicalFormula');
         setFormulas = ~cellfun(@isempty, formulas);
         model.metFormulas(setFormulas) = formulas(setFormulas);
-    end
-    if isfield(sbmlSpecies,'cvterms')
-        %Extract the cvterms, we will not individually parse annotation
-        %strings that do not adhere to miriam style annotations.
-        cvterms = [sbmlSpecies.cvterms];
-        if isstruct(cvterms)
-            %we need a cell array, but we need to be sure, that its not
-            %empty, i.e. that it actually is the struct we are looking for.
-            cvterms = {sbmlSpecies.cvterms};
-            [databases,identifiers,qualifiers] = cellfun(@parseCVTerms, cvterms,'UniformOutput',0);
-            model = mapAnnotationsToFields(model,databases,identifiers,qualifiers,'met');
-        end
-    end
-    
+    end   
 end
+
+%This is independent on the SBML version. 
+if isfield(sbmlSpecies,'cvterms')
+    %Extract the cvterms, we will not individually parse annotation
+    %strings that do not adhere to miriam style annotations.
+    cvterms = [sbmlSpecies.cvterms];
+    if isstruct(cvterms)
+        %we need a cell array, but we need to be sure, that its not
+        %empty, i.e. that it actually is the struct we are looking for.
+        cvterms = {sbmlSpecies.cvterms};
+        [databases,identifiers,qualifiers] = cellfun(@parseCVTerms, cvterms,'UniformOutput',0);
+        model = mapAnnotationsToFields(model,databases,identifiers,qualifiers,'met');
+    end
+end
+
 model.mets = columnVector(sbmlids);
 model.metNames = columnVector({sbmlSpecies.name});
 if isfield(sbmlSpecies,'sboTerm')
@@ -299,16 +301,12 @@ end
 
 
 %% Set up the objective. The default is maximisation.
-model.osense = -1;
+model.osenseStr = 'max';
 if isfield(modelSBML,'fbc_objective')
     %We only support the first one we find
     if ~isempty(modelSBML.fbc_objective)
         osenseStr = modelSBML.fbc_objective(1).fbc_type;
-        if ~strcmp(osenseStr , 'maximize')
-            model.osense = 1;
-        end
-        %since only one reaction can be a fluxobjective in a model, we will
-        %simply use that
+        model.osenseStr = lower(osenseStr(1:3)); %should be either min or max
         objReac = {modelSBML.fbc_objective(1).fbc_fluxObjective.fbc_reaction};
         coef = 1;
         coefsset = [modelSBML.fbc_objective(1).fbc_fluxObjective.isSetfbc_coefficient];        

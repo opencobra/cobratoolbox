@@ -83,7 +83,7 @@ master_doc = 'contents'
 
 # General information about the project.
 project = u'The COBRA Toolbox'
-copyright = u'2017, The COBRA Toolbox developers'
+copyright = u'2017-2018, The COBRA Toolbox developers'
 author = u'The COBRA Toolbox developers'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -114,7 +114,7 @@ conf_py_path = os.getcwd()
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = []
+exclude_patterns = ['tutorials/template.rst']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -173,6 +173,12 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
                 'theme_logo_only': True,
+                'favicon_apple_touch': 'img/apple-touch-icon.png',
+                'favicon32x32': 'img/favicon-32x32.png',
+                'favicon16x16': 'img/favicon-16x16.png',
+                'favicon_safari_pinned_tab': 'img/safari-pinned-tab.svg',
+                'manifest': 'json/manifest.json',
+                'browserconfig': 'browserconfig.xml',
                 'show_source': False}
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.

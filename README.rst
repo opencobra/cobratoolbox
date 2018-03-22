@@ -1,8 +1,5 @@
 .. raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/note_maintenance.png" width="100%">
-   <br>
-   
    <p align="center">
      <img class="readme_logo" src="https://prince.lcsb.uni.lu/img/logos/logo.png" height="160px"/>
    </p>
@@ -53,9 +50,10 @@ Installation
 
    .. code-block:: console
 
-      $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
-      
-   |warning| Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
+      $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
+
+
+   |warning| Please note the ``--depth=1`` in the clone command. Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
    **not** in |matlab|. Although not recommended, you can download the
    repository as a `compressed archive <https://github.com/opencobra/cobratoolbox/archive/master.zip>`__.
 
@@ -66,9 +64,9 @@ Installation
       >> initCobraToolbox
 
 3. You can test your installation by running from |matlab|
-   
+
    .. code-block:: matlab
-   
+
       >> testAll
 
 .. end-installation-marker
@@ -87,7 +85,7 @@ Tutorials, Documentation, and Support
 -  If you need support, please feel free to post your question in our |forum|.
 
 -  Answers to Frequently Asked Questions (**FAQ**) are
-   `here <https://opencobra.github.io/cobratoolbox/docs/FAQ.html>`__.
+   `here <https://opencobra.github.io/cobratoolbox/stable/faq.html>`__.
 
 
 How to contribute
@@ -101,7 +99,7 @@ Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 .. raw:: html
 
    <p align="center">
-   <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
+   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
    </p>
 
 
@@ -113,7 +111,25 @@ within MATLAB by typing:
 
     >> installDevTools()
 
-|bulb| Check out the `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart way!
+|bulb| Check out the `MATLAB.devTools
+<https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
+way! The **official documentation** is `here <https://opencobra.github.com/MATLAB.devTools>`__.
+
+|thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
+instructions
+<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+
+.. code-block:: matlab
+
+    >> contribute('opencobra/cobratoolbox');
+
+|thumbsup| Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
+instructions
+<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#cobra-tutorials>`__:
+
+.. code-block:: matlab
+
+    >> contribute('opencobra/COBRA.tutorials');
 
 -  Please follow the `Style
    Guide <https://opencobra.github.io/cobratoolbox/docs/styleGuide.html>`__.
@@ -123,9 +139,7 @@ within MATLAB by typing:
    `here <https://opencobra.github.io/cobratoolbox/docs/testTemplate.html>`__.
 -  More information on formatting the documentation is
    `here <https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html>`__
--  A guide for reporting an **issue** or submitting a **pull request
-   (PR)** is
-   `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
+-  A guide for reporting an **issue** is `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
 
 If you want to use ``git`` via the command line interface and need help,
 these `training slides <https://uni-lu.github.io/slides/>`__ will get
@@ -274,7 +288,7 @@ holder.*
 .. |latest| raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-   
+
 
 .. |forum| raw:: html
 
@@ -282,5 +296,5 @@ holder.*
 
 
 .. |br| raw:: html
-    
+
    <br>

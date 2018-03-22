@@ -78,11 +78,7 @@ c = [model.c;zeros(nRxns,1);zeros(3*nRelMets,1)];
 
 %Osense and csense might be missing, if osense is missing, we assume
 %maximisation.
-if isfield(model,'osense')
-    osense = model.osense;
-else
-    osense = -1;
-end
+[~,osense] = getObjectiveSense(model);
 
 if isfield(model,'csense')
     csense = [model.csense;repmat('G',2*nRxns,1);repmat('E',nRelMets,1);repmat('G',nRelMets,1);repmat('E',nRelMets,1)];

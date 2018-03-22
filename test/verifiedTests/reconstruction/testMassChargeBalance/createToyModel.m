@@ -25,6 +25,16 @@ function model = createToyModel(unknownMetabolite,unbalancedCharge,imbalancedRea
 %
 % v1  Thomas Pfau 09/02/2017
 
+if ~exist('unknownMetabolite', 'var')
+    unknownMetabolite = false;
+end
+if ~exist('unbalancedCharge', 'var')
+    unbalancedCharge = false;
+end
+if ~exist('imbalancedReaction', 'var')
+    imbalancedReaction = false;
+end
+
 model.S = sparse([-1 -1 -1 0 0 0; 0 1 0 -1 0 0; 0 0 1 0 -1 0; 0 0 0 1 -1 0 ; 0 0 0 0 1 -1]);
 
 model.mets = {'A[c]', 'B[c]', 'C[c]', 'D[c]','E[c]'}';

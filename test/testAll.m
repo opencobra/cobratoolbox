@@ -33,6 +33,7 @@ else
     CBTDIR = fileparts(which('initCobraToolbox.m'));
     cd(CBTDIR);
 end
+
 % include the root folder and all subfolders.
 addpath(genpath([pwd filesep 'test']));
 
@@ -41,6 +42,13 @@ cd(CBTDIR);
 
 % run the official initialisation script
 initCobraToolbox;
+
+%Init the cleanup:
+currentDir = cd('test');
+testDirContent = rdir(['**' filesep '*']);
+testDirPath = pwd;
+cd(currentDir);
+
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
     WAITBAR_TYPE = 0;
@@ -65,29 +73,15 @@ exit_code = 0;
 profile on;
 
 if COVERAGE
-    % open the .gitignore file
-    fid = fopen([CBTDIR filesep '.gitignore']);
-
-    % initialise
-    counter = 1;
-    ignoreFiles = {};
-
-    % loop through the file names of the .gitignore file
-    while ~feof(fid)
-        lineOfFile = strtrim(char(fgetl(fid)));
-
-        % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
-        if length(lineOfFile) > 4
-            if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end - 3:end), '.txt') || strcmp(lineOfFile(end - 1:end), '.m'))
-                ignoreFiles{counter} = lineOfFile;
-                counter = counter + 1;
-            end
-        end
-    end
-
-    % close the .gitignore file
-    fclose(fid);
-
+    % Get the ignored Files from gitIgnore
+    % only retain the lines that end with .txt and .m and 
+    %are not comments and point to files in the /src folder
+    ignoredPatterns = {'^.{0,3}$',... % Is smaller than four.
+                       ['^[^s][^r][^c][^' regexptranslate('escape',filesep) ']']}; % does not start with src/
+    filterPatterns = {'\.txt$','\.m$'}; % Is either a .m file or a .txt file.
+    ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
+    
+    
     % check the code quality
     listFiles = rdir(['./src', '/**/*.m']);
 
@@ -173,7 +167,12 @@ try
         sumFailed = sumFailed + result(i).Failed;
         sumIncomplete = sumIncomplete + result(i).Incomplete;
         if result(i).Failed
-            Message = result(i).Details.DiagnosticRecord.Exception.message;
+            try
+                Message = result(i).details.DiagnosticRecord.Exception.message;
+            catch
+                %Older Matlab versions might fail here
+                Message = 'Unknown Error, please check the log';
+            end
             resulttable{i,'Details'} = {Message};
         end
     end
@@ -238,6 +237,8 @@ catch ME
         rethrow(ME);
     end
 end
+
+removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)

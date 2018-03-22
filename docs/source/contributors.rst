@@ -1,71 +1,7 @@
 Contributors
 ============
 
-.. raw:: html
-
-    <br><br>
-    <div class="row">
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/laurentheirendt"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/20812112?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/laurentheirendt">laurentheirendt</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/syarra"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/816318?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/syarra">syarra</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/tpfau"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/9972778?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/tpfau">tpfau</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/rmtfleming"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/2146874?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/rmtfleming">rmtfleming</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/jacekwachowiak"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/26724015?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/jacekwachowiak">jacekwachowiak</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/snmendoz"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/20322531?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/snmendoz">snmendoz</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/marouenbg"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/7914548?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/marouenbg">marouenbg</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/arichelle"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/14930292?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/arichelle">arichelle</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/lemmerelassal"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/22169392?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/lemmerelassal">lemmerelassal</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/shjchan"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/6303462?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/shjchan">shjchan</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/longfeimao"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars2.githubusercontent.com/u/9161887?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/longfeimao">longfeimao</a></p>
-        </div>
-
-        <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://github.com/wbryant"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars0.githubusercontent.com/u/8303141?v=4" alt="" width="90px"></a>
-            <p><a href="https://github.com/wbryant">wbryant</a></p>
-        </div>
-    </div>
+.. include:: list_contributors.rst
 
 
 .. raw:: html
@@ -77,12 +13,12 @@ Contributors
         <div class="col-lg-2 text-center">
         </div>
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistryt"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="" width="90px"></a>
+            <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="Ronan Fleming" width="90px"></a>
             <p><a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry">Ronan Fleming</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/lcsb/research/mol_systems_physiology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/496e65732e546869656c6554484945494e33313830.jpg" alt="" width="90px"></a>
+            <a href="http://wwwen.uni.lu/lcsb/research/mol_systems_physiology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/496e65732e546869656c6554484945494e33313830.jpg" alt="Ines Thiele" width="90px"></a>
             <p><a href="http://wwwen.uni.lu/lcsb/research/mol_systems_physiology">Ines Thiele</a></p>
         </div>
 
@@ -90,18 +26,63 @@ Contributors
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/54686f6d61732e53617574657253415554544833313830.jpg" alt="" width="90px"></a>
+            <a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/54686f6d61732e53617574657253415554544833313830.jpg" alt="Thomas Sauter" width="90px"></a>
             <p><a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology">Thomas Sauter</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://lewislab.ucsd.edu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="http://lewislab.ucsd.edu/wp-content/uploads/2014/07/Nate2011.jpg" alt="" width="90px"></a>
+            <a href="http://lewislab.ucsd.edu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="http://lewislab.ucsd.edu/wp-content/uploads/2014/07/Nate2011.jpg" alt="Nate Lewis" width="90px"></a>
             <p><a href="http://lewislab.ucsd.edu/">Nate Lewis</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://systemsbiology.ucsd.edu/Researchers/Palsson"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://systemsbiology.ucsd.edu/sites/default/files/Palsson14.gif" alt="" width="90px"></a>
+            <a href="http://systemsbiology.ucsd.edu/Researchers/Palsson"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://systemsbiology.ucsd.edu/sites/default/files/Palsson14.gif" alt="Bernhard Palsson" width="90px"></a>
             <p><a href="http://systemsbiology.ucsd.edu/Researchers/Palsson">Bernhard Palsson</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://www.ihes.fr/~zinovyev/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://www.ihes.fr/~zinovyev/zinovyev2.jpg" alt="Andrei Zinovyev" width="90px"></a>
+            <p><a href="http://www.ihes.fr/~zinovyev/">Andrei Zinovyev</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://hscotthinton.usu.edu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://hscotthinton.usu.edu/images/SCOTT-HINTON.jpg" alt="" width="90px"></a>
+            <p><a href="http://hscotthinton.usu.edu/">H. Scott Hinton</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="https://www.tecnun.es/departamentos/personal/ficha/-/journal_content/56_INSTANCE_izKAh02mizKD/10229/10075782"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://www.tecnun.es/documents/10229/103097/10075782/7e14d1ed-d230-4b55-adab-8cf5351151e1?t=1464617878000" alt="" width="90px"></a>
+            <p><a href="https://www.tecnun.es/departamentos/personal/ficha/-/journal_content/56_INSTANCE_izKAh02mizKD/10229/10075782">Francisco J. Planes</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://biosystems.lv/index.php/team/7-dr-sc-ing-egils-stalidzans"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://biosystems.lv/images/team/profile_egils01.jpg" alt="" width="90px"></a>
+            <p><a href="http://biosystems.lv/index.php/team/7-dr-sc-ing-egils-stalidzans">Egils Stalidzāns</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://www.dim.uchile.cl/~amaass/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://www.dim.uchile.cl/~amaass/fotomaass.jpg" alt="" width="90px"></a>
+            <p><a href="http://www.dim.uchile.cl/~amaass/">Alejandro Maass</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="https://www.cc.gatech.edu/people/santosh-vempala"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://www.cc.gatech.edu/sites/default/files/styles/medium/public/santosh-vempala_0_0.jpg?itok=n4yZ_z7P" alt="" width="90px"></a>
+            <p><a href="https://www.cc.gatech.edu/people/santosh-vempala">Santosh S. Vempala </a></p>
+        </div>
+
+         <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://www.cds.caltech.edu/~mhucka/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://media.licdn.com/dms/image/C5103AQGGlmxiwxjYeQ/profile-displayphoto-shrink_800_800/0?e=1525712400&v=alpha&t=T_8yMQzjRBXWyNEvnQ-SiQtup1IGwNKACkMH2VG8SAc" alt="" width="90px"></a>
+            <p><a href="http://www.cds.caltech.edu/~mhucka/">Michael Hucka</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://stanford.edu/~saunders/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://cap.stanford.edu/profiles/viewImage?profileId=29953&type=square&ts=1512535728449" alt="" width="90px"></a>
+            <p><a href="http://stanford.edu/~saunders/">Michael A. Saunders</a></p>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 text-center">
+            <a href="http://www.maranasgroup.com/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://www.maranasgroup.com/images/cmaranas.jpg" alt="" width="90px"></a>
+            <p><a href="http://www.maranasgroup.com/">Costas D. Maranas</a></p>
         </div>
     </div>
 

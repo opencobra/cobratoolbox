@@ -37,13 +37,13 @@ sub_space = {'R', 'N', 'C', 'L'};
 % calculate the subspace projectors
 for printLevel = 0:1
     for i = 1:length(sub_space)
-        [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space{i});
+        [PR, PN, PC, PL] = subspaceProjector(SInt, printLevel, sub_space{i});
     end
 end
 
 sub_space = 'all';
 
-[PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space);
+[PR, PN, PC, PL] = subspaceProjector(SInt, printLevel, sub_space);
 
 u = rand(m, 1);
 v = rand(n, 1);

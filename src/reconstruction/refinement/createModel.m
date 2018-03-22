@@ -49,7 +49,7 @@ model.lb=zeros(0,1);model.ub=zeros(0,1);model.c=zeros(0,1);
 model.mets=cell(0,1);model.b=zeros(0,1);
 model.rules=cell(0,1);
 model.genes=cell(0,1);
-model.osense = -1;
+model.osenseStr = 'max';
 model.csense = char();
 model.rxnGeneMat = sparse(0,0);
 %If no arguments are provided, return this empty model.

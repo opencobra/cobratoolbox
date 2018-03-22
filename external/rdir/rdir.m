@@ -23,8 +23,8 @@ function [varargout] = rdir(rootdir,varargin)
 % levels. For example ROOT = 'path\**\*.m' will match all ".m" files in
 % "path" and all subdirectories of "path".
 %
-% NOTE : ".svn" directories created by SubVersion (SVN) are excluded from
-% the recursive listing.
+% NOTE : ".svn" directories created by SubVersion (SVN) or ".git" 
+% repositories created by git are excluded from the recursive listing.
 %
 % * TEST
 %
@@ -192,7 +192,7 @@ if isempty(wildpath)
   D = dir([prepath postpath]);
 
   % Exclude ".", ".." and ".svn" directories from the list
-  excl = isdotdir(D) | issvndir(D);
+  excl = isdotdir(D) | isRepoDir(D);
   D(excl) = [];
 
   if isdir([prepath postpath]);
@@ -222,7 +222,7 @@ elseif strcmp(wildpath,'**')
   D_sd = dir([prepath '*']);
 
   % Exclude ".", "..", ".svn" directories and files from the list
-  excl = isdotdir(D_sd) | issvndir(D_sd) | ~([D_sd.isdir]');
+  excl = isdotdir(D_sd) | isRepoDir(D_sd) | ~([D_sd.isdir]');
   D_sd(excl) = [];
 
   % Process each sub directory found
@@ -238,7 +238,7 @@ else
   D_sd = dir([prepath wildpath]);
 
   % Exclude ".", "..", ".svn" directories and files from the list
-  excl = isdotdir(D_sd) | issvndir(D_sd) | ~([D_sd.isdir]');
+  excl = isdotdir(D_sd) | isRepoDir(D_sd) | ~([D_sd.isdir]');
   D_sd(excl) = [];
 
   if ~isdir(prepath) || ( numel(D_sd)==1 && strcmp(D_sd.name, prepath))
@@ -382,14 +382,14 @@ end
 
 
 %% ------------------------------------------------------------------------
-function tf = issvndir(d)
-% True for ".svn" directories.
+function tf = isRepoDir(d)
+% True for ".svn" or ".git" directories.
 % d is a structure returned by "dir"
 %
 
 is_dir = [d.isdir]';
 
-is_svn = strcmp({d.name}, '.svn')';
+is_svn = strcmp({d.name}, '.svn')' | strcmp({d.name}, '.git')';
 %is_svn = false; % uncomment to disable ".svn" filtering
 
 tf = (is_dir & is_svn);
