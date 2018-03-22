@@ -57,10 +57,10 @@ for i = 1:length(solvers)
     % run the tests if the solver is available
     if solverOK
         FBA = optimizeCbModel(model, 'max');
-        summaryTable{i + 1, 2} = FBA.dual(incObjMet);
-        summaryTable{i + 1, 3} = FBA.rcost(incObjRxn);
-        summaryTable{i + 1, 4} = FBA.dual(decObjMet);
-        summaryTable{i + 1, 5} = FBA.rcost(decObjRxn);
+        summaryTable{i + 1, 2} = FBA.y(incObjMet);
+        summaryTable{i + 1, 3} = FBA.w(incObjRxn);
+        summaryTable{i + 1, 4} = FBA.y(decObjMet);
+        summaryTable{i + 1, 5} = FBA.w(decObjRxn);
 
         % compare all solvers
         assert(summaryTable{i + 1, 2} > 0);  % SP is positive for metabolites that increase OF flux
