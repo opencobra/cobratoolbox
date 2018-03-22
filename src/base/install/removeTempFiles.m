@@ -33,7 +33,7 @@ checkSubFolders = parser.Results.checkSubFolders;
 currentDir = cd(directory);
 
 if cobraGitIgnoredOnly
-    gitTypeFlag = 'COBRAIgnored';
+    gitTypeFlag = 'ignoredByCOBRA';
 else
     gitTypeFlag = 'all';
 end
