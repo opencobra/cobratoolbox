@@ -172,14 +172,14 @@ if isfield(model,'C')
         end
         model.csense(1:nMets,1) = 'E';
         model.csense(nMets+1:nMets+nIneq,1) = 'L';
-    else 
+    else
         if length(model.csense)~=nMets+nIneq
             error('Length of csense is invalid! Defaulting to equality constraints.')
         else
             model.csense = columnVector(model.csense);
         end
     end
-else   
+else
     if ~isfield(model,'csense')
         % If csense is not declared in the model, assume that all constraints are equalities.
         if printLevel>1
@@ -238,7 +238,7 @@ end
 
 if isfield(model,'C')
     %pad out matrices with a new slack variable (s)
-    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <= s  
+    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <= s
     e(model.csense == 'E',1) = 0;
     e(model.csense == 'G',1) = -1;
     e(model.csense == 'L',1) = 1;
@@ -248,7 +248,7 @@ if isfield(model,'C')
 end
 
 %now build the equality and inequality constraint matrices
-if isfield(model,'d')    
+if isfield(model,'d')
     LPproblem.b = [model.dxdt;model.d];
 else
     LPproblem.b = model.dxdt;
@@ -348,7 +348,7 @@ switch FBAsolution.stat
         %% Minimise l_0 norm
         time = cputime;
         params.epsilon=epsilon;
-        solutionL0 = sparseLP(zeroNormApprox,constraint,params);
+        solutionL0 = sparseLP(constraint, zeroNormApprox, params);
 
         if printLevel>2
             fprintf('%10g%s%g%s\n',norm(constraint.A*solutionL0.x-constraint.b),' ||S*v-b||_0, should be less than tolerance (',epsilon,').')
