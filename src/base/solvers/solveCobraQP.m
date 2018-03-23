@@ -146,6 +146,8 @@ switch solver
         x = Result.x_k;
         f = osense*Result.f_k;
         origStat = Result.Inform;
+        w = Result.v_k(1:length(lb));
+        y = Result.v_k((length(lb)+1):end);
         if (origStat == 1)
             stat = 1; % Optimal
         elseif (origStat == 3 || origStat == 4)
@@ -205,6 +207,12 @@ switch solver
         Result = CplexQPProblem.solve();
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
+        end
+        if isfield(Result, 'dual')
+            y = Result.dual;
+        end
+        if isfield(Result, 'reducedcost')
+            w = Result.reducedcost;
         end
         if isfield(Result,'objval')  % Cplex solution may not have objval
             f = osense*Result.objval;
