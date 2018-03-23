@@ -27,7 +27,7 @@ global SOLVERS
 
 %Do this test for all available MIQP solvers
 UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solverPkgs = COBRARequisitesFullfilled('needsMILP',true,'UseIfAvailable',UseIfAvailable);
+solverPkgs = testRequirementsAndGetSolvers('needsMILP',true,'UseIfAvailable',UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;

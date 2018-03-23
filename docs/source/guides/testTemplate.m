@@ -23,7 +23,7 @@ requiredSolvers = {'dqqMinos','matlab'};
 
 %Now, check if the specified requirements are fullFilled. 
 %You can also require solvers for a specific type of problem by
-%e.g. using COBRARequisitesFullfilled('needLP', true)  to declare that a LP solver is required for the test. 
+%e.g. using testRequirementsAndGetSolvers('needLP', true)  to declare that a LP solver is required for the test. 
 %For other problem types (NLP,MILP,MIQP,QP) replace LP by the respective problem type.
 %You can further specify that the test only runs on windows/mac/linux/unix
 %by specifying 'needsWindows',true
@@ -33,11 +33,11 @@ requiredSolvers = {'dqqMinos','matlab'};
 %Require the bioinformatics and optimization toolbox (specified above),
 %along with dqqMinos and matlab as solvers (also specified above)
 %solvers will contain a cell arrays of solver names.
-% solversPkgs = COBRARequisitesFullfilled(); 
+% solversPkgs = testRequirementsAndGetSolvers(); 
 %will return the default solvers for the current installation.
 % The following call will both check the presence of the required solvers
 % and the required Toolboxes 
-solversPkgs = COBRARequisitesFullfilled('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
+solversPkgs = testRequirementsAndGetSolvers('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
 
 
 

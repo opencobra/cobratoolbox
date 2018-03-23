@@ -13,7 +13,7 @@
 %Test presence of required toolboxes.
 requiredToolboxes = {'bioinformatics_toolbox'};
 requiredSolvers = {'gurobi'};
-COBRARequisitesFullfilled('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
+testRequirementsAndGetSolvers('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
 
 

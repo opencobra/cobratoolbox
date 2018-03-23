@@ -14,7 +14,7 @@ global ILOG_CPLEX_PATH
 %Test requirements
 requiredToolboxes = {'distrib_computing_toolbox'};
 requiredSolvers = {'ibm_cplex'};
-COBRARequisitesFullfilled('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
+testRequirementsAndGetSolvers('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
 % save the userpath
 originalUserPath = path;

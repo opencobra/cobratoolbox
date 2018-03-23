@@ -14,7 +14,7 @@ global CBTDIR
 %Test the requirements
 useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
             'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
-solvers = COBRARequisitesFullfilled('needsLP',true,'useIfAvailable',useSolversIfAvailable);
+solvers = testRequirementsAndGetSolvers('needsLP',true,'useIfAvailable',useSolversIfAvailable);
 
 % save the current path
 currentDir = pwd;

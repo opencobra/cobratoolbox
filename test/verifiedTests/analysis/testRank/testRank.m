@@ -10,7 +10,7 @@
 
 global CBTDIR
 
-COBRARequisitesFullfilled('needsUnix',true);
+testRequirementsAndGetSolvers('needsUnix',true);
 
 % save the current path
 currentDir = pwd;

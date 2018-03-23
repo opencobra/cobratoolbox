@@ -5,7 +5,7 @@
 %
 
 %Check Requirements
-solverPkgs = COBRARequisitesFullfilled('needsUnix',true, 'needsLP',true);
+solverPkgs = testRequirementsAndGetSolvers('needsUnix',true, 'needsLP',true);
 
 
 % save the current path

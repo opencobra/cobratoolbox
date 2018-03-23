@@ -13,7 +13,7 @@ global CBTDIR
 %Test presence of required Toolboxes
 requiredToolboxes = {'statistics_toolbox'};
 requiredSolvers = {'gurobi'}; %This probably should work with any MILP and any LP solver...
-COBRARequisitesFullfilled('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
+testRequirementsAndGetSolvers('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
 % save the current path
 currentDir = pwd;
