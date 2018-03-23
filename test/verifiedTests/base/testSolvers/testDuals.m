@@ -14,7 +14,7 @@ global CBTDIR
 currentDir = pwd;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'mosek'}; %, 'gurobi', 'ibm_cplex', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'mosek', 'gurobi', 'ibm_cplex', 'tomlab_cplex', 'glpk'};
 
 % define a tolerance
 tol = 1e-4;
