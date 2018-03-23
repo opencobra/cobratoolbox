@@ -1,4 +1,4 @@
-function [solversToUse] = COBRARequisitesFullfilled(varargin)
+function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
 % Checks the prerequisites of the test, and returns solvers depending on
 % the input parameters. If the requirements are NOT met, it will throw a
 % COBRA:RequirementsNotMet error.
@@ -9,7 +9,7 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 % OPTIONAL INPUTS:
 %    varagin:       'ParameterName',value pairs with the following
 %                   Parameter options:
-%                   * 'toolboxes'      - Names of required toolboxes (the license
+%                   * 'toolboxes' or 'requiredToolboxes' - Names of required toolboxes (the license
 %                                        feature name) (Default: {})
 %                   * 'reqSolvers'     - Names of all solvers which MUST be
 %                                        available. If not empty, the resulting
@@ -43,14 +43,41 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 %
 %    solversToUse:         A struct with one field per solver type listing
 %                          the solvers to use for that type of problem in a cell array.
-%                          If neither the useIfAvailable nor the reqSolvers
+%                          If neither the 'useIfAvailable' nor the 'reqSolvers'
 %                          paramter is provided, only at most one solver
-%                          per type will be returned.
-%                          If either is provided, the returned struct will contain cell arrays of
-%                          solver names.
+%                          per type will be returned (i.e. the default
+%                          solver for that type). See the examples below
+%                          
+% EXAMPLE:
+%
+%      %Request a check for the parallel processing toolbox
+%      >>> solvers = COBRARequisitesFullfilled('requiredToolboxes',{'distrib_computing_toolbox'})
+%      solvers = 
+%       
+%                struct with fields:
+%       
+%                      LP: {'gurobi'}
+%                    MILP: {'gurobi'}
+%                      QP: {'gurobi'}
+%                    MIQP: {'gurobi'}
+%                     NLP: {'matlab'}
+%
+%      %Request gurobi, ibm_cplex and tomlab if available
+%      >>> solvers = COBRARequisitesFullfilled('useIfAvailable',{'tomlab','ibm_cplex','gurobi'})
+%      solvers = 
+%       
+%                struct with fields:
+%       
+%                      LP: {2×1 cell} 
+%                    MILP: {2×1 cell}
+%                      QP: {2×1 cell}
+%                    MIQP: {'gurobi'}
+%                     NLP: {'matlab'}     
+%                           
+%                          
 
 %Do some precomputation.
-global CBT_MISSING_REQUIREMENTS;
+global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 global OPT_PROB_TYPES
 persistent availableSolvers
 
@@ -76,6 +103,7 @@ end
 
 parser = inputParser();
 parser.addParamValue('Toolboxes',{},@iscell);
+parser.addParamValue('RequiredToolboxes',{},@iscell);
 parser.addParamValue('ReqSolvers',{},@iscell);
 parser.addParamValue('UseIfAvailable',{},@iscell);
 parser.addParamValue('NeedsLP',false,@(x) islogical(x) || x == 1 || x == 0 );
@@ -105,7 +133,7 @@ linuxOnly = parser.Results.NeedsLinux;
 
 
 
-toolboxes = parser.Results.Toolboxes;
+toolboxes = union(parser.Results.Toolboxes,parser.Results.RequiredToolboxes);
 requiredSolvers = parser.Results.ReqSolvers;
 preferredSolvers = parser.Results.UseIfAvailable;
 
@@ -252,7 +280,7 @@ end
 
 
 if ~isempty(errorMessage)
-    error(CBT_MISSING_REQUIREMENTS,strjoin(errorMessage,'\n'));
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID,strjoin(errorMessage,'\n'));
 end
 
 %Ok, we are successfull. so lets collect the Used Solvers.

@@ -12,7 +12,8 @@ global CBTDIR
 %Define the features required to run the test
 
 %These are the names of the toolboxes as used in
-%license('test','featurename')
+%license('test','featurename'). If there are no toolboxes required, the
+%argument can be empty or not supplied.
 requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
 %requiredSolvers lists all solvers that need to be present for the test to
 %run. Make sure this is only used if there is an explicit requirement for a
@@ -32,6 +33,10 @@ requiredSolvers = {'dqqMinos','matlab'};
 %Require the bioinformatics and optimization toolbox (specified above),
 %along with dqqMinos and matlab as solvers (also specified above)
 %solvers will contain a cell arrays of solver names.
+% solversPkgs = COBRARequisitesFullfilled(); 
+%will return the default solvers for the current installation.
+% The following call will both check the presence of the required solvers
+% and the required Toolboxes 
 solversPkgs = COBRARequisitesFullfilled('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
 
 

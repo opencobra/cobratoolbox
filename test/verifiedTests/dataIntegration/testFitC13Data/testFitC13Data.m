@@ -12,14 +12,6 @@
 %Check Requirements
 solvers = COBRARequisitesFullfilled('needsLP',true,'needsNLP',true);
 
-%For some odd reason, this fails on 2015b under certain conditions. so we
-%will skip the test on 2015b.
-% matver = ver('MATLAB');
-% global CBT_MISSING_REQUIREMENTS
-% if isequal(matver.Version,'8.6')
-%     error(CBT_MISSING_REQUIREMENTS,'ParPool is likely to fail on 2015b. Skipping this test');
-% end
-
 % save the current path
 currentDir = pwd;
 
