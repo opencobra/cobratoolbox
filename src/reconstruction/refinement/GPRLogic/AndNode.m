@@ -23,6 +23,45 @@ classdef (HandleCompatible) AndNode < Node
             end
         end
         
+        function deleteLiteral(self,literalID)            
+            toDelete = false(size(self.children));            
+           % originalNodeString = self.toString(1);
+
+            for child = 1:numel(self.children)
+                cchild = self.children(child);
+                if cchild.contains(literalID)
+                    if isa(cchild,'LiteralNode')
+                        toDelete(child) = true; %This is a child that needs to be removed.
+                    else
+                        %Remove it from the child
+                        cchild.deleteLiteral(literalID)
+                        %and, if that child now only has one child left,
+                        %move that child up (and remove the node).                        
+                        if numel(cchild.children) <= 1
+                            if numel(cchild.children) == 1
+                                %Add the child only if there is anything.
+                                if ~exist('childrenToAdd','var')
+                                    childrenToAdd = cchild.children;
+                                else
+                                    childrenToAdd(end+1) = cchild.children;
+                                end
+                            end
+                            toDelete(child) = true; %This child is discarded
+                        end
+                    end
+                end
+            end
+            self.children(toDelete) = [];
+            if exist('childrenToAdd','var')
+                for child = 1:numel(childrenToAdd)
+                    newChild = childrenToAdd(child);
+                    self.children(end+1) = newChild;
+                    newChild.parent = self;
+                end            
+            end
+            %fprintf('Removing Literal %s from the following node:\n%s\nLeads to the node:\n%s\n',literalID,originalNodeString,self.toString(1));
+        end   
+        
         function res = toString(self,PipeAnd)
             if nargin < 2
                 PipeAnd = 0;
