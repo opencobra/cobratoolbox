@@ -29,7 +29,7 @@ cd(testdir)
 
 requiredToolboxes = {'image_toolbox'};
 
-COBRARequisitesFullfilled('toolboxes',requiredToolboxes);
+testRequirementsAndGetSolvers('toolboxes',requiredToolboxes);
 
 
 model = createToyModelForConnectedComponentAnalysis();

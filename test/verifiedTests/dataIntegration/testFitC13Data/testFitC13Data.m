@@ -10,7 +10,7 @@
 
 
 %Check Requirements
-solvers = COBRARequisitesFullfilled('needsLP',true,'needsNLP',true);
+solvers = testRequirementsAndGetSolvers('needsLP',true,'needsNLP',true);
 
 % save the current path
 currentDir = pwd;

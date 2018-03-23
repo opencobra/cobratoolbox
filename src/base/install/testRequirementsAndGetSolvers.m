@@ -4,7 +4,7 @@ function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
 % COBRA:RequirementsNotMet error.
 %
 % USAGE:
-%    [solversToUse] = COBRARequisitesFullfilled(varargin)
+%    [solversToUse] = testRequirementsAndGetSolvers(varargin)
 %
 % OPTIONAL INPUTS:
 %    varagin:       'ParameterName',value pairs with the following
@@ -51,7 +51,7 @@ function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
 % EXAMPLE:
 %
 %      %Request a check for the parallel processing toolbox
-%      >>> solvers = COBRARequisitesFullfilled('requiredToolboxes',{'distrib_computing_toolbox'})
+%      >>> solvers = testRequirementsAndGetSolvers('requiredToolboxes',{'distrib_computing_toolbox'})
 %      solvers = 
 %       
 %                struct with fields:
@@ -63,7 +63,7 @@ function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
 %                     NLP: {'matlab'}
 %
 %      %Request gurobi, ibm_cplex and tomlab if available
-%      >>> solvers = COBRARequisitesFullfilled('useIfAvailable',{'tomlab','ibm_cplex','gurobi'})
+%      >>> solvers = testRequirementsAndGetSolvers('useIfAvailable',{'tomlab','ibm_cplex','gurobi'})
 %      solvers = 
 %       
 %                struct with fields:

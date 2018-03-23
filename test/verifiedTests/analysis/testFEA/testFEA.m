@@ -11,7 +11,7 @@ global CBTDIR
 
 %Test requirements
 requiredToolboxes = {'bioinformatics_toolbox','statistics_toolbox'};
-COBRARequisitesFullfilled('toolboxes',requiredToolboxes);
+testRequirementsAndGetSolvers('toolboxes',requiredToolboxes);
 
 % save the current path
 currentDir = pwd;

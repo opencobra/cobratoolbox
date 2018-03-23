@@ -9,7 +9,7 @@
 
 %Check requirements
 requiredToolboxes = {'bioinformatics_toolbox'}; %This is the Global optimization toolbox
-solvers = COBRARequisitesFullfilled('needsLP',true,'toolboxes',requiredToolboxes);
+solvers = testRequirementsAndGetSolvers('needsLP',true,'toolboxes',requiredToolboxes);
 
 % save the current path
 currentDir = pwd;
