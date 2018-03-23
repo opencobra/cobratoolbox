@@ -204,7 +204,7 @@ dedicated page.
 
 ## Tutorial
 
-A livescript toutorial `mgPipeTutorial.mlx` is available in the `tutorials` folder.
+A livescript toutorial `mgPipeTutorial.mlx` is available in the `COBRA.tutorials/additionalTutorials/microbiomeModelingToolbox/` folder.
 
 
 ## Author & Documentation Date

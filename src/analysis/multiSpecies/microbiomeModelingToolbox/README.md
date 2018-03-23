@@ -15,6 +15,6 @@ metagenomic data integration. More information on the different folder content
 and purpose of functions can be found in the readme documents of each folder.
 The LiveScripts `MicrobeMicrobeInteractions.mlx`,
 `HostMicrobeInteractions.mlx`and `mgPipeTutorial.mlx` located in
-the `COBRA.tutorials/additionalTutorials/microbeMicrobeInteractions/`
+the `COBRA.tutorials/additionalTutorials/microbeMicrobeInteractions/` and at `COBRA.tutorials/additionalTutorials/microbiomeModelingToolbox/`
 folder of the COBRA Toolbox provide examples of application and of input
 data, using the AGORA resource (PMID:27893703).
