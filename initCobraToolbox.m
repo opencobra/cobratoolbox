@@ -206,8 +206,7 @@ function initCobraToolbox()
     end
 
     %get the current content of the init Folder
-    [~, content] = system('git ls-files');
-    dirContent = strsplit(content, '\n');
+    dirContent = getFilesInDir('type','all');    
 
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
@@ -548,7 +547,7 @@ function initCobraToolbox()
     cd(currentDir);
 
     % cleanup at the end of the successful run
-    removeGitIgnoredNewFiles(CBTDIR, dirContent);
+    removeTempFiles(CBTDIR, dirContent);
 
     % clear all temporary variables
     % Note: global variables are kept in memory - DO NOT clear all the variables!

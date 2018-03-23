@@ -134,6 +134,8 @@ mapMitocartaTransportColoured.xml
 mapNodesArea.xml
 mapPPIUnified.xml
 
+#generated MILP problem files
+MILPProblem.mat
 
 # generated tutorial documentation
 docs/source/_static/tutorials/*.html

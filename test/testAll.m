@@ -45,7 +45,7 @@ initCobraToolbox;
 
 %Init the cleanup:
 currentDir = cd('test');
-testDirContent = rdir(['**' filesep '*']);
+testDirContent = getFilesInDir('type','all'); %Get all currently present files in the folder.
 testDirPath = pwd;
 cd(currentDir);
 
@@ -82,8 +82,8 @@ if COVERAGE
     ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
     
     
-    % check the code quality
-    listFiles = rdir(['./src', '/**/*.m']);
+    % check the code quality    
+    listFiles = getFilesInDir('gitFileType','tracked','restrictToPattern','*.m$');
 
     % count the number of failed code quality checks per file
     nMsgs = 0;
@@ -92,18 +92,12 @@ if COVERAGE
     nCommentLines = 0;
 
     for i = 1:length(listFiles)
-        nMsgs = nMsgs + length(checkcode(listFiles(i).name));
+        nMsgs = nMsgs + length(checkcode(listFiles(i)));
 
-        fid = fopen(listFiles(i).name);
+        fid = fopen(listFiles(i));
 
         % check if the file is on the ignored list
         countFlag = true;
-        for k = 1:length(ignoreFiles)
-            if ~isempty(strfind(listFiles(i).name, ignoreFiles{k}))
-                countFlag = false;
-            end
-        end
-
         while ~feof(fid) && countFlag
             lineOfFile = strtrim(char(fgetl(fid)));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
@@ -222,12 +216,17 @@ try
     end
 
     fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
+    
+    %clean up temporary files.
+    removeTempFiles(testDirPath,testDirContent);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         exit(exit_code);
     end
 catch ME
+    %Also clean up temporary files in case of an error.
+    removeTempFiles(testDirPath,testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         % only exit on jenkins.
         exit(1);
@@ -238,7 +237,6 @@ catch ME
     end
 end
 
-removeGitIgnoredNewFiles(testDirPath,testDirContent);
 
 % switch back to the original directory
 cd(origDir)
