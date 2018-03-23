@@ -70,8 +70,10 @@ for field = 1:length(fieldNames)
     
     %Get the field definitions
     fieldType = fieldDefinitions{field,7};
-    defaultValue = fieldDefinitions{field,5};
-    
+    defaultValue = fieldDefinitions{field,5};    
+    %define i, for checks relating to model fields which have non ''
+    %defaults
+    i = 1;    
     switch fieldType
         case 'sparse'
             model.(fieldNames{field}) = sparse(xdim,ydim);            
