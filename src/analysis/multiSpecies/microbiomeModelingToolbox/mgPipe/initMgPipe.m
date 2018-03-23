@@ -43,6 +43,12 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 
 init = 0;
 
+% Check for installation of parallel Toolbox
+try 
+   ver('distcomp');
+catch
+   error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
+end
 % Here we go on with the warning section and the autorun
 if autorun == 1
     if numWorkers >= 2
@@ -70,7 +76,7 @@ else
 end
 
 if numWorkers < 2
-    warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify numWorkers option.')
+    error('apparently you disabled parallel mode to enable sequential one. Sequential mode is not available for this application. Please specify a higher number of workers modifying numWorkers option.')
 end
 if patStat == 0
     disp('Individuals health status not declared. Analysis will ignore that.')
