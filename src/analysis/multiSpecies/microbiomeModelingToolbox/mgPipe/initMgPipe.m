@@ -58,7 +58,7 @@ if autorun == 1
         end
     end
     disp('Well done! Pipeline successfully activated and running!')
-    MgPipe
+    mgPipe
 else
     if numWorkers >= 2
         poolobj = gcp('nocreate');
@@ -67,7 +67,7 @@ else
         end
     end
     warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
-    edit('MgPipe.m')
+    edit('mgPipe.m')
 end
 if compMod == 1
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')
