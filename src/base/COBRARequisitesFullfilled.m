@@ -4,12 +4,12 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 % COBRA:RequirementsNotMet error.
 %
 % USAGE:
-%    [tf,solversToUse] = COBRARequisitesFullfilled(varargin)
+%    [solversToUse] = COBRARequisitesFullfilled(varargin)
 %
-% INPUTS:
+% OPTIONAL INPUTS:
 %    varagin:       'ParameterName',value pairs with the following
 %                   Parameter options:
-%                   * 'toolboxes'      - Names of toolboxes (the license
+%                   * 'toolboxes'      - Names of required toolboxes (the license
 %                                        feature name) (Default: {})
 %                   * 'reqSolvers'     - Names of all solvers which MUST be
 %                                        available. If not empty, the resulting
@@ -18,6 +18,7 @@ function [solversToUse] = COBRARequisitesFullfilled(varargin)
 %                                        used if they are available. If not empty, the resulting
 %                                        solvers struct will contain cell arrays (will
 %                                        not throw an error if not).
+%                                        (Default: {:})
 %                   * 'needsLP'        - Whether a LP solver is required.
 %                                       (Default = false);
 %                   * 'needsMILP'      - Whether a MILP solver is required.
