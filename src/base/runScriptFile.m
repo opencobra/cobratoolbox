@@ -21,7 +21,7 @@ function result = runScriptFile(fileName)
 % Author:
 %    - Thomas Pfau Jan 2018.
 
-global CBT_MISSING_REQUIREMENTS;
+global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
 COBRA_TESTSUITE_TESTFILE = fileName;
 
@@ -32,10 +32,10 @@ try
     executefile(fileName);
 catch ME
     %Catch errors and interpret them
-    clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS
+    clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS_ERROR_ID
     result = struct('status','failed','failed',true,'passed',false,'skipped',false,'fileName',...
         COBRA_TESTSUITE_TESTFILE,'time',NaN, 'statusMessage', 'fail', 'Error',ME);    
-    if strcmp(ME.identifier,CBT_MISSING_REQUIREMENTS)
+    if strcmp(ME.identifier,CBT_MISSING_REQUIREMENTS_ERROR_ID)
         %Requirement missing, so the test was skipped.
         result.status = 'skipped';  
         result.skipped = true;

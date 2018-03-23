@@ -40,13 +40,13 @@ function initCobraToolbox()
     global WAITBAR_TYPE;
     global ENV_VARS;
     global gitBashVersion;
-    global CBT_MISSING_REQUIREMENTS;
+    global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
     
      % Set the Requirements Error Message ID:
-    CBT_MISSING_REQUIREMENTS = 'COBRA:RequirementsNotMet';
+    CBT_MISSING_REQUIREMENTS_ERROR_ID = 'COBRA:RequirementsNotMet';
 
     % default waitbar is of type text
     if isempty(WAITBAR_TYPE)

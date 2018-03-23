@@ -4,7 +4,7 @@ function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 %
 %    ignoreFiles = getIgnoredFiles()
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
 %    ignorePatterns:    A cell array of regexp patterns indicating files
 %                       which are not to be listed 
 %    filterpatterns:    A cell array of regexp patterns identifying those
