@@ -607,11 +607,11 @@ solution.rcost = w;
 
 if solution.stat==1
     %TODO slacks for other solvers
-    if any(strcmp(solver,{'gurobi','mosek'}))
+    if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex'}))
         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
         tmp=norm(residual,inf);
        if tmp > feasTol*100
-            error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
+            error(['Optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
         end
     end
 end
