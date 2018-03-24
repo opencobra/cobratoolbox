@@ -30,7 +30,7 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = {'ibm_cplex', 'tomlab_cplex', 'gurobi'};
+solverPkgs = {'mosek', 'ibm_cplex', 'tomlab_cplex', 'gurobi'};
 
 % define solver tolerances
 QPtol = 0.02;
