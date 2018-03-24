@@ -281,13 +281,76 @@ switch solver
         else
             cmd='minimize echo(0)';
         end
+        
+        %matching bounds and zero diagonal of F at the same time
+        bool = lb == ub & diag(F)==0;
+        if any(bool)
+            if 0
+                %this helps to regularise the problem, but changes it
+                %slightly
+                F = spdiags(bool*1e-6,0,F);
+                QPproblem.F=F;
+            end
+            warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
+        end
+        param=parameters;
+        % only set the print level if not already set via solverParams
+        % structure
+        if ~isfield(param, 'MSK_IPAR_LOG')
+            switch printLevel
+                case 0
+                    echolev = 0;
+                case 1
+                    echolev = 3;
+                case 2
+                    param.MSK_IPAR_LOG_INTPNT = 1;
+                    param.MSK_IPAR_LOG_SIM = 1;
+                    echolev = 3;
+                otherwise
+                    echolev = 0;
+            end
+            if echolev == 0
+                param.MSK_IPAR_LOG = 0;
+                cmd = ['minimize echo(' int2str(echolev) ')'];
+            else
+                cmd = 'minimize';
+            end
+        end
+        %remove parameter fields that mosek does not recognise
+        %optParamNames = {'printLevel','saveInput','optTol','feasTol'};
+        if isfield(param,'printLevel')
+            param=rmfield(param,'printLevel');
+        end
+        if isfield(param,'saveInput')
+            param=rmfield(param,'saveInput');
+        end
+        if isfield(param,'optTol')
+            param=rmfield(param,'optTol');
+        end
+        if isfield(param,'feasTol')
+            param=rmfield(param,'feasTol');
+        end
+        %https://docs.mosek.com/8.1/toolbox/solving-geco.html
+        if ~isfield(param, 'MSK_DPAR_INTPNT_NL_TOL_PFEAS')
+            param.MSK_DPAR_INTPNT_NL_TOL_PFEAS=feasTol;
+        end
+        if ~isfield(param, 'MSK_DPAR_INTPNT_NL_TOL_DFEAS.')
+            param.MSK_DPAR_INTPNT_NL_TOL_DFEAS=feasTol;
+        end
 
         % Optimize the problem.
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
-        [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,[],cmd);
-
+        [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+        
+        % stat   Solver status
+        %           1   Optimal solution found
+        %           2   Unbounded solution
+        %           0   Infeasible QP
+        %           3   Other problem (time limit etc)
+        %%
+        
         if isempty(res)
             stat=3;
         else
@@ -297,7 +360,8 @@ switch solver
                     stat=1;
                     % x solution.
                     x = res.sol.itr.xx;
-                    f = 0.5*x'*F*x + c'*x;
+                    %f = 0.5*x'*F*x + c'*x;
+                    f = res.sol.itr.pobjval;
 
                     %dual to equality
                     y= res.sol.itr.y;
@@ -317,6 +381,8 @@ switch solver
                         %norm(A*x + s -b)
                         %pause
                     end
+                    %                     %slack for blc <= A*x <= buc
+                    %                     s = b - A*x;
                 else
                     stat=3;
                 end
@@ -325,12 +391,25 @@ switch solver
                 origStat=[res.rmsg , res.rcodestr];
             end
         end
-        % stat   Solver status
-        %           1   Optimal solution found
-        %           2   Unbounded solution
-        %           0   Infeasible QP
-        %           3   Other problem (time limit etc)
-        %%
+        
+        %debugging
+        if printLevel>2
+            res1=A*x + s -b;
+            norm(res1(csense == 'G'),inf)
+            norm(s(csense == 'G'),inf)
+            norm(res1(csense == 'L'),inf)
+            norm(s(csense == 'L'),inf)
+            norm(res1(csense == 'E'),inf)
+            norm(s(csense == 'E'),inf)
+            res1(~isfinite(res1))=0;
+            norm(res1,inf)
+            
+            norm(osense*c + F*x-A'*y -w,inf)
+            y2=res.sol.itr.slc-res.sol.itr.suc;
+            norm(osense*c + F*x -A'*y2 -w,inf)
+        end
+        
+
     case 'pdco'
         %-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
@@ -521,9 +600,9 @@ solution.rcost = w;
 if solution.stat==1
     %TODO slacks for other solvers
     if any(strcmp(solver,{'gurobi','mosek'}))
-        tmp=norm(osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost, inf);
-        %tmp=norm(QPproblem.osense*(QPproblem.c  - QPproblem.A'*solution.dual - solution.rcost) + QPproblem.F*solution.full);
-        if tmp > feasTol*100%optTol/10
+        residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
+        tmp=norm(residual,inf);
+       if tmp > feasTol*100
             error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
         end
     end

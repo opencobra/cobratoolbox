@@ -1,5 +1,5 @@
 function [solution] = relaxFBA_cappedL1(model, param)
-% Finds the mimimal set of relaxations on bounds and steady state constraint to make the FBA problem feasible.
+% Finds the mimimal set of relaxations on bounds and steady state constraints to make the FBA problem feasible.
 % The zero-norm is appproximated by capped-L1 norm
 %
 % USAGE:
@@ -50,8 +50,18 @@ function [solution] = relaxFBA_cappedL1(model, param)
 
 [m,n] = size(model.S); %Check inputs
 
-param.maxUB = max(max(model.ub),-min(model.lb));
-param.minLB = min(-max(model.ub),min(model.lb));
+if ~isfield(param,'maxUB')
+    param.maxUB = max(max(model.ub),-min(model.lb));
+end
+if ~isfield(param,'maxLB')
+    param.minLB = min(-max(model.ub),min(model.lb));
+end
+if ~isfield(param,'maxRelaxR')
+    param.maxRelaxR = 1000; %TODO - check this for multiscale models
+end
+if ~isfield(param,'printLevel')
+    param.printLevel = 0; %TODO - check this for multiscale models
+end
 
 stop = false;
 solution.stat = 1;
@@ -141,41 +151,67 @@ stop = false;
 one_over_theta = 1/theta;
 
 % Variable x = (v,r,p,q)
-v   = zeros(n,1);
-r   = zeros(m,1);
-p   = zeros(n,1);
-q   = zeros(n,1);
+if 0 %Minh
+    v   = zeros(n,1);
+    r   = zeros(m,1);
+    p   = zeros(n,1);
+    q   = zeros(n,1);
+else %Ronan random starting points
+    v   = rand(n,1);
+    r   = rand(m,1);
+    p   = rand(n,1);
+    q   = rand(n,1);
+end
 
 obj_old = relaxFBA_cappedL1_obj(model,v,r,p,q,param);
 
 %DCA
 while nbIteration < nbMaxIteration && stop ~= true
-
+    
     x_old = [v;r;p;q];
-
-    %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
+    
     if 1
-        %Minh
-        v_bar  = sign(v)*(gamma1 + gamma0*theta);
+        %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
+        if 0
+            %Minh - maximise
+            v_bar  = sign(v)*(gamma1 + gamma0*theta);
+        else
+            %Ronan - minimise
+            v_bar  = -sign(v)*gamma1;
+            v(abs(v) < one_over_theta) = 0;
+            v_bar = v_bar + sign(v)*gamma0*theta;
+        end
+        
+        r_bar  = -sign(r)*lambda1;
+        r(abs(r) < one_over_theta) = 0;
+        r_bar = r_bar + sign(r)*lambda0*theta;
+        
+        p_bar  = -sign(p)*alpha1;
+        p(p < one_over_theta) = 0;
+        p_bar = p_bar + sign(p)*alpha0*theta;
+        
+        q_bar  = -sign(q)*alpha1;
+        q(q < one_over_theta) = 0;
+        q_bar = q_bar + sign(q)*alpha0*theta;
     else
-        %Ronan- mimic other variables
-        v_bar  = -sign(v)*gamma1;
+        %Ronan - mimics sparseLP_cappedL1
+        v_bar  = sign(v)*gamma1;
         v(abs(v) < one_over_theta) = 0;
         v_bar = v_bar + sign(v)*gamma0*theta;
+
+        r_bar  = sign(r)*lambda1;
+        r(abs(r) < one_over_theta) = 0;
+        r_bar = r_bar + sign(r)*lambda0*theta;
+        
+        p_bar  = sign(p)*alpha1;
+        p(p < one_over_theta) = 0;
+        p_bar = p_bar + sign(p)*alpha0*theta;
+        
+        q_bar  = sign(q)*alpha1;
+        q(q < one_over_theta) = 0;
+        q_bar = q_bar + sign(q)*alpha0*theta;
     end
     
-    r_bar  = -sign(r)*lambda1;
-    r(abs(r) < one_over_theta) = 0;
-    r_bar = r_bar + sign(r)*lambda0*theta;
-
-    p_bar  = -sign(p)*alpha1;
-    p(p < one_over_theta) = 0;
-    p_bar = p_bar + sign(p)*alpha0*theta;
-
-    q_bar  = -sign(q)*alpha1;
-    q(q < one_over_theta) = 0;
-    q_bar = q_bar + sign(q)*alpha0*theta;
-
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
     %disp([v,p,q])
@@ -212,6 +248,12 @@ while nbIteration < nbMaxIteration && stop ~= true
             end
             nbIteration = nbIteration + 1;
 
+            if param.printLevel>0
+                if nbIteration==1
+                    fprintf('%20s%12.3s%12.4s\n','itn','obj','err');
+                end
+                fprintf('%20u%12.3g%12.4g\n',nbIteration,obj_new,min(error_x,error_obj));
+            end
 %             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
 %             disp(strcat('Obj:',num2str(obj_new)));
 %             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
@@ -244,7 +286,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
 
     % Define LP
     % Variables [v r p q t w]
-    obj = [c-v_bar; -r_bar; alpha0*theta*ones(n,1)-p_bar; alpha0*theta*ones(n,1)-q_bar; gamma0*ones(n,1); lambda0*ones(m,1)];%why no thetaa for gamma0 and lambda0?
+    obj = [c-v_bar; -r_bar; alpha0*theta*ones(n,1)-p_bar; alpha0*theta*ones(n,1)-q_bar; gamma0*ones(n,1); lambda0*ones(m,1)];%why no theta for gamma0 and lambda0?
 
     % Constraints
     %       Sv + r <=> b
@@ -330,10 +372,10 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     lb2(~excludedReactions) = minLB;
     ub2(~excludedReactions) = maxUB;
 
-    maxRelaxR = 100; %TODO - check this for multiscale models
+    maxRelaxR=param.maxRelaxR;
     %Variables [v r p q t w]
-    l = [lb2; -maxRelaxR*ones(m,1); zeros(n,1); zeros(n,1); ones(n,1); zeros(m,1)];
-    u = [ub2; maxRelaxR*ones(m,1); -minLB*ones(n,1)+lb; maxUB*ones(n,1)-ub; max(abs(lb2),abs(ub2)); maxRelaxR*ones(m,1)];
+    l = [lb2; -maxRelaxR*ones(m,1);          zeros(n,1);         zeros(n,1);              ones(n,1);          zeros(m,1)];
+    u = [ub2;  maxRelaxR*ones(m,1); -minLB*ones(n,1)+lb; maxUB*ones(n,1)-ub; max(abs(lb2),abs(ub2)); maxRelaxR*ones(m,1)];
 
     %Exlude metabolites from relaxation (set the upper and lower bound of the relaxation to 0)
     indexExcludedMet = find(excludedMetabolites);
@@ -362,7 +404,8 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
             disp('-')
         end
     else
-        warning(['solveCobraLP solution status is ' num2str(solution.stat)])
+        disp(param)
+        warning(['solveCobraLP solution status is ' num2str(solution.stat) ', and original status is ' num2str(solution.origStat)])
         v = [];
         r = [];
         p = [];
@@ -379,9 +422,9 @@ function obj = relaxFBA_cappedL1_obj(model,v,r,p,q,param)
     [m,n] = size(S);
 
     part_v = c'*v + gamma1*ones(n,1)'*abs(v) + gamma0*ones(n,1)'*min(ones(n,1),theta*abs(v));
-    part_r = lambda1*ones(m,1)'*abs(r) + lambda0*ones(m,1)'*min(ones(m,1),theta*abs(r));
-    part_p = alpha1*ones(n,1)'*p + alpha0*ones(n,1)'*min(ones(n,1),theta*p);
-    part_q = alpha1*ones(n,1)'*q + alpha0*ones(n,1)'*min(ones(n,1),theta*q);
+    part_r =       lambda1*ones(m,1)'*abs(r) + lambda0*ones(m,1)'*min(ones(m,1),theta*abs(r));
+    part_p =        alpha1*ones(n,1)'*p      + alpha0*ones(n,1)'*min(ones(n,1),theta*p);
+    part_q =        alpha1*ones(n,1)'*q      + alpha0*ones(n,1)'*min(ones(n,1),theta*q);
     obj = part_v + part_r + part_p + part_q;
 
 %     disp(strcat('Part v:',num2str(part_v)));

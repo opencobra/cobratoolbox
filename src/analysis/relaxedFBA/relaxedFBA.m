@@ -1,4 +1,4 @@
-function solution = relaxedFBA(model, param)
+function [solution, relaxedModel] = relaxedFBA(model, param)
 %
 % Finds the mimimal set of relaxations on bounds and steady state
 % constraints to make the FBA problem feasible. The optional parameters,
@@ -20,8 +20,14 @@ function solution = relaxedFBA(model, param)
 %
 % INPUTS:
 %    model:          COBRA model structure
+%    model.S
+%    model.SIntRxnBool
 %
 % OPTIONAL INPUTS:
+%    model:          COBRA model structure
+%    model.SIntRxnBool
+%
+%
 %    param:    Structure optionally containing the relaxation parameters:
 %
 %                      * internalRelax:
@@ -38,8 +44,8 @@ function solution = relaxedFBA(model, param)
 %
 %                      * steadyStateRelax:
 %
-%                        * {0} = do not allow to relax the steady state constraint S*v = b
-%                        *   1 = allow to relax the steady state constraint S*v = b
+%                        *    0 = do not allow to relax the steady state constraint S*v = b
+%                        *  {1} = allow to relax the steady state constraint S*v = b
 %
 %                      * toBeUnblockedReactions - n x 1 vector indicating the reactions to be unblocked
 %
@@ -79,11 +85,25 @@ function solution = relaxedFBA(model, param)
 %                      * q - relaxation on upper bound of reactions
 %                      * v - reaction rate
 %
-% .. Authors: - Hoai Minh Le, Ronan Fleming	15/11/2015
+% relaxedModel       model structure that admits a flux balance solution
 %
+% .. Authors: - Hoai Minh Le, Ronan Fleming	15/11/2015
+%              
 
 [m,n] = size(model.S); %Check inputs
 
+if ~isfield(param,'maxUB')
+    param.maxUB = max(max(model.ub),-min(model.lb));
+end
+if ~isfield(param,'maxLB')
+    param.minLB = min(-max(model.ub),min(model.lb));
+end
+if ~isfield(param,'maxRelaxR')
+    param.maxRelaxR = 1000; %TODO - check this for multiscale models
+end
+if ~isfield(param,'printLevel')
+    param.printLevel = 0; %TODO - check this for multiscale models
+end
 
 if isfield(model,'SIntRxnBool')
     SIntRxnBool = model.SIntRxnBool;
@@ -114,7 +134,7 @@ else
 end
 
 if isfield(param,'steadyStateRelax') == 0
-    param.steadyStateRelax = 0; %do not allow steady state constraint to be relaxed
+    param.steadyStateRelax = 1; %do not allow steady state constraint to be relaxed
 else
     if param.steadyStateRelax < 0 || param.steadyStateRelax > 1
         solution.status = -1;
@@ -144,13 +164,17 @@ if isfield(param,'nbMaxIteration') == 0
 end
 
 if isfield(param,'epsilon') == 0
-    param.epsilon = 10e-6;
+    param.epsilon = 1e-6;
 end
 
 if isfield(param,'theta') == 0
     param.theta   = 0.5;
 end
     
+%Old
+%      min  ~&~ c^T v - \gamma_1 ||v||_1 - \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
+
+%New
 %      min  ~&~ c^T v - \gamma_1 ||v||_1 - \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
 %           ~&~   + \alpha_1 (||p||_1 + ||q||_1) + \alpha_0 (||p||_0 + ||q||_0) \\
 %      s.t. ~&~ S v + r = b \\
@@ -195,7 +219,7 @@ end
 if ~isfield(param,'gamma1')
     %always include some regularisation on the flux rates to keep it well
     %behaved
-    param.gamma1 = 1e-6 + param.gamma0/10;   
+    param.gamma1 = 0*1e-6 + param.gamma0/10;   
 end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
@@ -225,10 +249,11 @@ end
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
 % Call the solver
-if 1
+if 0
     param
 end
 solution = relaxFBA_cappedL1(model,param);
+
 
 % Attempt to handle numerical issues with small perturbations, less than
 % feasibility tolerance, that cause relaxed problem to be slightly
@@ -239,10 +264,21 @@ solution = relaxFBA_cappedL1(model,param);
 % solution.q(1052)
 % ans =
 %   -1.7053e-13
-% feasTol = getCobraSolverParams('LP', 'feasTol');
-% param.epsilon = feasTol;
-% solution.p(solution.p<feasTol) = 0;%lower bound relaxation
-% solution.q(solution.q<feasTol) = 0;%upper bound relaxation
-% solution.r(solution.r<feasTol) = 0;%steady state constraint relaxation
+feasTol = getCobraSolverParams('LP', 'feasTol');
+solution.p(solution.p<feasTol) = 0;%lower bound relaxation
+solution.q(solution.q<feasTol) = 0;%upper bound relaxation
+solution.r(abs(solution.r)<feasTol) = 0;%steady state constraint relaxation
+
+%check the relaxed problem is feasible
+relaxedModel=model;
+relaxedModel.lb=model.lb-solution.p;
+relaxedModel.ub=model.ub+solution.q;
+relaxedModel.b=relaxedModel.b-solution.r;
+
+LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
+if LPsol.stat~=1
+    disp(LPsol)
+    error('Relaxed model does not admit a steady state. relaxedFBA failed')
+end
 
 end

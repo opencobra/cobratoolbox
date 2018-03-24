@@ -672,6 +672,7 @@ switch solver
                 cmd = 'minimize';
             end
         end
+        %https://docs.mosek.com/8.1/toolbox/solving-linear.html
         if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
             param.MSK_DPAR_INTPNT_TOL_PFEAS=feasTol;
         end

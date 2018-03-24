@@ -57,6 +57,14 @@ for i = 1:length(solvers)
     % run the tests if the solver is available
     if solverOK
         FBA = optimizeCbModel(model, 'max');
+        FBA
+        %
+%                          * f - Objective value
+%                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
+%                          * y - Dual
+%                          * w - Reduced costs
+%                          * s - Slacks
+%                          * stat - Solver status in standardized form:
         summaryTable{i + 1, 2} = FBA.y(incObjMet);
         summaryTable{i + 1, 3} = FBA.w(incObjRxn);
         summaryTable{i + 1, 4} = FBA.y(decObjMet);
