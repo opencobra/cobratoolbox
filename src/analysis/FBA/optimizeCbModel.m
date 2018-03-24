@@ -104,7 +104,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %    solution:       solution object:
 %
 %                          * f - Objective value
-%                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
+%                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
 %                          * y - Dual
 %                          * w - Reduced costs
 %                          * s - Slacks

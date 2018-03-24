@@ -386,6 +386,7 @@ while nbIteration < nbMaxIteration && stop ~= true
     %Compute (x_bar,y_bar,z_bar) in subgradient of second DC component (z_bar = 0)
     x(abs(x) < 1/theta) = 0;
     x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Minh - are the signs here correct?
+    %x_bar =  lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Ronan
     y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y); 
 
     %Solve the linear sub-program to obtain new x

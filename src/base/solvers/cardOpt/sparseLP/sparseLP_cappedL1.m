@@ -143,6 +143,8 @@ while nbIteration < nbMaxIteration && stop ~= true,
     x_old = x;
 
     %Compute x_bar in subgradient of second DC component
+    %H. A.LeThietal./EuropeanJournalofOperationalResearch000(2014)
+    %Table 2, r_cap
     x(abs(x) < 1/theta) = 0;
     x_bar = sign(x)*theta;
 

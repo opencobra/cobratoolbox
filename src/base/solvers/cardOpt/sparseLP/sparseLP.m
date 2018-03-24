@@ -162,7 +162,12 @@ switch approximation
         bestAprox = '';
         for i=1:length(approximations)
             %disp(approximations(i))
-            solutionL0 = sparseLP(char(approximations(i)),model,params);
+            %try
+                solutionL0 = sparseLP(model,char(approximations(i)),params);
+            %catch
+                %fail gracefully
+                %solutionL0.stat = 0;
+            %end
             if solutionL0.stat == 1
                 if bestResult > nnz(solutionL0.x)
                     bestResult = nnz(solutionL0.x);
