@@ -369,7 +369,7 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
-                    f = res.sol.itr.pobjval;
+                    f = osense*res.sol.itr.pobjval;
 
                     %dual to equality
                     y= res.sol.itr.y;
@@ -610,7 +610,15 @@ if solution.stat==1
     if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex'}))
         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
         tmp=norm(residual,inf);
-       if tmp > feasTol*100
+
+        % set the tolerance
+        if strcmpi(solver, 'mosek')
+            resTol = 1e-2;
+        else
+            resTol = feasTol * 100;
+        end
+
+        if tmp > resTol
             error(['Optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
         end
     end
