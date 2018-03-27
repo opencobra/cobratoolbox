@@ -23,8 +23,10 @@ document is to be considered not relevant or obsolete.
 ## Requirements
 
 MgPipe requires `Matrix Laboratory`, the `Parallel Computing Toolbox`, as well
-as, the Toolbox to be installed with the `ILOG CPLEX` solver. Pleas refer to
+as, the COBRA Toolbox to be installed. Please refer to
 the [installation instructions](https://opencobra.github.io/cobratoolbox/stable/installation.html).
+The usage of `ILOG CPLEX` solver is strongly advised to obtain the best speed performance
+(required for the fastFVA.m function).
 
 MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
 version 1.0 from https://vmh.uni.lu/#downloadview and place the mat files into
