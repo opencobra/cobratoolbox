@@ -38,18 +38,19 @@ else
     exch = {};
 end
 for j = 1:size(models, 1)
-    model = models{j, 1};
-    model = findSExRxnInd(model);
-    mod_exch=model.rxns(model.ExchRxnBool);
-    mod_exch=strrep(mod_exch, 'EX_', '');
-    mod_exch=strrep(mod_exch, '(e)', '[e]');
-    exch = union(exch,mod_exch);
+     model = models{j, 1};
+     exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
+%      model = findSExRxnInd(model);
+%      mod_exch=model.rxns(model.ExchRxnBool);
+%      mod_exch=strrep(mod_exch, 'EX_', '');
+%      mod_exch=strrep(mod_exch, '(e)', '[e]');
+%      exch = union(exch,mod_exch);
 end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
 rmBio=strrep(objre, 'EX_', '');
-rmBio=strrep(rmBio, '(e)', '[e]');
+rmBio=strrep(rmBio, '(e)', '[c]');
 exch = setdiff(exch, rmBio);
 %% Create additional compartments for dietary compartment and fecal secretion.
 
