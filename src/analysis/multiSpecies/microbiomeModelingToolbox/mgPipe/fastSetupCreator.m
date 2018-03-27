@@ -39,7 +39,6 @@ if ~isempty(host)  % Get list of all exchanged metabolites
 else
     exch = {};
 end
-exch = {}; 
  for j = 1:size(models, 1)
     model = models{j, 1};
     %exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
