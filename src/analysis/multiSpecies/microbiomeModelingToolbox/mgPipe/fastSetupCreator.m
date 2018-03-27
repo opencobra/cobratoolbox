@@ -33,19 +33,20 @@ function model = fastSetupCreator(models, microbeNames, host, objre)
 % .. Author: Stefania Magnusdottir and Federico Baldini 2016-2018
 
 if ~isempty(host)  % Get list of all exchanged metabolites
-    exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
+    %exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
+    exStruct = findSExRxnInd(host);
+    exch = findMetsFromRxns(host,host.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
 else
     exch = {};
 end
-for j = 1:size(models, 1)
-     model = models{j, 1};
-     exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
-%      model = findSExRxnInd(model);
-%      mod_exch=model.rxns(model.ExchRxnBool);
-%      mod_exch=strrep(mod_exch, 'EX_', '');
-%      mod_exch=strrep(mod_exch, '(e)', '[e]');
-%      exch = union(exch,mod_exch);
-end
+exch = {}; 
+ for j = 1:size(models, 1)
+    model = models{j, 1};
+    %exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
+    exStruct = findSExRxnInd(model);
+    new_exch = findMetsFromRxns(model,model.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
+    exch = union(exch,new_exch);
+ end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
