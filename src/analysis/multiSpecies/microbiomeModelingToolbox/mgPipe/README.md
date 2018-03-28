@@ -3,9 +3,9 @@
 ## Introduction
 
 MgPipe is a MATLAB based pipeline to integrate microbial abundances (coming
-from metagenomic data) with constraint based modeling, creating
+from metagenomic data) with constraint-based modeling, creating
 individuals' personalized models.  The pipeline is divided in 3 parts: [PART 1]
-Analysis of individuals' specific microbes abundances is computed. Individuals?
+Analysis of individuals' specific microbes abundances is computed. Individuals'
 metabolic diversity in relation to microbiota size and disease presence as well
 as Classical multidimensional scaling (PCoA) on individuals' reaction
 repertoire are examples.  [PART 2]: 1 Constructing a global metabolic model
@@ -16,25 +16,30 @@ function.  [PART 3] Simulations under different diet regimes. Set of standard
 analysis to apply to the personalized models. PCA of computed MNPCs of
 individuals as for example.
 
-**WARNING :**Please take into consideration only the files listed in this
+**WARNING:** Please take into consideration only the files listed in this
 document. Everything present in the folder but not listed and explained in this
 document is to be considered not relevant or obsolete.
 
 ## Requirements
 
-MgPipe requires Matrix Laboratory as well as the Cobra Toolbox to be installed
-with ILOG CPLEX as solver.  All toolboxes/solvers/files should be in the MATLAB
-path.  MgPipe was created (and tested) for AGORA 1.0 please first download
-AGORA version 1.0 from https://vmh.uni.lu/#downloadview and place the mat files
-into a dedicated folder.
+MgPipe requires `Matrix Laboratory`, the `Parallel Computing Toolbox`, as well
+as, the COBRA Toolbox to be installed. Please refer to
+the [installation instructions](https://opencobra.github.io/cobratoolbox/stable/installation.html).
+The usage of `ILOG CPLEX` solver is strongly advised to obtain the best speed performance
+(required for the fastFVA.m function).
+
+MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
+version 1.0 from https://vmh.uni.lu/#downloadview and place the mat files into
+a dedicated folder.
 
 ## Main Folder Structure and Files
 
-The following files are supplied
+The following files are essential for the usage of the pipeline and are
+supplied in the current folder and in `papers/2018_microbiomeModelingToolbox`
 
 | Filename                                       | Purpose                                                                |
 | -----------------------------------------------|------------------------------------------------------------------------|
-| StartMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
+| startMgPipe.m                                  | *driver, containing all the input variables, to be modified by the user* |
 | initMgPipe.m                                   | *function containing all the input variables launching the pipeline*   |
 | loadUncModels.m                                | *function to load and unconstraint the models*                         |
 | fastSetupCreator.m                             | *function to create "global" setup*                                    |
@@ -42,7 +47,7 @@ The following files are supplied
 | detectOutput.m                                 | *function to check if a specific file was already created and saved*   |
 | getIndividualSizeName.m                        | *get information on number and ID of organisms and individuals*|
 | addMicrobeCommunityBiomass.m                   | *function to add community biomass*                                    |
-| MgPipe.m                                       | *Pipeline*                                                             |
+| mgPipe.m                                       | *pipeline*                                                             |
 | parsave.m                                      | *function to allow object saving in parallel loops*                    |
 | getMappingInfo.m                               | *function to extract information from the mapping*             |
 | plotMappingInfo.m                              | *function plot extracted information from the mapping*                 |
@@ -51,36 +56,33 @@ The following files are supplied
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
 | mgSimResCollect.m                              | *function to collect and output simulation results*                    |
 | README.md                                      | *this file*                                                            |
-| **DietImplementation**                         | *Folder containing diets and related scripts*                          |
 | useDiet.m                                      | *function to impose a specific diet and add essential elements to microbiota models*|
 | adaptVMHDietToAGORA.m                          | *function to convert a specific diet from VMH into an AGORA compatible one*|
-| **examples**                                   | *folder containing necessary files to replicate the pipeline tutorial* |
-| StartMgPipeHMP.m                               | *driver, containing all the input variables of the HMP study*         |
 | ***compfile***                                 | *Results subfolder: contains objects saved in open format*             |
-
 
 ## Usage
 
 Once installed the necessary dependencies the pipeline is ready to be used at
 the condition that some input variables are inserted or changed from the
-default input file (StartMgPipe.m) or directly in the input function
-(initMgPipe.m).
+default input file `startMgPipe.m` or directly in the input function
+`initMgPipe.m`.
 
-Running the script called ?StartMgPipe.m? (after having changed the necessary
+Running the script called `startMgPipe.m` (after having changed the necessary
 inputs) is the only action required from the user to start the
 pipeline.
 
 The pipeline can be stopped at every moment as all the results are saved as
 soon as they are computed.  In case of accidental or volunteer halt in the
-execution, the pipeline can be simply restarted without loss of time: already
-saved results (from previous runs) are automatically detected and not
-recomputed.
+execution, the pipeline can be simply restarted without loss of time running
+again `startMgPipe.m` : already saved results (from previous runs) are
+automatically detected and not recomputed.
 
 ## Inputs
 
 Some specific information files need to be loaded by the pipeline. For this
-reason, they must be formatted and called in a specific way. See the [Examples]
-section for more information. The files needed are
+reason, they must be formatted and called in a specific way. See the examples
+folder in `papers/2018_microbiomeModelingToolbox` for more information.
+The files needed are
 
 | File                   | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
@@ -94,9 +96,7 @@ variables which need to be created or changed from default are
 | Variables    | Description                          |
 | -------------|--------------------------------------|
 | modPath      | path to microbes models              |
-| toolboxPath  | path to where the Microbiome Modeling Toolbox is located|
-| infoPath     | path to csv files (where input files are stored)|
-| resePath     | path to the directory containing results|
+| resPath      | path to the directory containing results|
 | dietFilePath | path to and name of the file with dietary information|
 | abunFilePath | path to and name of the file with abundance information|
 | objre        | name of objective function of microbes|
@@ -109,13 +109,12 @@ variables which need to be created or changed from default are
 | extSolve     | option to save microbiota models with diet to simulate with different language (autofix=1 means yes, =0 no)          |
 | fvaType      | which FVA function to use (fastFVA =1) |
 
-
 The `autorun` variable controls the behavior of the pipeline. The autorun
 functionality is automatically on.  This functionality enables the pipeline to
 automatically run and detect outputs. By changing `autorun` variable to 0 it is
 possible to enter in manual / debug mode.
 
-**WARNING :**you should not change the ?autorun? variable value. Manual mode is
+**WARNING**: you should not change the `autorun` variable value. Manual mode is
 strongly discouraged and should be used only for debugging purposes.
 
 ## Outputs
@@ -126,7 +125,7 @@ patients reaction repertoire are outputs of the first part [PART 1]; they are
 directly saved into the current MATLAB folder as figure files. Moreover, a
 series of objects created by the first part can be of interest to the user as
 they could be the object of further analysis. For this reason, the MATLAB
-workspace is saved into a file called ?MapInfo.mat?. The saved variables are:
+workspace is saved into a file called `MapInfo.mat`. The saved variables are:
 
 | Object                 | Description                                                                                  |
 | -----------------------|----------------------------------------------------------------------------------------------|
@@ -153,24 +152,25 @@ outputs are:
 If the specific option is enabled in the input file, some of the outputs are
 saved also in open format (.csv) in the dedicated folder.
 
-## Special uses
+## Additional information on usage
 
-Data should be formatted exactly as specified (see also ?Examples? section).
-The input files should have names as listed in the input section.  The first
-part of [part 2] is meant to be run only once to create a global microbiota
-model.  The user can decide to use different FVA functions in part 3.  The user
-should be careful calculating the number of cores to allocate.  Priority should
-be given in assigning cores for each personalized model simulation (one core
-for each individual), then, if more cores are available (ex. user
-running the pipeline on the HPC) the use of fastFVA is suggested.
-Please take note that if the specific option is enabled in the input
-file some of the outputs are saved also in open format (csv) in the
-dedicated folder.  By setting ?autorun?=0 autorun function will be
-disabled. You are now running in manual / debug mode. Please note that
-the usage in manual mode is strongly discouraged and should be used
-only for debugging purposes.
+Data should be formatted exactly as specified (see also
+`papers/2018_microbiomeModelingToolbox`).  The input files should
+have names as listed in the input section.  The first part of [part 2] is meant
+to be run only once to create a global microbiota model.  The user can decide
+to use different FVA functions in part 3.  The user should be careful
+calculating the number of cores to allocate.  Priority should be given in
+assigning cores for each personalized model simulation (one core for each
+individual), then, if more cores are available (ex. user running the
+pipeline on the HPC) the use of fastFVA is suggested.  Please take
+note that if the specific option is enabled in the input file some of
+the outputs are saved also in open format (csv) in the dedicated
+folder.  By setting `autorun`=0 autorun function will be disabled. You
+are now running in manual / debug mode. Please note that the usage in
+manual mode is strongly discouraged and should be used only for
+debugging purposes.
 
-**WARNING :**MgPipe was created (and tested) for AGORA 1.0. The use of models
+**WARNING**: MgPipe was created (and tested) for AGORA 1.0. The use of models
 from any different source was not tested and it is not guaranteed to work.
 
 # Status of implementation
@@ -189,7 +189,7 @@ suggestion with the pipeline implementation is welcome.
 
 ## Examples
 
-Examples of input are contained in the examples folder.
+Examples of input are in the examples folder `papers/2018_microbiomeModelingToolbox`.
 
 ## Spin offs
 
@@ -207,11 +207,11 @@ dedicated page.
 
 ## Tutorial
 
-A livescript toutorial "mgPipeTutorial.mlx" is available in the `tutorials` folder.
-
+A livescript tutorial `mgPipeTutorial.mlx` is available in
+`tutorials/additionalTutorials/microbiomeModelingToolbox/`.
 
 ## Author & Documentation Date
 
-*Federico Baldini, 16.03.18*
+*Federico Baldini, 23.03.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*

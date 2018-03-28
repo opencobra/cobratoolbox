@@ -17,7 +17,6 @@ function dummy = makeDummyModel(numMets, numRxns)
 
 dummy.mets = cell(numMets, 1);
 dummy.rxns = cell(numRxns, 1);
-dummy.rev = zeros(numRxns, 1);
 dummy.c = zeros(numRxns, 1);
 dummy.S = zeros(numMets, numRxns);
 dummy.lb = zeros(numRxns, 1);

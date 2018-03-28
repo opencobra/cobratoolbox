@@ -1,4 +1,4 @@
-function model = fastSetupCreator(models, microbeNames, host)
+function model = fastSetupCreator(models, microbeNames, host, objre)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -25,6 +25,7 @@ function model = fastSetupCreator(models, microbeNames, host)
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
+%    objre:               char with reaction name of objective function of organisms
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
@@ -32,18 +33,25 @@ function model = fastSetupCreator(models, microbeNames, host)
 % .. Author: Stefania Magnusdottir and Federico Baldini 2016-2018
 
 if ~isempty(host)  % Get list of all exchanged metabolites
-    exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
+    %exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
+    exStruct = findSExRxnInd(host);
+    exch = findMetsFromRxns(host,host.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
 else
     exch = {};
 end
-for j = 1:size(models, 1)
+ for j = 1:size(models, 1)
     model = models{j, 1};
-    exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
-end
+    %exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
+    exStruct = findSExRxnInd(model);
+    new_exch = findMetsFromRxns(model,model.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
+    exch = union(exch,new_exch);
+ end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
-exch = setdiff(exch, 'biomass[c]');
+rmBio=strrep(objre, 'EX_', '');
+rmBio=strrep(rmBio, '(e)', '[c]');
+exch = setdiff(exch, rmBio);
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns
@@ -58,7 +66,6 @@ for j = 1:size(exch, 1)
     cnt = cnt + 1;
     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[d]'));
     dummy.S(mdInd, cnt) = -1;
-    dummy.rev(cnt, 1) = 1;
     dummy.lb(cnt, 1) = -1000;
     dummy.ub(cnt, 1) = 1000;
     % diet-lumen transport
@@ -77,7 +84,6 @@ for j = 1:size(exch, 1)
     cnt = cnt + 1;  % counts rxns
     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[fe]'));
     dummy.S(mfeInd, cnt) = -1;
-    dummy.rev(cnt, 1) = 1;
     dummy.lb(cnt, 1) = -1000;
     dummy.ub(cnt, 1) = 1000;
 end

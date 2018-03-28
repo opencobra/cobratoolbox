@@ -11,7 +11,7 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
-%    model:              "global setup" model in COBRA model structure format
+%    setup:              "global setup" model in COBRA model structure format
 %    sampName:           cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
 %    rDiet:              number (double) indicating if to simulate a rich diet
@@ -77,7 +77,7 @@ end
 % Starting personalized simulations
 for k = startIter:(patNumb + 1)
  idInfo = cell2mat(sampName((k - 1), 1))
- load(strcat('microbiota_model_samp_', idInfo, '.mat'))
+ load(strcat('microbiota_model_samp_', idInfo, '.mat'));
  model = microbiota_model;
  for j = 1:length(model.rxns)
     if strfind(model.rxns{j}, 'biomass')
@@ -200,8 +200,10 @@ if pDiet==1
  DietID = {DietNames{:,1} ; Diets{:,k-1}}';
  DietID = regexprep(DietID,'EX_','Diet_EX_');
  DietID = regexprep(DietID,'\(e\)','\[d\]');
+ 
  model_pd = setDietConstraints(model_pd,DietID);
- solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
+ solution_pdiet=solveCobraLP(model_pd)
+ %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
  presol{k,3}=solution_pdiet.obj
  if isnan(solution_pdiet.obj)
     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')

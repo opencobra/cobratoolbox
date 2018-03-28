@@ -34,7 +34,6 @@ else
 end
 dummy.S(end - 1:end, 2) = [-1; 1];
 dummy.S(end, 3) = -1;
-dummy.rev(end, 1) = 1;
 dummy.lb(end, 1) = -1000;
 dummy.ub = ones(size(dummy.ub)) * 1000;
 % join models

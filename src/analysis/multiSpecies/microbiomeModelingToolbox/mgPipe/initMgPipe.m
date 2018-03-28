@@ -1,4 +1,4 @@
-function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, solver, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
+function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -43,6 +43,12 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 
 init = 0;
 
+% Check for installation of parallel Toolbox
+try 
+   ver('distcomp');
+catch
+   error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
+end
 % Here we go on with the warning section and the autorun
 if autorun == 1
     if numWorkers >= 2
@@ -52,7 +58,7 @@ if autorun == 1
         end
     end
     disp('Well done! Pipeline successfully activated and running!')
-    MgPipe
+    mgPipe
 else
     if numWorkers >= 2
         poolobj = gcp('nocreate');
@@ -61,7 +67,7 @@ else
         end
     end
     warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
-    edit('MgPipe.m')
+    edit('mgPipe.m')
 end
 if compMod == 1
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')
@@ -70,7 +76,7 @@ else
 end
 
 if numWorkers < 2
-    warning('apparently you disabled parallel mode to enable sequential one. Computations might become very slow. Please modify numWorkers option.')
+    error('apparently you disabled parallel mode to enable sequential one. Sequential mode is not available for this application. Please specify a higher number of workers modifying numWorkers option.')
 end
 if patStat == 0
     disp('Individuals health status not declared. Analysis will ignore that.')
