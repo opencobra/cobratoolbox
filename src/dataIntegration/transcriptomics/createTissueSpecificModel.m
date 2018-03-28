@@ -1,4 +1,4 @@
-function [tissueModel] = createTissueSpecificModel(model, options, funcModel, exRxnRemove)
+function [tissueModel] = createTissueSpecificModel(model, options, funcModel, exRxnRemove, optionalParams)
 % Creates draft tissue specific model from mRNA expression data
 %
 % USAGE:
@@ -20,6 +20,11 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                            step (Default = 0)
 %	exRxnRemove:             Names of exchange reactions to remove
 %                           (Default = [])
+%   optionalParams           Additional paramaters for the consistency
+%                            check. Will only be used if funcModel = 1
+%                            Is a structure with possible fields of epsilon
+%                            (numeric, min nonzero mass), modeFlag (return
+%                            flux mode, 0/1), and method ('fastcc','dc')
 %
 % OUTPUTS:
 %	tissueModel:                     extracted model
@@ -109,6 +114,11 @@ end
 
 if ~exist('funcModel','var') || isempty(funcModel)
     funcModel = 0;
+    optionalParams = struct();
+end
+
+if funcModel == 1 && ~exist('optionalParams', 'var')
+    optionalParams = struct();
 end
 
 if ~exist('options','var') || isempty(options)
@@ -188,9 +198,12 @@ if funcModel ==1
     paramConsistency.epsilon=1e-10;
     paramConsistency.modeFlag=0;
     paramConsistency.method='fastcc';
+    givenParams = fieldnames(optionalParams);
+    for i = 1:length(givenParams)
+        paramConsistency.(givenParams{i}) = optionalParams.(givenParams{i});
+    end
     
-    remove = [];
-    [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,paramConsistency);
+    [~,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,paramConsistency);
     remove=tissueModel.rxns(fluxConsistentRxnBool==0);
     tissueModel = removeRxns(tissueModel,remove);
     tissueModel = removeUnusedGenes(tissueModel);
