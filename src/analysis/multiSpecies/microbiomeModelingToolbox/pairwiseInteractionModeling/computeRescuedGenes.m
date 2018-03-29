@@ -60,6 +60,18 @@ Rxn2 = parser.Results.Rxn2;
 nameTag1 = parser.Results.nameTag1;
 nameTag2 = parser.Results.nameTag2;
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(OriModel1,'rxnGeneMat')
+    OriModel1 = buildRxnGeneMat(OriModel1);
+end
+
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(OriModel2,'rxnGeneMat')
+    OriModel2 = buildRxnGeneMat(OriModel2);
+end
+
 % set a solver if not done yet
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
@@ -103,6 +115,9 @@ OptSolWT.(strcat('SingleModel_', Rxn1)) = solutionWT_Rxn1.obj;
 % Second reaction
 solutionWT_Rxn2 = solveCobraLP(SecondModelSingle);
 OptSolWT.(strcat('SingleModel_', Rxn2)) = solutionWT_Rxn2.obj;
+
+
+
 
 % Perform gene deletion for all genes in the first original model structure
 % to find the ones that have an effect.

@@ -19,6 +19,12 @@ global MaxKnockOuts
 global CBT_LP_SOLVER
 %size(rxn_vector_matrix)
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if isGeneList && ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 popsize = size(rxn_vector_matrix,1);
 val = zeros(1,popsize);
 

@@ -44,6 +44,12 @@ end
 
 tol = 1e-7;
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 % Number of deletions
 nDel = length(deletions);
 
