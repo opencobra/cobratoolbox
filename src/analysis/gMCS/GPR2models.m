@@ -26,7 +26,7 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %
 % .. Authors:
 %       - Luis V. Valcarcel, Aug 2017, University of Navarra, TECNUN School of Engineering.
-%       - Iñigo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
+%       - Iï¿½igo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, Aug 2017, University of Navarra, TECNUN School of Engineering.
 
 if (nargin < 4 || isempty(printLevel))
@@ -50,6 +50,12 @@ if ~isfield(metabolic_model,'rxns')
 end
 if ~isfield(metabolic_model,'grRules') || ~isfield(metabolic_model,'rules') ||~isfield(metabolic_model,'rxnGeneMat')
     error('The GPR rules of the model are not defined');
+end
+
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(metabolic_model,'rxnGeneMat')
+    metabolic_model = buildRxnGeneMat(metabolic_model);
 end
 
 % Generate a cell array to store the resulting models

@@ -100,7 +100,9 @@ switch lower(options.koType)
         end
 
     case 'genes'
-        %% Use rxnGeneMat as selRxnMatrix
+        if ~isfield(model,'rxnGeneMat')
+            model = buildRxnGeneMat(model);
+        end
         model.selRxnMatrix = model.rxnGeneMat;
         possibleKOList = model.genes;
     otherwise
