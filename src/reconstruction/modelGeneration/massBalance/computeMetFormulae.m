@@ -729,7 +729,7 @@ if ~calcMetMwRange
     end
     if ischar(findCM) && ~CMfound
          cargin = varargin;
-        if numel(varargin > 0) && isstruct(varargin{1})           
+        if numel(varargin) > 0 && isstruct(varargin{1})           
             cargin(1) = []; % remove the first element
         end
         N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, cargin{:});
