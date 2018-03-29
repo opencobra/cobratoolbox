@@ -12,12 +12,11 @@ function [ExRxns, MaxTheoOut] = theoretMaxProd(model, inputrxn, criterion, norma
 % OPTIONAL INPUT:
 %    criterion:     One of
 %
-%                     * 'pr_mol' (default)
-%                     * 'pr_mw'  (same thing in molecular weight)
-%                     * 'pr_other_mol' (other carbon compounds secretion rate)
-%                     * 'pr_other_mw'  (same thing in molecular weight)
-%                       weight yield)
-%    normalize:     normalize by input flux.  Either the flux rate in mol or
+%                     * 'pr_mol' (default, return the maximal molar fluxes for all exchangers)
+%                     * 'pr_mw'  (return the maximal molecular weight fluxes)
+%                     * 'pr_other_mol' (return the molar fluxes through other carbon Exporters)
+%                     * 'pr_other_mw'  (return the molecular weights exported through other carbon Exporters)
+%    normalize:     normalize by input flux with respect to the input Flux.  Either the flux rate in mol or
 %                   in molecular weight (Default = false)
 %    rxns:          Selection Vector (1 for selected, 0 otherwise)
 %
@@ -85,9 +84,6 @@ elseif( strcmp(criterion, 'pr_other_mol') || strcmp(criterion, 'pr_other_mw'))
         metID = find(model.S(:,rxnID));
         if cmets(metID)>0
             coefficients(rxnID) = mw(metID);
-%             if strcmp(ExRxns(i), 'EX_co2(e)') % get rid of CO2 if required
-%                 coefficients(rxnID) = 0;
-%             end
         end
     end
 
@@ -99,7 +95,6 @@ elseif( strcmp(criterion, 'pr_other_mol') || strcmp(criterion, 'pr_other_mw'))
         model.c = newC;
         % run the LP optimization
         FBAsolution = optimizeCbModel(model);
-%            optimalFlux = FBAsolution.f;
         cf2 = coefficients;
         cf2(inputRxnID) = 0;
         cf2(rxnID) = 0;
@@ -116,7 +111,6 @@ elseif( strcmp(criterion, 'pr_other_mol') || strcmp(criterion, 'pr_other_mw'))
         end
     end
 else
-  x=7
     display('unknown criterion');
     criterion
 end
