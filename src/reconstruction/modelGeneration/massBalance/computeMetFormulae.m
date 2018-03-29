@@ -728,7 +728,11 @@ if ~calcMetMwRange
         findCM = 'efmtool';
     end
     if ischar(findCM) && ~CMfound
-        N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, varargin{:});
+         cargin = varargin;
+        if numel(varargin > 0) && isstruct(varargin{1})           
+            cargin(1) = []; % remove the first element
+        end
+        N = findElementaryMoietyVectors(model, 'method', findCM, 'deadCMs', deadCM, cargin{:});
         CMfound = true;
     end
     if CMfound
