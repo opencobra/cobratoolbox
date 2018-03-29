@@ -49,6 +49,12 @@ if (nargin < 5)
     verbFlag = false;
 end
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 nGenes = length(model.genes);
 
 % Run single gene deletions first to figure out lethal genes

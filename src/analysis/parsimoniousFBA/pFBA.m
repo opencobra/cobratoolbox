@@ -79,8 +79,11 @@ if skipclass % skip the model reduction and gene/rxn classification
     GeneClasses = [];
     RxnClasses = [];
 else
-
-
+    %rxnGeneMat is a required field for this function, so if it does not exist,
+    %build it.
+    if ~isfield(model,'rxnGeneMat')
+        model = buildRxnGeneMat(model);
+    end
     % save a copy of the inputted model
     model_sav = model;
 

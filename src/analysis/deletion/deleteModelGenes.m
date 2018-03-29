@@ -45,6 +45,12 @@ if (~isfield(model,'genes'))
     error('Gene-reaction associations not included with the model');
 end
 
+%RxnGeneMat is required for this function, so we will have to build it if
+%it does not exist
+if ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 hasEffect = false;
 constrRxnNames = {};
 %deletedGenes is a cell array for returning the genes that are

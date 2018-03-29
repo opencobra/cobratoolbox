@@ -48,6 +48,11 @@ if (nargin < 5)
     uniqueGene = 0;
 end
 
+if ~isfield(model,'rxnGeneMat')
+    %We need the reactionGeneMat during deleteModelGenes, so build it in
+    %the beginning
+    model = buildRxnGeneMat(model);
+end
 
 if (uniqueGene == 1)
 

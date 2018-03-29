@@ -20,6 +20,12 @@ else
     selRxnsC = true(length(model.rxns),1);
 end
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(model,'rxnGeneMat')
+    model = buildRxnGeneMat(model);
+end
+
 [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(model.mets);
 uniqueMetNames = uniqueMetNames';
 for i = 1:length(uniqueMetNames)
