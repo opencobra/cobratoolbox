@@ -535,11 +535,11 @@ switch solver
                 params.DisplayInterval = 1;
         end
 
-        params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+        params.Method = -1;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
         params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        params.IntFeasTol = 1e-5;
-        params.FeasibilityTol = 1e-6;
-        params.OptimalityTol = 1e-6;
+        params.IntFeasTol = feasTol;
+        params.FeasibilityTol = feasTol;
+        params.OptimalityTol = optTol;
         %params.Quad = 1;
 
         if (isempty(QPproblem.csense))
