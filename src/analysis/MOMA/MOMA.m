@@ -211,7 +211,7 @@ if (solutionWT.stat > 0)
     % Solve the linearMOMA problem
     [QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,QPproblem.csense,QPproblem.osense] = deal(A,b,F,c,lb,ub,csense,1);
     %QPsolution = solveCobraQP(QPproblem,[],verbFlag-1);
-    QPsolution = solveCobraQP(QPproblem, 'printLevel', verbFlag-1);
+    QPsolution = solveCobraQP(QPproblem, 'printLevel', verbFlag-1, 'method', 0);
 
     if (verbFlag)
         fprintf('%f seconds\n',QPsolution.time);
