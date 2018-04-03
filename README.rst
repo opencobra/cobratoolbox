@@ -44,23 +44,10 @@ Installation
 ------------
 
 .. begin-installation-marker
-0. If you have an existing installation of a legacy COBRA Toolbox on your system, please remove 
-   the installation and the remove the installation directory from your matlab path. 
-   You can skip this step, if you do not have a legacy COBRA Toolbox installed.
-
-   |warning| The following commands will delete your ``cobratoolbox`` directory and all of its contents 
-
-   .. code-block:: matlab
-   
-         >> CBTDIR = fileparts(which('initCobraToolbox.m')); %Get the Toolbox directory
-         >> rmpath(genpath(CBTDIR)); %remove the directory from the path
-         >> savepath % save the new path
-         >> delete(CBTDIR,'s') %delete the installation directory
-
 
 1. Download this repository (the folder ``./cobratoolbox/`` will be
    created). You can clone the repository using:
-   
+
    .. code-block:: console
 
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
