@@ -128,6 +128,10 @@ globalsToDelete = setdiff(globalvars,fieldnames(someOddNameThatSureLyNoGlobalVar
 for i = 1:numel(globalsToDelete)
     clearvars('-global',globalsToDelete{i});
 end
+
+%Also clear all persistant values
+clear functions
+
 %And for everything else, check, if it changed
 globalNames = fieldnames(someOddNameThatSureLyNoGlobalVarHas);
 for i = 1:numel(globalNames)
