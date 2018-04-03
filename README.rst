@@ -44,10 +44,23 @@ Installation
 ------------
 
 .. begin-installation-marker
+0. If you have an existing installation of an old COBRA toolbox on your system, please remove 
+   the installation and the path  from your folder. You can skip this step, if you do not have
+   an old cobra toolbox installed.
+
+   |warning| The following commands will delete your CobraToolboxFolder and all of its contents 
+
+   .. code-block:: matlab
+   
+         >> cobraFolder = fileparts(which('initCobraToolbox'));
+         >> rmpath(genpath(cobraFolder);
+         >> savepath
+         >> delete(cobraFolder,'s')
+
 
 1. Download this repository (the folder ``./cobratoolbox/`` will be
    created). You can clone the repository using:
-
+   
    .. code-block:: console
 
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
