@@ -103,40 +103,79 @@ function globals = getGlobals()
 % OUTPUT:
 %
 %    globals:   a struct of all global variables 
-someOddNameThatSureLyNoGlobalVarHas = struct();
+globals = struct();
 globalvars = who('global');
 for i = 1:numel(globalvars)
-    eval(['global ' globalvars{i}]);
-    eval(['someOddNameThatSureLyNoGlobalVarHas.' globalvars{i} ' = ' globalvars{i}, ';']);
+    globals.(globalvars{i}) = getGlobalValue(globalvars{i});
 end
-globals = someOddNameThatSureLyNoGlobalVarHas;
 end
 
-function resetGlobals(someOddNameThatSureLyNoGlobalVarHas)
+function resetGlobals(globals)
 % Reset all global variables to a value stored in the input struct (all
 % variables not present will be deleted.
 % USAGE:
-%    resetGlobals(someOddNameThatSureLyNoGlobalVarHas)
+%    resetGlobals(globals)
 %
 % INPUT:
-%    someOddNameThatSureLyNoGlobalVarHas:   A struct with 1 field per
-%                                           global variable.
+%    globals:   A struct with 1 field per global variable.
 
 globalvars = who('global');
-globalsToDelete = setdiff(globalvars,fieldnames(someOddNameThatSureLyNoGlobalVarHas));
+globalsToDelete = setdiff(globalvars,fieldnames(globals));
 
 for i = 1:numel(globalsToDelete)
-    clearvars('-global',globalsToDelete{i});
+    clearGlobal(globalsToDelete{i});
 end
 
 %Also clear all persistant values
 clear functions
 
 %And for everything else, check, if it changed
-globalNames = fieldnames(someOddNameThatSureLyNoGlobalVarHas);
+globalNames = fieldnames(globals);
 for i = 1:numel(globalNames)
-    eval(['global ' globalNames{i}]);
-    %Set it to the old value.
-    eval([globalNames{i} ' = someOddNameThatSureLyNoGlobalVarHas.' globalNames{i} ';']);
+    %Set the global to the old value.
+    setGlobal(globalNames{i},globals.(globalNames{i}));    
 end
+end
+
+
+function setGlobal(globalName,globalValue)
+% Safely set a global Variable to a specific value.
+%
+% USAGE:
+%    setGlobal(globalName,globalValue)
+%
+% INPUTS:
+%    globalName:    A string representing the name of the global variable
+%    globalValue:   The value to set the global variable to
+
+eval([ globalName '_val = globalValue;']);
+eval(['global ' globalName]);
+eval([globalName ' = ' globalName '_val;']);
+end
+
+function clearGlobal(globalName)
+% Safely clear a global variable.
+%
+% USAGE:
+%    clearGlobal(globalName)
+%
+% INPUTS:
+%    globalName:    The name of the global variable to clear.
+
+clearvars('-global',globalName);
+
+end
+
+function value = getGlobalValue(globalName)
+% Safely get the Value of a global variable.
+%
+% USAGE:
+%    getGlobalValue(globalName)
+%
+% INPUTS:
+%    globalName:    The name of the global variable to get the value for
+
+eval(['global ' globalName]);
+eval(['value = ' globalName ';']);
+
 end
