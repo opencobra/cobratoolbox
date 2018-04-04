@@ -40,9 +40,13 @@ function initCobraToolbox()
     global WAITBAR_TYPE;
     global ENV_VARS;
     global gitBashVersion;
+    global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
+    
+     % Set the Requirements Error Message ID:
+    CBT_MISSING_REQUIREMENTS_ERROR_ID = 'COBRA:RequirementsNotMet';
 
     % default waitbar is of type text
     if isempty(WAITBAR_TYPE)
@@ -301,8 +305,9 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-    %Lets define a order of the solvers fields. Starting with the most
-    %common solvers others will be added as needed.
+    
+    %Define a set of "use first" solvers, other supported solvers will also be added to the struct. 
+    %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
     SOLVERS = struct('gurobi',struct(),...
                      'ibm_cplex',struct(),...
                      'tomlab_cplex',struct(),...
@@ -316,9 +321,9 @@ function initCobraToolbox()
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP'};
     SOLVERS.matlab.type = {'LP', 'NLP'};
-    SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
+    SOLVERS.mosek.type = {'LP', 'QP'};
     SOLVERS.pdco.type = {'LP', 'QP'};
-    SOLVERS.quadMinos.type = {'LP', 'NLP'};
+    SOLVERS.quadMinos.type = {'LP'};
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
     % passive support - solver interfaces

@@ -11,7 +11,6 @@ function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 %                       files which should be returned after ignoring.
 %
 % OUTPUTS:
-%
 %    ignoredFiles:      All files (and patterns) indicated as ignored in
 %                       the gitignore file.
 %

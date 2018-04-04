@@ -2,6 +2,27 @@
 
 Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](https://opencobra.github.io/cobratoolbox/docs/styleGuide.html).
 
+## Define requisites for the test
+There are functions which might need a specific solver, or which can only be run if a certain toolbox is installed on a system. To address these you should specify the respective requirements by using 
+`COBRARequisitesFullfilled`.  
+At the same time the number of solvers that are used for a test can be selected based on this functions output. 
+If the test does not request multiple solvers via the `'useSolversIfAvailable' keyword, only one solver per problem type will be returned.
+
+Here are a few examples:
+````Matlab
+%require Windows for the test (the same works with Mac, Linux and Unix instead of windows).
+COBRARequisitesFullfilled('needsWindows',true);
+
+%require an LP solver. The same works with NLP, MILP, QP or MIQP. solver.LP, solvers.MILP etc will contain a string with exactly one solver (if any is installed that works for the type)
+solvers = COBRARequisitesFullfilled('needsLP',true);
+
+%If multiple solvers are requested. solver.LP, solvers.MILP etc will contain all those solvers which can solve the respective Problem and are installed.
+solvers = COBRARequisitesFullfilled('needsLP',true, 'useSolverIfAvailable',{'ibm_cplex','gurobi'});
+
+%requirethe statistics toolbox to be present. Other toolboxes as defined by their license string.
+solvers = COBRARequisitesFullfilled('Toolboxes',{'statistics_toolbox'})
+````
+
 ## Test if an output is correct
 
 If you want to test if the output of a function `[output1, output2] = function1(input1, input2)` is correct, you should call this function at least 4 times in your test. The argument `ìnput2` might be an optional input argument.
@@ -89,7 +110,7 @@ cd(fileparts(which('fileName')));
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
+solvers = COBRARequisitesFullfilled('needsLP',true);
 ```
 
 #### 4. Load a model and/or reference data
@@ -125,22 +146,31 @@ end
 
 #### 6. Body of test
 
-Loop through the solver packages
+The test. If multiple solvers were requested by 'useIfAvailable',  run:
 
 ````Matlab
-for k = 1:length(solverPkgs)
-    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
+for k = 1:length(solvers.LP)
+    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solvers.LP{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-
-    if solverLPOK
-        % <your test goes here>
-    end
+    solverLPOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
+    % <your test goes here>
 
     % output a success message
     fprintf('Done.\n');
 end    
 ````
+
+If only one solver is requested:
+
+````Matlab
+solverLPOK = changeCobraSolver(solvers.LP, 'LP', 0);
+% <your test goes here>
+
+% output a success message
+fprintf('Done.\n');
+    
+````
+
 
 #### 7. Change to the current directory
 

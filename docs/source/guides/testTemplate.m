@@ -9,6 +9,39 @@
 
 global CBTDIR
 
+%Define the features required to run the test
+
+%These are the names of the toolboxes as used in
+%license('test','featurename'). If there are no toolboxes required, the
+%argument can be empty or not supplied.
+requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
+%requiredSolvers lists all solvers that need to be present for the test to
+%run. Make sure this is only used if there is an explicit requirement for a
+%specific solver. Otherwise indicate the type of required solver. (see
+%below)
+requiredSolvers = {'dqqMinos','matlab'};
+
+%Now, check if the specified requirements are fullFilled. 
+%You can also require solvers for a specific type of problem by
+%e.g. using testRequirementsAndGetSolvers('needLP', true)  to declare that a LP solver is required for the test. 
+%For other problem types (NLP,MILP,MIQP,QP) replace LP by the respective problem type.
+%You can further specify that the test only runs on windows/mac/linux/unix
+%by specifying 'needsWindows',true
+%For more details and examples please have a look at this guide:
+%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/guides/testGuide.md
+
+%Require the bioinformatics and optimization toolbox (specified above),
+%along with dqqMinos and matlab as solvers (also specified above)
+%solvers will contain a cell arrays of solver names.
+% solversPkgs = testRequirementsAndGetSolvers(); 
+%will return the default solvers for the current installation.
+% The following call will both check the presence of the required solvers
+% and the required Toolboxes 
+solversPkgs = testRequirementsAndGetSolvers('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
+
+
+
+
 % save the current path
 currentDir = pwd;
 
@@ -17,9 +50,6 @@ cd(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
-
-% define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 % load the model
 %Either:
@@ -49,10 +79,10 @@ if parTest
 % if parallel toolbox has to be present (if not, this can be left out).
 %}
 
-for k = 1:length(solverPkgs)
-    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
+for k = 1:length(solverPkgs.LP)
+    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs.LP{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
 
     if solverLPOK
         % <your test goes here>

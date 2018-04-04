@@ -10,6 +10,11 @@
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
 global CBTDIR
+global SOLVERS 
+
+%Do this test for all available MIQP solvers
+UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
+solvers = testRequirementsAndGetSolvers('needsMIQP',true,'UseIfAvailable',UseIfAvailable);
 
 % save the current path
 currentDir = pwd;
@@ -20,9 +25,6 @@ cd(fileDir);
 
 % set the tolerance
 tol = 1e-4;
-
-% test solver packages
-solverPkgs = {'gurobi'};
 
 % MIQP Solver test: http://tomopt.com/docs/quickguide/quickguide006.php
 
@@ -37,23 +39,21 @@ MIQPproblem.osense = 1;
 MIQPproblem.csense = 'L';
 MIQPproblem.vartype = ['I'; 'C'];
 
-for k = 1:length(solverPkgs)
+for k = 1:length(solvers.MIQP)
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'MIQP', 0);
+    solverOK = changeCobraSolver(solvers.MIQP{k}, 'MIQP', 0);
 
-    if solverOK
+    fprintf('   Running testSolveCobraQP using %s ... ', solvers.MIQP{k});
+    
+    MIQPsolution = solveCobraMIQP(MIQPproblem, 'printLevel', 0);
+    
+    % Check MIQP results with expected answer.
+    assert(abs(MIQPsolution.obj + 4.5) < tol & all(abs(MIQPsolution.full - [1;0.5]) < tol));
+    
+    % output a success message
+    fprintf('Done.\n');
 
-        fprintf('   Running testSolveCobraQP using %s ... ', solverPkgs{k});
-
-        MIQPsolution = solveCobraMIQP(MIQPproblem, 'printLevel', 0);
-
-        % Check MIQP results with expected answer.
-        assert(abs(MIQPsolution.obj + 4.5) < tol & all(abs(MIQPsolution.full - [1;0.5]) < tol));
-
-        % output a success message
-        fprintf('Done.\n');
-    end
 end
 
 % change the directory
