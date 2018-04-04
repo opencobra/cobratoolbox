@@ -70,7 +70,7 @@ else
     error('No solver found');
 end
 
-optParamNames = {'printLevel','saveInput','optTol','feasTol'};
+optParamNames = {'printLevel','saveInput','optTol','feasTol', 'method'};
 parameters = struct();
 if nargin ~=1
     if mod(length(varargin),2)==0
@@ -104,7 +104,7 @@ stat = -99;
 solStat = -99;
 
 %parameters
-[printLevel, saveInput,optTol,feasTol] = getCobraSolverParams('QP',optParamNames,parameters);
+[printLevel, saveInput, optTol, feasTol, method] = getCobraSolverParams('QP',optParamNames,parameters);
 
 [A,b,F,c,lb,ub,csense,osense] = ...
     deal(QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
@@ -281,7 +281,7 @@ switch solver
         else
             cmd='minimize echo(0)';
         end
-        
+
         %matching bounds and zero diagonal of F at the same time
         bool = lb == ub & diag(F)==0;
         if any(bool)
@@ -343,14 +343,14 @@ switch solver
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
         [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
-        
+
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
         %           0   Infeasible QP
         %           3   Other problem (time limit etc)
         %%
-        
+
         if isempty(res)
             stat=3;
         else
@@ -391,7 +391,7 @@ switch solver
                 origStat=[res.rmsg , res.rcodestr];
             end
         end
-        
+
         %debugging
         if printLevel>2
             res1=A*x + s -b;
@@ -403,12 +403,12 @@ switch solver
             norm(s(csense == 'E'),inf)
             res1(~isfinite(res1))=0;
             norm(res1,inf)
-            
+
             norm(osense*c + F*x-A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
             norm(osense*c + F*x -A'*y2 -w,inf)
         end
-        
+
 
     case 'pdco'
         %-----------------------------------------------------------------------
@@ -535,11 +535,11 @@ switch solver
                 params.DisplayInterval = 1;
         end
 
-        params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+        params.Method = method;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
         params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        params.IntFeasTol = 1e-5;
-        params.FeasibilityTol = 1e-6;
-        params.OptimalityTol = 1e-6;
+        params.IntFeasTol = feasTol;
+        params.FeasibilityTol = feasTol;
+        params.OptimalityTol = optTol;
         %params.Quad = 1;
 
         if (isempty(QPproblem.csense))
