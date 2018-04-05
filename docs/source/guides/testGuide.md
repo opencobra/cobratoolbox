@@ -12,25 +12,26 @@ If the test does not ask for multiple solvers (via the `requiredSolvers` or the 
 Here are a few examples:  
 
 #### A: Require Windows for the test
-The same works with Mac, Linux and Unix instead of Windows.
+The same works with `needsMac`, `needsLinux` and `needsUnix` instead of `needsWindows`.
 
 ````Matlab
 solvers = prepareTest('needsWindows',true);
 ````
 
 #### B: Require an LP solver. 
-The same works with NLP, MILP, QP or MIQP. 
-solver.LP, solvers.MILP etc will contain a string with exactly one solver 
-(if the 'useSolversIfAvailable' keyword is not used and 
-there is a solver installed that works for the problem type)
+The same works with `needsNLP`, `needsMILP`, `needsQP` or `needsMIQP` instead of `needsLP`. 
+`solvers.LP`, `solvers.MILP` etc will be cell arrays of string with the respective 
+available solver for the problem type. If the `'useSolversIfAvailable'` parameter is non empty, 
+all installed solvers requested will be in the cell array. 
+Otherwise there will be at most one solver (if no solver for the problem is installed, the cell array is empty).
 
 ````Matlab
 solvers = prepareTest('needsLP',true);
 ````
 
 #### C: Use multiple solvers if present
-If multiple solvers are requested. solver.LP, solvers.MILP etc will 
-contain all those requested solvers which can solve the respective Problem 
+If multiple solvers are requested. `solvers.LP`, `solvers.MILP` etc will 
+contain all those requested solvers which can solve the respective problem type
 and are installed.
 
 ````Matlab
