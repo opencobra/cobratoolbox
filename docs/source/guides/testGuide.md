@@ -9,15 +9,17 @@ If successfull and all requirements are fulfilled, `prepareTest` will return a s
 Each field will be a cell array of solver names (if any are available).
 If the test does not ask for multiple solvers (via the `requiredSolvers` or the `useSolversIfAvailable` arguments), the returned cell array will only contain at most one solver.
 
-Here are a few examples:
-Require Windows for the test (the same works with Mac, Linux and Unix 
-instead of Windows).
+Here are a few examples:  
+
+#### A: Require Windows for the test
+The same works with Mac, Linux and Unix instead of Windows.
 
 ````Matlab
 solvers = prepareTest('needsWindows',true);
 ````
 
-Require an LP solver. The same works with NLP, MILP, QP or MIQP. 
+#### B: Require an LP solver. 
+The same works with NLP, MILP, QP or MIQP. 
 solver.LP, solvers.MILP etc will contain a string with exactly one solver 
 (if the 'useSolversIfAvailable' keyword is not used and 
 there is a solver installed that works for the problem type)
@@ -26,6 +28,7 @@ there is a solver installed that works for the problem type)
 solvers = prepareTest('needsLP',true);
 ````
 
+#### C: Use multiple solvers if present
 If multiple solvers are requested. solver.LP, solvers.MILP etc will 
 contain all those requested solvers which can solve the respective Problem 
 and are installed.
@@ -34,14 +37,15 @@ and are installed.
 solvers = prepareTest('needsLP',true, 'useSolversIfAvailable',{'ibm_cplex','gurobi'});
 ````
 
-Require a specific Matlab toolbox (e.g. the statistics toolbox) to be present. 
+#### D: Require a specific Matlab toolbox 
+The following example requires the statistics toolbox to be present. 
 The toolbox IDs are specified as those used in `license('test','toolboxName')`. 
 
 ````Matlab
 solvers = prepareTest('requiredToolboxes',{'statistics_toolbox'})
 ````
 
-Require a specific solver for the test.
+#### E: Require a specific solver for the test.
 Make sure this is only used if there is an explicit requirement for a
 specific solver. Otherwise indicate the type of required solver. (see
 above)
@@ -49,8 +53,10 @@ above)
 ````Matlab
 solvers = prepareTest('requiredSolvers',{'ibm_cplex','gurobi'})
 ````
-
-If you have a more complex requirement you should separate the requirements.
+#### F: Multiple Requirements
+If the test requires multiple different properties to be met, 
+you should test them all in the same call. To keep the code readable, first define the 
+Requirements and then pass them in.
 
 ````Matlab
 %Define Required Toolboxes
@@ -100,7 +106,7 @@ If you want to test whether your `function1` correctly throws an **error** messa
 assert(verifyCobraFunctionError(@() function1(input1,input2'),'Input2 has the wrong dimension'));
 
 % If the aim is to test, that the function throws an error at all
-    assert(verifyCobraFunctionError(@() function1(input1,input2')));
+assert(verifyCobraFunctionError(@() function1(input1,input2')));
 
 ````
 
