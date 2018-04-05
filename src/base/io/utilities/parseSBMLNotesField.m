@@ -46,11 +46,10 @@ else
 end
 
 
-[tmp,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'],'tokens','match');
+[fieldTmp,fieldList] = regexp(notesField,['<' tag '>(.*?)</' tag '>'],'tokens','match');
 
 for i = 1:length(fieldList)
-    fieldTmp = regexp(fieldList{i},['<' tag '>(.*)</' tag '>'],'tokens');
-    fieldStr = strtrim(fieldTmp{1}{1});
+    fieldStr = strtrim(fieldTmp{i}{1});
     % Join the remaining string again with the : separator
     strfields = strsplit(fieldStr,':');
     valueStr = strjoin(strfields(2:end), ':');
