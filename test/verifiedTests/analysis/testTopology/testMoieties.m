@@ -13,7 +13,7 @@
 %Test presence of required toolboxes.
 requiredToolboxes = {'bioinformatics_toolbox'};
 requiredSolvers = {'gurobi'};
-testRequirementsAndGetSolvers('ReqSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
+prepareTest('requiredSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
 
 

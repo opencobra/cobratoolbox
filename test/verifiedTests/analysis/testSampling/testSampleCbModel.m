@@ -5,7 +5,7 @@
 %
 
 %Check Requirements
-solverPkgs = testRequirementsAndGetSolvers('needsUnix',true, 'needsLP',true);
+solverPkgs = prepareTest('needsUnix',true, 'needsLP',true); %TODO: Check, whether UNIX is really still required for the test.
 
 
 % save the current path

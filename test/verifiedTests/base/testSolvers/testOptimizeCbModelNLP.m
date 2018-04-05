@@ -11,7 +11,7 @@ global CBTDIR
 
 %Test Requirements
 requiredSolvers = {'matlab','glpk'};
-testRequirementsAndGetSolvers('ReqSolvers',requiredSolvers);
+prepareTest('requiredSolvers',requiredSolvers);
 
 
 % save the current path

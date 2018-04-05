@@ -14,7 +14,7 @@ global CBTDIR
 %Test the requirements
 useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
             'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
-solvers = testRequirementsAndGetSolvers('needsLP',true,'useIfAvailable',useSolversIfAvailable);
+solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
 
 % save the current path
 currentDir = pwd;

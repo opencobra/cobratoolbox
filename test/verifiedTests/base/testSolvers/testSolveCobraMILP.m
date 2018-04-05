@@ -27,7 +27,7 @@ global SOLVERS
 
 %Do this test for all available MIQP solvers
 UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solverPkgs = testRequirementsAndGetSolvers('needsMILP',true,'UseIfAvailable',UseIfAvailable);
+solverPkgs = prepareTest('needsMILP',true,'useSolversIfAvailable',UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;

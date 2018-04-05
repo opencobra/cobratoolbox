@@ -12,7 +12,7 @@
 global CBTDIR
 
 %Check the requirements (a LP solver is necessary)
-solverPkgs = testRequirementsAndGetSolvers('needsLP',true);
+solverPkgs = prepareTest('needsLP',true);
 
 % save the current path
 currentDir = pwd;

@@ -29,7 +29,7 @@ cd(testdir)
 
 requiredToolboxes = {'image_toolbox'};
 
-testRequirementsAndGetSolvers('toolboxes',requiredToolboxes);
+prepareTest('toolboxes',requiredToolboxes);
 
 
 model = createToyModelForConnectedComponentAnalysis();

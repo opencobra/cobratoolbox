@@ -10,7 +10,7 @@
 
 
 %Check Requirements
-solvers = testRequirementsAndGetSolvers('needsLP',true,'needsNLP',true);
+solvers = prepareTest('needsLP',true,'needsNLP',true);
 
 % save the current path
 currentDir = pwd;

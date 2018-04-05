@@ -1,10 +1,10 @@
-function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
+function [solversToUse] = prepareTest(varargin)
 % Checks the prerequisites of the test, and returns solvers depending on
 % the input parameters. If the requirements are NOT met, it will throw a
 % COBRA:RequirementsNotMet error.
 %
 % USAGE:
-%    [solversToUse] = testRequirementsAndGetSolvers(varargin)
+%    [solversToUse] = prepareTest(varargin)
 %
 % OPTIONAL INPUTS:
 %    varagin:       'ParameterName',value pairs with the following

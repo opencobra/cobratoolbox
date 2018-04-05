@@ -9,7 +9,7 @@
 %Check requirements
 
 requiredToolboxes = {'gads_toolbox'}; %This is the Global optimization toolbox
-solvers = testRequirementsAndGetSolvers('needsLP',true,'needsMILP',true,'toolboxes',requiredToolboxes);
+solvers = prepareTest('needsLP',true,'needsMILP',true,'toolboxes',requiredToolboxes);
 %If we have more than one solver per type (LP/MILP), only use those that
 %are available for both.
 if numel(solvers.LP) > 1 && numel(solvers.MILP) > 1

@@ -10,7 +10,7 @@
 
 global CBTDIR
 
-testRequirementsAndGetSolvers('needsUnix',true);
+prepareTest('needsUnix',true);
 
 % save the current path
 currentDir = pwd;

@@ -15,7 +15,7 @@
 currentDir = pwd;
 
 %For windows systems, the LU implementation in sparseNull unfortunately does not provide the same accuracy as LU. We therefore skip the test on Windows.
-testRequirementsAndGetSolvers('needsUnix',true);
+prepareTest('needsUnix',true);
 
 % initialize the test
 fileDir = fileparts(which('testNullspace'));

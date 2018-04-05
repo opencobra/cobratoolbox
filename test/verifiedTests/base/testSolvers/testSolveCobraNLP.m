@@ -24,7 +24,7 @@ tol = 1e-4;
 % define the solver packages to be used to run this test
 global SOLVERS
 UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solverPkgs = testRequirementsAndGetSolvers('needsNLP',true,'UseIfAvailable',UseIfAvailable);
+solverPkgs = prepareTest('needsNLP',true,'useSolversIfAvailable',UseIfAvailable);
 
 for k = 1:length(solverPkgs.NLP)
 

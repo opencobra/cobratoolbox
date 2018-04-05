@@ -14,7 +14,7 @@ global SOLVERS
 
 %Do this test for all available MIQP solvers
 UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solvers = testRequirementsAndGetSolvers('needsMIQP',true,'UseIfAvailable',UseIfAvailable);
+solvers = prepareTest('needsMIQP',true,'useSolversIfAvailable',UseIfAvailable);
 
 % save the current path
 currentDir = pwd;
