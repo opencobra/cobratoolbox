@@ -62,11 +62,11 @@ you should test them all in the same call. To keep the code readable, first defi
 Requirements and then pass them in.
 
 ````Matlab
-%Define Required Toolboxes
+%Define required toolboxes
 requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
-%Define the required Solvers (in this case matlab and dqqMinos)
+%Define the required solvers (in this case matlab and dqqMinos)
 requiredSolvers = {'dqqMinos','matlab'};
-%Now, check if the specified requirements are fullFilled. 
+%Now, check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS). 
 solversPkgs = prepareTest('requiredSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes, 'needsUnix',true);
 ````
 
