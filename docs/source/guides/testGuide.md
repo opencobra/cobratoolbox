@@ -4,23 +4,61 @@ Before starting to write a test on your own, it might be instructive to follow c
 
 ## Define requisites for the test
 There are functions which might need a specific solver, or which can only be run if a certain toolbox is installed on a system. To address these you should specify the respective requirements by using 
-`COBRARequisitesFullfilled`.  
-At the same time the number of solvers that are used for a test can be selected based on this functions output. 
-If the test does not request multiple solvers via the `'useSolversIfAvailable' keyword, only one solver per problem type will be returned.
+`solvers = prepareTest(requirements)`.  
+If successfull and all requirements are fulfilled, `prepareTest` will return a struct with one field for each problem type (`solvers.LP`, `solvers.MILP` etc.).
+Each field will be a cell array of solver names (if any are available).
+If the test does not ask for multiple solvers (via the `requiredSolvers` or the `useSolversIfAvailable` arguments), the returned cell array will only contain at most one solver.
 
 Here are a few examples:
+Require Windows for the test (the same works with Mac, Linux and Unix 
+instead of Windows).
+
 ````Matlab
-%require Windows for the test (the same works with Mac, Linux and Unix instead of windows).
-COBRARequisitesFullfilled('needsWindows',true);
+solvers = prepareTest('needsWindows',true);
+````
 
-%require an LP solver. The same works with NLP, MILP, QP or MIQP. solver.LP, solvers.MILP etc will contain a string with exactly one solver (if any is installed that works for the type)
-solvers = COBRARequisitesFullfilled('needsLP',true);
+Require an LP solver. The same works with NLP, MILP, QP or MIQP. 
+solver.LP, solvers.MILP etc will contain a string with exactly one solver 
+(if the 'useSolversIfAvailable' keyword is not used and 
+there is a solver installed that works for the problem type)
 
-%If multiple solvers are requested. solver.LP, solvers.MILP etc will contain all those solvers which can solve the respective Problem and are installed.
-solvers = COBRARequisitesFullfilled('needsLP',true, 'useSolverIfAvailable',{'ibm_cplex','gurobi'});
+````Matlab
+solvers = prepareTest('needsLP',true);
+````
 
-%requirethe statistics toolbox to be present. Other toolboxes as defined by their license string.
-solvers = COBRARequisitesFullfilled('Toolboxes',{'statistics_toolbox'})
+If multiple solvers are requested. solver.LP, solvers.MILP etc will 
+contain all those requested solvers which can solve the respective Problem 
+and are installed.
+
+````Matlab
+solvers = prepareTest('needsLP',true, 'useSolversIfAvailable',{'ibm_cplex','gurobi'});
+````
+
+Require a specific Matlab toolbox (e.g. the statistics toolbox) to be present. 
+The toolbox IDs are specified as those used in `license('test','toolboxName')`. 
+
+````Matlab
+solvers = prepareTest('requiredToolboxes',{'statistics_toolbox'})
+````
+
+Require a specific solver for the test.
+Make sure this is only used if there is an explicit requirement for a
+specific solver. Otherwise indicate the type of required solver. (see
+above)
+
+````Matlab
+solvers = prepareTest('requiredSolvers',{'ibm_cplex','gurobi'})
+````
+
+If you have a more complex requirement you should separate the requirements.
+
+````Matlab
+%Define Required Toolboxes
+requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
+%Define the required Solvers (in this case matlab and dqqMinos)
+requiredSolvers = {'dqqMinos','matlab'};
+%Now, check if the specified requirements are fullFilled. 
+solversPkgs = prepareTest('requiredSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes, 'needsUnix',true);
 ````
 
 ## Test if an output is correct
@@ -110,7 +148,7 @@ cd(fileparts(which('fileName')));
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solvers = COBRARequisitesFullfilled('needsLP',true);
+solvers = prepareTest('needsLP',true);
 ```
 
 #### 4. Load a model and/or reference data

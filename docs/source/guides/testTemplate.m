@@ -10,37 +10,10 @@
 global CBTDIR
 
 %Define the features required to run the test
-
-%These are the names of the toolboxes as used in
-%license('test','featurename'). If there are no toolboxes required, the
-%argument can be empty or not supplied.
-requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
-%requiredSolvers lists all solvers that need to be present for the test to
-%run. Make sure this is only used if there is an explicit requirement for a
-%specific solver. Otherwise indicate the type of required solver. (see
-%below)
-requiredSolvers = {'dqqMinos','matlab'};
-
-%Now, check if the specified requirements are fullFilled. 
-%You can also require solvers for a specific type of problem by
-%e.g. using testRequirementsAndGetSolvers('needLP', true)  to declare that a LP solver is required for the test. 
-%For other problem types (NLP,MILP,MIQP,QP) replace LP by the respective problem type.
-%You can further specify that the test only runs on windows/mac/linux/unix
-%by specifying 'needsWindows',true
-%For more details and examples please have a look at this guide:
-%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/guides/testGuide.md
-
-%Require the bioinformatics and optimization toolbox (specified above),
-%along with dqqMinos and matlab as solvers (also specified above)
-%solvers will contain a cell arrays of solver names.
-% solversPkgs = testRequirementsAndGetSolvers(); 
-%will return the default solvers for the current installation.
-% The following call will both check the presence of the required solvers
-% and the required Toolboxes 
-solversPkgs = testRequirementsAndGetSolvers('reqSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes);
-
-
-
+requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
+requiredSolvers = { 'dqqMinos', 'matlab' };
+%Require the specified toolboxes and solvers, along with a UNIX OS
+solversPkgs = prepareTest('reqSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needUnix', true);
 
 % save the current path
 currentDir = pwd;

@@ -11,14 +11,14 @@ function [solversToUse] = testRequirementsAndGetSolversForTest(varargin)
 %                   Parameter options:
 %                   * 'toolboxes' or 'requiredToolboxes' - Names of required toolboxes (the license
 %                                        feature name) (Default: {})
-%                   * 'reqSolvers'     - Names of all solvers which MUST be
-%                                        available. If not empty, the resulting
-%                                        solvers struct will contain cell arrays (Default: {})
-%                   * 'useIfAvailable' - Names of solvers which should be
-%                                        used if they are available. If not empty, the resulting
-%                                        solvers struct will contain cell arrays (will
-%                                        not throw an error if not).
-%                                        (Default: {:})
+%                   * 'requiredSolvers' - Names of all solvers which MUST be
+%                                         available. If not empty, the resulting
+%                                         solvers struct will contain cell arrays (Default: {})
+%                   * 'useSolversIfAvailable'  - Names of solvers which should be
+%                                                used if they are available. If not empty, the resulting
+%                                                solvers struct will contain cell arrays (will
+%                                                not throw an error if not).
+%                                                (Default: {})
 %                   * 'needsLP'        - Whether a LP solver is required.
 %                                       (Default = false);
 %                   * 'needsMILP'      - Whether a MILP solver is required.
@@ -102,40 +102,40 @@ end
 
 
 parser = inputParser();
-parser.addParamValue('Toolboxes',{},@iscell);
-parser.addParamValue('RequiredToolboxes',{},@iscell);
-parser.addParamValue('ReqSolvers',{},@iscell);
-parser.addParamValue('UseIfAvailable',{},@iscell);
-parser.addParamValue('NeedsLP',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsMILP',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsNLP',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsQP',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsMIQP',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsUnix',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsLinux',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsWindows',false,@(x) islogical(x) || x == 1 || x == 0 );
-parser.addParamValue('NeedsMac',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('toolboxes',{},@iscell);
+parser.addParamValue('requiredToolboxes',{},@iscell);
+parser.addParamValue('requiredSolvers',{},@iscell);
+parser.addParamValue('useSolversIfAvailable',{},@iscell);
+parser.addParamValue('needsLP',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsMILP',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsNLP',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsQP',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsMIQP',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsUnix',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsLinux',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsWindows',false,@(x) islogical(x) || x == 1 || x == 0 );
+parser.addParamValue('needsMac',false,@(x) islogical(x) || x == 1 || x == 0 );
 
 
 parser.parse(varargin{:});
 
-useQP = parser.Results.NeedsQP;
-useLP = parser.Results.NeedsLP;
-useMIQP = parser.Results.NeedsMIQP;
-useNLP = parser.Results.NeedsNLP;
-useMILP = parser.Results.NeedsMILP;
+useQP = parser.Results.needsQP;
+useLP = parser.Results.needsLP;
+useMIQP = parser.Results.needsMIQP;
+useNLP = parser.Results.needsNLP;
+useMILP = parser.Results.needsMILP;
 
 
-macOnly = parser.Results.NeedsMac;
-windowsOnly = parser.Results.NeedsWindows;
-unixOnly = parser.Results.NeedsUnix;
-linuxOnly = parser.Results.NeedsLinux;
+macOnly = parser.Results.needsMac;
+windowsOnly = parser.Results.needsWindows;
+unixOnly = parser.Results.needsUnix;
+linuxOnly = parser.Results.needsLinux;
 
 
 
-toolboxes = union(parser.Results.Toolboxes,parser.Results.RequiredToolboxes);
-requiredSolvers = parser.Results.ReqSolvers;
-preferredSolvers = parser.Results.UseIfAvailable;
+toolboxes = union(parser.Results.toolboxes,parser.Results.requiredToolboxes);
+requiredSolvers = parser.Results.requiredSolvers;
+preferredSolvers = parser.Results.useSolversIfAvailable;
 
 errorMessage = {};
 
