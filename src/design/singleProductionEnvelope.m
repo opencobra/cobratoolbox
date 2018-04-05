@@ -138,8 +138,8 @@ if savePlot
     currectDirectory = pwd;
     cd(folder);
     NewDirectory = outputFolder;
-    if ~isdir(NewDirectory)
-        mkdir(NewDirectory)
+    if ~isdir([folder filesep NewDirectory])
+        mkdir([folder filesep NewDirectory])
     end
     cd(NewDirectory)
 
