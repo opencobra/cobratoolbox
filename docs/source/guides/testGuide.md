@@ -4,7 +4,9 @@ Before starting to write a test on your own, it might be instructive to follow c
 
 ## Define requisites for the test
 There are functions which might need a specific solver, or which can only be run if a certain toolbox is installed on a system. To address these you should specify the respective requirements by using 
-`solvers = prepareTest(requirements)`.  
+````Matlab
+solvers = prepareTest(requirements)
+````
 If successfull and all requirements are fulfilled, `prepareTest` will return a struct with one field for each problem type (`solvers.LP`, `solvers.MILP` etc.).
 Each field will be a cell array of solver names (if any are available).
 If the test does not ask for multiple solvers (via the `requiredSolvers` or the `useSolversIfAvailable` arguments), the returned cell array will only contain at most one solver.
