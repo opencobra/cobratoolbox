@@ -50,32 +50,31 @@ end
 
 for i = 1:length(fieldList)
     fieldStr = strtrim(fieldTmp{i}{1});
-    % Join the remaining string again with the : separator
     strfields = strsplit(fieldStr,':');
-    valueStr = strjoin(strfields(2:end), ':');
+    %Remove leading and trailing whitespace , and join the remaining string again with the : separator
+    valueStr = strtrim(strjoin(strfields(2:end), ':'));
     %We have several
     if strcmpi(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION') || strcmp(strfields{1}, 'GPR_ASSOCIATION')
-        %Remove leading and trailing whitespace 
-        grRule = strtrim(valueStr);
+        grRule = valueStr;
     elseif strcmpi(strfields{1},'SUBSYSTEM')
-        subSystem = strtrim(valueStr);
+        subSystem = valueStr;
         subSystem = strrep(subSystem,'S_','');
         subSystem = strsplit(regexprep(subSystem,'_+',' '),';');
         
     elseif strcmpi(strfields{1},'EC Number') || strcmpi(strfields{1},'EC_Number')
-        ecNumber = strtrim(valueStr);
+        ecNumber = valueStr;
     elseif strcmpi(strfields{1},'FORMULA')
-        formula = strtrim(valueStr);
+        formula = valueStr;
     elseif strcmpi(strfields{1},'CHARGE')
-        charge = str2num(strtrim(valueStr));
+        charge = str2num(valueStr);
     elseif strcmp(strfields{1},'AUTHORS')
         if isempty(citation)
-            citation = strtrim(valueStr);
+            citation = valueStr;
         else
-            citation = strcat(citation,';',strtrim(valueStr));
+            citation = strcat(citation,';',valueStr);
         end
     elseif strcmpi(strfields{1},'Confidence Level') || strcmpi(strfields{1},'Confidence_Level')
-        confidenceScore = str2double(strtrim(valueStr));
+        confidenceScore = str2double(valueStr);
     elseif strcmpi(strfields{1},'NOTES')
         if isempty(notes)
             notes = regexprep(fieldStr,'[\n\r]+',' ');
