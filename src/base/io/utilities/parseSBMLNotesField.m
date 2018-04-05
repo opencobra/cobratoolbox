@@ -51,39 +51,38 @@ end
 for i = 1:length(fieldList)
     fieldTmp = regexp(fieldList{i},['<' tag '>(.*)</' tag '>'],'tokens');
     fieldStr = strtrim(fieldTmp{1}{1});
+    % Join the remaining string again with the : separator
     strfields = strsplit(fieldStr,':');
+    valueStr = strjoin(strfields(2:end), ':');
     %We have several
-    if strcmp(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION') || strcmp(strfields{1}, 'GPR_ASSOCIATION')
-        %Remove leading and trailing whitespace, and join the remaining strin again with the : separator
-        grRule = strtrim(strjoin(strfields(2:end),':'));
-    elseif strcmp(strfields{1},'SUBSYSTEM')
-        subSystem = strtrim(strjoin(strfields(2:end),':'));
+    if strcmpi(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION') || strcmp(strfields{1}, 'GPR_ASSOCIATION')
+        %Remove leading and trailing whitespace 
+        grRule = strtrim(valueStr);
+    elseif strcmpi(strfields{1},'SUBSYSTEM')
+        subSystem = strtrim(valueStr);
         subSystem = strrep(subSystem,'S_','');
         subSystem = strsplit(regexprep(subSystem,'_+',' '),';');
         
-    elseif strcmp(strfields{1},'EC Number') || strcmp(strfields{1},'EC_Number') || strcmp(strfields{1},'EC_NUMBER') || strcmp(strfields{1},'EC NUMBER')
-        ecNumber = strtrim(strjoin(strfields(2:end),':'));
-    elseif strcmp(strfields{1},'FORMULA') || strcmp(strfields{1},'Formula')
-        formula = strtrim(strjoin(strfields(2:end),':'));
-    elseif strcmp(strfields{1},'CHARGE') || strcmp(strfields{1},'Charge')
-        charge = str2num(strtrim(strjoin(strfields(2:end),':')));
+    elseif strcmpi(strfields{1},'EC Number') || strcmpi(strfields{1},'EC_Number')
+        ecNumber = strtrim(valueStr);
+    elseif strcmpi(strfields{1},'FORMULA')
+        formula = strtrim(valueStr);
+    elseif strcmpi(strfields{1},'CHARGE')
+        charge = str2num(strtrim(valueStr));
     elseif strcmp(strfields{1},'AUTHORS')
         if isempty(citation)
-            citation = strtrim(strjoin(strfields(2:end),':'));
+            citation = strtrim(valueStr);
         else
-            citation = strcat(citation,';',strtrim(strjoin(strfields(2:end),':')));
+            citation = strcat(citation,';',strtrim(valueStr));
         end
-    elseif strcmp(strfields{1},'Confidence Level')
-        confidenceScore = str2num(strtrim(strjoin(strfields(2:end),':')));
-        if isempty(confidenceScore)
-            confidenceScore = NaN;
-        end
-    elseif strcmp(strfields{1},'NOTES')
+    elseif strcmpi(strfields{1},'Confidence Level') || strcmpi(strfields{1},'Confidence_Level')
+        confidenceScore = str2double(strtrim(valueStr));
+    elseif strcmpi(strfields{1},'NOTES')
         if isempty(notes)
             notes = regexprep(fieldStr,'[\n\r]+',' ');
         else
-            if ~isempty(strjoin(strfields(2:end),':'))
-                notes = regexprep(strcat(notes,';',strjoin(strfields(2:end),':')),'[\n\r]+',' ');
+            if ~isempty(valueStr)
+                notes = regexprep(strcat(notes,';',valueStr),'[\n\r]+',' ');
             end
         end
     else

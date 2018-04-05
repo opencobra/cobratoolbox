@@ -79,8 +79,6 @@ if modelSBML.SBML_level == 2
         setCharges =  logical([sbmlSpecies.isSetCharge]);
         model.metCharges(setCharges) = charges(setCharges);
     end
-    %here, we would have to manually parse the annotation, and can't use
-    %CVTerms like in SBML3.
 else
     if isfield(modelSBML,'fbc_version') && modelSBML.fbc_version == 2; %This might have to be adjusted to >2 if the fields stay...
         %Update Charges if set in FBC
