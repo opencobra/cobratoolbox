@@ -39,7 +39,7 @@ testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 
 %Get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'testModelM*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
@@ -47,6 +47,9 @@ pathForTests = path;
 %save the current globals (all tests should have the same environment when
 %starting)
 globals = getGlobals();
+
+%Save the current warning state
+warnstate = warning();
 
 %Run the tests and show outputs.
 for i = 1:numel(testFileNames)
@@ -63,6 +66,9 @@ for i = 1:numel(testFileNames)
     resetGlobals(globals);
     %reset the path
     path(pathForTests);    
+    % Reset the warning state
+    warning(warnstate);
+    
     [~,file,ext] = fileparts(testFileNames{i});
     testName = file;
     fprintf('****************************************************\n\n');
@@ -127,7 +133,12 @@ for i = 1:numel(globalsToDelete)
 end
 
 %Also clear all persistant values
-clear functions
+%This will trigger a warning for all testSuite Files, indicating that they could not be cleared.
+%Therefore we supress warnings for this clear.
+wstate = warning();
+warning('off')
+clear functions 
+warning(wstate);
 
 %And for everything else, check, if it changed
 globalNames = fieldnames(globals);
