@@ -28,3 +28,6 @@
 [submodule "COBRA.papers"]
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
+[submodule "external/rdir"]
+	path = external/rdir
+	url = https://github.com/uni-lu/rdir.git
