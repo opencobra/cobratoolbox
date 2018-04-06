@@ -60,14 +60,14 @@ for i = 1:length(fieldList)
         subSystem = valueStr;
         subSystem = strrep(subSystem,'S_','');
         subSystem = strsplit(regexprep(subSystem,'_+',' '),';');
-        
+
     elseif strcmpi(strfields{1},'EC Number') || strcmpi(strfields{1},'EC_Number')
         ecNumber = valueStr;
     elseif strcmpi(strfields{1},'FORMULA')
         formula = valueStr;
     elseif strcmpi(strfields{1},'CHARGE')
         charge = str2num(valueStr);
-    elseif strcmp(strfields{1},'AUTHORS')
+    elseif strcmpi(strfields{1},'AUTHORS')
         if isempty(citation)
             citation = valueStr;
         else
@@ -98,6 +98,6 @@ if ~isempty(notes)
     else
         comment = [notes sprintf('\n') comment];
     end
-    
+
 end
 end
