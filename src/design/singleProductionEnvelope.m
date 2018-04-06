@@ -38,7 +38,7 @@ function [x, y1, y2] = singleProductionEnvelope(model, deletions, product, bioma
 %
 % OUTPUTS;
 %    x:               x axis for the curves
-%    y1:              y results for the first curve - 'Minimum Wild-type'  
+%    y1:              y results for the first curve - 'Minimum Wild-type'
 %    y2:              y results for the second curve - 'Maximum Wild-type'
 %
 % .. Author - Sebastian Mendoza, December 9th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
@@ -137,11 +137,11 @@ if savePlot
     folder = fileparts(fullPath);
     currectDirectory = pwd;
     cd(folder);
-    NewDirectory = outputFolder;
-    if ~isdir([folder filesep NewDirectory])
-        mkdir([folder filesep NewDirectory])
+    newDirectory = outputFolder;
+    if ~isdir([folder filesep newDirectory])
+        mkdir([folder filesep newDirectory])
     end
-    cd(NewDirectory)
+    cd(newDirectory)
 
     set(gcf, 'PaperUnits', 'centimeters');
     set(gcf, 'PaperPosition', [0 0 20 10]);
