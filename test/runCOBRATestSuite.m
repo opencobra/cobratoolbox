@@ -132,13 +132,7 @@ for i = 1:numel(globalsToDelete)
     clearGlobal(globalsToDelete{i});
 end
 
-%Also clear all persistant values
-%This will trigger a warning for all testSuite Files, indicating that they could not be cleared.
-%Therefore we supress warnings for this clear.
-wstate = warning();
-warning('off')
-clear functions 
-warning(wstate);
+%We cannot clean functions as this would remove profiling information
 
 %And for everything else, check, if it changed
 globalNames = fieldnames(globals);
