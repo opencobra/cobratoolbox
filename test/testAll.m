@@ -83,19 +83,19 @@ if COVERAGE
     
     
     % check the code quality    
-    listFiles = getFilesInDir('gitFileType','tracked','restrictToPattern','*.m$');
+    listFiles = getFilesInDir('type','tracked','restrictToPattern','^.*\.m$','checkSubFolders',true);
 
     % count the number of failed code quality checks per file
     nMsgs = 0;
     nCodeLines = 0;
     nEmptyLines = 0;
     nCommentLines = 0;
-
+    
+    nMsgs = length(checkcode(listFiles{:})); %Check all code files at once.
+    
     for i = 1:length(listFiles)
-        nMsgs = nMsgs + length(checkcode(listFiles(i)));
 
-        fid = fopen(listFiles(i));
-
+        fid = fopen(listFiles{i});
         % check if the file is on the ignored list
         countFlag = true;
         while ~feof(fid) && countFlag
