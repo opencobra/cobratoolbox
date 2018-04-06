@@ -2,72 +2,89 @@
 
 Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](https://opencobra.github.io/cobratoolbox/docs/styleGuide.html).
 
-## Define requisites for the test
-There are functions which might need a specific solver, or which can only be run if a certain toolbox is installed on a system. To address these you should specify the respective requirements by using 
+## Prepare the test (define requirements)
+
+There are functions that need a specific solver or that can only be run if a
+certain toolbox is installed on a system. To address these, you should specify
+the respective requirements by using
+
 ````Matlab
 solvers = prepareTest(requirements)
 ````
-If successfull and all requirements are fulfilled, `prepareTest` will return a struct with one field for each problem type (`solvers.LP`, `solvers.MILP` etc.).
-Each field will be a cell array of solver names (if any are available).
-If the test does not ask for multiple solvers (via the `requiredSolvers` or the `useSolversIfAvailable` arguments), the returned cell array will only contain at most one solver.
 
-Here are a few examples:  
+If successfull and all requirements are
+fulfilled, `prepareTest` will return a `struct` with one field for each problem
+type (`solvers.LP`, `solvers.MILP` etc.).  Each field will be a cell array of
+solver names (if any are available).  If the test does not ask for multiple
+solvers (via the `requiredSolvers` or the `useSolversIfAvailable` arguments),
+the returned cell array will only contain at most one solver.
 
-#### A: Require Windows for the test
+Here are a few examples:
+
+#### Example A: Require Windows for the test
+
 The same works with `needsMac`, `needsLinux` and `needsUnix` instead of `needsWindows`.
 
 ````Matlab
-solvers = prepareTest('needsWindows',true);
+solvers = prepareTest('needsWindows', true);
 ````
 
-#### B: Require an LP solver. 
-The same works with `needsNLP`, `needsMILP`, `needsQP` or `needsMIQP` instead of `needsLP`. 
-`solvers.LP`, `solvers.MILP` etc will be cell arrays of string with the respective 
-available solver for the problem type. If the `'useSolversIfAvailable'` parameter is non empty, 
-all installed solvers requested will be in the cell array. 
-Otherwise there will be at most one solver (if no solver for the problem is installed, the cell array is empty).
+#### Example B: Require an LP solver (`needsLP`)
+
+The same works with `needsNLP`, `needsMILP`, `needsQP` or `needsMIQP`.
+ `solvers.LP`, `solvers.MILP` etc. will be cell arrays of string
+with the respective available solver for the problem type. If the
+`'useSolversIfAvailable'` parameter is non empty, all installed solvers
+requested will be in the cell array.  Otherwise, there will be at most one
+solver (if no solver for the problem is installed, the cell array is empty).
 
 ````Matlab
-solvers = prepareTest('needsLP',true);
+solvers = prepareTest('needsLP', true);
 ````
 
-#### C: Use multiple solvers if present
-If multiple solvers are requested. `solvers.LP`, `solvers.MILP` etc will 
-contain all those requested solvers which can solve the respective problem type
-and are installed.
+#### Example C: Use multiple solvers if present
+
+If multiple solvers are requested. `solvers.LP`, `solvers.MILP` etc will
+contain all those requested solvers that can solve the respective problem type
+and that are installed.
 
 ````Matlab
-solvers = prepareTest('needsLP',true, 'useSolversIfAvailable',{'ibm_cplex','gurobi'});
+solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex', 'gurobi'});
 ````
 
-#### D: Require a specific Matlab toolbox 
-The following example requires the statistics toolbox to be present. 
-The toolbox IDs are specified as those used in `license('test','toolboxName')`. 
+#### Example D: Require a specific MATLAB toolbox
+
+The toolbox IDs are specified as those used in `license('test', 'toolboxName')`.
+The following example requires the statistics toolbox to be present.
 
 ````Matlab
-solvers = prepareTest('requiredToolboxes',{'statistics_toolbox'})
+solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
 ````
 
-#### E: Require a specific solver for the test.
+#### Example E: Require a specific solver
+
 Make sure this is only used if there is an explicit requirement for a
-specific solver. Otherwise indicate the type of required solver. (see
-above)
+specific solver. Otherwise, indicate the type of required solver (see
+above).
 
 ````Matlab
-solvers = prepareTest('requiredSolvers',{'ibm_cplex','gurobi'})
+solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 ````
-#### F: Multiple Requirements
-If the test requires multiple different properties to be met, 
-you should test them all in the same call. To keep the code readable, first define the 
-Requirements and then pass them in.
+#### Example F: Multiple requirements
+
+If the test requires multiple different properties to be met,
+you should test them all in the same call. To keep the code readable, first define the
+requirements and then pass them in.
 
 ````Matlab
-%Define required toolboxes
-requiredToolboxes = {'bioinformatics_toolbox','optimization_toolbox'};
-%Define the required solvers (in this case matlab and dqqMinos)
-requiredSolvers = {'dqqMinos','matlab'};
-%Now, check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS). 
-solversPkgs = prepareTest('requiredSolvers',requiredSolvers,'requiredToolboxes',requiredToolboxes, 'needsUnix',true);
+% define required toolboxes
+requiredToolboxes = {'bioinformatics_toolbox', 'optimization_toolbox'};
+
+% define the required solvers (in this case matlab and dqqMinos)
+requiredSolvers = {'dqqMinos', 'matlab'};
+
+% check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS).
+solversPkgs = prepareTest('requiredSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needsUnix', true);
 ````
 
 ## Test if an output is correct
@@ -204,7 +221,7 @@ for k = 1:length(solvers.LP)
 
     % output a success message
     fprintf('Done.\n');
-end    
+end
 ````
 
 If only one solver is requested:
@@ -215,7 +232,7 @@ solverLPOK = changeCobraSolver(solvers.LP, 'LP', 0);
 
 % output a success message
 fprintf('Done.\n');
-    
+
 ````
 
 
