@@ -1,10 +1,10 @@
-function [results, resultTable] = runCOBRATestSuite(testNames)
+function [results, resultTable] = runTestSuite(testNames)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
 % to be skipped if it throws a COBRA:RequirementsNotMet error.
 %
-% INPUTS: 
+% INPUTS:
 %
 %    testNames:     only run tests matching the regexp given in testNames.
 %
@@ -17,12 +17,12 @@ function [results, resultTable] = runCOBRATestSuite(testNames)
 %                             otherwise false
 %                   .status - a string representing the status of the test
 %                             ('failed','skipped' or'passed')
-%                   .fileName - the fileName of the test 
+%                   .fileName - the fileName of the test
 %                   .time - the duration of the test (if passed otherwise NaN)
 %                   .statusMessage - Informative string about potential
 %                                    problems.
-%                   .Error - The Error message received from a failed or skipped test 
-%    resultTable:   A Table with details of the results. 
+%                   .Error - The Error message received from a failed or skipped test
+%    resultTable:   A Table with details of the results.
 %
 % Author:
 %    - Thomas Pfau Jan 2018.
@@ -53,7 +53,7 @@ warnstate = warning();
 
 %Run the tests and show outputs.
 for i = 1:numel(testFileNames)
-    %Shut down any existing parpool. 
+    %Shut down any existing parpool.
     try
         %Test if there is a parpool that we should shut down before the
         %next test.
@@ -65,25 +65,25 @@ for i = 1:numel(testFileNames)
     %reset the globals
     resetGlobals(globals);
     %reset the path
-    path(pathForTests);    
+    path(pathForTests);
     % Reset the warning state
     warning(warnstate);
-    
+
     [~,file,ext] = fileparts(testFileNames{i});
     testName = file;
     fprintf('****************************************************\n\n');
     fprintf('Running %s\n\n',testName);
     results(i) = runScriptFile([file ext]);
-    fprintf('\n\n%s %s!\n',testName,results(i).status);    
+    fprintf('\n\n%s %s!\n',testName,results(i).status);
     if ~results(i).passed
         if results(i).skipped
             fprintf('Reason:\n%s\n',results(i).statusMessage);
         else
             trace = results(i).Error.getReport();
             tracePerLine = strsplit(trace,'\n');
-            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x,'runCOBRATestSuite')),tracePerLine));
+            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')),tracePerLine));
             trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.
-            fprintf('Reason:\n%s\n',trace);        
+            fprintf('Reason:\n%s\n',trace);
         end
     end
     fprintf('\n\n****************************************************\n');
@@ -94,7 +94,7 @@ end
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
-                        
+
 
 %Change back to the original directory.
 cd(currentDir)
@@ -108,7 +108,7 @@ function globals = getGlobals()
 %
 % OUTPUT:
 %
-%    globals:   a struct of all global variables 
+%    globals:   a struct of all global variables
 globals = struct();
 globalvars = who('global');
 for i = 1:numel(globalvars)
@@ -138,7 +138,7 @@ end
 globalNames = fieldnames(globals);
 for i = 1:numel(globalNames)
     %Set the global to the old value.
-    setGlobal(globalNames{i},globals.(globalNames{i}));    
+    setGlobal(globalNames{i},globals.(globalNames{i}));
 end
 end
 

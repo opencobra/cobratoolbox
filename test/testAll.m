@@ -74,15 +74,15 @@ profile on;
 
 if COVERAGE
     % Get the ignored Files from gitIgnore
-    % only retain the lines that end with .txt and .m and 
+    % only retain the lines that end with .txt and .m and
     %are not comments and point to files in the /src folder
     ignoredPatterns = {'^.{0,3}$',... % Is smaller than four.
                        ['^[^s][^r][^c][^' regexptranslate('escape',filesep) ']']}; % does not start with src/
     filterPatterns = {'\.txt$','\.m$'}; % Is either a .m file or a .txt file.
     ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
-    
-    
-    % check the code quality    
+
+
+    % check the code quality
     listFiles = getFilesInDir('type','tracked','restrictToPattern','^.*\.m$','checkSubFolders',true);
 
     % count the number of failed code quality checks per file
@@ -90,9 +90,9 @@ if COVERAGE
     nCodeLines = 0;
     nEmptyLines = 0;
     nCommentLines = 0;
-    
+
     nMsgs = length(checkcode(listFiles{:})); %Check all code files at once.
-    
+
     for i = 1:length(listFiles)
 
         fid = fopen(listFiles{i});
@@ -151,11 +151,11 @@ try
     originalUserPath = path;
 
     % run the tests in the subfolder verifiedTests/ recursively
-    [result,resultTable] = runCOBRATestSuite();
+    [result,resultTable] = runTestSuite();
 
-    sumSkipped = sum(resultTable.Skipped);    
-    sumFailed = sum(resultTable.Failed) - sumSkipped;    
-    
+    sumSkipped = sum(resultTable.Skipped);
+    sumFailed = sum(resultTable.Failed) - sumSkipped;
+
     fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
 
     % count the number of covered lines of code
@@ -191,11 +191,11 @@ try
 
     % print out a summary table
     resultTable
-    
+
     % Print some information on failed and skipped tests.
     skippedTests = find(resultTable.Skipped);
     if sum(skippedTests > 0)
-        fprintf('The following tests were skipped:\n%s\n\n', strjoin(resultTable.TestName(skippedTests),'\n'));        
+        fprintf('The following tests were skipped:\n%s\n\n', strjoin(resultTable.TestName(skippedTests),'\n'));
         fprintf('The reasons were as follows:\n')
         for i = 1:numel(skippedTests)
             fprintf('------------------------------------------------\n')
@@ -205,35 +205,35 @@ try
         end
         fprintf('\n\n')
     end
-    
+
     failedTests = find(resultTable.Failed & ~resultTable.Skipped);
     if sum(failedTests > 0)
-        fprintf('The following tests failed:\n%s\n\n', strjoin(resultTable.TestName(failedTests),'\n'));        
+        fprintf('The following tests failed:\n%s\n\n', strjoin(resultTable.TestName(failedTests),'\n'));
         fprintf('The reasons were as follows:\n')
         for i = 1:numel(failedTests)
             fprintf('------------------------------------------------\n')
             fprintf('%s:\n',resultTable.TestName{failedTests(i)});
             trace = result(failedTests(i)).Error.getReport();
             tracePerLine = strsplit(trace,'\n');
-            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x,'runCOBRATestSuite')),tracePerLine));
-            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.                        
+            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')),tracePerLine));
+            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.
             fprintf('%s\n',trace);
             fprintf('------------------------------------------------\n')
         end
         fprintf('\n\n')
     end
-    
+
 
     % restore the original path
     restoredefaultpath;
     addpath(originalUserPath);
 
-    if sumFailed > 0 
+    if sumFailed > 0
         exit_code = 1;
     end
 
     fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
-    
+
     %clean up temporary files.
     removeTempFiles(testDirPath,testDirContent);
 
