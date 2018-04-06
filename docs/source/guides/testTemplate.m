@@ -9,10 +9,12 @@
 
 global CBTDIR
 
-%Define the features required to run the test
+% define the features required to run the test
 requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
+
 requiredSolvers = { 'dqqMinos', 'matlab' };
-%Require the specified toolboxes and solvers, along with a UNIX OS
+
+% require the specified toolboxes and solvers, along with a UNIX OS
 solversPkgs = prepareTest('reqSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needUnix', true);
 
 % save the current path
@@ -48,7 +50,7 @@ catch ME
     parTest = false;
     fprintf('No Parallel Toolbox found. TRying test without Parallel toolbox.\n')
 end
-if parTest 
+if parTest
 % if parallel toolbox has to be present (if not, this can be left out).
 %}
 
