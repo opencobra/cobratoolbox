@@ -9,8 +9,8 @@
 %
 
 
-%Check Requirements
-solvers = prepareTest('needsLP',true,'needsNLP',true);
+% Check Requirements
+solvers = prepareTest('needsLP', true, 'needsNLP', true);
 
 % save the current path
 currentDir = pwd;
@@ -19,14 +19,14 @@ currentDir = pwd;
 fileDir = fileparts(which('testFitC13Data'));
 cd(fileDir);
 
-majorIterationLimit = 10000; % fitting length
-model = readCbModel('model.mat'); % loads modelWT
-load('expdata.mat', 'expdata'); % load data
-load('point.mat', 'v0'); % load initial point
+majorIterationLimit = 10000;  % fitting length
+model = readCbModel('model.mat');  % loads modelWT
+load('expdata.mat', 'expdata');  % load data
+load('point.mat', 'v0');  % load initial point
 
 % create a parallel pool
 try
-    %Shut down any existing pool
+    % Shut down any existing pool
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
 
@@ -40,14 +40,14 @@ catch
     disp('Trying Non Parallel')
 end
 
-changeCobraSolver(solvers.NLP{1},'NLP',0);
-changeCobraSolver(solvers.LP{1},'LP',0);
+changeCobraSolver(solvers.NLP{1}, 'NLP', 0);
+changeCobraSolver(solvers.LP{1}, 'LP', 0);
 
 generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
-expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)
+expdata.inputfrag = convertCarbonInput(expdata.input);  % generate inputFragments (required for EMU solver)
 
 % start from a different point
-output = scoreC13Fit(v0.^2,expdata,model);
+output = scoreC13Fit(v0.^2, expdata, model);
 
 initial_score = output.error;
 
