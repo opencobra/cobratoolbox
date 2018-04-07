@@ -7,50 +7,34 @@ function [solversToUse] = prepareTest(varargin)
 %    [solversToUse] = prepareTest(varargin)
 %
 % OPTIONAL INPUTS:
-%    varagin:           'ParameterName' value pairs with the following
-%                       Parameter options:
-%                        * 'toolboxes' or 'requiredToolboxes' - Names of required toolboxes (the license
-%                                                               feature name) (Default: {})
-%                        * 'requiredSolvers'        - Names of all solvers which MUST be
-%                                                     available. If not empty, the resulting
-%                                                     solvers struct will contain cell arrays (Default: {})
-%                        * 'useSolversIfAvailable'  - Names of solvers which should be
-%                                                     used if they are available. If not empty, the resulting
-%                                                     solvers struct will contain cell arrays (will
-%                                                     not throw an error if not). (Default: {})
-%                        * 'needsLP'                - Whether a LP solver is required.
-%                                                     (Default = false);
-%                        * 'needsMILP'              - Whether a MILP solver is required.
-%                                                     (Default = false);
-%                        * 'needsQP'                - Whether a QP solver is required.
-%                                                     (Default = false);
-%                        * 'needsMIQP'              - Whether a MIQP solver is required.
-%                                                     (Default = false);
-%                        * 'needsNLP'               - Whether a NLP solver is required.
-%                                                     (Default = false);
-%                        * 'needsUnix'              - Whether the test only works on a
-%                                                     Unix system (mac or linux)
-%                                                     (Default = false);
-%                        * 'needsWindows'           - Whether the test only works on a Windows system
-%                                                     (Default = false);
-%                        * 'needsMac'               - Whether the test only works on a Mac system
-%                                                     (Default = false);
-%                        * 'needsLinux'             - Whether the test only works on a Linux system
-%                                                     (Default = false);
+%    varagin:      `ParameterName` value pairs with the following options:
+%
+%                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name) (default: {})
+%                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
+%                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
+%                   - `needsLP`: Whether a LP solver is required (default: false)
+%                   - `needsMILP`: Whether a MILP solver is required (default: false)
+%                   - `needsQP`: Whether a QP solver is required (default: false)
+%                   - `needsMIQP`: Whether a MIQP solver is required (default: false)
+%                   - `needsNLP`: Whether a NLP solver is required (default: false)
+%                   - `needsUnix`: Whether the test only works on a Unix system (macOS or Linux) (default: false)
+%                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
+%                   - `needsMac`: Whether the test only works on a Mac system (default: false)
+%                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
 %
 % OUTPUTS:
 %
-%    solversToUse:         A struct with one field per solver type listing
-%                          the solvers to use for that type of problem in a cell array.
-%                          If neither the 'useIfAvailable' nor the 'reqSolvers'
-%                          paramter is provided, only at most one solver
-%                          per type will be returned (i.e. the default
-%                          solver for that type). See the examples below
+%    solversToUse:  A struct with one field per solver type listing
+%                   the solvers to use for that type of problem in a cell array.
+%                   If neither of the 'useIfAvailable' nor the 'reqSolvers'
+%                   parameter is provided, only at most one solver
+%                   per type will be returned (i.e. the default
+%                   solver for that type). See the examples below
 %
 % EXAMPLE:
 %
 %      % request a check for the parallel processing toolbox
-%      >>> solvers = testRequirementsAndGetSolvers('requiredToolboxes',{'distrib_computing_toolbox'})
+%      >> solvers = prepareTest('requiredToolboxes', {'distrib_computing_toolbox'})
 %      solvers =
 %
 %                struct with fields:
@@ -62,7 +46,7 @@ function [solversToUse] = prepareTest(varargin)
 %                     NLP: {'matlab'}
 %
 %      % request gurobi, ibm_cplex and tomlab if available
-%      >>> solvers = testRequirementsAndGetSolvers('useIfAvailable',{'tomlab','ibm_cplex','gurobi'})
+%      >> solvers = prepareTest('useIfAvailable', {'tomlab', 'ibm_cplex', 'gurobi'})
 %      solvers =
 %
 %                struct with fields:
@@ -75,7 +59,7 @@ function [solversToUse] = prepareTest(varargin)
 %
 %
 
-global CBT_MISSING_REQUIREMENTS_ERROR_ID;
+global CBT_MISSING_REQUIREMENTS_ERROR_ID
 global OPT_PROB_TYPES
 persistent availableSolvers
 
