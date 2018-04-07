@@ -8,19 +8,18 @@ function status = removeTempFiles(directory, oldcontent, varargin)
 %
 % INPUT:
 %    directory: The directory which should be checked for changing files.
-%    content:   Absolute file names of the original conten in a cell array. 
-% 
+%    content:   Absolute file names of the original conten in a cell array.
+%
 % OPTIONAL INPUT:
-%    varargin:             Additional Options as 'ParameterName', value
-%                          pairs with the following options:
-%                          COBRAGitIgnoredOnly - Whether to only remove files which are listed by
-%                                                the COBRA gitignore file.
-%                                                (Default: true)
-%                          checkSubFolders -     Whether to check subFolder (Default: true)
+%    varargin:  Additional options as `ParameterName`, value
+%               pairs with the following options:
+%
+%                - `COBRAGitIgnoredOnly`: only remove files which are listed by the COBRA gitignore file (default: true)
+%                - `checkSubFolders`: check subFolder (default: true)
 %
 % OUTPUT:
 %
-%    status:        Whether the deletion was successfull (
+%    status:    status of the deletion (`true` if successful)
 
 parser = inputParser();
 parser.addParamValue('COBRAGitIgnoredOnly',true,@(x) islogical(x) || isnumeric(x) && (x == 0 || x == 1));
@@ -52,7 +51,7 @@ warning('PlaceHolder') %create a placeholder to test if the delete call throws a
 lwarn = lastwarn;
 
 % by adding the folder, we already have the correct path.
-if ~isempty(newIgnoredFiles)    
+if ~isempty(newIgnoredFiles)
     delete(newIgnoredFiles{:});
 end
 newlwarn = lastwarn;
@@ -65,7 +64,7 @@ if strcmpi(lwarn,newlwarn)
 else
     status = false;
 end
-    
+
 cd(currentDir);
 
 end
