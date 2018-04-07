@@ -30,7 +30,7 @@ try
     executefile(fileName);
 catch ME
     % vatch errors and interpret them
-    clearvars - except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS_ERROR_ID
+    clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS_ERROR_ID
     result = struct('status', 'failed', 'failed', true, 'passed', false, 'skipped', false, 'fileName', ...
                     COBRA_TESTSUITE_TESTFILE, 'time', NaN, 'statusMessage', 'fail', 'Error', ME);
     if strcmp(ME.identifier, CBT_MISSING_REQUIREMENTS_ERROR_ID)
