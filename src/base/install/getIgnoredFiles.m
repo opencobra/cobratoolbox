@@ -6,7 +6,7 @@ function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 %
 % OPTIONAL INPUTS:
 %    ignorePatterns:    A cell array of regexp patterns indicating files
-%                       which are not to be listed 
+%                       which are not to be listed
 %    filterpatterns:    A cell array of regexp patterns identifying those
 %                       files which should be returned after ignoring.
 %
@@ -14,8 +14,8 @@ function ignoredFiles = getIgnoredFiles(ignorepatterns, filterpatterns)
 %    ignoredFiles:      All files (and patterns) indicated as ignored in
 %                       the gitignore file.
 %
-% Authors:      Original Code: Laurent Heirandt
-%               Move to function: Thomas Pfau, Jan 2018
+% .. Authors: - Original Code: Laurent Heirandt
+%          - Move to function: Thomas Pfau, Jan 2018
 
 
 global CBTDIR
@@ -39,10 +39,10 @@ ignoredFiles = {};
 
 % loop through the file names of the .gitignore file
 while ~feof(fid)
-    lineOfFile = strtrim(char(fgetl(fid)));    
+    lineOfFile = strtrim(char(fgetl(fid)));
     %remove lines that match any ignore pattern and do not match any
     %filterpattern
-    if ~any(~cellfun(@(x) isempty(regexp(lineOfFile,x,'ONCE')),ignorepatterns))        
+    if ~any(~cellfun(@(x) isempty(regexp(lineOfFile,x,'ONCE')),ignorepatterns))
         if any(~cellfun(@(x) isempty(regexp(lineOfFile,x,'ONCE')),filterpatterns))
             ignoredFiles{counter} = lineOfFile;
             counter = counter + 1;
