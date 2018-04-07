@@ -1,5 +1,5 @@
 function solvers = getAvailableSolversByType()
-% Get the available Solvers for the different Types on the system.
+% Get the available solvers for the different solver types on the system.
 %
 % USAGE:
 %    solvers = getAvailableSolversByType()
@@ -9,8 +9,8 @@ function solvers = getAvailableSolversByType()
 %               solvers installed on the system for that problem type.
 %
 
-global OPT_PROB_TYPES;
-global SOLVERS;
+global OPT_PROB_TYPES
+global SOLVERS
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
@@ -23,12 +23,12 @@ solvers = struct();
 for i = 1:numel(OPT_PROB_TYPES)
     solvers.(OPT_PROB_TYPES{i}) = {};
 end
-    
+
 for i = 1:numel(solverNames)
-   if SOLVERS.(solverNames{i}).working
-       availableTypes = SOLVERS.(solverNames{i}).type;
-       for j = 1:numel(availableTypes)
-           solvers.(availableTypes{j}) = [solvers.(availableTypes{j}), solverNames{i}];
-       end
-   end
+    if SOLVERS.(solverNames{i}).working
+        availableTypes = SOLVERS.(solverNames{i}).type;
+        for j = 1:numel(availableTypes)
+            solvers.(availableTypes{j}) = [solvers.(availableTypes{j}), solverNames{i}];
+        end
+    end
 end
