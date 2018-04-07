@@ -1,43 +1,42 @@
 function [solversToUse] = prepareTest(varargin)
 % Checks the prerequisites of the test, and returns solvers depending on
-% the input parameters. If the requirements are NOT met, it will throw a
-% COBRA:RequirementsNotMet error.
+% the input parameters. If the requirements are NOT met, a
+% COBRA:RequirementsNotMet error is thrown.
 %
 % USAGE:
 %    [solversToUse] = prepareTest(varargin)
 %
 % OPTIONAL INPUTS:
-%    varagin:       'ParameterName',value pairs with the following
-%                   Parameter options:
-%                   * 'toolboxes' or 'requiredToolboxes' - Names of required toolboxes (the license
-%                                        feature name) (Default: {})
-%                   * 'requiredSolvers' - Names of all solvers which MUST be
-%                                         available. If not empty, the resulting
-%                                         solvers struct will contain cell arrays (Default: {})
-%                   * 'useSolversIfAvailable'  - Names of solvers which should be
-%                                                used if they are available. If not empty, the resulting
-%                                                solvers struct will contain cell arrays (will
-%                                                not throw an error if not).
-%                                                (Default: {})
-%                   * 'needsLP'        - Whether a LP solver is required.
-%                                       (Default = false);
-%                   * 'needsMILP'      - Whether a MILP solver is required.
-%                                       (Default = false);
-%                   * 'needsQP'        - Whether a QP solver is required.
-%                                       (Default = false);
-%                   * 'needsMIQP'      - Whether a MIQP solver is required.
-%                                       (Default = false);
-%                   * 'needsNLP'       - Whether a NLP solver is required.
-%                                       (Default = false);
-%                   * 'needsUnix'      - Whether the test only works on a
-%                                        Unix system (mac or linux)
-%                                        (Default = false);
-%                   * 'needsWindows'   - Whether the test only works on a Windows system
-%                                        (Default = false);
-%                   * 'needsMac'       - Whether the test only works on a Mac system
-%                                        (Default = false);
-%                   * 'needsLinux'     - Whether the test only works on a Linux system
-%                                        (Default = false);
+%    varagin:           'ParameterName' value pairs with the following
+%                       Parameter options:
+%                        * 'toolboxes' or 'requiredToolboxes' - Names of required toolboxes (the license
+%                                                               feature name) (Default: {})
+%                        * 'requiredSolvers'        - Names of all solvers which MUST be
+%                                                     available. If not empty, the resulting
+%                                                     solvers struct will contain cell arrays (Default: {})
+%                        * 'useSolversIfAvailable'  - Names of solvers which should be
+%                                                     used if they are available. If not empty, the resulting
+%                                                     solvers struct will contain cell arrays (will
+%                                                     not throw an error if not). (Default: {})
+%                        * 'needsLP'                - Whether a LP solver is required.
+%                                                     (Default = false);
+%                        * 'needsMILP'              - Whether a MILP solver is required.
+%                                                     (Default = false);
+%                        * 'needsQP'                - Whether a QP solver is required.
+%                                                     (Default = false);
+%                        * 'needsMIQP'              - Whether a MIQP solver is required.
+%                                                     (Default = false);
+%                        * 'needsNLP'               - Whether a NLP solver is required.
+%                                                     (Default = false);
+%                        * 'needsUnix'              - Whether the test only works on a
+%                                                     Unix system (mac or linux)
+%                                                     (Default = false);
+%                        * 'needsWindows'           - Whether the test only works on a Windows system
+%                                                     (Default = false);
+%                        * 'needsMac'               - Whether the test only works on a Mac system
+%                                                     (Default = false);
+%                        * 'needsLinux'             - Whether the test only works on a Linux system
+%                                                     (Default = false);
 %
 % OUTPUTS:
 %
@@ -50,7 +49,7 @@ function [solversToUse] = prepareTest(varargin)
 %
 % EXAMPLE:
 %
-%      %Request a check for the parallel processing toolbox
+%      % request a check for the parallel processing toolbox
 %      >>> solvers = testRequirementsAndGetSolvers('requiredToolboxes',{'distrib_computing_toolbox'})
 %      solvers =
 %
@@ -62,7 +61,7 @@ function [solversToUse] = prepareTest(varargin)
 %                    MIQP: {'gurobi'}
 %                     NLP: {'matlab'}
 %
-%      %Request gurobi, ibm_cplex and tomlab if available
+%      % request gurobi, ibm_cplex and tomlab if available
 %      >>> solvers = testRequirementsAndGetSolvers('useIfAvailable',{'tomlab','ibm_cplex','gurobi'})
 %      solvers =
 %
@@ -76,12 +75,11 @@ function [solversToUse] = prepareTest(varargin)
 %
 %
 
-% Do some precomputation.
 global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 global OPT_PROB_TYPES
 persistent availableSolvers
 
-% Some Matlab Toolboxes currently in use in the COBRA Toolbox.
+% some Matlab Toolboxes currently in use in the COBRA Toolbox.
 % This might have to be extended in the future.
 toolboxInfo = struct('statistics_toolbox', {{'Statistics and Machine Learning Toolbox', 'Statistics Toolbox'}}, ...
                      'bioinformatics_toolbox', {{'Bioinformatics Toolbox'}}, ...
@@ -116,7 +114,6 @@ parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0)
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
 
-
 parser.parse(varargin{:});
 
 useQP = parser.Results.needsQP;
@@ -125,12 +122,10 @@ useMIQP = parser.Results.needsMIQP;
 useNLP = parser.Results.needsNLP;
 useMILP = parser.Results.needsMILP;
 
-
 macOnly = parser.Results.needsMac;
 windowsOnly = parser.Results.needsWindows;
 unixOnly = parser.Results.needsUnix;
 linuxOnly = parser.Results.needsLinux;
-
 
 toolboxes = union(parser.Results.toolboxes, parser.Results.requiredToolboxes);
 requiredSolvers = parser.Results.requiredSolvers;
@@ -138,7 +133,7 @@ preferredSolvers = parser.Results.useSolversIfAvailable;
 
 errorMessage = {};
 
-% First, check whether the OS is applicable
+% first, check whether the OS is applicable
 if macOnly
     if ~ismac
         errorMessage{end + 1} = 'This test only works on macOS';
@@ -150,7 +145,6 @@ if windowsOnly
         errorMessage{end + 1} = 'This test only works on Windows';
     end
 end
-
 
 if linuxOnly
     if ~isunix
@@ -168,10 +162,9 @@ if unixOnly
     end
 end
 
-
-% Then, check the required Solvers
+% then, check the required Solvers
 if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers, availableSolvers.ALL))
-    % We have required solvers and some are missing
+    % we have required solvers and some are missing
     missing = ~ismember(requiredSolvers, availableSolvers.ALL);
     if sum(missing) == 1
         misssolver = requiredSolvers{missing};
@@ -180,11 +173,11 @@ if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers, availableSolvers.
         errorMessage{end + 1} = sprintf('%s are missing solvers required for the test but not available on your system.', strjoin(requiredSolvers(missing), ' and '));
     end
 else
-    % Otherwise add the required Solvers to the preferred solvers.
+    % otherwise add the required Solvers to the preferred solvers.
     preferredSolvers = union(preferredSolvers, requiredSolvers);
 end
 
-% Now, Check the Toolboxes
+% check the Toolboxes
 res = ver;
 missingTBs = struct('License', {{}}, 'Installation', {{}});
 for i = 1:numel(toolboxes)
@@ -193,7 +186,7 @@ for i = 1:numel(toolboxes)
     if any(ismember(tbstring, fieldnames(toolboxInfo)))
         tbpres = any(ismember(toolboxInfo.(lower(toolboxes{i})), {res.Name}));
     else
-        % We will rely on the license....
+        % rely on the license
         tbpres = licpres;
     end
     if ~tbpres
@@ -205,7 +198,7 @@ for i = 1:numel(toolboxes)
 end
 
 
-% Append the error message.
+% append the error message
 if ~isempty(missingTBs.License)
     errorMessage{end + 1} = sprintf('The test requires licenses for the following Toolboxes: %s', strjoin(missingTBs.License, ' and '));
 end
@@ -213,7 +206,7 @@ if ~isempty(missingTBs.Installation)
     errorMessage{end + 1} = sprintf('The test requires the following Toolboxes to be installed: %s', strjoin(missingTBs.Installation, ' and '));
 end
 
-% Set up default solvers. And test whether the test is useable.
+% set up default solvers and test whether the test is useable
 if isempty(availableSolvers.LP)
     if useLP
         errorMessage{end + 1} = 'The test requires at least one LP solver but no solver is installed';
@@ -281,7 +274,7 @@ if ~isempty(errorMessage)
     error(CBT_MISSING_REQUIREMENTS_ERROR_ID, strjoin(errorMessage, '\n'));
 end
 
-% Ok, we are successfull. so lets collect the Used Solvers.
+% collect the Used Solvers.
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
 for i = 1:numel(problemTypes)
@@ -291,10 +284,10 @@ for i = 1:numel(problemTypes)
             eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
         else
             if isempty(availableSolvers.(problemTypes{i}))
-                % No solver exists, the cell array is empty.
+                % no solver exists, the cell array is empty.
                 solversToUse.(problemTypes{i}) = {};
             else
-                % A Solver exists, provide it.
+                % a solver exists, provide it.
                 eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
             end
         end
