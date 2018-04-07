@@ -43,9 +43,9 @@ cd(CBTDIR);
 % run the official initialisation script
 initCobraToolbox;
 
-%Init the cleanup:
+% Init the cleanup:
 currentDir = cd('test');
-testDirContent = getFilesInDir('type','all'); %Get all currently present files in the folder.
+testDirContent = getFilesInDir('type', 'all');  % Get all currently present files in the folder.
 testDirPath = pwd;
 cd(currentDir);
 
@@ -75,15 +75,14 @@ profile on;
 if COVERAGE
     % Get the ignored Files from gitIgnore
     % only retain the lines that end with .txt and .m and
-    %are not comments and point to files in the /src folder
-    ignoredPatterns = {'^.{0,3}$',... % Is smaller than four.
-                       ['^[^s][^r][^c][^' regexptranslate('escape',filesep) ']']}; % does not start with src/
-    filterPatterns = {'\.txt$','\.m$'}; % Is either a .m file or a .txt file.
-    ignoreFiles = getIgnoredFiles(ignoredPatterns,filterPatterns);
-
+    % are not comments and point to files in the /src folder
+    ignoredPatterns = {'^.{0,3}$', ...  % Is smaller than four.
+                       ['^[^s][^r][^c][^' regexptranslate('escape', filesep) ']']};  % does not start with src/
+    filterPatterns = {'\.txt$', '\.m$'};  % Is either a .m file or a .txt file.
+    ignoreFiles = getIgnoredFiles(ignoredPatterns, filterPatterns);
 
     % check the code quality
-    listFiles = getFilesInDir('type','tracked','restrictToPattern','^.*\.m$','checkSubFolders',true);
+    listFiles = getFilesInDir('type', 'tracked', 'restrictToPattern', '^.*\.m$', 'checkSubFolders', true);
 
     % count the number of failed code quality checks per file
     nMsgs = 0;
@@ -91,7 +90,7 @@ if COVERAGE
     nEmptyLines = 0;
     nCommentLines = 0;
 
-    nMsgs = length(checkcode(listFiles{:})); %Check all code files at once.
+    nMsgs = length(checkcode(listFiles{:}));  % Check all code files at once.
 
     for i = 1:length(listFiles)
 
@@ -151,7 +150,7 @@ try
     originalUserPath = path;
 
     % run the tests in the subfolder verifiedTests/ recursively
-    [result,resultTable] = runTestSuite();
+    [result, resultTable] = runTestSuite();
 
     sumSkipped = sum(resultTable.Skipped);
     sumFailed = sum(resultTable.Failed) - sumSkipped;
@@ -195,12 +194,12 @@ try
     % Print some information on failed and skipped tests.
     skippedTests = find(resultTable.Skipped);
     if sum(skippedTests > 0)
-        fprintf('The following tests were skipped:\n%s\n\n', strjoin(resultTable.TestName(skippedTests),'\n'));
+        fprintf('The following tests were skipped:\n%s\n\n', strjoin(resultTable.TestName(skippedTests), '\n'));
         fprintf('The reasons were as follows:\n')
         for i = 1:numel(skippedTests)
             fprintf('------------------------------------------------\n')
-            fprintf('%s:\n',resultTable.TestName{skippedTests(i)});
-            fprintf('%s\n',resultTable.Details{skippedTests(i)});
+            fprintf('%s:\n', resultTable.TestName{skippedTests(i)});
+            fprintf('%s\n', resultTable.Details{skippedTests(i)});
             fprintf('------------------------------------------------\n')
         end
         fprintf('\n\n')
@@ -208,21 +207,20 @@ try
 
     failedTests = find(resultTable.Failed & ~resultTable.Skipped);
     if sum(failedTests > 0)
-        fprintf('The following tests failed:\n%s\n\n', strjoin(resultTable.TestName(failedTests),'\n'));
+        fprintf('The following tests failed:\n%s\n\n', strjoin(resultTable.TestName(failedTests), '\n'));
         fprintf('The reasons were as follows:\n')
         for i = 1:numel(failedTests)
             fprintf('------------------------------------------------\n')
-            fprintf('%s:\n',resultTable.TestName{failedTests(i)});
+            fprintf('%s:\n', resultTable.TestName{failedTests(i)});
             trace = result(failedTests(i)).Error.getReport();
-            tracePerLine = strsplit(trace,'\n');
-            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')),tracePerLine));
-            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.
-            fprintf('%s\n',trace);
+            tracePerLine = strsplit(trace, '\n');
+            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')), tracePerLine));
+            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition - 7)), '\n'));  % Remove the testSuiteTrace.
+            fprintf('%s\n', trace);
             fprintf('------------------------------------------------\n')
         end
         fprintf('\n\n')
     end
-
 
     % restore the original path
     restoredefaultpath;
@@ -234,16 +232,16 @@ try
 
     fprintf(['\n > The exit code is ', num2str(exit_code), '.\n\n']);
 
-    %clean up temporary files.
-    removeTempFiles(testDirPath,testDirContent);
+    % clean up temporary files.
+    removeTempFiles(testDirPath, testDirContent);
 
     % ensure that we ALWAYS call exit
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         exit(exit_code);
     end
 catch ME
-    %Also clean up temporary files in case of an error.
-    removeTempFiles(testDirPath,testDirContent);
+    % Also clean up temporary files in case of an error.
+    removeTempFiles(testDirPath, testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         % only exit on jenkins.
         exit(1);
