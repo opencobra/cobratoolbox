@@ -82,38 +82,25 @@ if strcmp(type,'genes')
             errormessage = ['Rules field does not satisfy the field definitions. Please check that it satisfies the definitions given ' includedLink];
             error(errormessage);
         end
-        %Store all modified rules
-        modifiedRules = [];
-        %However, we first normalize the rules.        
-        model = normalizeRules(model);
-        %First, eliminate all removed indices
-        for i = 1:numel(genePos)
-            %Replace either a trailing &, or a leading &            
-            rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
-            matchingrules = find(~cellfun(@isempty, rules));
-            modifiedRules = union(modifiedRules,matchingrules);
-            for elem = 1:numel(matchingrules)
-                cres = rules{matchingrules(elem)};                
-                for pos = 1:numel(cres)
-                    if isequal(cres(pos).pre,'&')
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)|$])'],'$1');
-                    elseif isequal(cres(pos).post,'&')
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[ \(]) *x\(' num2str(genePos(i)) '\) *& *'],'$1');
-                    elseif isequal(cres(pos).post,'|')
-                        %Make sure its not preceded by a &
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
-                    elseif isequal(cres(pos).pre,'|')
-                        %Make sure its not followed by a &
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\)([^&]|$)'],'$1');
-                    else
-                        %This should only ever happen if there is only one gene.
-                        model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['^|[\( ]*x\(' num2str(genePos(i)) '\)[\) ]*|$'],'');
-                    end
-                    %Remove trailing or leading whitespaces
-                    model.rules(matchingrules(elem)) = strtrim(model.rules(matchingrules(elem)));
+        %obtain the relevant rules
+        relrules = cellfun(@(y) cellfun(@(x) ~isempty(strfind(y,x)),strcat('x(',cellfun(@num2str,num2cell(genePos),'UniformOutput',0),')')),model.rules,'UniformOutput',0);                
+        matchingRules = find(cellfun(@any,relrules));
+        %Define modified rules.
+        modifiedRules = matchingRules;
+        fp = FormulaParser();
+        for crule = 1:numel(matchingRules)
+            rule = fp.parseFormula(model.rules{matchingRules(crule)});
+            rulegenes = relrules{matchingRules(crule)};
+            for g = 1:numel(genePos)
+                if rulegenes(g)
+                    rule.deleteLiteral(num2str(genePos(g)));
                 end
-            end              
+        % Fix rules that now have more than one continuous "|"
+        model.rules = regexprep(model.rules, '\|{2,}', '|');
+            end
+            model.rules{matchingRules(crule)} = rule.toString(1);
         end
+        
         %Now, replace all remaining indices.
         oldIndices = find(~indicesToRemove);
         for i = 1:numel(oldIndices)
@@ -121,11 +108,54 @@ if strcmp(type,'genes')
                 %replace by new with an indicator that this is new.
                 model.rules = strrep(model.rules,['x(' num2str(oldIndices(i)) ')'],['x(' num2str(i) '$)']);
             end
-        end
-        %remove the indicator.
-        model.rules = strrep(model.rules,'$','');
-        %remove the indicator.
+        %First, eliminate all removed indices        
+%         for i = 1:numel(genePos)
+%             %Replace either a trailing &, or a leading &            
+%             rules = regexp(model.rules,['(?<pre>[\|&]?) *x\(' num2str(genePos(i)) '\) *(?<post>[\|&]?)'],'names');
+%             matchingrules = find(~cellfun(@isempty, rules));
+%             modifiedRules = union(modifiedRules,matchingrules);
+%             for elem = 1:numel(matchingrules)
+%                 cres = rules{matchingrules(elem)};                
+%                 for pos = 1:numel(cres)
+%                     if isequal(cres(pos).pre,'&')
+%                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *& *x\(' num2str(genePos(i)) '\) *([ \)|$])'],'$1');
+%                     elseif isequal(cres(pos).post,'&')
+%                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[ \(]) *x\(' num2str(genePos(i)) '\) *& *'],'$1');
+%                     elseif isequal(cres(pos).post,'|')
+%                         %Make sure its not preceded by a &
+%                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['(^|[^&]) *x\(' num2str(genePos(i)) '\) *\| *'],'$1 ');
+%                     elseif isequal(cres(pos).pre,'|')
+%                         %Make sure its not followed by a &
+%                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),[' *\| *x\(' num2str(genePos(i)) '\)([^&]|$)'],'$1');
+%                     else
+%                         %This should only ever happen if there is only one gene.
+%                         model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),['^|[\( ]*x\(' num2str(genePos(i)) '\)[\) ]*|$'],'');
+%                     end
+%                     %Remove trailing or leading whitespaces
+%                     model.rules(matchingrules(elem)) = strtrim(model.rules(matchingrules(elem)));
+%                     %And remove any parenthesis which now only capture a
+%                     %single element
+%                     model.rules(matchingrules(elem)) = regexprep(model.rules(matchingrules(elem)),' *\( *(x\([0-9]+\)) *\) *','$1');
+%                 end
+%             end              
+%         end
+%         %Now, replace all remaining indices.
+%         oldIndices = find(~indicesToRemove);
+%         for i = 1:numel(oldIndices)
+%             if i ~= oldIndices(i)
+%                 %replace by new with an indicator that this is new.
+%                 model.rules = strrep(model.rules,['x(' num2str(oldIndices(i)) ')'],['x(' num2str(i) '$)']);
+%             end
+%         end
+%         %remove the indicator.
+%         model.rules = strrep(model.rules,'$','');
+%         %remove the indicator.
 
+        end
+        %remove the indicator.       
+        model.rules = strrep(model.rules,'$','');
+        
+        model = normalizeRules(model,modifiedRules);
     end
     if removeRulesField
         model = rmfield(model,'rules');
@@ -149,27 +179,28 @@ if isfield(model, 'grRules') && exist('modifiedRules','var')
     currentrules = strrep(model.rules(modifiedRules),'&','and');
     currentrules = strrep(currentrules,'|','or');
     getGeneName = @(pos) model.genes{str2num(pos)};
-    currentrules = regexprep(currentrules,'x\(([0-9])\)','${getGeneName($1)}');
+    currentrules = regexprep(currentrules,'x\(([0-9]+)\)','${getGeneName($1)}');
     model.grRules(modifiedRules) = currentrules;
 end
 
 
 
-function model = normalizeRules(model)
+function model = normalizeRules(model,rxns)
 % Normalizes the rules by removing surplus parenthesis around gene
 % references
 % USAGE:
-%    model = normalizeRules(model)
+%    model = normalizeRules(model,rxns)
 % INPUT:
 %    model:     A COBRA model structure containing the rules field.
+%    rxns:      Positions to normalize
 %
 % OUTPUT:
 %    model:     A COBRA model structure with with a normalized rules field.
 
-origrules = model.rules;
-model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
-while ~all(strcmp(origrules,model.rules))
-    origrules = model.rules;
-    model.rules = regexprep(model.rules,'\( *(x\([0-9]+\)) *\)','$1');
+origrules = model.rules(rxns);
+model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
+while ~all(strcmp(origrules,model.rules(rxns)))
+    origrules = model.rules(rxns);
+    model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
 end
         

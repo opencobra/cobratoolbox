@@ -55,27 +55,21 @@ else % might be a ratio.  Gotta process strings
             [rxn1,rest] = strtok(directions{i}, '/');
             rxnID = findRxnIDs(model,rxn1);
             if rxnID == 0
-                display('unable to process rxn from list');
-                display(directions{i});
-                return;
+                error('Unable to process rxn from list\n %s', directions{i});
             else
                 isratio(i) = -rxnID;
             end
             rxn2 = rest(2:end);
             rxnID = findRxnIDs(model,rxn2);
             if rxnID == 0
-                display('unable to process rxn from list');
-                display(rest(2:end));
-                return;
+                error('Unable to process rxn from list\n %s', rest(2:end))
             else
                 denom(i) = rxnID;
             end
         else
             rxnID = findRxnIDs(model,directions{i});
             if rxnID == 0
-                display('unable to process rxn from list');
-                display(directions{i});
-                return;
+                error('Unable to process rxn from list\n %s', directions{i});
             else
                 isratio(i) = rxnID;
             end
@@ -213,8 +207,7 @@ end
 
 if ~exist (logdirectory, 'dir')
     if ~mkdir(logdirectory)
-        display('unable to create logdirectory');
-        return;
+        error('unable to create logdirectory');
     end
 end
 clear d

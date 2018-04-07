@@ -13,10 +13,12 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %
 % INPUT:
 %    model:         structure with:
-%
-%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
+%                           
+%                     * S - m x n stoichiometric matrix
 %
 % OPTIONAL INPUT:
+%    model:         structure with:             
+%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
 %    nRealMet:      specified in case extra rows in `S` which dont correspond to metabolties
 %    printLevel:    verbose level
 %
@@ -135,6 +137,8 @@ model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model
 model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
 
+%input/output
+SExRxnBoolHeuristic = model.ExchRxnBool | model.DMRxnBool | model.SinkRxnBool;
 
 %remove ATP demand as it is usually mass balanced
 bool=strcmp('ATPM',model.rxns);
@@ -161,9 +165,9 @@ if any(bool)
     end
     model.DMRxnBool(bool)=0;
 end
+%remove atp demand
+SExRxnBoolHeuristic(bool)=0;
 
-%input/output
-SExRxnBoolHeuristic = model.ExchRxnBool | model.DMRxnBool | model.SinkRxnBool;
 
 diffBool= ~SExRxnBoolHeuristic & SExRxnBoolOneCoefficient;
 if any(diffBool)

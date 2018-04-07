@@ -23,7 +23,7 @@ function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, mode
 %    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix('Recon2.v04', modelR204, '.')
 % 
 % .. Authors:
-%       - Iñigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Iï¿½igo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
 
@@ -31,6 +31,13 @@ mkdir(['.' filesep '.tmp']);    % Create directories
 mkdir(['.' filesep '.tmp' filesep 'rxn_level_gMCSs']);
 mkdir(['.' filesep '.tmp' filesep 'rxn_level_gMCSs_by_rxn']);
 mkdir(['.' filesep '.tmp' filesep 'rxn_level_models']);
+
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(model_struct,'rxnGeneMat')
+    model_struct = buildRxnGeneMat(model_struct);
+end
+
 
 % Analyze the GPR rules in order to set the strategy for the calculation of
 % the knockouts for the G matrix

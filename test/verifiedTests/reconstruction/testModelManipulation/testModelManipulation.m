@@ -23,6 +23,9 @@ cd(fileDir);
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');
 
+%Init the empty model.
+model = struct();
+
 % addReaction, removeReaction, removeMetabolite
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;
             1, -1, 0, 0, 0, 0, 0;
@@ -40,15 +43,25 @@ model.lb = [0, 0, 0, 0, 0, 0, 0]';
 model.ub = [20, 20, 20, 20, 20, 20, 20]';
 model.rxns = {'GLCt1'; 'HEX1'; 'PGI'; 'PFK'; 'FBP'; 'FBA'; 'TPI'};
 model.mets = {'glc-D[e]'; 'glc-D'; 'atp'; 'H'; 'adp'; 'g6p';'f6p'; 'fdp'; 'pi'; 'h2o'; 'g3p'; 'dhap'};
-sc =  [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+sc =  [-1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0];
 mets_length = length(model.mets);
 rxns_length = length(model.rxns);
 
 % adding a reaction to the model
 model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
+assert(any(ismember(model.rxns,'EX_glc')));
 
 % adding a reaction to the model (test only)
-model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
+model = addReaction(model, 'ABC_def', sort(model.mets), 2 * sc, 0, -5, 10);
+assert(any(ismember(model.rxns,'ABC_def')));
+
+reactionPos = ismember(model.rxns,'ABC_def');
+[~,metPos] = ismember(sort(model.mets),model.mets);
+assert(all(model.S(metPos,reactionPos) == 2*sc')); %Correct stoichiometry
+assert(model.lb(reactionPos) == -5);
+assert(model.ub(reactionPos) == 10);
+
+
 
 %Now, add some fields by an extensive addReaction call
 modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem','Some Sub','geneRule','GeneA or GeneB');

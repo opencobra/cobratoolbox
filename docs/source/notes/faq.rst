@@ -3,6 +3,21 @@ Frequently Asked Questions (FAQ)
 
 .. begin-faq-marker
 
+Remove legacy installation
+--------------------------
+
+If you have an existing installation of a legacy COBRA Toolbox on your system,
+please remove the installation directory from your MATLAB path.
+
+|warning| The following commands will delete your ``cobratoolbox`` directory and all of its contents
+
+.. code-block:: matlab
+
+    >> CBTDIR = fileparts(which('initCobraToolbox.m')); % get the directory of the COBRA Toolbox
+    >> rmpath(genpath(CBTDIR)); % remove the directory from the path
+    >> savepath % save the new path
+    >> delete(CBTDIR,'s') % delete the installation directory
+
 Github
 ------
 

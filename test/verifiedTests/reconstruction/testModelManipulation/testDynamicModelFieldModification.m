@@ -24,7 +24,7 @@ model.genes{end+1,1} = 'gene1';
 
 %extend all relevant fields (the original size was 0.
 %get all Model fields for genes
-fprintf('Testing getModelFieldsForType and extendModelFielsForType ...\n');
+fprintf('Testing getModelFieldsForType and extendModelFieldsForType ...\n');
 [matchingGeneFields,dimensions] = getModelFieldsForType(model,'genes','fieldSize',0);
 assert(dimensions == 2);
 assert(isequal(matchingGeneFields,{'rxnGeneMat'}));

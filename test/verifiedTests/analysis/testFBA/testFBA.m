@@ -22,7 +22,7 @@ cd(fileDir);
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'ibm_cplex', 'gurobi', 'mosek', 'gurobi6', 'tomlab_cplex', 'glpk'};
 
 % load the model
 load('testFBAData.mat');

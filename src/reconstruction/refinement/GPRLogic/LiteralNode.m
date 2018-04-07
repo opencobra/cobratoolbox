@@ -20,6 +20,13 @@ classdef (HandleCompatible) LiteralNode < Node
             dnfNode.addChild(litnode);
         end
         
+        
+        function deleteLiteral(self,literalID)
+            %This function is not applicable to a literal node, as a
+            %literal node cannot delete itself.
+            error('Cannot delete from a Literal Node.');
+        end    
+        
         function res = evaluate(self,assignment, printLevel)
             if ~exist('printLevel','var')
                 printLevel = 0;

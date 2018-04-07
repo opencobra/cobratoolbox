@@ -59,6 +59,9 @@ valDef.logFile = ['Cobra' solverType 'Solver.log'];
 valDef.saveInput = [];
 valDef.PbName = [solverType 'problem'];
 
+% GUROBI parameters
+valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+
 %CPLEX parameters
 valDef.DATACHECK = 1;
 valDef.DEPIND = 1;

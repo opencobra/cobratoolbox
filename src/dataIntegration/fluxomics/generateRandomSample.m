@@ -1,8 +1,7 @@
 function [output] = generateRandomSample(model, n)
 
 if (nargin < 1)
-    disp 'function [output] = generateRandomSample(model, n)';
-    return;
+    error 'function [output] = generateRandomSample(model, n)';
 end
 if (nargin < 2)
     n = 5000;

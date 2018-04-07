@@ -15,6 +15,10 @@ function [solution, all_obj] = runLPvariousSolvers(model, solverPkgs, params)
 % AUTHORS:
 %     Ronan Fleming 18/11/2014 First version
 
+%save the current solver
+global CBT_LP_SOLVER
+currentSolver = CBT_LP_SOLVER;
+
 % model.A assumed to be matrix with coupling constraints
 if ~isfield(model, 'A')
     model.A = model.S;
@@ -290,4 +294,8 @@ for i = 1:ilt
         all_obj(i) = NaN;
     end
 end
+
+%change back to original solver
+solverOK = changeCobraSolver(currentSolver, 'LP', 0);
+
 end

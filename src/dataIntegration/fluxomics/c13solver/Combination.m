@@ -16,6 +16,7 @@ function [out] = Combination(n, k)
 
     if (n < 0 || k < 0) % normally n >= k
       disp('Negative parameter in constructor');
+      out = [];
       return
     end
 

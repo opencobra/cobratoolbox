@@ -117,6 +117,15 @@ for k = 1:length(solverPkgs)
             % temporarily shut down warning
             warning_stat = warning;
             warning off
+            MILPproblem = struct();
+            MILPproblem.A = [speye(10,20),-3*rand(10,30)];
+            MILPproblem.b = zeros(10,1);
+            MILPproblem.c = ones(50,1);
+            MILPproblem.lb = [-1000*ones(35,1); zeros(15,1)];
+            MILPproblem.ub = [1000*ones(35,1); ones(15,1)];
+            MILPproblem.vartype = char(['C'*ones(1,20), 'I'*ones(1,15), 'B'*ones(1,15)]);
+            MILPproblem.csense = char('E' * ones(1, 10));
+            MILPproblem.osense = -1;
             % test TimeLimit as a gurobi-specific parameter
             sol = solveCobraMILP(MILPproblem, struct('TimeLimit',0));
             assert(strcmp(sol.origStat, 'TIME_LIMIT'))

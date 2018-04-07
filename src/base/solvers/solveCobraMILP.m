@@ -534,7 +534,12 @@ switch solver
         elseif strcmp(resultgurobi.status,'TIME_LIMIT')
                 solStat = 3; % Time limit reached
                 warning('Time limit reached, solution might not be optimal (gurobi)')
-               [x,f] = deal(resultgurobi.x,resultgurobi.objval);
+                try
+                    [x,f] = deal(resultgurobi.x,resultgurobi.objval);
+                catch
+                    %x and f could not be assigned, as there is no solution
+                    %yet
+                end
         else
            solStat = -1; % Solution not optimal or solver problem
         end

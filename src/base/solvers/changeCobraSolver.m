@@ -99,7 +99,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %                     get rid of net flux around loops
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
-%     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+%     mosek           Mosek QP solver with Matlab API
 %     pdco            PDCO solver
 %     tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
 %     ============    ============================================================
@@ -222,7 +222,8 @@ end
 %actually set i.e. initCobraToolbox is called before). This is only
 %necessary, if the solver is being validated.
 if validationLevel == 1
-    finish = onCleanup(@() removeGitIgnoredNewFiles(pwd, rdir(['**' filesep '*'])));
+    origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false);
+    finish = onCleanup(@() removeTempFiles(pwd, origFiles,'checkSubFolders',false));
 end
     % configure the environment variables
 configEnvVars();

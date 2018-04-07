@@ -26,6 +26,16 @@ function [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam
 
 SharedRxns = intersect(model1.rxns,model2.rxns);
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(model1,'rxnGeneMat')
+    model1 = buildRxnGeneMat(model1);
+end
+if ~isfield(model2,'rxnGeneMat')
+    model2 = buildRxnGeneMat(model2);
+end
+
+
 % filter down to only gene-associated reactions
 m1GAR = model1.rxns(sum(model1.rxnGeneMat,2)>0);
 m2GAR = model2.rxns(sum(model2.rxnGeneMat,2)>0);
