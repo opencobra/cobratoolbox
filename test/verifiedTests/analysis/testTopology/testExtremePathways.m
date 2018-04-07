@@ -15,9 +15,9 @@
 
 global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
-if isempty(strfind(result, '/lrs')) %Which returns the path with /!
-    %This test will be skipped since there are Requirements (LRS) missing.
-    error(CBT_MISSING_REQUIREMENTS_ERROR_ID,'lrs was not properly installed on your system');
+if isempty(strfind(result, '/lrs'))  % Which returns the path with /!
+    % This test will be skipped since there are Requirements (LRS) missing.
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system');
 end
 
 % save the current path
@@ -35,14 +35,14 @@ minimalModel.S = model.S;
 [P, V] = extremePathways(minimalModel);
 
 refP = [2, 2, 2;
-    1, 0, 1;
-    0, 1, 0;
-    0, 1, 1;
-    0, 0, 1;
-    1, 0, 0;
-    2, 2, 2;
-    1, 1, 1;
-    1, 1, 1];
+        1, 0, 1;
+        0, 1, 0;
+        0, 1, 1;
+        0, 0, 1;
+        1, 0, 0;
+        2, 2, 2;
+        1, 1, 1;
+        1, 1, 1];
 
 assert(all(all(refP(:, [2, 1, 3]) == P)))
 
@@ -51,15 +51,15 @@ inequality = 1;
 
 [P, V] = extremePathways(model, positivity, inequality);
 
-refP = [ 0,  0, 2;
-    1,  1, 0;
-    -1, -1, 1;
-    0, -1, 1;
-    1,  0, 0;
-    0,  1, 0;
-    0,  0, 2;
-    0,  0, 1;
-    0,  0, 1];
+refP = [0,  0, 2;
+        1,  1, 0;
+        -1, -1, 1;
+        0, -1, 1;
+        1,  0, 0;
+        0,  1, 0;
+        0,  0, 2;
+        0,  0, 1;
+        0,  0, 1];
 
 assert(all(all(refP == P)))
 
