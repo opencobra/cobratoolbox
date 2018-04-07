@@ -23,11 +23,11 @@ orig_solver = CBT_MILP_SOLVER;
 
 % test solver packages
 
-global SOLVERS 
+global SOLVERS
 
-%Do this test for all available MIQP solvers
-UseIfAvailable = fieldnames(SOLVERS); %We will simply use all available solvers that are MIQP solvers.
-solverPkgs = prepareTest('needsMILP',true,'useSolversIfAvailable',UseIfAvailable);
+% Do this test for all available MIQP solvers
+UseIfAvailable = fieldnames(SOLVERS);  % We will simply use all available solvers that are MIQP solvers.
+solverPkgs = prepareTest('needsMILP', true, 'useSolversIfAvailable', UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;
@@ -126,7 +126,7 @@ for k = 1:length(solverPkgs.MILP)
             assert(isequal(l, -1))
             fclose(f);
             delete('test_ibm_cplex_output_to_console1.txt')
-            
+
             % solve wit logToFile = 1
             diary test_ibm_cplex_output_to_console2.txt
             sol = solveCobraMILP(MILPproblem, 'logFile', 1);
@@ -145,46 +145,46 @@ for k = 1:length(solverPkgs.MILP)
             fprintf('Test ibm_cplex output to command window ... Done\n')
 
         end
-        
+
         if strcmp(solverPkgs.MILP{k}, 'gurobi')
-            % check additional parameters for Gurobi 
+            % check additional parameters for Gurobi
             % temporarily shut down warning
             warning_stat = warning;
             warning off
             MILPproblem = struct();
-            MILPproblem.A = [speye(10,20),-3*rand(10,30)];
-            MILPproblem.b = zeros(10,1);
-            MILPproblem.c = ones(50,1);
-            MILPproblem.lb = [-1000*ones(35,1); zeros(15,1)];
-            MILPproblem.ub = [1000*ones(35,1); ones(15,1)];
-            MILPproblem.vartype = char(['C'*ones(1,20), 'I'*ones(1,15), 'B'*ones(1,15)]);
+            MILPproblem.A = [speye(10, 20), -3 * rand(10, 30)];
+            MILPproblem.b = zeros(10, 1);
+            MILPproblem.c = ones(50, 1);
+            MILPproblem.lb = [-1000 * ones(35, 1); zeros(15, 1)];
+            MILPproblem.ub = [1000 * ones(35, 1); ones(15, 1)];
+            MILPproblem.vartype = char(['C' * ones(1, 20), 'I' * ones(1, 15), 'B' * ones(1, 15)]);
             MILPproblem.csense = char('E' * ones(1, 10));
             MILPproblem.osense = -1;
             % test TimeLimit as a gurobi-specific parameter
-            sol = solveCobraMILP(MILPproblem, struct('TimeLimit',0));
+            sol = solveCobraMILP(MILPproblem, struct('TimeLimit', 0));
             assert(strcmp(sol.origStat, 'TIME_LIMIT'))
             % restore previous warning state
             warning(warning_stat)
-            
+
             % check user-supplied x0
-            MILPproblem.A = rand(10,20);
-            MILPproblem.b = 1000 * ones(10,1);
-            MILPproblem.c = zeros(20,1);
-            MILPproblem.lb = zeros(20,1);
-            MILPproblem.ub = ones(20,1);
-            MILPproblem.vartype = char(['C'*ones(1,10), 'B'*ones(1,10)]);
+            MILPproblem.A = rand(10, 20);
+            MILPproblem.b = 1000 * ones(10, 1);
+            MILPproblem.c = zeros(20, 1);
+            MILPproblem.lb = zeros(20, 1);
+            MILPproblem.ub = ones(20, 1);
+            MILPproblem.vartype = char(['C' * ones(1, 10), 'B' * ones(1, 10)]);
             MILPproblem.csense = char('L' * ones(1, 10));
-            
+
             % no objective function. The supplied should be the returned
             % (if not everything becomes zero after presolve)
             MILPproblem.x0 = zeros(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
             MILPproblem.x0 = ones(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
         end
     end
 
