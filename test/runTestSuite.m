@@ -11,22 +11,19 @@ function [results, resultTable] = runTestSuite(testNames)
 % OUTPUTS:
 %
 %    results:       A structure array with one entry per test and the following fields:
-%                   .passed - true if the test passed otherwise false
-%                   .skipped - true if the test was skipped otherwise false
-%                   .failed - true if the test failed, or was skipped,
-%                             otherwise false
-%                   .status - a string representing the status of the test
-%                             ('failed','skipped' or'passed')
-%                   .fileName - the fileName of the test
-%                   .time - the duration of the test (if passed otherwise NaN)
-%                   .statusMessage - Informative string about potential
-%                                    problems.
-%                   .Error - The Error message received from a failed or skipped test
+%
+%                    - `.passed`: true if the test passed otherwise false
+%                    - `.skipped`: true if the test was skipped otherwise false
+%                    - `.failed`: true if the test failed, or was skipped, otherwise false
+%                    - `.status`: a string representing the status of the test ('failed','skipped' or'passed')
+%                    - `.fileName`: the fileName of the test
+%                    - `.time`: the duration of the test (if passed otherwise NaN)
+%                    - `.statusMessage`: Informative string about potential problems
+%                    - `.Error`: Error message received from a failed or skipped test
 %    resultTable:   A Table with details of the results.
 %
 % Author:
 %    - Thomas Pfau Jan 2018.
-
 
 global CBTDIR
 
@@ -34,39 +31,41 @@ if ~exist('testNames','var')
     testNames = '.*';
 end
 
-%Go to the test directory.
+% go to the test directory.
 testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 
-%Get all names of test files
+% get all names of test files
 testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
 pathForTests = path;
-%save the current globals (all tests should have the same environment when
-%starting)
+
+% save the current globals (all tests should have the same environment when starting)
 globals = getGlobals();
 
-%Save the current warning state
+% save the current warning state
 warnstate = warning();
 
-%Run the tests and show outputs.
+% run the tests and show outputs.
 for i = 1:numel(testFileNames)
-    %Shut down any existing parpool.
+    % shut down any existing parpool.
     try
-        %Test if there is a parpool that we should shut down before the
-        %next test.
+        % test if there is a parpool that we should shut down before the next test.
         p = gcp('nocreate');
         delete(p);
     catch
-        %Do nothing
+        % do nothing
     end
-    %reset the globals
+
+    % reset the globals
     resetGlobals(globals);
-    %reset the path
+
+    % reset the path
     path(pathForTests);
-    % Reset the warning state
+
+    % reset the warning state
     warning(warnstate);
 
     [~,file,ext] = fileparts(testFileNames{i});
@@ -89,14 +88,12 @@ for i = 1:numel(testFileNames)
     fprintf('\n\n****************************************************\n');
 end
 
-%Now, create a table from the fields
-
+% create a table from the fields
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
 
-
-%Change back to the original directory.
+% change back to the original directory.
 cd(currentDir)
 end
 
@@ -109,11 +106,12 @@ function globals = getGlobals()
 % OUTPUT:
 %
 %    globals:   a struct of all global variables
-globals = struct();
-globalvars = who('global');
-for i = 1:numel(globalvars)
-    globals.(globalvars{i}) = getGlobalValue(globalvars{i});
-end
+
+    globals = struct();
+    globalvars = who('global');
+    for i = 1:numel(globalvars)
+        globals.(globalvars{i}) = getGlobalValue(globalvars{i});
+    end
 end
 
 function resetGlobals(globals)
@@ -125,21 +123,21 @@ function resetGlobals(globals)
 % INPUT:
 %    globals:   A struct with 1 field per global variable.
 
-globalvars = who('global');
-globalsToDelete = setdiff(globalvars,fieldnames(globals));
+    globalvars = who('global');
+    globalsToDelete = setdiff(globalvars,fieldnames(globals));
 
-for i = 1:numel(globalsToDelete)
-    clearGlobal(globalsToDelete{i});
-end
+    for i = 1:numel(globalsToDelete)
+        clearGlobal(globalsToDelete{i});
+    end
 
-%We cannot clean functions as this would remove profiling information
+    % Note: we cannot clean functions as this would remove profiling information
 
-%And for everything else, check, if it changed
-globalNames = fieldnames(globals);
-for i = 1:numel(globalNames)
-    %Set the global to the old value.
-    setGlobal(globalNames{i},globals.(globalNames{i}));
-end
+    % for everything else, check, if it changed
+    globalNames = fieldnames(globals);
+    for i = 1:numel(globalNames)
+        % set the global to the old value.
+        setGlobal(globalNames{i},globals.(globalNames{i}));
+    end
 end
 
 
@@ -153,9 +151,9 @@ function setGlobal(globalName,globalValue)
 %    globalName:    A string representing the name of the global variable
 %    globalValue:   The value to set the global variable to
 
-eval([ globalName '_val = globalValue;']);
-eval(['global ' globalName]);
-eval([globalName ' = ' globalName '_val;']);
+    eval([ globalName '_val = globalValue;']);
+    eval(['global ' globalName]);
+    eval([globalName ' = ' globalName '_val;']);
 end
 
 function clearGlobal(globalName)
@@ -167,8 +165,7 @@ function clearGlobal(globalName)
 % INPUTS:
 %    globalName:    The name of the global variable to clear.
 
-clearvars('-global',globalName);
-
+    clearvars('-global',globalName);
 end
 
 function value = getGlobalValue(globalName)
@@ -180,7 +177,6 @@ function value = getGlobalValue(globalName)
 % INPUTS:
 %    globalName:    The name of the global variable to get the value for
 
-eval(['global ' globalName]);
-eval(['value = ' globalName ';']);
-
+    eval(['global ' globalName]);
+    eval(['value = ' globalName ';']);
 end
