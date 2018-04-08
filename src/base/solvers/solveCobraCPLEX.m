@@ -262,7 +262,11 @@ if printLevel>0 && solution.origStat~=1 && tomlabSelected
     solution.ExitText=ExitText;
     solution.ExitFlag=ExitFlag;
     if any(model.c~=0)
-        fprintf('\n%s%g\n',[ExitText ', Objective '],  model.c'*cplex.Solution.x);
+        if isfield(cplex.Solution, 'objval')
+            fprintf('\n%s%g\n',[ExitText ', Objective '], model.osense*cplex.Solution.objval);
+        else
+            fprintf('\n%s\n', ExitText);
+        end
     end
 end
 
