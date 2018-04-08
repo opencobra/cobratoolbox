@@ -293,17 +293,18 @@ switch solver
         %matching bounds and zero diagonal of F at the same time
         bool = lb == ub & diag(F)==0;
         if any(bool)
-            if 0
+            %{
                 %this helps to regularise the problem, but changes it
                 %slightly
                 F = spdiags(bool*1e-6,0,F);
                 QPproblem.F=F;
-            end
+            %}
             warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
         end
-        param=parameters;
-        % only set the print level if not already set via solverParams
-        % structure
+
+        % only set the print level if not already set via solverParams structure
+        param.printLevel = parameters.printLevel;
+
         if ~isfield(param, 'MSK_IPAR_LOG')
             switch printLevel
                 case 0
