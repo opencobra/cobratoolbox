@@ -1522,7 +1522,10 @@ switch solver
         else
             options.MaxIter = 200;
         end
+
+        % set the printLevel
         options.Print=printLevel;
+
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f= c'*x;
