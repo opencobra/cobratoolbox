@@ -302,8 +302,11 @@ switch solver
             warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
         end
 
+        param = struct();
         % only set the print level if not already set via solverParams structure
-        param.printLevel = parameters.printLevel;
+        if isfield(parameters, 'printLevel')
+            param.printLevel = parameters.printLevel;
+        end
 
         if ~isfield(param, 'MSK_IPAR_LOG')
             switch printLevel
