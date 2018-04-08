@@ -369,8 +369,7 @@ if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cpl
     addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
-% add the matlab path (in case someone had the great idea to overwrite the
-% matlab path).
+% add the matlab path (in case someone had the great idea to overwrite the MATLAB path).
 if (~isempty(strfind(solverName, 'matlab')))
     FMINCON_PATH = [matlabroot filesep 'toolbox' filesep 'shared' filesep 'optimlib'];
     addSolverDir(FMINCON_PATH, printLevel, 'matlab', 'FMINCON_PATH', FMINCON_PATH, true);
@@ -378,6 +377,11 @@ if (~isempty(strfind(solverName, 'matlab')))
     addSolverDir(LINPROG_PATH, printLevel, 'matlab', 'LINPROG_PATH', LINPROG_PATH, true);
 end
 
+% add the pdco submodule path (especially important if TOMLAB_PATH is set)
+if ~isempty(strfind(solverName, 'pdco'))
+    PDCO_PATH = [CBTDIR filesep 'external' filesep 'pdco'];
+    addSolverDir(PDCO_PATH, printLevel, 'pdco', 'PDCO_PATH', PDCO_PATH, true);
+end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
@@ -461,10 +465,10 @@ if compatibleStatus == 1 || compatibleStatus == 2
     end
 end
 
-% set solver related global variables
+% set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
     solverInstalled = true;
-    if validationLevel > 0
+    if validationLevel > 0 && strcmpi(SOLVERS.(solverName).categ, 'active')
         cwarn = warning;
         warning('off');
         eval(['oldval = CBT_', solverType, '_SOLVER;']);
