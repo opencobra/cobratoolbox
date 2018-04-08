@@ -11,7 +11,7 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    #- bash .ci/runtests.sh
+    - bash .artenolis/runtests.sh
 
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
