@@ -146,6 +146,8 @@ switch solver
         x = Result.x_k;
         f = osense*Result.f_k;
         origStat = Result.Inform;
+        w = Result.v_k(1:length(lb));
+        y = Result.v_k((length(lb)+1):end);
         if (origStat == 1)
             stat = 1; % Optimal
         elseif (origStat == 3 || origStat == 4)
@@ -205,6 +207,12 @@ switch solver
         Result = CplexQPProblem.solve();
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
+        end
+        if isfield(Result, 'dual')
+            y = Result.dual;
+        end
+        if isfield(Result, 'reducedcost')
+            w = Result.reducedcost;
         end
         if isfield(Result,'objval')  % Cplex solution may not have objval
             f = osense*Result.objval;
@@ -285,17 +293,21 @@ switch solver
         %matching bounds and zero diagonal of F at the same time
         bool = lb == ub & diag(F)==0;
         if any(bool)
-            if 0
+            %{
                 %this helps to regularise the problem, but changes it
                 %slightly
                 F = spdiags(bool*1e-6,0,F);
                 QPproblem.F=F;
-            end
+            %}
             warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
         end
-        param=parameters;
-        % only set the print level if not already set via solverParams
-        % structure
+
+        param = struct();
+        % only set the print level if not already set via solverParams structure
+        if isfield(parameters, 'printLevel')
+            param.printLevel = parameters.printLevel;
+        end
+
         if ~isfield(param, 'MSK_IPAR_LOG')
             switch printLevel
                 case 0
@@ -361,7 +373,7 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
-                    f = res.sol.itr.pobjval;
+                    f = osense*res.sol.itr.pobjval;
 
                     %dual to equality
                     y= res.sol.itr.y;
@@ -599,11 +611,19 @@ solution.rcost = w;
 
 if solution.stat==1
     %TODO slacks for other solvers
-    if any(strcmp(solver,{'gurobi','mosek'}))
+    if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex'}))
         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
         tmp=norm(residual,inf);
-       if tmp > feasTol*100
-            error(['Optimality conditions in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
+
+        % set the tolerance
+        if strcmpi(solver, 'mosek')
+            resTol = 1e-2;
+        else
+            resTol = feasTol * 100;
+        end
+
+        if tmp > resTol
+            error(['Optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp) ', while feasTol = ' num2str(feasTol)])
         end
     end
 end

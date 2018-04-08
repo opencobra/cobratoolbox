@@ -218,7 +218,7 @@ if (solutionWT.stat > 0)
     end
 
     % Get the solution(s)
-    if (QPsolution.stat > 0)
+    if QPsolution.stat == 1
         if minNormFlag
             solutionDel.x = QPsolution.full;
         else
