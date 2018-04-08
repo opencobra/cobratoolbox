@@ -468,21 +468,23 @@ end
 % set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
     solverInstalled = true;
-    if validationLevel > 0 && strcmpi(SOLVERS.(solverName).categ, 'active')
-        cwarn = warning;
-        warning('off');
-        eval(['oldval = CBT_', solverType, '_SOLVER;']);
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
-        Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
-        try
-            eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
-        catch ME
-            solverOK = false;
-            eval(['CBT_', solverType, '_SOLVER = oldval;']);
+    if strcmpi(SOLVERS.(solverName).categ, 'active')
+        if validationLevel > 0
+            cwarn = warning;
+            warning('off');
+            eval(['oldval = CBT_', solverType, '_SOLVER;']);
+            eval(['CBT_', solverType, '_SOLVER = solverName;']);
+            Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+            try
+                eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
+            catch ME
+                solverOK = false;
+                eval(['CBT_', solverType, '_SOLVER = oldval;']);
+            end
+            warning(cwarn)
+        else
+            eval(['CBT_', solverType, '_SOLVER = solverName;']);
         end
-        warning(cwarn)
-    else
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
 end
 end
@@ -510,8 +512,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 end
 
 function addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
-% Adds the solver installation path to the MATLAB path
-%
+% Adds the solver installation path to the MATLAB path:
 % Usage:
 %     addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
 %

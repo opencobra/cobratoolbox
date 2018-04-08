@@ -44,7 +44,7 @@ function initCobraToolbox()
 
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
-    
+
      % Set the Requirements Error Message ID:
     CBT_MISSING_REQUIREMENTS_ERROR_ID = 'COBRA:RequirementsNotMet';
 
@@ -210,7 +210,7 @@ function initCobraToolbox()
     end
 
     %get the current content of the init Folder
-    dirContent = getFilesInDir('type','all');    
+    dirContent = getFilesInDir('type','all');
 
     % add the folders of The COBRA Toolbox
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
@@ -305,8 +305,8 @@ function initCobraToolbox()
 
     % define categories of solvers: LP, MILP, QP, MIQP, NLP
     OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-    
-    %Define a set of "use first" solvers, other supported solvers will also be added to the struct. 
+
+    %Define a set of "use first" solvers, other supported solvers will also be added to the struct.
     %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
     SOLVERS = struct('gurobi',struct(),...
                      'ibm_cplex',struct(),...
