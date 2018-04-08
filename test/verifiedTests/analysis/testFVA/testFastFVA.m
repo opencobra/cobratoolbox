@@ -11,11 +11,10 @@
 global CBTDIR
 global ILOG_CPLEX_PATH
 
-%check whether required toolboxes are present
-v = ver;
-statPres = any(strcmp('Parallel Computing Toolbox', {v.Name})) && license('test','Distrib_Computing_Toolbox');
-assert(statPres,sprintf('The Parallel Computing Toolbox required for this function is not installed or not licensed on your system.'))
-
+%Test requirements
+requiredToolboxes = {'distrib_computing_toolbox'};
+requiredSolvers = {'ibm_cplex'};
+prepareTest('requiredSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
 % save the userpath
 originalUserPath = path;

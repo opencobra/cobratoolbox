@@ -27,31 +27,29 @@ currentDir = pwd;
 testdir = fileparts(which('testConnectedComponents.m'));
 cd(testdir)
 
-IPT = 'Image Processing Toolbox';
-IPT_Lic = 'Image_Toolbox';
-v = ver;
+requiredToolboxes = {'image_toolbox'};
 
-if ~any(strcmp(IPT, {v.Name})) || ~license('test', IPT_Lic)
-    warning([IPT, ' is not installed or not licensed. Aborting test.'])
-else
-    model = createToyModelForConnectedComponentAnalysis();
-    [groups,orphans,R,C] = connectedComponents(model);
-
-    %The orphan reactions, are the exchangers, which by definition are dropped
-    %from the connected components.Those are the last 5 reactions)
-    assert(isequal(orphans,numel(model.rxns)-4:numel(model.rxns)));
-
-    assert(isequal(model.rxns(1:2),model.rxns(groups(1).elements)));
-    assert(isequal(model.rxns(3:6),model.rxns(groups(2).elements)));
+prepareTest('toolboxes',requiredToolboxes);
 
 
-    [groups,orphans] = connectedComponents(model,'largestComponent',0,1);
+model = createToyModelForConnectedComponentAnalysis();
+[groups,orphans,R,C] = connectedComponents(model);
 
-    assert(isequal(numel(groups),1));
-    assert(isequal(model.rxns(3:6),model.rxns(groups.elements)));
+%The orphan reactions, are the exchangers, which by definition are dropped
+%from the connected components.Those are the last 5 reactions)
+assert(isequal(orphans,numel(model.rxns)-4:numel(model.rxns)));
 
-    delete('reactionsNotConnectedByAnything.txt');
-    delete('reactionAdjacencyOtherThanCofactors.txt')
-end
+assert(isequal(model.rxns(1:2),model.rxns(groups(1).elements)));
+assert(isequal(model.rxns(3:6),model.rxns(groups(2).elements)));
+
+
+[groups,orphans] = connectedComponents(model,'largestComponent',0,1);
+
+assert(isequal(numel(groups),1));
+assert(isequal(model.rxns(3:6),model.rxns(groups.elements)));
+
+delete('reactionsNotConnectedByAnything.txt');
+delete('reactionAdjacencyOtherThanCofactors.txt')
+
 
 cd(currentDir)

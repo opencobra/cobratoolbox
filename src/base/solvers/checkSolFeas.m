@@ -14,10 +14,10 @@ function varargout = checkSolFeas(LP, sol, maxInfeas, tol, internal)
 %    maxInfeas:    if true (defaulted), `infeas` = maximum infeasiblity
 %                  if false, `infeas` = struct of vectors of infeasibility with the following fields:
 %
-%                    * 'con' for infeasibility of constraints
-%                    * 'lb'  for infeasibility of lower bounds
-%                    * 'ub'  for infeasibility of upper bounds
-%                    * 'ind' for infeasibility of indicator constraints. = -Inf if an indicator is not active. (CPLEX class only)
+%                    * `.con` for infeasibility of constraints
+%                    * `.lb`  for infeasibility of lower bounds
+%                    * `.ub`  for infeasibility of upper bounds
+%                    * `.ind` for infeasibility of indicator constraints. = -Inf if an indicator is not active. (CPLEX class only)
 %    tol:          feasibility tolerance (defaulted at the Cobra solver `feasTol` value).
 %                  For determining if the input solution is indeed feasible. Used only if the input solution is a structure.
 %

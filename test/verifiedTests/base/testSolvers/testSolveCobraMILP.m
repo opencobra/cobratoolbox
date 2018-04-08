@@ -22,16 +22,21 @@ global CBT_MILP_SOLVER;
 orig_solver = CBT_MILP_SOLVER;
 
 % test solver packages
-solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
+
+global SOLVERS
+
+% Do this test for all available MIQP solvers
+UseIfAvailable = fieldnames(SOLVERS);  % We will simply use all available solvers that are MIQP solvers.
+solverPkgs = prepareTest('needsMILP', true, 'useSolversIfAvailable', UseIfAvailable);
 
 % set the tolerance
 tol = 1e-8;
 
-for k = 1:length(solverPkgs)
-    fprintf('   Running solveCobraMILP using %s ... ', solverPkgs{k});
+for k = 1:length(solverPkgs.MILP)
+    fprintf('   Running solveCobraMILP using %s ... ', solverPkgs.MILP{k});
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
+    solverOK = changeCobraSolver(solverPkgs.MILP{k}, 'MILP', 0);
 
     if solverOK
         % MILP Solver test: chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
@@ -51,7 +56,7 @@ for k = 1:length(solverPkgs)
         pass = 1;
 
         % solve MILP problem setting the relative MIP gap tolerance and integrality tolerance to 1e-12 using parameters structure.
-        if strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'tomlab_cplex')
+        if strcmp(solverPkgs.MILP{k}, 'cplex_direct') || strcmp(solverPkgs.MILP{k}, 'tomlab_cplex')
             parameters.relMipGapTol = 1e-12;
             parameters.intTol = 1e-12;
             MILPsolution = solveCobraMILP(MILPproblem, parameters);
@@ -68,7 +73,7 @@ for k = 1:length(solverPkgs)
         assert(abs(MILPsolution.obj - 554) < tol)
         assert(abs(MILPsolution2.obj - 554) < tol)
 
-        if strcmp(solverPkgs{k}, 'ibm_cplex')
+        if strcmp(solverPkgs.MILP{k}, 'ibm_cplex')
             % test IBM-Cplex-specific parameters. Solve with the below parameters changed
             cplexParams = struct();
             cplexParams.emphasis.mip = 0;  % MIP emphasis: balance optimality and integer feasibility
@@ -110,85 +115,81 @@ for k = 1:length(solverPkgs)
                 % delete the log files
                 delete(['testIBMcplexMILPparam' num2str(jTest) '.log']);
             end
+            fprintf('Test ibm_cplex output to command window ...\n')
+            % solve without logToFile = 1
+            diary test_ibm_cplex_output_to_console1.txt
+            sol = solveCobraMILP(MILPproblem);
+            diary off
+            % read the diary, which should be empty
+            f = fopen('test_ibm_cplex_output_to_console1.txt', 'r');
+            l = fgets(f);
+            assert(isequal(l, -1))
+            fclose(f);
+            delete('test_ibm_cplex_output_to_console1.txt')
+
+            % solve wit logToFile = 1
+            diary test_ibm_cplex_output_to_console2.txt
+            sol = solveCobraMILP(MILPproblem, 'logFile', 1);
+            diary off
+            % read the diary, which should be non-empty
+            f = fopen('test_ibm_cplex_output_to_console2.txt', 'r');
+            l = fgets(f);
+            line = 0;
+            while ~isequal(l, -1)
+                line = line + 1;
+                l = fgets(f);
+            end
+            fclose(f);
+            assert(line > 3)
+            delete('test_ibm_cplex_output_to_console2.txt')
+            fprintf('Test ibm_cplex output to command window ... Done\n')
+
         end
-        
-        if strcmp(solverPkgs{k}, 'gurobi6')
-            % check additional parameters for Gurobi 
+
+        if strcmp(solverPkgs.MILP{k}, 'gurobi')
+            % check additional parameters for Gurobi
             % temporarily shut down warning
             warning_stat = warning;
             warning off
             MILPproblem = struct();
-            MILPproblem.A = [speye(10,20),-3*rand(10,30)];
-            MILPproblem.b = zeros(10,1);
-            MILPproblem.c = ones(50,1);
-            MILPproblem.lb = [-1000*ones(35,1); zeros(15,1)];
-            MILPproblem.ub = [1000*ones(35,1); ones(15,1)];
-            MILPproblem.vartype = char(['C'*ones(1,20), 'I'*ones(1,15), 'B'*ones(1,15)]);
+            MILPproblem.A = [speye(10, 20), -3 * rand(10, 30)];
+            MILPproblem.b = zeros(10, 1);
+            MILPproblem.c = ones(50, 1);
+            MILPproblem.lb = [-1000 * ones(35, 1); zeros(15, 1)];
+            MILPproblem.ub = [1000 * ones(35, 1); ones(15, 1)];
+            MILPproblem.vartype = char(['C' * ones(1, 20), 'I' * ones(1, 15), 'B' * ones(1, 15)]);
             MILPproblem.csense = char('E' * ones(1, 10));
             MILPproblem.osense = -1;
             % test TimeLimit as a gurobi-specific parameter
-            sol = solveCobraMILP(MILPproblem, struct('TimeLimit',0));
+            sol = solveCobraMILP(MILPproblem, struct('TimeLimit', 0));
             assert(strcmp(sol.origStat, 'TIME_LIMIT'))
             % restore previous warning state
             warning(warning_stat)
-            
+
             % check user-supplied x0
-            MILPproblem.A = rand(10,20);
-            MILPproblem.b = 1000 * ones(10,1);
-            MILPproblem.c = zeros(20,1);
-            MILPproblem.lb = zeros(20,1);
-            MILPproblem.ub = ones(20,1);
-            MILPproblem.vartype = char(['C'*ones(1,10), 'B'*ones(1,10)]);
+            MILPproblem.A = rand(10, 20);
+            MILPproblem.b = 1000 * ones(10, 1);
+            MILPproblem.c = zeros(20, 1);
+            MILPproblem.lb = zeros(20, 1);
+            MILPproblem.ub = ones(20, 1);
+            MILPproblem.vartype = char(['C' * ones(1, 10), 'B' * ones(1, 10)]);
             MILPproblem.csense = char('L' * ones(1, 10));
-            
+
             % no objective function. The supplied should be the returned
             % (if not everything becomes zero after presolve)
             MILPproblem.x0 = zeros(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
             MILPproblem.x0 = ones(20, 1);
             sol = solveCobraMILP(MILPproblem);
             assert(isequal(sol.full, MILPproblem.x0));
-            
+
         end
     end
 
     % output a success message
     fprintf('Done.\n');
-end
-
-% test ibm_cplex output to command window
-solverOK = changeCobraSolver('ibm_cplex', 'MILP', 0);
-if solverOK
-    fprintf('Test ibm_cplex output to command window ...\n')
-    % solve without logToFile = 1
-    diary test_ibm_cplex_output_to_console1.txt
-    sol = solveCobraMILP(MILPproblem);
-    diary off
-    % read the diary, which should be empty
-    f = fopen('test_ibm_cplex_output_to_console1.txt', 'r');
-    l = fgets(f);
-    assert(isequal(l, -1))
-    fclose(f);
-    delete('test_ibm_cplex_output_to_console1.txt')
-    
-    % solve wit logToFile = 1
-    diary test_ibm_cplex_output_to_console2.txt
-    sol = solveCobraMILP(MILPproblem, 'logFile', 1);
-    diary off
-    % read the diary, which should be non-empty
-    f = fopen('test_ibm_cplex_output_to_console2.txt', 'r');
-    l = fgets(f);
-    line = 0;
-    while ~isequal(l, -1)
-        line = line + 1;
-        l = fgets(f);
-    end
-    fclose(f);
-    assert(line > 3)
-    delete('test_ibm_cplex_output_to_console2.txt')
-    fprintf('Test ibm_cplex output to command window ... Done\n')
 end
 
 % remove the generated file

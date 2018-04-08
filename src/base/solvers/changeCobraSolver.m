@@ -225,7 +225,7 @@ if validationLevel == 1
     origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false);
     finish = onCleanup(@() removeTempFiles(pwd, origFiles,'checkSubFolders',false));
 end
-    % configure the environment variables
+% configure the environment variables
 configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER

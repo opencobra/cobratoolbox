@@ -11,6 +11,9 @@
 
 global CBTDIR
 
+%Check the requirements (a LP solver is necessary)
+solverPkgs = prepareTest('needsLP',true);
+
 % save the current path
 currentDir = pwd;
 
@@ -18,14 +21,8 @@ currentDir = pwd;
 fileDir = fileparts(which('testLoadBiGGModel.m'));
 cd(fileDir);
 
-%Check if the model contains the same information
-
 % initialize the test
 cd([CBTDIR, filesep, 'test', filesep, 'models']);
-
-% define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
-
 
 % Models: FileName of local file, model ID and type for BiGG, along with
 % FBA Min and Max value.
@@ -53,34 +50,31 @@ for i = 1:size(modelArr,1)
     assert(isSameCobraModel(model1,model3));
     
     if ~isnan(modelArr{i,5})
-        for k = 1:length(solverPkgs)
+        for k = 1:length(solverPkgs.LP)
+            fprintf(' -- Running testLoadBiGGModel using the solver interface: %s ... ', solverPkgs.LP{k});
+            changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
             
-            % set the solver
-            solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+            fprintf('   Testing loaded model ... \n');
             
-            if solverOK == 1
-                fprintf('   Testing with solver %s ... \n', solverPkgs{k});
-                
-                
-                % solve the maximisation problem
-                FBA = optimizeCbModel(model2, 'max');
-                
-                % test the maximisation solution
-                assert(FBA.stat == 1);
-                assert(abs(FBA.f - modelArr{i,6}) < tol);
-                assert(norm(model2.S * FBA.x) < tol);
-                
-                % solve the minimisation problem
-                FBA = optimizeCbModel(model2, 'min');
-                
-                % test the minimisation solution
-                assert(FBA.stat == 1);
-                assert(abs(FBA.f - modelArr{i,5}) < tol);
-                assert(norm(model2.S * FBA.x) < tol);
-                
-                % print a line for success of loop i
-                fprintf(' Done.\n');
-            end
+            
+            % solve the maximisation problem
+            FBA = optimizeCbModel(model2, 'max');
+            
+            % test the maximisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelArr{i,6}) < tol);
+            assert(norm(model2.S * FBA.x) < tol);
+            
+            % solve the minimisation problem
+            FBA = optimizeCbModel(model2, 'min');
+            
+            % test the minimisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelArr{i,5}) < tol);
+            assert(norm(model2.S * FBA.x) < tol);
+            
+            % print a line for success of loop i
+            fprintf(' Done.\n');
         end
     end
 end
