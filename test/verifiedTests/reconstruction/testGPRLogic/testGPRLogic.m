@@ -119,3 +119,52 @@ for i = 1:numel(positions)
     assert(clauseFound);
 end   
 assert(isempty(clausesToCheck));
+
+%Convert from DNF to CNF
+%This formula is equivalent to (x(1) | x(2)) & (x(3) | x(4)) & (x(5) | x(6))
+DNFFormula = fp.parseFormula('x(1) & x(3) & x(5) | (x(1) & x(3) & x(6) | x(1) & x(4) & x(5)) | (x(1) & x(4)) & x(6) | x(2) & x(3) & x(5) | x(2) & x(3) & x(6) | x(2) & x(4) & x(5) | x(2) & x(4) & x(6)');
+CNFFormula = DNFFormula.convertToCNF();
+
+clauses ={[1,2],[3,4],[5,6]};
+clausesToCheck = clauses;
+%Now, lets extract the clauses from the rules string
+clausesInModel = strsplit(CNFFormula.toString(1),'&');
+%now, extract the numbers from the clauses
+positions = regexp(clausesInModel,'^|[\( ]x\((?<pos>[0-9]+)\)[ \)]|$','names'); %This simultaneously checks, that the format was adapted.
+for i = 1:numel(positions)
+    cpos = cellfun(@str2num, {positions{i}.pos});    
+    clauseFound = false;
+    for j = 1:numel(clausesToCheck)
+        if isempty(setxor(cpos,clausesToCheck{j}))
+            clausesToCheck(j) = [];
+            clauseFound = true;
+            break;
+        end
+    end
+    assert(clauseFound);
+end   
+assert(isempty(clausesToCheck));
+
+%And also test another formula:
+formula = fp.parseFormula('x(1) | x(2) & x(3) | (x(3) & ( x(4) | x(5)) & x(6))');
+CNFFormula = formula.convertToCNF();
+%This formula is equivalent to:
+%(x(1) | x(3)) & (x(1) | x(2) | x(6)) & (x(1) | x(2) | x(4) | x(5))
+clauses = {[1,3],[1,2,6],[1,2,4,5]};
+clausesToCheck = clauses;
+clausesInModel = strsplit(CNFFormula.toString(1),'&');
+%now, extract the numbers from the clauses
+positions = regexp(clausesInModel,'^|[\( ]x\((?<pos>[0-9]+)\)[ \)]|$','names'); %This simultaneously checks, that the format was adapted.
+for i = 1:numel(positions)
+    cpos = cellfun(@str2num, {positions{i}.pos});    
+    clauseFound = false;
+    for j = 1:numel(clausesToCheck)
+        if isempty(setxor(cpos,clausesToCheck{j}))
+            clausesToCheck(j) = [];
+            clauseFound = true;
+            break;
+        end
+    end
+    assert(clauseFound);
+end   
+assert(isempty(clausesToCheck));
