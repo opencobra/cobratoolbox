@@ -261,7 +261,7 @@
 <span id="id1"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.coupling"></span><dl class="function">
 <dt id="src.analysis.coupling.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds ratio reaction.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -293,7 +293,7 @@ COBRA model structure containing the ratio</li>
 
 <dl class="function">
 <dt id="src.analysis.coupling.constrainRxnListAboveBound">
-<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
+<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
 Appends to existing inequality constraints if they are present</p>
 <p><strong>Usage</strong></p>
@@ -345,7 +345,7 @@ constrained model:<ul>
 
 <dl class="function">
 <dt id="src.analysis.coupling.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
 (<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
 reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.

@@ -3,6 +3,21 @@ Frequently Asked Questions (FAQ)
 
 .. begin-faq-marker
 
+Remove legacy installation
+--------------------------
+
+If you have an existing installation of a legacy COBRA Toolbox on your system,
+please remove the installation directory from your MATLAB path.
+
+|warning| The following commands will delete your ``cobratoolbox`` directory and all of its contents
+
+.. code-block:: matlab
+
+    >> CBTDIR = fileparts(which('initCobraToolbox.m')); % get the directory of the COBRA Toolbox
+    >> rmpath(genpath(CBTDIR)); % remove the directory from the path
+    >> savepath % save the new path
+    >> delete(CBTDIR,'s') % delete the installation directory
+
 Github
 ------
 
@@ -58,7 +73,7 @@ variables) are not properly set.
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER
     parfor i = 1:2
-        changeCobraSolver(solver, 'LP');
+        changeCobraSolver(solver, 'LP', 0, -1); %third argument is printLevel, fourth argument is validation Level.
         % additional code in the parfor loop will now use the currently set solver
         optimizeCbModel(model);
     end

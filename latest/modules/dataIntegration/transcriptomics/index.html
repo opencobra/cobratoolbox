@@ -257,7 +257,7 @@
 </div>
 <span class="target" id="module-src.dataIntegration.transcriptomics"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>options</em>, <em>funcModel</em>, <em>exRxnRemove</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b80de23adff2b01e4fb468c53cc8ceef2a8203dc/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>options</em>, <em>funcModel</em>, <em>exRxnRemove</em>, <em>optionalParams</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates draft tissue specific model from mRNA expression data</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -284,6 +284,7 @@ model strusture</li>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
+<div><blockquote>
 <div><ul class="simple">
 <li><strong>funcModel</strong> &#8211;
 1 - Build a functional model having only reactions
@@ -293,6 +294,14 @@ step (Default = 0)</li>
 Names of exchange reactions to remove
 (Default = [])</li>
 </ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>optionalParams           Additional paramaters for the consistency</dt>
+<dd>check. Will only be used if funcModel = 1
+Is a structure with possible fields of epsilon
+(numeric, min nonzero mass), modeFlag (return
+flux mode, 0/1), and method (&#8216;fastcc&#8217;,&#8217;dc&#8217;)</dd>
+</dl>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>

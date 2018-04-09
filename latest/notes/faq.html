@@ -216,6 +216,18 @@
             
   <div class="section" id="frequently-asked-questions-faq">
 <h1>Frequently Asked Questions (FAQ)<a class="headerlink" href="#frequently-asked-questions-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="remove-legacy-installation">
+<h2>Remove legacy installation<a class="headerlink" href="#remove-legacy-installation" title="Permalink to this headline">¶</a></h2>
+<p>If you have an existing installation of a legacy COBRA Toolbox on your system,
+please remove the installation directory from your MATLAB path.</p>
+<p><a href="#id1"><span class="problematic" id="id2">|warning|</span></a> The following commands will delete your <code class="docutils literal"><span class="pre">cobratoolbox</span></code> directory and all of its contents</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">CBTDIR</span> <span class="p">=</span> <span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;initCobraToolbox.m&#39;</span><span class="p">));</span> <span class="c">% get the directory of the COBRA Toolbox</span>
+<span class="o">&gt;&gt;</span> <span class="n">rmpath</span><span class="p">(</span><span class="n">genpath</span><span class="p">(</span><span class="n">CBTDIR</span><span class="p">));</span> <span class="c">% remove the directory from the path</span>
+<span class="o">&gt;&gt;</span> <span class="n">savepath</span> <span class="c">% save the new path</span>
+<span class="o">&gt;&gt;</span> <span class="n">delete</span><span class="p">(</span><span class="n">CBTDIR</span><span class="p">,</span><span class="s">&#39;s&#39;</span><span class="p">)</span> <span class="c">% delete the installation directory</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="github">
 <h2>Github<a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h2>
 <p><strong>What do all these labels mean?</strong></p>
@@ -259,7 +271,7 @@ do this is as follows:</div>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBT_LP_SOLVER</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">CBT_LP_SOLVER</span>
 <span class="n">parfor</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span>
-    <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">);</span>
+    <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="o">%</span><span class="n">third</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">printLevel</span><span class="p">,</span> <span class="n">fourth</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">validation</span> <span class="n">Level</span><span class="o">.</span>
     <span class="o">%</span> <span class="n">additional</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">parfor</span> <span class="n">loop</span> <span class="n">will</span> <span class="n">now</span> <span class="n">use</span> <span class="n">the</span> <span class="n">currently</span> <span class="nb">set</span> <span class="n">solver</span>
     <span class="n">optimizeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 <span class="n">end</span>
