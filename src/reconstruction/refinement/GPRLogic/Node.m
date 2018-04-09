@@ -48,6 +48,15 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         % OUTPUTS:
         %    res:           A Node in DNF form (i.e. and clauses separated
         %                   by or )
+        %        
+        cnfNode = convertToCNF(self);
+        % Convert to a CNF Node.
+        % USAGE:
+        %    dnfNode = Node.convertToCNF()
+        %
+        % OUTPUTS:
+        %    res:           A Node in CNF form (i.e. and or-clauses separated
+        %                   by and )
         %
         reduce(self);
         % Reduce the node elimiating subnodes of the same type and singular
@@ -85,6 +94,19 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             obj.children = [];
         end
         
+        function nodeCopy = copy(self)
+            if isa(self,'LiteralNode')
+                nodeCopy = LiteralNode(self.id);
+            else
+                nodeCopy = eval(class(self));
+            end
+            for i = 1:numel(self.children)
+                cchild = self.children(i);
+                childCopy = cchild.copy();
+                nodeCopy.addChild(childCopy);
+            end
+        end
+        
         function id = getID(self)
             % Get the ID (commonly the class except for Literals
             % USAGE:
@@ -111,7 +133,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
                 for i=1:numel(childNode.children)
                     if isempty(self.children)
                         self.children = childNode.children(i);
-                    else                  
+                    else                                          
                         self.children(end+1) = childNode.children(i);
                     end
                     childNode.children(i).parent = self.parent;
@@ -119,8 +141,8 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             else
                 if isempty(self.children)
                     self.children = childNode;
-                else
-                    self.children(end+1) = childNode;
+                else                    
+                    self.children(end+1) = childNode;                    
                 end
                 childNode.parent = self;
             end            
@@ -159,6 +181,20 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             for c=1:numel(self.children)
                 child = self.children(c);
                 literals = [literals child.getLiterals()];
+            end
+        end
+        
+        function removeDuplicateLiterals(self)
+            % Remove all duplicate literal nodes in this node.
+            % USAGE:
+            %    node.removeDuplicateLiterals()
+            % 
+            if ~isa(self,'LiteralNode')
+                literals = find(arrayfun(@(x) isa(x,'LiteralNode'),self.children));
+                literalIDs = arrayfun(@(x) x.id,self.children(literals),'Uniform',false);
+                [~,toKeep] = unique(literalIDs);
+                toRemove = setdiff(literals,toKeep);
+                self.children(toRemove) = [];
             end
         end
         
