@@ -2,6 +2,7 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 % Add multiple Reactions to the model. In contrast to addReaction, this
 % function allows the addition of multiple reactions at once but requires
 % all used metabolites to be already present in the model. 
+%
 % USAGE:
 %
 %    newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,varargin)
@@ -16,24 +17,28 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %    varargin:          fieldName, Value pairs. The given fields will be set
 %                       according to the values. Only defined COBRA fields may be
 %                       used. The following fields will be ignored (as they
-%                       are dependent on the existing model structure):
-%                       S - this is being resolved by the
-%                       metList/Stoichiometries combination
-%                       rxnGeneMat - This depends on the original model structure, and is thus nor considered.
+%                       are dependent on the existing model structure)
+%
+%                        - S:  this is being resolved by the metList/Stoichiometries combination
+%                        - rxnGeneMat: This depends on the original model structure, and is thus nor considered.
+%                       
 %                       You can provide GPR rules in different ways to
 %                       this function:
-%                       1. By providing a grRules array in the varargin
-%                       2. By providing a genes field in the varargin and a
-%                       corresponding rules field
-%                       3. By providing a rules field, that directly refers
-%                       to the genes in the model.
+%
+%                        - By providing a grRules array in the varargin
+%                        - By providing a genes field in the varargin and a
+%                          corresponding rules field
+%                        - By providing a rules field, that directly refers
+%                          to the genes in the model.
+%
 %                       Examples of parameters are:
-%                       'rxnNames',{'RuBisCo','Transketloase'}
-%                       'rxnKEGGID,{'R00024','R01641'}
-%                       'lb',[0,-1000]
-%                       or any field name associated with reactions (except
-%                       for S and rxnGeneMat) as defined in the COBRA
-%                       Model field definitions.
+%
+%                        - 'rxnNames',{'RuBisCo','Transketloase'}
+%                        - 'rxnKEGGID,{'R00024','R01641'}
+%                        - 'lb',[0,-1000]
+%                        - or any field name associated with reactions (except
+%                          for S and rxnGeneMat) as defined in the COBRA
+%                          Model field definitions.
 %                       
 %                       
 %

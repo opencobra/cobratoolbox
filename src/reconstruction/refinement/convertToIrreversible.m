@@ -11,6 +11,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 % OPTIONAL INPUTS:
 %    varargin:      Additional Options as ParameterName/Value pairs.
 %                   Allowed Parameters are:
+%
 %                   * sRxns: List of specific reversible reactions to convert to
 %                     irreversible (Default = model.rxns)
 %                   * flipOrientation:  Alter reactions that can only carry negative

@@ -21,7 +21,7 @@ function [model]  = removeSubSystemsFromRxns(model,reactions,subSystems)
 %    model:                 The model with the subSystems set to the
 %                           respective reactions (old values will be removed).
 %
-% USAGE:
+% EXAMPLE:
 %    %Remove TCA as subSystem from a set of reactions
 %    [model]  = removeSubSystemsFromRxns(model,{'ACONTa';'ACONTb';'AKGDH';'CS';'FUM';'ICDHyr';'MDH';'SUCOAS'},'TCA')
 %    %Remove Glycolysis/Gluconeogenesis from reaction 18 of the model

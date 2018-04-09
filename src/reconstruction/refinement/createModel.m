@@ -24,6 +24,9 @@ function model = createModel(varargin)
 %                       from common gene names to systematic gene names)
 %    systNameList:      List of systematic names
 %
+% OUTPUT:
+%    model:             COBRA model structure
+%
 % EXAMPLES:
 %
 %    1) Create A model with two Reactions (R1 : 'A -> B + C', R2: 'C -> D')
@@ -35,8 +38,6 @@ function model = createModel(varargin)
 %    model = createModel({'R1','R2'},{'Reaction 1','Reaction 2'},{'A -> B + C', 'C -> D'},...
 %    'subSystemList', {'Sub1','Sub2'}, 'lowerBoundList',[-3 -1000],'upperBoundList',[120 17]);
 %
-% OUTPUT:
-%    model:             COBRA model structure
 %
 % .. Author: - Ines Thiele 01/09
 %            - Adjusted to Name/Value Pairs - Thomas Pfau May 2017

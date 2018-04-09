@@ -11,14 +11,17 @@ function newmodel = addGenes(model,geneIDs,varargin)
 %                       according to the values. Only defined COBRA fields may be
 %                       used. The following fields will be ignored (as they
 %                       are dependent on the existing model structure):
-%                       rxnGeneMat - The size will be extended, but no associations will be set. 
+%
+%                        * rxnGeneMat - The size will be extended, but no associations will be set. 
 % OUTPUT:
 %    newmodel:     The model structure with the additional reactions.
 %
 % EXAMPLE:
-%    To add genes with specific fields use:
+%    %To add genes with specific fields use:
 %    `model = addGenes(model, {'G1', 'Gene2', 'InterestingGene'}, 'proteins', {'Protein1','Protein B','Protein Alpha'}, 'geneField2', {'D','E','F'})`
-%    note, that all fields (geneField1/geneField2) have to be present in
+%
+% NOTE:
+%    All fields (geneField1/geneField2) have to be present in
 %    the model, or defined in the field definitions, otherwise they are
 %    ignored.
 %    

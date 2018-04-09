@@ -12,7 +12,8 @@ function [modelNew] = updateGenes(model)
 % OUTPUT:
 %    modelNew:           COBRA model structure with corrected genes
 %
-% Note - the gene order will be changed to sorted. You should probably use
+% NOTE: 
+%        The gene order will be changed to sorted. You should probably use
 %        buildRxnGeneMat to make sure the order matches in all relevant
 %        fields.
 %
