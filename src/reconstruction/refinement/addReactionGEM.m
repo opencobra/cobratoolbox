@@ -27,13 +27,14 @@ function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas,
 %
 %    [modelLB_NH3] = addReactionSmiley(modelLB, 'NH3r', 'NH3 protonization', cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'), 1, -1000, 1000, 'Others');
 %
-% - Manually add reactions to a specified model, can either add one or
-%   multiple reactions at a time
+% NOTE:
+%    Manually add reactions to a specified model, can either add one or
+%    multiple reactions at a time
 %
-% - All syntax standards must comply with the specified model
+%    All syntax standards must comply with the specified model
 %
-% - For reaction formulas, use: '-->' for irreversible or '<==>' for
-%   reversible
+%    For reaction formulas, use: '-->' for irreversible or '<==>' for
+%    reversible
 %
 % .. Author:
 %       - Aarash Bordbar 11/2/07 based on AddRxn

@@ -10,13 +10,15 @@ function modelNew = mergeModelFieldPositions(model,type,positions,mergeFunctions
 % OPTIONAL INPUTS:
 %    mergeFunctions:  A cell array of fieldNames and functions that can be
 %                     called on a larger array of the type used for the
-%                     field. e.g. {'metCharges',@(x) x(1); 'grRules', @(x)
-%                     strjoin(x,' or ');
-%                     by default, all numeric fields are added up, all
-%                     unique entries in cell arrays are concatenated with
-%                     ';', grRules and rules are assumed to be merged with
-%                     and (i.e. a batch reaction is assumed to need all
-%                     associated GPRs)
+%                     field. e.g. 
+%
+%                      - {'metCharges',@(x) x(1); 'grRules', @(x) strjoin(x,' or ');
+%                      - by default, all numeric fields are added up, all
+%                        unique entries in cell arrays are concatenated with
+%                        ';', 
+%                      - grRules and rules are assumed to be merged with
+%                        and (i.e. a batch reaction is assumed to need all
+%                        associated GPRs)
 %                 
 %
 % OUTPUT:
