@@ -102,8 +102,15 @@ if cplexInstalled && libraryExists
     % define the name of the source code
     filename      = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
 
+    % define a special compiler flag to switch for deprecated functions after CPLEX 12.8.0
+    if str2num(cplexVersion) >= 1280
+        versionFlag = '-DHIGHER_THAN_128'; % this flag is defined in the .c file
+    else
+        versionFlag = '';
+    end
+
     % generation of MEX string with compiler options
-    CFLAGS        = '-O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v ';
+    CFLAGS        = [versionFlag ' -O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v '];
     cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims -ldl CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
 
     if printLevel > 1
