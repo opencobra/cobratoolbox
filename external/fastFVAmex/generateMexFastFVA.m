@@ -102,9 +102,9 @@ if cplexInstalled && libraryExists
     % define the name of the source code
     filename      = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
 
-    % Generation of MEX string with compiler options
+    % generation of MEX string with compiler options
     CFLAGS        = '-O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v ';
-    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
+    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims -ldl CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
 
     if printLevel > 1
         fprintf('The compilation command is:\n');
