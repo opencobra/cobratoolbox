@@ -19,8 +19,8 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %                       used. The following fields will be ignored (as they
 %                       are dependent on the existing model structure)
 %
-%                        - S:  this is being resolved by the metList/Stoichiometries combination
-%                        - rxnGeneMat: This depends on the original model structure, and is thus nor considered.
+%                        - `S`:  this is being resolved by the metList/Stoichiometries combination
+%                        - `rxnGeneMat`: This depends on the original model structure, and is thus nor considered.
 %                       
 %                       You can provide GPR rules in different ways to
 %                       this function:
@@ -48,24 +48,20 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %
 % EXAMPLE:
 %
-%    To add the following reactions, with lower and upper bounds:
-%    ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
-%    model = addMultipleReactions(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-%                                   'lb',[-50,30,1],'ub',[0,60,15])
-%    To add them with GPRs in text form:
-%    ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
-%    model = addMultipleReactions(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-%                                   'grRules',{'G1 or G2', 'G3 and G4',''})
+%    % To add the following reactions, with lower and upper bounds:
+%    % ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
+%    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'lb', [-50,30,1], 'ub', [0,60,15])
+%    % To add them with GPRs in text form:
+%    % ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
+%    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'grRules', {'G1 or G2', 'G3 and G4',''})
 %
 %
-%    To add them with the same GPRs in logical format assuming that model.genes is {'G1';'G2';'G3';'G4'}:
-%    ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
-%    model = addMultipleReactions(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-%                                   'rules',{'x(1) | x(2)', 'x(3) and x(4)',''})
-%    To add them with the same GPRs in logical format without assuming anything for the model:
-%    ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
-%    model = addMultipleReactions(model,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
-%                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'G2';'G1';'G3'})
+%    % To add them with the same GPRs in logical format assuming that model.genes is {'G1';'G2';'G3';'G4'}:
+%    % ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
+%    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'rules', {'x(1) | x(2)', 'x(3) and x(4)',''})
+%    % To add them with the same GPRs in logical format without assuming anything for the model:
+%    % ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
+%    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'rules', {'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'G2';'G1';'G3'})
 %
 
 [metPres,metPos] = ismember(metList,model.mets);

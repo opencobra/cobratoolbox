@@ -14,7 +14,7 @@ function newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %    varargin:      fieldName, Value pairs with additional properties for the
 %                   added metabolites.  
 %                   The given values fields will be set according to the values. 
-%                   Only fields associated with mets defined in the COBRA definitions (except S) 
+%                   Only fields associated with mets defined in the COBRA definitions (except `S`) 
 %                   or fields already in the model may be used.  
 %                   Examples for this use would be:  
 %
@@ -27,9 +27,8 @@ function newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %
 % EXAMPLE:
 %
-%    %To add metabolites, with charges, formulas and KEGG ids:
-%    model = addMultipleMetabolites(model,{'A','b','c'},'metCharges', [ -1 1
-%    0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
+%    % To add metabolites, with charges, formulas and KEGG ids:
+%    model = addMultipleMetabolites(model,{'A','b','c'},'metCharges', [ -1 1 0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
 %    
 
 if (any(ismember(model.mets,metIDs)) || numel(unique(metIDs)) < numel(metIDs))
