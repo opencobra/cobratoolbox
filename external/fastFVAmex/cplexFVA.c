@@ -1162,16 +1162,13 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
           mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
         }
 
-        #ifdef HIGHER_THAN_128
-            LogFile = fopen(concat3(logFileName, numThreadstr,".log"), "w");
-        #endif
         #ifdef LOWER_THAN_128
             LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
-        #endif
 
-        if (LogFile == NULL) {
-            TROUBLE_mexErrMsgTxt(concat3("Could not open the log file ",logFileName,".log.\n"));
-        }
+            if (LogFile == NULL) {
+                TROUBLE_mexErrMsgTxt(concat3("Could not open the log file ",logFileName,".log.\n"));
+            }
+        #endif
 
         #ifdef HIGHER_THAN_128
             status = CPXsetlogfilename(env, concat3(logFileName, numThreadstr,".log"), "w");
