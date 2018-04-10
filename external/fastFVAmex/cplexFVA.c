@@ -739,7 +739,8 @@ static void freelicence(void)
 
         #ifdef HIGHER_THAN_128
             status = fclose(LogFile);
-        #else
+        #endif
+        #ifdef LOWER_THAN_128
             status = CPXfclose(LogFile);
         #endif
 
@@ -1163,7 +1164,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
         #ifdef HIGHER_THAN_128
             LogFile = fopen(concat3(logFileName, numThreadstr,".log"), "w");
-        #else
+        #endif
+        #ifdef LOWER_THAN_128
             LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
         #endif
 
@@ -1172,8 +1174,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         }
 
         #ifdef HIGHER_THAN_128
-            status = CPXsetlogfilename (env, concat3(logFileName, numThreadstr,".log"), "w");
-        #else
+            status = CPXsetlogfilename(env, concat3(logFileName, numThreadstr,".log"), "w");
+        #endif
+        #ifdef LOWER_THAN_128
             status = CPXsetlogfile(env, LogFile);
         #endif
 
@@ -1287,7 +1290,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if ((opt_logfile) && (LogFile != NULL)){
         #ifdef HIGHER_THAN_128
             status = fclose(LogFile);
-        #else
+        #endif
+        #ifdef LOWER_THAN_128
             status = CPXfclose(LogFile);
         #endif
 

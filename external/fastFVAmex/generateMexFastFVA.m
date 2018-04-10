@@ -102,11 +102,16 @@ if cplexInstalled && libraryExists
     % define the name of the source code
     filename      = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
 
+    cplexVersionNum = str2num(cplexVersion);
+    if cplexVersionNum >= 1000
+        cplexVersionNum = cplexVersionNum/10;
+    end
+
     % define a special compiler flag to switch for deprecated functions after CPLEX 12.8.0
-    if str2num(cplexVersion) >= 1280
+    if cplexVersionNum >= 128
         versionFlag = '-DHIGHER_THAN_128'; % this flag is defined in the .c file
     else
-        versionFlag = '';
+        versionFlag = '-DLOWER_THAN_128';
     end
 
     % generation of MEX string with compiler options
