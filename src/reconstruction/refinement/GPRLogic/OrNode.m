@@ -26,6 +26,17 @@ classdef (HandleCompatible) OrNode < Node
         end
         
         
+        function cnfNode = convertToCNF(self)
+            cnfNode = AndNode();
+            for c=1:numel(self.children)
+                child = self.children(c);
+                CNFChild = child.convertToCNF();
+                cnfNode = combineChildren(cnfNode,CNFChild);
+                %If the child is again an or node, we need to add all
+                %children of that child directly to this node.                
+            end
+        end
+        
         function dnfNode = convertToDNF(self)
             dnfNode = OrNode();
             for c=1:numel(self.children)
@@ -58,6 +69,8 @@ classdef (HandleCompatible) OrNode < Node
                 childNode.children(childrenToRemove) = [];
             end
         end
+        
+        
         
         function removeDNFduplicates(self)
             % Assuming this is a DNF head node, removeDNFDuplicates checks
@@ -110,7 +123,7 @@ classdef (HandleCompatible) OrNode < Node
         
         function deleteLiteral(self,literalID)
             toDelete = false(size(self.children));
-           % originalNodeString = self.toString(1);            
+            % originalNodeString = self.toString(1);
             for child = 1:numel(self.children)
                 cchild = self.children(child);
                 if cchild.contains(literalID)
@@ -143,7 +156,7 @@ classdef (HandleCompatible) OrNode < Node
                     newChild.parent = self;
                 end
             end
-          %  fprintf('Removing Literal %s from the following node:\n%s\nLeads to the node:\n%s\n',literalID,originalNodeString,self.toString(1));
+            %  fprintf('Removing Literal %s from the following node:\n%s\nLeads to the node:\n%s\n',literalID,originalNodeString,self.toString(1));
         end
         
         function reduce(self)
@@ -163,7 +176,7 @@ classdef (HandleCompatible) OrNode < Node
                 else
                     mergeNode.children = [mergeNode.children,cchild];
                 end
-            end
+            end            
             self.children = mergeNode.children;
             for i = 1:numel(self.children)
                 self.children(i).parent = self;
