@@ -42,6 +42,14 @@ end
 
 cplexVersion = getCobraSolverVersion('ibm_cplex', printLevel, rootPathCPLEX);
 
+cplexVersionNum = str2num(cplexVersion);
+if cplexVersionNum >= 1000
+    cplexVersionNum = cplexVersionNum/10;
+    addZero = '';
+else
+    addZero = '0';
+end
+    
 % save the userpath
 originalUserPath = path;
 
@@ -59,6 +67,15 @@ include       = [rootPathCPLEX filesep 'include' filesep 'ilcplex'];
 
 libraryExists = false;
 
+% define a special compiler flag to switch for deprecated functions after CPLEX 12.8.0
+if cplexVersionNum >= 128
+    versionFlag = '-DHIGHER_THAN_128'; % this flag is defined in the .c file
+    versionVS = 'vs2015';
+else
+    versionFlag = '-DLOWER_THAN_128';
+    versionVS = 'vs2013';
+end
+
 if exist(include, 'dir') ~= 7
     error(['The directory ' include ' does not exist. Please install the CPLEX solver as explained here.']);
 else
@@ -68,7 +85,7 @@ else
     elseif ismac == 1
         lib           = [rootPathCPLEX filesep 'lib/x86-64_osx/static_pic'];
     else
-        lib           = [rootPathCPLEX filesep 'lib\x64_windows_vs2013\stat_mda'];
+        lib           = [rootPathCPLEX filesep 'lib\x64_windows_' versionVS '\stat_mda'];
     end
 
     % check if the library directory exist
@@ -78,7 +95,7 @@ else
         if isunix == 1 || ismac == 1
             library       = [lib filesep 'libcplex.a'];  % The library file is the same for *nix systems
         else
-            library       = ['"' lib filesep 'cplex' cplexVersion '.lib" "' lib filesep 'ilocplex.lib"'];
+            library       = ['"' lib filesep 'cplex' cplexVersion addZero '.lib" "' lib filesep 'ilocplex.lib"'];
         end
 
         % check if the library file exist
@@ -95,33 +112,25 @@ if cplexInstalled && libraryExists
     % run the mex setup first in order to make sure that the MEX environment is configured properly
     compVerboseMode = '';
     if printLevel > 1
-        compVerboseMode = ' -v'
+        compVerboseMode = ' -v';
     end
     eval(['mex -setup c' compVerboseMode]);
 
     % define the name of the source code
-    filename      = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
-
-    cplexVersionNum = str2num(cplexVersion);
-    if cplexVersionNum >= 1000
-        cplexVersionNum = cplexVersionNum/10;
-    end
-
-    % define a special compiler flag to switch for deprecated functions after CPLEX 12.8.0
-    if cplexVersionNum >= 128
-        versionFlag = '-DHIGHER_THAN_128'; % this flag is defined in the .c file
-    else
-        versionFlag = '-DLOWER_THAN_128';
-    end
+    filename = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
 
     % generation of MEX string with compiler options
-    CFLAGS        = [versionFlag ' -O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v '];
-    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims -ldl CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
+    if isunix
+        dynamicLinker = '-ldl';
+    else
+        dynamicLinker = '';
+    end
+    
+    CFLAGS = [versionFlag ' -O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v '];
+    cmd = ['-output cplexFVA' cplexVersion ' -largeArrayDims ' dynamicLinker ' CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
 
     if printLevel > 1
-        fprintf('The compilation command is:\n');
-        cmd
-        fprintf('\n');
+        fprintf(['The compilation command is: \n' cmd '\n']);
     end
 
     % define the current directory
