@@ -90,14 +90,11 @@ if COVERAGE
     nEmptyLines = 0;
     nCommentLines = 0;
 
-    nMsgs = length(checkcode(listFiles{:}));  % Check all code files at once.
-
     for i = 1:length(listFiles)
-
+        nMsgs = nMsgs + length(checkcode(listFiles{i}));
         fid = fopen(listFiles{i});
-        % check if the file is on the ignored list
-        countFlag = true;
-        while ~feof(fid) && countFlag
+
+        while ~feof(fid)
             lineOfFile = strtrim(char(fgetl(fid)));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
                 && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
