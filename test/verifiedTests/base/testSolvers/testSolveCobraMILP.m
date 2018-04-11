@@ -146,7 +146,7 @@ for k = 1:length(solverPkgs.MILP)
 
         end
 
-        if strcmp(solverPkgs{k}, 'gurobi6')
+        if strcmp(solverPkgs.MILP{k}, 'gurobi')
             % check additional parameters for Gurobi
             % temporarily shut down warning
             warning_stat = warning;
