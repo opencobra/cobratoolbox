@@ -14,12 +14,12 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 %    figForm:                format to use for saving figures
 %    numWorkers:             logical indicating the number of cores to use for parallelization
 %    autoFix:                double indicating if to try to automatically fix inconsistencies
-%    compMod:                logical indicating if outputs in open format should be produced for each section (1=T)
-%    patStat:                logical indicating if documentation on health status is available
-%    rDiet:                  logical indicating if to enable also rich diet simulations
-%    extSolve:               logical indicating if to save the constrained models to solve them externally
-%    fvaType:                logical indicating which function to use for flux variability
-%    autorun:                logical used to enable /disable autorun behavior (please set to 1)
+%    compMod:                boolean indicating if outputs in open format should be produced for each section (default: `false`)
+%    patStat:                logical indicating if documentation on health status is available (default: `false`)
+%    rDiet:                  logical indicating if to enable also rich diet simulations (default: `false`)
+%    extSolve:               logical indicating if to save the constrained models to solve them externally (default: `false`)
+%    fvaType:                logical indicating which function to use for flux variability (default: `true`)
+%    autorun:                logical used to enable /disable autorun behavior (please set to `true`) (default: `false`)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -43,14 +43,34 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 
 init = 0;
 
+% input checks
+if ~exist('autorun', 'var')
+    autorun = false;
+end
+if ~exist('numWorkers', 'var')
+    numWorkers = 2;
+end
+if ~exist('compMod', 'var')
+    compMod = false;
+end
+if ~exist('patStat', 'var')
+    patStat = false;
+end
+
+% path checking
+if ~exist(modPath, 'dir')
+    error('modPath is not defined. Please set the path of the model directory.');
+end
+
 % Check for installation of parallel Toolbox
 try
    ver('distcomp');
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
 end
+
 % Here we go on with the warning section and the autorun
-if autorun == 1
+if autorun
     if numWorkers >= 2
         poolobj = gcp('nocreate');
         if isempty(poolobj)
@@ -71,7 +91,7 @@ else
         edit('mgPipe.m');
     end
 end
-if compMod == 1
+if compMod
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')
 else
     warning('pipeline output will be saved in .mat format. Please enable compomod option if you wish to activate compatibility mode.')
