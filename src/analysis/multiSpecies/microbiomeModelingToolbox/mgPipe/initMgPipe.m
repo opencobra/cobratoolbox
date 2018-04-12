@@ -44,7 +44,7 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 init = 0;
 
 % Check for installation of parallel Toolbox
-try 
+try
    ver('distcomp');
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
@@ -67,7 +67,9 @@ else
         end
     end
     warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
-    edit('mgPipe.m')
+    if usejava('desktop')
+        edit('mgPipe.m');
+    end
 end
 if compMod == 1
     warning('compatibility mode activated. Output will also be saved in .csv / .sbml format. Time of computations will be affected.')
