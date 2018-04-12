@@ -26,9 +26,8 @@ cd(fileparts(which(mfilename)));
 % set the tolerance
 tol = 1e-8;
 
-
 % path to microbe models
-modPath = [CBTDIR filesep 'test' filesep 'models' 'mat'];
+modPath = [CBTDIR filesep 'test' filesep 'models' filesep 'mat'];
 
 % path where to save results
 resPath= [CBTDIR filesep '.tmp'] ;
@@ -69,8 +68,18 @@ fvaType = 1;
 % To tourn off the autorun to be able to manually execute each part of the pipeline.
 autorun = 0;
 
-[init,modPath,toolboxPath,resPath,dietFilePath,abunFilePath,objre,figForm,numWorkers,autoFix,compMod,patStat,rDiet,extSolve,fvaType,autorun]= initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet,extSolve,fvaType,autorun);
+% input checker
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun);
 
+% logical tests for outputs
+assert(init == 1);
+
+init = initMgPipe(modPath);
+
+assert(init == 1);
+
+% test if the function throws an error when modPath is not defined
+assert(verifyCobraFunctionError(@() initMgPipe()))
 %{
 % load the model
 %Either:
