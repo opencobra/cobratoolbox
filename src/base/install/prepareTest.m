@@ -115,6 +115,8 @@ toolboxes = union(parser.Results.toolboxes, parser.Results.requiredToolboxes);
 requiredSolvers = parser.Results.requiredSolvers;
 preferredSolvers = parser.Results.useSolversIfAvailable;
 
+runtype = getenv('CI_RUNTYPE');
+
 errorMessage = {};
 
 % first, check whether the OS is applicable
@@ -261,19 +263,30 @@ end
 % collect the Used Solvers.
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
-for i = 1:numel(problemTypes)
-    solversToUse.(problemTypes{i}) = intersect(preferredSolvers, availableSolvers.(problemTypes{i}));
-    if isempty(solversToUse.(problemTypes{i})) && ~isempty(availableSolvers.(problemTypes{i}))
-        if isempty(preferredSolvers)
-            eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
-        else
-            if isempty(availableSolvers.(problemTypes{i}))
-                % no solver exists, the cell array is empty.
-                solversToUse.(problemTypes{i}) = {};
-            else
-                % a solver exists, provide it.
+if strcmpi(runtype,'fullRun')
+    solversToUse = availableSolvers;
+    %exclude pdco if not explicitly requested and available, as it does
+    %have issues at the moment.    
+%    if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
+%        solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
+%        solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
+%    end
+else   
+    for i = 1:numel(problemTypes)
+        solversToUse.(problemTypes{i}) = intersect(preferredSolvers, availableSolvers.(problemTypes{i}));
+        if isempty(solversToUse.(problemTypes{i})) && ~isempty(availableSolvers.(problemTypes{i}))
+            if isempty(preferredSolvers)
                 eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
+            else
+                if isempty(availableSolvers.(problemTypes{i}))
+                    % no solver exists, the cell array is empty.
+                    solversToUse.(problemTypes{i}) = {};
+                else
+                    % a solver exists, provide it.
+                    eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
+                end
             end
         end
     end
 end
+    

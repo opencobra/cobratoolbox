@@ -51,55 +51,60 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
 
     % read in the file with the compatibility matrix
-    C = {};
-    compatMatrix = {};
-    testedOS = {};
+    persistent C;
+    persistent compatMatrix;    
+    persistent testedOS;
+    
     untestedFlag = false;
-    fid = fopen(compatMatrixFile);
-    while 1
-        tline = fgetl(fid);
-        if ~ischar(tline), break; end
-
-        % if the line is not empty, read it in
-        if length(tline) > 1
-            if printLevel > 1
-                disp(tline);
-            end
-            if strcmp(tline(1), '|')
-                % split the line at the vertical bar
-                Cpart = strsplit(tline, '|');
-                Cpart = Cpart(2:end-1);
-
-                % convert incompatible flag
-                Cpart = strrep(Cpart, ':x:', '0');
-
-                % convert compatible flag
-                Cpart = strrep(Cpart, ':white_check_mark:', '1');
-
-                % convert untested flag
-                Cpart = strrep(Cpart, ':warning:', '2');
-
-                C{end+1} = strtrim(Cpart);
-            else
-                if ~isempty(C)
-                    compatMatrix{end+1} = C;
-                    C = {};
+    if isempty(compatMatrix)
+        C = {};
+        compatMatrix = {};
+        testedOS = {};
+        fid = fopen(compatMatrixFile);
+        while 1
+            tline = fgetl(fid);
+            if ~ischar(tline), break; end
+            
+            % if the line is not empty, read it in
+            if length(tline) > 1
+                if printLevel > 1
+                    disp(tline);
                 end
-                if strcmp(tline(1:2), '##') && ~strcmp(tline(3), '#')
-                    testedOS{end+1} = strtrim(tline(3:end));
+                if strcmp(tline(1), '|')
+                    % split the line at the vertical bar
+                    Cpart = strsplit(tline, '|');
+                    Cpart = Cpart(2:end-1);
+                    
+                    % convert incompatible flag
+                    Cpart = strrep(Cpart, ':x:', '0');
+                    
+                    % convert compatible flag
+                    Cpart = strrep(Cpart, ':white_check_mark:', '1');
+                    
+                    % convert untested flag
+                    Cpart = strrep(Cpart, ':warning:', '2');
+                    
+                    C{end+1} = strtrim(Cpart);
+                else
+                    if ~isempty(C)
+                        compatMatrix{end+1} = C;
+                        C = {};
+                    end
+                    if strcmp(tline(1:2), '##') && ~strcmp(tline(3), '#')
+                        testedOS{end+1} = strtrim(tline(3:end));
+                    end
                 end
             end
         end
+        compatMatrix{end+1} = C;
     end
-    compatMatrix{end+1} = C;
-
     % select the compatibility matrix based on the OS
     if isunix && ~ismac % linux
         tableNb = 1;
         resultVERS = system_dependent('getos');
         tmp = strsplit(testedOS{tableNb});
         if ~isempty(strfind(lower(resultVERS), lower(tmp{2})))
-            compatMatrix = compatMatrix{tableNb};
+            cMatrix = compatMatrix{tableNb};
         else
             untestedFlag = true;
             if printLevel > 0
@@ -111,7 +116,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         [~, resultVERS] = unix('sw_vers');
         tmp = strsplit(testedOS{tableNb});
         if ~isempty(strfind(resultVERS, tmp{2}))
-            compatMatrix = compatMatrix{tableNb};
+            cMatrix = compatMatrix{tableNb};
         else
             untestedFlag = true;
             if printLevel > 0
@@ -123,7 +128,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         for tableNb = length(testedOS)-1:length(testedOS) % loop through the last 2 tables
             tmp = strsplit(testedOS{tableNb});
             if ~isempty(strfind(resultVERS, tmp{2}))
-                compatMatrix = compatMatrix{tableNb};
+                cMatrix = compatMatrix{tableNb};
             else
                 untestedFlag = true;
                 if printLevel > 0 && tableNb == length(testedOS)
@@ -132,15 +137,15 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             end
         end
     end
-
+    
     if untestedFlag
-        compatMatrix = {};
+        cMatrix = {};
     end
 
     % determine the version of MATLAB and the corresponding column
     versionMatlab = ['R' version('-release')];
-    if ~isempty(compatMatrix)
-        compatMatlabVersions = compatMatrix{1}(2:end);
+    if ~isempty(cMatrix)
+        compatMatlabVersions = cMatrix{1}(2:end);
         colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
     else
         colIndexVersion = [];
@@ -164,9 +169,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         end
 
         % check compatibility of solver
-        for i = 1:length(compatMatrix)
+        for i = 1:length(cMatrix)
             % save the row of the compatibilitx matrix
-            row = compatMatrix{i};
+            row = cMatrix{i};
 
             % determine the name of the solver
             solverNameRow = row{1};
