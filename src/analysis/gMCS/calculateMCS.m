@@ -1,65 +1,73 @@
-function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, options)
-% Calculate Minimal Cut Sets (MCSs): Calculate Minimal Cut Sets at the
-% reaction level (minimal reaction knockout interventions), with or without
-% selecting a given knockout, among all the reactions included in the model
-% or a given subset of them. Tobalina et al., 2016 (Bioinformatics);
-% von Kamp and Klamt, 2014 (PLoS Computational Biology).
+function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, options)
+% Calculate Minimal Cut Sets (MCSs) using the warm-start strategy available
+% in CPLEX, namely cplex.populate(), with or without selecting a given
+% knockout, among all the reactions included in the model or a given subset
+% of them. Tobalina et al., 2016 (Bioinformatics); von Kamp and Klamt, 2014
+% (PLoS Computational Biology).
 % 
 % USAGE:
 % 
-%    [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, options)
+%    [mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)
 % 
 % INPUTS:
 %    model_struct:    Metabolic model structure (COBRA Toolbox format).
 %    n_mcs:           Number of MCSs to calculate.
+%    max_len_mcs:     Number of reactions in the largest MCS to be calculated.
 % 
 % OPTIONAL INPUT:
 %    options:         Structure with fields:
 % 
-%                       * .KO - Selected reaction knockout. Default [].
+%                       * .KO - Selected reaction knockout. Default: [].
 %                       * .rxn_set - Cell array containing the set of 
 %                         reactions ('rxns') among which the MCSs are 
-%                         wanted to be calculated. Default [].
-%                       * .timelimit - Time limit for the calculation of each
-%                         MCS in seconds. Default: maximum permited by solver.
+%                         wanted to be calculated. Default: [] (all reactions
+%                         are included).
+%                       * .timelimit - Time limit for the calculation of MCSs
+%                         each time the solver is called. Default: 1e75.
 %                       * .target_b - Desired activity level of the metabolic
-%                         task to be disrupted. Default 1e-3;
-%                       * .printLevel - Printing level 
-%                           * 0 - Silent (Default)
-%                           * 1 - Warnings and Errors
-%                           * 2 - Summary information
-%                           * 3 - More detailed information
-%                           * > 10 - Pause statements, and maximal printing (debug mode)
+%                         task to be disrupted. Default: 1e-3;
+%                       * .forceLength - 1 if the constraint limiting the
+%                         length of the MCSs is to be active (recommended for
+%                         enumerating low order MCSs), 0 otherwise.
+%                         Default: 1.
+%                       * .printLevel - 1 if the process is wanted to be
+%                         shown on the screen, 0 otherwise. Default: 1.
 % 
 % OUTPUTS:
-%    mcs:         Structure containing the calculated MCSs.
+%    mcs:         Cell array containing the calculated MCSs.
 %    mcs_time:    Calculation times of the different processes in 
 %                 the algorithm.
 % 
 % EXAMPLE:
 %    %With optional values
-%    [mcs, mcs_time] = calculateMCS(modelR204, 100, options)
+%    [mcs, mcs_time] = populateMCS(modelR204, 100, 10, options)
 %    %Being:
 %    %options.KO = 'r1651'
 %    %options.rxn_set = {'r1652'; 'r1653'; 'r1654'}
 %    %options.timelimit = 300
 %    %options.target_b = 1e-4
+%    %options.forceLength = 0
+%    %options.printLevel = 0
 % 
 %    %Without optional values 
-%    [mcs, mcs_time] = calculateMCS(model, 10)
+%    [mcs, mcs_time] = populateMCS(model, 100, 10)
 % 
 % .. Authors:
-%       - Iñigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
-%       - Luis V. Valcarcel, 18/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 
-tic
+time_aa = tic;
+% Set Parameters
 % Optional inputs
-if nargin == 2
+if nargin == 3
     KO = [];
     rxn_set = [];
     target_b = 1e-3;
-    printLevel = 0;
+    timelimit = 1e75;
+    forceLength = 1;
+    printLevel = 1;
 else
     if isfield(options, 'KO')
         KO = options.KO;
@@ -72,22 +80,29 @@ else
         rxn_set = [];
     end
     if isfield(options, 'timelimit')
-        changeCobraSolverParams('MILP', 'timeLimit', options.timelimit);
+        timelimit = options.timelimit;
+    else
+        timelimit = 1e75;
     end
     if isfield(options, 'target_b')
         target_b = options.target_b;
     else
         target_b = 1e-3;
     end
+    if isfield(options, 'forceLength')
+        forceLength = options.forceLength;
+    else
+        forceLength = 1;
+    end
     if isfield(options, 'printLevel')
         printLevel = options.printLevel;
     else
-        printLevel = 0;
+        printLevel = 1;
     end
 end
 
-% Set Parameters
-M = 1e5;    % Big Value
+integrality_tolerance = 1e-5;
+M = 1e3;    % Big Value
 alpha = 1;  % used to relate the lower bound of v variables with z variables
 c = 1e-3;   % used to activate w variable
 b = 1e-3;   % used to activate KnockOut constraint
@@ -95,11 +110,13 @@ phi = 1000; % b/c;
 
 % Build the K Matrix
 [~, n_ini_rxns] = size(model_struct.S);
-K = eye(n_ini_rxns);
+K = speye(n_ini_rxns);
 
 % Splitting
 S = [model_struct.S -model_struct.S(:, model_struct.lb<0)];
 K = [K K(:, model_struct.lb<0)];
+K_ind = model_struct.rxns;
+n_K_ind = length(K_ind);
 [n_mets, n_rxns] = size(S);
 nbio = find(model_struct.c);
 t = zeros(n_rxns, 1);
@@ -116,13 +133,10 @@ if ~isempty(rxn_set)
     K = K(pos_set, :);
     K_ind = model_struct.rxns(pos_set);
     n_K_ind = length(K_ind);
-else
-    K_ind = model_struct.rxns;
-    n_K_ind = length(K_ind);
 end
 
 if isempty(KO)
-% ENUMERATE gMCSs
+% ENUMERATE MCSs
 % Define variables
     var.u = 1:n_mets;
     var.vp = var.u(end)+1:var.u(end)+n_K_ind;
@@ -136,35 +150,34 @@ if isempty(KO)
 % Define constraints
     cons.Ndual = 1:size(S, 2);
     cons.forceBioCons = cons.Ndual(end)+1:cons.Ndual(end)+1;
-    cons.linkAlpha = cons.forceBioCons(end)+1:cons.forceBioCons(end)+length(var.zp)+length(var.zw);
-    cons.linkM = cons.linkAlpha(end)+1:cons.linkAlpha(end)+length(var.zp)+length(var.zw);
-    n_cons = cons.linkM(end);
+    cons.forceLength = cons.forceBioCons(end)+1:cons.forceBioCons(end)+1;
+    n_cons = cons.forceLength(end);
 
-% A matrix
+% Cplex - A matrix
     A = sparse(zeros(n_cons, n_vars));
     A(cons.Ndual, var.u) = S';
     A(cons.Ndual, var.vp) = K';
     A(cons.Ndual, var.w) = -t;
     A(cons.forceBioCons, var.w) = -target_b;
-    A(cons.linkAlpha, [var.vp var.w]) = speye(length(var.vp)+length(var.w));
-    A(cons.linkAlpha, [var.zp var.zw]) = -alpha*speye(length(var.zp)+length(var.zw));
-    A(cons.linkM, [var.vp var.w]) = speye(length(var.vp)+length(var.w));
-    A(cons.linkM, [var.zp var.zw]) = -M*speye(length(var.zp)+length(var.zw));
+    if forceLength == 1
+        A(cons.forceLength, var.zp) = 1;
+    end
 
-% rhs vector
+% Cplex - rhs and lhs vectors
     rhs = zeros(n_cons, 1);
-    rhs(cons.Ndual, 1) = 0;
+    rhs(cons.Ndual, 1) = inf;
     rhs(cons.forceBioCons) = -c;
-    rhs(cons.linkAlpha) = 0;
-    rhs(cons.linkM) = 0;
+    if forceLength == 1
+        rhs(cons.forceLength) = 1;
+    end
+    lhs = zeros(n_cons, 1);
+    lhs(cons.Ndual, 1) = 0;
+    lhs(cons.forceBioCons) = -1000;
+    if forceLength == 1
+        lhs(cons.forceLength) = 1;
+    end
 
-% csense vector
-    csense(cons.Ndual, 1) = 'G';
-    csense(cons.forceBioCons) = 'L';
-    csense(cons.linkAlpha) = 'G';
-    csense(cons.linkM) = 'L';
-
-% ub and lb vectors
+% Cplex - ub and lb vectors
     ub(var.u, 1) = inf;
     ub(var.vp) = inf;
     ub(var.w) = inf;
@@ -176,66 +189,127 @@ if isempty(KO)
     lb(var.zp) = 0;
     lb(var.zw) = 0;
 
-% obj vector
+% Cplex - obj vector
     obj(var.u, 1) = 0;
     obj(var.vp) = 0;
     obj(var.w) = 0;
     obj(var.zp) = 1;
     obj(var.zw) = 0;
 
-% ctype vector
+% Cplex - ctype vector
     ctype(var.u) = 'C';
     ctype(var.vp) = 'C';
     ctype(var.w) = 'C';
     ctype(var.zp) = 'B';
     ctype(var.zw) = 'B';
 
-% Introduce all data in a structure
-    MILPproblem.A = A;
-    MILPproblem.b = rhs;
-    MILPproblem.c = obj;
-    MILPproblem.lb = lb;
-    MILPproblem.ub = ub;
-    MILPproblem.csense = csense;
-    MILPproblem.vartype = ctype;
-    MILPproblem.osense = 1;
-    MILPproblem.x0 = [];
+% Cplex - sense of the optimization
+    sense = 'minimize';
+    
+% Cplex - Introduce all data in a Cplex structure
+    cplex = Cplex('MCS');
+    cplex.Model.A = A;
+    cplex.Model.rhs = rhs;
+    cplex.Model.lhs = lhs;
+    cplex.Model.ub = ub;
+    cplex.Model.lb = lb;
+    cplex.Model.obj = obj;
+    cplex.Model.ctype = ctype;
+    cplex.Model.sense = sense;
 
-% Solve the problem
-    mcs_time = [];
-    showprogress(0, ['Calculating ' num2str(n_mcs) ' MCSs...']);
-    for i = 1:n_mcs
-        showprogress(i/n_mcs);
-        ini_mcs_time = toc;
-        tmp_sol_mcs = solveCobraMILP(MILPproblem, 'printLevel', printLevel);
-        if tmp_sol_mcs.stat == 1
-            mcs{i, 1} = K_ind((tmp_sol_mcs.full(var.zp))>0.9);
-            mcsi_time = toc-ini_mcs_time;
+% Cplex Indicators
+    % z = 1  -->  v >= alpha
+    for ivar = 1:length(var_group.z)
+        a = zeros(n_vars, 1);
+        a(var_group.v(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 0, a, 'G', alpha);
+    end
+
+% Cplex Indicators
+    % z = 0  -->  v <= 0
+    for ivar = 1:length(var_group.z)
+        a = zeros(n_vars, 1);
+        a(var_group.v(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 1, a, 'L', 0);
+    end
+
+% Cplex Parameters
+    cplex.Param.mip.tolerances.integrality.Cur = integrality_tolerance;
+    cplex.Param.mip.strategy.heuristicfreq.Cur = 1000;
+    cplex.Param.mip.strategy.rinsheur.Cur = 50;
+    cplex.Param.emphasis.mip.Cur = 4;
+    cplex.Param.preprocessing.aggregator.Cur = 50;
+    cplex.Param.preprocessing.boundstrength.Cur = 1;
+    cplex.Param.preprocessing.coeffreduce.Cur = 2;
+    cplex.Param.preprocessing.dependency.Cur = 1;
+    cplex.Param.preprocessing.dual.Cur = 1;
+    cplex.Param.preprocessing.fill.Cur = 50;
+    cplex.Param.preprocessing.linear.Cur = 1;
+    cplex.Param.preprocessing.numpass.Cur = 50;
+    cplex.Param.preprocessing.presolve.Cur = 1;
+    cplex.Param.preprocessing.reduce.Cur = 3;
+    cplex.Param.preprocessing.relax.Cur = 1;
+    cplex.Param.preprocessing.symmetry.Cur = 1;
+    cplex.Param.timelimit.Cur = max(10, timelimit);
+    if printLevel == 0
+        cplex.DisplayFunc = [];
+    end
+
+% Calculation of MCSs
+    mcs_time{1, 1} = '------ TIMING ------';
+    mcs_time{1, 2} = '--- MCSs ---';
+    i = 0;
+    k = 0;
+    n_time = size(mcs_time, 1);
+    mcs_time{n_time+1, 1} = 'Preparation';
+    mcs_time{n_time+1, 2} = toc(time_aa);
+    mcs = [];
+    largest_mcs = 0;
+    while largest_mcs <= max_len_mcs && k < n_mcs && cplex.Model.rhs(cons.forceLength) <= max_len_mcs
+        ini_mcs_time = toc(time_aa);
+        cplex.Param.mip.limits.populate.Cur = 40;
+        cplex.Param.mip.pool.relgap.Cur = 0.1;
+        cplex.populate();
+        n_pool = size(cplex.Solution.pool.solution, 1);
+        if n_pool ~= 0
+            solution = cplex.Solution.pool.solution;
+            for j = 1:n_pool
+                k = k+1;
+                mcs{k, 1} = K_ind((solution(j).x(var.zp))>0.9);
+                n_cons = n_cons+1;
+                sol = solution(j).x(var.zp)>0.9;
+                cplex.Model.A(n_cons, var.zp) = sparse(double(sol));
+                cplex.Model.rhs(n_cons) = sum(sol)-1;
+                cplex.Model.lhs(n_cons) = 0;
+            end
+            i = i+1;
+            mcsi_time = toc(time_aa)-ini_mcs_time;
             n_time = size(mcs_time, 1);
-            mcs_time{n_time+1, 1} = ['MCS_' num2str(i)];
+            mcs_time{n_time+1, 1} = ['POPULATE_ORDER_' num2str(cplex.Model.rhs(cons.forceLength))];
             mcs_time{n_time+1, 2} = mcsi_time;
         else
+            mcsi_time = toc(time_aa)-ini_mcs_time;
             n_time = size(mcs_time, 1);
-            mcs_time{n_time+1, 1} = 'Total Time MCS';
-            mcs_time{n_time+1, 2} = toc;
-            fprintf('\nAll existing MCSs have been calculated.\n');
-            return
-        end        
-        sol = tmp_sol_mcs.full(var.zp)>0.9;
-        n_cons = n_cons+1;
-        A(n_cons, var.zp) = sparse(double(sol));
-        rhs(n_cons) = sum(sol)-1;
-        csense(n_cons) = 'L';
-        MILPproblem.A = A;
-        MILPproblem.b = rhs;
-        MILPproblem.csense = csense;
+            mcs_time{n_time+1, 1} = ['POPULATE_ORDER_' num2str(cplex.Model.rhs(cons.forceLength)) 'NF'];
+            mcs_time{n_time+1, 2} = mcsi_time;
+            if forceLength == 1
+                cplex.Model.rhs(cons.forceLength) = cplex.Model.rhs(cons.forceLength)+1;
+                cplex.Model.lhs(cons.forceLength) = cplex.Model.lhs(cons.forceLength)+1;
+            else
+                n_time = size(mcs_time, 1);
+                mcs_time{n_time+1, 1} = 'TOTAL MCSs';
+                mcs_time{n_time+1, 2} = toc(time_aa);
+                return;
+            end     
+        end
+        try save('tmp.mat', 'mcs', 'mcs_time'); end
+        try largest_mcs = max(cellfun(@length, mcs)); end
     end
 else
-% CALCULATE gMCSs WITH A GIVEN KNOCK-OUT
-% Select the Row in K_ind related to the KO under study
+% CALCULATE MCSs WITH A GIVEN KNOCKOUT
+% Select the row(s) in K_ind related to the KO under study
     tmp = repmat({KO}, n_K_ind, 1);
     dp = cellfun(@isequal, K_ind, tmp);
-    dp = dp*10; % To improve the solving process. It doesn't affect to the solution.
 
 % Define variables
     var.u = 1:n_mets;
@@ -258,49 +332,43 @@ else
     cons.Ndual = 1:size(S, 2);
     cons.forceBioCons = cons.Ndual(end)+1:cons.Ndual(end)+1;
     cons.forceKO = cons.forceBioCons(end)+1:cons.forceBioCons(end)+1;
-    cons.linkAlpha = cons.forceKO(end)+1:cons.forceKO(end)+length(var.zp)+length(var.zw);
-    cons.linkM = cons.linkAlpha(end)+1:cons.linkAlpha(end)+length(var.zp)+length(var.zw);
-    cons.linearComb = cons.linkM(end)+1:cons.linkM(end)+size(S, 1)+size(K, 1)+size(t, 2);
-    cons.link_z_eps_del = cons.linearComb(end)+1:cons.linearComb(end)+length(var.zp)+length(var.zw);
-    n_cons = cons.link_z_eps_del(end);
+    cons.linearComb = cons.forceKO(end)+1:cons.forceKO(end)+size(S, 1)+size(K, 1)+size(t, 2);
+    cons.forceLength = cons.linearComb(end)+1:cons.linearComb(end)+1;
+    n_cons = cons.forceLength(end);
 
-% A matrix
-    A = sparse(zeros(cons.link_z_eps_del(end), var.x(end)));
+% Cplex - A matrix
+    A = sparse(zeros(n_cons, n_vars));
     A(cons.Ndual, var.u) = S';
     A(cons.Ndual, var.vp) = K';
     A(cons.Ndual, var.w) = -t;
     A(cons.forceBioCons, var.w) = -target_b;
-    A(cons.linkAlpha, [var.vp var.w]) = speye(length(var.vp)+length(var.w));
-    A(cons.linkAlpha, [var.zp var.zw]) = -alpha*speye(length(var.zp)+length(var.zw));
-    A(cons.linkM, [var.vp var.w]) = speye(length(var.vp)+length(var.w));
-    A(cons.linkM, [var.zp var.zw]) = -M*speye(length(var.zp)+length(var.zw));
     A(cons.forceKO, var.vp) = dp';
     A(cons.linearComb, var.x) = [S sparse(zeros(n_mets, 1)); K sparse(zeros(n_K_ind, 1)); -t' target_b];
     A(cons.linearComb, [var.epsp var.epsw]) = [sparse(zeros(n_mets, length(var.vp)+length(var.w))); -speye(length(var.vp)+length(var.w))];
     A(cons.linearComb, [var.delp var.delw]) = -[sparse(zeros(n_mets, length(var.vp)+length(var.w))); -speye(length(var.vp)+length(var.w))];
-    A(cons.link_z_eps_del, [var.zp var.zw]) = M*speye(length(var.zp)+length(var.zw));
-    A(cons.link_z_eps_del, [var.epsp var.epsw]) = speye(length(var.vp)+length(var.w));
-    A(cons.link_z_eps_del, [var.delp var.delw]) = speye(length(var.vp)+length(var.w));
+    if forceLength == 1
+        A(cons.forceLength, var.zp) = 1;
+    end
 
-% rhs vector
-    rhs(cons.Ndual, 1) = 0;
+% Cplex - rhs and lhs vectors
+    rhs = zeros(n_cons, 1);
+    rhs(cons.Ndual, 1) = inf;
     rhs(cons.forceBioCons) = -c;
-    rhs(cons.forceKO) = b*10;
-    rhs(cons.linkAlpha) = 0;
-    rhs(cons.linkM) = 0;
+    rhs(cons.forceKO) = 10000;
     rhs(cons.linearComb) = [sparse(zeros(n_mets, 1)); dp; zeros(size(t, 2), 1)];
-    rhs(cons.link_z_eps_del) = M;
-    
-% csense vector
-    csense(cons.Ndual, 1) = 'G';
-    csense(cons.forceBioCons) = 'L';
-    csense(cons.forceKO) = 'G';
-    csense(cons.linkAlpha) = 'G';
-    csense(cons.linkM) = 'L';
-    csense(cons.linearComb) = 'E';
-    csense(cons.link_z_eps_del) = 'L';
+    if forceLength == 1
+        rhs(cons.forceLength) = 1;
+    end
+    lhs = zeros(n_cons, 1);
+    lhs(cons.Ndual, 1) = 0;
+    lhs(cons.forceBioCons) = -1000;
+    lhs(cons.forceKO) = b*10;
+    lhs(cons.linearComb) = [sparse(zeros(n_mets, 1)); dp; zeros(size(t, 2), 1)];
+    if forceLength == 1
+        lhs(cons.forceLength) = 1;
+    end
 
-% ub and lb vectors
+% Cplex - ub and lb vectors
     ub(var.u, 1) = inf;
     ub(var.vp) = inf;
     ub(var.w) = inf;
@@ -323,7 +391,7 @@ else
     lb(var.x) = 0;
     lb(var.x(end)) = phi;
 
-% obj vector
+% Cplex - obj vector
     obj(var.u, 1) = 0;
     obj(var.vp) = 0;
     obj(var.w) = 0;
@@ -335,7 +403,7 @@ else
     obj(var.delw) = 0;
     obj(var.x) = 0;
 
-% ctype vector
+% Cplex - ctype vector
     ctype(var.u) = 'C';
     ctype(var.vp) = 'C';
     ctype(var.w) = 'C';
@@ -347,48 +415,125 @@ else
     ctype(var.delw) = 'C';
     ctype(var.x) = 'C';
 
-% Introduce all data in a structure
-    MILPproblem.A = A;
-    MILPproblem.b = rhs;
-    MILPproblem.c = obj;
-    MILPproblem.lb = lb;
-    MILPproblem.ub = ub;
-    MILPproblem.csense = csense;
-    MILPproblem.vartype = ctype;
-    MILPproblem.osense = 1;
-    MILPproblem.x0 = [];
+% Cplex - sense of the optimization
+    sense = 'minimize';
 
-% Solve the problem
-    mcs_time = [];
-    showprogress(0, ['Calculating ' num2str(n_mcs) ' MCSs...']);
-    for i = 1:n_mcs
-        showprogress(i/n_mcs);
-        ini_mcs_time = toc;
-        tmp_sol_mcs = solveCobraMILP(MILPproblem, 'printLevel', printLevel);
-        if tmp_sol_mcs.stat == 1
-            mcs{i, 1} = K_ind((tmp_sol_mcs.full(var.zp))>0.9);
-            mcsi_time = toc-ini_mcs_time;
+% Cplex - Introduce all data in a Cplex structure
+    cplex = Cplex('geneMCS');
+    cplex.Model.A = A;
+    cplex.Model.rhs = rhs;
+    cplex.Model.lhs = lhs;
+    cplex.Model.ub = ub;
+    cplex.Model.lb = lb;
+    cplex.Model.obj = obj;
+    cplex.Model.ctype = ctype;
+    cplex.Model.sense = sense;
+
+% Cplex Indicators
+    % z = 1  -->  v >= alpha
+    for ivar = 1:length(var_group.z)
+        a = zeros(var.x(end), 1);
+        a(var_group.v(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 0, a, 'G', alpha);
+    end
+
+% Cplex Indicators
+    % z = 0  -->  v <= 0
+    for ivar = 1:length(var_group.z)
+        a = zeros(var.x(end), 1);
+        a(var_group.v(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 1, a, 'L', 0);
+    end
+
+% Cplex Indicators
+    % z = 1  -->  epsilon <= 0
+    for ivar = 1:length(var_group.z)
+        a = zeros(var.x(end), 1);
+        a(var_group.eps(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 0, a, 'L', 0);
+    end
+    
+% Cplex Indicators
+    % z = 0  -->  epsilon <= M
+    for ivar = 1:length(var_group.z)
+        a = zeros(var.x(end), 1);
+        a(var_group.eps(ivar)) = 1;
+        cplex.addIndicators(var_group.z(ivar), 1, a, 'L', M);
+    end
+
+% Cplex Parameters
+    cplex.Param.mip.tolerances.integrality.Cur = integrality_tolerance;
+    cplex.Param.mip.strategy.heuristicfreq.Cur = 1000;
+    cplex.Param.mip.strategy.rinsheur.Cur = 50;
+    cplex.Param.emphasis.mip.Cur = 4;
+    cplex.Param.preprocessing.aggregator.Cur = 50;
+    cplex.Param.preprocessing.boundstrength.Cur = 1;
+    cplex.Param.preprocessing.coeffreduce.Cur = 2;
+    cplex.Param.preprocessing.dependency.Cur = 1;
+    cplex.Param.preprocessing.dual.Cur = 1;
+    cplex.Param.preprocessing.fill.Cur = 50;
+    cplex.Param.preprocessing.linear.Cur = 1;
+    cplex.Param.preprocessing.numpass.Cur = 50;
+    cplex.Param.preprocessing.presolve.Cur = 1;
+    cplex.Param.preprocessing.reduce.Cur = 3;
+    cplex.Param.preprocessing.relax.Cur = 1;
+    cplex.Param.preprocessing.symmetry.Cur = 1;
+    if printLevel == 0
+        cplex.DisplayFunc = [];
+    end
+
+% Calculation of MCSs
+    mcs_time{1, 1} = '------ TIMING ------';
+    mcs_time{1, 2} = '--- MCSs ---';
+    i = 0;
+    k = 0;
+    n_time = size(mcs_time, 1);
+    mcs_time{n_time+1, 1} = 'Preparation';
+    mcs_time{n_time+1, 2} = toc(time_aa);
+    mcs = [];
+    largest_mcs = 0;
+    while largest_mcs <= max_len_mcs && k < n_mcs && cplex.Model.rhs(cons.forceLength) <= max_len_mcs
+        ini_mcs_time = toc(time_aa);
+        cplex.Param.mip.limits.populate.Cur = 40;
+        cplex.Param.mip.pool.relgap.Cur = 0.1;
+        cplex.populate();
+        n_pool = size(cplex.Solution.pool.solution, 1);
+        if n_pool ~= 0
+            solution = cplex.Solution.pool.solution;
+            for j = 1:n_pool
+                k = k+1;
+                mcs{k, 1} = K_ind((solution(j).x(var.zp))>0.9);
+                n_cons = n_cons+1;
+                sol = solution(j).x(var.zp)>0.9;
+                cplex.Model.A(n_cons, var.zp) = sparse(double(sol));
+                cplex.Model.rhs(n_cons) = sum(sol)-1;
+                cplex.Model.lhs(n_cons) = 0;
+            end
+            i = i+1;
+            mcsi_time = toc(time_aa)-ini_mcs_time;
             n_time = size(mcs_time, 1);
-            mcs_time{n_time+1, 1} = ['MCS_' num2str(i)];
+            mcs_time{n_time+1, 1} = ['POPULATE_ORDER_' num2str(cplex.Model.rhs(cons.forceLength))];
             mcs_time{n_time+1, 2} = mcsi_time;
         else
+            mcsi_time = toc(time_aa)-ini_mcs_time;
             n_time = size(mcs_time, 1);
-            mcs_time{n_time+1, 1} = 'Total Time MCS';
-            mcs_time{n_time+1, 2} = toc;
-            fprintf('\nAll existing MCSs have been calculated.\n');
-            return
-        end        
-        sol = tmp_sol_mcs.full(var.zp)>0.9;
-        n_cons = n_cons+1;
-        A(n_cons, var.zp) = sparse(double(sol));
-        rhs(n_cons) = sum(sol)-1;
-        csense(n_cons) = 'L';
-        MILPproblem.A = A;
-        MILPproblem.b = rhs;
-        MILPproblem.csense = csense;
+            mcs_time{n_time+1, 1} = ['POPULATE_ORDER_' num2str(cplex.Model.rhs(cons.forceLength)) 'NF'];
+            mcs_time{n_time+1, 2} = mcsi_time;
+            if forceLength == 1
+                cplex.Model.rhs(cons.forceLength) = cplex.Model.rhs(cons.forceLength)+1;
+                cplex.Model.lhs(cons.forceLength) = cplex.Model.lhs(cons.forceLength)+1;
+            else
+                n_time = size(mcs_time, 1);
+                mcs_time{n_time+1, 1} = 'TOTAL MCSs';
+                mcs_time{n_time+1, 2} = toc(time_aa);
+                return;
+            end     
+        end
+        try save('tmp.mat', 'mcs', 'mcs_time'); end
+        try largest_mcs = max(cellfun(@length, mcs)); end
     end
 end
 n_time = size(mcs_time, 1);
-mcs_time{n_time+1, 1} = 'Total Time MCS';
-mcs_time{n_time+1, 2} = toc;
+mcs_time{n_time+1, 1} = 'TOTAL MCSs';
+mcs_time{n_time+1, 2} = toc(time_aa);
 end
