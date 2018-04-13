@@ -40,7 +40,7 @@ for k = 1:length(solverPkgs)
         end
         
         % Calculate GMCS
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20);
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20,5);
         
         % Check if the solution obtained is the same as the expected
         % solution
