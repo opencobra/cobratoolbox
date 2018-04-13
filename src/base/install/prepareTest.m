@@ -12,6 +12,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name) (default: {})
 %                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
+%                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available                  
 %                   - `needsLP`: Whether a LP solver is required (default: false)
 %                   - `needsMILP`: Whether a MILP solver is required (default: false)
 %                   - `needsQP`: Whether a QP solver is required (default: false)
@@ -75,11 +76,6 @@ toolboxInfo = struct('statistics_toolbox', {{'Statistics and Machine Learning To
 
 if isempty(availableSolvers)
     availableSolvers = getAvailableSolversByType();
-    fieldsWithSolvers = fieldnames(availableSolvers);
-    availableSolvers.ALL = {};
-    for i = 1:numel(fieldsWithSolvers)
-        availableSolvers.ALL = union(availableSolvers.ALL, availableSolvers.(fieldsWithSolvers{i}));
-    end
 end
 
 
@@ -88,6 +84,7 @@ parser.addParamValue('toolboxes', {}, @iscell);
 parser.addParamValue('requiredToolboxes', {}, @iscell);
 parser.addParamValue('requiredSolvers', {}, @iscell);
 parser.addParamValue('useSolversIfAvailable', {}, @iscell);
+parser.addParamValue('requireOneSolverOf', {}, @iscell);
 parser.addParamValue('needsLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMILP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsNLP', false, @(x) islogical(x) || x == 1 || x == 0);
@@ -113,6 +110,7 @@ linuxOnly = parser.Results.needsLinux;
 
 toolboxes = union(parser.Results.toolboxes, parser.Results.requiredToolboxes);
 requiredSolvers = parser.Results.requiredSolvers;
+possibleSolvers = parser.Results.requireOneSolverOf;
 preferredSolvers = parser.Results.useSolversIfAvailable;
 
 runtype = getenv('CI_RUNTYPE');
@@ -161,6 +159,27 @@ if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers, availableSolvers.
 else
     % otherwise add the required Solvers to the preferred solvers.
     preferredSolvers = union(preferredSolvers, requiredSolvers);
+end
+
+if ~isempty(possibleSolvers) && ~any(ismember(possibleSolvers,availableSolvers.ALL))
+    if numel(possibleSolvers) == 1
+        errorMessage{end + 1} = sprintf('The test requires that the following solver is installed:\n%s', strjoin(possibleSolvers, ' or '));
+    else
+        errorMessage{end + 1} = sprintf('The test requires that at least one of the following solvers is installed:\n%s or %s', strjoin(possibleSolvers(1:end-1), ', '),possibleSolvers{end});
+    end
+else
+    if ~isempty(possibleSolvers)
+        %We have a set of possible solvers. 
+        %So we restrict the preferredSolvers to those
+        % if there are preferred solvers.
+        if ~isempty(preferredSolvers)
+            preferredSolvers = intersect(preferredSolvers,possibleSolvers);                    
+        else
+            solverOptions = intersect(possibleSolvers,availableSolvers.ALL);
+            preferredSolvers = availableSolvers.ALL(find(ismember(availableSolvers.ALL,possibleSolvers),1));
+        end            
+        
+    end
 end
 
 % check the Toolboxes
@@ -267,10 +286,16 @@ if strcmpi(runtype,'fullRun')
     solversToUse = availableSolvers;
     %exclude pdco if not explicitly requested and available, as it does
     %have issues at the moment.    
-%    if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
-%        solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
-%        solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
-%    end
+    if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
+        solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
+        solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
+    end
+    if ~isempty(possibleSolvers)
+        %Restrict to the possibleSolvers
+        for i = 1:numel(problemTypes)
+            solversToUse.(problemTypes{i}) = intersect(solversToUse.(problemTypes{i}),possibleSolvers);
+        end
+    end
 else   
     for i = 1:numel(problemTypes)
         solversToUse.(problemTypes{i}) = intersect(preferredSolvers, availableSolvers.(problemTypes{i}));
