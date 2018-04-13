@@ -124,11 +124,12 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             end
         end
     else % Windows
-        resultVERS = system_dependent('getwinsys');
+        resultVERS = system_dependent('getos');
         for tableNb = length(testedOS)-1:length(testedOS) % loop through the last 2 tables
             tmp = strsplit(testedOS{tableNb});
             if ~isempty(strfind(resultVERS, tmp{2}))
                 cMatrix = compatMatrix{tableNb};
+                break;
             else
                 untestedFlag = true;
                 if printLevel > 0 && tableNb == length(testedOS)
