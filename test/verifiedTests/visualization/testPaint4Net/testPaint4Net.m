@@ -42,7 +42,7 @@ end
 
 for k = 1:length(solvers.LP)
     fprintf(' -- Running testPaint4Net using the solver interface: %s ... ', solvers.LP{k});
-    changeCobraSolver(solvers.LP, 'LP', 0);
+    changeCobraSolver(solvers.LP{k}, 'LP', 0);
 
     [involvedRxns_test, involvedMets_test, deadEnds_test] = draw_by_met(model, {'etoh[c]'}, 'false', 1, 'struc', {''}, sol.x);
     assert(isequal(involvedRxns_test, involvedRxns_etoh) && isequal(involvedMets_test, involvedMets_etoh));

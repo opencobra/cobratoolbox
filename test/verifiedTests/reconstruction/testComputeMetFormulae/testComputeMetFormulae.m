@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 %This tests requires gurobi and cplex. 
-prepareTest('requireSolver',{'gurobi','ibm_cplex'});
+prepareTest('requiredSolver',{'gurobi','ibm_cplex'});
 
 % initialize the test
 fileDir = fileparts(which('testComputeMetFormulae'));

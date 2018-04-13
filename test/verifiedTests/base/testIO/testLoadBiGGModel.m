@@ -12,7 +12,7 @@
 global CBTDIR
 
 %Check the requirements (a LP solver is necessary)
-solverPkgs = prepareTest('needsLP',true);
+solverPkgs = prepareTest('needsLP',true,'requireOneSolverOf',{'gurobi','ibm_cplex','glpk','mosek','quadMinos'});
 
 % save the current path
 currentDir = pwd;
