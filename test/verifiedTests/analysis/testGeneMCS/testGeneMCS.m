@@ -17,7 +17,7 @@ testDir = fileparts(which('testGeneMCS'));
 cd(testDir);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex','gurobi'}; 
+solverPkgs = {'ibm_cplex'}; 
 
 % Load Toy Example
 model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
