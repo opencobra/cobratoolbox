@@ -4,7 +4,6 @@ function environment = getEnvironment()
 %    environment = getEnvironment()
 %
 % OUTPUT:
-%
 %    environment:      a struct with two fields
 %                       * .globals - contains all global values
 %                       * .path - contains the current path
@@ -18,16 +17,3 @@ environment.globals = globals;
 environment.path = path;
 end
 
-
-function value = getGlobalValue(globalName)
-% Safely get the Value of a global variable.
-%
-% USAGE:
-%    getGlobalValue(globalName)
-%
-% INPUTS:
-%    globalName:    The name of the global variable to get the value for
-
-    eval(['global ' globalName]);
-    eval(['value = ' globalName ';']);
-end
