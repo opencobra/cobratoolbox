@@ -12,6 +12,9 @@ function restoreEnvironment(environment, printLevel)
 %                       * 0: No outputs (Default)
 %                       * 1: Info what each value is set to
 %                                   
+    if ~exist('printLevel','var')
+        printLevel = 0;
+    end
 
     globalvars = who('global');
     globalsToDelete = setdiff(globalvars,fieldnames(environment.globals));
