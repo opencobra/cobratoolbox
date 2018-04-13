@@ -9,6 +9,10 @@
 % save the current path
 currentDir = pwd;
 
+
+%This tests requires gurobi
+prepareTest('requireSolver',{'gurobi'});
+
 % initialize the test
 fileDir = fileparts(which('testAnalyzeGCdesign'));
 cd(fileDir);
@@ -26,6 +30,8 @@ intermediateSlnsM = {};
 % solver change due to instability of qpng
 % to be changed with gurobi
 changeCobraSolver('gurobi', 'QP');
+
+
 [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);
 
 for i=2:8;

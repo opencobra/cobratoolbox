@@ -12,29 +12,26 @@ global CBTDIR
 % save the current path
 currentDir = pwd;
 
+% set the LP cobra solver - used in optimizeCbModelNLP that calls optimizeCbModel
+solverPkgs = prepareTest('needsLP',true);
+
 % initialize the test
 fileDir = fileparts(which('testOptimizeTwoCbModels'));
 cd(fileDir);
-
-% set the LP cobra solver - used in optimizeCbModelNLP that calls optimizeCbModel
-solverPkgs = {'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
-
-tested = false;
 
 model1 = createToyModelForAltOpts();
 model2 = createToyModelForAltOpts();
 model1 = changeObjective(model1,'R3');
 model2 = changeObjective(model2,'R6');
 
-objtol = getCobraSolverParams('LP','objTol');
+objtol = 1e-4;
 
-for k = 1:length(solverPkgs)
+for k = 1:length(solverPkgs.LP)
     
-    solverOk = changeCobraSolver(solverPkgs{k},'LP',0);
+    solverOk = changeCobraSolver(solverPkgs.LP{k},'LP',0);
     
     if solverOk
-        fprintf('   Running optimizeTwoCbModels using %s ... ', solverPkgs{k});
-       tested = true;
+        fprintf('   Running optimizeTwoCbModels using %s ... ', solverPkgs.LP{k});
        [sol1,sol2,totalDiffFlux] = optimizeTwoCbModels(model1,model2);       
        %There is a difference of 4 reactions carrying a flux of 1000. 
        assert(abs((totalDiffFlux - 4000)) <= objtol);
@@ -69,8 +66,6 @@ for k = 1:length(solverPkgs)
     end
     
 end
-
-assert(tested);
 
 fprintf('Done...\n')
 cd(currentDir)

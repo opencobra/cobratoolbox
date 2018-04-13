@@ -22,7 +22,8 @@ cd(fileDir);
 tol = 1e-4;
 
 % test solver packages
-solverPkgs = {'cplex_direct', 'tomlab_cplex','ibm_cplex', 'gurobi', 'qpng'}; %'mosek', 'pdco'
+useSolversIfAvailable = {'cplex_direct', 'tomlab_cplex','ibm_cplex', 'gurobi', 'qpng'};
+solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useSolversIfAvailable); 
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
