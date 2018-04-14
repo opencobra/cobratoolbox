@@ -315,20 +315,11 @@ if ~PCT_status %aka nothing is active
         maxFlux(maxFluxOrder(maxFluxPres)) = maxs; 
     end
 else % parallel job.  pretty much does the same thing.
-
-    global CBT_LP_SOLVER;
-    global CBT_MILP_SOLVER;
-    global CBT_QP_SOLVER;
-    lpsolver = CBT_LP_SOLVER;
-    qpsolver = CBT_QP_SOLVER;
-    milpsolver = CBT_MILP_SOLVER;
-    cpath = path;
+    environment = getEnvironment();
+    
     if minNorm        
         parfor i = 1:length(rxnNameList)
-            changeCobraSolver(qpsolver,'QP',0,-1);
-            changeCobraSolver(lpsolver,'LP',0,-1);
-            changeCobraSolver(milpsolver,'MILP',0,-1);                
-            path(cpath);
+            restoreEnvironment(environment);
             parLPproblem = LPproblem;        
             parLPproblem.osense = 1;
             [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
@@ -338,11 +329,8 @@ else % parallel job.  pretty much does the same thing.
     else
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
-        parfor i = 1:length(rxnListMin)    
-            changeCobraSolver(qpsolver,'QP',0,-1);
-            changeCobraSolver(lpsolver,'LP',0,-1);
-            changeCobraSolver(milpsolver,'MILP',0,-1);
-            path(cpath);
+        parfor i = 1:length(rxnListMin)
+            restoreEnvironment(environment);
             parLPproblem = LPproblem;
             [mins(i)] = calcSolForEntry(model,rxnListMin,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
@@ -352,10 +340,7 @@ else % parallel job.  pretty much does the same thing.
         maxs = inf*ones(length(rxnListMax),1);
         LPproblem.osense = -1;
         parfor i = 1:length(rxnListMax)        
-            changeCobraSolver(qpsolver,'QP',0,-1);
-            changeCobraSolver(lpsolver,'LP',0,-1);
-            changeCobraSolver(milpsolver,'MILP',0,-1);            
-            path(cpath);
+            restoreEnvironment(environment);
             parLPproblem = LPproblem;
             [maxs(i)] = calcSolForEntry(model,rxnListMax,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end

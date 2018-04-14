@@ -28,15 +28,17 @@ COBRA_TESTSUITE_STARTTIME = clock();
 try
     % run the file
     executefile(fileName);
-catch ME
+catch ME    
     % vatch errors and interpret them
     clearvars -except ME COBRA_TESTSUITE_STARTTIME COBRA_TESTSUITE_TESTFILE CBT_MISSING_REQUIREMENTS_ERROR_ID
+    scriptTime = etime(clock(), COBRA_TESTSUITE_STARTTIME);
     result = struct('status', 'failed', 'failed', true, 'passed', false, 'skipped', false, 'fileName', ...
-                    COBRA_TESTSUITE_TESTFILE, 'time', NaN, 'statusMessage', 'fail', 'Error', ME);
+                    COBRA_TESTSUITE_TESTFILE, 'time', scriptTime, 'statusMessage', 'fail', 'Error', ME);
     if strcmp(ME.identifier, CBT_MISSING_REQUIREMENTS_ERROR_ID)
         % requirement missing, so the test was skipped.
         result.status = 'skipped';
         result.skipped = true;
+        result.failed = false;
         result.statusMessage = ME.message;
     else
         % actual error in the test.

@@ -65,23 +65,29 @@ variables) are not properly set.
   parallel computing toolbox. Global variables are not passed on to the
   workers of a parallel pool.
 | To change cobra global settings for a parfor loop, it is necessary to
-  reinitialize the global variables on each worker. The easiest way to
-  do this is as follows:
+  reinitialize the global variables on each worker. The toolbox offers 
+  two helper functions for this purpose, which also take care of pathes, 
+  ``getEnvironment()`` and ``restoreEnvironment()``, which can be used 
+  as in the below example.
 
 .. code::
 
-    global CBT_LP_SOLVER
-    solver = CBT_LP_SOLVER
+    environment = getEnvironment();
     parfor i = 1:2
+        restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1); %third argument is printLevel, fourth argument is validation Level.
         % additional code in the parfor loop will now use the currently set solver
         optimizeCbModel(model);
     end
 
-By requesting the current global variable before the parfor loop and
+By requesting the current environment (global variables and path) before the parfor loop and
 assigning it to a local variable, that variable is passed on to the
-workers, which can then use it to set up the correct solver (or other
-variable).
+workers, which can then use it to set up the environment.
+
+``dqqMinos`` and ``quadMinos`` use the file system to input and output solutions.
+Therefore, they can currently not be used in any function that uses ``parfor``, as this would
+cause concurrency issues between different workers.
+
 
 (Windows) MATLAB R2016b crashes with CPLEX 12.7.1
 -------------------------------------------------

@@ -22,7 +22,8 @@ cd(fileDir);
 tol = 1e-4;
 
 % test solver packages
-solverPkgs = {'cplex_direct', 'tomlab_cplex','ibm_cplex', 'gurobi', 'qpng'}; %'mosek', 'pdco'
+requireOneSolverOf = {'tomlab_cplex','ibm_cplex', 'gurobi'};
+solverPkgs = prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
@@ -37,21 +38,21 @@ QPproblem.x0 = [0, 1]';  % starting point
 QPproblem.osense = 1;
 QPproblem.csense = ['L'; 'E'];
 
-for k = 1:length(solverPkgs)
+for k = 1:length(solverPkgs.QP)
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
+    solverOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
 
     if solverOK
 
-        fprintf('   Running testSolveCobraQP using %s ... ', solverPkgs{k});
+        fprintf('   Running testSolveCobraQP using %s ... ', solverPkgs.QP{k});
 
         QPsolution = solveCobraQP(QPproblem, 'printLevel', 0);
 
         % Check QP results with expected answer.
         assert(any(abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]));
 
-        if strcmp(solverPkgs{k}, 'ibm_cplex') && isunix
+        if strcmp(solverPkgs.QP{k}, 'ibm_cplex') && isunix
             % Note: On windows, the timelimit parameter has no effect
             % test IBM-Cplex-specific parameters. No good example for testing this. Just test time limit
             QPsolution = solveCobraQP(QPproblem, struct('timelimit', 0.0), 'printLevel', 0);

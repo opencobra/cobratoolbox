@@ -61,16 +61,31 @@ The following example requires the statistics toolbox to be present.
 solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
 ````
 
-#### Example E: Require a specific solver
+#### Example E: Require one of a set of solvers
 
-Make sure this is only used if there is an explicit requirement for a
-specific solver. Otherwise, indicate the type of required solver (see
-above).
+Some functionalities do only work properly with a limited set of solvers.
+with the keyword `requireOneSolverOf` you can specify a set of solvers 
+of which the test requires at least one to be present. This option, 
+will make the test never be run with any but the solvers specified in
+the supplied list. 
+E.g. if your test only works with `gurobi` or `mosek` you would call prepareTest as
+
+````Matlab
+solvers = prepareTest('requireOneSolverOf', {'ibm_cplex', 'gurobi'})
+````
+
+#### Example F: Require multiple solvers
+
+Some tests require more than one solver to be run, and otherwise fail.
+To require multiple solvers for a test use the `requiredSolvers` parameters.
+E.g. if your function requires `ibm_cplex` and `gurobi` use the following call:
+
 
 ````Matlab
 solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 ````
-#### Example F: Multiple requirements
+
+#### Example G: Multiple requirements
 
 If the test requires multiple different properties to be met,
 you should test them all in the same call. To keep the code readable, first define the

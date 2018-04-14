@@ -40,10 +40,9 @@ testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
-pathForTests = path;
-
-% save the current globals (all tests should have the same environment when starting)
-globals = getGlobals();
+% save the current globals (all tests should have the same environment when
+% starting) and path 
+environment = getEnvironment();
 
 % save the current warning state
 warnstate = warning();
@@ -60,10 +59,7 @@ for i = 1:numel(testFileNames)
     end
 
     % reset the globals
-    resetGlobals(globals);
-
-    % reset the path
-    path(pathForTests);
+    restoreEnvironment(environment)
 
     % reset the warning state
     warning(warnstate);

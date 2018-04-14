@@ -14,6 +14,10 @@ global SOLVERS
 % save the current path
 currentDir = pwd;
 
+requireOneSolverOf = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'};
+prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf); 
+
+
 % initialize the test
 fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
@@ -123,7 +127,7 @@ for jTest = 1:2
             cont = changeCobraSolver('ibm_cplex', 'LP');
         end
     else  % test any one of the other LP solvers
-        solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'; 'dqqMinos'; 'quadMinos'};
+        solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'}; %Minos cannot be run using parfor!
         jSolver = 1;
         cont = 0;
         while jSolver <= numel(solverPrefer)
@@ -142,7 +146,7 @@ for jTest = 1:2
 
     if cont
         switch CBT_LP_SOLVER
-            case {'gurobi', 'ibm_cplex', 'tomlab_cplex', 'cplex_direct', 'glpk', 'dqqMinos', 'quadMinos'}
+            case {'gurobi', 'ibm_cplex', 'tomlab_cplex', 'cplex_direct', 'glpk'} % QuadMinos and dqqMinos don' work in parallel settings
                 feasTol = 1e-8;  % feasibility tolerance
                 tol = 1e-3;  % tolerance for comparing results
             case {'mosek', 'matlab'}
