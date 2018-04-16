@@ -9,6 +9,8 @@
 
 global CBTDIR
 
+solverPkgs = prepareTest('requireOneSolverOf', {'ibm_cplex','gurobi'});
+
 originalDir = pwd;
 
 pathTutorial = which('testOptForce.m');
@@ -42,7 +44,7 @@ model = changeRxnBounds(model, 'EX_glyc', -100, 'l');
 
 origmodel = model;
 
-solverPkgs = {'gurobi'};
+
 %set up the xlwrite command for xls io. We do this before the loop, as
 %changeCobraSolver will correct the globals which are reset on 2014b by a
 %javaaddpath.
