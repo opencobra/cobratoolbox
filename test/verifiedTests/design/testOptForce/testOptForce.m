@@ -51,8 +51,8 @@ origmodel = model;
 setupxlwrite();
 
 for k = 1:length(solverPkgs)
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP');
-    solverMILPOK = changeCobraSolver(solverPkgs{k}, 'MILP');
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP');
+    solverMILPOK = changeCobraSolver(solverPkgs.MILP{k}, 'MILP');
     
     if solverLPOK && solverMILPOK
         %get max growth rate
