@@ -24,7 +24,7 @@ if exist('org.apache.poi.ss.usermodel.WorkbookFactory', 'class') ~= 8 ...
     oldfolder = pwd;
     folder = fileparts(which('xlwrite'));
     cd(folder);
-    addpath('poi_library');
+    addpath([ folder filesep 'poi_library']);
     javaaddpath(['poi_library' filesep 'poi-3.8-20120326.jar']);
     javaaddpath(['poi_library' filesep 'poi-ooxml-3.8-20120326.jar']);
     javaaddpath(['poi_library' filesep 'poi-ooxml-schemas-3.8-20120326.jar']);
