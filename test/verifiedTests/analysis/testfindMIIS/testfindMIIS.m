@@ -10,6 +10,8 @@
 
 global CBTDIR
 
+% Define requirements for the test
+prepareTest('requiredSolvers',{'ibm_cplex'}) %Could this also use tomlab cplex??
 % save the current path
 currentDir = pwd;
 

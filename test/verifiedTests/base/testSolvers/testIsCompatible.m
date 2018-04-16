@@ -3,6 +3,12 @@
 % Purpose:
 %     - testIsCompatible tests the isCompatible function
 
+
+%Define Requirements for the test
+usedSolvers = {'gurobi','mosek','ibm_cplex'};
+solverPkgs = prepareTest('needsUnix',true,'requireOneSolverOf',usedSolvers,'useSolversIfAvailable',usedSolvers);
+
+
 % save the current path
 currentDir = pwd;
 
@@ -26,7 +32,7 @@ end
 
 if isunix && ~ismac
     % loop through all solver names
-    solverNames = {'ibm_cplex', 'gurobi', 'mosek'};
+    solverNames = solverPkgs.LP;
 
     for i = 1:length(solverNames)
         solverOK = changeCobraSolver(solverNames{i});
