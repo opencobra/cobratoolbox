@@ -48,38 +48,62 @@ figForm = '-depsc';
 numWorkers = 2;
 
 % autofix for names mismatch
-autoFix = 1;
+autoFix = true;
 
 % if outputs in open formats should be produced for each section (1=T)
-compMod = 0;
+compMod = false;
 
 % if documentations on patient health status is provided (0 not 1 yes)
-patStat = 0;
+patStat = false;
 
 % to enable also rich diet simulations
-rDiet = 0;
+rDiet = false;
 
 % if if to use an external solver and save models with diet
-extSolve = 0;
+extSolve = false;
 
 % the type of FVA function to use to solve
-fvaType = 1;
+fvaType = true;
 
 % To tourn off the autorun to be able to manually execute each part of the pipeline.
-autorun = 0;
+autorun = false;
 
 % input checker
 init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun);
 
 % logical tests for outputs
-assert(init == 1);
+assert(init && ~autorun);
 
-init = initMgPipe(modPath);
+% check if error is thrown when running in serial
+assert(verifyCobraFunctionError(@() initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, 1, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)));
 
-assert(init == 1);
-
-% test if the function throws an error when modPath is not defined
+% test if the function throws an error when no arguments are provided
 assert(verifyCobraFunctionError(@() initMgPipe()))
+
+% test with only the path to the models (throws an error that the abundance file is missing)
+assert(verifyCobraFunctionError(@() initMgPipe(modPath)));
+
+% test if the path to the models exists (the model directory is set, but it does not exist)
+assert(verifyCobraFunctionError(@() initMgPipe('/tmp/abcdef')))
+
+% turn all warnings off
+warning('off', 'all')
+
+% test if the resPath is set to default value
+abunFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
+init = initMgPipe(modPath, CBTDIR, '', '', abunFilePath);
+assert(length(lastwarn()) > 0);
+
+% test with compMod = true
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, true, patStat, rDiet, extSolve, fvaType, autorun);
+assert(length(lastwarn()) > 0);
+
+% test with patStat = true
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, true, rDiet, extSolve, fvaType, autorun);
+assert(length(lastwarn()) > 0);
+
+% turn warning back on
+warning('on', 'all');
 %{
 % load the model
 %Either:
