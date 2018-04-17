@@ -1,4 +1,4 @@
-% The COBRAToolbox: testMappingInfo.m
+% The COBRAToolbox: testMgPipe.m
 %
 % Purpose:
 %     - test the mappingInfo function of the Microbiome Toolbox
