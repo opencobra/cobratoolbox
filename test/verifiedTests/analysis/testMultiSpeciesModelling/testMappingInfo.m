@@ -4,7 +4,7 @@
 %     - test the mappingInfo function of the Microbiome Toolbox
 %
 % Authors:
-%     - original version: Federico Baldini, April 2018
+%     - original version: Federico Baldini & Laurent Heirendt, April 2018
 %
 
 global CBTDIR
@@ -104,45 +104,6 @@ assert(length(lastwarn()) > 0);
 
 % turn warning back on
 warning('on', 'all');
-%{
-% load the model
-%Either:
-model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
-%or
-model = readCbModel('testModel.mat','modelName','NameOfTheModelStruct'); %For all models which are part of this particular test.
 
-%Load reference data
-load('testData_functionToBeTested.mat');
-
-% This is only necessary for tests that test a function that runs in parallel.
-% create a parallel pool
-% This is in try/catch as otherwise the test will error if no parallel
-% toolbox is installed.
-try
-    parTest = true;
-    poolobj = gcp('nocreate'); % if no pool, do not create new one.
-    if isempty(poolobj)
-        parpool(2); % launch 2 workers
-    end
-catch ME
-    parTest = false;
-    fprintf('No Parallel Toolbox found. TRying test without Parallel toolbox.\n')
-end
-if parTest
-% if parallel toolbox has to be present (if not, this can be left out).
-
-for k = 1:length(solverPkgs.LP)
-    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs.LP{k});
-
-    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-
-    if solverLPOK
-        % <your test goes here>
-    end
-    verifyCobraFunctionError(@() testFile(wrongInput));
-    % output a success message
-    fprintf('Done.\n');
-end
-%}
 % change the directory
 cd(currentDir)
