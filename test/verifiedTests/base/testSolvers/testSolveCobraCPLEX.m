@@ -7,6 +7,8 @@
 %     - Laurent Heirendt, November 2017
 %
 
+prepareTest('requiredSolvers',{'ibm_cplex'}) %Could this also use tomlab cplex??
+
 global CBTDIR
 
 % save the current path
