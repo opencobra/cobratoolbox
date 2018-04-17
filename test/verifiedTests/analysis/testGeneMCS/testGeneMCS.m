@@ -17,7 +17,7 @@ testDir = fileparts(which('testGeneMCS'));
 cd(testDir);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex'}; 
+solverPkgs = {'ibm_cplex', 'glpk', 'gurobi6'}; 
 
 % Load Toy Example
 model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
@@ -41,7 +41,7 @@ for k = 1:length(solverPkgs)
         
         % Calculate GMCS
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20,5);
-        
+
         % Check if the solution obtained is the same as the expected
         % solution
         gmcsIsTrue = zeros(size(true_gmcs));
@@ -58,15 +58,15 @@ for k = 1:length(solverPkgs)
         assert(sum(~logical(gmcsIsTrue))==0);
         %Now, test with a gene_set 
         options = struct();
-        options.gene_set = model.genes([1 2 4 5 6]);                
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        options.gene_set = model.genes([1 2 4 5 6]);    
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         %Assert that all correct solutions are there 
         assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),gmcs)), {{'g5'},{'g1','g4'}})))
         %and, that there are no surplus solutions
         assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),{{'g5'},{'g1','g4'}})), gmcs)))
         %Finally test this for gMCS containing a specific knockout.
         options.KO = 'g5';
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         assert(isequal(gmcs,{{'g5'}}));
     else
         warning('The test testGeneMCS cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
@@ -81,6 +81,9 @@ for k = 1:length(solverPkgs)
     end
     if exist([testDir filesep 'MILPProblem.mat'], 'file')
         delete MILPProblem.mat
+    end
+    if exist([testDir filesep 'tmp.mat'], 'file')
+        delete tmp.mat
     end
 
     % output a success message

@@ -67,7 +67,20 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
+% .. Revisions:
 %       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
+
+% Check the installation of cplex
+global SOLVERS;
+global CBT_MILP_SOLVER;
+if SOLVERS.ibm_cplex.installed && SOLVERS.ibm_cplex.working
+    if ~strcmp(CBT_MILP_SOLVER,'ibm_cplex')
+        warning('calculateMCS will use IBM CPLEX although it is not selected for MILP')
+    end
+else
+    error('This version calculateMCS only works with IBM CPLEX. Newer versions will include more solvers included in COBRA Toolbox')
+end
 
 if nargin == 4              % Set Parameters
     KO = [];                % Optional inputs
@@ -278,14 +291,9 @@ if isempty(KO)
     
 % Cplex - Introduce all data in a Cplex structure
     cplex = Cplex('geneMCS');
-    cplex.Model.A = A;
-    cplex.Model.rhs = rhs;
-    cplex.Model.lhs = lhs;
-    cplex.Model.ub = ub;
-    cplex.Model.lb = lb;
-    cplex.Model.obj = obj;
-    cplex.Model.ctype = ctype;
-    cplex.Model.sense = sense;
+    Model = struct();
+    [Model.A, Model.rhs, Model.lhs, Model.ub, Model.lb, Model.obj, Model.ctype, Model.sense] = deal(A, rhs, lhs, ub, lb, obj, ctype, sense);
+    cplex.Model = Model;
 
 % Cplex Indicators
     % z = 1  -->  v >= alpha
@@ -304,23 +312,15 @@ if isempty(KO)
     end
 
 % Cplex Parameters
-    cplex.Param.mip.tolerances.integrality.Cur = integrality_tolerance;
-    cplex.Param.mip.strategy.heuristicfreq.Cur = 1000;
-    cplex.Param.mip.strategy.rinsheur.Cur = 50;
-    cplex.Param.emphasis.mip.Cur = 4;
-    cplex.Param.preprocessing.aggregator.Cur = 50;
-    cplex.Param.preprocessing.boundstrength.Cur = 1;
-    cplex.Param.preprocessing.coeffreduce.Cur = 2;
-    cplex.Param.preprocessing.dependency.Cur = 1;
-    cplex.Param.preprocessing.dual.Cur = 1;
-    cplex.Param.preprocessing.fill.Cur = 50;
-    cplex.Param.preprocessing.linear.Cur = 1;
-    cplex.Param.preprocessing.numpass.Cur = 50;
-    cplex.Param.preprocessing.presolve.Cur = 1;
-    cplex.Param.preprocessing.reduce.Cur = 3;
-    cplex.Param.preprocessing.relax.Cur = 1;
-    cplex.Param.preprocessing.symmetry.Cur = 1;
-    cplex.Param.timelimit.Cur = max(10, timelimit);
+    [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
+        sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
+        sP.preprocessing.dual, sP.preprocessing.fill,...
+        sP.preprocessing.linear, sP.preprocessing.numpass, ...
+        sP.preprocessing.presolve, sP.preprocessing.reduce,..., ...
+        sP.preprocessing.relax, sP.preprocessing.symmetry] = deal(50, 1, 2, 1, 1, 50, 1, 50, 1, 3, 1, 1);
+    cplex = setCplexParam(cplex, sP);
     if printLevel == 0
         cplex.DisplayFunc = [];
     end
