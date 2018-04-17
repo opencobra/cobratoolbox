@@ -61,6 +61,7 @@ end
 if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
     resPath = [CBTDIR filesep '.tmp'];
     warning(['The path to the results has been set to ' resPath]);
+    mkdir(resPath);
 end
 if ~exist('dietFilePath', 'var')|| ~exist(dietFilePath, 'file')
     dietFilePath = [CBTDIR filesep 'papers' filesep '2017_AGORA' filesep 'resourceForMicrobiomeModelingToolbox' filesep 'AverageEuropeanDiet'];

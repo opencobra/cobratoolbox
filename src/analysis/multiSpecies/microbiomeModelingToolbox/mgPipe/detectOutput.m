@@ -14,8 +14,7 @@ function mapP = detectOutput(resPath, objNam)
 %
 % .. Author: Federico Baldini 2017-2018
 
-resPathc = resPath(1:(length(resPath) - 1));
-cd(resPathc);
+cd(resPath);
 fnames = dir('*.mat');
 numfids = length(fnames);
 vals = cell(1, numfids);

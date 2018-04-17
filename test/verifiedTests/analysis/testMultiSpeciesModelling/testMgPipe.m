@@ -90,7 +90,7 @@ assert(verifyCobraFunctionError(@() initMgPipe('/tmp/abcdef')))
 warning('off', 'all')
 
 % test if the resPath is set to default value
-abunFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
+abunFilePath = [CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
 init = initMgPipe(modPath, CBTDIR, '', '', abunFilePath);
 assert(length(lastwarn()) > 0);
 
@@ -104,6 +104,18 @@ assert(length(lastwarn()) > 0);
 
 % turn warning back on
 warning('on', 'all');
+
+% test getIndividualSizeName
+abunFilePath = which('normCoverageReduced.csv');
+[indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath);
+
+assert(indNumb == 4)
+assert(length(sampName) == 4)
+assert(length(organisms) == 30)
+
+% test detectOutput
+mapP = detectOutput(resPath, 'mapInfo.mat');
+assert(isempty(mapP));
 
 % change the directory
 cd(currentDir)
