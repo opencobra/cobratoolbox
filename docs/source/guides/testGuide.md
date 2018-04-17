@@ -52,16 +52,7 @@ and that are installed.
 solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex', 'gurobi'});
 ````
 
-#### Example D: Require a specific MATLAB toolbox
-
-The toolbox IDs are specified as those used in `license('test', 'toolboxName')`.
-The following example requires the statistics toolbox to be present.
-
-````Matlab
-solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
-````
-
-#### Example E: Require one of a set of solvers
+#### Example D: Require one of a set of solvers
 
 Some functionalities do only work properly with a limited set of solvers.
 with the keyword `requireOneSolverOf` you can specify a set of solvers 
@@ -72,6 +63,19 @@ E.g. if your test only works with `gurobi` or `mosek` you would call prepareTest
 
 ````Matlab
 solvers = prepareTest('requireOneSolverOf', {'ibm_cplex', 'gurobi'})
+````
+
+
+#### Example E: Exclude a solver
+
+If for some reason, a function is known not to work with a few specific solvers 
+(e.g. precision is insufficient) but works with all others, 
+it might be advantageous to explicitly exclude that one solver instead of defining 
+the list of possible solvers. This can be done with the `excludeSolvers` parameter.
+Eg. to exclude `matlab` and `lp_solve` you would use the following command:
+
+````Matlab
+solvers = prepareTest('excludeSolvers', {'matlab', 'lp_solve'})
 ````
 
 #### Example F: Require multiple solvers
@@ -85,7 +89,16 @@ E.g. if your function requires `ibm_cplex` and `gurobi` use the following call:
 solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 ````
 
-#### Example G: Multiple requirements
+#### Example G: Require a specific MATLAB toolbox
+
+The toolbox IDs are specified as those used in `license('test', 'toolboxName')`.
+The following example requires the statistics toolbox to be present.
+
+````Matlab
+solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
+````
+
+#### Example H: Multiple requirements
 
 If the test requires multiple different properties to be met,
 you should test them all in the same call. To keep the code readable, first define the

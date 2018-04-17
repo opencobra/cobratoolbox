@@ -13,6 +13,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
 %                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available                  
+%                   - `excludeSolvers`: Names of solvers which should never be used for the test (because they fail)
 %                   - `needsLP`: Whether a LP solver is required (default: false)
 %                   - `needsMILP`: Whether a MILP solver is required (default: false)
 %                   - `needsQP`: Whether a QP solver is required (default: false)
@@ -85,6 +86,7 @@ parser.addParamValue('requiredToolboxes', {}, @iscell);
 parser.addParamValue('requiredSolvers', {}, @iscell);
 parser.addParamValue('useSolversIfAvailable', {}, @iscell);
 parser.addParamValue('requireOneSolverOf', {}, @iscell);
+parser.addParamValue('excludeSolvers', {}, @iscell);
 parser.addParamValue('needsLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMILP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsNLP', false, @(x) islogical(x) || x == 1 || x == 0);
@@ -111,11 +113,13 @@ linuxOnly = parser.Results.needsLinux;
 toolboxes = union(parser.Results.toolboxes, parser.Results.requiredToolboxes);
 requiredSolvers = parser.Results.requiredSolvers;
 possibleSolvers = parser.Results.requireOneSolverOf;
+excludedSolvers = parser.Results.excludeSolvers;
 preferredSolvers = parser.Results.useSolversIfAvailable;
 
 runtype = getenv('CI_RUNTYPE');
 
 errorMessage = {};
+infoMessage = {};
 
 % first, check whether the OS is applicable
 if macOnly
@@ -146,10 +150,26 @@ if unixOnly
     end
 end
 
+% restrict the solvers available for this test
+solversForTest = availableSolvers;
+
+if ~isempty(excludedSolvers)
+    solverTypes = fieldnames(availableSolvers);
+    for i = 1:numel(solverTypes)
+        excludedPos = ismember(solversForTest.(solverTypes{i}),excludedSolvers);
+        solversForTest.(solverTypes{i}) = solversForTest.(solverTypes{i})(~excludedPos);
+    end
+    if numel(excludedSolvers) == 1
+        infoMessage{end+1} = sprintf('%s is not compatible with the tested function and thus excluded.',excludedSolvers{1});
+    else
+        infoMessage{end+1} = sprintf('The following solvers are not compatible with this test and therefore excluded:\n%s and %s', strjoin(excludedSolvers(1:end-1),' and '),excludedSolvers{end});
+    end
+end
+
 % then, check the required Solvers
-if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers, availableSolvers.ALL))
+if ~isempty(requiredSolvers) && ~all(ismember(requiredSolvers, solversForTest.ALL))
     % we have required solvers and some are missing
-    missing = ~ismember(requiredSolvers, availableSolvers.ALL);
+    missing = ~ismember(requiredSolvers, solversForTest.ALL);
     if sum(missing) == 1
         misssolver = requiredSolvers{missing};
             errorMessage{end + 1} = sprintf('%s is a required solver for the test and not available on your system.', misssolver);
@@ -161,7 +181,7 @@ else
     preferredSolvers = union(preferredSolvers, requiredSolvers);
 end
 
-if ~isempty(possibleSolvers) && ~any(ismember(possibleSolvers,availableSolvers.ALL))
+if ~isempty(possibleSolvers) && ~any(ismember(possibleSolvers,solversForTest.ALL))
     if numel(possibleSolvers) == 1
         errorMessage{end + 1} = sprintf('The test requires that the following solver is installed:\n%s', strjoin(possibleSolvers, ' or '));
     else
@@ -175,8 +195,8 @@ else
         if ~isempty(preferredSolvers)
             preferredSolvers = intersect(preferredSolvers,possibleSolvers);                    
         else
-            solverOptions = intersect(possibleSolvers,availableSolvers.ALL);
-            preferredSolvers = availableSolvers.ALL(find(ismember(availableSolvers.ALL,possibleSolvers),1));
+            solverOptions = intersect(possibleSolvers,solversForTest.ALL);
+            preferredSolvers = solversForTest.ALL(find(ismember(solversForTest.ALL,possibleSolvers),1));
         end            
         
     end
@@ -212,63 +232,63 @@ if ~isempty(missingTBs.Installation)
 end
 
 % set up default solvers and test whether the test is useable
-if isempty(availableSolvers.LP)
+if isempty(solversForTest.LP)
     if useLP
         errorMessage{end + 1} = 'The test requires at least one LP solver but no solver is installed';
     end
 else
-    if ~isempty(availableSolvers.LP)
-        defaultLPSolver = availableSolvers.LP{1};
+    if ~isempty(solversForTest.LP)
+        defaultLPSolver = solversForTest.LP{1};
     else
         defaultLPSolver = '';
     end
 end
 
-if isempty(availableSolvers.QP)
+if isempty(solversForTest.QP)
     if useQP
         errorMessage{end + 1} = 'The test requires at least one QP solver but no solver is installed';
     end
 else
-    if ~isempty(availableSolvers.QP)
-        defaultQPSolver = availableSolvers.QP{1};
+    if ~isempty(solversForTest.QP)
+        defaultQPSolver = solversForTest.QP{1};
     else
         defaultQPSolver = '';
     end
 end
 
-if isempty(availableSolvers.MILP)
+if isempty(solversForTest.MILP)
     if useMILP
         errorMessage{end + 1} = 'The test requires at least one MILP solver but no solver is installed';
     end
 else
-    if ~isempty(availableSolvers.MILP)
-        defaultMILPSolver = availableSolvers.MILP{1};
+    if ~isempty(solversForTest.MILP)
+        defaultMILPSolver = solversForTest.MILP{1};
     else
         defaultMILPSolver = '';
     end
 
 end
 
-if isempty(availableSolvers.MIQP)
+if isempty(solversForTest.MIQP)
     if useMIQP
         errorMessage{end + 1} = 'The test requires at least one MIQP solver but no solver is installed';
     end
 else
-    if ~isempty(availableSolvers.MIQP)
-        defaultMIQPSolver = availableSolvers.MIQP{1};
+    if ~isempty(solversForTest.MIQP)
+        defaultMIQPSolver = solversForTest.MIQP{1};
     else
         defaultMIQPSolver = '';
     end
 
 end
 
-if isempty(availableSolvers.NLP)
+if isempty(solversForTest.NLP)
     if useNLP
         errorMessage{end + 1} = 'The test requires at least one NLP solver but no solver is installed';
     end
 else
-    if ~isempty(availableSolvers.NLP)
-        defaultNLPSolver = availableSolvers.NLP{1};
+    if ~isempty(solversForTest.NLP)
+        defaultNLPSolver = solversForTest.NLP{1};
     else
         defaultNLPSolver = '';
     end
@@ -276,14 +296,16 @@ end
 
 
 if ~isempty(errorMessage)
-    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, strjoin(errorMessage, '\n'));
+    errorString = strjoin(errorMessage, '\n');
+    infoString = strjoin(infoMessage, '\n');
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, strjoin({errorString,infoString}, '\n'));
 end
 
 % collect the Used Solvers.
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
 if strcmpi(runtype,'fullRun')
-    solversToUse = availableSolvers;
+    solversToUse = solversForTest;
     %exclude pdco if not explicitly requested and available, as it does
     %have issues at the moment.    
     if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
@@ -298,12 +320,12 @@ if strcmpi(runtype,'fullRun')
     end
 else   
     for i = 1:numel(problemTypes)
-        solversToUse.(problemTypes{i}) = intersect(preferredSolvers, availableSolvers.(problemTypes{i}));
-        if isempty(solversToUse.(problemTypes{i})) && ~isempty(availableSolvers.(problemTypes{i}))
+        solversToUse.(problemTypes{i}) = intersect(preferredSolvers, solversForTest.(problemTypes{i}));
+        if isempty(solversToUse.(problemTypes{i})) && ~isempty(solversForTest.(problemTypes{i}))
             if isempty(preferredSolvers)
                 eval(['solversToUse.' problemTypes{i} ' = {default' problemTypes{i} 'Solver};']);
             else
-                if isempty(availableSolvers.(problemTypes{i}))
+                if isempty(solversForTest.(problemTypes{i}))
                     % no solver exists, the cell array is empty.
                     solversToUse.(problemTypes{i}) = {};
                 else
