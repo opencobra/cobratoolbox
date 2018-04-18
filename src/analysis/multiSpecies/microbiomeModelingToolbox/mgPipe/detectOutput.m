@@ -18,9 +18,9 @@ cd(resPath);
 fnames = dir('*.mat');
 numfids = length(fnames);
 vals = cell(1, numfids);
-    for K = 1:numfids
-        vals{K} = fnames(K).name;
-    end
+for K = 1:numfids
+    vals{K} = fnames(K).name;
+end
 vals = vals';
 mapP = strmatch(objNam, vals, 'exact');
 end
