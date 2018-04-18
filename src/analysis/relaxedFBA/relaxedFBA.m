@@ -92,6 +92,10 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 
 [m,n] = size(model.S); %Check inputs
 
+if ~exist('param','var')
+    param = struct();
+end
+
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
 end
@@ -112,8 +116,8 @@ else
     SIntRxnBool = model_Ex.SIntRxnBool;
 end
 
-maxUB = max(model.ub); % maxUB is considered as +inf
-minLB = min(model.lb); % minLB is considered as -inf
+maxUB = param.maxUB; % maxUB is considered as +inf
+minLB = param.minLB; % minLB is considered as -inf
 
 if isfield(param,'internalRelax') == 0
     param.internalRelax = 2; %allow all internal reaction bounds to be relaxed
