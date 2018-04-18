@@ -94,6 +94,12 @@ assert(length(lastwarn()) > 0);
 init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, true, rDiet, extSolve, fvaType, autorun);
 assert(length(lastwarn()) > 0);
 
+% test with muted printLevel
+fprintf(' > Testing printLevel = 0 ... ');
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun, 0);
+assert(init && ~autorun);
+fprintf('Done.\n');
+
 % turn warning back on
 warning('on', 'all');
 

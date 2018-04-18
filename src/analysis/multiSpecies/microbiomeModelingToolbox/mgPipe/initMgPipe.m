@@ -1,4 +1,4 @@
-function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)
+function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun, printLevel)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -22,6 +22,7 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
 %    fvaType:                boolean indicating which function to use for flux variability (default: `true`)
 %    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
+%    printLevel:             verbose level (default: 1)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -111,10 +112,13 @@ end
 if ~exist('autorun', 'var')
     autorun = false;
 end
+if ~exist('printLevel', 'var')
+    printLevel = 1;
+end
 
 % Check for installation of parallel Toolbox
 try
-   ver('distcomp');
+   version = ver('distcomp');
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
 end
@@ -129,22 +133,28 @@ else
 end
 
 % Here we go on with the warning section and the autorun
-if compMod
+if compMod && printLevel > 0
     warning('Compatibility mode activated. Output will also be saved in .csv format. Computations might take longer.')
 end
-if patStat
-   warning('Individuals health status not declared. Analysis will ignore that.')
+if patStat && printLevel > 0
+    warning('Individuals health status not declared. Analysis will ignore that.')
 end
 
-fprintf(' > Models will be read from: %s\n', modPath);
-fprintf(' > Results will be stored in: %s\n', resPath);
-fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
+% output messages
+if printLevel > 0
+    fprintf(' > Models will be read from: %s\n', modPath);
+    fprintf(' > Results will be stored in: %s\n', resPath);
+    fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
+end
+
 init = true;
 
 if init && autorun
     mgPipe
 elseif init && ~autorun
-    warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
+    if printLevel > 0
+        warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
+    end
     if usejava('desktop')
         edit('mgPipe.m');
     end
