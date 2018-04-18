@@ -82,7 +82,7 @@ elseif numWorkers == 1
     poolsize = 0;               % Single core
 else
     gcp();
-    poolsize = NumWorkers;      % Multi core, limited by user
+    poolsize = numWorkers;      % Multi core, limited by user
 end
 
 % Step 2: Create models
