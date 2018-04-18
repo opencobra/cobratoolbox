@@ -41,7 +41,7 @@ function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, mode
 time_a = tic;
 % Generate name for temporary folder
 global CBTDIR
-tmpFolderName = [CBTDIR filesep '.tmpGMCS'];
+tmpFolderName = [CBTDIR filesep '.tmp'];
 if ~exist(tmpFolderName,'dir')  % Create directories if needed
     mkdir(tmpFolderName)
 end

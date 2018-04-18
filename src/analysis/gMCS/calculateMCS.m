@@ -43,7 +43,7 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 % 
 % EXAMPLE:
 %    %With optional values
-%    [mcs, mcs_time] = populateMCS(modelR204, 100, 10, options)
+%    [mcs, mcs_time] = calculateMCS(modelR204, 100, 10, options)
 %    %Being:
 %    %options.KO = 'r1651'
 %    %options.rxn_set = {'r1652'; 'r1653'; 'r1654'}
@@ -53,7 +53,7 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 %    %options.printLevel = 0
 % 
 %    %Without optional values 
-%    [mcs, mcs_time] = populateMCS(model, 100, 10)
+%    [mcs, mcs_time] = calculateMCS(model, 100, 10)
 % 
 % .. Authors:
 %       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
@@ -82,7 +82,7 @@ if nargin == 3
     rxn_set = [];
     target_b = 1e-3;
     timelimit = 1e75;
-    forceLength = 1;
+    forceLength = true;
     numWorkers = 0;
     printLevel = 1;
 else
@@ -253,7 +253,7 @@ if isempty(KO)
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
@@ -261,6 +261,7 @@ if isempty(KO)
         sP.preprocessing.presolve, sP.preprocessing.reduce,..., ...
         sP.preprocessing.relax, sP.preprocessing.symmetry] = deal(50, 1, 2, 1, 1, 50, 1, 50, 1, 3, 1, 1);
     cplex = setCplexParam(cplex, sP);
+    
     if printLevel == 0
         cplex.DisplayFunc = [];
     end
@@ -469,7 +470,7 @@ else
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...

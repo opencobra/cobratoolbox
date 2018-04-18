@@ -16,6 +16,8 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 % OPTIONAL INPUTS:
 %    numWorkers:        Maximum number of workers
 %                       * 0 - maximum provided by the system (automatic)
+%                       (default). If parallel pool is active, numWorkers
+%                       is defined by the system, otherwise is 1.
 %                       * 1 - sequential
 %                       * 2+ - parallel
 %    printLevel:        show the reactions created in models.
@@ -34,8 +36,12 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %       - Francisco J. Planes, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Iñigo Apaolaza, April 2018, University of Navarra, TECNUN School of Engineering.
 
-if (nargin < 4 || isempty(printLevel))
-    printLevel = 1;
+if (nargin < 5 || isempty(printLevel))
+    printLevel = 1; % Default is show progress
+end
+
+if (nargin < 4 || isempty(numWorkers))
+    numWorkers = 0; % Default is gpc('nocreate')
 end
 
 if (nargin < 3)
@@ -75,6 +81,7 @@ elseif numWorkers == 0
 elseif numWorkers == 1
     poolsize = 0;               % Single core
 else
+    gcp();
     poolsize = NumWorkers;      % Multi core, limited by user
 end
 

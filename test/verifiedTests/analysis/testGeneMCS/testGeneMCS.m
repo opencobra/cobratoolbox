@@ -41,6 +41,12 @@ for k = 1:length(solverPkgs)
             delete G_toy_example_gMCS.mat
         end
         
+        % Check errors when missing argument
+        assert((verifyCobraFunctionError(@() calculateGeneMCS(model, 20, 5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', [], 20,5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, [],5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, 20))));
+        
         % Calculate GMCS
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20,5);
 
@@ -70,6 +76,10 @@ for k = 1:length(solverPkgs)
         options.KO = 'g5';
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         assert(isequal(gmcs,{{'g5'}}));
+        %assert using one worker
+        options = struct();
+        options.numWorkers = 1;
+        assert(~(verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, 20, 5, options))));
     else
         warning('The test testGeneMCS cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
     end

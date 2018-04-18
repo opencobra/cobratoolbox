@@ -6,7 +6,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 % 
 % USAGE:
 % 
-%    [gmcs, gmcs_time] = populateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)
+%    [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)
 % 
 % INPUTS:
 %    model_name:      Name of the metabolic model under study (in order to
@@ -53,7 +53,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 % 
 % EXAMPLE:
 %    %With optional values
-%    [gmcs, gmcs_time] = populateGeneMCS('Recon2.v04', modelR204, 100, 10, options)
+%    [gmcs, gmcs_time] = calculateGeneMCS('Recon2.v04', modelR204, 100, 10, options)
 %    %Being:
 %    %options.KO = '6240'
 %    %options.gene_set = {'2987'; '6241'}
@@ -64,7 +64,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    %options.printLevel = 0
 % 
 %    %Without optional values 
-%    [gmcs, gmcs_time] = populateGeneMCS('ecoli_core_model', model, 100, 10)
+%    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 100, 10)
 % 
 % .. Authors:
 %       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
@@ -91,7 +91,7 @@ if nargin == 4              % Set Parameters
     target_b = 1e-3;
     timelimit = 1e75;
     separate_transcript = '';
-    forceLength = 1;
+    forceLength = true;
     numWorkers = 0;
     printLevel = 1;
 else
@@ -123,7 +123,7 @@ else
     if isfield(options, 'forceLength')
         forceLength = options.forceLength;
     else
-        forceLength = 1;
+        forceLength = true;
     end
     if isfield(options, 'numWorkers')
         numWorkers = options.numWorkers;
@@ -322,7 +322,7 @@ if isempty(KO)
 
 % Cplex Parameters
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
@@ -552,7 +552,7 @@ else
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
