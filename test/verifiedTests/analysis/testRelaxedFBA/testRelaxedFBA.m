@@ -21,6 +21,10 @@ modelWithPartiallyClosedExchangers = changeRxnBounds(modelWithPartiallyClosedExc
 modelWithOneFiniteBound = changeRxnBounds(model,model.rxns{3},30,'u');
 modelWithFiniteBounds = changeRxnBounds(modelWithOneFiniteBound,model.rxns{4},30,'u');
 
+%Save warnings settings.
+warn = warning();
+%Turn off warnings for the test.
+warning('off')
 
 for k = 1:numel(solverPkgs.LP)
     changeCobraSolver(solverPkgs.LP(k),'all');
@@ -119,7 +123,7 @@ for k = 1:numel(solverPkgs.LP)
     %Lets test excludeReactions
     param = struct();
     param.internalRelax = 1; %Only reaction infinite bounds i.e. R4
-    param.steadyStateRelax = 0; %No steady state relaxation
+    param.steadyStateRelax = 0; %No steady sttestate relaxation
     param.excludedReactions = false(size(model.rxns));
     param.excludedReactions(6) = true; %Exclude Cout.
     [relaxation,relaxmodel] = relaxedFBA(modelWithOneFiniteBound,param);
@@ -131,5 +135,6 @@ for k = 1:numel(solverPkgs.LP)
     assert(nnz(relaxation.q) == 0);    
     
 end
-
+%restore warnings settings.
+warning(warn)
 
