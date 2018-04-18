@@ -233,12 +233,15 @@ elseif param.internalRelax == 1 % Exclude internal reactions with finite bounds
     index_IntRxnFiniteBound_Bool = ((model.ub < maxUB) & (model.lb > minLB)) & SIntRxnBool;
     param.excludedReactions(index_IntRxnFiniteBound_Bool) = true;
 end
-
+usedModel = model;
 if param.exchangeRelax == 0 %Exclude all exchange reactions
     param.excludedReactions(~SIntRxnBool) = true;
 elseif param.exchangeRelax == 1 % Exclude exchange reactions of the type [0,0]
-    index_ExRxn00_Bool = ((model.ub == 0) & (model.lb == 0)) & ~SIntRxnBool;
-    param.excludedReactions(index_ExRxn00_Bool) = true;
+    index_ExRxn00_Bool = ((usedModel.ub == 0) & (usedModel.lb == 0)) & ~SIntRxnBool;
+    %These reactions are dead. So we simply remove them. 
+    usedModel = removeRxns(usedModel,usedModel.rxns(index_ExRxn00_Bool),'metFlag',0);    
+    param.excludedReactions(index_ExRxn00_Bool) = [];
+    excludedReactionsTmp(index_ExRxn00_Bool) = [];
 end
 
 %override
@@ -253,10 +256,26 @@ end
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
 % Call the solver
-if 0
-    param
+solution = relaxFBA_cappedL1(usedModel,param);
+
+
+%Restore dead removed exchangers
+if exist('index_ExRxn00_Bool','var')    
+    if solution.stat == 1
+        solnew.stat = solution.stat;
+        nRxns = numel(index_ExRxn00_Bool);
+        solnew.v = zeros(nRxns,1);
+        solnew.v(~index_ExRxn00_Bool) = solution.v;
+        solnew.p = zeros(nRxns,1);
+        solnew.p(~index_ExRxn00_Bool) = solution.p;
+        solnew.q = zeros(nRxns,1);
+        solnew.q(~index_ExRxn00_Bool) = solution.q;
+        solnew.r = solution.r;
+        solution = solnew;
+    end
 end
-solution = relaxFBA_cappedL1(model,param);
+        
+    
 
 
 % Attempt to handle numerical issues with small perturbations, less than
