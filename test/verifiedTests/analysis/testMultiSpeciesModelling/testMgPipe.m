@@ -12,19 +12,11 @@ global CBTDIR
 % define the features required to run the test
 requiredToolboxes = { 'distrib_computing_toolbox' };
 
-requiredSolvers = { 'ibm_cplex' };
-
-% require the specified toolboxes and solvers, along with a UNIX OS
-solversPkgs = prepareTest('requiredSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes);
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
 cd(fileparts(which(mfilename)));
-
-% set the tolerance
-tol = 1e-8;
 
 % path to microbe models
 modPath = [CBTDIR filesep 'test' filesep 'models' filesep 'mat'];
