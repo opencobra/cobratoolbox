@@ -1,10 +1,10 @@
-function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
+function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)
 % Each GPR rule is converted into a network where the reaction and genes
 % involved are interconnected.
 %
 % USAGE:
 %
-%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
+%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)
 %
 % INPUTS:
 %    metabolic_model:        Metabolic model structure (COBRA Toolbox format)
@@ -14,6 +14,10 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %                            different isoforms of a gene. Default ''.
 %
 % OPTIONAL INPUTS:
+%    numWorkers:        Maximum number of workers
+%                       * 0 - maximum provided by the system (automatic)
+%                       * 1 - sequential
+%                       * 2+ - parallel
 %    printLevel:        show the reactions created in models.
 %                       * 0 - shows nothing 
 %                       * 1 - shows progress by reactions (default)
@@ -53,6 +57,12 @@ if ~isfield(metabolic_model,'grRules') || ~isfield(metabolic_model,'rules') ||~i
     error('The GPR rules of the model are not defined');
 end
 
+%rxnGeneMat is a required field for this function, so if it does not exist,
+%build it.
+if ~isfield(metabolic_model,'rxnGeneMat')
+    metabolic_model = buildRxnGeneMat(metabolic_model);
+end
+
 % Generate a cell array to store the resulting models
 networks = cell(size(selected_rxns));
 
@@ -60,16 +70,21 @@ networks = cell(size(selected_rxns));
 p = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(p)
     poolsize = 0;               % Single core
+elseif numWorkers == 0
+    poolsize = p.NumWorkers;    % Multi core, all cores in the PC
+elseif numWorkers == 1
+    poolsize = 0;               % Single core
 else
-    poolsize = p.NumWorkers;    % Multi core
+    poolsize = NumWorkers;      % Multi core, limited by user
 end
 
 % Step 2: Create models
-disp('Calculating Networks for GPR rules...');
+if printLevel > 0 && length(selected_rxns)>1
+    disp('Calculating Networks for GPR rules...');
+end
 parfor (i=1:length(selected_rxns),poolsize)
-% for i=1:length(selected_rxns)
     if printLevel > 0
-        clc
+%         clc
         disp([num2str(i),' of ', num2str(length(selected_rxns)) ,' rxns']);
     end
     RXN = metabolic_model.rxns{selected_rxns(i)};

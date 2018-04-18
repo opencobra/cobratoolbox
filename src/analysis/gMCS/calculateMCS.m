@@ -30,6 +30,9 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 %                         length of the MCSs is to be active (recommended for
 %                         enumerating low order MCSs), 0 otherwise.
 %                         Default: 1.
+%                       * .numWorkers  - is the maximun number of workers
+%                       used by Cplex and GPR2models. 0 = automatic, 1 =
+%                       sequential, >1 = parallel. Default = 0;
 %                       * .printLevel - 1 if the process is wanted to be
 %                         shown on the screen, 0 otherwise. Default: 1.
 % 
@@ -80,6 +83,7 @@ if nargin == 3
     target_b = 1e-3;
     timelimit = 1e75;
     forceLength = 1;
+    numWorkers = 0;
     printLevel = 1;
 else
     if isfield(options, 'KO')
@@ -106,6 +110,11 @@ else
         forceLength = options.forceLength;
     else
         forceLength = 1;
+    end
+    if isfield(options, 'numWorkers')
+        numWorkers = options.numWorkers;
+    else
+        numWorkers = 0;
     end
     if isfield(options, 'printLevel')
         printLevel = options.printLevel;
@@ -221,6 +230,7 @@ if isempty(KO)
     
 % Cplex - Introduce all data in a Cplex structure
     cplex = Cplex('MCS');
+    Model = struct();
     [Model.A, Model.rhs, Model.lhs, Model.ub, Model.lb, Model.obj, Model.ctype, Model.sense] = deal(A, rhs, lhs, ub, lb, obj, ctype, sense);
     cplex.Model = Model;
 
@@ -241,6 +251,7 @@ if isempty(KO)
     end
 
 % Cplex Parameters
+    sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
     [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
@@ -418,15 +429,10 @@ else
     sense = 'minimize';
 
 % Cplex - Introduce all data in a Cplex structure
-    cplex = Cplex('geneMCS');
-    cplex.Model.A = A;
-    cplex.Model.rhs = rhs;
-    cplex.Model.lhs = lhs;
-    cplex.Model.ub = ub;
-    cplex.Model.lb = lb;
-    cplex.Model.obj = obj;
-    cplex.Model.ctype = ctype;
-    cplex.Model.sense = sense;
+    cplex = Cplex('MCS');
+    Model = struct();
+    [Model.A, Model.rhs, Model.lhs, Model.ub, Model.lb, Model.obj, Model.ctype, Model.sense] = deal(A, rhs, lhs, ub, lb, obj, ctype, sense);
+    cplex.Model = Model;
 
 % Cplex Indicators
     % z = 1  -->  v >= alpha
@@ -461,22 +467,16 @@ else
     end
 
 % Cplex Parameters
-    cplex.Param.mip.tolerances.integrality.Cur = integrality_tolerance;
-    cplex.Param.mip.strategy.heuristicfreq.Cur = 1000;
-    cplex.Param.mip.strategy.rinsheur.Cur = 50;
-    cplex.Param.emphasis.mip.Cur = 4;
-    cplex.Param.preprocessing.aggregator.Cur = 50;
-    cplex.Param.preprocessing.boundstrength.Cur = 1;
-    cplex.Param.preprocessing.coeffreduce.Cur = 2;
-    cplex.Param.preprocessing.dependency.Cur = 1;
-    cplex.Param.preprocessing.dual.Cur = 1;
-    cplex.Param.preprocessing.fill.Cur = 50;
-    cplex.Param.preprocessing.linear.Cur = 1;
-    cplex.Param.preprocessing.numpass.Cur = 50;
-    cplex.Param.preprocessing.presolve.Cur = 1;
-    cplex.Param.preprocessing.reduce.Cur = 3;
-    cplex.Param.preprocessing.relax.Cur = 1;
-    cplex.Param.preprocessing.symmetry.Cur = 1;
+    sP = struct();
+    [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit] = deal(4, -1, max(10, timelimit)); 
+    [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
+        sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
+        sP.preprocessing.dual, sP.preprocessing.fill,...
+        sP.preprocessing.linear, sP.preprocessing.numpass, ...
+        sP.preprocessing.presolve, sP.preprocessing.reduce,..., ...
+        sP.preprocessing.relax, sP.preprocessing.symmetry] = deal(50, 1, 2, 1, 1, 50, 1, 50, 1, 3, 1, 1);
+    cplex = setCplexParam(cplex, sP);
     if printLevel == 0
         cplex.DisplayFunc = [];
     end

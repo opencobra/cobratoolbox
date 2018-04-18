@@ -8,6 +8,10 @@
 %
 
 global CBTDIR
+global SOLVERS;
+
+% Error message if there is no Cplex
+errorMessage = 'This version calculateMCS only works with IBM CPLEX. Newer versions will include more solvers included in COBRA Toolbox';
 
 % save the current path
 currentDir = pwd;
@@ -28,11 +32,14 @@ true_gmcs{1} = {'g5'}';
 true_gmcs{2} = {'g1' 'g4'}';
 true_gmcs{3} = {'g2' 'g3' 'g4'}';
 
+% Check Existence of Cplex in this computer
+assert(SOLVERS.ibm_cplex.installed && SOLVERS.ibm_cplex.working, 'ibm_cplex is a required solver for the test and not available on your system.')
+
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});
 
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
-
+        
     if solverLPOK
         % Eliminate G-matrix if it exist
         if exist([currentDir filesep 'G_toy_example_gMCS.mat'], 'file')

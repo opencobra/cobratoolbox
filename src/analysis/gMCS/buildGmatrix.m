@@ -1,15 +1,25 @@
-function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model, separate_isoform)
+function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model, separate_isoform, numWorkers, printLevel)
 % Build the G matrix required for the calculation of genetic Minimal Cut
 % Sets (gMCSs).
 % 
 % USAGE:
 % 
-%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform)
+%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)
 % 
 % INPUTS:
 %    model_name:          Name of the metabolic model under study.
 %    model_struct:        Metabolic model structure (COBRA Toolbox format).
 %    separate_isoform:    Character used to discriminate different isoforms of a gene.
+% 
+% OPTIONAL INPUTS:
+%    numWorkers:        Maximum number of workers
+%                       * 0 - maximum provided by the system (automatic)
+%                       * 1 - sequential
+%                       * 2+ - parallel
+%    printLevel:        show the reactions created in models.
+%                       * 0 - shows nothing 
+%                       * 1 - shows progress by reactions (default)
+%                       * 2+ - shows everything (reaction and network generation)
 % 
 % OUTPUTS:
 %    G:             G matrix.
@@ -29,17 +39,20 @@ function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, mode
 %       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 
 time_a = tic;
-if ~exist(fullfile('.', '.tmp'))  % Create directories if needed
-    mkdir(fullfile('.', '.tmp'))
+% Generate name for temporary folder
+global CBTDIR
+tmpFolderName = [CBTDIR filesep '.tmpGMCS'];
+if ~exist(tmpFolderName,'dir')  % Create directories if needed
+    mkdir(tmpFolderName)
 end
-if ~exist(fullfile('.', '.tmp', 'rxn_level_gMCSs'))
-    mkdir(fullfile('.', '.tmp', 'rxn_level_gMCSs'))
+if ~exist([tmpFolderName filesep 'rxn_level_gMCSs'],'dir')
+    mkdir([tmpFolderName filesep 'rxn_level_gMCSs'])
 end
-if ~exist(fullfile('.', '.tmp', 'rxn_level_gMCSs_by_rxn'))
-    mkdir(fullfile('.', '.tmp', 'rxn_level_gMCSs_by_rxn'))
+if ~exist([tmpFolderName filesep 'rxn_level_gMCSs_by_rxn'],'dir')
+    mkdir([tmpFolderName filesep 'rxn_level_gMCSs_by_rxn'])
 end
-if ~exist(fullfile('.', '.tmp', 'rxn_level_models'))
-    mkdir(fullfile('.', '.tmp', 'rxn_level_models'))
+if ~exist([tmpFolderName filesep 'rxn_level_models'],'dir')
+    mkdir([tmpFolderName filesep 'rxn_level_models'])
 end
 
 % Analyze the GPR rules in order to set the strategy for the calculation of
@@ -68,12 +81,17 @@ n_rxns_total = n_rxns_0_genes+n_rxns_1_gene+n_rxns_only_or+n_rxns_only_and+n_rxn
 summary_1 = {'n_rxns_0_genes', n_rxns_0_genes; 'n_rxns_1_gene', n_rxns_1_gene;
     'n_rxns_only_or', n_rxns_only_or; 'n_rxns_only_and', n_rxns_only_and;
     'n_rxns_or_and', n_rxns_or_and; 'n_rxns_total', n_rxns_total};
-summary_1
+if printLevel >=1
+    fprintf('\nG MATRIX - Summary\n')
+    disp(summary_1)
+end
 ini_time = toc(time_a);
 
 % Step 1 - Reactions with 1 gene
-clc
-disp('G MATRIX - STEP 1');
+% clc
+if printLevel >=1
+    disp('G MATRIX - STEP 1');
+end
 time_b = tic;
 act_rxnGeneMat = rxnGeneMat(rxns_1_gene, :);
 not_delete_cols = sum(act_rxnGeneMat, 1) ~= 0;
@@ -86,8 +104,10 @@ G_1(:, rxns_1_gene) = tmp_G_1;
 G_time(1, 1) = toc(time_b);
 
 % Step2 - Reactions with more than one gene and only OR rules
-clc
-disp('G MATRIX - STEP 2');
+% clc
+if printLevel >=1
+    disp('G MATRIX - STEP 2');
+end
 time_c = tic;
 act_rxnGeneMat = rxnGeneMat(rxns_only_or, :);
 pos_rxns_only_or = find(rxns_only_or);
@@ -100,8 +120,10 @@ G_2(:, rxns_only_or) = tmp_G_2;
 G_time(2, 1) = toc(time_c);
 
 % Reactions with more than one gene and only AND rules
-clc
-disp('G MATRIX - STEP 3');
+% clc
+if printLevel >=1
+    disp('G MATRIX - STEP 3');
+end
 time_d = tic;
 act_rxnGeneMat = rxnGeneMat(rxns_only_and, :);
 not_delete_cols = sum(act_rxnGeneMat, 1) ~= 0;
@@ -115,30 +137,34 @@ G_time(3, 1) = toc(time_d);
 
 % Reactions with more than one gene and both OR and AND rules
 time_e = tic;
-search_filename = fullfile('.', '.tmp', 'rxn_level_models', ['rxn_level_' model_name '_and_or.mat']);
-if exist(search_filename)
+search_filename = [tmpFolderName filesep 'rxn_level_models' filesep 'rxn_level_' model_name '_and_or.mat'];
+if exist(search_filename,'file')
     load(search_filename);
 else
-    printLevel = 1;
     pos_rxns_or_and = find(rxns_or_and);
-    [models_or_and, rxnNumGenes_or_and] = GPR2models(model, pos_rxns_or_and, separate_isoform, printLevel);
+    [models_or_and, rxnNumGenes_or_and] = GPR2models(model, pos_rxns_or_and, separate_isoform, numWorkers, printLevel);
     save(search_filename, 'models_or_and', 'rxnNumGenes_or_and');
 end
 
-search_filename_2 = fullfile('.', '.tmp', 'rxn_level_gMCSs', ['rxn_level_gMCSs_' model_name '.mat']);
-if exist(search_filename_2)
+search_filename_2 = [tmpFolderName filesep 'rxn_level_gMCSs' filesep 'rxn_level_gMCSs_' model_name '.mat'];
+if exist(search_filename_2,'file')
     load(search_filename_2);
 else
     target_b = 1e-3;
     n_mcs = 100000000000;
     timelimit = 5*60;
     pos_rxns_or_and = find(rxns_or_and);
-    for i = 1:n_rxns_or_and
-        clc
+    if printLevel >=1
         disp('G MATRIX - STEP 4');
-        disp([num2str(i),' of ', num2str(n_rxns_or_and)]);
-        search_filename_3 = fullfile('.', '.tmp', 'rxn_level_gMCSs_by_rxn', ['rxn_level_gMCSs_' model_name '_rxn' num2str(pos_rxns_or_and(i)) '.mat']);
-        if exist(search_filename_3)
+        showprogress(0);
+    end
+    for i = 1:n_rxns_or_and
+        if printLevel >=1
+%             disp([num2str(i),' of ', num2str(n_rxns_or_and)]);
+            showprogress(i/n_rxns_or_and);
+        end
+        search_filename_3 = [tmpFolderName filesep 'rxn_level_gMCSs_by_rxn' filesep 'rxn_level_gMCSs_' model_name '_rxn' num2str(pos_rxns_or_and(i)) '.mat'];
+        if exist(search_filename_3,'file')
             load(search_filename_3);
             mcs{i, 1} = act_mcs;
         else
@@ -166,7 +192,7 @@ end
 
 k = 0;
 for i = 1:n_rxns_or_and
-    load(fullfile('.', '.tmp', 'rxn_level_gMCSs_by_rxn', ['rxn_level_gMCSs_' model_name '_rxn' num2str(pos_rxns_or_and(i)) '.mat']));
+    load([tmpFolderName filesep 'rxn_level_gMCSs_by_rxn' filesep 'rxn_level_gMCSs_' model_name '_rxn' num2str(pos_rxns_or_and(i)) '.mat']);
     n_act_mcs = length(act_mcs);
     
     for j = 1:n_act_mcs
@@ -197,8 +223,9 @@ end
 G_ind_3 = cellfun(@strtok, G_ind_3, repmat({separate_isoform}, length(G_ind_3), 1), 'UniformOutput', false);
 
 % Delete repeats
-clc
-disp('G MATRIX - Delete Repeats');
+if printLevel >=1
+    disp('G MATRIX - Delete Repeats');
+end
 tmp_G = [];
 try tmp_G = [tmp_G; G_1]; end
 try tmp_G = [tmp_G; G_2]; end
@@ -262,8 +289,9 @@ end
 G = double(G>0);
 
 % Check the interconnections between KOs
-clc
-disp('G MATRIX - Check Relations');
+if printLevel >=1
+    disp('G MATRIX - Check Relations');
+end
 k = 0;
 n_genes_KO = cellfun(@length, G_ind);
 for i = 2:n_G_ind
@@ -301,10 +329,11 @@ else
     related = NaN;
 end
 
-final_filename = fullfile('.', ['G_' model_name '.mat']);
+final_filename = [pwd filesep 'G_' model_name '.mat'];
 G_time(5, 1) = toc(time_f)+ini_time;
 save(final_filename, 'G', 'G_ind', 'related', 'n_genes_KO', 'G_time');
-clc
-disp('The G Matrix has been successfully calculated');
-rmdir('.tmp', 's');
+if printLevel >=1
+    disp('The G Matrix has been successfully calculated');
+end
+rmdir(tmpFolderName, 's');
 end
