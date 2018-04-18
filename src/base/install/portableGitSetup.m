@@ -79,7 +79,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
                     newMachinePath = strrep(oldMachinePath, [pathPortableGitFragments{i} ';'], '');
                     setsysenvironvar('Path', newMachinePath);
                 end
-                
+
                 % session path
                 oldSessionPath = getenv('Path');
                 newSessionPath = strrep(oldSessionPath, [pathPortableGitFragments{i} ';'], '');
