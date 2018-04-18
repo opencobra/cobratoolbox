@@ -47,7 +47,7 @@ global CBTDIR
 
 init = false;
 
-% mandatory variable checks
+% check for mandatory variables
 if ~exist('modPath', 'var') || ~exist(modPath, 'dir')
     error('modPath is not defined. Please set the path of the model directory.');
 else
@@ -60,7 +60,7 @@ if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
 end
 
 
-% optional input checks
+% check for optional inputs
 if ~exist('toolboxPath', 'var') || ~exist(toolboxPath, 'dir')
     toolboxPath = CBTDIR;
 end
