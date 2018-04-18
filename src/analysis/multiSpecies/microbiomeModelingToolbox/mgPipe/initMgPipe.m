@@ -6,10 +6,12 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, objre
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
+%    abunFilePath:           char with path and name of file from which to retrieve abundance information
+%
+% OPTIONAL INPUTS:
 %    toolboxPath:            char with path of directory where the toolbox is saved
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
-%    abunFilePath:           char with path and name of file from which to retrieve abundance information
 %    objre:                  char with reaction name of objective function of organisms
 %    figForm:                format to use for saving figures
 %    numWorkers:             boolean indicating the number of cores to use for parallelization
@@ -45,7 +47,7 @@ global CBTDIR
 
 init = false;
 
-% path checking
+% mandatory variable checks
 if ~exist('modPath', 'var') || ~exist(modPath, 'dir')
     error('modPath is not defined. Please set the path of the model directory.');
 else
@@ -53,8 +55,12 @@ else
         error(['modPath (' modPath ') does not exist.']);
     end
 end
+if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
+    error('abunFilePath is not set. Please set the absolute path to the abundance file.');
+end
 
-% input checks
+
+% optional input checks
 if ~exist('toolboxPath', 'var') || ~exist(toolboxPath, 'dir')
     toolboxPath = CBTDIR;
 end
@@ -65,9 +71,6 @@ if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
 end
 if ~exist('dietFilePath', 'var')|| ~exist(dietFilePath, 'file')
     dietFilePath = [CBTDIR filesep 'papers' filesep '2017_AGORA' filesep 'resourceForMicrobiomeModelingToolbox' filesep 'AverageEuropeanDiet'];
-end
-if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
-    error('abunFilePath is not set. Please set the absolute path to the abundance file.');
 end
 
 % adding a filesep at the end of the path
