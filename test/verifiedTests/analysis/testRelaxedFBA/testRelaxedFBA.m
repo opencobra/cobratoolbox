@@ -73,11 +73,12 @@ for k = 1:numel(solverPkgs.LP)
     param.exchangeRelax = 1;
     assert(verifyCobraFunctionError(@() relaxedFBA(modelWithBlockedExport,param),'Problem infeasible !'));
     
-    %This should work with only one blocked exchanger and an alternative route ! But doesn't
-    %currently
-    %[relaxation,relaxmodel] = relaxedFBA(modelWithPartiallyClosedExchangers,param);
-    %assert(relaxation.q(7) >= 1)
-    %assert(nnz(relaxation.p) == 0 && nnz(relaxation.r) == 0);
+    %This should work with only one blocked exchanger and an alternative route!
+    [relaxation,relaxmodel] = relaxedFBA(modelWithPartiallyClosedExchangers,param);
+	sol = optimizeCbModel(relaxmodel);
+    assert(sol.stat == 1);
+    assert(relaxation.q(7) >= 1)
+    assert(nnz(relaxation.p) == 0 && nnz(relaxation.r) == 0);
     
     %Test internalRelax
     param.exchangeRelax = 0;
