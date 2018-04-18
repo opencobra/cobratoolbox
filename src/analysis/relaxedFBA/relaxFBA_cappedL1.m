@@ -120,6 +120,9 @@ if exist('param','var')
     end
 end
 
+if 0
+    param
+end
 
 [nbMaxIteration,epsilon,theta]      = deal(param.nbMaxIteration,param.epsilon,param.theta);
 [gamma0,gamma1]                     = deal(param.gamma0,param.gamma1);
@@ -148,11 +151,17 @@ stop = false;
 one_over_theta = 1/theta;
 
 % Variable x = (v,r,p,q)
-v   = rand(n,1);
-r   = rand(m,1);
-p   = rand(n,1);
-q   = rand(n,1);
-
+if 0 %Minh
+    v   = zeros(n,1);
+    r   = zeros(m,1);
+    p   = zeros(n,1);
+    q   = zeros(n,1);
+else %Ronan random starting points
+    v   = rand(n,1);
+    r   = rand(m,1);
+    p   = rand(n,1);
+    q   = rand(n,1);
+end
 
 obj_old = relaxFBA_cappedL1_obj(model,v,r,p,q,param);
 
@@ -161,23 +170,47 @@ while nbIteration < nbMaxIteration && stop ~= true
     
     x_old = [v;r;p;q];
     
-    v_bar  = -sign(v)*gamma1;
-    v(abs(v) < one_over_theta) = 0;
-    v_bar = v_bar + sign(v)*gamma0*theta;
-    
-    
-    r_bar  = -sign(r)*lambda1;
-    r(abs(r) < one_over_theta) = 0;
-    r_bar = r_bar + sign(r)*lambda0*theta;
-    
-    p_bar  = -sign(p)*alpha1;
-    p(p < one_over_theta) = 0;
-    p_bar = p_bar + sign(p)*alpha0*theta;
-    
-    q_bar  = -sign(q)*alpha1;
-    q(q < one_over_theta) = 0;
-    q_bar = q_bar + sign(q)*alpha0*theta;
- 
+    if 1
+        %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
+        if 0
+            %Minh - maximise
+            v_bar  = sign(v)*(gamma1 + gamma0*theta);
+        else
+            %Ronan - minimise
+            v_bar  = -sign(v)*gamma1;
+            v(abs(v) < one_over_theta) = 0;
+            v_bar = v_bar + sign(v)*gamma0*theta;
+        end
+        
+        r_bar  = -sign(r)*lambda1;
+        r(abs(r) < one_over_theta) = 0;
+        r_bar = r_bar + sign(r)*lambda0*theta;
+        
+        p_bar  = -sign(p)*alpha1;
+        p(p < one_over_theta) = 0;
+        p_bar = p_bar + sign(p)*alpha0*theta;
+        
+        q_bar  = -sign(q)*alpha1;
+        q(q < one_over_theta) = 0;
+        q_bar = q_bar + sign(q)*alpha0*theta;
+    else
+        %Ronan - mimics sparseLP_cappedL1
+        v_bar  = sign(v)*gamma1;
+        v(abs(v) < one_over_theta) = 0;
+        v_bar = v_bar + sign(v)*gamma0*theta;
+
+        r_bar  = sign(r)*lambda1;
+        r(abs(r) < one_over_theta) = 0;
+        r_bar = r_bar + sign(r)*lambda0*theta;
+        
+        p_bar  = sign(p)*alpha1;
+        p(p < one_over_theta) = 0;
+        p_bar = p_bar + sign(p)*alpha0*theta;
+        
+        q_bar  = sign(q)*alpha1;
+        q(q < one_over_theta) = 0;
+        q_bar = q_bar + sign(q)*alpha0*theta;
+    end
     
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
@@ -366,7 +399,12 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
         r = solution.full(n+1:n+m);
         p = solution.full(n+m+1:n+m+n);
         q = solution.full(n+m+n+1:n+m+n+n);
+        if 0
+            disp([v,p,q])
+            disp('-')
+        end
     else
+        disp(param)
         warning(['solveCobraLP solution status is ' num2str(solution.stat) ', and original status is ' num2str(solution.origStat)])
         v = [];
         r = [];
