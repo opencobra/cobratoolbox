@@ -12,6 +12,9 @@ global CBTDIR
 % define the features required to run the test
 requiredToolboxes = { 'distrib_computing_toolbox' };
 
+% test Requirements
+prepareTest('requiredToolboxes',requiredToolboxes);
+
 % save the current path
 currentDir = pwd;
 
