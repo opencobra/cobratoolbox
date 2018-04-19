@@ -81,8 +81,8 @@ elseif numWorkers == 0
 elseif numWorkers == 1
     poolsize = 0;               % Single core
 else
-    gcp();
-    poolsize = numWorkers;      % Multi core, limited by user
+    p = parpool(numWorkers);
+    poolsize = p.NumWorkers;    % Multi core, limited by user
 end
 
 % Step 2: Create models
