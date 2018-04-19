@@ -22,6 +22,7 @@ function blockedReactions = findBlockedReaction(model, method)
 
 blockedReactions = cellstr('');
 qptol = getCobraSolverParams('QP','intTol');
+[m,n]=size(model.S);
 if (nargin < 2 || isequal(method, 'FVA'))
     tol = 1e-10;
     [minMax(:, 1), minMax(:, 2)] = fluxVariability(model, 0);
@@ -33,6 +34,7 @@ if (nargin < 2 || isequal(method, 'FVA'))
         end
     end
 else
+    model.c=zeros(n,1);
     solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6);
     blockedReactions = model.rxns(abs(solution.full) < qptol)';
 end
