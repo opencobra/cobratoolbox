@@ -21,6 +21,7 @@ function blockedReactions = findBlockedReaction(model, method)
 %       - Marouen BEN GUEBILA - used 2-norm min as a heuristic for non-sparsity
 
 blockedReactions = cellstr('');
+qptol = getCobraSolverParams('QP','intTol');
 if (nargin < 2 || isequal(method, 'FVA'))
     tol = 1e-10;
     [minMax(:, 1), minMax(:, 2)] = fluxVariability(model, 0);
@@ -33,7 +34,7 @@ if (nargin < 2 || isequal(method, 'FVA'))
     end
 else
     solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6);
-    blockedReactions = model.rxns(abs(solution.full) < 1e-11)';
+    blockedReactions = model.rxns(abs(solution.full) < qptol)';
 end
 
 end
