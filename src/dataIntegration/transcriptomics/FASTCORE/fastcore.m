@@ -9,8 +9,12 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printlevel)
 %    tissueModel = fastcore(model, core)
 %
 % INPUTS:
+%    model:             (the following fields are required - others can be supplied)
+%                         * S  - `m x 1` Stoichiometric matrix
+%                         * lb - `n x 1` Lower bounds
+%                         * ub - `n x 1` Upper bounds
+%                         * rxns   - `n x 1` cell array of reaction abbreviations
 %
-%   model:               input model (COBRA model structure)
 %   core:                indices of reactions in cobra model that are part of the
 %                        core set of reactions (called 'C' in 'Vlassis et al,
 %                        2014')
@@ -24,7 +28,8 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printlevel)
 %
 %   tissueModel:         extracted model
 %
-%
+%   coreRxnBool:         n x 1 boolean vector indicating core reactions
+% 
 % 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
 % context-specific metbolic network models. PLoS Comput. Biol. 10,
 % e1003424.'
