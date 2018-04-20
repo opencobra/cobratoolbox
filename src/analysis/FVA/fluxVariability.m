@@ -319,7 +319,7 @@ else % parallel job.  pretty much does the same thing.
     
     if minNorm        
         parfor i = 1:length(rxnNameList)
-            restoreEnvironment(environment);
+            restoreEnvironment(environment,0);
             parLPproblem = LPproblem;        
             parLPproblem.osense = 1;
             [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
@@ -330,7 +330,7 @@ else % parallel job.  pretty much does the same thing.
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
         parfor i = 1:length(rxnListMin)
-            restoreEnvironment(environment);
+            restoreEnvironment(environment,0);
             parLPproblem = LPproblem;
             [mins(i)] = calcSolForEntry(model,rxnListMin,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
@@ -340,7 +340,7 @@ else % parallel job.  pretty much does the same thing.
         maxs = inf*ones(length(rxnListMax),1);
         LPproblem.osense = -1;
         parfor i = 1:length(rxnListMax)        
-            restoreEnvironment(environment);
+            restoreEnvironment(environment,0);
             parLPproblem = LPproblem;
             [maxs(i)] = calcSolForEntry(model,rxnListMax,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,[]);
         end
