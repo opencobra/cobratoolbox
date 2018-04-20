@@ -1,10 +1,10 @@
-function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
+function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)
 % Each GPR rule is converted into a network where the reaction and genes
 % involved are interconnected.
 %
 % USAGE:
 %
-%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)
+%    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)
 %
 % INPUTS:
 %    metabolic_model:        Metabolic model structure (COBRA Toolbox format)
@@ -14,6 +14,12 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %                            different isoforms of a gene. Default ''.
 %
 % OPTIONAL INPUTS:
+%    numWorkers:        Maximum number of workers
+%                       * 0 - maximum provided by the system (automatic)
+%                       (default). If parallel pool is active, numWorkers
+%                       is defined by the system, otherwise is 1.
+%                       * 1 - sequential
+%                       * 2+ - parallel
 %    printLevel:        show the reactions created in models.
 %                       * 0 - shows nothing 
 %                       * 1 - shows progress by reactions (default)
@@ -25,12 +31,17 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %                       rule for each reaction.
 %
 % .. Authors:
+%       - Iñigo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, Aug 2017, University of Navarra, TECNUN School of Engineering.
-%       - Iï¿½igo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, Aug 2017, University of Navarra, TECNUN School of Engineering.
+%       - Iñigo Apaolaza, April 2018, University of Navarra, TECNUN School of Engineering.
 
-if (nargin < 4 || isempty(printLevel))
-    printLevel = 1;
+if (nargin < 5 || isempty(printLevel))
+    printLevel = 1; % Default is show progress
+end
+
+if (nargin < 4 || isempty(numWorkers))
+    numWorkers = 0; % Default is gpc('nocreate')
 end
 
 if (nargin < 3)
@@ -65,62 +76,83 @@ networks = cell(size(selected_rxns));
 p = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(p)
     poolsize = 0;               % Single core
+elseif numWorkers == 0
+    poolsize = p.NumWorkers;    % Multi core, all cores in the PC
+elseif numWorkers == 1
+    poolsize = 0;               % Single core
 else
-    poolsize = p.NumWorkers;    % Multi core
+    p = parpool(numWorkers);
+    poolsize = p.NumWorkers;    % Multi core, limited by user
 end
 
 % Step 2: Create models
-disp('Calculating Networks for GPR rules...');
-% parfor (i=1:length(selected_rxns),poolsize)
-for i=1:length(selected_rxns)
+if printLevel > 0 && length(selected_rxns)>1
+    disp('Calculating Networks for GPR rules...');
+end
+parfor (i=1:length(selected_rxns),poolsize)
     if printLevel > 0
-        clc
+%         clc
         disp([num2str(i),' of ', num2str(length(selected_rxns)) ,' rxns']);
     end
     RXN = metabolic_model.rxns{selected_rxns(i)};
     % Create empty model
     model = createModel();
     % include metabolic reaction as objective metabolite
-    model = addMetabolite(model,RXN);
-
+    model.mets{1} = RXN;
+    % Add objective function
+    model.rxns{1} = RXN; 
+    model.S(1,1) = -1;
+    
     % Check if there is any gene related to this reaction and add them
     genes = metabolic_model.genes(metabolic_model.rxnGeneMat(selected_rxns(i),:)>0);
     if length(genes)>1
-        model = addMetabolite(model,genes); % Include genes in the model 
+        model.mets = vertcat(RXN, genes); % Include genes in the model 
+%         model = addMetabolite(model,genes);
         model.genes = genes;
         fp = FormulaParser();
         head = fp.parseFormula(metabolic_model.rules{selected_rxns(i)});
-        model = modelParser(model,metabolic_model.genes,head,'N_1',RXN, printLevel);
+        model = modelParser(model,metabolic_model.genes,head,[RXN,'_N_1'],RXN, printLevel);
         model = reduceModel(model);
     elseif length(genes)==1
-        model = addMetabolite(model,genes); % Include genes in the model
+        model.mets = vertcat(RXN, genes); % Include genes in the model
         model.genes = genes;
-        model = addReaction(model,genes{1},...
-            'metaboliteList',{genes{1},RXN},'stoichCoeffList',[-1, 1],...
-            'printLevel',printLevel-1);
+        model.rxns(2) = genes;
+        model.S(1:2,2) = [+1 -1];
     else
-        model = addReaction(model,'NO_GENES','reactionFormula',[' -> ',RXN],'printLevel',printLevel-1);
+        model.rxns{2} = 'NO_GENES';
+        model.S(1,1:2) = [-1 +1];
     end
 
     % Include Exchange reactions
-    for gen = 1:length(genes)
-        model = addReaction(model,['DM_',genes{gen}],...
-            'metaboliteList',{genes{gen}},'stoichCoeffList',[1],...
-            'reversible',false,'printLevel',printLevel-1,...
-            'geneRule', genes{gen});
-    end
-
+    [~, gene_idx] = ismember(genes, model.mets);
+    demand_idx = (1:length(genes)) + length(model.rxns);
+    % compulsitory fields
+    model.rxns(demand_idx) = strcat('DM_',genes);
+    model.rxns = model.rxns';
+    model.S(gene_idx,demand_idx) = eye(length(genes));
+    
     % converge isoforms (if neccesary)
     if ~isempty(separate_transcript) && length(genes)>1
-        model = convergeTranscripts2Gene(model, separate_transcript, printLevel);
+        model = convergeTranscripts2Gene(model, separate_transcript);
     end
-
-    % Add objective function
-    model = addReaction(model,RXN,'reactionFormula',[RXN,' -> '],...
-        'printLevel',printLevel-1); % exchange reaction for objective metabolite
-    % Define objective function
-    model = changeObjective(model, RXN);
-
+    
+    % Generate rest of fields
+    idx_rxns = (1:length(model.rxns))';
+    idx_mets = (1:length(model.mets))';
+    model.b(idx_mets) = 0;
+    model.csense(idx_mets) = 'E';
+    model.c(idx_rxns) = 0;
+    model.c(1) = 1;
+    model.lb(idx_rxns) = 0;
+    model.ub(idx_rxns) = inf;
+    model.ub(1) = 1000;
+    model.rules(demand_idx) = {''};
+    model.b = model.b';
+    model.c = model.c';
+    model.lb = model.lb';
+    model.ub = model.ub';
+    model.rules = model.rules';
+    
     % Store the model
     networks{i} = model;
 end
@@ -150,32 +182,39 @@ function model = modelParser(model,genes,head,node_parent,parent,printLevel)
 
 
 %  Name nodes according to position and layer inside the GPR rule
-node = cell(size(head.children));
-for child=1:length(head.children)
-    node{child} = [node_parent,'_',num2str(child)];
-end
-model = addMetabolite(model, node);
+node = strcat({[node_parent,'_']},cellfun(@num2str,num2cell(1:length(head.children)),'UniformOutput', false));
+
+% model = addMetabolite(model, node);
+model.mets = vertcat(model.mets,node');
+[~, idx_new_mets] = ismember(node, model.mets);
+
+idx_parent_mets = find(strcmp(parent, model.mets));
 
 %  Expand model with every node, using OR/AND rules
-if strcmp(class(head),'OrNode')
-    for child=1:length(head.children)
-        model = addReaction(model,node{child},...
-            'reactionFormula',[node{child},' -> ',parent],'printLevel',printLevel-1);
-    end
+if isa(head,'OrNode')
+    idx_new_rxn = length(model.rxns) + (1:length(head.children));
+    model.rxns(idx_new_rxn) = node;
+    model.S(idx_new_mets,idx_new_rxn) = -eye(length(head.children));
+    model.S(idx_parent_mets,idx_new_rxn) = +1;
 else
-    model = addReaction(model,strjoin(node,' & '),...
-        'reactionFormula',[strjoin(node,' + '),' -> ',parent],'printLevel',printLevel-1);
+    idx_new_rxn = length(model.rxns)+1;
+    model.rxns{idx_new_rxn} = ['AND_' parent];
+    model.S(idx_new_mets,idx_new_rxn) = -1;
+    model.S(idx_parent_mets,idx_new_rxn) = +1;
 end
 
 
 for i=1:length(head.children)
     child = head.children(i);
     % check if the child is final layer
-    if strcmp(class(child),'LiteralNode')
-        gen = genes(str2num(child.id));
-        model = addReaction(model,[gen{1},'_',node{i}],...
-            'metaboliteList',{gen{1},node{i}},'stoichCoeffList',[-1, 1],...
-            'printLevel',printLevel-1);
+    if isa(child,'LiteralNode')
+        gen = genes(str2double(child.id));
+        idx_new_rxn = length(model.rxns)+1;
+        idx_met_gen = strcmp(gen,model.mets);
+        idx_met_node = strcmp(node(i),model.mets);
+        model.rxns{idx_new_rxn} = [gen{1},'_',node{i}];
+        model.S(idx_met_node,idx_new_rxn) = +1;
+        model.S(idx_met_gen,idx_new_rxn) = -1;
     else
         model = modelParser(model,genes,child,node{i},node{i},printLevel);
     end
@@ -191,21 +230,19 @@ function modelOut = reduceModel(model)
 % This is done for every gene of the model
 genes = model.genes;
 for gen=1:length(genes)
-    gen_idx = find(strcmp(model.mets,genes{gen})); % find idx of gene
+    gen_idx = strcmp(model.mets,genes{gen}); % find idx of gene
     rxn_gen_out = find(model.S(gen_idx,:)<0);   % find reactions that consume gene
     % for each reaction, find consumption node
-    [node_idx,aux] = find(model.S(:,rxn_gen_out)>0);
+    [node_idx,~] = find(model.S(:,rxn_gen_out)>0);
     for i = 1:length(node_idx)
         % for each reaction, find consumption node
         node_name = model.mets(node_idx(i));
         % find reactions out of this node
-        [aux, rxn_idx] = find((model.S(node_idx(i),:)<0));
+        [~, rxn_idx] = find((model.S(node_idx(i),:)<0));
         rxn_name = model.rxns(rxn_idx);
         % in this reaction, change (node -> rule) for (gene -> rule)
         model = changeRxnMets(model, node_name, genes(gen), rxn_name);   
     end
-    % remove reactions (gene -> node)
-%     model = removeRxns(model, model.rxns(rxn_gen_out), 'metFlag',false); 
     % remove stoichimetri of intermediate nodes
     model.S(node_idx,:)=0;
     % remove output of genes to intermediate nodes
@@ -213,12 +250,16 @@ for gen=1:length(genes)
 end
 
 % remove unused reactions and unused metabolites
-modelOut = removeTrivialStoichiometry(model);    
+idx_rxns = sum(model.S~=0,1)>0;
+idx_mets = sum(model.S~=0,2)>0;
+modelOut.S = model.S(idx_mets,idx_rxns);
+modelOut.rxns = model.rxns(idx_rxns);
+modelOut.mets = model.mets(idx_mets);
 
 end
 
 
-function model = convergeTranscripts2Gene(model, separate_transcripts, printLevel)
+function model = convergeTranscripts2Gene(model, separate_transcripts)
 % Some COBRA models have transcripts instead of genes. Most of the
 % transcripts have the same functionallity, so we can converge them as the
 % same gene.
@@ -229,22 +270,47 @@ function model = convergeTranscripts2Gene(model, separate_transcripts, printLeve
 % This is done for every gene of the model at exchange reaction level
 
 % seach demand reactions
-DM_rxns = model.rxns(startsWith(model.rxns,'DM_'));
+idx_DM_rxns = startsWith(model.rxns,'DM_');
+DM_rxns = model.rxns(idx_DM_rxns);
 % obtain isoforms and genes
 transcripts = regexprep(DM_rxns,'DM_','');
 genes = strtok(transcripts,separate_transcripts);
-[genes_unique,IA,IC] = unique(genes);
 
-for i = 1:length(genes_unique)
-    % look those genes with several isoforms
-    if sum(strcmp(genes_unique(i),genes))>1
-        idx_transcripts = IC==i;
-        model = removeRxns(model,DM_rxns(idx_transcripts), 'metFlag', false);
-        model = addReaction(model,['DM_',genes_unique{i}],...
-            'metaboliteList',transcripts(idx_transcripts)','stoichCoeffList',...
-            ones(size(transcripts(idx_transcripts)')),'reversible',false,...
-            'printLevel',printLevel-1);
-    end
+% Remove all the previously existing exchange reactions
+model.S = model.S(:,~idx_DM_rxns);
+model.rxns = model.rxns(~idx_DM_rxns);
+
+% Divide into genes with one transcript and two or more transcripts
+x = tabulate(genes);
+genes_unique = x(:,1);
+genes_one_transcrits = x(cell2mat(x(:,2))==1,1);
+genes_more_transcripts = x(cell2mat(x(:,2))>1,1);
+
+% For genes with one transcript, just change the name
+[~,idx_genes_one_transcript] = ismember(genes_one_transcrits, strtok( model.mets,separate_transcripts));
+model.mets(idx_genes_one_transcript) = genes_one_transcrits;
+
+% For genes with more than one transcript, converge them into one
+% metabolite
+% Generate new metabolites
+model = addMetabolite(model, genes_more_transcripts);
+% Converge genes
+for i = 1:length(genes_more_transcripts)
+    gen_idx = find(strcmp(genes_more_transcripts{i}, model.mets));
+    transcripts_idx = find(strcmp(genes_more_transcripts{i}, strtok( model.mets,separate_transcripts)));
+    transcripts_idx = setdiff(transcripts_idx,gen_idx);
+    % new reactions to converge genes
+    idx_new_rxns = length(model.rxns)+1 : length(model.rxns) + length(transcripts_idx);
+    model.S(transcripts_idx,idx_new_rxns) = +eye(length(transcripts_idx)); % produce transcript
+    model.S(gen_idx,idx_new_rxns) = -1; % consume gene
+    model.rxns(idx_new_rxns) = strcat('Con_',genes_more_transcripts{i},'_',model.mets(transcripts_idx));
 end
+
+% Generate new demand reactions for all genes
+[~, gene_idx] = ismember(genes_unique, model.mets);
+demand_idx = (1:length(genes_unique)) + length(model.rxns);
+model.rxns(demand_idx) = strcat('DM_',genes_unique);
+model.S(gene_idx,demand_idx) = eye(length(genes_unique));
+
 
 end
