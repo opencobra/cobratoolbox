@@ -32,8 +32,8 @@ function [model ModifiedRxns] = changeRxnMets(model, Mets2change, NewMets, Rxn, 
 % OUTPUTS:
 %    model:           COBRA model structure with changed reaction
 %    ModifiedRxns:    `Rxns` which were modified
-%
-%  Nathan Lewis (Apr 24, 2009)
+% .. Author:
+%    Nathan Lewis (Apr 24, 2009)
 
 if nargin ==4
     NewStoich = [];

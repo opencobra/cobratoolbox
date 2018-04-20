@@ -12,26 +12,31 @@ currentDir = pwd;
 fileDir = fileparts(which('testTest4HumanFctExt'));
 cd(fileDir)
 
-solverOK = changeCobraSolver('gurobi');
+
+solverPkgs = prepareTest('requireOneSolverOf', {'ibm_cplex','gurobi'});
 
 % set a tolerance
 tol = 1e-4;
 
-if solverOK
-    fileName= 'Recon1.0model.mat'; % if using Recon 3 model, amend filename.
-    model = getDistributedModel(fileName);
-    model.csense(1:size(model.S,1),1) = 'E';
+%Configure model for test
+fileName= 'Recon1.0model.mat'; % if using Recon 3 model, amend filename.
+model = getDistributedModel(fileName);
+model.csense(1:size(model.S,1),1) = 'E';
 
-    % Set the lower bounds on all biomass reactions and sink/demand reactions to zero.
-    model.lb(find(ismember(model.rxns, 'biomass_reaction'))) = 0;
-    model.lb(find(ismember(model.rxns, 'biomass_maintenance_noTrTr'))) = 0;
-    model.lb(find(ismember(model.rxns, 'biomass_maintenance'))) = 0;
-    DMs = strmatch('DM_', model.rxns);
-    model.lb(DMs) = 0;
-    Sinks = strmatch('sink_', model.rxns);
-    model.lb(Sinks) = 0;
-    model.ub(Sinks) = 1000;
+% Set the lower bounds on all biomass reactions and sink/demand reactions to zero.
+model.lb(find(ismember(model.rxns, 'biomass_reaction'))) = 0;
+model.lb(find(ismember(model.rxns, 'biomass_maintenance_noTrTr'))) = 0;
+model.lb(find(ismember(model.rxns, 'biomass_maintenance'))) = 0;
+DMs = strmatch('DM_', model.rxns);
+model.lb(DMs) = 0;
+Sinks = strmatch('sink_', model.rxns);
+model.lb(Sinks) = 0;
+model.ub(Sinks) = 1000;
 
+for k = 1:numel(solverPkgs.LP)
+    fprintf('Testing HumanFctExt with solver %s\n',solverPkgs.LP{k});
+    changeCobraSolver(solverPkgs.LP{k});
+    
     % run testATPYieldFromCsources
     [Table_csourcesOri, TestedRxnsC, Perc] = testATPYieldFromCsources(model, 'Recon3');
 

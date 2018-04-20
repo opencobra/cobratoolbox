@@ -60,7 +60,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
         % download the file
         if exist(fileNamePortableGit, 'file') ~= 2 && exist(fileNamePortableGitwoVersion, 'file') ~= 2 && removeFlag < 2
             fprintf(' > Downloading gitBash archive (this may take a while) ... ');
-            urlwrite(urlPortableGit, fileNamePortableGit);
+            websave(fileNamePortableGit, urlPortableGit);
             fprintf('Done.\n');
         end
 
@@ -75,8 +75,10 @@ function portableGitSetup(gitBashVersion, removeFlag)
             for i = 1:length(pathPortableGitFragments)
                 % global machine path
                 oldMachinePath = getsysenvironvar('Path');
-                newMachinePath = strrep(oldMachinePath, [pathPortableGitFragments{i} ';'], '');
-                setsysenvironvar('Path', newMachinePath);
+                if  ~isempty(oldMachinePath)
+                    newMachinePath = strrep(oldMachinePath, [pathPortableGitFragments{i} ';'], '');
+                    setsysenvironvar('Path', newMachinePath);
+                end
 
                 % session path
                 oldSessionPath = getenv('Path');

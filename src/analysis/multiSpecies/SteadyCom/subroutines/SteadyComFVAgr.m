@@ -414,7 +414,9 @@ else
 
     [maxFluxCell, minFluxCell, minFDCell, maxFDCell] = deal(cell(numPool,1));
     fprintf('%s\n',saveFVA);
+    environment = getEnvironment();
     parfor jP = 1:numPool
+        restoreEnvironment(environment,0);        
         if ibm_cplex
             LPp = Cplex('subproblem');
             LPp.Model = LPmodel;

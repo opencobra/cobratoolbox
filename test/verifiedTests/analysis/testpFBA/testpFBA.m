@@ -26,19 +26,19 @@ tol = 1e-8;
 % load models and expected results
 model_glc = readCbModel('testpFBAData.mat','modelName','model_glc');
 model_lac = readCbModel('testpFBAData.mat','modelName','model_lac');
-%load('testpFBAData.mat', 'model_glc', 'model_lac');
+
 objGenes = load('testpFBAData.mat', 'GeneClasses_glc2', 'GeneClasses_glc1', 'GeneClasses_glc0', 'GeneClasses_lac2', 'GeneClasses_lac1', 'GeneClasses_lac0');
 objRxns = load('testpFBAData.mat', 'RxnClasses_glc2', 'RxnClasses_glc1', 'RxnClasses_glc0', 'RxnClasses_lac2', 'RxnClasses_lac1', 'RxnClasses_lac0');
 objModel = load('testpFBAData.mat', 'modelIrrev_glc2', 'modelIrrev_glc1', 'modelIrrev_glc0', 'modelIrrev_lac2', 'modelIrrev_lac1', 'modelIrrev_lac0');
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+solverPkgs = {'gurobi'}; % 'tomlab_cplex', 'glpk'
 
 % create a parallel pool
 try
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
-    
+
     if myCluster.NumWorkers >= minWorkers
         poolobj = gcp('nocreate');  % if no pool, do not create new one.
         if isempty(poolobj)
@@ -48,8 +48,10 @@ try
 catch
     disp('Trying non parallel test')
 end
+
 for k = 1:length(solverPkgs)
-        fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... \n', solverPkgs{k});
+
+    fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... \n', solverPkgs{k});
 
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 

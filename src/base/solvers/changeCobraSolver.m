@@ -225,7 +225,7 @@ if validationLevel == 1
     origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false);
     finish = onCleanup(@() removeTempFiles(pwd, origFiles,'checkSubFolders',false));
 end
-    % configure the environment variables
+% configure the environment variables
 configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
@@ -369,8 +369,7 @@ if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cpl
     addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
-% add the matlab path (in case someone had the great idea to overwrite the
-% matlab path).
+% add the matlab path (in case someone had the great idea to overwrite the MATLAB path).
 if (~isempty(strfind(solverName, 'matlab')))
     FMINCON_PATH = [matlabroot filesep 'toolbox' filesep 'shared' filesep 'optimlib'];
     addSolverDir(FMINCON_PATH, printLevel, 'matlab', 'FMINCON_PATH', FMINCON_PATH, true);
@@ -378,6 +377,11 @@ if (~isempty(strfind(solverName, 'matlab')))
     addSolverDir(LINPROG_PATH, printLevel, 'matlab', 'LINPROG_PATH', LINPROG_PATH, true);
 end
 
+% add the pdco submodule path (especially important if TOMLAB_PATH is set)
+if ~isempty(strfind(solverName, 'pdco'))
+    PDCO_PATH = [CBTDIR filesep 'external' filesep 'pdco'];
+    addSolverDir(PDCO_PATH, printLevel, 'pdco', 'PDCO_PATH', PDCO_PATH, true);
+end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
     % add the solver path
@@ -461,24 +465,26 @@ if compatibleStatus == 1 || compatibleStatus == 2
     end
 end
 
-% set solver related global variables
+% set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
     solverInstalled = true;
-    if validationLevel > 0
-        cwarn = warning;
-        warning('off');
-        eval(['oldval = CBT_', solverType, '_SOLVER;']);
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
-        Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
-        try
-            eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
-        catch ME
-            solverOK = false;
-            eval(['CBT_', solverType, '_SOLVER = oldval;']);
+    if strcmpi(SOLVERS.(solverName).categ, 'active')
+        if validationLevel > 0
+            cwarn = warning;
+            warning('off');
+            eval(['oldval = CBT_', solverType, '_SOLVER;']);
+            eval(['CBT_', solverType, '_SOLVER = solverName;']);
+            Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+            try
+                eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
+            catch ME
+                solverOK = false;
+                eval(['CBT_', solverType, '_SOLVER = oldval;']);
+            end
+            warning(cwarn)
+        else
+            eval(['CBT_', solverType, '_SOLVER = solverName;']);
         end
-        warning(cwarn)
-    else
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
 end
 end
@@ -506,8 +512,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 end
 
 function addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
-% Adds the solver installation path to the MATLAB path
-%
+% Adds the solver installation path to the MATLAB path:
 % Usage:
 %     addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
 %

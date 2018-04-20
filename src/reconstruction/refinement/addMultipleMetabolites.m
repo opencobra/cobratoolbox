@@ -1,39 +1,39 @@
-function newmodel = addMultipleMetabolites(model,metIDs,varargin)
-% Simultaneously add multiple metabolites. Allows the use of the field
-% names of the model struct to specify additional properties of the
-% metabolites added.
+function newmodel = addMultipleMetabolites(model, metIDs, varargin)
+% Simultaneously add multiple metabolites. Allows the use of the field names of the model struct to specify additional properties of the metabolites added.
+%
 % USAGE:
 %
-%    model = addMultipleMetabolites(model,metIDs,varargin)
+%    newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %
 % INPUTS:
-%    model:     The model to add the Metabolite batch to.
-%    metIDs:    The metabolite IDs to add. No duplicate IDs may be provided
-%               and no ID may be present in the supplied model.
+%    model:         The model to add the Metabolite batch to.
+%    metIDs:        The metabolite IDs to add. No duplicate IDs may be provided
+%                   and no ID may be present in the supplied model.
 %
 % OPTIONAL INPUTS:
-%    varargin:  fieldName, Value pairs with additional properties for the
-%               added metabolites.
-%               The given values fields will be set according to the values. 
-%               Only fields associated with mets defined in the COBRA definitions (except S) 
-%               or fields already in the model may be used. 
-%               Examples: 
-%               'metNames',{'Glucose';'Pyruvate'}            
-%               'metCharges',[0;-2]
+%    varargin:      fieldName, Value pairs with additional properties for the
+%                   added metabolites.  
+%                   The given values fields will be set according to the values. 
+%                   Only fields associated with mets defined in the COBRA definitions (except `S`) 
+%                   or fields already in the model may be used.  
+%                   Examples for this use would be:  
+%
+%                     * 'metNames',{'Glucose';'Pyruvate'}              
+%                     * 'metCharges',[0;-2]  
+%
 % OUTPUTS:
 %
 %    newmodel:     The model structure with the additional metabolites.
 %
 % EXAMPLE:
 %
-%    To add metabolites, with charges, formulas and KEGG ids:
-%    model = addMultipleMetabolites(model,{'A','b','c'},'metCharges', [ -1 1
-%    0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
+%    % To add metabolites, with charges, formulas and KEGG ids:
+%    model = addMultipleMetabolites(model,{'A','b','c'},'metCharges', [ -1 1 0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
 %    
 
-%Check, if there are either duplicate metabolite IDS to be added OR if
-%any metabolite is already in the model.
 if (any(ismember(model.mets,metIDs)) || numel(unique(metIDs)) < numel(metIDs))
+    %Check, if there are either duplicate metabolite IDS to be added OR if
+    %any metabolite is already in the model.
     error('Duplicate Metabolite ID detected.');
 end
 

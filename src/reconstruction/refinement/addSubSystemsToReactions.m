@@ -22,11 +22,13 @@ function [model]  = addSubSystemsToReactions(model,reactions,subSystems)
 %    model:                 The model with the subSystems added to the
 %                           respective reactions (old, non empty, values are retained).
 %
-% USAGE:
-%    %Add TCA to a set of reactions
+% EXAMPLE:
+%
+%    % Add TCA to a set of reactions   
 %    [model]  = addSubSystemsToReactions(model,{'ACONTa';'ACONTb';'AKGDH';'CS';'FUM';'ICDHyr';'MDH';'SUCOAS'},'TCA')
-%    %Add Glycolysis/Gluconeogenesis to a the reaction 18 of the model
+%    % Add Glycolysis/Gluconeogenesis to a the reaction 18 of the model
 %    [model]  = addSubSystemsToReactions(model,18,{'Glycolysis','Gluconeogenesis'})
+%    
 %
 % .. Author: - Thomas Pfau Nov 2017
 

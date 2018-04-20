@@ -6,6 +6,10 @@
 % Author:
 %     - Marouen BEN GUEBILA 04/12/2017
 
+
+%Define Requirements
+prepareTest('requiredSolvers',{'ibm_cplex'}) %Could this also use tomlab cplex??
+
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
 

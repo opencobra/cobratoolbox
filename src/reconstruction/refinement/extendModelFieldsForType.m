@@ -12,6 +12,7 @@ function model = extendModelFieldsForType(model, type, varargin)
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
+%
 %                     - 'originalSize', the original size of the field,
 %                       this is used to determine fields which have to be
 %                       adjusted (default length of field type - 1).

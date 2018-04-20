@@ -12,15 +12,16 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 % OPTIONAL INPUTS:
 %    varargin:      Optional Inputs provided as 'ParameterName', Value
 %                   pairs. the following parameternames are available:
-%                   * metName:       Human readable name(s) (default metID, String)
-%                   * metFormula:    The chemical formula(s) (default '', String)
-%                   * ChEBIID:       The CHEBI Id(s) (default '', String)
-%                   * KEGGId:        The KEGG Compound ID(s) (default '', String)
-%                   * PubChemID:     The PubChemID(s) (default '', String)
-%                   * InChi:         The InChi description(s) (default '', String)
-%                   * Charge:        The Charge(s) (default NaN, int)
-%                   * b:             The accumulation(s) or release(s) (default 0, double)
-%                   * csense:        The sense of this metabolite (default 'E', char)
+%
+%                    * metName:       Human readable name(s) (default metID, String)
+%                    * metFormula:    The chemical formula(s) (default '', String)
+%                    * ChEBIID:       The CHEBI Id(s) (default '', String)
+%                    * KEGGId:        The KEGG Compound ID(s) (default '', String)
+%                    * PubChemID:     The PubChemID(s) (default '', String)
+%                    * InChi:         The InChi description(s) (default '', String)
+%                    * Charge:        The Charge(s) (default NaN, int)
+%                    * b:             The accumulation(s) or release(s) (default 0, double)
+%                    * csense:        The sense of this metabolite (default 'E', char)
 %
 % OUTPUT:
 %    newModel:      COBRA model with added metabolite(s)
@@ -30,10 +31,12 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 %    model = addMetabolite(model,'MetToAcc','b',5);
 %    2) Add a Metabolite with a given Formula and a given Charge
 %    model = addMetabolite(model,'MetWithForm','metFormula','H3O','metCharge',1);
-% .. Author: - Thomas Pfau 15/12/2014
+% 
+% NOTE:
+%    `metID` and all optional arguments either have to be a single value or cell
+%    arrays. `Charge` and `b` have to be double arrays.
 %
-% `metID` and all optional arguments either have to be a single value or cell
-% arrays. `Charge` and `b` have to be double arrays.
+% .. Author: - Thomas Pfau 15/12/2014
 
 optionalParameters = {'metName','metFormula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b', 'csense'};
 oldOptionalOrder = {'metName','metformula','ChEBIID','KEGGId','PubChemID', 'InChi','Charge', 'b' };

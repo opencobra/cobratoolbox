@@ -1119,7 +1119,11 @@ switch solver
         else
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
         end
-
+        
+        if optTol < 1e-8
+            optTol = optTol * 100; %make sure, that we are within the range of allowed values.
+        end
+        
         linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,optTol*0.01,constTolParam,feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
@@ -1522,7 +1526,10 @@ switch solver
         else
             options.MaxIter = 200;
         end
+
+        % set the printLevel
         options.Print=printLevel;
+
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f= c'*x;

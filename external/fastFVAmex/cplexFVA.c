@@ -736,7 +736,13 @@ static void freelicence(void)
     /* Close log file */
     if (LogFile != NULL){
         mexPrintf("LogFile is not NULL.\n");
-    	status=CPXfclose(LogFile);
+
+        #ifdef HIGHER_THAN_128
+            status = fclose(LogFile);
+        #endif
+        #ifdef LOWER_THAN_128
+            status = CPXfclose(LogFile);
+        #endif
 
         if (status) {
             mexPrintf("Could not close log file.\n");
@@ -1156,12 +1162,21 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
           mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat3("cplexint_logfile_", numThreadstr,".log"));
         }
 
-        LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
+        #ifdef LOWER_THAN_128
+            LogFile = CPXfopen(concat3(logFileName, numThreadstr,".log"), "w");
 
-       if (LogFile == NULL) {
-            TROUBLE_mexErrMsgTxt(concat3("Could not open the log file ",logFileName,".log.\n"));
-        }
-        status = CPXsetlogfile(env, LogFile);
+            if (LogFile == NULL) {
+                TROUBLE_mexErrMsgTxt(concat3("Could not open the log file ",logFileName,".log.\n"));
+            }
+        #endif
+
+        #ifdef HIGHER_THAN_128
+            status = CPXsetlogfilename(env, concat3(logFileName, numThreadstr,".log"), "w");
+        #endif
+        #ifdef LOWER_THAN_128
+            status = CPXsetlogfile(env, LogFile);
+        #endif
+
         if (status) {
             dispCPLEXerror(env, status);
             goto TERMINATE;
@@ -1270,7 +1285,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     /* Close log file */
     if ((opt_logfile) && (LogFile != NULL)){
-    	status = CPXfclose(LogFile);
+        #ifdef HIGHER_THAN_128
+            status = fclose(LogFile);
+        #endif
+        #ifdef LOWER_THAN_128
+            status = CPXfclose(LogFile);
+        #endif
 
         if (status) {
             mexPrintf("Could not close log file.\n");

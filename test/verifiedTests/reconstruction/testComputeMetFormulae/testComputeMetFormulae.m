@@ -9,6 +9,9 @@
 % save the current path
 currentDir = pwd;
 
+%This tests requires gurobi and cplex. 
+prepareTest('requiredSolver',{'gurobi','ibm_cplex'});
+
 % initialize the test
 fileDir = fileparts(which('testComputeMetFormulae'));
 cd(fileDir);
@@ -219,10 +222,6 @@ changeCobraSolver('ibm_cplex', 'LP');
 [yn, id] = ismember(ele2, ele);
 assert(all(yn))
 assert(sum(any(abs(metEle2 - metEle(:, id)) > 1e-5, 2)) < 5)
-
-% change back to the original solver
-changeCobraSolver(orig_lp_solver, 'LP', 0);
-changeCobraSolver(orig_milp_solver, 'MILP', 0);
 
 % change the directory
 cd(currentDir)

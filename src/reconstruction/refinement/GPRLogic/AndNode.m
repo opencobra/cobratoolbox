@@ -84,7 +84,19 @@ classdef (HandleCompatible) AndNode < Node
                 end
             end
         end
-        
+        function cnfNode = convertToCNF(self)            
+            cnfNode = AndNode();
+            for i = 1:numel(self.children)
+                if isa(self.children(i),'LiteralNode')
+                    CNFChild = self.children(i).copy();
+                else
+                    CNFChild = self.children(i).convertToCNF();
+                end                
+                cnfNode.addChild(CNFChild);
+            end
+        end
+            
+
         function dnfNode = convertToDNF(self)
             dnfNode = OrNode();
             childNodes = [];

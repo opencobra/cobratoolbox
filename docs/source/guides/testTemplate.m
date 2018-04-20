@@ -9,6 +9,14 @@
 
 global CBTDIR
 
+% define the features required to run the test
+requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
+
+requiredSolvers = { 'dqqMinos', 'matlab' };
+
+% require the specified toolboxes and solvers, along with a UNIX OS
+solversPkgs = prepareTest('reqSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needUnix', true);
+
 % save the current path
 currentDir = pwd;
 
@@ -17,9 +25,6 @@ cd(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
-
-% define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 % load the model
 %Either:
@@ -45,14 +50,14 @@ catch ME
     parTest = false;
     fprintf('No Parallel Toolbox found. TRying test without Parallel toolbox.\n')
 end
-if parTest 
+if parTest
 % if parallel toolbox has to be present (if not, this can be left out).
 %}
 
-for k = 1:length(solverPkgs)
-    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
+for k = 1:length(solverPkgs.LP)
+    fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs.LP{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
 
     if solverLPOK
         % <your test goes here>

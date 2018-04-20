@@ -22,11 +22,11 @@ function [model]  = setRxnSubSystems(model,reactions,subSystems)
 %    model:                 The model with the subSystems set to the
 %                           respective reactions (old values will be removed).
 %
-% USAGE:
-%    %Set TCA as subSystem for a set of reactions
-%    [model]  = setRxnSubSystems(model,{'ACONTa';'ACONTb';'AKGDH';'CS';'FUM';'ICDHyr';'MDH';'SUCOAS'},'TCA')
-%    %Set Glycolysis/Gluconeogenesis to reaction 18 of the model
-%    [model]  = setRxnSubSystems(model,18,{'Glycolysis','Gluconeogenesis'})
+% EXAMPLE:
+%    % Set TCA as subSystem for a set of reactions
+%    [model]  = setRxnSubSystems(model, {'ACONTa';'ACONTb';'AKGDH';'CS';'FUM';'ICDHyr';'MDH';'SUCOAS'}, 'TCA')
+%    % Set Glycolysis/Gluconeogenesis to reaction 18 of the model
+%    [model]  = setRxnSubSystems(model, 18, {'Glycolysis','Gluconeogenesis'})
 %
 % .. Author: - Thomas Pfau Nov 2017
 

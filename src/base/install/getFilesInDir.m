@@ -8,56 +8,40 @@ function files = getFilesInDir(varargin)
 %    files = getFilesInDir(varargin)
 %
 % OPTIONAL INPUTS:
-%    varargin:     Options as 'ParameterName',Value pairs. Available
-%                  options are:
-%                  dirToList -  the directory to list the files for, 
-%                               (Default: The current working directory)
-%                  type      -  Git type of files to return
-%                                'tracked' - Only tracked files
-%                                'ignored' - Only git ignored files
-%                                            excluding files that are tracked but
-%                                            ignored (specified in
-%                                            .gitignore). If the folder is
-%                                            not controlled by git, 'all'
-%                                            will be used. 
-%                                'untracked' - anything that is not ignored
-%                                              and not tracked. (new files)
-%                                'all'  - all files except for the git
-%                                         specific files (e.g. .git, .gitignore etc).                               
-%                                'ignoredByCOBRA' - use the COBRA Toolbox .gitignore
-%                                                 file. Only return those
-%                                                 files which match
-%                                                 patterns specified there.
-%                                                 Slower than 'ignored',
-%                                                 since all files have to
-%                                                 be manually checked
-%                                                 against the expressions
-%                                                 specified in the
-%                                                 gitignored file, but
-%                                                 available on all folders
-%                                                 
-%                                (Default: 'all')   
-%                  restrictToPattern - give a regexp pattern to filter the
-%                                      files, this option is ignored if
-%                                      empty. (Default: '', i.e. ignored)
-%                  checkSubFolders - check the subfolders of the current
-%                                    directory. (Default: true)
-%                  printLevel -     0 - No print out (default)
-%                                   1 - Print Information.
+%    varargin:     Options as 'ParameterName' value pairs with the following options:
+%
+%                   - `dirToList`: the directory to list the files for (default: the current working directory)
+%                   - `type`: Git type of files to return
+%
+%                      - `tracked`: Only tracked files
+%                      - `ignored`: Only `git` ignored files excluding files that are tracked but ignored (specified in .gitignore). If the folder is not controlled by git, `all` will be used.
+%                      - `untracked`: anything that is not ignored and not tracked (new files)
+%                      - `all`: all files except for the git specific files (e.g. .git, .gitignore etc).
+%                      - `ignoredByCOBRA`: use the COBRA Toolbox .gitignore file. Only return those files that match patterns specified there. Slower than `ignored` since all files have to be manually checked against the expressions specified in the .gitignore file, but available on all folders (default: `all`)
+%                   - `restrictToPattern` - give a regexp pattern to filter the files, this option is ignored if empty (default: '', i.e. ignored)
+%                   - `checkSubFolders - check the subfolders of the current directory (default: `true`)
+%                   - `printLevel`
+%
+%                      - `0`: No print out (default)
+%                      - `1`: print Information
 %
 %
 % OUTPUTS:
 %    files:         A Cell Array of files with absolute file pathes.
 %                   present in this folder matching the options choosen.
-% 
+%
 % EXAMPLES:
-%    Get all m files in the source folder:
+%
+%    % get all m files in the source folder:
 %    files = getFilesInDir('dirToList', [CBTDIR filesep 'src'], 'restrictToPattern', '\.m$');
-%    Get the git tracked files in the test Directory.
+%
+%    % Get the git tracked files in the test Directory.
 %    files = getFilesInDir('dirToList', [CBTDIR filesep 'test'], 'type', 'tracked');
-%    Get all git tracked files  which start with "MyFile" in the current directory
+%
+%    % get all git tracked files  which start with "MyFile" in the current directory
 %    files = getFilesInDir('type', 'tracked', 'restrictToPattern', '^MyFile');
-%    Get only the gitIgnored files in the current folder
+%
+%    % get only the gitIgnored files in the current folder
 %    files = getFilesInDir('type', 'ignored');
 
 persistent COBRAIgnored
@@ -109,21 +93,21 @@ end
 switch selectedType
     case 'all'
         if gitStatus == 0
-            [status, trackedfiles] = system('git ls-files');             
-            [status, untrackedfiles] = system('git ls-files -o');        
+            [status, trackedfiles] = system('git ls-files');
+            [status, untrackedfiles] = system('git ls-files -o');
             trackedfiles = strsplit(strtrim(trackedfiles), '\n');
             untrackedfiles = strsplit(strtrim(untrackedfiles), '\n');
-            files = [trackedfiles,untrackedfiles];            
+            files = [trackedfiles,untrackedfiles];
         else
            if parser.Results.checkSubFolders
                rdircall = ['**' filesep '*'];
            else
                rdircall = ['*'];
            end
-           files = rdir(rdircall); 
+           files = rdir(rdircall);
            files = {files.name}'; %Need to transpose to give consistent results.
         end
-            
+
     case 'tracked'
         [status, files] = system('git ls-files');
         files = strsplit(strtrim(files), '\n');
@@ -132,25 +116,25 @@ switch selectedType
         [status, files] = system('git ls-files -o --exclude-standard');
         files = strsplit(strtrim(files), '\n');
     case 'ignored'
-        [~, files] = system('git ls-files -o -i --exclude-standard');        
+        [~, files] = system('git ls-files -o -i --exclude-standard');
         files = strsplit(strtrim(files), '\n');
     case 'ignoredbycobra'
         if gitStatus == 0
-            [status, trackedfiles] = system('git ls-files');             
-            [status, untrackedfiles] = system('git ls-files -o');        
+            [status, trackedfiles] = system('git ls-files');
+            [status, untrackedfiles] = system('git ls-files -o');
             trackedfiles = strsplit(strtrim(trackedfiles), '\n');
             untrackedfiles = strsplit(strtrim(untrackedfiles), '\n');
             files = [trackedfiles,untrackedfiles];
         else
-           files = rdir(['**' filesep '*']); 
+           files = rdir(['**' filesep '*']);
            files = {files.name}'; %Need to transpose to give consistent results.
-        end  
+        end
         matching = false(size(files));
         for i = 1:numel(COBRAIgnored)
             matching = matching | ~cellfun(@(x) isempty(regexp(x,COBRAIgnored{i},'ONCE')),files);
         end
         files = files(matching);
-        
+
 end
 if ~parser.Results.checkSubFolders
     files = files(cellfun(@(x) isempty(regexp(x,regexptranslate('escape',filesep))),files));

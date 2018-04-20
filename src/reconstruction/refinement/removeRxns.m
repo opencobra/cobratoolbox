@@ -12,6 +12,7 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 % OPTIONAL INPUTS:
 %    varargin:          Parameters in ParameterName, Value pair representation. 
 %                       Available parameters are:
+%
 %                       * irrevFlag:   Irreverseble (true) or reversible (false) reaction
 %                         format (Default = false)
 %                       * metFlag:   Remove unused metabolites (Default = true)

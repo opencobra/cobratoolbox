@@ -8,6 +8,8 @@
 %
 
 global CBTDIR
+requiredSolvers = {'ibm_cplex'};
+prepareTest('requiredSolvers',requiredSolvers);
 
 % save the current path
 currentDir = pwd;
@@ -17,7 +19,7 @@ testDir = fileparts(which('testGeneMCS'));
 cd(testDir);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex','gurobi'}; 
+solverPkgs = {'ibm_cplex', 'glpk', 'gurobi6'}; 
 
 % Load Toy Example
 model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
@@ -32,16 +34,22 @@ for k = 1:length(solverPkgs)
     fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});
 
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
-
+        
     if solverLPOK
         % Eliminate G-matrix if it exist
         if exist([currentDir filesep 'G_toy_example_gMCS.mat'], 'file')
             delete G_toy_example_gMCS.mat
         end
         
-        % Calculate GMCS
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20);
+        % Check errors when missing argument
+        assert((verifyCobraFunctionError(@() calculateGeneMCS(model, 20, 5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', [], 20,5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, [],5))));
+        assert((verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, 20))));
         
+        % Calculate GMCS
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20,5);
+
         % Check if the solution obtained is the same as the expected
         % solution
         gmcsIsTrue = zeros(size(true_gmcs));
@@ -58,16 +66,20 @@ for k = 1:length(solverPkgs)
         assert(sum(~logical(gmcsIsTrue))==0);
         %Now, test with a gene_set 
         options = struct();
-        options.gene_set = model.genes([1 2 4 5 6]);                
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        options.gene_set = model.genes([1 2 4 5 6]);    
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         %Assert that all correct solutions are there 
         assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),gmcs)), {{'g5'},{'g1','g4'}})))
         %and, that there are no surplus solutions
         assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),{{'g5'},{'g1','g4'}})), gmcs)))
         %Finally test this for gMCS containing a specific knockout.
         options.KO = 'g5';
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, options);
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         assert(isequal(gmcs,{{'g5'}}));
+        %assert using one worker
+        options = struct();
+        options.numWorkers = 1;
+        assert(~(verifyCobraFunctionError(@() calculateGeneMCS('toy_example_gMCS', model, 20, 5, options))));
     else
         warning('The test testGeneMCS cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
     end
@@ -81,6 +93,9 @@ for k = 1:length(solverPkgs)
     end
     if exist([testDir filesep 'MILPProblem.mat'], 'file')
         delete MILPProblem.mat
+    end
+    if exist([testDir filesep 'tmp.mat'], 'file')
+        delete tmp.mat
     end
 
     % output a success message

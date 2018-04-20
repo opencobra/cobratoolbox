@@ -11,6 +11,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
+%
 %                     - 'fieldSize', the original size of the field (if
 %                       mets was already adjusted, this size will be used
 %                       to determine matching fields.

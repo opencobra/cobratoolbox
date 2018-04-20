@@ -16,14 +16,17 @@ function cpxControl = CPLEXParamSet(interface)
 %
 % EXAMPLE:
 %
-%    %(1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
-%    %(2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
-%    %(3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
+%    % (1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
+%    % (2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
+%    % (3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
+%
 %    [solution, LPProblem] = solveCobraLP_CPLEX(LPProblem, [], [], [], 'CPLEXParamSetPaddyLPJob1');
 %
-% CPLEX consists of 4 different LP solvers which can be used to solve sysbio LP problems
-% you can control which of the solvers, e.g. simplex or interior point solve using the
-% CPLEX control parameter `cpxControl.LPMETHOD`
+% NOTE:
+%
+%     CPLEX consists of 4 different LP solvers which can be used to solve LP problems
+%     you can control which of the solvers, e.g. simplex or interior point solve using the
+%     CPLEX control parameter `cpxControl.LPMETHOD`
 %
 % .. Author: - Ronan Fleming 10th June 2008
 
