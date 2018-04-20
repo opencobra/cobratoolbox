@@ -718,7 +718,7 @@ Maximum flux for each reaction</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.initMgPipe">
-<code class="descname">initMgPipe</code><span class="sig-paren">(</span><em>modPath</em>, <em>toolboxPath</em>, <em>resPath</em>, <em>dietFilePath</em>, <em>abunFilePath</em>, <em>objre</em>, <em>figForm</em>, <em>numWorkers</em>, <em>autoFix</em>, <em>compMod</em>, <em>patStat</em>, <em>rDiet</em>, <em>extSolve</em>, <em>fvaType</em>, <em>autorun</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/initMgPipe.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.initMgPipe" title="Permalink to this definition">¶</a></dt>
+<code class="descname">initMgPipe</code><span class="sig-paren">(</span><em>modPath</em>, <em>toolboxPath</em>, <em>resPath</em>, <em>dietFilePath</em>, <em>abunFilePath</em>, <em>objre</em>, <em>figForm</em>, <em>numWorkers</em>, <em>autoFix</em>, <em>compMod</em>, <em>patStat</em>, <em>rDiet</em>, <em>extSolve</em>, <em>fvaType</em>, <em>autorun</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/initMgPipe.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.initMgPipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is called from the MgPipe driver <cite>StartMgPipe</cite> takes care of saving some variables
 in the environment (in case that the function is called without a driver), does some checks on the
 inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -728,34 +728,41 @@ in the function it can replace the driver.</p>
 <div><ul class="simple">
 <li><strong>modPath</strong> &#8211;
 char with path of directory where models are stored</li>
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve abundance information</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>toolboxPath</strong> &#8211;
 char with path of directory where the toolbox is saved</li>
 <li><strong>resPath</strong> &#8211;
 char with path of directory where results are saved</li>
 <li><strong>dietFilePath</strong> &#8211;
 char with path of directory where the diet is saved</li>
-<li><strong>abunFilePath</strong> &#8211;
-char with path and name of file from which to retrieve abundance information</li>
 <li><strong>objre</strong> &#8211;
 char with reaction name of objective function of organisms</li>
 <li><strong>figForm</strong> &#8211;
 format to use for saving figures</li>
 <li><strong>numWorkers</strong> &#8211;
-logical indicating the number of cores to use for parallelization</li>
+boolean indicating the number of cores to use for parallelization</li>
 <li><strong>autoFix</strong> &#8211;
 double indicating if to try to automatically fix inconsistencies</li>
 <li><strong>compMod</strong> &#8211;
-logical indicating if outputs in open format should be produced for each section (1=T)</li>
+boolean indicating if outputs in open format should be produced for each section (default: <cite>false</cite>)</li>
 <li><strong>patStat</strong> &#8211;
-logical indicating if documentation on health status is available</li>
+boolean indicating if documentation on health status is available (default: <cite>false</cite>)</li>
 <li><strong>rDiet</strong> &#8211;
-logical indicating if to enable also rich diet simulations</li>
+boolean indicating if to enable also rich diet simulations (default: <cite>false</cite>)</li>
 <li><strong>extSolve</strong> &#8211;
-logical indicating if to save the constrained models to solve them externally</li>
+boolean indicating if to save the constrained models to solve them externally (default: <cite>false</cite>)</li>
 <li><strong>fvaType</strong> &#8211;
-logical indicating which function to use for flux variability</li>
+boolean indicating which function to use for flux variability (default: <cite>true</cite>)</li>
 <li><strong>autorun</strong> &#8211;
-logical used to enable /disable autorun behavior (please set to 1)</li>
+boolean used to enable /disable autorun behavior (please set to <cite>true</cite>) (default: <cite>false</cite>)</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level (default: 1)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -778,21 +785,21 @@ char with reaction name of objective function of organisms</li>
 <li><strong>figForm</strong> &#8211;
 format to use for saving figures</li>
 <li><strong>numWorkers</strong> &#8211;
-logical indicating the number of cores to use for parallelization</li>
+boolean indicating the number of cores to use for parallelization</li>
 <li><strong>autoFix</strong> &#8211;
 double indicating if to try to automatically fix inconsistencies</li>
 <li><strong>compMod</strong> &#8211;
-logical indicating if outputs in open format should be produced for each section (1=T)</li>
+boolean indicating if outputs in open format should be produced for each section (1=T)</li>
 <li><strong>patStat</strong> &#8211;
-logical indicating if documentation on health status is available</li>
+boolean indicating if documentation on health status is available</li>
 <li><strong>rDiet</strong> &#8211;
-logical indicating if to enable also rich diet simulations</li>
+boolean indicating if to enable also rich diet simulations</li>
 <li><strong>extSolve</strong> &#8211;
-logical indicating if to save the constrained models to solve them externally</li>
+boolean indicating if to save the constrained models to solve them externally</li>
 <li><strong>fvaType</strong> &#8211;
-logical indicating which function to use for flux variability</li>
+boolean indicating which function to use for flux variability</li>
 <li><strong>autorun</strong> &#8211;
-logical used to enable /disable autorun behavior (please set to 1)</li>
+boolean used to enable /disable autorun behavior (please set to 1)</li>
 </ul>
 </div></blockquote>
 </dd></dl>

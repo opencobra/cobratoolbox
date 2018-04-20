@@ -388,16 +388,23 @@ the minimum of reactions possible to support the core.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>tissueModel = fastcore(model, core)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<p><strong>Input</strong></p>
 <blockquote>
+<div><blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-input model (COBRA model structure)</li>
-<li><strong>core</strong> &#8211;
-indices of reactions in cobra model that are part of the
-core set of reactions (called &#8216;C&#8217; in &#8216;Vlassis et al,
-2014&#8217;)</li>
+(the following fields are required - others can be supplied)
+* S  - <cite>m x 1</cite> Stoichiometric matrix
+* lb - <cite>n x 1</cite> Lower bounds
+* ub - <cite>n x 1</cite> Upper bounds
+* rxns   - <cite>n x 1</cite> cell array of reaction abbreviations</li>
 </ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>core:                indices of reactions in cobra model that are part of the</dt>
+<dd>core set of reactions (called &#8216;C&#8217; in &#8216;Vlassis et al,
+2014&#8217;)</dd>
+</dl>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
@@ -409,11 +416,13 @@ smallest flux value that is considered nonzero
 0 = silent, 1 = summary, 2 = debug (default - 0)</li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>tissueModel</strong> &#8211;
 extracted model</li>
+<li><strong>coreRxnBool</strong> &#8211;
+n x 1 boolean vector indicating core reactions</li>
 </ul>
 </div></blockquote>
 <p>&#8216;Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact

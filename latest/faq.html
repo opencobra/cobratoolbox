@@ -276,22 +276,26 @@ variables) are not properly set.</p>
 parallel computing toolbox. Global variables are not passed on to the
 workers of a parallel pool.</div>
 <div class="line">To change cobra global settings for a parfor loop, it is necessary to
-reinitialize the global variables on each worker. The easiest way to
-do this is as follows:</div>
+reinitialize the global variables on each worker. The toolbox offers
+two helper functions for this purpose, which also take care of pathes,
+<code class="docutils literal"><span class="pre">getEnvironment()</span></code> and <code class="docutils literal"><span class="pre">restoreEnvironment()</span></code>, which can be used
+as in the below example.</div>
 </div>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBT_LP_SOLVER</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">CBT_LP_SOLVER</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">environment</span> <span class="o">=</span> <span class="n">getEnvironment</span><span class="p">();</span>
 <span class="n">parfor</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span>
+    <span class="n">restoreEnvironment</span><span class="p">(</span><span class="n">environment</span><span class="p">);</span>
     <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="o">%</span><span class="n">third</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">printLevel</span><span class="p">,</span> <span class="n">fourth</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">validation</span> <span class="n">Level</span><span class="o">.</span>
     <span class="o">%</span> <span class="n">additional</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">parfor</span> <span class="n">loop</span> <span class="n">will</span> <span class="n">now</span> <span class="n">use</span> <span class="n">the</span> <span class="n">currently</span> <span class="nb">set</span> <span class="n">solver</span>
     <span class="n">optimizeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 <span class="n">end</span>
 </pre></div>
 </div>
-<p>By requesting the current global variable before the parfor loop and
+<p>By requesting the current environment (global variables and path) before the parfor loop and
 assigning it to a local variable, that variable is passed on to the
-workers, which can then use it to set up the correct solver (or other
-variable).</p>
+workers, which can then use it to set up the environment.</p>
+<p><code class="docutils literal"><span class="pre">dqqMinos</span></code> and <code class="docutils literal"><span class="pre">quadMinos</span></code> use the file system to input and output solutions.
+Therefore, they can currently not be used in any function that uses <code class="docutils literal"><span class="pre">parfor</span></code>, as this would
+cause concurrency issues between different workers.</p>
 </div>
 <div class="section" id="windows-matlab-r2016b-crashes-with-cplex-12-7-1">
 <h2>(Windows) MATLAB R2016b crashes with CPLEX 12.7.1<a class="headerlink" href="#windows-matlab-r2016b-crashes-with-cplex-12-7-1" title="Permalink to this headline">¶</a></h2>

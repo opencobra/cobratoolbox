@@ -261,12 +261,12 @@
 <span id="id1"></span><h1>gMCS<a class="headerlink" href="#gmcs" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.gMCS"></span><dl class="function">
 <dt id="src.analysis.gMCS.GPR2models">
-<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Each GPR rule is converted into a network where the reaction and genes
 involved are interconnected.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, printLevel)</div></blockquote>
+<div>[networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -280,9 +280,16 @@ Character used to discriminate
 different isoforms of a gene. Default &#8216;&#8217;.</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
+<li><strong>numWorkers</strong> &#8211;
+Maximum number of workers
+* 0 - maximum provided by the system (automatic)
+(default). If parallel pool is active, numWorkers
+is defined by the system, otherwise is 1.
+* 1 - sequential
+* 2+ - parallel</li>
 <li><strong>printLevel</strong> &#8211;
 show the reactions created in models.
 * 0 - shows nothing
@@ -304,12 +311,12 @@ rule for each reaction.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.buildGmatrix">
-<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>separate_transcript</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build the G matrices required for the calculation of genetic Minimal Cut
+<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model</em>, <em>separate_isoform</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the G matrix required for the calculation of genetic Minimal Cut
 Sets (gMCSs).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_transcript)</div></blockquote>
+<div>[G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -317,8 +324,23 @@ Sets (gMCSs).</p>
 Name of the metabolic model under study.</li>
 <li><strong>model_struct</strong> &#8211;
 Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>separate_transcript</strong> &#8211;
-Character used to discriminate different transcripts of a gene.</li>
+<li><strong>separate_isoform</strong> &#8211;
+Character used to discriminate different isoforms of a gene.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>numWorkers</strong> &#8211;
+Maximum number of workers
+* 0 - maximum provided by the system (automatic)
+* 1 - sequential
+* 2+ - parallel</li>
+<li><strong>printLevel</strong> &#8211;
+show the reactions created in models.
+* 0 - shows nothing
+* 1 - shows progress by reactions (default)
+* 2+ - shows everything (reaction and network generation)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -344,14 +366,14 @@ Calculation times for each of the steps.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateGeneMCS">
-<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate Genetic Minimal Cut Sets (gMCSs): Calculate Minimal Cut Sets at
-the gene level (minimal gene knockout interventions), with or without
-selecting a given knockout, among all the genes included in the model or
-a given subset of them. Apaolaza et al., 2017 (Nature Communications).</p>
+<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>max_len_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate genetic Minimal Cut Sets (gMCSs) using the warm-start strategy
+available in CPLEX, namely cplex.populate(), with or without selecting a
+given knockout, among all the genes included in the model or a given
+subset of them. Apaolaza et al., 2017 (Nature Communications).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, options)</div></blockquote>
+<div>[gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -362,6 +384,8 @@ identify the G matrix).</li>
 Metabolic model structure (COBRA Toolbox format).</li>
 <li><strong>n_gmcs</strong> &#8211;
 Number of gMCSs to calculate.</li>
+<li><strong>max_len_gmcs</strong> &#8211;
+Number of genes in the largest gMCS to be calculated.</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -370,19 +394,20 @@ Number of gMCSs to calculate.</li>
 <li><p class="first"><strong>options</strong> &#8211;
 Structure with fields:</p>
 <ul>
-<li><p class="first">.KO - Selected gene knockout. Default [].</p>
+<li><p class="first">.KO - Selected gene knockout. Default: [].</p>
 </li>
-<li><p class="first">.gene_set - Set of genes among which the gMCSs are
-wanted to be calculated. Default [].</p>
+<li><p class="first">.gene_set - Cell array containing the set of
+genes among which the gMCSs are wanted to be calculated.
+Default: [] (all genes are included).</p>
 </li>
-<li><p class="first">.timelimit - Time limit for the calculation of each
-gMCS in seconds. Default maximum permited by solver.</p>
+<li><p class="first">.timelimit - Time limit for the calculation of gMCSs
+each time the solver is called. Default: 1e75.</p>
 </li>
 <li><p class="first">.target_b - Desired activity level of the metabolic
-task to be disrupted (i.e. biomass reaction). Default 1e-3.</p>
+task to be disrupted. Default: 1e-3;</p>
 </li>
 <li><p class="first">.separate_transcript - Character used to discriminate
-different transcripts of a gene. Default &#8216;&#8217;.
+different transcripts of a gene. Default: &#8216;&#8217;.
 Example: separate_transcript = &#8216;&#8217;</p>
 <blockquote>
 <div><blockquote>
@@ -399,19 +424,20 @@ gene 10005.3</p>
 </dl>
 </div></blockquote>
 </li>
-<li><dl class="first docutils">
-<dt>.printLevel - Printing level</dt>
-<dd><ul class="first last simple">
-<li>0 - Silent (Default)</li>
-<li>1 - Warnings and Errors</li>
-<li>2 - Summary information</li>
-<li>3 - More detailed information</li>
-<li>&gt; 10 - Pause statements, and maximal printing (debug mode)</li>
-</ul>
-</dd>
-</dl>
+<li><p class="first">.forceLength - 1 if the constraint limiting the
+length of the gMCSs is to be active (recommended for
+enumerating low order gMCSs), 0 otherwise.
+Default: 1.</p>
+</li>
+<li><p class="first">.numWorkers  - is the maximun number of workers</p>
 </li>
 </ul>
+<p>used by Cplex and GPR2models. 0 = automatic, 1 =
+sequential, &gt;1 = parallel. Default = 0;
+* .printLevel - 1 if the process is wanted to be</p>
+<blockquote>
+<div><p>shown on the screen, 0 otherwise. Default: 1.</p>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -427,30 +453,34 @@ the algorithm.</li>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">With</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">&#39;Recon2.v04&#39;</span><span class="p">,</span> <span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">&#39;Recon2.v04&#39;</span><span class="p">,</span> <span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 <span class="o">%</span><span class="n">Being</span><span class="p">:</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">KO</span> <span class="o">=</span> <span class="s1">&#39;6240&#39;</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">gene_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;54675&#39;</span><span class="p">;</span> <span class="s1">&#39;259230&#39;</span><span class="p">;</span> <span class="s1">&#39;2987&#39;</span><span class="p">;</span> <span class="s1">&#39;60386 &#39;</span><span class="p">;</span> <span class="s1">&#39;1841&#39;</span><span class="p">;</span> <span class="s1">&#39;50484&#39;</span><span class="p">;</span> <span class="s1">&#39;6241&#39;</span><span class="p">}</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">gene_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;2987&#39;</span><span class="p">;</span> <span class="s1">&#39;6241&#39;</span><span class="p">}</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">timelimit</span> <span class="o">=</span> <span class="mi">300</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">separate_transcript</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">target_b</span> <span class="o">=</span> <span class="mf">1e-4</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">separate_transcript</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">;</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">forceLength</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">printLevel</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="o">%</span><span class="n">Without</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">&#39;ecoli_core_model&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">&#39;ecoli_core_model&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Check the installation of cplex</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateMCS">
-<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate Minimal Cut Sets (MCSs): Calculate Minimal Cut Sets at the
-reaction level (minimal reaction knockout interventions), with or without
-selecting a given knockout, among all the reactions included in the model
-or a given subset of them. Tobalina et al., 2016 (Bioinformatics);
-von Kamp and Klamt, 2014 (PLoS Computational Biology).</p>
+<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>max_len_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f0b7a8f4d1ebc3106775c65bbf22d757593d50b8/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate Minimal Cut Sets (MCSs) using the warm-start strategy available
+in CPLEX, namely cplex.populate(), with or without selecting a given
+knockout, among all the reactions included in the model or a given subset
+of them. Tobalina et al., 2016 (Bioinformatics); von Kamp and Klamt, 2014
+(PLoS Computational Biology).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[mcs, mcs_time] = calculateMCS(model_struct, n_mcs, options)</div></blockquote>
+<div>[mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -458,34 +488,37 @@ von Kamp and Klamt, 2014 (PLoS Computational Biology).</p>
 Metabolic model structure (COBRA Toolbox format).</li>
 <li><strong>n_mcs</strong> &#8211;
 Number of MCSs to calculate.</li>
+<li><strong>max_len_mcs</strong> &#8211;
+Number of reactions in the largest MCS to be calculated.</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>options</strong> &#8211;
-Structure with fields:<ul>
-<li>.KO - Selected reaction knockout. Default [].</li>
+<div><ul>
+<li><p class="first"><strong>options</strong> &#8211;
+Structure with fields:</p>
+<ul class="simple">
+<li>.KO - Selected reaction knockout. Default: [].</li>
 <li>.rxn_set - Cell array containing the set of
 reactions (&#8216;rxns&#8217;) among which the MCSs are
-wanted to be calculated. Default [].</li>
-<li>.timelimit - Time limit for the calculation of each
-MCS in seconds. Default: maximum permited by solver.</li>
+wanted to be calculated. Default: [] (all reactions
+are included).</li>
+<li>.timelimit - Time limit for the calculation of MCSs
+each time the solver is called. Default: 1e75.</li>
 <li>.target_b - Desired activity level of the metabolic
-task to be disrupted. Default 1e-3;</li>
-<li><dl class="first docutils">
-<dt>.printLevel - Printing level</dt>
-<dd><ul class="first last">
-<li>0 - Silent (Default)</li>
-<li>1 - Warnings and Errors</li>
-<li>2 - Summary information</li>
-<li>3 - More detailed information</li>
-<li>&gt; 10 - Pause statements, and maximal printing (debug mode)</li>
+task to be disrupted. Default: 1e-3;</li>
+<li>.forceLength - 1 if the constraint limiting the
+length of the MCSs is to be active (recommended for
+enumerating low order MCSs), 0 otherwise.
+Default: 1.</li>
+<li>.numWorkers  - is the maximun number of workers</li>
 </ul>
-</dd>
-</dl>
-</li>
-</ul>
+<p>used by Cplex and GPR2models. 0 = automatic, 1 =
+sequential, &gt;1 = parallel. Default = 0;
+* .printLevel - 1 if the process is wanted to be</p>
+<blockquote>
+<div><p>shown on the screen, 0 otherwise. Default: 1.</p>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -493,7 +526,7 @@ task to be disrupted. Default 1e-3;</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>mcs</strong> &#8211;
-Structure containing the calculated MCSs.</li>
+Cell array containing the calculated MCSs.</li>
 <li><strong>mcs_time</strong> &#8211;
 Calculation times of the different processes in
 the algorithm.</li>
@@ -501,17 +534,20 @@ the algorithm.</li>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">With</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 <span class="o">%</span><span class="n">Being</span><span class="p">:</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">KO</span> <span class="o">=</span> <span class="s1">&#39;r1651&#39;</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">rxn_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;r1652&#39;</span><span class="p">;</span> <span class="s1">&#39;r1653&#39;</span><span class="p">;</span> <span class="s1">&#39;r1654&#39;</span><span class="p">}</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">timelimit</span> <span class="o">=</span> <span class="mi">300</span>
 <span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">target_b</span> <span class="o">=</span> <span class="mf">1e-4</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">forceLength</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">printLevel</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="o">%</span><span class="n">Without</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Check the installation of cplex</p>
 </dd></dl>
 
 </div>
