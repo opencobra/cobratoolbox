@@ -22,7 +22,14 @@ if isempty(dietConstraints) || size(dietConstraints, 2) < 2
     error('No dietary constraints entered.')
 end
 model = modelIn;
-model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), 0, 'l');
+
+% Adapt constraints in dietary and fecal compartments- only for microbiota models
+if any(strncmp(dietConstraints(:,1),'Diet_EX_',8))
+    model = changeRxnBounds(model, model.rxns(strmatch('Diet_EX_', model.rxns)), 0, 'l');
+else
+    % for AGORA or pairwise model
+    model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), 0, 'l');
+end
 
 for i = 1:length(dietConstraints)
     model = changeRxnBounds(model, char(dietConstraints{i, 1}), str2double(dietConstraints{i, 2}), 'l');
