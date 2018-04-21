@@ -90,8 +90,11 @@ for k = startIter:(patNumb + 1)
     EXrxn = model.rxns(RxnInd);
     EXrxn = regexprep(EXrxn, 'EX_', 'Diet_EX_');
     model.rxns(RxnInd) = EXrxn;
-    model = changeRxnBounds(model, 'EX_microbeBiomass[fe]', 0.4, 'l');
-    model = changeRxnBounds(model, 'EX_microbeBiomass[fe]', 1, 'u');
+    model = changeRxnBounds(model, 'communityBiomass', 0.4, 'l');
+    model = changeRxnBounds(model, 'communityBiomass', 1, 'u');
+    model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
+    model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');
+    model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
     % set a solver if not done yet
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
@@ -100,12 +103,11 @@ for k = startIter:(patNumb + 1)
     end
     solution_allOpen = solveCobraLP(model);
     % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
-    if isnan(solution_allOpen.obj)
+    if solution_allOpen.stat==0
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
         inFesMat{k, 1} = model.name
     else
     presol{k, 1} = solution_allOpen.obj;
-    model = changeRxnBounds(model, {'DUt_h2o', 'UFEt_h2o', 'EX_h2o[fe]'}, 1000000, 'u');
   if extSolve==0
       AllRxn = model.rxns;
       FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
@@ -151,7 +153,7 @@ model_sd=model;
 solution_sDiet=solveCobraLP(model_sd);
 % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
 presol{k,2}=solution_sDiet.obj
- if isnan(solution_sDiet.obj)
+ if solution_sDiet.stat==0
     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
     inFesMat{k,2}= model.name
  else

@@ -153,7 +153,6 @@ parfor j = 1:size(models, 1)
         metE = find(ismember(dummyMicEU.mets, regexprep(eMets{k}, '\[e\]', '\[u\]')));
         dummyMicEU.S(metU, k) = 1;
         dummyMicEU.S(metE, k) = -1;
-        dummyMicEU.rev(k) = 1;
         dummyMicEU.lb(k) = -1000;
         dummyMicEU.ub(k) = 1000;
     end
@@ -188,6 +187,10 @@ for j = 2:(floor(log2(size(models, 1))) + 1)  % +1 because it starts with one co
     end
     FirstSaveStore=modelStorage(:,(j-1));
     % SecondSaveStore=modelStorage(:,(j-1)); %changes 010318
+    modelStorage(1:(dim-1),(j-1))={[]}; %this line will erase all the models from the container 
+    %with the only exception of the last one that might be needed to be
+    %merged separately. This prevents a dramatic increase in ram usage in
+    %each iteration as result of stoaring all the merging three. 
     
     parfor k=1:halfdim
         parind = k;	
