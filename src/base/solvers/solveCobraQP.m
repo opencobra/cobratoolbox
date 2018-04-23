@@ -573,7 +573,7 @@ switch solver
             osense = 1;
        end
 
-        QPproblem.Q = 0.5*sparse(QPproblem.F);
+        QPproblem.Q = osense*0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
         [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
         resultgurobi = gurobi(QPproblem,params);
