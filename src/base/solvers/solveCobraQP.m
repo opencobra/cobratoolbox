@@ -125,7 +125,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
+        tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
 
         %optional parameters
         tomlabProblem.PriLvl=printLevel;
@@ -180,9 +180,11 @@ switch solver
         CplexQPProblem.Model.ub = ub;
         CplexQPProblem.Model.rhs = b_U;
         CplexQPProblem.Model.lhs = b_L;
-        CplexQPProblem.Model.obj = osense*c;
-        CplexQPProblem.Model.Q = F;
-
+        CplexQPProblem.Model.obj = c;
+        CplexQPProblem.Model.Q = F;   
+        if osense == -1
+            CplexQPProblem.Model.sense = 'maximize';
+        end
         %optional parameters
         if printLevel == 0  % set display function as empty
             CplexQPProblem.DisplayFunc=[];
@@ -215,7 +217,7 @@ switch solver
             w = Result.reducedcost;
         end
         if isfield(Result,'objval')  % Cplex solution may not have objval
-            f = osense*Result.objval;
+            f = Result.objval;
         end
         origStat = Result.status;
         if (origStat == 1 || origStat == 101)
@@ -256,7 +258,7 @@ switch solver
 
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+        [x, f, y, info] = qpng (osense*QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
 
         f = 0.5*x'*QPproblem.F*x + c'*x;
 
@@ -354,7 +356,7 @@ switch solver
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
-        [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
 
         % stat   Solver status
         %           1   Optimal solution found
@@ -501,7 +503,7 @@ switch solver
         [qrow,qcol,qval]=find(F);
         qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
         qcol=qcol'-1;
-        qval=0.5*qval';
+        qval=osense*0.5*qval';
 
         opts.QP.qrow = int32(qrow);
         opts.QP.qcol = int32(qcol);
@@ -583,7 +585,7 @@ switch solver
             %Ronan: I changed the signs of the dual variables to make it
             %consistent with the way solveCobraLP returns the dual
             %variables
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
@@ -612,7 +614,7 @@ solution.rcost = w;
 if solution.stat==1
     %TODO slacks for other solvers
     if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex'}))
-        residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
+        residual = osense*QPproblem.c  + osense * QPproblem.F*solution.full - osense * QPproblem.A'*solution.dual - solution.rcost;
         tmp=norm(residual,inf);
 
         % set the tolerance
@@ -631,8 +633,8 @@ end
 %Helper function for pdco
 %%
     function [obj,grad,hess] = QPObj(x)
-        obj  = c'*x + 0.5*x'*F*x;
-        grad = c + F*x;
-        hess = F;
+        obj  = osense*c'*x + osense*0.5*x'*F*x;
+        grad = osense*c + osense*F*x;
+        hess = osense*F;
     end
 end
