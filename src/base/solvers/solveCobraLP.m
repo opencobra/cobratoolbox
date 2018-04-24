@@ -1060,7 +1060,16 @@ switch solver
             case 'UNBOUNDED'
                 stat = 2; % Unbounded
             case 'INF_OR_UNBD'
-                stat = 0; % Gurobi reports infeasible *or* unbounded
+                %Lets check, what it is. We simply remove the objective and
+                %solve again. If the status becomes 'OPTIMAL' its
+                %unbounded, otherwise its infeasible.
+                LPproblem.obj(:) = 0;
+                resultgurobi = gurobi(LPproblem,param);
+                if strcmp(resultgurobi.status,'OPTIMAL')
+                    stat = 2;
+                else
+                    stat = 0; % Gurobi reports infeasible *or* unbounded
+                end
             otherwise
                 stat = -1; % Solution not optimal or solver problem
         end
