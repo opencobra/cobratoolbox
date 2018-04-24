@@ -67,16 +67,16 @@ init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, f
 assert(init && ~autorun);
 
 % check if error is thrown when running in serial
-assert(verifyCobraFunctionError(@() initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, 1, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun)));
+assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, 1, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun}));
 
 % test if the function throws an error when no arguments are provided
-assert(verifyCobraFunctionError(@() initMgPipe()))
+assert(verifyCobraFunctionError('initMgPipe'))
 
 % test with only the path to the models (throws an error that the abundance file is missing)
-assert(verifyCobraFunctionError(@() initMgPipe(modPath)));
+assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath}));
 
 % test if the path to the models exists (the model directory is set, but it does not exist)
-assert(verifyCobraFunctionError(@() initMgPipe('/tmp/abcdef')))
+assert(verifyCobraFunctionError('initMgPipe','inputs',{'/tmp/abcdef'}))
 
 % turn all warnings off
 warning('off', 'all')

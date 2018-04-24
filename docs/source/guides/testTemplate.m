@@ -62,7 +62,8 @@ for k = 1:length(solverPkgs.LP)
     if solverLPOK
         % <your test goes here>
     end
-    verifyCobraFunctionError(@() testFile(wrongInput));
+    wrongInputs = {'FirstArgument',modelForSecondArgument};
+    verifyCobraFunctionError('testFile', 'inputs', wrongInputs);
     % output a success message
     fprintf('Done.\n');
 end

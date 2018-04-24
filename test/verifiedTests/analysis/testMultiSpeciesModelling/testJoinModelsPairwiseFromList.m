@@ -46,7 +46,7 @@ for i = 2:size(pairedModelInfo, 1)
 end
 
 % test the diet call without entering any dietary constraints
-assert(verifyCobraFunctionError(@() useDiet(pairedModel,[])))
+assert(verifyCobraFunctionError('useDiet', 'inputs',{pairedModel,[]}))
 
 % change to the current directory
 cd(currentDir)

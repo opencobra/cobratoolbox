@@ -65,7 +65,7 @@ assert(all(all(refP == P)))
 
 % Change the model to have one non integer entry.
 model.S(1, 1) = 0.5;
-assert(verifyCobraFunctionError(@() extremePathways(model)));
+assert(verifyCobraFunctionError('extremePathways','inputs',{model}));
 
 % delete generated files
 delete('*.ine');

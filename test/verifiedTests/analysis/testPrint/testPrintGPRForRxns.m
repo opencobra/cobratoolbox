@@ -55,7 +55,7 @@ gprs = findGPRFromRxns(modelTemp2,modelTemp2.rxns(1:5));
 assert(all(cellfun(@isempty, gprs)));
 
 %Give an error, if a reaction is not present
-verifyCobraFunctionError(@() findGPRFromRxns(model,'A'));
+assert(verifyCobraFunctionError('findGPRFromRxns','inputs',{model,'A'}));
 
 % Finally test, that no output is generated from findGPRFromRxns
 diary findGPR.txt
