@@ -382,8 +382,12 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
         % unbounded and if it is unbounded, the max flux is infinity.
         if LPsolution.stat == 2
             Flux = -LPproblem.osense * inf;
-        else
+        elseif LPsolution.stat == 1        
             Flux = getObjectiveFlux(LPsolution, LPproblem);
+        else
+            error(sprintf(['A Solution could not be found!\nThis should not be possible but can happen',...
+                   'if the used solver cannot properly handle unboundedness, or if there are numerical issues.\n',...
+                   'Please try to use a different solver.\n']))
         end
     else
         LPsolution = sol;
