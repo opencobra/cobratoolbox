@@ -250,15 +250,21 @@ if ~allowLoops
 else
     sol = solveCobraLP(QuickProblem);
 end
-relSol = sol.full(Order(Presence));
-%Obtain fluxes at their boundaries
-maxSolved = model.ub(Order(Presence)) == relSol;
-minSolved = model.lb(Order(Presence)) == relSol;
-if minNorm
-    preCompMaxSols(maxSolved) = {sol};
-    preCompMinSols(minSolved) = {sol};
+%If we reach this point, we can be certain, that there is a solution, i.e.
+%if the stat is not 1, we have to check all reactions.
+if sol.stat == 1
+    relSol = sol.full(Order(Presence));
+    %Obtain fluxes at their boundaries
+    maxSolved = model.ub(Order(Presence)) == relSol;
+    minSolved = model.lb(Order(Presence)) == relSol;
+    if minNorm
+        preCompMaxSols(maxSolved) = {sol};
+        preCompMinSols(minSolved) = {sol};
+    end
+else
+    maxSolved = false(size(model.lb));
+    minSolved = false(size(model.lb));
 end
-
 %Minimise reactions
 QuickProblem.osense = 1;
 if ~allowLoops
@@ -266,14 +272,16 @@ if ~allowLoops
 else
     sol = solveCobraLP(QuickProblem);
 end
-relSol = sol.full(Order(Presence));
-%Again obtain fluxes at their boundaries
-maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
-minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
-%This is only necessary, if we want a min norm.
-if minNorm
-    preCompMaxSols((model.ub(Order(Presence)) == relSol)) = {sol};
-    preCompMinSols((model.lb(Order(Presence)) == relSol)) = {sol};
+if sol.stat == 1
+    relSol = sol.full(Order(Presence));
+    %Again obtain fluxes at their boundaries
+    maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
+    minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
+    %This is only necessary, if we want a min norm.
+    if minNorm
+        preCompMaxSols((model.ub(Order(Presence)) == relSol)) = {sol};
+        preCompMinSols((model.lb(Order(Presence)) == relSol)) = {sol};
+    end
 end
 %Restrict the reactions to test only those which are not at their boundariestestFv.
 rxnListMin = rxnNameList(~minSolved);
@@ -373,7 +381,7 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
         % A solution is possible, so the only problem should be if its
         % unbounded and if it is unbounded, the max flux is infinity.
         if LPsolution.stat == 2
-            Flux = -LPProblem.osense * inf;
+            Flux = -LPproblem.osense * inf;
         else
             Flux = getObjectiveFlux(LPsolution, LPproblem);
         end
