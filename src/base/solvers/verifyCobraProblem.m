@@ -93,9 +93,23 @@ if ~isfield(XPproblem, 'csense')
     return;
 end
 if length(XPproblem.csense) ~= nconstraints
-    disp('Wrong size csense vector');
-    statusOK = -1;
-    return;
+    if isfield(XPproblem,'dsense')
+        if length(XPproblem.csense)+length(XPproblem.dsense) ~= nconstraints
+            disp('Wrong size dsense vector...');
+            fprintf('%s\n',['dsense dimensions:         ' num2str(length(XPproblem.dsense))])
+            fprintf('%s\n',['csense dimensions:         ' num2str(length(XPproblem.csense))])
+            fprintf('%s\n',[' sum sense dimensions:     ' num2str(length(XPproblem.csense)+length(XPproblem.dsense))])
+            fprintf('%s\n',['constraint dimensions:     ' num2str(nconstraints)])
+            statusOK = -1;
+            return;
+        end
+    else
+        disp('Wrong size csense vector...');
+        fprintf('%s\n',['csense dimensions:         ' num2str(length(XPproblem.csense))])
+        fprintf('%s\n',['constraint dimensions:     ' num2str(num2str(nconstraints))])
+        statusOK = -1;
+        return;
+    end
 end
 if size(XPproblem.csense,2) ~= 1
     disp('Csense should be a column vector')
