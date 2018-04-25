@@ -7,6 +7,8 @@ function solution = sparseLP_cappedL1(constraint, params)
 % http://dx.doi.org/10.1016/j.ejor.2014.11.031
 %
 %  Capped-1 (Peleg & Meir,2008)
+%  Peleg,D.,& Meir,R.(2008). A bilinear formulation for vector sparsity optimization. Signal Processing,8(2),375–389.
+% 
 %  l0-approximation function: rcap(t) = min{1, θ|t|}
 %     First DC decomposition:       ϕ = θ|t|
 %

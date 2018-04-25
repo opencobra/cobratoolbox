@@ -1,6 +1,14 @@
 function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
 % Finds the minimal set of reactions subject to a LP objective
 %
+% .. math::
+%      min ~&~ ||v||_0 \\
+%      s.t ~&~ S v \leq, = or \geq b \\
+%          ~&~ c^T v = f* \\
+%          ~&~ l \leq v \leq u
+%
+% where :math:`f*` is the optimal value of objective (default is :math:`max c^T v`).
+%
 % USAGE:
 %
 %    [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
@@ -50,18 +58,8 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %    sparseRxnBool:       Returns a vector with 1 and 0's, where 1 means sparse
 %    essentialRxnBool:    Returns a vector with 1 and 0's, where 1 means essential
 %
-% .. Authors:
-%       - Hoai Minh Le	23/10/2015
-%       - Ronan Fleming 12/07/2016 nonzero flux is set according to current feasibility tol. Default is 1e-9.
-%
-% .. math::
-%      min ~&~ ||v||_0 \\
-%      s.t ~&~ S v \leq, = or \geq b \\
-%          ~&~ c^T v = f* \\
-%          ~&~ l \leq v \leq u
-%
-% where :math:`f*` is the optimal value of objective (default is :math:`max c^T v`).
-%
+% Authors: - Hoai Minh Le, Ronan Fleming
+
 
 if exist('osenseStr', 'var')
     if isempty(osenseStr)
