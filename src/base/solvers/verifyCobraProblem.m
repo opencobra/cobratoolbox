@@ -79,6 +79,10 @@ elseif any(isnan(XPproblem.b))
     disp(['NaN present in b vector at' strCoords '.']);
     statusOK = -1;
     return;
+elseif ~isnumeric(XPproblem.b)
+    disp('b must be numeric')
+    statusOK = -1;
+    return
 end
 if any(size(XPproblem.b) ~= [nconstraints, 1])
     disp('Wrong size b vector');
@@ -125,7 +129,7 @@ end
 
 %check lb
 if ~isfield(XPproblem,'lb')
-    diplay('Required field lb not found');
+    display('Required field lb not found');
     statusOK = -1;
     return;
 elseif any(isnan(XPproblem.lb))
@@ -137,6 +141,10 @@ elseif any(isnan(XPproblem.lb))
     disp(['NaN present in lb vector at' strCoords '.']);
     statusOK = -1;
     return;
+elseif ~isnumeric(XPproblem.lb)
+    disp('lb must be numeric')
+    statusOK = -1;
+    return
 end
 if any(size(XPproblem.lb) ~= [nvars, 1])
     disp('Wrong size lb vector');
@@ -146,7 +154,7 @@ end
 
 %check ub
 if ~isfield(XPproblem,'ub')
-    diplay('Required field ub not found');
+    display('Required field ub not found');
     statusOK = -1;
     return;
 elseif any(isnan(XPproblem.ub))
@@ -158,6 +166,10 @@ elseif any(isnan(XPproblem.ub))
     disp(['NaN present in ub vector at' strCoords '.']);
     statusOK = -1;
     return;
+elseif ~isnumeric(XPproblem.ub)
+    disp('ub must be numeric')
+    statusOK = -1;
+    return
 end
 if any(size(XPproblem.ub) ~= [nvars, 1])
     disp('Wrong size ub vector');
@@ -173,7 +185,7 @@ end
 
 %check c
 if ~isfield(XPproblem,'c')
-    diplay('Required field c not found');
+    display('Required field c not found');
     statusOK = -1;
     return;
 elseif any(isnan(XPproblem.c))
@@ -185,6 +197,10 @@ elseif any(isnan(XPproblem.c))
     disp(['NaN present in c vector at' strCoords '.']);
     statusOK = -1;
     return;
+elseif ~isnumeric(XPproblem.c)
+    disp('c must be numeric')
+    statusOK = -1;
+    return
 end
 if any(size(XPproblem.c) ~= [nvars, 1])
     disp('Wrong size c vector');
@@ -205,6 +221,10 @@ if isfield(XPproblem,'F')
         disp(['NaN present in F matrix at' strCoords '.']);
         statusOK = -1;
         return;
+    elseif ~isnumeric(XPproblem.F)
+        disp('F must be numeric')
+        statusOK = -1;
+        return
     end
     if nRows ~= nCols
         disp('F matrix not square');
