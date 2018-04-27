@@ -39,7 +39,9 @@ function solution = optimizeCardinality(problem, param)
 %
 %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                   * .epsilon - stopping criteria - (Defautl value = 10e-6)
-%                   * .theta - parameter of the approximation (Default value = 2)
+%                   * .theta - parameter of the approximation (Default value = 2) 
+%                              For a sufficiently large parameter , the Capped-L1 approximate problem
+%                              and the original cardinality optimisation problem are have the same set of optimal solutions
 %
 % OUTPUT:
 %    solution:    Structure containing the following fields:
@@ -161,8 +163,8 @@ else
         solution.stat = -1;
         return;
     else
-        if any(problem.k <=0)
-            warning('Error: the weight vector k should be stritly possitive');
+        if any(problem.k <=0) %& 0
+            warning('Error: the weight vector k should be strictly positive');
             solution.stat = -1;
             return;
         end
@@ -182,7 +184,7 @@ else
         return;
         else
         if any(problem.d <=0)
-            warning('Error: the weight vector d should be stritly positive');
+            warning('Error: the weight vector d should be strictly positive');
             solution.stat = -1;
             return;
         end
@@ -262,61 +264,100 @@ end
 [A,b,lb,ub,csense] = deal(problem.A,problem.b,problem.lb,problem.ub,problem.csense);
 s = length(problem.b);
 
+%variables are (x,y,z,w,t)
 
-%% Initialisation
-nbIteration = 0;
-x       = -100 + 200*rand(p,1);
-y       = -100 + 200*rand(q,1);
-z       = zeros(r,1);
-x_bar   = zeros(p,1);
-y_bar   = zeros(q,1);
-
-% Solve the l1 approximation for starting point
-% min       c'(x,y,z) + lambda_0*||x||_1
-% s.t.      A*(x,y,z) <= b
-%           l <= (x,y,z) <=u
-%           x in R^p, y in R^q, z in R^r
-
-obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);lambda0*ones(p,1)];
-% Constraints
-% A*[x;y;z] <=b
-% w >= x
-% w >= -x
-A1 = [A                                             sparse(s,p);
-      speye(p)      sparse(p,q)      sparse(p,r)    -speye(p);
-      -speye(p)     sparse(p,q)      sparse(p,r)    -speye(p);];
-b1 = [b; zeros(2*p,1)];
-csense1 = [csense;repmat('L',2*p, 1)];
-
-% Bound;
+% Bounds for unweighted problem
 % lb <= [x;y;z] <= ub
 % 0  <= w <= max(|lb_x|,|ub_x|)
-lb1 = [lb;zeros(p,1)];
-ub1 = [ub;max(abs(lb(1:p)),abs(ub(1:p)))];
+% 1  <= t <= theta*max(|lb_y|,|ub_y|)
+%lb2 = [lb;zeros(p,1);ones(q,1)];
+%ub2 = [ub;max(abs(lb(1:p)),abs(ub(1:p)));theta*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];
 
-%Define the linear sub-problem
-LPproblem = struct('c',obj,'osense',1,'A',A1,'csense',csense1,'b',b1,'lb',lb1,'ub',ub1);
+% Bounds for weighted problem
+% lb <= [x;y;z] <= ub
+% 0  <= w <= max(|k.*lb_x|,|k.*ub_x|)
+% 1  <= t <= theta*max(|d.*lb_y|,|d.*ub_y|)
+lb2 = [lb;zeros(p,1);ones(q,1)];
 
-%Solve the linear problem
-LPsolution = solveCobraLP(LPproblem);
-
-switch LPsolution.stat
-    case 1
-        x = LPsolution.full(1:p);
-        y = LPsolution.full(p+1:p+q);
-        z = LPsolution.full(p+q+1:p+q+r);
-    case 0
-        % solution                  Structure containing the following fields
-        %       x                   p x 1 solution vector
-        %       y                   q x 1 solution vector
-        %       z                   r x 1 solution vector
-        %       stat                status
-        solution.stat=LPsolution.stat;
-        return
-    otherwise
-        error('L1 problem is neither solved nor infeasible')
+%make sure theta is not too small
+thetaMin = 1./d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+%thetaMin = 1./(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+thetaMin = min(thetaMin);
+if theta<thetaMin
+    warning(['theta = ' num2str(theta) '. Raised to ' num2str(thetaMin)])
+    theta=thetaMin+1e-6;
 end
 
+ub2 = [ub;   k.*max(abs(lb(1:p)),abs(ub(1:p)));   theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
+%ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
+
+if 0
+    % Solve an l1 approximation for starting point
+    x       = -100 + 200*rand(p,1);
+    y       = -100 + 200*rand(q,1);
+    z       = zeros(r,1);
+    x_bar   = zeros(p,1);
+    y_bar   = zeros(q,1);
+    
+    
+    % min       c'(x,y,z) + lambda_0*||x||_1
+    % s.t.      A*(x,y,z) <= b
+    %           l <= (x,y,z) <=u
+    %           x in R^p, y in R^q, z in R^r
+    
+    obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);lambda0*ones(p,1)];
+    % Constraints
+    % A*[x;y;z] <=b
+    % w >= x
+    % w >= -x
+    A1 = [A                                             sparse(s,p);
+        speye(p)      sparse(p,q)      sparse(p,r)    -speye(p);
+        -speye(p)     sparse(p,q)      sparse(p,r)    -speye(p);];
+    b1 = [b; zeros(2*p,1)];
+    csense1 = [csense;repmat('L',2*p, 1)];
+    
+    % Bound;
+    % lb <= [x;y;z] <= ub
+    % 0  <= w <= max(|lb_x|,|ub_x|)
+    lb1 = [lb;zeros(p,1)];
+    ub1 = [ub;max(abs(lb(1:p)),abs(ub(1:p)))];
+    
+    %Define the linear sub-problem
+    LPproblem = struct('c',obj,'osense',1,'A',A1,'csense',csense1,'b',b1,'lb',lb1,'ub',ub1);
+    
+    %Solve the linear problem
+    LPsolution = solveCobraLP(LPproblem);
+    
+    switch LPsolution.stat
+        case 1
+            x = LPsolution.full(1:p);
+            y = LPsolution.full(p+1:p+q);
+            z = LPsolution.full(p+q+1:p+q+r);
+        case 0
+            % solution                  Structure containing the following fields
+            %       x                   p x 1 solution vector
+            %       y                   q x 1 solution vector
+            %       z                   r x 1 solution vector
+            %       stat                status
+            solution.stat=LPsolution.stat;
+            return
+        otherwise
+            error('L1 problem is neither solved nor infeasible')
+    end
+else
+    %random initial starting point
+    full = lb2 + diag(rand(2*p+2*q+r,1))*(ub2 - lb2);
+    x = full(1:p);
+    y = full(p+1:p+q);
+    z = full(p+q+1:p+q+r);
+    w = full(p+q+r+1:2*p+q+r);
+    t = full(2*p+q+r+1:2*p+2*q+r);
+    
+    %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
+    x(abs(x) < 1/theta) = 0;
+    x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x);
+    y_bar = -delta1*sign(y)  +   theta*delta0*d.*sign(y);
+end
 
 % Create the linear sub-programme that one needs to solve at each iteration, only its
 % objective function changes, the constraints set remains.
@@ -337,22 +378,6 @@ A2 = [A                                                        sparse(s,p)      
 b2 = [b; zeros(2*p+2*q,1)];
 csense2 = [csense;repmat('L',2*p+2*q, 1)];
 
-% Bounds for unweighted problem
-% lb <= [x;y;z] <= ub
-% 0  <= w <= max(|lb_x|,|ub_x|)
-% 1  <= t <= theta*max(|lb_y|,|ub_y|)
-%lb2 = [lb;zeros(p,1);ones(q,1)];
-%ub2 = [ub;max(abs(lb(1:p)),abs(ub(1:p)));theta*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];
-
-% Bounds for weighted problem
-% lb <= [x;y;z] <= ub
-% 0  <= w <= max(|k.*lb_x|,|k.*ub_x|)
-% 1  <= t <= theta*max(|d.*lb_y|,|d.*ub_y|)
-lb2 = [lb;zeros(p,1);ones(q,1)];
-
-%ub2 = [ub;    k.*max(abs(lb(1:p)),abs(ub(1:p)));    theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
- ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
-
 if any(lb2>ub2)
     error('lower must be less than upper bounds')
 end
@@ -363,7 +388,6 @@ subLPproblem = struct('c',obj,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2
 if 1
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
-
     if ~LPsolution.stat
         if param.printLevel>2
             disp(theta)
@@ -381,18 +405,17 @@ end
 obj_old = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda1,delta0,delta1);
 
 %% DCA loop
+nbIteration = 0;
 while nbIteration < nbMaxIteration && stop ~= true
 
     x_old = x;
     y_old = y;
     z_old = z;
 
-    %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
+    %Compute subgradient of second DC component (x_bar,y_bar, where z_bar = 0)
     x(abs(x) < 1/theta) = 0;
-    %x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Minh - negative on the lambda1 reversed below
-     x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Ronan
-    %y_bar =  delta1*sign(y)  +  theta*delta0*d.*sign(y); % Minh
-     y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y); % Ronan
+    x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Negative on the lambda1 reversed below
+    y_bar =  -delta1*sign(y) +   theta*delta0*d.*sign(y); %Negative on the delta1 reversed below
 
     %Solve the linear sub-program to obtain new x
     [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x_bar,y_bar,p,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,param.printLevel);
@@ -434,10 +457,16 @@ while nbIteration < nbMaxIteration && stop ~= true
             end
             nbIteration = nbIteration + 1;
             if param.printLevel>0
+                     obj_linear = c'*[x;y;z];
+                     obj_x0 = lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x));
+                     obj_y0 = - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y));
+                     obj_x1 = lambda1*norm(x,1);
+                     obj_y1 = delta1*norm(y,1);
+     
                 if nbIteration==1
-                    fprintf('%20s%12.3s%12.4s\n','itn','obj','err');
+                    fprintf('%20s%12.3s%12.6s%12.6s%12.6s%12.6s%12.6s%12.6s\n','itn','err','obj','linear','||x||0','||x||1','||y||0','||y||1');
                 end
-                fprintf('%20u%12.3g%12.4g\n',nbIteration,obj_new,min(error_x,error_obj));
+                fprintf('%20u%12.3g%12.6g%12.6g%12.6g%12.6g%12.6g%12.6g\n',nbIteration,min(error_x,error_obj),obj_new,obj_linear,obj_x0,obj_x1,obj_y0,obj_y1);
             end
             %                 disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
             %                 disp(strcat('Obj:',num2str(obj_new)));
@@ -475,8 +504,8 @@ function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLP
                           lambda0*theta*ones(p,1);... % w = max(x,-x)
                                  delta0*ones(q,1)];   % t = max(1,theta*abs(y))
    
-    %subLPproblem.ub  = [ub;    k.*max(abs(lb(1:p)),abs(ub(1:p)));    theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
-     subLPproblem.ub  = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Ronan - each weight must be greater than unity to stay feasible
+     subLPproblem.ub  = [ub;    k.*max(abs(lb(1:p)),abs(ub(1:p)));    theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
+    %subLPproblem.ub  = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Ronan - each weight must be greater than unity to stay feasible
     
     %debugging problematic example
     if 0
