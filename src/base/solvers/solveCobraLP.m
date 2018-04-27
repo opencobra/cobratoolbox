@@ -1342,14 +1342,14 @@ switch solver
                 y = ILOGcplex.Solution.dual;
             elseif origStat == 4
                 %This is likely unbounded, but could be infeasible
-                %Lets check, by solving an additional LP with a bounded
-                %objective.
-                %Store the original solution
-                Solution = ILOGcplex.Solution;
-                ILOGcplex.Param.preprocessing.presolve.Cur = 0;
+                %Lets check, by solving an additional LP with no objective.
+                %If that LP has a solution, its unbounded. If it doesn't
+                %its infeasible.
+                Solution = ILOGcplex.Solution;                
+                ILOGcplex.Model.obj(:) = 0;
                 ILOGcplex.solve();
                 origStatNew   = ILOGcplex.Solution.status;
-                if origStatNew == 2
+                if origStatNew == 1
                     stat = 2;
                 else
                     stat = 0;
