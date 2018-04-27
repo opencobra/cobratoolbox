@@ -2,7 +2,7 @@ function solution = optimizeCardinality(problem, param)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by capped-`l1` function.
 % :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0 
-%                        + lambda_1*||x||_1 - delta_1*||y||_1` 
+%                        + lambda_1*||x||_1    + delta_1*||y||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -17,24 +17,27 @@ function solution = optimizeCardinality(problem, param)
 %                   * .p - size of vector `x`
 %                   * .q - size of vector `y`
 %                   * .r - size of vector `z`
-%                   * .c - `(p+q+r) x 1` linear objective function vector
-%                   * .lambda_0 - trade-off parameter on minimise `||x||_0`
-%                   * .k - `p x 1` strictly positive weight vector on minimise `||x||_0`
-%                   * .lambda_1 - trade-off parameter on minimise `||x||_1`
-%                   * .delta_0 - trade-off parameter on maximise `||y||_0`
-%                   * .d - `q x 1` strictly positive weight vector on maximise `||y||_0`
-%                   * .delta_1 - trade-off parameter on maximise `||y||_1
 %                   * .A - `s x (p+q+r)` LHS matrix
 %                   * .b - `s x 1` RHS vector
-%                   * .csense - `s x 1` Constraint senses, a string containting the constraint sense for
+%                   * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
 %                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %                   * .lb - `(p+q+r) x 1` Lower bound vector
 %                   * .ub - `(p+q+r) x 1` Upper bound vector
+%                   * .c - `(p+q+r) x 1` linear objective function vector
 %
 % OPTIONAL INPUTS:
+%    problem:     Structure containing the following fields describing the problem:
+%                   * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
+%                   * .lambda0 - trade-off parameter on minimise `||x||_0`
+%                   * .lambda1 - trade-off parameter on minimise `||x||_1`
+%                   * .k - `p x 1` strictly positive weight vector on minimise `||x||_0`
+%                   * .delta0 - trade-off parameter on maximise `||y||_0`
+%                   * .delta1 - trade-off parameter on maximise `||y||_1
+%                   * .d - `q x 1` strictly positive weight vector on maximise `||y||_0`
+%
 %    param:      Parameters structure:
 %
-%                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 1000)
+%                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                   * .epsilon - stopping criteria - (Defautl value = 10e-6)
 %                   * .theta - parameter of the approximation (Default value = 2)
 %
@@ -52,8 +55,7 @@ function solution = optimizeCardinality(problem, param)
 %                     * -1=  Invalid input
 %
 
-% .. Author: - Hoai Minh Le, 07/03/2016
-%             Ronan Fleming, 2018
+% .. Author: - Hoai Minh Le &  Ronan Fleming
 
 stop = false;
 solution.x = [];
@@ -63,12 +65,12 @@ solution.stat = 1;
 
 %% Check inputs
 if ~exist('param','var') || isempty(param)
-    param.nbMaxIteration = 1000;
+    param.nbMaxIteration = 100;
     param.epsilon = getCobraSolverParams('LP', 'feasTol');
     param.theta   = 2;
 end
 if ~isfield(param,'nbMaxIteration')
-    param.nbMaxIteration = 1000;
+    param.nbMaxIteration = 100;
 end
 if ~isfield(param,'epsilon')
     param.epsilon = getCobraSolverParams('LP', 'feasTol');
@@ -77,7 +79,7 @@ if ~isfield(param,'theta')
     param.theta   = 2;
 end
 if ~isfield(param,'nbMaxIteration')
-    param.nbMaxIteration = 1000;
+    param.nbMaxIteration = 100;
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0;
@@ -148,8 +150,11 @@ if ~isfield(problem,'delta1')
 end
 
 if ~isfield(problem,'k')
-    %warning('Error: Weight vector of x is not defined. Default value will be used');
-    problem.k = ones(problem.p,1);
+    if problem.lambda0==0
+        problem.k = zeros(problem.p,1);
+    else
+        problem.k = ones(problem.p,1);
+    end
 else
     if length(problem.k) ~= problem.p 
         warning('Error: the size of weight vector k is not correct');
@@ -165,8 +170,11 @@ else
 end
 
 if ~isfield(problem,'d')
-    %warning('Error: Weight vector of y is not defined. Default value will be used');
-    problem.d = ones(problem.q,1);
+    if problem.delta0==0
+        problem.d = zeros(problem.q,1);
+    else
+        problem.d = ones(problem.q,1);
+    end
 else
     if length(problem.d) ~= problem.q 
         warning('Error: the size of weight vector d is not correct');
@@ -324,8 +332,8 @@ obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);-del
 A2 = [A                                                        sparse(s,p)      sparse(s,q);
       sparse(diag(k))   sparse(p,q)             sparse(p,r)    -speye(p)        sparse(p,q);
       -sparse(diag(k))  sparse(p,q)             sparse(p,r)    -speye(p)        sparse(p,q);
-      sparse(q,p)       theta*sparse(diag(d))   sparse(q,r)    sparse(q,p)      -speye(q);
-      sparse(q,p)       -theta*sparse(diag(d))  sparse(q,r)    sparse(q,p)      -speye(q)];
+      sparse(q,p)       theta*spdiags(d,0,q,q)   sparse(q,r)    sparse(q,p)      -speye(q);
+      sparse(q,p)       -theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q)];
 b2 = [b; zeros(2*p+2*q,1)];
 csense2 = [csense;repmat('L',2*p+2*q, 1)];
 
@@ -341,17 +349,12 @@ csense2 = [csense;repmat('L',2*p+2*q, 1)];
 % 0  <= w <= max(|k.*lb_x|,|k.*ub_x|)
 % 1  <= t <= theta*max(|d.*lb_y|,|d.*ub_y|)
 lb2 = [lb;zeros(p,1);ones(q,1)];
-if 0
-    ub2 = [ub;k.*max(abs(lb(1:p)),abs(ub(1:p)));theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
-end
-if 0
-    ub2 = [ub;max(abs(k.*lb(1:p)),abs(k.*ub(1:p)));theta*max(abs(d.*lb(p+1:p+q)),abs(d.*ub(p+1:p+q)))];%Same as above
-end
-if 1
-    ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
-end
-if 0
-    ub2 = [ub;max(abs(lb(1:p)),abs(ub(1:p)));theta*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];
+
+%ub2 = [ub;    k.*max(abs(lb(1:p)),abs(ub(1:p)));    theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
+ ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
+
+if any(lb2>ub2)
+    error('lower must be less than upper bounds')
 end
 
 %Define the linear sub-problem
@@ -368,7 +371,8 @@ if 1
             subLPproblemRelaxed=subLPproblem;
             subLPproblemRelaxed.lb(:)=-1000;
             subLPproblemRelaxed.ub(:)=1000;
-            LPsolutionRelaxed = solveCobraLP(subLPproblemRelaxed)
+            LPsolutionRelaxed = solveCobraLP(subLPproblemRelaxed);
+            disp(LPsolutionRelaxed);
             error('Infeasible before the iterations begin')
         end
     end
@@ -383,11 +387,12 @@ while nbIteration < nbMaxIteration && stop ~= true
     y_old = y;
     z_old = z;
 
-    %Compute (x_bar,y_bar,z_bar) in subgradient of second DC component (z_bar = 0)
+    %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
     x(abs(x) < 1/theta) = 0;
-    x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Minh - are the signs here correct?
-    %x_bar =  lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Ronan
-    y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y); 
+    %x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Minh - negative on the lambda1 reversed below
+     x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Ronan
+    %y_bar =  delta1*sign(y)  +  theta*delta0*d.*sign(y); % Minh
+     y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y); % Ronan
 
     %Solve the linear sub-program to obtain new x
     [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x_bar,y_bar,p,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,param.printLevel);
@@ -459,19 +464,19 @@ end
 end
 
 %Solve the linear sub-program to obtain new (x,y,z)
-function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x_bar,y_bar,p,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,printLevel);
+function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x_bar,y_bar,p,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,printLevel)
     % Change the objective - variable (x,y,z,w,t)
-    if 0
-        %subLPproblem.obj  = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);delta0*ones(q,1)]; %Minh
-    else
-        subLPproblem.c  = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1); delta0*ones(q,1)]; %Ronan. It must be subLPproblem.c for solveCobraLP
-    end
+
+    %subLPproblem.obj  = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);delta0*ones(q,1)]; %Minh
+    %Ronan. It must be subLPproblem.c for solveCobraLP
+    subLPproblem.c     = [c(1:p)     - x_bar;...      % x 
+                          c(p+1:p+q) - y_bar;...      % y
+                          c(p+q+1:p+q+r);...          % z
+                          lambda0*theta*ones(p,1);... % w = max(x,-x)
+                                 delta0*ones(q,1)];   % t = max(1,theta*abs(y))
    
-    if 0
-        subLPproblem.ub  = [ub;k.*max(abs(lb(1:p)),abs(ub(1:p)));theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh - This is identical with below
-    else
-        subLPproblem.ub = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Ronan - each weight greater than unity
-    end
+    %subLPproblem.ub  = [ub;    k.*max(abs(lb(1:p)),abs(ub(1:p)));    theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
+     subLPproblem.ub  = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Ronan - each weight must be greater than unity to stay feasible
     
     %debugging problematic example
     if 0
@@ -516,7 +521,8 @@ function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLP
             subLPproblemRelaxed=subLPproblem;
             subLPproblemRelaxed.lb(:)=-1000;
             subLPproblemRelaxed.ub(:)=1000;
-            LPsolutionRelaxed = solveCobraLP(subLPproblemRelaxed)
+            LPsolutionRelaxed = solveCobraLP(subLPproblemRelaxed);
+            disp(LPsolutionRelaxed)
         end
         x = [];
         y = [];
@@ -529,9 +535,9 @@ end
 function obj = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda1,delta0,delta1)
     p = length(x);
     q = length(y);
-    if 0
-        obj = c'*[x;y;z] + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x)) - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y)) + lambda1*norm(x,1) + delta1* norm(y,1);%Minh
-    else
-        obj = c'*[x;y;z] + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x)) - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y)) + lambda1*norm(x,1) - delta1* norm(y,1);%Ronan - delata1
-    end
+    %obj = c'*[x;y;z] + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x)) - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y)) + lambda1*norm(x,1) + delta1*norm(y,1);%Minh
+     obj = c'*[x;y;z]...
+         + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x))...
+         - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y))...
+         + lambda1*norm(x,1) + delta1*norm(y,1);
 end

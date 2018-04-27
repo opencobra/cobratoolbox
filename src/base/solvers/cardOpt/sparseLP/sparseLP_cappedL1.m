@@ -117,7 +117,8 @@ obj_old = sparseLP_cappedL1_obj(x,theta);
 %Create the linear sub-programme that one needs to solve at each iteration, only its
 %objective function changes, the constraints set remains.
 
-% Define objective - variable (x,t)
+% First part of the objective for the convex optimisation problem Pk
+% variables are x, t
 obj = [zeros(n,1);theta*ones(n,1)];
 
 % Constraints
@@ -144,7 +145,7 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
 
-    %Compute x_bar in subgradient of second DC component
+    %Compute x_bar, which is the subgradient of the second DC component
     %H. A.LeThietal./EuropeanJournalofOperationalResearch000(2014)
     %Table 2, r_cap
     x(abs(x) < 1/theta) = 0;
@@ -210,7 +211,7 @@ function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,t
 
 end
 
-%Compute the objective function
+%Compute the objective function for the outer problem
 function obj = sparseLP_cappedL1_obj(x,theta)
     n = length(x);
     obj = ones(n,1)'*min(ones(n,1),theta*abs(x));
