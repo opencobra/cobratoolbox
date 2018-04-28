@@ -280,12 +280,14 @@ s = length(problem.b);
 lb2 = [lb;zeros(p,1);ones(q,1)];
 
 %make sure theta is not too small
-thetaMin = 1./d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
-%thetaMin = 1./(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
-thetaMin = min(thetaMin);
-if theta<thetaMin
-    warning(['theta = ' num2str(theta) '. Raised to ' num2str(thetaMin)])
-    theta=thetaMin+1e-6;
+if length(q)>0
+    thetaMin = 1./d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+    %thetaMin = 1./(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+    thetaMin = min(thetaMin);
+    if theta<thetaMin
+        warning(['theta = ' num2str(theta) '. Raised to ' num2str(thetaMin)])
+        theta=thetaMin+1e-6;
+    end
 end
 
 ub2 = [ub;   k.*max(abs(lb(1:p)),abs(ub(1:p)));   theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
@@ -346,7 +348,14 @@ if 0
     end
 else
     %random initial starting point
-    full = lb2 + diag(rand(2*p+2*q+r,1))*(ub2 - lb2);
+    
+    %protect against inf or -inf in bounds.
+    maxub=1e4*ones(length(ub2),1);
+    maxub2=min(maxub,ub2);
+    minlb=-1e4*ones(length(lb2),1);
+    minlb2=max(minlb,lb2);
+    
+    full = lb2 + diag(rand(2*p+2*q+r,1))*(maxub2 - minlb2);
     x = full(1:p);
     y = full(p+1:p+q);
     z = full(p+q+1:p+q+r);
