@@ -253,8 +253,14 @@ end
 model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList);
 
 if ~isempty(strmatch('Confidence Score',rxnHeaders,'exact'))
-    model.confidenceScores = cell2mat(rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact')));
-    model.confidenceScores(isnan(model.confidenceScores)) = 0;
+    confidenceScores = rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact'));
+    if any(~cellfun(@isnumeric, confidenceScores))
+        %replace any non numeric elements by their numbers.
+        confidenceScores = cellfun(@str2num,confidenceScores,'UniformOutput',0);
+    end
+    confidenceScores(cellfun(@isempty,confidenceScores)) = {NaN}; %Replace empty by nan.
+    model.rxnConfidenceScores = cell2mat(confidenceScores);    
+    model.rxnConfidenceScores(isnan(model.rxnConfidenceScores)) = 0;
 end
 if ~isempty(strmatch('EC Number',rxnHeaders,'exact'))
     %This needs to be changed to the new annotation scheme and putting the
