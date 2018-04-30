@@ -74,11 +74,11 @@ assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
 
 %Trying to add a reaction without stoichiometry will fail.
 errorCall = @() addReaction(model,'NoStoich');
-assert(verifyCobraFunctionError(errorCall));
+assert(verifyCobraFunctionError('addReaction', 'inputs',{model,'NoStoich'}));
 
 %Try adding a new reaction with two different stoichiometries
-errorCall = @() addReaction(model, 'reactionFormula', 'A + B -> C','stoichCoeffList',[ -1 2], 'metaboliteList',{'A','C'});
-assert(verifyCobraFunctionError(errorCall));
+
+assert(verifyCobraFunctionError('addReaction', 'inputs', {model, 'reactionFormula', 'A + B -> C','stoichCoeffList',[ -1 2], 'metaboliteList',{'A','C'}}));
 
 %Try having a metabolite twice in the metabolite list or reaction formula
 modelWAddedMet = addReaction(model, 'reactionFormula', 'Alpha + Beta -> Gamma + 2 Beta');
@@ -438,8 +438,8 @@ assert(isequal(modelWGenes.geneField2(genepos), gField2));
 assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGenes.genes,genes)))));
 
 %And finally test duplication errors.
-assert(verifyCobraFunctionError(@() addGenes(model,{'b0008','G1'})));
-assert(verifyCobraFunctionError(@() addGenes(model,{'G2','G1','G2'})));
+assert(verifyCobraFunctionError('addGenes', 'inputs', {model,{'b0008','G1'}}));
+assert(verifyCobraFunctionError('addGenes', 'inputs', {model,{'G2','G1','G2'}}));
 
 
 

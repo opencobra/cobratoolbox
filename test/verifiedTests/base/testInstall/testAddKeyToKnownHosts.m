@@ -13,7 +13,7 @@ global CBTDIR
 currentDir = pwd;
 
 % test for a failure of an unknown host
-assert(verifyCobraFunctionError(@() addKeyToKnownHosts('github123.co')));
+assert(verifyCobraFunctionError('addKeyToKnownHosts','inputs',{'github123.co'}));
 
 % find the keyscan
 [status_keyscan, result_keyscan] = system('ssh-keyscan');
