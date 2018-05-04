@@ -23,11 +23,15 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                         * ub - `n x 1` Upper bounds
 %
 % OPTIONAL INPUTS:
-%    model:             (the following fields are optional)
+%    model:             
 %                         * dxdt - `m x 1` change in concentration with time
+%                         * csense - `m x 1` character array with entries in {L,E,G} 
+%                           (The code is backward compatible with an m + k x 1 csense vector,
+%                           where k is the number of coupling constraints)
+%
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x n` Right hand side of C*v <= d
-%                         * csense - `m + k x 1` character array with entries in {L,E,G}
+%                         * dsense - `k x 1` character array with entries in {L,E,G}
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
 %    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
@@ -259,15 +263,33 @@ if isfield(model,'C')
         if printLevel>1
             fprintf('%s\n','No defined csense.')
             fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
         end
         model.csense(1:nMets,1) = 'E';
-        model.csense(nMets+1:nMets+nIneq,1) = 'L';
     else
-        if length(model.csense)~=nMets+nIneq
-            error('Length of csense is invalid! Defaulting to equality constraints.')
-        else
+        if length(model.csense)==nMets
             model.csense = columnVector(model.csense);
+        else
+            if length(model.csense)==nMets+nIneq
+                %this is a workaround, a model should not be like this
+                model.dsense=model.csense(nMets+1:nMets+nIneq,1);
+                model.csense=model.csense(1:m,1);
+            else
+                error('Length of csense is invalid!')
+            end
+        end
+    end
+    
+    if ~isfield(model,'dsense')
+        if printLevel>1
+            fprintf('%s\n','No defined dsense.')
+            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+        end
+        model.dsense(1:nIneq,1) = 'L';
+    else
+        if length(model.dsense)~=nIneq
+            error('Length of dsense is invalid! Defaulting to equality constraints.')
+        else
+            model.dsense = columnVector(model.dsense);
         end
     end
 else
@@ -296,12 +318,13 @@ end
 
 if isfield(model,'C')
     LPproblem.A = [model.S;model.C];
+    %copy over the constraint sense also
+    LPproblem.csense=[model.csense;model.dsense];
 else
+    %copy over the constraint sense also
+    LPproblem.csense=model.csense;
     LPproblem.A = model.S;
 end
-
-%copy over the constraint sense also
-LPproblem.csense=model.csense;
 
 %linear objective coefficient
 LPproblem.c = model.c;
