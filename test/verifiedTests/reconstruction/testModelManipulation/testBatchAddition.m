@@ -37,8 +37,8 @@ assert(verifyModel(modelBatch,'simpleCheck',true));
 assert(isfield(modelBatch,'metKEGGID'));
 
 %Assert duplication check
-assert(verifyCobraFunctionError(@() addMultipleMetabolites(model,model.mets(1:3))))
-assert(verifyCobraFunctionError(@() addMultipleMetabolites(model,{'A','b','A'})))
+assert(verifyCobraFunctionError('addMultipleMetabolites', 'inputs',{model,model.mets(1:3)}))
+assert(verifyCobraFunctionError('addMultipleMetabolites', 'inputs',{model,{'A','b','A'}}))
 
 % For Reactions:
 fprintf('>> Testing Reaction Batch Addition...\n');
@@ -97,12 +97,12 @@ head2 = fp.parseFormula(modelBatch3.rules{ExAPos});
 assert(head1.isequal(head2));
 
 %Now, test duplicate ID fails (duplicate in the reaction list
-assert(verifyCobraFunctionError(@() addMultipleReactions(model,{'ExA','ATob','ExA'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1])));
-assert(verifyCobraFunctionError(@() addMultipleReactions(model,{'ExA','ATob','CS'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1])));
+assert(verifyCobraFunctionError('addMultipleReactions', 'inputs',{model,{'ExA','ATob','ExA'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1]}));
+assert(verifyCobraFunctionError('addMultipleReactions', 'inputs',{model,{'ExA','ATob','CS'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1]}));
 
 %Also assert, that all metabolites are part of the Model (this is necessary
 %for quick addition).
-assert(verifyCobraFunctionError(@() addMultipleReactions(model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1])));
+assert(verifyCobraFunctionError('addMultipleReactions', 'inputs',{model,{'ExA','ATob','BToC'},{'A','b','ac[c]'},[1 -1 0; 0,1,-1;0,0,1]}));
 
 % For Genes
 fprintf('>> Testing Gene Batch Addition...\n');
@@ -130,8 +130,8 @@ assert(isequal(modelWGenes.geneField2(genepos), gField2));
 assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGenes.genes,genes)))));
 
 %And finally test duplication errors.
-assert(verifyCobraFunctionError(@() addGenes(model,{'b0008','G1'})));
-assert(verifyCobraFunctionError(@() addGenes(model,{'G2','G1','G2'})));
+assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'b0008','G1'}}));
+assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'G2','G1','G2'}}));
                                
                                
 % change the directory

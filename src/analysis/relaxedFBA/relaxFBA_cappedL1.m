@@ -14,6 +14,16 @@ function [solution] = relaxFBA_cappedL1(model, param)
 %                        * excludedReactions(i) = false : allow to relax bounds on reaction i
 %                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i
 %
+%                      * excludedReactionLB - n x 1 bool vector indicating the reactions with lower bounds to be excluded from relaxation
+%
+%                        * excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)
+%                        * excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i 
+%
+%                      * excludedReactionUB - n x 1 bool vector indicating the reactions with upper bounds to be excluded from relaxation
+%
+%                        * excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)
+%                        * excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i 
+%
 %                      * excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
@@ -70,6 +80,12 @@ solution.stat = 1;
 if exist('param','var')
     if isfield(param,'excludedReactions') == 0
         param.excludedReactions = false(n,1);
+    end
+    if isfield(param,'excludedReactionLB') == 0
+        param.excludedReactionLB = false(n,1);
+    end
+    if isfield(param,'excludedReactionUB') == 0
+        param.excludedReactionUB = false(n,1);
     end
     if isfield(param,'excludedMetabolites') == 0
         param.excludedMetabolites = false(m,1);
@@ -224,7 +240,8 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.p = [];
             solution.q = [];
             solution.stat = 0;
-            error('Problem infeasible !');
+            warning('Problem infeasible !');
+            break
         case 2
             solution.v = [];
             solution.r = [];
@@ -250,9 +267,9 @@ while nbIteration < nbMaxIteration && stop ~= true
 
             if param.printLevel>0
                 if nbIteration==1
-                    fprintf('%20s%12.3s%12.4s\n','itn','obj','err');
+                    fprintf('%5s%12.3s%18s%18s%18s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
                 end
-                fprintf('%20u%12.3g%12.4g\n',nbIteration,obj_new,min(error_x,error_obj));
+                    fprintf('%5u%12.3g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,error_x,error_obj,obj_new,nnz(v),nnz(r),nnz(p),nnz(q));
             end
 %             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
 %             disp(strcat('Obj:',num2str(obj_new)));
@@ -279,6 +296,8 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     [lambda0,lambda1]                   = deal(param.lambda0,param.lambda1);
     [alpha0,alphal1]                    = deal(param.alpha0,param.alpha1);
     excludedReactions                   = deal(param.excludedReactions);
+    excludedReactionLB                   = deal(param.excludedReactionLB);
+    excludedReactionUB                   = deal(param.excludedReactionUB);
     excludedMetabolites                 = deal(param.excludedMetabolites);
     toBeUnblockedReactions              = deal(param.toBeUnblockedReactions);
 
@@ -314,7 +333,9 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     sense = [sense; sense2];
 
     % Constraint theta*v - t <= 0
-    A3 = [theta*speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];
+    %A3 = [theta*speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];%Minh
+    % Constraint v - t <= 0
+    A3 = [speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];
     rhs3 = zeros(n,1);
     sense3 = repmat('L', n, 1);
 
@@ -323,7 +344,9 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     sense = [sense; sense3];
 
     % Constraint -theta*v - t <= 0
-    A4 = [-theta*speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];
+    % A4 = [-theta*speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];%Minh
+    % Constraint -*v - t <= 0
+    A4 = [-speye(n,n)  sparse(n,m) sparse(n,n) sparse(n,n) -speye(n,n) sparse(n,m)];
     rhs4 = zeros(n,1);
     sense4 = repmat('L', n, 1);
 
@@ -366,31 +389,79 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
         sense = [sense; sense7];
     end
 
-    %Bounds
-    lb2 = lb;
-    ub2 = ub;
-    lb2(~excludedReactions) = minLB;
-    ub2(~excludedReactions) = maxUB;
+    if isfield(model,'C')
+        [nIneq,nltC]=size(model.C);
+        A8 = [model.C  sparse(nIneq,m) sparse(nIneq,n) sparse(nIneq,n) sparse(nIneq,n)   sparse(nIneq,m) ];
+        rhs8 = model.d;
+        sense8 = model.dsense;
+        
+        A = [A; A8];
+        rhs = [rhs; rhs8];
+        sense = [sense; sense8];
+    end
+    
+    % Variables [v r p q t w]
 
+    lb1 = lb;
+    ub1 = ub;
+    if 0
+        lb1(~excludedReactions) = minLB;
+        ub1(~excludedReactions) = maxUB;
+    else
+        lb1(~excludedReactionLB) = minLB;
+        ub1(~excludedReactionUB) = maxUB;
+    end
+    
     maxRelaxR=param.maxRelaxR;
-    %Variables [v r p q t w]
-    l = [lb2; -maxRelaxR*ones(m,1);          zeros(n,1);         zeros(n,1);              ones(n,1);          zeros(m,1)];
-    u = [ub2;  maxRelaxR*ones(m,1); -minLB*ones(n,1)+lb; maxUB*ones(n,1)-ub; max(abs(lb2),abs(ub2)); maxRelaxR*ones(m,1)];
+    
+    %Minh - lead to infeasible problems, due to l > u.
+    %l = [lb1; -maxRelaxR*ones(m,1);            zeros(n,1);         zeros(n,1);               ones(n,1);          zeros(m,1)];
+    %u = [ub1;  maxRelaxR*ones(m,1);   -minLB*ones(n,1)+lb; maxUB*ones(n,1)-ub;  max(abs(lb1),abs(ub1)); maxRelaxR*ones(m,1)];
 
+    %%%%Ronan - make sure problem stays feasible
+    %Bounds from sparseLP_cappedL1.m
+    % lb <= x <= ub
+    % 0  <= t <= max(|lb|,|ub|)
+    %Variables [v r p q t w]
+    ub3=-minLB*ones(n,1)+lb;
+    ub3(ub3<0)=0;
+    ub4=maxUB*ones(n,1)-ub;
+    ub4(ub4<0)=0;
+    l = [lb1; -maxRelaxR*ones(m,1);  zeros(n,1);    zeros(n,1);              zeros(n,1);          zeros(m,1)];
+    u = [ub1;  maxRelaxR*ones(m,1);         ub3;           ub4;  max(abs(lb1),abs(ub1)); maxRelaxR*ones(m,1)];
+    %%%%%%%
+    
     %Exlude metabolites from relaxation (set the upper and lower bound of the relaxation to 0)
     indexExcludedMet = find(excludedMetabolites);
 
     l(n+indexExcludedMet) = 0;
     u(n+indexExcludedMet) = 0;
 
-    %Exlude reactions from relaxation (set the upper and lower bound of the relaxation to 0)
-    indexExcludedRxn = find(excludedReactions);
-
-    l(n+m+indexExcludedRxn) = 0;
-    u(n+m+indexExcludedRxn) = 0;
-    l(n+m+n+indexExcludedRxn) = 0;
-    u(n+m+n+indexExcludedRxn) = 0;
-
+    if 0
+        %Exlude reactions from relaxation (set the upper and lower bound of the relaxation to 0)
+        indexExcludedRxn = find(excludedReactions);
+        
+        l(n+m+indexExcludedRxn) = 0;
+        u(n+m+indexExcludedRxn) = 0;
+        l(n+m+n+indexExcludedRxn) = 0;
+        u(n+m+n+indexExcludedRxn) = 0;
+    else
+        %Exclude reactions from relaxation by individually set the upper and/or lower bound of the relaxation to 0
+        indexExcludedRxnLB = find(excludedReactionLB);
+        indexExcludedRxnUB = find(excludedReactionUB);
+        
+        % p is for relaxation of lower bounds
+        l(n+m+indexExcludedRxnLB) = 0;
+        u(n+m+indexExcludedRxnLB) = 0;
+        %q is for relaxation of upper bounds
+        l(n+m+n+indexExcludedRxnUB) = 0;
+        u(n+m+n+indexExcludedRxnUB) = 0;
+    end
+    
+    if any(l>u)
+        error('bounds inconsistent')
+    end
+    
     %Solve the linear problem
     lpProblem = struct('c',obj,'osense',1,'A',A,'csense',sense,'b',rhs,'lb',l,'ub',u);
     solution = solveCobraLP(lpProblem);
@@ -421,10 +492,10 @@ function obj = relaxFBA_cappedL1_obj(model,v,r,p,q,param)
     [alpha0,alpha1]                     = deal(param.alpha0,param.alpha1);
     [m,n] = size(S);
 
-    part_v = c'*v + gamma1*ones(n,1)'*abs(v) + gamma0*ones(n,1)'*min(ones(n,1),theta*abs(v));
+    part_v = c'*v + gamma1*ones(n,1)'*abs(v) +  gamma0*ones(n,1)'*min(ones(n,1),theta*abs(v));
     part_r =       lambda1*ones(m,1)'*abs(r) + lambda0*ones(m,1)'*min(ones(m,1),theta*abs(r));
-    part_p =        alpha1*ones(n,1)'*p      + alpha0*ones(n,1)'*min(ones(n,1),theta*p);
-    part_q =        alpha1*ones(n,1)'*q      + alpha0*ones(n,1)'*min(ones(n,1),theta*q);
+    part_p =        alpha1*ones(n,1)'*p      +  alpha0*ones(n,1)'*min(ones(n,1),theta*p);
+    part_q =        alpha1*ones(n,1)'*q      +  alpha0*ones(n,1)'*min(ones(n,1),theta*q);
     obj = part_v + part_r + part_p + part_q;
 
 %     disp(strcat('Part v:',num2str(part_v)));

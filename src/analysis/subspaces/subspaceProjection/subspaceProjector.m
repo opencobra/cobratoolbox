@@ -32,7 +32,7 @@ function [PR, PN, PC, PL] = subspaceProjector(A, printLevel, sub_space)
 %
 % USAGE:
 %
-%    [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space, fullS)
+%    [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space)
 %
 % INPUT:
 %    A          `m x n` matrix

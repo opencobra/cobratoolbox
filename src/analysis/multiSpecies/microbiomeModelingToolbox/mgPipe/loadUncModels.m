@@ -28,6 +28,10 @@ models = {[]};  % empty cell array to be filled with models
         biomass = allex(strmatch(objre, allex));
         finrex = setdiff(allex, biomass);
         ldm = changeRxnBounds(ldm, finrex, -1000, 'l');
+        ldm = changeRxnBounds(ldm, finrex, 1000, 'u');
+        % removing blocked reactions from the bacs
+        [BlockedRxns] = identifyFastBlockedRxns(ldm,ldm.rxns);
+        ldm= removeRxns(ldm,BlockedRxns);
         % creating array with models as required as input from the following functions
         models(i, 1) = {ldm};
     end

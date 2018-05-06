@@ -76,7 +76,7 @@ param.lambda=0;
 param.delta=1;
 
 if 1
-    if 0
+    if 1
         solution = optimizeCardinality(cardProblem,param);
         boolx=solution.x>=param.eta;
         booly=solution.y>=param.eta;
@@ -107,7 +107,7 @@ end
 %                   * .k - `p x 1` strictly positive weight vector of `x`
 %                   * .d - `q x 1` strictly positive weight vector of `y`
 
-if 0
+if 1
     cardProblem.k = rand(p,1);
     cardProblem.d  = rand(q,1);
     

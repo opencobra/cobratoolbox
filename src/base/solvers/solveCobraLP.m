@@ -1060,7 +1060,16 @@ switch solver
             case 'UNBOUNDED'
                 stat = 2; % Unbounded
             case 'INF_OR_UNBD'
-                stat = 0; % Gurobi reports infeasible *or* unbounded
+                %Lets check, what it is. We simply remove the objective and
+                %solve again. If the status becomes 'OPTIMAL' its
+                %unbounded, otherwise its infeasible.
+                LPproblem.obj(:) = 0;
+                resultgurobi = gurobi(LPproblem,param);
+                if strcmp(resultgurobi.status,'OPTIMAL')
+                    stat = 2;
+                else
+                    stat = 0; % Gurobi reports infeasible *or* unbounded
+                end
             otherwise
                 stat = -1; % Solution not optimal or solver problem
         end
@@ -1333,14 +1342,14 @@ switch solver
                 y = ILOGcplex.Solution.dual;
             elseif origStat == 4
                 %This is likely unbounded, but could be infeasible
-                %Lets check, by solving an additional LP with a bounded
-                %objective.
-                %Store the original solution
-                Solution = ILOGcplex.Solution;
-                ILOGcplex.Param.preprocessing.presolve.Cur = 0;
+                %Lets check, by solving an additional LP with no objective.
+                %If that LP has a solution, its unbounded. If it doesn't
+                %its infeasible.
+                Solution = ILOGcplex.Solution;                
+                ILOGcplex.Model.obj(:) = 0;
                 ILOGcplex.solve();
                 origStatNew   = ILOGcplex.Solution.status;
-                if origStatNew == 2
+                if origStatNew == 1
                     stat = 2;
                 else
                     stat = 0;
