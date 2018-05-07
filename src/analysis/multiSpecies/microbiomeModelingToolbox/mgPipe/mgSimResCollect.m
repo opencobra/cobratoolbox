@@ -60,7 +60,7 @@ end
 
 names = {'rich', 'standard', 'personalized'};
 for j = init:fl
-
+noPcoa = 0;
 for k = 2:patNumb + 1
 if isempty(fvaCt{fl, (k - 1)}) == 1
     disp('Jumping not feasible model')
@@ -69,7 +69,6 @@ if isempty(fvaCt{fl, (k - 1)}) == 1
     fSp(:, k - 1) = sp;
     noPcoa = 1;
 else
-    noPcoa = 0;
     sp = NaN(length(ID), 1);  % consider to remove preallocation
     for i = 1:length(ID)
         x = fvaCt{j, (k - 1)}{i, 3};
@@ -84,6 +83,7 @@ end
 
 csvwrite(strcat(resPath, names{1, j}, '.csv'), fSp)
 if noPcoa == 1
+    Y=[];
     disp('Jump plotting')
 else
     JD = pdist(fSp','euclidean');
