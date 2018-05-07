@@ -84,6 +84,7 @@ end
 
 if ~exist('objre', 'var')
    objre = {'EX_biomass(e)'};
+   warning(['The default objective (objre) has been set to ' objre{1}]);
 end
 if ~exist('figForm', 'var')
     figForm = '-depsc';
