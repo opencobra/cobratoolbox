@@ -36,7 +36,7 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoF
      end
      fclose(fid);
  end 
- if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
+if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
     patStat = 0;
 else
     patStat = 1;
