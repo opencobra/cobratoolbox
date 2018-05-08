@@ -6,8 +6,8 @@
 
 Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 
-This COBRA Toolbox extension enables the the creation, simulation and analysis
-of microbe-microbe interactions and of personalized community models obtained
+This COBRA Toolbox extension enables the creation, simulation, and analysis
+of microbe-microbe interactions and personalized community models obtained
 through metagenomic data integration.  The folder
 `/pairwiseInteractionModeling` contains functions for microbe-microbe analysis
 and simulation while the folder `/mgPipe` contains functions for community modeling with
