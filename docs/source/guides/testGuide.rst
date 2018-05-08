@@ -65,29 +65,58 @@ problem type and that are installed.
 
     solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex', 'gurobi'});
 
-Example D: Require a specific MATLAB toolbox
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Example D: Require one of a set of solvers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The toolbox IDs are specified as those used in
-``license('test', 'toolboxName')``. The following example requires the
-statistics toolbox to be present.
+Some functionalities do only work properly with a limited set of solvers.
+with the keyword ``requireOneSolverOf`` you can specify a set of solvers
+of which the test requires at least one to be present. This option, will
+make the test never be run with any but the solvers specified in the
+supplied list. E.g. if your test only works with ``gurobi`` or ``mosek``
+you would call ``prepareTest`` as
 
 .. code-block:: matlab
 
-    solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
+    solvers = prepareTest('requireOneSolverOf', {'ibm_cplex', 'gurobi'})
 
-Example E: Require a specific solver
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Example E: Exclude a solver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Make sure this is only used if there is an explicit requirement for a
-specific solver. Otherwise, indicate the type of required solver (see
-above).
+If for some reason, a function is known not to work with a few specific
+solvers (e.g. precision is insufficient) but works with all others, it
+might be advantageous to explicitly exclude that one solver instead of
+defining the list of possible solvers. This can be done with the
+``excludeSolvers parameter``. Eg. to exclude ``matlab`` and ``lp_solve``
+you would use the following command:
+
+.. code-block:: matlab
+
+    solvers = prepareTest('excludeSolvers', {'matlab', 'lp_solve'})
+
+Example F: Require multiple solvers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some tests require more than one solver to be run, and otherwise fail. To
+require multiple solvers for a test use the ``requiredSolvers`` parameters.
+E.g. if your function requires ``ibm_cplex`` and ``gurobi`` use the following
+call:
 
 .. code-block:: matlab
 
     solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 
-Example F: Multiple requirements
+Example G: Require a specific MATLAB toolbox
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The toolbox IDs are specified as those used in ``license('test',
+'toolboxName')``.  The following example requires the statistics toolbox
+to be present.
+
+.. code-block:: matlab
+
+    solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
+
+Example H: Multiple requirements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the test requires multiple different properties to be met, you should
