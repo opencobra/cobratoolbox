@@ -84,12 +84,14 @@ Keywords
 
 The automatic documentation software relies on keywords to properly
 format the documented function. A keyword also defines the start of a
-block with the header of a function. Main keywords include: -
-``USAGE:``: block for defining how to use the function - ``INPUT:`` or
-``INPUTS:``: block with input argument(s) - ``OUTPUT:`` or ``OUTPUTS:``:
-block with output argument(s) - ``EXAMPLE:``: block with example code
-(formatted ``MATLAB`` syntax) - ``NOTE:``: highlighted box with text -
-``Author:``: list with author(s)
+block with the header of a function. Main keywords include:
+
+- ``USAGE:``: block for defining how to use the function
+- ``INPUT:`` or ``INPUTS:``: block with input argument(s)
+- ``OUTPUT:`` or ``OUTPUTS:``: block with output argument(s)
+- ``EXAMPLE:``: block with example code (formatted ``MATLAB`` syntax)
+- ``NOTE:``: highlighted box with text
+- ``Author:``: list with author(s)
 
 Each of them must be followed by non-empty lines and should be separated
 from the next block by an empty line.
@@ -277,7 +279,7 @@ formatting.
     %    input1:     Description of input1
     %    input2:     Description of input2
     %
-    % OPTIONAL INPUT:
+    % OPTIONAL INPUTS:
     %    input3:     Structure with fields:
     %
     %                       * First field - description
@@ -292,9 +294,9 @@ formatting.
     %
     % EXAMPLE:
     %
-    %    %this could be an example that can be copied from the documentation to MATLAB
+    %    % this could be an example that can be copied from the documentation to MATLAB
     %    [output1, output2] = someFunction(11, '22', structure, [1;2])
-    %    %without optional values
+    %    % without optional values
     %    output1 = someFunction(11, '22')
     %
     % NOTE:

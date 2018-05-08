@@ -13,7 +13,7 @@ There are functions that need a specific solver or that can only be run
 if a certain toolbox is installed on a system. To address these, you
 should specify the respective requirements by using
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest(requirements)
 
@@ -33,7 +33,7 @@ Example A: Require Windows for the test
 The same works with ``needsMac``, ``needsLinux`` and ``needsUnix``
 instead of ``needsWindows``.
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest('needsWindows', true);
 
@@ -48,7 +48,7 @@ solvers requested will be in the cell array. Otherwise, there will be at
 most one solver (if no solver for the problem is installed, the cell
 array is empty).
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest('needsLP', true);
 
@@ -59,7 +59,7 @@ If multiple solvers are requested. ``solvers.LP``, ``solvers.MILP`` etc
 will contain all those requested solvers that can solve the respective
 problem type and that are installed.
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex', 'gurobi'});
 
@@ -70,7 +70,7 @@ The toolbox IDs are specified as those used in
 ``license('test', 'toolboxName')``. The following example requires the
 statistics toolbox to be present.
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
 
@@ -81,7 +81,7 @@ Make sure this is only used if there is an explicit requirement for a
 specific solver. Otherwise, indicate the type of required solver (see
 above).
 
-.. code:: matlab
+.. code-block:: matlab
 
     solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 
@@ -92,7 +92,7 @@ If the test requires multiple different properties to be met, you should
 test them all in the same call. To keep the code readable, first define
 the requirements and then pass them in.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % define required toolboxes
     requiredToolboxes = {'bioinformatics_toolbox', 'optimization_toolbox'};
@@ -111,7 +111,7 @@ If you want to test if the output of a function
 should call this function at least 4 times in your test. The argument
 ``ìnput2`` might be an optional input argument.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % Case 1: test with 1 input and 1 output argument
     output1 = function1(input1)
@@ -128,7 +128,7 @@ should call this function at least 4 times in your test. The argument
 Each of the 4 test scenarios should be followed by a test on ``output1``
 and ``output2``. For instance, for ``Case 4``:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % Case 4: test with 2 input and 2 output arguments
     [output1, output2] = function1(input1, input2)
@@ -148,7 +148,7 @@ Test if a function throws an error or warning message
 If you want to test whether your ``function1`` correctly throws an
 **error** message, you can test as follows:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)
     % There are two options. If a particular error message is to be tested (here, 'Input2 has the wrong dimension'):
@@ -160,7 +160,7 @@ If you want to test whether your ``function1`` correctly throws an
 If you want to test whether your ``function1`` correctly throws a
 **warning** message, you can test as follows:
 
-.. code:: matlab
+.. code-block:: matlab
 
     warning('off', 'all')
         output1 = function1(input1, input2');
@@ -180,7 +180,7 @@ The following sections shall be included in a test file:
 1. Header
 ^^^^^^^^^
 
-.. code:: matlab
+.. code-block:: matlab
 
     % The COBRAToolbox: <testNameOfSrcFile>.m
     %
@@ -194,7 +194,7 @@ The following sections shall be included in a test file:
 2. Test initialization
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: matlab
+.. code-block:: matlab
 
     global CBTDIR
 
@@ -207,7 +207,7 @@ The following sections shall be included in a test file:
 3. Define the solver packages to be tested and the tolerance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: matlab
+.. code-block:: matlab
 
     % set the tolerance
     tol = 1e-8;
@@ -218,7 +218,7 @@ The following sections shall be included in a test file:
 4. Load a model and/or reference data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: matlab
+.. code-block:: matlab
 
     % load the model
     load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
@@ -232,7 +232,7 @@ online, please make a pull request with the URL entry to the
 :warning: In order to guarantee compatibility across platforms, please
 use the full path to the model. For instance:
 
-.. code:: matlab
+.. code-block:: matlab
 
     global CBTDIR
 
@@ -245,7 +245,7 @@ use the full path to the model. For instance:
 This is only necessary for tests that test a function that runs in
 parallel.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % create a parallel pool
     poolobj = gcp('nocreate'); % if no pool, do not create new one.
@@ -261,7 +261,7 @@ should not be needed to test a parallel function efficiently.
 
 The test. If multiple solvers were requested by ‘useIfAvailable’, run:
 
-.. code:: matlab
+.. code-block:: matlab
 
     for k = 1:length(solvers.LP)
         fprintf(' -- Running <testFile> using the solver interface: %s ... ', solvers.LP{k});
@@ -275,7 +275,7 @@ The test. If multiple solvers were requested by ‘useIfAvailable’, run:
 
 If only one solver is requested:
 
-.. code:: matlab
+.. code-block:: matlab
 
     solverLPOK = changeCobraSolver(solvers.LP, 'LP', 0);
     % <your test goes here>
@@ -286,7 +286,7 @@ If only one solver is requested:
 7. Change to the current directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: matlab
+.. code-block:: matlab
 
     % change the directory
     cd(currentDir)
@@ -297,14 +297,14 @@ Run the test locally on your machine
 Please make sure that your test runs individually by typing after a
 fresh start:
 
-.. code:: matlab
+.. code-block:: matlab
 
     >> initCobraToolbox
     >> <testName>
 
 Please then verify that the test runs in the test suite by running:
 
-.. code:: matlab
+.. code-block:: matlab
 
     >> testAll
 
@@ -356,7 +356,7 @@ comprehensive information is provided at the end of the test run.
 For instance, the following test script **do not do this - bad
 practice!**:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % do not do this: bad practice!
     testPassed = 0;
@@ -380,7 +380,7 @@ practice!**:
 
 shall be rewritten as follows:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % good practice
     assert(logicalCondition1);
