@@ -1,3 +1,5 @@
+.. _testGuide:
+
 Guide for writing a test
 ========================
 

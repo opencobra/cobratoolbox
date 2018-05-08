@@ -1,5 +1,7 @@
-Styleguide
-==========
+.. _styleGuide:
+
+Style guide
+===========
 
 Code
 ~~~~
