@@ -249,7 +249,7 @@
 <span id="id1"></span><h1>stoichConsistency<a class="headerlink" href="#stoichconsistency" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.stoichConsistency"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency">
-<code class="descname">checkStoichiometricConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/checkStoichiometricConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkStoichiometricConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/checkStoichiometricConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verification of stoichiometric consistency by checking for at least one
 strictly positive basis in the left nullspace of <cite>S</cite>.
 If <cite>S</cite> is not stoichiometrically consistent detect conserved and unconserved
@@ -331,7 +331,7 @@ a stoichiometrically consistent metabolite</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons">
-<code class="descname">findMassLeaksAndSiphons</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMassLeaksAndSiphons</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the metabolites in a network that either leak mass or act as a
 siphon for mass, with (default) or without the bounds on a model.
 The approach is to solve the problem:</p>
@@ -423,7 +423,7 @@ status (negative leakage modes)<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode">
-<code class="descname">findMinimalLeakageMode</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>epsilon</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMinimalLeakageMode</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>epsilon</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the problem</p>
 <div class="math">
 \[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
@@ -498,7 +498,7 @@ status (negative leakage modes)<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet">
-<code class="descname">findMinimalLeakageModeMet</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMinimalLeakageModeMet</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
 minimal set of reactions involved. Test metabolites in metBool.</p>
 <p>Solve the problem</p>
@@ -590,7 +590,7 @@ status (negative leakage modes)<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn">
-<code class="descname">findMinimalLeakageModeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnBool</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMinimalLeakageModeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnBool</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
 minimal set of exclusive reactions involved. Test reactions in rxnBool.</p>
 <dl class="docutils">
@@ -685,7 +685,7 @@ status (negative leakage modes)<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset">
-<code class="descname">findStoichConsistentSubset</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanceCheck</em>, <em>printLevel</em>, <em>fileName</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findStoichConsistentSubset</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanceCheck</em>, <em>printLevel</em>, <em>fileName</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the subset of <cite>S</cite> that is stoichiometrically consistent using
 an iterative cardinality optimisation approach</p>
 <p><strong>Usage</strong></p>
@@ -750,7 +750,7 @@ model</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.leakTest">
-<code class="descname">leakTest</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/leakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.leakTest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">leakTest</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/leakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.leakTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem</p>
 <div class="math">
 \[\begin{split}min  ~&amp; \lambda ||v||_0 - \delta ||s||_0 \\
@@ -797,7 +797,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector">
-<code class="descname">maxCardinalityConservationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">maxCardinalityConservationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximises the cardinality of the conservation vector:</p>
 <div class="math">
 \[\begin{split}max  ~&amp; ||l||_0 \\
@@ -852,7 +852,7 @@ Structure containing the following fields:<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector">
-<code class="descname">maxEntConsVector</code><span class="sig-paren">(</span><em>SInt</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">maxEntConsVector</code><span class="sig-paren">(</span><em>SInt</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>[m, bool] = maxEntConsVector(SInt, printLevel)</div></blockquote>
@@ -878,7 +878,7 @@ is 1 if <cite>m &gt; 0</cite></li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector">
-<code class="descname">minCardinalityConservationRelaxationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minCardinalityConservationRelaxationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem</p>
 <div class="math">
 \[\begin{split}min  ~&amp; \lambda ||x||_0 \\
@@ -927,7 +927,7 @@ structure with:<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors">
-<code class="descname">optimalConservationVectors</code><span class="sig-paren">(</span><em>S</em>, <em>lambda</em>, <em>delta</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimalConservationVectors</code><span class="sig-paren">(</span><em>S</em>, <em>lambda</em>, <em>delta</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem</p>
 <div class="math">
 \[\begin{split}min  ~&amp; \lambda ||x||_0 - \delta ||y||_0 \\
@@ -963,7 +963,7 @@ result of the solved cardinality optimization problem</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode">
-<code class="descname">printMinimalLeakageMode</code><span class="sig-paren">(</span><em>model</em>, <em>minMetBool</em>, <em>minRxnBool</em>, <em>y</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/reconstruction/modelGeneration/stoichConsistency/printMinimalLeakageMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printMinimalLeakageMode</code><span class="sig-paren">(</span><em>model</em>, <em>minMetBool</em>, <em>minRxnBool</em>, <em>y</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/reconstruction/modelGeneration/stoichConsistency/printMinimalLeakageMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out the data on each leakage mode</p>
 <p><strong>Usage</strong></p>
 <blockquote>

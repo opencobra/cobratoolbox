@@ -261,7 +261,7 @@
 <span id="id1"></span><h1>relaxedFBA<a class="headerlink" href="#relaxedfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.relaxedFBA"></span><dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxFBA_cappedL1">
-<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state constraints to make the FBA problem feasible.
 The zero-norm is appproximated by capped-L1 norm</p>
 <p><strong>Usage</strong></p>
@@ -277,6 +277,16 @@ Structure containing the relaxation options:<ul>
 <li>excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
 * excludedReactions(i) = false : allow to relax bounds on reaction i
 * excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
+<li>excludedReactionLB - n x 1 bool vector indicating the reactions with lower bounds to be excluded from relaxation<ul>
+<li>excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)</li>
+<li>excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i</li>
+</ul>
+</li>
+<li>excludedReactionUB - n x 1 bool vector indicating the reactions with upper bounds to be excluded from relaxation<ul>
+<li>excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)</li>
+<li>excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i</li>
+</ul>
+</li>
 <li>excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
 * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
 * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
@@ -319,7 +329,7 @@ s.t. ~&amp;~ S v + r = b \\
 
 <dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxedFBA">
-<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state
 constraints to make the FBA problem feasible. The optional parameters,
 excludedReactions and excludedMetabolites override all other relaxation options.</p>
@@ -327,10 +337,10 @@ excludedReactions and excludedMetabolites override all other relaxation options.
 \[\begin{split}min ~&amp;~ c^T v + \gamma ||v||_0 + \lambda ||r||_0 + \alpha (||p||_0 + ||q||_0) \\
 s.t ~&amp;~ S v + r \leq, =, \geq  b \\
     ~&amp;~ l - p \leq v \leq u + q \\
-    ~&amp;~ r \in R^m \\
-    ~&amp;~ p,q \in R_+^n\end{split}\]</div>
-<p><cite>m</cite> - number of metabolites,
-<cite>n</cite> - number of reactions</p>
+    ~&amp;~ r \in R^nMets \\
+    ~&amp;~ p,q \in R_+^nRxns\end{split}\]</div>
+<p><cite>nMets</cite> - number of metabolites,
+<cite>nRxns</cite> - number of reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[solution] = relaxedFBA(model, param)</div></blockquote>
@@ -372,18 +382,39 @@ Structure optionally containing the relaxation parameters:</p>
 <li>{1} = allow to relax the steady state constraint S*v = b</li>
 </ul>
 </li>
-<li>toBeUnblockedReactions - n x 1 vector indicating the reactions to be unblocked<ul>
+<li>toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked<ul>
 <li>toBeUnblockedReactions(i) = 1 : impose v(i) to be positive</li>
 <li>toBeUnblockedReactions(i) = -1 : impose v(i) to be negative</li>
 <li>toBeUnblockedReactions(i) = 0 : do not add any constraint (default)</li>
 </ul>
 </li>
-<li>excludedReactions - n x 1 bool vector indicating the reactions to be excluded from relaxation<ul>
+<li>excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation<ul>
 <li>excludedReactions(i) = false : allow to relax bounds on reaction i (default)</li>
 <li>excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
 </ul>
 </li>
-<li>excludedMetabolites - m x 1 bool vector indicating the metabolites to be excluded from relaxation<ul>
+<li>excludedReactionLB - nRxns x 1 bool vector indicating</li>
+</ul>
+<p>the reactions with lower bounds to be excluded from
+relaxation (overridden by excludedReactions)</p>
+<blockquote>
+<div><ul class="simple">
+<li>excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)</li>
+<li>excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>excludedReactionUB - nRxns x 1 bool vector indicating</li>
+</ul>
+<p>the reactions with upper bounds to be excluded from relaxation (overridden by excludedReactions)</p>
+<blockquote>
+<div><ul class="simple">
+<li>excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)</li>
+<li>excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation<ul>
 <li>excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i (default)</li>
 <li>excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
 </ul>
@@ -394,10 +425,20 @@ Structure optionally containing the relaxation parameters:</p>
 </ul>
 </div></blockquote>
 <ul class="simple">
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
+<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)</li>
+<li>.epsilon - stopping criteria - (Default value = 1e-6)</li>
+<li><dl class="first docutils">
+<dt>.theta0 - initial parameter of the approximation (Default value = 0.5)</dt>
+<dd>Theoretically, the greater the value of step parameter, the better the approximation of a step function.
+However, practically, a greater inital value, will tend to optimise toward a local minima of the approximate
+cardinality optimisation problem.</dd>
+</dl>
+</li>
+<li>.printLevel (Default = 0) Printing the progress of</li>
 </ul>
+<p>the algorithm is useful when trying different values
+of theta0 to start with the appropriate parameter
+giving the lowest cardinality solution.</p>
 </li>
 </ul>
 </div></blockquote>

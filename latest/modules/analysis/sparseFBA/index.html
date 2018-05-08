@@ -261,8 +261,14 @@
 <span id="id1"></span><h1>sparseFBA<a class="headerlink" href="#sparsefba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sparseFBA"></span><dl class="function">
 <dt id="src.analysis.sparseFBA.sparseFBA">
-<code class="descname">sparseFBA</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>checkMinimalSet</em>, <em>checkEssentialSet</em>, <em>zeroNormApprox</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/29dd0d3246c439639e368a20462df52eb779dfe9/src/analysis/sparseFBA/sparseFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseFBA</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>checkMinimalSet</em>, <em>checkEssentialSet</em>, <em>zeroNormApprox</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5052f08bd6496bb5e8663365e868a2d753a61295/src/analysis/sparseFBA/sparseFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the minimal set of reactions subject to a LP objective</p>
+<div class="math">
+\[\begin{split}min ~&amp;~ ||v||_0 \\
+s.t ~&amp;~ S v \leq, = or \geq b \\
+    ~&amp;~ c^T v = f* \\
+    ~&amp;~ l \leq v \leq u\end{split}\]</div>
+<p>where <span class="math">\(f*\)</span> is the optimal value of objective (default is <span class="math">\(max c^T v\)</span>).</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)</div></blockquote>
@@ -340,12 +346,7 @@ Returns a vector with 1 and 0&#8217;s, where 1 means sparse</li>
 Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
 </ul>
 </div></blockquote>
-<div class="math">
-\[\begin{split}min ~&amp;~ ||v||_0 \\
-s.t ~&amp;~ S v \leq, = or \geq b \\
-    ~&amp;~ c^T v = f* \\
-    ~&amp;~ l \leq v \leq u\end{split}\]</div>
-<p>where <span class="math">\(f*\)</span> is the optimal value of objective (default is <span class="math">\(max c^T v\)</span>).</p>
+<p>Authors: - Hoai Minh Le, Ronan Fleming</p>
 </dd></dl>
 
 </div>
