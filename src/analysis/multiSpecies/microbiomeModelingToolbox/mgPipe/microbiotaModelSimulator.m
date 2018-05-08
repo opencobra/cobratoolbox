@@ -90,6 +90,7 @@ for k = startIter:(patNumb + 1)
     EXrxn = model.rxns(RxnInd);
     EXrxn = regexprep(EXrxn, 'EX_', 'Diet_EX_');
     model.rxns(RxnInd) = EXrxn;
+    %model = changeRxnBounds(model, 'communityBiomass', 0.1, 'l');
     model = changeRxnBounds(model, 'communityBiomass', 0.4, 'l');
     model = changeRxnBounds(model, 'communityBiomass', 1, 'u');
     model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
