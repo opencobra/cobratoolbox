@@ -118,5 +118,20 @@ assert(length(organisms) == 30)
 mapP = detectOutput(resPath, 'mapInfo.mat');
 assert(isempty(mapP));
 
+% load the models
+abunFilePath = which('testData_normCoverageReduced.csv');
+[indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath);
+models = loadUncModels(modPath, organisms, objre);
+
+assert(length(models) == 5);
+
+assert(verifyCobraFunctionError('loadUncModels', 'inputs', {}));
+assert(verifyCobraFunctionError('loadUncModels', 'inputs', {modPath, ''}));
+
+warning('off', 'all');
+    loadUncModels(modPath, organisms);
+    assert(length(lastwarn()) > 0)
+warning('on', 'all');
+
 % change the directory
 cd(currentDir)
