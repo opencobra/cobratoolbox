@@ -7,24 +7,24 @@ documentation extracts the commented header of the function (commented
 lines between the function’s signature and the first line of code) based
 on keywords and blocks.
 
-**Rule**: There should be 1 free space between the percentage sign ``%``
+**Rule 1**: There should be 1 free space between the percentage sign ``%``
 and the text. For instance, a correctly formatted line in the header
 reads:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % this is correct
 
 A line in the header that is formatted as follows is **ignored**:
 
-.. code:: matlab
+.. code-block:: matlab
 
     %this is not correct (note the space)
 
 **Rule 2**: After the last line of the header, leave one empty line
 before the body of the function.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % This is the end of the header of the function
 
@@ -33,7 +33,7 @@ before the body of the function.
 Importantly, **do not** put a comment above the first line of code, but
 include the comment inline:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % This is the end of the header of the function
 
@@ -43,7 +43,7 @@ include the comment inline:
 **Rule 3**: A line in the header that includes ``..`` after the
 percentage sign will be **ignored** in the documentation:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % .. this line will be ignored
 
@@ -54,14 +54,14 @@ The function signature must be correctly formatted. Leave a space after
 every comma and before and after the equal sign ``=``. A correctly
 formatted function signature reads:
 
-.. code:: matlab
+.. code-block:: matlab
 
     function [output1, output2, output3] = someFunction(input1, input2, input3) % good practice
 
 A function signature that is not formatted properly throws an **error**
 during the automatic documentation generation:
 
-.. code:: matlab
+.. code-block:: matlab
 
     function [ output1,output2,output3 ]=someFunction( input1,input2,input3 ) % bad practice
 
@@ -72,7 +72,7 @@ The description of the function is a brief explanation of the purpose of
 the function. The description of the function may extend over several
 lines. However, try to keep the explanations as brief as possible.
 
-.. code:: matlab
+.. code-block:: matlab
 
     function [output1, output2, output3] = someFunction(input1, input2, input3)
     % This is a description of the function that helps to understand how the function works
@@ -100,7 +100,7 @@ input arguments, the keyword ``INPUTS:`` can be omitted.
 Any line of the block must be indented by 4 spaces after the comment
 sign ``%``:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % INPUTS:
     %    input1:     Description of input1
@@ -120,7 +120,7 @@ signature must be given in order to show how the function should be
 used. It is important to leave one empty line before the keyword
 ``USAGE:``, after the keyword, and after the function’s signature.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % the end of the description
     %
@@ -141,7 +141,7 @@ The indentation between the argument (with colon) and the description
 should be at least 4 spaces, so that all argument descriptions are
 aligned.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % INPUTS:
     %    input1:     Description of input1 <-- good practice
@@ -163,7 +163,7 @@ space between ``*`` and ``.``). It is not necessary to leave an empty
 line after listing fields and writing the next argument. The following
 illustrates how to list a structure with its fields:
 
-.. code:: matlab
+.. code-block:: matlab
 
     % OUTPUT:
     %    output:    output argument with fields:
@@ -179,7 +179,7 @@ illustrates how to list a structure with its fields:
 It is also possible to replace ``*`` with a numbered list. You can use
 numbers followed by a dot (e.g., ``1.``) instead of ``* .``.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % OPTIONAL INPUT:
     %    input:    optional input argument with fields:
@@ -195,7 +195,7 @@ included in this block will be formatted as ``MATLAB`` formatted code.
 Leave one empty line before the keyword ``EXAMPLE:``, after the keyword,
 and after the properly indented (4 spaces) code snippet.
 
-.. code:: matlab
+.. code-block:: matlab
 
     % the previous block ends here
     %
@@ -219,7 +219,7 @@ and after the properly indented text (indent of 4 spaces).
 Normally formatted text can be left at the with one space after the
 comment sign. An example of a ``NOTE:`` block reads:
 
-.. code:: matlab
+.. code-block:: matlab
 
     %
     % NOTE:
@@ -238,7 +238,7 @@ contributed to the function are listed. Authors are not shown in the
 documentation itself, so the keyword is preceded by ``..``. List 1
 author as follows:
 
-.. code:: matlab
+.. code-block:: matlab
 
     %
     % .. Author: - Name, date, additional information if needed
@@ -247,7 +247,7 @@ author as follows:
 
 If there are 2 or more authors, format as follows:
 
-.. code:: matlab
+.. code-block:: matlab
 
     %
     % .. Authors:
@@ -263,7 +263,7 @@ A complete example of a function is provided here. Please remember that
 colons, indentations, and keywords are important to guarantee pretty
 formatting.
 
-.. code:: matlab
+.. code-block:: matlab
 
     function [output1, output2] = someFunction(input1, input2, input3, input4)
     % This is a description of the function that helps understand how the function works
@@ -305,3 +305,4 @@ formatting.
     % .. Author: - Name, date, some information
 
     x = 5;  % here the body of the function begins
+
