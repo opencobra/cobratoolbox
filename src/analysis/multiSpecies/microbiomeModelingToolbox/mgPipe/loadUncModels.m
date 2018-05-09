@@ -16,7 +16,7 @@ function models = loadUncModels(modPath, organisms, objre)
 % .. Author: Federico Baldini 2017-2018
 
 models = {[]};  % empty cell array to be filled with models
-    for i = 1:length(organisms)
+    parfor i = 1:length(organisms)
     % reading the models
         pn = strcat(modPath, organisms(i, 1), {'.mat'});  % complete path from which to read the models
         cpn = char(pn);  % conversion of the path in character
