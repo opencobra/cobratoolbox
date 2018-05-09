@@ -103,7 +103,8 @@ else
     else
         patTab = readtable(indInfoFilePath);
         patients = table2array(patTab(2, :));
-        patients = patients(1:length(patOrg));
+        %patients = patients(1:length(patOrg));
+        patients = patients(1:length(patients));
         N = length(patients(1, :));
         colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
                 for k = 1: length(patients(1, :))
@@ -114,9 +115,8 @@ else
                        colorMap(k, :) = [0, 1, 0];  % Green
                     end
                 end
-       scatter(patOrg,reacNumber,24* ones(length(reacNumber), 1), colorMap, 'filled');
+       scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
        title('PCoA of NMPCs');
     end
-end
 end
 end
