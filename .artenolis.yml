@@ -19,9 +19,8 @@ after_success:
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
-      export here=`pwd`;
-      python ~/github_stats.py $here/docs/source/list_contributors.rst;
-      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins'); doc.deploy()";
+      python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
       fi
       fi
