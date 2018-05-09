@@ -88,8 +88,8 @@ figure(2)
 scatter(patOrg, reacNumber, 24 * ones(length(reacNumber), 1), colorMap, 'filled');
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
-title('Metabolic Diversity | health resolved')
-print(strcat(resPath, 'Metabolic Diversity | health resolved'), figForm)
+title('Metabolic Diversity')
+print(strcat(resPath, 'Metabolic Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
