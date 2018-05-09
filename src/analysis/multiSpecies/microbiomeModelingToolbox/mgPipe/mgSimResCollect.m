@@ -1,4 +1,4 @@
-function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat, fvaCt, figForm)
+function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -7,7 +7,7 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat,
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -17,7 +17,8 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat,
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
 %    patNumb:            number (double) of individuals in the study
-%    patStat:            logical indicating if documentation on health status
+%    indInfoFilePath:    char indicating, if stratification criteria are available, 
+%                        full path and name to related documentation(default: no)
 %                        is available
 %    fvaCt:              cell array containing FVA values for maximal uptake
 %    figForm:            char indicating the format of figures
@@ -34,7 +35,13 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, patStat,
          fprintf(fid, '%s,%f\n', ID{k, :});
      end
      fclose(fid);
- end
+ end 
+if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
+    patStat = 0;
+else
+    patStat = 1;
+end
+
 
 % Extract results from fluxes matrix and analyze: NMPCs will be computed for
 % rich (if enabled) and standard diet. NMPCs are computed under the assumption
@@ -60,7 +67,7 @@ end
 
 names = {'rich', 'standard', 'personalized'};
 for j = init:fl
-
+noPcoa = 0;
 for k = 2:patNumb + 1
 if isempty(fvaCt{fl, (k - 1)}) == 1
     disp('Jumping not feasible model')
@@ -69,7 +76,6 @@ if isempty(fvaCt{fl, (k - 1)}) == 1
     fSp(:, k - 1) = sp;
     noPcoa = 1;
 else
-    noPcoa = 0;
     sp = NaN(length(ID), 1);  % consider to remove preallocation
     for i = 1:length(ID)
         x = fvaCt{j, (k - 1)}{i, 3};
@@ -84,6 +90,7 @@ end
 
 csvwrite(strcat(resPath, names{1, j}, '.csv'), fSp)
 if noPcoa == 1
+    Y=[];
     disp('Jump plotting')
 else
     JD = pdist(fSp','euclidean');
@@ -94,7 +101,7 @@ else
         print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
         title('PCoA of NMPCs');
     else
-        patTab = readtable(strcat(toolboxPath, 'Resources\sampInfo.csv'));
+        patTab = readtable(indInfoFilePath);
         patients = table2array(patTab(2, :));
         patients = patients(1:length(patOrg));
         N = length(patients(1, :));

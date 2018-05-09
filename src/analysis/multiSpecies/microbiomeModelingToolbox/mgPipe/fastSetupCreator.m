@@ -103,7 +103,7 @@ dummyHostB.S = host.S(exMetRxnsMets, exMetRxns);
 dummyHostB.c = host.c(exMetRxns);
 dummyHostB.lb = host.lb(exMetRxns);
 dummyHostB.ub = host.ub(exMetRxns);
-dummyHostB.rev = host.rev(exMetRxns);
+
 
 % remove exchange reactions from host while leaving demand and sink
 % reactions
@@ -128,7 +128,6 @@ for j = 1:size(exMets2, 1)
     metE = find(ismember(dummyHostEU.mets, host.mets{exMets2(j)}));
     dummyHostEU.S(metU, j) = 1;
     dummyHostEU.S(metE, j) = -1;
-    dummyHostEU.rev(j) = 1;
     dummyHostEU.lb(j) = -1000;
     dummyHostEU.ub(j) = 1000;
 end

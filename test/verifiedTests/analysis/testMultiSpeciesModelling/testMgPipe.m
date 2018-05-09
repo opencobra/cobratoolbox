@@ -63,14 +63,17 @@ fvaType = true;
 % To tourn off the autorun to be able to manually execute each part of the pipeline.
 autorun = false;
 
+% stratification criteria
+indInfoFilePath = 'nostrat';
+
 % input checker
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun);
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun);
 
 % logical tests for outputs
 assert(init && ~autorun);
 
 % check if error is thrown when running in serial
-assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, 1, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun}));
+assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, 1, autoFix, compMod, rDiet, extSolve, fvaType, autorun}));
 
 % test if the function throws an error when no arguments are provided
 assert(verifyCobraFunctionError('initMgPipe'))
@@ -90,16 +93,12 @@ init = initMgPipe(modPath, CBTDIR, '', '', abunFilePath);
 assert(length(lastwarn()) > 0);
 
 % test with compMod = true
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, true, patStat, rDiet, extSolve, fvaType, autorun);
-assert(length(lastwarn()) > 0);
-
-% test with patStat = true
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, true, rDiet, extSolve, fvaType, autorun);
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, true, rDiet, extSolve, fvaType, autorun);
 assert(length(lastwarn()) > 0);
 
 % test with muted printLevel
 fprintf(' > Testing printLevel = 0 ... ');
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, objre, figForm, numWorkers, autoFix, compMod, patStat, rDiet, extSolve, fvaType, autorun, 0);
+init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, 0);
 assert(init && ~autorun);
 fprintf('Done.\n');
 

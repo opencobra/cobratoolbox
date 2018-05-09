@@ -34,7 +34,7 @@ function [adaptedDiet, growthOK] = adaptVMHDietToAGORA(VMHDiet, setupUsed, AGORA
 %                            can serve as input for the function useDiet.
 %
 % OPTIONAL OUTPUT:
-%     growthOK:              Bool indicating whether all AGORA models could
+%     growthOK:              Variable indicating whether all AGORA models could
 %                            grow on the adapted diet (if 1 then yes).
 %
 % .. Authors:
@@ -110,18 +110,16 @@ if nargin > 2
         bioID = model.rxns(find(strncmp(model.rxns, 'biomass', 7)));
         model = changeObjective(model, bioID);
         FBA = optimizeCbModel(model, 'max');
-        if FBA.f > 0.0000000001
-            Growth = 1;
+        if FBA.f > 0.00001
+            growthOK(i,1) = 1;
         else
-            Growth = 0;
+            growthOK(i,1) = 0;
         end
     end
-    if sum(Growth) == length(Growth)
+    if sum(growthOK) == length(growthOK)
         fprintf('All AGORA models can grow on the diet. \n')
-        growthOK = true;
     else
         fprintf('Not all AGORA models can grow on the diet. \n')
-        growthOK = false;
     end
 end
 
@@ -138,7 +136,7 @@ elseif strcmp(setupUsed, 'Microbiota')
     % add constraints on upper bounds based on uptake constraints in the
     % diet
     for i = 1:size(adaptedDietConstraints, 1)
-        adaptedDietConstraints{i, 3} = '1000';
+        adaptedDietConstraints{i, 3} = '0';
         origDietConstr=find(strcmp(adaptedDietConstraints{i, 1},VMHDietConstraints(:,1)));
         if ~isempty(origDietConstr)
             adaptedDietConstraints{i, 3} = num2str(-0.8 * VMHDietConstraints{origDietConstr, 2});

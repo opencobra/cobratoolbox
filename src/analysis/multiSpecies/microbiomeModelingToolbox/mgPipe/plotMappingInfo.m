@@ -1,11 +1,11 @@
-function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, patStat, figForm)
+function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)
 % This function computes and automatically plots information coming from
 % the mapping data as metabolic diversity and classical multidimensional
 % scaling of individuals' reactions repertoire
 %
 % USAGE:
 %
-%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, patStat, figForm)
+%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)
 %
 % INPUTS:
 %   resPath:            char with path of directory where results are saved
@@ -18,7 +18,8 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, patS
 %                       individual.
 %   reacAbun:           matrix with abundance of reaction per individual
 %   reacNumber:         number of unique reactions of each individual
-%   patStat:            logical indicating if documentation on health status
+%   indInfoFilePath:    char indicating, if stratification criteria are available, 
+%                       full path and name to related documentation(default: no)
 %                       is available
 %   figForm:            format to use for saving figures
 %
@@ -36,6 +37,11 @@ ylabel('Organisms');  % y-axis label
 title('Heatmap individuals | organisms reactions')
 print(strcat(resPath, 'Heatmap'), figForm)
 
+if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
+    patStat = 0;
+else
+    patStat = 1;
+end
 
 if patStat == 0
     % Plot:metabolic diversity
@@ -64,7 +70,7 @@ print(strcat(resPath, 'PCoA reactions'), figForm)
 else
     % Plot: number of species | number of reactions  disease resolved
     % Patients status: cellarray of same lenght of number of patients 0 means patient with disease 1 means helthy
-patTab = readtable(strcat(toolboxPath, 'Resources\sampInfo.csv'));
+patTab = readtable(indInfoFilePath);
 patients = table2array(patTab(2, :));
 patients = patients(1:length(patOrg));
 N = length(patients(1, :));
@@ -82,8 +88,8 @@ figure(2)
 scatter(patOrg, reacNumber, 24 * ones(length(reacNumber), 1), colorMap, 'filled');
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
-title('Metabolic Diversity | health resolved')
-print(strcat(resPath, 'Metabolic Diversity | health resolved'), figForm)
+title('Metabolic Diversity')
+print(strcat(resPath, 'Metabolic Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
