@@ -39,6 +39,7 @@ while L<Llast
     %Find reactions that carry flux (above solver tolerance)
     Rxns2Check(find(abs(solutionGF_O2.full)>1e-6))=[];
     Rxns2CheckF = intersect(Rxns2CheckF,Rxns2Check);
+    L = length(Rxns2CheckF);
     if printLevel > 0
        fprintf([' L = ' L '\n']);
     end
