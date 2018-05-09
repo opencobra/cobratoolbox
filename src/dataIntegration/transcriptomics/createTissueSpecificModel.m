@@ -137,6 +137,7 @@ else
             if ~isfield(options,'core'),options.core ={};end
             if ~isfield(options,'logfile'),options.logfile ='MILPlog';end
             if ~isfield(options,'runtime'),options.runtime =7200;end
+            if ~isfield(options,'epsilon'),options.epsilon=1;end
         case 'GIMME'
             if ~isfield(options,'expressionRxns') || ~isfield(options,'threshold')
                 error('One of the 2 required option fields for GIMME method is not defined')                
@@ -149,6 +150,7 @@ else
             if ~isfield(options,'tol'),options.tol=1e-8;end
             if ~isfield(options,'logfile'),options.logfile ='MILPlog';end
             if ~isfield(options,'runtime'),options.runtime =7200;end
+            if ~isfield(options,'epsilon'),options.epsilon=1;end
         case 'MBA'
             if ~isfield(options,'medium_set') || ~isfield(options,'high_set')
                 error('One of the 2 required option fields for MBA method is not defined')                
@@ -180,11 +182,11 @@ end
 
 switch options.solver
     case 'iMAT'
-        tissueModel = iMAT(model, options.expressionRxns, options.threshold_lb, options.threshold_ub, options.tol, options.core, options.logfile, options.runtime);
+        tissueModel = iMAT(model, options.expressionRxns, options.threshold_lb, options.threshold_ub, options.tol, options.core, options.logfile, options.runtime, options.epsilon);
     case 'GIMME'
         tissueModel = GIMME(model, options.expressionRxns, options.threshold, options.obj_frac);
     case 'INIT'
-        tissueModel = INIT(model, options.weights, options.tol, options.runtime, options.logfile);
+        tissueModel = INIT(model, options.weights, options.tol, options.runtime, options.logfile, options.epsilon);
     case 'MBA'
         tissueModel = MBA(model, options.medium_set, options.high_set, options.tol);
     case 'mCADRE'

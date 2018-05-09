@@ -1,4 +1,4 @@
-function tissueModel = INIT(model, weights, tol, runtime, logfile)
+function tissueModel = INIT(model, weights, tol, runtime, logfile, epsilon)
 % Use the INIT algorithm (`Agren et al., 2012`) to extract a context
 % specific model using data. INIT algorithm find the optimal trade-off
 % between inluding and removing reactions based on their given weights. If
@@ -31,6 +31,9 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile)
 %
 % .. Authors:  - Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
+if nargin < 6 || isempty(epsilon)
+    epsilon=1;
+end
 if nargin < 5 || isempty(runtime)
     runtime = 7200;
 end
@@ -49,7 +52,6 @@ end
     S = model.S;
     lb = model.lb;
     ub = model.ub;
-    epsilon=1;
 
     % Creating A matrix
     A = sparse(size(S,1)+2*length(RHindex)+2*length(RLindex),size(S,2)+2*length(RHindex)+length(RLindex));
