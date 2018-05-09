@@ -82,7 +82,7 @@ else
     patStat = 1;
 end
 if ~exist('indInfoFilePath', 'var')
-   indInfoFilePath='nostrat'
+   indInfoFilePath='nostrat';
 end
 
 % adding a filesep at the end of the path
