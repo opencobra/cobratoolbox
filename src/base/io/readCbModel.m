@@ -133,7 +133,7 @@ modelDescription = parser.Results.modelDescription;
 compSymbolList = parser.Results.compSymbolList;
 compNameList = parser.Results.compNameList;
 matlabModelName = parser.Results.modelName;
-supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
+supportedFileExtensions = {'*.xml;*.sbml;*.sto;*.xls;*.xlsx;*.mat'};
 
 % Open a dialog to select file
 if ~exist('fileType', 'var') || isempty(fileType)
