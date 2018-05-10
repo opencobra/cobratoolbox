@@ -71,9 +71,11 @@ function models = loadUncModels(modPath, organisms, objre, printLevel)
         ldm = changeRxnBounds(ldm, finrex, 1000, 'u');
 
         % removing blocked reactions from the bacs
-        BlockedRxns = identifyFastBlockedRxns(ldm,ldm.rxns, printLevel);
-        ldm= removeRxns(ldm, BlockedRxns);
-
+        %BlockedRxns = identifyFastBlockedRxns(ldm,ldm.rxns, printLevel);
+        %ldm= removeRxns(ldm, BlockedRxns);
+        %BlockedReaction = findBlockedReaction(ldm,'L2')
+        
+        
         % creating array with models as required as input from the following functions
         models(i, 1) = {ldm};
     end
