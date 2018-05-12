@@ -154,6 +154,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#remove-legacy-installation">Remove legacy installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#github">Github</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reconstruction">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -226,6 +227,18 @@
   <div class="section" id="faq">
 <h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
 <br><p>Answers to Frequently Asked Questions (<strong>FAQ</strong>) are listed below.</p>
+<div class="section" id="remove-legacy-installation">
+<h2>Remove legacy installation<a class="headerlink" href="#remove-legacy-installation" title="Permalink to this headline">¶</a></h2>
+<p>If you have an existing installation of a legacy COBRA Toolbox on your system,
+please remove the installation directory from your MATLAB path.</p>
+<p><a href="#id1"><span class="problematic" id="id2">|warning|</span></a> The following commands will delete your <code class="docutils literal"><span class="pre">cobratoolbox</span></code> directory and all of its contents</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">CBTDIR</span> <span class="p">=</span> <span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;initCobraToolbox.m&#39;</span><span class="p">));</span> <span class="c">% get the directory of the COBRA Toolbox</span>
+<span class="o">&gt;&gt;</span> <span class="n">rmpath</span><span class="p">(</span><span class="n">genpath</span><span class="p">(</span><span class="n">CBTDIR</span><span class="p">));</span> <span class="c">% remove the directory from the path</span>
+<span class="o">&gt;&gt;</span> <span class="n">savepath</span> <span class="c">% save the new path</span>
+<span class="o">&gt;&gt;</span> <span class="n">delete</span><span class="p">(</span><span class="n">CBTDIR</span><span class="p">,</span><span class="s">&#39;s&#39;</span><span class="p">)</span> <span class="c">% delete the installation directory</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="github">
 <h2>Github<a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h2>
 <p><strong>What do all these labels mean?</strong></p>
@@ -263,22 +276,26 @@ variables) are not properly set.</p>
 parallel computing toolbox. Global variables are not passed on to the
 workers of a parallel pool.</div>
 <div class="line">To change cobra global settings for a parfor loop, it is necessary to
-reinitialize the global variables on each worker. The easiest way to
-do this is as follows:</div>
+reinitialize the global variables on each worker. The toolbox offers
+two helper functions for this purpose, which also take care of pathes,
+<code class="docutils literal"><span class="pre">getEnvironment()</span></code> and <code class="docutils literal"><span class="pre">restoreEnvironment()</span></code>, which can be used
+as in the below example.</div>
 </div>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBT_LP_SOLVER</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">CBT_LP_SOLVER</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">environment</span> <span class="o">=</span> <span class="n">getEnvironment</span><span class="p">();</span>
 <span class="n">parfor</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span>
+    <span class="n">restoreEnvironment</span><span class="p">(</span><span class="n">environment</span><span class="p">);</span>
     <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="o">%</span><span class="n">third</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">printLevel</span><span class="p">,</span> <span class="n">fourth</span> <span class="n">argument</span> <span class="ow">is</span> <span class="n">validation</span> <span class="n">Level</span><span class="o">.</span>
     <span class="o">%</span> <span class="n">additional</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">parfor</span> <span class="n">loop</span> <span class="n">will</span> <span class="n">now</span> <span class="n">use</span> <span class="n">the</span> <span class="n">currently</span> <span class="nb">set</span> <span class="n">solver</span>
     <span class="n">optimizeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 <span class="n">end</span>
 </pre></div>
 </div>
-<p>By requesting the current global variable before the parfor loop and
+<p>By requesting the current environment (global variables and path) before the parfor loop and
 assigning it to a local variable, that variable is passed on to the
-workers, which can then use it to set up the correct solver (or other
-variable).</p>
+workers, which can then use it to set up the environment.</p>
+<p><code class="docutils literal"><span class="pre">dqqMinos</span></code> and <code class="docutils literal"><span class="pre">quadMinos</span></code> use the file system to input and output solutions.
+Therefore, they can currently not be used in any function that uses <code class="docutils literal"><span class="pre">parfor</span></code>, as this would
+cause concurrency issues between different workers.</p>
 </div>
 <div class="section" id="windows-matlab-r2016b-crashes-with-cplex-12-7-1">
 <h2>(Windows) MATLAB R2016b crashes with CPLEX 12.7.1<a class="headerlink" href="#windows-matlab-r2016b-crashes-with-cplex-12-7-1" title="Permalink to this headline">¶</a></h2>

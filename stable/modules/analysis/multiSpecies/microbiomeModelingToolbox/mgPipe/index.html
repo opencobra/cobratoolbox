@@ -1,0 +1,1114 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mgPipe &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Microbiome Modeling Toolbox" href="../index.html"/>
+        <link rel="next" title="parsimoniousFBA" href="../../../parsimoniousFBA/index.html"/>
+        <link rel="prev" title="Pairwise Interaction Modeling" href="../pairwiseInteractionModeling/index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dynamicFBA/index.html">Dynamic FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">MultiSpecies</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../SteadyCom/index.html">SteadyCom</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Microbiome Modeling Toolbox</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../pairwiseInteractionModeling/index.html">Pairwise Interaction Modeling</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">mgPipe</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Functions</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Analysis</a> &raquo;</li>
+        
+          <li><a href="../../index.html">MultiSpecies</a> &raquo;</li>
+        
+          <li><a href="../index.html">Microbiome Modeling Toolbox</a> &raquo;</li>
+        
+      <li>mgPipe</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mgpipe">
+<span id="id1"></span><h1>mgPipe<a class="headerlink" href="#mgpipe" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe"></span><dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.adaptVMHDietToAGORA">
+<code class="descname">adaptVMHDietToAGORA</code><span class="sig-paren">(</span><em>VMHDiet</em>, <em>setupUsed</em>, <em>AGORAPath</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/adaptVMHDietToAGORA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.adaptVMHDietToAGORA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox.
+This function adapts a diet generated by the Diet Designer on
+<a class="reference external" href="https://vmh.uni.lu">https://vmh.uni.lu</a> such that microbiome community models created from the
+AGORA resource can generate biomass. All metabolites required by at least
+one AGORA model are added. Note that the adapted diet that is the output
+of this function is specific to the AGORA resource. It is not guaranteed
+that other constraint-based models can produce biomass on this diet.
+Units are given in mmol/day/person.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[adaptedDietConstraints, growthOK] = adaptVMHDietToAGORA(VMHDiet, setupUsed, AGORAPath)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>VMHDietConstraints</strong> &#8211;
+Name of text file with VMH exchange reaction IDs
+and values on lower bounds generated by Diet
+Designer on <a class="reference external" href="https://vmh.uni.lu">https://vmh.uni.lu</a> (or manually).</li>
+<li><strong>setupUsed</strong> &#8211;
+Model setup for which the adapted diet will be
+used. Allowed inputs are AGORA (the single AGORA
+models), Pairwise (the microbe-microbe models
+generated by the pairwise modeling module), and
+Microbiota (the microbe community models
+generated by MgPipe).</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>AGORAPath</strong> &#8211;
+Path to the AGORA model resource. If entered,
+growth of all single models on the adapted diet
+will be tested.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>adaptedDiet</strong> &#8211;
+Cell array of exchange reaction IDs, values on
+lower bounds, and values on upper bounds that
+can serve as input for the function useDiet.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>growthOK</strong> &#8211;
+Variable indicating whether all AGORA models could
+grow on the adapted diet (if 1 then yes).</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.addMicrobeCommunityBiomass">
+<code class="descname">addMicrobeCommunityBiomass</code><span class="sig-paren">(</span><em>model</em>, <em>microbeNames</em>, <em>abundances</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.addMicrobeCommunityBiomass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a community biomass reaction to a model structure with multiple
+microbes based on their relative abundances. If no abundance values are
+provided, all n microbes get equal weights (1/n). Assumes a lumen
+compartment [u] and a fecal secretion comparment [fe]. Creates a community
+biomass metabolite &#8216;microbeBiomass&#8217; that is secreted from [u] to [fe] and
+exchanged from fecal compartment.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = addMicrobeCommunityBiomass(model, microbeNames, abundances)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with n joined microbes with biomass
+metabolites &#8216;Microbe_biomass[c]&#8217;.</li>
+<li><strong>microbeNames</strong> &#8211;
+nx1 cell array of n unique strings that represent
+each microbe in the model.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abundances</strong> &#8211;
+nx1 vector with the relative abundance of each microbe.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.calculateReactionAbundance">
+<code class="descname">calculateReactionAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>modelPath</em>, <em>taxonomy</em>, <em>rxnsList</em>, <em>numWorkers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/calculateReactionAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the total abundance of reactions of interest in a given microbiome
+sample based on the strain-level composition.
+Reaction presence or absence in each strain is derived from the reaction content
+of the respective AGORA model. Two outputs are given: the total abundance,
+and optionally the abundance on different taxonomical levels.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>ReactionAbundance =calculateReactionAbundance(abundance, modelPath, taxonomy, rxnsList, numWorkers)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abundance</strong> &#8211;
+Table of relative abundances with AGORA model
+IDs of the strains as rows and sample IDs as columns</li>
+<li><strong>modelPath</strong> &#8211;
+Folder containing the strain-specific AGORA models</li>
+<li><strong>taxonomy</strong> &#8211;
+Table with information on the taxonomy of each
+AGORA model strain</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnsList</strong> &#8211;
+List of reactions for which the abundance
+should be calculated (if left empty: all
+reactions in all models)</li>
+<li><strong>numWorkers</strong> &#8211;
+Number of workers used for parallel pool. If
+left empty, the parallel pool will not be
+started. Parallellization is recommended if
+all reactions are computed.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>ReactionAbundance       Structure with abundance for each microbiome</strong> &#8211;</p>
+<p>and reaction in total and on taxon levels</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.checkNomenConsist">
+<code class="descname">checkNomenConsist</code><span class="sig-paren">(</span><em>organisms</em>, <em>autoFix</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/checkNomenConsist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.checkNomenConsist" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks consistence of inputs (organisms names). If the parameter
+autoFix == 0 the function halts execution with error msg when inconsistences are
+detected, otherwise it really tries hard to fix the problem and continues execution.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[autoStat, fixVec, organisms] = checkNomenConsist(organisms, autoFix)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>organisms</strong> &#8211;
+nx1 cell array cell array with names of organisms in the study</li>
+<li><strong>autoFix</strong> &#8211;
+double indicating if to try to automatically fix inconsistencies</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>autoStat</strong> &#8211;
+double indicating if inconsistencies were found</li>
+<li><strong>fixVec</strong> &#8211;
+nx1 cell array cell array with names of individuals in the study</li>
+<li><strong>organisms</strong> &#8211;
+nx1 cell array cell array with non ambiguous names of organisms in the study</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.correlateFluxWithTaxonAbundance">
+<code class="descname">correlateFluxWithTaxonAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>fluxes</em>, <em>taxonomy</em>, <em>corrMethod</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the correlations between fluxes for one or more reactions of
+interest in a number of microbiome samples and the relative microbe
+abundance on different taxonomical levels in the same samples.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abundance</strong> &#8211;
+Table of relative abundances with AGORA model IDs
+of the strains as rows and sample IDs as columns</li>
+<li><strong>fluxes</strong> &#8211;
+Table of fluxes for reactions of interest with
+reaction IDs in microbiome community models as rows
+and sample IDs as columns</li>
+<li><strong>taxonomy</strong> &#8211;
+Table with information on the taxonomy of each
+AGORA model strain</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>corrMethod</strong> &#8211;
+Method to compute the linear correlation
+coefficient. Allowed inputs: &#8216;Pearson&#8217; (default),
+&#8216;Kendall&#8217;, &#8216;Spearman&#8217;.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FluxCorrelations</strong> &#8211;
+Structure with correlations between fluxes for each
+reaction and abundances on taxon levels</li>
+<li><strong>PValues</strong> &#8211;
+p-values corresponding to each calculated
+correlation</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPersonalizedModel">
+<code class="descname">createPersonalizedModel</code><span class="sig-paren">(</span><em>abunFilePath</em>, <em>resPath</em>, <em>model</em>, <em>sampName</em>, <em>orglist</em>, <em>patNumb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/createPersonalizedModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPersonalizedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates personalized models from integration of given
+organisms abundances into the previously built global setup. Coupling
+constraints are also added for each organism. All the operations are
+parallelized and the generated personalized models directly saved in .mat
+format.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[createdModels] = createPersonalizedModel(abunFilePath, resPath, model, sampName, orglist, patNumb)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>infoPath</strong> &#8211;
+char with path of directory and file name from where to retrieve abundance information</li>
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>model</strong> &#8211;
+&#8220;global setup&#8221; model in COBRA model structure format</li>
+<li><strong>sampName</strong> &#8211;
+cell array with names of individuals in the study</li>
+<li><strong>orglist</strong> &#8211;
+cell array with names of organisms in the study</li>
+<li><strong>patNumb</strong> &#8211;
+number (double) of individuals in the study</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>createdModels</strong> &#8211;
+created personalized models</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.detectOutput">
+<code class="descname">detectOutput</code><span class="sig-paren">(</span><em>resPath</em>, <em>objNam</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/detectOutput.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.detectOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks the existence of a specific file in the results folder.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>mapP = detectOutput(resPath, objNam)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>objNam</strong> &#8211;
+char with name of object to find in the results folder</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mapP</strong> &#8211;
+double indicating if object was found in the result folder</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.fastSetupCreator">
+<code class="descname">fastSetupCreator</code><span class="sig-paren">(</span><em>models</em>, <em>microbeNames</em>, <em>host</em>, <em>objre</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/fastSetupCreator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.fastSetupCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a microbiota model (min 1 microbe) that can be coupled with a host
+model. Microbes and host are connected with a lumen compartment [u], host
+can secrete metabolites into body fluids [b]. Diet is simulated as uptake
+through the compartment [d], transporters are unidirectional from [d] to
+[u]. Secretion goes through the fecal compartment [fe], transporters are
+unidirectional from [u] to [fe].
+Reaction types
+Diet exchange: &#8216;EX_met[d]&#8217;: &#8216;met[d] &lt;=&gt;&#8217;
+Diet transporter: &#8216;DUt_met&#8217;: &#8216;met[d] -&gt; met[u]&#8217;
+Fecal transporter: &#8216;UFEt_met&#8217;: &#8216;met[u] -&gt; met[fe]&#8217;
+Fecal exchanges: &#8216;EX_met[fe]&#8217;: &#8216;met[fe] &lt;=&gt;&#8217;
+Microbe uptake/secretion: &#8216;Microbe_IEX_met[c]tr&#8217;: &#8216;Microbe_met[c] &lt;=&gt; met[u]&#8217;
+Host uptake/secretion lumen: &#8216;Host_IEX_met[c]tr&#8217;: &#8216;Host_met[c] &lt;=&gt; met[u]&#8217;
+Host exchange body fluids: &#8216;Host_EX_met(e)b&#8217;: &#8216;Host_met[b] &lt;=&gt;&#8217;</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>models</strong> &#8211;
+nx1 cell array that contains n microbe models in
+COBRA model structure format</li>
+<li><strong>microbeNames</strong> &#8211;
+nx1 cell array of n unique strings that represent
+each microbe model. Reactions and metabolites of
+each microbe will get the corresponding
+microbeNames (e.g., &#8216;Ecoli&#8217;) prefix. Reactions
+will be named &#8216;Ecoli_RxnAbbr&#8217; and metabolites
+&#8216;Ecoli_MetAbbr[c]&#8217;).</li>
+<li><strong>host</strong> &#8211;
+Host COBRA model structure, can be left empty if
+there is no host model</li>
+<li><strong>objre</strong> &#8211;
+char with reaction name of objective function of organisms</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with all models combined</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.getIndividualSizeName">
+<code class="descname">getIndividualSizeName</code><span class="sig-paren">(</span><em>abunFilePath</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/getIndividualSizeName.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.getIndividualSizeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function automatically detects name and number of individuals present
+in the study.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve information</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>indNumb</strong> &#8211;
+number of individuals in the study</li>
+<li><strong>sampName</strong> &#8211;
+nx1 cell array cell array with names of individuals in the study</li>
+<li><strong>organisms</strong> &#8211;
+nx1 cell array cell array with names of organisms in the study</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.getMappingInfo">
+<code class="descname">getMappingInfo</code><span class="sig-paren">(</span><em>models</em>, <em>abunFilePath</em>, <em>patNumb</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/getMappingInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.getMappingInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function automatically extracts information from strain abundances in
+different individuals and combines this information into different tables.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(models, abunFilePath, patNumb)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>models</strong> &#8211;
+nx1 cell array that contains n microbe models in
+COBRA model structure format</li>
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve abundance information</li>
+<li><strong>patNumb</strong> &#8211;
+number of individuals in the study</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>reac</strong> &#8211;
+cell array with all the unique set of reactions
+contained in the models</li>
+<li><strong>micRea</strong> &#8211;
+binary matrix assessing presence of set of unique
+reactions for each of the microbes</li>
+<li><strong>binOrg</strong> &#8211;
+binary matrix assessing presence of specific strains in
+different individuals</li>
+<li><strong>reacPat</strong> &#8211;
+matrix with number of reactions per individual
+(organism resolved)</li>
+<li><strong>reacSet</strong> &#8211;
+matrix with names of reactions of each individual</li>
+<li><strong>reacTab</strong> &#8211;
+char with names of individuals in the study</li>
+<li><strong>reacAbun</strong> &#8211;
+binary matrix with presence/absence of reaction per
+individual: to compare different individuals</li>
+<li><strong>reacNumber</strong> &#8211;
+number of unique reactions of each individual</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.guidedSim">
+<code class="descname">guidedSim</code><span class="sig-paren">(</span><em>model</em>, <em>fvaType</em>, <em>rl</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.guidedSim" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is part of the MgPipe pipeline and runs FVAs on a series of
+selected reactions with different possible FVA functions. Solver is
+automatically set to &#8216;cplex&#8217;, objective function is maximized, and
+optPercentage set to 99.99.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[minFlux, maxFlux] = guidedSim(model, fvaType, rl)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with n joined microbes with biomass
+metabolites &#8216;Microbe_biomass[c]&#8217;.</li>
+<li><strong>fvaType</strong> &#8211;
+double indicating what FVA function to use
+fvaType=1 for fastFVA; fvaType=0 for fluxVariability.</li>
+<li><strong>rl</strong> &#8211;
+nx1 vector with the reactions of interest.</li>
+<li><strong>solver</strong> &#8211;
+char with slver name to use.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minFlux</strong> &#8211;
+Minimum flux for each reaction</li>
+<li><strong>maxFlux</strong> &#8211;
+Maximum flux for each reaction</li>
+</ul>
+</div></blockquote>
+<p>..Author:  Federico Baldini,  2017-2018</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.initMgPipe">
+<code class="descname">initMgPipe</code><span class="sig-paren">(</span><em>modPath</em>, <em>toolboxPath</em>, <em>resPath</em>, <em>dietFilePath</em>, <em>abunFilePath</em>, <em>indInfoFilePath</em>, <em>objre</em>, <em>figForm</em>, <em>numWorkers</em>, <em>autoFix</em>, <em>compMod</em>, <em>rDiet</em>, <em>extSolve</em>, <em>fvaType</em>, <em>autorun</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/initMgPipe.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.initMgPipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called from the MgPipe driver <cite>StartMgPipe</cite> takes care of saving some variables
+in the environment (in case that the function is called without a driver), does some checks on the
+inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
+in the function it can replace the driver.</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modPath</strong> &#8211;
+char with path of directory where models are stored</li>
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve abundance information</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>toolboxPath</strong> &#8211;
+char with path of directory where the toolbox is saved</li>
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>dietFilePath</strong> &#8211;
+char with path of directory where the diet is saved</li>
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve abundance information</li>
+<li><strong>indInfoFilePath</strong> &#8211;
+char indicating, if stratification criteria are available, full path and name to related documentation(default: no)</li>
+<li><strong>objre</strong> &#8211;
+char with reaction name of objective function of organisms</li>
+<li><strong>figForm</strong> &#8211;
+format to use for saving figures</li>
+<li><strong>numWorkers</strong> &#8211;
+boolean indicating the number of cores to use for parallelization</li>
+<li><strong>autoFix</strong> &#8211;
+double indicating if to try to automatically fix inconsistencies</li>
+<li><strong>compMod</strong> &#8211;
+boolean indicating if outputs in open format should be produced for each section (default: <cite>false</cite>)</li>
+<li><strong>rDiet</strong> &#8211;
+boolean indicating if to enable also rich diet simulations (default: <cite>false</cite>)</li>
+<li><strong>extSolve</strong> &#8211;
+boolean indicating if to save the constrained models to solve them externally (default: <cite>false</cite>)</li>
+<li><strong>fvaType</strong> &#8211;
+boolean indicating which function to use for flux variability (default: <cite>true</cite>)</li>
+<li><strong>autorun</strong> &#8211;
+boolean used to enable /disable autorun behavior (please set to <cite>true</cite>) (default: <cite>false</cite>)</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level (default: 1)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>init</strong> &#8211;
+status of initialization</li>
+<li><strong>modPath</strong> &#8211;
+char with path of directory where models are stored</li>
+<li><strong>toolboxPath</strong> &#8211;
+char with path of directory where the toolbox is saved</li>
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>dietFilePath</strong> &#8211;
+char with path of directory where the diet is saved</li>
+<li><strong>abunFilePath</strong> &#8211;
+char with path and name of file from which to retrieve abundance information</li>
+<li><strong>indInfoFilePath</strong> &#8211;
+char indicating, if stratification criteria are available, full path and name to related documentation(default: no)</li>
+<li><strong>objre</strong> &#8211;
+char with reaction name of objective function of organisms</li>
+<li><strong>figForm</strong> &#8211;
+format to use for saving figures</li>
+<li><strong>numWorkers</strong> &#8211;
+boolean indicating the number of cores to use for parallelization</li>
+<li><strong>autoFix</strong> &#8211;
+double indicating if to try to automatically fix inconsistencies</li>
+<li><strong>compMod</strong> &#8211;
+boolean indicating if outputs in open format should be produced for each section (1=T)</li>
+<li><strong>patStat</strong> &#8211;
+boolean indicating if documentation on health status is available</li>
+<li><strong>rDiet</strong> &#8211;
+boolean indicating if to enable also rich diet simulations</li>
+<li><strong>extSolve</strong> &#8211;
+boolean indicating if to save the constrained models to solve them externally</li>
+<li><strong>fvaType</strong> &#8211;
+boolean indicating which function to use for flux variability</li>
+<li><strong>autorun</strong> &#8211;
+boolean used to enable /disable autorun behavior (please set to 1)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.loadUncModels">
+<code class="descname">loadUncModels</code><span class="sig-paren">(</span><em>modPath</em>, <em>organisms</em>, <em>objre</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/loadUncModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.loadUncModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads and unconstrains metabolic models from a specific folder</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>models = loadUncModels(modPath, organisms, objre)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>organisms</strong> &#8211;
+nx1 cell array cell array with names of organisms in the study</li>
+<li><strong>modPath</strong> &#8211;
+char with path of directory where models are stored</li>
+<li><strong>objre</strong> &#8211;
+char with reaction name of objective function of organisms</li>
+<li><strong>printLevel</strong> &#8211;
+Verbose level (default: printLevel = 1)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>models</strong> &#8211;
+double indicating if object was found in the result folder</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.makeDummyModel">
+<code class="descname">makeDummyModel</code><span class="sig-paren">(</span><em>numMets</em>, <em>numRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/makeDummyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.makeDummyModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes an empty model with numMets rows for metabolites and numRxns columns
+for reactions. Includes all fields that are necessary to join models.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>dummy = makeDummyModel(numMets, numRxns)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>numMets</strong> &#8211;
+Number of metabolites</li>
+<li><strong>numRxns</strong> &#8211;
+Number of reactions</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>dummy</strong> &#8211;
+Empty COBRA model structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgSimResCollect">
+<code class="descname">mgSimResCollect</code><span class="sig-paren">(</span><em>resPath</em>, <em>ID</em>, <em>rDiet</em>, <em>pDiet</em>, <em>patNumb</em>, <em>indInfoFilePath</em>, <em>fvaCt</em>, <em>figForm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgSimResCollect" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called from the MgPipe pipeline. Its purpose is to compute
+NMPCs from simulations with different diet on multiple microbiota models.
+Results are outputted as .csv and a PCoA on NMPCs to group microbiota
+models of individuals for similar metabolic profile is also
+computed and outputted.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[fSp, Y]= mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>ID</strong> &#8211;
+cell array with list of all unique Exchanges to diet/
+fecal compartment</li>
+<li><strong>rDiet</strong> &#8211;
+number (double) indicating if to simulate a rich diet</li>
+<li><strong>pDiet</strong> &#8211;
+number (double) indicating if a personalized diet
+is available and should be simulated</li>
+<li><strong>patNumb</strong> &#8211;
+number (double) of individuals in the study</li>
+<li><strong>indInfoFilePath</strong> &#8211;
+char indicating, if stratification criteria are available,
+full path and name to related documentation(default: no)
+is available</li>
+<li><strong>fvaCt</strong> &#8211;
+cell array containing FVA values for maximal uptake</li>
+<li><strong>figForm</strong> &#8211;
+char indicating the format of figures</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fSp</strong> &#8211;
+cell array with computed NMPCs</li>
+<li><strong>Y</strong> &#8211;
+classical multidimensional scaling</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.microbiotaModelSimulator">
+<code class="descname">microbiotaModelSimulator</code><span class="sig-paren">(</span><em>resPath</em>, <em>setup</em>, <em>sampName</em>, <em>dietFilePath</em>, <em>rDiet</em>, <em>pDiet</em>, <em>extSolve</em>, <em>patNumb</em>, <em>fvaType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/microbiotaModelSimulator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.microbiotaModelSimulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called from the MgPipe pipeline. Its purpose is to apply
+different diets (according to the user?s input) to the microbiota models
+and run simulations computing FVAs on exchanges reactions of the microbiota
+models. The output is saved in multiple .mat objects. Intermediate saving
+checkpoints are present.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>setup</strong> &#8211;
+&#8220;global setup&#8221; model in COBRA model structure format</li>
+<li><strong>sampName</strong> &#8211;
+cell array with names of individuals in the study</li>
+<li><strong>dietFilePath</strong> &#8211;
+path to and name of the text file with dietary information</li>
+<li><strong>rDiet</strong> &#8211;
+number (double) indicating if to simulate a rich diet</li>
+<li><strong>pDiet</strong> &#8211;
+number (double) indicating if a personalized diet
+is available and should be simulated</li>
+<li><strong>extSolve</strong> &#8211;
+number (double) indicating if simulations will be
+not run in matlab but externally (models with imposed
+constraints are saved)</li>
+<li><strong>patNumb</strong> &#8211;
+number (double) of individuals in the study</li>
+<li><strong>fvaType</strong> &#8211;
+number (double) which FVA function to use(fastFVA =1)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>ID</strong> &#8211;
+cell array with list of all unique Exchanges to diet/
+fecal compartment</p>
+</li>
+<li><p class="first"><strong>fvaCt</strong> &#8211;
+cell array containing FVA values for maximal uptake
+and secretion for setup lumen / diet exchanges</p>
+</li>
+<li><p class="first"><strong>nsCt</strong> &#8211;
+cell array containing FVA values for minimal uptake
+and secretion for setup lumen / diet exchanges</p>
+</li>
+<li><p class="first"><strong>presol              array containing values of microbiota models</strong> &#8211;</p>
+<p>objective function</p>
+</li>
+<li><p class="first"><strong>inFesMat            cell array with names of infeasible microbiota models</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.parsave">
+<code class="descname">parsave</code><span class="sig-paren">(</span><em>fname</em>, <em>microbiota_model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.parsave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a model from a parfor loop - might not work in R2105b</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>parsave(fname, microbiota_model)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fname</strong> &#8211;
+name of file</li>
+<li><strong>microbiota_model</strong> &#8211;
+name of variable</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.plotMappingInfo">
+<code class="descname">plotMappingInfo</code><span class="sig-paren">(</span><em>resPath</em>, <em>patOrg</em>, <em>reacPat</em>, <em>reacTab</em>, <em>reacNumber</em>, <em>indInfoFilePath</em>, <em>figForm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2c5855c6187b3bc3b414088fec29041ac3c8a28c/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.plotMappingInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes and automatically plots information coming from
+the mapping data as metabolic diversity and classical multidimensional
+scaling of individuals&#8217; reactions repertoire</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>reac</strong> &#8211;
+nx1 cell array with all the unique set of reactions
+contained in the models</li>
+<li><strong>micRea</strong> &#8211;
+binary matrix assessing presence of set of unique
+reactions for each of the microbes</li>
+<li><strong>reacSet</strong> &#8211;
+matrix with names of reactions of each individual</li>
+<li><strong>reacTab</strong> &#8211;
+binary matrix with presence/absence of reaction per
+individual.</li>
+<li><strong>reacAbun</strong> &#8211;
+matrix with abundance of reaction per individual</li>
+<li><strong>reacNumber</strong> &#8211;
+number of unique reactions of each individual</li>
+<li><strong>indInfoFilePath</strong> &#8211;
+char indicating, if stratification criteria are available,
+full path and name to related documentation(default: no)
+is available</li>
+<li><strong>figForm</strong> &#8211;
+format to use for saving figures</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Y</strong> &#8211;
+classical multidimensional scaling of individuals&#8217;
+reactions repertoire</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../parsimoniousFBA/index.html" class="btn btn-default float-right" title="parsimoniousFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../pairwiseInteractionModeling/index.html" class="btn btn-default" title="Pairwise Interaction Modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

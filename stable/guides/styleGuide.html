@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Style guide &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Style guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="style-guide">
+<span id="styleguide"></span><h1>Style guide<a class="headerlink" href="#style-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><strong>Spacing</strong></li>
+</ol>
+<ul class="simple">
+<li>Write <code class="docutils literal"><span class="pre">if</span> <span class="pre">singleCondition</span></code>, and not <code class="docutils literal"><span class="pre">if</span> <span class="pre">(singleCondition)</span></code>. Use
+brackets only for multiple conditions.</li>
+<li>Use spaces around operators, e.g., <code class="docutils literal"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> instead of <code class="docutils literal"><span class="pre">i+1</span></code></li>
+<li>Use spaces after commas (unless separated by newlines)</li>
+<li>Avoid spaces inside the curly-braces of cells: <code class="docutils literal"><span class="pre">{a,</span> <span class="pre">b}</span></code> instead of
+<code class="docutils literal"><span class="pre">{</span> <span class="pre">a,</span> <span class="pre">b</span> <span class="pre">}</span></code></li>
+<li>Use spaces after commas in lists, after operands, after names, etc.
+This also improves readability. e.g. <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3;</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6];</span></code>
+instead of <code class="docutils literal"><span class="pre">a=[1,2,3;4,5,6]</span></code>;</li>
+<li>Include a single line of whitespace between blocks of code</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><strong>Variable names</strong></li>
+</ol>
+<ul class="simple">
+<li>When using mixed words, separate with capital letters (with no
+intervening spaces or punctuation), e.g. <code class="docutils literal"><span class="pre">calculateKineticFlux</span></code></li>
+<li>Avoid ambiguity when naming variables: be as specific as possible</li>
+<li>All variable names must be written in English</li>
+<li>Use verb-noun structure for functions: allows to explain the
+operations performed</li>
+<li>Append meaningful prefixes when possible, e.g. <code class="docutils literal"><span class="pre">Av</span></code>, <code class="docutils literal"><span class="pre">Sum</span></code>,
+<code class="docutils literal"><span class="pre">Min</span></code>, <code class="docutils literal"><span class="pre">Max</span></code>, etc</li>
+<li>Boolean type variables, i.e.&nbsp;with only <code class="docutils literal"><span class="pre">true/false</span></code> values, with
+<code class="docutils literal"><span class="pre">Is</span></code> or <code class="docutils literal"><span class="pre">is</span></code> to stress this fact, e.g. <code class="docutils literal"><span class="pre">if</span> <span class="pre">dataIsLoaded</span></code></li>
+<li>Reuse names for short-life and variables with local scope, such as
+indexes of loops</li>
+<li>Only use <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, etc., as indexes for very short loops</li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><strong>Miscellaneous</strong></li>
+</ol>
+<ul class="simple">
+<li>Add sanity checks to the code, e.g., if something does not work as
+expected, there should be code to check for this and either issue a
+<code class="docutils literal"><span class="pre">warning</span></code> or an <code class="docutils literal"><span class="pre">error</span></code> if there is a problem.</li>
+<li>Do not encode the absolute position of any files within any function:
+use relative paths, where possible</li>
+<li>Indent the code: really improves readability.</li>
+<li>Fix a maximum line length: break large ones if needed. Ensure that it
+is clear that the sentence is separated through different lines,
+e.g.:</li>
+</ul>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span>function [parameter1, parameter2, parameter3, parameter4] = functionManyParameters...
+          (InputParameter1, InputParameter2, InputParameter3, InputParameter3, ...
+           InputParameter4, InputParameter5)
+</pre></div>
+</div>
+<ul class="simple">
+<li>Divide the code in separate functional files whenever it is possible
+(and logical)</li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><strong>Platform independent code</strong></li>
+</ol>
+<ul class="simple">
+<li>Use <code class="docutils literal"><span class="pre">pwd</span></code> to get the current directory</li>
+<li>Use <code class="docutils literal"><span class="pre">filesep</span></code> for paths (e.g., <code class="docutils literal"><span class="pre">['myPath'</span> <span class="pre">filesep</span> <span class="pre">'myFile.m']</span></code>)</li>
+</ul>
+</div>
+<div class="section" id="documentation-and-comments">
+<h2>Documentation and comments<a class="headerlink" href="#documentation-and-comments" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Make sure the code is fully documented and commented</li>
+<li>Header for each file with the following elements:<ul>
+<li>Brief description (easy and short functions) or more detailed
+explanations (more complicated functions).</li>
+<li>Description of <code class="docutils literal"><span class="pre">INPUT</span></code> and <code class="docutils literal"><span class="pre">OUTPUT</span></code> variables</li>
+<li>Authors, co-authors, contributors (and the contribution of each of
+them)</li>
+<li>Date of first fully operative version, and dates of consequent
+modifications with the corresponding number of version, e.g.
+<code class="docutils literal"><span class="pre">v1</span> <span class="pre">-</span> <span class="pre">11/06/2014</span> <span class="pre">/</span> <span class="pre">v2</span> <span class="pre">-</span> <span class="pre">12/08/2014</span></code></li>
+<li>Description of modifications in later versions, e.g.
+<code class="docutils literal"><span class="pre">v2:</span> <span class="pre">the</span> <span class="pre">efficiency</span> <span class="pre">has</span> <span class="pre">been</span> <span class="pre">improved</span> <span class="pre">by</span> <span class="pre">substituting</span> <span class="pre">the</span> <span class="pre">loops</span> <span class="pre">with</span> <span class="pre">matrices</span> <span class="pre">operations</span></code></li>
+</ul>
+</li>
+<li>Throughout the file:<ul>
+<li>Comment smartly. Not every line, but enough to allow tracking the
+execution</li>
+<li>Try to use brief comments.</li>
+<li>In case you believe a more complicated part requires a more
+comprehensive explanation, describe <code class="docutils literal"><span class="pre">What</span> <span class="pre">are</span> <span class="pre">you</span> <span class="pre">doing</span></code> and
+<code class="docutils literal"><span class="pre">How</span> <span class="pre">it</span> <span class="pre">is</span> <span class="pre">done</span> <span class="pre">through</span> <span class="pre">a</span> <span class="pre">more</span> <span class="pre">detailed</span> <span class="pre">paragraph</span></code>.</li>
+<li>If the code is divided in blocks, you can also introduce briefly
+what is the function of each block beforehand.</li>
+</ul>
+</li>
+</ul>
+<!-- elaborate guidelines to automatically generate the documentation //--></div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Annotate the individual tests extensively for review</li>
+<li>Use <code class="docutils literal"><span class="pre">assert(computedResult</span> <span class="pre">==</span> <span class="pre">expectedResult)</span></code> to logically test
+the <code class="docutils literal"><span class="pre">computedResult</span></code> and the <code class="docutils literal"><span class="pre">expectedResult</span></code> (you may also use
+<code class="docutils literal"><span class="pre">&lt;</span></code> or <code class="docutils literal"><span class="pre">&gt;</span></code>)</li>
+<li>For testing all entries of a vector, use
+<code class="docutils literal"><span class="pre">assert(all(vector1</span> <span class="pre">==</span> <span class="pre">vector2))</span></code></li>
+<li>Only use equality <code class="docutils literal"><span class="pre">assert</span></code> tests for integer values</li>
+<li>Make sure that equality <code class="docutils literal"><span class="pre">assert</span></code> tests within a given tolerance,
+e.g., <code class="docutils literal"><span class="pre">tol</span> <span class="pre">=</span> <span class="pre">1e-9;</span> <span class="pre">assert(condition</span> <span class="pre">&lt;</span> <span class="pre">tol);</span></code></li>
+<li>Write loops for testing multiple models and/or solvers</li>
+<li>Try to make your tests compatible with as many solvers as possible</li>
+<li>Test, if possible, your contribution on <code class="docutils literal"><span class="pre">Linux</span></code></li>
+<li>Make sure to limit the output of the function to a minimum - only
+print the necessary information</li>
+<li>Use <code class="docutils literal"><span class="pre">verbose</span></code> or <code class="docutils literal"><span class="pre">printLevel</span></code> to switch the verbose mode</li>
+<li>Ensure that the solution of optimization problems is actually a
+solution (test that the solution vector satisfies the imposed
+constraints)</li>
+</ul>
+</div>
+<div class="section" id="git-commit-messages">
+<h2>Git commit messages<a class="headerlink" href="#git-commit-messages" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Use the present tense (“Add feature” not “Added feature”)</li>
+<li>Limit the first line to 72 characters or less</li>
+<li>Reference issues and pull requests liberally</li>
+<li>When only changing documentation, include <code class="docutils literal"><span class="pre">[documentation]</span></code> in the commit
+description</li>
+<li>Consider starting the commit message (not the title of the PR) with
+an applicable emoji:<ul>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/bug.png" height="20px" width="20px" alt="bug"> <code class="docutils literal"><span class="pre">:bug:</span></code> when fixing a bug</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/art.png" height="20px" width="20px" alt="art"> <code class="docutils literal"><span class="pre">:art:</span></code> when improving the format/structure of the code</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/racehorse.png" height="20px" width="20px" alt="racehorse"> <code class="docutils literal"><span class="pre">:racehorse:</span></code> when improving performance</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/memo.png" height="20px" width="20px" alt="memo"> <code class="docutils literal"><span class="pre">:memo:</span></code> when writing docs</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/fire.png" height="20px" width="20px" alt="fire"> <code class="docutils literal"><span class="pre">:fire:</span></code> when removing code or files</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"> <code class="docutils literal"><span class="pre">:white_check_mark:</span></code> when adding tests</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/penguin.png" height="20px" width="20px" alt="penguin"> <code class="docutils literal"><span class="pre">:penguin:</span></code> when fixing something on Linux</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="apple"> <code class="docutils literal"><span class="pre">:apple:</span></code> when fixing something on macOS</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer"> <code class="docutils literal"><span class="pre">:computer:</span></code> when fixing something on Windows</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/green_heart.png" height="20px" width="20px" alt="green_heart"> <code class="docutils literal"><span class="pre">:green_heart:</span></code> when fixing the CI build</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
