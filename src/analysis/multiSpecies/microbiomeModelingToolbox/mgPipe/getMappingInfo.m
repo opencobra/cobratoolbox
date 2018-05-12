@@ -131,7 +131,7 @@ reacTab = zeros(length(reac), length(reacPat(1, :)));
 
 
 parfor k = 1: length(reacPat(1, :))
-    match = []
+    match = zeros(1,length(reac));
         for i = 1: length(reac)
             for j = 1: length(reacSet(:, 1))
                 if strcmp(reac(i), reacSet(j, k)) == 1  % the 2 reactions are equal
