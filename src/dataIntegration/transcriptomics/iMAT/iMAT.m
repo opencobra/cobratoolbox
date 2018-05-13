@@ -26,6 +26,8 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %                       the high confidence set (default - no core reactions)
 %    logfile:           name of the file to save the MILP log (string)
 %    runtime:           maximum solve time for the MILP (default value - 7200s)
+%    epsilon:           value added/subtracted to upper/lower bounds
+%                       (default 1)
 %
 % OUTPUT:
 %    tissueModel:       extracted model

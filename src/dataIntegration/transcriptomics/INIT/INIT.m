@@ -21,6 +21,8 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile, epsilon)
 %                         (default 1e-8)
 %    logfile:             name of the file to save the MILP log (string)
 %    runtime:             maximum solve time for the MILP (default value - 7200s)
+%    epsilon:             value added/subtracted to upper/lower bounds
+%                         (default 1)
 %
 % OUTPUTS:
 %    tissueModel:         extracted model
