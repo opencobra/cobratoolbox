@@ -46,7 +46,7 @@ end
 
 % different ways of doing it.  I'm still playing with this.
 if nargin < 3
-    if size(LPproblem.A,2) == size(model.S,2); % if the number of variables matches the number of model reactions
+    if size(LPproblem.A,2) == size(model.S,2) % if the number of variables matches the number of model reactions
         rxnIndex = 1:size(model.S,2);
     elseif size(LPproblem.A,2) > size(model.S,2)
         display('warning:  extra variables in LPproblem.  will assume first n correspond to v')
@@ -71,35 +71,36 @@ MILPproblem = LPproblem;
 
 S = model.S;
 [m,n] = size(LPproblem.A);
-nontransport = (sum(S ~= 0) > 1)'; %reactions which are not transport reactions.
-%nnz(nontransport)
-nontransport = (nontransport | (model.lb ==0 & model.ub == 0));
-%nnz(nontransport)
-%pause;
+
+if ~isfield(model,'SIntRxnBool')
+    model = findSExRxnInd(model);
+end
+isInternal = model.SIntRxnBool; % internal, presumably mass balanced reactions
+
 if reduce_vars == 1
-    active1 = ~(model.lb ==0 & model.ub == 0);
-    S2 = S(:,active1); % exclude rxns with ub/lb ==0
+    active = ~(model.lb ==0 & model.ub == 0);
+    S2 = S(:,active); % exclude rxns with ub/lb ==0
     
     N2 = sparseNull(sparse(S2));
-    N = zeros(length(active1), size(N2,2));
-    N(active1,:) = N2;
+    N = zeros(length(active), size(N2,2));
+    N(active,:) = N2;
     %size(N)
-    active = any(abs(N) > 1e-6, 2); % exclude rxns not in null space
+    active = active & any(abs(N) > 1e-6, 2); % exclude rxns not in null space
     %size(active)
     %size(nontransport)
-    nontransport = nontransport & active;
+    isInternal = isInternal & active;
 end
 
-Sn = S(:,nontransport);
+Sn = S(:,isInternal);
 
 Ninternal = sparseNull(sparse(Sn));
 %max(max(abs(Ninternal)))
 %pause
 linternal = size(Ninternal,2);
 
-nint = length(find(nontransport));
+nint = length(find(isInternal));
 temp = sparse(nint, n);
-temp(:, rxnIndex(nontransport)) = speye(nint);
+temp(:, rxnIndex(isInternal)) = speye(nint);
 
 
 if method == 1 % two variables (ar, af)
