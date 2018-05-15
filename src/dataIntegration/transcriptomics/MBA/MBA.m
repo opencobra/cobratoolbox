@@ -47,7 +47,7 @@ end
         r = NC{ri};       
             
         PM = removeRxns(PM, r);
-        [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(PM,param);
+        [~,fluxConsistentRxnBool] = findFluxConsistentSubset(PM,param);
         inactive=PM.rxns(fluxConsistentRxnBool==0);
         eH = intersect(inactive, high_set);
         eM = intersect(inactive, medium_set);
