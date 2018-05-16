@@ -9,8 +9,17 @@ Can I check if everything is properly set up before I start?
 MATLAB
 ^^^^^^
 
-Please ensure that you have a working ``MATLAB``
-`installation <https://nl.mathworks.com/help/install/>`__.
+Please ensure that you have a compatible and working ``MATLAB``
+`installation <https://nl.mathworks.com/help/install/>`__ installation.
+The list of compatible solvers is available `here <compatMatrix.md>`__.
+
+No support is provided for versions older than R2014b.
+``MATLAB`` is released on a twice-yearly schedule. After the latest release (version b),
+it may be a couple of months before certain methods with dependencies
+on other software become compatible. For example, the latest releases of ``MATLAB``
+may not be compatible with the existing solver interfaces,
+necessitating an update of the ``MATLAB`` interface provided by the solver developers,
+or an update of the COBRA Toolbox, or both.
 
 git
 ^^^
@@ -37,7 +46,8 @@ in the terminal (``cmd`` on Windows, not ``Git Bash``):
     $ curl --version
 
 which will return ``curl 7.51.0 [...]`` or similar with another version
-number if installed properly.
+number if installed properly. Please make sure that you only have one version
+of ``curl`` installed on your machine.
 
 What if my system is not properly configured?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
