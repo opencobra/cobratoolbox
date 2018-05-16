@@ -3,8 +3,16 @@ Frequently Asked Questions (FAQ)
 
 .. begin-faq-marker
 
-Remove legacy installation
---------------------------
+.. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
+.. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
+
+If you need support, please feel free to post your question in our |ImageLink|_.
+
+Installation
+------------
+
+How may I remove a legacy installation?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have an existing installation of a legacy COBRA Toolbox on your system,
 please remove the installation directory from your MATLAB path.
@@ -18,82 +26,28 @@ please remove the installation directory from your MATLAB path.
     >> savepath % save the new path
     >> delete(CBTDIR,'s') % delete the installation directory
 
-Github
-------
 
-**What do all these labels mean?**
-
-A comprehensive list of labels and their description for the issues and
-pull requests is given
-`here <https://opencobra.github.io/cobratoolbox/docs/labels.html>`__.
-
-Reconstruction
---------------
-
-What does ``DM_reaction`` stand for after running
-``biomassPrecursorCheck(model)``?
-
-**Answer**: ``DM_ reactions`` are commonly demand reactions.
-
-Submodules
-----------
-
-When running ``git submodule update``, the following error message
-appears:
+When running ``git submodule update``, the following error message appears. What should I do?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code::
 
     No submodule mapping found in .gitmodules for path 'external/lusolMex64bit'
 
-**Solution**: remove the cached version of the respective submodule
+remove the cached version of the respective submodule by typing:
 
 .. code::
 
     git rm --cached external/lusolMex64bit
 
-**Note**: The submodule throwing an error might be different than
-``external/lusolMex64bit``, but the command should work with any
-submodule.
-
-Parallel programming
---------------------
-
-When running cobra code in a parfor loop, solvers (and other global
-variables) are not properly set.
-
-| **Answer**: This is an issue with global variables and the matlab
-  parallel computing toolbox. Global variables are not passed on to the
-  workers of a parallel pool.
-| To change cobra global settings for a parfor loop, it is necessary to
-  reinitialize the global variables on each worker. The toolbox offers 
-  two helper functions for this purpose, which also take care of pathes, 
-  ``getEnvironment()`` and ``restoreEnvironment()``, which can be used 
-  as in the below example.
-
-.. code::
-
-    environment = getEnvironment();
-    parfor i = 1:2
-        restoreEnvironment(environment);
-        changeCobraSolver(solver, 'LP', 0, -1); %third argument is printLevel, fourth argument is validation Level.
-        % additional code in the parfor loop will now use the currently set solver
-        optimizeCbModel(model);
-    end
-
-By requesting the current environment (global variables and path) before the parfor loop and
-assigning it to a local variable, that variable is passed on to the
-workers, which can then use it to set up the environment.
-
-``dqqMinos`` and ``quadMinos`` use the file system to input and output solutions.
-Therefore, they can currently not be used in any function that uses ``parfor``, as this would
-cause concurrency issues between different workers.
+Note: The submodule throwing an error might be different than
+``external/lusolMex64bit``, but the command should work with any submodule.
 
 
-(Windows) MATLAB R2016b crashes with CPLEX 12.7.1
--------------------------------------------------
+On Windows, MATLAB R2016b crashes with CPLEX 12.7.1. Why?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you experience an unexpected crash of MATLAB ``R2016b`` when
-running:
+When you experience an unexpected crash of MATLAB ``R2016b`` when running:
 
 .. code::
 
@@ -122,5 +76,76 @@ In order to fix this issue, follow these steps:
 -  Finish the installation of CPLEX ``12.7.1``
 -  Restart your computer
 -  Start MATLAB and the above commands again
+
+Parallel programming
+--------------------
+
+When running code in a parfor loop, solvers (and other global variables) are not properly set.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is an issue with global variables and the matlab
+parallel computing toolbox. Global variables are not passed on to the
+workers of a parallel pool. To change cobra global settings for a parfor loop, it is necessary to
+reinitialize the global variables on each worker. The toolbox offers
+two helper functions for this purpose, which also take care of pathes,
+``getEnvironment()`` and ``restoreEnvironment()``, which can be used
+as in the below example.
+
+.. code::
+
+    environment = getEnvironment();
+    parfor i = 1:2
+        restoreEnvironment(environment);
+        changeCobraSolver(solver, 'LP', 0, -1); %third argument is printLevel, fourth argument is validation Level.
+        % additional code in the parfor loop will now use the currently set solver
+        optimizeCbModel(model);
+    end
+
+By requesting the current environment (global variables and path) before the parfor loop and
+assigning it to a local variable, that variable is passed on to the
+workers, which can then use it to set up the environment. ``dqqMinos`` and ``quadMinos`` use the file system to input and output solutions.
+Therefore, they can currently not be used in any function that uses ``parfor``, as this would
+cause concurrency issues between different workers.
+
+Reconstruction
+--------------
+
+What does ``DM_reaction`` stand for after running ``biomassPrecursorCheck(model)``?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``DM_ reactions`` are commonly demand reactions.
+
+Github & Contributing
+---------------------
+
+How may I update a submodule?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When updating a submodule, please consider updating the submodule itself
+in the ``opencobra/cobratoolbox`` repository. Below is an example of how to update
+the ``tutorials`` submodule:
+
+.. code::
+
+    $ cd fork-cobratoolbox # directory of your cloned fork
+    $ git checkout develop
+    $ git fetch upstream # upstream must be configured to point to opencobra/cobratoolbox
+    $ git merge upstream/develop
+    $ git checkout -b update-submodule
+    $ cd tutorials
+    $ git pull origin master # pull the latest changes from the master branch of COBRA.tutorials
+    $ cd .. # change back to the root
+    $ git add tutorials
+    $ git commit -m "Updating the tutorials submodule"
+    $ git push origin update-submodule
+
+Then, proceed to open the PR to the ``opencobra/cobratoolbox`` repository.
+
+What do all these labels on issues and PRs mean?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A comprehensive list of labels and their description for the issues and
+pull requests is given
+`here <https://opencobra.github.io/cobratoolbox/docs/labels.html>`__.
 
 .. end-faq-marker
