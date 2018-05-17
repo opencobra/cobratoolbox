@@ -49,13 +49,13 @@ On Windows, MATLAB R2016b crashes with CPLEX 12.7.1. Why?
 
 When you experience an unexpected crash of MATLAB ``R2016b`` when running:
 
-.. code:: matlab
+.. code-block:: matlab
 
     >> changeCobraSolver('ibm_cplex')
 
 or
 
-.. code:: matlab
+.. code-block:: matlab
 
     >> initCobraToolbox
 
@@ -91,7 +91,7 @@ two helper functions for this purpose, which also take care of pathes,
 ``getEnvironment()`` and ``restoreEnvironment()``, which can be used
 as in the below example.
 
-.. code:: matlab
+.. code-block:: matlab
 
     environment = getEnvironment();
     parfor i = 1:2
