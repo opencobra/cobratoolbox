@@ -25,6 +25,8 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     else
         launchTestSuite = false;
     end
+else
+    launchTestSuite = true;
 end
 
 % save the current folder
