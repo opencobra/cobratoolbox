@@ -46,8 +46,11 @@ in the terminal (``cmd`` on Windows, not ``Git Bash``):
     $ curl --version
 
 which will return ``curl 7.51.0 [...]`` or similar with another version
-number if installed properly. Please make sure that you only have one version
-of ``curl`` installed on your machine.
+number if installed properly. If you encounter any issues with ``curl``, please
+post in our |ImageLink|_.
+
+.. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
+.. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
 
 What if my system is not properly configured?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
