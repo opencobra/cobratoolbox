@@ -46,9 +46,14 @@ end
         ri = randi([1,numel(NC)],1);
         r = NC{ri};       
             
-        PM = removeRxns(PM, r);
-        [~,fluxConsistentRxnBool] = findFluxConsistentSubset(PM,param);
-        inactive=PM.rxns(fluxConsistentRxnBool==0);
+        PM_temp = removeRxns(PM, r);
+        sol = optimizeCbModel(PM_temp);
+        if sol.stat ~= 1
+            inactive = PM_temp.rxns;
+        else
+            [~,fluxConsistentRxnBool] = findFluxConsistentSubset(PM_temp,param);
+            inactive=[PM_temp.rxns(fluxConsistentRxnBool==0);r];
+        end  
         eH = intersect(inactive, high_set);
         eM = intersect(inactive, medium_set);
         eX = setdiff(inactive,union(high_set,medium_set));
