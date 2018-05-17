@@ -10,7 +10,7 @@ MATLAB
 ^^^^^^
 
 Please ensure that you have a compatible and working ``MATLAB``
-`installation <https://nl.mathworks.com/help/install/>`__ installation.
+`installation <https://nl.mathworks.com/help/install/>`__.
 The list of compatible solvers is available `here <compatMatrix.md>`__.
 
 No support is provided for versions older than R2014b.
