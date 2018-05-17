@@ -30,15 +30,15 @@ please remove the installation directory from your MATLAB path.
 When running ``git submodule update``, the following error message appears. What should I do?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code::
+.. code:: console
 
     No submodule mapping found in .gitmodules for path 'external/lusolMex64bit'
 
 remove the cached version of the respective submodule by typing:
 
-.. code::
+.. code:: console
 
-    git rm --cached external/lusolMex64bit
+    $ git rm --cached external/lusolMex64bit
 
 Note: The submodule throwing an error might be different than
 ``external/lusolMex64bit``, but the command should work with any submodule.
@@ -49,13 +49,13 @@ On Windows, MATLAB R2016b crashes with CPLEX 12.7.1. Why?
 
 When you experience an unexpected crash of MATLAB ``R2016b`` when running:
 
-.. code::
+.. code:: matlab
 
     >> changeCobraSolver('ibm_cplex')
 
 or
 
-.. code::
+.. code:: matlab
 
     >> initCobraToolbox
 
@@ -91,7 +91,7 @@ two helper functions for this purpose, which also take care of pathes,
 ``getEnvironment()`` and ``restoreEnvironment()``, which can be used
 as in the below example.
 
-.. code::
+.. code:: matlab
 
     environment = getEnvironment();
     parfor i = 1:2
@@ -125,7 +125,7 @@ When updating a submodule, please consider updating the submodule itself
 in the ``opencobra/cobratoolbox`` repository. Below is an example of how to update
 the ``tutorials`` submodule:
 
-.. code::
+.. code:: console
 
     $ cd fork-cobratoolbox # directory of your cloned fork
     $ git checkout develop
