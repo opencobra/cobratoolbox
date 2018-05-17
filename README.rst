@@ -63,12 +63,6 @@ Installation
 
       >> initCobraToolbox
 
-3. You can test your installation by running from |matlab|
-
-   .. code-block:: matlab
-
-      >> testAll
-
 .. end-installation-marker
 
 

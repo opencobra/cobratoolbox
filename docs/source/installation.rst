@@ -3,6 +3,12 @@ Installation
 
 |br|
 
+System Requirements
+-------------------
+
+.. include:: installation/requirements.rst
+   :start-after: begin-requirements-marker
+   :end-before: end-requirements-marker
 
 Download and installation
 --------------------------
@@ -11,20 +17,6 @@ Download and installation
    :start-after: begin-installation-marker
    :end-before: end-installation-marker
 
-Solver Installation
--------------------
-
-.. include:: installation/solvers.rst
-   :start-after: begin-solver-installation-marker
-   :end-before: end-solver-installation-marker
-
-System Requirements
--------------------
-
-.. include:: installation/requirements.rst
-   :start-after: begin-requirements-marker
-   :end-before: end-requirements-marker
-
 Binaries and Compatibility
 --------------------------
 
@@ -32,6 +24,26 @@ Binaries and Compatibility
    :start-after: begin-binaries-marker
    :end-before: end-binaries-marker
 
+Solver Installation
+-------------------
+
+.. include:: installation/solvers.rst
+   :start-after: begin-solver-installation-marker
+   :end-before: end-solver-installation-marker
+
+Test the installation
+---------------------
+
+You may test your installation by running from |matlab|
+
+.. code-block:: matlab
+
+    >> testAll
+
+If you need support, please feel free to post your question in our |ImageLink|_.
+
+.. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
+.. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
 
 .. |macos| raw:: html
 
