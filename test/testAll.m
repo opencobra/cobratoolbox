@@ -44,6 +44,15 @@ else
     cd(CBTDIR);
 end
 
+
+C13File = [CBTDIR filesep 'src' filesep 'dataIntegration' filesep 'fluxomics' filesep 'c13solver' filesep 'slvrEMU.m'];
+try
+    f = fopen(C13File);
+    disp(fgetl(f));
+catch
+    disp('File did not exist');
+end
+
 % include the root folder and all subfolders.
 addpath(genpath([pwd filesep 'test']));
 
