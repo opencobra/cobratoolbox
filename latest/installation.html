@@ -148,14 +148,6 @@
               </ul>
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#solver-installation">Solver Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#tomlab">TOMLAB</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ibm-ilog-cplex">IBM ILOG CPLEX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gurobi">GUROBI</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mosek">MOSEK</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#can-i-check-if-everything-is-properly-set-up-before-i-start">Can I check if everything is properly set up before I start?</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#matlab">MATLAB</a></li>
@@ -171,7 +163,16 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#binaries-and-compatibility">Binaries and Compatibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solver-installation">Solver Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tomlab">TOMLAB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ibm-ilog-cplex">IBM ILOG CPLEX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gurobi">GUROBI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mosek">MOSEK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-the-installation">Test the installation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
@@ -245,6 +246,73 @@
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p><br></p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="can-i-check-if-everything-is-properly-set-up-before-i-start">
+<h3>Can I check if everything is properly set up before I start?<a class="headerlink" href="#can-i-check-if-everything-is-properly-set-up-before-i-start" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="matlab">
+<h4>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h4>
+<p>Please ensure that you have a compatible and working <code class="docutils literal"><span class="pre">MATLAB</span></code>
+<a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.
+The list of compatible solvers is available <a class="reference external" href="compatMatrix.md">here</a>.</p>
+<p>No support is provided for versions older than R2014b.
+<code class="docutils literal"><span class="pre">MATLAB</span></code> is released on a twice-yearly schedule. After the latest release (version b),
+it may be a couple of months before certain methods with dependencies
+on other software become compatible. For example, the latest releases of <code class="docutils literal"><span class="pre">MATLAB</span></code>
+may not be compatible with the existing solver interfaces,
+necessitating an update of the <code class="docutils literal"><span class="pre">MATLAB</span></code> interface provided by the solver developers,
+or an update of the COBRA Toolbox, or both.</p>
+</div>
+<div class="section" id="git">
+<h4>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h4>
+<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">git</span></code> by typing in
+the <code class="docutils literal"><span class="pre">Terminal</span></code> (on <code class="docutils literal"><span class="pre">linux</span></code> and <code class="docutils literal"><span class="pre">macOS</span></code>) or <code class="docutils literal"><span class="pre">cmd</span></code> (in
+<code class="docutils literal"><span class="pre">Windows</span></code>, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git --version
+</pre></div>
+</div>
+<p>If installed properly, this will return <code class="docutils literal"><span class="pre">git</span> <span class="pre">version</span> <span class="pre">2.13.1</span> <span class="pre">[...]</span></code> or
+similar with another version number.</p>
+</div>
+<div class="section" id="curl">
+<h4>curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h4>
+<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">curl</span></code> by typing
+in the terminal (<code class="docutils literal"><span class="pre">cmd</span></code> on Windows, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> curl --version
+</pre></div>
+</div>
+<p>which will return <code class="docutils literal"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
+number if installed properly. If you encounter any issues with <code class="docutils literal"><span class="pre">curl</span></code>, please
+post in our <a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img alt="ImageLink" src="https://img.shields.io/badge/COBRA-forum-blue.svg" /></a>.</p>
+</div>
+</div>
+<div class="section" id="what-if-my-system-is-not-properly-configured">
+<h3>What if my system is not properly configured?<a class="headerlink" href="#what-if-my-system-is-not-properly-configured" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linux-ubuntu-or-debian">
+<h4>Linux (Ubuntu or Debian)<a class="headerlink" href="#linux-ubuntu-or-debian" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
+</pre></div>
+</div>
+</div>
+<div class="section" id="macos">
+<h4>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h4>
+<p>In order to install <code class="docutils literal"><span class="pre">git</span></code>, install the <a class="reference external" href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">Xcode Command Line
+Tools</a>.
+For <code class="docutils literal"><span class="pre">curl</span></code>, follow the instructions
+<a class="reference external" href="http://macappstore.org/curl/">here</a>.</p>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
+<p>Please download the <code class="docutils literal"><span class="pre">git</span></code> tools for Windows from
+<a class="reference external" href="https://git-scm.com/download/win">here</a>. During the installation
+process, please ensure that you select <strong>Use Git Bash and optional Unix
+tools from the Windows Command prompt</strong>. In addition, please make sure
+that you select <strong>Checkout as-is, commit Unix-style line endings</strong>.</p>
+<div align="center">
+<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_0.png" height="280px" alt="git windows">&nbsp;&nbsp;&nbsp;<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_1.png" height="280px" alt="git windows">.
+</div></div>
+</div>
+</div>
 <div class="section" id="download-and-installation">
 <h2>Download and installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
@@ -262,12 +330,26 @@ repository as a <a class="reference external" href="https://github.com/opencobra
 </pre></div>
 </div>
 </li>
-<li><p class="first">You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab"></p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
-</pre></div>
-</div>
-</li>
 </ol>
+</div>
+<div class="section" id="binaries-and-compatibility">
+<h2>Binaries and Compatibility<a class="headerlink" href="#binaries-and-compatibility" title="Permalink to this headline">¶</a></h2>
+<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Please make sure you install a compatible solver. Check the
+compatibility
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
+<p>For convenience, we provide
+<a class="reference external" href="https://github.com/blegat/glpkmex">glpk_mex</a> and
+<a class="reference external" href="http://sbml.org/Software/libSBML">libSBML-5.15+</a> in
+<code class="docutils literal"><span class="pre">/external</span></code>.</p>
+<p><a class="reference external" href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these
+libraries are provided in a submodule for Mac OS X 10.6 or later
+(64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+
+(64-bit). For unsupported OS, please refer to their respective building
+instructions
+(<a class="reference external" href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source">glpk_mex</a>,
+<a class="reference external" href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html">libSBML</a>).</p>
+<p>Read more on the compatibility with SBML-FBCv2
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p>
 </div>
 <div class="section" id="solver-installation">
 <h2>Solver Installation<a class="headerlink" href="#solver-installation" title="Permalink to this headline">¶</a></h2>
@@ -572,82 +654,13 @@ command in your terminal</p>
 </ol>
 </div>
 </div>
-<div class="section" id="system-requirements">
-<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="can-i-check-if-everything-is-properly-set-up-before-i-start">
-<h3>Can I check if everything is properly set up before I start?<a class="headerlink" href="#can-i-check-if-everything-is-properly-set-up-before-i-start" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="matlab">
-<h4>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h4>
-<p>Please ensure that you have a working <code class="docutils literal"><span class="pre">MATLAB</span></code>
-<a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.</p>
-</div>
-<div class="section" id="git">
-<h4>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h4>
-<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">git</span></code> by typing in
-the <code class="docutils literal"><span class="pre">Terminal</span></code> (on <code class="docutils literal"><span class="pre">linux</span></code> and <code class="docutils literal"><span class="pre">macOS</span></code>) or <code class="docutils literal"><span class="pre">cmd</span></code> (in
-<code class="docutils literal"><span class="pre">Windows</span></code>, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git --version
+<div class="section" id="test-the-installation">
+<h2>Test the installation<a class="headerlink" href="#test-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>You may test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab"></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
 </pre></div>
 </div>
-<p>If installed properly, this will return <code class="docutils literal"><span class="pre">git</span> <span class="pre">version</span> <span class="pre">2.13.1</span> <span class="pre">[...]</span></code> or
-similar with another version number.</p>
-</div>
-<div class="section" id="curl">
-<h4>curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h4>
-<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">curl</span></code> by typing
-in the terminal (<code class="docutils literal"><span class="pre">cmd</span></code> on Windows, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> curl --version
-</pre></div>
-</div>
-<p>which will return <code class="docutils literal"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
-number if installed properly.</p>
-</div>
-</div>
-<div class="section" id="what-if-my-system-is-not-properly-configured">
-<h3>What if my system is not properly configured?<a class="headerlink" href="#what-if-my-system-is-not-properly-configured" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="linux-ubuntu-or-debian">
-<h4>Linux (Ubuntu or Debian)<a class="headerlink" href="#linux-ubuntu-or-debian" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
-</pre></div>
-</div>
-</div>
-<div class="section" id="macos">
-<h4>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h4>
-<p>In order to install <code class="docutils literal"><span class="pre">git</span></code>, install the <a class="reference external" href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">Xcode Command Line
-Tools</a>.
-For <code class="docutils literal"><span class="pre">curl</span></code>, follow the instructions
-<a class="reference external" href="http://macappstore.org/curl/">here</a>.</p>
-</div>
-<div class="section" id="windows">
-<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
-<p>Please download the <code class="docutils literal"><span class="pre">git</span></code> tools for Windows from
-<a class="reference external" href="https://git-scm.com/download/win">here</a>. During the installation
-process, please ensure that you select <strong>Use Git Bash and optional Unix
-tools from the Windows Command prompt</strong>. In addition, please make sure
-that you select <strong>Checkout as-is, commit Unix-style line endings</strong>.</p>
-<div align="center">
-<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_0.png" height="280px" alt="git windows">&nbsp;&nbsp;&nbsp;<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_1.png" height="280px" alt="git windows">.
-</div></div>
-</div>
-</div>
-<div class="section" id="binaries-and-compatibility">
-<h2>Binaries and Compatibility<a class="headerlink" href="#binaries-and-compatibility" title="Permalink to this headline">¶</a></h2>
-<p><img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning"> Please make sure you install a compatible solver. Check the
-compatibility
-<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
-<p>For convenience, we provide
-<a class="reference external" href="https://github.com/blegat/glpkmex">glpk_mex</a> and
-<a class="reference external" href="http://sbml.org/Software/libSBML">libSBML-5.15+</a> in
-<code class="docutils literal"><span class="pre">/external</span></code>.</p>
-<p><a class="reference external" href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these
-libraries are provided in a submodule for Mac OS X 10.6 or later
-(64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+
-(64-bit). For unsupported OS, please refer to their respective building
-instructions
-(<a class="reference external" href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source">glpk_mex</a>,
-<a class="reference external" href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html">libSBML</a>).</p>
-<p>Read more on the compatibility with SBML-FBCv2
-<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p>
+<p>If you need support, please feel free to post your question in our <a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img alt="ImageLink" src="https://img.shields.io/badge/COBRA-forum-blue.svg" /></a>.</p>
 </div>
 </div>
 
