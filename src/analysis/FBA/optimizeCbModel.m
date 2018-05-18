@@ -272,7 +272,7 @@ if isfield(model,'C')
             if length(model.csense)==nMets+nIneq
                 %this is a workaround, a model should not be like this
                 model.dsense=model.csense(nMets+1:nMets+nIneq,1);
-                model.csense=model.csense(1:m,1);
+                model.csense=model.csense(1:nMets,1);
             else
                 error('Length of csense is invalid!')
             end

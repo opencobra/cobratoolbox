@@ -1,4 +1,4 @@
-function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime)
+function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime, epsilon)
 % Uses the iMAT algorithm (`Zur et al., 2010`) to extract a context
 % specific model using data. iMAT algorithm find the optimal trade-off
 % between inluding high-expression reactions and removing low-expression reactions.
@@ -26,6 +26,8 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %                       the high confidence set (default - no core reactions)
 %    logfile:           name of the file to save the MILP log (string)
 %    runtime:           maximum solve time for the MILP (default value - 7200s)
+%    epsilon:           value added/subtracted to upper/lower bounds
+%                       (default 1)
 %
 % OUTPUT:
 %    tissueModel:       extracted model
@@ -35,6 +37,9 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 % .. Author: - Implementation adapted from the cobra toolbox
 % (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
+if nargin < 9 || isempty(epsilon)
+    epsilon=1;
+end
 if nargin < 8 || isempty(runtime)
     %runtime = 7200;
     runtime = 60;
@@ -69,7 +74,6 @@ end
     S = model.S;
     lb = model.lb;
     ub = model.ub;
-    epsilon=1;
 
     % Creating A matrix
     A = sparse(size(S,1)+2*length(RHindex)+2*length(RLindex),size(S,2)+2*length(RHindex)+length(RLindex));
