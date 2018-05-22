@@ -1,13 +1,14 @@
-function structure = addLevelVersion(structure, level, version)
-%  structure = addLevelVersion(structure, level, version)
+function sbmlStruct = getSBMLDefaultStruct(varargin)
+%  structure = getSBMLDefaultStruct(element_name, level, version, 
+%                                                          packages (optional), packageVersion (optional))
 % 
-% this function is used internally by TranslateSBML
-%
 % Takes
 %
-% 1. structure - any MATLAB_SBML structure
+% 1. element_name - the name of the SBML element whose structure is wanted
 % 2. level - an integer for the value of the level field to be added
 % 3. version - an integer for the value of the version field to be added
+% 4. packages, cell array of package names
+% 5. packageVersion, an integer array representing the SBML package versions 
 %
 % Returns
 %
@@ -15,8 +16,8 @@ function structure = addLevelVersion(structure, level, version)
 %                           'version' added to this and every child
 %                           structure
 %
-% Note:
-%             The structure must contain a 'typecode' field
+
+%  Thanks to Thomas Pfau for providing this function.
 
 %<!---------------------------------------------------------------------------
 % This file is part of libSBML.  Please visit http://sbml.org for more
@@ -46,29 +47,37 @@ function structure = addLevelVersion(structure, level, version)
 % http://sbml.org/software/libsbml/license.html
 %----------------------------------------------------------------------- -->
 
-if ~isfield(structure, 'typecode')
-    return;
+pkgCount = 0;
+
+if (nargin < 3)
+    error('not enough input arguments');
+else
+    element_name = varargin{1};
+    level = varargin{2};
+    version = varargin{3};
 end;
-if length(structure) ~= 1 ||strcmp(structure.typecode, 'SBML_MODEL') ~= 1
-    structure = addData(structure, level, version);
-end;
-for i = 1:length(structure)
-    f = fieldnames(structure(i));
-    for j = 1:length(f)
-        if isstruct(structure(i).(f{j}))
-            substr = structure(i).(f{j});
-            structure(i).(f{j}) = addLevelVersion(substr, level, version);
-        end;
+packages = {};
+packageVersion = 1;
+if (nargin > 3)
+    if (nargin < 5)
+        error('not enough input arguments');
     end;
+    pkgCount = length(varargin{4});
+    packages = varargin{4};
+    if (length(varargin{5}) ~= pkgCount)
+        error('need a version number for each package');
+    end;            
+    packageVersion = varargin{5};
 end;
 
+fieldData = [getStructureFieldnames(element_name, level, version, ...
+packages, packageVersion) ; getDefaultValues(element_name, level, ...
+version, packages, packageVersion)];
 
-function str = addData(str, l, v)
-f = fieldnames(str);
-if sum(ismember(f, 'level')) > 0
-    return;
+if ~isempty(fieldData)
+    fieldData = reshape(fieldData,numel(fieldData),1);
+    sbmlStruct = struct(fieldData{:});
+else
+    sbmlStruct = struct();
 end;
-for i=1:length(str)
-    str(i).level = l;
-    str(i).version = v;
-end;
+end

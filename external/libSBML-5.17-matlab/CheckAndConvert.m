@@ -22,7 +22,7 @@ function Formula = CheckAndConvert(Input)
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2017 jointly by the following organizations:
+% Copyright (C) 2013-2018 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
@@ -201,13 +201,13 @@ else
         else
 
             % find the opening bracket
-            Open = ismember(OpenBracket, LogIndex(i)+3) == 1;
+            Open = find(ismember(OpenBracket, LogIndex(i)+3) == 1,1);
 
             % find closing bracket
             Close = find(CloseBracket > LogIndex(i)+3, 1);
 
             % is there a comma between
-            Greater = find(Comma > OpenBracket(Open));
+            Greater = find(Comma > OpenBracket(Open),1);
             Less = find(Comma < CloseBracket(Close));
 
             if (isempty(Greater) || isempty(Less))
