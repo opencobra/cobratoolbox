@@ -12,7 +12,7 @@ function models = loadUncModels(modPath, organisms, objre, printLevel)
 %   printLevel:          Verbose level (default: printLevel = 1)
 %
 % OUTPUT:
-%   models:              double indicating if object was found in the result folder
+%   models:              nx1 cell array cell array with models of organisms in the study
 %
 % .. Author: Federico Baldini 2017-2018
 
