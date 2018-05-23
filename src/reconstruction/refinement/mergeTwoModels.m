@@ -1,5 +1,6 @@
 function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
-%
+% Merge two models. If fields conflict, the data from fields in model1 will be
+% used.
 % USAGE:
 %    [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
 %
@@ -11,8 +12,10 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
 % OPTIONAL INPUTS:
 %    objrxnmodel:     Set as 1 or 2 to set objective reaction from
 %                     desired model
-%    mergeGenes:      Do merge the gene associated data, if false it will create
-%                     empty fields instead (Default = true)
+%    mergeGenes:      Do merge the gene associated data, if false the genes 
+%                     field and the rules field will be cleared and other fields 
+%                     associated with genes will not be merged. GPR rules can be 
+%                     reconstructed using the grRules field.(Default = true)
 %
 % OUTPUT:
 %
@@ -22,6 +25,7 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
 %                   - Aarash Bordbar, 07/06/07 based on[model_metE] = CreateMetE(model_E,model_M)) ();
 %                   - Ines Thiele 11/10/2007
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
+%
 
 if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
     objrxnmodel = 1;
@@ -39,7 +43,6 @@ end
 
 %First, we have to merge the genes field, to be able to update the rules field.
 modelNew = struct();
-
 if mergeGenes
     showprogress(0, 'Combining Genes in Progress ...');
     
@@ -52,80 +55,43 @@ if mergeGenes
         if ~isfield(model2, 'genes')
             model2.genes = {};
         end
+        model2genes = model2.genes;
+        model1genes = model1.genes;
         %lets build a merged gene field:
         genes = union(model2.genes,model1.genes); % this will be the new gene field.
-        %Now, update the rules fields
-        model1 = buildRxnGeneMat(model1);
-        model2 = buildRxnGeneMat(model2);
         
-        geneIndex = 1:numel(genes)';
+        %Add missing genes to both models
+        model2 = addGenes(model2,setdiff(genes,model2.genes));
+        model1 = addGenes(model1,setdiff(genes,model1.genes));
         
-        %Update the rules for model 1
-        [model1genePresence,model1genePos] = ismember(genes,model1.genes);
-        oldindices1 = model1genePos(model1genePresence);
-        newindices1 = geneIndex(model1genePresence);
-        for i = 1:numel(model1.rules)
-            if ~isempty(model1.rules{i})
-                model1.rules{i} = updateRule(model1.rules{i},oldindices1(model1.rxnGeneMat(i,:)),newindices1(model1.rxnGeneMat(i,:)));
-            end
-        end
+        %Determine positions unique to model2
+        uniqueModel2Pos = ismember(genes,model2genes) & ~ismember(genes,model1genes);
         
-        %Do the same for model 2;
-        [model2genePresence,model2genePos] = ismember(genes,model2.genes);
-        oldindices2 = model2genePos(model2genePresence);
-        newindices2 = geneIndex(model2genePresence);
-        for i = 1:numel(model2.rules)
-            if ~isempty(model2.rules{i})
-                model2.rules{i} = updateRule(model2.rules{i},oldindices2(model2.rxnGeneMat(i,:)),newindices2(model2.rxnGeneMat(i,:)));
-            end
-        end
-        showprogress(0.1, 'Rules updated ...');
-        %now, get the remaining gene associated fields.
+        %Update the order of the genes in both models to match "genes"
+        [model2Pres,model2Pos] = ismember(genes,model2.genes);
+        model2 = updateFieldOrderForType(model2,'genes',model2Pos(model2Pres));
+        [model1Pres,model1Pos] = ismember(genes,model1.genes);
+        model1 = updateFieldOrderForType(model1,'genes',model1Pos(model1Pres));
+        
+        %Now, add all gene fields to the new model.       
         fields1 = getModelFieldsForType(model1,'genes');
         fields1 = setdiff(fields1,{'S','rxnGeneMat'}); % we have to handle these sepaerately
         fields2 = getModelFieldsForType(model2,'genes');
-        fields2 = setdiff(fields2,{'S','rxnGeneMat'});
-        commonfields = intersect(fields1,fields2);
-        [model2genePresence,model2genePos] = ismember(genes,setdiff(model2.genes,model1.genes));
-        oldadditionalindices = model2genePos(model2genePresence);
-        newadditionalindices = geneIndex(model2genePresence);
-        for i = 1:numel(commonfields)
-            %The first call is just to get the size and type right.
-            modelNew.(commonfields{i}) = [model1.(commonfields{i})(oldindices1); model2.(commonfields{i})(oldadditionalindices)];
-            modelNew.(commonfields{i})(newindices1) = model1.(commonfields{i})(oldindices1);
-            modelNew.(commonfields{i})(newadditionalindices) = model2.(commonfields{i})(oldadditionalindices);
+        fields2 = setdiff(fields2,{'S','rxnGeneMat'}); % we have to handle these sepaerately
+        commonFields = intersect(fields1,fields2);
+        model1Fields = setdiff(fields1,fields2);
+        model2Fields = setdiff(fields2,fields1);
+        for i = 1 : numel(commonFields)
+            modelNew.(commonFields{i}) = model1.(commonFields{i});
+            modelNew.(commonFields{i})(uniqueModel2Pos) = model2.(commonFields{i})(uniqueModel2Pos);
         end
-        fields1 = setdiff(fields1,commonfields);
-        for i = 1:numel(fields1)
-            if iscell(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
-                modelNew.(fields1{i})(newadditionalindices) = {''};
-            elseif isnumeric(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
-                modelNew.(fields1{i})(newadditionalindices) = NaN;
-            elseif islogical(model1.(fields1{i}))
-                modelNew.(fields1{i})(newindices1) = model1.(fields1{i})(oldindices1);
-                modelNew.(fields1{i})(newadditionalindices) = false;
-            end
+        for i = 1 : numel(model1Fields)
+            modelNew.(model1Fields{i}) = model1.(model1Fields{i});
+        end
+        for i = 1 : numel(model2Fields)
+            modelNew.(model2Fields{i}) = model2.(model2Fields{i});            
         end
         
-        fields2 = setdiff(fields2,commonfields);
-        [model2genePresence,model2genePos] = ismember(genes,model2.genes);
-        oldindices = model2genePos(model2genePresence);
-        newindices = geneIndex(model2genePresence);
-        otherindices = setdiff(geneIndex,newindices);
-        for i = 1:numel(fields2)
-            if iscell(model1.(fields2{i}))
-                modelNew.(fields2{i})(newindices) = model2.(fields2{i})(oldindices);
-                modelNew.(fields2{i})(otherindices) = {''};
-            elseif isnumeric(model2.(fields2{i}))
-                modelNew.(fields2{i})(newindices1) = model1.(fields2{i})(oldindices);
-                modelNew.(fields2{i})(otherindices) = NaN;
-            elseif islogical(model2.(fields2{i}))
-                modelNew.(fields2{i})(newindices1) = model1.(fields2{i})(oldindices);
-                modelNew.(fields2{i})(otherindices) = false;
-            end
-        end
     end
     %Thats the genes done...
 end
@@ -173,14 +139,16 @@ showprogress(0.9, 'Finishing touches...');
 %We will lose information here, but we will just remove the duplicates.
 [modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
 
+%Check, that there are no duplicated IDs in the primary key fields.
+ureacs = unique(modelNew.rxns);
+if ~(numel(modelNew.rxns) == numel(ureacs))
+    error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
+    strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
+end
 
-
-if mergeGenes
-%recreating the rxnGeneMat
-modelNew = buildRxnGeneMat(modelNew);
-
-%updating grRules
-modelNew = creategrRulesField(modelNew);
+if mergeGenes && (isfield(model1,'rxnGeneMat') || isfield(model2, 'rxnGeneMat'))
+    %recreating the rxnGeneMat
+    modelNew = buildRxnGeneMat(modelNew);    
 else
     modelNew.rules = repmat({''},size(modelNew.rxns));
     modelNew.genes = {};    
