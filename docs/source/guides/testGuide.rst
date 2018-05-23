@@ -183,10 +183,10 @@ If you want to test whether your ``function1`` correctly throws an
 
     % Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)
     % There are two options. If a particular error message is to be tested (here, 'Input2 has the wrong dimension'):
-    assert(verifyCobraFunctionError(@() function1(input1,input2'),'Input2 has the wrong dimension'));
+    assert(verifyCobraFunctionError('function1', 'inputs', {input1, input2'}, 'testMessage', 'Input2 has the wrong dimension'));
 
     % If the aim is to test, that the function throws an error at all
-    assert(verifyCobraFunctionError(@() function1(input1,input2')));
+    assert(verifyCobraFunctionError('function1', 'inputs', {input1, input2'}));
 
 If you want to test whether your ``function1`` correctly throws a
 **warning** message, you can test as follows:
@@ -260,8 +260,7 @@ you want to use a non-standard test model that is already available
 online, please make a pull request with the URL entry to the
 `COBRA.models repository <https://github.com/cobrabot/COBRA.models>`__.
 
-:warning: In order to guarantee compatibility across platforms, please
-use the full path to the model. For instance:
+:warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
 
 .. code-block:: matlab
 
