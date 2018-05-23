@@ -50,6 +50,8 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                                    the high confidence set (default - no core reactions)
 %       options.logfile*             name of the file to save the MILP log (defaut - 'MILPlog')
 %       options.runtime*             maximum solve time for the MILP (default - 7200s)
+%       options.epsilon*             small value to consider when modeling
+%                                    flux (default 1)
 %
 %   for GIMME
 %       options.expressionRxns       reaction expression, expression data corresponding to model.rxns.
@@ -67,6 +69,8 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                                    (default  - 1e-8)
 %   	options.logfile*             name of the file to save the MILP log (defaut - 'MILPlog')
 %       options.runtime*             maximum solve time for the MILP (default - 7200s)
+%       options.epsilon*             small value to consider when modeling
+%                                    flux (default 1)
 %
 %   for MBA
 %       options.medium_set           list of reaction names with medium confidence
