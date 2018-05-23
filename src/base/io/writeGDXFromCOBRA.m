@@ -1,21 +1,16 @@
 function [helpText] = writeGDXFromCOBRA(cobraStruct, varargin)
 % Writes a GDX file with the stoichiometric matrix, bounds and
 % reversibility information. 
-
-% Requires 'wgdx' to be on path, which is provided by a GAMS installation.
 %
 % USAGE:
 %
 %    [helpText] = writeGDXFromCOBRA(cobraStruct,...)
 %
-% REQUIRED INPUTS:
+% INPUTS:
+%    cobraStruct:  Model Structure  
 %
-%    cobraStruct:  Model Structure
-%
-% OPTIONAL KEY VALUE PAIRS: 
-
 %    FileName      char     name of the file
-
+%
 %    IncludeSets   boolean  True :  Metabolite and Reactions in the model 
 %                                   will be included as sets in the gdx
 %                                   files (Default)
@@ -31,8 +26,13 @@ function [helpText] = writeGDXFromCOBRA(cobraStruct, varargin)
 % OUTPUT:
 %    helpText:       String with example load
 %
-%    Edits: Claudio Delpino 22/05/2018 Added inputParser and option to include bounds.    
-% .. Authors: Claudio Delpino & Romina Lasry @PLAPIQUI 02/17/15
+% NOTE: 
+% 
+%    Requires 'wgdx' to be on path, which is provided by a GAMS installation.
+%
+% .. AUTHORS: 
+% .. Claudio Delpino  22/05/2018 Added inputParser and option to include bounds.    
+% .. Claudio Delpino & Romina Lasry @PLAPIQUI 02/17/15 Original function
 
 p = inputParser; 
 addRequired(p,'cobraStruct',@isstruct)
