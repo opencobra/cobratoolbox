@@ -23,7 +23,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .c - Objective coeff vector
 %                       * .lb - Lower bound vector
 %                       * .ub - Upper bound vector
-%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .osense - Objective sense for the linear part (-1 max, +1 min)
 %                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
@@ -125,7 +125,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
+        tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
 
         %optional parameters
         tomlabProblem.PriLvl=printLevel;
@@ -144,7 +144,7 @@ switch solver
 
         Result = tomRun('cplex', tomlabProblem);
         x = Result.x_k;
-        f = osense*Result.f_k;
+        f = Result.f_k;
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);
@@ -180,11 +180,8 @@ switch solver
         CplexQPProblem.Model.ub = ub;
         CplexQPProblem.Model.rhs = b_U;
         CplexQPProblem.Model.lhs = b_L;
-        CplexQPProblem.Model.obj = c;
+        CplexQPProblem.Model.obj = osense*c;
         CplexQPProblem.Model.Q = F;   
-        if osense == -1
-            CplexQPProblem.Model.sense = 'maximize';
-        end
         %optional parameters
         if printLevel == 0  % set display function as empty
             CplexQPProblem.DisplayFunc=[];
@@ -258,7 +255,7 @@ switch solver
 
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (osense*QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+        [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
 
         f = 0.5*x'*QPproblem.F*x + c'*x;
 
@@ -340,6 +337,17 @@ switch solver
         end
         if isfield(param,'optTol')
             param=rmfield(param,'optTol');
+            param.MSK_DPAR_BASIS_TOL_S = param.optTol;
+            param.MSK_DPAR_BASIS_REL_TOL_S = param.optTol;
+            param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = param.optTol;
+            param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = param.optTol;
+            param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = param.optTol;
+        else
+            param.MSK_DPAR_BASIS_TOL_S = optTol;
+            param.MSK_DPAR_BASIS_REL_TOL_S = optTol;
+            param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = optTol;
+            param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = optTol;
+            param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = optTol;
         end
         if isfield(param,'feasTol')
             param=rmfield(param,'feasTol');
@@ -356,7 +364,7 @@ switch solver
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
-        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+        [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
 
         % stat   Solver status
         %           1   Optimal solution found
@@ -375,7 +383,7 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
-                    f = osense*res.sol.itr.pobjval;
+                    f = res.sol.itr.pobjval;
 
                     %dual to equality
                     y= res.sol.itr.y;
@@ -503,7 +511,7 @@ switch solver
         [qrow,qcol,qval]=find(F);
         qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
         qcol=qcol'-1;
-        qval=osense*0.5*qval';
+        qval=0.5*qval';
 
         opts.QP.qrow = int32(qrow);
         opts.QP.qcol = int32(qcol);
@@ -516,8 +524,8 @@ switch solver
         %opt.Quad=1;
 
         %gurobi_mex doesn't cast logicals to doubles automatically
-        c = double(c);
-        [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
+        c = osense*double(c);
+        [x,f,origStat,output,y] = gurobi_mex(c,1,sparse(A),b, ...
             csense,lb,ub,[],opts);
         if origStat==2
             stat = 1; % Optimal solutuion found
@@ -567,17 +575,11 @@ switch solver
             QPproblem.csense = QPproblem.csense(:);
         end
 
-        if QPproblem.osense == -1
-            QPproblem.osense = 'max';
-            osense = -1;
-        else
-            QPproblem.osense = 'min';
-            osense = 1;
-       end
-
+        QPproblem.osense = 'min';
+        
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
-        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
+        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,osense*double(QPproblem.c),QPproblem.csense);
         resultgurobi = gurobi(QPproblem,params);
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
@@ -614,7 +616,7 @@ solution.rcost = w;
 if solution.stat==1
     %TODO slacks for other solvers
     if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex'}))
-        residual = osense*QPproblem.c  + osense * QPproblem.F*solution.full - osense * QPproblem.A'*solution.dual - solution.rcost;
+        residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
         tmp=norm(residual,inf);
 
         % set the tolerance
