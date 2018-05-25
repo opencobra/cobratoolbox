@@ -42,6 +42,11 @@ model.modelVersion = modelVersion;
 
 %Recover the modelName
 model.modelName = regexprep(convertSBMLID(modelSBML.id,false),'^M_','');
+if strcmp(model.modelName,'COBRAModel')
+    %This is the default, and indicates, that no name was originally
+    %present
+    model = rmfield(model,'modelName');
+end
 %% first look for defined compartments (this can be aweful if someone uses
 
 %one compartment but different ids..
