@@ -49,7 +49,7 @@ for k = 1:length(solverPkgs)
         solLP = solveCobraLP(LPproblem);
 
         % test the sign of the ojective value
-        assert(norm(solQP.obj - solLP.obj) < tol)
+        assert(norm(solQP.obj + solLP.obj) < tol) %QP is always a minimisation, and thus will return the minimal value
 
         % test the sign of the duals
         assert(norm(solQP.dual - solLP.dual) < tol)
