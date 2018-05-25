@@ -120,11 +120,15 @@ end
 %For metabolites, this is slightly different.
 %Set the stoichiometric matrix to that of model1
 showprogress(0.7, 'Combining mets and setting up S ...');
-modelNew.S = model1.S;
 %For metabolites which are in both models, we will simply merge the rows.
 [metpres,metPos] = ismember(model1.mets,model2.mets);
 nRxns = numel(modelNew.rxns);
-modelNew.S(metpres,end+1:nRxns) = model2.S(metPos(metpres),:);
+%For some reason, R2014b does not extend the spare matrix in this
+%instance.
+[nMetsM1,nRxnsM1] = size(model1.S);
+modelNew.S = sparse(numel(model1.mets),nRxns);
+modelNew.S(1:nMetsM1,1:nRxnsM1) = model1.S;
+modelNew.S(metpres,nRxnsM1+1:nRxns) = model2.S(metPos(metpres),:);
 [metpres2] = ismember(model2.mets,model1.mets);
 S_add = model2.S(~metpres2,:);
 modelNew.S = [modelNew.S ;sparse(size(S_add,1),numel(model1.rxns)),S_add];
