@@ -31,8 +31,12 @@ fileName = [fileDir filesep name extension];
 modelSBML = TranslateSBML(fileName,0,0,[1 1]);
 model = struct();
 %TODO: Fix Model Annotation/Notes IO.
-model.modelAnnotation = modelSBML.annotation;
-model.modelNotes = modelSBML.notes;
+if ~isempty(modelSBML.annotation)
+    model.modelAnnotation = modelSBML.annotation;
+end
+if ~isempty(modelSBML.notes)
+    model.modelNotes = modelSBML.notes;
+end
 modelVersion.SBML_level = modelSBML.SBML_level;
 modelVersion.SBML_version = modelSBML.SBML_version;
 if isfield(modelSBML,'fbc_version')
@@ -41,12 +45,19 @@ end
 model.modelVersion = modelVersion;
 
 %Recover the modelName
-model.modelName = regexprep(convertSBMLID(modelSBML.id,false),'^M_','');
-if strcmp(model.modelName,'COBRAModel')
+model.modelID = regexprep(convertSBMLID(modelSBML.id,false),'^M_','');
+if strcmp(model.modelID,'COBRAModel')
     %This is the default, and indicates, that no name was originally
     %present
-    model = rmfield(model,'modelName');
+    model = rmfield(model,'modelID');
 end
+%Recover the name
+if ~strcmp(modelSBML.name,'Model Exported from COBRA Toolbox') && ~isempty(modelSBML.name)
+    model.modelName = modelSBML.name;
+end
+
+    
+
 %% first look for defined compartments (this can be aweful if someone uses
 
 %one compartment but different ids..

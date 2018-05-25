@@ -112,10 +112,14 @@ for i = 1:size(unit_kinds, 2)
 end
 
 if isfield(model,'modelName')
-    sbmlModel.name = model.modelName;
-    sbmlModel.id = ['M_' convertSBMLID(model.modelName)];
+    sbmlModel.name = model.modelName;    
 else
-    sbmlModel.name = 'Model Exported from COBRA Toolbox';
+    sbmlModel.name = 'Model Exported from COBRA Toolbox';    
+end
+
+if isfield(model,'modelID')
+    sbmlModel.id = ['M_' convertSBMLID(model.modelID)];
+else
     sbmlModel.id = 'COBRAModel';
 end
 
