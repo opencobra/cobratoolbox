@@ -30,9 +30,9 @@ cd(currentDir);
 fileName = [fileDir filesep name extension];
 modelSBML = TranslateSBML(fileName,0,0,[1 1]);
 model = struct();
-model.description = struct();
-model.description.annotation = modelSBML.annotation;
-model.description.notes = modelSBML.notes;
+%TODO: Fix Model Annotation/Notes IO.
+model.modelAnnotation = modelSBML.annotation;
+model.modelNotes = modelSBML.notes;
 modelVersion.SBML_level = modelSBML.SBML_level;
 modelVersion.SBML_version = modelSBML.SBML_version;
 if isfield(modelSBML,'fbc_version')
@@ -40,7 +40,8 @@ if isfield(modelSBML,'fbc_version')
 end
 model.modelVersion = modelVersion;
 
-
+%Recover the modelName
+model.modelName = regexprep(convertSBMLID(modelSBML.id,false),'^M_','');
 %% first look for defined compartments (this can be aweful if someone uses
 
 %one compartment but different ids..
