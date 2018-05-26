@@ -333,8 +333,11 @@ available for the reactions, set the value to -1</dd>
 <dt>options.core*                cell with reaction names (strings) that are manually put in</dt>
 <dd>the high confidence set (default - no core reactions)</dd>
 </dl>
-<p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)
-options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+<p>options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)
+options.runtime*             maximum solve time for the MILP (default - 7200s)
+options.epsilon*             small value to consider when modeling</p>
+<blockquote class="last">
+<div>flux (default 1)</div></blockquote>
 </dd>
 </dl>
 </div></blockquote>
@@ -361,7 +364,10 @@ options.obj_frac*            minimum fraction of the model objective function</p
 <p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)</p>
 </dd>
 </dl>
-<p class="last">options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+<p>options.runtime*             maximum solve time for the MILP (default - 7200s)
+options.epsilon*             small value to consider when modeling</p>
+<blockquote class="last">
+<div>flux (default 1)</div></blockquote>
 </dd>
 <dt>for MBA</dt>
 <dd><p class="first">options.medium_set           list of reaction names with medium confidence

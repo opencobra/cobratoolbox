@@ -1555,7 +1555,9 @@ concatenated with &#8216;;&#8217; matrices will be summed up.</li>
 <dl class="function">
 <dt id="src.reconstruction.refinement.mergeTwoModels">
 <code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em>, <em>mergeGenes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Usage</strong></p>
+<dd><p>Merge two models. If fields conflict, the data from fields in model1 will be
+used.
+<strong>Usage</strong></p>
 <blockquote>
 <div>[modelNew] = mergeTwoModels(model1,model2,objrxnmodel)</div></blockquote>
 <p><strong>Inputs</strong></p>
@@ -1574,8 +1576,10 @@ model 2</li>
 Set as 1 or 2 to set objective reaction from
 desired model</li>
 <li><strong>mergeGenes</strong> &#8211;
-Do merge the gene associated data, if false it will create
-empty fields instead (Default = true)</li>
+Do merge the gene associated data, if false the genes
+field and the rules field will be cleared and other fields
+associated with genes will not be merged. GPR rules can be
+reconstructed using the grRules field.(Default = true)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>

@@ -366,10 +366,10 @@ logical condition.</p>
 <strong>error</strong> message, you can test as follows:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)</span>
 <span class="c">% There are two options. If a particular error message is to be tested (here, &#39;Input2 has the wrong dimension&#39;):</span>
-<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(@()</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span><span class="n">input2</span><span class="o">&#39;</span><span class="p">),</span><span class="s">&#39;Input2 has the wrong dimension&#39;</span><span class="p">));</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">},</span> <span class="s">&#39;testMessage&#39;</span><span class="p">,</span> <span class="s">&#39;Input2 has the wrong dimension&#39;</span><span class="p">));</span>
 
 <span class="c">% If the aim is to test, that the function throws an error at all</span>
-<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(@()</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span><span class="n">input2</span><span class="o">&#39;</span><span class="p">)));</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">}));</span>
 </pre></div>
 </div>
 <p>If you want to test whether your <code class="docutils literal"><span class="pre">function1</span></code> correctly throws a
@@ -438,11 +438,10 @@ online, please make a pull request with the URL entry to the
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">In order to guarantee compatibility across platforms, please</td>
+<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">In order to guarantee compatibility across platforms, please use the full path to the model. For instance:</td>
 </tr>
 </tbody>
 </table>
-<p>use the full path to the model. For instance:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
 
 <span class="c">% load the ecoli core model</span>
