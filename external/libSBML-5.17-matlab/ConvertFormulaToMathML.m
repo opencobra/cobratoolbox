@@ -19,7 +19,7 @@ function Formula = ConvertFormulaToMathML(Input)
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2017 jointly by the following organizations:
+% Copyright (C) 2013-2018 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
@@ -157,6 +157,7 @@ subIndex = 1;
 for i = 1:length(Index)
     if (LogTypes(i) == 1)
       % get x and n from (log(x)/log(n))
+      % but what if we have pow((log(x)/log(n),y)
       pairs = PairBrackets(Formula);
       for j=1:length(pairs)
         if (pairs(j,1) == Index(i))
@@ -164,11 +165,17 @@ for i = 1:length(Index)
         end;
       end;
       subFormula{subIndex} = Formula(Index(i):pairs(j,2));
-      ff = subFormula{subIndex};
-      subPairs = PairBrackets(ff);
-      x = ff(subPairs(2,1)+1:subPairs(2,2)-1);
-      n = ff(subPairs(3,1)+1:subPairs(3,2)-1);
-      newFormula{subIndex} = sprintf('log(%s,%s)', n, x);
+      comma = find(subFormula{subIndex} == ',', 1);
+      if (~isempty(comma))
+          doReplace(subIndex) = 0;
+      else
+          ff = subFormula{subIndex};
+          subPairs = PairBrackets(ff);
+          x = ff(subPairs(2,1)+1:subPairs(2,2)-1);
+          n = ff(subPairs(3,1)+1:subPairs(3,2)-1);
+          newFormula{subIndex} = sprintf('log(%s,%s)', n, x);
+          doReplace(subIndex) = 1;
+      end;
       subIndex = subIndex+1;
     end;
 
@@ -177,7 +184,9 @@ if (subIndex-1 > num)
   error('Problem');
 end;
 for i=1:num
-  y = strrep(y, subFormula{i}, newFormula{i});
+    if (doReplace(i) == 1)
+        y = strrep(y, subFormula{i}, newFormula{i});
+    end;
 end;
 function y = IsItLogBase(Formula)
 

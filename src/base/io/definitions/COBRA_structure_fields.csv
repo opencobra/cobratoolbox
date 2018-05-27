@@ -7,7 +7,7 @@ rxns	rxns	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y
 lb	rxns	1	isnumeric(x)				-1000		Column Vector of Doubles	The lower bounds for fluxes through the reactions.	'true(1)'	numeric
 ub	rxns	1	isnumeric(x)				1000		Column Vector of Doubles	The upper bounds for fluxes through the reactions.	'true(1)'	numeric
 c	rxns	1	isnumeric(x)				0		Column Vector of Doubles	The objective coefficient of the reactions.	'true(1)'	numeric
-osenseStr	NaN	NaN	ischar(x) && strcmpi(x,'max') || strcmpi(x,'min')				'max'		String	The objective sense either `'max'` for maximisation or `'min'` for minimisation	'true(1)'
+osenseStr	NaN	NaN	ischar(x) && strcmpi(x,'max') || strcmpi(x,'min')				'max'		String	The objective sense either `'max'` for maximisation or `'min'` for minimisation	'true(1)'	
 genes	genes	1	iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))				['G' num2str(i)]		Column Cell Array of Strings	Identifiers of the genes in the model	'true(1)'	cell
 rules	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux	'true(1)'	cell
 geneNames	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))		is	genes	model.genes{i}		Column Cell Array of Strings	Full names of each corresponding genes.	'false(1)'	cell
@@ -27,8 +27,6 @@ metChEBIID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	chebi;obo.chebi	
 metPubChemID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubchem.compound	is	mets	''	^\d+$	Column Cell Array of Strings	PubChem ID of each metabolite	'false(1)'	cell
 metMetaNetXID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	metanetx.chemical	is	mets	''	^MNXM\d+$	Column Cell Array of Strings	MetaNetX identifier of the metabolite	'false(1)'	cell
 metSBOTerms	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	mets	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the metabolite	'false(1)'	cell
-description	NaN	NaN	ischar(x) || isstruct(x)				struct()		String or Struct	Name of a file the model is loaded from.	'false(1)'	char
-modelVersion	NaN	NaN	isstruct(x)				struct()		Struct	Information on the model version	'false(1)'	struct
 geneEntrezID	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ncbigene	is;isEncodedBy	genes	''	^\d+$	Column Cell Array of Strings	Entrez IDs of genes	'false(1)'	cell
 grRules	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	A string representation of the GPR rules defined in a readable format.	'false(1)'	cell
 rxnGeneMat	rxns	genes	issparse(x) || isnumeric(x) || islogical(x)				0		Sparse or Full Matrix of Double or Boolean	Matrix with rows corresponding to reactions and columns corresponding to genes.	'false(1)'	sparselogical
@@ -40,3 +38,7 @@ rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDesc
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'	cell
 rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	rxns	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'	cell
 subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))				{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell
+description	NaN	NaN	ischar(x) || isstruct(x)				struct()		String or Struct	Name of a file the model is loaded from.	'false(1)'	char
+modelVersion	NaN	NaN	isstruct(x)				struct()		Struct	Information on the model version	'false(1)'	struct
+modelName	NaN	NaN	ischar(x)				'Model Exported from COBRA Toolbox'		String	A Descriptive Name of the model	'false(1)'	char
+modelID	NaN	NaN	ischar(x)				'COBRAModel'		String	The ID of the model	'false(1)'	char

@@ -42,19 +42,32 @@ nGenes = numel(model.genes);
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'genes'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'genes'), fieldDefs(:,3)));
 modelGeneFields = getModelFieldsForType(model,'genes');
+model.genes = [model.genes;columnVector(geneIDs)];
+
 for field = 1:2:numel(varargin)
+    %If the field does not exist and is not defined, we will not add that
+    %information, as we don't know how the field should look.
     cfield = varargin{field};
-    if any(ismember({'rxnGeneMat'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelGeneFields,cfield)))        
+    if strcmp('rxnGeneMat',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelGeneFields,cfield)))        
         warning('Field %s is excluded.',cfield);
         continue;
-    end    
-    if ~isfield(model,cfield)
-        model = createEmptyFields(model,cfield);    
-    end    
+    end
+    
     if ~any(size(varargin{field+1}) == numel(geneIDs)) %something must fit
         error('Size of field %s does not fit to the rxnList size', varargin{field});
     end
-    model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];    
+    %Now add the field data.     
+    if ~isfield(model,cfield)
+        %If its not yet in the model, create it
+        %according to its defaults and replace the final elements.        
+        model = createEmptyFields(model,cfield);    
+        model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});    
+    else    
+        %Or just extend it with the supplied data.        
+        model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];
+    end    
+
+        
 end
-model.genes = [model.genes;columnVector(geneIDs)];
+%Extend the remaining fields, to keep the fields in sync
 newmodel = extendModelFieldsForType(model,'genes','originalSize',nGenes);

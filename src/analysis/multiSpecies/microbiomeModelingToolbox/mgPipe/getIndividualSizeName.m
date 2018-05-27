@@ -1,5 +1,5 @@
 function [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath)
-% This function automatically detects name and number of individuals present
+% This function automatically detects organisms, names and number of individuals present
 % in the study.
 %
 % USAGE:

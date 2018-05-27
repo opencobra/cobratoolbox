@@ -23,7 +23,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .c - Objective coeff vector
 %                       * .lb - Lower bound vector
 %                       * .ub - Upper bound vector
-%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .osense - Objective sense for the linear part (-1 max, +1 min)
 %                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
@@ -144,7 +144,7 @@ switch solver
 
         Result = tomRun('cplex', tomlabProblem);
         x = Result.x_k;
-        f = osense*Result.f_k;
+        f = Result.f_k;
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);
@@ -181,8 +181,7 @@ switch solver
         CplexQPProblem.Model.rhs = b_U;
         CplexQPProblem.Model.lhs = b_L;
         CplexQPProblem.Model.obj = osense*c;
-        CplexQPProblem.Model.Q = F;
-
+        CplexQPProblem.Model.Q = F;   
         %optional parameters
         if printLevel == 0  % set display function as empty
             CplexQPProblem.DisplayFunc=[];
@@ -215,7 +214,7 @@ switch solver
             w = Result.reducedcost;
         end
         if isfield(Result,'objval')  % Cplex solution may not have objval
-            f = osense*Result.objval;
+            f = Result.objval;
         end
         origStat = Result.status;
         if (origStat == 1 || origStat == 101)
@@ -338,6 +337,17 @@ switch solver
         end
         if isfield(param,'optTol')
             param=rmfield(param,'optTol');
+            param.MSK_DPAR_BASIS_TOL_S = param.optTol;
+            param.MSK_DPAR_BASIS_REL_TOL_S = param.optTol;
+            param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = param.optTol;
+            param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = param.optTol;
+            param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = param.optTol;
+        else
+            param.MSK_DPAR_BASIS_TOL_S = optTol;
+            param.MSK_DPAR_BASIS_REL_TOL_S = optTol;
+            param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = optTol;
+            param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = optTol;
+            param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = optTol;
         end
         if isfield(param,'feasTol')
             param=rmfield(param,'feasTol');
@@ -373,7 +383,7 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
-                    f = osense*res.sol.itr.pobjval;
+                    f = res.sol.itr.pobjval;
 
                     %dual to equality
                     y= res.sol.itr.y;
@@ -514,8 +524,8 @@ switch solver
         %opt.Quad=1;
 
         %gurobi_mex doesn't cast logicals to doubles automatically
-        c = double(c);
-        [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
+        c = osense*double(c);
+        [x,f,origStat,output,y] = gurobi_mex(c,1,sparse(A),b, ...
             csense,lb,ub,[],opts);
         if origStat==2
             stat = 1; % Optimal solutuion found
@@ -565,17 +575,11 @@ switch solver
             QPproblem.csense = QPproblem.csense(:);
         end
 
-        if QPproblem.osense == -1
-            QPproblem.osense = 'max';
-            osense = -1;
-        else
-            QPproblem.osense = 'min';
-            osense = 1;
-       end
-
+        QPproblem.osense = 'min';
+        
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
-        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
+        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,osense*double(QPproblem.c),QPproblem.csense);
         resultgurobi = gurobi(QPproblem,params);
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
@@ -583,7 +587,7 @@ switch solver
             %Ronan: I changed the signs of the dual variables to make it
             %consistent with the way solveCobraLP returns the dual
             %variables
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
@@ -631,8 +635,8 @@ end
 %Helper function for pdco
 %%
     function [obj,grad,hess] = QPObj(x)
-        obj  = c'*x + 0.5*x'*F*x;
-        grad = c + F*x;
-        hess = F;
+        obj  = osense*c'*x + osense*0.5*x'*F*x;
+        grad = osense*c + osense*F*x;
+        hess = osense*F;
     end
 end

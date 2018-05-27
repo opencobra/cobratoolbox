@@ -44,7 +44,7 @@ if strcmp(type,'genes')
         for i = 1:numel(model.genes)       
             if i ~= newOrder(i)
                 %replace by new with an indicator that this is new.
-                model.rules = strrep(model.rules,['x(' num2str(i) ')'],['x(' num2str(newOrder(i)) '$)']);
+                model.rules = strrep(model.rules,['x(' num2str(newOrder(i)) ')'],['x(' num2str(i) '$)']);
             end
         end
         %remove the indicator.
