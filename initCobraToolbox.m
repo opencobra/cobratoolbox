@@ -612,6 +612,9 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     if ENV_VARS.printLevel
         fprintf(' > Checking if curl is installed ... ')
     end
+    
+    origLD = getenv('LD_LIBRARY_PATH');
+    setenv('LD_LIBRARY_PATH', '');
 
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
@@ -659,4 +662,6 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
+    
+    setenv('LD_LIBRARY_PATH', origLD);
 end
