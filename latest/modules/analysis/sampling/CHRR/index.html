@@ -267,7 +267,7 @@
 <span id="id1"></span><h1>CHRR<a class="headerlink" href="#chrr" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sampling.CHRR"></span><dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrExpSampler">
-<code class="descname">chrrExpSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>lambda</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/sampling/CHRR/chrrExpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrExpSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrExpSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>lambda</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/analysis/sampling/CHRR/chrrExpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrExpSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random flux samples from an exponential distribution
 with CHRR Coordinate Hit-and-Run with Rounding.
 chrrExpSampler will generate <cite>numSamples</cite> samples from model, taking <cite>numSkip</cite> steps of a random walk between each sample.
@@ -327,7 +327,7 @@ flux minima and maxima</li>
 
 <dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrParseModel">
-<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/sampling/CHRR/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrParseModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/analysis/sampling/CHRR/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrParseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a COBRA model into the right format for the CHRR sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -365,7 +365,7 @@ A structure with fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrSampler">
-<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em>, <em>optPercentage</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/sampling/CHRR/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em>, <em>optPercentage</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/analysis/sampling/CHRR/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
 chrrSampler will generate numSamples samples from model, taking <cite>numSkip</cite> steps of a random walk between each sample.
 Rounding the polytope is a potentially expensive step. If you generate multiple rounds

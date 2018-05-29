@@ -249,7 +249,7 @@
 <span id="id1"></span><h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.preprocessing"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.preprocessing.GPRparser">
-<code class="descname">GPRparser</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/dataIntegration/transcriptomics/preprocessing/GPRparser.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.GPRparser" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GPRparser</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/dataIntegration/transcriptomics/preprocessing/GPRparser.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.GPRparser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps the GPR rules of the model to a specified format that is used by
 the model extraction methods</p>
 <p><strong>Usage</strong></p>
@@ -274,7 +274,7 @@ cell matrix containing parsed GPR rule</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.preprocessing.findUsedGenesLevels">
-<code class="descname">findUsedGenesLevels</code><span class="sig-paren">(</span><em>model</em>, <em>exprData</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.findUsedGenesLevels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findUsedGenesLevels</code><span class="sig-paren">(</span><em>model</em>, <em>exprData</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.findUsedGenesLevels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns vectors of gene identifiers and corresponding gene expression
 levels for each gene present in the model (&#8216;model.genes&#8217;).</p>
 <p><strong>Usage</strong></p>
@@ -319,7 +319,7 @@ vector of expression values associated to each
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.preprocessing.mapExpressionToReactions">
-<code class="descname">mapExpressionToReactions</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/dataIntegration/transcriptomics/preprocessing/mapExpressionToReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.mapExpressionToReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mapExpressionToReactions</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/dataIntegration/transcriptomics/preprocessing/mapExpressionToReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.mapExpressionToReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the expression data associated to each reaction present in
 the model</p>
 <p><strong>Usage</strong></p>
@@ -353,7 +353,7 @@ cell matrix containing parsed GPR rule</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.preprocessing.selectGeneFromGPR">
-<code class="descname">selectGeneFromGPR</code><span class="sig-paren">(</span><em>model</em>, <em>gene_names</em>, <em>gene_exp</em>, <em>parsedGPR</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.selectGeneFromGPR" title="Permalink to this definition">¶</a></dt>
+<code class="descname">selectGeneFromGPR</code><span class="sig-paren">(</span><em>model</em>, <em>gene_names</em>, <em>gene_exp</em>, <em>parsedGPR</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.preprocessing.selectGeneFromGPR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map gene expression to reaction expression using the GPR rules. An AND
 will be replaced by MIN and an OR will be replaced by MAX.</p>
 <p><strong>Usage</strong></p>
