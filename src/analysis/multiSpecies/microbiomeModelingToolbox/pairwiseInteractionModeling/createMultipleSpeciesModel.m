@@ -49,6 +49,10 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %         from BIGG Models database that have _e instead of [e] as compartment IDs
 %       - Almut Heinken, 06.03.2018-changed to parameter-input pairs
 %       - Laurent Heirendt, 16/3/2018 - backward compatibility
+%
+% NOTE:
+%    This function assumes, that exchange reactions are identified by
+%    containing 'EX' in the reaction name and that no other reactions do have this property!
 
 oldOptionalOrder = {'nameTagsModels', 'modelHost', 'nameTagHost', 'mergeGenesFlag'};
 
@@ -145,7 +149,7 @@ end
 
 if ~isempty(modelHost)
     %% with a host
-    exmod = modelHost.rxns(strmatch('EX', modelHost.rxns));
+    exmod = modelHost.rxns(strmatch('EX', modelHost.rxns)); 
 
     % modelHost = removeRxns(modelHost,ExRH);
     % ExRH = modelHost.rxns(selExcH);
@@ -153,19 +157,17 @@ if ~isempty(modelHost)
     % ExRH(strmatch('DM',modelHost.rxns(selExcH)))=[];
 
     % create a new extracellular space for host
-    for i = 1:length(modelHost.mets)
-        if ~isempty(strfind(modelHost.mets{i}, '[e]'))
-            % find all reactions associated - copy and rename
-            ERxnind = find(modelHost.S(i, :));
-            ERxnForm = printRxnFormula(modelHost, modelHost.rxns(ERxnind), false);
-            ERxnForm = regexprep(ERxnForm, '\[e\]', '\[b\]');
-            for j = 1:length(ERxnForm)
-                [modelHost, rxnIDexists] = addReaction(modelHost, ...
-                                                      strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.lb(ERxnind(j)) < 0, ...
-                                                      modelHost.lb(ERxnind(j)), modelHost.ub(ERxnind(j)), modelHost.c(ERxnind(j)), 'Host exchange', '', '', '', false);
-            end
-        end
-    end
+    %find all metabolites in e
+    relMetIndex = cellfun(@(x) ~isempty(strfind(x, '[e]')),modelHost.mets);
+    relMets = modelHost.mets(relMetIndex);
+    relRxns = findRxnsFromMets(modelHost,relMets); %These are all reactions which are relevant
+    rxnIndices = ismember(modelHost.rxns,relRxns);
+    Stoich = modelHost.S(:,rxnIndices);
+    changedMets = regexprep(modelHost.mets, '\[e\]', '\[b\]');
+    modelHost = addMultipleMetabolites(modelHost,setdiff(changedMets,modelHost.mets));
+    modelHost = addMultipleReactions(modelHost,strcat(modelHost.rxns(rxnIndices),'b'),changedMets,Stoich,'lb',modelHost.lb(rxnIndices),...
+                                    'ub',modelHost.ub(rxnIndices),'c',modelHost.c(rxnIndices),'subSystems',repmat({'Host Exchange'},numel(relRxns),1));
+
 
     % remove exchange reactions from host while leaving demand and sink reactions
     modelHost = removeRxns(modelHost, exmod);
