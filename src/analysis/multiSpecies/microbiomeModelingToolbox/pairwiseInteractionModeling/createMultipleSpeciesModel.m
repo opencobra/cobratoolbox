@@ -235,56 +235,39 @@ end
 function [modelNew,MexG] = createInterSpace(model, nameTag, eTag, exTag)
 % create intercellular space
 % will need to find all extracellular metabolites and duplicate reactions using them
-
-ExR = [];
-SpR = [];
 modelNew = model;
-cnt = 1;
-
 % add name tag to all metabolites and reactions in model
 modelNew.mets = strcat(nameTag, model.mets);
 modelNew.rxns = strcat(nameTag, model.rxns);
-
-for i = 1:length(modelNew.mets)
-    if ~isempty(strfind(modelNew.mets{i}, strcat('[', exTag, ']')))
-        % add diffusion reactions into extracellular space
-        Mex = modelNew.mets{i};
-        MexG{cnt} = regexprep(modelNew.mets{i}, strcat('\[', exTag, '\]'), strcat('\[', eTag, '\]'));
-
-        % remove nameTag from metabolites
-        MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
-        % add the metabolite in advance to avoid warning by addReaction and also give metNames and metFormulas to the metabolite to be added
-        if isfield(modelNew, 'metFormulas')
-            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i}, 'metFormula', modelNew.metFormulas{i});
-        else
-            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i});
-        end
-        [modelNew, rxnIDexists] = addReaction(modelNew, ...
-                                              strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
-                                              -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
-        cnt = cnt + 1;
-
-    elseif ~isempty(strfind(modelNew.mets{i}, 'biomass[c]'))
-        % add diffusion reactions into extracellular space
-        Mex = modelNew.mets{i};
-        MexG{cnt} = regexprep(modelNew.mets{i}, strcat('\[', exTag, '\]'), strcat('\[', eTag, '\]'));
-
-        % remove nameTag from metabolites
-        MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
-        % add the metabolite in advance to avoid warning by addReaction and also give metNames and metFormulas to the metabolite to be added
-        if isfield(modelNew, 'metFormulas')
-            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i}, 'metFormula', modelNew.metFormulas{i});
-        else
-            modelNew = addMetabolite(modelNew, MexG{cnt}, 'metName', modelNew.metNames{i});
-        end
-        [modelNew, rxnIDexists] = addReaction(modelNew,...
-                                              strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
-                                              -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
-
-        cnt = cnt + 1;
-    else
-        continue;
-    end
+%Get the relevant metabolites
+relMetsIndex = cellfun(@(x) ~isempty(strfind(x,'biomass[c]')) || ~isempty(strfind(x,['[', exTag, ']'])),modelNew.mets);
+relMets = modelNew.mets(relMetsIndex);
+%Define the names of the interspace metabolites
+MexG = regexprep(strrep(relMets,nameTag,''),strcat('\[', exTag, '\]'), strcat('\[', eTag, '\]'));
+varinput = {};
+%Add metNames and metFormulas, if present in the original model
+if isfield(modelNew,'metNames')
+    varinput{end+1} = 'metNames';
+    varinput{end+1} = modelNew.metNames(relMetsIndex);
 end
-% add exchange reactions
+if isfield(modelNew,'metFormulas')
+    varinput{end+1} = 'metFormulas';
+    varinput{end+1} = modelNew.metFormulas(relMetsIndex);
+end
+%Add all new Metabolites
+modelNew = addMultipleMetabolites(modelNew, MexG, varinput{:});
+
+nExchange = numel(relMets);
+%Set the exchanger Stoichiometries (met[e] -> met[u])
+stoich = [-speye(nExchange);speye(nExchange)];
+%Set the names of the exchangers
+rxnNames =  strcat(nameTag, 'IEX_', MexG, 'tr');
+%Set the bounds
+lbs = repmat(-1000,nExchange,1);
+ubs = repmat(1000,nExchange,1);
+%Set the subSystem
+subSystems = repmat({'Transport, intercellular'},nExchange,1);
+%Add all Reactions in one go.
+modelNew = addMultipleReactions(modelNew,rxnNames,[relMets;MexG],stoich,'lb',lbs,'ub',ubs,'subSystems',subSystems);
+
 end
