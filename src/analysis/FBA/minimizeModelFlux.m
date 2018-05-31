@@ -1,4 +1,4 @@
-function [MinimizedFlux modelIrrev]= minimizeModelFlux(model, osenseStr, minNorm)
+function [MinimizedFlux, modelIrrev]= minimizeModelFlux(model, osenseStr, minNorm)
 % This function finds the minimum flux through the network and returns the
 % minimized flux and an irreversible model
 %
@@ -99,8 +99,7 @@ end
     % Add a pseudo reaction that measures the flux through the network
     modelIrrev = addReaction(modelIrrev,'netFlux',{'fluxMeasure'},[-1],false,0,inf,0,'','');
 
-    % Set the flux measuring demand as the objective
-    modelIrrev.c = zeros(length(modelIrrev.rxns),1);
+    % Set the flux measuring demand as the objective    
     modelIrrev = changeObjective(modelIrrev, 'netFlux');
 
     % Minimize the flux measuring demand (netFlux)
