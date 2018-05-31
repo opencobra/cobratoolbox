@@ -86,6 +86,8 @@ fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,3)));
 modelRxnFields = getModelFieldsForType(model,'rxns');
 
+model.rxns= [model.rxns;columnVector(rxnIDs)];
+
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
     %Anything thats not a model field or not a specialised field is
@@ -102,7 +104,6 @@ for field = 1:2:numel(varargin)
     end
     model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];
 end
-model.rxns= [model.rxns;columnVector(rxnIDs)];
 newmodel = extendModelFieldsForType(model,'rxns','originalSize',nRxns);
 %Now, we have extended the S matrix. So lets fill it.
 newmodel.S(metPos,(nRxns+1):end) = Stoichiometries;
