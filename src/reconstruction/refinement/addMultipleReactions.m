@@ -85,6 +85,7 @@ nRxns = numel(model.rxns);
 fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'rxns'), fieldDefs(:,3)));
 modelRxnFields = getModelFieldsForType(model,'rxns');
+model.rxns= [model.rxns;columnVector(rxnIDs)];
 
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
@@ -96,13 +97,11 @@ for field = 1:2:numel(varargin)
     end
     if ~isfield(model,cfield)
         model = createEmptyFields(model,cfield);
-    end    
-    if ~any(size(varargin{field+1}) == numel(rxnIDs)) %something must fit
-        error('Size of field %s does not fit to the rxnList size', varargin{field});
-    end
-    model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];
+        model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});  
+    else
+        model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];
+    end       
 end
-model.rxns= [model.rxns;columnVector(rxnIDs)];
 newmodel = extendModelFieldsForType(model,'rxns','originalSize',nRxns);
 %Now, we have extended the S matrix. So lets fill it.
 newmodel.S(metPos,(nRxns+1):end) = Stoichiometries;

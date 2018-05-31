@@ -132,7 +132,14 @@ assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGen
 %And finally test duplication errors.
 assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'b0008','G1'}}));
 assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'G2','G1','G2'}}));
-                               
+              
+%Test the functions on an empty model
+fprintf('Testing Addition to an empty model');
+model = createModel();
+modelBatch = addMultipleMetabolites(model,metNames,'metNames',metNames,'metCharges', [ -1 1 0],...
+    'metFormulas', metFormulas, 'metKEGGID',{'C000012','C000023','C000055'});
+modelBatch2 = addMultipleReactions(modelBatch,rxnIDs,{'A','b','c'},[1 -1 0; 0,-2,-1;0,0,1],...
+                                   'lb',[-50,30,1],'ub',[0,60,15],'rxnKEGGID',{'R01','R02','R03'});                              
                                
 % change the directory
 cd(currentDir)
