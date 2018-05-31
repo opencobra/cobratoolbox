@@ -165,6 +165,9 @@ if(isfield(modelNew, 'comps'))
     toKeep(ia) = false;
     modelNew = removeFieldEntriesForType(modelNew,~toKeep,'comps',numel(toKeep));
 end
+showprogress(1.0, 'Finished merging models ...');
+fprintf('\n');
+
 
 
 function modelNew = mergeFields(modelNew,model1,model2,type)

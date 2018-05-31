@@ -49,9 +49,12 @@ if ~isempty(duplicate)
     end
 end
 
-for i = 1 : length(metList)
-    [newModel,rxnIDexists] = addReaction(newModel,strcat('EX_',metList{i}),...
-        'metaboliteList',metList(i),'stoichCoeffList',-1,...
-        'lowerBound',lb(i), 'upperBound',ub(i), 'subSystem', 'Exchange', 'checkDuplicate', false);
-    AddedExchRxn=[AddedExchRxn;strcat('EX_',metList(i))];
-end
+%Set the Exchanger Names that are added
+AddedExchRxn = strcat('EX_',metList);
+%Set the stoichiometry ( met[x] <=>)
+stoich = -speye(numel(metList));
+%Set the subSystem to "Exchange"
+subSystems = repmat({'Exchange'},numel(metList),1);
+%Add all Exchangers
+newModel = addMultipleReactions(newModel,AddedExchRxn,metList,stoich,'lb',lb,'ub',ub,'subSystems',subSystems);
+
