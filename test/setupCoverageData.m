@@ -18,7 +18,7 @@ coverageStruct(numel(files)).fileName = 'end';
 for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
-    lines = strsplit(text,'\n');
+    lines = strsplit(text,'\n','CollapseDelimiters',false);
     relevantLines = columnVector(find(cellfun(@(x) iscodeLine(strtrim(x)),lines)));
     relevantLines = [relevantLines,zeros(size(relevantLines))];
     coverageStruct(i).fileName = cFileName;
@@ -30,13 +30,13 @@ end
 end
 
 function tf = iscodeLine(lineOfFile)
-if length(lineOfFile) > 0 && ... There is something in the file
-        length(strfind(lineOfFile(1), '%')) ~= 1  && ... The line is not commented
-        length(strfind(lineOfFile, 'end')) ~= 1 && ... Its not an 'end'
-        length(strfind(lineOfFile, 'otherwise')) ~= 1 && ... 'its not an otherwise from a switch statement
-        length(strfind(lineOfFile, 'else')) ~= 1  && ... its not an else from an if
-        length(strfind(lineOfFile, 'case')) ~= 1 && ... its not a individual case from aswitch statement
-        length(strfind(lineOfFile, 'function')) ~= 1 %its not the function header
+if length(lineOfFile) > 0 && ... %There is something in the line
+        length(strfind(lineOfFile(1), '%')) ~= 1  && ... %The line is not commented
+        length(strfind(lineOfFile, 'end')) ~= 1 && ... %Its not an 'end'
+        length(strfind(lineOfFile, 'otherwise')) ~= 1 && ... %'its not an otherwise from a switch statement
+        length(strfind(lineOfFile, 'else')) ~= 1  && ... %its not an else from an if
+        length(strfind(lineOfFile, 'case')) ~= 1 && ... %its not a individual case from aswitch statement
+        length(strfind(lineOfFile, 'function')) ~= 1 % its not the function header
     tf = true;
 else
     tf = false;
