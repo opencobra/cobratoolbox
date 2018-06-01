@@ -614,7 +614,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     end
     
     origLD = getenv('LD_LIBRARY_PATH');
-    setenv('LD_LIBRARY_PATH', '');
+        newLD = regexprep(origLD, '[^:]*MATLAB[^:]*', '');
 
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
@@ -623,6 +623,15 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
+    elseif status_curl == 127
+        setenv('LD_LIBRARY_PATH', newLD);
+        [status_curl, result_curl] = system('curl --version');
+        if status_curl == 0 && ~isempty(strfind(result_curl, 'curl')) && ~isempty(strfind(result_curl, 'http'))
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+            end
+        end
+        setenv('LD_LIBRARY_PATH', origLD);
     else
         if throwError
             if ispc
@@ -652,6 +661,15 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
+    elseif status_curl == 127
+        setenv('LD_LIBRARY_PATH', newLD);
+        [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
+        if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+            end
+        end
+        setenv('LD_LIBRARY_PATH', origLD);
     else
         if throwError
             fprintf(result_curl);
@@ -662,6 +680,4 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
-    
-    setenv('LD_LIBRARY_PATH', origLD);
 end
