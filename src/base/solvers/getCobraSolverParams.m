@@ -46,34 +46,38 @@ if nargin <3
     parameters = '';
 end
 
-%% Default Values
-valDef.minNorm = 0;
-valDef.objTol = 1e-6; %used in optimizeTwoCbModels
-valDef.optTol = 1e-9;
-valDef.feasTol = 1e-9;
-valDef.printLevel = 0;
-valDef.primalOnly = 0;
-valDef.timeLimit = 1e36; %this should indicate No time limit per default
-valDef.iterationLimit = 1000;
-valDef.logFile = ['Cobra' solverType 'Solver.log'];
-valDef.saveInput = [];
-valDef.PbName = [solverType 'problem'];
-
-% GUROBI parameters
-valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
-
-%CPLEX parameters
-valDef.DATACHECK = 1;
-valDef.DEPIND = 1;
-valDef.checkNaN = 0;
-valDef.warning = 0;
-
-%tolerances
-valDef.intTol = 1e-12;
-valDef.relMipGapTol = 1e-12;
-valDef.absMipGapTol = 1e-12;
-valDef.NUMERICALEMPHASIS = 1;
-
+persistent valDef
+if isempty(valDef)
+    %% Default Values
+    valDef.minNorm = 0;
+    valDef.objTol = 1e-6; %used in optimizeTwoCbModels
+    valDef.optTol = 1e-9;
+    valDef.feasTol = 1e-9;
+    valDef.printLevel = 0;
+    valDef.primalOnly = 0;
+    valDef.timeLimit = 1e36; %this should indicate No time limit per default
+    valDef.iterationLimit = 1000;
+    valDef.logFile = ['Cobra' solverType 'Solver.log'];
+    valDef.saveInput = [];
+    valDef.PbName = [solverType 'problem'];
+    valDef.debug = 0;
+    
+    % GUROBI parameters
+    valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+    
+    %CPLEX parameters
+    valDef.DATACHECK = 1;
+    valDef.DEPIND = 1;
+    valDef.checkNaN = 0;
+    valDef.warning = 0;
+    
+    %tolerances
+    valDef.intTol = 1e-12;
+    valDef.relMipGapTol = 1e-12;
+    valDef.absMipGapTol = 1e-12;
+    valDef.NUMERICALEMPHASIS = 1;    
+    
+end
 
 %%
 if ~iscell(paramNames)
