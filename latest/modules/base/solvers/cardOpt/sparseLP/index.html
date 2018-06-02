@@ -276,7 +276,7 @@ mutual coherence</li>
 <dt id="src.base.solvers.cardOpt.sparseLP.optimizeCardinality">
 <code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/08d1e02feb9d7e949305d0c53a03480c82dd2027/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
-The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
+The <cite>l0</cite> norm is approximated by a capped-<cite>l1</cite> function.
 :math:<a href="#id2"><span class="problematic" id="id3">`</span></a>min c&#8217;(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0</p>
 <blockquote>
 <div><ul class="simple">
@@ -310,8 +310,8 @@ each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater t
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>problem</strong> &#8211;
+<div><ul>
+<li><p class="first"><strong>problem</strong> &#8211;
 Structure containing the following fields describing the problem:
 * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
 * .lambda0 - trade-off parameter on minimise <cite>||x||_0</cite>
@@ -319,18 +319,18 @@ Structure containing the following fields describing the problem:
 * .k - <cite>p x 1</cite> strictly positive weight vector on minimise <cite>||x||_0</cite>
 * .delta0 - trade-off parameter on maximise <cite>||y||_0</cite>
 * .delta1 - trade-off parameter on maximise <cite>||y||_1
-* .d - `q x 1</cite> strictly positive weight vector on maximise <cite>||y||_0</cite></li>
-<li><strong>param</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)</li>
-<li>.epsilon - stopping criteria - (Defautl value = 10e-6)</li>
-<li><dl class="first docutils">
-<dt>.theta - parameter of the approximation (Default value = 2)</dt>
-<dd>For a sufficiently large parameter , the Capped-L1 approximate problem
-and the original cardinality optimisation problem are have the same set of optimal solutions</dd>
-</dl>
+* .d - `q x 1</cite> strictly positive weight vector on maximise <cite>||y||_0</cite></p>
 </li>
-</ul>
+<li><p class="first"><strong>param</strong> &#8211;
+Parameters structure:
+* .printLevel - greater than zero to recieve more output
+* .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
+* .epsilon - stopping criteria - (Defautl value = 10e-6)
+* .theta - parameter of the approximation (Default value = 2)</p>
+<blockquote>
+<div><p>For a sufficiently large parameter , the Capped-L1 approximate problem
+and the original cardinality optimisation problem are have the same set of optimal solutions</p>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
