@@ -38,7 +38,7 @@ for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
     lines = strsplit(text,'\n','CollapseDelimiters',false);
-    codeLines = columnVector(find(cellfun(@(x) iscodeLine(strtrim(x)),lines)));
+    codeLines = columnVector(find(cellfun(@(x) iscodeLine(x),lines)));
     relevantLines = zeros(numel(codeLines),2);
     relevantLines(:,1) = codeLines;
     relevantLines(:,2) = zeros(size(codeLines));
@@ -52,13 +52,38 @@ end
 end
 
 function tf = iscodeLine(lineOfFile)
-if length(lineOfFile) > 0 && ... %There is something in the line
-        length(strfind(lineOfFile(1), '%')) ~= 1  && ... %The line is not commented
-        length(strfind(lineOfFile, 'end')) ~= 1 && ... %Its not an 'end'
-        length(strfind(lineOfFile, 'otherwise')) ~= 1 && ... %'its not an otherwise from a switch statement
-        length(strfind(lineOfFile, 'else')) ~= 1  && ... %its not an else from an if
-        length(strfind(lineOfFile, 'case')) ~= 1 && ... %its not a individual case from aswitch statement
-        length(strfind(lineOfFile, 'function')) ~= 1 % its not the function header
+lineOfFile = strtrim(lineOfFile);
+if (length(lineOfFile) > 0) && ... %There is something in the line
+        (length(strfind(lineOfFile(1), '%')) ~= 1) %The line is not commented
+    %Now, we have a line, which is not a commented line.
+    
+    if ~isempty(regexp(lineOfFile,'^end;?\s*(%.*)|$'))
+        %Now, if it only contains 'end' or 'end;' or an end with a comment we can skip it.
+        tf = false;
+        return
+    end
+    if ~isempty(regexp(lineOfFile,'^otherwise\s*(%.*)|$'))
+        %Now, if it only contains 'otherwise' or an 'otherwise followed by a comment or whitespace we can skip it.
+        tf = false;
+        return
+    end
+    if ~isempty(regexp(lineOfFile,'^else;?\s*(%.*)|$'))
+        %Now, if it only contains 'else' or an 'else;' or an else followed by a comment or whitespace we can skip it.
+        tf = false;
+        return
+    end
+    if ~isempty(regexp(lineOfFile,'^case\s*(%.*)|$'))
+        %Now, if it only contains 'case' or an case followed by a comment or whitespace we can skip it.
+        tf = false;
+        return
+    end
+    if ~isempty(regexp(lineOfFile,'^function\s+.*$'))
+        %If it contains the 'function' keyword at the start of the non
+        %whitespace line followed by at least one whitespace (to make
+        %sure it actually is the function keyword.
+        tf = false;
+        return
+    end
     tf = true;
 else
     tf = false;
