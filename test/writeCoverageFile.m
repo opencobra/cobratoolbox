@@ -41,7 +41,7 @@ for i = 1:numel(coverage)-1
     fprintf(f,'{ ');
     fprintf(f,'"name": "%s",\n',strrep(currentFile.fileName,CBTDIR,''));
     fprintf(f,'"source_digest": "%s",\n',currentFile.md5sum);
-    fprintf(f,'"coverage": [ %s ]',strjoin(filecoverage,','));
+    fprintf(f,'"coverage": [%s]',strjoin(filecoverage,','));
     fprintf(f,'},\n');
 end
 catch ME
