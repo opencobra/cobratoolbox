@@ -54,8 +54,8 @@ cd(CBTDIR);
 if launchTestSuite
 
     if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
-        addpath(genpath(getenv('MOCOV_PATH')))
-        addpath(genpath(getenv('JSONLAB_PATH')))
+        %addpath(genpath(getenv('MOCOV_PATH')))
+        %addpath(genpath(getenv('JSONLAB_PATH')))
         COVERAGE = true;
         fprintf('MoCov and JsonLab are on path, coverage will be computed.\n')
     else
