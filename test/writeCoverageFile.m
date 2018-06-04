@@ -30,30 +30,34 @@ f = fopen(fileName,'w');
 fprintf(f,'{\n"service_job_id": "none",\n"service_name": "none",\n"source_files": [\n');
 coveredLines = 0;
 codeLines = 0;
+try
 for i = 1:numel(coverage)-1
     currentFile = coverage(i);    
-    coverage = cell(currentFile.totalLines,1);
-    coverage(:) = {'null'};
-    coverage(currentFile.relevantLines(:,1)) = cellfun(@num2str, num2cell(currentFile.relevantLines(:,2),'Uniform',0));
+    filecoverage = cell(currentFile.totalLines,1);
+    filecoverage(:) = {'null'};
+    filecoverage(currentFile.relevantLines(:,1)) = cellfun(@num2str, num2cell(currentFile.relevantLines(:,2)),'Uniform',0);
     codeLines = codeLines + size(currentFile.relevantLines,1);
     coveredLines = coveredLines + sum(currentFile.relevantLines(:,2) ~= 0);
     fprintf(f,'{ ');
     fprintf(f,'"name": "%s",\n',strrep(currentFile.fileName,CBTDIR,''));
     fprintf(f,'"source_digest": "%s",\n',currentFile.md5sum);
-    fprintf(f,'"coverage": [ %s ]',strjoin(coverage,','));
+    fprintf(f,'"coverage": [ %s ]',strjoin(filecoverage,','));
     fprintf(f,'},\n');
+end
+catch ME
+    disp('blubb')
 end
 %the last file:
 currentFile = coverage(end);
-coverage = cell(currentFile.totalLines,1);
-coverage(:) = {'null'};
-coverage(currentFile.relevantLines(:,1)) = cellfun(@num2str, num2cell(currentFile.relevantLines(:,2),'Uniform',0));
+filecoverage = cell(currentFile.totalLines,1);
+filecoverage(:) = {'null'};
+filecoverage(currentFile.relevantLines(:,1)) = cellfun(@num2str, num2cell(currentFile.relevantLines(:,2)),'Uniform',0);
 codeLines = codeLines + size(currentFile.relevantLines,1);
 coveredLines = coveredLines + sum(currentFile.relevantLines(:,2) ~= 0);
 fprintf(f,'{ ');
 fprintf(f,'"name": "%s",\n',strrep(currentFile.fileName,CBTDIR,''));
 fprintf(f,'"source_digest": "%s",\n',currentFile.md5sum);
-fprintf(f,'"coverage": [%s]',strjoin(coverage,','));
+fprintf(f,'"coverage": [%s]',strjoin(filecoverage,','));
 fprintf(f,'}\n'); % no ',' in the end.
 
 

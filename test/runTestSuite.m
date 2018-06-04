@@ -113,7 +113,9 @@ resultTable= table({results.fileName}',{results.status}',[results.passed]',[resu
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
 
 if doCoverage
-    writeCoverageFile(cov);
+    [codeLines,coveredLines] = writeCoverageFile(cov);
+    fprintf('Coverage Report:\n');
+    fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', coveredLines, codeLines, coveredLines / codeLines * 100);
 end
 
 % change back to the original directory.
