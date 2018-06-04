@@ -14,9 +14,26 @@ function coverageStruct = setupCoverageData()
 %    - Thomas Pfau
 
 global CBTDIR
+sourceFolder = [CBTDIR filesep 'src'];
 coverageStruct = struct('fileName','fileName','relevantLines',1);
-files = getFilesInDir('dirToList',[CBTDIR filesep 'src'],'type', 'tracked', 'restrictToPattern', '^.*\.m$', 'checkSubFolders', true);
+files = getFilesInDir('dirToList',sourceFolder,'type', 'tracked', 'restrictToPattern', '^.*\.m$', 'checkSubFolders', true);
 coverageStruct(numel(files)).fileName = 'end';
+[stat,res] = system(['find ' sourceFolder ' -type f -regex .*\.m -exec md5sum "{}" +']);
+if stat == 0
+    indFiles = strsplit(res,'\n');
+    [md5s,fileNames] = cellfun(@(x) deal(x(1:32),x(35:end)),indFiles(1:end-1),'UniformOutput',0);    %The last line is an empty line.
+    [fpres,fpos] = ismember(files,fileNames);
+    md5s = md5s(fpos(fpres));
+else
+    md5s = cell(numel(files));
+    for i = 1:numel(files)
+        [~,md5] = getMD5Checksum(files{i});
+        md5s{i} = getMD5Checksum(md5);
+    end
+end
+    
+        
+    
 for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
@@ -28,7 +45,7 @@ for i = 1:length(files)
     coverageStruct(i).fileName = cFileName;
     coverageStruct(i).relevantLines = relevantLines;
     coverageStruct(i).totalLines = numel(lines);
-    coverageStruct(i).md5sum = GetMD5(cFileName,'file');
+    coverageStruct(i).md5sum = md5s{i};
 end
 
 

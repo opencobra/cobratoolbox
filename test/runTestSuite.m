@@ -49,9 +49,6 @@ testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),
 %Set up coverage Data generation
 
 if doCoverage
-    if ~exist([CBTDIR filesep 'external' filesep 'GetMD5.' mexext],'file')
-        InstallMD5Mex('GetMD5.c');
-    end
     cov = setupCoverageData();
 end
 
