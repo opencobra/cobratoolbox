@@ -1,6 +1,6 @@
 function solution = optimizeCardinality(problem, param)
 % DC programming for solving the cardinality optimization problem
-% The `l0` norm is approximated by capped-`l1` function.
+% The `l0` norm is approximated by a capped-`l1` function.
 % :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0 
 %                        + lambda_1*||x||_1    + delta_1*||y||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
@@ -36,7 +36,7 @@ function solution = optimizeCardinality(problem, param)
 %                   * .d - `q x 1` strictly positive weight vector on maximise `||y||_0`
 %
 %    param:      Parameters structure:
-%
+%                   * .printLevel - greater than zero to recieve more output
 %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                   * .epsilon - stopping criteria - (Defautl value = 10e-6)
 %                   * .theta - parameter of the approximation (Default value = 2) 
@@ -70,6 +70,7 @@ if ~exist('param','var') || isempty(param)
     param.nbMaxIteration = 100;
     param.epsilon = getCobraSolverParams('LP', 'feasTol');
     param.theta   = 2;
+    param.warmStartMethod = 'random';
 end
 if ~isfield(param,'nbMaxIteration')
     param.nbMaxIteration = 100;
@@ -86,55 +87,22 @@ end
 if ~isfield(param,'printLevel')
     param.printLevel = 0;
 end
-
-if ~isfield(problem,'p')
-    warning('Error: the size of vector x is not defined');
-    solution.stat = -1;
-    return;
-else
-    if problem.p < 0
-        warning('Error: p should be a non-negative number');
-        solution.stat = -1;
-        return;
-    end
-end
-
-if ~isfield(problem,'q')
-    warning('Error: the size of vector y is not defined');
-    solution.stat = -1;
-    return;
-else
-    if problem.q < 0
-        warning('Error: q should be a non-negative number');
-        solution.stat = -1;
-        return;
-    end
-end
-
-if ~isfield(problem,'r')
-    warning('Error: the size of vector z is not defined');
-    solution.stat = -1;
-    return;
-else
-    if problem.r < 0
-        warning('Error: r should be a non-negative number');
-        solution.stat = -1;
-        return;
-    end
+if ~isfield(param,'warmStartMethod')
+    param.warmStartMethod = 'random';
 end
 
 %set global parameters on zero norm if they do not exist
 if ~isfield(problem,'lambda') && ~isfield(problem,'lambda0')
-    problem.lambda = 10;  %weight on relaxation of steady state constraints
+    problem.lambda = 10;  %weight on minimisation of the zero norm of x
 end
 if ~isfield(problem,'delta') && ~isfield(problem,'delta0')
     %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining 
-    problem.delta = 0;  %weight on zero norm of reaction rate  
+    problem.delta = 0;  %weight on minimisation of the one norm of x
 end
 
 %set local paramters on zero norm for capped L1
 if ~isfield(problem,'lambda0')
-    problem.lambda0 = problem.lambda;    
+    problem.lambda0 = problem.lambda;  %weight on maximisation of the zero norm of y  
 end
 if ~isfield(problem,'delta0')
     problem.delta0 = problem.delta;       
@@ -142,7 +110,7 @@ end
 
 %set local paramters on one norm for capped L1
 if ~isfield(problem,'lambda1')
-    problem.lambda1 = problem.lambda0/10;    
+    problem.lambda1 = problem.lambda0/10;  %weight on minimisation of the one norm of y   
 end
 if ~isfield(problem,'delta1')
     %always include some regularisation on the flux rates to keep it well
@@ -151,40 +119,50 @@ if ~isfield(problem,'delta1')
     problem.delta1 = problem.delta0/10;   
 end
 
-if ~isfield(problem,'k')
-    if problem.lambda0==0
-        problem.k = zeros(problem.p,1);
-    else
-        problem.k = ones(problem.p,1);
-    end
+if ~isfield(problem,'p')
+    warning('Error: the size of vector x is not defined');
+    solution.stat = -1;
+    return;
 else
-    if length(problem.k) ~= problem.p 
-        warning('Error: the size of weight vector k is not correct');
-        solution.stat = -1;
-        return;
+    ltp=length(problem.p);
+    ltq=length(problem.q);
+    ltr=length(problem.r);
+    if ltp==1
+        if problem.p < 0
+            warning('Error: p should be a non-negative number');
+            solution.stat = -1;
+            return;
+        end
     else
-        if any(problem.k <=0) %& 0
-            warning('Error: the weight vector k should be strictly positive');
+        if ltp~=ltq && ltq~=ltr
+            warning('Error: if p,q,r are Boolean vectors, they should be the same dimension');
+            solution.stat = -1;
+        end
+    end
+end
+
+if ~isfield(problem,'q')
+    warning('Error: the size/location of vector y is not defined');
+    solution.stat = -1;
+    return;
+else
+    if length(problem.q)==1
+        if problem.q < 0
+            warning('Error: q should be a non-negative number');
             solution.stat = -1;
             return;
         end
     end
 end
 
-if ~isfield(problem,'d')
-    if problem.delta0==0
-        problem.d = zeros(problem.q,1);
-    else
-        problem.d = ones(problem.q,1);
-    end
+if ~isfield(problem,'r')
+    warning('Error: the size of vector z is not defined');
+    solution.stat = -1;
+    return;
 else
-    if length(problem.d) ~= problem.q 
-        warning('Error: the size of weight vector d is not correct');
-        solution.stat = -1;
-        return;
-        else
-        if any(problem.d <=0)
-            warning('Error: the weight vector d should be strictly positive');
+    if length(problem.r)==1
+        if problem.r < 0
+            warning('Error: r should be a non-negative number');
             solution.stat = -1;
             return;
         end
@@ -196,11 +174,164 @@ if ~isfield(problem,'A')
     solution.stat = -1;
     return;
 else
-    if size(problem.A,2) ~= (problem.p + problem.q + problem.r)
-        warning('Error: the number of columns of A is not correct');
+    if length(problem.p)==1
+        if size(problem.A,2) ~= (problem.p + problem.q + problem.r)
+            warning('Error: the number of columns of A is not correct');
+            solution.stat = -1;
+            return;
+        end
+    else
+        if size(problem.A,2) ~= length(problem.p)
+            error('The number of columns of A is not consistent with the dimension of boolean vectors p,q,r.');
+            solution.stat = -1;
+            return;
+        end
+    end
+end
+
+if ~isfield(problem,'lb')
+    warning('Error: lower bound vector is not defined');
+    solution.stat = -1;
+    return;
+else
+    if length(problem.p)==1
+        if length(problem.lb) ~= (problem.p + problem.q + problem.r)
+            warning('Error: the size of vector lb is not correct');
+            solution.stat = -1;
+            return;
+        end
+    else
+        if length(problem.lb) ~= length(problem.p)
+            warning('Error: the size of vector lb is not correct');
+            solution.stat = -1;
+            return;
+        end
+    end
+end
+
+if ~isfield(problem,'ub')
+    warning('Error: upper bound vector is not defined');
+    solution.stat = -1;
+    return;
+else
+    if length(problem.p)==1
+        if length(problem.ub) ~= (problem.p + problem.q + problem.r)
+            warning('Error: the size of vector ub is not correct');
+            solution.stat = -1;
+            return;
+        end
+    else
+        if length(problem.ub) ~= length(problem.p)
+            warning('Error: the size of vector ub is not correct');
+            solution.stat = -1;
+            return;
+        end
+    end
+end
+
+if ~isfield(problem,'k')
+    if length(problem.p)==1
+        if problem.lambda0==0
+            problem.k = zeros(problem.p,1);
+        else
+            problem.k = ones(problem.p,1);
+        end
+    else
+        if problem.lambda0==0
+            problem.k = ones(length(problem.p),1);
+        else
+            problem.k = ones(length(problem.p),1);
+        end
+    end
+else
+    if length(problem.p)==1
+        if length(problem.k) ~= problem.p
+            warning('Error: the size of weight vector k is not correct');
+            solution.stat = -1;
+            return;
+        end
+    else
+        if length(problem.k) ~= length(problem.p)
+            warning('Error: the size of weight vector k is not correct');
+            solution.stat = -1;
+            return;
+        end
+    end
+    if any(problem.k <=0) %& 0
+        warning('Error: the weight vector k should be strictly positive');
         solution.stat = -1;
         return;
     end
+end
+
+if ~isfield(problem,'d')
+    if length(problem.q)==1
+        if problem.delta0==0
+            problem.d = zeros(problem.q,1);
+        else
+            problem.d = ones(problem.q,1);
+        end
+    else
+        if problem.delta0==0
+            problem.d = ones(length(problem.q),1);
+        else
+            problem.d = ones(length(problem.q),1);
+        end
+    end
+else
+    if length(problem.q)==1
+        if length(problem.d) ~= problem.q
+            warning('Error: the size of weight vector d is not correct');
+            solution.stat = -1;
+            return;
+        end
+    else
+        if length(problem.d) ~= length(problem.p)
+            warning('Error: the size of weight vector k is not correct');
+            solution.stat = -1;
+            return;
+        end
+    end
+    if any(problem.d <=0) %& 0
+        warning('Error: the weight vector d should be strictly positive');
+        solution.stat = -1;
+        return;
+    end
+end
+
+[p,q,r,k,d] = deal(problem.p,problem.q,problem.r,problem.k,problem.d);
+[A,b,c,lb,ub,csense] = deal(problem.A,problem.b,problem.c,problem.lb,problem.ub,problem.csense);
+
+%%
+
+if length(problem.p)~=1
+    bool = problem.p | problem.q | problem.r;
+    if ~all(bool)
+        error('The number of columns of A is not consistent with the total number of nonzeros of boolean vectors p,q,r.');
+        solution.stat = -1;
+        return;
+    end
+    indp=find(problem.p);
+    indq=find(problem.q);
+    indr=find(problem.r);
+    p=nnz(problem.p);
+    q=nnz(problem.q);
+    r=nnz(problem.r);
+    
+    A   = [A(:,indp),A(:,indq),A(:,indr)];
+    lb  = [lb(indp);lb(indq);lb(indr)];
+    ub  = [ub(indp);ub(indq);ub(indr)];
+    c   = [c(indp);c(indq);c(indr)];
+    k   =  k(indp);
+    d   =  d(indq);
+end
+%%
+
+
+if any(problem.lb > problem.ub)
+    warning('Error: lb is greater than ub');
+    solution.stat = -1;
+    return;
 end
 
 if ~isfield(problem,'b')
@@ -213,36 +344,6 @@ else
         solution.stat = -1;
         return;
     end
-end
-
-if ~isfield(problem,'lb')
-    warning('Error: lower bound vector is not defined');
-    solution.stat = -1;
-    return;
-else
-    if length(problem.lb) ~= (problem.p + problem.q + problem.r)
-        warning('Error: the size of vector lb is not correct');
-        solution.stat = -1;
-        return;
-    end
-end
-
-if ~isfield(problem,'ub')
-    warning('Error: upper bound vector is not defined');
-    solution.stat = -1;
-    return;
-else
-    if length(problem.ub) ~= (problem.p + problem.q + problem.r)
-        warning('Error: the size of vector lb is not correct');
-        solution.stat = -1;
-        return;
-    end
-end
-
-if any(problem.lb > problem.ub)
-    warning('Error: lb is greater than ub');
-    solution.stat = -1;
-    return;
 end
 
 if ~isfield(problem,'csense')
@@ -258,10 +359,7 @@ else
 end
 
 [nbMaxIteration,epsilon,theta] = deal(param.nbMaxIteration,param.epsilon,param.theta);
-[p,q,r] = deal(problem.p,problem.q,problem.r);
-[c,lambda0,lambda1,delta0,delta1] = deal(problem.c,problem.lambda0,problem.lambda1,problem.delta0,problem.delta1);
-[k,d] = deal(problem.k,problem.d);
-[A,b,lb,ub,csense] = deal(problem.A,problem.b,problem.lb,problem.ub,problem.csense);
+[lambda0,lambda1,delta0,delta1] = deal(problem.lambda0,problem.lambda1,problem.delta0,problem.delta1);
 s = length(problem.b);
 
 %variables are (x,y,z,w,t)
@@ -293,81 +391,129 @@ end
 ub2 = [ub;   k.*max(abs(lb(1:p)),abs(ub(1:p)));   theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
 %ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
 
-if 0
-    % Solve an l1 approximation for starting point
-    x       = -100 + 200*rand(p,1);
-    y       = -100 + 200*rand(q,1);
-    z       = zeros(r,1);
-    x_bar   = zeros(p,1);
-    y_bar   = zeros(q,1);
-    
-    
-    % min       c'(x,y,z) + lambda_0*||x||_1
-    % s.t.      A*(x,y,z) <= b
-    %           l <= (x,y,z) <=u
-    %           x in R^p, y in R^q, z in R^r
-    
-    obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);lambda0*ones(p,1)];
-    % Constraints
-    % A*[x;y;z] <=b
-    % w >= x
-    % w >= -x
-    A1 = [A                                             sparse(s,p);
-        speye(p)      sparse(p,q)      sparse(p,r)    -speye(p);
-        -speye(p)     sparse(p,q)      sparse(p,r)    -speye(p);];
-    b1 = [b; zeros(2*p,1)];
-    csense1 = [csense;repmat('L',2*p, 1)];
-    
-    % Bound;
-    % lb <= [x;y;z] <= ub
-    % 0  <= w <= max(|lb_x|,|ub_x|)
-    lb1 = [lb;zeros(p,1)];
-    ub1 = [ub;max(abs(lb(1:p)),abs(ub(1:p)))];
-    
-    %Define the linear sub-problem
-    LPproblem = struct('c',obj,'osense',1,'A',A1,'csense',csense1,'b',b1,'lb',lb1,'ub',ub1);
-    
-    %Solve the linear problem
-    LPsolution = solveCobraLP(LPproblem);
-    
-    switch LPsolution.stat
-        case 1
-            x = LPsolution.full(1:p);
-            y = LPsolution.full(p+1:p+q);
-            z = LPsolution.full(p+q+1:p+q+r);
-        case 0
-            % solution                  Structure containing the following fields
-            %       x                   p x 1 solution vector
-            %       y                   q x 1 solution vector
-            %       z                   r x 1 solution vector
-            %       stat                status
-            solution.stat=LPsolution.stat;
-            return
-        otherwise
-            error('L1 problem is neither solved nor infeasible')
-    end
-else
-    %random initial starting point
-    
-    %protect against inf or -inf in bounds.
-    maxub=1e4*ones(length(ub2),1);
-    maxub2=min(maxub,ub2);
-    minlb=-1e4*ones(length(lb2),1);
-    minlb2=max(minlb,lb2);
-    
-    full = lb2 + diag(rand(2*p+2*q+r,1))*(maxub2 - minlb2);
-    x = full(1:p);
-    y = full(p+1:p+q);
-    z = full(p+q+1:p+q+r);
-    w = full(p+q+r+1:2*p+q+r);
-    t = full(2*p+q+r+1:2*p+2*q+r);
-    
-    %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
-    x(abs(x) < 1/theta) = 0;
-    x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x);
-    y_bar = -delta1*sign(y)  +   theta*delta0*d.*sign(y);
+switch param.warmStartMethod
+    case 'inverseTheta'
+        x       = zeros(p,1);
+        y       = zeros(q,1);
+        z       = zeros(r,1);
+    case 'original'
+        x       = -100 + 200*rand(p,1);
+        y       = -100 + 200*rand(q,1);
+        z       = zeros(r,1);
+    case '0'
+        x       = zeros(p,1);
+        y       = zeros(q,1);
+        z       = zeros(r,1);
+    case 'l1'
+        % Solve an l1 approximation for starting point
+%         x       = -100 + 200*rand(p,1);
+%         y       = -100 + 200*rand(q,1);
+%         z       = zeros(r,1);
+%         x_bar   = zeros(p,1);
+%         y_bar   = zeros(q,1);
+        
+        
+        % min       c'(x,y,z) + lambda_0*||x||_1
+        % s.t.      A*(x,y,z) <= b
+        %           l <= (x,y,z) <=u
+        %           x in R^p, y in R^q, z in R^r
+        
+        obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r);lambda0*ones(p,1)];
+        % Constraints
+        % A*[x;y;z] <=b
+        % w >= x
+        % w >= -x
+        A1 = [A                                            sparse(s,p);
+            speye(p)      sparse(p,q)      sparse(p,r)    -speye(p);
+            -speye(p)     sparse(p,q)      sparse(p,r)    -speye(p);];
+        b1 = [b; zeros(2*p,1)];
+        csense1 = [csense;repmat('L',2*p, 1)];
+        
+        % Bound;
+        % lb <= [x;y;z] <= ub
+        % 0  <= w <= max(|lb_x|,|ub_x|)
+        lb1 = [lb;zeros(p,1)];
+        ub1 = [ub;max(abs(lb(1:p)),abs(ub(1:p)))];
+        
+        %Define the linear sub-problem
+        LPproblem = struct('c',obj,'osense',1,'A',A1,'csense',csense1,'b',b1,'lb',lb1,'ub',ub1);
+        
+        %Solve the linear problem
+        LPsolution = solveCobraLP(LPproblem);
+        
+        switch LPsolution.stat
+            case 1
+                x = LPsolution.full(1:p);
+                y = LPsolution.full(p+1:p+q);
+                z = LPsolution.full(p+q+1:p+q+r);
+            case 0
+                % solution                  Structure containing the following fields
+                %       x                   p x 1 solution vector
+                %       y                   q x 1 solution vector
+                %       z                   r x 1 solution vector
+                %       stat                status
+                solution.stat=LPsolution.stat;
+                return
+            otherwise
+                error('L1 problem is neither solved nor infeasible')
+        end
+    case 'l2'
+        % Solve an l2 approximation for starting point      
+        
+        % min       c'(x,y,z) + lambda_0*||x||_2
+        % s.t.      A*(x,y,z) <= b
+        %           l <= (x,y,z) <=u
+        %           x in R^p, y in R^q, z in R^r
+        
+        obj = [c(1:p);c(p+1:p+q);c(p+q+1:p+q+r)];
+        % Constraints
+       
+        %quadratic objective
+        F = diag(sparse([ones(p,1);zeros(q,1);zeros(r,1)]));
+        %Define the linear sub-problem
+        QPproblem = struct('c',obj,'osense',1,'A',A,'csense',csense,'b',b,'lb',lb,'ub',ub,'F',F);
+        
+        %Solve the linear problem
+        QPsolution = solveCobraQP(QPproblem);
+        
+        switch QPsolution.stat
+            case 1
+                x = QPsolution.full(1:p);
+                y = QPsolution.full(p+1:p+q);
+                z = QPsolution.full(p+q+1:p+q+r);
+            case 0
+                % solution                  Structure containing the following fields
+                %       x                   p x 1 solution vector
+                %       y                   q x 1 solution vector
+                %       z                   r x 1 solution vector
+                %       stat                status
+                solution.stat=QPsolution.stat;
+                return
+            otherwise
+                error('L2 problem is neither solved nor infeasible')
+        end
+    case 'random'
+        %random initial starting point
+        
+        %protect against inf or -inf in bounds.
+        maxub=1e4*ones(length(ub2),1);
+        maxub2=min(maxub,ub2);
+        minlb=-1e4*ones(length(lb2),1);
+        minlb2=max(minlb,lb2);
+        
+        full = lb2 + diag(rand(2*p+2*q+r,1))*(maxub2 - minlb2);
+        x = full(1:p);
+        y = full(p+1:p+q);
+        z = full(p+q+1:p+q+r);
+%         w = full(p+q+r+1:2*p+q+r);
+%         t = full(2*p+q+r+1:2*p+2*q+r);
 end
+%Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
+x(abs(x) < 1/theta) = 0;
+x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x);
+y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y);
 
+        
 % Create the linear sub-programme that one needs to solve at each iteration, only its
 % objective function changes, the constraints set remains.
 % Define objective - variable (x,y,z,w,t)
@@ -380,9 +526,9 @@ obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);-del
 % t >= theta*d.*y       -> theta*d.*y - t <= 0
 % t >= -theta*d.*y      -> -theta*d.*y - t <= 0
 A2 = [A                                                        sparse(s,p)      sparse(s,q);
-      sparse(diag(k))   sparse(p,q)             sparse(p,r)    -speye(p)        sparse(p,q);
-      -sparse(diag(k))  sparse(p,q)             sparse(p,r)    -speye(p)        sparse(p,q);
-      sparse(q,p)       theta*spdiags(d,0,q,q)   sparse(q,r)    sparse(q,p)      -speye(q);
+       sparse(diag(k))   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
+      -sparse(diag(k))   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
+       sparse(q,p)       theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q);
       sparse(q,p)       -theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q)];
 b2 = [b; zeros(2*p+2*q,1)];
 csense2 = [csense;repmat('L',2*p+2*q, 1)];
@@ -473,9 +619,9 @@ while nbIteration < nbMaxIteration && stop ~= true
                      obj_y1 = delta1*norm(y,1);
      
                 if nbIteration==1
-                    fprintf('%20s%12.3s%12.6s%12.6s%12.6s%12.6s%12.6s%12.6s\n','itn','err','obj','linear','||x||0','||x||1','||y||0','||y||1');
+                    fprintf('%20s%12.6s%12.3s%12.6s%12.6s%12.6s%12.6s%12.6s%12.6s\n','itn','theta','err','obj','linear','||x||0','||x||1','||y||0','||y||1');
                 end
-                fprintf('%20u%12.3g%12.6g%12.6g%12.6g%12.6g%12.6g%12.6g\n',nbIteration,min(error_x,error_obj),obj_new,obj_linear,obj_x0,obj_x1,obj_y0,obj_y1);
+                fprintf('%20u%12.6g%12.3g%12.6g%12.6g%12.6g%12.6g%12.6g%12.6g\n',nbIteration,theta,min(error_x,error_obj),obj_new,obj_linear,obj_x0,obj_x1,obj_y0,obj_y1);
             end
             %                 disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
             %                 disp(strcat('Obj:',num2str(obj_new)));
@@ -497,6 +643,12 @@ if solution.stat == 1
     solution.x = x;
     solution.y = y;
     solution.z = z;
+    if length(problem.p)~=1
+        solution.xyz = NaN*ones(ltp,1);
+        solution.xyz(problem.p)=x;
+        solution.xyz(problem.q)=y;
+        solution.xyz(problem.r)=z;
+    end
 end
 
 end
@@ -547,11 +699,13 @@ function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLP
     
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
-
+    
     if LPsolution.stat == 1
+        
         x = LPsolution.full(1:p);
         y = LPsolution.full(p+1:p+q);
         z = LPsolution.full(p+q+1:p+q+r);
+        
     else
         if printLevel>2
             disp(theta)
@@ -575,7 +729,7 @@ function obj = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda
     q = length(y);
     %obj = c'*[x;y;z] + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x)) - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y)) + lambda1*norm(x,1) + delta1*norm(y,1);%Minh
      obj = c'*[x;y;z]...
-         + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x))...
-         - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y))...
+         + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x))... %Capped-l1 approximate step function (bottom row Table 2.)
+         -  delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y))...
          + lambda1*norm(x,1) + delta1*norm(y,1);
 end

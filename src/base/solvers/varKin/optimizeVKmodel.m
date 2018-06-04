@@ -1,4 +1,4 @@
-function output = optimizeVKmodels(model, solver, x0, parms)
+function output = optimizeVKmodel(model, solver, x0, parms)
 % Function for finding a solution of the nonlinear system
 % :math:`h(x) = f(x) = 0`, `x` in :math:`R^m`, (I)
 % or :math:`h(x) = (f(x)^T, l(x)^T)^T = 0`, `x` in :math:`R^m`, (II)
@@ -12,7 +12,7 @@ function output = optimizeVKmodels(model, solver, x0, parms)
 %
 % USAGE:
 %
-%    output = optimizeVKmodels(model, solver, x0, parms)
+%    output = optimizeVKmodel(model, solver, x0, parms)
 %
 % INPUT:
 %    model:    stracture includes `F`, `R` and/or `L`
@@ -593,5 +593,5 @@ if flag_time == 1
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% optimizeVKmodels.m %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% optimizeVKmodel.m %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
