@@ -20,7 +20,8 @@ switch solverType
                       'feasTol', ... % feasibility Tolerance
                       'optTol', ... % optimality Tolerance
                       'solver', ... % solver to use (overriding set solver)
-                      'debug'}; % run debgugging code
+                      'debug', ... % run debgugging code
+                      'lifting'}; % Whether to lift a problem
 
     case 'QP'
         

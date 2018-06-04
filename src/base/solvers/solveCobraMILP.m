@@ -481,23 +481,12 @@ switch solver
         
         
         % Strict numerical tolerances
-        if isfield(solverParams,'DATACHECK')
-            tomlabProblem.MIP.cpxControl.DATACHECK = solverParams.DATACHECK;
-            solverParams = rmfield(solverParams,'DATACHECK');
-        end
-        if isfield(solverParams,'DEPIND')
-            tomlabProblem.MIP.cpxControl.DEPIND = solverParams.DEPIND;
-            solverParams = rmfield(solverParams,'DEPIND');
-        end
         tomlabProblem.MIP.cpxControl.EPRHS = cobraParams.feasTol;
         tomlabProblem.MIP.cpxControl.EPOPT = cobraParams.optTol;
         tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
-        if isfield(solverParams,'NUMERICALEMPHASIS')
-            tomlabProblem.MIP.cpxControl.NUMERICALEMPHASIS = solverParams.NUMERICALEMPHASIS;
-            solverParams = rmfield(solverParams,'NUMERICALEMPHASIS');
-        end 
+        
         %Now, replace anything that is in the solver Specific field.
-        tomlabProblem = updateStruct(tomlabProblem,solverParams);
+        tomlabProblem = updateStruct(tomlabProblem.MIP.cpxControl,solverParams);
         
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;

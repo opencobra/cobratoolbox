@@ -11,7 +11,7 @@ solverVars = cell(numel(COBRASolverParameters),1);
 defaultParams = [columnVector(COBRASolverParameters),columnVector(solverVars)];
 %Parse the supplied parameters
 if numel(varargin) > 0
-    if mod(numel(varargin),2) == 1 %We should have a struct at the end
+    if mod(numel(varargin),2) == 1 %We should have a struct at the end                       
         optParamStruct = varargin{end};
         if ~isstruct(optParamStruct)
             optParamStruct = varargin{1};

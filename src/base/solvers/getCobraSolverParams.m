@@ -61,7 +61,8 @@ if isempty(valDef)
     valDef.saveInput = [];
     valDef.PbName = [solverType 'problem'];
     valDef.debug = 0;
-    
+    valDef.lifting = 0;
+       
     % GUROBI parameters
     valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
     
