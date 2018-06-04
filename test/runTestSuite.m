@@ -27,7 +27,7 @@ function [results, resultTable] = runTestSuite(testNames,coverageFile)
 
 global CBTDIR
 
-if ~exist('testNames','var')
+if ~exist('testNames','var') || isempty(testNames)
     testNames = '.*';
 end
 
@@ -42,7 +42,7 @@ testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 
 % get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'testSolveCobraLP*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
