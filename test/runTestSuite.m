@@ -1,4 +1,4 @@
-function [results, resultTable] = runTestSuite(testNames)
+function [results, resultTable] = runTestSuite(testNames,coverageFile)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
@@ -31,14 +31,29 @@ if ~exist('testNames','var')
     testNames = '.*';
 end
 
+if ~exist('coverageFile','var')
+    doCoverage = false;
+else
+    doCoverage = true;
+end
+
 % go to the test directory.
 testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 
 % get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'testSolveCobraLP*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
+
+%Set up coverage Data generation
+
+if doCoverage
+    if ~exist([CBTDIR filesep 'external' filesep 'GetMD5.' mexext],'file')
+        InstallMD5Mex('GetMD5.c');
+    end
+    cov = setupCoverageData();
+end
 
 % save the current globals (all tests should have the same environment when
 % starting) and path 
@@ -68,7 +83,15 @@ for i = 1:numel(testFileNames)
     testName = file;
     fprintf('****************************************************\n\n');
     fprintf('Running %s\n\n',testName);
+    if doCoverage
+        profile on
+    end
     results(i) = runScriptFile([file ext]);
+    if doCoverage
+        p = profile('info');
+        updateCoverageData(cov,p);
+    end
+    
     fprintf('\n\n%s %s!\n',testName,results(i).status);
     if ~results(i).passed
         if results(i).skipped
@@ -88,6 +111,10 @@ end
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
+
+if doCoverage
+    writeCoverageFile(cov);
+end
 
 % change back to the original directory.
 cd(currentDir)
