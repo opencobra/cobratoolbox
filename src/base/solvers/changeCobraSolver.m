@@ -442,6 +442,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                 end
             else
                 solverOK = false;
+                fprintf(['You must have `csh` installed in order to use `', solverName, '`.\n']);
                 if printLevel > 0
                     error(['You must have `csh` installed in order to use `', solverName, '`.']);
                 end
