@@ -89,7 +89,7 @@ for i = 1:numel(testFileNames)
     results(i) = runScriptFile([file ext]);
     if doCoverage
         p = profile('info');
-        updateCoverageData(cov,p);
+        cov = updateCoverageData(cov,p);
     end
     
     fprintf('\n\n%s %s!\n',testName,results(i).status);
