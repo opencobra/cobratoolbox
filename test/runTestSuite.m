@@ -1,4 +1,4 @@
-function [results, resultTable] = runTestSuite(testNames)
+function [results, resultTable] = runTestSuite(testNames,doCoverage)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
@@ -7,6 +7,7 @@ function [results, resultTable] = runTestSuite(testNames)
 % INPUTS:
 %
 %    testNames:     only run tests matching the regexp given in testNames.
+%    doCoverage:    Whether to calculate test coverage.
 %
 % OUTPUTS:
 %
@@ -27,8 +28,12 @@ function [results, resultTable] = runTestSuite(testNames)
 
 global CBTDIR
 
-if ~exist('testNames','var')
+if ~exist('testNames','var') || isempty(testNames)
     testNames = '.*';
+end
+
+if ~exist('doCoverage','var')
+    doCoverage = true;
 end
 
 % go to the test directory.
@@ -39,6 +44,12 @@ currentDir = cd(testDir);
 testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
+
+%Set up coverage Data generation
+
+if doCoverage
+    cov = setupCoverageData();
+end
 
 % save the current globals (all tests should have the same environment when
 % starting) and path 
@@ -68,7 +79,15 @@ for i = 1:numel(testFileNames)
     testName = file;
     fprintf('****************************************************\n\n');
     fprintf('Running %s\n\n',testName);
+    if doCoverage
+        profile on
+    end
     results(i) = runScriptFile([file ext]);
+    if doCoverage
+        p = profile('info');
+        cov = updateCoverageData(cov,p);
+    end
+    
     fprintf('\n\n%s %s!\n',testName,results(i).status);
     if ~results(i).passed
         if results(i).skipped
@@ -88,6 +107,12 @@ end
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
+
+if doCoverage
+    [codeLines,coveredLines] = writeCoverageFile(cov);
+    fprintf('Coverage Report:\n');
+    fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', coveredLines, codeLines, coveredLines / codeLines * 100);
+end
 
 % change back to the original directory.
 cd(currentDir)
