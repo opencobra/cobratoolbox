@@ -33,22 +33,26 @@ else
 end
     
         
-    
+    try
 for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
     lines = strsplit(text,'\n','CollapseDelimiters',false);
     codeLines = cellfun(@(x) iscodeLine(x),lines);
     codeLineNumbers = columnVector(find(codeLines));
-    relevantLines = zeros(numel(codeLineNumbers),2);
-    relevantLines(:,1) = codeLineNumbers;
-    relevantLines(:,2) = zeros(size(codeLineNumbers));
+    relevantLines = zeros(numel(codeLineNumbers),2); 
+    if size(codeLineNumbers > 0)
+        relevantLines(:,1) = codeLineNumbers;
+        relevantLines(:,2) = zeros(size(codeLineNumbers));
+    end
     coverageStruct(i).fileName = cFileName;
     coverageStruct(i).relevantLines = relevantLines;
     coverageStruct(i).totalLines = numel(lines);
     coverageStruct(i).md5sum = md5s{i};
 end
-
+    catch
+        keyboard
+    end
 
 end
 
