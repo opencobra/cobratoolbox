@@ -174,36 +174,6 @@ try
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
 
-        % count the number of covered lines of code
-%         if COVERAGE
-%             % write coverage based on profile('info')
-%             fprintf('Running MoCov ... \n')
-%             mocov('-cover', 'src', ...
-%                 '-profile_info', ...
-%                 '-cover_json_file', 'coverage.json', ...
-%                 '-cover_html_dir', 'coverage_html', ...
-%                 '-cover_method', 'profile', ...
-%                 '-verbose');
-% 
-%             % load the coverage file
-%             data = loadjson('coverage.json', 'SimplifyCell', 1);
-% 
-%             sf = data.source_files;
-%             clFiles = zeros(length(sf), 1);
-%             tlFiles = zeros(length(sf), 1);
-% 
-%             for i = 1:length(sf)
-%                 clFiles(i) = nnz(sf(i).coverage);
-%                 tlFiles(i) = length(sf(i).coverage);
-%             end
-% 
-%             % average the values for each file
-%             cl = sum(clFiles);
-%             tl = sum(tlFiles);
-% 
-%             % print out the coverage
-%             fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
-%         end
 
         % print out a summary table
         resultTable
