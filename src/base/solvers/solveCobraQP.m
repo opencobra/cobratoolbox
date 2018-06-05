@@ -502,7 +502,7 @@ switch solver
             case 0
                 params.OutputFlag = 0;
                 params.DisplayInterval = 1;
-            case printLevel>1
+            case cobraParams.printLevel>1
                 params.OutputFlag = 1;
                 params.DisplayInterval = 5;
             otherwise
