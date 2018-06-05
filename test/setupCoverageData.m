@@ -38,10 +38,11 @@ for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
     lines = strsplit(text,'\n','CollapseDelimiters',false);
-    codeLines = columnVector(find(cellfun(@(x) iscodeLine(x),lines)));
-    relevantLines = zeros(numel(codeLines),2);
-    relevantLines(:,1) = codeLines;
-    relevantLines(:,2) = zeros(size(codeLines));
+    codeLines = cellfun(@(x) iscodeLine(x),lines);
+    codeLineNumbers = columnVector(find(codeLines));
+    relevantLines = zeros(numel(codeLineNumbers),2);
+    relevantLines(:,1) = codeLineNumbers;
+    relevantLines(:,2) = zeros(size(codeLineNumbers));
     coverageStruct(i).fileName = cFileName;
     coverageStruct(i).relevantLines = relevantLines;
     coverageStruct(i).totalLines = numel(lines);
@@ -57,22 +58,22 @@ if (length(lineOfFile) > 0) && ... %There is something in the line
         (length(strfind(lineOfFile(1), '%')) ~= 1) %The line is not commented
     %Now, we have a line, which is not a commented line.
     
-    if ~isempty(regexp(lineOfFile,'^end;?\s*(%.*)|$'))
+    if ~isempty(regexp(lineOfFile,'^end;?\s*(%.*)?$'))
         %Now, if it only contains 'end' or 'end;' or an end with a comment we can skip it.
         tf = false;
         return
     end
-    if ~isempty(regexp(lineOfFile,'^otherwise\s*(%.*)|$'))
+    if ~isempty(regexp(lineOfFile,'^otherwise;?\s*(%.*)?$'))
         %Now, if it only contains 'otherwise' or an 'otherwise followed by a comment or whitespace we can skip it.
         tf = false;
         return
     end
-    if ~isempty(regexp(lineOfFile,'^else;?\s*(%.*)|$'))
+    if ~isempty(regexp(lineOfFile,'^else;?\s*(%.*)?$'))
         %Now, if it only contains 'else' or an 'else;' or an else followed by a comment or whitespace we can skip it.
         tf = false;
         return
     end
-    if ~isempty(regexp(lineOfFile,'^case\s*(%.*)|$'))
+    if ~isempty(regexp(lineOfFile,'^case .*$|(%.*)'))
         %Now, if it only contains 'case' or an case followed by a comment or whitespace we can skip it.
         tf = false;
         return
