@@ -5,6 +5,7 @@ global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
 c = clock;
+
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
 fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
 fprintf(['     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - ' num2str(c(1)) '\n']);
@@ -53,11 +54,9 @@ cd(CBTDIR);
 % run the official initialisation script
 if launchTestSuite
 
-    if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
-        addpath(genpath(getenv('MOCOV_PATH')))
-        addpath(genpath(getenv('JSONLAB_PATH')))
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins')) && ~verLessThan('matlab', '9.0') %only on 2016b and above
         COVERAGE = true;
-        fprintf('MoCov and JsonLab are on path, coverage will be computed.\n')
+        fprintf('On the CI, coverage will be computed.\n')
     else
         COVERAGE = false;
     end
@@ -168,43 +167,13 @@ try
         originalUserPath = path;
 
         % run the tests in the subfolder verifiedTests/ recursively
-        [result, resultTable] = runTestSuite();
+        [result, resultTable] = runTestSuite('',COVERAGE);
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed) - sumSkipped;
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
 
-        % count the number of covered lines of code
-        if COVERAGE
-            % write coverage based on profile('info')
-            fprintf('Running MoCov ... \n')
-            mocov('-cover', 'src', ...
-                '-profile_info', ...
-                '-cover_json_file', 'coverage.json', ...
-                '-cover_html_dir', 'coverage_html', ...
-                '-cover_method', 'profile', ...
-                '-verbose');
-
-            % load the coverage file
-            data = loadjson('coverage.json', 'SimplifyCell', 1);
-
-            sf = data.source_files;
-            clFiles = zeros(length(sf), 1);
-            tlFiles = zeros(length(sf), 1);
-
-            for i = 1:length(sf)
-                clFiles(i) = nnz(sf(i).coverage);
-                tlFiles(i) = length(sf(i).coverage);
-            end
-
-            % average the values for each file
-            cl = sum(clFiles);
-            tl = sum(tlFiles);
-
-            % print out the coverage
-            fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
-        end
 
         % print out a summary table
         resultTable
