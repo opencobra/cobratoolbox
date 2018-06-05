@@ -22,8 +22,8 @@ cd(fileDir);
 tol = 1e-4;
 
 % test solver packages
-requireOneSolverOf = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek'};
-solverPkgs = prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
+useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek'};
+solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
