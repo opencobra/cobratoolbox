@@ -4,7 +4,6 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
-matlabV = [10, 1] * sscanf(version, '%d.%d', 2);
 c = clock;
 
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
@@ -55,7 +54,7 @@ cd(CBTDIR);
 % run the official initialisation script
 if launchTestSuite
 
-    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins')) && matlabV >= 900 %only on 2016b and above
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins')) && ~verLessThan('matlab', '9.0') %only on 2016b and above
         COVERAGE = true;
         fprintf('On the CI, coverage will be computed.\n')
     else
