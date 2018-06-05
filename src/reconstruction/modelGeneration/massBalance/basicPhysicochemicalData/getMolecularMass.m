@@ -76,7 +76,7 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 %    If you want to double check that the mass given by this script is correct
 %    then compare it to either
 %
-%      1. OpenBabel: `echo "InChIstring" | babel -iinchi -  -oreport`  or
+%      1. OpenBabel: `echo "InChIstring" | obabel -iinchi -  -oreport`  or
 %      2. http://www.sisweb.com/referenc/tools/exactmass.htm
 %    Please report any errors as these are critical for use of this script
 %    with mass spec machines.

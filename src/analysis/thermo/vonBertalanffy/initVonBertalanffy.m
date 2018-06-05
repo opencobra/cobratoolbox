@@ -30,22 +30,22 @@ if status ~= 0
     end
 end
 
-%check if call to babel works
-[status,result] = system('ldd /usr/bin/babel');
+%check if call to obabel works
+[status,result] = system('ldd /usr/bin/obabel');
 if ~isempty(strfind(result,'MATLAB'))
     disp(result)
-    fprintf('%s\n','babel must depend on the system libstdc++.so.6 not the one from MATLAB')
+    fprintf('%s\n','obabel must depend on the system libstdc++.so.6 not the one from MATLAB')
     fprintf('%s\n','Trying to edit the ''LD_LIBRARY_PATH'' to make sure that it has the correct system path before the Matlab path!')
     setenv('LD_LIBRARY_PATH',['/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')]);
     fprintf('%s\n','The solution will be arch dependent');
 end
 
-[status,result] = system('babel');
+[status,result] = system('obabel');
 if status ~= 0
     setenv('LD_LIBRARY_PATH',['/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')]);
 end
 
-[status,result] = system('babel');
+[status,result] = system('obabel');
 if status ~= 0
     error('Check that OpenBabel is installed and on the system path.')
 end
