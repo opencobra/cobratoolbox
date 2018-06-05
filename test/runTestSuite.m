@@ -1,4 +1,4 @@
-function [results, resultTable] = runTestSuite(testNames,coverageFile)
+function [results, resultTable] = runTestSuite(testNames,doCoverage)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
@@ -7,6 +7,7 @@ function [results, resultTable] = runTestSuite(testNames,coverageFile)
 % INPUTS:
 %
 %    testNames:     only run tests matching the regexp given in testNames.
+%    doCoverage:    Whether to calculate test coverage.
 %
 % OUTPUTS:
 %
@@ -31,9 +32,7 @@ if ~exist('testNames','var') || isempty(testNames)
     testNames = '.*';
 end
 
-if ~exist('coverageFile','var')
-    doCoverage = false;
-else
+if ~exist('doCoverage','var')
     doCoverage = true;
 end
 
