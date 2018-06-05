@@ -1,4 +1,4 @@
-function Shat = determineBinaryMatrix(S)
+function [Shat, nconnect, mconnect] = determineBinaryMatrix(S)
 % Determine the binary form of S
 %
 % INPUT:
@@ -14,6 +14,10 @@ function Shat = determineBinaryMatrix(S)
     % determine the size of S
     [m,n] = size(S);
 
+    % initialize the connectivity vectors
+    nconnect = zeros(n,1);
+    mconnect = zeros(m,1);
+
     % initialize the binary matrix
     Shat = zeros(m, n);
 
@@ -24,4 +28,19 @@ function Shat = determineBinaryMatrix(S)
             end
         end
     end
+
+    % determine the column connectivity
+    for j = 1:n
+        nconnect(j) = sum(Shat(:, j));
+    end
+
+    % determine the row connectivity
+    for i = 1:m
+        mconnect(i) = sum(Shat(i, :));
+    end
+
+    % sort the connectivity vectors
+    mconnect = sort(mconnect, 'descend');
+    nconnect = sort(nconnect, 'descend');
+
 end
