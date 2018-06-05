@@ -309,12 +309,10 @@ switch solver
         end
         cplexlp.Model.ctype = vartype;
         cplexlp.Start.x = x0;
+
         
-        cplexlp.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
-        cplexlp.Param.mip.tolerances.integrality.Cur =  cobraParams.intTol;
         cplexlp.Param.timelimit.Cur = cobraParams.timeLimit;
-        cplexlp.Param.output.writelevel.Cur = cobraParams.printLevel;
-        
+        cplexlp.Param.output.writelevel.Cur = cobraParams.printLevel;        
         
         if isscalar(cobraParams.logFile) && cobraParams.logFile == 1
             % allow print to command window by setting solverParams.logFile == 1
@@ -325,10 +323,12 @@ switch solver
             logToConsole = false;
         end
         cplexlp.DisplayFunc = @redirect;
-        
+        %Set tolerances 
         cplexlp.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
         cplexlp.Param.mip.tolerances.absmipgap.Cur =  cobraParams.absMipGapTol;
         cplexlp.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
+        cplexlp.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
+        cplexlp.Param.mip.tolerances.integrality.Cur =  cobraParams.intTol;       
         
         % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
         cplexlp = setCplexParam(cplexlp, solverParams);
@@ -383,16 +383,16 @@ switch solver
         if ~isempty(cobraParams.logFile)
             params.LogFile = cobraParams.logFile;
         end
-        
         params.TimeLimit = cobraParams.timeLimit;
-        params.MIPGap = cobraParams.relMipGapTol;
+
         
+        %Set tolerances
+        params.MIPGap = cobraParams.relMipGapTol;        
         if cobraParams.intTol <= 1e-09
             params.IntFeasTol = 1e-09;
         else
             params.IntFeasTol = cobraParams.intTol;
-        end
-        
+        end        
         params.FeasibilityTol = cobraParams.feasTol;
         params.OptimalityTol = cobraParams.optTol;
         
@@ -535,7 +535,11 @@ switch solver
         writeLPProblem(MILPproblem, 'problemName','COBRAMILPProblem','fileName','MILP.mps','solverParams',solverParams);
         return
     otherwise
-        error(['Unknown solver: ' solver]);
+        if isempty(solver)
+            error('There is no solver for MILP problems available');
+        else
+            error(['Unknown solver: ' solver]);
+        end
 end
 t = etime(clock, t_start);
 

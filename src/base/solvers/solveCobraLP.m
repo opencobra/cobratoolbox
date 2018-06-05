@@ -107,7 +107,6 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBTDIR % Process arguments etc
 global MINOS_PATH
 
-
 [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
 %Set the solver
 solver = cobraParams.solver;
@@ -1306,7 +1305,11 @@ switch solver
         % temporary legacy support
         writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
     otherwise
-        error(['Unknown solver: ' solver]);
+        if isempty(solver)
+            error('There is no solver for LP problems available');
+        else
+            error(['Unknown solver: ' solver]);
+        end
 
 end
 if stat == -1
@@ -1340,14 +1343,14 @@ if ~strcmp(solver, 'mps') && ~strcmp(solver, 'matlab')
             tmp1=norm(res1,inf);
             if tmp1 > cobraParams.feasTol*1000
                 disp(solution.origStat)
-                error(['Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
+                error(['Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraParams.feasTol)])
             end
 
             res2=osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
             tmp2=norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')),inf);
             if tmp2 > cobraParams.feasTol*100
                 disp(solution.origStat)
-                error(['Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(feasTol)])
+                error(['Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraParams.feasTol)])
             end
         end
     end

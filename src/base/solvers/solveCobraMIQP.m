@@ -58,30 +58,19 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 
 global CBT_MIQP_SOLVER;
 solver = CBT_MIQP_SOLVER;
+[cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:});
 
-%optional parameters
-optParamNames = {'printLevel', 'saveInput', 'timeLimit'};
-parameters = '';
-if nargin ~=1
-    if mod(length(varargin),2)==0
-        for i=1:2:length(varargin)-1
-            if ismember(varargin{i},optParamNames)
-                parameters.(varargin{i}) = varargin{i+1};
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
-        end
-    elseif strcmp(varargin{1},'default')
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        parameters = varargin{1};
-    else
-        display('Warning: Invalid number of parameters/values')
-        solution=[];
-        return;
+solver = cobraParams.solver;
+
+% Save Input if selected
+if ~isempty(cobraParams.saveInput)
+    fileName = cobraParams.saveInput;
+    if ~find(regexp(fileName, '.mat'))
+        fileName = [fileName '.mat'];
     end
+    display(['Saving MILPproblem in ' fileName]);
+    save(fileName, 'MILPproblem')
 end
-[printLevel, saveInput, timeLimit] = getCobraSolverParams('QP',optParamNames,parameters);
 
 [A,b,F,c,lb,ub,csense,osense, vartype] = ...
     deal(MIQPproblem.A,MIQPproblem.b,MIQPproblem.F,MIQPproblem.c,MIQPproblem.lb,MIQPproblem.ub,...
@@ -109,19 +98,19 @@ switch solver
         tomlabProblem.CPLEX.LogFile = 'MIQPproblem.log';
 
         %optional parameters
-        PriLvl = printLevel;
-
-        %Save Input if selected
-        if ~isempty(saveInput)
-            fileName = parameters.saveInput;
-            if ~find(regexp(fileName,'.mat'))
-                fileName = [fileName '.mat'];
-            end
-            display(['Saving MIQPproblem in ' fileName]);
-            save(fileName,'MIQPproblem')
-        end
-        tomlabProblem.MIP.cpxControl.TILIM = timeLimit; % time limit
+        PriLvl = cobraParams.printLevel;
+        
+        tomlabProblem.MIP.cpxControl.TILIM = cobraParams.timeLimit; % time limit
         tomlabProblem.MIP.cpxControl.THREADS = 1; % by default use only one thread
+        %Set tolerances
+        tomlabProblem.MIP.cpxControl.EPINT = cobraParams.intTol;
+        tomlabProblem.MIP.cpxControl.EPGAP = cobraParams.relMipGapTol;
+        tomlabProblem.MIP.cpxControl.EPRHS = cobraParams.feasTol;
+        tomlabProblem.MIP.cpxControl.EPOPT = cobraParams.optTol;
+        tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
+        
+        tomlabProblem.MIP.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
+        
         Result = tomRun('cplex', tomlabProblem, PriLvl);
 
         x = Result.x_k;
@@ -186,10 +175,16 @@ switch solver
         opts.QP.qval = qval;
         opts.Method = 0;    % 0 - primal, 1 - dual
         opts.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        opts.FeasibilityTol = 1e-6;
-        opts.IntFeasTol = 1e-5;
-        opts.OptimalityTol = 1e-6;
-        %opt.Quad=1;
+        %Set parameters
+        opts.MIPGap = cobraParams.relMipGapTol;        
+        if cobraParams.intTol <= 1e-09
+            opts.IntFeasTol = 1e-09;
+        else
+            opts.IntFeasTol = cobraParams.intTol;
+        end        
+        opts.FeasibilityTol = cobraParams.feasTol;
+        opts.OptimalityTol = cobraParams.optTol;        
+        opts = updateStructData(opts,solverParams);
 
         %gurobi_mex doesn't cast logicals to doubles automatically
     	c = double(c);
@@ -211,8 +206,8 @@ switch solver
      % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
-        clear params            % Use the default parameter settings
-        if printLevel == 0
+        params = struct();
+        if cobraParams.printLevel == 0
             params.OutputFlag = 0;
             params.DisplayInterval = 1;
         else
@@ -222,10 +217,18 @@ switch solver
 
         params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
         params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        params.IntFeasTol = 1e-5;
-        params.FeasibilityTol = 1e-6;
-        params.OptimalityTol = 1e-6;
+        %Set tolerances
+        params.MIPGap = cobraParams.relMipGapTol;        
+        if cobraParams.intTol <= 1e-09
+            params.IntFeasTol = 1e-09;
+        else
+            params.IntFeasTol = cobraParams.intTol;
+        end        
+        params.FeasibilityTol = cobraParams.feasTol;
+        params.OptimalityTol = cobraParams.optTol;
 
+        params = updateStructData(params,solverParams);
+        
         if (isempty(MIQPproblem.csense))
             clear MIQPproblem.csense
             MIQPproblem.csense(1:length(b),1) = '=';
@@ -267,7 +270,11 @@ switch solver
         end
         %%
     otherwise
-        error(['Unknown solver: ' solver]);
+        if isempty(solver)
+            error('There is no solver for MIQP problems available');
+        else
+            error(['Unknown solver: ' solver]);
+        end
 end
 %%
 t = etime(clock, t_start);

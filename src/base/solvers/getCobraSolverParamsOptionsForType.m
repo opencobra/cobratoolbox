@@ -27,9 +27,10 @@ switch solverType
         
         paramNames = {'method', ... % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent (if supported by the solver)
                       'printLevel', ... % print Level
-                      'primalOnly', ... % only solve for primal
                       'saveInput', ... % save the input to a file (specified)
-                      'feasTol'};% feasibility Tolerance
+                      'feasTol',... % feasibility Tolerance
+                      'optTol',... % feasibility Tolerance
+                      'solver'}; % The solver to use
         
 
     case 'MILP'
@@ -47,16 +48,25 @@ switch solverType
 
     case 'MIQP'        
         paramNames = {'timeLimit', ... % maximum time before stopping computation (if supported by the solver)
+                      'feasTol',... % feasibility Tolerance
+                      'optTol',... % feasibility Tolerance
+                      'intTol', ... % integer tolerance (accepted derivation from integer numbers)
+                      'relMipGapTol', ... % Relative MIP Gap Tolerance
+                      'absMipGapTol', ... %Absolute MIP Gap tolerance
                       'printLevel', ... % print Level                      
-                      'saveInput'}; % save the input to a file (specified)
+                      'saveInput',... % save the input to a file (specified)
+                      'solver'}; % The solver to use
                       
     case 'NLP'
         paramNames = {'warning', ... % Whether to display warnings
                       'checkNaN', ... % check for NaN solutions
                       'PbName', ... %Name of the problem
                       'iterationLimit', ... % maximum number of iterations before stopping computation (if supported by the solver)
+                      'timeLimit', ... % Time limit for the calculation
                       'logFile', ... % file (location) to write logs to
-                      'printLevel'}; % print Level                      
+                      'printLevel',... % print Level                      
+                      'saveInput', ... % save the input to a file (specified)                      
+                      'solver'}; % The solver to use
                       
 end
         
