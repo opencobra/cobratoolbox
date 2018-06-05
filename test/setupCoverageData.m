@@ -33,7 +33,6 @@ else
 end
     
         
-    try
 for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
@@ -50,10 +49,6 @@ for i = 1:length(files)
     coverageStruct(i).totalLines = numel(lines);
     coverageStruct(i).md5sum = md5s{i};
 end
-    catch
-        keyboard
-    end
-
 end
 
 function tf = iscodeLine(lineOfFile)
