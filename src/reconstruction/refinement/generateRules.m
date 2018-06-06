@@ -29,13 +29,15 @@ function [model] = generateRules(model)
     nRules = length(model.grRules);
 
     % allocate the model.rules field
-    model.rules = cell(nRules, 1);
-    toc
+    model.rules = cell(nRules, 1);    
     % loop through all the grRules
     for i = 1:nRules
         if ~isempty(preParsedGrRules{i})
-            [genePres,genePos] = ismember(genes{i},model.genes);
-            rule = parseGPR(preParsedGrRules{i}, genes{i}, true, genePos(genePres));    
+            genePos = zeros(numel(genes{i}));
+            for j = 1:numel(genes{i})
+                genePos(j) = find(strcmp(model.genes,genes{i}{j}));
+            end            
+            rule = parseGPR(preParsedGrRules{i}, genes{i}, true, genePos);    
             model.rules{i, 1} = rule;
         else
             model.rules{i, 1} = '';
