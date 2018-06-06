@@ -19,11 +19,11 @@ cd(fileDir);
 matlabVersion = ['R' version('-release')];
 
 if isunix && strcmp(matlabVersion, 'R2016b')
-    % GUROBI 6.5.0 is compatible on UNIX when running R2016b
-    compatibleStatus = isCompatible('gurobi', 1, '6.5.0');
+    % GUROBI 8.0.0 is compatible on UNIX when running R2016b    
+    compatibleStatus = isCompatible('gurobi', 1, '8.0.0');
     assert(compatibleStatus == 1);
 
-    % IBM CPLEX 12.7.0 is not compatible on UNIX when running R2016b
+    % IBM CPLEX 12.6.3 is not compatible on UNIX when running R2016b
     compatibleStatus = isCompatible('ibm_cplex', 0, '12.6.3');
     assert(compatibleStatus == 0);
 
