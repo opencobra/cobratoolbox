@@ -76,7 +76,7 @@ end
 optArgin = {'knownMets', 'balancedRxns', 'fillMets', 'calcCMs', 'nameCMs', 'deadCMs', 'metMwRange'}; 
 defaultValues = {[], [], 'HCharge1', true, false, true, []};
 validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
-    @(x) ischar(x) | iscellstr(x) | isvector(x), ...  % balancedRxns
+    @(x) ischar(x) | iscellstr(x) | isvector(x) | isempty(x), ...  % balancedRxns
     @(x) ischar(x) | iscellstr(x), ...  % fillMets
     @(x) ischar(x) | isnumeric(x) | isscalar(x), ...  % calcCMs
     @isscalar, @isscalar, ...    % nameCMs and deadCMs
@@ -90,10 +90,14 @@ pSpos = 1;
 paramValueInput = false;
 if numel(varargin) > 0
     for pSpos = 1:numel(varargin)
-        if isstruct(varargin{pSpos}) || ischar(varargin{pSpos}) && (~any(ismember(varargin{pSpos},optArgin)) || ~any(ismember(varargin{pSpos},cobraOptions)))
-            %Its a struct (LP struct) or a keyWord.
+        if isstruct(varargin{pSpos})
             paramValueInput = true;
             break;            
+        end
+        if ischar(varargin{pSpos}) && (any(strncmpi(varargin{pSpos},optArgin,length(varargin{pSpos}))) || any(ismember(varargin{pSpos},cobraOptions)))
+            %Its a keyword
+            paramValueInput = true;
+            break
         end
     end
 end
@@ -124,19 +128,26 @@ else
         end
     end
     [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
+    
     for jArg = numel(optArgs)+1:numel(optArgin)
         parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end    
-    parser.KeepUnmatched = 1;
-    parser.parse(optArgs{:},solverParams);
-    
-    for i = 1:numel(optArgin)
-        if isfield(solverParams,optArgin{i})
-            solverParams = rmfield(solverParams,optArgin{i});
+    end        
+    actualSolverParams = struct();
+    solverParamFields = fieldnames(solverParams);
+    functionParams = {};
+    for i = 1:numel(solverParamFields)                
+        if ~any(strncmpi(solverParamFields{i},optArgin,length(solverParamFields{i})))            
+            actualSolverParams.(solverParamFields{i}) = solverParams.(solverParamFields{i});
+            solverParams = rmfield(solverParams,solverParamFields{i});
+        else
+            functionParams(end+1:end+2) = {solverParamFields{i}, solverParams.(solverParamFields{i})};
         end
     end    
+    parser.CaseSensitive = 0;
+    parser.parse(optArgs{:},functionParams{:});    
+    
     varargin = cell(1,1+2*numel(cobraOptions));    
-    varargin{1} = solverParams;    
+    varargin{1} = actualSolverParams;    
     for i = 1:numel(cobraOptions)
         cOption = cobraOptions{i};
         varargin([2*i, 2*i+1]) = {cOption,cobraParams.(cOption)};
