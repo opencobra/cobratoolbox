@@ -1,4 +1,4 @@
-function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes, preparsed)
+function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, currentGenes, preparsed, positions)
 % Convert a GPR rule in string format to a rule in logic format.
 % We assume the following properties of GPR Rules:
 % 1. There are no genes called "and" or "or" (in any capitalization).
@@ -18,6 +18,15 @@ function [ruleString, totalGeneList, newGeneList] = parseGPR(grRuleString, curre
 %    grRuleString:     The rule string in textual format.
 %    currentGenes:     Names of all currently known genes. Encountered
 %                      genes (column cell Array of Strings)
+% OPTIONAL INPUT:
+%    preparsed:        Whether the sring inserted into the function was
+%                      preparsed or not. If provided, it is assumed, that
+%                      currentGenes ONLY contains the genes in this rule
+%                      AND that positions is the actual position of each
+%                      gene to be used for the rule.
+%    positions:        Only used when preparsed is true.
+%                      positions(ismember(currentGenes,gene)) will become
+%                      the number used for that gene in the rule.
 % OUTPUT:
 %    ruleString:       The logical formula representing the grRuleString.
 %                      Any position refers to the totalGeneList returned.
@@ -31,40 +40,45 @@ if nargin < 3 %This is faster than checking exist)
     preparsed = false;
 end
 
-newGeneList = {};
-if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
-    %If the provided string is empty or consists only of whitespaces or
-    %brackets, i.e. it does not contain a rule
-    ruleString = '';
-    totalGeneList = currentGenes;
-    return
+if ~preparsed
+    newGeneList = {};
+    if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
+        %If the provided string is empty or consists only of whitespaces or
+        %brackets, i.e. it does not contain a rule
+        ruleString = '';
+        totalGeneList = currentGenes;
+        return
+    end
+else
+    %If its preparsed, there is no new gene list!
+    newGeneList = {};
 end
 
 % preparse all model.grRules
 if ~preparsed
     grRuleString = preparseGPR(grRuleString);
-end
+    %Now, genes are items which do not have brackets, operators or whitespace characters
+    genes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
 
-%Now, genes are items which do not have brackets, operators or whitespace characters
-genes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
-
-%We have a new Gene List (which can be empty).
-for i = 1:length(genes)
-    if ~any(strcmp(genes{i}, currentGenes))
-        newGeneList{end+1} = genes{i};
+    %We have a new Gene List (which can be empty).
+    for i = 1:length(genes)
+        if ~any(strcmp(genes{i}, currentGenes))
+            newGeneList{end+1} = genes{i};
+        end
     end
+    % make sure that the list is a column list
+    if ~isempty(newGeneList)
+        newGeneList = columnVector(unique(newGeneList));
+    end
+    %So generate the new gene list.
+    totalGeneList = [currentGenes;newGeneList];
+    % define the internal function for convertGenes
+    convertGenes = @(x) sprintf('x(%d)',  find(strcmp(x, totalGeneList)));
+
+else
+    totalGeneList = currentGenes;
+    convertGenes = @(x) sprintf('x(%d)',  positions(strcmp(x, totalGeneList)));
 end
-
-% make sure that the list is a column list
-if ~isempty(newGeneList)
-    newGeneList = columnVector(unique(newGeneList));
-end
-
-%So generate the new gene list.
-totalGeneList = [currentGenes;newGeneList];
-
-% define the internal function for convertGenes
-convertGenes = @(x) sprintf('x(%d)', find(strcmp(x, totalGeneList)));
 
 ruleString = regexprep(grRuleString, '([^\(\)\|\&\s]+)', '${convertGenes($0)}');
 ruleString = regexprep(ruleString, '[\s]?x\(([0-9]+)\)[\s]?', ' x($1) '); %introduce spaces around entries.

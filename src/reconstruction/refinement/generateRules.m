@@ -17,8 +17,14 @@ function [model] = generateRules(model)
 %            - Diana El Assal 30/8/2017
 %            - Laurent Heirendt December 2017, speedup
 
-    preParsedGrRules = preparseGPR(model.grRules);  % preparse all model.grRules
-
+    [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
+    allGenes =  unique([genes{:}]); %Get the unique gene list
+    newGenes = setdiff(allGenes,model.genes);
+    if ~isempty(newGenes)
+        warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+        model.genes = addGenes(model,newGenes);
+    end        
+    
     % determine the number of rules
     nRules = length(model.grRules);
 
@@ -28,11 +34,8 @@ function [model] = generateRules(model)
     % loop through all the grRules
     for i = 1:nRules
         if ~isempty(preParsedGrRules{i})
-            [rule,~,newGenes] = parseGPR(preParsedGrRules{i}, model.genes,true);
-            if ~isempty(newGenes)
-                warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
-                model.genes = [model.genes ; newGenes];
-            end
+            [genePres,genePos] = ismember(genes{i},model.genes);
+            rule = parseGPR(preParsedGrRules{i}, genes{i}, true, genePos(genePres));    
             model.rules{i, 1} = rule;
         else
             model.rules{i, 1} = '';
