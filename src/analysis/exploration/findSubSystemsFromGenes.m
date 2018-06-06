@@ -62,7 +62,9 @@ genePres = ismember(model.genes,genes);
 if userxnGeneMat
     relAssocs = model.rxnGeneMat(:,genePres);
 elseif useRules
-    relAssoc = arrayfun(@(y) cellfun(@(x) ~isempty(x), strfind(model.rules,['x(' num2str(y) ')'])),find(genePres));
+    relAssocs = cell2mat(arrayfun(@(y) cellfun(@(x) ~isempty(x), strfind(model.rules,['x(' num2str(y) ')']))',find(genePres),'Uniform',0))';    
+else
+    relAssocs = cell2mat(cellfun(@(y) cellfun(@(x) ~isempty(x), regexp(model.grRules,['^|[ \(]' regexptranslate y '$|[ \)]']))',model.genes(genePres),'Uniform',0))';    
 end
 allSubs = model.subSystems(any(relAssocs==1,2));
 GeneSubSystems = unique([allSubs{:}]);
