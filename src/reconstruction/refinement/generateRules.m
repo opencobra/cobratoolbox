@@ -18,7 +18,7 @@ function [model] = generateRules(model)
 %            - Laurent Heirendt December 2017, speedup
 
     [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
-    allGenes =  unique([genes{:}]); %Get the unique gene list
+    allGenes =  unique([genes{~cellfun(@isempty,genes)}]); %Get the unique gene list
     newGenes = setdiff(allGenes,model.genes);
     if ~isempty(newGenes)
         warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
@@ -30,7 +30,7 @@ function [model] = generateRules(model)
 
     % allocate the model.rules field
     model.rules = cell(nRules, 1);
-
+    toc
     % loop through all the grRules
     for i = 1:nRules
         if ~isempty(preParsedGrRules{i})
