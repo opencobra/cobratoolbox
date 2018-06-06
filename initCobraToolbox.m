@@ -614,8 +614,8 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     end
     
     origLD = getenv('LD_LIBRARY_PATH');
-        newLD = regexprep(origLD, '[^:]*MATLAB[^:]*', '');
-
+    newLD = regexprep(getenv('LD_LIBRARY_PATH'), [matlabroot '/bin/glnxa64:'], '');
+    
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
 
@@ -623,15 +623,25 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif status_curl == 127
+    elseif status_curl == 127 || status_curl == 48
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl --version');
+        setenv('LD_LIBRARY_PATH', origLD);
         if status_curl == 0 && ~isempty(strfind(result_curl, 'curl')) && ~isempty(strfind(result_curl, 'http'))
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
             end
+        else
+            if throwError
+                fprintf(result_curl);
+                fprintf(' > Please follow the guidelines on how to install curl: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
+                error(' > curl is not installed.');
+            else
+                if ENV_VARS.printLevel
+                    fprintf(' (not installed).\n');
+                end
+            end
         end
-        setenv('LD_LIBRARY_PATH', origLD);
     else
         if throwError
             if ispc
@@ -648,28 +658,37 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
-
+    
     if ENV_VARS.printLevel
         fprintf(' > Checking if remote can be reached ... ')
     end
-
+    
     % check if the remote repository can be reached
     [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
-
+    
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif status_curl == 127
+    elseif status_curl == 127 || status_curl == 48
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
+        setenv('LD_LIBRARY_PATH', origLD);
         if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
             end
+        else
+            if throwError
+                fprintf(result_curl);
+                error('The remote repository cannot be reached. Please check your internet connection.');
+            else
+                if ENV_VARS.printLevel
+                    fprintf(' (unsuccessful - no internet connection).\n');
+                end
+            end
         end
-        setenv('LD_LIBRARY_PATH', origLD);
     else
         if throwError
             fprintf(result_curl);
