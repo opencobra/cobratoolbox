@@ -40,6 +40,9 @@ if nargin < 3 %This is faster than checking exist)
     preparsed = false;
 end
 
+%Preparsing and providing IDs allows a lot of things to be ignored, so we
+%essentially have 2 distinct functions. One for preparsed and one for non
+%preparsed.
 if ~preparsed
     newGeneList = {};
     if isempty(grRuleString) || ~isempty(regexp(grRuleString,'^[\s\(\{\[\}\]\)]*$'))
@@ -49,13 +52,6 @@ if ~preparsed
         totalGeneList = currentGenes;
         return
     end
-else
-    %If its preparsed, there is no new gene list!
-    newGeneList = {};
-end
-
-% preparse all model.grRules
-if ~preparsed
     grRuleString = preparseGPR(grRuleString);
     %Now, genes are items which do not have brackets, operators or whitespace characters
     genes = regexp(grRuleString,'([^\(\)\|\&\s]+)','match');
@@ -76,6 +72,7 @@ if ~preparsed
     convertGenes = @(x) sprintf('x(%d)',  find(strcmp(x, totalGeneList)));
 
 else
+    newGeneList = {};
     totalGeneList = currentGenes;
     convertGenes = @(x) sprintf('x(%d)',  positions(strcmp(x, totalGeneList)));
 end
