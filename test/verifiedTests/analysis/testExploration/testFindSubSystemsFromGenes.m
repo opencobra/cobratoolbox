@@ -13,14 +13,11 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testFindRxnsFromGenes'));
+fileDir = fileparts(which('findSubSystemsFromGenes'));
 cd(fileDir);
 
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
-
-% convert to new style model
-model = convertOldStyleModel(model);
 
 % get reactions for gene list, include gene not in model and nested cell
 geneList = {'b0115'; {'b0722'; 'MadeUp'}};
