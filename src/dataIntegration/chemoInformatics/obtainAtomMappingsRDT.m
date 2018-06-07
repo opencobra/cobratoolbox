@@ -164,7 +164,7 @@ end
 if standariseRxn == true
     fnames = dir([outputDir filesep 'atomMapped' filesep '*.rxn']);
     for i = 1:length(fnames)
-        standardised = canonicalRxn(fnames(i).name, [outputDir...
+        standardised = standardRxn(fnames(i).name, [outputDir...
             'atomMapped'], [outputDir 'rxnFiles']);
         if standardised
             counterBalanced = counterBalanced + 1;
