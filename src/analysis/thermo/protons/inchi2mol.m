@@ -70,7 +70,7 @@ for n = 1:nInchis
     if ~isempty(inchis{n})
         if isempty(strfind(existingMolFiles,['.mol' filenames{n} '.mol'])) || overwrite == 1 % If mol file of same name does not already exist or if it should be overwritten
             system(['echo ' inchis{n} ' > inchi.inchi']); % Temporary place holder for inchi. Overwritten in each loop.
-            system(['babel inchi.inchi ' filenames{n} '.mol']); % Convert InChI to mol file
+            system(['obabel inchi.inchi ' filenames{n} '.mol']); % Convert InChI to mol file
 
             f = dir([outputdir '\' filenames{n} '.mol']);
             if f.bytes > eps % If mol file is empty the conversion failed
