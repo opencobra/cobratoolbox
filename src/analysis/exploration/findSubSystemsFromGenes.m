@@ -11,7 +11,7 @@ function [GeneSubSystems,SingleList] = findSubSystemsFromGenes(model,genes, vara
 %    genes:            The genes to find subSystems for 
 %                      (Default: model.genes)
 %    varargin:         Optional arguments as parameter/value pairs, or parameter struct.
-%                       * structResult - return individual Gene Associations as a struct instead of a Cell Array with each gene represented by a field. Gene names might be adapted to fit to field names.
+%                       * structResult - return individual Gene Associations as a struct instead of a Cell Array with each gene represented by a field. Gene names might be adapted to fit to field names and all genes will be prefixed with gene_.
 %                       * onlyOneSub - Only return one subSystem for each gene.
 %                                 
 %
@@ -58,7 +58,8 @@ end
 
 %Get the gene positions
 genePres = ismember(model.genes,genes);
-[ogenePres,ogenePos] = ismember(genes,model.genes(genePres));
+[oGenePres,oGenePos] = ismember(genes,model.genes(genePres));
+
 if userxnGeneMat
     relAssocs = model.rxnGeneMat(:,genePres);
 elseif useRules
@@ -73,15 +74,24 @@ if parser.Results.onlyOneSub
 else    
     cellList = [model.genes(genePres),arrayfun(@(x) unique([model.subSystems{relAssocs(:,x) == 1}]),(1:size(relAssocs,2))','Uniform',false)];
 end
-
-if parser.Results.structResult
-    
-    cellList = cellList(ogenePos(ogenePres),:);
-    cellList(:,1) = regexprep(cellfun(@(x) convertSBMLID(x,true),cellList(:,1)),'^([0-9])','_$1');
-    cellList = cellList';
-    SingleList = struct(cellList{:});    
+%Now, adapt the cellList to report on all provided genes (even those not in
+%the model.
+cellList = cellList(oGenePos(oGenePres),:);
+if sum(genePres) ~= numel(genes) %Only do this, if there are actually additional genes
+   oGenePres = ismember(genes,cellList(:,1));
+   newCellList = cell(length(oGenePres),2);
+   newCellList(oGenePres,:) = cellList;
+   newCellList(~oGenePres,1) = genes(~oGenePres);
+   cellList = newCellList;
+end
+if parser.Results.structResult    
+    cellList(:,1) = strcat('gene_',regexprep(cellList(:,1),'[^a-zA-Z0-9]','_'));    
+    SingleList = struct();    
+    for i = 1:size(cellList,1)
+        SingleList.(cellList{i,1}) = cellList{i,2};
+    end
 else
-    SingleList = cellList(ogenePos(ogenePres),:);
+    SingleList = cellList;
 end
  
 
