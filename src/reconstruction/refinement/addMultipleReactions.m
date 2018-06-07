@@ -18,7 +18,7 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %                       according to the values. Only defined COBRA fields may be
 %                       used. The following fields will be ignored (as they
 %                       are dependent on the existing model structure)
-%
+%                       
 %                        - `S`:  this is being resolved by the metList/Stoichiometries combination
 %                        - `rxnGeneMat`: This depends on the original model structure, and is thus nor considered.
 %                       
@@ -39,7 +39,8 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %                        - or any field name associated with reactions (except
 %                          for S and rxnGeneMat) as defined in the COBRA
 %                          Model field definitions.
-%                       
+%                       It is also possible to add a printout to the
+%                       function by using the 'printLevel', 1 argument.
 %                       
 %
 % OUTPUTS:
@@ -63,6 +64,8 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %    % ExA: A <-> ; ATob: A <-> B ; BToC: B <-> C
 %    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'rules', {'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'G2';'G1';'G3'})
 %
+%    % Print the above:
+%    model = addMultipleReactions(model, {'ExA','ATob','BToC'}, {'A','b','c'}, [1 -1 0; 0,1,-1;0,0,1], 'printLevel', 1, 'rules', {'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'G2';'G1';'G3'})
 
 [metPres,metPos] = ismember(metList,model.mets);
 if any(metPos == 0)
@@ -76,6 +79,8 @@ end
 if numel(unique(metList)) < numel(metList)
     error('Duplicate Metabolite ID detected.');
 end
+
+printLevel = 0;
 
 nRxns = numel(model.rxns);
 
@@ -91,10 +96,15 @@ for field = 1:2:numel(varargin)
     cfield = varargin{field};
     %Anything thats not a model field or not a specialised field is
     %ignored.
-    if any(ismember({'S','rxnGeneMat','rules','genes'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))
+    if strcmp(cfield,'printLevel')
+        printLevel = varargin{field+1};
+        continue;
+    end
+    if any(ismember({'S','rxnGeneMat','rules','genes'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))        
         warning('Field %s is excluded.',cfield);
         continue;
     end
+    
     if ~isfield(model,cfield)
         model = createEmptyFields(model,cfield);
         model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});  
@@ -180,4 +190,7 @@ if any(ismember(varargin(1:2:end),'rules'))
         end
     end
 
+end
+if printLevel > 0
+    printRxnFormula(newmodel,rxnIDs);
 end
