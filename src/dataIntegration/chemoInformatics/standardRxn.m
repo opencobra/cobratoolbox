@@ -4,7 +4,7 @@ function standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %
 % USAGE:
 %
-%    standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+%    standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %
 % INPUTS:
 %     rxnFile:      Name of the RXN file to standarize.
@@ -23,7 +23,7 @@ function standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %    rxnFile = 'DOPACCL.rxn';
 %    mappedDir = ['mapped' filesep];
 %    standardDir = ['standard' filesep];
-%    standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+%    standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %
 % .. Author: - German A. Preciat Gonzalez 25/05/2017
 
