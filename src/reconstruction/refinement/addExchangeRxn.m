@@ -17,13 +17,29 @@ function [newModel, AddedExchRxn] = addExchangeRxn(model, metList, lb, ub)
 %    newModel:    COBRA model with added exchange reactions
 %
 % .. Author: - Ines Thiele 02/2009
+%            - Thomas Pfau, June 2018 - Change to use addMultipleReactions  
 
+if ~iscell(metList) 
+    if ischar(metList)
+        metList = {metList};
+    else
+        error('metList must either be a cell array of metabolite names or the name of a metabolite as a char');
+    end
+end
 if nargin < 3
     lb = ones(length(metList),1)*min(model.lb);
 end
 if nargin < 4
     ub = ones(length(metList),1)*max(model.ub);
 end
+
+missingMets = setdiff(metList,model.mets);
+if ~isempty(missingMets)
+    warning('The following Metabolites have been added to the model, as they were not in the model before:\n%s', strjoin(missingMets,'\n'));
+    model = addMultipleMetabolites(model,missingMets);
+end
+
+
 Revs = zeros(length(metList),1);
 Revs(lb<0) = 1;
 
@@ -48,6 +64,7 @@ if ~isempty(duplicate)
         warning(['Model already has the same reaction you tried to add: ', newModel.rxns{duplicate(j)}]);
     end
 end
+
 
 %Set the Exchanger Names that are added
 AddedExchRxn = strcat('EX_',metList);

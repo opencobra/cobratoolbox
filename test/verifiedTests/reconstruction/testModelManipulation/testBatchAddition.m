@@ -80,9 +80,11 @@ assert(head1.isequal(head2));
 %Also check logical format addition:              
 modelBatch3 = addMultipleReactions(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
                                    'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0727';'G1';'b0008'});
+
 %The same addition as above but a different
 %format, so test the same things.
 assert(numel(modelBatch3.genes) == numel(model.genes)+2); %Only two genes were added, the others already existed.
+assert(verifyModel(modelBatch3,'simpleCheck',true))
 %Since the model has a rules field, we will test the equality of the rules.
 fp = FormulaParser();
 %Assert all correct genes are there.
@@ -95,6 +97,26 @@ Formula = ['x(' num2str(G1pos) ,') | x(' num2str(b0727pos) ')'];
 head1 = fp.parseFormula(Formula);
 head2 = fp.parseFormula(modelBatch3.rules{ExAPos});
 assert(head1.isequal(head2));
+
+%Now also check the printLevel argument at different positions.
+diary('reacAdd1.txt');
+modelBatch4 = addMultipleReactions(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],'printLevel',1,...
+                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0727';'G1';'b0008'});
+diary off
+diary('comparison.txt')
+printRxnFormula(modelBatch4,{'ExA','ATob','BToC'});
+diary off
+assert(all(fileread('reacAdd1.txt')==fileread('comparison.txt')));
+diary('reacAdd2.txt');
+modelBatch4 = addMultipleReactions(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1],...
+                                   'rules',{'x(3) | x(2)', 'x(4) & x(1)',''},'printLevel',1, 'genes', {'G4';'b0727';'G1';'b0008'});
+diary off
+assert(all(fileread('reacAdd2.txt')==fileread('comparison.txt')));
+%clean diaries
+delete('reacAdd1.txt');
+delete('reacAdd2.txt');
+delete('comparison.txt');
+
 
 %Now, test duplicate ID fails (duplicate in the reaction list
 assert(verifyCobraFunctionError('addMultipleReactions', 'inputs',{model,{'ExA','ATob','ExA'},{'A','b','c'},[1 -1 0; 0,1,-1;0,0,1]}));
@@ -134,12 +156,12 @@ assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'b0008','G1'}}));
 assert(verifyCobraFunctionError('addGenes', 'inputs',{model,{'G2','G1','G2'}}));
               
 %Test the functions on an empty model
-fprintf('Testing Addition to an empty model');
+fprintf('>> Testing Addition to an empty model\n');
 model = createModel();
 modelBatch = addMultipleMetabolites(model,metNames,'metNames',metNames,'metCharges', [ -1 1 0],...
     'metFormulas', metFormulas, 'metKEGGID',{'C000012','C000023','C000055'});
 modelBatch2 = addMultipleReactions(modelBatch,rxnIDs,{'A','b','c'},[1 -1 0; 0,-2,-1;0,0,1],...
                                    'lb',[-50,30,1],'ub',[0,60,15],'rxnKEGGID',{'R01','R02','R03'});                              
-                               
+
 % change the directory
 cd(currentDir)
