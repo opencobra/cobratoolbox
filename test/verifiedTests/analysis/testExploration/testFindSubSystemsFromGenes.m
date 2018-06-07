@@ -56,7 +56,7 @@ assert(all(cellfun(@(x,y) isempty(setxor(x,y)),indList(2:3,2),genesOfInterest(:,
 %Finally, test the struct flag
 fprintf('>> Testing Struct Output\n')
 checkedGenes = ['2some+OtherGene',genesOfInterest(:,1)'];
-[subSystems,indList] = findSubSystemsFromGenes(model,checkGenes,'structResult',true);
+[subSystems,indList] = findSubSystemsFromGenes(model,checkedGenes,'structResult',true);
 geneFields = fieldnames(indList);
 assert(isempty(setxor(strcat('gene_',regexprep(checkedGenes,'[^a-zA-Z0-9]','_')),geneFields)));
 assert(isempty(indList.gene_2some_OtherGene)); %Empty field.
