@@ -1,12 +1,13 @@
-function [GgneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, varargin)
+function [geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, varargin)
 % Returns the subsystems associated with the provided genes. 
 %
 % USAGE:
 %
-%    [genSubSystems,singleList] = findSubSystemsFromGenes(model,genes,...)
+%    [geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes,...)
 %
 % INPUT:
 %    model:            COBRA model structure
+%
 % OPTIONAL INPUTS:
 %    genes:            The genes to find subSystems for 
 %                      (Default: model.genes)
@@ -16,7 +17,8 @@ function [GgneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, vara
 %                                 
 %
 % OUTPUT:
-%    genSubSystems:    All subsystems associated with the provided genes.
+%    geneSubSystems:    All subsystems associated with the provided genes.
+%
 % OPTIONAL OUTPUT:
 %    singleList:       A Cell array of size(nGenes,2), with the first column 
 %                      representing the gene and the second column
@@ -68,7 +70,7 @@ else
     relAssocs = cell2mat(cellfun(@(y) cellfun(@(x) ~isempty(x), regexp(model.grRules,['^|[ \(]' regexptranslate y '$|[ \)]']))',model.genes(genePres),'Uniform',0))';    
 end
 allSubs = model.subSystems(any(relAssocs==1,2));
-GgneSubSystems = unique([allSubs{:}]);
+geneSubSystems = unique([allSubs{:}]);
 if parser.Results.onlyOneSub
     cellList = [model.genes(genePres),arrayfun(@(x) model.subSystems{find(relAssocs(:,x),1)},(1:size(relAssocs,2))','Uniform',false)];        
 else    
