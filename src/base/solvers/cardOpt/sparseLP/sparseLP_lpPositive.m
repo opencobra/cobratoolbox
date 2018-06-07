@@ -134,6 +134,7 @@ obj_old = sparseLP_lpPositive_obj(x,epsilonP,p);
 
 
 %DCA
+tic
 while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
@@ -179,8 +180,11 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     end
 end
+time = toc;
 if solution.stat == 1
     solution.x = x;
+    solution.time = time;
+    solution.nIterations = nbIteration;
 end
 
 end
