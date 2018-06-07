@@ -156,3 +156,15 @@ tutorials/additionalTutorials/optKnock/Results/
 # .documenter file
 docs/.documenter
 docs/source/_static/json/functions.json
+
+# images
+*.eps
+*.jpg
+*.jpeg
+*.gif
+*.png
+*.tiff
+
+# videos
+*.flv
+*.mp4
