@@ -623,7 +623,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif status_curl == 127 || status_curl == 48
+    elseif (status_curl == 127 || status_curl == 48) && (strcmp(computer('arch'), 'glnxa64') || strcmp(computer('arch'), 'maci64'))
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl --version');
         setenv('LD_LIBRARY_PATH', origLD);
@@ -671,7 +671,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif status_curl == 127 || status_curl == 48
+    elseif (status_curl == 127 || status_curl == 48) && (strcmp(computer('arch'), 'glnxa64') || strcmp(computer('arch'), 'maci64'))
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
         setenv('LD_LIBRARY_PATH', origLD);
