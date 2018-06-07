@@ -100,7 +100,10 @@ for field = 1:2:numel(varargin)
         printLevel = varargin{field+1};
         continue;
     end
-    if any(ismember({'S','rxnGeneMat','rules','genes'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))        
+    if any(ismember({'rules','genes'},cfield))
+        continue; %Don't throw a warning here.
+    end
+    if any(ismember({'S','rxnGeneMat'},cfield)) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelRxnFields,cfield)))        
         warning('Field %s is excluded.',cfield);
         continue;
     end
@@ -148,12 +151,12 @@ if any(ismember(varargin(1:2:end),'rules'))
         %Find all genes (and their positions) which are already in the model.
         [genePres,genePos] = ismember(genes,newmodel.genes);
         additionalGenes = sum(~genePres);
-        newmodel = addGenes(model,genes(~genePres));
+        newmodel = addGenes(newmodel,genes(~genePres));
         genePos(~genePres) = nGenes+(1:additionalGenes);
         %now, replace the ids.
         genePos = cellfun(@(x) strcat('x(', num2str(x),')'), num2cell(genePos),'Uniformoutput',false);
         rules = regexprep(rules,'x\(([0-9]+)\)','${genePos{str2num($1)}}');
-        newmodel.rules(nRxns+1:length(model.rxns)) = rules;
+        newmodel.rules(nRxns+1:length(newmodel.rxns)) = rules;
     else
         rulesPos = 2 * find(ismember(varargin(1:2:end),'rules'));
         if ~isfield(newmodel,'rules') %If rules does not exist, create it.
