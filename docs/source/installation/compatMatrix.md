@@ -8,6 +8,7 @@
 | IBM CPLEX 12.7.1  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | IBM CPLEX 12.7    | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | IBM CPLEX 12.6.3  | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| GUROBI 8.0.0      | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.2      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.5.1      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.0.2      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -26,6 +27,7 @@
 | IBM CPLEX 12.7.1  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | IBM CPLEX 12.7    | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | IBM CPLEX 12.6.3  | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| GUROBI 8.0.0      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.2      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.5.1      | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.0.2      | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -36,6 +38,25 @@
 | DQQ MINOS         | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | PDCO              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
+## macOS 10.13
+
+| SolverName        | R2017b             | R2017a             | R2016b             | R2016a             | R2015b             | R2015a             | R2014b             | R2014a             |
+|-------------------|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
+| IBM CPLEX 12.8    | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| IBM CPLEX 12.7.1  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| IBM CPLEX 12.7    | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| IBM CPLEX 12.6.3  | :warning:          | :warning:          | :x:                | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 8.0.0      | :warning:          | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 7.5.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 7.5.1      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 7.0.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 6.5.0      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| TOMLAB CPLEX 8.3  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| MOSEK 8           | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GLPK              | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| DQQ MINOS         | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| PDCO              | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+
 ## Windows 7
 
 | SolverName        | R2017b             | R2017a             | R2016b             | R2016a             | R2015b             | R2015a             | R2014b             | R2014a             |
@@ -44,6 +65,7 @@
 | IBM CPLEX 12.7.1  | :white_check_mark: | :warning:          | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                |
 | IBM CPLEX 12.7    | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                |
 | IBM CPLEX 12.6.3  | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| GUROBI 8.0.0      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.2      | :white_check_mark: | :warning:          | :white_check_mark: | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.1      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | GUROBI 7.0.2      | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -62,6 +84,7 @@
 | IBM CPLEX 12.7.1  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | IBM CPLEX 12.7    | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | IBM CPLEX 12.6.3  | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
+| GUROBI 8.0.0      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.5.1      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |
 | GUROBI 7.0.2      | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          | :warning:          |

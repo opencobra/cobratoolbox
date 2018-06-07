@@ -112,16 +112,18 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             end
         end
     elseif ismac % macOS
-        tableNb = 2;
+        macpos = find(strncmp(testedOS,'macOS',5));
+        macOSFound = false;
         [~, resultVERS] = unix('sw_vers');
-        tmp = strsplit(testedOS{tableNb});
-        if ~isempty(strfind(resultVERS, tmp{2}))
-            cMatrix = compatMatrix{tableNb};
-        else
-            untestedFlag = true;
-            if printLevel > 0
-                fprintf([' > The compatibility can only be evaluated on macOS ', tmp{2}, '.\n']);
+        for tableNb = macpos %             
+            tmp = strsplit(testedOS{tableNb});
+            if ~isempty(strfind(resultVERS, tmp{2}))
+                cMatrix = compatMatrix{tableNb};
+                macOSFound = true;
             end
+        end        
+        if ~macOSFound && printLevel > 0
+            fprintf([' > The compatibility can only be evaluated on the following mac OS versions: ', strjoin(testedOS(macpos),', '), '.\n']);
         end
     else % Windows
         resultVERS = system_dependent('getos');
