@@ -614,7 +614,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     end
     
     origLD = getenv('LD_LIBRARY_PATH');
-    newLD = regexprep(getenv('LD_LIBRARY_PATH'), [matlabroot '/bin/glnxa64:'], '');
+    newLD = regexprep(getenv('LD_LIBRARY_PATH'), [matlabroot '/bin/' computer('arch') ':'], '');
     
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
