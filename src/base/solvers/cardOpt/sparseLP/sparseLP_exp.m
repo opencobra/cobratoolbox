@@ -126,6 +126,7 @@ x = zeros(n,1);
 obj_old = sparseLP_exp_obj(x,theta);
 
 %DCA
+tic
 while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
@@ -166,8 +167,11 @@ while nbIteration < nbMaxIteration && stop ~= true,
 %             disp('=================================');
     end
 end
+time = toc;
 if solution.stat == 1
     solution.x = x;
+    solution.time = time;
+    solution.nIterations = nbIteration;
 end
 
 end
