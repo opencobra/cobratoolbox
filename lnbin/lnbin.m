@@ -6,15 +6,21 @@
 % option is not required, just call the function without including the third out
 % put; i.e.: [midpts Freq]=lnbin(x,BinNum).
 
-function [midpts Freq eFreq] = lnbin(x, BinNum)
+function [midpts Freq eFreq] = lnbin(x, BinNum, printLevel)
+
+    if ~exist('printLevel', 'var')
+        printLevel = 1;
+    end
 x = sort(x);
 i = 1;
 while x(i) <= 0;
     i = i + 1;
 end
 str = num2str((length(x) - i) / length(x) * 100);
-stuff = 'Percentage of input vec binned ';
-disp([stuff str])
+if printLevel > 0
+    stuff = 'Percentage of input vec binned ';
+    disp([stuff str])
+end
 
 FPT = x(i:length(x));
 LFPT = log10(FPT);
