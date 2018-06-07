@@ -36,7 +36,7 @@ if ~isempty(missingMets)
     model = addMultipleMetabolites(model,missingMets);
 end
 
-rxnNames = strcat('DM_',metaboliteNameList);    
+rxnNames = rowvector(strcat('DM_',metaboliteNameList));    
 nMets = length(metaboliteNameList);
 stoich = -1 * speye(nMets);
 subSystems = repmat({'Demand'},nMets,1);
