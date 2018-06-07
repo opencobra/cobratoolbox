@@ -11,7 +11,7 @@ function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, printLev
 %    metaboliteNameList:    List of metabolite names (cell array)
 %
 % OPTIONAL INPUT:
-%    printLevel:            If > 0 will print out the reaction formula.
+%    printLevel:            If > 0 will print out the reaction formulas (Default: 1).
 %
 % OUTPUTS:
 %    model:                 COBRA model structure with added demand reactions
@@ -20,7 +20,7 @@ function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, printLev
 % .. Authors:
 %       - Markus Herrgard 5/8/07
 %       - Ines Thiele 03/09 - Corrected reaction coefficient for demand reaction
-%       - SpeedUp
+%       - Thomas Pfau, June 2018 - Change to use addMultipleReactions and adding printLevel 
 
 if (~iscell(metaboliteNameList))
     metaboliteNameList = {metaboliteNameList};

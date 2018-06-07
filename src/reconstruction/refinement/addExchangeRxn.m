@@ -17,6 +17,7 @@ function [newModel, AddedExchRxn] = addExchangeRxn(model, metList, lb, ub)
 %    newModel:    COBRA model with added exchange reactions
 %
 % .. Author: - Ines Thiele 02/2009
+%            - Thomas Pfau, June 2018 - Change to use addMultipleReactions  
 
 if ~iscell(metList) 
     if ischar(metList)
