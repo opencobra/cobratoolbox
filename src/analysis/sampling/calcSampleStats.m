@@ -36,9 +36,9 @@ end
 for i = 1:length(samples)
     fprintf('Processing sample %d\n', i);
     sampleStats.mean(:, i) = mean(samples{i}')';
-    sampleStats.std(:, i) = std(samples{i}')';
-    sampleStats.mode(:, i) = mode(samples{i}')';
-    sampleStats.median(:, i) = median(samples{i}')';
-    sampleStats.skew(:, i) = skewness(samples{i}')';
-    sampleStats.kurt(:, i) = kurtosis(samples{i}')';
+    sampleStats.std(:, i)=std(samples{i}')';
+    sampleStats.mode(:, i)=mode(samples{i}')';
+    sampleStats.median(:, i)=median(samples{i}')';
+    sampleStats.skew(:, i)=skewness(samples{i}')';
+    sampleStats.kurt(:, i)=kurtosis(samples{i}')';
 end

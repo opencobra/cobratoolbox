@@ -1,4 +1,4 @@
-function standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+function standardised = standardRxn(rxnFile, mappedDir, standardDir)
 % Standarize atom mapped RXNS files into a canonical format. ChemAxon
 % installed is required (needed to compute the atom transition network)
 %

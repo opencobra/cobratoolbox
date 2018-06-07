@@ -34,20 +34,20 @@ function [stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 %
 % Output will be in order that tests are inputed. i.e. {'ks','rankSum'}
 
-if nargin<3
+if nargin < 3
     tests = {'ks', 'rankSum', 'chiSquare', 'tTest'};
 end
 
 [nVar, nSample] = size(sample1);
 
-for i=1:length(tests)
+for i = 1:length(tests)
     switch lower(tests{i})
         case 'ks'
             for j = 1:nVar
                 [~, pLarger, statLarger] = kstest2(sample1(j, :), ...
-                    sample2(j, :), 0.01, 'larger');
+                                                   sample2(j, :), 0.01, 'larger');
                 [~, pSmaller, statSmaller] = kstest2(sample1(j, :), ...
-                    sample2(j, :), 0.01, 'smaller');
+                                                     sample2(j, :), 0.01, 'smaller');
                 if statLarger > statSmaller
                     stats.ks(j, 1) = statLarger;
                     pVals.ks(j, 1) = pLarger;
@@ -59,7 +59,7 @@ for i=1:length(tests)
         case 'ranksum'
             for j = 1:nVar
                 [p, ~, stat] = ranksum(sample1(j, :), ...
-                    sample2(j, :), 'method', 'approximate');
+                                       sample2(j, :), 'method', 'approximate');
                 pVals.ranksum(j, 1) = p;
                 stats.ranksum(j, 1) = -stat.zval;
             end
@@ -67,11 +67,11 @@ for i=1:length(tests)
             nBin = round(nSample / 50);
             for j = 1:nVar
                 counts = hist([sample1(j, :)' sample2(j, :)'], nBin) / nSample;
-                tmpStat = (counts(:, 1) - counts(:, 2)).^2./(counts(:, 1) + counts(:, 2));
+                tmpStat = (counts(:, 1) - counts(:, 2)).^2. / (counts(:, 1) + counts(:, 2));
                 tmpStat(isnan(tmpStat)) = 0;
                 stats.chisquare(j, 1) = sum(tmpStat);
             end
-            pVals.chisquare = chi2cdf([stats.chisquare], nBin-1);
+            pVals.chisquare = chi2cdf([stats.chisquare], nBin - 1);
         case 'ttest'
             for j = 1:nVar
                 [~, pVals.ttest(j, 1), tmp, tmpstats] = ttest2(sample1(j, :), sample2(j, :));
