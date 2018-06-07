@@ -23,20 +23,6 @@ function [Shat, mconnect, mconnectin, mconnectout, nconnect] = determineBinaryMa
     nconnect = zeros(n,1);
 
     % initialize the binary matrix
-    %{
-        Shat = zeros(m, n);
-
-    % determine the elements of the binary matrix
-    for i = 1:m
-        for j = 1:n
-            if S(i, j) > 0
-                Shat(i, j) = 1;
-            elseif S(i, j) < 0
-                Shat(i, j) = -1;
-            end
-        end
-    end
-    %}
     Shat = S;
     Shat(S > 0) = 1;
     Shat(S < 0) = -1;
