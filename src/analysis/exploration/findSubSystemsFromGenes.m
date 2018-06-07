@@ -1,9 +1,9 @@
-function [GeneSubSystems,SingleList] = findSubSystemsFromGenes(model,genes, varargin)
+function [GgneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, varargin)
 % Returns the subsystems associated with the provided genes. 
 %
 % USAGE:
 %
-%    [GenSubSystems,SingleList] = findSubSystemsFromGenes(model,genes,...)
+%    [genSubSystems,singleList] = findSubSystemsFromGenes(model,genes,...)
 %
 % INPUT:
 %    model:            COBRA model structure
@@ -16,9 +16,9 @@ function [GeneSubSystems,SingleList] = findSubSystemsFromGenes(model,genes, vara
 %                                 
 %
 % OUTPUT:
-%    GenSubSystems:    All subsystems associated with the provided genes.
+%    genSubSystems:    All subsystems associated with the provided genes.
 % OPTIONAL OUTPUT:
-%    SingleList:       A Cell array of size(nGenes,2), with the first column 
+%    singleList:       A Cell array of size(nGenes,2), with the first column 
 %                      representing the gene and the second column
 %                      containing the subSystems associated with the gene.
 %
@@ -68,7 +68,7 @@ else
     relAssocs = cell2mat(cellfun(@(y) cellfun(@(x) ~isempty(x), regexp(model.grRules,['^|[ \(]' regexptranslate y '$|[ \)]']))',model.genes(genePres),'Uniform',0))';    
 end
 allSubs = model.subSystems(any(relAssocs==1,2));
-GeneSubSystems = unique([allSubs{:}]);
+GgneSubSystems = unique([allSubs{:}]);
 if parser.Results.onlyOneSub
     cellList = [model.genes(genePres),arrayfun(@(x) model.subSystems{find(relAssocs(:,x),1)},(1:size(relAssocs,2))','Uniform',false)];        
 else    
@@ -86,12 +86,12 @@ if sum(genePres) ~= numel(genes) %Only do this, if there are actually additional
 end
 if parser.Results.structResult    
     cellList(:,1) = strcat('gene_',regexprep(cellList(:,1),'[^a-zA-Z0-9]','_'));    
-    SingleList = struct();    
+    singleList = struct();    
     for i = 1:size(cellList,1)
-        SingleList.(cellList{i,1}) = cellList{i,2};
+        singleList.(cellList{i,1}) = cellList{i,2};
     end
 else
-    SingleList = cellList;
+    singleList = cellList;
 end
  
 
