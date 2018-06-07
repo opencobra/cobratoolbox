@@ -1,13 +1,15 @@
-function [Shat, nconnect, mconnect] = determineBinaryMatrix(S)
+function [Shat, mconnect, nconnect] = determineBinaryMatrix(S)
 % Determine the binary form of S
 %
 % INPUT:
 %
-%    S:         Stoichiometric matrix
+%    S:         Stoichiometric matrix of size m x n (m rows, n columns)
 %
 % OUTPUT:
 %
 %    Shat:      Binary form of the stoichiometric matrix
+%    mconnect:  Compound connectivity (connectivity number; sum of the number of non-zero entries in a row)
+%    nconnect:  Reaction participation number (sum of the number of non-zero entries in a column)
 %
 % .. Author: Laurent Heirendt, June 2018
 
@@ -15,12 +17,13 @@ function [Shat, nconnect, mconnect] = determineBinaryMatrix(S)
     [m,n] = size(S);
 
     % initialize the connectivity vectors
-    nconnect = zeros(n,1);
     mconnect = zeros(m,1);
+    nconnect = zeros(n,1);
 
     % initialize the binary matrix
     Shat = zeros(m, n);
 
+    % determine the elements of the binary matrix
     for i = 1:m
         for j = 1:n
             if abs(S(i, j)) > 0
@@ -30,17 +33,26 @@ function [Shat, nconnect, mconnect] = determineBinaryMatrix(S)
     end
 
     % determine the column connectivity
-    for j = 1:n
-        nconnect(j) = sum(Shat(:, j));
+    if nargout > 2
+        for j = 1:n
+            nconnect(j) = sum(Shat(:, j));
+        end
     end
 
     % determine the row connectivity
-    for i = 1:m
-        mconnect(i) = sum(Shat(i, :));
+    if nargout > 1
+        for i = 1:m
+            mconnect(i) = sum(Shat(i, :));
+        end
     end
 
     % sort the connectivity vectors
-    mconnect = sort(mconnect, 'descend');
-    nconnect = sort(nconnect, 'descend');
+    if nargout > 2
+        nconnect = sort(nconnect, 'descend');
+    end
+
+    if nargout > 1
+        mconnect = sort(mconnect, 'descend');
+    end
 
 end
