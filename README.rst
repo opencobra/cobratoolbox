@@ -202,7 +202,7 @@ compatibility
 
 For convenience, we provide
 `glpk_mex <https://github.com/blegat/glpkmex>`__ and
-`libSBML-5.15+ <http://sbml.org/Software/libSBML>`__ in
+`libSBML-5.17+ <http://sbml.org/Software/libSBML>`__ in
 ``/external``.
 
 `Binaries <https://github.com/opencobra/COBRA.binary>`__ for these
@@ -211,7 +211,7 @@ libraries are provided in a submodule for Mac OS X 10.6 or later
 (64-bit). For unsupported OS, please refer to their respective building
 instructions
 (`glpk_mex <https://github.com/blegat/glpkmex#instructions-for-compiling-from-source>`__,
-`libSBML <http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html>`__).
+`libSBML <http://sbml.org/Software/libSBML/5.17.0/docs//cpp-api/libsbml-installation.html>`__).
 
 Read more on the compatibility with SBML-FBCv2
 `here <https://opencobra.github.io/cobratoolbox/docs/notes.html>`__.

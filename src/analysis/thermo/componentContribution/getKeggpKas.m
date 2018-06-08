@@ -5,39 +5,39 @@ end
 
 if ismac
     cxcalc_cmd = '/Applications/ChemAxon/JChem/bin/cxcalc';
-    babel_cmd = '/usr/local/bin/babel';
+    babel_cmd = '/usr/local/bin/obabel';
 else
     cxcalc_cmd = 'cxcalc';
-    babel_cmd = 'babel';
+    babel_cmd = 'obabel';
 end
 
 [success, ~] = system(cxcalc_cmd);
 if success ~= 0
-    error('Please make sure the command line program "babel" is installed and in the path');
+    error('Please make sure the command line program "obabel" is installed and in the path');
 end
 
 KeggSpeciespKa = [];
 
 for i = 1:length(target_cids)
-    cid = target_cids(i);    
+    cid = target_cids(i);
     inchi = target_inchi{i};
     if isempty(inchi)
         continue
     end
-    
+
     if ispc
         [success, smiles] = system(['echo ' inchi ' | ' babel_cmd ' -iinchi -osmi']);
     else
         [success, smiles] = system(['echo "' inchi '" | ' babel_cmd ' -iinchi -osmi']);
     end
-    
+
     if success == 0
        smiles = strtok(smiles);
        structure = smiles;
     else
         structure = inchi;
     end
-        
+
     fprintf('Using cxcalc on C%05d: %s\n', cid, structure);
 
     if ispc
@@ -46,11 +46,11 @@ for i = 1:length(target_cids)
         cmd = ['echo "' structure '" | ' cxcalc_cmd ' pka -a ' num2str(n_pkas) ' -b ' num2str(n_pkas) ' majorms -M true --pH 7'];
     end
     [success, cxcalc_stdout] = system(cmd);
-    
+
     if ~isempty(strfind(cxcalc_stdout,'Inconsistent molecular structure'))
-       success = -1; 
+       success = -1;
     end
-    
+
     if success == 0
         %fprintf(cxcalc_stdout);
         pkalist = regexp(cxcalc_stdout,'\n','split');
@@ -80,10 +80,10 @@ for i = 1:length(target_cids)
         end
 
         if ispc
-            cmd = ['echo ' majorms_smiles ' | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
+            cmd = ['echo ' majorms_smiles ' | obabel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
         else
-            cmd = ['echo "' majorms_smiles '" | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
-        end        
+            cmd = ['echo "' majorms_smiles '" | obabel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
+        end
         [success, babel_stdout] = system(cmd);
         if success == 0 && ~isempty(babel_stdout) && strcmp('InChI=',babel_stdout(1:6))
             majorms_nstd_inchi = strtok(babel_stdout);
@@ -92,7 +92,7 @@ for i = 1:length(target_cids)
             nH = 0;
             charge = 0;
         end
-        
+
         idx = length(KeggSpeciespKa) + 1;
         if ~isempty(pkalist)
             pkas = zeros(length(pkalist)+1,length(pkalist)+1);
@@ -106,7 +106,7 @@ for i = 1:length(target_cids)
             else
                 mmsbool(end) = true;
             end
-            KeggSpeciespKa(idx).majorMSpH7 = mmsbool;                    
+            KeggSpeciespKa(idx).majorMSpH7 = mmsbool;
             zs = 1:size(pkas,1);
             zs = zs - find(mmsbool);
             zs = zs + charge;

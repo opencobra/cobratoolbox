@@ -130,6 +130,7 @@ x = zeros(n,1);
 obj_old = sparseLP_SCAD_obj(x,theta,alpha);
 
 %DCA
+tic
 while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
@@ -183,8 +184,11 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     end
 end
+time = toc;
 if solution.stat == 1
     solution.x = x;
+    solution.time = time;
+    solution.nIterations = nbIteration;
 end
 
 end

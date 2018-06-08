@@ -14,14 +14,14 @@ if ~exist(KEGG_ADDITIONS_TSV_FNAME, 'file')
 end
 
 if ismac
-    babel_cmd = '/usr/local/bin/babel';
+    babel_cmd = '/usr/local/bin/obabel';
 else
-    babel_cmd = 'babel';
+    babel_cmd = 'obabel';
 end
 
 [success, ~] = system(babel_cmd);
 if success ~= 0
-    error('Please make sure the command line program "babel" is installed and in the path');
+    error('Please make sure the command line program "obabel" is installed and in the path');
 end
 
 % Load relevant InChIs (for all compounds in the training data)
@@ -35,9 +35,9 @@ end
 if ~isempty(setdiff(target_cids, inchies.cids))
     % load the InChIs for all KEGG compounds in the 'kegg_additions.tsv' file.
     % this contains a few corrections needed in KEGG and added compounds (all starting with C80000)
-    
+
     fprintf('Obtaining MOL files for the training data from KEGG and converting to InChI using OpenBabel\n');
-    
+
     fid = fopen(KEGG_ADDITIONS_TSV_FNAME, 'r');
     fgetl(fid); % fields are: name, cid, inchi
     filecols = textscan(fid, '%s%d%s', 'delimiter','\t');
@@ -53,7 +53,7 @@ if ~isempty(setdiff(target_cids, inchies.cids))
 
     for i = 1:length(target_cids)
         cid = target_cids(i);
-        
+
         if ismember(cid, added_cids)
             inchi = added_inchis{find(added_cids == cid)};
             if ispc
@@ -67,14 +67,14 @@ if ~isempty(setdiff(target_cids, inchies.cids))
             if isempty(mol)
                 continue
             end
-            
+
             if ispc
                 cmd = ['echo ' mol ' | ' babel_cmd ' -imol -oinchi ---errorlevel 0'];
             else
                 cmd = ['echo "' mol '" | ' babel_cmd ' -imol -oinchi ---errorlevel 0'];
             end
         end
-        
+
         [success, std_inchi] = system([cmd ' -xT/noiso/nochg/nostereo']);
         if success == 0 && ~isempty(std_inchi) && strcmp('InChI=',std_inchi(1:6))
             std_inchi = strtok(std_inchi);

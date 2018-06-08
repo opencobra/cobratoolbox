@@ -85,6 +85,8 @@ end
 
     if LPsolution.stat == 1
         solution.x = LPsolution.full(1:n);
+        solution.time = LPsolution.time;
+        solution.nIterations = 1;
     else
         x = [];
     end

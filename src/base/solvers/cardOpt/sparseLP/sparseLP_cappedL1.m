@@ -141,6 +141,7 @@ ub2 = [ub;max(abs(lb),abs(ub))];
 subLPproblem = struct('c',obj,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
 
 %DCA
+tic
 while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
@@ -185,8 +186,11 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     end
 end
+time = toc;
 if solution.stat == 1
     solution.x = x;
+    solution.time = time;
+    solution.nIterations = nbIteration;
 end
 
 end

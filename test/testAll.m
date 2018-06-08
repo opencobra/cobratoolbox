@@ -171,7 +171,7 @@ try
         [result, resultTable] = runTestSuite();
 
         sumSkipped = sum(resultTable.Skipped);
-        sumFailed = sum(resultTable.Failed) - sumSkipped;
+        sumFailed = sum(resultTable.Failed);
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
 

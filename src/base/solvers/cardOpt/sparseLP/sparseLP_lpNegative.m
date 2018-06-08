@@ -131,6 +131,7 @@ x = zeros(n,1);
 obj_old = sparseLP_lpNegative_obj(x,theta,p);
 
 %DCA
+tic
 while nbIteration < nbMaxIteration && stop ~= true,
 
     x_old = x;
@@ -174,8 +175,11 @@ while nbIteration < nbMaxIteration && stop ~= true,
 
     end
 end
+time = toc;
 if solution.stat == 1
     solution.x = x;
+    solution.time = time;
+    solution.nIterations = nbIteration;
 end
 
 end
