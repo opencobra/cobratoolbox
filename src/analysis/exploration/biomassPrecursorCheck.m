@@ -30,9 +30,7 @@ m = 1;
 [model_newDemand, addedRxns] = addDemandReaction(model, biomassMetabs);
 [missingMets, presentMets] = deal({});
 for i = 1:length(biomassMetabs)
-%     [model_newDemand,addedRxn] = addDemandReaction(model,biomassMetabs(i));   % ADD DEMAND REACTION
-    model_newDemand.c = zeros(length(model_newDemand.c), 1);                     % CHANGE OBJECTIVE FUNCTION TO NEW DEMAND RXN
-    model_newDemand.c(strmatch(addedRxns{i}, model_newDemand.rxns)) = 1;
+    model_newDemand = changeObjective(model_newDemand, addedRxns{i});
     solution = optimizeCbModel(model_newDemand);                                % OPTIMIZE
     if solution.f == 0                                                          % MAKE LIST OF WHICH BIOMASS PRECURSORS ARE ...
         missingMets(k) = biomassMetabs(i);                                      %  SYNTHESIZED AND WHICH ARE NOT
@@ -42,7 +40,6 @@ for i = 1:length(biomassMetabs)
         m = m + 1;
     end
 end
-
 
 missingMets = columnVector(missingMets);
 presentMets = columnVector(presentMets);

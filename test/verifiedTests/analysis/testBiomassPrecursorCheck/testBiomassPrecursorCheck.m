@@ -5,7 +5,7 @@
 %
 % Authors:
 %    - Siu Hung Joshua Chan June 2018
-%
+
 % save the current path
 currentDir = pwd;
 
@@ -14,6 +14,8 @@ fileDir = fileparts(which('testBiomassPrecursorCheck'));
 cd(fileDir);
 
 model = readCbModel('iJO1366.mat');
+
+% test where there is no missing metabolite
 [missingMets, presentMets] = biomassPrecursorCheck(model);
 assert(isempty(missingMets))
 presentMetsResult = {'10fthf_c';'2fe2s_c';'2ohph_c';'4fe4s_c';'ala__L_c';...
@@ -27,6 +29,13 @@ presentMetsResult = {'10fthf_c';'2fe2s_c';'2ohph_c';'4fe4s_c';'ala__L_c';...
     'ser__L_c';'sheme_c';'so4_c';'thf_c';'thmpp_c';'thr__L_c';'trp__L_c';...
     'tyr__L_c';'udcpdp_c';'utp_c';'val__L_c';'zn2_c'};
 assert(isequal(sort(presentMets), presentMetsResult))
+
+% test where there is a missing metabolite
+model = addReaction(model,'testBiomass','reactionFormula','NotExist + amet_c -> ');
+model = changeObjective(model,'testBiomass');
+[missingMets, presentMets] = biomassPrecursorCheck(model);
+assert(isempty(setxor(missingMets,{'NotExist'}))); % NotExist, and only NotExist is not producible.
+assert(isempty(setxor(presentMets,{'amet_c'}))); % amet_c and only amet_c is producible
 
 % change the directory
 cd(currentDir)
