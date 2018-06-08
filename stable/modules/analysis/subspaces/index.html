@@ -277,7 +277,7 @@
 </div>
 <span class="target" id="module-src.analysis.subspaces"></span><dl class="function">
 <dt id="src.analysis.subspaces.checkScaling">
-<code class="descname">checkScaling</code><span class="sig-paren">(</span><em>model</em>, <em>estLevel</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/checkScaling.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.checkScaling" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkScaling</code><span class="sig-paren">(</span><em>model</em>, <em>estLevel</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/checkScaling.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.checkScaling" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -349,7 +349,7 @@ maximum and minimum column scaling coefficients</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.conservationAnalysis">
-<code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.</p>
 <p>i.e. <span class="math">\(L S = 0\)</span> where <span class="math">\([-Lzero I] Pl^T S = 0\)</span>;
 and <span class="math">\(S N = 0\)</span> where <span class="math">\(S Pn [-Nzero; I] = S, [-Nzero^T I^T] Pn^T = 0\)</span>;</p>
@@ -423,7 +423,7 @@ Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite><
 
 <dl class="function">
 <dt id="src.analysis.subspaces.detMinSpan">
-<code class="descname">detMinSpan</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>vectors</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/detMinSpan.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.detMinSpan" title="Permalink to this definition">¶</a></dt>
+<code class="descname">detMinSpan</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>vectors</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/detMinSpan.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.detMinSpan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the MinSpan vectors for a COBRA model. The
 algorithm determines a set of linearly independent basis vectors that
 span the nullspace that meet the criteria of the flux bounds of the
@@ -482,7 +482,7 @@ MinSpan vectors for COBRA model</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.fourFundamentalSubpaces">
-<code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate linearly independent bases the four fundamental subspaces of <cite>S</cite> using LUSOL or SVD</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -546,7 +546,7 @@ driving forces move the concentration state of the network.</p>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.gmscale">
-<code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/gmscale.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/gmscale.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Geometric-Mean Scaling finds the scale values for the
 <cite>m x n</cite> sparse matrix <cite>A</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -603,7 +603,7 @@ we need to define &#8220;barred&#8221; quantities by the following relations:
 
 <dl class="function">
 <dt id="src.analysis.subspaces.scaleSMatrix">
-<code class="descname">scaleSMatrix</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/8703c09cb3173e34ee1e649893c28bdf71d07a6c/src/analysis/subspaces/scaleSMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.scaleSMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scaleSMatrix</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/analysis/subspaces/scaleSMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.scaleSMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scales stoichimetric matrix to integers</p>
 <p><strong>Usage</strong></p>
 <blockquote>
