@@ -30,7 +30,7 @@ if isAnnotation
     if length(searchString) < 4
         relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(searchString))),betAnnot);
     else
-        relVals = distAndPos(:,1) < (1-minSim) * length(searchString);
+        relVals = distAndPos(:,1) <= (1-minSim) * length(searchString);
     end
     field  = bestAnnot;
     distances = distAndPos(:,1);
@@ -41,7 +41,7 @@ else
     else
         %if its a longer query, we only use those with a distance smaller
         %than a similarity threshold
-        relVals = distances < (1-minSim) * length(searchString);
+        relVals = distances <= (1-minSim) * length(searchString);
     end
 end
 matchingIDs = field(relVals);

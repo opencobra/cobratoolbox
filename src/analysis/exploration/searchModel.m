@@ -41,7 +41,8 @@ knownFields = union(knownFields,dbFields(:,3));
 annotationQualifiers = getBioQualifiers();
 results = struct();
 %Now, loop over all basic fields 
-for field = 1:numel(baseFields)
+displayedFields = 0;
+for field = 1:numel(baseFields)    
     cField = baseFields{field};
     if ~isfield(model,cField)
         continue;
@@ -50,9 +51,10 @@ for field = 1:numel(baseFields)
     modelFields = getModelFieldsForType(model,cField);
     resultList = cell(numel(model.(cField)),numel(modelFields));    
     similarities = zeros(numel(model.(cField)),1);
+    annotationsFields = {};
     for aqual = 1:numel(annotationQualifiers)  
        cAnnotType = regexprep(cField,'s$',annotationQualifiers{aqual});
-       annotationsFields = modelFields(cellfun(@(x) strncmp(x,cAnnotType,length(cAnnotType)),modelFields));
+       annotationsFields = union(annotationsFields,modelFields(cellfun(@(x) strncmp(x,cAnnotType,length(cAnnotType)),modelFields)));
     end
     %Except for xyzNames there are few other fields which contain sensibly
     %searchable information (subSystems is one example). 
@@ -94,8 +96,12 @@ for field = 1:numel(baseFields)
         end
     end
     if any(any(~cellfun(@isempty, resultList)))
+        if printLevel > 0 && displayedFields > 0
+            fprintf('\n-----------------------------------------------------\n\n');
+        end
+        displayedFields = displayedFields + 1;
         if printLevel > 0            
-            fprintf('The following %s have matching properties:\n',baseFieldNames{field});            
+            fprintf('The following %s have matching properties:\n\n',baseFieldNames{field});            
         end
         %get the base field
         results.(cField) = struct();
@@ -141,7 +147,7 @@ for field = 1:numel(baseFields)
                 fprintf('\n\n');
             end
         end
-    end 
+    end     
 end
          
         
