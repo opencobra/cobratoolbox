@@ -15,8 +15,8 @@ function [Shatabs, mconnect, mconnectin, mconnectout, nconnect] = determineBinar
 
     % initialize the binary matrix
     Shat = S;
-    Shat(S > 0) = 1;
-    Shat(S < 0) = -1;
+    Shat(S > 0) = 1; % products, produced -> kin
+    Shat(S < 0) = -1; % educts, reactants, consumed -> kout
 
     % determine the row connectivity
     Shatabs = abs(Shat);
