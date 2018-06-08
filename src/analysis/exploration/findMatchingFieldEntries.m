@@ -1,11 +1,11 @@
-function [matchingIDs, positions] = findMatchingFieldEntries(field, identifier, isAnnotation, minSim)
+function [matchingIDs, positions, similarities] = findMatchingFieldEntries(field, searchString, isAnnotation, minSim)
 % Find elements of the field that are similar to the provided identifier
 % USAGE:
-%    [matchingIDs, positons] = findMatchingFieldEntries(field, identifier, isAnnotation, minSim)
+%    [matchingIDs, positons, similarities] = findMatchingFieldEntries(field, searchString, isAnnotation, minSim)
 %
 % INPUTS:
 %    field:             A Cell Array of strings
-%    identifier:        The item to search for
+%    searchString:      The item to search for
 %    isAnnotation:      Whether the strings in the field are annotation
 %                       strings (multiple identifiers are concatenated with ; and will be
 %                       separated)
@@ -15,33 +15,39 @@ function [matchingIDs, positions] = findMatchingFieldEntries(field, identifier, 
 % OUTPUTS:
 %    matchingIDs:       All IDs which are matching to the search string.
 %    positions:         The positions of these IDs in the supplied field.
+%    similarities:      Similarities of the matchingIDs with the search
+%                       String
+%
+% .. Author: - Thomas Pfau, June 2018
 
 if isAnnotation
     %Annotations are separated by ;. So we should split them.
     splittedFields = cellfun(@(x) strsplit(x,';'),field,'Uniform',0); %Should give a Cell Array of Cell Arrays.
     %calc distances for all cell arrays of cell array.
-    distances = cellfun(@(x) cellfun(@(y) calcSim(identifier,y),x),splittedFields,'Uniform',0);
-    distAndPos = cellfun(@(x) [min(x),find(x == min(x),1)],distances);
-    bestAnnot = arrayfun(@(x,y) splittedFields{y}{x},1:size(distAndPos,1),distAndPos(:,2),'Uniform',0);
-    if length(identifier) < 4
-        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(identifier))),betAnnot);
+    distances = cellfun(@(x) cellfun(@(y) calcDist(searchString,y),x),splittedFields,'Uniform',0);
+    distAndPos = cell2mat(cellfun(@(x) [min(x),find(x == min(x),1)],distances,'Uniform',0));
+    bestAnnot = arrayfun(@(x,y) splittedFields{x}{y},(1:size(distAndPos,1))',distAndPos(:,2),'Uniform',0);
+    if length(searchString) < 4
+        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(searchString))),betAnnot);
     else
-        relVals = bestAnnot(distAndPos(:,1) < (1-minSim) * length(identifier));
+        relVals = distAndPos(:,1) < (1-minSim) * length(searchString);
     end
     field  = bestAnnot;
     distances = distAndPos(:,1);
-else
-    distances = cellfun(@(x) calcSim(identifier,x),field);
-    if length(identifier) < 4 %Only look for perfect matches - case independent.
-        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(identifier))),field);
+else    
+    distances = cellfun(@(x) calcDist(searchString,x),field);
+    if length(searchString) < 4 %Only look for perfect matches - case independent.
+        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(searchString))),field);
     else
-        %if its a longer query, we only use those with a distance < 1
-        relVals = distances < (1-minSim) * length(identifier);
+        %if its a longer query, we only use those with a distance smaller
+        %than a similarity threshold
+        relVals = distances < (1-minSim) * length(searchString);
     end
 end
 matchingIDs = field(relVals);
 distances = distances(relVals);
-[~,order] = sort(distances);
+[similarities,order] = sort(distances/length(searchString));
+similarities = 1-similarities;
 matchingIDs = matchingIDs(order);
 positions = find(relVals);
 positions = positions(order);
