@@ -15,11 +15,12 @@ function results = searchModel(model,searchTerm,varargin)
 %                    
 % OUTPUTS:
 %    results:       The results struct build as follows:
-%                    * .field - a struct array containing of the basic fields (e.g. rxns, mets etc) of the model in which matches were found with each field indicating the matches as detailed below.
-%                    * .field.id - The id of the matching element
-%                    * .field.matches - information about the matches of the respective ID.
-%                    * .field.matches.value - the value that matched.
-%                    * .field.matches.source - the field that contained the matching value.
+% 
+%                     * .field - a struct array containing of the basic fields (e.g. rxns, mets etc) of the model in which matches were found with each field indicating the matches as detailed below.
+%                     * .field.id - The id of the matching element
+%                     * .field.matches - information about the matches of the respective ID.
+%                     * .field.matches.value - the value that matched.
+%                     * .field.matches.source - the field that contained the matching value.
 %
 % .. Author: - Thomas Pfau, June 2018
 
