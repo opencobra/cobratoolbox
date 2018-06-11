@@ -26,7 +26,7 @@ metKEGGID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.compound;keg
 metChEBIID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	chebi;obo.chebi	is	mets	''	^CHEBI:\d+$	Column Cell Array of Strings	ChEBI ID of the metabolite.	'false(1)'	cell
 metPubChemID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubchem.compound	is	mets	''	^\d+$	Column Cell Array of Strings	PubChem ID of each metabolite	'false(1)'	cell
 metMetaNetXID	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	metanetx.chemical	is	mets	''	^MNXM\d+$	Column Cell Array of Strings	MetaNetX identifier of the metabolite	'false(1)'	cell
-metSBOTerms	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	mets	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the metabolite	'false(1)'	cell
+metSBOTerms	mets	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	hasProperty	mets	''	^SBO:\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the metabolite	'false(1)'	cell
 geneEntrezID	genes	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ncbigene	is;isEncodedBy	genes	''	^\d+$	Column Cell Array of Strings	Entrez IDs of genes	'false(1)'	cell
 grRules	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell Array of Strings	A string representation of the GPR rules defined in a readable format.	'false(1)'	cell
 rxnGeneMat	rxns	genes	issparse(x) || isnumeric(x) || islogical(x)				0		Sparse or Full Matrix of Double or Boolean	Matrix with rows corresponding to reactions and columns corresponding to genes.	'false(1)'	sparselogical
