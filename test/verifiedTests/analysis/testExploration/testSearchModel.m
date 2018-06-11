@@ -39,7 +39,7 @@ result = searchModel(model,'WeLookForSomethingOdd','printLevel',1);
 assert(isempty(fieldnames(result)));
 %We add a field that is looking like an annotation field.
 model.geneisSomething = repmat({''},size(model.genes));
-model.geneisSomething{2} = 'WeLookForSomethingOdderThanThis;Whatever you do we do it better; We do it better than you! :)';
+model.geneisSomething{2} = 'WeLookForSomethingOdderThanThis;WhateverweFindHereIsThere;Maybe';
 result = searchModel(model,'WeLookForSomethingOdd','printLevel',1);
 %Now, result should have the second gene.
 assert(isempty(setxor(fieldnames(result),{'genes'}))) %There are genes, and only genes found now.

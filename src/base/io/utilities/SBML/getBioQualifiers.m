@@ -1,5 +1,6 @@
 function bioQualifiers = getBioQualifiers()
 % Get a list of possible bioqualifiers
+%
 % USAGE:
 %    annotationQualifiers = getBioQualifiers()
 %
