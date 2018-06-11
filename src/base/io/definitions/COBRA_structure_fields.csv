@@ -36,7 +36,7 @@ rxnNotes	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))				''		Column Cell
 rxnECNumbers	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	ec-code	is;isVersionOf	rxns	''	^\d+\.-\.-\.-|\d+\.\d+\.-\.-|\d+\.\d+\.\d+\.-|\d+\.\d+\.\d+\.(n)?\d+$	Column Cell Array of Strings	E.C. number for each reaction.	'false(1)'	cell
 rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDescribedBy	rxns	''	^\d+$	Column Cell Array of Strings	Description of references for each corresponding reaction.	'false(1)'	cell
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'	cell
-rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	is	rxns	''	^SBO\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'	cell
+rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	hasProperty	rxns	''	^SBO:\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'	cell
 subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))				{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell
 description	NaN	NaN	ischar(x) || isstruct(x)				struct()		String or Struct	Name of a file the model is loaded from.	'false(1)'	char
 modelVersion	NaN	NaN	isstruct(x)				struct()		Struct	Information on the model version	'false(1)'	struct
