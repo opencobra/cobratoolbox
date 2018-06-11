@@ -33,6 +33,13 @@ printLevel = parser.Results.printLevel;
 % first collect some potential fields, which are known.
 baseFields = {'rxns','mets','vars','ctrs','genes','comps','prots'};
 baseFieldNames = {'reactions', 'metabolites', 'variables', 'constraints', 'genes', 'compartments', 'proteins'};
+
+%filter the base fields:
+fieldsPresentInModel = ismember(baseFields,fieldnames(model));
+baseFields = baseFields(fieldsPresentInModel);
+baseFieldNames = baseFieldNames(fieldsPresentInModel);
+
+%All Base fields do have an associated "Names" field.
 nameFields = regexprep(baseFields,'s$','Names');
 knownFields = union(baseFields,nameFields);
 dbFields = getDefinedFieldProperties('DataBaseFields',true);
@@ -44,9 +51,6 @@ results = struct();
 displayedFields = 0;
 for field = 1:numel(baseFields)    
     cField = baseFields{field};
-    if ~isfield(model,cField)
-        continue;
-    end    
     % get the model fields associated with this type.
     modelFields = getModelFieldsForType(model,cField);
     resultList = cell(numel(model.(cField)),numel(modelFields));    
