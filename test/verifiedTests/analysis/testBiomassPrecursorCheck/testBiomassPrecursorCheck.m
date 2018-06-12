@@ -37,5 +37,22 @@ model = changeObjective(model,'testBiomass');
 assert(isempty(setxor(missingMets,{'NotExist'}))); % NotExist, and only NotExist is not producible.
 assert(isempty(setxor(presentMets,{'amet_c'}))); % amet_c and only amet_c is producible
 
+%Test coupling
+model = createToyModelForBiomassPrecursorCheck();
+%This model cannot carry flux through the objective, but each precursor can
+%be produced if exchangers exist for all precursors.
+[missingMets, presentMets] = biomassPrecursorCheck(model);
+assert(isempty(setxor(presentMets,{'E','F'})));
+
+%Check for coupled Mets
+[missingMets, presentMets, coupledMets] = biomassPrecursorCheck(model,true);
+
+assert(isempty(missingMets))
+assert(isempty(setxor(presentMets,{'F'}))); %F can be produced, as surplus E can be removed by the biomass function.
+assert(isempty(setxor(coupledMets,{'E'}))); % All E has to go to the biomass as long as there is no sink for F.
+
+%Test error
+assert(verifyCobraFunctionError('biomassPrecursorCheck','input',{model},'outputArgCount',3,'testMessage','coupledMets are not being calculated if checkCoupling is not set to true!'));
+
 % change the directory
 cd(currentDir)
