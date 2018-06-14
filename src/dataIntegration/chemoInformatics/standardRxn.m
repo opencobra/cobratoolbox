@@ -1,10 +1,10 @@
-function standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+function standardised = standardRxn(rxnFile, mappedDir, standardDir)
 % Standarize atom mapped RXNS files into a canonical format. ChemAxon
 % installed is required (needed to compute the atom transition network)
 %
 % USAGE:
 %
-%    standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+%    standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %
 % INPUTS:
 %     rxnFile:      Name of the RXN file to standarize.
@@ -23,7 +23,7 @@ function standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
 %    rxnFile = 'DOPACCL.rxn';
 %    mappedDir = ['mapped' filesep];
 %    standardDir = ['standard' filesep];
-%    standardised = canonicalRxn(rxnFile, mappedDir, standardDir)
+%    standardised = standardRxn(rxnFile, mappedDir, standardDir)
 %
 % .. Author: - German A. Preciat Gonzalez 25/05/2017
 
