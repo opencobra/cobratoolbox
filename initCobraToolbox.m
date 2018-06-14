@@ -623,7 +623,13 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif (status_curl == 127 || status_curl == 48) && (strcmp(computer('arch'), 'glnxa64') || strcmp(computer('arch'), 'maci64'))
+    elseif ((status_curl == 127 || status_curl == 48) && isunix)
+        % status_curl of 48 is "An unknown option was passed in to libcurl"
+        % status_curl of 127 is a bash/shell error for "command not found"
+        % You can get either if there is mismatch between the library
+        % libcurl and the curl program, which happens with matlab's
+        % distributed libcurl. In order to avoid library mismatch we
+        % temporarily fchange LD_LIBRARY_PATH
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl --version');
         setenv('LD_LIBRARY_PATH', origLD);
@@ -671,7 +677,7 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
-    elseif (status_curl == 127 || status_curl == 48) && (strcmp(computer('arch'), 'glnxa64') || strcmp(computer('arch'), 'maci64'))
+    elseif ((status_curl == 127 || status_curl == 48) && isunix)
         setenv('LD_LIBRARY_PATH', newLD);
         [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
         setenv('LD_LIBRARY_PATH', origLD);
