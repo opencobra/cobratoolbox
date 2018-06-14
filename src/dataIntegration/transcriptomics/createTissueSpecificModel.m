@@ -173,7 +173,7 @@ else
                 error('The required option field "core" is not defined for fastCore method')                
             end
             if ~isfield(options,'epsilon'),options.epsilon=1e-4;end
-            if ~isfield(options,'printlevel'),options.printlevel=0;end
+            if ~isfield(options,'printLevel'),options.printLevel=0;end
     end
 end
 
@@ -196,7 +196,7 @@ switch options.solver
     case 'mCADRE'
         tissueModel = mCADRE(model, options.ubiquityScore, options.confidenceScores, options.protectedRxns, options.checkFunctionality, options.eta, options.tol);
     case 'fastCore'
-        tissueModel = fastcore(model, options.core, options.epsilon, options.printlevel);
+        tissueModel = fastcore(model, options.core, options.epsilon, options.printLevel);
 end
 
 

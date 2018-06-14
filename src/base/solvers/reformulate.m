@@ -13,7 +13,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 % structure FBA. `reformulate` assumes `S` and `C` do not contain very small entries
 % and transforms constraints containing very large entries (entries larger than
 % BIG). BIG should be set between 1000 and 10000 on double precision machines.
-% `printlevel` = 1 or 0 enables/diables printing respectively.
+% `printLevel` = 1 or 0 enables/diables printing respectively.
 %
 % Reformulation techniques are described in detail in:
 % `Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
