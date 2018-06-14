@@ -1,7 +1,7 @@
 function [missingMets, presentMets,coupledMets] = biomassPrecursorCheck(model,checkCoupling)
 % Checks if biomass precursors are able to be synthesized.
 %
-% [missingMets, presentMets] = biomassPrecursorCheck(model)
+% [missingMets, presentMets, coupledMets] = biomassPrecursorCheck(model)
 %
 % INPUT:
 %    model:             COBRA model structure
@@ -14,11 +14,14 @@ function [missingMets, presentMets,coupledMets] = biomassPrecursorCheck(model,ch
 % OUTPUTS:
 %    missingMets:    List of biomass precursors that are not able to be synthesized
 %    presentMets:    List of biomass precursors that are able to be synthesized
+%    coupledMets:    List of metabolites which need an exchange reaction for at least one other
+%                    biomass component because their production is coupled to it.
+%                    
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
 % May identify metabolites that are typically recycled within the
 % network such as ATP, NAD, NADPH, ACCOA.
-if nargin < 2
+if ~exist('checkCoupling','var')
     checkCoupling = 0;
 end
 
@@ -36,9 +39,9 @@ biomassMetabs = model.mets(any(model.S(:, colS_biomass) < 0, 2));
 % AND OPTIMIZE.  NOTE: A CRITICAL ASSUMPTION IS THAT THE ADDED DEMAND
 % REACTION IS APPENDED TO THE FAR RIGHT OF THE S-MATRIX.  THE CODE NEEDS TO
 % BE REVISED IF THIS IS NOT THE CASE.
-m = 1;
-p = 1;
-c = 1;
+m = 1; % position in the missing metabolies vector
+p = 1; % position in the present metabolies vector
+c = 1; % position in the coupled metabolies vector
 % ADD DEMAND REACTIONS
 [model_newDemand, addedRxns] = addDemandReaction(model, biomassMetabs);
 
