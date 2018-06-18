@@ -1,4 +1,4 @@
-function spyc(sA, cmap, pb, newFig, sizeDataFactor, fontSize, figWidth, figHeight);
+function spyc(sA, cmap, pb, newFig, sizeDataFactor, fontSize, figWidth, figHeight)
 % SPYC Visualize sparsity pattern with color-coded scale.
 %   SPYC(S) plots the color-coded sparsity pattern of the matrix S.
 %
@@ -46,7 +46,9 @@ imap = round((sA - min(sA)) / (max(sA) - min(sA))) + 1;
 
 if newFig
     h = figure;
-    set(h, 'Position', [0 0 figWidth figHeight])
+    if exist('figWidth', 'var') && exist('figHeight', 'var')
+        set(h, 'Position', [0 0 figWidth figHeight]);
+    end
     hold on;
 end
 colormap(cmap)
@@ -55,7 +57,7 @@ set(gca, 'ydir', 'reverse')
 set(gca, 'FontSize', fontSize);
 axis equal;
 xlabel({'Number of columns/reactions'; ['(' num2str(ns) ' nonzero elements)']});
-ylabel(['Number of rows/metabolites']);
+ylabel('Number of rows/metabolites');
 axis([0 Ny 0 Nx])
 box on
 
