@@ -34,7 +34,7 @@ function [sampleDiff, sampleRatio] = calcSampleDifference(sample1, sample2, nPts
 assert(nFlux1 == nFlux2, 'Samples have different numbers of rxns.');
 
 if nargin < 3 || isempty(nPts)
-    nPts = nSample1 * 2;
+    nPts = nSample1 * 25;
 end
 
 select1 = randi(nSample1, 1, nPts);
