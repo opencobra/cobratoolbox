@@ -37,8 +37,9 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
     %   get all the parameters
     login = minerva.login;
     password = minerva.password;
-    model = minerva.map;
+    map = minerva.map;
+    googleLicenseContent = minerva.googleLicenseConsent;
     %     have to turn it into string
     content = sprintf(content);
-    response = postMINERVArequest(login, password, model, subsystem, content);
+    response = postMINERVArequest(login, password, map, googleLicenseContent, subsystem, content);
 end
