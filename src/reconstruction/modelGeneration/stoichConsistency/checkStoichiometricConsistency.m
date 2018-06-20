@@ -223,7 +223,7 @@ if inform~=1
             global CBT_LP_SOLVER
             method.solver=CBT_LP_SOLVER;
             tic
-            solution=maxCardinalityConservationVector(SInt);
+            [~, ~, solution] = maxCardinalityConservationVector(SInt);
             timetaken=toc;
             method.solver='cappedL1';
             if solution.stat==1
@@ -336,6 +336,4 @@ end
 % model.SConsistentRxnBool(~model.SIntRxnBool)=0;
 
 %corresponding reactions exclusively involving consistent metabolites
-model.SConsistentRxnBool=false(nRxn,1);
-model.SConsistentRxnBool(~model.SIntRxnBool)= any(model.S( model.SConsistentMetBool,~model.SIntRxnBool),1)'...
-                                           & ~any(model.S(~model.SConsistentMetBool,~model.SIntRxnBool),1)';
+model.SConsistentRxnBool = ~any(model.S(~model.SConsistentMetBool, :), 1)' & model.SIntRxnBool;
