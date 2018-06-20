@@ -1,5 +1,4 @@
-function spyc(sA, cmap, pb, newFig);
-
+function spyc(sA, cmap, pb, newFig, sizeDataFactor, fontSize, figWidth, figHeight)
 % SPYC Visualize sparsity pattern with color-coded scale.
 %   SPYC(S) plots the color-coded sparsity pattern of the matrix S.
 %
@@ -10,18 +9,18 @@ function spyc(sA, cmap, pb, newFig);
 %                   flag PB=0
 %
 
-if nargin < 4
+if ~exist('fontSize', 'var')
+    fontSize = 12;
+end
+if ~exist('sizeDataFactor', 'var')
+    sizeDataFactor = 400;
+end
+if ~exist('newFig', 'var')
     newFig = true;
 end
 
-if nargin < 1 | nargin > 3 && ~isempty(cmap)
-    error('spyc:InvalidNumArg', 'spyc takes one to three inputs')
-    return
-end
-
 if isempty(sA)
-    error('spyc:InvalidArg', 'sparse matrix is empty')
-    return
+    error('spyc:InvalidArg', 'sparse matrix is empty');
 end
 
 if nargin > 1 && ~isempty(cmap)
@@ -47,15 +46,18 @@ imap = round((sA - min(sA)) / (max(sA) - min(sA))) + 1;
 
 if newFig
     h = figure;
+    if exist('figWidth', 'var') && exist('figHeight', 'var')
+        set(h, 'Position', [0 0 figWidth figHeight]);
+    end
     hold on;
 end
 colormap(cmap)
-scatter(iy, ix, [], sA, 'Marker', '.', 'SizeData', 0.4 * 1e3 * (abs(sA) / max(max(abs(sA)))))
+scatter(iy, ix, [], sA, 'filled', 'Marker', 'o', 'SizeData', sizeDataFactor * abs(sA)/max(max(abs(sA))))
 set(gca, 'ydir', 'reverse')
-set(gca, 'FontSize', 6);
+set(gca, 'FontSize', fontSize);
 axis equal;
 xlabel({'Number of columns/reactions'; ['(' num2str(ns) ' nonzero elements)']});
-ylabel(['Number of rows/metabolites']);
+ylabel('Number of rows/metabolites');
 axis([0 Ny 0 Nx])
 box on
 
@@ -64,4 +66,4 @@ if pb
 end
 
 c = colorbar;
-set(c, 'FontSize', 12);
+set(c, 'FontSize', fontSize);

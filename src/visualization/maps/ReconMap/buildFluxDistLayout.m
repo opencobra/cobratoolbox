@@ -57,11 +57,12 @@ end
 %   get all the parameters
 login = minerva.login;
 password = minerva.password;
+googleLicenseContent = minerva.googleLicenseConsent;
 map = minerva.map;
 %     have to turn it into string
 %     disp(content);
-content = sprintf(content);
-serverResponse = postMINERVArequest(login, password, map, identifier, content);
+% content = sprintf(content);
+serverResponse = postMINERVArequest(login, password, map, googleLicenseContent, identifier, content);
 end
 
 %% Normalize a flux into a range of 1 to 10

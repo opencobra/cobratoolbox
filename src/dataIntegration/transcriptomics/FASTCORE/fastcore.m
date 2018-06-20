@@ -1,4 +1,4 @@
-function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printlevel)
+function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printLevel)
 % Use the FASTCORE algorithm ('Vlassis et al, 2014') to extract a context
 % specific model. FASTCORE algorithm defines one set of core
 % reactions that is guaranteed to be active in the extracted model and find
@@ -40,7 +40,7 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printlevel)
 %       - Anne Richelle, code adaptation to fit with createTissueSpecificModel
 
 if nargin < 4 || ~exist('printLevel','var')
-    printlevel = 0;
+    printLevel = 0;
 end
 if nargin < 3 || isempty(epsilon)
     epsilon=1e-4;
@@ -69,7 +69,7 @@ singleton = false;
 % Find irreversible core reactions
 J = intersect(coreSetRxn, irrevRxns);
 
-if printlevel > 0
+if printLevel > 0
     fprintf('|J|=%d  ', length(J));
 end
 
@@ -86,13 +86,13 @@ if ~isempty(setdiff(J, Supp))
 end
 
 A = Supp;
-if printlevel > 0
+if printLevel > 0
     fprintf('|A|=%d\n', length(A));
 end
 
 % J is the set of irreversible reactions
 J = setdiff(coreSetRxn, A);
-if printlevel > 0
+if printLevel > 0
     fprintf('|J|=%d  ', length(J));
 end
 
@@ -106,13 +106,13 @@ while ~isempty(J)
     [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon, basis);
     
     A = union(A, Supp);
-    if printlevel > 0
+    if printLevel > 0
         fprintf('|A|=%d\n', length(A));
     end
     
     if ~isempty( intersect(J, A))
         J = setdiff(J, A);
-        if printlevel > 0
+        if printLevel > 0
             fprintf('|J|=%d  ', length(J));
         end
         flipped = false;
@@ -136,17 +136,17 @@ while ~isempty(J)
             model.lb(JiRev) = -tmp;
             flipped = true;
             
-            if printlevel > 0
+            if printLevel > 0
                 fprintf('(flip)  ');
             end
         end
     end
 end
-if printlevel > 0
+if printLevel > 0
     fprintf('|A|=%d\n', length(A)); % A : indices of reactions in the new model
 end
 
-if printlevel > 1
+if printLevel > 1
     toc
 end
 

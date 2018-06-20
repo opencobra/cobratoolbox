@@ -18,7 +18,7 @@ function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %    BIG:           A parameter the controls the largest entries that appear in the
 %                   reformulated problem (default = 1000).
 %    printLevel:    printLevel = 1 enables printing of problem statistics (default);
-%                   printlevel = 0 silent
+%                   printLevel = 0 silent
 %    fileName:      name of th file to load
 %    directory:     file directory (if `model` is empty, you can load it using `fileName` and `directory`)
 %

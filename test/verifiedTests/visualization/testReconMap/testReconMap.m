@@ -34,6 +34,7 @@ if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
     
     minerva.login = 'cobratoolbox-test';
     minerva.password = 'test';
+    minerva.googleLicenseConsent = 'true';
 
     % FBA solution for flux distribution
     changeCobraSolver('glpk', 'LP');
