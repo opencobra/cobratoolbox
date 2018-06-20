@@ -1,4 +1,4 @@
-function [databases, identifiers, relations] = parseCVTerms(CVTerms)
+function [databases, identifiers, relations, types] = parseCVTerms(CVTerms)
 %parseCVTerms extracts the annotations deposited in cvterms in an SBML struct
 %
 % USAGE:
@@ -11,9 +11,10 @@ function [databases, identifiers, relations] = parseCVTerms(CVTerms)
 %
 % OUTPUT:
 %
-%    databases:     the databases stored in the ressources of the CVTerms.
-%    identifiers:   The identifiers annotated for the databases.
-%    relations:     The bio-qualifier relation encoded in the CVTerms.
+%    databases:       The databases stored in the ressources of the CVTerms.
+%    identifiers:     The identifiers annotated for the databases.
+%    relations:       The bio-qualifier relation encoded in the CVTerms.
+%    types:           The types of qualifiers ('biological' or 'model')
 %
 % .. Authors:
 %       - Thomas Pfau May 2017 
@@ -21,11 +22,14 @@ function [databases, identifiers, relations] = parseCVTerms(CVTerms)
 databases = {};
 identifiers = {};
 relations = {};
+types = {};
+
 if isempty(CVTerms)
     return;
 end
-[databases,identifiers,relations] = cellfun(@getDataBases, {CVTerms.resources}, {CVTerms.qualifier},'UniformOutput',0);
+[databases,identifiers,relations,types] = cellfun(@getDataBases, {CVTerms.resources}, {CVTerms.qualifier}, {CVTerms.qualifierType},'UniformOutput',0);
 
+types = vertcat(types{:});
 databases = vertcat(databases{:});
 identifiers = vertcat(identifiers{:});
 relations = vertcat(relations{:});

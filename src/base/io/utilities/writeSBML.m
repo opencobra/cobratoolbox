@@ -118,7 +118,8 @@ else
 end
 
 if isfield(model,'modelID')
-    sbmlModel.id = ['M_' convertSBMLID(model.modelID)];
+    sbmlModel.id = regexprep(convertSBMLID(model.modelID),'(^[0-9])','M_$1');
+    
 else
     sbmlModel.id = 'COBRAModel';
 end
@@ -588,6 +589,21 @@ sbmlModel.namespaces=struct('prefix',{'','fbc','groups'},...
     'http://www.sbml.org/sbml/level3/version1/groups/version1'});
 
 sbmlModel.fbc_strict=1;
+%Check, if there is a is relationship for this model.
+modelfields = regexprep(fieldnames(model),'^model','');
+identityField = cellfun(@(x) ~isempty(regexp(x,'(^mis(?!(InstanceOf)|(DescribedBy)|(DerivedFrom)))|(^midentity)')),modelfields);
+if ~any(identityField)
+    %if there  is no is field, than we remove all 
+    %fields that assign is annotations.
+    isAnnotations = {'idDescribedBy','description','isInstanceOf','class','hasInstance','instance'};
+    assignFields = strcat('model',modelfields(cellfun(@(x) ~isempty(regexp(x,['(^' strjoin(isAnnotations,')|(^'), ')'])),modelfields)));
+    for afield = 1:numel(assignFields)
+        if isfield(model,assignFields{afield})
+           model = rmfield(model,assignFields{afield});
+        end
+    end
+end
+sbmlModel.annotation = makeSBMLAnnotationString(model,sbmlModel.id,'model',1);
 
 OutputSBML(sbmlModel,fileName,1,0,[1,0]);
 end

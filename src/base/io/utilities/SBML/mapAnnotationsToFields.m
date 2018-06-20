@@ -1,28 +1,29 @@
-function mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,relationSelection, inverseRelationSelection)
+function mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,varargin)
 %MAPANNOTATIONSTOFIELDS maps annotations in bioql/MIRIAM annotation from SBML to model fields.
 %
 % USAGE:
 %
-%    mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,relationSelection, exclusiveSelection)
+%    mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,...)
 %
 % INPUT:
 %
-%    model:        the COBRA model to annotate
-%    databases:    a cell array of cell arrays containing databases
-%    identifiers:  a cell array of cell arrays containing the identifiers
-%                  associated with the databases above
-%    relations:    a cell array of cell arrays containing the bioql relations
-%                  associated with the databases above
-%    field:        the model field (met/gene/rxn/protein/comp etc) to
-%                  annotate. Note that there is an s missing here.
+%    model:          the COBRA model to annotate
+%    databases:      a cell array of cell arrays containing databases
+%    identifiers:    a cell array of cell arrays containing the identifiers
+%                    associated with the databases above
+%    relations:      a cell array of cell arrays containing the bioql relations
+%                    associated with the databases above
+%    field:          the model field (met/gene/rxn/protein/comp etc) to
+%                    annotate. Note that there is an s missing here.
 % OPTIONAL INPUT:
+% 
+%    varargin:       Additional Arguments as parameter/value pairs or
+%                    parameter struct:
 %
-%    relationSelection:            whether only a specific relation is choosen
-%                                  and all others are ignored (default {})
-%    inverseRelationSelection:     whether the relation specified by
-%                                  relationSelection is inverted (i.e. all
-%                                  other fields are used (default true))
-%
+%                     * relationSelection:            whether only a specific relation is choosen and all others are ignored (default {})
+%                     * inverseRelationSelection:     whether the relation specified by relationSelection is inverted (i.e. all other fields are used (default true))
+%                     * types:                        cell array with types of the relations either "biological" or "model"
+%                                                     
 % OUTPUT:
 %
 %    mappedFields:         a struct with fields for each encountered
@@ -34,12 +35,18 @@ function mappedFields = mapAnnotationsToFields(model,databases,identifiers,relat
 % .. Authors:
 %       - Thomas Pfau May 2017 
 
-if~exist('relationSelection','var')
-    relationSelection = {};
-end
-if ~exist('inverseRelationSelection','var')
-    inverseRelationSelection = true;
-end
+
+parser = inputParser();
+
+parser.addParamValue('relationSelection',{},@iscell);
+parser.addParamValue('inverseRelationSelection',true,@islogical);
+parser.addParamValue('types',repmat({{}},size(relations)),@(x) iscell(x));
+
+parser.parse(varargin{:});
+
+types = parser.Results.types;
+relationSelection  = parser.Results.relationSelection;
+inverseRelationSelection  = parser.Results.inverseRelationSelection;
 %All fields need to be initialized with the same size.
 %Now, get all known mappings from databases to model fields. (knownMappings
 %is a cell array of typedb, relation  triplets.
@@ -48,7 +55,7 @@ knownMappings = getDatabaseMappings(field);
 
 %Not sure, whether we can transform this to a cellfun, but at the moment, I
 %doubt it...
-fieldTrans = cellfun(@(db,rel) getMappingInfo(db,rel,knownMappings,field,relationSelection,~inverseRelationSelection), databases,relations,'UniformOutput',0);
+fieldTrans = cellfun(@(db,rel,type) getMappingInfo(db,rel,type,knownMappings,field,relationSelection,~inverseRelationSelection), databases,relations,types,'UniformOutput',0);
 modelFields = vertcat(fieldTrans{:});
 %Create ids with relations to cpature everything.
 uid = strcat(modelFields(:,1),modelFields(:,3));
@@ -76,14 +83,17 @@ function [idstring] = getID(databases,relations,ids,currentDB,relation)
     idstring = strjoin(ids(ismember(databases,currentDB) & ismember(relations,relation)),'; ');
 end
             
-function fieldID = convertDBID(dbid,relation,field)
+function fieldID = convertDBID(dbid,relation,type,field)
 fieldID = convertSBMLID(dbid);
 fieldID = strcat(relation,fieldID);
+if ~isempty(type)
+    fieldID = strcat(cellfun(@(x) x(1), type,'Uniform',0),fieldID);
+end
 fieldID = strcat(field,fieldID);
 fieldID = strcat(fieldID,'ID');
 end
 
-function map = getMappingInfo(db,rel,knownMappings,field, excludeAnnotationType,inverseRelationSelection)
+function map = getMappingInfo(db,rel,type,knownMappings,field, excludeAnnotationType,inverseRelationSelection)
 %Get mapping, and missing fields.
 %repeat relations, this is a set of cvterms all under one qualifier
 [mapping] = ismember(knownMappings(:,1),db) & ...
@@ -97,7 +107,7 @@ function map = getMappingInfo(db,rel,knownMappings,field, excludeAnnotationType,
         knownMappings(mapping,3), ...
         knownMappings(mapping,2);...
        db(~inverseMapping),...
-       convertDBID(db(~inverseMapping),rel(~inverseMapping),field),...
+       convertDBID(db(~inverseMapping),rel(~inverseMapping),type,field),...
        rel(~inverseMapping)];
 
 end
