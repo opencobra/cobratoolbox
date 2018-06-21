@@ -122,8 +122,11 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                 macOSFound = true;
             end
         end        
-        if ~macOSFound && printLevel > 0
-            fprintf([' > The compatibility can only be evaluated on the following mac OS versions: ', strjoin(testedOS(macpos),', '), '.\n']);
+        if ~macOSFound
+            untestedFlag = true;
+            if printLevel > 0
+                fprintf([' > The compatibility can only be evaluated on the following mac OS versions: ', strjoin(testedOS(macpos),', '), '.\n']);
+            end
         end
     else % Windows
         resultVERS = system_dependent('getos');
