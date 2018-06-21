@@ -29,24 +29,24 @@ if ~checkCoupling && nargout == 3
     error('coupledMets are not being calculated if checkCoupling is not set to true!');
 end
 
+% Find column in s-matrix that corresponds to biomass equation
 colS_biomass = model.c ~= 0;
-% FIND COLUMN IN S-MATRIX THAT CORRESPONDS TO BIOMASS EQUATION
 
-% LIST ALL METABOLITES IN THE BIOMASS FUNCTION
+% List all metabolites in the biomass function
 biomassMetabs = model.mets(any(model.S(:, colS_biomass) < 0, 2));
 
-% ADD DEMAND REACTION, SET OBJECTIVE FUNCTION TO MAXIMIZE ITS PRODUCTION,
-% AND OPTIMIZE.  NOTE: A CRITICAL ASSUMPTION IS THAT THE ADDED DEMAND
-% REACTION IS APPENDED TO THE FAR RIGHT OF THE S-MATRIX.  THE CODE NEEDS TO
-% BE REVISED IF THIS IS NOT THE CASE.
+% Add demand reaction, set objective function to maximize its production,
+% and optimize.  Note: a critical assumption is that the added demand
+% reaction is appended to the far right of the s-matrix.  The code needs to
+% be revised if this is not the case.
 m = 1; % position in the missing metabolies vector
 p = 1; % position in the present metabolies vector
 c = 1; % position in the coupled metabolies vector
-% ADD DEMAND REACTIONS
+% Add demand reactions
 [model_newDemand, addedRxns] = addDemandReaction(model, biomassMetabs);
 
 if checkCoupling
-    %Close the precursors
+    % Close the precursors
     model_newDemand = changeRxnBounds(model_newDemand,addedRxns,zeros(numel(addedRxns,1)),repmat('b',numel(addedRxns,1)));
     coupledMets = {};
 end
