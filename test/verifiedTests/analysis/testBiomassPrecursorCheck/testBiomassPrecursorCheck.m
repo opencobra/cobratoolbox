@@ -96,9 +96,9 @@ while ~isequal(l, -1)
 end
 fclose(f);
 
-lineCan = find(~cellfun(@isempty, strfind(text, 'Cofactors in the biomass reaction that CAN be produced:')));
+lineCan = find(~cellfun(@isempty, strfind(text, 'Cofactors in the biomass reaction that CAN be synthesized:')));
 assert(isscalar(lineCan))
-lineCannot = find(~cellfun(@isempty, strfind(text, 'Cofactors in the biomass reaction that CANNOT be produced:')));
+lineCannot = find(~cellfun(@isempty, strfind(text, 'Cofactors in the biomass reaction that CANNOT be synthesized:')));
 assert(isscalar(lineCannot))
 cofactorCan = {'nadph[c]  -> nadp[c]', 'atp[c]  -> adp[c]', 'accoa[c]  -> coa[c]', 'nad[c]  -> nadh[c]'};
 cofactorCannot = {'metTest1[c]  -> metTest2[c]'};
