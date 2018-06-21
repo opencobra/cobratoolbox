@@ -1,19 +1,22 @@
-function [databases,ids,qualifiers] = getDataBases(Ressources,qualifier)
+function [databases,ids,qualifiers,types] = getDataBases(Ressources,qualifier,type)
 %getDataBases extracts database and correspdoning id from a ressource string in an sbml
 % USAGE:
 %
-%       [databases,ids,qualifiers] = getDataBases(Ressource,qualifier)
+%       [databases,ids,qualifiers,types] = getDataBases(Ressource,qualifier,type)
 %
 % INPUT:
 %
 %    Ressources:    The Ressource String(s) as a cell array
 %    qualifier:     The bio-qualifier of the ressource
+%    type:          The type of the qualifier (model or biological)
 %
 % OUTPUT:
 %
 %    databases:    The databases of the ressources
 %    ids:          The identifiers of the ressource strings
 %    qualifier:    The bio-qualifiers associated (the same as the input)
+%    types:        The type of the qualifiers associated - model or
+%                  biological (same as input but repeated)
 %
 % .. Authors:
 %       - Thomas Pfau May 2017
@@ -45,6 +48,10 @@ if ~isempty(tokens)
     databases = columnVector(cellfun(@(x) x{1}, tokens,'UniformOutput',0));
     ids = columnVector(cellfun(@(x) x{2}, tokens,'UniformOutput',0));
     qualifiers = repmat({qualifier},numel(databases),1);
+end
+
+if nargout == 4
+    types = repmat({type},numel(databases),1);
 end
 
 end

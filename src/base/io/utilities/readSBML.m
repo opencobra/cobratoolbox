@@ -31,12 +31,24 @@ fileName = [fileDir filesep name extension];
 modelSBML = TranslateSBML(fileName,0,0,[1 1]);
 model = struct();
 %TODO: Fix Model Annotation/Notes IO.
-if ~isempty(modelSBML.annotation)
-    model.modelAnnotation = modelSBML.annotation;
+if isfield(modelSBML,'cvterms')
+    %We will read miriam annotations. Anthing else, we will ignore!
+    cvterms = {modelSBML.cvterms};
+    [databases,identifiers,qualifiers,types] = cellfun(@parseCVTerms, cvterms,'UniformOutput',0);
+    %Replace all "IS" and "identity" qualifiers by "isDerivedFrom" 
+    for i = 1:numel(qualifiers)
+        isRelations = strcmp(qualifiers{i},'is') | strcmp(qualifiers{i},'identity');
+        cquals = qualifiers{i};
+        cquals(isRelations) = {'isDerivedFrom'};
+        qualifiers{i} = cquals;
+    end
+    model = mapAnnotationsToFields(model,databases,identifiers,qualifiers,'model','types',types); %We apply types here as models tend to have model annotations in contrast to other parts of the model.
 end
+
 if ~isempty(modelSBML.notes)
     model.modelNotes = modelSBML.notes;
 end
+
 modelVersion.SBML_level = modelSBML.SBML_level;
 modelVersion.SBML_version = modelSBML.SBML_version;
 if isfield(modelSBML,'fbc_version')
@@ -172,10 +184,10 @@ if(isfield(modelSBML,'fbc_geneProduct') && ~isempty(modelSBML.fbc_geneProduct))
             %the annotation
             cvterms = {modelSBML.fbc_geneProduct.cvterms};
             [databases,identifiers,qualifiers] = cellfun(@parseCVTerms, cvterms,'UniformOutput',0);
-            model = mapAnnotationsToFields(model,databases,identifiers,qualifiers,'gene',{'isEncodedBy','encoder'},true);
+            model = mapAnnotationsToFields(model,databases,identifiers,qualifiers,'gene','relationSelection',{'isEncodedBy','encoder'}, 'inverseRelationSelection',true);
             %TODO: We currently don't use Protein information. And we will miss, if
             %the geneProduct is incorrectly annotated as protein (i.e. anything but the isEncodedBy relation).
-            proteinFieldsFromGeneProducts = mapAnnotationsToFields(struct(),databases,identifiers,qualifiers,'protein',{'isEncodedBy','encoder'});
+            proteinFieldsFromGeneProducts = mapAnnotationsToFields(struct(),databases,identifiers,qualifiers,'protein','relationSelection',{'isEncodedBy','encoder'});
             %For now - This is potentially going to change in the future:
             %We will use the IDs as geneIDs. We will use Labels as geneNames and we
             %will use name as "protein" ids.

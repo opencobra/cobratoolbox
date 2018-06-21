@@ -9,7 +9,7 @@ function [annotationString,notes] = makeSBMLAnnotationString(model,id,fieldentri
 %    model:            the model to extract the data
 %    id:               the ID of the entity
 %    fieldentries:     either a char indicating the field
-%                      (prot,met,rxn,comp,gene), or a cell array with X{:,1}
+%                      (prot,met,rxn,comp,gene,model,...), or a cell array with X{:,1}
 %                      being field IDs and X{:,2} being bioql qualiiers to
 %                      annotate for the field.
 %    position:         the position in the model to extract the data.
@@ -27,11 +27,23 @@ function [annotationString,notes] = makeSBMLAnnotationString(model,id,fieldentri
 
 allQualifiers = getBioQualifiers();
 
+%We have to handle some things special for model annotations (e.g. they can
+%have model qualifiers)
+if strcmp(fieldentries,'model')
+    modelAnnot = true;
+    modelQualString = ' xmlns:bqmodel="http://biomodels.net/model-qualifiers/" ';
+    allQualifiers = [strcat('m',allQualifiers),strcat('b',allQualifiers)];
+else
+    modelAnnot = false;
+    modelQualString = '';
+end
+
 if ischar(fieldentries)
     fieldentries = {fieldentries, allQualifiers};
 end
 annotationString = '';
 modelFields = fieldnames(model);
+unusedFields = true(size(modelFields));
 %Only look at the relevant fields.
 tmp_note = '';
 notes = cell(0,2);
@@ -47,9 +59,9 @@ for pos = 1:size(fieldentries,1)
     [~,upos,~] = unique(fieldMappings(:,3));
     fieldMappings = fieldMappings(upos,:);
     
-    relfields = modelFields(cellfun(@(x) strncmp(x,field,length(field)),modelFields));
     
     for i = 1:numel(allowedQualifiers)
+        relfields = modelFields(cellfun(@(x) strncmp(x,field,length(field)),modelFields) & unusedFields);        
         annotationsFields = relfields(cellfun(@(x) strncmp(x,[field allowedQualifiers{i}],length([field allowedQualifiers{i}])),relfields));
         knownFields = fieldMappings(cellfun(@(x) strcmp(x,allowedQualifiers{i}),fieldMappings(:,2)),:);
         dbnote = '';
@@ -57,13 +69,12 @@ for pos = 1:size(fieldentries,1)
             if isempty(model.(annotationsFields{fieldid}){position})
                 continue
             end
-            ids = strsplit(model.(annotationsFields{fieldid}){position},';');
-            
-            
+            ids = strsplit(model.(annotationsFields{fieldid}){position},';');           
             dbname = convertSBMLID(regexprep(annotationsFields{fieldid},[field allowedQualifiers{i} '(.*)' 'ID$'],'$1'),false);
             dbrdfstring = [bagindentlevel '    <rdf:li rdf:resource="http://identifiers.org/' dbname '/'];
             dbstring = strjoin(strcat(dbrdfstring,ids,sprintf('%s\n','"/>')),sprintf('\n'));
             dbnote = [dbnote, dbstring];
+            unusedFields(ismember(modelFields,annotationsFields(fieldid))) =  false;
         end
         knownExistentFields = knownFields(ismember(knownFields(:,3),modelFields),:);
         
@@ -85,18 +96,32 @@ for pos = 1:size(fieldentries,1)
             if any(~correctids)
                 notes(end+1,:) = {knownExistentFields{fieldid,3}, model.(knownExistentFields{fieldid,3}){position}};
             end
+            unusedFields(ismember(modelFields,knownExistentFields{fieldid,3})) =  false;
         end
         
         if ~isempty(dbnote)
             %Make specification for this bag
-            specstring = ['<bqbiol:' allowedQualifiers{i} ' xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">' ];
-            specend = ['</bqbiol:' allowedQualifiers{i} '>'];
+            bqtype = allowedQualifiers{i}(1);
+            if modelAnnot
+                idstart = 2;
+            else
+                idstart = 1;
+            end
+            % we have to be careful here but currently this is the only
+            % useful option to keep the type of qualifier.
+            if bqtype == 'm'
+                bqtype = 'bqmodel';
+            else
+                bqtype = 'bqbiol';
+            end
+            specstring = ['<' bqtype ':' allowedQualifiers{i}(idstart:end) modelQualString ' xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">' ];
+            specend = ['</' bqtype ':' allowedQualifiers{i}(idstart:end) '>'];
             
             specification_string = sprintf('%s%s\n%s  %s\n%s%s\n',bagindentlevel,specstring,bagindentlevel,'<rdf:Bag/>',bagindentlevel,specend);                        
              
-            tmp_note=[specification_string, tmp_note, bagindentlevel, '<bqbiol:', allowedQualifiers{i}, sprintf('%s\n%s  %s\n','>', bagindentlevel,'<rdf:Bag>')];
+            tmp_note=[specification_string, tmp_note, bagindentlevel, '<' bqtype ':', allowedQualifiers{i}(idstart:end), sprintf('%s\n%s  %s\n','>', bagindentlevel,'<rdf:Bag>')];
             tmp_note = [tmp_note, dbnote ];
-            tmp_note = [ tmp_note, sprintf('\n  %s%s\n%s%s\n',bagindentlevel,'</rdf:Bag>',bagindentlevel, ['</bqbiol:' allowedQualifiers{i} '>'])]; % ending syntax
+            tmp_note = [ tmp_note, sprintf('\n  %s%s\n%s%s\n',bagindentlevel,'</rdf:Bag>',bagindentlevel, ['</' bqtype ':' allowedQualifiers{i}(idstart:end) '>'])]; % ending syntax
         end
         
     end
