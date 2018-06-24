@@ -21,8 +21,11 @@ function [missingMets, presentMets,coupledMets, missingCofs, presentCofs] = biom
 %    presentCofs:    List of cofactor pairs that are able to be synthesized
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
-% May identify metabolites that are typically recycled within the network 
-% such as ATP, NAD, NADPH, ACCOA. Turn on checkCoupling to check them.
+%
+% NOTE:
+%    May identify metabolites that are typically recycled within the network 
+%    such as ATP, NAD, NADPH, ACCOA. Turn on checkCoupling to check them.
+
 if ~exist('checkCoupling','var')
     checkCoupling = 0;
 end
