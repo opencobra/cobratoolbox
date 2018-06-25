@@ -32,10 +32,6 @@ function varargout = biomassPrecursorCheck(model, checkCoupling, checkConservedQ
 %                    (returned only if checkConservedQuantities = true)
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
-%
-% NOTE:
-%    May identify metabolites that are typically recycled within the network 
-%    such as ATP, NAD, NADPH, ACCOA. Turn on checkConservedQuantities to check them.
 
 if ~exist('checkCoupling','var') || isempty(checkCoupling)
     checkCoupling = 0;
@@ -179,6 +175,7 @@ if checkConservedQuantities && ~isempty(missingMets)
     missingMets = missingMets(~ismember(missingMets, metCofs(:)));
 end
 
+% assign output argument
 varargout = {missingMets; presentMets};
 if checkCoupling
     varargout{end + 1} = coupledMets;

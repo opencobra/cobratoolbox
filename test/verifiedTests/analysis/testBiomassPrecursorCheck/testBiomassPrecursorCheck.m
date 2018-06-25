@@ -75,7 +75,9 @@ model = addReaction(model, 'COF', 'reactionFormula', 'metTest1[c] -> metTest2[c]
 model = addReaction(model, 'BIOMASS2', 'reactionFormula', 'metTest1[c] + atp[c] -> metTest2[c] + adp[c]');
 % Test the function's capability to handle >1 objective reactions 
 model = changeObjective(model, {'Biomass_Ecoli_core_N(w/GAM)-Nmet2'; 'BIOMASS2'}, 1);
+% additional functionalities not turned on
 [missingMets0, presentMets0] = biomassPrecursorCheck(model);
+% additional functionalities turned on
 if exist([pwd filesep 'testBiomassPrecursorCheck.txt'], 'file')
     delete([pwd filesep 'testBiomassPrecursorCheck.txt'])
 end
