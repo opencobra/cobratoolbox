@@ -1,7 +1,11 @@
-function [missingMets, presentMets,coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model,checkCoupling)
+function varargout = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)
 % Checks if biomass precursors are able to be synthesized.
 %
-% [missingMets, presentMets, coupledMets] = biomassPrecursorCheck(model, checkCoupling)
+% USAGE:
+%    [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)
+%    [missingMets, presentMets] = biomassPrecursorCheck(model)
+%    [missingMets, presentMets, coupledMets] = biomassPrecursorCheck(model, true)
+%    [missingMets, presentMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, [], true)
 %
 % INPUT:
 %    model:             COBRA model structure
@@ -10,28 +14,43 @@ function [missingMets, presentMets,coupledMets, missingCofs, presentCofs] = biom
 %    checkCoupling:     Test, whether some compounds can only be produced
 %                       if there is a sink for other biomass precursors
 %                       (Default: false)
+%    checkConservedQuantities:  true to check whether the cofactor pairs containing conserved moieties 
+%                               (defined by the network structure) can be synthesized 
+%                               (e.g., ATP, NAD, NADPH, ACCOA, AA-charged tRNA, fatty acyl-ACP). 
+%                               They will otherwise be identified as missingMets (Default: false)       
 %
 % OUTPUTS:
 %    missingMets:    List of biomass precursors that are not able to be synthesized
 %    presentMets:    List of biomass precursors that are able to be synthesized
 %    coupledMets:    List of metabolites which need an exchange reaction for at least one other
-%                    biomass component because their production is coupled to it.
+%                    biomass component because their production is coupled to it
+%                    (returned only if checkCoupling = true)
 %    missingCofs:    List of cofactor pairs (defined by the network conserved moieties) 
 %                    that are not able to be synthesized
+%                    (returned only if checkConservedQuantities = true)
 %    presentCofs:    List of cofactor pairs that are able to be synthesized
+%                    (returned only if checkConservedQuantities = true)
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
 %
 % NOTE:
 %    May identify metabolites that are typically recycled within the network 
-%    such as ATP, NAD, NADPH, ACCOA. Turn on checkCoupling to check them.
+%    such as ATP, NAD, NADPH, ACCOA. Turn on checkConservedQuantities to check them.
 
-if ~exist('checkCoupling','var')
+if ~exist('checkCoupling','var') || isempty(checkCoupling)
     checkCoupling = 0;
 end
+if ~exist('checkConservedQuantities', 'var') || isempty(checkConservedQuantities)
+    checkConservedQuantities = 0;
+end
 
-if ~checkCoupling && nargout >= 3
-    error('coupledMets, missingCofs and presentCofs are not being calculated if checkCoupling is not set to true!');
+if ~checkCoupling && checkConservedQuantities && nargout > 4
+    error('coupledMets are not being calculated if checkCoupling is not set to true!');
+elseif checkCoupling && ~checkConservedQuantities && nargout > 3
+    error('missingCofs and presentCofs are not being calculated if checkConservedQuantities is not set to true!');
+elseif ~checkCoupling && ~checkConservedQuantities && nargout > 2
+    error('coupledMets are not being calculated if checkCoupling is not set to true!\n%s', ...
+        'missingCofs and presentCofs are not being calculated if checkConservedQuantities is not set to true!');
 end
 
 % Find column in s-matrix that corresponds to biomass equation
@@ -87,7 +106,7 @@ end
 missingMets = columnVector(missingMets);
 presentMets = columnVector(presentMets);
 
-if checkCoupling && ~isempty(missingMets)
+if checkConservedQuantities && ~isempty(missingMets)
     % Detect cofactor pairs in the biomass reaction. They contain conserved moieties.
     EMV = findElementaryMoietyVectors(model);
     % Biomass metabolites that contain conserved moieties
@@ -158,4 +177,12 @@ if checkCoupling && ~isempty(missingMets)
     metCofs = [cofactorPair{:}];
     % Exclude those metabolites in cofactor pairs from missingMets
     missingMets = missingMets(~ismember(missingMets, metCofs(:)));
+end
+
+varargout = {missingMets; presentMets};
+if checkCoupling
+    varargout{end + 1} = coupledMets;
+end
+if checkConservedQuantities
+    varargout(end + 1 : end + 2) = {missingCofs; presentCofs};
 end
