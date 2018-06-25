@@ -1,8 +1,8 @@
-function annotations = getMIRIAMAnnotations(model, type, bioQualifiers)
+function annotations = getMIRIAMAnnotations(model, type, varargin)
 % Get the MIRIAM Annotations a struct array of annotation structs for the given type
 %
 % USAGE:
-%    annotations = getMIRIAMAnnotations(model,field)
+%    annotations = getMIRIAMAnnotations(model,field,...)
 %
 % INPUTS:
 %    model:             The COBRA  model structure. 
@@ -10,9 +10,9 @@ function annotations = getMIRIAMAnnotations(model, type, bioQualifiers)
 %                       model
 %
 % OPTIONAL INPUT:
-%    bioQualifiers:     A Cell array of BioQualifiers to look for
-%                       if not provided, or empty, all bioQualifiers
-%                       defined in `getBioQualifiers()` will be used
+%    varagin:           Additional arguments as parameter/value pairs.
+%                        * bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in `getBioQualifiers()` will be used
+%                        * ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type 's'])). 
 %
 % OUTPUT:
 %    annotations:       A struct array with the following structure:
@@ -24,11 +24,23 @@ function annotations = getMIRIAMAnnotations(model, type, bioQualifiers)
 %                        * .annotation.cvterms.ressources.database -> the database for this ressource.
 %                        * .annotation.cvterms.ressources.id-> The ID in the database for this ressource.
 
-if ~exist('bioQualifiers','var') || isempty(bioQualifiers)
-    [bioQualifiers,standardQualifiers] = getBioQualifiers();
+
+[defaultBioQualifiers,standardQualifiers] = getBioQualifiers();
+if ~strcmpi(type,'model')
+    defaultIDs = model.([lower(type) 's']);
 else
-    [~,standardQualifiers] = getBioQualifiers();
+    defaultIDs = {'model'};
 end
+
+parser = inputParser();
+
+parser.addParameter('bioQualifiers',defaultBioQualifiers,@(x) ischar(x) || iscell(x))
+parser.addParameter('ids',defaultIDs,@(x) ischar(x) || iscell(x));
+
+parser.parse(varargin{:});
+
+bioQualifiers = parser.Results.bioQualifiers;
+ids = parser.Results.ids;
 
 %We have to handle some things special for model annotations (e.g. they can
 %have model qualifiers)
@@ -36,13 +48,13 @@ if strcmp(type,'model')
     numElements = 1;
     annotations = cell(1);
     modelAnnot = true;
-    bioQualifiers = [strcat('m',bioQualifiers),strcat('b',bioQualifiers)];
+    bioQualifiers = [strcat('m',bioQualifiers),strcat('b',bioQualifiers)];    
     ids = {'model'};
 else
-    numElements = length(model.([type 's']));
+    numElements = length(ids);
     modelAnnot = false;
     modelQualString = '';
-    ids = model.([type 's']);
+    relPos = ismember(model.([type 's']),ids);
 end
 
 modelFields = fieldnames(model);
@@ -71,7 +83,11 @@ for i = 1:size(databaseFields,1)
     cField = databaseFields{i,3};
     cSource = databaseFields(i,1);
     cQual = databaseFields(i,2);
-    cValues = model.(cField);
+    if modelAnnot
+        cValues = {model.(cField)};    
+    else
+        cValues = model.(cField)(relPos);
+    end
     cQualType = databaseFields(i,6);
     resultArray(:,arrayDim2Pos,:) = [repmat(cQualType,numElements,1),repmat(cQual,numElements,1),repmat(cSource,numElements,1),cValues];
     arrayDim2Pos = arrayDim2Pos + 1;
@@ -79,7 +95,11 @@ end
 
 for i = 1:numel(annotationsFields)
     cField = annotationsFields{i};
-    cValues = model.(annotationsFields{i});
+    if modelAnnot
+        cValues = {model.(annotationsFields{i})};    
+    else
+        cValues = model.(annotationsFields{i})(relPos);
+    end
     %get the correct qualifier for this field.
     for i = 1:numel(bioQualifiers)
         cQual = bioQualifiers{i};
@@ -101,7 +121,11 @@ for i = 1:numel(annotationsFields)
 end
 
 %Now, build a struct out of this cell array.
-annotations = struct('id','rxn1','cvterms',struct('qualifier','','qualifierType','','ressources',struct('database','','id','')));
+ressourceStruct = struct('database','','id','');
+ressourceStruct(1) = []; %Clear the empty element.
+cvtermStruct = struct(struct('qualifier','','qualifierType','','ressources',ressourceStruct));
+cvtermStruct(1) = [];
+annotations = struct('id','rxn1','cvterms',cvtermStruct);
 annotations(numElements).id = '';
 
 % As a reminder, this is the structure of the array:
@@ -112,7 +136,7 @@ annotations(numElements).id = '';
 for i = 1:numElements
     cvtermsIndex = 1;
     annotations(i).id = ids{i};
-    cvtermsStruct = struct('qualifier','','qualifierType','','ressources',struct('database','','id',''));
+    currentCVtermsStruct = cvtermStruct;    
     %Take all qualifierTypes which have non empty entries for this element
     relArray = resultArray(i,:,:);
     currentQualifiers = unique(resultArray(i,:,2));
@@ -126,7 +150,7 @@ for i = 1:numElements
         for k = 1:numel(qualifierTypes)
             %QAnd qualifier typee
             cQualifierType = qualifierTypes{k};            
-            cStruct = struct('qualifier',cQualifier,'qualifierType',cQualifierType,'ressources',struct('database','','id',''));
+            cStruct = struct('qualifier',cQualifier,'qualifierType',cQualifierType,'ressources',ressourceStruct);
             cDBArray = {};
             cIDArray = {};
             relIndices = strcmp(resultArray(i,:,1),cQualifierType) & qualIndex;
@@ -143,15 +167,15 @@ for i = 1:numElements
             end
             if ~isempty(cIDArray)
                 %if we have at least one ID
-                ressourceStruct = struct('database','','id','');
-                ressourceStruct(numel(cIDArray)).id = '';
-                [ressourceStruct(:).id] = deal(cIDArray{:});
-                [ressourceStruct(:).database] = deal(cDBArray{:});
-                cStruct.ressources = ressourceStruct();           
-                cvtermsStruct(cvtermsIndex) = cStruct;
+                cRessourcestruct = ressourceStruct;
+                cRessourceStruct(numel(cIDArray)).id = '';
+                [cRessourceStruct(:).id] = deal(cIDArray{:});
+                [cRessourceStruct(:).database] = deal(cDBArray{:});
+                cStruct.ressources = cRessourceStruct();           
+                currentCVtermsStruct(cvtermsIndex) = cStruct;
                 cvtermsIndex = cvtermsIndex + 1;                           
             end
-            annotations(i).cvterms = cvtermsStruct; %Either empty or with data.
+            annotations(i).cvterms = currentCVtermsStruct; %Either empty or with data.
         end        
     end
 end

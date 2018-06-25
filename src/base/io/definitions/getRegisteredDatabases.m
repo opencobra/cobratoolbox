@@ -16,8 +16,8 @@ function identifiersDBs = getRegisteredDatabases()
 persistent databases
 
 if isempty(databases)
-    %Load from external site    
-        dbs = webread('http://identifiers.org/rest/collections');    
+    %Load from external site        
+    dbs = webread('http://identifiers.org/rest/collections');        
     % extract relevant information
     dbnames = cellfun(@(x) x.name, dbs,'Uniform',0);
     dbpatterns = cellfun(@(x) x.pattern, dbs,'Uniform',0);

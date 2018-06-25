@@ -6,11 +6,11 @@ function [fieldNames,dbIDs,relations] = getAnnotationFieldName(annotatedField,da
 %    fieldName = getAnnotationFieldName(annotatedField,database,annotationQualifier)
 %
 % INPUTS:
-%    annotationFields:           The base field that is being annotated
-%                                (e.g. 'rxns', 'model', 'comps', ...)
-%    databases:                  The database names of the annotation. (e.g.
+%    annotationField:            The base field that is being annotated
+%                                (e.g. 'rxn', 'model', 'comp', ...)
+%    database:                   The database names of the annotation. (e.g.
 %                                kegg)
-%    annotationQualifiers:       The annotation qualifier (see
+%    annotationQualifier:        The annotation qualifier (see
 %                                http://co.mbine.org/standards/qualifiers for possible qualifiers)
 %
 % OPTIONAL INPUTS:
@@ -34,6 +34,15 @@ end
 if ~exist('invertSelection','var')
     invertSelection = false;
 end
+
+if ischar(database)
+    database = {database};
+end
+
+if ischar(annotationQualifier)
+    annotationQualifier = {annotationQualifier};
+end
+
 
 knownMappings = getDatabaseMappings(annotatedField);
 
