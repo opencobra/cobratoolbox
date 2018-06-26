@@ -144,9 +144,6 @@ model.osense = -1;
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
 assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 
-% load the testData based on sampling of the iJO1366 model (issue 1188)
-load('testDataSolveCobraLP.mat')
-
 % only test the solvers for which the optimality conditions have been implemented
 solverPkgs = {'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
 
@@ -157,7 +154,7 @@ for k = 1:length(solverPkgs)
     if solverOK
         fprintf('   Running optimalityConditions tests in solveCobraLP using %s ... ', solverPkgs{k});
 
-        assert(~verifyCobraFunctionError('solveCobraLP', 'inputs', {LP}));
+        assert(~verifyCobraFunctionError('solveCobraLP', 'inputs', {model}));
         fprintf(' Done.\n');
     end
 end
