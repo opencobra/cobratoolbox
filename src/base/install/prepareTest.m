@@ -23,6 +23,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
 %                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
+%                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '') 
 %
 % OUTPUTS:
 %
@@ -96,6 +97,7 @@ parser.addParamValue('needsUnix', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
+parser.addParamValue('needsWebAddress', '', @ischar);
 
 parser.parse(varargin{:});
 
@@ -115,6 +117,7 @@ requiredSolvers = parser.Results.requiredSolvers;
 possibleSolvers = parser.Results.requireOneSolverOf;
 excludedSolvers = parser.Results.excludeSolvers;
 preferredSolvers = parser.Results.useSolversIfAvailable;
+needsWebAddress = parser.Results.needsWebAddress;
 
 runtype = getenv('CI_RUNTYPE');
 
@@ -141,6 +144,14 @@ if linuxOnly
         if ~strcmp(computer('arch'), 'glnx64')
             errorMessage{end + 1} = 'This test only works on Linux Systems';
         end
+    end
+end
+
+if ~isempty(needsWebAddress)
+    try
+        webread(needsWebAddress);
+    catch 
+        errorMessage{end + 1} = sprintf('This tests needs to connect to %s and was unable to do so.',needsWebAddress);
     end
 end
 
