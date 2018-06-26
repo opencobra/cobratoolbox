@@ -76,7 +76,7 @@ end
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
 if isempty(solver)
-    initCobraToolbox(0); %Don't update the toolbox automatically
+    initCobraToolbox(false); %Don't update the toolbox automatically
 end
 
 % Start the gene deletion analysis.

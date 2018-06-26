@@ -25,7 +25,7 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
     % run initCobraToolbox when not yet initialised
     if isempty(SOLVERS)
         ENV_VARS.printLevel = false;
-        initCobraToolbox(0); %Don't update the toolbox automatically
+        initCobraToolbox(false); %Don't update the toolbox automatically
         ENV_VARS.printLevel = true;
     end
 
