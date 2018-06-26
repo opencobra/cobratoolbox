@@ -71,30 +71,26 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
     end
 
 
-    display('Processing inputs and ranking reactions...')
+    disp('Processing inputs and ranking reactions...')
 
     [coreRxn, nonCoreRxn, rankNonCore, zeroExpRxns] = rankReactions(model, ubiquityScore, confidenceScores, protectedRxns);
 
     % Precursor are defined as the metabolites involved in the
     % reactions defined in protected reactions
     if checkFunctionality == 1 && ~isempty(protectedRxns)
-    	precursorMets={};
-    	for i=1:numel(protectedRxns)
-        	colS_obj = findRxnIDs(model,protectedRxns{i});
-            precursorMets = [precursorMets; model.mets(model.S(:,colS_obj)<0)];
-        end
-
+        precursorMets = model.mets(any(model.S(:, findRxnIDs(model, protectedRxns)) < 0, 2));
+        
         genericStatus = checkModelFunction(model, precursorMets);
-
+        
     else
     	precursorMets={};
     	genericStatus=1;
     end
 
     if genericStatus
-    	display('Generic model passed precursor metabolites test');
+    	disp('Generic model passed precursor metabolites test');
 
-        display('Pruning reactions...')
+        disp('Pruning reactions...')
         t0 = clock;
 
         [tissueModel, cRes] = pruningModel(model, rankNonCore, coreRxn, zeroExpRxns, precursorMets, eta, tol);
