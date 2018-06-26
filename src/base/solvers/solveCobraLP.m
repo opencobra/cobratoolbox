@@ -18,6 +18,17 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                       each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
+%    varargin:      Additional parameters either as parameter struct, or as
+%                   parameter/value pairs. A combination is possible, if
+%                   the parameter struct is either at the beginning or the
+%                   end of the optional input. 
+%                   All fields of the struct which are not COBRA parameters
+%                   (see `getCobraSolverParamsOptionsForType`) for this
+%                   problem type will be passed on to the solver in a
+%                   solver specific manner. Some optional parameters which
+%                   can be passed to the function as parameter value pairs,
+%                   or as part of the options struct are listed below:
+%                   
 %    printLevel:    Printing level
 %
 %                     * 0 - Silent (Default)

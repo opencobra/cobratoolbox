@@ -47,8 +47,14 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 % `getCobraSolverParameters`.
 %
 % OPTIONAL INPUTS:
-%    parameters:      Structure containing optional parameters.
-%
+%    varargin:      Additional parameters either as parameter struct, or as
+%                   parameter/value pairs. A combination is possible, if
+%                   the parameter struct is either at the beginning or the
+%                   end of the optional input. 
+%                   All fields of the struct which are not COBRA parameters
+%                   (see `getCobraSolverParamsOptionsForType`) for this
+%                   problem type will be passed on to the solver in a
+%                   solver specific manner. 
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a NLP solution:
 %
