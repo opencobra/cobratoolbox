@@ -36,7 +36,7 @@ testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 
 % get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'testSolveCobra*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
