@@ -221,7 +221,7 @@ end
 
 % Check solver compatibility with minNorm option
 if max(minNorm) ~= 0 && ~any(strcmp(solver, {'cplex_direct', 'cplex'}))
-  error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
+    error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
 end
 
 % Save Input if selected
@@ -1128,11 +1128,11 @@ switch solver
         else
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
         end
-        
+
         if optTol < 1e-8
             optTol = optTol * 100; %make sure, that we are within the range of allowed values.
         end
-        
+
         linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,optTol*0.01,constTolParam,feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
@@ -1340,12 +1340,13 @@ switch solver
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
                 y = ILOGcplex.Solution.dual;
+                s = b - A*x;
             elseif origStat == 4
                 %This is likely unbounded, but could be infeasible
                 %Lets check, by solving an additional LP with no objective.
                 %If that LP has a solution, its unbounded. If it doesn't
                 %its infeasible.
-                Solution = ILOGcplex.Solution;                
+                Solution = ILOGcplex.Solution;
                 ILOGcplex.Model.obj(:) = 0;
                 ILOGcplex.solve();
                 origStatNew   = ILOGcplex.Solution.status;
@@ -1364,6 +1365,7 @@ switch solver
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
                 y = ILOGcplex.Solution.dual;
+                s = b - A*x;
             elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
                 %Abort due to reached limit. check if there is a solution
                 %and return it.
@@ -1588,18 +1590,18 @@ end
 if ~strcmp(solver, 'mps') && ~strcmp(solver, 'matlab')
     if solution.stat==1 % TODO check for matlab
         %TODO slacks for other solvers
-        if any(strcmp(solver,{'gurobi','mosek'}))
+        if any(strcmp(solver,{'gurobi', 'mosek', 'ibm_cplex'}))
             res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
             res1(~isfinite(res1))=0;
             tmp1=norm(res1,inf);
-            if tmp1 > feasTol*1000
+            if tmp1 > feasTol*1e4
                 disp(solution.origStat)
                 error(['Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(feasTol)])
             end
 
             res2=osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
             tmp2=norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')),inf);
-            if tmp2 > feasTol*100
+            if tmp2 > feasTol*1e2
                 disp(solution.origStat)
                 error(['Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(feasTol)])
             end
