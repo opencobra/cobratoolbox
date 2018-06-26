@@ -15,7 +15,7 @@ global SOLVERS
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
-    initCobraToolbox;
+    initCobraToolbox(0); %Don't update the toolbox automatically;
     ENV_VARS.printLevel = true;
 end
 
