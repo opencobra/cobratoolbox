@@ -988,6 +988,7 @@ switch solver
             f = f*osense;
             y = osense*lambda.eqlin;
             w = osense*(lambda.upper-lambda.lower);
+            s = LPproblem.b - LPproblem.A*x;
         elseif (origStat < 0)
             stat = 0; % Infeasible
         else
@@ -1305,6 +1306,7 @@ switch solver
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f = c'*x;
+        s = b - A*x;
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -1346,29 +1348,45 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     %% Assign solution
     t = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
-    [solution.full,solution.obj,solution.rcost,solution.dual,solution.slack,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
-        deal(x,f,w,y,s,solver,algorithm,stat,origStat,t,basis);
+    [solution.full, solution.obj, solution.rcost, solution.dual, solution.slack, ...
+     solution.solver, solution.algorithm, solution.stat, solution.origStat, ...
+     solution.time,solution.basis] = deal(x,f,w,y,s,solver,algorithm,stat,origStat,t,basis);
 elseif strcmp(solver,'mps')
     solution = [];
 end
 
-if ~strcmp(solver, 'mps') && ~strcmp(solver, 'matlab')
-    if solution.stat==1 % TODO check for matlab
-        %TODO slacks for other solvers
-        if any(strcmp(solver,{'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
-            res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
-            res1(~isfinite(res1))=0;
-            tmp1=norm(res1,inf);
-            if tmp1 > cobraParams.feasTol*1e4
-                disp(solution.origStat)
-                error(['Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraParams.feasTol)])
+if ~strcmp(solver, 'mps')
+    if solution.stat == 1
+        if any(strcmp(solver,{'pdco', 'matlab', 'glpk', 'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
+            if ~isempty(solution.slack) && ~isempty(solution.full)
+                res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
+                res1(~isfinite(res1))=0;
+                tmp1=norm(res1,inf);
+                if tmp1 > cobraParams.feasTol*1e4
+                    disp(solution.origStat)
+                    error(['[' solver '] Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraParams.feasTol)])
+                else
+                    if printLevel > 0
+                        fprintf(['\n > [' solver '] Optimality condition (1) in solveCobraLP satisfied.']);
+                    end
+                end
             end
 
-            res2=osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
-            tmp2=norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')),inf);
-            if tmp2 > cobraParams.feasTol*1e2
-                disp(solution.origStat)
-                error(['Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraParams.feasTol)])
+            if ~isempty(solution.rcost) && ~isempty(solution.dual)
+                res2=osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
+                tmp2=norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')),inf);
+                if tmp2 > cobraParams.feasTol*1e2
+                    disp(solution.origStat)
+                    error(['[' solver '] Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraParams.feasTol)])
+                else
+                    if printLevel > 0
+                        fprintf(['\n > [' solver '] Optimality condition (2) in solveCobraLP satisfied.\n']);
+                    end
+                end
+            end
+        else
+            if printLevel > 0
+                warning(['\nThe return of slack variables is not implemented for ' solver '.\n']);
             end
         end
     end
@@ -1378,8 +1396,6 @@ function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)
 % setup the constraint coeffiecient matrix and rhs vector for OPTI solvers
 % this can be done here for lower level calls or disregarded when solver is
 % called using an OPTI object as argument
-
-
 
 % set constraint type
 e = zeros(size(A,1),1);
