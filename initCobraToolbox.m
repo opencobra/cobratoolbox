@@ -1,4 +1,4 @@
-function initCobraToolbox()
+function initCobraToolbox(updateToolbox)
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
 %     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
@@ -41,7 +41,10 @@ function initCobraToolbox()
     global ENV_VARS;
     global gitBashVersion;
     global CBT_MISSING_REQUIREMENTS_ERROR_ID;
-
+        
+    if ~exist('updateToolbox','var')
+        updateToolbox = true;
+    end
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
 
@@ -533,8 +536,12 @@ function initCobraToolbox()
     changeCobraSolver('gurobi', 'ALL', 0);
 
     % check if a new update exists
-    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
+    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200')) && updateToolbox
         updateCobraToolbox(true); % only check
+    else
+        if ~updateToolbox && ENV_VARS.printLevel
+            fprintf('> Checking for available updates ... skipped\n')
+        end
     end
 
     % restore global configuration by unsetting http.sslVerify
