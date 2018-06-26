@@ -1,4 +1,4 @@
-function [model] = generateRules(model)
+function [model] = generateRules(model, printLevel)
 % If a model does not have a model.rules field but has a model.grRules
 % field, can be regenerated using this script
 %
@@ -7,7 +7,9 @@ function [model] = generateRules(model)
 %    [model] = generateRules(model)
 %
 % INPUT:
-%    model:     COBRA model with model.grRules
+%    model:        COBRA model with model.grRules
+%    printLevel:   optional variable to print out all new genes 
+%                  (default = TRUE), can be zero if not needed
 %
 % OUTPUT:
 %    model:     same model but with model.rules added
@@ -17,13 +19,22 @@ function [model] = generateRules(model)
 %            - Diana El Assal 30/8/2017
 %            - Laurent Heirendt December 2017, speedup
 
+    if ~exist('printLevel', 'var')
+        printLevel = 1;
+    end
     [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
     allGenes =  unique([genes{~cellfun(@isempty,genes)}]); %Get the unique gene list
-    newGenes = setdiff(allGenes,model.genes);
+    if (~isfield(model, 'genes'))
+        newGenes = allGenes;
+    else
+        newGenes = setdiff(allGenes,model.genes);
+    end
     if ~isempty(newGenes)
-        warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
-        model.genes = addGenes(model,newGenes);
-    end        
+        if printLevel
+            warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+        end
+        model = addGenes(model,newGenes);
+    end
     
     % determine the number of rules
     nRules = length(model.grRules);

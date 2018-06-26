@@ -27,7 +27,7 @@ function newmodel = addGenes(model,geneIDs,varargin)
 %    
 
 
-if (isfield(model,'genes') && any(ismember(model.genes,geneIDs))) || numel(unique(geneIDs)) < numel(geneIDs)
+if (isfield(model,'genes') && ~isempty(model.genes) && any(ismember(model.genes,geneIDs))) || numel(unique(geneIDs)) < numel(geneIDs)
     error('Duplicate Reaction ID detected.');
 end
 
