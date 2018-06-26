@@ -582,6 +582,7 @@ switch solver
         [x, f, y, w, stat, origStat] = solveGlpk(c, A, b, lb, ub, csense, osense, param);
         y = -y;
         w = -w;
+        s = b - A*x;
 
     case {'lindo_new', 'lindo_old'}
         %% LINDO
@@ -1045,7 +1046,11 @@ switch solver
         switch resultgurobi.status
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
-                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc,resultgurobi.slack);
+                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc);
+
+                % save the slack variables
+                s = b - A*x;
+
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
@@ -1213,7 +1218,7 @@ switch solver
         % Assign results
         x = Result.x_k;
         f = osense*sum(tomlabProblem.QP.c.*Result.x_k);
-        %        [Result.f_k f]
+        s = b - A*x;
 
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
@@ -1543,7 +1548,7 @@ switch solver
 
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
-        f= c'*x;
+        f = c'*x;
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -1590,7 +1595,7 @@ end
 if ~strcmp(solver, 'mps') && ~strcmp(solver, 'matlab')
     if solution.stat==1 % TODO check for matlab
         %TODO slacks for other solvers
-        if any(strcmp(solver,{'gurobi', 'mosek', 'ibm_cplex'}))
+        if any(strcmp(solver,{'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
             res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
             res1(~isfinite(res1))=0;
             tmp1=norm(res1,inf);
