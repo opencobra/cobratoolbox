@@ -338,6 +338,7 @@ minFluxTmp = {};
 % Launch fastFVA on 1 core
 if nworkers <= 1
 
+    % define the end of the index vector
     iend(1) = n;
 
     if length(rxnsList) > 0
@@ -346,7 +347,7 @@ if nworkers <= 1
         rxnsKey = (1:n);
     end
 
-    % Sequential version
+    % sequential version
     if printLevel > 0
         fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
     end
@@ -370,7 +371,7 @@ if nworkers <= 1
         end
     end
 
-
+    % output the results
     minFluxTmp{1} = minFlux;
     maxFluxTmp{1} = maxFlux;
 
@@ -604,7 +605,7 @@ else
         end
     end
 
-    % Aggregate results
+    % aggregate results
     optsol = iopt(1);
     ret = max(iret);
     out = parfor_progress(0, filenameParfor);
