@@ -285,18 +285,18 @@ end
 % output how many reactions are min, max, or both
 totalOptMode = length(find(rxnsOptMode == 0));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reactions out of %d are minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 end
 
 totalOptMode = length(find(rxnsOptMode == 1));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
@@ -307,11 +307,11 @@ end
 
 totalOptMode = length(find(rxnsOptMode == 2));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 end
@@ -319,7 +319,7 @@ end
 % count the number of workers
 poolobj = gcp('nocreate');  % If no pool, do not create new one.
 if isempty(poolobj)
-    nworkers = 0;
+    nworkers = 1;
 else
     nworkers = poolobj.NumWorkers;
 end
@@ -330,8 +330,15 @@ rootDirFastFVA = [CBTDIR filesep 'src' filesep 'analysis' filesep 'FVA' filesep 
 % define the directory to the logFiles and results directories
 logFileDir = [rootDirFastFVA filesep 'logFiles'];
 
+% initialisations
+istart(1) = 1;
+maxFluxTmp = {};
+minFluxTmp = {};
+
 % Launch fastFVA on 1 core
 if nworkers <= 1
+
+    iend(1) = n;
 
     if length(rxnsList) > 0
         rxnsKey = find(ismember(model.rxns, rxnsList));
@@ -340,7 +347,7 @@ if nworkers <= 1
     end
 
     % Sequential version
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
     end
     if bExtraOutputs1
@@ -358,9 +365,24 @@ if nworkers <= 1
     end
 
     if ret ~= 0 && printLevel > 0
-        if printLevel > 0        
+        if printLevel > 0
             fprintf('Unable to complete the FVA, return code=%d\n', ret);
         end
+    end
+
+
+    minFluxTmp{1} = minFlux;
+    maxFluxTmp{1} = maxFlux;
+
+    if bExtraOutputs || bExtraOutputs1
+        fvaminRes{1} = fvamin;
+        fvamaxRes{1} = fvamax;
+        fbasolRes{1} = fbasol;
+    end
+
+    if bExtraOutputs1
+        statussolminRes{1} = statussolmin;
+        statussolmaxRes{1} = statussolmax;
     end
 else
     % Divide the reactions amongst workers
@@ -372,7 +394,7 @@ else
     if n > 5000 & loadBalancing == 1
         % A primitive load-balancing strategy for large problems
         nworkers = 4 * nworkers;
-        if printLevel > 0    
+        if printLevel > 0
             fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
         end
     end
@@ -386,7 +408,7 @@ else
 
     [Nmets, Nrxns] = size(A);
     assert(sum(nrxn) == n);
-    istart = 1; iend = nrxn(1);
+    iend(1) = nrxn(1);
     for i = 2:nworkers
         istart(i) = iend(i - 1) + 1;
         iend(i) = istart(i) + nrxn(i) - 1;
@@ -465,9 +487,6 @@ else
     iopt = zeros(nworkers, 1);
     iret = zeros(nworkers, 1);
 
-    maxFluxTmp = {};
-    minFluxTmp = {};
-
     % initialilze extra outputs
     if bExtraOutputs || bExtraOutputs1
         fvaminRes = {};
@@ -479,12 +498,12 @@ else
         statussolminRes = {};
         statussolmaxRes = {};
     end
-    
+
     if printLevel > 0
         fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
         fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
     end
-    
+
     out = parfor_progress(nworkers, filenameParfor);
 
     parfor i = 1:nworkers
@@ -503,7 +522,7 @@ else
             fprintf('\n----------------------------------------------------------------------------------\n');
         end
         if strategy == 0
-            if printLevel > 0    
+            if printLevel > 0
                 fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
                     t.ID, nworkers, i, istart(i), iend(i), m, n);
             end
@@ -547,7 +566,7 @@ else
         if printLevel > 0
             fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
         end
-        
+
         if iret(i) ~= 0 && printLevel > 0
             if printLevel > 0
                 fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
@@ -570,7 +589,7 @@ else
         if printLevel > 0
             fprintf('\n----------------------------------------------------------------------------------\n');
         end
-        
+
         % print out the percentage of the progress
         percout = parfor_progress(-1, filenameParfor);
 
@@ -579,7 +598,7 @@ else
                 fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
             end
         else
-            if printLevel > 0    
+            if printLevel > 0
                 fprintf(' ==> 100%% done. Analysis completed.\n', percout);
             end
         end
