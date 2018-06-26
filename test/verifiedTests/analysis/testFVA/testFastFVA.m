@@ -39,15 +39,15 @@ if changeCobraSolver(solverName, 'LP', 0)
     if isempty(strfind(ILOG_CPLEX_PATH, '1271')) || isempty(strfind(ILOG_CPLEX_PATH, '128'))
         generateMexFastFVA;
     end
-keyboard
+
     [minFluxSerial, maxFluxSerial, optsolSerial, retSerial, fbasolSerial, ...
-    fvaminSerial, fvamaxSerial, statussolminSerial, statussolmaxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
+        fvaminSerial, fvamaxSerial, statussolminSerial, statussolmaxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
     % Start a parpool environment in MATLAB
     setWorkerCount(nworkers);
 
     [minFluxParallel, maxFluxParallel, optsolParallel, retParallel, fbasolParallel, ...
-    ~, ~, statussolminParallel, statussolmaxParallel] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
+        ~, ~, statussolminParallel, statussolmaxParallel] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
     assert(norm(minFluxSerial - minFluxParallel) < tol);
     assert(norm(maxFluxSerial - maxFluxParallel) < tol);
