@@ -19,7 +19,7 @@ function [model] = generateRules(model, printLevel)
 %            - Diana El Assal 30/8/2017
 %            - Laurent Heirendt December 2017, speedup
 
-    if (nargin < 2)
+    if ~exist('printLevel', 'var')
         printLevel = 1;
     end
     [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
