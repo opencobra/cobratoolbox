@@ -57,6 +57,19 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %    model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C', ...
 %                        'subSystem', 'Glycolysis', 'geneRule', 'Gene1 or Gene2');
 %
+% 
+% NOTE:
+%    Using `addReaction` to add several reactions iteratively is a very
+%    inefficient procedure, as it extends all reaction related fields one
+%    at a time, leading to a large memory reallocation overhead. There are
+%    also many checks performed which allow for a more flexible use of the
+%    function, but which simultaneously lead to a slower computation time.
+%    This function is mainly intended to be used when adding individual reactions during
+%    analysis. When adding multiple reactions, in particular when coding
+%    for a more compex methodology, please use the `addMultipleReactions`
+%    function which only performs very basic checks, but is much more
+%    efficient.
+%
 % .. Authors:
 %       - Markus Herrgard 1/12/07
 %       - Richard Que 11/13/2008 Modified the check to see if duplicate reaction already is in model by using S matrix coefficients to be able to handle larger matricies
