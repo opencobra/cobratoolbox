@@ -22,7 +22,7 @@ global ENV_VARS
 
 if isempty(CBTDIR)
     ENV_VARS.printLevel = false;
-    initCobraToolbox;
+    initCobraToolbox(false); %Don't update the toolbox automatically
     ENV_VARS.printLevel = true;
 end
 
