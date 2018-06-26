@@ -145,7 +145,7 @@ model.osense = -1;
 assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 
 % only test the solvers for which the optimality conditions have been implemented
-solverPkgs = {'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
+solverPkgs = {'pdco', 'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
 
 % change the COBRA solver (LP)
 for k = 1:length(solverPkgs)
