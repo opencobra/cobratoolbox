@@ -16,7 +16,7 @@ function FileString = generateFieldDescriptionFile(FileName)
 global CBTDIR
 if ~exist('FileName','var')
     if isempty(CBTDIR)
-        initCobraToolbox
+        initCobraToolbox(0); %Don't update the toolbox automatically
     end
     FileName = [CBTDIR filesep 'docs' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'];
 end
