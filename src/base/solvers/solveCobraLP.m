@@ -119,7 +119,8 @@ global CBTDIR % Process arguments etc
 global MINOS_PATH
 
 % get the solver parameters
-[cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
+[cobraParams, solverParams] = parseSolverParameters('LP',varargin{:});
+
 % set the solver
 solver = cobraParams.solver;
 
@@ -134,14 +135,14 @@ if ~isempty(cobraParams.saveInput)
     if ~find(regexp(fileName, '.mat'))
         fileName = [fileName '.mat'];
     end
-    display(['Saving LPproblem in ' fileName]);
+    disp(['Saving LPproblem in ' fileName]);
     save(fileName, 'LPproblem')
 end
 
-% support for lifting of ill scaled models
+% support for lifting of ill-scaled models
 if cobraParams.lifting == 1
-    BIG = 1e4;  % suitable for double precision solvers
-    [LPproblem] = reformulate(LPproblem, BIG, printLevel);
+    largeNb = 1e4;  % suitable for double precision solvers
+    [LPproblem] = reformulate(LPproblem, largeNb, printLevel);
 end
 
 % Assume constraint matrix is S if no A provided.
@@ -633,8 +634,6 @@ switch solver
                 end
             end
 
-
-
             %debugging
             %{
             if printLevel>2
@@ -846,10 +845,10 @@ switch solver
             LPproblem.vbasis = full(LPproblem.basis.vbasis);
             LPproblem=rmfield(LPproblem,'basis');
         end
-        %Set the solver Specific Parameters
+        % set the solver specific parameters
         param = updateStructData(param,solverParams);
 
-        %Update Tolerance According to actual setting
+        % update tolerance according to actual setting
         cobraParams.feasTol = param.FeasibilityTol;
 
 
