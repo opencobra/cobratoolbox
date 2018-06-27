@@ -23,8 +23,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testSolveCobraLP'));
 cd(fileDir);
 
-% Dummy Model
-% http://www2.isye.gatech.edu/~spyros/LP/node2.html
+% define a dummy model: http://www2.isye.gatech.edu/~spyros/LP/node2.html
 LPproblem.c = [200; 400];
 LPproblem.A = [1 / 40, 1 / 60; 1 / 50, 1 / 50];
 LPproblem.b = [1; 1];
@@ -63,8 +62,7 @@ for k = 1:length(solverPkgs)
 
         elseif p == 2
             % solve th ecoli_core_model (csense vector is missing)
-            %This is explicitly a load, to test missing csense
-            %vector compensation
+            % Note: this is explicitly a load, to test missing csense vector compensation
             load([getDistributedModelFolder('ecoli_core_model.mat') filesep 'ecoli_core_model.mat'], 'model');
 
             % solveCobraLP
@@ -154,7 +152,7 @@ for k = 1:length(solverPkgs)
     if solverOK
         fprintf('   Running optimalityConditions tests in solveCobraLP using %s ... ', solverPkgs{k});
 
-        assert(~verifyCobraFunctionError('solveCobraLP', 'inputs', {model}));
+        assert(~verifyCobraFunctionError('solveCobraLP', 'inputs', {LPproblem}));
         fprintf(' Done.\n');
     end
 end
