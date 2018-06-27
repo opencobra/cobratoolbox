@@ -43,11 +43,6 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                   are ILOG cplex and Tomlab parameter syntax. see example
 %                   for details.
 %
-% Optional parameters can also be set through the
-% solver can be set through `changeCobraSolver('LP', value)`;
-% `changeCobraSolverParams('LP', 'parameter', value)` function. This
-% includes the minNorm and the `printLevel` flags.
-%
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a LP solution:
 %                     * .full:         Full LP solution vector
@@ -68,6 +63,12 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .time:         Solve time in seconds
 %                     * .basis:        (optional) LP basis corresponding to solution
 %
+% NOTE:
+%           Optional parameters can also be set through the
+%           solver can be set through `changeCobraSolver('LP', value)`;
+%           `changeCobraSolverParams('LP', 'parameter', value)` function. This
+%           includes the minNorm and the `printLevel` flags.
+%
 % EXAMPLE:
 %
 %    %Optional parameters can be entered in three different ways {A,B,C}
@@ -77,7 +78,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1, 'feasTol', 1e-8);
 %
 %    %B) parameters structure with field names specific to a particular solvers
-%    %internal parameter fields
+%    % internal parameter fields
 %    [solution] = solveCobraLP(LPCoupled, parameters);
 %
 %    %C) as parameter followed by parameter value, with a parameter structure
@@ -104,10 +105,8 @@ function solution = solveCobraLP(LPproblem, varargin)
 %       - Tim Harrington, 05/18/12 Added support for the Gurobi 5.0 solver
 %       - Ronan Fleming, 07/04/13 Reinstalled support for optional parameter structure
 
-global CBTDIR % Process arguments etc
+global CBTDIR % process arguments etc
 global CBT_LP_SOLVER
-global MINOSPATH
-global DQQMINOSPATH
 global MINOS_PATH
 
 if ~isempty(CBT_LP_SOLVER)
@@ -122,22 +121,22 @@ optParamNames = {'minNorm', 'printLevel', 'primalOnly', 'saveInput', 'feasTol', 
                  'optTol', 'solver', 'pdco_method', 'pdco_maxiter', 'pdco_xsize', ...
                  'pdco_zsize','debug'};
 
-% Set default parameter values
+% set default parameter values
 [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
     getCobraSolverParams('LP', optParamNames(1:6));
 
-%By default this is not debugging
+% by default, this is not debugging
 debug = false;
 
-% Set user specified parameter values
+% set user specified parameter values
 solverParams.dummy = 3;
 solverParams = rmfield(solverParams, 'dummy');  % workaround to initialize nonempty structure
 
-% First input can be 'default' or a solver-specific parameter structure
+% first input can be 'default' or a solver-specific parameter structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
 
-    if strcmp(varargin{1}, 'default')  % Set tolerances to COBRA toolbox defaults
+    if strcmp(varargin{1}, 'default')  % set tolerances to COBRA toolbox defaults
         [feasTol, optTol] = getCobraSolverParams('LP', optParamNames(5:6), 'default');
         isdone(1) = true;
         varargin = varargin(~isdone);
@@ -151,7 +150,7 @@ if ~isempty(varargin)
     end
 end
 
-% Last input can be a solver specific parameter structure
+% last input can be a solver specific parameter structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
 
@@ -162,7 +161,7 @@ if ~isempty(varargin)
     end
 end
 
-% Remaining inputs should be parameter name-value pairs
+% remaining inputs should be parameter name-value pairs
 if ~isempty(varargin)
     isdone = false(size(varargin));
 
@@ -206,9 +205,9 @@ if ~isempty(varargin)
             debug = parameters.debug;
             parameters = rmfield(parameters, 'debug');
         end
+
         % overwrite defaults
-        [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
-            getCobraSolverParams('LP', optParamNames(1:4), parameters);
+        [minNorm, printLevel, primalOnlyFlag, saveInput] = getCobraSolverParams('LP', optParamNames(1:4), parameters);
 
         isdone(:) = true;
         varargin = varargin(~isdone);
@@ -219,12 +218,12 @@ if ~isempty(varargin)
     error('solveCobraLP: Invalid parameter input.')
 end
 
-% Check solver compatibility with minNorm option
+% check solver compatibility with minNorm option
 if max(minNorm) ~= 0 && ~any(strcmp(solver, {'cplex_direct', 'cplex'}))
     error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
 end
 
-% Save Input if selected
+% save Input if selected
 if ~isempty(saveInput)
     fileName = saveInput;
     if ~find(regexp(fileName, '.mat'))
@@ -242,34 +241,33 @@ if isfield(solverParams, 'lifting')
     end
 end
 
-% Assume constraint matrix is S if no A provided.
+% assume constraint matrix is S if no A provided.
 if ~isfield(LPproblem, 'A') && isfield(LPproblem, 'S')
     LPproblem.A = LPproblem.S;
 end
 
-% Assume constraint S*v = b if csense not provided
+% assume constraint S*v = b if csense not provided
 if ~isfield(LPproblem, 'csense')
-    % If csense is not declared in the model, assume that all
+    % if csense is not declared in the model, assume that all
     % constraints are equalities.
     LPproblem.csense(1:length(LPproblem.mets), 1) = 'E';
 end
 
-% Assume constraint S*v = 0 if b not provided
+% assume constraint S*v = 0 if b not provided
 if ~isfield(LPproblem, 'b')
     warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
     LPproblem.b = zeros(size(LPproblem.A, 1), 1);
 end
 
-% Assume max c'v s.t. S v = b if osense not provided
+% assume max c'v s.t. S v = b if osense not provided
 if ~isfield(LPproblem, 'osense')
     LPproblem.osense = -1;
 end
 
-
 % extract the problem from the structure
 [A, b, c, lb, ub, csense, osense] = deal(LPproblem.A, LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense);
 
-% Defaults in case the solver does not return anything
+% defaults in case the solver does not return anything
 f = [];
 x = [];
 y = [];
@@ -356,8 +354,7 @@ switch solver
                 [x, obj, exitflag, info] = ...
                 opti_scip([], f, A, rl, ru, lb, ub, xtype, [], [], opts);
             otherwise
-                % construct opti object and solve using an automatically
-                % chosen solver
+                % construct opti object and solve using an automatically chosen solver
                 [f, A, b, e] = setupOPTIproblem(c, A, b, osense, csense, 'auto');
                 optiobj = opti('f', f, 'mix', A, b, e, 'bounds', lb, ub, ...
                                'sense', osense, 'options', opts);
@@ -383,7 +380,7 @@ switch solver
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
-        if ~debug % IF debugging leave the files in case of an error.
+        if ~debug % iF debugging leave the files in case of an error.
             cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
         end
         % create the
@@ -444,23 +441,23 @@ switch solver
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
         f = c'* x;
-        %dqqMinos uses a constraint to represent the objective.
-        %This is exported as the first variable thus, y = sol.y(2:end)
+        % dqqMinos uses a constraint to represent the objective.
+        % Note: this is exported as the first variable thus, y = sol.y(2:end)
         y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
 
         k = sol.s;
 
-        % Note that status handling may change (see lp_lib.h)
+        % note that status handling may change (see lp_lib.h)
         if (origStat == 0)
-            stat = 1;  % Optimal solution found
+            stat = 1;  % optimal solution found
         % elseif (origStat == 3)
-        %     stat = 2; % Unbounded
+        %     stat = 2; % unbounded
         % elseif (origStat == 2)
-        %     stat = 0; % Infeasible
-        else
-            stat = -1;  % Solution not optimal or solver problem
+        %     stat = 0; % infeasible
+        else % solution not optimal or solver problem
+            stat = -1;
         end
 
         % return to original directory
@@ -485,12 +482,12 @@ switch solver
         % write out flat file to current folder
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
 
-        if ~debug % IF debugging leave the files in case of an error.
+        if ~debug % iF debugging leave the files in case of an error.
             cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
         end
 
         % change system to testFBA directory
-        cd([MINOS_PATH]);
+        cd(MINOS_PATH);
 
         % call minos
         sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
@@ -537,21 +534,21 @@ switch solver
         x = sol.x;
 
         f = c' * x;
-        %Minos uses a constraint to represent the objective.
-        %This is exported as the first variable thus, y = sol.y(2:end)
+        % Minos uses a constraint to represent the objective.
+        % Note: This is exported as the first variable thus, y = sol.y(2:end)
         y = sol.y(2:end);
         w = sol.rc;
         origStat = sol.inform;
 
         k = sol.s;
 
-        % Note that status handling may change (see lp_lib.h)
+        % note that status handling may change (see lp_lib.h)
         if (origStat == 0)
-            stat = 1;  % Optimal solution found
+            stat = 1;  % optimal solution found
         % elseif (origStat == 3)
-        %     stat = 2; % Unbounded
+        %     stat = 2; % unbounded
         % elseif (origStat == 2)
-        %     stat = 0; % Infeasible
+        %     stat = 0; % infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
         end
@@ -587,36 +584,36 @@ switch solver
     case {'lindo_new', 'lindo_old'}
         %% LINDO
         if (strcmp(solver, 'lindo_new'))
-            % Use new API (>= 2.0)
+            % use new API (>= 2.0)
             [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, primalOnlyFlag, false);
-            % Note that status handling may change (see Lindo.h)
+            % note that status handling may change (see Lindo.h)
             if (origStat == 1 || origStat == 2)
-                stat = 1;  % Optimal solution found
+                stat = 1;  % optimal solution found
             elseif(origStat == 4)
-                stat = 2;  % Unbounded
+                stat = 2;  % unbounded
             elseif(origStat == 3 || origStat == 6)
-                stat = 0;  % Infeasible
+                stat = 0;  % infeasible
             else
                 stat = -1;  % Solution not optimal or solver problem
             end
         else
-            % Use old API
+            % use old API
             [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, primalOnlyFlag, true);
             % Note that status handling may change (see Lindo.h)
             if (origStat == 2 || origStat == 3)
-                stat = 1;  % Optimal solution found
+                stat = 1;  % optimal solution found
             elseif(origStat == 5)
-                stat = 2;  % Unbounded
+                stat = 2;  % unbounded
             elseif(origStat == 4 || origStat == 6)
-                stat = 0;  % Infeasible
+                stat = 0;  % infeasible
             else
-                stat = -1;  % Solution not optimal or solver problem
+                stat = -1;  % solution not optimal or solver problem
             end
         end
         %[f,x,y,s,w,stat] = LMSolveLPNew(A,b,c,csense,lb,ub,osense,0);
 
     case 'lp_solve'
-        %% lp_solve
+        % lp_solve
         if (isempty(csense))
             [f, x, y, origStat] = lp_solve(c * (-osense), A, b, zeros(size(A, 1), 1), lb, ub);
             f = f * (-osense);
@@ -627,20 +624,21 @@ switch solver
             [f, x, y, origStat] = lp_solve(c * (-osense), A, b, e, lb, ub);
             f = f * (-osense);
         end
-        % Note that status handling may change (see lp_lib.h)
+
+        % note that status handling may change (see lp_lib.h)
         if (origStat == 0)
-            stat = 1;  % Optimal solution found
+            stat = 1;  % optimal solution found
         elseif(origStat == 3)
-            stat = 2;  % Unbounded
+            stat = 2;  % unbounded
         elseif(origStat == 2)
-            stat = 0;  % Infeasible
+            stat = 0;  % infeasible
         else
-            stat = -1;  % Solution not optimal or solver problem
+            stat = -1;  % solution not optimal or solver problem
         end
         s = [];
         w = [];
     case 'mosek'
-        %% mosek
+        % mosek
         % use msklpopt with full control over all mosek parameters
         % http://docs.mosek.com/7.0/toolbox/Parameters.html
         % see also
@@ -651,8 +649,7 @@ switch solver
         %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
 
         param = solverParams;
-        % only set the print level if not already set via solverParams
-        % structure
+        % only set the print level if not already set via solverParams structure
         if ~isfield(param, 'MSK_IPAR_LOG')
             switch printLevel
                 case 0
@@ -673,6 +670,7 @@ switch solver
                 cmd = 'minimize';
             end
         end
+
         %https://docs.mosek.com/8.1/toolbox/solving-linear.html
         if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
             param.MSK_DPAR_INTPNT_TOL_PFEAS=feasTol;
@@ -715,14 +713,14 @@ switch solver
 
         if (isempty(csense))
             % assumes all equality constraints
-            %[res] = msklpopt(      c,a,blc,buc,blx,bux,param,cmd)
+            % [res] = msklpopt(c,a,blc,buc,blx,bux,param,cmd)
             [res] = msklpopt(osense * c, A, b, b, lb, ub, param, cmd);
         else
             blc = b;
             buc = b;
             buc(csense == 'G') = inf;
             blc(csense == 'L') = -inf;
-            %[res] = msklpopt(       c,a,blc,buc,blx,bux,param,cmd)
+            % [res] = msklpopt(       c,a,blc,buc,blx,bux,param,cmd)
             [res] = msklpopt(osense * c, A, blc, buc, lb, ub, param, cmd);
 %             res.sol.itr
 %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
@@ -736,24 +734,23 @@ switch solver
                 if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
                         strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
                         strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-                    stat = 1; % Optimal solution found
+                    stat = 1; % optimal solution found
                     x=res.sol.itr.xx; % primal solution.
                     y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
 
                     w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-
 
                     % TODO  -work this out with Erling
                     % override if specific solver selected
                     if isfield(param,'MSK_IPAR_OPTIMIZER')
                         switch param.MSK_IPAR_OPTIMIZER
                             case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-                                stat = 1; % Optimal solution found
+                                stat = 1; % optimal solution found
                                 x=res.sol.bas.xx; % primal solution.
                                 y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
                                 w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
                             case 'MSK_OPTIMIZER_INTPNT'
-                                stat = 1; % Optimal solution found
+                                stat = 1; % optimal solution found
                                 x=res.sol.itr.xx; % primal solution.
                                 y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
                                 w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
@@ -761,19 +758,19 @@ switch solver
                     end
                     if isfield(res.sol,'bas') && 0
                         % override
-                        stat = 1; % Optimal solution found
+                        stat = 1; % optimal solution found
                         x=res.sol.bas.xx; % primal solution.
                         y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
                         w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
                     end
                     f=c'*x;
-                    %slack for blc <= A*x <= buc
+                    % slack for blc <= A*x <= buc
                     s = b - A * x; % output the slack variables
                 elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-                    stat=0; %infeasible
+                    stat=0; % infeasible
                     x=[];
                     y=[];
                     w=[];
@@ -783,7 +780,7 @@ switch solver
                 if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-                    stat = 1; % Optimal solution found
+                    stat = 1; % optimal solution found
                     x=res.sol.bas.xx; % primal solution.
                     y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
                     w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
@@ -791,32 +788,30 @@ switch solver
                     if isfield(param,'MSK_IPAR_OPTIMIZER')
                         switch param.MSK_IPAR_OPTIMIZER
                             case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-                                stat = 1; % Optimal solution found
+                                stat = 1; % optimal solution found
                                 x=res.sol.bas.xx; % primal solution.
                                 y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
                                 w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
                             case 'MSK_OPTIMIZER_INTPNT'
-                                stat = 1; % Optimal solution found
+                                stat = 1; % optimal solution found
                                 x=res.sol.itr.xx; % primal solution.
                                 y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
                                 w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
                         end
                     end
                     f=c'*x;
-                    %slack for blc <= A*x <= buc
+                    % slack for blc <= A*x <= buc
                     s = b - A * x; % output the slack variables
                 elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-                    stat=0; %infeasible
+                    stat=0; % infeasible
                     x=[];
                     y=[];
                     w=[];
                 end
             end
-
-
 
             %debugging
             %{
@@ -889,7 +884,7 @@ switch solver
         end
         y = [];
         if (origStat > 0)
-            stat = 1; % Optimal solution found
+            stat = 1; % optimal solution found
             f = f*osense;
             y = zeros(size(A,1),1);
             y(csense == 'E',1) = -lambda.eqlin;
@@ -897,7 +892,7 @@ switch solver
             y(csense == 'G',1)=-y(csense == 'G',1); %change sign
             w = lambda.lower-lambda.upper;
         elseif (origStat < 0)
-            stat = 0; % Infeasible
+            stat = 0; % infeasible
         else
             stat = -1; % Solution did not converge
         end
@@ -943,11 +938,11 @@ switch solver
         w=[];
         if origStat==2
             w = c - A'*y;%reduced cost added -Ronan Jan 19th 2011
-           stat = 1; % Optimal solutuion found
+           stat = 1; % optimal solutuion found
         elseif origStat==3
-           stat = 0; % Infeasible
+           stat = 0; % infeasible
         elseif origStat==5
-           stat = 2; % Unbounded
+           stat = 2; % unbounded
         elseif origStat==4
            stat = 0; % Gurobi reports infeasible *or* unbounded
         else
@@ -973,7 +968,7 @@ switch solver
         %  2=barrier,
         %  3=concurrent,
         %  4=deterministic concurrent
-        % i.e. params.method     = 1;          % Use dual simplex method
+        % i.e. params.method     = 1;          % use dual simplex method
 
         param=solverParams;
         if ~isfield(param,'OutputFlag')
@@ -1034,7 +1029,7 @@ switch solver
         % call the solver
         resultgurobi = gurobi(LPproblem,param);
 
-        %switch back to numeric
+        % switch back to numeric
         if strcmp(LPproblem.osense,'max')
             LPproblem.osense = -1;
         else
@@ -1045,7 +1040,7 @@ switch solver
         origStat = resultgurobi.status;
         switch resultgurobi.status
             case 'OPTIMAL'
-                stat = 1; % Optimal solution found
+                stat = 1; % optimal solution found
                 [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc);
 
                 s = b - A * x; % output the slack variables
@@ -1060,13 +1055,12 @@ switch solver
 %                     LPproblem=rmfield(LPproblem,'vbasis');
 %                 end
             case 'INFEASIBLE'
-                stat = 0; % Infeasible
+                stat = 0; % infeasible
             case 'UNBOUNDED'
-                stat = 2; % Unbounded
+                stat = 2; % unbounded
             case 'INF_OR_UNBD'
-                %Lets check, what it is. We simply remove the objective and
-                %solve again. If the status becomes 'OPTIMAL' its
-                %unbounded, otherwise its infeasible.
+                % we simply remove the objective and solve again.
+                % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
                 LPproblem.obj(:) = 0;
                 resultgurobi = gurobi(LPproblem,param);
                 if strcmp(resultgurobi.status,'OPTIMAL')
@@ -1085,7 +1079,7 @@ switch solver
             %  2=barrier,
             %  3=concurrent,
             %  4=deterministic concurrent
-            % i.e. params.method     = 1;          % Use dual simplex method
+            % i.e. params.method     = 1;          % use dual simplex method
             switch param.Method
                 case -1
                     algorithm='automatic';
@@ -1114,10 +1108,11 @@ switch solver
            otherwise
                matlabPrintLevel = 'off';
         end
-        %Set the solver Options.
-        %Seems like matlab tends to ignore the optimalityTolerance (or at
-        %least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
-        %make this tolerance smaller...)
+
+        % Set the solver Options.
+        % Seems like matlab tends to ignore the optimalityTolerance (or at
+        % least vilates it (e.g. 3*e-6 when tol is set to 1e-6, so we will
+        % make this tolerance smaller...)
         if verLessThan('matlab','9.0')
             optToleranceParam = 'TolFun';
             constTolParam = 'TolCon';
@@ -1126,7 +1121,7 @@ switch solver
             constTolParam = 'ConstraintTolerance';
         end
 
-        %For whatever
+        % define clinprog depending on the version of MATLAB
         if verLessThan('matlab','9.1')
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,[],options);
         else
@@ -1138,8 +1133,7 @@ switch solver
         end
 
         linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,optTol*0.01,constTolParam,feasTol);
-        %Replace all options if they are provided by the solverParameters
-        %struct
+        % replace all options if they are provided by the solverParameters struct
         if ~isempty(fieldnames(solverParams))
             solverParamFields = fieldnames(solverParams);
             for fieldPos = 1:numel(solverParamFields)
@@ -1163,13 +1157,13 @@ switch solver
         end
         y = [];
         if (origStat > 0)
-            stat = 1; % Optimal solution found
+            stat = 1; % optimal solution found
             f = f*osense;
             y = osense*lambda.eqlin;
             w = osense*(lambda.upper-lambda.lower);
             s = LPproblem.b - LPproblem.A*x;
         elseif (origStat < 0)
-            stat = 0; % Infeasible
+            stat = 0; % infeasible
         else
             stat = -1; % Solution did not converge
         end
@@ -1235,7 +1229,7 @@ switch solver
         end
     case 'cplex_direct'
         % Tomlab cplex.m direct
-        % Used with the current script, only some of the control affoarded with
+        % used with the current script, only some of the control affoarded with
         % this interface is provided. Primarily, this is to change the print
         % level and whether to minimise the Euclidean Norm of the internal
         % fluxes or not.
@@ -1253,10 +1247,10 @@ switch solver
         end
     case 'ibm_cplex'
         % By default use the complex ILOG-CPLEX interface as it seems to be faster
-        % IBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
+        % iBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
         ILOGcomplex=1;
         if ILOGcomplex
-            % Initialize the CPLEX object
+            % initialize the CPLEX object
             try
                 ILOGcplex = Cplex('fba');
             catch ME
@@ -1285,7 +1279,7 @@ switch solver
             ILOGcplex.Model.lhs   = b_L;
             ILOGcplex.Model.rhs   = b_U;
 
-            % ILOGcplex.Param.lpmethod.Cur
+            % iLOGcplex.Param.lpmethod.Cur
             % Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
             % always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
             % when multiple threads have been requested. In this case, the Automatic setting will use the concurrent optimization
@@ -1335,7 +1329,7 @@ switch solver
                 ILOGcplex.Param=rmfield(ILOGcplex.Param,'printLevel');
             end
 
-            % Optimize the problem
+            % optimize the problem
             ILOGcplex.solve();
 
             origStat   = ILOGcplex.Solution.status;
@@ -1347,10 +1341,9 @@ switch solver
                 y = ILOGcplex.Solution.dual;
                 s = b - A * x; % output the slack variables
             elseif origStat == 4
-                %This is likely unbounded, but could be infeasible
-                %Lets check, by solving an additional LP with no objective.
-                %If that LP has a solution, its unbounded. If it doesn't
-                %its infeasible.
+                % this is likely unbounded, but could be infeasible
+                % lets check, by solving an additional LP with no objective.
+                % if that LP has a solution, it's unbounded. If it doesn't, it's infeasible.
                 Solution = ILOGcplex.Solution;
                 ILOGcplex.Model.obj(:) = 0;
                 ILOGcplex.solve();
@@ -1360,7 +1353,8 @@ switch solver
                 else
                     stat = 0;
                 end
-                %Restore the original solution.
+
+                % restore the original solution.
                 ILOGcplex.Solution = Solution;
             elseif origStat == 3
                 stat = 0;
@@ -1372,13 +1366,12 @@ switch solver
                 y = ILOGcplex.Solution.dual;
                 s = b - A * x; % output the slack variables
             elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
-                %Abort due to reached limit. check if there is a solution
-                %and return it.
+                % abort due to reached limit. check if there is a solution and return it.
                 stat = 3;
                 if isfield(ILOGcplex.Solution ,'x')
                     x = ILOGcplex.Solution.x;
                 else
-                    % No solution returned
+                    % no solution returned
                     stat = -1;
                 end
                 if isfield(ILOGcplex.Solution ,'reducedcost')
@@ -1488,18 +1481,17 @@ switch solver
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
     case 'pdco'
         % changed 30th May 2015 with Michael Saunders
-        %% -----------------------------------------------------------------------
+        % -----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
-        %-----------------------------------------------------------------------
+        % -----------------------------------------------------------------------
         % AUTHOR:
         %    Michael Saunders, Systems Optimization Laboratory (SOL),
         %    Stanford University, Stanford, California, USA.
-        % Interfaced with Cobra toolbox by Ronan Fleming, 27 June 2009
+        %    interfaced with Cobra toolbox by Ronan Fleming, 27 June 2009
         [nMet,nRxn]=size(LPproblem.A);
         x0 = ones(nRxn,1);
         y0 = zeros(nMet,1);
         z0 = ones(nRxn,1);
-
 
         % setting d1 to zero is dangerous numerically, but is necessary to avoid
         % minimising the Euclidean norm of the optimal flux. A more
@@ -1546,8 +1538,7 @@ switch solver
         % set the printLevel
         options.Print=printLevel;
 
-        [x,y,w,inform,PDitns,CGitns,time] = ...
-            pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
+        [x,y,w,inform,PDitns,CGitns,time] = pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f = c'*x;
         s = b - A * x; % output the slack variables
 
@@ -1579,13 +1570,13 @@ if stat == -1
     end
 end
 
-%TODO  pull out slack variable from every solver interface
+%TODO: pull out slack variable from every solver interface (see list of solvers below)
 if ~exist('s','var')
     s = zeros(size(A,1),1);
 end
 
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
-    %% Assign solution
+    % assign solution
     t = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
     [solution.full, solution.obj, solution.rcost, solution.dual, solution.slack, ...
@@ -1878,18 +1869,18 @@ end
 %% solveGlpk Solve actual LP problem using glpk and return relevant results
 function [x,f,y,w,stat,origStat] = solveGlpk(c,A,b,lb,ub,csense,osense,params)
 
-% Old way of calling glpk
+% old way of calling glpk
 %[x,f,stat,extra] = glpkmex(osense,c,A,b,csense,lb,ub,[],params);
 [x,f,origStat,extra] = glpk(c,A,b,lb,ub,csense,[],osense,params);
 y = extra.lambda;
 w = extra.redcosts;
 % Note that status handling may change (see glplpx.h)
 if (origStat == 180 || origStat == 5)
-    stat = 1; % Optimal solution found
+    stat = 1; % optimal solution found
 elseif (origStat == 182 || origStat == 183 || origStat == 3 || origStat == 110)
-    stat = 0; % Infeasible
+    stat = 0; % infeasible
 elseif (origStat == 184 || origStat == 6)
-    stat = 2; % Unbounded
+    stat = 2; % unbounded
 else
     stat = -1; % Solution not optimal or solver problem
 end
