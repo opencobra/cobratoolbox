@@ -3,7 +3,7 @@ Frequently Asked Questions (FAQ)
 
 .. begin-faq-marker
 
-.. contents::
+.. contents::Table of contents
 
 .. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
 .. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
