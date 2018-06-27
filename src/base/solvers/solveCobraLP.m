@@ -21,14 +21,14 @@ function solution = solveCobraLP(LPproblem, varargin)
 %    varargin:      Additional parameters either as parameter struct, or as
 %                   parameter/value pairs. A combination is possible, if
 %                   the parameter struct is either at the beginning or the
-%                   end of the optional input. 
+%                   end of the optional input.
 %                   All fields of the struct which are not COBRA parameters
 %                   (see `getCobraSolverParamsOptionsForType`) for this
 %                   problem type will be passed on to the solver in a
 %                   solver specific manner. Some optional parameters which
 %                   can be passed to the function as parameter value pairs,
 %                   or as part of the options struct are listed below:
-%                   
+%
 %    printLevel:    Printing level
 %
 %                     * 0 - Silent (Default)
@@ -688,7 +688,7 @@ switch solver
         end
         % generate proper mosek options structure for linprog
         options = mskoptimset(options);
-        
+
         if (isempty(csense))
             [x,f,origStat,output,lambda] = linprog(c*osense,[],[],A,b,lb,ub,[],options);
         else
@@ -737,17 +737,17 @@ switch solver
                 opts.Display = 1;
             end
         end
-        if ~isfield(opts,'FasibilityTol')
+        if ~isfield(opts, 'FeasibilityTol')
             opts.FeasibilityTol = cobraParams.feasTol;
         end
-        if ~isfield(opts,'OptimalityTol')
+        if ~isfield(opts, 'OptimalityTol')
             opts.OptimalityTol = cobraParams.optTol;
         end
         %If the feasibility tolerance is changed by the solverParams
         %struct, this needs to be forwarded to the cobra Params for the
         %final consistency test!
         cobraParams.feasTol = opts.FeasibilityTol;
-        
+
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -811,14 +811,14 @@ switch solver
                     param.DisplayInterval = 1;
             end
         end
-        
+
         if ~isfield(param,'FeasibilityTol')
             param.FeasibilityTol = cobraParams.feasTol;
         end
         if ~isfield(param,'OptimalityTol')
             param.OptimalityTol = cobraParams.optTol;
         end
-        
+
         if (isempty(LPproblem.csense))
             clear LPproblem.csense
             LPproblem.csense(1:length(b),1) = '=';
@@ -848,11 +848,11 @@ switch solver
         end
         %Set the solver Specific Parameters
         param = updateStructData(param,solverParams);
-        
+
         %Update Tolerance According to actual setting
         cobraParams.feasTol = param.FeasibilityTol;
 
-        
+
         % call the solver
         resultgurobi = gurobi(LPproblem,param);
 
@@ -951,18 +951,18 @@ switch solver
         else
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
         end
-        
+
         if cobraParams.optTol < 1e-8
             cobraParams.optTol = cobraParams.optTol * 100; %make sure, that we are within the range of allowed values.
         end
-        
+
         linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,cobraParams.optTol*0.01,constTolParam,cobraParams.feasTol);
         %Replace all options if they are provided by the solverParameters
         %struct
         linprogOptions = updateStructData(linprogOptions,solverParams);
         %UPdate Tolerance according to actual tolerance used.
         cobraParams.feasTol = linprogOptions.(constTolParam);
-        
+
         if (isempty(csense))
             [x,f,origStat,output,lambda] = clinprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
         else
@@ -1005,7 +1005,7 @@ switch solver
         end
         tomlabProblem = lpAssign(osense*c,A,b_L,b_U,lb,ub);
         % Result = tomRun('cplex', tomlabProblem, 0);
-        % This is faster than using tomRun       
+        % This is faster than using tomRun
 
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
@@ -1020,13 +1020,13 @@ switch solver
         % set tolerance
         tomlabProblem.MIP.cpxControl.EPRHS = cobraParams.feasTol;
         tomlabProblem.MIP.cpxControl.EPOPT = cobraParams.optTol;
-        
+
         %Update the parameter struct according to provided parameters
         tomlabProblem.MIP.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
-        
+
         %UPdate Tolerance according to actual tolerance used.
         cobraParams.feasTol = tomlabProblem.MIP.cpxControl.EPRHS;
-        
+
         % solve
         Result = cplexTL(tomlabProblem);
 
@@ -1069,7 +1069,7 @@ switch solver
     case 'ibm_cplex'
         % By default use the complex ILOG-CPLEX interface as it seems to be faster
         % IBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
-        
+
         % Initialize the CPLEX object
         try
             ILOGcplex = Cplex('fba');
@@ -1090,7 +1090,7 @@ switch solver
             b_U = b;
         end
         ILOGcplex.Model.sense = 'minimize';
-        
+
         % Now populate the problem with the data
         ILOGcplex.Model.obj   = osense*c;
         ILOGcplex.Model.lb    = lb;
@@ -1098,7 +1098,7 @@ switch solver
         ILOGcplex.Model.A     = LPproblem.A;
         ILOGcplex.Model.lhs   = b_L;
         ILOGcplex.Model.rhs   = b_U;
-        
+
         % ILOGcplex.Param.lpmethod.Cur
         % Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
         % always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
@@ -1113,7 +1113,7 @@ switch solver
         % 5 Sifting
         % 6 Concurrent Dual, Barrier and Primal
         % Default: 0
-        
+
         % Assign all parameters
         % solverParams in this case can be e.g.:
         % solverParams = struct();
@@ -1121,12 +1121,12 @@ switch solver
         %      solverParams.sifting.display, solverParams.conflict.display] = deal(0);
         % [solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9);
         % See Cplex().Param for all possible parameters
-        
+
         % use the feasTol and optTol from Cobra toolbox if exist
         ILOGcplex.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
         ILOGcplex.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
         ILOGcplex.Param.lpmethod.Cur = 0;
-        
+
         % set the print level
         if cobraParams.printLevel==0
             ILOGcplex.DisplayFunc=[];
@@ -1136,17 +1136,17 @@ switch solver
             ILOGcplex.Param.simplex.display.Cur = cobraParams.printLevel;
             ILOGcplex.Param.sifting.display.Cur = cobraParams.printLevel;
         end
-        
+
         %Update parameters according to the solverParams settings
         ILOGcplex = setCplexParam(ILOGcplex, solverParams, cobraParams.printLevel);
-        
+
         %Update Tolerance According to actual setting
         cobraParams.feasTol = ILOGcplex.Param.simplex.tolerances.feasibility.Cur;
-        
-        
+
+
         % Optimize the problem
         ILOGcplex.solve();
-        
+
         origStat   = ILOGcplex.Solution.status;
         stat = origStat;
         if origStat==1
@@ -1194,13 +1194,13 @@ switch solver
             if isfield(ILOGcplex.Solution ,'dual')
                 y = ILOGcplex.Solution.dual;
             end
-            
+
         elseif origStat == 13
             stat = -1;
         elseif origStat == 20
             stat = 2;
         end
-        
+
         switch ILOGcplex.Param.lpmethod.Cur
             case 0
                 algorithm='Automatic';
@@ -1216,7 +1216,7 @@ switch solver
                 algorithm='Sifting';
             case 6
                 algorithm='Concurrent Dual, Barrier and Primal';
-        end        
+        end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         labindex = 1;
         if exist([pwd filesep 'clone1_' labindex '.log'],'file')
@@ -1262,7 +1262,7 @@ switch solver
         % also means you may have to tune the various parameters here,
         % especially xsize and zsize (see pdco.m) to get the real optimal
         % objective value
-        
+
         if isfield(solverParams,'pdco_xsize')
             xsize = solverParams.pdco_xsize;
             solverParams = rmfield(solverParams,'pdco_xsize');
@@ -1282,7 +1282,7 @@ switch solver
         else
             options.Method = 1; %Cholesky
         end
-        
+
         if isfield(solverParams,'pdco_maxiter')
             options.MaxIter = solverParams.pdco_maxiter;
             solverParams = rmfield(solverParams,'pdco_maxiter');
@@ -1292,7 +1292,7 @@ switch solver
 
         % set the printLevel
         options.Print=cobraParams.printLevel;
-        
+
         %Set direct struct data options
         options = updateStructData(options,solverParams);
 
