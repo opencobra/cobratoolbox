@@ -338,6 +338,7 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.lindo_old.type = {'LP'};
     SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
+    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
     % definition of category of solvers with active support
     SOLVERS.cplex_direct.categ = 'active';
@@ -360,6 +361,7 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
+    SOLVERS.opti.categ = 'legacy';
 
     % definition of categories of solvers
     supportedSolversNames = fieldnames(SOLVERS);
