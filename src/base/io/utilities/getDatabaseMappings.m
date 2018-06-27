@@ -24,7 +24,7 @@ function returnedmappings = getDatabaseMappings(field,qualifiers)
 %                           X{:,3} : The model field associated with this db
 %                           X{:,4} : The association field (met/rxn/gene/prot/comp)
 %                           X{:,5} : The specified regular expression the identifier has to adhere to. 
-
+%                           X{:,6} : The type of the qualifier (modelQualifier or bioQualifier)
 
 if exist('qualifiers', 'var') && ...
     ((ischar(qualifiers) && isequal(qualifiers,'all')) || iscell(qualifiers) && any(ismember(qualifiers,'all')))
