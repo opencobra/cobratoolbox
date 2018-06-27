@@ -134,13 +134,13 @@ rng('shuffle');
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
 filenameParfor = [CBTDIR filesep '.tmp' filesep filenameParfor];
 
-    % Turn on the load balancing for large problems
+% turn on the load balancing for large problems
 loadBalancing = 0;  % 0: off; 1: on
 
-% Define if information about the work load distriibution will be shown or not
+% define if information about the work load distriibution will be shown or not
 showSplitting = 1;
 
-% Define the input arguments
+% define the input arguments
 if (nargin < 8 || isempty(strategy))
     strategy = 0;
 end
@@ -154,7 +154,7 @@ if (nargin < 5 || isempty(rxnsList))
     rxns = 1:length(model.rxns);
     rxnsList = model.rxns;
 else
-    %% check here if the vector of rxns is sorted or not
+    % check here if the vector of rxns is sorted or not
     % this needs to be fixed to sort the flux vectors accordingly
     % as the find() function sorts the reactions automatically
     % ->> this is currently an issue on git
@@ -185,7 +185,7 @@ if (nargin < 2 || isempty(optPercentage))
     optPercentage = 100;
 end
 
-% Define extra outputs if required
+% define extra outputs if required
 if nargout > 4 && nargout <= 7
     assert(nargout == 7);
     bExtraOutputs = true;
@@ -193,7 +193,7 @@ else
     bExtraOutputs = false;
 end
 
-% Define extra outputs if required
+% define extra outputs if required
 if nargout > 7
     assert(nargout == 9);
     bExtraOutputs1 = true;
@@ -208,7 +208,7 @@ if nargout ~= 4 && nargout ~= 7 && nargout ~= 9
     end
 end
 
-% Define the osenseStr
+% define the osenseStr
 if strcmpi(osenseStr, 'max')
     obj = -1;
 elseif strcmpi(osenseStr, 'min')
@@ -217,7 +217,7 @@ else
     error('Unknown osenseStr');
 end
 
-% Define the solverName
+% define the solverName
 if strcmp('glpk', solverName)
     error('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strcmp('ibm_cplex', solverName)
@@ -226,7 +226,7 @@ else
     error(['Solver ', solverName, ' not supported.']);
 end
 
-% Define the CPLEX parameter set and the associated values - split the struct
+% define the CPLEX parameter set and the associated values - split the struct
 namesCPLEXparams = fieldnames(cpxControl);
 nCPLEXparams = length(namesCPLEXparams);
 valuesCPLEXparams = zeros(nCPLEXparams, 1);
@@ -234,10 +234,10 @@ for i = 1:nCPLEXparams
     valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
 end
 
-% Retrieve the b vector of the model file
+% retrieve the b vector of the model file
 b = model.b;
 
-% Define the stoichiometric matrix to be solved
+% define the stoichiometric matrix to be solved
 if isfield(model, 'A') && (matrixAS == 'A')
     A = model.A;
     csense = model.csense(:);
@@ -257,19 +257,19 @@ if printLevel > 0
     fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
 end
 
-% Define the matrix A as sparse in case it is not as
+% define the matrix A as sparse in case it is not as
 % C code assumes a sparse stochiometric matrix
 if ~issparse(A)
     A = sparse(A);
 end
 
-% Determine the size of the stoichiometric matrix
+% determine the size of the stoichiometric matrix
 [m, n] = size(A);
 if printLevel > 0
     fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m, n);
 end
 
-% Determine the number of reactions that are considered
+% determine the number of reactions that are considered
 nR = length(rxns);
 if nR ~= n
     if printLevel > 0
@@ -335,13 +335,13 @@ istart(1) = 1;
 maxFluxTmp = {};
 minFluxTmp = {};
 
-% Launch fastFVA on 1 core
+% launch fastFVA on 1 core
 if nworkers <= 1
 
     % define the end of the index vector
     iend(1) = n;
 
-    if length(rxnsList) > 0
+    if ~isempty(rxnsList)
         rxnsKey = find(ismember(model.rxns, rxnsList));
     else
         rxnsKey = (1:n);
@@ -371,29 +371,32 @@ if nworkers <= 1
         end
     end
 
-    % output the results
+    % output the minimum and maximum fluxes
     minFluxTmp{1} = minFlux;
     maxFluxTmp{1} = maxFlux;
 
+    % output the minimum and maximum flux vectors
     if bExtraOutputs || bExtraOutputs1
         fvaminRes{1} = fvamin;
         fvamaxRes{1} = fvamax;
         fbasolRes{1} = fbasol;
     end
 
+    % output the solver status
     if bExtraOutputs1
         statussolminRes{1} = statussolmin;
         statussolmaxRes{1} = statussolmax;
     end
 else
-    % Divide the reactions amongst workers
-    %
-    % The load balancing can be improved for certain problems, e.g. in case
-    % of problems involving E-type matrices, some workers will get mostly
-    % well-behaved LPs while others may get many badly scaled LPs.
+    % divide the reactions amongst workers
 
-    if n > 5000 & loadBalancing == 1
-        % A primitive load-balancing strategy for large problems
+    % Note:
+    %      The load balancing can be improved for certain problems, e.g. in case
+    %      of problems involving E-type matrices, some workers will get mostly
+    %      well-behaved LPs while others may get many badly scaled LPs.
+
+    if n > 5000 && loadBalancing == 1
+        % primitive load-balancing strategy for large problems
         nworkers = 4 * nworkers;
         if printLevel > 0
             fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
@@ -488,7 +491,7 @@ else
     iopt = zeros(nworkers, 1);
     iret = zeros(nworkers, 1);
 
-    % initialilze extra outputs
+    % initialize extra outputs
     if bExtraOutputs || bExtraOutputs1
         fvaminRes = {};
         fvamaxRes = {};
@@ -632,7 +635,7 @@ end
 if bExtraOutputs || bExtraOutputs1
 
     if nworkers > 1
-        fbasol = fbasolRes{1};  % Initial FBA solutions are identical across workers
+        fbasol = fbasolRes{1};  % initial FBA solutions are identical across workers
     end
 
     fvamin = zeros(length(model.rxns), length(model.rxns));
