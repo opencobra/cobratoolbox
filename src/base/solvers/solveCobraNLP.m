@@ -77,10 +77,10 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %       - Markus Herrgard 12/7/07
 %       - Richard Que 02/10/10 Added tomlab_snopt support.
 
-global CBT_NLP_SOLVER
 
-[cobraParams,solverParams] = parseSolverParameters('NLP',varargin{:});
-%Set the solver
+[cobraParams,solverParams] = parseSolverParameters('NLP',varargin{:});% get the solver parameters
+
+% set the solver
 solver = cobraParams.solver;
 
 % Save Input if selected

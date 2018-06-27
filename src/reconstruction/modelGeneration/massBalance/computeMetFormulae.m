@@ -85,17 +85,21 @@ validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
 if isempty(varargin)
     varargin = {[]};
 end
+% get the cobra parameters for LP.
 cobraOptions = getCobraSolverParamsOptionsForType('LP');
 pSpos = 1;
+% parse the inputs accordingly.
 paramValueInput = false;
 if numel(varargin) > 0
+    %Check if we have parameter/value inputs.
     for pSpos = 1:numel(varargin)
         if isstruct(varargin{pSpos})
+            % its a struct, so yes, we do have additional inputs.
             paramValueInput = true;
             break;            
         end
         if ischar(varargin{pSpos}) && (any(strncmpi(varargin{pSpos},optArgin,length(varargin{pSpos}))) || any(ismember(varargin{pSpos},cobraOptions)))
-            %Its a keyword
+            % its a keyword, so yes, we have paramValu input.
             paramValueInput = true;
             break
         end
@@ -103,15 +107,17 @@ if numel(varargin) > 0
 end
 
 if ~paramValueInput
-    %We only have non Cobra stuff.
+    % we only have values specific to this function.
     parser = inputParser();
+    % so build a parser and parse the data.
     for jArg = 1:numel(optArgin)
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end
+    end    
     parser.parse(varargin{1:min(numel(varargin),numel(optArgin))});    
     [cobraParams,solverParams] = parseSolverParameters('LP');
     varargin = {};
 else    
+    % we do have solve specific parameters, so we need to also 
     parser = inputParser();
     optArgs = varargin(1:pSpos-1);
     varargin = varargin(pSpos:end);    
@@ -119,22 +125,27 @@ else
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
     end
     if mod(numel(varargin),2) == 1
-        %This should indicate, that there is an LP solver struct somewhere!
+        % this should indicate, that there is an LP solver struct somewhere!
         for i = 1:2:numel(varargin)
             if isstruct(varargin{i})
-                %reorder varargin
+                % reorder varargin
                 varargin = [varargin{1:i-1},varargin{i+1:end},varargin(i)];
             end
         end
     end
-    [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
     
+    [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
+    % now, we create a new parser, that parses all algorithm specific
+    % inputs.
     for jArg = numel(optArgs)+1:numel(optArgin)
         parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end        
+    end      
+    % and extract the parameters from the field names, as CaseSensitive = 0
+    % only works for parameter/value pairs but not for fieldnames.
     actualSolverParams = struct();
     solverParamFields = fieldnames(solverParams);
     functionParams = {};
+    % build the parameter/value pairs array
     for i = 1:numel(solverParamFields)                
         if ~any(strncmpi(solverParamFields{i},optArgin,length(solverParamFields{i})))            
             actualSolverParams.(solverParamFields{i}) = solverParams.(solverParamFields{i});
@@ -143,9 +154,10 @@ else
             functionParams(end+1:end+2) = {solverParamFields{i}, solverParams.(solverParamFields{i})};
         end
     end    
+    % and parse them.
     parser.CaseSensitive = 0;
     parser.parse(optArgs{:},functionParams{:});    
-    
+    % and also convert the cobra options into parameter/value pair lists.
     varargin = cell(1,1+2*numel(cobraOptions));    
     varargin{1} = actualSolverParams;    
     for i = 1:numel(cobraOptions)

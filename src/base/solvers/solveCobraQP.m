@@ -71,9 +71,8 @@ function solution = solveCobraQP(QPproblem, varargin)
 %       - Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
 %       - Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver
 
-global CBT_QP_SOLVER;
 
-[cobraParams,solverParams] = parseSolverParameters('QP',varargin{:});
+[cobraParams,solverParams] = parseSolverParameters('QP',varargin{:}); % get the solver parameters
 %Set the solver
 solver = cobraParams.solver;
 

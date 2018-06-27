@@ -81,7 +81,7 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %       - Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
 %       interface) to the solvers.
 
-[cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:});
+[cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:}); % get the solver parameters
 
 solver = cobraParams.solver;
 

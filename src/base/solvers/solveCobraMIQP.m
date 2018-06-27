@@ -65,9 +65,8 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 %       - Markus Herrgard 6/8/07
 %       - Tim Harrington 05/18/12 Added support for the Gurobi 5.0 solver
 
-global CBT_MIQP_SOLVER;
-solver = CBT_MIQP_SOLVER;
-[cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:});
+
+[cobraParams,solverParams] = parseSolverParameters('MIQP',varargin{:}); % get the solver parameters
 
 solver = cobraParams.solver;
 

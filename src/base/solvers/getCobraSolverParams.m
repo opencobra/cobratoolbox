@@ -48,14 +48,15 @@ end
 
 persistent valDef
 if isempty(valDef)
-    %% Default Values
+    % Default Values
+    
     valDef.minNorm = 0;
     valDef.objTol = 1e-6; %used in optimizeTwoCbModels
     valDef.optTol = 1e-9;
     valDef.feasTol = 1e-9;
     valDef.printLevel = 0;
     valDef.primalOnly = 0;
-    valDef.timeLimit = 1e36; %this should indicate No time limit per default
+    valDef.timeLimit = 1e36; % this should indicate No time limit per default
     valDef.iterationLimit = 1000;
     valDef.logFile = ['Cobra' solverType 'Solver.log'];
     valDef.saveInput = [];
@@ -66,13 +67,13 @@ if isempty(valDef)
     % GUROBI parameters
     valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
     
-    %CPLEX parameters
+    % CPLEX parameters
     valDef.DATACHECK = 1;
     valDef.DEPIND = 1;
     valDef.checkNaN = 0;
     valDef.warning = 0;
     
-    %tolerances
+    % tolerances
     valDef.intTol = 1e-12;
     valDef.relMipGapTol = 1e-12;
     valDef.absMipGapTol = 1e-12;
@@ -80,7 +81,6 @@ if isempty(valDef)
     
 end
 
-%%
 if ~iscell(paramNames)
     paramNames = {paramNames};
 end
@@ -107,19 +107,18 @@ switch solverType
 end
 
 for i=1:length(paramNames)
-    %set values to default
+    % set values to default
     if isfield(valDef,paramNames{i})
         varargout{i} = valDef.(paramNames{i});
     end
-    if ~strcmp(parameters,'default') %skip of using default values
-        %set values to global values
+    if ~strcmp(parameters,'default') % skip of using default values
+        % set values to global values
         if isfield(parametersGlobal,paramNames{i})
            varargout{i} = parametersGlobal.(paramNames{i});
         end
-        %set values to specified values
+        % set values to specified values
         if isfield(parameters,paramNames{i})
            varargout{i} = parameters.(paramNames{i});
         end
     end
 end
-%pause(eps)

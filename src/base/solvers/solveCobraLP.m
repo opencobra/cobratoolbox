@@ -118,16 +118,17 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBTDIR % Process arguments etc
 global MINOS_PATH
 
+% get the solver parameters
 [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
-%Set the solver
+% set the solver
 solver = cobraParams.solver;
 
-% Check solver compatibility with minNorm option
+% check solver compatibility with minNorm option
 if max(cobraParams.minNorm) ~= 0 && ~any(strcmp(solver, {'cplex_direct', 'cplex'}))
   error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
 end
 
-% Save Input if selected
+% save Input if selected
 if ~isempty(cobraParams.saveInput)
     fileName = cobraParams.saveInput;
     if ~find(regexp(fileName, '.mat'))
