@@ -31,3 +31,6 @@
 [submodule "external/rdir"]
 	path = external/base/rdir
 	url = https://github.com/uni-lu/rdir.git
+[submodule "external/mptoolbox"]
+	path = external/mptoolbox
+	url = https://github.com/cobrabot/mptoolbox.git
