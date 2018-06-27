@@ -62,14 +62,7 @@ Linux (Ubuntu or Debian)
 
     $ sudo apt-get install git-all curl
 
-In addition, some MATLAB versions (known for 2016b and before) ship with several broken system libraries. This is particularily true for ``libssl.so.1.0.0``, which leads to Matlab crashes if accessing any ``https://`` ressource. To fix this issue, replace the shipped MATLAB file with the system file: 
-
-.. code-block:: console
-
-    $ sudo mv <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0 <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0.old
-    $ sudo cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0
-
-where ``<MATLAB_ROOT>`` is the directory of your MATLAB installation.
+If you run MATLAB 2016b and before there is also a known issue with a library shipped by MATLAB when trying to access web ressources. Please have a look at the <../notes/faq.rst#On Linux, MATLAB Suddenly crashes without any error>
 
 macOS
 ^^^^^
