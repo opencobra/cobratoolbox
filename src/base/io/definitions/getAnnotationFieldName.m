@@ -18,7 +18,7 @@ function [fieldNames,dbIDs,relations] = getAnnotationFieldName(annotatedField,da
 %    invertSelection:            Invert the qualifierSelection i.e. use
 %                                only those specified (default: false);
 %
-% OUTPUT:
+% OUTPUTS:
 %    fieldNames:                 The name of the field corresponding to the
 %                                given annotation.
 %    dbIDs:                      A Cell array with the DB IDs 
@@ -46,9 +46,8 @@ end
 
 knownMappings = getDatabaseMappings(annotatedField);
 
-%function map = getMappingInfo(db,rel,knownMappings,field, excludeAnnotationType,inverseRelationSelection)
-%Get mapping, and missing fields.
-%repeat relations, this is a set of cvterms all under one qualifier
+% get mapping, and missing fields.
+% repeat relations, this is a set of cvterms all under one qualifier
 [mapping] = ismember(knownMappings(:,1),database) & ...
             ismember(knownMappings(:,2),annotationQualifier) & ...
             ~(ismember(knownMappings(:,2),qualifierSelection) ~=invertSelection) ;
@@ -64,7 +63,7 @@ end
 
 
 function fieldID = convertDBID(dbid,relation,field)
-% Convert dbID and a relation to a field name. 
+% convert dbID and a relation to a field name. 
 
 fieldID = convertSBMLID(dbid);
 fieldID = strcat(relation,fieldID);

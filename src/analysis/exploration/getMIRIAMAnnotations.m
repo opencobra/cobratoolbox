@@ -9,7 +9,7 @@ function annotations = getMIRIAMAnnotations(model, type, varargin)
 %    type:              the basic field to get annotations for (e.g. rxn, met, or
 %                       model
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
 %    varagin:           Additional arguments as parameter/value pairs.
 %                        * bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in `getBioQualifiers()` will be used
 %                        * ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type 's'])). 
@@ -42,8 +42,8 @@ parser.parse(varargin{:});
 bioQualifiers = parser.Results.bioQualifiers;
 ids = parser.Results.ids;
 
-%We have to handle some things special for model annotations (e.g. they can
-%have model qualifiers)
+% we have to handle some things special for model annotations (e.g. they can
+% have model qualifiers)
 if strcmp(type,'model')
     numElements = 1;
     annotations = cell(1);
@@ -60,20 +60,20 @@ end
 modelFields = fieldnames(model);
 unusedFields = true(size(modelFields));
 databaseFields = getDatabaseMappings(type);
-%Ok, these can be converted
+% ok, these can be converted
 databaseFields = databaseFields(ismember(databaseFields(:,3),modelFields),:);
-%So we first convert the databaseFields
-%But we will first filter so that we only get the standard qualifiers for
-%each db.
+% so we first convert the databaseFields
+% but we will first filter so that we only get the standard qualifiers for
+% each db.
 databaseFields = databaseFields(ismember(databaseFields(:,2),standardQualifiers(:,1)),:);
 
-%Now we know the database fields, so we will check for the non default
-%Annotation fields
+% now we know the database fields, so we will check for the non default
+% annotation fields
 relfields = modelFields(cellfun(@(x) strncmp(x,type,length(type)),modelFields));        
 annotationsFields = relfields(cellfun(@(x) any(cellfun(@(y) strncmp(x,[type, y],length([type y])),bioQualifiers)),relfields));
 
-%Now, we can initialize the result cell array. 
-%this array has the following form:
+% now, we can initialize the result cell array. 
+% this array has the following form:
 % Dim1 -> one entry per element
 % Dim2 -> one entry per either database or annotations Field
 % Dim3 -> 1: qualifierType ; 2: qualifier ; 3: Database ; 4: IDs ; 
@@ -100,7 +100,7 @@ for i = 1:numel(annotationsFields)
     else
         cValues = model.(annotationsFields{i})(relPos);
     end
-    %get the correct qualifier for this field.
+    % get the correct qualifier for this field.
     for i = 1:numel(bioQualifiers)
         cQual = bioQualifiers{i};
         if strncmp(cField,[type, cQual],length([type cQual]))
@@ -120,7 +120,7 @@ for i = 1:numel(annotationsFields)
     arrayDim2Pos = arrayDim2Pos + 1;
 end
 
-%Now, build a struct out of this cell array.
+% now, build a struct out of this cell array.
 ressourceStruct = struct('database','','id','');
 ressourceStruct(1) = []; %Clear the empty element.
 cvtermStruct = struct(struct('qualifier','','qualifierType','','ressources',ressourceStruct));
@@ -128,7 +128,7 @@ cvtermStruct(1) = [];
 annotations = struct('id','rxn1','cvterms',cvtermStruct);
 annotations(numElements).id = '';
 
-% As a reminder, this is the structure of the array:
+% as a reminder, this is the structure of the array:
 % Dim1 -> one entry per element
 % Dim2 -> one entry per either database or annotations Field
 % Dim3 -> 1: qualifierType ; 2: qualifier ; 3: Database ; 4: IDs ; 
@@ -137,18 +137,18 @@ for i = 1:numElements
     cvtermsIndex = 1;
     annotations(i).id = ids{i};
     currentCVtermsStruct = cvtermStruct;    
-    %Take all qualifierTypes which have non empty entries for this element
+    % take all qualifierTypes which have non empty entries for this element
     relArray = resultArray(i,:,:);
     currentQualifiers = unique(resultArray(i,:,2));
-    %We go over each qualifier, and will then look for the qualifierType to
-    %distinguish
+    % we go over each qualifier, and will then look for the qualifierType to
+    % distinguish
     for j = 1:numel(currentQualifiers)
-        %Get the current qualifier
+        % get the current qualifier
         cQualifier = currentQualifiers{j};
         qualIndex = strcmp(resultArray(i,:,2),cQualifier);
         qualifierTypes = unique(resultArray(i,qualIndex,1));        
         for k = 1:numel(qualifierTypes)
-            %QAnd qualifier typee
+            % and qualifier typee
             cQualifierType = qualifierTypes{k};            
             cStruct = struct('qualifier',cQualifier,'qualifierType',cQualifierType,'ressources',ressourceStruct);
             cDBArray = {};
@@ -157,7 +157,7 @@ for i = 1:numElements
             databases = resultArray(i,relIndices,3);
             dbids = resultArray(i,relIndices,4);
             for cdb = 1:length(databases)
-                %And the ressources
+                % and the ressources
                 cDatabase = databases{cdb};
                 cIDs = strsplit(dbids{cdb},'; '); %IDs are split by ; in the fields.                
                 if ~all(cellfun(@isempty, cIDs))
@@ -166,7 +166,7 @@ for i = 1:numElements
                 end
             end
             if ~isempty(cIDArray)
-                %if we have at least one ID
+                % if we have at least one ID
                 cRessourcestruct = ressourceStruct;
                 cRessourceStruct(numel(cIDArray)).id = '';
                 [cRessourceStruct(:).id] = deal(cIDArray{:});

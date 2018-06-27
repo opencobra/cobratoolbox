@@ -16,13 +16,17 @@ function identifiersDBs = getRegisteredDatabases()
 persistent databases
 
 if isempty(databases)
-    %Load from external site        
-    dbs = webread('http://identifiers.org/rest/collections');        
+    % load from external site        
+    try
+        dbs = webread('http://identifiers.org/rest/collections');        
+    catch
+        error('Could not load the databases registered with identifiers.org.\nThis is likely due to a missing internet connection.\nPlease try this again later');
+    end
     % extract relevant information
     dbnames = cellfun(@(x) x.name, dbs,'Uniform',0);
     dbpatterns = cellfun(@(x) x.pattern, dbs,'Uniform',0);
     dbprefix = cellfun(@(x) x.prefix, dbs,'Uniform',0);    
-    %Collate as struct
+    % collate as struct
     databases = struct('name',dbnames,'pattern',dbpatterns,'prefix',dbprefix);
 end
 

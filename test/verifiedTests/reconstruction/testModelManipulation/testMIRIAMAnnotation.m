@@ -16,7 +16,7 @@ currentDir = pwd;
 model = getDistributedModel('ecoli_core_model.mat');
 
 
-%This test can fail if no internet connection is present.
+% this test can fail if no internet connection is present.
 try
     dbs = getRegisteredDatabases();
 catch
@@ -24,13 +24,13 @@ catch
 end
 
 errorMessage = sprintf('The following databases are not defined on identifiers.org:\n%s',strjoin({'NonExistentDB'},'\n'));
-%Add an invalid annotation to the model
+% add an invalid annotation to the model
 assert(verifyCobraFunctionError('addMIRIAMAnnotations','inputs',{model,model.rxns(1),'NonExistentDB','blubb'},'testMessage',errorMessage))
 
-%Try to add an invalid ID
+% try to add an invalid ID
 assert(verifyCobraFunctionError('addMIRIAMAnnotations','inputs',{model,model.rxns(1),'brenda','blubb'}))
 
-%Now, we will add a valid brenda ID
+% now, we will add a valid brenda ID
 assert(~isfield(model,'rxnisbrendaID'));
 validBrendaID = '1.2.3.4';
 modelWithID = addMIRIAMAnnotations(model,model.rxns(1),'brenda',validBrendaID);
@@ -38,36 +38,42 @@ assert(isfield(modelWithID,'rxnisbrendaID'));
 assert(all(strcmp(modelWithID.rxnisbrendaID(2:end),'')));
 assert(strcmp(modelWithID.rxnisbrendaID{1},validBrendaID));
 additionalIDs = {validBrendaID, '2.3.4.5', '5.6.7.8'};
-%Add multiple additional IDs (we need the ID 3 times.
+
+% add multiple additional IDs (we need the ID 3 times.
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
 assert(isempty(setxor(strsplit(modelWithID.rxnisbrendaID{1},'; '),additionalIDs)));
 assert(length(strsplit(modelWithID.rxnisbrendaID{1},'; ')) == 3);
-%Lets add the ids again and see, that it did nmot change.
+
+% lets add the ids again and see, that it did nmot change.
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
 assert(isempty(setxor(strsplit(modelWithID.rxnisbrendaID{1},'; '),additionalIDs)));
 assert(length(strsplit(modelWithID.rxnisbrendaID{1},'; ')) == 3);
-%Now, replace the annotation by the validBrendaID
+
+% now, replace the annotation by the validBrendaID
 modelWithID = addMIRIAMAnnotations(modelWithID,model.rxns(1),'brenda',validBrendaID,'replaceAnnotation',true);
 assert(strcmp(modelWithID.rxnisbrendaID{1},validBrendaID));
 
-%Repeat the addition of all
+% repeat the addition of all
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
 
-%And lets test getMIRIAMAnnotations
+% and lets test getMIRIAMAnnotations
 annotations = getMIRIAMAnnotations(model,'rxn','ids',model.rxns(1));
-%This is all empty. There are no terms on the basic model.
+
+% this is all empty. There are no terms on the basic model.
 assert(isempty(annotations.cvterms))
 
-%Now check that the Brenda Terms are correct
+% now check that the Brenda Terms are correct
 annotations = getMIRIAMAnnotations(modelWithID,'rxn','ids',model.rxns(1));
 assert(strcmp(annotations.cvterms(1).qualifier,'is'))
 assert(strcmp(annotations.cvterms(1).qualifierType,'bioQualifier'))
-%It contains all those IDs.
+
+% it contains all those IDs.
 assert(isempty(setxor({annotations.cvterms(1).ressources(:).id},additionalIDs)));
-%And its the brenda database
+
+% and its the brenda database
 assert(all(strcmp({annotations.cvterms(1).ressources(:).database},'brenda')));
 
-%Now, also check, whether we can add ,model annotations
+% now, also check, whether we can add ,model annotations
 modelWithID = addMIRIAMAnnotations(modelWithID,'','bigg.model','iJO1366','referenceField','model'); %This adds a bioModifier
 modelWithID = addMIRIAMAnnotations(modelWithID,'','bigg.model','iJO1366','referenceField','model',...
                                    'annotationTypes','model','annotationQualifiers','isDerivedFrom'); %This adds a bioModifier
@@ -77,12 +83,15 @@ assert(strcmp(modelWithID.modelbisbigg__46__modelID, 'iJO1366'));
 
 annotations = getMIRIAMAnnotations(modelWithID,'model');
 isDerivedFromPos = ismember({annotations.cvterms.qualifier},'isDerivedFrom');
-% This is a model qualifier
+
+% this is a model qualifier
 assert(strcmp(annotations.cvterms(isDerivedFromPos).qualifierType,'modelQualifier')) 
-% And is named iJO1366
+
+% and is named iJO1366
 assert(strcmp(annotations.cvterms(isDerivedFromPos).ressources.id,'iJO1366')) 
 
-% The other is a bioQualifier.
+% the other is a bioQualifier.
 assert(strcmp(annotations.cvterms(~isDerivedFromPos).qualifierType,'bioQualifier')) 
-% And also named iJO1366
+
+% and also named iJO1366
 assert(strcmp(annotations.cvterms(~isDerivedFromPos).ressources.id,'iJO1366')) 

@@ -19,7 +19,7 @@ function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargi
 %                   only a single element is annotated, or a cell array of
 %                   chars if multiple elements are annotated.
 %
-% OPTIONAL INPUT
+% OPTIONAL INPUTS:
 %    varargin:      Additional parameters either as parameter/value pairs
 %                   or as a parameter struct with the following
 %                   options/fieldnames:
@@ -32,31 +32,28 @@ function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargi
 %    model:         The COBRA model with the added annotations
 
 definedModelFields = getDefinedFieldProperties();
-%These are all base fields
+% these are all base fields
 baseFields = union(definedModelFields(cellfun(@ischar,definedModelFields(:,2)),2),definedModelFields(cellfun(@ischar,definedModelFields(:,3)),3));
 
-%Get the defined databases
-try
-    dbs = getRegisteredDatabases();
-catch
-    error('Could not load the  databases registered with identifiers.org.\nThis is likely due to a missing internet connection.\nPlease try this again later');
-end
-%We assume everything is a cell array, so we translate provided char
-%arrays.
+% get the defined databases
+dbs = getRegisteredDatabases();
+
+% we assume everything is a cell array, so we translate provided char
+% arrays.
 if ischar(ids)
     ids = {ids};
 end
-
 if ischar(elementIDs)
     elementIDs = {elementIDs};
 end
 
-%Check the databases
+% check the databases
 if ischar(databases)
     databases = repmat({databases},numel(ids),1);
 end
 
 
+% parse the input
 parser = inputParser();
 parser.addParameter('referenceField','',@(x) isempty(x) || any(strcmpi(baseFields,x)) || strcmpi('model',x));
 parser.addParameter('annotationTypes',repmat({'bio'},numel(elementIDs),1),@(x) (ischar(x) && any(strcmpi(x,{'model','bio'}))) ...
@@ -71,14 +68,18 @@ annotationType = parser.Results.annotationTypes;
 annotationQualifier = parser.Results.annotationQualifiers;
 replaceAnnotation = parser.Results.replaceAnnotation;
 printLevel = parser.Results.printLevel;
-%We assume that all are cell arrays.
 
+% convert element Ids to a column vector - ease of use
 elementIDs = columnVector(elementIDs);
+
+% and convert potential single elements to cell arrays refering to all
+% elements
 if ischar(annotationType)
     annotationType = repmat({annotationType},numel(ids),1);
 end
 annotationType = columnVector(annotationType);
 
+% the same for the qualifier
 if ischar(annotationQualifier)
     annotationQualifier = repmat({annotationQualifier},numel(ids),1);
 end
@@ -87,12 +88,15 @@ annotationQualifier = columnVector(annotationQualifier);
 
 
 
-
+% if the databases are not registered with registry.org we do not allow
+% them.
 db2prefix = [{dbs.name};{dbs.prefix}];
 if ~all(ismember(unique(databases),db2prefix))
     missing = setdiff(unique(databases),db2prefix);
     error('The following databases are not defined on identifiers.org:\n%s',strjoin(missing,'\n'));
 else
+    % we allow the names (full names) and convert them to the corresponding
+    % prefixes.
     [dbpres,dbpos] = ismember(databases,db2prefix(1,:));    
     if printLevel > 0
         fprintf('Replaced the provided Names by the following prefixes:\n%s',strjoin(cellfun(@(x,y) strcat(x, {': '}, y), database(dbpres), db2prefix(2,dbpos(dbpres)), 'Uniform',0),'\n'));
@@ -100,7 +104,7 @@ else
     databases(dbpres) = db2prefix(2,dbpos(dbpres)); %Replace the name by the prefix    
 end
 
-%if referenceField is empty, determine the relevant fields
+% if referenceField is empty, determine the relevant fields
 usedFields = {};
 annotateModel = false;
 if isempty(referenceField)
@@ -110,7 +114,7 @@ if isempty(referenceField)
         end
     end        
 else
-    %If its not empty, check for model and reference.
+    % if its not empty, check for model and reference.
     if strcmpi('model',referenceField)
         usedFields = {'model'};
         annotateModel = true;
@@ -121,26 +125,31 @@ else
     end    
 end
 
-%If usedFields is empty, there is no field that contains the IDs.
+% if usedFields is empty, there is no field that contains the IDs.
 if isempty(usedFields)
     error('None of the provided IDs was found in any of the model fields');
 end
 
-%We will run through each annotation database. 
+% we will run through each annotation database. 
 annotationQualifiers = unique(annotationQualifier);
 udatabases = unique(databases);
 
 
 if annotateModel
+    % if we annotate a model, we need to check, whether its a biological or
+    % a model qualifier
     uQualTypes = unique(annotationType);
     for type = 1:numel(uQualTypes)
+        % check all qualifier types 
         cQualType = uQualTypes{type};
         relForType = strcmp(annotationType,cQualType);
         for db = 1:numel(udatabases)
+            % and all databases
             cdb = udatabases(db);
             relForDB = strcmp(databases,cdb);
             identifiersDBPos = ismember({dbs.prefix},cdb);
             dbpattern = dbs(identifiersDBPos).pattern;
+            % validate the identifiers used vs the patterns
             if any(cellfun(@(x) isempty(regexp(x,dbpattern)),ids(relForDB)))
                 relIDs = ids(relForDB);
                 invalidIDs = cellfun(@(x) isempty(regexp(x,dbpattern)),relIDs);
@@ -149,10 +158,13 @@ if annotateModel
             for annotQual = 1:numel(annotationQualifiers)
                 cQual = annotationQualifiers{annotQual};
                 relForAnnot = strcmp(annotationQualifier,annotationQualifiers(annotQual));
-                %Now, build the field, if it does not exist.
+                % now, build the field, if it does not exist.
                 fieldName = getAnnotationFieldName('model',cdb,cQual);
                 fieldName = regexprep(fieldName{1},'^model',['model' cQualType(1)]);
                 annotation = unique(ids(relForDB & relForAnnot & relForType));
+                % if the field does not exist or the annotation is supposed
+                % to be replaced we simply recreate the field. otherwise we
+                % join data from the field with the new annotation.
                 if replaceAnnotation || ~isfield(model,'fieldName')
                     model.(fieldName) = strjoin(annotation, '; ');
                 else                    
@@ -161,7 +173,7 @@ if annotateModel
             end
         end
     end         
-    return %We are done here.
+    return % we are done here.
 else
     if any(strcmp(annotationQualifier,'model'))
         error('Model annotations can only be assigned to the model!');
@@ -173,40 +185,50 @@ end
 % get all relevant IDs
 
 
-%Now, we have to go through all base Fields
+% now, we have to go through all base Fields
 for field = 1 : numel(usedFields)
+    % for each field that has the identifier
     cField = usedFields{field};
     relevantIDs = ismember(elementIDs,model.(cField));
     usedIDs = unique(elementIDs(relevantIDs));
     for db = 1:numel(udatabases)        
+        % and each database
         cdb = udatabases(db);
         relForDB = strcmp(databases,cdb);
         identifiersDBPos = ismember({dbs.prefix},cdb);
         dbpattern = dbs(identifiersDBPos).pattern;
+        % we first check, whether the provided ids are valid identifiers
+        % for this database
         if any(cellfun(@(x) isempty(regexp(x,dbpattern)),ids(relForDB)))
             relIDs = ids(relForDB);
             invalidIDs = cellfun(@(x) isempty(regexp(x,dbpattern)),relIDs);
             error('The following IDs are invalid for database %s which requires this pattern (%s):\n%s',cdb{1},dbpattern,strjoin(relIDs(invalidIDs),'\n'));
         end        
+        % and then collect all qualifier types to assign the respective
+        % values.
         for annotQual = 1:numel(annotationQualifiers)
             cQual = annotationQualifiers{annotQual};
             relForAnnot = strcmp(annotationQualifier,annotationQualifiers(annotQual));
-            %Now, build the field, if it does not exist.
+            % now, build the field, if it does not exist.
             fieldName = getAnnotationFieldName(cField(1:end-1),cdb,cQual);
             fieldName = fieldName{1};
             if ~isfield(model,fieldName)
                 %The field is a simple cell array of strings.
                 model = createEmptyFields(model,fieldName,{fieldName,cField,1,'iscell(x)','''''',0,'cell'});
             end
-            %After the field is present, we will now built the current
-            %annotation field.
-            %for each relevant ID, we will set the respective position                        
+            % after the field is present, we will now built the current
+            % annotation field.
+            % for each relevant ID, we will set the respective position                        
             annotations = cellfun(@(x) unique(ids(relForDB & relForAnnot & strcmp(x,elementIDs))),usedIDs,'Uniform', 0);
             [idpres,idpos] = ismember(model.(cField),usedIDs);            
             if replaceAnnotation
+                % if the annotation is replaced, we simply overwrite
+                % existing information for those elements where we have new information.
                 newAnnotation = cellfun(@(x) strjoin(x,'; '),annotations, 'Uniform',0);
                 model.(fieldName)(idpres) = newAnnotation(idpos(idpres));
             else
+                % otherwise we join the annotation identifiers using '; '
+                % as collation string.
                 newPos = idpos(idpres);
                 combinedAnnotation = model.(fieldName)(idpres);                
                 emptyAnnotations = cellfun(@isempty, combinedAnnotation);                               
