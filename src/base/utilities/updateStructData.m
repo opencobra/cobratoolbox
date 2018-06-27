@@ -1,7 +1,9 @@
 function updatedStruct = updateStructData(origStruct,updateStruct)
 % Update the struct in origStruct with the data from updateStruct
+%
 % USAGE:
 %    updatedStruct = updateStruct(origStruct,updateStruct)
+%
 % INPUTS:
 %    origStruct:        The original Struct
 %    updateStruct:      The struct to update the information in origStruct.
@@ -10,8 +12,8 @@ function updatedStruct = updateStructData(origStruct,updateStruct)
 %    updatedStruct:     The struct with the information from origStruct
 %                       updated by the info from updateStruct
 
-
 updateFieldNames = fieldnames(updateStruct); % get all field names from the original struct that contains the additional information
+
 % set up the updated struct
 updatedStruct = origStruct;
 
@@ -27,5 +29,3 @@ for i = 1:numel(updateFieldNames)
         end
     end
 end
-        
-            
