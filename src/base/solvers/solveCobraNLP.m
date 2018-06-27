@@ -50,11 +50,11 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %    varargin:      Additional parameters either as parameter struct, or as
 %                   parameter/value pairs. A combination is possible, if
 %                   the parameter struct is either at the beginning or the
-%                   end of the optional input. 
+%                   end of the optional input.
 %                   All fields of the struct which are not COBRA parameters
 %                   (see `getCobraSolverParamsOptionsForType`) for this
 %                   problem type will be passed on to the solver in a
-%                   solver specific manner. 
+%                   solver specific manner.
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a NLP solution:
 %
@@ -77,22 +77,20 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %       - Markus Herrgard 12/7/07
 %       - Richard Que 02/10/10 Added tomlab_snopt support.
 
-
 [cobraParams,solverParams] = parseSolverParameters('NLP',varargin{:});% get the solver parameters
 
 % set the solver
 solver = cobraParams.solver;
 
-% Save Input if selected
+% save input if selected
 if ~isempty(cobraParams.saveInput)
     fileName = cobraParams.saveInput;
     if ~find(regexp(fileName, '.mat'))
         fileName = [fileName '.mat'];
     end
-    display(['Saving LPproblem in ' fileName]);
+    disp(['Saving LPproblem in ' fileName]);
     save(fileName, 'LPproblem')
 end
-
 
 currentDir = pwd;
 
@@ -102,18 +100,18 @@ optParamNames = {'printLevel','warning','checkNaN','PbName', ...
                  'iterationLimit', 'logFile'};
 parameters = '';
 
-%deal variables
+% deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
 
-% Assume constraint A*x = b if csense not provided
+% assume constraint A*x = b if csense not provided
 if ~isfield(NLPproblem, 'csense')
     % If csense is not declared in the Problem, assume that all
     % constraints are equalities.
-    NLPproblem.csense(1:size(A,1), 1) = 'E';   
+    NLPproblem.csense(1:size(A,1), 1) = 'E';
 end
 csense = NLPproblem.csense;
- 
-% Assume constraint A*x = 0 if b not provided
+
+% assume constraint A*x = 0 if b not provided
 if ~isfield(NLPproblem, 'b')
     NLPproblem.b = zeros(size(A, 1), 1);
 end
@@ -135,7 +133,7 @@ end
 
 
 t_start = clock;
-% Solvers
+% solvers
 switch solver
     case 'matlab'
         %% fmincon
@@ -145,7 +143,7 @@ switch solver
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
 
-        %Get fminCon Options, and set the options supplied by the user.
+        % get fminCon Options, and set the options supplied by the user.
         switch cobraParams.printLevel
             case 0
                 fminconPrintLevel = 'off';
@@ -158,7 +156,7 @@ switch solver
         end
         options = optimoptions('fmincon','maxIter',cobraParams.iterationLimit,'maxFunEvals',cobraParams.iterationLimit, 'Display',fminconPrintLevel);
 
-        options = updateStructData(options,solverParams);        
+        options = updateStructData(options,solverParams);
 
         % define the objective function with 2 input arguments
         if exist('objFunction','var')
@@ -166,8 +164,11 @@ switch solver
         else
             func = @(x) NLPproblem.osense*sum(c.*x);
         end
+
         %Now, define the maximum timer
+
         options.OutputFcn = @stopTimer;
+
         %and start it.
         stopTimer(cobraParams.timeLimit,1);
 
@@ -184,14 +185,13 @@ switch solver
         % change back to currentDir
         cd(currentDir);
 
-        %Assign Results
+        % assign Results
         if (origStat > 0)
             stat = 1; % Optimal solution found
             y = lambda.eqlin;
             w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)
         elseif (origStat < 0)
-            %We supply empty fields, but we need to assign them as
-            %otherwise
+            % we supply empty fields, but we need to assign them as otherwise
             y = [];
             w = [];
             stat = 0; % Infeasible
@@ -306,7 +306,7 @@ switch solver
         end
         %Now, update the Problem struct with solver Params....
         Prob = updateStructData(Prob,solverParams);
-        
+
         %Call Solver
         Result = tomRun('snopt', Prob, printLevel);
 

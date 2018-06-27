@@ -36,7 +36,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 %    varargin:        Additional parameters either as parameter struct, or as
 %                     parameter/value pairs. A combination is possible, if
 %                     the parameter struct is either at the beginning or the
-%                     end of the optional input. 
+%                     end of the optional input.
 %                     All fields of the struct which are not COBRA parameters
 %                     (see `getCobraSolverParamsOptionsForType`) for this
 %                     problem type will be passed on to the solver in a
@@ -71,12 +71,12 @@ function solution = solveCobraQP(QPproblem, varargin)
 %       - Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
 %       - Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver
 
-
 [cobraParams,solverParams] = parseSolverParameters('QP',varargin{:}); % get the solver parameters
-%Set the solver
+
+% set the solver
 solver = cobraParams.solver;
 
-% Defaults in case the solver does not return anything
+% defaults in case the solver does not return anything
 x = [];
 y = [];
 w = [];
@@ -123,10 +123,10 @@ switch solver
         tomlabProblem.PriLvl=cobraParams.printLevel;
         tomlabProblem.MIP.cpxControl.QPMETHOD = 1;
         tomlabProblem.MIP.cpxControl.THREADS = 1;
-        
+
         %Adapt to given parameters
         tomlabProblem.MIP.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
-        
+
         Result = tomRun('cplex', tomlabProblem);
         x = Result.x_k;
         f = Result.f_k;
@@ -166,7 +166,7 @@ switch solver
         CplexQPProblem.Model.rhs = b_U;
         CplexQPProblem.Model.lhs = b_L;
         CplexQPProblem.Model.obj = osense*c;
-        CplexQPProblem.Model.Q = F;   
+        CplexQPProblem.Model.Q = F;
         %optional parameters
         if cobraParams.printLevel == 0  % set display function as empty
             CplexQPProblem.DisplayFunc=[];
@@ -174,13 +174,13 @@ switch solver
         CplexQPProblem.Param.output.writelevel.Cur = cobraParams.printLevel;
         CplexQPProblem.Param.qpmethod.Cur = 1;
         CplexQPProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-        CplexQPProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;        
+        CplexQPProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
         % Set IBM-Cplex-specific parameters
         CplexQPProblem = setCplexParam(CplexQPProblem, solverParams, cobraParams.printLevel);
         %Set the feasibility Tolerance if it changed.
         cobraParams.feasTol = CplexQPProblem.Param.simplex.tolerances.feasibility.Cur;
-        
-        
+
+
         Result = CplexQPProblem.solve();
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
@@ -311,9 +311,9 @@ switch solver
         %https://docs.mosek.com/8.1/toolbox/solving-geco.html
         param.MSK_DPAR_INTPNT_NL_TOL_PFEAS=cobraParams.feasTol;
         param.MSK_DPAR_INTPNT_NL_TOL_DFEAS=cobraParams.feasTol;
-        
+
         %Update with solver Specific Parameter struct
-        param = updateStructData(param,solverParams);        
+        param = updateStructData(param,solverParams);
         cobraParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
 
         % Optimize the problem.
@@ -474,14 +474,14 @@ switch solver
         opts.QP.qrow = int32(qrow);
         opts.QP.qcol = int32(qcol);
         opts.QP.qval = qval;
-        opts.Method = cobraParams.method;    % 0 - primal, 1 - dual        
-        opts.FeasibilityTol = cobraParams.feasTol;        
+        opts.Method = cobraParams.method;    % 0 - primal, 1 - dual
+        opts.FeasibilityTol = cobraParams.feasTol;
         opts.OptimalityTol = cobraParams.optTol;
         %opt.Quad=1;
         opts = updateStructData(opts,solverParams);
         cobraParams.feasTol = opts.FeasibilityTol;
 
-        
+
         %gurobi_mex doesn't cast logicals to doubles automatically
         c = osense*double(c);
         [x,f,origStat,output,y] = gurobi_mex(c,1,sparse(A),b, ...
@@ -525,10 +525,10 @@ switch solver
         params.OptimalityTol = cobraParams.optTol;
         %Update param struct with Solver Specific parameters
         params = updateStructData(params,solverParams);
-        
+
         %Update feasTol in case it is changed by the solver Parameters
         cobraParams.feasTol = params.FeasibilityTol;
-        
+
         %Finished setting up options.
 
         if (isempty(QPproblem.csense))
@@ -543,7 +543,7 @@ switch solver
         end
 
         QPproblem.osense = 'min';
-        
+
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
         [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,osense*double(QPproblem.c),QPproblem.csense);
