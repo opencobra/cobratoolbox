@@ -1355,14 +1355,19 @@ elseif strcmp(solver,'mps')
     solution = [];
 end
 
+% check the optimality conditions for variaous solvers
 if ~strcmp(solver, 'mps')
     if solution.stat == 1
         if any(strcmp(solver,{'pdco', 'matlab', 'glpk', 'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
             if ~isempty(solution.slack) && ~isempty(solution.full)
+
+                % determine the residual 1
                 res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
                 res1(~isfinite(res1))=0;
-                tmp1=norm(res1,inf);
-                if tmp1 > cobraParams.feasTol*1e4
+                tmp1 = norm(res1, inf);
+
+                % evaluate the optimality condition 1
+                if tmp1 > cobraParams.feasTol * 1e4
                     disp(solution.origStat)
                     error(['[' solver '] Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraParams.feasTol)])
                 else
@@ -1373,9 +1378,13 @@ if ~strcmp(solver, 'mps')
             end
 
             if ~isempty(solution.rcost) && ~isempty(solution.dual)
-                res2=osense*LPproblem.c  - LPproblem.A'*solution.dual - solution.rcost;
-                tmp2=norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')),inf);
-                if tmp2 > cobraParams.feasTol*1e2
+
+                % determine the residual 2
+                res2 = osense * LPproblem.c  - LPproblem.A' * solution.dual - solution.rcost;
+                tmp2 = norm(res2(strcmp(LPproblem.csense,'E') | strcmp(LPproblem.csense,'=')), inf);
+
+                % evaluate the optimality condition 2
+                if tmp2 > cobraParams.feasTol * 1e2
                     disp(solution.origStat)
                     error(['[' solver '] Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraParams.feasTol)])
                 else
