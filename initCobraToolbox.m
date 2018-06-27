@@ -607,7 +607,7 @@ function [installed, versionGit] = checkGit()
         versionGitStr = result_gitVersion(length(searchStr)+1:end);
 
         % replace line breaks and white spaces
-        versionGitStr = regexprep(versionGitStr,'\s+','');
+        versionGitStr = regexprep(versionGitStr(1:7),'\s+','');
 
         % replace the dots in the version number
         tmp = strrep(versionGitStr, '.', '');
