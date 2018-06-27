@@ -396,7 +396,7 @@ switch solver
         [x, f, y, w, stat, origStat] = solveGlpk(c, A, b, lb, ub, csense, osense, param);
         y = -y;
         w = -w;
-        s = b - A*x;
+        s = b - A * x; % output the slack variables
 
     case {'lindo_new', 'lindo_old'}
         %% LINDO
@@ -587,7 +587,7 @@ switch solver
                     end
                     f=c'*x;
                     %slack for blc <= A*x <= buc
-                    s = b - A*x;
+                    s = b - A * x; % output the slack variables
                 elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
@@ -623,7 +623,7 @@ switch solver
                     end
                     f=c'*x;
                     %slack for blc <= A*x <= buc
-                    s = b - A*x;
+                    s = b - A * x; % output the slack variables
                 elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
                         strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
@@ -870,8 +870,7 @@ switch solver
                 stat = 1; % Optimal solution found
                 [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc);
 
-                % save the slack variables
-                s = b - A*x;
+                s = b - A * x; % output the slack variables
 
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
@@ -1038,7 +1037,7 @@ switch solver
         % Assign results
         x = Result.x_k;
         f = osense*sum(tomlabProblem.QP.c.*Result.x_k);
-        s = b - A*x;
+        s = b - A * x; % output the slack variables
 
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
@@ -1159,7 +1158,7 @@ switch solver
             x = ILOGcplex.Solution.x;
             w = ILOGcplex.Solution.reducedcost;
             y = ILOGcplex.Solution.dual;
-            s = b - A*x;
+            s = b - A * x; % output the slack variables
         elseif origStat == 4
             %This is likely unbounded, but could be infeasible
             %Lets check, by solving an additional LP with no objective.
@@ -1184,7 +1183,7 @@ switch solver
             x = ILOGcplex.Solution.x;
             w = ILOGcplex.Solution.reducedcost;
             y = ILOGcplex.Solution.dual;
-                s = b - A*x;
+                s = b - A * x; % output the slack variables
         elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
             %Abort due to reached limit. check if there is a solution
             %and return it.
@@ -1306,7 +1305,8 @@ switch solver
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f = c'*x;
-        s = b - A*x;
+        s = b - A * x; % output the slack variables
+
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
