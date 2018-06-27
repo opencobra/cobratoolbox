@@ -23,8 +23,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testSolveCobraLP'));
 cd(fileDir);
 
-% Dummy Model
-% http://www2.isye.gatech.edu/~spyros/LP/node2.html
+% define a dummy model: http://www2.isye.gatech.edu/~spyros/LP/node2.html
 LPproblem.c = [200; 400];
 LPproblem.A = [1 / 40, 1 / 60; 1 / 50, 1 / 50];
 LPproblem.b = [1; 1];
@@ -43,37 +42,35 @@ solverPkgs = solvers.LP;
 testSuite = {'dummyModel', 'ecoli'};
 
 for k = 1:length(solverPkgs)
-    
-    
+
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    
+
     for p = 1:length(testSuite)
         fprintf('   Running %s with solveCobraLP using %s ... ', testSuite{p}, solverPkgs{k});
-        
+
         if p == 1
             % solve LP problem printing summary information
             for printLevel = 0:3
                 LPsolution = solveCobraLP(LPproblem, 'printLevel', printLevel);
             end
-            
+
             for i = 1:length(LPsolution.full)
                 assert((abs(LPsolution.full(i) - 1) < tol))
             end
             assert(abs(LPsolution.obj) - 600 < tol)
-            
+
         elseif p == 2
             % solve th ecoli_core_model (csense vector is missing)
-            %This is explicitly a load, to test missing csense
-            %vector compensation
+            % Note: this is explicitly a load, to test missing csense vector compensation
             load([getDistributedModelFolder('ecoli_core_model.mat') filesep 'ecoli_core_model.mat'], 'model');
-            
+
             % solveCobraLP
             solution_solveCobraLP = solveCobraLP(model);
-            
+
             % optimizeCbModel
             solution_optimizeCbModel = optimizeCbModel(model);
-            
+
             % compare both solution objects
             assert(abs(solution_solveCobraLP.obj-solution_optimizeCbModel.f) < 1e-6);
             assert(isequal(solution_solveCobraLP.full, solution_optimizeCbModel.x))
@@ -81,7 +78,7 @@ for k = 1:length(solverPkgs)
             assert(isequal(solution_solveCobraLP.dual, solution_optimizeCbModel.y))
             assert(solution_solveCobraLP.stat == solution_optimizeCbModel.stat)
         end
-        
+
         % output a success message
         fprintf('Done.\n');
     end
@@ -144,6 +141,21 @@ model.c = 1;
 model.osense = -1;
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
 assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
+
+% only test the solvers for which the optimality conditions have been implemented
+solverPkgs = {'pdco', 'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
+
+% change the COBRA solver (LP)
+for k = 1:length(solverPkgs)
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+
+    if solverOK
+        fprintf('   Running optimalityConditions tests in solveCobraLP using %s ... ', solverPkgs{k});
+
+        assert(~verifyCobraFunctionError('solveCobraLP', 'inputs', {LPproblem}));
+        fprintf(' Done.\n');
+    end
+end
 
 % change the directory
 cd(currentDir)
