@@ -122,7 +122,6 @@ global MINOS_PATH
 % get the solver parameters
 [cobraParams, solverParams] = parseSolverParameters('LP',varargin{:});
 
-
 % set the solver
 solver = cobraParams.solver;
 
@@ -1159,7 +1158,7 @@ switch solver
             w = ILOGcplex.Solution.reducedcost;
             y = ILOGcplex.Solution.dual;
             s = b - A * x; % output the slack variables
-        elseif origStat == 4            
+        elseif origStat == 4
             % this is likely unbounded, but could be infeasible
             % lets check, by solving an additional LP with no objective.
             % if that LP has a solution, it's unbounded. If it doesn't, it's infeasible.
@@ -1368,7 +1367,7 @@ if ~strcmp(solver, 'mps')
                     disp(solution.origStat)
                     error(['[' solver '] Optimality condition (1) in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraParams.feasTol)])
                 else
-                    if printLevel > 0
+                    if cobraParams.printLevel > 0
                         fprintf(['\n > [' solver '] Optimality condition (1) in solveCobraLP satisfied.']);
                     end
                 end
@@ -1385,13 +1384,13 @@ if ~strcmp(solver, 'mps')
                     disp(solution.origStat)
                     error(['[' solver '] Optimality conditions (2) in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraParams.feasTol)])
                 else
-                    if printLevel > 0
+                    if cobraParams.printLevel > 0
                         fprintf(['\n > [' solver '] Optimality condition (2) in solveCobraLP satisfied.\n']);
                     end
                 end
             end
         else
-            if printLevel > 0
+            if cobraParams.printLevel > 0
                 warning(['\nThe return of slack variables is not implemented for ' solver '.\n']);
             end
         end
