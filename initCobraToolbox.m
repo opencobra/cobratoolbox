@@ -41,7 +41,7 @@ function initCobraToolbox(updateToolbox)
     global ENV_VARS;
     global gitBashVersion;
     global CBT_MISSING_REQUIREMENTS_ERROR_ID;
-        
+
     if ~exist('updateToolbox','var')
         updateToolbox = true;
     end
@@ -338,7 +338,6 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.lindo_old.type = {'LP'};
     SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
-    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
     % definition of category of solvers with active support
     SOLVERS.cplex_direct.categ = 'active';
@@ -361,7 +360,6 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
-    SOLVERS.opti.categ = 'legacy';
 
     % definition of categories of solvers
     supportedSolversNames = fieldnames(SOLVERS);
@@ -619,10 +617,10 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     if ENV_VARS.printLevel
         fprintf(' > Checking if curl is installed ... ')
     end
-    
+
     origLD = getenv('LD_LIBRARY_PATH');
     newLD = regexprep(getenv('LD_LIBRARY_PATH'), [matlabroot '/bin/' computer('arch') ':'], '');
-    
+
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
 
@@ -671,14 +669,14 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
-    
+
     if ENV_VARS.printLevel
         fprintf(' > Checking if remote can be reached ... ')
     end
-    
+
     % check if the remote repository can be reached
     [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
-    
+
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         if ENV_VARS.printLevel
