@@ -152,8 +152,8 @@ if linuxOnly
 end
 
 if ~isempty(needsWebAddress)
-    [status_curl, result_curl] = system(['curl -s -k --head ' needsWebAddress]);
-    if status_curl ~= 0 || isempty(strfind(result_curl, '200 OK'))
+    [status_curl, result_curl] = system(['curl -s -k ' needsWebAddress]);
+    if status_curl ~= 0 || isempty(strfind(result_curl))
         errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);    	
     end    
     if needsWebRead
