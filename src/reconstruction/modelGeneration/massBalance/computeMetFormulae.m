@@ -20,7 +20,7 @@ function [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, varargo
 %    model:          COBRA model
 %
 % OPTIONAL INPUTS (support name-value argument input):
-%    kownMets:       Known metabolites (cell array of strings or vector of met IDs) 
+%    knownMets:      Known metabolites (cell array of strings or vector of met IDs) 
 %                    [default all mets with nonempty .metFormulas]
 %    balancedRxns:   The set of reactions for inferring formulae (cell array of strings or vector of rxn IDs)
 %                    [default all non-exchange reactions]
@@ -76,7 +76,7 @@ end
 optArgin = {'knownMets', 'balancedRxns', 'fillMets', 'calcCMs', 'nameCMs', 'deadCMs', 'metMwRange'}; 
 defaultValues = {[], [], 'HCharge1', true, false, true, []};
 validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
-    @(x) ischar(x) | iscellstr(x) | isvector(x), ...  % balancedRxns
+    @(x) ischar(x) | iscellstr(x) | isvector(x) | isempty(x), ...  % balancedRxns
     @(x) ischar(x) | iscellstr(x), ...  % fillMets
     @(x) ischar(x) | isnumeric(x) | isscalar(x), ...  % calcCMs
     @isscalar, @isscalar, ...    % nameCMs and deadCMs
@@ -85,51 +85,86 @@ validator = {@(x) ischar(x) | iscellstr(x) | isvector(x), ...  % knownMets
 if isempty(varargin)
     varargin = {[]};
 end
-varargin = varargin(:);
-solverParamArg = false;
-while jArg <= min(numel(varargin), numel(optArgin))
-    if ischar(varargin{jArg}) && ((jArg ~= 1 && jArg ~= 3) || ~any(strcmp(model.mets, varargin{jArg}))) ...
-            && (jArg ~= 2 || ~any(strcmp(model.rxns, varargin{jArg}))) ...
-            && (jArg ~= 4 || (~strcmpi(varargin{jArg}, 'efmtool') && ~strcmpi(varargin{jArg}, 'null')))
-        % name-value pair arguments begin. Get the name-vale pair arguments
-        break
-    elseif isstruct(varargin{jArg})
-        % structure input. Assume it is a solver-specific parameter structure
-        solverParamArg = true;
-        break
-    elseif ~isempty(varargin{jArg}) || (jArg == 3 && isequal(varargin{jArg}, {}))
-        % true input if it is nonempty
-        tempArgin = [tempArgin; optArgin(jArg); varargin(jArg)];
-    end
-    jArg = jArg + 1;
-end
-while jArg <= numel(varargin) - 1 && ~solverParamArg
-    if any(strncmp(optArgin, varargin{jArg}, numel(varargin{jArg})))
-        tempArgin = [tempArgin; varargin(jArg:(jArg + 1))];
-        jArg = jArg + 2;
-    else
-        break
-    end
-end
-% the rest are parameters for solveCobraLP
-varargin = varargin(jArg:end);
-
-% get printLevel from the cobra solver parameters if exists
-printLevel = 0;
-for j = 1:(numel(varargin) - 1)
-    if ischar(varargin{j}) && strcmpi(varargin{j}, 'printLevel')
-        printLevel = varargin{j + 1};
-        break
+% get the cobra parameters for LP.
+cobraOptions = getCobraSolverParamsOptionsForType('LP');
+pSpos = 1;
+% parse the inputs accordingly.
+paramValueInput = false;
+if numel(varargin) > 0
+    %Check if we have parameter/value inputs.
+    for pSpos = 1:numel(varargin)
+        if isstruct(varargin{pSpos})
+            % its a struct, so yes, we do have additional inputs.
+            paramValueInput = true;
+            break;            
+        end
+        if ischar(varargin{pSpos}) && (any(strncmpi(varargin{pSpos},optArgin,length(varargin{pSpos}))) || any(ismember(varargin{pSpos},cobraOptions)))
+            % its a keyword, so yes, we have paramValu input.
+            paramValueInput = true;
+            break
+        end
     end
 end
 
-% parse the name-value arguments
-parser = inputParser();
-for jArg = 1:numel(optArgin)
-    parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});
+if ~paramValueInput
+    % we only have values specific to this function.
+    parser = inputParser();
+    % so build a parser and parse the data.
+    for jArg = 1:numel(optArgin)
+        parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
+    end    
+    parser.parse(varargin{1:min(numel(varargin),numel(optArgin))});    
+    [cobraParams,solverParams] = parseSolverParameters('LP');
+    varargin = {};
+else    
+    % we do have solve specific parameters, so we need to also 
+    parser = inputParser();
+    optArgs = varargin(1:pSpos-1);
+    varargin = varargin(pSpos:end);    
+    for jArg = 1:numel(optArgs)
+        parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
+    end
+    if mod(numel(varargin),2) == 1
+        % this should indicate, that there is an LP solver struct somewhere!
+        for i = 1:2:numel(varargin)
+            if isstruct(varargin{i})
+                % reorder varargin
+                varargin = [varargin{1:i-1},varargin{i+1:end},varargin(i)];
+            end
+        end
+    end
+    
+    [cobraParams,solverParams] = parseSolverParameters('LP',varargin{:});
+    % now, we create a new parser, that parses all algorithm specific
+    % inputs.
+    for jArg = numel(optArgs)+1:numel(optArgin)
+        parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
+    end      
+    % and extract the parameters from the field names, as CaseSensitive = 0
+    % only works for parameter/value pairs but not for fieldnames.
+    actualSolverParams = struct();
+    solverParamFields = fieldnames(solverParams);
+    functionParams = {};
+    % build the parameter/value pairs array
+    for i = 1:numel(solverParamFields)                
+        if ~any(strncmpi(solverParamFields{i},optArgin,length(solverParamFields{i})))            
+            actualSolverParams.(solverParamFields{i}) = solverParams.(solverParamFields{i});
+            solverParams = rmfield(solverParams,solverParamFields{i});
+        else
+            functionParams(end+1:end+2) = {solverParamFields{i}, solverParams.(solverParamFields{i})};
+        end
+    end    
+    % and parse them.
+    parser.CaseSensitive = 0;
+    parser.parse(optArgs{:},functionParams{:});    
+    % and also convert the cobra options into parameter/value pair lists.
+    varargin = cell(1,1+2*numel(cobraOptions));    
+    varargin{1} = actualSolverParams;    
+    for i = 1:numel(cobraOptions)
+        cOption = cobraOptions{i};
+        varargin([2*i, 2*i+1]) = {cOption,cobraParams.(cOption)};
+    end            
 end
-parser.CaseSensitive = false;
-parser.parse(tempArgin{:});
 
 metKnown = parser.Results.knownMets;
 rxns = parser.Results.balancedRxns;
@@ -199,7 +234,7 @@ if any(metK == 0)
         error('metKnown indices must be positive integer.')
     end
 elseif calcMetMwRange && any(metK == metI)
-    if printLevel
+    if cobraParams.printLevel
         fprintf('The met of interest (supplied in the argument ''metMwRange'') already has a known formula. Nothing to calculate.\n');
     end
     
@@ -218,19 +253,7 @@ end
 metK = metK(~metKform);
 
 % get feasibility tolerance
-if ~isempty(varargin) && isstruct(varargin{1}) && isfield(varargin{1}, 'feasTol')
-    feasTol = varargin{1}.feasTol;
-else
-    feasTolInInput = find(strcmp(varargin,'feasTol'),1);
-    if ~isempty(feasTolInInput)
-        if feasTolInInput == numel(varargin) || ~isnumeric(varargin{feasTolInInput+1})
-            error('Invalid input for the parameter feasTol.');
-        end
-        feasTol = varargin{find(feasTolInInput) + 1};
-    else
-        feasTol = getCobraSolverParams('LP',{'feasTol'});
-    end
-end
+feasTol = cobraParams.feasTol;
 
 digitRounded = 12;
 %% Preprocess
@@ -391,7 +414,7 @@ for jEC = 1:nEC
         end
     end
     
-    % solve for minimum inconsistency
+    % solve for minimum inconsistency    
     sol(jEC).minIncon = solveCobraLP(LPj, varargin{:});
     
     if isfield(sol(jEC).minIncon, 'full') && numel(sol(jEC).minIncon.full) == size(LPj.A, 2)
@@ -676,7 +699,7 @@ end
 solInfo.feasTol = feasTol;
 
 if any(strcmp(stat, 'infeasible'))
-    if printLevel
+    if cobraParams.printLevel
         fprintf('Critical failure: no feasible solution is found.\n')
     end
     solInfo.stat = 'infeasible';
@@ -736,7 +759,7 @@ if ~calcMetMwRange
         CMfound = true;
     end
     if CMfound
-        if printLevel
+        if cobraParams.printLevel
             fprintf('Elementary conserved moiety vectors found.\n');
         end
         % clear close-to-zero values
