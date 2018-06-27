@@ -28,7 +28,17 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 % `getCobraSolverParameters`.
 %
 % OPTIONAL INPUTS:
-%    parameters:      Structure containing optional parameters.
+%    varargin:        Additional parameters either as parameter struct, or as
+%                     parameter/value pairs. A combination is possible, if
+%                     the parameter struct is either at the beginning or the
+%                     end of the optional input. 
+%                     All fields of the struct which are not COBRA parameters
+%                     (see `getCobraSolverParamsOptionsForType`) for this
+%                     problem type will be passed on to the solver in a
+%                     solver specific manner. Some optional parameters which
+%                     can be passed to the function as parameter value pairs,
+%                     or as part of the options struct are listed below:
+%    
 %    timeLimit:       Global solver time limit
 %    intTol:          Integrality tolerance
 %    relMipGapTol:    Relative MIP gap tolerance
@@ -71,115 +81,13 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %       - Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
 %       interface) to the solvers.
 
-global CBT_MILP_SOLVER % Process options
+[cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:}); % get the solver parameters
 
-if ~isempty(CBT_MILP_SOLVER)
-    solver = CBT_MILP_SOLVER;
-elseif nargin == 1
-    error('No MILP solver found. Run >> changeCobraSolver(solverName);');
-end
-
-if ~isstruct(MILPproblem)
-    error('MILPproblem needs to be a strcuture array');
-end
-
-optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
-                 'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
-                 'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'solver'};
-
-parameters = [];
-parametersStructureFlag = false;
-% First input can be 'default' or a solver-specific parameter structure
-if ~isempty(varargin)
-    isdone = false(size(varargin));
-
-    if strcmp(varargin{1}, 'default')  % Set tolerances to COBRA toolbox defaults
-        [feasTol, optTol] = getCobraSolverParams('LP', optParamNames(5:6), 'default');
-        isdone(1) = true;
-        varargin = varargin(~isdone);
-
-    elseif isstruct(varargin{1})  % solver-specific parameter structure
-        [solverParams, directParamStruct] = deal(varargin{1});
-        parametersStructureFlag = true;
-        isdone(1) = true;
-        varargin = varargin(~isdone);
-    end
-end
-
-% Last input can be a solver specific parameter structure
-if ~isempty(varargin)
-    isdone = false(size(varargin));
-
-    if isstruct(varargin{end})
-        [solverParams, directParamStruct] = deal(varargin{end});
-        parametersStructureFlag = true;
-        isdone(end) = true;
-        varargin = varargin(~isdone);
-    end
-end
-
-if nargin ~= 1
-    if mod(length(varargin), 2) == 0
-        try
-            parameters = struct(varargin{:});
-        catch
-            error('solveCobraLP: Invalid parameter name-value pairs.')
-        end
-
-        if isfield(parameters, 'solver')
-            solver = parameters.solver;
-            parameters = rmfield(parameters, 'solver');
-        end
-    elseif strcmp(varargin{1}, 'default')
-        % default cobra parameters
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        % uses the structure for setting parameters in preference to those
-        % of the optParamNames, where appropriate
-        parametersStructureFlag = 1;
-        directParamStruct = varargin{1};
-        parameters = '';
-    elseif isstruct(varargin{length(varargin)})
-        % expecting pairs of parameter names and parameter values, then a
-        % parameter structure at the end
-        parametersStructureFlag = 1;
-        directParamStruct = varargin{length(varargin)};
-        for i = 1:2:length(varargin) - 2
-            if ismember(varargin{i}, optParamNames)
-                parameters.(varargin{i}) = varargin{i + 1};
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
-        end
-        % pause(eps)
-    else
-        error('solveCobraMILP: Invalid number of parameters/values')
-    end
-%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-%     getCobraSolverParams('LP', optParamNames(1:6), parameters);
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
-else
-    parametersStructureFlag = 0;
-%     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-%     getCobraSolverParams('LP', optParamNames(1:6));
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP', {'minNorm', 'printLevel', 'primalOnlyFlag', 'saveInput', 'feasTol', 'optTol'}, parameters);
-    % parameters will later be accessed and should be initialized.
-    parameters = '';
-end
-
-% optional parameters
-[solverParams.intTol, solverParams.relMipGapTol, solverParams.timeLimit, ...
-    solverParams.logFile, solverParams.printLevel, saveInput, ...
-    solverParams.DATACHECK, solverParams.DEPIND, solverParams.feasTol, ...
-    solverParams.optTol, solverParams.absMipGapTol, ...
-    solverParams.NUMERICALEMPHASIS] = ...
-    getCobraSolverParams('MILP', optParamNames(1:13), parameters);
+solver = cobraParams.solver;
 
 % Save Input if selected
-if ~isempty(saveInput)
-    fileName = parameters.saveInput;
+if ~isempty(cobraParams.saveInput)
+    fileName = cobraParams.saveInput;
     if ~find(regexp(fileName, '.mat'))
         fileName = [fileName '.mat'];
     end
@@ -208,10 +116,10 @@ end
 
 t_start = clock;
 switch solver
-
+    
     case 'glpk'
-%% glpk
-
+        %% glpk
+        
         % Set up problem
         if (isempty(csense))
             clear csense
@@ -222,16 +130,21 @@ switch solver
             csense(csense == 'E') = 'S';
             csense = columnVector(csense);
         end
-        params.msglev = solverParams.printLevel;
-        params.tmlim = solverParams.timeLimit;
-
+        
+        if ~isfield(solverParams,'msglev')
+            solverParams.msglev = cobraParams.printLevel;
+        end
+        if ~isfield(solverParams,'tmlim')
+            solverParams.tmlim = cobraParams.timeLimit;
+        end
+        
         % whos csense vartype
         csense = char(csense);
         vartype = char(vartype);
         % whos csense vartype
-
+        
         % Solve problem
-        [x, f, stat, extra] = glpk(c, A, b, lb, ub, csense, vartype, osense, params);
+        [x, f, stat, extra] = glpk(c, A, b, lb, ub, csense, vartype, osense, solverParams);
         % Handle solution status reports
         if (stat == 5)
             solStat = 1;  % optimal
@@ -239,7 +152,7 @@ switch solver
             solStat = 2;  % unbounded
         elseif(stat == 4)
             solStat = 0;  % infeasible
-        
+            
         elseif(stat == 171)
             solStat = 1;  % Opt integer within tolerance
         elseif(stat == 173)
@@ -251,10 +164,10 @@ switch solver
         else
             solStat = -1;  % No integer solution exists
         end
-
-         case 'cplex_direct'
-%% cplex_direct
-
+        
+    case 'cplex_direct'
+        %% cplex_direct
+        
         % Set up problem
         b = full(b);
         [m_lin, n] = size(MILPproblem.A);
@@ -268,12 +181,12 @@ switch solver
             A = MILPproblem.A(csense == 'E', :);
             b = b(csense == 'E', 1);
             [x, f, exitflag, output] = cplexmilp(c, Aineq, bineq, A, b, [], [], [], lb, ub, vartype');
-
+            
             % primal
             solution.obj = osense * f;
             solution.full = x;
             % this is the dual to the equality constraints but it's not the chemical potential
-%             solution.dual=lambda.eqlin;
+            %             solution.dual=lambda.eqlin;
         else
             Aineq = [];
             bineq = [];
@@ -282,15 +195,15 @@ switch solver
             solution.full = x;
             % this is the dual to the equality constraints but it's not the chemical potential
             solution.dual = sparse(size(MILPproblem.A, 1), 1);
-%             solution.dual(csense == 'E')=lambda.eqlin;
+            %             solution.dual(csense == 'E')=lambda.eqlin;
             % this is the dual to the inequality constraints but it's not the chemical potential
-%             solution.dual(csense == 'L')=lambda.ineqlin(1:nnz(csense == 'L'),1);
-%             solution.dual(csense == 'G')=lambda.ineqlin(nnz(csense == 'L')+1:end,1);
+            %             solution.dual(csense == 'L')=lambda.ineqlin(1:nnz(csense == 'L'),1);
+            %             solution.dual(csense == 'G')=lambda.ineqlin(nnz(csense == 'L')+1:end,1);
         end
         solution.nInfeas = [];
         solution.sumInfeas = [];
         solution.origStat = output.cplexstatus;
-
+        
         Inform = solution.origStat;
         stat = Inform;
         if (stat == 101 || stat == 102)
@@ -304,35 +217,47 @@ switch solver
         else
             solStat = 3;  % Other problem, but integer solution exists
         end
-
-   case 'gurobi_mex'
+        
+    case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
         % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
         % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
-
-        clear opts % Use the default parameter settings
-        if solverParams.printLevel == 0
-           % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
-           opts.Display = 0;
-           opts.DisplayInterval = 0;
+        
+        opts = solverParams;
+        if cobraParams.printLevel == 0
+            % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
+            % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
+            if ~isfield(opts,'Display')
+                opts.Display = 0;
+            end
+            if ~isfield(opts,'DisplayInterval')
+                opts.DisplayInterval = 0;
+            end
         else
-           opts.Display = 1;
+            if ~isfield(opts,'Display')
+                opts.Display = 1;
+            end
         end
-
-        % minimum intTol for gurobi = 1e-9
-        if solverParams.intTol<1e-9
-            solverParams.intTol = 1e-9;
+        
+        if ~isfield(opts,'TimeLimit')
+            opts.TimeLimit = solverParams.timeLimit;
         end
-
-        opts.TimeLimit=solverParams.timeLimit;
-        opts.MIPGap = solverParams.relMipGapTol;
-        opts.IntFeasTol = solverParams.intTol;
-        opts.FeasibilityTol = solverParams.feasTol;
-        opts.OptimalityTol = solverParams.optTol;
-
+        if ~isfield(opts,'MIPGap')
+            opts.MIPGap = solverParams.relMipGapTol;
+        end
+        if ~isfield(opts,'IntFeasTol')
+            opts.IntFeasTol = solverParams.intTol;
+        end
+        if ~isfield(opts,'FeasibilityTol')
+            % minimum intTol for gurobi = 1e-9
+            opts.FeasibilityTol = max(solverParams.feasTol,1e-9);
+        end
+        if ~isfield(opts,'OptimalityTol')
+            opts.OptimalityTol = solverParams.optTol;
+        end
+        
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -345,23 +270,23 @@ switch solver
         % gurobi_mex doesn't automatically cast logicals to doubles
         c = double(c);
         [x,f,stat,output] = gurobi_mex(c,osense,sparse(A),b, ...
-                                             csense,lb,ub,vartype,opts);
+            csense,lb,ub,vartype,opts);
         if stat == 2
-           solStat = 1; % Optimal solutuion found
+            solStat = 1; % Optimal solutuion found
         elseif stat == 3
-           solStat = 0; % Infeasible
+            solStat = 0; % Infeasible
         elseif stat == 5
-           solStat = 2; % Unbounded
+            solStat = 2; % Unbounded
         elseif stat == 4
-           solStat = 0; % Gurobi reports infeasible *or* unbounded
+            solStat = 0; % Gurobi reports infeasible *or* unbounded
         else
-           solStat = -1; % Solution not optimal or solver problem
+            solStat = -1; % Solution not optimal or solver problem
         end
         
     case 'ibm_cplex'
         % Free academic licenses for the IBM CPLEX solver can be obtained from
         % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
-
+        
         cplexlp = Cplex();
         if (~isempty(csense))
             b_L(csense == 'E') = b(csense == 'E');
@@ -394,39 +319,34 @@ switch solver
         end
         cplexlp.Model.ctype = vartype;
         cplexlp.Start.x = x0;
-        cplexlp.Param.mip.tolerances.mipgap.Cur =  solverParams.relMipGapTol;
-        cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
-        cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
-        cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
+
         
+        cplexlp.Param.timelimit.Cur = cobraParams.timeLimit;
+        cplexlp.Param.output.writelevel.Cur = cobraParams.printLevel;        
         
-        if isscalar(solverParams.logFile) && solverParams.logFile == 1
+        if isscalar(cobraParams.logFile) && cobraParams.logFile == 1
             % allow print to command window by setting solverParams.logFile == 1
             outputfile = 1;
             logToConsole = true;
         else
-            outputfile = fopen(solverParams.logFile,'a');
+            outputfile = fopen(cobraParams.logFile,'a');
             logToConsole = false;
         end
         cplexlp.DisplayFunc = @redirect;
-
-        cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
-        cplexlp.Param.mip.tolerances.absmipgap.Cur =  solverParams.absMipGapTol;
-        cplexlp.Param.simplex.tolerances.feasibility.Cur = solverParams.feasTol;
-        % Strict numerical tolerances
-        cplexlp.Param.emphasis.numerical.Cur = solverParams.NUMERICALEMPHASIS;
+        %Set tolerances 
+        cplexlp.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
+        cplexlp.Param.mip.tolerances.absmipgap.Cur =  cobraParams.absMipGapTol;
+        cplexlp.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
+        cplexlp.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
+        cplexlp.Param.mip.tolerances.integrality.Cur =  cobraParams.intTol;       
         
-        % Remove all Cobra solve parameters in solverParams which are not IBM Cplex parameters
-        solverParams = rmfield(solverParams, optParamNames([1:5, 7:12]));
         % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
-        cplexlp = setCplexParam(cplexlp, solverParams, printLevel);
+        cplexlp = setCplexParam(cplexlp, solverParams);
         
-        save('MILPProblem','cplexlp')
-
         % Set up callback to print out intermediate solutions
         % only set this up if you know that you actually need these
         % results.  Otherwise do not specify intSolInd and contSolInd
-
+        
         % Solve problem
         Result = cplexlp.solve();
         
@@ -440,7 +360,7 @@ switch solver
         if (stat == 101 || stat == 102 || stat == 1)
             solStat = 1; % Opt integer within tolerance
             % Return solution if problem is feasible, bounded and optimal
-            x = Result.x;   
+            x = Result.x;
             f = osense*Result.objval;
         elseif (stat == 103 || stat == 3)
             solStat = 0; % Integer infeas
@@ -454,41 +374,38 @@ switch solver
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
-
- case 'gurobi'
+        
+    case 'gurobi'
         %% gurobi 5
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
-        resultgurobi = struct('x',[],'objval',[]);
         MILPproblem.A = deal(sparse(MILPproblem.A));
-
-        clear params            % Use the default parameter settings
-
-        if solverParams.printLevel == 0
-           params.OutputFlag = 0;
-           params.DisplayInterval = 1;
+               
+        if cobraParams.printLevel == 0
+            params.OutputFlag = 0;
+            params.DisplayInterval = 1;
         else
-           params.OutputFlag = 1;
-           params.DisplayInterval = 5;
+            params.OutputFlag = 1;
+            params.DisplayInterval = 5;
         end
-
+        
         %return solution when time limit is reached and save the log file
-        if isfield(solverParams, 'logFile')
-                params.LogFile = solverParams.logFile;
+        if ~isempty(cobraParams.logFile)
+            params.LogFile = cobraParams.logFile;
         end
+        params.TimeLimit = cobraParams.timeLimit;
 
-        params.TimeLimit = solverParams.timeLimit;
-        params.MIPGap = solverParams.relMipGapTol;
-
-        if solverParams.intTol <= 1e-09
+        
+        %Set tolerances
+        params.MIPGap = cobraParams.relMipGapTol;        
+        if cobraParams.intTol <= 1e-09
             params.IntFeasTol = 1e-09;
         else
-            params.IntFeasTol = solverParams.intTol;
-        end
-
-        params.FeasibilityTol = solverParams.feasTol;
-        params.OptimalityTol = solverParams.optTol;
-
+            params.IntFeasTol = cobraParams.intTol;
+        end        
+        params.FeasibilityTol = cobraParams.feasTol;
+        params.OptimalityTol = cobraParams.optTol;
+        
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -498,21 +415,20 @@ switch solver
             csense(csense == 'E') = '=';
             MILPproblem.csense = csense(:);
         end
-
+        
         if osense == -1
             MILPproblem.osense = 'max';
         else
             MILPproblem.osense = 'min';
         end
-
+        
         % overwrite default params with directParams
-        if parametersStructureFlag
-            fieldNames = fieldnames(directParamStruct);
-            for i = 1:size(fieldNames,1)
-                params.(fieldNames{i}) = directParamStruct.(fieldNames{i});
-            end
+        fieldNames = fieldnames(solverParams);
+        for i = 1:size(fieldNames,1)
+            params.(fieldNames{i}) = solverParams.(fieldNames{i});
         end
-
+        
+        
         MILPproblem.vtype = vartype;
         MILPproblem.modelsense = MILPproblem.osense;
         [MILPproblem.A,MILPproblem.rhs,MILPproblem.obj,MILPproblem.sense] = deal(sparse(MILPproblem.A),MILPproblem.b,double(MILPproblem.c),MILPproblem.csense);
@@ -520,32 +436,32 @@ switch solver
             MILPproblem.start = x0;
         end
         resultgurobi = gurobi(MILPproblem,params);
-
+        
         stat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
-           solStat = 1; % Optimal solution found
-           [x,f] = deal(resultgurobi.x,resultgurobi.objval);
+            solStat = 1; % Optimal solution found
+            [x,f] = deal(resultgurobi.x,resultgurobi.objval);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
-           solStat = 0; % Infeasible
+            solStat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
-           solStat = 2; % Unbounded
+            solStat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-           solStat = 0; % Gurobi reports infeasible *or* unbounded
+            solStat = 0; % Gurobi reports infeasible *or* unbounded
         elseif strcmp(resultgurobi.status,'TIME_LIMIT')
-                solStat = 3; % Time limit reached
-                warning('Time limit reached, solution might not be optimal (gurobi)')
-                try
-                    [x,f] = deal(resultgurobi.x,resultgurobi.objval);
-                catch
-                    %x and f could not be assigned, as there is no solution
-                    %yet
-                end
+            solStat = 3; % Time limit reached
+            warning('Time limit reached, solution might not be optimal (gurobi)')
+            try
+                [x,f] = deal(resultgurobi.x,resultgurobi.objval);
+            catch
+                %x and f could not be assigned, as there is no solution
+                %yet
+            end
         else
-           solStat = -1; % Solution not optimal or solver problem
+            solStat = -1; % Solution not optimal or solver problem
         end
-
+        
     case 'tomlab_cplex'
-%% CPLEX through tomlab
+        %% CPLEX through tomlab
         if (~isempty(csense))
             b_L(csense == 'E') = b(csense == 'E');
             b_U(csense == 'E') = b(csense == 'E');
@@ -564,26 +480,27 @@ switch solver
         % intVars
         % pause;
         tomlabProblem = mipAssign(osense*c,A,b_L,b_U,lb,ub,x0,'CobraMILP',[],[],intVars);
-
+        
         % Set parameters for CPLEX
-        tomlabProblem.MIP.cpxControl.EPINT = solverParams.intTol;
-        tomlabProblem.MIP.cpxControl.EPGAP = solverParams.relMipGapTol;
-        tomlabProblem.MIP.cpxControl.TILIM = solverParams.timeLimit;
-        tomlabProblem.CPLEX.LogFile = solverParams.logFile;
-        tomlabProblem.PriLev = solverParams.printLevel;
+        tomlabProblem.MIP.cpxControl.EPINT = cobraParams.intTol;
+        tomlabProblem.MIP.cpxControl.EPGAP = cobraParams.relMipGapTol;
+        tomlabProblem.MIP.cpxControl.TILIM = cobraParams.timeLimit;
+        tomlabProblem.CPLEX.LogFile = cobraParams.logFile;
+        tomlabProblem.PriLev = cobraParams.printLevel;
         tomlabProblem.MIP.cpxControl.THREADS = 1; % by default use only one thread
-
-
+        
+        
         % Strict numerical tolerances
-        tomlabProblem.MIP.cpxControl.DATACHECK = solverParams.DATACHECK;
-        tomlabProblem.MIP.cpxControl.DEPIND = solverParams.DEPIND;
-        tomlabProblem.MIP.cpxControl.EPRHS = solverParams.feasTol;
-        tomlabProblem.MIP.cpxControl.EPOPT = solverParams.optTol;
-        tomlabProblem.MIP.cpxControl.EPAGAP = solverParams.absMipGapTol;
-        tomlabProblem.MIP.cpxControl.NUMERICALEMPHASIS = solverParams.NUMERICALEMPHASIS;
+        tomlabProblem.MIP.cpxControl.EPRHS = cobraParams.feasTol;
+        tomlabProblem.MIP.cpxControl.EPOPT = cobraParams.optTol;
+        tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
+        
+        %Now, replace anything that is in the solver Specific field.
+        tomlabProblem = updateStruct(tomlabProblem.MIP.cpxControl,solverParams);
+        
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
-
+        
         % Set up callback to print out intermediate solutions
         % only set this up if you know that you actually need these
         % results.  Otherwise do not specify intSolInd and contSolInd
@@ -601,11 +518,11 @@ switch solver
         cobraContSolInd = MILPproblem.contSolInd;
         tomlabProblem.MIP.callbacks = [];
         tomlabProblem.PriLevOpt = 0;
-
-
+        
+        
         % Solve problem
         Result = tomRun('cplex', tomlabProblem);
-
+        
         % Get results
         x = Result.x_k;
         f = osense*Result.f_k;
@@ -624,10 +541,15 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
+        solverParams = updateStructData(cobraParams,solverParams);
         writeLPProblem(MILPproblem, 'problemName','COBRAMILPProblem','fileName','MILP.mps','solverParams',solverParams);
         return
     otherwise
-        error(['Unknown solver: ' solver]);
+        if isempty(solver)
+            error('There is no solver for MILP problems available');
+        else
+            error(['Unknown solver: ' solver]);
+        end
 end
 t = etime(clock, t_start);
 
@@ -639,7 +561,7 @@ if ~strcmp(solver,'mps')
         xInt = x(vartype == 'B' | vartype == 'I');
         xCont = x(vartype == 'C');
     end
-
+    
     solution.cont = xCont;
     solution.int = xInt;
     solution.obj = f;
@@ -654,9 +576,9 @@ if ~strcmp(solver,'mps')
 end
 
 %% Redirection function such that cplex redirects its output to the defined outputfile.
-function redirect(l)
-    % Write the line of log output
-    fprintf(outputfile, '%s\n', l);
-end
+    function redirect(l)
+        % Write the line of log output
+        fprintf(outputfile, '%s\n', l);
+    end
 
 end

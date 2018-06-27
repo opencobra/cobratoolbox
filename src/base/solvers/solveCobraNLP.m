@@ -47,8 +47,14 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 % `getCobraSolverParameters`.
 %
 % OPTIONAL INPUTS:
-%    parameters:      Structure containing optional parameters.
-%
+%    varargin:      Additional parameters either as parameter struct, or as
+%                   parameter/value pairs. A combination is possible, if
+%                   the parameter struct is either at the beginning or the
+%                   end of the optional input. 
+%                   All fields of the struct which are not COBRA parameters
+%                   (see `getCobraSolverParamsOptionsForType`) for this
+%                   problem type will be passed on to the solver in a
+%                   solver specific manner. 
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a NLP solution:
 %
@@ -71,13 +77,22 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %       - Markus Herrgard 12/7/07
 %       - Richard Que 02/10/10 Added tomlab_snopt support.
 
-global CBT_NLP_SOLVER
 
-if ~isempty(CBT_NLP_SOLVER)
-    solver = CBT_NLP_SOLVER;
-else
-    error('No solver found.  call changeCobraSolver(solverName)');
+[cobraParams,solverParams] = parseSolverParameters('NLP',varargin{:});% get the solver parameters
+
+% set the solver
+solver = cobraParams.solver;
+
+% Save Input if selected
+if ~isempty(cobraParams.saveInput)
+    fileName = cobraParams.saveInput;
+    if ~find(regexp(fileName, '.mat'))
+        fileName = [fileName '.mat'];
+    end
+    display(['Saving LPproblem in ' fileName]);
+    save(fileName, 'LPproblem')
 end
+
 
 currentDir = pwd;
 
@@ -87,63 +102,31 @@ optParamNames = {'printLevel','warning','checkNaN','PbName', ...
                  'iterationLimit', 'logFile'};
 parameters = '';
 
-[printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
-
-if nargin ~=1
-    if mod(length(varargin),2)==0
-        for i=1:2:length(varargin)-1
-            if ismember(varargin{i},optParamNames)
-                parameters.(varargin{i}) = varargin{i+1};
-            else
-                %Changed to highlight non COBRA parameters (which might be used for e.g. fmincon.
-                parameters.(varargin{i}) = varargin{i+1};
-                if printLevel > 0
-                    warning([varargin{i} ' is not a COBRA parameter']);
-                end
-            end
-        end
-    elseif strcmp(varargin{1},'default')
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        parameters = varargin{1};
-    else
-        error('Invalid number of parameters/values')
-        solution=[];
-        return;
-    end
-end
-
-
 %deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
 
-% Assume constraint S*v = b if csense not provided
+% Assume constraint A*x = b if csense not provided
 if ~isfield(NLPproblem, 'csense')
-    % If csense is not declared in the model, assume that all
+    % If csense is not declared in the Problem, assume that all
     % constraints are equalities.
-    NLPproblem.csense(1:size(A,1), 1) = 'E';
+    NLPproblem.csense(1:size(A,1), 1) = 'E';   
 end
-
-% Assume constraint S*v = 0 if b not provided
+csense = NLPproblem.csense;
+ 
+% Assume constraint A*x = 0 if b not provided
 if ~isfield(NLPproblem, 'b')
     NLPproblem.b = zeros(size(A, 1), 1);
 end
-
-if isfield(NLPproblem,'csense')
-    [b, csense] = deal(NLPproblem.b, NLPproblem.csense);
-elseif isfield(NLPproblem,'b_U')
-    [b_L,b_U] = deal(NLPproblem.b_L,NLPproblem.b_U);
-else
-    display('either .b_U, .b_L or .b, .csense must be defined')
-end
+b = NLPproblem.b;
 
 if isfield(NLPproblem, 'objFunction')
     objFunction = NLPproblem.objFunction;
 elseif isfield(NLPproblem, 'c')
     c = NLPproblem.c;
 else
-    display('either .objFunction or .c must be defined')
+    error('either .objFunction or .c must be defined')
 end
+
 if isfield(NLPproblem,'x0')
     x0 = NLPproblem.x0;
 else
@@ -163,8 +146,7 @@ switch solver
         b2 = b(csense == 'E');
 
         %Get fminCon Options, and set the options supplied by the user.
-        [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);
-        switch printLevel
+        switch cobraParams.printLevel
             case 0
                 fminconPrintLevel = 'off';
             case 1
@@ -172,18 +154,11 @@ switch solver
             case 2
                 fminconPrintLevel = 'iter-detailed';
             otherwise
-                fminconPrintLevel = 'off'
+                fminconPrintLevel = 'off';
         end
-        options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit, 'Display',fminconPrintLevel);
+        options = optimoptions('fmincon','maxIter',cobraParams.iterationLimit,'maxFunEvals',cobraParams.iterationLimit, 'Display',fminconPrintLevel);
 
-        if isstruct(parameters)
-            paramFields = fieldnames(parameters);
-            for field = 1:numel(paramFields)
-                if any(ismember(fieldnames(options),paramFields{field}))
-                    options.(paramFields{field}) = parameters.(paramFields{field});
-                end
-            end
-        end
+        options = updateStructData(options,solverParams);        
 
         % define the objective function with 2 input arguments
         if exist('objFunction','var')
@@ -194,7 +169,7 @@ switch solver
         %Now, define the maximum timer
         options.OutputFcn = @stopTimer;
         %and start it.
-        stopTimer(timeLimit,1);
+        stopTimer(cobraParams.timeLimit,1);
 
         % save current directory
         currentDir = pwd;
@@ -315,22 +290,23 @@ switch solver
                 x_min, x_max, f_opt, x_opt);
         end
         Prob.user = userParams;
-        Prob.Warning = warning;
-        Prob.SOL.optPar(35) = iterationLimit; %This is major iteration limit.
+        Prob.Warning = cobraParams.warning;
+        Prob.SOL.optPar(35) = cobraParams.iterationLimit; %This is major iteration limit.
         Prob.SOL.optPar(30) = 1e9; %this is the minor iteration limit.  Essentially unlimited
-        Prob.CheckNaN = checkNaN;
+        Prob.CheckNaN = cobraParams.checkNaN;
 
-        Prob.SOL.PrintFile = strcat(logFile, '_iterations.txt');
-        Prob.SOL.SummFile = strcat(logFile, '_summary.txt');
+        Prob.SOL.PrintFile = strcat(cobraParams.logFile, '_iterations.txt');
+        Prob.SOL.SummFile = strcat(cobraParams.logFile, '_summary.txt');
 
-        if printLevel >= 1
+        if cobraParams.printLevel >= 1
             Prob.optParam.IterPrint = 1;
         end
-        if printLevel >=3
+        if cobraParams.printLevel >=3
             Prob.PriLevOpt = 1;
-
         end
-
+        %Now, update the Problem struct with solver Params....
+        Prob = updateStructData(Prob,solverParams);
+        
         %Call Solver
         Result = tomRun('snopt', Prob, printLevel);
 
@@ -352,7 +328,11 @@ switch solver
         end
         save ttt
     otherwise
-        error(['Unknown solver: ' solver]);
+        if isempty(solver)
+            error('There is no solver for LP problems available');
+        else
+            error(['Unknown solver: ' solver]);
+        end
 end
 
 %% Assign Solution
