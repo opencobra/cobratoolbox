@@ -261,9 +261,11 @@
 <span id="id1"></span><h1>Exploration<a class="headerlink" href="#exploration" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.exploration"></span><dl class="function">
 <dt id="src.analysis.exploration.biomassPrecursorCheck">
-<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em>, <em>checkCoupling</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/analysis/exploration/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
+<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em>, <em>checkCoupling</em>, <em>checkConservedQuantities</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/analysis/exploration/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if biomass precursors are able to be synthesized.</p>
-<p>[missingMets, presentMets, coupledMets] = biomassPrecursorCheck(model)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -271,13 +273,18 @@
 COBRA model structure</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>checkCoupling</strong> &#8211;
 Test, whether some compounds can only be produced
 if there is a sink for other biomass precursors
 (Default: false)</li>
+<li><strong>checkConservedQuantities</strong> &#8211;
+true to check whether the cofactor pairs containing conserved moieties
+(defined by the network structure) can be synthesized
+(e.g., ATP, NAD, NADPH, ACCOA, AA-charged tRNA, fatty acyl-ACP).
+They will otherwise be identified as missingMets (Default: false)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -289,11 +296,17 @@ List of biomass precursors that are not able to be synthesized</li>
 List of biomass precursors that are able to be synthesized</li>
 <li><strong>coupledMets</strong> &#8211;
 List of metabolites which need an exchange reaction for at least one other
-biomass component because their production is coupled to it.</li>
+biomass component because their production is coupled to it
+(returned only if checkCoupling = true)</li>
+<li><strong>missingCofs</strong> &#8211;
+List of cofactor pairs (defined by the network conserved moieties)
+that are not able to be synthesized
+(returned only if checkConservedQuantities = true)</li>
+<li><strong>presentCofs</strong> &#8211;
+List of cofactor pairs that are able to be synthesized
+(returned only if checkConservedQuantities = true)</li>
 </ul>
 </div></blockquote>
-<p>May identify metabolites that are typically recycled within the
-network such as ATP, NAD, NADPH, ACCOA.</p>
 </dd></dl>
 
 <dl class="function">
@@ -1156,6 +1169,48 @@ compartment of the transport (e.g. &#8216;c&#8217;, cytosol)</li>
 <div><ul class="simple">
 <li><strong>TrspRxns</strong> &#8211;
 List of transporters reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.exploration.getMIRIAMAnnotations">
+<code class="descname">getMIRIAMAnnotations</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/analysis/exploration/getMIRIAMAnnotations.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.getMIRIAMAnnotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the MIRIAM Annotations a struct array of annotation structs for the given type</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>annotations = getMIRIAMAnnotations(model,field,...)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The COBRA  model structure.</li>
+<li><strong>type</strong> &#8211;
+the basic field to get annotations for (e.g. rxn, met, or
+model</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varagin</strong> &#8211;
+Additional arguments as parameter/value pairs.
+* bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in <cite>getBioQualifiers()</cite> will be used
+* ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type &#8216;s&#8217;])).</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>annotations</strong> &#8211;
+A struct array with the following structure:
+* .annotation -&gt; A Struct array with one element per element of the given type.
+* .annotation.cvterms -&gt; A Struct array of controlled vocabulary terms with one element per qualifier used
+* .annotation.cvterms.qualifier -&gt; the bioQualifier for this all ressourcesof this cvterm
+* .annotation.cvterms.qualifierType -&gt; the Qualifier type (modelQualifier or bioQualifier) for all ressources of this cvterm
+* .annotation.cvterms.ressources -&gt; struct with the following fields:
+* .annotation.cvterms.ressources.database -&gt; the database for this ressource.
+* .annotation.cvterms.ressources.id-&gt; The ID in the database for this ressource.</li>
 </ul>
 </div></blockquote>
 </dd></dl>

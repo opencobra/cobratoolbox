@@ -358,6 +358,63 @@ ignored.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.addMIRIAMAnnotations">
+<code class="descname">addMIRIAMAnnotations</code><span class="sig-paren">(</span><em>model</em>, <em>elementIDs</em>, <em>databases</em>, <em>ids</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/reconstruction/refinement/addMIRIAMAnnotations.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addMIRIAMAnnotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a MIRIAM style annotation to the model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = addMIRIAMAnnotation(model, elementID, database, id, ...)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA Style model struct</li>
+<li><strong>elementID</strong> &#8211;
+The element IDs to annotate (either a single ID as a
+char array, or a cell array of model IDs. Must be
+present in one of the basic fields of the model.</li>
+<li><strong>databases</strong> &#8211;
+The databases for which annotations are added. Either a
+single char array if it is the same database for all
+annotated elements, or a cell array of strings with one
+element for each added element. The databases have to
+be registered with identifiers.org and must match
+either the identifiers.org prefix or the exact name!</li>
+<li><strong>ids</strong> &#8211;
+The IDs to set for each element. Either a char array if
+only a single element is annotated, or a cell array of
+chars if multiple elements are annotated.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional parameters either as parameter/value pairs
+or as a parameter struct with the following
+options/fieldnames:</p>
+<blockquote>
+<div><ul class="simple">
+<li>referenceField - the field in which to look up the ids (e.g. rxns, mets, comps etc...) If this is &#8216;model&#8217;, than the annotation will be assumed to be a model annotation, and the ID will be ignored. If empty, the whole model will be checked, and all matching ids will be annotated.</li>
+<li>annotationTypes - The type of the annotation. either &#8216;bio&#8217; or &#8216;model&#8217;. Default(&#8216;bio&#8217;)</li>
+<li>annotationQualifiers - The qualifier of the annotation ( see <a class="reference external" href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a> ) for possible qualifiers (Default: &#8216;is&#8217;)</li>
+<li>replaceAnnotation - Replace existing annotations with those supplied now (Default: false)</li>
+<li>printLevel - How much output to produce - 0, silent ; 1, verbose - (Default: 0)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The COBRA model with the added annotations</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.addMetabolite">
 <code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/reconstruction/refinement/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addMetabolite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a Metabolite to the Current Reconstruction</p>
@@ -1394,17 +1451,20 @@ The model with the specified reactions flipped.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.generateRules">
-<code class="descname">generateRules</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/reconstruction/refinement/generateRules.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.generateRules" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateRules</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/c72a7bd511f79ebc1b6b1e0421544b22b4a9335d/src/reconstruction/refinement/generateRules.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.generateRules" title="Permalink to this definition">¶</a></dt>
 <dd><p>If a model does not have a model.rules field but has a model.grRules
 field, can be regenerated using this script</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[model] = generateRules(model)</div></blockquote>
-<p><strong>Input</strong></p>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model with model.grRules</li>
+<li><strong>printLevel</strong> &#8211;
+optional variable to print out all new genes
+(default = TRUE), can be zero if not needed</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
