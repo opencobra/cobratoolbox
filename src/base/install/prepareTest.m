@@ -24,6 +24,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
 %                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
 %                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '')
+%                   - `needsWebRead`: Tests, whether webread can be used with the given url
 %
 % OUTPUTS:
 %
@@ -98,6 +99,7 @@ parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0)
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWebAddress', '', @ischar);
+parser.addParamValue('needsWebRead', false, @(x) islogical(x) || x == 1 || x == 0);
 
 parser.parse(varargin{:});
 
@@ -117,7 +119,9 @@ requiredSolvers = parser.Results.requiredSolvers;
 possibleSolvers = parser.Results.requireOneSolverOf;
 excludedSolvers = parser.Results.excludeSolvers;
 preferredSolvers = parser.Results.useSolversIfAvailable;
+
 needsWebAddress = parser.Results.needsWebAddress;
+needsWebRead = parser.Results.needsWebRead;
 
 runtype = getenv('CI_RUNTYPE');
 
@@ -148,15 +152,26 @@ if linuxOnly
 end
 
 if ~isempty(needsWebAddress)
-    try
-        [status_curl, result_curl] = system(['curl -s -k --head ' needsWebAddress]);
-        if status_curl ~= 0 || isempty(strfind(result_curl, '200 OK'))
-            error(['The URL ' needsWebAddress ' cannot be reached']);
+    [status_curl, result_curl] = system(['curl -s -k --head ' needsWebAddress]);
+    if status_curl ~= 0 || isempty(strfind(result_curl, '200 OK'))
+        errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);    	
+    end    
+    if needsWebRead
+        if verLessThan('MATLAB','9.3') && isunix && strncmp(needsWebAddress,'https',5)
+            errorString = sprintf(['This function needs to connect to a ''https'' address using webread.\n', ...
+                                   'Your MATLAB version is shipped with an invalid libssl.so.1.0.0 \n',...
+                                   'which will cause MATLAB to crash if webread is called with an \n',...
+                                   '''https'' website.\n',...
+                                   'To fix this, you can replace your MATLAB library with the system library \n',...
+                                   'by running the following commands in the console:\n',...
+                                   '$ sudo mv %s/bin/glnxa64/libssl.so.1.0.0 %s/bin/glnxa64/libssl.so.1.0.0.old\n',...
+                                   '$ sudo cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 %s/bin/glnxa64/libssl.so.1.0.0\n'],...
+                                   matlabroot,matlabroot,matlabroot);                                   
+            errorMessage{end + 1} = errorString;    	
         end
-    catch
-        errorMessage{end + 1} = sprintf('This test needs to connect to %s and was unable to do so.',needsWebAddress);
     end
 end
+
 
 if unixOnly
     if ~isunix
