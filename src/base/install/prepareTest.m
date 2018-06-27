@@ -12,7 +12,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name) (default: {})
 %                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
-%                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available                  
+%                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available
 %                   - `excludeSolvers`: Names of solvers which should never be used for the test (because they fail)
 %                   - `needsLP`: Whether a LP solver is required (default: false)
 %                   - `needsMILP`: Whether a MILP solver is required (default: false)
@@ -23,7 +23,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
 %                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
-%                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '') 
+%                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '')
 %
 % OUTPUTS:
 %
@@ -149,9 +149,12 @@ end
 
 if ~isempty(needsWebAddress)
     try
-        webread(needsWebAddress);
-    catch 
-        errorMessage{end + 1} = sprintf('This tests needs to connect to %s and was unable to do so.',needsWebAddress);
+        [status_curl, result_curl] = system(['curl -s -k --head ' needsWebAddress]);
+        if status_curl ~= 0 || isempty(strfind(result_curl, '200 OK'))
+            error(['The URL ' needsWebAddress ' cannot be reached']);
+        end
+    catch
+        errorMessage{end + 1} = sprintf('This test needs to connect to %s and was unable to do so.',needsWebAddress);
     end
 end
 
@@ -200,16 +203,16 @@ if ~isempty(possibleSolvers) && ~any(ismember(possibleSolvers,solversForTest.ALL
     end
 else
     if ~isempty(possibleSolvers)
-        %We have a set of possible solvers. 
+        %We have a set of possible solvers.
         %So we restrict the preferredSolvers to those
         % if there are preferred solvers.
         if ~isempty(preferredSolvers)
-            preferredSolvers = intersect(preferredSolvers,possibleSolvers);                    
+            preferredSolvers = intersect(preferredSolvers,possibleSolvers);
         else
             solverOptions = intersect(possibleSolvers,solversForTest.ALL);
             preferredSolvers = solversForTest.ALL(find(ismember(solversForTest.ALL,possibleSolvers),1));
-        end            
-        
+        end
+
     end
 end
 
@@ -318,7 +321,7 @@ problemTypes = OPT_PROB_TYPES;
 if strcmpi(runtype,'fullRun')
     solversToUse = solversForTest;
     %exclude pdco if not explicitly requested and available, as it does
-    %have issues at the moment.    
+    %have issues at the moment.
     if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
         solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
         solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
@@ -329,7 +332,7 @@ if strcmpi(runtype,'fullRun')
             solversToUse.(problemTypes{i}) = intersect(solversToUse.(problemTypes{i}),possibleSolvers);
         end
     end
-else   
+else
     for i = 1:numel(problemTypes)
         solversToUse.(problemTypes{i}) = intersect(preferredSolvers, solversForTest.(problemTypes{i}));
         if isempty(solversToUse.(problemTypes{i})) && ~isempty(solversForTest.(problemTypes{i}))
@@ -347,4 +350,4 @@ else
         end
     end
 end
-    
+
