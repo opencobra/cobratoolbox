@@ -1,39 +1,52 @@
 [submodule "external/base/solvers/lusol"]
 	path = external/base/solvers/lusol
 	url = https://github.com/nwh/lusol.git
+	ignore = dirty
 [submodule "external/base/solvers/pdco"]
 	path = external/base/solvers/pdco
 	url = https://github.com/mxsaunders/pdco.git
+	ignore = dirty
 [submodule "external/base/utilities/Smith-Decomposition"]
 	path = external/base/utilities/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
+	ignore = dirty
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
+	ignore = dirty
 [submodule "external/analysis/gaimc"]
 	path = external/analysis/gaimc
 	url = https://github.com/dgleich/gaimc.git
+	ignore = dirty
 [submodule "test/models"]
 	path = test/models
 	url = https://github.com/cobrabot/COBRA.models
+	ignore = dirty
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
+	ignore = dirty
 [submodule "external/analysis/CnaCobraInterface"]
 	path = external/analysis/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
+	ignore = dirty
 [submodule "COBRA.tutorials"]
 	path = tutorials
 	url = https://github.com/opencobra/COBRA.tutorials.git
+	ignore = dirty
 [submodule "COBRA.papers"]
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
+	ignore = dirty
 [submodule "external/base/utilities/rdir"]
 	path = external/base/utilities/rdir
 	url = https://github.com/uni-lu/rdir.git
+	ignore = dirty
 [submodule "external/analysis/mptoolbox"]
 	path = external/analysis/mptoolbox
 	url = https://github.com/cobrabot/mptoolbox.git
+	ignore = dirty
 [submodule "external/analysis/octave-networks-toolbox"]
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
+	ignore = dirty
