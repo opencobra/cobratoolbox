@@ -13,8 +13,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testListBiGGModels'));
 cd(fileDir);
 
-% function outputs
+prepareTest('needsWebAddress','http://bigg.ucsd.edu/api/v2/models');
 
+% function outputs
 [str] = listBiGGModels();
 
 %With 2016b we can properly test this

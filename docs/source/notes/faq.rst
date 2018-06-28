@@ -3,6 +3,8 @@ Frequently Asked Questions (FAQ)
 
 .. begin-faq-marker
 
+.. contents:: Table of contents
+
 .. |ImageLink| image:: https://img.shields.io/badge/COBRA-forum-blue.svg
 .. _ImageLink: https://groups.google.com/forum/#!forum/cobra-toolbox
 
@@ -76,6 +78,21 @@ In order to fix this issue, follow these steps:
 -  Finish the installation of CPLEX ``12.7.1``
 -  Restart your computer
 -  Start MATLAB and the above commands again
+
+
+On Linux, MATLAB Suddenly crashes without any error
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This can happen due to some MATLAB versions shipping broken libraries, in particular ``libssl.so.1.0.0``. 
+To fix this, you will have to replace the matlab library by the system library as follows:
+
+.. code-block:: console
+
+    $ sudo mv <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0 <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0.old
+    $ sudo cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 <MATLAB_ROOT>/bin/glnxa64/libssl.so.1.0.0
+
+where ``<MATLAB_ROOT>`` is the directory of your MATLAB installation.
+
 
 Parallel programming
 --------------------
