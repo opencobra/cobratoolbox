@@ -20,7 +20,7 @@
 	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
 [submodule "external/base/utilities/CnaCobraInterface"]
-	path = external/base/utilities/CnaCobraInterface
+	path = external/analysis/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
 [submodule "COBRA.tutorials"]
 	path = tutorials
