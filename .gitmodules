@@ -19,7 +19,7 @@
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
-[submodule "external/base/utilities/CnaCobraInterface"]
+[submodule "external/analysis/CnaCobraInterface"]
 	path = external/analysis/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
 [submodule "COBRA.tutorials"]
@@ -28,7 +28,7 @@
 [submodule "COBRA.papers"]
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
-[submodule "external/base/rdir"]
+[submodule "external/base/utilities/rdir"]
 	path = external/base/utilities/rdir
 	url = https://github.com/uni-lu/rdir.git
 [submodule "external/analysis/mptoolbox"]
