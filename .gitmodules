@@ -1,10 +1,10 @@
-[submodule "external/base/lusol"]
+[submodule "external/base/solvers/lusol"]
 	path = external/base/solvers/lusol
 	url = https://github.com/nwh/lusol.git
-[submodule "external/base/pdco"]
+[submodule "external/base/solvers/pdco"]
 	path = external/base/solvers/pdco
 	url = https://github.com/mxsaunders/pdco.git
-[submodule "external/base/Smith-Decomposition"]
+[submodule "external/base/utilities/Smith-Decomposition"]
 	path = external/base/utilities/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "binary"]
@@ -19,7 +19,7 @@
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
-[submodule "external/base/CnaCobraInterface"]
+[submodule "external/base/utilities/CnaCobraInterface"]
 	path = external/base/utilities/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
 [submodule "COBRA.tutorials"]
