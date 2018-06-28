@@ -29,6 +29,29 @@ please remove the installation directory from your MATLAB path.
     >> delete(CBTDIR,'s') % delete the installation directory
 
 
+I cannot update the COBRA Toolbox using ``updateCobraToolbox()``. Why?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whenever the update of the COBRA Toolbox fails when running ``updateCobraToolbox()``,
+there is a chance that major restructurations happened recently. For instance, new submodules
+might have been added.
+
+Another reason for a failing update might be when the local version of the COBRA Toolbox is too old.
+In that case, the easiest is to reinstall (reclone) the COBRA Toolbox or the fork after
+having backed up the current version.
+
+In case the update fails because of changes in the COBRA Toolbox, please
+contribute your changes first by following the instructions `here <https://opencobra.github.io/cobratoolbox/stable/contributing.html>`.
+
+In case you do not want to contribute your changes and are familiar with ``git``, you may also type (beware, your changes will be lost!):
+
+.. code:: console
+
+    $ git stash # stash all potential changes
+    $ git add --all  # add all files first to stage
+    $ git reset --hard HEAD  # hard reset the repository
+
+
 When running ``git submodule update``, the following error message appears. What should I do?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -79,11 +102,10 @@ In order to fix this issue, follow these steps:
 -  Restart your computer
 -  Start MATLAB and the above commands again
 
-
 On Linux, MATLAB Suddenly crashes without any error
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This can happen due to some MATLAB versions shipping broken libraries, in particular ``libssl.so.1.0.0``. 
+This can happen due to some MATLAB versions shipping broken libraries, in particular ``libssl.so.1.0.0``.
 To fix this, you will have to replace the matlab library by the system library as follows:
 
 .. code-block:: console
