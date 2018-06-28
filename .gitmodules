@@ -5,7 +5,7 @@
 	path = external/base/solvers/pdco
 	url = https://github.com/mxsaunders/pdco.git
 [submodule "external/base/Smith-Decomposition"]
-	path = external/base/Smith-Decomposition
+	path = external/base/utilities/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "binary"]
 	path = binary
