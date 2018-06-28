@@ -331,7 +331,7 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP'};
     SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP'};
-    SOLVERS.pdco.type = {'LP', 'QP'};
+    SOLVERS.pdco.type = {'QP'};
     SOLVERS.quadMinos.type = {'LP'};
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
