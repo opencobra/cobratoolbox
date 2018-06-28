@@ -446,6 +446,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                     error(['You must have `csh` installed in order to use `', solverName, '`.']);
                 end
             end
+        %{
         case 'opti'
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
@@ -456,6 +457,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                     return;
                 end
             end
+        %}
         case 'matlab'
             v = ver;
             %Both linprog and fmincon are part of the optimization toolbox.
