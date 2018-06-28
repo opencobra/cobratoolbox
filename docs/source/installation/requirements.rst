@@ -62,7 +62,7 @@ Linux (Ubuntu or Debian)
 
     $ sudo apt-get install git-all curl
 
-If you run MATLAB 2016b and before there is also a known issue with a library shipped by MATLAB when trying to access web ressources. Please have a look at the `FAQ <https://opencobra.github.io/cobratoolbox/stable/faq.html#on-linux-matlab-suddenly-crashes-without-any-error>`__.
+There is a known issue on Matlab 2016b (or earlier) with a default library that is used to access web resources. Please have a look at the `FAQ <https://opencobra.github.io/cobratoolbox/stable/faq.html#on-linux-matlab-suddenly-crashes-without-any-error>`__.
 
 macOS
 ^^^^^
