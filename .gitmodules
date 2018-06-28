@@ -1,25 +1,25 @@
-[submodule "external/lusol"]
+[submodule "external/base/lusol"]
 	path = external/base/lusol
 	url = https://github.com/nwh/lusol.git
-[submodule "external/pdco"]
+[submodule "external/base/pdco"]
 	path = external/base/pdco
 	url = https://github.com/mxsaunders/pdco.git
-[submodule "external/Smith-Decomposition"]
+[submodule "external/base/Smith-Decomposition"]
 	path = external/base/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
-[submodule "external/gaimc"]
+[submodule "external/analysis/gaimc"]
 	path = external/analysis/gaimc
 	url = https://github.com/dgleich/gaimc.git
 [submodule "test/models"]
 	path = test/models
 	url = https://github.com/cobrabot/COBRA.models
-[submodule "external/Volume-and-Sampling"]
+[submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
-[submodule "external/CnaCobraInterface"]
+[submodule "external/base/CnaCobraInterface"]
 	path = external/base/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
 [submodule "COBRA.tutorials"]
@@ -28,12 +28,12 @@
 [submodule "COBRA.papers"]
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
-[submodule "external/rdir"]
+[submodule "external/base/rdir"]
 	path = external/base/rdir
 	url = https://github.com/uni-lu/rdir.git
-[submodule "external/mptoolbox"]
+[submodule "external/analysis/mptoolbox"]
 	path = external/analysis/mptoolbox
 	url = https://github.com/cobrabot/mptoolbox.git
-[submodule "external/analysis/matlab_network_routines"]
+[submodule "external/analysis/octave-networks-toolbox"]
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
