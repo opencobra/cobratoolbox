@@ -1,26 +1,26 @@
-[submodule "external/lusol"]
-	path = external/lusol
+[submodule "external/base/solvers/lusol"]
+	path = external/base/solvers/lusol
 	url = https://github.com/nwh/lusol.git
-[submodule "external/pdco"]
-	path = external/pdco
+[submodule "external/base/solvers/pdco"]
+	path = external/base/solvers/pdco
 	url = https://github.com/mxsaunders/pdco.git
-[submodule "external/Smith-Decomposition"]
-	path = external/Smith-Decomposition
+[submodule "external/base/utilities/Smith-Decomposition"]
+	path = external/base/utilities/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
-[submodule "external/gaimc"]
-	path = external/gaimc
+[submodule "external/analysis/gaimc"]
+	path = external/analysis/gaimc
 	url = https://github.com/dgleich/gaimc.git
 [submodule "test/models"]
 	path = test/models
 	url = https://github.com/cobrabot/COBRA.models
-[submodule "external/Volume-and-Sampling"]
-	path = external/Volume-and-Sampling
+[submodule "external/analysis/Volume-and-Sampling"]
+	path = external/analysis/Volume-and-Sampling
 	url = https://github.com/Bounciness/Volume-and-Sampling.git
-[submodule "external/CnaCobraInterface"]
-	path = external/CnaCobraInterface
+[submodule "external/analysis/CnaCobraInterface"]
+	path = external/analysis/CnaCobraInterface
 	url = https://github.com/SteffKlamt/CnaCobraInterface.git
 [submodule "COBRA.tutorials"]
 	path = tutorials
@@ -28,6 +28,12 @@
 [submodule "COBRA.papers"]
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
-[submodule "external/rdir"]
-	path = external/rdir
+[submodule "external/base/utilities/rdir"]
+	path = external/base/utilities/rdir
 	url = https://github.com/uni-lu/rdir.git
+[submodule "external/analysis/mptoolbox"]
+	path = external/analysis/mptoolbox
+	url = https://github.com/cobrabot/mptoolbox.git
+[submodule "external/analysis/octave-networks-toolbox"]
+	path = external/analysis/octave-networks-toolbox
+	url = https://github.com/aeolianine/octave-networks-toolbox.git
