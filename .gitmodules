@@ -34,3 +34,6 @@
 [submodule "external/mptoolbox"]
 	path = external/analysis/mptoolbox
 	url = https://github.com/cobrabot/mptoolbox.git
+[submodule "external/analysis/matlab_network_routines"]
+	path = external/analysis/matlab_network_routines
+	url = https://github.com/aeolianine/octave-networks-toolbox.git
