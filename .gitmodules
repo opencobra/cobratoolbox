@@ -5,13 +5,13 @@
 	path = external/base/pdco
 	url = https://github.com/mxsaunders/pdco.git
 [submodule "external/Smith-Decomposition"]
-	path = external/Smith-Decomposition
+	path = external/base/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
 [submodule "external/gaimc"]
-	path = external/gaimc
+	path = external/analysis/gaimc
 	url = https://github.com/dgleich/gaimc.git
 [submodule "test/models"]
 	path = test/models
@@ -32,5 +32,5 @@
 	path = external/base/rdir
 	url = https://github.com/uni-lu/rdir.git
 [submodule "external/mptoolbox"]
-	path = external/mptoolbox
+	path = external/analysis/mptoolbox
 	url = https://github.com/cobrabot/mptoolbox.git
