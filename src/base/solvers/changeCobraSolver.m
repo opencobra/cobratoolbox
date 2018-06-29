@@ -379,7 +379,7 @@ end
 
 % add the pdco submodule path (especially important if TOMLAB_PATH is set)
 if ~isempty(strfind(solverName, 'pdco'))
-    PDCO_PATH = [CBTDIR filesep 'external' filesep 'pdco'];
+    PDCO_PATH = [CBTDIR filesep 'external' filesep 'base' filesep 'solvers' filesep 'pdco'];
     addSolverDir(PDCO_PATH, printLevel, 'pdco', 'PDCO_PATH', PDCO_PATH, true);
 end
 

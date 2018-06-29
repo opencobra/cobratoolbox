@@ -105,10 +105,10 @@ function initCobraToolbox(updateToolbox)
     cd(CBTDIR);
 
     % add the external install folder
-    addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
 
     %And the rdir directory
-    addpath(genpath([CBTDIR filesep 'external' filesep 'rdir']));
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
 
     % add the install folder
     addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
