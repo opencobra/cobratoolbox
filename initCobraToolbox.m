@@ -340,9 +340,9 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
     % legacy solvers
-    SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.lindo_old.type = {'LP'};
-    SOLVERS.lindo_legacy.type = {'LP'};
+    %SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    %SOLVERS.lindo_old.type = {'LP'};
+    %SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
     %SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
@@ -363,9 +363,9 @@ function initCobraToolbox(updateToolbox)
     SOLVERS.tomlab_snopt.categ = 'passive';
 
     % definition of category of solvers with legacy support
-    SOLVERS.gurobi_mex.categ = 'legacy';
-    SOLVERS.lindo_old.categ = 'legacy';
-    SOLVERS.lindo_legacy.categ = 'legacy';
+    %SOLVERS.gurobi_mex.categ = 'legacy';
+    %SOLVERS.lindo_old.categ = 'legacy';
+    %SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
     %SOLVERS.opti.categ = 'legacy';
 
