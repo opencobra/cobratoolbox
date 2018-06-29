@@ -1,5 +1,5 @@
 function compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
-% determine the compatibility status of a solver based on the file compatMatrix.md
+% determine the compatibility status of a solver based on the file compatMatrix.rst
 %
 % USAGE:
 %    compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
