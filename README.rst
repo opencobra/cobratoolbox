@@ -194,11 +194,11 @@ implemented in The COBRA Toolbox v3.0 [2], was employed.*
 Binaries and Compatibility
 --------------------------
 
-.. begin-binaries-marker
-
 |warning| Please make sure you install a compatible solver. Check the
 compatibility
 `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
+
+.. begin-binaries-marker
 
 For convenience, we provide
 `glpk_mex <https://github.com/blegat/glpkmex>`__ and
