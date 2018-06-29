@@ -1,3 +1,6 @@
+Solver compatibility
+--------------------
+
 Linux Ubuntu
 ~~~~~~~~~~~~
 
@@ -173,15 +176,13 @@ Windows 10
 | PDCO              | |warning|          | |warning|          | |warning|          | |warning|          | |warning|          | |warning|          | |warning|          | |warning|          |
 +-------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+
 
-Legend
-~~~~~~
+.. rubric:: Legend
 
 -  |white_check_mark| : compatible with the COBRA Toolbox (tested)
 -  |x| : not compatible with the COBRA Toolbox (tested)
 -  |warning| : unverified compatibility with the COBRA Toolbox (not tested)
 
-Notes
-~~~~~
+.. rubric:: Notes
 
 -  Make sure to install the correct Tomlab version for your version of ``macOS``. Please note that there is a different Tomlab installer for MATLAB ``R2017a+``.
 -  Only **actively** supported interfaces are evaluated for compatibility.

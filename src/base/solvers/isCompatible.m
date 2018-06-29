@@ -48,53 +48,74 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatibleStatus = 2;
 
     % check if the solver and the matlab version are compatible
-    compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.md'];
+    compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.rst'];
 
     % read in the file with the compatibility matrix
     persistent C;
-    persistent compatMatrix;    
+    persistent compatMatrix;
     persistent testedOS;
-    
+
     untestedFlag = false;
     if isempty(compatMatrix)
         C = {};
         compatMatrix = {};
         testedOS = {};
         fid = fopen(compatMatrixFile);
+        lineCount = 0;
         while 1
+
+            % save the previous line
+            if lineCount > 0
+                tline_prev = tline;
+            end
+
+            % read in a new line
             tline = fgetl(fid);
+
             if ~ischar(tline), break; end
-            
+
+            % skip a table line
+            if ~isempty(strfind(tline, '+-------------------+')) || ~isempty(strfind(tline, '+====================+'))
+                tline = '';
+            end
+
             % if the line is not empty, read it in
             if length(tline) > 1
                 if printLevel > 1
                     disp(tline);
                 end
+
+                % replace the markers
+                tline = strrep(tline, '|x|', ':x:');
+                tline = strrep(tline, '|white_check_mark|', ':white_check_mark:');
+                tline = strrep(tline, '|warning|', ':warning:');
+
                 if strcmp(tline(1), '|')
                     % split the line at the vertical bar
                     Cpart = strsplit(tline, '|');
                     Cpart = Cpart(2:end-1);
-                    
+
                     % convert incompatible flag
                     Cpart = strrep(Cpart, ':x:', '0');
-                    
+
                     % convert compatible flag
                     Cpart = strrep(Cpart, ':white_check_mark:', '1');
-                    
+
                     % convert untested flag
                     Cpart = strrep(Cpart, ':warning:', '2');
-                    
+
                     C{end+1} = strtrim(Cpart);
                 else
                     if ~isempty(C)
                         compatMatrix{end+1} = C;
                         C = {};
                     end
-                    if strcmp(tline(1:2), '##') && ~strcmp(tline(3), '#')
-                        testedOS{end+1} = strtrim(tline(3:end));
+                    if strcmp(tline(1:2), '~~') %&& ~strcmp(tline(3), '#')
+                        testedOS{end+1} = strtrim(tline_prev);
                     end
                 end
             end
+            lineCount = lineCount + 1;
         end
         compatMatrix{end+1} = C;
     end
@@ -115,13 +136,13 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         macpos = find(strncmp(testedOS,'macOS',5));
         macOSFound = false;
         [~, resultVERS] = unix('sw_vers');
-        for tableNb = macpos %             
+        for tableNb = macpos %
             tmp = strsplit(testedOS{tableNb});
             if ~isempty(strfind(resultVERS, tmp{2}))
                 cMatrix = compatMatrix{tableNb};
                 macOSFound = true;
             end
-        end        
+        end
         if ~macOSFound
             untestedFlag = true;
             if printLevel > 0
@@ -143,7 +164,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
             end
         end
     end
-    
+
     if untestedFlag
         cMatrix = {};
     end
