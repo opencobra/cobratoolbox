@@ -117,7 +117,7 @@ if cplexInstalled && libraryExists
     eval(['mex -setup c' compVerboseMode]);
 
     % define the name of the source code
-    filename = [CBTDIR filesep 'external' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
+    filename = [CBTDIR filesep 'external' filesep 'analysis' filesep 'fastFVAmex' filesep 'cplexFVA.c'];
 
     % generation of MEX string with compiler options
     if isunix
