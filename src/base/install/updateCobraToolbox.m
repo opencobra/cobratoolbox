@@ -44,7 +44,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
         [status_gitFetch, result_gitFetch] = system('git fetch origin');
         if status_gitFetch ~= 0
             fprintf(result_gitFetch);
-            fprintf(' > The changes of The COBRA Toolbox could not be fetched.');
+            fprintf(' > The changes of The COBRA Toolbox could not be fetched. Please make sure you have an active internet connection.');
         end
 
         % check if master branch exists
@@ -116,7 +116,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                     fprintf([' > The COBRA Toolbox has been updated (<', branches{k}, '> branch).\n']);
                                 else
                                     fprintf(result_gitPull);
-                                    warning([' > The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
+                                    warning([' > The COBRA Toolbox could not be updated (<', branches{k}, '> branch). Please follow instructions here: https://opencobra.github.io/cobratoolbox/stable/faq.html#installation']);
                                 end
                             end
 
@@ -137,7 +137,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                             end
                         end
                     else
-                        fprintf(' > The COBRA Toolbox cannot be updated as you have unstaged files. Commits should only be made in your local and cloned fork.\n');
+                        fprintf(' > The COBRA Toolbox cannot be updated as you have unstaged files. Commits should only be made in your local and cloned fork. Please follow instructions here: https://opencobra.github.io/cobratoolbox/stable/faq.html#installation \n');
                     end
                 else
                     fprintf(' > You can update The COBRA Toolbox by running updateCobraToolbox() (from within MATLAB).\n');
@@ -156,7 +156,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, '].\n']);
-        fprintf(['     Please use the MATLAB.devTools (', devtoolsLink, ').\n']);
+        fprintf(['     Please use the MATLAB.devTools (', devtoolsLink, ') to update your fork.\n']);
     end
 end
 
