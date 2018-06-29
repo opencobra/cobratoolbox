@@ -110,7 +110,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                         compatMatrix{end+1} = C;
                         C = {};
                     end
-                    if strcmp(tline(1:2), '~~') %&& ~strcmp(tline(3), '#')
+                    if strcmp(tline(1:2), '~~')
                         testedOS{end+1} = strtrim(tline_prev);
                     end
                 end
