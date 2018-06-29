@@ -3,8 +3,15 @@ How to contribute
 
 .. include:: ../../README.rst
    :start-after: begin-how-to-contribute-marker
-   :end-before: end-how-to-contribute-marker 
+   :end-before: end-how-to-contribute-marker
 
+.. include:: guides/testGuide.rst
+
+.. include:: guides/documentationGuide.rst
+
+.. include:: guides/styleGuide.rst
+
+.. include:: guides/issueGuide.rst
 
 .. |macos| raw:: html
 
@@ -54,7 +61,7 @@ How to contribute
 .. |latest| raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-   
+
 
 .. |forum| raw:: html
 

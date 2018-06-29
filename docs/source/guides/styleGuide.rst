@@ -1,7 +1,7 @@
 .. _styleGuide:
 
 Style guide
-===========
+-----------
 
 Code
 ~~~~

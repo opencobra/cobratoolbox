@@ -81,9 +81,9 @@ In order to fix this issue, follow these steps:
 
 
 On Linux, MATLAB Suddenly crashes without any error
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This can happen due to some MATLAB versions shipping broken libraries, in particular ``libssl.so.1.0.0``. 
+This can happen due to some MATLAB versions shipping broken libraries, in particular ``libssl.so.1.0.0``.
 To fix this, you will have to replace the matlab library by the system library as follows:
 
 .. code-block:: console
