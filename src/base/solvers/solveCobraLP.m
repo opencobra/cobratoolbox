@@ -195,7 +195,6 @@ switch solver
             error('The OPTI interface is a legacy interface and is currently not maintained.');
         end
 
-        %{
         % J. Currie and D. I. Wilson, "OPTI: Lowering the Barrier Between Open
         % Source Optimizers and the Industrial MATLAB User," Foundations of
         % Computer-Aided Process Operations, Georgia, USA, 2012
@@ -211,75 +210,75 @@ switch solver
         %     opts = setupOPTIoptions(printLevel,optTol,...
         %     OPTIsolver,OPTIalgorithm);
         % end
-        if ~isempty(fieldnames(solverParams))
-            opts = setupOPTIoptions(solverParams, 'printLevel', printLevel, ...
-                                            'optTol', optTol);
-        else
-            opts = setupOPTIoptions('printLevel', printLevel, ...
-                                            'optTol', optTol);
-        end
+        % if ~isempty(fieldnames(solverParams))
+        %     opts = setupOPTIoptions(solverParams, 'printLevel', printLevel, ...
+        %                                     'optTol', optTol);
+        % else
+        %     opts = setupOPTIoptions('printLevel', printLevel, ...
+        %                                     'optTol', optTol);
+        % end
 
-        auto = 0;
-        switch opts.solver
-            case 'clp'
-                % https://projects.coin-or.org/Clp
-                % set CLP algorithm  - options
-                % 1. automatic
-                % 2. barrier
-                % 3. primalsimplex - primal simplex
-                % 4. dualsimplex - dual simplex
-                % 5. primalsimplexorsprint - primal simplex or sprint
-                % 6. barriernocross - barrier without simplex crossover
-                % opts.solver = [];
-                % setup problem for OPTI based solver
-                [f, A, rl, ru] = setupOPTIproblem(c, A, b, osense, csense, 'clp');
-                % solve optimization problem
-                [x, obj, exitflag, info] = ...
-                opti_clp([], f, A, rl, ru, lb, ub, opts);
-            case 'csdp'
-                % https://projects.coin-or.org/Csdp/
-                % not recommended for solving LPs
-                [f, A, b] = setupOPTIproblem(c, A, b, osense, csense, 'csdp');
-                % solve problem using csdp
-                [x, obj, exitflag, info] = opti_csdp(f, A, b, lb, ub, [], [], opts);
-            case 'dsdp'
-                % http://www.mcs.anl.gov/hs/software/DSDP/
-                % not recommended for solving large LPs
-                [f, A, b] = setupOPTIproblem(c, A, b, osense, csense, 'dsdp');
-                % solve problem using dsdp
-                [x, obj, exitflag, info] = opti_dsdp(f, A, b, lb, ub, [], [], opts);
-            case 'ooqp'
-                % http://pages.cs.wisc.edu/~swright/ooqp/
-                % not recommended for solving large LPs
-                [f, Aineq, rl, ru, Aeq, beq] = ...
-                setupOPTIproblem(c, A, b, osense, csense, 'ooqp');
-                % solve problem using ooqp
-                [x, obj, exitflag, info] = ...
-                opti_ooqp([], f, Aineq, rl, ru, Aeq, beq, lb, ub, opts);
-            case 'scip'
-                % http://scip.zib.de/
-                % http://scip.zib.de/scip.shtml
-                [f, A, rl, ru, xtype] = ...
-                setupOPTIproblem(c, A, b, osense, csense, 'scip');
-                [x, obj, exitflag, info] = ...
-                opti_scip([], f, A, rl, ru, lb, ub, xtype, [], [], opts);
-            otherwise
-                % construct opti object and solve using an automatically
-                % chosen solver
-                [f, A, b, e] = setupOPTIproblem(c, A, b, osense, csense, 'auto');
-                optiobj = opti('f', f, 'mix', A, b, e, 'bounds', lb, ub, ...
-                            'sense', osense, 'options', opts);
-                [x, obj, exitflag, info] = solve(optiobj);
-                auto = 1;
-        end
-        % parse results for solution output structure
-        if ~auto
-            f = obj * osense;
-        else
-            f = obj;
-        end
-        [w, y, algorithm, stat, origStat, t] = parseOPTIresult(exitflag, info);
-    %}
+        % auto = 0;
+        % switch opts.solver
+        %     case 'clp'
+        %         % https://projects.coin-or.org/Clp
+        %         % set CLP algorithm  - options
+        %         % 1. automatic
+        %         % 2. barrier
+        %         % 3. primalsimplex - primal simplex
+        %         % 4. dualsimplex - dual simplex
+        %         % 5. primalsimplexorsprint - primal simplex or sprint
+        %         % 6. barriernocross - barrier without simplex crossover
+        %         % opts.solver = [];
+        %         % setup problem for OPTI based solver
+        %         [f, A, rl, ru] = setupOPTIproblem(c, A, b, osense, csense, 'clp');
+        %         % solve optimization problem
+        %         [x, obj, exitflag, info] = ...
+        %         opti_clp([], f, A, rl, ru, lb, ub, opts);
+        %     case 'csdp'
+        %         % https://projects.coin-or.org/Csdp/
+        %         % not recommended for solving LPs
+        %         [f, A, b] = setupOPTIproblem(c, A, b, osense, csense, 'csdp');
+        %         % solve problem using csdp
+        %         [x, obj, exitflag, info] = opti_csdp(f, A, b, lb, ub, [], [], opts);
+        %     case 'dsdp'
+        %         % http://www.mcs.anl.gov/hs/software/DSDP/
+        %         % not recommended for solving large LPs
+        %         [f, A, b] = setupOPTIproblem(c, A, b, osense, csense, 'dsdp');
+        %         % solve problem using dsdp
+        %         [x, obj, exitflag, info] = opti_dsdp(f, A, b, lb, ub, [], [], opts);
+        %     case 'ooqp'
+        %         % http://pages.cs.wisc.edu/~swright/ooqp/
+        %         % not recommended for solving large LPs
+        %         [f, Aineq, rl, ru, Aeq, beq] = ...
+        %         setupOPTIproblem(c, A, b, osense, csense, 'ooqp');
+        %         % solve problem using ooqp
+        %         [x, obj, exitflag, info] = ...
+        %         opti_ooqp([], f, Aineq, rl, ru, Aeq, beq, lb, ub, opts);
+        %     case 'scip'
+        %         % http://scip.zib.de/
+        %         % http://scip.zib.de/scip.shtml
+        %         [f, A, rl, ru, xtype] = ...
+        %         setupOPTIproblem(c, A, b, osense, csense, 'scip');
+        %         [x, obj, exitflag, info] = ...
+        %         opti_scip([], f, A, rl, ru, lb, ub, xtype, [], [], opts);
+        %     otherwise
+        %         % construct opti object and solve using an automatically
+        %         % chosen solver
+        %         [f, A, b, e] = setupOPTIproblem(c, A, b, osense, csense, 'auto');
+        %         optiobj = opti('f', f, 'mix', A, b, e, 'bounds', lb, ub, ...
+        %                     'sense', osense, 'options', opts);
+        %         [x, obj, exitflag, info] = solve(optiobj);
+        %         auto = 1;
+        % end
+        % % parse results for solution output structure
+        % if ~auto
+        %     f = obj * osense;
+        % else
+        %     f = obj;
+        % end
+        % [w, y, algorithm, stat, origStat, t] = parseOPTIresult(exitflag, info);
+
     case 'dqqMinos'
         if ~isunix
             error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
