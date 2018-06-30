@@ -96,7 +96,7 @@ createLocalVariables(){
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
-    dirHyperLink="https://github.com/opencobra/COBRA.tutorials/tree/master/$tutorialFolder"
+    dirHyperlink="https://github.com/opencobra/COBRA.tutorials/tree/master/$tutorialFolder"
 
     previousSection=""
     if [[ -n $section ]]; then

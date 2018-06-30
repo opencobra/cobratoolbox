@@ -134,13 +134,13 @@ rng('shuffle');
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
 filenameParfor = [CBTDIR filesep '.tmp' filesep filenameParfor];
 
-    % Turn on the load balancing for large problems
+% turn on the load balancing for large problems
 loadBalancing = 0;  % 0: off; 1: on
 
-% Define if information about the work load distriibution will be shown or not
+% define if information about the work load distriibution will be shown or not
 showSplitting = 1;
 
-% Define the input arguments
+% define the input arguments
 if (nargin < 8 || isempty(strategy))
     strategy = 0;
 end
@@ -154,7 +154,7 @@ if (nargin < 5 || isempty(rxnsList))
     rxns = 1:length(model.rxns);
     rxnsList = model.rxns;
 else
-    %% check here if the vector of rxns is sorted or not
+    % check here if the vector of rxns is sorted or not
     % this needs to be fixed to sort the flux vectors accordingly
     % as the find() function sorts the reactions automatically
     % ->> this is currently an issue on git
@@ -185,7 +185,7 @@ if (nargin < 2 || isempty(optPercentage))
     optPercentage = 100;
 end
 
-% Define extra outputs if required
+% define extra outputs if required
 if nargout > 4 && nargout <= 7
     assert(nargout == 7);
     bExtraOutputs = true;
@@ -193,7 +193,7 @@ else
     bExtraOutputs = false;
 end
 
-% Define extra outputs if required
+% define extra outputs if required
 if nargout > 7
     assert(nargout == 9);
     bExtraOutputs1 = true;
@@ -208,7 +208,7 @@ if nargout ~= 4 && nargout ~= 7 && nargout ~= 9
     end
 end
 
-% Define the osenseStr
+% define the osenseStr
 if strcmpi(osenseStr, 'max')
     obj = -1;
 elseif strcmpi(osenseStr, 'min')
@@ -217,7 +217,7 @@ else
     error('Unknown osenseStr');
 end
 
-% Define the solverName
+% define the solverName
 if strcmp('glpk', solverName)
     error('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strcmp('ibm_cplex', solverName)
@@ -226,7 +226,7 @@ else
     error(['Solver ', solverName, ' not supported.']);
 end
 
-% Define the CPLEX parameter set and the associated values - split the struct
+% define the CPLEX parameter set and the associated values - split the struct
 namesCPLEXparams = fieldnames(cpxControl);
 nCPLEXparams = length(namesCPLEXparams);
 valuesCPLEXparams = zeros(nCPLEXparams, 1);
@@ -234,10 +234,10 @@ for i = 1:nCPLEXparams
     valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
 end
 
-% Retrieve the b vector of the model file
+% retrieve the b vector of the model file
 b = model.b;
 
-% Define the stoichiometric matrix to be solved
+% define the stoichiometric matrix to be solved
 if isfield(model, 'A') && (matrixAS == 'A')
     A = model.A;
     csense = model.csense(:);
@@ -257,19 +257,19 @@ if printLevel > 0
     fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
 end
 
-% Define the matrix A as sparse in case it is not as
+% define the matrix A as sparse in case it is not as
 % C code assumes a sparse stochiometric matrix
 if ~issparse(A)
     A = sparse(A);
 end
 
-% Determine the size of the stoichiometric matrix
+% determine the size of the stoichiometric matrix
 [m, n] = size(A);
 if printLevel > 0
     fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m, n);
 end
 
-% Determine the number of reactions that are considered
+% determine the number of reactions that are considered
 nR = length(rxns);
 if nR ~= n
     if printLevel > 0
@@ -285,18 +285,18 @@ end
 % output how many reactions are min, max, or both
 totalOptMode = length(find(rxnsOptMode == 0));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reactions out of %d are minimized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 end
 
 totalOptMode = length(find(rxnsOptMode == 1));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
@@ -307,11 +307,11 @@ end
 
 totalOptMode = length(find(rxnsOptMode == 2));
 if totalOptMode == 1
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reaction out of %d is minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 else
-    if printLevel > 0    
+    if printLevel > 0
         fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
     end
 end
@@ -319,7 +319,7 @@ end
 % count the number of workers
 poolobj = gcp('nocreate');  % If no pool, do not create new one.
 if isempty(poolobj)
-    nworkers = 0;
+    nworkers = 1;
 else
     nworkers = poolobj.NumWorkers;
 end
@@ -330,17 +330,25 @@ rootDirFastFVA = [CBTDIR filesep 'src' filesep 'analysis' filesep 'FVA' filesep 
 % define the directory to the logFiles and results directories
 logFileDir = [rootDirFastFVA filesep 'logFiles'];
 
-% Launch fastFVA on 1 core
+% initialisations
+istart(1) = 1;
+maxFluxTmp = {};
+minFluxTmp = {};
+
+% launch fastFVA on 1 core
 if nworkers <= 1
 
-    if length(rxnsList) > 0
+    % define the end of the index vector
+    iend(1) = n;
+
+    if ~isempty(rxnsList)
         rxnsKey = find(ismember(model.rxns, rxnsList));
     else
         rxnsKey = (1:n);
     end
 
-    % Sequential version
-    if printLevel > 0    
+    % sequential version
+    if printLevel > 0
         fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
     end
     if bExtraOutputs1
@@ -358,21 +366,39 @@ if nworkers <= 1
     end
 
     if ret ~= 0 && printLevel > 0
-        if printLevel > 0        
+        if printLevel > 0
             fprintf('Unable to complete the FVA, return code=%d\n', ret);
         end
     end
-else
-    % Divide the reactions amongst workers
-    %
-    % The load balancing can be improved for certain problems, e.g. in case
-    % of problems involving E-type matrices, some workers will get mostly
-    % well-behaved LPs while others may get many badly scaled LPs.
 
-    if n > 5000 & loadBalancing == 1
-        % A primitive load-balancing strategy for large problems
+    % output the minimum and maximum fluxes
+    minFluxTmp{1} = minFlux;
+    maxFluxTmp{1} = maxFlux;
+
+    % output the minimum and maximum flux vectors
+    if bExtraOutputs || bExtraOutputs1
+        fvaminRes{1} = fvamin;
+        fvamaxRes{1} = fvamax;
+        fbasolRes{1} = fbasol;
+    end
+
+    % output the solver status
+    if bExtraOutputs1
+        statussolminRes{1} = statussolmin;
+        statussolmaxRes{1} = statussolmax;
+    end
+else
+    % divide the reactions amongst workers
+
+    % Note:
+    %      The load balancing can be improved for certain problems, e.g. in case
+    %      of problems involving E-type matrices, some workers will get mostly
+    %      well-behaved LPs while others may get many badly scaled LPs.
+
+    if n > 5000 && loadBalancing == 1
+        % primitive load-balancing strategy for large problems
         nworkers = 4 * nworkers;
-        if printLevel > 0    
+        if printLevel > 0
             fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
         end
     end
@@ -386,7 +412,7 @@ else
 
     [Nmets, Nrxns] = size(A);
     assert(sum(nrxn) == n);
-    istart = 1; iend = nrxn(1);
+    iend(1) = nrxn(1);
     for i = 2:nworkers
         istart(i) = iend(i - 1) + 1;
         iend(i) = istart(i) + nrxn(i) - 1;
@@ -465,10 +491,7 @@ else
     iopt = zeros(nworkers, 1);
     iret = zeros(nworkers, 1);
 
-    maxFluxTmp = {};
-    minFluxTmp = {};
-
-    % initialilze extra outputs
+    % initialize extra outputs
     if bExtraOutputs || bExtraOutputs1
         fvaminRes = {};
         fvamaxRes = {};
@@ -479,12 +502,12 @@ else
         statussolminRes = {};
         statussolmaxRes = {};
     end
-    
+
     if printLevel > 0
         fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
         fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
     end
-    
+
     out = parfor_progress(nworkers, filenameParfor);
 
     parfor i = 1:nworkers
@@ -503,7 +526,7 @@ else
             fprintf('\n----------------------------------------------------------------------------------\n');
         end
         if strategy == 0
-            if printLevel > 0    
+            if printLevel > 0
                 fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
                     t.ID, nworkers, i, istart(i), iend(i), m, n);
             end
@@ -547,7 +570,7 @@ else
         if printLevel > 0
             fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
         end
-        
+
         if iret(i) ~= 0 && printLevel > 0
             if printLevel > 0
                 fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
@@ -570,7 +593,7 @@ else
         if printLevel > 0
             fprintf('\n----------------------------------------------------------------------------------\n');
         end
-        
+
         % print out the percentage of the progress
         percout = parfor_progress(-1, filenameParfor);
 
@@ -579,13 +602,13 @@ else
                 fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
             end
         else
-            if printLevel > 0    
+            if printLevel > 0
                 fprintf(' ==> 100%% done. Analysis completed.\n', percout);
             end
         end
     end
 
-    % Aggregate results
+    % aggregate results
     optsol = iopt(1);
     ret = max(iret);
     out = parfor_progress(0, filenameParfor);
@@ -612,7 +635,7 @@ end
 if bExtraOutputs || bExtraOutputs1
 
     if nworkers > 1
-        fbasol = fbasolRes{1};  % Initial FBA solutions are identical across workers
+        fbasol = fbasolRes{1};  % initial FBA solutions are identical across workers
     end
 
     fvamin = zeros(length(model.rxns), length(model.rxns));

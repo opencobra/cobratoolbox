@@ -23,7 +23,7 @@ function status = checkCNAinstallation(printLevel)
     % make sure that the interface functions from the submodule are used
     fullPath = which('CNAcobra2cna');
     if isempty(strfind(fullPath, 'external'))
-        addpath(genpath([CBTDIR filesep 'external' filesep 'CnaCobraInterface']));
+        addpath(genpath([CBTDIR filesep 'external' filesep 'analysis' filesep 'CnaCobraInterface']));
     end
 
     % check if CNA is available and convert the model

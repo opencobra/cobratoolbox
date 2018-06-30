@@ -22,7 +22,7 @@ function installDevTools(repoName)
     % git and curl are tested here
     if isempty(ENV_VARS)
         ENV_VARS.printLevel = false;
-        initCobraToolbox;
+        initCobraToolbox(false); %Don't update the toolbox automatically
         ENV_VARS.printLevel = true;
     end
 

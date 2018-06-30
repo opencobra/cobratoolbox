@@ -48,8 +48,8 @@ knownMappings = getDatabaseMappings(field);
 
 %Not sure, whether we can transform this to a cellfun, but at the moment, I
 %doubt it...
-fieldTrans = cellfun(@(db,rel) getMappingInfo(db,rel,knownMappings,field,relationSelection,~inverseRelationSelection), databases,relations,'UniformOutput',0);
-modelFields = vertcat(fieldTrans{:});
+[fieldNames,dbIDs,rels] = cellfun(@(db,rel)getAnnotationFieldName(field,db,rel, relationSelection, ~inverseRelationSelection), databases',relations','Uniform',0);
+modelFields = [vertcat(dbIDs{:}),vertcat(fieldNames{:}),vertcat(rels{:})];
 %Create ids with relations to cpature everything.
 uid = strcat(modelFields(:,1),modelFields(:,3));
 [~,pos] = unique(uid);
@@ -75,32 +75,3 @@ end
 function [idstring] = getID(databases,relations,ids,currentDB,relation)
     idstring = strjoin(ids(ismember(databases,currentDB) & ismember(relations,relation)),'; ');
 end
-            
-function fieldID = convertDBID(dbid,relation,field)
-fieldID = convertSBMLID(dbid);
-fieldID = strcat(relation,fieldID);
-fieldID = strcat(field,fieldID);
-fieldID = strcat(fieldID,'ID');
-end
-
-function map = getMappingInfo(db,rel,knownMappings,field, excludeAnnotationType,inverseRelationSelection)
-%Get mapping, and missing fields.
-%repeat relations, this is a set of cvterms all under one qualifier
-[mapping] = ismember(knownMappings(:,1),db) & ...
-            ismember(knownMappings(:,2),rel) & ...
-            ~(ismember(knownMappings(:,2),excludeAnnotationType) ~=inverseRelationSelection) ;
-[inverseMapping] = ismember(db,knownMappings(:,1)) &...
-                   ismember(rel,knownMappings(:,2) )|...
-                   (ismember(rel,excludeAnnotationType) ~=inverseRelationSelection);
-
-    map = [knownMappings(mapping,1),...
-        knownMappings(mapping,3), ...
-        knownMappings(mapping,2);...
-       db(~inverseMapping),...
-       convertDBID(db(~inverseMapping),rel(~inverseMapping),field),...
-       rel(~inverseMapping)];
-
-end
-            
-
-

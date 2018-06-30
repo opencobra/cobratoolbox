@@ -1,7 +1,10 @@
 .. _styleGuide:
 
 Style guide
-===========
+-----------
+
+A comprehensive MATLAB style guide written by Richard Jonson can be
+found [here](http://www.datatool.com/downloads/MatlabStyle2%20book.pdf).
 
 Code
 ~~~~
@@ -18,6 +21,7 @@ Code
    This also improves readability. e.g. ``a = [1, 2, 3; 4, 5, 6];``
    instead of ``a=[1,2,3;4,5,6]``;
 -  Include a single line of whitespace between blocks of code
+-  Include a whitespace after a comment sign ``%``
 
 2. **Variable names**
 
@@ -64,7 +68,8 @@ Code
 Documentation and comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
--  Make sure the code is fully documented and commented
+-  Make sure the code is fully documented and commented, especially parts of
+   the code that might be difficult to understand for beginner users.
 -  Header for each file with the following elements:
 
    -  Brief description (easy and short functions) or more detailed
@@ -88,6 +93,7 @@ Documentation and comments
       ``How it is done through a more detailed paragraph``.
    -  If the code is divided in blocks, you can also introduce briefly
       what is the function of each block beforehand.
+   -  Format the comments with a whitespace after the ``%`` sign. Try to use lowercase letters for comments.
 
 .. raw:: html
 

@@ -1,7 +1,7 @@
 .. _testGuide:
 
 Guide for writing a test
-========================
+------------------------
 
 Before starting to write a test on your own, it might be instructive to
 follow common test practices in ``/test/verifiedTests``. A style guide
@@ -9,7 +9,7 @@ on how to write tests is given
 `here <https://opencobra.github.io/cobratoolbox/docs/styleGuide.html>`__.
 
 Prepare the test (define requirements)
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are functions that need a specific solver or that can only be run
 if a certain toolbox is installed on a system. To address these, you
@@ -29,8 +29,7 @@ contain at most one solver.
 
 Here are a few examples:
 
-Example A: Require Windows for the test
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example A: Require Windows for the test
 
 The same works with ``needsMac``, ``needsLinux`` and ``needsUnix``
 instead of ``needsWindows``.
@@ -39,8 +38,7 @@ instead of ``needsWindows``.
 
     solvers = prepareTest('needsWindows', true);
 
-Example B: Require an LP solver (``needsLP``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example B: Require an LP solver (``needsLP``)
 
 The same works with ``needsNLP``, ``needsMILP``, ``needsQP`` or
 ``needsMIQP``. ``solvers.LP``, ``solvers.MILP`` etc. will be cell arrays
@@ -54,8 +52,7 @@ array is empty).
 
     solvers = prepareTest('needsLP', true);
 
-Example C: Use multiple solvers if present
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example C: Use multiple solvers if present
 
 If multiple solvers are requested. ``solvers.LP``, ``solvers.MILP`` etc
 will contain all those requested solvers that can solve the respective
@@ -65,8 +62,7 @@ problem type and that are installed.
 
     solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex', 'gurobi'});
 
-Example D: Require one of a set of solvers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example D: Require one of a set of solvers
 
 Some functionalities do only work properly with a limited set of solvers.
 with the keyword ``requireOneSolverOf`` you can specify a set of solvers
@@ -79,8 +75,7 @@ you would call ``prepareTest`` as
 
     solvers = prepareTest('requireOneSolverOf', {'ibm_cplex', 'gurobi'})
 
-Example E: Exclude a solver
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example E: Exclude a solver
 
 If for some reason, a function is known not to work with a few specific
 solvers (e.g. precision is insufficient) but works with all others, it
@@ -93,8 +88,7 @@ you would use the following command:
 
     solvers = prepareTest('excludeSolvers', {'matlab', 'lp_solve'})
 
-Example F: Require multiple solvers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example F: Require multiple solvers
 
 Some tests require more than one solver to be run, and otherwise fail. To
 require multiple solvers for a test use the ``requiredSolvers`` parameters.
@@ -105,8 +99,7 @@ call:
 
     solvers = prepareTest('requiredSolvers', {'ibm_cplex', 'gurobi'})
 
-Example G: Require a specific MATLAB toolbox
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example G: Require a specific MATLAB toolbox
 
 The toolbox IDs are specified as those used in ``license('test',
 'toolboxName')``.  The following example requires the statistics toolbox
@@ -116,8 +109,7 @@ to be present.
 
     solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'})
 
-Example H: Multiple requirements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Example H: Multiple requirements
 
 If the test requires multiple different properties to be met, you should
 test them all in the same call. To keep the code readable, first define
@@ -135,7 +127,7 @@ the requirements and then pass them in.
     solversPkgs = prepareTest('requiredSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needsUnix', true);
 
 Test if an output is correct
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to test if the output of a function
 ``[output1, output2] = function1(input1, input2)`` is correct, you
@@ -174,7 +166,7 @@ The test succeeds if the argument of ``assert()`` yields a ``true``
 logical condition.
 
 Test if a function throws an error or warning message
------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to test whether your ``function1`` correctly throws an
 **error** message, you can test as follows:
@@ -202,14 +194,13 @@ Note that this allows the error message to be thrown without failing the
 test.
 
 Test template
--------------
+~~~~~~~~~~~~~
 
 A test template is readily available
 `here <https://opencobra.github.io/cobratoolbox/docs/testTemplate.html>`__.
 The following sections shall be included in a test file:
 
-1. Header
-^^^^^^^^^
+.. rubric:: 1. Header
 
 .. code-block:: matlab
 
@@ -222,8 +213,7 @@ The following sections shall be included in a test file:
     %     - <major change>: <your name> <date>
     %
 
-2. Test initialization
-^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: 2. Test initialization
 
 .. code-block:: matlab
 
@@ -235,8 +225,7 @@ The following sections shall be included in a test file:
     % initialize the test
     cd(fileparts(which('fileName')));
 
-3. Define the solver packages to be tested and the tolerance
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: 3. Define the solver packages to be tested and the tolerance
 
 .. code-block:: matlab
 
@@ -246,8 +235,7 @@ The following sections shall be included in a test file:
     % define the solver packages to be used to run this test
     solvers = prepareTest('needsLP',true);
 
-4. Load a model and/or reference data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: 4. Load a model and/or reference data
 
 .. code-block:: matlab
 
@@ -269,8 +257,7 @@ online, please make a pull request with the URL entry to the
     % load the ecoli core model
     load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
-5. Create a parallel pool
-^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: 5. Create a parallel pool
 
 This is only necessary for tests that test a function that runs in
 parallel.
@@ -286,8 +273,7 @@ parallel.
 :warning: Please only launch a pool of ``2`` workers - more workers
 should not be needed to test a parallel function efficiently.
 
-6. Body of test
-^^^^^^^^^^^^^^^
+.. rubric:: 6. Body of test
 
 The test. If multiple solvers were requested by ‘useIfAvailable’, run:
 
@@ -313,8 +299,7 @@ If only one solver is requested:
     % output a success message
     fprintf('Done.\n');
 
-7. Change to the current directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: 7. Change to the current directory
 
 .. code-block:: matlab
 
@@ -322,7 +307,7 @@ If only one solver is requested:
     cd(currentDir)
 
 Run the test locally on your machine
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Please make sure that your test runs individually by typing after a
 fresh start:
@@ -345,7 +330,7 @@ Alternatively, you can run the test suite in the background by typing:
     $ matlab -nodesktop -nosplash < test/testAll.m
 
 Verify that your test passed
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once your pull request (PR) has been submitted, you will notice an
 orange mark next to your latest commit. Once the continuous integration
@@ -353,7 +338,7 @@ orange mark next to your latest commit. Once the continuous integration
 failed, you will see a red cross.
 
 What should I do in case my PR failed?
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can check why your PR failed by clicking on the mark and following
 the respective links. Alternatively, you can see the output of the CI
@@ -375,7 +360,7 @@ Common errors include:
    ``verLessThan('matlab', '<version>')``.
 
 Can I find out how many tests have failed?
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The logical conditions, when tested using ``assert()``, will throw an
 error when not satisfied. It is bad practice to test the sum of tests

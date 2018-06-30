@@ -1,5 +1,5 @@
 Documentation guide
-===================
+-------------------
 
 In order to enable the automatic documentation generation, the header of
 a ``MATLAB`` function has to be formatted properly. The automatic
@@ -66,7 +66,7 @@ during the automatic documentation generation:
     function [ output1,output2,output3 ]=someFunction( input1,input2,input3 ) % bad practice
 
 Function description
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 The description of the function is a brief explanation of the purpose of
 the function. The description of the function may extend over several
@@ -80,7 +80,7 @@ lines. However, try to keep the explanations as brief as possible.
     %
 
 Keywords
---------
+~~~~~~~~
 
 The automatic documentation software relies on keywords to properly
 format the documented function. A keyword also defines the start of a
@@ -114,8 +114,7 @@ sign ``%``:
 
 If the indentation differs, there will be an error.
 
-Keyword ``USAGE:``
-~~~~~~~~~~~~~~~~~~
+.. rubric:: Keyword ``USAGE:``
 
 In the block starting with the keyword ``USAGE:``, the function’s
 signature must be given in order to show how the function should be
@@ -132,8 +131,7 @@ used. It is important to leave one empty line before the keyword
     %
     % here the other section can begin
 
-Keyword ``INPUT:`` and ``OUTPUT:``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. rubric:: Keyword ``INPUT:`` and ``OUTPUT:``
 
 The arguments declared in the blocks: ``INPUT:``, ``INPUTS:``,
 ``OUTPUT:`` and ``OUTPUTS:`` must be followed by a colon ``:`` before
@@ -189,8 +187,7 @@ numbers followed by a dot (e.g., ``1.``) instead of ``* .``.
     %                1. first element of a numbered list
     %                2. second element of a numbered list
 
-Keyword ``EXAMPLE:``
-~~~~~~~~~~~~~~~~~~~~
+.. rubric:: Keyword ``EXAMPLE:``
 
 A common usage example can be included in the ``EXAMPLE:`` block. Code
 included in this block will be formatted as ``MATLAB`` formatted code.
@@ -208,8 +205,7 @@ and after the properly indented (4 spaces) code snippet.
     %
     % another block begins here
 
-Keyword ``NOTE:``
-~~~~~~~~~~~~~~~~~
+.. rubric:: Keyword ``NOTE:``
 
 Important information, such as common errors, can be included in the
 block that starts with the keyword ``NOTE:``. A ``NOTE:`` block is
@@ -232,8 +228,7 @@ comment sign. An example of a ``NOTE:`` block reads:
     % This is an additional final comment that can be added and that is
     % only relevant to the code itself
 
-Keyword ``Author:`` or ``Author(s):``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. rubric:: Keyword ``Author:`` or ``Author(s):``
 
 In the ``Author(s)`` block, the author(s) that have written or
 contributed to the function are listed. Authors are not shown in the
@@ -258,8 +253,8 @@ If there are 2 or more authors, format as follows:
 
     x = 5;  % here the body of the function begins
 
-Complete example of formatted documentation
--------------------------------------------
+Example
+~~~~~~~
 
 A complete example of a function is provided here. Please remember that
 colons, indentations, and keywords are important to guarantee pretty

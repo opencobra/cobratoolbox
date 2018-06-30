@@ -214,7 +214,7 @@ solverInstalled = false;
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
-    initCobraToolbox;
+    initCobraToolbox(false); %Don't update the toolbox automatically
     ENV_VARS.printLevel = true;
 end
 
@@ -379,7 +379,7 @@ end
 
 % add the pdco submodule path (especially important if TOMLAB_PATH is set)
 if ~isempty(strfind(solverName, 'pdco'))
-    PDCO_PATH = [CBTDIR filesep 'external' filesep 'pdco'];
+    PDCO_PATH = [CBTDIR filesep 'external' filesep 'base' filesep 'solvers' filesep 'pdco'];
     addSolverDir(PDCO_PATH, printLevel, 'pdco', 'PDCO_PATH', PDCO_PATH, true);
 end
 
@@ -446,6 +446,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                     error(['You must have `csh` installed in order to use `', solverName, '`.']);
                 end
             end
+        %{
         case 'opti'
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
@@ -456,6 +457,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                     return;
                 end
             end
+        %}
         case 'matlab'
             v = ver;
             %Both linprog and fmincon are part of the optimization toolbox.

@@ -12,7 +12,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name) (default: {})
 %                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
-%                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available                  
+%                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available
 %                   - `excludeSolvers`: Names of solvers which should never be used for the test (because they fail)
 %                   - `needsLP`: Whether a LP solver is required (default: false)
 %                   - `needsMILP`: Whether a MILP solver is required (default: false)
@@ -23,6 +23,8 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
 %                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
+%                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '')
+%                   - `needsWebRead`: Tests, whether webread can be used with the given url
 %
 % OUTPUTS:
 %
@@ -96,6 +98,8 @@ parser.addParamValue('needsUnix', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
+parser.addParamValue('needsWebAddress', '', @ischar);
+parser.addParamValue('needsWebRead', false, @(x) islogical(x) || x == 1 || x == 0);
 
 parser.parse(varargin{:});
 
@@ -115,6 +119,9 @@ requiredSolvers = parser.Results.requiredSolvers;
 possibleSolvers = parser.Results.requireOneSolverOf;
 excludedSolvers = parser.Results.excludeSolvers;
 preferredSolvers = parser.Results.useSolversIfAvailable;
+
+needsWebAddress = parser.Results.needsWebAddress;
+needsWebRead = parser.Results.needsWebRead;
 
 runtype = getenv('CI_RUNTYPE');
 
@@ -143,6 +150,32 @@ if linuxOnly
         end
     end
 end
+
+if ~isempty(needsWebAddress)
+    [status_curl, result_curl] = system(['curl -s -k ' needsWebAddress]);
+    if status_curl ~= 0 || isempty(result_curl)
+        errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);    	
+    end    
+    if needsWebRead
+        if verLessThan('MATLAB','9.3') && isunix && strncmp(needsWebAddress,'https',5)
+            errorString = sprintf(['This function needs to connect to a ''https'' address using webread.\n', ...
+                                   'Your MATLAB version is shipped with an invalid libssl.so.1.0.0 \n',...
+                                   'which will cause MATLAB to crash if webread is called with an \n',...
+                                   '''https'' website.\n',...
+                                   'To fix this, you can replace your MATLAB library with the system library \n',...
+                                   'by running the following commands in the console:\n',...
+                                   '$ sudo mv %s/bin/glnxa64/libssl.so.1.0.0 %s/bin/glnxa64/libssl.so.1.0.0.old\n',...
+                                   '$ sudo cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 %s/bin/glnxa64/libssl.so.1.0.0\n',...
+                                   'Please note that this test will not be able to run on your system,\n',...
+                                   'regardless on whether you fixed the library or not. If you want to run it,',...
+                                   'you will have to remove the ''needsWebRead'' flag from the ''prepareTest''',...
+                                   'statement in the test and run it again.'],...                                   
+                                   matlabroot,matlabroot,matlabroot);                                   
+            errorMessage{end + 1} = errorString;    	
+        end
+    end
+end
+
 
 if unixOnly
     if ~isunix
@@ -189,16 +222,16 @@ if ~isempty(possibleSolvers) && ~any(ismember(possibleSolvers,solversForTest.ALL
     end
 else
     if ~isempty(possibleSolvers)
-        %We have a set of possible solvers. 
+        %We have a set of possible solvers.
         %So we restrict the preferredSolvers to those
         % if there are preferred solvers.
         if ~isempty(preferredSolvers)
-            preferredSolvers = intersect(preferredSolvers,possibleSolvers);                    
+            preferredSolvers = intersect(preferredSolvers,possibleSolvers);
         else
             solverOptions = intersect(possibleSolvers,solversForTest.ALL);
             preferredSolvers = solversForTest.ALL(find(ismember(solversForTest.ALL,possibleSolvers),1));
-        end            
-        
+        end
+
     end
 end
 
@@ -307,7 +340,7 @@ problemTypes = OPT_PROB_TYPES;
 if strcmpi(runtype,'fullRun')
     solversToUse = solversForTest;
     %exclude pdco if not explicitly requested and available, as it does
-    %have issues at the moment.    
+    %have issues at the moment.
     if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
         solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
         solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
@@ -318,7 +351,7 @@ if strcmpi(runtype,'fullRun')
             solversToUse.(problemTypes{i}) = intersect(solversToUse.(problemTypes{i}),possibleSolvers);
         end
     end
-else   
+else
     for i = 1:numel(problemTypes)
         solversToUse.(problemTypes{i}) = intersect(preferredSolvers, solversForTest.(problemTypes{i}));
         if isempty(solversToUse.(problemTypes{i})) && ~isempty(solversForTest.(problemTypes{i}))
@@ -336,4 +369,4 @@ else
         end
     end
 end
-    
+

@@ -63,7 +63,7 @@ FVAflag = parser.Results.FVAflag;
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
 if isempty(solver)
-    initCobraToolbox;
+    initCobraToolbox(false); %Don't update the toolbox automatically
 end
 
 % Find the range of possible optimal values for both objective functions

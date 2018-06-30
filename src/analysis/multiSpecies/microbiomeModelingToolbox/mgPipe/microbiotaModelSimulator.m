@@ -100,7 +100,7 @@ for k = startIter:(patNumb + 1)
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
     if isempty(solver)
-        initCobraToolbox;
+        initCobraToolbox(false); %Don't update the toolbox automatically
     end
     solution_allOpen = solveCobraLP(model);
     % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);

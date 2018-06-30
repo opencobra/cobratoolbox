@@ -13,7 +13,7 @@ global CBTDIR
 global CBT_MISSING_REQUIREMENTS_ERROR_ID
 
 %Check the requirements (a LP solver is necessary)
-solverPkgs = prepareTest('needsLP',true,'requireOneSolverOf',{'gurobi','ibm_cplex','glpk','mosek','quadMinos'});
+solverPkgs = prepareTest('needsLP',true,'requireOneSolverOf',{'gurobi','ibm_cplex','glpk','mosek','quadMinos'},'needsWebAddress','http://bigg.ucsd.edu/api/v2/models');
 
 % save the current path
 currentDir = pwd;

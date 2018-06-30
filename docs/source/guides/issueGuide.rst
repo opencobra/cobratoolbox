@@ -1,8 +1,8 @@
-Guide on reporting issues/enhancements
-======================================
+Issues/enhancements guide
+-------------------------
 
 What should I do before opening an issue?
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Following these guidelines helps maintainers and the community
 understand your report |pencil|, reproduce the behavior |computer|, and
@@ -29,7 +29,7 @@ If you provide snippets in the issue/pull request, use `Markdown code
 blocks <https://help.github.com/articles/markdown-basics/#multiple-lines>`__.
 
 How can I report an issue (or enhancement)?
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Explain the problem and include **additional details** to help
 maintainers reproduce the problem:

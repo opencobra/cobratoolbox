@@ -16,7 +16,7 @@ cd(fileDir);
 % test variables
 field = 'met';
 qualifiers = {};
-refData_returnedmappings = cell(0, 5);
+refData_returnedmappings = cell(0, 6);
 
 % function outputs
 returnedmappings = getDatabaseMappings(field, qualifiers);

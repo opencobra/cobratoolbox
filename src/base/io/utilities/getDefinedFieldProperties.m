@@ -81,15 +81,15 @@ if db
         end
         %Get the indices for database, qualifier and reference.
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.databaseid);
-        relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows)];
-        dbInfo = cell(0,5);
+        relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows),raw.qualifierType(relrows)];
+        dbInfo = cell(0,6);
         for i = 1:size(relarray)
             fieldRef = relarray{i,4}(1:end-1);
             dbs = strsplit(relarray{i,1},';');
             for db = 1:length(dbs)
                 quals = strsplit(relarray{i,2},';');
                 for qual = 1:length(quals)
-                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef,relarray{i,5}};
+                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef,relarray{i,5},relarray{i,6}};
                 end
             end
         end

@@ -1,4 +1,4 @@
-function initCobraToolbox()
+function initCobraToolbox(updateToolbox)
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
 %     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
@@ -42,6 +42,9 @@ function initCobraToolbox()
     global gitBashVersion;
     global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
+    if ~exist('updateToolbox','var')
+        updateToolbox = true;
+    end
     % define a base version of gitBash that is tested
     gitBashVersion = '2.13.3';
 
@@ -102,16 +105,22 @@ function initCobraToolbox()
     cd(CBTDIR);
 
     % add the external install folder
-    addpath(genpath([CBTDIR filesep 'external' filesep 'install']));
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
 
     %And the rdir directory
-    addpath(genpath([CBTDIR filesep 'external' filesep 'rdir']));
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
 
     % add the install folder
     addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
 
     % check if git is installed
-    checkGit();
+    [installedGit, versionGit] = checkGit();
+
+    % set the depth flag if the version of git is higher than 2.10.0
+    depthFlag = '';
+    if installedGit && versionGit > 2100
+        depthFlag = '--depth=1';
+    end
 
     % change to the root of The COBRA Tooolbox
     cd(CBTDIR);
@@ -144,7 +153,7 @@ function initCobraToolbox()
 
         if status_curl == 0
             % set the remote origin
-            [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
+            [status_fetch, result_fetch] = system(['git fetch origin master ' depthFlag]);
             if status_fetch ~= 0
                 fprintf(result_fetch);
                 error(' > The files could not be fetched.');
@@ -189,7 +198,7 @@ function initCobraToolbox()
         end
 
         % Update/initialize submodules
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --remote --no-fetch --depth 1');
+        [status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);
 
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));
@@ -331,11 +340,11 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
     % legacy solvers
-    SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.lindo_old.type = {'LP'};
-    SOLVERS.lindo_legacy.type = {'LP'};
+    %SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    %SOLVERS.lindo_old.type = {'LP'};
+    %SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
-    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
+    %SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
     % definition of category of solvers with active support
     SOLVERS.cplex_direct.categ = 'active';
@@ -354,11 +363,11 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.categ = 'passive';
 
     % definition of category of solvers with legacy support
-    SOLVERS.gurobi_mex.categ = 'legacy';
-    SOLVERS.lindo_old.categ = 'legacy';
-    SOLVERS.lindo_legacy.categ = 'legacy';
+    %SOLVERS.gurobi_mex.categ = 'legacy';
+    %SOLVERS.lindo_old.categ = 'legacy';
+    %SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
-    SOLVERS.opti.categ = 'legacy';
+    %SOLVERS.opti.categ = 'legacy';
 
     % definition of categories of solvers
     supportedSolversNames = fieldnames(SOLVERS);
@@ -533,8 +542,12 @@ function initCobraToolbox()
     changeCobraSolver('gurobi', 'ALL', 0);
 
     % check if a new update exists
-    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
+    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200')) && updateToolbox
         updateCobraToolbox(true); % only check
+    else
+        if ~updateToolbox && ENV_VARS.printLevel
+            fprintf('> Checking for available updates ... skipped\n')
+        end
     end
 
     % restore global configuration by unsetting http.sslVerify
@@ -561,14 +574,21 @@ function initCobraToolbox()
     end
 end
 
-function checkGit()
+function [installed, versionGit] = checkGit()
 % Checks if git is installed on the system and throws an error if not
 %
 % USAGE:
-%     checkGit();
+%     versionGit = checkGit();
+%
+% OUTPUT:
+%     installed:      boolean to determine whether git is installed or not
+%     versionGit:     version of git installed
 %
 
     global ENV_VARS
+
+    % set the boolean as false (not installed)
+    installed = false;
 
     if ENV_VARS.printLevel
         fprintf(' > Checking if git is installed ... ')
@@ -577,9 +597,29 @@ function checkGit()
     % check if git is properly installed
     [status_gitVersion, result_gitVersion] = system('git --version');
 
-    if status_gitVersion == 0 && ~isempty(strfind(result_gitVersion, 'git version'))
+    % get index of the version string
+    searchStr = 'git version';
+    index = strfind(result_gitVersion, searchStr);
+
+    if status_gitVersion == 0 && ~isempty(index)
+
+        % determine the version of git
+        versionGitStr = result_gitVersion(length(searchStr)+1:end);
+
+        % replace line breaks and white spaces
+        versionGitStr = regexprep(versionGitStr(1:7),'\s+','');
+
+        % replace the dots in the version number
+        tmp = strrep(versionGitStr, '.', '');
+
+        % convert the string of the version number to a number
+        versionGit = str2num(tmp);
+
+        % set the boolean to true
+        installed = true;
+
         if ENV_VARS.printLevel
-            fprintf(' Done.\n');
+            fprintf([' Done (version: ' versionGitStr ').\n']);
         end
     else
         if ispc
@@ -612,10 +652,10 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     if ENV_VARS.printLevel
         fprintf(' > Checking if curl is installed ... ')
     end
-    
+
     origLD = getenv('LD_LIBRARY_PATH');
     newLD = regexprep(getenv('LD_LIBRARY_PATH'), [matlabroot '/bin/' computer('arch') ':'], '');
-    
+
     % check if curl is properly installed
     [status_curl, result_curl] = system('curl --version');
 
@@ -664,14 +704,14 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
             end
         end
     end
-    
+
     if ENV_VARS.printLevel
         fprintf(' > Checking if remote can be reached ... ')
     end
-    
+
     % check if the remote repository can be reached
     [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
-    
+
     % check if the URL exists
     if status_curl == 0 && ~isempty(strfind(result_curl, ' 200'))
         if ENV_VARS.printLevel

@@ -97,7 +97,7 @@ if nargin > 2
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
     if isempty(solver)
-        initCobraToolbox;
+        initCobraToolbox(false); %Don't update the toolbox automatically
     end
     % inconsistency in reaction IDs..can currently only be fixed manually.
     TestAdaptedDietConstraints = adaptedDietConstraints;
