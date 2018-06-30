@@ -150,7 +150,39 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guide-for-writing-a-test">Guide for writing a test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-the-test-define-requirements">Prepare the test (define requirements)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-if-an-output-is-correct">Test if an output is correct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-if-a-function-throws-an-error-or-warning-message">Test if a function throws an error or warning message</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-template">Test template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-the-test-locally-on-your-machine">Run the test locally on your machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verify-that-your-test-passed">Verify that your test passed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-should-i-do-in-case-my-pr-failed">What should I do in case my PR failed?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#can-i-find-out-how-many-tests-have-failed">Can I find out how many tests have failed?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-guide">Documentation guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#function-signature">Function signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-description">Function description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keywords">Keywords</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#style-guide">Style guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#code">Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation-and-comments">Documentation and comments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tests">Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-commit-messages">Git commit messages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#issues-enhancements-guide">Issues/enhancements guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-should-i-do-before-opening-an-issue">What should I do before opening an issue?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-report-an-issue-or-enhancement">How can I report an issue (or enhancement)?</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -258,6 +290,827 @@ you started. This
 or the official <a class="reference external" href="https://help.github.com/articles/creating-a-pull-request/">GitHub
 guide</a>
 also come in handy.</p>
+<div class="section" id="guide-for-writing-a-test">
+<span id="testguide"></span><h2>Guide for writing a test<a class="headerlink" href="#guide-for-writing-a-test" title="Permalink to this headline">¶</a></h2>
+<p>Before starting to write a test on your own, it might be instructive to
+follow common test practices in <code class="docutils literal"><span class="pre">/test/verifiedTests</span></code>. A style guide
+on how to write tests is given
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/styleGuide.html">here</a>.</p>
+<div class="section" id="prepare-the-test-define-requirements">
+<h3>Prepare the test (define requirements)<a class="headerlink" href="#prepare-the-test-define-requirements" title="Permalink to this headline">¶</a></h3>
+<p>There are functions that need a specific solver or that can only be run
+if a certain toolbox is installed on a system. To address these, you
+should specify the respective requirements by using</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="n">requirements</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If successfull and all requirements are fulfilled, <code class="docutils literal"><span class="pre">prepareTest</span></code> will
+return a <code class="docutils literal"><span class="pre">struct</span></code> with one field for each problem type
+(<code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc.). Each field will be a cell array
+of solver names (if any are available). If the test does not ask for
+multiple solvers (via the <code class="docutils literal"><span class="pre">requiredSolvers</span></code> or the
+<code class="docutils literal"><span class="pre">useSolversIfAvailable</span></code> arguments), the returned cell array will only
+contain at most one solver.</p>
+<p>Here are a few examples:</p>
+<p class="rubric">Example A: Require Windows for the test</p>
+<p>The same works with <code class="docutils literal"><span class="pre">needsMac</span></code>, <code class="docutils literal"><span class="pre">needsLinux</span></code> and <code class="docutils literal"><span class="pre">needsUnix</span></code>
+instead of <code class="docutils literal"><span class="pre">needsWindows</span></code>.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsWindows&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">Example B: Require an LP solver (<code class="docutils literal"><span class="pre">needsLP</span></code>)</p>
+<p>The same works with <code class="docutils literal"><span class="pre">needsNLP</span></code>, <code class="docutils literal"><span class="pre">needsMILP</span></code>, <code class="docutils literal"><span class="pre">needsQP</span></code> or
+<code class="docutils literal"><span class="pre">needsMIQP</span></code>. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc. will be cell arrays
+of string with the respective available solver for the problem type. If
+the <code class="docutils literal"><span class="pre">'useSolversIfAvailable'</span></code> parameter is non empty, all installed
+solvers requested will be in the cell array. Otherwise, there will be at
+most one solver (if no solver for the problem is installed, the cell
+array is empty).</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">Example C: Use multiple solvers if present</p>
+<p>If multiple solvers are requested. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc
+will contain all those requested solvers that can solve the respective
+problem type and that are installed.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s">&#39;useSolversIfAvailable&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">});</span>
+</pre></div>
+</div>
+<p class="rubric">Example D: Require one of a set of solvers</p>
+<p>Some functionalities do only work properly with a limited set of solvers.
+with the keyword <code class="docutils literal"><span class="pre">requireOneSolverOf</span></code> you can specify a set of solvers
+of which the test requires at least one to be present. This option, will
+make the test never be run with any but the solvers specified in the
+supplied list. E.g. if your test only works with <code class="docutils literal"><span class="pre">gurobi</span></code> or <code class="docutils literal"><span class="pre">mosek</span></code>
+you would call <code class="docutils literal"><span class="pre">prepareTest</span></code> as</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requireOneSolverOf&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example E: Exclude a solver</p>
+<p>If for some reason, a function is known not to work with a few specific
+solvers (e.g. precision is insufficient) but works with all others, it
+might be advantageous to explicitly exclude that one solver instead of
+defining the list of possible solvers. This can be done with the
+<code class="docutils literal"><span class="pre">excludeSolvers</span> <span class="pre">parameter</span></code>. Eg. to exclude <code class="docutils literal"><span class="pre">matlab</span></code> and <code class="docutils literal"><span class="pre">lp_solve</span></code>
+you would use the following command:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;excludeSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;matlab&#39;</span><span class="p">,</span> <span class="s">&#39;lp_solve&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example F: Require multiple solvers</p>
+<p>Some tests require more than one solver to be run, and otherwise fail. To
+require multiple solvers for a test use the <code class="docutils literal"><span class="pre">requiredSolvers</span></code> parameters.
+E.g. if your function requires <code class="docutils literal"><span class="pre">ibm_cplex</span></code> and <code class="docutils literal"><span class="pre">gurobi</span></code> use the following
+call:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example G: Require a specific MATLAB toolbox</p>
+<p>The toolbox IDs are specified as those used in <code class="docutils literal"><span class="pre">license('test',</span>
+<span class="pre">'toolboxName')</span></code>.  The following example requires the statistics toolbox
+to be present.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;statistics_toolbox&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example H: Multiple requirements</p>
+<p>If the test requires multiple different properties to be met, you should
+test them all in the same call. To keep the code readable, first define
+the requirements and then pass them in.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% define required toolboxes</span>
+<span class="n">requiredToolboxes</span> <span class="p">=</span> <span class="p">{</span><span class="s">&#39;bioinformatics_toolbox&#39;</span><span class="p">,</span> <span class="s">&#39;optimization_toolbox&#39;</span><span class="p">};</span>
+
+<span class="c">% define the required solvers (in this case matlab and dqqMinos)</span>
+<span class="n">requiredSolvers</span> <span class="p">=</span> <span class="p">{</span><span class="s">&#39;dqqMinos&#39;</span><span class="p">,</span> <span class="s">&#39;matlab&#39;</span><span class="p">};</span>
+
+<span class="c">% check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS).</span>
+<span class="n">solversPkgs</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="n">requiredSolvers</span><span class="p">,</span> <span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="n">requiredToolboxes</span><span class="p">,</span> <span class="s">&#39;needsUnix&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-if-an-output-is-correct">
+<h3>Test if an output is correct<a class="headerlink" href="#test-if-an-output-is-correct" title="Permalink to this headline">¶</a></h3>
+<p>If you want to test if the output of a function
+<code class="docutils literal"><span class="pre">[output1,</span> <span class="pre">output2]</span> <span class="pre">=</span> <span class="pre">function1(input1,</span> <span class="pre">input2)</span></code> is correct, you
+should call this function at least 4 times in your test. The argument
+<code class="docutils literal"><span class="pre">ìnput2</span></code> might be an optional input argument.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 1: test with 1 input and 1 output argument</span>
+<span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+
+<span class="c">% Case 2: test with 1 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+
+<span class="c">% Case 3: test with 1 output and 2 input arguments</span>
+<span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+
+<span class="c">% Case 4: test with 2 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each of the 4 test scenarios should be followed by a test on <code class="docutils literal"><span class="pre">output1</span></code>
+and <code class="docutils literal"><span class="pre">output2</span></code>. For instance, for <code class="docutils literal"><span class="pre">Case</span> <span class="pre">4</span></code>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 4: test with 2 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+
+<span class="c">% test on output1</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">output1</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">);</span> <span class="c">% tol must be defined previously, e.g. tol = 1e-6;</span>
+
+<span class="c">% test on output2</span>
+<span class="n">assert</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">output2</span> <span class="o">-</span> <span class="n">refData_output2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">);</span> <span class="c">% refData_output2 can be loaded from a file</span>
+</pre></div>
+</div>
+<p>The test succeeds if the argument of <code class="docutils literal"><span class="pre">assert()</span></code> yields a <code class="docutils literal"><span class="pre">true</span></code>
+logical condition.</p>
+</div>
+<div class="section" id="test-if-a-function-throws-an-error-or-warning-message">
+<h3>Test if a function throws an error or warning message<a class="headerlink" href="#test-if-a-function-throws-an-error-or-warning-message" title="Permalink to this headline">¶</a></h3>
+<p>If you want to test whether your <code class="docutils literal"><span class="pre">function1</span></code> correctly throws an
+<strong>error</strong> message, you can test as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)</span>
+<span class="c">% There are two options. If a particular error message is to be tested (here, &#39;Input2 has the wrong dimension&#39;):</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">},</span> <span class="s">&#39;testMessage&#39;</span><span class="p">,</span> <span class="s">&#39;Input2 has the wrong dimension&#39;</span><span class="p">));</span>
+
+<span class="c">% If the aim is to test, that the function throws an error at all</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">}));</span>
+</pre></div>
+</div>
+<p>If you want to test whether your <code class="docutils literal"><span class="pre">function1</span></code> correctly throws a
+<strong>warning</strong> message, you can test as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">)</span>
+    <span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">lastwarn</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">warning</span><span class="p">(</span><span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this allows the error message to be thrown without failing the
+test.</p>
+</div>
+<div class="section" id="test-template">
+<h3>Test template<a class="headerlink" href="#test-template" title="Permalink to this headline">¶</a></h3>
+<p>A test template is readily available
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/testTemplate.html">here</a>.
+The following sections shall be included in a test file:</p>
+<p class="rubric">1. Header</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% The COBRAToolbox: &lt;testNameOfSrcFile&gt;.m</span>
+<span class="c">%</span>
+<span class="c">% Purpose:</span>
+<span class="c">%     - &lt;provide a short description of the purpose of the test</span>
+<span class="c">%</span>
+<span class="c">% Authors:</span>
+<span class="c">%     - &lt;major change&gt;: &lt;your name&gt; &lt;date&gt;</span>
+<span class="c">%</span>
+</pre></div>
+</div>
+<p class="rubric">2. Test initialization</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
+
+<span class="c">% save the current path</span>
+<span class="n">currentDir</span> <span class="p">=</span> <span class="n">pwd</span><span class="p">;</span>
+
+<span class="c">% initialize the test</span>
+<span class="n">cd</span><span class="p">(</span><span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;fileName&#39;</span><span class="p">)));</span>
+</pre></div>
+</div>
+<p class="rubric">3. Define the solver packages to be tested and the tolerance</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% set the tolerance</span>
+<span class="n">tol</span> <span class="p">=</span> <span class="mf">1e-8</span><span class="p">;</span>
+
+<span class="c">% define the solver packages to be used to run this test</span>
+<span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span><span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">4. Load a model and/or reference data</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% load the model</span>
+<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;testModel.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
+<span class="n">load</span><span class="p">(</span><span class="s">&#39;testData_functionToBeTested.mat&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Please only load <em>small</em> models, i.e.&nbsp;less than <code class="docutils literal"><span class="pre">100</span></code> reactions. If
+you want to use a non-standard test model that is already available
+online, please make a pull request with the URL entry to the
+<a class="reference external" href="https://github.com/cobrabot/COBRA.models">COBRA.models repository</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">In order to guarantee compatibility across platforms, please use the full path to the model. For instance:</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
+
+<span class="c">% load the ecoli core model</span>
+<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;ecoli_core_model.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">5. Create a parallel pool</p>
+<p>This is only necessary for tests that test a function that runs in
+parallel.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% create a parallel pool</span>
+<span class="n">poolobj</span> <span class="p">=</span> <span class="n">gcp</span><span class="p">(</span><span class="s">&#39;nocreate&#39;</span><span class="p">);</span> <span class="c">% if no pool, do not create new one.</span>
+<span class="k">if</span> <span class="nb">isempty</span><span class="p">(</span><span class="n">poolobj</span><span class="p">)</span>
+    <span class="n">parpool</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c">% launch 2 workers</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">Please only launch a pool of <code class="docutils literal"><span class="pre">2</span></code> workers - more workers</td>
+</tr>
+</tbody>
+</table>
+<p>should not be needed to test a parallel function efficiently.</p>
+<p class="rubric">6. Body of test</p>
+<p>The test. If multiple solvers were requested by ‘useIfAvailable’, run:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">)</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39; -- Running &lt;testFile&gt; using the solver interface: %s ... &#39;</span><span class="p">,</span> <span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">});</span>
+
+    <span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">},</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c">% &lt;your test goes here&gt;</span>
+
+    <span class="c">% output a success message</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>If only one solver is requested:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">,</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="c">% &lt;your test goes here&gt;</span>
+
+<span class="c">% output a success message</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">7. Change to the current directory</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% change the directory</span>
+<span class="n">cd</span><span class="p">(</span><span class="n">currentDir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-test-locally-on-your-machine">
+<h3>Run the test locally on your machine<a class="headerlink" href="#run-the-test-locally-on-your-machine" title="Permalink to this headline">¶</a></h3>
+<p>Please make sure that your test runs individually by typing after a
+fresh start:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">initCobraToolbox</span>
+<span class="o">&gt;&gt;</span> <span class="o">&lt;</span><span class="n">testName</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Please then verify that the test runs in the test suite by running:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
+</pre></div>
+</div>
+<p>Alternatively, you can run the test suite in the background by typing:</p>
+<div class="code sh highlight-default"><div class="highlight"><pre><span></span>$ matlab -nodesktop -nosplash &lt; test/testAll.m
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify-that-your-test-passed">
+<h3>Verify that your test passed<a class="headerlink" href="#verify-that-your-test-passed" title="Permalink to this headline">¶</a></h3>
+<p>Once your pull request (PR) has been submitted, you will notice an
+orange mark next to your latest commit. Once the continuous integration
+(CI) server succeeded, you will see a green check mark. If the CI
+failed, you will see a red cross.</p>
+</div>
+<div class="section" id="what-should-i-do-in-case-my-pr-failed">
+<h3>What should I do in case my PR failed?<a class="headerlink" href="#what-should-i-do-in-case-my-pr-failed" title="Permalink to this headline">¶</a></h3>
+<p>You can check why your PR failed by clicking on the mark and following
+the respective links. Alternatively, you can see the output of the CI
+for your PR
+<a class="reference external" href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-pr-auto/">here</a>.
+You can then click on the build number. Under <code class="docutils literal"><span class="pre">Console</span> <span class="pre">Output</span></code>, you
+can see the output of <code class="docutils literal"><span class="pre">test/testAll.m</span></code> with your integrated PR.</p>
+<p>Once you understood why the build for your proposed PR failed, you can
+add more commits that aim at fixing the error, and the CI will be
+re-triggered.</p>
+<p>Common errors include:</p>
+<ul class="simple">
+<li>Double percentage sign <code class="docutils literal"><span class="pre">%%</span></code> in your test file to separate code
+blocks. Replace <code class="docutils literal"><span class="pre">%%</span></code> with <code class="docutils literal"><span class="pre">%</span></code>.</li>
+<li>Compatibility issues (<code class="docutils literal"><span class="pre">ILOG</span> <span class="pre">Cplex</span></code> is not compatible with
+<code class="docutils literal"><span class="pre">R2015b+</span></code>). Add an additional test on the version of matlab using
+<code class="docutils literal"><span class="pre">verLessThan('matlab',</span> <span class="pre">'&lt;version&gt;')</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="can-i-find-out-how-many-tests-have-failed">
+<h3>Can I find out how many tests have failed?<a class="headerlink" href="#can-i-find-out-how-many-tests-have-failed" title="Permalink to this headline">¶</a></h3>
+<p>The logical conditions, when tested using <code class="docutils literal"><span class="pre">assert()</span></code>, will throw an
+error when not satisfied. It is bad practice to test the sum of tests
+passed and failed. Please only test using <code class="docutils literal"><span class="pre">assert(logicalCondition)</span></code>.
+Even though a test may fail using <code class="docutils literal"><span class="pre">assert()</span></code>, a summary table with
+comprehensive information is provided at the end of the test run.</p>
+<p>For instance, the following test script <strong>do not do this - bad
+practice!</strong>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% do not do this: bad practice!</span>
+<span class="n">testPassed</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">testFailed</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c">% test on logical condition 1 - do not do this: bad practice!</span>
+<span class="k">if</span> <span class="n">logicalCondition1</span>
+    <span class="n">testPassed</span> <span class="p">=</span> <span class="n">testPassed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">testFailed</span> <span class="p">=</span> <span class="n">testFailed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="c">% test on logical condition 2 - do not do this: bad practice!</span>
+<span class="k">if</span> <span class="n">logicalCondition2</span>
+    <span class="n">testPassed</span> <span class="p">=</span> <span class="n">testPassed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">testFailed</span> <span class="p">=</span> <span class="n">testFailed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="n">testPassed</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">testFailed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c">% do not do this: bad practice!</span>
+</pre></div>
+</div>
+<p>shall be rewritten as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% good practice</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">logicalCondition1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">logicalCondition2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="documentation-guide">
+<h2>Documentation guide<a class="headerlink" href="#documentation-guide" title="Permalink to this headline">¶</a></h2>
+<p>In order to enable the automatic documentation generation, the header of
+a <code class="docutils literal"><span class="pre">MATLAB</span></code> function has to be formatted properly. The automatic
+documentation extracts the commented header of the function (commented
+lines between the function’s signature and the first line of code) based
+on keywords and blocks.</p>
+<p><strong>Rule 1</strong>: There should be 1 free space between the percentage sign <code class="docutils literal"><span class="pre">%</span></code>
+and the text. For instance, a correctly formatted line in the header
+reads:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% this is correct</span>
+</pre></div>
+</div>
+<p>A line in the header that is formatted as follows is <strong>ignored</strong>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">%this is not correct (note the space)</span>
+</pre></div>
+</div>
+<p><strong>Rule 2</strong>: After the last line of the header, leave one empty line
+before the body of the function.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% This is the end of the header of the function</span>
+
+<span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% the body of the function begins after one empty line</span>
+</pre></div>
+</div>
+<p>Importantly, <strong>do not</strong> put a comment above the first line of code, but
+include the comment inline:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% This is the end of the header of the function</span>
+
+<span class="c">% the body of the function begins after one empty line</span>
+<span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Rule 3</strong>: A line in the header that includes <code class="docutils literal"><span class="pre">..</span></code> after the
+percentage sign will be <strong>ignored</strong> in the documentation:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% .. this line will be ignored</span>
+</pre></div>
+</div>
+<div class="section" id="function-signature">
+<h3>Function signature<a class="headerlink" href="#function-signature" title="Permalink to this headline">¶</a></h3>
+<p>The function signature must be correctly formatted. Leave a space after
+every comma and before and after the equal sign <code class="docutils literal"><span class="pre">=</span></code>. A correctly
+formatted function signature reads:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[output1, output2, output3] <span class="p">=</span><span class="w"> </span><span class="nf">someFunction</span><span class="p">(</span>input1, input2, input3<span class="p">)</span><span class="w"> </span><span class="c">% good practice</span>
+</pre></div>
+</div>
+<p>A function signature that is not formatted properly throws an <strong>error</strong>
+during the automatic documentation generation:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[ output1,output2,output3 ]<span class="p">=</span><span class="nf">someFunction</span><span class="p">(</span> input1,input2,input3 <span class="p">)</span><span class="w"> </span><span class="c">% bad practice</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="function-description">
+<h3>Function description<a class="headerlink" href="#function-description" title="Permalink to this headline">¶</a></h3>
+<p>The description of the function is a brief explanation of the purpose of
+the function. The description of the function may extend over several
+lines. However, try to keep the explanations as brief as possible.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[output1, output2, output3] <span class="p">=</span><span class="w"> </span><span class="nf">someFunction</span><span class="p">(</span>input1, input2, input3<span class="p">)</span><span class="w"></span>
+<span class="c">% This is a description of the function that helps to understand how the function works</span>
+<span class="c">% Here the description continues, then we leave an empty comment line</span>
+<span class="c">%</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="keywords">
+<h3>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
+<p>The automatic documentation software relies on keywords to properly
+format the documented function. A keyword also defines the start of a
+block with the header of a function. Main keywords include:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">USAGE:</span></code>: block for defining how to use the function</li>
+<li><code class="docutils literal"><span class="pre">INPUT:</span></code> or <code class="docutils literal"><span class="pre">INPUTS:</span></code>: block with input argument(s)</li>
+<li><code class="docutils literal"><span class="pre">OUTPUT:</span></code> or <code class="docutils literal"><span class="pre">OUTPUTS:</span></code>: block with output argument(s)</li>
+<li><code class="docutils literal"><span class="pre">EXAMPLE:</span></code>: block with example code (formatted <code class="docutils literal"><span class="pre">MATLAB</span></code> syntax)</li>
+<li><code class="docutils literal"><span class="pre">NOTE:</span></code>: highlighted box with text</li>
+<li><code class="docutils literal"><span class="pre">Author:</span></code>: list with author(s)</li>
+</ul>
+<p>Each of them must be followed by non-empty lines and should be separated
+from the next block by an empty line.</p>
+<p>All keywords are optional. For instance, if a function does not have any
+input arguments, the keyword <code class="docutils literal"><span class="pre">INPUTS:</span></code> can be omitted.</p>
+<p>Any line of the block must be indented by 4 spaces after the comment
+sign <code class="docutils literal"><span class="pre">%</span></code>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% INPUTS:</span>
+<span class="c">%    input1:     Description of input1</span>
+<span class="c">%    input2:     Description of input2</span>
+<span class="c">% input3:    Description &lt;-- this is bad practice</span>
+<span class="c">%</span>
+<span class="c">% OUTPUTS:</span>
+<span class="c">%    output1:    Description of output1</span>
+</pre></div>
+</div>
+<p>If the indentation differs, there will be an error.</p>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">USAGE:</span></code></p>
+<p>In the block starting with the keyword <code class="docutils literal"><span class="pre">USAGE:</span></code>, the function’s
+signature must be given in order to show how the function should be
+used. It is important to leave one empty line before the keyword
+<code class="docutils literal"><span class="pre">USAGE:</span></code>, after the keyword, and after the function’s signature.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% the end of the description</span>
+<span class="c">%</span>
+<span class="c">% USAGE:</span>
+<span class="c">%</span>
+<span class="c">%    [output1, output2, output3] = someFunction(input1, input2, input3)</span>
+<span class="c">%</span>
+<span class="c">% here the other section can begin</span>
+</pre></div>
+</div>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">INPUT:</span></code> and <code class="docutils literal"><span class="pre">OUTPUT:</span></code></p>
+<p>The arguments declared in the blocks: <code class="docutils literal"><span class="pre">INPUT:</span></code>, <code class="docutils literal"><span class="pre">INPUTS:</span></code>,
+<code class="docutils literal"><span class="pre">OUTPUT:</span></code> and <code class="docutils literal"><span class="pre">OUTPUTS:</span></code> must be followed by a colon <code class="docutils literal"><span class="pre">:</span></code> before
+the argument description is provided.</p>
+<p>The indentation between the argument (with colon) and the description
+should be at least 4 spaces, so that all argument descriptions are
+aligned.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% INPUTS:</span>
+<span class="c">%    input1:     Description of input1 &lt;-- good practice</span>
+<span class="c">%    input2      No colon &lt;-- bad practice</span>
+<span class="c">%    input3: Not enough distance (4+ spaces) &lt;-- bad practice</span>
+<span class="c">%</span>
+<span class="c">% OUTPUTS:</span>
+<span class="c">%    longerNameOutput:    Description of longerNameOutput after 4 spaces</span>
+<span class="c">%    output1:             Description begins at the same place as the longest argument &lt;-- good practice</span>
+<span class="c">%    output2:    Description begins too soon &lt;-- bad practice</span>
+</pre></div>
+</div>
+<p>For a <code class="docutils literal"><span class="pre">structure</span></code> argument, it is possible to list its fields. An
+empty line is added after the <code class="docutils literal"><span class="pre">structure</span></code> argument. Then, in the next
+line, the field is written aligned with the description of the
+<code class="docutils literal"><span class="pre">structure</span></code> <strong>plus 2 extra spaces</strong>.</p>
+<p>The field is listed beginning as <code class="docutils literal"><span class="pre">*</span> <span class="pre">.field</span> <span class="pre">-</span> <span class="pre">description</span></code> (note the
+space between <code class="docutils literal"><span class="pre">*</span></code> and <code class="docutils literal"><span class="pre">.</span></code>). It is not necessary to leave an empty
+line after listing fields and writing the next argument. The following
+illustrates how to list a structure with its fields:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% OUTPUT:</span>
+<span class="c">%    output:    output argument with fields:</span>
+<span class="c">%</span>
+<span class="c">%                 * .field1 - first field of the structure.</span>
+<span class="c">%               * .field2 - no indent &lt;-- bad practice</span>
+<span class="c">%                 * .field3 - multi-line comment must begin always</span>
+<span class="c">%                   where the text of the first line begins &lt;-- good practice</span>
+<span class="c">%                 * .field4 - multi-line comment where</span>
+<span class="c">%                 the text in line 2 begins too soon &lt;-- bad practice</span>
+<span class="c">%    next:      next argument can be added without empty line</span>
+</pre></div>
+</div>
+<p>It is also possible to replace <code class="docutils literal"><span class="pre">*</span></code> with a numbered list. You can use
+numbers followed by a dot (e.g., <code class="docutils literal"><span class="pre">1.</span></code>) instead of <code class="docutils literal"><span class="pre">*</span> <span class="pre">.</span></code>.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% OPTIONAL INPUT:</span>
+<span class="c">%    input:    optional input argument with fields:</span>
+<span class="c">%</span>
+<span class="c">%                1. first element of a numbered list</span>
+<span class="c">%                2. second element of a numbered list</span>
+</pre></div>
+</div>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">EXAMPLE:</span></code></p>
+<p>A common usage example can be included in the <code class="docutils literal"><span class="pre">EXAMPLE:</span></code> block. Code
+included in this block will be formatted as <code class="docutils literal"><span class="pre">MATLAB</span></code> formatted code.
+Leave one empty line before the keyword <code class="docutils literal"><span class="pre">EXAMPLE:</span></code>, after the keyword,
+and after the properly indented (4 spaces) code snippet.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% the previous block ends here</span>
+<span class="c">%</span>
+<span class="c">% EXAMPLE:</span>
+<span class="c">%</span>
+<span class="c">%    result = someFunction(input1, input2)</span>
+<span class="c">%    %additional comment if necessary</span>
+<span class="c">%</span>
+<span class="c">% another block begins here</span>
+</pre></div>
+</div>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">NOTE:</span></code></p>
+<p>Important information, such as common errors, can be included in the
+block that starts with the keyword <code class="docutils literal"><span class="pre">NOTE:</span></code>. A <code class="docutils literal"><span class="pre">NOTE:</span></code> block is
+formatted in a dedicated and highlighted box in the documentation.</p>
+<p>Leave one empty line before the keyword <code class="docutils literal"><span class="pre">NOTE:</span></code>, after the keyword,
+and after the properly indented text (indent of 4 spaces).</p>
+<p>Normally formatted text can be left at the with one space after the
+comment sign. An example of a <code class="docutils literal"><span class="pre">NOTE:</span></code> block reads:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">%</span>
+<span class="c">% NOTE:</span>
+<span class="c">%</span>
+<span class="c">%    This is a note that contains a important information.</span>
+<span class="c">%    It will be clearly visible in the documentation online.</span>
+<span class="c">%</span>
+<span class="c">% This is an additional final comment that can be added and that is</span>
+<span class="c">% only relevant to the code itself</span>
+</pre></div>
+</div>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">Author:</span></code> or <code class="docutils literal"><span class="pre">Author(s):</span></code></p>
+<p>In the <code class="docutils literal"><span class="pre">Author(s)</span></code> block, the author(s) that have written or
+contributed to the function are listed. Authors are not shown in the
+documentation itself, so the keyword is preceded by <code class="docutils literal"><span class="pre">..</span></code>. List 1
+author as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">%</span>
+<span class="c">% .. Author: - Name, date, additional information if needed</span>
+
+<span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% here the body of the function begins</span>
+</pre></div>
+</div>
+<p>If there are 2 or more authors, format as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">%</span>
+<span class="c">% .. Authors:</span>
+<span class="c">%       - Name1, date, additional information if needed</span>
+<span class="c">%       - Name2, date, additional information if needed</span>
+
+<span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% here the body of the function begins</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>A complete example of a function is provided here. Please remember that
+colons, indentations, and keywords are important to guarantee pretty
+formatting.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[output1, output2] <span class="p">=</span><span class="w"> </span><span class="nf">someFunction</span><span class="p">(</span>input1, input2, input3, input4<span class="p">)</span><span class="w"></span>
+<span class="c">% This is a description of the function that helps understand how the function works</span>
+<span class="c">% Here the description continues, then we leave an empty comment line</span>
+<span class="c">%</span>
+<span class="c">% USAGE:</span>
+<span class="c">%</span>
+<span class="c">%    [output1, output2] = someFunction(input1, input2, input3, input4)</span>
+<span class="c">%</span>
+<span class="c">% INPUTS:</span>
+<span class="c">%    input1:     Description of input1</span>
+<span class="c">%    input2:     Description of input2</span>
+<span class="c">%</span>
+<span class="c">% OPTIONAL INPUTS:</span>
+<span class="c">%    input3:     Structure with fields:</span>
+<span class="c">%</span>
+<span class="c">%                       * First field - description</span>
+<span class="c">%                       * Second field - description</span>
+<span class="c">%    input4:     Description of input4</span>
+<span class="c">%</span>
+<span class="c">% OUTPUT:</span>
+<span class="c">%    output1:    Description of output1</span>
+<span class="c">%</span>
+<span class="c">% OPTIONAL OUTPUT:</span>
+<span class="c">%    output2:    Description of output2</span>
+<span class="c">%</span>
+<span class="c">% EXAMPLE:</span>
+<span class="c">%</span>
+<span class="c">%    % this could be an example that can be copied from the documentation to MATLAB</span>
+<span class="c">%    [output1, output2] = someFunction(11, &#39;22&#39;, structure, [1;2])</span>
+<span class="c">%    % without optional values</span>
+<span class="c">%    output1 = someFunction(11, &#39;22&#39;)</span>
+<span class="c">%</span>
+<span class="c">% NOTE:</span>
+<span class="c">%    This is a very important information to be highlighted</span>
+<span class="c">%</span>
+<span class="c">% This is a final comment that cannot be in the description but can be useful</span>
+<span class="c">%</span>
+<span class="c">% .. Author: - Name, date, some information</span>
+
+<span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% here the body of the function begins</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="style-guide">
+<span id="styleguide"></span><h2>Style guide<a class="headerlink" href="#style-guide" title="Permalink to this headline">¶</a></h2>
+<p>A comprehensive MATLAB style guide written by Richard Jonson can be
+found [here](<a class="reference external" href="http://www.datatool.com/downloads/MatlabStyle2%20book.pdf">http://www.datatool.com/downloads/MatlabStyle2%20book.pdf</a>).</p>
+<div class="section" id="code">
+<h3>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><strong>Spacing</strong></li>
+</ol>
+<ul class="simple">
+<li>Write <code class="docutils literal"><span class="pre">if</span> <span class="pre">singleCondition</span></code>, and not <code class="docutils literal"><span class="pre">if</span> <span class="pre">(singleCondition)</span></code>. Use
+brackets only for multiple conditions.</li>
+<li>Use spaces around operators, e.g., <code class="docutils literal"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> instead of <code class="docutils literal"><span class="pre">i+1</span></code></li>
+<li>Use spaces after commas (unless separated by newlines)</li>
+<li>Avoid spaces inside the curly-braces of cells: <code class="docutils literal"><span class="pre">{a,</span> <span class="pre">b}</span></code> instead of
+<code class="docutils literal"><span class="pre">{</span> <span class="pre">a,</span> <span class="pre">b</span> <span class="pre">}</span></code></li>
+<li>Use spaces after commas in lists, after operands, after names, etc.
+This also improves readability. e.g. <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3;</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6];</span></code>
+instead of <code class="docutils literal"><span class="pre">a=[1,2,3;4,5,6]</span></code>;</li>
+<li>Include a single line of whitespace between blocks of code</li>
+<li>Include a whitespace after a comment sign <code class="docutils literal"><span class="pre">%</span></code></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><strong>Variable names</strong></li>
+</ol>
+<ul class="simple">
+<li>When using mixed words, separate with capital letters (with no
+intervening spaces or punctuation), e.g. <code class="docutils literal"><span class="pre">calculateKineticFlux</span></code></li>
+<li>Avoid ambiguity when naming variables: be as specific as possible</li>
+<li>All variable names must be written in English</li>
+<li>Use verb-noun structure for functions: allows to explain the
+operations performed</li>
+<li>Append meaningful prefixes when possible, e.g. <code class="docutils literal"><span class="pre">Av</span></code>, <code class="docutils literal"><span class="pre">Sum</span></code>,
+<code class="docutils literal"><span class="pre">Min</span></code>, <code class="docutils literal"><span class="pre">Max</span></code>, etc</li>
+<li>Boolean type variables, i.e.&nbsp;with only <code class="docutils literal"><span class="pre">true/false</span></code> values, with
+<code class="docutils literal"><span class="pre">Is</span></code> or <code class="docutils literal"><span class="pre">is</span></code> to stress this fact, e.g. <code class="docutils literal"><span class="pre">if</span> <span class="pre">dataIsLoaded</span></code></li>
+<li>Reuse names for short-life and variables with local scope, such as
+indexes of loops</li>
+<li>Only use <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, etc., as indexes for very short loops</li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><strong>Miscellaneous</strong></li>
+</ol>
+<ul class="simple">
+<li>Add sanity checks to the code, e.g., if something does not work as
+expected, there should be code to check for this and either issue a
+<code class="docutils literal"><span class="pre">warning</span></code> or an <code class="docutils literal"><span class="pre">error</span></code> if there is a problem.</li>
+<li>Do not encode the absolute position of any files within any function:
+use relative paths, where possible</li>
+<li>Indent the code: really improves readability.</li>
+<li>Fix a maximum line length: break large ones if needed. Ensure that it
+is clear that the sentence is separated through different lines,
+e.g.:</li>
+</ul>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span>function [parameter1, parameter2, parameter3, parameter4] = functionManyParameters...
+          (InputParameter1, InputParameter2, InputParameter3, InputParameter3, ...
+           InputParameter4, InputParameter5)
+</pre></div>
+</div>
+<ul class="simple">
+<li>Divide the code in separate functional files whenever it is possible
+(and logical)</li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><strong>Platform independent code</strong></li>
+</ol>
+<ul class="simple">
+<li>Use <code class="docutils literal"><span class="pre">pwd</span></code> to get the current directory</li>
+<li>Use <code class="docutils literal"><span class="pre">filesep</span></code> for paths (e.g., <code class="docutils literal"><span class="pre">['myPath'</span> <span class="pre">filesep</span> <span class="pre">'myFile.m']</span></code>)</li>
+</ul>
+</div>
+<div class="section" id="documentation-and-comments">
+<h3>Documentation and comments<a class="headerlink" href="#documentation-and-comments" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Make sure the code is fully documented and commented, especially parts of
+the code that might be difficult to understand for beginner users.</li>
+<li>Header for each file with the following elements:<ul>
+<li>Brief description (easy and short functions) or more detailed
+explanations (more complicated functions).</li>
+<li>Description of <code class="docutils literal"><span class="pre">INPUT</span></code> and <code class="docutils literal"><span class="pre">OUTPUT</span></code> variables</li>
+<li>Authors, co-authors, contributors (and the contribution of each of
+them)</li>
+<li>Date of first fully operative version, and dates of consequent
+modifications with the corresponding number of version, e.g.
+<code class="docutils literal"><span class="pre">v1</span> <span class="pre">-</span> <span class="pre">11/06/2014</span> <span class="pre">/</span> <span class="pre">v2</span> <span class="pre">-</span> <span class="pre">12/08/2014</span></code></li>
+<li>Description of modifications in later versions, e.g.
+<code class="docutils literal"><span class="pre">v2:</span> <span class="pre">the</span> <span class="pre">efficiency</span> <span class="pre">has</span> <span class="pre">been</span> <span class="pre">improved</span> <span class="pre">by</span> <span class="pre">substituting</span> <span class="pre">the</span> <span class="pre">loops</span> <span class="pre">with</span> <span class="pre">matrices</span> <span class="pre">operations</span></code></li>
+</ul>
+</li>
+<li>Throughout the file:<ul>
+<li>Comment smartly. Not every line, but enough to allow tracking the
+execution</li>
+<li>Try to use brief comments.</li>
+<li>In case you believe a more complicated part requires a more
+comprehensive explanation, describe <code class="docutils literal"><span class="pre">What</span> <span class="pre">are</span> <span class="pre">you</span> <span class="pre">doing</span></code> and
+<code class="docutils literal"><span class="pre">How</span> <span class="pre">it</span> <span class="pre">is</span> <span class="pre">done</span> <span class="pre">through</span> <span class="pre">a</span> <span class="pre">more</span> <span class="pre">detailed</span> <span class="pre">paragraph</span></code>.</li>
+<li>If the code is divided in blocks, you can also introduce briefly
+what is the function of each block beforehand.</li>
+<li>Format the comments with a whitespace after the <code class="docutils literal"><span class="pre">%</span></code> sign. Try to use lowercase letters for comments.</li>
+</ul>
+</li>
+</ul>
+<!-- elaborate guidelines to automatically generate the documentation //--></div>
+<div class="section" id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Annotate the individual tests extensively for review</li>
+<li>Use <code class="docutils literal"><span class="pre">assert(computedResult</span> <span class="pre">==</span> <span class="pre">expectedResult)</span></code> to logically test
+the <code class="docutils literal"><span class="pre">computedResult</span></code> and the <code class="docutils literal"><span class="pre">expectedResult</span></code> (you may also use
+<code class="docutils literal"><span class="pre">&lt;</span></code> or <code class="docutils literal"><span class="pre">&gt;</span></code>)</li>
+<li>For testing all entries of a vector, use
+<code class="docutils literal"><span class="pre">assert(all(vector1</span> <span class="pre">==</span> <span class="pre">vector2))</span></code></li>
+<li>Only use equality <code class="docutils literal"><span class="pre">assert</span></code> tests for integer values</li>
+<li>Make sure that equality <code class="docutils literal"><span class="pre">assert</span></code> tests within a given tolerance,
+e.g., <code class="docutils literal"><span class="pre">tol</span> <span class="pre">=</span> <span class="pre">1e-9;</span> <span class="pre">assert(condition</span> <span class="pre">&lt;</span> <span class="pre">tol);</span></code></li>
+<li>Write loops for testing multiple models and/or solvers</li>
+<li>Try to make your tests compatible with as many solvers as possible</li>
+<li>Test, if possible, your contribution on <code class="docutils literal"><span class="pre">Linux</span></code></li>
+<li>Make sure to limit the output of the function to a minimum - only
+print the necessary information</li>
+<li>Use <code class="docutils literal"><span class="pre">verbose</span></code> or <code class="docutils literal"><span class="pre">printLevel</span></code> to switch the verbose mode</li>
+<li>Ensure that the solution of optimization problems is actually a
+solution (test that the solution vector satisfies the imposed
+constraints)</li>
+</ul>
+</div>
+<div class="section" id="git-commit-messages">
+<h3>Git commit messages<a class="headerlink" href="#git-commit-messages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Use the present tense (“Add feature” not “Added feature”)</li>
+<li>Limit the first line to 72 characters or less</li>
+<li>Reference issues and pull requests liberally</li>
+<li>When only changing documentation, include <code class="docutils literal"><span class="pre">[documentation]</span></code> in the commit
+description</li>
+<li>Consider starting the commit message (not the title of the PR) with
+an applicable emoji:<ul>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/bug.png" height="20px" width="20px" alt="bug"> <code class="docutils literal"><span class="pre">:bug:</span></code> when fixing a bug</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/art.png" height="20px" width="20px" alt="art"> <code class="docutils literal"><span class="pre">:art:</span></code> when improving the format/structure of the code</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/racehorse.png" height="20px" width="20px" alt="racehorse"> <code class="docutils literal"><span class="pre">:racehorse:</span></code> when improving performance</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/memo.png" height="20px" width="20px" alt="memo"> <code class="docutils literal"><span class="pre">:memo:</span></code> when writing docs</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/fire.png" height="20px" width="20px" alt="fire"> <code class="docutils literal"><span class="pre">:fire:</span></code> when removing code or files</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"> <code class="docutils literal"><span class="pre">:white_check_mark:</span></code> when adding tests</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/penguin.png" height="20px" width="20px" alt="penguin"> <code class="docutils literal"><span class="pre">:penguin:</span></code> when fixing something on Linux</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="apple"> <code class="docutils literal"><span class="pre">:apple:</span></code> when fixing something on macOS</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer"> <code class="docutils literal"><span class="pre">:computer:</span></code> when fixing something on Windows</li>
+<li><img src="https://prince.lcsb.uni.lu/jenkins/userContent/green_heart.png" height="20px" width="20px" alt="green_heart"> <code class="docutils literal"><span class="pre">:green_heart:</span></code> when fixing the CI build</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="issues-enhancements-guide">
+<h2>Issues/enhancements guide<a class="headerlink" href="#issues-enhancements-guide" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-should-i-do-before-opening-an-issue">
+<h3>What should I do before opening an issue?<a class="headerlink" href="#what-should-i-do-before-opening-an-issue" title="Permalink to this headline">¶</a></h3>
+<p>Following these guidelines helps maintainers and the community
+understand your report <img src="https://prince.lcsb.uni.lu/jenkins/userContent/pencil.png" height="20px" width="20px" alt="pencil">, reproduce the behavior <img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer">, and
+fix it.</p>
+<ul class="simple">
+<li><strong>Get the latest version</strong> Check if you can reproduce the problem
+with the latest version, if the problem happens when you run your
+script/function with a different version of <code class="docutils literal"><span class="pre">MATLAB</span></code> or when using
+a different computer <img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer"> or different operating system (such
+as <code class="docutils literal"><span class="pre">Linux</span></code>, <code class="docutils literal"><span class="pre">Windows</span></code>, or <code class="docutils literal"><span class="pre">macOS</span></code>).</li>
+<li><strong>Check The COBRA Toolbox Forum on Google</strong>
+<a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox">here</a>
+Has your question already been asked, or has your problem already
+been reported? If it has, add a comment to the existing issue instead
+of opening a new one.</li>
+<li><strong>Check the list of currently reported issues</strong>
+<a class="reference external" href="https://github.com/opencobra/cobratoolbox/issues">here</a>. If you
+happen to find a related issue, please use that thread or refer in
+your new issue to an already existing one.</li>
+<li><strong>Check the list of open pull requests</strong>
+<a class="reference external" href="https://github.com/opencobra/cobratoolbox/pulls">here</a>.</li>
+</ul>
+<p>If you provide snippets in the issue/pull request, use <a class="reference external" href="https://help.github.com/articles/markdown-basics/#multiple-lines">Markdown code
+blocks</a>.</p>
+</div>
+<div class="section" id="how-can-i-report-an-issue-or-enhancement">
+<h3>How can I report an issue (or enhancement)?<a class="headerlink" href="#how-can-i-report-an-issue-or-enhancement" title="Permalink to this headline">¶</a></h3>
+<p>Explain the problem and include <strong>additional details</strong> to help
+maintainers reproduce the problem:</p>
+<ul class="simple">
+<li>Use a clear and descriptive title.</li>
+<li>Provide information when you last updated The COBRA Toolbox.</li>
+<li>Describe the exact steps that reproduce the problem and that describe
+the proposed enhancement in as many details as possible. Start by
+explaining how you started and initialized The COBRA Toolbox.</li>
+<li>Provide specific examples to demonstrate the steps.</li>
+<li>Describe the current behavior you observed after following the steps
+and point out what exactly is the problem with that behavior.</li>
+<li>Explain what behavior you expected to see instead and why.</li>
+</ul>
+<p>Provide details on the <strong>nature of the issue</strong>:</p>
+<ul class="simple">
+<li>If you’re reporting that <code class="docutils literal"><span class="pre">MATLAB</span></code> crashed, include a crash report.
+Indicate the line that you think that made <code class="docutils literal"><span class="pre">MATLAB</span></code> crash. As this
+is an operating system related issue, please make sure to test the
+same code on a different computer and/or operating system <img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer">
+before reporting the issue.</li>
+<li>If the problem is related to performance, include more details, such
+as CPU information, RAM, computer brand/model. Eventually, mention
+where you feel potential improvements could be made.</li>
+<li>If the problem wasn’t triggered by a specific action, describe what
+you were doing before the problem happened.</li>
+</ul>
+<p>Include details about your <strong>configuration and environment</strong>:</p>
+<ul class="simple">
+<li>Provide details on your <code class="docutils literal"><span class="pre">startup.m</span></code> and your <code class="docutils literal"><span class="pre">pathdef.m</span></code> file.</li>
+<li>Which version of MATLAB are you using?</li>
+<li>What operating system are you using?</li>
+<li>Which solvers do you have installed? You can get that table by
+running <code class="docutils literal"><span class="pre">initCobraToolbox</span></code>.</li>
+</ul>
+<p>Provide more context by answering these <strong>questions</strong>:</p>
+<ul class="simple">
+<li>Might the problem be related to an external program?</li>
+<li>Did the problem start happening recently?</li>
+<li>If the problem started happening recently, can you reproduce the
+problem in an older version of The COBRA Toolbox?</li>
+<li>Can you reliably reproduce the issue?</li>
+<li>Does the problem happen for all COBRA models, or only some?</li>
+</ul>
+</div>
+</div>
 </div>
 
 

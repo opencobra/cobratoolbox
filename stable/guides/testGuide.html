@@ -236,16 +236,13 @@ multiple solvers (via the <code class="docutils literal"><span class="pre">requi
 <code class="docutils literal"><span class="pre">useSolversIfAvailable</span></code> arguments), the returned cell array will only
 contain at most one solver.</p>
 <p>Here are a few examples:</p>
-<div class="section" id="example-a-require-windows-for-the-test">
-<h3>Example A: Require Windows for the test<a class="headerlink" href="#example-a-require-windows-for-the-test" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example A: Require Windows for the test</p>
 <p>The same works with <code class="docutils literal"><span class="pre">needsMac</span></code>, <code class="docutils literal"><span class="pre">needsLinux</span></code> and <code class="docutils literal"><span class="pre">needsUnix</span></code>
 instead of <code class="docutils literal"><span class="pre">needsWindows</span></code>.</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsWindows&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-b-require-an-lp-solver-needslp">
-<h3>Example B: Require an LP solver (<code class="docutils literal"><span class="pre">needsLP</span></code>)<a class="headerlink" href="#example-b-require-an-lp-solver-needslp" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example B: Require an LP solver (<code class="docutils literal"><span class="pre">needsLP</span></code>)</p>
 <p>The same works with <code class="docutils literal"><span class="pre">needsNLP</span></code>, <code class="docutils literal"><span class="pre">needsMILP</span></code>, <code class="docutils literal"><span class="pre">needsQP</span></code> or
 <code class="docutils literal"><span class="pre">needsMIQP</span></code>. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc. will be cell arrays
 of string with the respective available solver for the problem type. If
@@ -256,18 +253,14 @@ array is empty).</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-c-use-multiple-solvers-if-present">
-<h3>Example C: Use multiple solvers if present<a class="headerlink" href="#example-c-use-multiple-solvers-if-present" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example C: Use multiple solvers if present</p>
 <p>If multiple solvers are requested. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc
 will contain all those requested solvers that can solve the respective
 problem type and that are installed.</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s">&#39;useSolversIfAvailable&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">});</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-d-require-one-of-a-set-of-solvers">
-<h3>Example D: Require one of a set of solvers<a class="headerlink" href="#example-d-require-one-of-a-set-of-solvers" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example D: Require one of a set of solvers</p>
 <p>Some functionalities do only work properly with a limited set of solvers.
 with the keyword <code class="docutils literal"><span class="pre">requireOneSolverOf</span></code> you can specify a set of solvers
 of which the test requires at least one to be present. This option, will
@@ -277,9 +270,7 @@ you would call <code class="docutils literal"><span class="pre">prepareTest</spa
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requireOneSolverOf&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-e-exclude-a-solver">
-<h3>Example E: Exclude a solver<a class="headerlink" href="#example-e-exclude-a-solver" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example E: Exclude a solver</p>
 <p>If for some reason, a function is known not to work with a few specific
 solvers (e.g. precision is insufficient) but works with all others, it
 might be advantageous to explicitly exclude that one solver instead of
@@ -289,9 +280,7 @@ you would use the following command:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;excludeSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;matlab&#39;</span><span class="p">,</span> <span class="s">&#39;lp_solve&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-f-require-multiple-solvers">
-<h3>Example F: Require multiple solvers<a class="headerlink" href="#example-f-require-multiple-solvers" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example F: Require multiple solvers</p>
 <p>Some tests require more than one solver to be run, and otherwise fail. To
 require multiple solvers for a test use the <code class="docutils literal"><span class="pre">requiredSolvers</span></code> parameters.
 E.g. if your function requires <code class="docutils literal"><span class="pre">ibm_cplex</span></code> and <code class="docutils literal"><span class="pre">gurobi</span></code> use the following
@@ -299,18 +288,14 @@ call:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-g-require-a-specific-matlab-toolbox">
-<h3>Example G: Require a specific MATLAB toolbox<a class="headerlink" href="#example-g-require-a-specific-matlab-toolbox" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example G: Require a specific MATLAB toolbox</p>
 <p>The toolbox IDs are specified as those used in <code class="docutils literal"><span class="pre">license('test',</span>
 <span class="pre">'toolboxName')</span></code>.  The following example requires the statistics toolbox
 to be present.</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;statistics_toolbox&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-h-multiple-requirements">
-<h3>Example H: Multiple requirements<a class="headerlink" href="#example-h-multiple-requirements" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">Example H: Multiple requirements</p>
 <p>If the test requires multiple different properties to be met, you should
 test them all in the same call. To keep the code readable, first define
 the requirements and then pass them in.</p>
@@ -323,7 +308,6 @@ the requirements and then pass them in.</p>
 <span class="c">% check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS).</span>
 <span class="n">solversPkgs</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="n">requiredSolvers</span><span class="p">,</span> <span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="n">requiredToolboxes</span><span class="p">,</span> <span class="s">&#39;needsUnix&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="test-if-an-output-is-correct">
@@ -388,8 +372,7 @@ test.</p>
 <p>A test template is readily available
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/testTemplate.html">here</a>.
 The following sections shall be included in a test file:</p>
-<div class="section" id="header">
-<h3>1. Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">1. Header</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% The COBRAToolbox: &lt;testNameOfSrcFile&gt;.m</span>
 <span class="c">%</span>
 <span class="c">% Purpose:</span>
@@ -400,9 +383,7 @@ The following sections shall be included in a test file:</p>
 <span class="c">%</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="test-initialization">
-<h3>2. Test initialization<a class="headerlink" href="#test-initialization" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">2. Test initialization</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
 
 <span class="c">% save the current path</span>
@@ -412,9 +393,7 @@ The following sections shall be included in a test file:</p>
 <span class="n">cd</span><span class="p">(</span><span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;fileName&#39;</span><span class="p">)));</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="define-the-solver-packages-to-be-tested-and-the-tolerance">
-<h3>3. Define the solver packages to be tested and the tolerance<a class="headerlink" href="#define-the-solver-packages-to-be-tested-and-the-tolerance" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">3. Define the solver packages to be tested and the tolerance</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% set the tolerance</span>
 <span class="n">tol</span> <span class="p">=</span> <span class="mf">1e-8</span><span class="p">;</span>
 
@@ -422,9 +401,7 @@ The following sections shall be included in a test file:</p>
 <span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span><span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="load-a-model-and-or-reference-data">
-<h3>4. Load a model and/or reference data<a class="headerlink" href="#load-a-model-and-or-reference-data" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">4. Load a model and/or reference data</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% load the model</span>
 <span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;testModel.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
 <span class="n">load</span><span class="p">(</span><span class="s">&#39;testData_functionToBeTested.mat&#39;</span><span class="p">);</span>
@@ -448,9 +425,7 @@ online, please make a pull request with the URL entry to the
 <span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;ecoli_core_model.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-a-parallel-pool">
-<h3>5. Create a parallel pool<a class="headerlink" href="#create-a-parallel-pool" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">5. Create a parallel pool</p>
 <p>This is only necessary for tests that test a function that runs in
 parallel.</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% create a parallel pool</span>
@@ -469,9 +444,7 @@ parallel.</p>
 </tbody>
 </table>
 <p>should not be needed to test a parallel function efficiently.</p>
-</div>
-<div class="section" id="body-of-test">
-<h3>6. Body of test<a class="headerlink" href="#body-of-test" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">6. Body of test</p>
 <p>The test. If multiple solvers were requested by ‘useIfAvailable’, run:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">)</span>
     <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39; -- Running &lt;testFile&gt; using the solver interface: %s ... &#39;</span><span class="p">,</span> <span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">});</span>
@@ -492,13 +465,10 @@ parallel.</p>
 <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="change-to-the-current-directory">
-<h3>7. Change to the current directory<a class="headerlink" href="#change-to-the-current-directory" title="Permalink to this headline">¶</a></h3>
+<p class="rubric">7. Change to the current directory</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% change the directory</span>
 <span class="n">cd</span><span class="p">(</span><span class="n">currentDir</span><span class="p">)</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="run-the-test-locally-on-your-machine">

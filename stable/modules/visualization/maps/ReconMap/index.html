@@ -243,7 +243,7 @@
 <span id="id1"></span><h1>ReconMaps<a class="headerlink" href="#reconmaps" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.visualization.maps.ReconMap"></span><dl class="function">
 <dt id="src.visualization.maps.ReconMap.buildFluxDistLayout">
-<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildFluxDistLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>model</em>, <em>solution</em>, <em>identifier</em>, <em>hexColour</em>, <em>thickness</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a layout for MINERVA from a flux distribution. If a dictionary
 of identifiers is not provided it is assumed that the map and the COBRA
 model&#8217;s nomenclature is coherent. Sends the layout to the remote MINERVA
@@ -286,8 +286,31 @@ Response of the MINERVA</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.visualization.maps.ReconMap.changeCbMapOutput">
+<code class="descname">changeCbMapOutput</code><span class="sig-paren">(</span><em>outputFormat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/visualization/maps/ReconMap/changeCbMapOutput.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.changeCbMapOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeCbMapOutput sets the output format for drawCbMap. Displays
+outputFormat if no inputs provided.</p>
+<blockquote>
+<div>outputFormatOK = changeCbMapOutput(outputFormat)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>outputFormat      drawCbMap render format</strong> &#8211;</p>
+<p>{&#8216;svg&#8217;, &#8216;matlab&#8217;, &#8216;java&#8217;} (java not implemented)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>outputFormatOK    True if output format set properly, else false.</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.visualization.maps.ReconMap.generateSubsystemLayouts">
-<code class="descname">generateSubsystemLayouts</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/visualization/maps/ReconMap/generateSubsystemLayouts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateSubsystemLayouts</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/visualization/maps/ReconMap/generateSubsystemLayouts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -308,7 +331,7 @@ Color</li>
 
 <dl class="function">
 <dt id="src.visualization.maps.ReconMap.generateSubsytemsLayout">
-<code class="descname">generateSubsytemsLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>subsystem</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/visualization/maps/ReconMap/generateSubsytemsLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateSubsytemsLayout</code><span class="sig-paren">(</span><em>minerva</em>, <em>cobra_model</em>, <em>subsystem</em>, <em>color</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/visualization/maps/ReconMap/generateSubsytemsLayout.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -331,7 +354,7 @@ Color</li>
 
 <dl class="function">
 <dt id="src.visualization.maps.ReconMap.postMINERVArequest">
-<code class="descname">postMINERVArequest</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>map</em>, <em>identifier</em>, <em>content</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4bfe8b34e9c468b6770a079cb1c00a43a8614212/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">postMINERVArequest</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>map</em>, <em>googleLicenseContent</em>, <em>identifier</em>, <em>content</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a new layout to a MINERVA instance</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -347,12 +370,13 @@ MINERVA username</li>
 MINERVA password</li>
 <li><strong>map</strong> &#8211;
 MINERVA map</li>
-<li><strong>identifier</strong> &#8211;
-Layout name</li>
-<li><strong>content</strong> &#8211;
-Content of the layout</li>
 </ul>
 </div></blockquote>
+<p>.  googleLicenseContent:      True if user agreed to Google Maps terms of
+use: <a class="reference external" href="https://cloud.google.com/maps-platform/terms/">https://cloud.google.com/maps-platform/terms/</a></p>
+<blockquote>
+<div>identifier:                Layout name
+content:                   Content of the layout</div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
