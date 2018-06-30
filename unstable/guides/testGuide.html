@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Guide for writing a test &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Guide for writing a test</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="guide-for-writing-a-test">
+<span id="testguide"></span><h1>Guide for writing a test<a class="headerlink" href="#guide-for-writing-a-test" title="Permalink to this headline">¶</a></h1>
+<p>Before starting to write a test on your own, it might be instructive to
+follow common test practices in <code class="docutils literal"><span class="pre">/test/verifiedTests</span></code>. A style guide
+on how to write tests is given
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/styleGuide.html">here</a>.</p>
+<div class="section" id="prepare-the-test-define-requirements">
+<h2>Prepare the test (define requirements)<a class="headerlink" href="#prepare-the-test-define-requirements" title="Permalink to this headline">¶</a></h2>
+<p>There are functions that need a specific solver or that can only be run
+if a certain toolbox is installed on a system. To address these, you
+should specify the respective requirements by using</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="n">requirements</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If successfull and all requirements are fulfilled, <code class="docutils literal"><span class="pre">prepareTest</span></code> will
+return a <code class="docutils literal"><span class="pre">struct</span></code> with one field for each problem type
+(<code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc.). Each field will be a cell array
+of solver names (if any are available). If the test does not ask for
+multiple solvers (via the <code class="docutils literal"><span class="pre">requiredSolvers</span></code> or the
+<code class="docutils literal"><span class="pre">useSolversIfAvailable</span></code> arguments), the returned cell array will only
+contain at most one solver.</p>
+<p>Here are a few examples:</p>
+<p class="rubric">Example A: Require Windows for the test</p>
+<p>The same works with <code class="docutils literal"><span class="pre">needsMac</span></code>, <code class="docutils literal"><span class="pre">needsLinux</span></code> and <code class="docutils literal"><span class="pre">needsUnix</span></code>
+instead of <code class="docutils literal"><span class="pre">needsWindows</span></code>.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsWindows&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">Example B: Require an LP solver (<code class="docutils literal"><span class="pre">needsLP</span></code>)</p>
+<p>The same works with <code class="docutils literal"><span class="pre">needsNLP</span></code>, <code class="docutils literal"><span class="pre">needsMILP</span></code>, <code class="docutils literal"><span class="pre">needsQP</span></code> or
+<code class="docutils literal"><span class="pre">needsMIQP</span></code>. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc. will be cell arrays
+of string with the respective available solver for the problem type. If
+the <code class="docutils literal"><span class="pre">'useSolversIfAvailable'</span></code> parameter is non empty, all installed
+solvers requested will be in the cell array. Otherwise, there will be at
+most one solver (if no solver for the problem is installed, the cell
+array is empty).</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">Example C: Use multiple solvers if present</p>
+<p>If multiple solvers are requested. <code class="docutils literal"><span class="pre">solvers.LP</span></code>, <code class="docutils literal"><span class="pre">solvers.MILP</span></code> etc
+will contain all those requested solvers that can solve the respective
+problem type and that are installed.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s">&#39;useSolversIfAvailable&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">});</span>
+</pre></div>
+</div>
+<p class="rubric">Example D: Require one of a set of solvers</p>
+<p>Some functionalities do only work properly with a limited set of solvers.
+with the keyword <code class="docutils literal"><span class="pre">requireOneSolverOf</span></code> you can specify a set of solvers
+of which the test requires at least one to be present. This option, will
+make the test never be run with any but the solvers specified in the
+supplied list. E.g. if your test only works with <code class="docutils literal"><span class="pre">gurobi</span></code> or <code class="docutils literal"><span class="pre">mosek</span></code>
+you would call <code class="docutils literal"><span class="pre">prepareTest</span></code> as</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requireOneSolverOf&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example E: Exclude a solver</p>
+<p>If for some reason, a function is known not to work with a few specific
+solvers (e.g. precision is insufficient) but works with all others, it
+might be advantageous to explicitly exclude that one solver instead of
+defining the list of possible solvers. This can be done with the
+<code class="docutils literal"><span class="pre">excludeSolvers</span> <span class="pre">parameter</span></code>. Eg. to exclude <code class="docutils literal"><span class="pre">matlab</span></code> and <code class="docutils literal"><span class="pre">lp_solve</span></code>
+you would use the following command:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;excludeSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;matlab&#39;</span><span class="p">,</span> <span class="s">&#39;lp_solve&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example F: Require multiple solvers</p>
+<p>Some tests require more than one solver to be run, and otherwise fail. To
+require multiple solvers for a test use the <code class="docutils literal"><span class="pre">requiredSolvers</span></code> parameters.
+E.g. if your function requires <code class="docutils literal"><span class="pre">ibm_cplex</span></code> and <code class="docutils literal"><span class="pre">gurobi</span></code> use the following
+call:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ibm_cplex&#39;</span><span class="p">,</span> <span class="s">&#39;gurobi&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example G: Require a specific MATLAB toolbox</p>
+<p>The toolbox IDs are specified as those used in <code class="docutils literal"><span class="pre">license('test',</span>
+<span class="pre">'toolboxName')</span></code>.  The following example requires the statistics toolbox
+to be present.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;statistics_toolbox&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p class="rubric">Example H: Multiple requirements</p>
+<p>If the test requires multiple different properties to be met, you should
+test them all in the same call. To keep the code readable, first define
+the requirements and then pass them in.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% define required toolboxes</span>
+<span class="n">requiredToolboxes</span> <span class="p">=</span> <span class="p">{</span><span class="s">&#39;bioinformatics_toolbox&#39;</span><span class="p">,</span> <span class="s">&#39;optimization_toolbox&#39;</span><span class="p">};</span>
+
+<span class="c">% define the required solvers (in this case matlab and dqqMinos)</span>
+<span class="n">requiredSolvers</span> <span class="p">=</span> <span class="p">{</span><span class="s">&#39;dqqMinos&#39;</span><span class="p">,</span> <span class="s">&#39;matlab&#39;</span><span class="p">};</span>
+
+<span class="c">% check if the specified requirements are fullfilled (toolboxes, solvers in thhis example, a unix OS).</span>
+<span class="n">solversPkgs</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;requiredSolvers&#39;</span><span class="p">,</span> <span class="n">requiredSolvers</span><span class="p">,</span> <span class="s">&#39;requiredToolboxes&#39;</span><span class="p">,</span> <span class="n">requiredToolboxes</span><span class="p">,</span> <span class="s">&#39;needsUnix&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-if-an-output-is-correct">
+<h2>Test if an output is correct<a class="headerlink" href="#test-if-an-output-is-correct" title="Permalink to this headline">¶</a></h2>
+<p>If you want to test if the output of a function
+<code class="docutils literal"><span class="pre">[output1,</span> <span class="pre">output2]</span> <span class="pre">=</span> <span class="pre">function1(input1,</span> <span class="pre">input2)</span></code> is correct, you
+should call this function at least 4 times in your test. The argument
+<code class="docutils literal"><span class="pre">ìnput2</span></code> might be an optional input argument.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 1: test with 1 input and 1 output argument</span>
+<span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+
+<span class="c">% Case 2: test with 1 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span>
+
+<span class="c">% Case 3: test with 1 output and 2 input arguments</span>
+<span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+
+<span class="c">% Case 4: test with 2 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each of the 4 test scenarios should be followed by a test on <code class="docutils literal"><span class="pre">output1</span></code>
+and <code class="docutils literal"><span class="pre">output2</span></code>. For instance, for <code class="docutils literal"><span class="pre">Case</span> <span class="pre">4</span></code>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 4: test with 2 input and 2 output arguments</span>
+<span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">]</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
+
+<span class="c">% test on output1</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">output1</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">);</span> <span class="c">% tol must be defined previously, e.g. tol = 1e-6;</span>
+
+<span class="c">% test on output2</span>
+<span class="n">assert</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">output2</span> <span class="o">-</span> <span class="n">refData_output2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">);</span> <span class="c">% refData_output2 can be loaded from a file</span>
+</pre></div>
+</div>
+<p>The test succeeds if the argument of <code class="docutils literal"><span class="pre">assert()</span></code> yields a <code class="docutils literal"><span class="pre">true</span></code>
+logical condition.</p>
+</div>
+<div class="section" id="test-if-a-function-throws-an-error-or-warning-message">
+<h2>Test if a function throws an error or warning message<a class="headerlink" href="#test-if-a-function-throws-an-error-or-warning-message" title="Permalink to this headline">¶</a></h2>
+<p>If you want to test whether your <code class="docutils literal"><span class="pre">function1</span></code> correctly throws an
+<strong>error</strong> message, you can test as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)</span>
+<span class="c">% There are two options. If a particular error message is to be tested (here, &#39;Input2 has the wrong dimension&#39;):</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">},</span> <span class="s">&#39;testMessage&#39;</span><span class="p">,</span> <span class="s">&#39;Input2 has the wrong dimension&#39;</span><span class="p">));</span>
+
+<span class="c">% If the aim is to test, that the function throws an error at all</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">verifyCobraFunctionError</span><span class="p">(</span><span class="s">&#39;function1&#39;</span><span class="p">,</span> <span class="s">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">}));</span>
+</pre></div>
+</div>
+<p>If you want to test whether your <code class="docutils literal"><span class="pre">function1</span></code> correctly throws a
+<strong>warning</strong> message, you can test as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">)</span>
+    <span class="n">output1</span> <span class="p">=</span> <span class="n">function1</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="o">&#39;</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">lastwarn</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">warning</span><span class="p">(</span><span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this allows the error message to be thrown without failing the
+test.</p>
+</div>
+<div class="section" id="test-template">
+<h2>Test template<a class="headerlink" href="#test-template" title="Permalink to this headline">¶</a></h2>
+<p>A test template is readily available
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/testTemplate.html">here</a>.
+The following sections shall be included in a test file:</p>
+<p class="rubric">1. Header</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% The COBRAToolbox: &lt;testNameOfSrcFile&gt;.m</span>
+<span class="c">%</span>
+<span class="c">% Purpose:</span>
+<span class="c">%     - &lt;provide a short description of the purpose of the test</span>
+<span class="c">%</span>
+<span class="c">% Authors:</span>
+<span class="c">%     - &lt;major change&gt;: &lt;your name&gt; &lt;date&gt;</span>
+<span class="c">%</span>
+</pre></div>
+</div>
+<p class="rubric">2. Test initialization</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
+
+<span class="c">% save the current path</span>
+<span class="n">currentDir</span> <span class="p">=</span> <span class="n">pwd</span><span class="p">;</span>
+
+<span class="c">% initialize the test</span>
+<span class="n">cd</span><span class="p">(</span><span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;fileName&#39;</span><span class="p">)));</span>
+</pre></div>
+</div>
+<p class="rubric">3. Define the solver packages to be tested and the tolerance</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% set the tolerance</span>
+<span class="n">tol</span> <span class="p">=</span> <span class="mf">1e-8</span><span class="p">;</span>
+
+<span class="c">% define the solver packages to be used to run this test</span>
+<span class="n">solvers</span> <span class="p">=</span> <span class="n">prepareTest</span><span class="p">(</span><span class="s">&#39;needsLP&#39;</span><span class="p">,</span><span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">4. Load a model and/or reference data</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% load the model</span>
+<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;testModel.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
+<span class="n">load</span><span class="p">(</span><span class="s">&#39;testData_functionToBeTested.mat&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Please only load <em>small</em> models, i.e.&nbsp;less than <code class="docutils literal"><span class="pre">100</span></code> reactions. If
+you want to use a non-standard test model that is already available
+online, please make a pull request with the URL entry to the
+<a class="reference external" href="https://github.com/cobrabot/COBRA.models">COBRA.models repository</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">In order to guarantee compatibility across platforms, please use the full path to the model. For instance:</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
+
+<span class="c">% load the ecoli core model</span>
+<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;ecoli_core_model.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">5. Create a parallel pool</p>
+<p>This is only necessary for tests that test a function that runs in
+parallel.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% create a parallel pool</span>
+<span class="n">poolobj</span> <span class="p">=</span> <span class="n">gcp</span><span class="p">(</span><span class="s">&#39;nocreate&#39;</span><span class="p">);</span> <span class="c">% if no pool, do not create new one.</span>
+<span class="k">if</span> <span class="nb">isempty</span><span class="p">(</span><span class="n">poolobj</span><span class="p">)</span>
+    <span class="n">parpool</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c">% launch 2 workers</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">warning:</th><td class="field-body">Please only launch a pool of <code class="docutils literal"><span class="pre">2</span></code> workers - more workers</td>
+</tr>
+</tbody>
+</table>
+<p>should not be needed to test a parallel function efficiently.</p>
+<p class="rubric">6. Body of test</p>
+<p>The test. If multiple solvers were requested by ‘useIfAvailable’, run:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">)</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39; -- Running &lt;testFile&gt; using the solver interface: %s ... &#39;</span><span class="p">,</span> <span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">});</span>
+
+    <span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">},</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c">% &lt;your test goes here&gt;</span>
+
+    <span class="c">% output a success message</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>If only one solver is requested:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">,</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="c">% &lt;your test goes here&gt;</span>
+
+<span class="c">% output a success message</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p class="rubric">7. Change to the current directory</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% change the directory</span>
+<span class="n">cd</span><span class="p">(</span><span class="n">currentDir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-test-locally-on-your-machine">
+<h2>Run the test locally on your machine<a class="headerlink" href="#run-the-test-locally-on-your-machine" title="Permalink to this headline">¶</a></h2>
+<p>Please make sure that your test runs individually by typing after a
+fresh start:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">initCobraToolbox</span>
+<span class="o">&gt;&gt;</span> <span class="o">&lt;</span><span class="n">testName</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Please then verify that the test runs in the test suite by running:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
+</pre></div>
+</div>
+<p>Alternatively, you can run the test suite in the background by typing:</p>
+<div class="code sh highlight-default"><div class="highlight"><pre><span></span>$ matlab -nodesktop -nosplash &lt; test/testAll.m
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify-that-your-test-passed">
+<h2>Verify that your test passed<a class="headerlink" href="#verify-that-your-test-passed" title="Permalink to this headline">¶</a></h2>
+<p>Once your pull request (PR) has been submitted, you will notice an
+orange mark next to your latest commit. Once the continuous integration
+(CI) server succeeded, you will see a green check mark. If the CI
+failed, you will see a red cross.</p>
+</div>
+<div class="section" id="what-should-i-do-in-case-my-pr-failed">
+<h2>What should I do in case my PR failed?<a class="headerlink" href="#what-should-i-do-in-case-my-pr-failed" title="Permalink to this headline">¶</a></h2>
+<p>You can check why your PR failed by clicking on the mark and following
+the respective links. Alternatively, you can see the output of the CI
+for your PR
+<a class="reference external" href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-pr-auto/">here</a>.
+You can then click on the build number. Under <code class="docutils literal"><span class="pre">Console</span> <span class="pre">Output</span></code>, you
+can see the output of <code class="docutils literal"><span class="pre">test/testAll.m</span></code> with your integrated PR.</p>
+<p>Once you understood why the build for your proposed PR failed, you can
+add more commits that aim at fixing the error, and the CI will be
+re-triggered.</p>
+<p>Common errors include:</p>
+<ul class="simple">
+<li>Double percentage sign <code class="docutils literal"><span class="pre">%%</span></code> in your test file to separate code
+blocks. Replace <code class="docutils literal"><span class="pre">%%</span></code> with <code class="docutils literal"><span class="pre">%</span></code>.</li>
+<li>Compatibility issues (<code class="docutils literal"><span class="pre">ILOG</span> <span class="pre">Cplex</span></code> is not compatible with
+<code class="docutils literal"><span class="pre">R2015b+</span></code>). Add an additional test on the version of matlab using
+<code class="docutils literal"><span class="pre">verLessThan('matlab',</span> <span class="pre">'&lt;version&gt;')</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="can-i-find-out-how-many-tests-have-failed">
+<h2>Can I find out how many tests have failed?<a class="headerlink" href="#can-i-find-out-how-many-tests-have-failed" title="Permalink to this headline">¶</a></h2>
+<p>The logical conditions, when tested using <code class="docutils literal"><span class="pre">assert()</span></code>, will throw an
+error when not satisfied. It is bad practice to test the sum of tests
+passed and failed. Please only test using <code class="docutils literal"><span class="pre">assert(logicalCondition)</span></code>.
+Even though a test may fail using <code class="docutils literal"><span class="pre">assert()</span></code>, a summary table with
+comprehensive information is provided at the end of the test run.</p>
+<p>For instance, the following test script <strong>do not do this - bad
+practice!</strong>:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% do not do this: bad practice!</span>
+<span class="n">testPassed</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">testFailed</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c">% test on logical condition 1 - do not do this: bad practice!</span>
+<span class="k">if</span> <span class="n">logicalCondition1</span>
+    <span class="n">testPassed</span> <span class="p">=</span> <span class="n">testPassed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">testFailed</span> <span class="p">=</span> <span class="n">testFailed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="c">% test on logical condition 2 - do not do this: bad practice!</span>
+<span class="k">if</span> <span class="n">logicalCondition2</span>
+    <span class="n">testPassed</span> <span class="p">=</span> <span class="n">testPassed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">testFailed</span> <span class="p">=</span> <span class="n">testFailed</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="n">testPassed</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">testFailed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c">% do not do this: bad practice!</span>
+</pre></div>
+</div>
+<p>shall be rewritten as follows:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% good practice</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">logicalCondition1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">logicalCondition2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

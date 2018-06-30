@@ -220,8 +220,16 @@
 <h2>Can I check if everything is properly set up before I start?<a class="headerlink" href="#can-i-check-if-everything-is-properly-set-up-before-i-start" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="matlab">
 <h3>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h3>
-<p>Please ensure that you have a working <code class="docutils literal"><span class="pre">MATLAB</span></code>
-<a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.</p>
+<p>Please ensure that you have a compatible and working <code class="docutils literal"><span class="pre">MATLAB</span></code>
+<a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.
+The list of compatible solvers is available <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
+<p>No support is provided for versions older than R2014b.
+<code class="docutils literal"><span class="pre">MATLAB</span></code> is released on a twice-yearly schedule. After the latest release (version b),
+it may be a couple of months before certain methods with dependencies
+on other software become compatible. For example, the latest releases of <code class="docutils literal"><span class="pre">MATLAB</span></code>
+may not be compatible with the existing solver interfaces,
+necessitating an update of the <code class="docutils literal"><span class="pre">MATLAB</span></code> interface provided by the solver developers,
+or an update of the COBRA Toolbox, or both.</p>
 </div>
 <div class="section" id="git">
 <h3>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
@@ -242,7 +250,8 @@ in the terminal (<code class="docutils literal"><span class="pre">cmd</span></co
 </pre></div>
 </div>
 <p>which will return <code class="docutils literal"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
-number if installed properly.</p>
+number if installed properly. If you encounter any issues with <code class="docutils literal"><span class="pre">curl</span></code>, please
+post in our <a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img alt="ImageLink" src="https://img.shields.io/badge/COBRA-forum-blue.svg" /></a>.</p>
 </div>
 </div>
 <div class="section" id="what-if-my-system-is-not-properly-configured">
@@ -252,6 +261,7 @@ number if installed properly.</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
 </pre></div>
 </div>
+<p>There is a known issue on Matlab 2016b (or earlier) with a default library that is used to access web resources. Please have a look at the <a class="reference external" href="https://opencobra.github.io/cobratoolbox/stable/faq.html#on-linux-matlab-suddenly-crashes-without-any-error">FAQ</a>.</p>
 </div>
 <div class="section" id="macos">
 <h3>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>

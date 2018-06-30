@@ -247,7 +247,7 @@
 <span id="id1"></span><h1>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.io.definitions"></span><dl class="function">
 <dt id="src.base.io.definitions.descFileRead">
-<code class="descname">descFileRead</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/io/definitions/descFileRead.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.definitions.descFileRead" title="Permalink to this definition">¶</a></dt>
+<code class="descname">descFileRead</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/io/definitions/descFileRead.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.definitions.descFileRead" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides the same raw output as tdfread from the
 statistics toolbox, making sure, that we don&#8217;t need that as a
 prerequesite</p>
@@ -271,6 +271,81 @@ A struct with one field per header and a char
 array of all data listed in the column.</li>
 </ul>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.io.definitions.getAnnotationFieldName">
+<code class="descname">getAnnotationFieldName</code><span class="sig-paren">(</span><em>annotatedField</em>, <em>database</em>, <em>annotationQualifier</em>, <em>qualifierSelection</em>, <em>invertSelection</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/io/definitions/getAnnotationFieldName.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.definitions.getAnnotationFieldName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cobra field corresponding to the given database for the annotion
+Qualifier and the given annotated field.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>fieldName = getAnnotationFieldName(annotatedField,database,annotationQualifier)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>annotationField</strong> &#8211;
+The base field that is being annotated
+(e.g. &#8216;rxn&#8217;, &#8216;model&#8217;, &#8216;comp&#8217;, ...)</li>
+<li><strong>database</strong> &#8211;
+The database names of the annotation. (e.g.
+kegg)</li>
+<li><strong>annotationQualifier</strong> &#8211;
+The annotation qualifier (see
+<a class="reference external" href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a> for possible qualifiers)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>qualifierSelection</strong> &#8211;
+Exclude the qualifiers from mappings (default: {}).</li>
+<li><strong>invertSelection</strong> &#8211;
+Invert the qualifierSelection i.e. use
+only those specified (default: false);</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldNames</strong> &#8211;
+The name of the field corresponding to the
+given annotation.</li>
+<li><strong>dbIDs</strong> &#8211;
+A Cell array with the DB IDs</li>
+<li><strong>relations</strong> &#8211;
+The relations the field has with the db
+names (for defined fields, this can be a
+multiple tpes separated by &#8216;;&#8217;</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.io.definitions.getRegisteredDatabases">
+<code class="descname">getRegisteredDatabases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/io/definitions/getRegisteredDatabases.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.definitions.getRegisteredDatabases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all databases registered with identifiers.org along with their
+pattern and and prefix data.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>identifiersDBs = getRegisteredDatabases()</div></blockquote>
+<dl class="docutils">
+<dt>OUPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>identifiersDBs:        A Struct with data on each database registered</dt>
+<dd><p class="first">with identifiers.org (needs web access).
+The struct will have the following fields:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>.name:       The name of the database</li>
+<li>.pattern:    A regexp pattern allowed with the db.</li>
+<li>.prefix:     The prefix of the db on identifiers.org</li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

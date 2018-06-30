@@ -257,7 +257,7 @@
 </div>
 <span class="target" id="module-src.dataIntegration.transcriptomics"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>options</em>, <em>funcModel</em>, <em>exRxnRemove</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>options</em>, <em>funcModel</em>, <em>exRxnRemove</em>, <em>optionalParams</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates draft tissue specific model from mRNA expression data</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -284,6 +284,7 @@ model strusture</li>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
+<div><blockquote>
 <div><ul class="simple">
 <li><strong>funcModel</strong> &#8211;
 1 - Build a functional model having only reactions
@@ -293,6 +294,14 @@ step (Default = 0)</li>
 Names of exchange reactions to remove
 (Default = [])</li>
 </ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>optionalParams           Additional paramaters for the consistency</dt>
+<dd>check. Will only be used if funcModel = 1
+Is a structure with possible fields of epsilon
+(numeric, min nonzero mass), modeFlag (return
+flux mode, 0/1), and method (&#8216;fastcc&#8217;,&#8217;dc&#8217;)</dd>
+</dl>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
@@ -324,8 +333,11 @@ available for the reactions, set the value to -1</dd>
 <dt>options.core*                cell with reaction names (strings) that are manually put in</dt>
 <dd>the high confidence set (default - no core reactions)</dd>
 </dl>
-<p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)
-options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+<p>options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)
+options.runtime*             maximum solve time for the MILP (default - 7200s)
+options.epsilon*             small value to consider when modeling</p>
+<blockquote class="last">
+<div>flux (default 1)</div></blockquote>
 </dd>
 </dl>
 </div></blockquote>
@@ -352,7 +364,10 @@ options.obj_frac*            minimum fraction of the model objective function</p
 <p class="last">options.logfile*             name of the file to save the MILP log (defaut - &#8216;MILPlog&#8217;)</p>
 </dd>
 </dl>
-<p class="last">options.runtime*             maximum solve time for the MILP (default - 7200s)</p>
+<p>options.runtime*             maximum solve time for the MILP (default - 7200s)
+options.epsilon*             small value to consider when modeling</p>
+<blockquote class="last">
+<div>flux (default 1)</div></blockquote>
 </dd>
 <dt>for MBA</dt>
 <dd><p class="first">options.medium_set           list of reaction names with medium confidence

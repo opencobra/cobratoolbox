@@ -239,7 +239,7 @@
 <span id="id1"></span><h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.install"></span><dl class="function">
 <dt id="src.base.install.adaptMacPath">
-<code class="descname">adaptMacPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/adaptMacPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.adaptMacPath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">adaptMacPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/adaptMacPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.adaptMacPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adapts the path for binaries on a mac with Sierra/High Sierra or higher
 and Anything below.</p>
 <p><strong>Usage</strong></p>
@@ -249,7 +249,7 @@ and Anything below.</p>
 
 <dl class="function">
 <dt id="src.base.install.addCOBRABinaryPathToSystemPath">
-<code class="descname">addCOBRABinaryPathToSystemPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/addCOBRABinaryPathToSystemPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addCOBRABinaryPathToSystemPath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addCOBRABinaryPathToSystemPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/addCOBRABinaryPathToSystemPath.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addCOBRABinaryPathToSystemPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up the path to system executables shipped by the toolbox.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -258,7 +258,7 @@ and Anything below.</p>
 
 <dl class="function">
 <dt id="src.base.install.addKeyToKnownHosts">
-<code class="descname">addKeyToKnownHosts</code><span class="sig-paren">(</span><em>siteName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/addKeyToKnownHosts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addKeyToKnownHosts" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addKeyToKnownHosts</code><span class="sig-paren">(</span><em>siteName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/addKeyToKnownHosts.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.addKeyToKnownHosts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the public key to <cite>site.ext</cite> exists
 If the public key of the <cite>site.ext</cite> does not exist,
 adds the public key to the known hosts</p>
@@ -285,7 +285,7 @@ Boolean (true if key has been added successfully or exists)</li>
 
 <dl class="function">
 <dt id="src.base.install.checkCNAinstallation">
-<code class="descname">checkCNAinstallation</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/checkCNAinstallation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.checkCNAinstallation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkCNAinstallation</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/checkCNAinstallation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.checkCNAinstallation" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks the installation of CellNetAnalyzer</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -307,8 +307,77 @@ Boolean if CellNetAnalyzer is installed properly</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.install.getFilesInDir">
+<code class="descname">getFilesInDir</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/getFilesInDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getFilesInDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all files in the supplied (git tracked) Directory with their absolute path name
+based on the git ls-file command. If the directory is not git controlled, the
+type is assumed to be &#8216;all&#8217; and all files (except for .git files
+will be returned).</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>files = getFilesInDir(varargin)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Options as &#8216;ParameterName&#8217; value pairs with the following options:</p>
+<ul>
+<li><p class="first"><cite>dirToList</cite>: the directory to list the files for (default: the current working directory)</p>
+</li>
+<li><p class="first"><cite>type</cite>: Git type of files to return</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>tracked</cite>: Only tracked files</li>
+<li><cite>ignored</cite>: Only <cite>git</cite> ignored files excluding files that are tracked but ignored (specified in .gitignore). If the folder is not controlled by git, <cite>all</cite> will be used.</li>
+<li><cite>untracked</cite>: anything that is not ignored and not tracked (new files)</li>
+<li><cite>all</cite>: all files except for the git specific files (e.g. .git, .gitignore etc).</li>
+<li><cite>ignoredByCOBRA</cite>: use the COBRA Toolbox .gitignore file. Only return those files that match patterns specified there. Slower than <cite>ignored</cite> since all files have to be manually checked against the expressions specified in the .gitignore file, but available on all folders (default: <cite>all</cite>)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><cite>restrictToPattern</cite> - give a regexp pattern to filter the files, this option is ignored if empty (default: &#8216;&#8217;, i.e. ignored)</p>
+</li>
+<li><p class="first"><cite>checkSubFolders - check the subfolders of the current directory (default: `true</cite>)</p>
+</li>
+<li><p class="first"><cite>printLevel</cite></p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>0</cite>: No print out (default)</li>
+<li><cite>1</cite>: print Information</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>files</strong> &#8211;
+A Cell Array of files with absolute file pathes.
+present in this folder matching the options choosen.</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">get</span> <span class="nb">all</span> <span class="n">m</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">source</span> <span class="n">folder</span><span class="p">:</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">getFilesInDir</span><span class="p">(</span><span class="s1">&#39;dirToList&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s1">&#39;src&#39;</span><span class="p">],</span> <span class="s1">&#39;restrictToPattern&#39;</span><span class="p">,</span> <span class="s1">&#39;\.m$&#39;</span><span class="p">);</span>
+
+<span class="o">%</span> <span class="n">Get</span> <span class="n">the</span> <span class="n">git</span> <span class="n">tracked</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">test</span> <span class="n">Directory</span><span class="o">.</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">getFilesInDir</span><span class="p">(</span><span class="s1">&#39;dirToList&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;tracked&#39;</span><span class="p">);</span>
+
+<span class="o">%</span> <span class="n">get</span> <span class="nb">all</span> <span class="n">git</span> <span class="n">tracked</span> <span class="n">files</span>  <span class="n">which</span> <span class="n">start</span> <span class="k">with</span> <span class="s2">&quot;MyFile&quot;</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">directory</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">getFilesInDir</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;tracked&#39;</span><span class="p">,</span> <span class="s1">&#39;restrictToPattern&#39;</span><span class="p">,</span> <span class="s1">&#39;^MyFile&#39;</span><span class="p">);</span>
+
+<span class="o">%</span> <span class="n">get</span> <span class="n">only</span> <span class="n">the</span> <span class="n">gitIgnored</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">folder</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">getFilesInDir</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;ignored&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.install.getGitBashVersion">
-<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getGitBashVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/getGitBashVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getGitBashVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Windows, this function determines the version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -327,7 +396,7 @@ Integer of <cite>installedVersion</cite>, e.g. <cite>2132</cite></li>
 
 <dl class="function">
 <dt id="src.base.install.getIgnoredFiles">
-<code class="descname">getIgnoredFiles</code><span class="sig-paren">(</span><em>ignorepatterns</em>, <em>filterpatterns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/getIgnoredFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getIgnoredFiles" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getIgnoredFiles</code><span class="sig-paren">(</span><em>ignorepatterns</em>, <em>filterpatterns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/getIgnoredFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.getIgnoredFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all files/patterns which are ignored by git in the COBRA Toolbox directory..
 <strong>Usage</strong></p>
 <blockquote>
@@ -351,30 +420,34 @@ All files (and patterns) indicated as ignored in
 the gitignore file.</li>
 </ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>Authors:      Original Code: Laurent Heirandt</dt>
-<dd>Move to function: Thomas Pfau, Jan 2018</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.base.install.installDevTools">
-<code class="descname">installDevTools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installDevTools</code><span class="sig-paren">(</span><em>repoName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/installDevTools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installDevTools" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if the MATLAB.devTools are already present and installs the
 MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>installDevTools()</div></blockquote>
+<div>installDevTools(repoName)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>repoName</strong> &#8211;
+Name of the repository (default: &#8216;opencobra/cobratoolbox&#8217;)</li>
+</ul>
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">In order to install the devTools, please make sure that the SSH key is
-configured properly as explained <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">here</a>.</p>
+configured properly as explained <a class="reference external" href="https://opencobra.github.io/MATLAB.devTools/stable/installation.html">here</a>.
+The full documentation of the MATLAB.devTools is <a class="reference external" href="https://opencobra.github.io/MATLAB.devTools">here</a>.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.base.install.installGitBash">
-<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">installGitBash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/installGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.installGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function wraps the installer for PortableGit and checks for available updates.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>
@@ -384,7 +457,7 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 
 <dl class="function">
 <dt id="src.base.install.portableGitSetup">
-<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">portableGitSetup</code><span class="sig-paren">(</span><em>gitBashVersion</em>, <em>removeFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/portableGitSetup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.portableGitSetup" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function downloads the latest version of PortableGit on Windows (archive), extracts the folder
 and moves the contents to the hidden .tmp folder in a folder called <cite>PortableGit-a.bc.c</cite>
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
@@ -407,30 +480,124 @@ Flag to remove old versions from the path or not<ul>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.install.removeGitIgnoredNewFiles">
-<code class="descname">removeGitIgnoredNewFiles</code><span class="sig-paren">(</span><em>directory</em>, <em>oldcontent</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/removeGitIgnoredNewFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.removeGitIgnoredNewFiles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes all files that are in the specified directory but not part of
-the oldcontent if they match any file indicated by the gitignored files
-of the COBRA Toolbox .gitignore file.</p>
+<dt id="src.base.install.prepareTest">
+<code class="descname">prepareTest</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/prepareTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.prepareTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the prerequisites of the test, and returns solvers depending on
+the input parameters. If the requirements are NOT met, a
+COBRA:RequirementsNotMet error is thrown.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>removeGitIgnoredNewFiles(directory, content)</div></blockquote>
+<div>[solversToUse] = prepareTest(varargin)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varagin</strong> &#8211;
+<cite>ParameterName</cite> value pairs with the following options:<ul>
+<li><cite>toolboxes</cite> or <cite>requiredToolboxes</cite>: Names of required toolboxes (the license feature name) (default: {})</li>
+<li><cite>requiredSolvers</cite>: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})</li>
+<li><cite>useSolversIfAvailable</cite>: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})</li>
+<li><cite>requireOneSolverOf</cite>: Names of solvers, at least one of which has to be available</li>
+<li><cite>excludeSolvers</cite>: Names of solvers which should never be used for the test (because they fail)</li>
+<li><cite>needsLP</cite>: Whether a LP solver is required (default: false)</li>
+<li><cite>needsMILP</cite>: Whether a MILP solver is required (default: false)</li>
+<li><cite>needsQP</cite>: Whether a QP solver is required (default: false)</li>
+<li><cite>needsMIQP</cite>: Whether a MIQP solver is required (default: false)</li>
+<li><cite>needsNLP</cite>: Whether a NLP solver is required (default: false)</li>
+<li><cite>needsUnix</cite>: Whether the test only works on a Unix system (macOS or Linux) (default: false)</li>
+<li><cite>needsWindows</cite>: Whether the test only works on a Windows system (default: false)</li>
+<li><cite>needsMac</cite>: Whether the test only works on a Mac system (default: false)</li>
+<li><cite>needsLinux</cite>: Whether the test only works on a Linux system (default: false)</li>
+<li><cite>needsWebAddress</cite>: Tests, whether the supplied url exists (default: &#8216;&#8217;)</li>
+<li><cite>needsWebRead</cite>: Tests, whether webread can be used with the given url</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solversToUse</strong> &#8211;
+A struct with one field per solver type listing
+the solvers to use for that type of problem in a cell array.
+If neither of the &#8216;useIfAvailable&#8217; nor the &#8216;reqSolvers&#8217;
+parameter is provided, only at most one solver
+per type will be returned (i.e. the default
+solver for that type). See the examples below</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>% request a check for the parallel processing toolbox
+&gt;&gt; solvers = prepareTest(&#39;requiredToolboxes&#39;, {&#39;distrib_computing_toolbox&#39;})
+solvers =
+
+          struct with fields:
+
+                LP: {&#39;gurobi&#39;}
+              MILP: {&#39;gurobi&#39;}
+                QP: {&#39;gurobi&#39;}
+              MIQP: {&#39;gurobi&#39;}
+               NLP: {&#39;matlab&#39;}
+
+% request gurobi, ibm_cplex and tomlab if available
+&gt;&gt; solvers = prepareTest(&#39;useIfAvailable&#39;, {&#39;tomlab&#39;, &#39;ibm_cplex&#39;, &#39;gurobi&#39;})
+solvers =
+
+          struct with fields:
+
+                LP: {2×1 cell}
+              MILP: {2×1 cell}
+                QP: {2×1 cell}
+              MIQP: {&#39;gurobi&#39;}
+               NLP: {&#39;matlab&#39;}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.install.removeTempFiles">
+<code class="descname">removeTempFiles</code><span class="sig-paren">(</span><em>directory</em>, <em>oldcontent</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/removeTempFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.removeTempFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all files that are in the specified directory but not part of
+the oldcontent. By default only removes those files which match files
+mentioned in the COBRA .gitignore file.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>status = removeTempFiles(directory, oldcontent, varargin)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>directory</strong> &#8211;
 The directory which should be checked for changing files.</li>
 <li><strong>content</strong> &#8211;
-The directory structure obtained by rdir called in the
-directory indicated (i.e. cd(directory); content =
-rdir([&#8216;**&#8217; filesep &#8216;*&#8217;])</li>
+Absolute file names of the original conten in a cell array.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional options as <cite>ParameterName</cite>, value
+pairs with the following options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>COBRAGitIgnoredOnly</cite>: only remove files which are listed by the COBRA gitignore file (default: true)</li>
+<li><cite>checkSubFolders</cite>: check subFolder (default: true)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>status</strong> &#8211;
+status of the deletion (<cite>true</cite> if successful)</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.base.install.updateCobraToolbox">
-<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateCobraToolbox</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/updateCobraToolbox.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateCobraToolbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks new commits exist on the master branch of the openCOBRA repository
 and asks the user to update The COBRA Toolbox (updates the develop and master branches)</p>
 <p><strong>Usage</strong></p>
@@ -447,7 +614,7 @@ if set to true, the repository is not updated but only new commits are fetched (
 
 <dl class="function">
 <dt id="src.base.install.updateGitBash">
-<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateGitBash</code><span class="sig-paren">(</span><em>fetchAndCheckOnly</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/base/install/updateGitBash.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.install.updateGitBash" title="Permalink to this definition">¶</a></dt>
 <dd><p>On windows, this function updates the already existing version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <p><strong>Usage</strong></p>

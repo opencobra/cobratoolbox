@@ -64,7 +64,7 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="SteadyCom" href="../index.html"/>
-        <link rel="next" title="parsimoniousFBA" href="../../../parsimoniousFBA/index.html"/>
+        <link rel="next" title="Microbiome Modeling Toolbox" href="../../microbiomeModelingToolbox/index.html"/>
         <link rel="prev" title="SteadyCom" href="../index.html"/> 
 
   
@@ -169,6 +169,7 @@
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Subroutines</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../microbiomeModelingToolbox/index.html">Microbiome Modeling Toolbox</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
@@ -271,7 +272,7 @@
 <span id="id1"></span><h1>Subroutines<a class="headerlink" href="#subroutines" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.multiSpecies.SteadyCom.subroutines"></span><dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex">
-<code class="descname">SteadyComCplex</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>solverParams</em>, <em>LP</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComCplex</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>solverParams</em>, <em>LP</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm. Call the CPLEX dynamic object directly.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -437,7 +438,7 @@ structure with the following fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr">
-<code class="descname">SteadyComFVAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComFVAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flux variability analysis for community model at community steady-state at a given growth rate. Called by <cite>SteadyComFVA</cite>
 The function is capable of saving intermediate results and continuing from previous results
 if the file path is given in <cite>options.saveFVA</cite>. It also allows switch from single thread to parallel
@@ -532,7 +533,7 @@ the growth rate at which FVA is performed</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr">
-<code class="descname">SteadyComPOAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComPOAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
 at community steady-state at a given growth rate. Called by <cite>SteadyComPOA</cite>. See <cite>tutorial_SteadyCom</cite> for more details.</p>
 <p><strong>Usage</strong></p>
@@ -644,7 +645,7 @@ when <cite>rxnNameList{i}</cite> is fixed at the <cite>k</cite>-th value, <cite>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines">
-<code class="descname">SteadyComSubroutines</code><span class="sig-paren">(</span><em>purpose</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComSubroutines</code><span class="sig-paren">(</span><em>purpose</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls different subroutines for <cite>SteadyCom</cite> functions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -673,7 +674,7 @@ various input for different subroutines</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../../parsimoniousFBA/index.html" class="btn btn-default float-right" title="parsimoniousFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../microbiomeModelingToolbox/index.html" class="btn btn-default float-right" title="Microbiome Modeling Toolbox" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="SteadyCom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

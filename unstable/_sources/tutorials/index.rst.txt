@@ -125,9 +125,9 @@ Reconstruction
 * :doc:`tutorialRBioNet`
 * :doc:`tutorialModelManipulation`
 * :doc:`tutorialNumCharact`
-* :doc:`tutorialModelATPYield`
 * :doc:`tutorialModelSanityChecks`
 * :doc:`tutorialFidelityTesting`
+* :doc:`tutorialModelATPYield`
 
 .. raw:: html
 

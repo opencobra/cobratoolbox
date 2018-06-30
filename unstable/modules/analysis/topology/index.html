@@ -284,7 +284,7 @@
 </div>
 <span class="target" id="module-src.analysis.topology"></span><dl class="function">
 <dt id="src.analysis.topology.connectedComponents">
-<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/connectedComponents.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.connectedComponents" title="Permalink to this definition">¶</a></dt>
+<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/connectedComponents.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.connectedComponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assuming two reactions are connected if they share metabolites, calculates the connected components
 in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites</p>
 <p><strong>Usage</strong></p>
@@ -340,7 +340,7 @@ gaimc : Graph Algorithms In Matlab Code by David Gleich
 
 <dl class="function">
 <dt id="src.analysis.topology.findCyclicRxns">
-<code class="descname">findCyclicRxns</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/findCyclicRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.findCyclicRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findCyclicRxns</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/findCyclicRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.findCyclicRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the reactions that are part of one or more stoichiometrically
 balanced cycles in the network</p>
 <p><strong>Usage</strong></p>
@@ -368,7 +368,7 @@ scalar giving rank of <cite>S</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.topology.getCorrespondingCols">
-<code class="descname">getCorrespondingCols</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/getCorrespondingCols.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingCols" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCorrespondingCols</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/getCorrespondingCols.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingCols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a boolean vector that is true for a subset of the true cols in
 <cite>colBool</cite> according to whether the cols &#8216;exclusively&#8217; or &#8216;inclusively&#8217;
 correspond to true entries in <cite>rowBool</cite></p>
@@ -431,7 +431,7 @@ correspond to true entries in <cite>rowBool</cite></p>
 
 <dl class="function">
 <dt id="src.analysis.topology.getCorrespondingRows">
-<code class="descname">getCorrespondingRows</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/getCorrespondingRows.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingRows" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCorrespondingRows</code><span class="sig-paren">(</span><em>S</em>, <em>rowBool</em>, <em>colBool</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/getCorrespondingRows.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.getCorrespondingRows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a boolean vector that is true for a subset of the true rows in
 <cite>rowBool</cite> according to whether the rows &#8216;exclusively&#8217; or &#8216;inclusively&#8217;
 correspond to true entries in <cite>colBool</cite></p>
@@ -498,7 +498,7 @@ correspond to true entries in <cite>colBool</cite></p>
 
 <dl class="function">
 <dt id="src.analysis.topology.matrixCoherence">
-<code class="descname">matrixCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/matrixCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.matrixCoherence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">matrixCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/matrixCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.matrixCoherence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the coherence of a matrix <cite>A</cite>, that is
 the maximum absolute value of the cross correlations
 between the columns of <cite>A</cite></p>
@@ -525,7 +525,7 @@ matrix used by <cite>mu</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.topology.testForTypeIIIPathways">
-<code class="descname">testForTypeIIIPathways</code><span class="sig-paren">(</span><em>model</em>, <em>ListExch</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d48ef77e63e22f5fd7310b2475ddb2d79f207cf/src/analysis/topology/testForTypeIIIPathways.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.testForTypeIIIPathways" title="Permalink to this definition">¶</a></dt>
+<code class="descname">testForTypeIIIPathways</code><span class="sig-paren">(</span><em>model</em>, <em>ListExch</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/topology/testForTypeIIIPathways.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.testForTypeIIIPathways" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up the model to run extreme pathway analysis
 (expa) for identifying loops in the model (Type III pathways) and runs expa.</p>
 <p><strong>Usage</strong></p>
