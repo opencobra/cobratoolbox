@@ -17,14 +17,20 @@ Download and installation
    :start-after: begin-installation-marker
    :end-before: end-installation-marker
 
-Binaries and Compatibility
---------------------------
+.. include:: installation/compatMatrix.rst
+
+Binaries and Compilers
+----------------------
 
 .. include:: ../../README.rst
    :start-after: begin-binaries-marker
    :end-before: end-binaries-marker
 
-Solver Installation
+.. include:: installation/compilers.rst
+   :start-after: begin-compilers-marker
+   :end-before: end-compilers-marker
+
+Solver installation
 -------------------
 
 .. include:: installation/solvers.rst

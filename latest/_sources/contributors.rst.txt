@@ -71,7 +71,7 @@ Contributors
         </div>
 
          <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://www.cds.caltech.edu/~mhucka/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://media.licdn.com/dms/image/C5103AQGGlmxiwxjYeQ/profile-displayphoto-shrink_800_800/0?e=1525712400&v=alpha&t=T_8yMQzjRBXWyNEvnQ-SiQtup1IGwNKACkMH2VG8SAc" alt="" width="90px"></a>
+            <a href="http://www.cds.caltech.edu/~mhucka/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://avatars0.githubusercontent.com/u/1450019?s=400&v=4" alt="" width="90px"></a>
             <p><a href="http://www.cds.caltech.edu/~mhucka/">Michael Hucka</a></p>
         </div>
 

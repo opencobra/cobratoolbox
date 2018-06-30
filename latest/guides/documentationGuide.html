@@ -264,8 +264,9 @@ during the automatic documentation generation:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[ output1,output2,output3 ]<span class="p">=</span><span class="nf">someFunction</span><span class="p">(</span> input1,input2,input3 <span class="p">)</span><span class="w"> </span><span class="c">% bad practice</span>
 </pre></div>
 </div>
+</div>
 <div class="section" id="function-description">
-<h3>Function description<a class="headerlink" href="#function-description" title="Permalink to this headline">¶</a></h3>
+<h2>Function description<a class="headerlink" href="#function-description" title="Permalink to this headline">¶</a></h2>
 <p>The description of the function is a brief explanation of the purpose of
 the function. The description of the function may extend over several
 lines. However, try to keep the explanations as brief as possible.</p>
@@ -277,7 +278,7 @@ lines. However, try to keep the explanations as brief as possible.</p>
 </div>
 </div>
 <div class="section" id="keywords">
-<h3>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <p>The automatic documentation software relies on keywords to properly
 format the documented function. A keyword also defines the start of a
 block with the header of a function. Main keywords include:</p>
@@ -305,10 +306,7 @@ sign <code class="docutils literal"><span class="pre">%</span></code>:</p>
 </pre></div>
 </div>
 <p>If the indentation differs, there will be an error.</p>
-</div>
-</div>
-<div class="section" id="keyword-usage">
-<h2>Keyword <code class="docutils literal"><span class="pre">USAGE:</span></code><a class="headerlink" href="#keyword-usage" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">USAGE:</span></code></p>
 <p>In the block starting with the keyword <code class="docutils literal"><span class="pre">USAGE:</span></code>, the function’s
 signature must be given in order to show how the function should be
 used. It is important to leave one empty line before the keyword
@@ -322,9 +320,7 @@ used. It is important to leave one empty line before the keyword
 <span class="c">% here the other section can begin</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="keyword-input-and-output">
-<h2>Keyword <code class="docutils literal"><span class="pre">INPUT:</span></code> and <code class="docutils literal"><span class="pre">OUTPUT:</span></code><a class="headerlink" href="#keyword-input-and-output" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">INPUT:</span></code> and <code class="docutils literal"><span class="pre">OUTPUT:</span></code></p>
 <p>The arguments declared in the blocks: <code class="docutils literal"><span class="pre">INPUT:</span></code>, <code class="docutils literal"><span class="pre">INPUTS:</span></code>,
 <code class="docutils literal"><span class="pre">OUTPUT:</span></code> and <code class="docutils literal"><span class="pre">OUTPUTS:</span></code> must be followed by a colon <code class="docutils literal"><span class="pre">:</span></code> before
 the argument description is provided.</p>
@@ -371,9 +367,7 @@ numbers followed by a dot (e.g., <code class="docutils literal"><span class="pre
 <span class="c">%                2. second element of a numbered list</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="keyword-example">
-<h2>Keyword <code class="docutils literal"><span class="pre">EXAMPLE:</span></code><a class="headerlink" href="#keyword-example" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">EXAMPLE:</span></code></p>
 <p>A common usage example can be included in the <code class="docutils literal"><span class="pre">EXAMPLE:</span></code> block. Code
 included in this block will be formatted as <code class="docutils literal"><span class="pre">MATLAB</span></code> formatted code.
 Leave one empty line before the keyword <code class="docutils literal"><span class="pre">EXAMPLE:</span></code>, after the keyword,
@@ -388,9 +382,7 @@ and after the properly indented (4 spaces) code snippet.</p>
 <span class="c">% another block begins here</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="keyword-note">
-<h2>Keyword <code class="docutils literal"><span class="pre">NOTE:</span></code><a class="headerlink" href="#keyword-note" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">NOTE:</span></code></p>
 <p>Important information, such as common errors, can be included in the
 block that starts with the keyword <code class="docutils literal"><span class="pre">NOTE:</span></code>. A <code class="docutils literal"><span class="pre">NOTE:</span></code> block is
 formatted in a dedicated and highlighted box in the documentation.</p>
@@ -408,9 +400,7 @@ comment sign. An example of a <code class="docutils literal"><span class="pre">N
 <span class="c">% only relevant to the code itself</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="keyword-author-or-author-s">
-<h2>Keyword <code class="docutils literal"><span class="pre">Author:</span></code> or <code class="docutils literal"><span class="pre">Author(s):</span></code><a class="headerlink" href="#keyword-author-or-author-s" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Keyword <code class="docutils literal"><span class="pre">Author:</span></code> or <code class="docutils literal"><span class="pre">Author(s):</span></code></p>
 <p>In the <code class="docutils literal"><span class="pre">Author(s)</span></code> block, the author(s) that have written or
 contributed to the function are listed. Authors are not shown in the
 documentation itself, so the keyword is preceded by <code class="docutils literal"><span class="pre">..</span></code>. List 1
@@ -430,8 +420,9 @@ author as follows:</p>
 <span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% here the body of the function begins</span>
 </pre></div>
 </div>
-<div class="section" id="complete-example-of-formatted-documentation">
-<h3>Complete example of formatted documentation<a class="headerlink" href="#complete-example-of-formatted-documentation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>A complete example of a function is provided here. Please remember that
 colons, indentations, and keywords are important to guarantee pretty
 formatting.</p>
@@ -476,7 +467,6 @@ formatting.</p>
 
 <span class="n">x</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c">% here the body of the function begins</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
