@@ -25,6 +25,8 @@ buildTutorialList(){
 
 buildTutorialList
 
+declare -a tutorials=("tutorial_optForce")
+
 longest=0
 for word in "${tutorials[@]}"
 do
