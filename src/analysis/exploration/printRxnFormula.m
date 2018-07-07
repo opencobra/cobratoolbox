@@ -75,15 +75,15 @@ end
 
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
-parser.addParamValue('rxnAbbrList',model.rxns,@(x) iscell(x) || ischar(x))
-parser.addParamValue('printFlag',true,@(x) isnumeric(x) || islogical(x))
-parser.addParamValue('lineChangeFlag',true,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('metNameFlag',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('fid',1, @isnumeric);
-parser.addParamValue('directionFlag',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('gprFlag',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('proteinFlag',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('printBounds',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('rxnAbbrList',model.rxns,@(x) iscell(x) || ischar(x))
+parser.addParameter('printFlag',true,@(x) isnumeric(x) || islogical(x))
+parser.addParameter('lineChangeFlag',true,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('metNameFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('fid',1, @isnumeric);
+parser.addParameter('directionFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('gprFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('proteinFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('printBounds',false,@(x) isnumeric(x) || islogical(x));
 
 parser.parse(model,varargin{:})
 
@@ -163,9 +163,9 @@ for i = 1:length(rxnAbbrList)
         end
 
         if (model.lb(rxnID) < 0)
-            formulaStr = sprintf('%s  <=> ', formulaStr);
+            formulaStr = sprintf('%s <=> ', formulaStr);
         else
-            formulaStr = sprintf('%s  -> ', formulaStr);
+            formulaStr = sprintf('%s -> ', formulaStr);
         end
         
         for j = 1:length(prodMets)
@@ -180,8 +180,8 @@ for i = 1:length(rxnAbbrList)
         end
         formulas{i} = formulaStr;
         if (printFlag)
-            formulaStr = regexprep(formulaStr, '  <=> ', '\t<=>\t');
-            formulaStr = regexprep(formulaStr, '  -> ', '\t->\t');
+            formulaStr = regexprep(formulaStr, ' <=> ', '\t<=>\t');
+            formulaStr = regexprep(formulaStr, ' -> ', '\t->\t');
             fprintf(fid, '%s\t%s', rxnAbbr, formulaStr);
             if gprFlag
                 if (isfield(model, 'grRules'))
