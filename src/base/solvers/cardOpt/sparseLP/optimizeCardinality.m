@@ -501,10 +501,10 @@ switch param.warmStartMethod
         minlb=-1e4*ones(length(lb2),1);
         minlb2=max(minlb,lb2);
         
-        full = lb2 + diag(rand(2*p+2*q+r,1))*(maxub2 - minlb2);
-        x = full(1:p);
-        y = full(p+1:p+q);
-        z = full(p+q+1:p+q+r);
+        fullStart = lb2 + rand(2*p+2*q+r,1).*(maxub2 - minlb2);
+        x = fullStart(1:p);
+        y = fullStart(p+1:p+q);
+        z = fullStart(p+q+1:p+q+r);
 %         w = full(p+q+r+1:2*p+q+r);
 %         t = full(2*p+q+r+1:2*p+2*q+r);
 end
@@ -526,8 +526,8 @@ obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);-del
 % t >= theta*d.*y       -> theta*d.*y - t <= 0
 % t >= -theta*d.*y      -> -theta*d.*y - t <= 0
 A2 = [A                                                        sparse(s,p)      sparse(s,q);
-       sparse(diag(k))   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
-      -sparse(diag(k))   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
+       sparse(1:p, 1:p, k)   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
+      -sparse(1:p, 1:p, k)   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
        sparse(q,p)       theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q);
       sparse(q,p)       -theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q)];
 b2 = [b; zeros(2*p+2*q,1)];
