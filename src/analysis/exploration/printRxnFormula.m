@@ -110,8 +110,6 @@ if metNameFlag && ~isfield(model,'metNames')
     model.metNames = model.mets;
 end
 
-formulas = {};
-
 if (~iscell(rxnAbbrList))
     if (strcmp(rxnAbbrList, 'all'))
         rxnAbbrList = model.rxns;
@@ -122,16 +120,13 @@ if (~iscell(rxnAbbrList))
     end
 end
 
+formulas = cell(size(rxnAbbrList));
 
 for i = 1:length(rxnAbbrList)
 
     rxnAbbr = rxnAbbrList{i};
 
     rxnID = findRxnIDs(model, rxnAbbr);
-
-    if (printFlag)
-        fprintf(fid, '%s\t', rxnAbbr);
-    end
 
     if (rxnID > 0)
 
@@ -158,53 +153,56 @@ for i = 1:length(rxnAbbrList)
         formulaStr = '';
         for j = 1:length(reactMets)
             if (j > 1)
-                if (printFlag)
-                    fprintf(fid, '+ ');
-                end
-                formulaStr = [formulaStr '+ '];
+                formulaStr = sprintf('%s+ ', formulaStr);
             end
             if (abs(Sreact(j)) ~= 1)
-                if (printFlag)
-                    fprintf(fid, '%g %s ', abs(Sreact(j)), reactMets{j});
-                end
-                formulaStr = [formulaStr num2str(abs(Sreact(j))) ' ' reactMets{j} ' '];
+                formulaStr = sprintf('%s%g %s ', formulaStr, abs(Sreact(j)), reactMets{j});
             else
-                if (printFlag)
-                    fprintf(fid, '%s ', reactMets{j});
-                end
-                formulaStr = [formulaStr reactMets{j} ' '];
+                formulaStr = sprintf('%s%s ', formulaStr, reactMets{j});
             end
         end
 
         if (model.lb(rxnID) < 0)
-            if (printFlag)
-                fprintf(fid, '\t<=>\t');
-            end
-            formulaStr = [formulaStr ' <=> '];
+            formulaStr = sprintf('%s <=> ', formulaStr);
         else
-            if (printFlag)
-                fprintf(fid, '\t->\t');
-            end
-            formulaStr = [formulaStr ' -> '];
+            formulaStr = sprintf('%s -> ', formulaStr);
         end
-
+        
         for j = 1:length(prodMets)
             if (j > 1)
-                if (printFlag)
-                    fprintf(fid, '+ ');
-                end
-                formulaStr = [formulaStr '+ '];
+                formulaStr = sprintf('%s+ ', formulaStr);
             end
             if (Sprod(j) ~= 1)
-                if (printFlag)
-                    fprintf(fid, '%g %s ', Sprod(j), prodMets{j});
-                end
-                formulaStr = [formulaStr num2str(Sprod(j)) ' ' prodMets{j} ' '];
+                formulaStr = sprintf('%s%g %s ', formulaStr, abs(Sprod(j)), prodMets{j});
             else
-                if (printFlag)
-                    fprintf(fid, '%s ', prodMets{j});
+                formulaStr = sprintf('%s%s ', formulaStr, prodMets{j});
+            end
+        end
+        formulas{i} = formulaStr;
+        if (printFlag)
+            formulaStr = regexprep(formulaStr, ' <=> ', '\t<=>\t');
+            formulaStr = regexprep(formulaStr, ' -> ', '\t->\t');
+            fprintf(fid, '%s\t%s', rxnAbbr, formulaStr);
+            if gprFlag
+                if (isfield(model, 'grRules'))
+                    fprintf(fid, '\t%s', model.grRules{rxnID});
+                elseif (isfield(model,'rules'))
+                    rule = regexprep(model.rules{rxnID},'|','or');
+                    rule = regexprep(rule,'&','and');
+                    rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.genes{num2str($1)}}');
+                    fprintf(fid, '\t%s', rule);
                 end
-                formulaStr = [formulaStr prodMets{j} ' '];
+            end
+            if proteinFlag
+                if (isfield(model, 'rules'))
+                    rule = regexprep(model.rules{rxnID},'|','or');
+                    rule = regexprep(rule,'&','and');
+                    rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.proteins{num2str($1)}}');
+                    fprintf(fid, '\t%s', rule);
+                end
+            end
+            if printBounds
+                fprintf('\tlb:%f\tub:%f',model.lb(rxnID),model.ub(rxnID));
             end
         end
     else
@@ -212,51 +210,12 @@ for i = 1:length(rxnAbbrList)
             fprintf(fid, 'not in model');
         end
         formulaStr = 'NA';
+        formulas{i} = formulaStr;
     end
-    if printFlag && gprFlag
-        if (rxnID > 0) 
-            if (isfield(model, 'grRules'))
-                if (isempty(model.grRules{rxnID}))
-                    fprintf(fid, '\t');
-                else
-                    fprintf(fid, '\t%s', model.grRules{rxnID});
-                end
-            elseif (isfield(model,'rules'))
-                if (isempty(model.rules{rxnID}))
-                    fprintf(fid, '\t');
-                else            
-                    rule = regexprep(model.rules{rxnID},'|','or');
-                    rule = regexprep(rule,'&','and');
-                    rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.genes{num2str($1)}}');                
-                    fprintf(fid, '\t%s', rule);
-                end
-            end
-                
-        end
-    end
-    if printFlag && proteinFlag
-        if (rxnID > 0) && (isfield(model, 'rules'))            
-            if (isempty(model.rules{rxnID}))
-                fprintf(fid, '\t');
-            else            
-                rule = regexprep(model.rules{rxnID},'|','or');
-                rule = regexprep(rule,'&','and');
-                rule = regexprep(rule,'x\((?<id>[0-9]+)\)','${model.proteins{num2str($1)}}');                
-                fprintf(fid, '\t%s', rule);
-            end
-        end
-    end
-    if printBounds && printFlag
-        if rxnID > 0
-            fprintf('\tlb:%f\tub:%f',model.lb(rxnID),model.ub(rxnID));
-        end
-    end
-    if (lineChangeFlag) && printFlag
+    if (lineChangeFlag && printFlag)
         fprintf(fid, '\n');
     end
-    formulas{i} = formulaStr;
 end
-formulas = formulas';
 
 % %pass out a character string if only one reaction in the abbreviation list
 % if length(rxnAbbrList)==1
