@@ -89,22 +89,13 @@ else
         params.theta   = 0.5;
     end
 
-    if isfield(params,'feasTol') == 0
-        params.feasTol = 1e-9;
-    end
-
-    if isfield(params,'optTol') == 0
-        params.optTol   = 1e-9;
-    end
-
     if isfield(params,'p') == 0
         if strcmp(approximation,'lp-') == 1
             params.p = -1;
         end
         if strcmp(approximation,'lp+') == 1
-        params.p = 0.5;
-    end
-
+            params.p = 0.5;
+        end
     end
 
 end
