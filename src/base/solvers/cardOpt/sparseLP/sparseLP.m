@@ -49,7 +49,6 @@ function solution = sparseLP(model, approximation, params)
 %                          * 0 =  Infeasible
 %                          * -1=  Invalid input
 %
-
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
@@ -68,7 +67,7 @@ if nargin < 3
     params.epsilon = 1e-6;
     params.theta   = 0.5;
     params.p = -1;
-    if strcmp(approximation,'lp+') == 1
+    if strcmp(approximation,'lp+')
         params.p = 0.5;
     end
 else
@@ -93,27 +92,27 @@ else
 
 end
 
-if isfield(model,'A') == 0
+if ~isfield(model,'A')
     error('Error:LHS matrix is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'b') == 0
+if ~isfield(model,'b')
     error('RHS vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'lb') == 0
+if ~isfield(model,'lb')
     error('Lower bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'ub') == 0
+if ~isfield(model,'ub')
     error('Upper bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'csense') == 0
+if ~isfield(model,'csense')
     error('Constraint sense vector is not defined');
     solution.stat = -1;
     return;
@@ -127,13 +126,13 @@ end
 
 switch approximation
     case 'all'
-        approximations = setdiff(availableApprox, 'all');
+        approximations = setdiff(availableApprox,'all','stable');
         bestResult = size(model.A,2);
         bestAprox = '';
         for i=1:length(approximations)
             %disp(approximations(i))
             %try
-                solutionL0 = sparseLP(model,char(approximations(i)),params);
+                solutionL0 = sparseLP(model,approximations{i},params);
             %catch
                 %fail gracefully
                 %solutionL0.stat = 0;
@@ -141,7 +140,7 @@ switch approximation
             if solutionL0.stat == 1
                 if bestResult > nnz(solutionL0.x)
                     bestResult = nnz(solutionL0.x);
-                    bestAprox = char(approximations(i));
+                    bestAprox = approximations{i};
                     bestSolutionL0 = solutionL0;
                 end
             end
@@ -162,10 +161,6 @@ switch approximation
         %Create the linear sub-programme that one needs to solve at each iteration, only its
         %objective function changes, the constraints set remains.
         
-        % First part of the objective for the convex optimisation problem Pk
-        % variables are x, t
-        obj = [zeros(n,1);theta*ones(n,1)];
-        
         % Constraints
         % Ax <=b
         % t >= x
@@ -183,21 +178,29 @@ switch approximation
         ub2 = [ub;max(abs(lb),abs(ub))];
         
         %Define the linear sub-problem
-        subLPproblem = struct('c',obj,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
+        subLPproblem = struct('osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
         
         %Initialisation
         x = zeros(n,1);
-        obj_old = sparseLP_obj(x,theta,p,epsilonP,alpha,approximation);
+        obj_old = evalObj(x,theta,p,epsilonP,alpha,approximation);
         
         %DCA
         tic
         while nbIteration < nbMaxIteration && stop ~= true
             
             x_old = x;
-            x_bar = sparseLP_subgradient(x,theta,p,epsilonP,alpha,approximation);
+            x_bar = updateSubgrad(x,theta,p,epsilonP,alpha,approximation);
             
-            %Solve the linear sub-program to obtain new x
-            [x,LPsolution] = sparseLP_solveSubProblem(subLPproblem,x_bar,theta,p,epsilonP,alpha,approximation);
+            subLPproblem.c = updateObj(x_bar,theta,p,epsilonP,alpha,approximation);
+            
+            %Solve the linear problem
+            LPsolution = solveCobraLP(subLPproblem);
+            
+            if LPsolution.stat == 1
+                x = LPsolution.full(1:n);
+            else
+                x = [];
+            end
             
             switch LPsolution.stat
                 case 0
@@ -211,7 +214,7 @@ switch approximation
                 case 1
                     %Check stopping criterion
                     error_x = norm(x - x_old);
-                    obj_new = sparseLP_obj(x,theta,p,epsilonP,alpha,approximation);
+                    obj_new = evalObj(x,theta,p,epsilonP,alpha,approximation);
                     error_obj = abs(obj_new - obj_old);
                     if (error_x < epsilon) || (error_obj < epsilon)
                         stop = true;
