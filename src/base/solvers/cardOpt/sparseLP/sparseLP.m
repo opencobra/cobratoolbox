@@ -28,8 +28,8 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %                        * 'SCAD'     : SCAD function
 %                        * 'lp-'      : `L_p` norm with `p < 0`
 %                        * 'lp+'      : `L_p` norm with `0 < p < 1`
+%                        * 'l1'       : L1 norm
 %                        * 'all'      : try all approximations and return the best result
-%
 %
 % OPTIONAL INPUTS:
 %    params:           Parameters structure:
@@ -52,7 +52,7 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
-availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','all'};
+availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','l1','all'};
 
 if ~exist('approximation','var')
     approximation='cappedL1';
@@ -181,18 +181,15 @@ switch approximation
         %Initialisation
         x = zeros(n,1);
         obj_old = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
-        stop = false;
         
         %DCA
         tic
-        while nbIteration < nbMaxIteration && ~stop
+        while nbIteration < nbMaxIteration
             
             x_old = x;
-            x_bar = updateSubgrad(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
-            
-            subLPproblem.c = updateObj(x_bar,theta,pNeg,pPos,epsilonP,alpha,approximation);
             
             %Solve the linear problem
+            subLPproblem.c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
             solution = solveCobraLP(subLPproblem);
             
             if solution.stat == 1
@@ -203,7 +200,7 @@ switch approximation
                 obj_new = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
                 error_obj = abs(obj_new - obj_old);
                 if (error_x < epsilon) || (error_obj < epsilon)
-                    stop = true;
+                    break;
                 else
                     obj_old = obj_new;
                 end

@@ -60,6 +60,9 @@ switch approximation
     case 'lp+'
         x_bar  = sign(x)/pPos .* (power(epsilonP,1/(pPos-1))*ones(n,1) - power(abs(x)+epsilonP,1/(pPos-1)));
         
+    case 'l1'
+        x_bar  = zeros(n,1);
+        
     otherwise
         error('Approximation is not valid');
 end

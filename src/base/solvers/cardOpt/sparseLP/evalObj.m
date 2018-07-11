@@ -1,8 +1,8 @@
 function obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation)
 % Computes the value of the sparseLP objective function
-% 
+%
 % obj = sparseLP_obj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
-% 
+%
 % % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
@@ -30,7 +30,7 @@ n = length(x);
 switch approximation
     case 'cappedL1'
         obj = ones(n,1)'*min(ones(n,1),theta*abs(x));
-    
+        
     case 'exp'
         obj = ones(n,1)'*((ones(n,1) - exp(-theta*abs(x))));
         
@@ -59,6 +59,9 @@ switch approximation
         
     case 'lp+'
         obj = ones(n,1)'*power(abs(x)+epsilonP*ones(n,1),1/pPos);
+        
+    case 'l1'
+        obj = ones(n,1)'*abs(x);
         
     otherwise
         error('Approximation is not valid');
