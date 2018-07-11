@@ -143,7 +143,7 @@ switch approximation
             %end
             if candSolution.stat == 1
                 candResult = nnz(abs(candSolution.x) > feasTol);
-                if bestResult >= candResult
+                if bestResult > candResult
                     bestResult = candResult;
                     bestApprox = approximations{i};
                     bestSolution = candSolution;
@@ -181,7 +181,7 @@ switch approximation
         % lb <= x <= ub
         % 0  <= t <= max(|lb|,|ub|)
         lb2 = [lb;zeros(n,1)];
-        ub2 = [ub;Inf*ones(n,1)]; % max(abs(lb),abs(ub))];
+        ub2 = [ub;max(abs(lb),abs(ub))];
         
         %Define the linear sub-problem
         subLPproblem = struct('osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
