@@ -1,7 +1,7 @@
-function obj = evalObj(x,theta,p,epsilonP,alpha,approximation)
+function obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation)
 % Computes the value of the sparseLP objective function
 % 
-% obj = sparseLP_obj(x,theta,p,epsilonP,alpha,approximation);
+% obj = sparseLP_obj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
 % 
 % % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
@@ -12,11 +12,11 @@ end
 if ~exist('theta','var') || isempty(theta)
     theta = 0.5;
 end
-if ~exist('p','var') || isempty(p)
-    p = -1;
-    if strcmp(approximation,'lp+')
-        p = 0.5;
-    end
+if ~exist('pNeg','var') || isempty(pNeg)
+    pNeg = -1;
+end
+if ~exist('pPos','var') || isempty(pPos)
+    pPos = 0.5;
 end
 if ~exist('epsilonP','var') || isempty(epsilonP)
     epsilonP = 10e-2;
@@ -55,10 +55,10 @@ switch approximation
         end
         
     case 'lp-'
-        obj = ones(n,1)'*(1 - power((1+theta*abs(x)),p));
+        obj = ones(n,1)'*(1 - power((1+theta*abs(x)),pNeg));
         
     case 'lp+'
-        obj = ones(n,1)'*power(abs(x)+epsilonP*ones(n,1),1/p);
+        obj = ones(n,1)'*power(abs(x)+epsilonP*ones(n,1),1/pPos);
         
     otherwise
         error('Approximation is not valid');

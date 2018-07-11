@@ -1,4 +1,4 @@
-function solution = sparseLP(model, approximation, params)
+function [solution, nIterations, bestApprox] = sparseLP(model, approximation, params)
 % DC programming for solving the sparse LP
 % :math:`min ||x||_0` subject to linear constraints
 % See `Le Thi et al., DC approximation approaches for sparse optimization,
@@ -52,9 +52,6 @@ function solution = sparseLP(model, approximation, params)
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
-stop = false;
-solution.x = [];
-solution.stat = 1;
 availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','all'};
 
 if ~exist('approximation','var')
@@ -66,30 +63,29 @@ if nargin < 3
     params.nbMaxIteration = 1000;
     params.epsilon = 1e-6;
     params.theta   = 0.5;
-    params.p = -1;
-    if strcmp(approximation,'lp+')
-        params.p = 0.5;
-    end
+    params.pNeg = -1;
+    params.pPos = 0.5;
 else
     if ~isfield(params,'nbMaxIteration')
         params.nbMaxIteration = 1000;
     end
-
+    
     if ~isfield(params,'epsilon')
         params.epsilon = 1e-6;
     end
-
+    
     if ~isfield(params,'theta')
         params.theta   = 0.5;
     end
-
-    if ~isfield(params,'p')
-        params.p = -1;
-        if strcmp(approximation,'lp+')
-            params.p = 0.5;
-        end
+    
+    if ~isfield(params,'pNeg')
+        params.pNeg = -1;
     end
-
+    
+    if ~isfield(params,'pPos')
+        params.pPos = 0.5;
+    end
+    
 end
 
 if ~isfield(model,'A')
@@ -124,33 +120,35 @@ if ~ismember(approximation,availableApprox)
     return;
 end
 
+bestApprox = '';
+
 switch approximation
     case 'all'
         approximations = setdiff(availableApprox,'all','stable');
         bestResult = size(model.A,2);
-        bestAprox = '';
         for i=1:length(approximations)
             %disp(approximations(i))
             %try
-                solutionL0 = sparseLP(model,approximations{i},params);
+            [candSolution,candIterations] = sparseLP(model,approximations{i},params);
             %catch
-                %fail gracefully
-                %solutionL0.stat = 0;
+            %fail gracefully
+            %solutionL0.stat = 0;
             %end
-            if solutionL0.stat == 1
-                if bestResult > nnz(solutionL0.x)
-                    bestResult = nnz(solutionL0.x);
-                    bestAprox = approximations{i};
-                    bestSolutionL0 = solutionL0;
+            if candSolution.stat == 1
+                if bestResult > nnz(candSolution.x)
+                    bestResult = nnz(candSolution.x);
+                    bestApprox = approximations{i};
+                    bestSolution = candSolution;
+                    bestIterations = candIterations;
                 end
             end
         end
-        solution = bestSolutionL0;
-        solution.bestAprox = bestAprox;
+        solution = bestSolution;
+        nIterations = bestIterations;
         
     otherwise
-        [nbMaxIteration,epsilon,theta,p] = deal(params.nbMaxIteration,params.epsilon,params.theta,params.p);
-        [A,b,lb,ub,csense] = deal(constraint.A,constraint.b,constraint.lb,constraint.ub,constraint.csense);
+        [nbMaxIteration,epsilon,theta,pNeg,pPos] = deal(params.nbMaxIteration,params.epsilon,params.theta,params.pNeg,params.pPos);
+        [A,b,lb,ub,csense] = deal(model.A,model.b,model.lb,model.ub,model.csense);
         
         %Parameters
         nbIteration = 0;
@@ -166,8 +164,8 @@ switch approximation
         % t >= x
         % t >= -x
         A2 = [A         sparse(m,n);
-              speye(n) -speye(n);
-             -speye(n) -speye(n)];
+            speye(n) -speye(n);
+            -speye(n) -speye(n)];
         b2 = [b; zeros(2*n,1)];
         csense2 = [csense;repmat('L',2*n, 1)];
         
@@ -182,62 +180,51 @@ switch approximation
         
         %Initialisation
         x = zeros(n,1);
-        obj_old = evalObj(x,theta,p,epsilonP,alpha,approximation);
+        obj_old = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+        stop = false;
         
         %DCA
         tic
-        while nbIteration < nbMaxIteration && stop ~= true
+        while nbIteration < nbMaxIteration && ~stop
             
             x_old = x;
-            x_bar = updateSubgrad(x,theta,p,epsilonP,alpha,approximation);
+            x_bar = updateSubgrad(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
             
-            subLPproblem.c = updateObj(x_bar,theta,p,epsilonP,alpha,approximation);
+            subLPproblem.c = updateObj(x_bar,theta,pNeg,pPos,epsilonP,alpha,approximation);
             
             %Solve the linear problem
-            LPsolution = solveCobraLP(subLPproblem);
+            solution = solveCobraLP(subLPproblem);
             
-            if LPsolution.stat == 1
-                x = LPsolution.full(1:n);
+            if solution.stat == 1
+                x = solution.full(1:n);
+                
+                %Check stopping criterion
+                error_x = norm(x - x_old);
+                obj_new = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+                error_obj = abs(obj_new - obj_old);
+                if (error_x < epsilon) || (error_obj < epsilon)
+                    stop = true;
+                else
+                    obj_old = obj_new;
+                end
+                % Automatically update the approximation parameter theta
+                if theta < 1000
+                    theta = theta * 1.5;
+                end
+                nbIteration = nbIteration + 1;
+                %             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
+                %             disp(strcat('Obj:',num2str(obj_new)));
+                %             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
+                %             disp('=================================');
             else
                 x = [];
-            end
-            
-            switch LPsolution.stat
-                case 0
-                    solution.x = [];
-                    solution.stat = 0;
-                    error('Problem infeasible !');
-                case 2
-                    solution.x = [];
-                    solution.stat = 2;
-                    error('Problem unbounded !');
-                case 1
-                    %Check stopping criterion
-                    error_x = norm(x - x_old);
-                    obj_new = evalObj(x,theta,p,epsilonP,alpha,approximation);
-                    error_obj = abs(obj_new - obj_old);
-                    if (error_x < epsilon) || (error_obj < epsilon)
-                        stop = true;
-                    else
-                        obj_old = obj_new;
-                    end
-                    % Automatically update the approximation parameter theta
-                    if theta < 1000
-                        theta = theta * 1.5;
-                    end
-                    nbIteration = nbIteration + 1;
-                    %             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-                    %             disp(strcat('Obj:',num2str(obj_new)));
-                    %             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
-                    %             disp('=================================');
-                    
+                break;
             end
         end
+        
         time = toc;
-        if solution.stat == 1
-            solution.x = x;
-            solution.time = time;
-            solution.nIterations = nbIteration;
-        end
+        solution.x = x;
+        solution.time = time;
+        nIterations = nbIteration;
         
 end

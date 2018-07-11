@@ -1,7 +1,7 @@
-function c = updateObj(x_bar,theta,p,epsilonP,alpha,approximation)
+function c = updateObj(x_bar,theta,pNeg,pPos,epsilonP,alpha,approximation)
 % Change the objective - variables (x,t)
 % 
-% c = sparseLP_updateObj(x_bar,theta,p,epsilonP,alpha,approximation);
+% c = sparseLP_updateObj(x_bar,theta,pNeg,pPos,epsilonP,alpha,approximation);
 % 
 % % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
@@ -12,11 +12,11 @@ end
 if ~exist('theta','var') || isempty(theta)
     theta = 0.5;
 end
-if ~exist('p','var') || isempty(p)
-    p = -1;
-    if strcmp(approximation,'lp+')
-        p = 0.5;
-    end
+if ~exist('pNeg','var') || isempty(pNeg)
+    pNeg = -1;
+end
+if ~exist('pPos','var') || isempty(pPos)
+    pPos = 0.5;
 end
 if ~exist('epsilonP','var') || isempty(epsilonP)
     epsilonP = 10e-2;
@@ -41,10 +41,10 @@ switch approximation
         c = [-x_bar;(2*theta/(alpha+1))*ones(n,1)];
         
     case 'lp-'
-        c = [-x_bar;(-p*theta)*ones(n,1)];
+        c = [-x_bar;(-pNeg*theta)*ones(n,1)];
         
     case 'lp+'
-        c = [-x_bar;(power(epsilonP,1/(p-1))/p)*ones(n,1)];
+        c = [-x_bar;(power(epsilonP,1/(pPos-1))/pPos)*ones(n,1)];
         
     otherwise
         error('Approximation is not valid');
