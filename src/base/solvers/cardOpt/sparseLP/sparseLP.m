@@ -7,7 +7,7 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %
 % USAGE:
 %
-%    solution = sparseLP(model, approximation, params);
+%    [solution, nIterations, bestApprox] = sparseLP(model, approximation, params);
 %
 % INPUTS:
 %    model:       Structure containing the following fields describing the linear constraints:
@@ -48,6 +48,9 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %                          * 2 =  Unbounded
 %                          * 0 =  Infeasible
 %                          * -1=  Invalid input
+% 
+%   nIterations:       Number of iterations
+%   bestApprox:        Best approximation
 %
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
@@ -126,6 +129,10 @@ switch approximation
     case 'all'
         approximations = setdiff(availableApprox,'all','stable');
         bestResult = size(model.A,2);
+        bestSolution.x = [];
+        bestSolution.stat = 0;
+        bestIterations = 0;
+        feasTol = getCobraSolverParams('LP','feasTol');
         for i=1:length(approximations)
             %disp(approximations(i))
             %try
@@ -135,8 +142,9 @@ switch approximation
             %solutionL0.stat = 0;
             %end
             if candSolution.stat == 1
-                if bestResult > nnz(candSolution.x)
-                    bestResult = nnz(candSolution.x);
+                candResult = nnz(abs(candSolution.x) > feasTol);
+                if bestResult >= candResult
+                    bestResult = candResult;
                     bestApprox = approximations{i};
                     bestSolution = candSolution;
                     bestIterations = candIterations;
@@ -173,7 +181,7 @@ switch approximation
         % lb <= x <= ub
         % 0  <= t <= max(|lb|,|ub|)
         lb2 = [lb;zeros(n,1)];
-        ub2 = [ub;max(abs(lb),abs(ub))];
+        ub2 = [ub;Inf*ones(n,1)]; % max(abs(lb),abs(ub))];
         
         %Define the linear sub-problem
         subLPproblem = struct('osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
