@@ -37,11 +37,11 @@ switch approximation
         c = [-x_bar;theta*ones(n,1)];
         
     case 'exp'
-        x_bar = theta*sign(x).*(1 - exp(-sign(x)*theta));
+        x_bar = theta*sign(x).*(1 - exp(-abs(x)*theta));
         c = [-x_bar;theta*ones(n,1)];
         
     case 'log'
-        x_bar  = theta*theta*sign(x).*abs(x) ./ (log(1+theta) + (1 +theta*abs(x)));
+        x_bar  = theta*theta*sign(x).*abs(x) ./ (log(1+theta) * (1 +theta*abs(x)));
         c = [-x_bar;(theta/log(1+theta))*ones(n,1)];
         
     case 'SCAD'
@@ -51,7 +51,7 @@ switch approximation
         x_bar  = zeros(n,1);
         for i=1:n
             if (abs(x(i)) > one_over_theta) && (abs(x(i)) < alpha_over_theta)
-                x_bar(i) = sign(x(i))*2*theta*(theta*abs(x(i))-1) / (alpha*alpha-1);
+                x_bar(i) = sign(x(i))*2*theta*(theta*abs(x(i))+1) / (alpha*alpha-1);
             end
             if abs(x(i)) >= alpha_over_theta
                 x_bar(i) = sign(x(i))*2*theta / (alpha+1);
