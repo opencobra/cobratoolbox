@@ -1,29 +1,27 @@
 function obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation)
 % Computes the value of the sparseLP objective function
 %
-% obj = sparseLP_obj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+% obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+% 
+% INPUTS:
+%   x:              current solution vector
+%   theta, pNeg, pPos, epsilonP, alpha:
+%                   parameters of the approximations
+%   approximation:  appoximation type of zero-norm. Available approximations:
+%
+%                        * 'cappedL1' : Capped-L1 norm
+%                        * 'exp'      : Exponential function
+%                        * 'log'      : Logarithmic function
+%                        * 'SCAD'     : SCAD function
+%                        * 'lp-'      : `L_p` norm with `p < 0`
+%                        * 'lp+'      : `L_p` norm with `0 < p < 1`
+%                        * 'l1'       : L1 norm
+% 
+% OUTPUT:
+%   obj:    Current value of the objective function
 %
 % % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
-
-if ~exist('approximation','var') || isempty(approximation)
-    approximation = 'cappedL1';
-end
-if ~exist('theta','var') || isempty(theta)
-    theta = 0.5;
-end
-if ~exist('pNeg','var') || isempty(pNeg)
-    pNeg = -1;
-end
-if ~exist('pPos','var') || isempty(pPos)
-    pPos = 0.5;
-end
-if ~exist('epsilonP','var') || isempty(epsilonP)
-    epsilonP = 10e-2;
-end
-if ~exist('alpha','var') || isempty(alpha)
-    alpha = 3;
-end
 
 n = length(x);
 

@@ -55,7 +55,7 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
-availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','l1','all'};
+availableApprox = {'exp','log','SCAD','lp-','lp+','l1','cappedL1','all'};
 
 if ~exist('approximation','var')
     approximation='cappedL1';
@@ -143,7 +143,7 @@ switch approximation
             %end
             if candSolution.stat == 1
                 candResult = nnz(abs(candSolution.x) > feasTol);
-                if bestResult > candResult
+                if bestResult >= candResult
                     bestResult = candResult;
                     bestApprox = approximations{i};
                     bestSolution = candSolution;
