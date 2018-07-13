@@ -355,20 +355,28 @@ switch solver
         % Note: this is exported as the first variable thus, y = sol.y(2:end)
         y = sol.y(2:end);
         w = sol.rc;
-        origStat = sol.inform;
 
         k = sol.s;
-
-        % note that status handling may change (see lp_lib.h)
-        if (origStat == 0)
-            stat = 1;  % optimal solution found
-        % elseif (origStat == 3)
-        %     stat = 2; % unbounded
-        % elseif (origStat == 2)
-        %     stat = 0; % infeasible
-        else % solution not optimal or solver problem
-            stat = -1;
-        end
+        
+        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
+        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
+                      -4, 'DATAIGNORED',  -1;
+                      -3, 'NOBFP',        -1;
+                      -2, 'NOMEMORY',     -1;
+                      -1, 'NOTRUN',       -1;
+                       0, 'OPTIMAL',       1;
+                       1, 'SUBOPTIMAL',   -1;
+                       2, 'INFEASIBLE',    0;
+                       3, 'UNBOUNDED',     2;
+                       4, 'DEGENERATE',   -1;
+                       5, 'NUMFAILURE',   -1;
+                       6, 'USERABORT',    -1;
+                       7, 'TIMEOUT',      -1;
+                       8, 'RUNNING',      -1;
+                       9, 'PRESOLVED',    -1};
+        
+        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
+        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
 
         % return to original directory
         cd(originalDirectory);
