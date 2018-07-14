@@ -273,6 +273,47 @@ mutual coherence</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.cardOpt.sparseLP.evalObj">
+<code class="descname">evalObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/evalObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.evalObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the value of the sparseLP objective function</p>
+<p>obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>x</strong> &#8211;
+current solution vector</p>
+</li>
+<li><p class="first"><strong>theta, pNeg, pPos, epsilonP, alpha</strong> &#8211;</p>
+<p>parameters of the approximations</p>
+</li>
+<li><p class="first"><strong>approximation</strong> &#8211;
+appoximation type of zero-norm. Available approximations:</p>
+<ul class="simple">
+<li>&#8216;cappedL1&#8217; : Capped-L1 norm</li>
+<li>&#8216;exp&#8217;      : Exponential function</li>
+<li>&#8216;log&#8217;      : Logarithmic function</li>
+<li>&#8216;SCAD&#8217;     : SCAD function</li>
+<li>&#8216;lp-&#8216;      : <cite>L_p</cite> norm with <cite>p &lt; 0</cite></li>
+<li>&#8216;lp+&#8217;      : <cite>L_p</cite> norm with <cite>0 &lt; p &lt; 1</cite></li>
+<li>&#8216;l1&#8217;       : L1 norm</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>obj</strong> &#8211;
+Current value of the objective function</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>% .. Author: - Hoai Minh Le,   20/10/2015</dt>
+<dd>Ronan Fleming,    2017</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.optimizeCardinality">
 <code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
@@ -365,7 +406,7 @@ European Journal of Operational Research, 2014</cite>;
 <a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>solution = sparseLP(approximation, model, params)</div></blockquote>
+<div>[solution, nIterations, bestApprox] = sparseLP(model, approximation, params);</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -392,7 +433,7 @@ appoximation type of zero-norm. Available approximations:<ul>
 <li>&#8216;SCAD&#8217;     : SCAD function</li>
 <li>&#8216;lp-&#8216;      : <cite>L_p</cite> norm with <cite>p &lt; 0</cite></li>
 <li>&#8216;lp+&#8217;      : <cite>L_p</cite> norm with <cite>0 &lt; p &lt; 1</cite></li>
-<li>&#8216;l1&#8217;       : <cite>l_1</cite> norm</li>
+<li>&#8216;l1&#8217;       : L1 norm</li>
 <li>&#8216;all&#8217;      : try all approximations and return the best result</li>
 </ul>
 </li>
@@ -406,14 +447,13 @@ Parameters structure:<ul>
 <li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
 <li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
 <li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-<li>.optTol - optimality tolerance</li>
-<li>.feasTol - feasibilty tolerance</li>
 </ul>
 </li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
+<div><blockquote>
 <div><ul class="simple">
 <li><strong>solution</strong> &#8211;
 Structure containing the following fields:<ul>
@@ -429,43 +469,35 @@ Structure containing the following fields:<ul>
 </li>
 </ul>
 </div></blockquote>
+<p>nIterations:       Number of iterations
+bestApprox:        Best approximation</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_SCAD">
-<code class="descname">sparseLP_SCAD</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_SCAD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_SCAD" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constraints
-The <cite>l0</cite> norm is approximated by SCAD function.
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<p><strong>Usage</strong></p>
+<dt id="src.base.solvers.cardOpt.sparseLP.updateObj">
+<code class="descname">updateObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/updateObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.updateObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the linear objective - variables (x,t)</p>
+<p>c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);</p>
+<p><strong>Inputs</strong></p>
 <blockquote>
-<div>solution = sparseLP_SCAD(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
+<div><ul>
+<li><p class="first"><strong>x</strong> &#8211;
+current solution vector</p>
 </li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
+<li><p class="first"><strong>theta, pNeg, pPos, epsilonP, alpha</strong> &#8211;</p>
+<p>parameters of the approximations</p>
+</li>
+<li><p class="first"><strong>approximation</strong> &#8211;
+appoximation type of zero-norm. Available approximations:</p>
+<ul class="simple">
+<li>&#8216;cappedL1&#8217; : Capped-L1 norm</li>
+<li>&#8216;exp&#8217;      : Exponential function</li>
+<li>&#8216;log&#8217;      : Logarithmic function</li>
+<li>&#8216;SCAD&#8217;     : SCAD function</li>
+<li>&#8216;lp-&#8216;      : <cite>L_p</cite> norm with <cite>p &lt; 0</cite></li>
+<li>&#8216;lp+&#8217;      : <cite>L_p</cite> norm with <cite>0 &lt; p &lt; 1</cite></li>
+<li>&#8216;l1&#8217;       : L1 norm</li>
 </ul>
 </li>
 </ul>
@@ -473,360 +505,14 @@ Parameters structure:<ul>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><strong>c</strong> &#8211;
+New objective function</li>
 </ul>
 </div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_cappedL1">
-<code class="descname">sparseLP_cappedL1</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_cappedL1" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constraints
-The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<blockquote>
-<div><p>Capped-1 (Peleg &amp; Meir,2008)
-Peleg,D.,&amp; Meir,R.(2008). A bilinear formulation for vector sparsity optimization. Signal Processing,8(2),375–389.</p>
 <dl class="docutils">
-<dt>l0-approximation function: rcap(t) = min{1, θ|t|}</dt>
-<dd>First DC decomposition:       ϕ = θ|t|</dd>
+<dt>% .. Author: - Hoai Minh Le,   20/10/2015</dt>
+<dd>Ronan Fleming,    2017</dd>
 </dl>
-</div></blockquote>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_cappedL1(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_exp">
-<code class="descname">sparseLP_exp</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_exp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constraints
-The <cite>l0</cite> norm is approximated by exponential function.
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_exp(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_l1">
-<code class="descname">sparseLP_l1</code><span class="sig-paren">(</span><em>constraint</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_l1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_l1" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_1\)</span> subject to linear constraints</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_l1(constraint)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_log">
-<code class="descname">sparseLP_log</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_log.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constraints
-The <cite>l0</cite> norm is approximated by log function.
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_log(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_lpNegative">
-<code class="descname">sparseLP_lpNegative</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_lpNegative.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpNegative" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constrainrts
-The <cite>l0</cite> norm is approximated by <cite>l_p norm</cite> with <cite>p &lt; 0</cite>
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_lpNegative(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.base.solvers.cardOpt.sparseLP.sparseLP_lpPositive">
-<code class="descname">sparseLP_lpPositive</code><span class="sig-paren">(</span><em>constraint</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/1361503cb2d75e6e3435ee78c967a5888aaedcbf/src/base/solvers/cardOpt/sparseLP/sparseLP_lpPositive.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP_lpPositive" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the sparse LP
-<span class="math">\(min ||x||_0\)</span> subject to linear constraints
-The <cite>l0</cite> norm is approximated by  <cite>l_p norm</cite> with <cite>0 &lt; p &lt; 1</cite>.
-See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
-European Journal of Operational Research, 2014</cite>;
-<a class="reference external" href="http://dx.doi.org/10.1016/j.ejor.2014.11.031">http://dx.doi.org/10.1016/j.ejor.2014.11.031</a></p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>solution = sparseLP_lpPositive(constraint, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constraint</strong> &#8211;
-Structure containing the following fields describing the linear constraints:<ul>
-<li>.A - <cite>m x n</cite> LHS matrix</li>
-<li>.b - <cite>m x 1</cite> RHS vector</li>
-<li>.lb - <cite>n x 1</cite> Lower bound vector</li>
-<li>.ub - <cite>n x 1</cite> Upper bound vector</li>
-<li>.csense - <cite>m x 1</cite> Constraint senses, a string containting the constraint sense for
-each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params</strong> &#8211;
-Parameters structure:<ul>
-<li>.nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)</li>
-<li>.epsilon - stopping criteria - (Defaut value = 10e-6)</li>
-<li>.theta - parameter of the approximation (Defaut value = 0.5)</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>.x - <cite>n x 1</cite> solution vector</li>
-<li>.stat - status:<ul>
-<li>1 =  Solution found</li>
-<li>2 =  Unbounded</li>
-<li>0 =  Infeasible</li>
-<li>-1=  Invalid input</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
 </dd></dl>
 
 </div>
