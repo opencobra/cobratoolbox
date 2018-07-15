@@ -49,6 +49,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnECNumbers`| `n x 1` | Column Cell Array of Strings | E.C. number for each reaction. | 
 |`model.rxnReferences`| `n x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
 |`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
+|`model.rxnMetaNetXID`| `n x 1` | Column Cell Array of Strings | MetaNetX identifier of the reaction | 
 |`model.rxnSBOTerms`| `n x 1` | Column Cell Array of Strings | The SBO Identifier associated with the reaction | 
 |`model.subSystems`| `n x 1` | Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
 |`model.description`| `` | String or Struct | Name of a file the model is loaded from. | 

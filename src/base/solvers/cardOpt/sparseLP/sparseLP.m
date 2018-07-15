@@ -1,4 +1,4 @@
-function solution = sparseLP(model, approximation, params)
+function [solution, nIterations, bestApprox] = sparseLP(model, approximation, params)
 % DC programming for solving the sparse LP
 % :math:`min ||x||_0` subject to linear constraints
 % See `Le Thi et al., DC approximation approaches for sparse optimization,
@@ -7,7 +7,7 @@ function solution = sparseLP(model, approximation, params)
 %
 % USAGE:
 %
-%    solution = sparseLP(approximation, model, params)
+%    [solution, nIterations, bestApprox] = sparseLP(model, approximation, params);
 %
 % INPUTS:
 %    model:       Structure containing the following fields describing the linear constraints:
@@ -28,9 +28,8 @@ function solution = sparseLP(model, approximation, params)
 %                        * 'SCAD'     : SCAD function
 %                        * 'lp-'      : `L_p` norm with `p < 0`
 %                        * 'lp+'      : `L_p` norm with `0 < p < 1`
-%                        * 'l1'       : `l_1` norm
+%                        * 'l1'       : L1 norm
 %                        * 'all'      : try all approximations and return the best result
-%
 %
 % OPTIONAL INPUTS:
 %    params:           Parameters structure:
@@ -38,8 +37,6 @@ function solution = sparseLP(model, approximation, params)
 %                        * .nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
 %                        * .epsilon - stopping criteria - (Defaut value = 10e-6)
 %                        * .theta - parameter of the approximation (Defaut value = 0.5)
-%                        * .optTol - optimality tolerance
-%                        * .feasTol - feasibilty tolerance
 %
 % OUTPUT:
 %    solution:         Structure containing the following fields:
@@ -51,15 +48,14 @@ function solution = sparseLP(model, approximation, params)
 %                          * 2 =  Unbounded
 %                          * 0 =  Infeasible
 %                          * -1=  Invalid input
+% 
+%   nIterations:       Number of iterations
+%   bestApprox:        Best approximation
 %
-
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017
 
-stop = false;
-solution.x = [];
-solution.stat = 1;
-availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','l1','all'};
+availableApprox = {'exp','log','SCAD','lp-','lp+','l1','cappedL1','all'};
 
 if ~exist('approximation','var')
     approximation='cappedL1';
@@ -70,66 +66,52 @@ if nargin < 3
     params.nbMaxIteration = 1000;
     params.epsilon = 1e-6;
     params.theta   = 0.5;
-    if strcmp(approximation,'lp-') == 1
-        params.p = -1;
-    end
-    if strcmp(approximation,'lp+') == 1
-        params.p = 0.5;
-    end
+    params.pNeg = -1;
+    params.pPos = 0.5;
 else
-    if isfield(params,'nbMaxIteration') == 0
+    if ~isfield(params,'nbMaxIteration')
         params.nbMaxIteration = 1000;
     end
-
-    if isfield(params,'epsilon') == 0
+    
+    if ~isfield(params,'epsilon')
         params.epsilon = 1e-6;
     end
-
-    if isfield(params,'theta') == 0
+    
+    if ~isfield(params,'theta')
         params.theta   = 0.5;
     end
-
-    if isfield(params,'feasTol') == 0
-        params.feasTol = 1e-9;
+    
+    if ~isfield(params,'pNeg')
+        params.pNeg = -1;
     end
-
-    if isfield(params,'optTol') == 0
-        params.optTol   = 1e-9;
+    
+    if ~isfield(params,'pPos')
+        params.pPos = 0.5;
     end
-
-    if isfield(params,'p') == 0
-        if strcmp(approximation,'lp-') == 1
-            params.p = -1;
-        end
-        if strcmp(approximation,'lp+') == 1
-        params.p = 0.5;
-    end
-
-    end
-
+    
 end
 
-if isfield(model,'A') == 0
+if ~isfield(model,'A')
     error('Error:LHS matrix is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'b') == 0
+if ~isfield(model,'b')
     error('RHS vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'lb') == 0
+if ~isfield(model,'lb')
     error('Lower bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'ub') == 0
+if ~isfield(model,'ub')
     error('Upper bound vector is not defined');
     solution.stat = -1;
     return;
 end
-if isfield(model,'csense') == 0
+if ~isfield(model,'csense')
     error('Constraint sense vector is not defined');
     solution.stat = -1;
     return;
@@ -141,41 +123,113 @@ if ~ismember(approximation,availableApprox)
     return;
 end
 
+bestApprox = '';
+
 switch approximation
-    case 'cappedL1'
-        solution = sparseLP_cappedL1(model,params);
-    case 'exp'
-        solution = sparseLP_exp(model,params);
-    case 'log'
-        solution = sparseLP_log(model,params);
-    case 'SCAD'
-        solution = sparseLP_SCAD(model,params);
-    case 'lp-'
-        solution = sparseLP_lpNegative(model,params);
-    case 'lp+'
-        solution = sparseLP_lpPositive(model,params);
-    case 'l1'
-        solution = sparseLP_l1(model);
     case 'all'
-        approximations = {'cappedL1','exp','log','SCAD','lp+','lp-'};
+        approximations = setdiff(availableApprox,'all','stable');
         bestResult = size(model.A,2);
-        bestAprox = '';
+        bestSolution.x = [];
+        bestSolution.stat = 0;
+        bestIterations = 0;
+        feasTol = getCobraSolverParams('LP','feasTol');
         for i=1:length(approximations)
             %disp(approximations(i))
             %try
-                solutionL0 = sparseLP(model,char(approximations(i)),params);
+            [candSolution,candIterations] = sparseLP(model,approximations{i},params);
             %catch
-                %fail gracefully
-                %solutionL0.stat = 0;
+            %fail gracefully
+            %solutionL0.stat = 0;
             %end
-            if solutionL0.stat == 1
-                if bestResult > nnz(solutionL0.x)
-                    bestResult = nnz(solutionL0.x);
-                    bestAprox = char(approximations(i));
-                    bestSolutionL0 = solutionL0;
+            if candSolution.stat == 1
+                candResult = nnz(abs(candSolution.x) > feasTol);
+                if bestResult >= candResult
+                    bestResult = candResult;
+                    bestApprox = approximations{i};
+                    bestSolution = candSolution;
+                    bestIterations = candIterations;
                 end
             end
         end
-        solution = bestSolutionL0;
-        solution.bestAprox = bestAprox;
+        solution = bestSolution;
+        nIterations = bestIterations;
+        
+    otherwise
+        [nbMaxIteration,epsilon,theta,pNeg,pPos] = deal(params.nbMaxIteration,params.epsilon,params.theta,params.pNeg,params.pPos);
+        [A,b,lb,ub,csense] = deal(model.A,model.b,model.lb,model.ub,model.csense);
+        
+        %Parameters
+        nbIteration = 0;
+        epsilonP = 10e-2;
+        alpha = 3;
+        [m,n] = size(A);
+        
+        %Create the linear sub-programme that one needs to solve at each iteration, only its
+        %objective function changes, the constraints set remains.
+        
+        % Constraints
+        % Ax <=b
+        % t >= x
+        % t >= -x
+        A2 = [A         sparse(m,n);
+            speye(n) -speye(n);
+            -speye(n) -speye(n)];
+        b2 = [b; zeros(2*n,1)];
+        csense2 = [csense;repmat('L',2*n, 1)];
+        
+        % Bound;
+        % lb <= x <= ub
+        % 0  <= t <= max(|lb|,|ub|)
+        lb2 = [lb;zeros(n,1)];
+        ub2 = [ub;max(abs(lb),abs(ub))];
+        
+        %Define the linear sub-problem
+        subLPproblem = struct('osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
+        
+        %Initialisation
+        x = zeros(n,1);
+        obj_old = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+        
+        %DCA
+        tic
+        while nbIteration < nbMaxIteration
+            
+            x_old = x;
+            
+            %Solve the linear problem
+            subLPproblem.c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+            solution = solveCobraLP(subLPproblem);
+            
+            if solution.stat == 1
+                x = solution.full(1:n);
+                
+                %Check stopping criterion
+                error_x = norm(x - x_old);
+                obj_new = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
+                error_obj = abs(obj_new - obj_old);
+                if (error_x < epsilon) || (error_obj < epsilon)
+                    break;
+                else
+                    obj_old = obj_new;
+                end
+                % Automatically update the approximation parameter theta
+                if theta < 1000
+                    theta = theta * 1.5;
+                end
+                nbIteration = nbIteration + 1;
+                %             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
+                %             disp(strcat('Obj:',num2str(obj_new)));
+                %             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
+                %             disp('=================================');
+            else
+                x = [];
+                break;
+            end
+        end
+        
+        time = toc;
+        solution.x = x;
+        solution.time = time;
+        nIterations = nbIteration;
+        
 end

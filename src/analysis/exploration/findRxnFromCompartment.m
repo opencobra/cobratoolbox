@@ -14,17 +14,13 @@ function [compartmentReactions] = findRxnFromCompartment(model, compartment)
 %
 % .. Authors:
 %       - written by Diana El Assal 01/06/16
+%       - rewritten by Uri David Akavia 6-Jul-2018
 
-[reactions]=[model.rxns, printRxnFormula(model, model.rxns)]; % Form a matrix with the metabolites and its identifiers
-%Find the reactions in the compartment of interest (e.g. '[m], '[n]')
-compartmentRxns=strfind(reactions(:,2), compartment);
-index=find(~cellfun(@isempty, compartmentRxns));
-compartmentRxns=unique(reactions(index,1));
-
-%Find all reaction identifiers
-for i=1:size(compartmentRxns,1);
-    num=find(ismember(reactions(:,1),compartmentRxns{i,1}));
-    if ~isempty(num);
-        compartmentReactions(i,:)=reactions(num,:);
-    end
+if (length(compartment) == 1)
+    compartment = ['[' compartment ']'];
 end
+% Find mets in this compartment
+compartmentMets = ~cellfun(@isempty, strfind(model.mets, compartment));
+% Find reactions that involve the above mets
+compartmentRxns = model.rxns(any(model.S(compartmentMets, :)));
+compartmentReactions = [compartmentRxns, printRxnFormula(model, 'rxnAbbrList', compartmentRxns, 'printFlag', false)];
