@@ -210,6 +210,53 @@ assert(exist('nsCt', 'var') == 1)
 assert(exist('inFesMat', 'var') == 1)
 assert(size(presol,1)==5)
 assert(sum(cell2mat(presol(:,1)))==4)
+clear ID fvaCt nsCt presol inFesMat
+delete simRes.mat
+
+% test extractFullRes
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+finRes=extractFullRes(resPath,ID,'rDiet',sampName,fvaCt,nsCt);
+assert(exist('finRes', 'var') == 1)
+assert(2==exist('rDiet_allFlux.csv','file'))
+assert(length((finRes(:,1)))==length(ID)+1)
+assert(length((finRes(1,:)))==length(sampName)*4+1)
+clear ID fvaCt nsCt presol inFesMat
+delete simRes.mat
+delete rDiet_allFlux.csv
+
+
+% testing with fluxVar function and not fastFVA
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,0);
+assert(exist('ID', 'var') == 1)
+assert(exist('fvaCt', 'var') == 1)
+assert(exist('nsCt', 'var') == 1)
+assert(exist('inFesMat', 'var') == 1)
+assert(size(presol,1)==5)
+assert(sum(cell2mat(presol(:,1)))==4)
+clear ID fvaCt nsCt presol inFesMat
+delete simRes.mat
+
+% testing with rich diet
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+for i= 1:4
+    assert(length(fvaCt{1,i})~=0)
+end
+clear ID fvaCt nsCt presol inFesMat
+delete simRes.mat
+
+% testing extsolve
+[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,1,indNumb,fvaType);
+cd(resPath)
+assert(7==exist('Rich','dir'))
+cd Rich
+assert(2==exist('microbiota_model_richD_Test4.mat','file'))
+assert(2==exist('microbiota_model_richD_Test3.mat','file'))
+assert(2==exist('microbiota_model_richD_Test2.mat','file'))
+assert(2==exist('microbiota_model_richD_Test1.mat','file'))
+cd(resPath)
+rmdir('Rich','s')
+clear ID fvaCt nsCt presol inFesMat
+
 
 %erasing all testing files
 cd(resPath)
