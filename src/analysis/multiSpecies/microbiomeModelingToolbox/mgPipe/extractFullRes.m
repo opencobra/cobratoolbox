@@ -16,7 +16,7 @@ function [finRes] = extractFullRes(resPath, ID, dietType, sampName, fvaCt, nsCt)
 %    dietType:           char indicating under which diet to extract results: 
 %                        rDiet (rich diet), sDiet(previously specified diet)
 %                        set by default, and pDiet(personalized)if available        
-%    indNumb:            number of individuals in the study
+%    sampName:           nx1 cell array cell array with names of individuals in the study
 %    fvaCt:              cell array containing FVA values for maximal uptake
 %    nsCt:               cell array containing FVA values for minimal uptake
 %                        and secretion for setup lumen / diet exchanges
