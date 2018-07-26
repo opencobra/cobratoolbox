@@ -154,6 +154,15 @@ assert(exist('reacTab', 'var') == 1)
 assert(exist('reacAbun', 'var') == 1)
 assert(exist('reacNumber', 'var') == 1)
 
+% test plotMappingInfo
+cd(resPath)
+[PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,indInfoFilePath,figForm);
+assert(length(PCoA(1,:))<2)
+assert(length(PCoA(:,1))==4)
+assert(2==exist('Heatmap.eps','file'))
+assert(2==exist('Metabolic_Diversity.eps','file'))
+delete Metabolic_Diversity.eps Heatmap.eps
+
 % test checkNomenConsist
 [autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix);
 
@@ -201,15 +210,23 @@ assert(microbiota_model.A(4,1) == -0.2000)
 assert(microbiota_model.A(5,1) == -0.2000)
 assert(microbiota_model.A(6,1) == 1)
 
-% test createdModels
+% test simulation
 [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
-
 assert(exist('ID', 'var') == 1)
 assert(exist('fvaCt', 'var') == 1)
 assert(exist('nsCt', 'var') == 1)
 assert(exist('inFesMat', 'var') == 1)
 assert(size(presol,1)==5)
 assert(sum(cell2mat(presol(:,1)))==4)
+
+% test mgSimResCollect
+[Fsp,Y]= mgSimResCollect(resPath,ID,sampName,rDiet,0,indNumb,indInfoFilePath,fvaCt,figForm);
+assert(length(Fsp(1,:))==indNumb+1)
+assert(isempty(Y))
+assert(length(Fsp(:,1))==length(ID)+1)
+assert(2==exist('standard.csv','file'))
+assert(2==exist('ID.csv','file'))
+delete standard.csv ID.csv
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
