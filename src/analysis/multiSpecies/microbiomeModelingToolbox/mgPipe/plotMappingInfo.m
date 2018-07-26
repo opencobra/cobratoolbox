@@ -55,7 +55,7 @@ print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
 [Y, eigvals] = cmdscale(D);
-    if (length(Y(1,:))>2)
+    if (length(Y(1,:))>1)
         figure(3)
         P = [eigvals eigvals / max(abs(eigvals))];
         plot(Y(:, 1), Y(:, 2), 'bx')
