@@ -237,6 +237,8 @@ assert(exist('finRes', 'var') == 1)
 assert(2==exist('rDiet_allFlux.csv','file'))
 assert(length((finRes(:,1)))==length(ID)+1)
 assert(length((finRes(1,:)))==length(sampName)*4+1)
+finRes=extractFullRes(resPath,ID,'sDiet',sampName,fvaCt,nsCt);
+assert(finRes==0)
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 delete rDiet_allFlux.csv
