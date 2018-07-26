@@ -89,6 +89,7 @@ else
 end
 end
 
+fSpOld=fSp;
 convRes=num2cell(fSp);
 fSp=[ID';convRes'];
 ext=['NMPCs';sampName];
@@ -98,7 +99,7 @@ if noPcoa == 1
     Y=[];
     disp('Jump plotting')
 else
-    JD = pdist(fSp','euclidean');
+    JD = pdist(fSpOld','euclidean');
     [Y, eigvals] = cmdscale(JD);
     P = [eigvals eigvals / max(abs(eigvals))];
     if patStat == 0
