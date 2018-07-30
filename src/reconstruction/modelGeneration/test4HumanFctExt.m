@@ -24,6 +24,8 @@ function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanF
 %       - MKA, 24/05/12 finds correct EX_reactions and changes these to zero
 %       - IT, 07/20/12 added tests for sIEC model
 %       - AH, 07/12/17 minor changes to constraints that were resulting in infeasible models
+%       - Uri David Akavia, 15-Jul-2018 rewrote the function to minimize
+%         warnings and hopefully speedup
 
 if nargin<2
     test = 'all';
