@@ -13,7 +13,7 @@ global CBTDIR
 requiredToolboxes = { 'distrib_computing_toolbox' };
 
 % test Requirements
-prepareTest('requiredToolboxes',requiredToolboxes);
+prepareTest('requiredToolboxes',requiredToolboxes, 'requiredSolvers', {'ibm_cplex'});
 
 % save the current path
 currentDir = pwd;
@@ -29,7 +29,7 @@ resPath= [CBTDIR filesep '.tmp'] ;
 
 % path to and name of the file with dietary information.
 dietFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'resources' filesep 'AverageEuropeanDiet'];
-    
+
 % path to and name of the file with abundance information.
 abunFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
 
@@ -173,20 +173,20 @@ assert(length(organisms) == 5)
 % test fastSetupCreator
 
 setup=fastSetupCreator(models, organisms, {},objre);
- 
+
 assert(exist('setup', 'var') == 1)
 assert(strcmp(class(setup),'struct') == 1)
 assert(size(setup.S,2) == length(setup.rxns))
 assert(length(setup.lb) == length(setup.rxns))
 assert(length(setup.c) == length(setup.rxns))
-assert(length(setup.mets) == length(setup.metNames)) 
- 
-assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('DUt',setup.rxns)))) 
-assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('UFEt',setup.rxns)))) 
+assert(length(setup.mets) == length(setup.metNames))
+
+assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('DUt',setup.rxns))))
+assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('UFEt',setup.rxns))))
 assert(length(setup.rxns(strmatch('DUt',setup.rxns)))== length(setup.rxns(strmatch('UFEt',setup.rxns))))
 
 for k = 1:5
-assert(length(strmatch(organisms(k),setup.rxns)) > 0) 
+assert(length(strmatch(organisms(k),setup.rxns)) > 0)
 end
 
 % test createdModels
@@ -195,7 +195,7 @@ assert(size(createdModels,1)== 5)
 assert(strcmp(createdModels(2,1),'Test1'))
 assert(strcmp(createdModels(5,1),'Test4'))
 
-microbiota_model=load(strcat(resPath,'microbiota_model_samp_Test1')); 
+microbiota_model=load(strcat(resPath,'microbiota_model_samp_Test1'));
 microbiota_model=microbiota_model.microbiota_model;
 %assert(size(microbiota_model.A,1)> size(microbiota_model.S,1))
 %assert(length(microbiota_model.csense) == size(microbiota_model.A,1))
