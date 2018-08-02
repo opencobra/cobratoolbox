@@ -1,4 +1,4 @@
-function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
+function [fSp, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -7,12 +7,13 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoF
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
 %    ID:                 cell array with list of all unique Exchanges to diet/
 %                        fecal compartment
+%    sampName:           nx1 cell array cell array with names of individuals in the study
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
@@ -88,12 +89,17 @@ else
 end
 end
 
-csvwrite(strcat(resPath, names{1, j}, '.csv'), fSp)
+fSpOld=fSp;
+convRes=num2cell(fSp);
+fSp=[ID';convRes'];
+ext=['NMPCs';sampName];
+fSp=[ext';fSp'];
+writetable(cell2table(fSp),strcat(resPath, names{1, j}, '.csv'));
 if noPcoa == 1
     Y=[];
     disp('Jump plotting')
 else
-    JD = pdist(fSp','euclidean');
+    JD = pdist(fSpOld','euclidean');
     [Y, eigvals] = cmdscale(JD);
     P = [eigvals eigvals / max(abs(eigvals))];
     if patStat == 0

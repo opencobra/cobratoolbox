@@ -55,6 +55,7 @@ supplied in the current folder and in `papers/2018_microbiomeModelingToolbox`
 | microbiotaModelSimulator.m                     | *function to simulate under different diets the created models (called from mgPipe)*|
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
 | mgSimResCollect.m                              | *function to collect and output simulation results*                    |
+| extractFullRes.m                               | *function to retrieve and export all the results (fluxes) computed during the simulations *|
 | README.md                                      | *this file*                                                            |
 | useDiet.m                                      | *function to impose a specific diet and add essential elements to microbiota models*|
 | adaptVMHDietToAGORA.m                          | *function to convert a specific diet from VMH into an AGORA compatible one*|
@@ -114,7 +115,7 @@ functionality is automatically off.  This functionality enables the pipeline to
 automatically run and detect outputs. By changing `autorun` variable to false, it is
 possible to enter in manual / debug mode.
 
-**WARNING**: you should not change the `autorun` variable value. Manual mode is
+**WARNING**: concerning the `autorun` variable value: manual mode is
 strongly discouraged and should be used only for debugging purposes.
 
 ## Outputs
@@ -140,17 +141,26 @@ workspace is saved into a file called `MapInfo.mat`. The saved variables are:
 [PART 2] creates, first, a global microbiota metabolic model. Secondly,
 individuals' specific models (personalized) are created with their specific
 objective function and coupling constraints.  [PART 3] runs simulations
-(FVAs) and detects metabolic differences between personalized models.  The
+(FVAs) and detects metabolic differences between personalized models. The
 outputs are:
 
 | File                       | Description                                                                                  |
 | ---------------------------|----------------------------------------------------------------------------------------------|
 | Setup_allbacs.mat          | setup object containing all the models joined                                                |
 | microbiota_model_XXX.mat   | .mat file containing the personalized model                                                   |
-| simRes.mat                 | object containing NMPCs (FVAct), all the FVAs results (NSct), values of the objective function (Presol), names of infeasible models (InFesMat)|
+| simRes.mat                 | .mat file containing NMPCs (FVAct), the complementary FVAs results (NSct), values of the objective function (Presol), names of infeasible models (InFesMat)|
 
-If the specific option is enabled in the input file, some of the outputs are
-also saved in open format (.csv) in the dedicated folder.
+For simplicity, besides the .mat files containing all the results, the main results are also saved in open format (.csv) in the dedicated results folder. The saved tables are: 
+
+| File                       | Description                                                                                  |
+| ---------------------------|----------------------------------------------------------------------------------------------|
+| ID.csv                     | table containing list of metabolites for which simulations(FVA)and NMPCs are computed        |
+| standard.csv               | table containing metabolite resolved NMPCs for each individual under the same diet conditions|
+| sDiet_allFlux.csv          | table containing metabolite resolved min and max value of uptake and secretion or each individual under the same diet conditions|
+| rich.csv (if eneabled)     | table containing metabolite resolved NMPCs for each individual under rich diet conditions|
+| rDiet_allFlux.csv (if eneabled)| table containing metabolite resolved min and max value of uptake and secretion or each individual under rich diet conditions|
+
+If the specific option is enabled in the input file, some of the other outputs are also saved in open format (.csv) in the dedicated folder.
 
 ## Additional information on usage
 
@@ -175,8 +185,7 @@ from any different source was not tested and it is not guaranteed to work.
 
 # Status of implementation
 
-[Part 1, 2, 3] are implemented structured and tested. Refinement and expansion
-of these sections is always possible but it is not on the priority (todo) list.
+[Part 1, 2, 3] are implemented structured and tested. 
 
 A tutorial showing how to use the pipeline was created.
 
@@ -207,11 +216,11 @@ dedicated page.
 
 ## Tutorial
 
-A livescript tutorial `mgPipeTutorial.mlx` is available in
+A livescript tutorial `mgPipeTutorial.mlx` and its correspondent version `mgPipeTutorial.m` are available in
 `tutorials/additionalTutorials/microbiomeModelingToolbox/`.
 
 ## Author & Documentation Date
 
-*Federico Baldini, 08.05.18*
+*Federico Baldini, 26.07.18*
 
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*

@@ -724,7 +724,7 @@ for p = 1:length(d)
     tmpD = d{p};
     k = 1;
     for i = 1:numel(tmpD)
-        if ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..') && isempty(strfind(tmpD(i).name, '.txt'))
+        if ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..') && isempty(strfind(tmpD(i).name, '.txt')) && ~isempty(strfind(tmpD(i).name, 'cplexFVA'))
             tmpName = tmpD(i).name;
             tmpNameSplit = strsplit(tmpName, '.');
             tmpName = tmpNameSplit{1};
