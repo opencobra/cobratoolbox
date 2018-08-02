@@ -558,6 +558,48 @@ double indicating if object was found in the result folder</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.extractFullRes">
+<code class="descname">extractFullRes</code><span class="sig-paren">(</span><em>resPath</em>, <em>ID</em>, <em>dietType</em>, <em>sampName</em>, <em>fvaCt</em>, <em>nsCt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4587783a42b5794b1c2c4da87a46d4f58ab5b101/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.extractFullRes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called from the MgPipe pipeline. Its purpose is to retrieve
+and export, in a comprehensive way, all the results (fluxes) computed during
+the simulations for a specified diet. Since FVA is computed on diet and fecal
+exchanges, every metabolite will have four different values for each individual,
+values corresponding min and max of uptake and secretion.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[finRes]= extractFullRes(resPath, ID, dietType, sampName, fvaCt, nsCt)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resPath</strong> &#8211;
+char with path of directory where results are saved</li>
+<li><strong>ID</strong> &#8211;
+cell array with list of all unique Exchanges to diet/
+fecal compartment</li>
+<li><strong>dietType</strong> &#8211;
+char indicating under which diet to extract results:
+rDiet (rich diet), sDiet(previously specified diet)
+set by default, and pDiet(personalized)if available</li>
+<li><strong>sampName</strong> &#8211;
+nx1 cell array cell array with names of individuals in the study</li>
+<li><strong>fvaCt</strong> &#8211;
+cell array containing FVA values for maximal uptake</li>
+<li><strong>nsCt</strong> &#8211;
+cell array containing FVA values for minimal uptake
+and secretion for setup lumen / diet exchanges</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>finRes</strong> &#8211;
+cell array with min and max value of uptake and
+secretion for each metabolite</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.fastSetupCreator">
 <code class="descname">fastSetupCreator</code><span class="sig-paren">(</span><em>models</em>, <em>microbeNames</em>, <em>host</em>, <em>objre</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4587783a42b5794b1c2c4da87a46d4f58ab5b101/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/fastSetupCreator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.fastSetupCreator" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates a microbiota model (min 1 microbe) that can be coupled with a host
@@ -865,7 +907,7 @@ Empty COBRA model structure</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgSimResCollect">
-<code class="descname">mgSimResCollect</code><span class="sig-paren">(</span><em>resPath</em>, <em>ID</em>, <em>rDiet</em>, <em>pDiet</em>, <em>patNumb</em>, <em>indInfoFilePath</em>, <em>fvaCt</em>, <em>figForm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4587783a42b5794b1c2c4da87a46d4f58ab5b101/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgSimResCollect" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mgSimResCollect</code><span class="sig-paren">(</span><em>resPath</em>, <em>ID</em>, <em>sampName</em>, <em>rDiet</em>, <em>pDiet</em>, <em>patNumb</em>, <em>indInfoFilePath</em>, <em>fvaCt</em>, <em>figForm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4587783a42b5794b1c2c4da87a46d4f58ab5b101/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgSimResCollect" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is called from the MgPipe pipeline. Its purpose is to compute
 NMPCs from simulations with different diet on multiple microbiota models.
 Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -873,7 +915,7 @@ models of individuals for similar metabolic profile is also
 computed and outputted.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[fSp, Y]= mgSimResCollect(resPath, ID, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)</div></blockquote>
+<div>[fSp, Y]= mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -882,6 +924,8 @@ char with path of directory where results are saved</li>
 <li><strong>ID</strong> &#8211;
 cell array with list of all unique Exchanges to diet/
 fecal compartment</li>
+<li><strong>sampName</strong> &#8211;
+nx1 cell array cell array with names of individuals in the study</li>
 <li><strong>rDiet</strong> &#8211;
 number (double) indicating if to simulate a rich diet</li>
 <li><strong>pDiet</strong> &#8211;
