@@ -431,6 +431,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
         case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
             solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
         case 'gurobi'
+
             solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
         case {'quadMinos', 'dqqMinos'}
             [stat, res] = system('which csh');
@@ -476,10 +477,13 @@ if solverOK
             warning('off');
             eval(['oldval = CBT_', solverType, '_SOLVER;']);
             eval(['CBT_', solverType, '_SOLVER = solverName;']);
-            Problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
             try
-                eval(['solveCobra' solverType '(Problem,''printLevel'', 0);']);
+                eval(['solveCobra' solverType '(problem,''printLevel'', 0);']);
             catch ME
+                if printLevel > 0
+                    disp(ME.message);
+                end
                 solverOK = false;
                 eval(['CBT_', solverType, '_SOLVER = oldval;']);
             end
