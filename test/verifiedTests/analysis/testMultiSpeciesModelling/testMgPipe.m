@@ -95,11 +95,11 @@ end
 % test if the resPath is set to default value
 abunFilePath = [CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
 init = initMgPipe(modPath, CBTDIR, '', '', abunFilePath);
-assert(length(lastwarn()) > 0);
+assert(~isempty(lastwarn()));
 
 % test with compMod = true
 init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, true, rDiet, extSolve, fvaType, autorun);
-assert(length(lastwarn()) > 0);
+assert(~isempty(lastwarn()));
 
 % test with muted printLevel
 fprintf(' > Testing printLevel = 0 ... ');
@@ -134,7 +134,7 @@ assert(verifyCobraFunctionError('loadUncModels', 'inputs', {modPath, ''}));
 
 warning('off', 'all');
     loadUncModels(modPath, organisms);
-    assert(length(lastwarn()) > 0)
+    assert(~isempty(lastwarn()))
 warning('on', 'all');
 
 % change the directory
@@ -159,7 +159,7 @@ assert(length(organisms) == 5)
 
 % test fastSetupCreator
 
-setup=fastSetupCreator(models, organisms, {},objre);
+setup = fastSetupCreator(models, organisms, {},objre);
 
 assert(isstruct(setup))
 assert(size(setup.S,2) == length(setup.rxns))
@@ -195,7 +195,7 @@ assert(microbiota_model.A(5,1) == -0.2000)
 assert(microbiota_model.A(6,1) == 1)
 
 % test simulation
-[ID,fvaCt,~,presol]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
+[ID, fvaCt, ~, presol]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
 
 assert(size(presol,1) == 5)
 assert(sum(cell2mat(presol(:,1))) == 4)
@@ -210,11 +210,10 @@ assert(exist('ID.csv','file') == 2)
 
 % cleanup
 delete standard.csv ID.csv
-clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % test extractFullRes
-[ID,fvaCt,nsCt]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+[ID, fvaCt, nsCt] = microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
 finRes=extractFullRes(resPath,ID,'rDiet',sampName,fvaCt,nsCt);
 assert(exist('rDiet_allFlux.csv','file') == 2)
 assert(length((finRes(:,1))) == length(ID)+1)
@@ -223,7 +222,6 @@ finRes = extractFullRes(resPath,ID,'sDiet',sampName,fvaCt,nsCt);
 assert(finRes==0)
 
 % cleanup
-clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 delete rDiet_allFlux.csv
 
@@ -234,7 +232,6 @@ assert(size(presol,1)==5)
 assert(sum(cell2mat(presol(:,1)))==4)
 
 % cleanup
-clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % testing with rich diet
@@ -244,11 +241,10 @@ for i = 1:4
 end
 
 % cleanup
-clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % testing extsolve
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,1,indNumb,fvaType);
+microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,1,indNumb,fvaType);
 cd(resPath)
 if exist('Rich','dir') == 7
     cd Rich
