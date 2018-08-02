@@ -143,17 +143,6 @@ cd(currentDir)
 % test getMappingInfo
 [reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,abunFilePath,indNumb);
 
-assert(exist('reac', 'var') == 1)
-assert(exist('micRea', 'var') == 1)
-assert(exist('binOrg', 'var') == 1)
-assert(exist('patOrg', 'var') == 1)
-assert(exist('reacPat', 'var') == 1)
-assert(exist('reacNumb', 'var') == 1)
-assert(exist('reacSet', 'var') == 1)
-assert(exist('reacTab', 'var') == 1)
-assert(exist('reacAbun', 'var') == 1)
-assert(exist('reacNumber', 'var') == 1)
-
 % test plotMappingInfo
 cd(resPath)
 [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,indInfoFilePath,figForm);
@@ -166,16 +155,13 @@ delete Metabolic_Diversity.eps Heatmap.eps
 % test checkNomenConsist
 [autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix);
 
-assert(exist('autoStat', 'var') == 1)
-assert(exist('fixVec', 'var') == 1)
 assert(length(organisms) == 5)
 
 % test fastSetupCreator
 
 setup=fastSetupCreator(models, organisms, {},objre);
 
-assert(exist('setup', 'var') == 1)
-assert(strcmp(class(setup),'struct') == 1)
+assert(isstruct(setup))
 assert(size(setup.S,2) == length(setup.rxns))
 assert(length(setup.lb) == length(setup.rxns))
 assert(length(setup.c) == length(setup.rxns))
@@ -183,22 +169,20 @@ assert(length(setup.mets) == length(setup.metNames))
 
 assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('DUt',setup.rxns))))
 assert(length(setup.rxns(strmatch('EX',setup.rxns))) /2 == length(setup.rxns(strmatch('UFEt',setup.rxns))))
-assert(length(setup.rxns(strmatch('DUt',setup.rxns)))== length(setup.rxns(strmatch('UFEt',setup.rxns))))
+assert(length(setup.rxns(strmatch('DUt',setup.rxns))) == length(setup.rxns(strmatch('UFEt',setup.rxns))))
 
 for k = 1:5
-assert(length(strmatch(organisms(k),setup.rxns)) > 0)
+    assert(~isempty(strmatch(organisms(k),setup.rxns)))
 end
 
 % test createdModels
 [createdModels]=createPersonalizedModel(abunFilePath,resPath,setup,sampName,organisms,indNumb);
-assert(size(createdModels,1)== 5)
+assert(size(createdModels,1) == 5)
 assert(strcmp(createdModels(2,1),'Test1'))
 assert(strcmp(createdModels(5,1),'Test4'))
 
-microbiota_model=load(strcat(resPath,'microbiota_model_samp_Test1'));
-microbiota_model=microbiota_model.microbiota_model;
-%assert(size(microbiota_model.A,1)> size(microbiota_model.S,1))
-%assert(length(microbiota_model.csense) == size(microbiota_model.A,1))
+microbiota_model = load(strcat(resPath,'microbiota_model_samp_Test1'));
+microbiota_model = microbiota_model.microbiota_model;
 assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
 assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
 assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
@@ -211,73 +195,72 @@ assert(microbiota_model.A(5,1) == -0.2000)
 assert(microbiota_model.A(6,1) == 1)
 
 % test simulation
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
-assert(exist('ID', 'var') == 1)
-assert(exist('fvaCt', 'var') == 1)
-assert(exist('nsCt', 'var') == 1)
-assert(exist('inFesMat', 'var') == 1)
-assert(size(presol,1)==5)
-assert(sum(cell2mat(presol(:,1)))==4)
+[ID,fvaCt,~,presol]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
+
+assert(size(presol,1) == 5)
+assert(sum(cell2mat(presol(:,1))) == 4)
 
 % test mgSimResCollect
 [Fsp,Y]= mgSimResCollect(resPath,ID,sampName,rDiet,0,indNumb,indInfoFilePath,fvaCt,figForm);
 assert(length(Fsp(1,:))==indNumb+1)
 assert(isempty(Y))
 assert(length(Fsp(:,1))==length(ID)+1)
-assert(2==exist('standard.csv','file'))
-assert(2==exist('ID.csv','file'))
+assert(exist('standard.csv','file') == 2)
+assert(exist('ID.csv','file') == 2)
+
+% cleanup
 delete standard.csv ID.csv
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % test extractFullRes
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+[ID,fvaCt,nsCt]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
 finRes=extractFullRes(resPath,ID,'rDiet',sampName,fvaCt,nsCt);
-assert(exist('finRes', 'var') == 1)
-assert(2==exist('rDiet_allFlux.csv','file'))
-assert(length((finRes(:,1)))==length(ID)+1)
-assert(length((finRes(1,:)))==length(sampName)*4+1)
-finRes=extractFullRes(resPath,ID,'sDiet',sampName,fvaCt,nsCt);
+assert(exist('rDiet_allFlux.csv','file') == 2)
+assert(length((finRes(:,1))) == length(ID)+1)
+assert(length((finRes(1,:))) == length(sampName)*4+1)
+finRes = extractFullRes(resPath,ID,'sDiet',sampName,fvaCt,nsCt);
 assert(finRes==0)
+
+% cleanup
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 delete rDiet_allFlux.csv
 
 
 % testing with fluxVar function and not fastFVA
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,0);
-assert(exist('ID', 'var') == 1)
-assert(exist('fvaCt', 'var') == 1)
-assert(exist('nsCt', 'var') == 1)
-assert(exist('inFesMat', 'var') == 1)
+[~,~,~,presol,~]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,0);
 assert(size(presol,1)==5)
 assert(sum(cell2mat(presol(:,1)))==4)
+
+% cleanup
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % testing with rich diet
-[ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
-for i= 1:4
-    assert(length(fvaCt{1,i})~=0)
+[~,fvaCt]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+for i = 1:4
+    assert(~isempty(fvaCt{1,i}))
 end
+
+% cleanup
 clear ID fvaCt nsCt presol inFesMat
 delete simRes.mat
 
 % testing extsolve
 [ID,fvaCt,nsCt,presol,inFesMat]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,1,indNumb,fvaType);
 cd(resPath)
-assert(7==exist('Rich','dir'))
-cd Rich
-assert(2==exist('microbiota_model_richD_Test4.mat','file'))
-assert(2==exist('microbiota_model_richD_Test3.mat','file'))
-assert(2==exist('microbiota_model_richD_Test2.mat','file'))
-assert(2==exist('microbiota_model_richD_Test1.mat','file'))
-cd(resPath)
-rmdir('Rich','s')
+if exist('Rich','dir') == 7
+    cd Rich
+    assert(2==exist('microbiota_model_richD_Test4.mat','file'))
+    assert(2==exist('microbiota_model_richD_Test3.mat','file'))
+    assert(2==exist('microbiota_model_richD_Test2.mat','file'))
+    assert(2==exist('microbiota_model_richD_Test1.mat','file'))
+    cd(resPath)
+    rmdir('Rich','s')
+end
+
+% cleanup
 clear ID fvaCt nsCt presol inFesMat
-
-
-%erasing all testing files
 cd(resPath)
 delete *.mat
-
