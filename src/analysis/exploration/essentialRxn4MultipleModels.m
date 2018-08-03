@@ -1,30 +1,29 @@
-function [ essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
-
-%essentialRxn4MultipleModels.m
-%This funtion allows us to perform single reactions deletions to identify 
-%essential ones that are required for ATP generation. This means that these essential
-%reactions would carry a zero flux when optimising the ATP consumption
-%reaction (ATPM).
+function [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
+% Performs single reactions deletions across multiple models and identifies which reactions 
+% have variable essentiality across all models for the chosen objective function 
+% (eg. it identifies reactions whos deletion would result in a zero flux through ATP 
+% consumption reaction - ATPM). 
 %
-%by Dr. Miguel A.P. Oliveira{1} & Diana C. El Assal-Jordan{1}
-
-%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg,
-%7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
-
-% 13/11/2017
-% #########################################################\
-
-%% Example inputs:
-% % Structure-specific models with sample-cutoff 50%:
-% modelsDir = '/hdd/work/sbgCloud/programReconstruction/projects/brainMetabolism/results/modelGeneration/models/cutoff_50/';
-% addpath(modelsDir);
+% USAGE: [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
 %
-% % Objective function to be used:
-% objFun = 'ATPM';
+% INPUTS:
+%    allModels:    directory of the structure with multiple COBRA model structures
+%    objFun:       string with objective function reaction (e.g. 'ATPM')
+%
+% OUTPUT:
+%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction) 
+%                            after single deletion of model reaction (rows) across models (columns)  
+%    dataStruct:             Structure with all models 
+% 
+% EXAMPLE:
+%
+%    [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, 'ATPM')
+%    
+% .. Authors: 
+%	- Dr. Miguel A.P. Oliveira, 13/11/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg 
+%   	- Diana C. El Assal-Jordan, 13/11/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 
-
-%% Locate COBRA models in a directory and load them into a structure:
-% allModels = '/home/oliveira/Dropbox/workRepos/cobratoolbox/test/models/mat'
+% Locate COBRA models in a directory and load them into a structure:
 if isstr(allModels)
     modelsDir = allModels;
     clear allModels
@@ -45,14 +44,12 @@ if isstr(allModels)
     end
 end
 
-%% Load structure with models and perform singleRxnDeletion in all COBRA models
-
+% Load structure with models and perform singleRxnDeletion in all COBRA models
 modelNames = fieldnames(allModels);
 numModels = size(modelNames,1); 
 sumRxnSubsystems = {};
 
 for j=1:numModels
-    
     model = changeObjective(allModels.(modelNames{j}), objFun);
     fprintf(strcat(' \nAnalysing model: \n', modelNames{j},'\n'))
     
@@ -73,14 +70,14 @@ for j=1:numModels
     clear delRxnSubsystems
 end
 
-%% Identify unique reactions across all models
+% Identify unique reactions across all models
 uniqueRxns = unique(sumRxnSubsystems(:,1));
 allRxns = {};
 for i=1:size(uniqueRxns,1)
     allRxns(i,1) = sumRxnSubsystems(find(strcmp(uniqueRxns{i,1},sumRxnSubsystems(:,1)),1),:);
 end
 
-%% Build essential reaction table for all models
+% Build essential reaction table for all models
 essentialRxn4Models = cell2table(allRxns, 'VariableNames',{'rxn'}); %,'subsystem'
 
 for j=1:size(modelNames,1)
