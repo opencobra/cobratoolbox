@@ -1,5 +1,5 @@
 function rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
-% Identifies and plots (heatmap) a set of essential reactions based on conditional inputs. 
+% Identifies and plots (heatmap) a set of essential reactions (reactions of interest) based on conditional inputs. 
 %
 % USAGE: rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
 %
@@ -11,7 +11,8 @@ function rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialit
 %    numModelsPresent:       Minimum number of models where a reaction is essential in order to be ploted.
 %
 % OUTPUT:
-%    rxnInterest4Models:    Table with reaction fluxes (within the objective function reaction) 
+%    rxnInterest4Models:     Table with reaction fluxes (within the objective function reaction) 
+%                            for reactions of interest (rows) across models (columns)
 % 
 % EXAMPLE:
 %
