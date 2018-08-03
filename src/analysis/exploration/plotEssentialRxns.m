@@ -1,24 +1,28 @@
-function rxnInterest4Models = plotEssentialRxns( essentialRxn4Models, essentialityRange, numModelsPresent)
-
-%plotEssentialRxns.m
-%This funtion plots an heatmap using as inputs variables that allow a 
-%conditional search of reactions of interest
+function rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
+% Identifies and plots (heatmap) a set of essential reactions based on conditional inputs. 
 %
-%by Dr. Miguel A.P. Oliveira{1}
+% USAGE: rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
+%
+% INPUTS:
+%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction) 
+%                            after single deletion of model reaction (rows) across models (columns)
+%                            This input can be obtained from essentialRxn4MultipleModels.m
+%    essentialityRange:      Range of fluxes (e.g. [-100,100])
+%    numModelsPresent:       Minimum number of models where a reaction is essential in order to be ploted.
+%
+% OUTPUT:
+%    rxnInterest4Models:    Table with reaction fluxes (within the objective function reaction) 
+% 
+% EXAMPLE:
+%
+%    rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
+%    
+% .. Author: - Dr. Miguel A.P. Oliveira, 08/12/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg 
 
-%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg,
-%7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
+allRxnNames = essentialRxn4Models.rxn(:); % Obtain rxn names
+modelNames = essentialRxn4Models.Properties.VariableNames(2:end); % Obtain model names
 
-% 08/12/2017
-%% #########################################################\
-
-% Obtain rxn names
-allRxnNames = essentialRxn4Models.rxn(:);
-
-% Obtain model names
-modelNames = essentialRxn4Models.Properties.VariableNames(2:end);
-
-%% Build reaction essentiality matrix from essentialRxn4Models
+% Build reaction essentiality matrix from essentialRxn4Models
 for j=1:size(modelNames,2)
     for i=1:size(allRxnNames,1)
         value = essentialRxn4Models.(modelNames{j}){i};
@@ -32,8 +36,7 @@ for j=1:size(modelNames,2)
     end
 end
 
-%% Conditional search
-
+% Conditional search
 condition = essential>=essentialityRange(1) & essential>= 0  & essential<=essentialityRange(2);
 reactionsInterest = sum(condition,2)>=numModelsPresent;
 rxnsOfInterest = essential(reactionsInterest,:);
@@ -41,7 +44,7 @@ rxnsOfInterest = essential(reactionsInterest,:);
 rxnInterest4Models = table2cell(essentialRxn4Models(reactionsInterest,1));
 rxnInterestNames = allRxnNames(reactionsInterest,1);
 
-%% Generate plot labels
+% Generate plot labels
 for i=1:size(rxnInterestNames,1)
    rxnInterestNames(i,1) = strrep(rxnInterestNames(i,1),'_','-');
 end
@@ -49,7 +52,7 @@ for i=1:size(modelNames,2)
    modelNames(1,i) = strrep(modelNames(1,i),'_','-');
 end
 
-%% Compare essential reaction in a heatmap
+% Compare essential reaction in a heatmap
 
 maxFluxUnits = max(max(rxnsOfInterest));
 minFluxUnits = min(min(rxnsOfInterest));
