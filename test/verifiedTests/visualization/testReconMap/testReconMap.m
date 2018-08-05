@@ -22,7 +22,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 % Get the minerva structure
 load('minerva.mat');
 
-prepareTest('needsWebAddress','https://vmh.uni.lu/MapViewer/')
+prepareTest('needsWebAddress','https://vmh.uni.lu/minerva/')
 
 % check if the URL exists
 % Set the user to testing user
@@ -41,13 +41,13 @@ FBAsolution = optimizeCbModel(model, 'max');
 response = buildFluxDistLayout(minerva, model, FBAsolution, 'Test - Flux distribution 1');
 
 % 2 Correct responses, either successful or layout exists already
-assert(~isempty(regexp(response, 'Overlay generated successfully!')) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
+assert(~isempty(regexp(response, strcat('"creator":"', minerva.login, '"'))) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
 
 % Send the subsystem layout to MINERVA
 response = generateSubsytemsLayout(minerva, model, 'Pyruvate metabolism', '#6617B5');
 
 % Same as before - two possible correct responses
-assert(~isempty(regexp(response, 'Overlay generated successfully!')) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
+assert(~isempty(regexp(response, strcat('"creator":"', minerva.login, '"'))) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
 
 
 minerva.login = oldLogin;

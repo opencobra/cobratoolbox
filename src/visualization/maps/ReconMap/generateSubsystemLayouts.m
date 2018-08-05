@@ -21,7 +21,7 @@ function [] = generateSubsystemLayouts( minerva, cobra_model, color )
             response = generateSubsytemsLayout(cobra_model, subsystems(i), color);
         end
 
-        if ~isempty(regexp(response, '"status":"OK"'))
+        if ~isempty(regexp(response, strcat('"creator":"', minerva.login, '"')))
             result = [subsystems(i), ' successfully sent to ReconMap.'];
             disp(result)
         else

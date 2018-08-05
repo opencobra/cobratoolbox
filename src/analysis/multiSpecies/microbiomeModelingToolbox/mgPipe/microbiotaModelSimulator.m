@@ -138,7 +138,7 @@ for k = startIter:(patNumb + 1)
   else
        microbiota_model=model
        mkdir(strcat(resPath,'Rich'))
-       save(strcat(resPath,'Rich\','microbiota_model_richD_',idInfo,'.mat'),'microbiota_model')
+       save([resPath 'Rich' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')      
   end
 
 
@@ -181,7 +181,7 @@ presol{k,2}=solution_sDiet.obj
   else
   microbiota_model=model_sd;
   mkdir(strcat(resPath,'Standard'))
-  save(strcat(resPath,'Standard\','microbiota_model_standardD_',idInfo,'.mat'),'microbiota_model')
+  save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
   end
 
 if extSolve==0
@@ -229,7 +229,7 @@ if pDiet==1
   else
   microbiota_model=model_pd
     mkdir(strcat(resPath,'Personalized'))
-    save(strcat(resPath,'Personalized\','microbiota_model_personalizedD_',idInfo,'.mat'),'microbiota_model')
+    save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
   end
 
 

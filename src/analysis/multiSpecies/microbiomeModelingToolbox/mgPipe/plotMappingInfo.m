@@ -50,22 +50,26 @@ scatter(patOrg, reacNumber, 60, jet(length(patOrg)), 'filled')
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
 title('Metabolic Diversity')
-print(strcat(resPath, 'Metabolic Diversity'), figForm)
+print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
 [Y, eigvals] = cmdscale(D);
-figure(3)
-P = [eigvals eigvals / max(abs(eigvals))];
-plot(Y(:, 1), Y(:, 2), 'bx')
-
+    if (length(Y(1,:))>1)
+        figure(3)
+        P = [eigvals eigvals / max(abs(eigvals))];
+        plot(Y(:, 1), Y(:, 2), 'bx')
+        title('PCoA of reaction presence');
+        print(strcat(resPath, 'PCoA reactions'), figForm)
+    else
+        disp('noPcoA will be plotted')     
+    end  
 % build numbers of patients
 % lab = 1:length(Y(:,1)) ;
 % lab = strread(num2str(a),'%s');
 % labels = lab';
 % text(Y(:,1),Y(:,2),labels,'HorizontalAlignment','left');%to insert numbers
-title('PCoA of reaction presence');
-print(strcat(resPath, 'PCoA reactions'), figForm)
+
 
 else
     % Plot: number of species | number of reactions  disease resolved
@@ -89,16 +93,21 @@ scatter(patOrg, reacNumber, 24 * ones(length(reacNumber), 1), colorMap, 'filled'
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
 title('Metabolic Diversity')
-print(strcat(resPath, 'Metabolic Diversity'), figForm)
+print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
 [Y, eigvals] = cmdscale(D);
 figure(3)
 P = [eigvals eigvals / max(abs(eigvals))];
-scatter(Y(:, 1), Y(:, 2), 24 * ones(length(reacNumber), 1), colorMap, 'filled')
-title('PCoA of reaction presence');
-print(strcat(resPath, 'PCoA reactions'), figForm)
+    if (length(Y(1,:))>2)
+        scatter(Y(:, 1), Y(:, 2), 24 * ones(length(reacNumber), 1), colorMap, 'filled')
+        title('PCoA of reaction presence');
+        print(strcat(resPath, 'PCoA reactions'), figForm)
+    else
+        disp('noPcoA will be plotted')    
+    end
+
 end
 
 % Plot Eigen number value: diasbled by default

@@ -16,6 +16,7 @@ fi
 
 # check if all commit messages contains only [documentation]
 allDocumentationLabel=true
+artenolisForce=false
 for s in "${commitHashs[@]}"
 do
     if  [[ $s != "+" ]]; then
@@ -28,34 +29,44 @@ do
             echo " -- at least one commit message ($commitHash) does not contain the label [documentation]."
             break;
         fi
+
+        # force to run the test suite if labelled
+        if [[ $commitMsg == *"[artenolis]"* ]]; then
+            artenolisForce=true;
+            echo " -- label [artenolis] detected - CI run is forced."
+            break;
+        fi
     fi
 done
 
-if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
-   modifiedFiles=($(git diff --name-only $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
+if [[ "$artenolisForce" = false ]]; then
+    if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
+    modifiedFiles=($(git diff --name-only $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
+    else
+    modifiedFiles=($(git log develop..HEAD -q --pretty=%H | tail -1 2>&1))
+    fi
+
+    onlyDocFiles=true
+    for f in "${modifiedFiles[@]}"
+    do
+        if  [[ ! $f == *"docs/"* ]]; then
+            onlyDocFiles=false
+            echo " -- at least one modified file ($f) is not stored under the docs/ folder."
+            break;
+        fi
+    done
+
+    if [[ ${#commitHashs[@]} > 0 ]]; then
+        if [ "$allDocumentationLabel" = true ] || [ "$onlyDocFiles" = true ]; then
+            echo "> Tests will be ${green}skipped${normal} as modified files are ${green}only${normal} documentation files."
+            exit;
+        fi
+    fi
+
+    echo "> Tests will be ${green}run${normal} as modified files are ${green}not only${normal} documentation files."
 else
-   modifiedFiles=($(git log develop..HEAD -q --pretty=%H | tail -1 2>&1))
+    echo "> Tests will be ${green}run${normal} label [artenolis] set."
 fi
-
-onlyDocFiles=true
-for f in "${modifiedFiles[@]}"
-do
-    if  [[ ! $f == *"docs/"* ]]; then
-        onlyDocFiles=false
-        echo " -- at least one modified file ($f) is not stored under the docs/ folder."
-        break;
-    fi
-done
-
-if [[ ${#commitHashs[@]} > 0 ]]; then
-    if [ "$allDocumentationLabel" = true ] || [ "$onlyDocFiles" = true ]; then
-        echo "> Tests will be ${green}skipped${normal} as modified files are ${green}only${normal} documentation files."
-        exit;
-    fi
-fi
-
-echo "> Tests will be ${green}ran${normal} as modified files are ${green}not only${normal} documentation files."
-
 
 if [ "$ARCH" == "Linux" ]; then
     /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
