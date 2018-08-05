@@ -1,30 +1,31 @@
 function [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
-% Performs single reactions deletions across multiple models and identifies which reactions 
-% have variable essentiality across all models for the chosen objective function 
-% (eg. it identifies reactions whos deletion would result in a zero flux through ATP 
-% consumption reaction - ATPM). 
+% Performs single reactions deletions across multiple models and identifies which reactions
+% have variable essentiality across all models for the chosen objective function
+% (eg. it identifies reactions whos deletion would result in a zero flux through ATP
+% consumption reaction - ATPM).
 %
-% USAGE: [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
+% USAGE:
+%
+%    [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)
 %
 % INPUTS:
 %    allModels:    directory of the structure with multiple COBRA model structures
 %    objFun:       string with objective function reaction (e.g. 'ATPM')
 %
 % OUTPUT:
-%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction) 
-%                            after single deletion of model reaction (rows) across models (columns)  
-%    dataStruct:             Structure with all models 
-% 
+%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction)
+%                            after single deletion of model reaction (rows) across models (columns)
+%    dataStruct:             Structure with all models
+%
 % EXAMPLE:
 %
 %    [essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, 'ATPM')
-%    
-% .. Authors: 
-%	- Dr. Miguel A.P. Oliveira, 13/11/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg 
+%
+% .. Authors:
+%	    - Dr. Miguel A.P. Oliveira, 13/11/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 %   	- Diana C. El Assal-Jordan, 13/11/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 
-% Locate COBRA models in a directory and load them into a structure:
-if isstr(allModels)
+if isstr(allModels) % Locate COBRA models in a directory and load them into a structure:
     modelsDir = allModels;
     clear allModels
     allModelFilenames = dir(strcat(modelsDir,'/','*.mat'));
@@ -36,7 +37,7 @@ if isstr(allModels)
             str = strrep(str, match{j},{''});
         end
         newFilename{1,i} = horzcat(str{1},'_model');
-        
+
         loadedFile = load(strcat(modelsDir,'/',allModelFilenames(i).name));
         fields = fieldnames(loadedFile);
         model = loadedFile.(fields{1,1});
@@ -46,15 +47,15 @@ end
 
 % Load structure with models and perform singleRxnDeletion in all COBRA models
 modelNames = fieldnames(allModels);
-numModels = size(modelNames,1); 
+numModels = size(modelNames,1);
 sumRxnSubsystems = {};
 
 for j=1:numModels
     model = changeObjective(allModels.(modelNames{j}), objFun);
     fprintf(strcat(' \nAnalysing model: \n', modelNames{j},'\n'))
-    
+
     [~ , grRateKO, ~ , ~ , delRxn, fluxSolution] = singleRxnDeletion(model);
-    
+
     delRxnSubsystems(:,1) = model.rxns;
     %delRxnSubsystems(:,2) = model.subSystems;
     test = setdiff(model.rxns,delRxn);

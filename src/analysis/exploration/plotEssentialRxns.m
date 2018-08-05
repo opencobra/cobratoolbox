@@ -1,24 +1,27 @@
 function rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
-% Identifies and plots (heatmap) a set of essential reactions (reactions of interest) based on conditional inputs. 
+% Identifies and plots (heatmap) a set of essential reactions (reactions of interest) based on conditional inputs.
 %
-% USAGE: rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
+% USAGE:
+%
+%    rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
 %
 % INPUTS:
-%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction) 
+%    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction)
 %                            after single deletion of model reaction (rows) across models (columns)
 %                            This input can be obtained from essentialRxn4MultipleModels.m
 %    essentialityRange:      Range of fluxes (e.g. [-100,100])
 %    numModelsPresent:       Minimum number of models where a reaction is essential in order to be ploted.
 %
 % OUTPUT:
-%    rxnInterest4Models:     Table with reaction fluxes (within the objective function reaction) 
+%    rxnInterest4Models:     Table with reaction fluxes (within the objective function reaction)
 %                            for reactions of interest (rows) across models (columns)
-% 
+%
 % EXAMPLE:
 %
 %    rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)
-%    
-% .. Author: - Dr. Miguel A.P. Oliveira, 08/12/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg 
+%
+% .. Author:
+%      - Dr. Miguel A.P. Oliveira, 08/12/2017, Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 
 allRxnNames = essentialRxn4Models.rxn(:); % Obtain rxn names
 modelNames = essentialRxn4Models.Properties.VariableNames(2:end); % Obtain model names
@@ -62,10 +65,10 @@ if maxFluxUnits ~= 0 && minFluxUnits==0
     mymap = [ 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
     hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
     colormap(hm,mymap);
-elseif maxFluxUnits ~= 0 && minFluxUnits<0 && essentialityRange(1)<=0 
+elseif maxFluxUnits ~= 0 && minFluxUnits<0 && essentialityRange(1)<=0
     mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
     hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
-    colormap(hm,mymap);    
+    colormap(hm,mymap);
 elseif maxFluxUnits ~= 0 && minFluxUnits==0 && essentialityRange(1)==0
     mymap = [1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0;1 1 0; 1 1 0;1 1 0;  1 1 0;  1 1 0; 0 0 0];
     hm = HeatMap(rxnsOfInterest,'ColumnLabels', modelNames,'RowLabels',rxnInterestNames,'Colormap',redbluecmap, 'Symmetric', false, 'DisplayRange', 100); %maxFluxUnits/3
