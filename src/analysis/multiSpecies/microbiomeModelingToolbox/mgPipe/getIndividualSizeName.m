@@ -19,10 +19,6 @@ function [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath)
 [sampName] = readtable(abunFilePath, 'ReadVariableNames', false);
 % Creating array to compare with first column 
 fcol=table2cell(sampName(2:height(sampName),1));
-%fcol=table2array(sampName(2:height(sampName),1));
-% if  ~isa(fcol(2,1),'char')
-%     fcol=cellstr(num2str(fcol));
-% end
 pIndex=cellstr(num2str((1:(height(sampName)-1))'));
 spaceInd=strmatch(' ',pIndex);
 pIndexN=pIndex;
@@ -47,7 +43,6 @@ sampName = sampName(1, 3:s);
 sampName = table2cell(sampName);
 sampName = sampName';
 indNumb = length(sampName);  % number of individuals
-
 % getting info on present strains
 organisms = oldSampName(2:height(oldSampName), 2);  
 organisms = table2cell(organisms);  % extracted names of models
