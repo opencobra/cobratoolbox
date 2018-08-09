@@ -9,9 +9,10 @@ Luxembourg Centre for Systems Biomedicine, University of Luxembourg
 This COBRA Toolbox extension enables the creation, simulation, and analysis
 of microbe-microbe interactions and personalized community models obtained
 through metagenomic data integration.  The folder
-`/pairwiseInteractionModeling` contains functions for microbe-microbe analysis
-and simulation while the folder `/mgPipe` contains functions for community modeling with
-metagenomic data integration.
+[/pairwiseInteractionModeling] (https://github.com/opencobra/cobratoolbox/tree/master/src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling.html) 
+contains functions for microbe-microbe analysis
+and simulation while the folder [/mgPipe] (https://github.com/opencobra/cobratoolbox/tree/master/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe.html)  
+contains functions for community modeling with metagenomic data integration.
 
 More information on the different folder content
 and purpose of functions can be found in the `README` file of each folder.
@@ -20,3 +21,9 @@ The LiveScripts `MicrobeMicrobeInteractions.mlx`,
 `tutorials/additionalTutorials/microbiomeModelingToolbox/` folder of
 the COBRA Toolbox provide examples of application and of input data, using
 the AGORA resource (PMID:27893703).
+
+## Funding
+
+This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN
+grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union’s Horizon 2020 research and innovation
+programme (grant agreement No 757922).
