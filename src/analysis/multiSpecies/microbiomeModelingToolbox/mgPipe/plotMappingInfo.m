@@ -1,8 +1,8 @@
-function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName)
+function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName,organisms)
 % This function computes and automatically plots information coming from
 % the mapping data as metabolic diversity and classical multidimensional
-% scaling of individuals' reactions repertoire. If the last argument is 
-% specified MDS plots will be annotated with samples names
+% scaling of individuals' reactions repertoire. If the last 2 arguments are 
+% specified MDS plots will be annotated with samples and organisms names
 %
 % USAGE:
 %
@@ -24,6 +24,7 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indI
 %                       is available
 %   figForm:            format to use for saving figures
 %   sampName:           nx1 cell array cell array with names of individuals in the study
+%   organisms:          nx1 cell array cell array with names of organisms in the study
 %
 % OUTPUTS:
 %   Y:                  classical multidimensional scaling of individuals'
@@ -38,14 +39,31 @@ else
     aN=1;
 end
 
+if ~exist('organisms', 'var')
+    organisms = 0;
+    aO = 0;
+else
+    aO=1;
+end
+
 figure(1)
 imagesc(reacPat);
-colorbar
 xlabel('Individuals');  % x-axis label
 ylabel('Organisms');  % y-axis label
 ax = gca;
 ax.XTick = [1:length(patOrg)];
+if  aO>0
+    ax.YTick = [1:length(organisms)];
+    organisms2=strrep(organisms,'_',' ');
+    ax.YTickLabel = organisms2;
+end
+if  aN>0 
+    ax.XTickLabel = sampName;
+    ax.XTickLabelRotation = 45;
+end
 title('Heatmap individuals | organisms reactions');
+c = colorbar;
+c.Label.String = 'Number of reactions';
 print(strcat(resPath, 'Heatmap'), figForm)
 
 if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
