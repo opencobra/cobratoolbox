@@ -1,4 +1,4 @@
-function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName,organisms)
+function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName, organisms)
 % This function computes and automatically plots information coming from
 % the mapping data as metabolic diversity and classical multidimensional
 % scaling of individuals' reactions repertoire. If the last 2 arguments are 
@@ -6,7 +6,7 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indI
 %
 % USAGE:
 %
-%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName)
+%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName, organisms)
 %
 % INPUTS:
 %   resPath:            char with path of directory where results are saved
@@ -91,7 +91,9 @@ end
 ax = gca;
 ax.XTick = [min(patOrg):max(patOrg)];
 %xlim([min(patOrg) max(patOrg)]);
-ylim([min(reacNumber) max(reacNumber)]);
+if length(unique(reacNumber))>1
+    ylim([min(reacNumber) max(reacNumber)]);
+end
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
 title('Metabolic Diversity')
@@ -146,6 +148,8 @@ scatter(patOrg, reacNumber, 24 * ones(length(reacNumber), 1), colorMap, 'filled'
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
 title('Metabolic diversity with individuals stratification')
+text(max(patOrg),max(reacNumber),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
+text(max(patOrg),(max(reacNumber)-50),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
 print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
@@ -159,6 +163,8 @@ P = [eigvals eigvals / max(abs(eigvals))];
         title('PCoA of reaction presence');
         xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
         ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+        text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
+        text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
         print(strcat(resPath, 'PCoA reactions'), figForm)
     else
         disp('noPcoA will be plotted')    

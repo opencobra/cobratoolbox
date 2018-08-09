@@ -130,6 +130,8 @@ else
                     end
                 end
        scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
+       text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
+       text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
        xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
        ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
        title('PCoA of NMPCs');
