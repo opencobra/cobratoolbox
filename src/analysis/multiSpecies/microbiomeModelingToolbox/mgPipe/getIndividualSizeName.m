@@ -19,6 +19,13 @@ function [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath)
 [sampName] = readtable(abunFilePath, 'ReadVariableNames', false);
 % Creating array to compare with first column 
 fcol=table2cell(sampName(2:height(sampName),1));
+if  ~isa(fcol{2,1},'char')
+     fcol=cellstr(num2str(cell2mat(fcol))); 
+end
+spaceColInd=strmatch(' ',fcol);
+if length(spaceColInd)>0
+   fcol(spaceColInd)=strrep(fcol(spaceColInd),' ','');
+end
 pIndex=cellstr(num2str((1:(height(sampName)-1))'));
 spaceInd=strmatch(' ',pIndex);
 pIndexN=pIndex;
@@ -26,9 +33,6 @@ if length(spaceInd)>0
     pIndexN(spaceInd)=strrep(pIndex(spaceInd),' ','');
 end
 % Adding index column if needed
-if  ~isa(fcol{2,1},'char')
-     fcol=cellstr(num2str(cell2mat(fcol))); 
-end
 if isequal(fcol,pIndexN)
     disp('Index fashion input file detected');
 else

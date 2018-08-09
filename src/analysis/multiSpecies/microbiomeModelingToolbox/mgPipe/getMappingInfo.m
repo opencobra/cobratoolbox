@@ -29,6 +29,32 @@ function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, rea
 %
 % .. Author: Federico Baldini 2017-2018
 
+%%
+[abundance] = readtable(abunFilePath);
+% Creating array to compare with first column 
+fcol=table2cell(abundance(1:height(abundance),1));
+if  ~isa(fcol{2,1},'char')
+     fcol=cellstr(num2str(cell2mat(fcol))); 
+end
+spaceColInd=strmatch(' ',fcol);
+if length(spaceColInd)>0
+   fcol(spaceColInd)=strrep(fcol(spaceColInd),' ','');
+end
+pIndex=cellstr(num2str((1:(height(abundance)))'));
+spaceInd=strmatch(' ',pIndex);
+pIndexN=pIndex;
+if length(spaceInd)>0
+    pIndexN(spaceInd)=strrep(pIndex(spaceInd),' ','');
+end
+% Adding index column if needed
+if isequal(fcol,pIndexN)
+    disp('Index fashion input file detected');
+else
+   disp('Plain csv input format: adding index for internal purposes');
+   addIndex=pIndex;
+   abundance=horzcat((cell2table(addIndex)),abundance);
+end
+%%
 reac = {}; % array with unique set of all the reactions present in the models
 for i = 1:length(models) % find the unique set of all the reactions contained in the models
     smd = models{i,1};
@@ -47,7 +73,7 @@ parfor i = 1:mdlt
 end
 
 % creating binary table for abundances
-[binary] = readtable(abunFilePath);
+[binary] = abundance;
 s = size(binary);
 s = s(1, 2);
 binary = binary(:, 3:s);  % removing model info and others
@@ -92,7 +118,6 @@ patOrg = patOrg';
 
 % number and names of UNIQUE reactions per patient
 
-[abundance] = readtable(abunFilePath);
 reacSet = {};
 reacNumber = [];
 
