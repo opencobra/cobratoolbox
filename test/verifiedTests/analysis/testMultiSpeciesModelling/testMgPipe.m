@@ -152,6 +152,14 @@ assert(2==exist('Heatmap.eps','file'))
 assert(2==exist('Metabolic_Diversity.eps','file'))
 delete Metabolic_Diversity.eps Heatmap.eps
 
+% test plotMappingInfo with annotation
+[PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,indInfoFilePath,figForm,sampName, organisms);
+assert(length(PCoA(1,:))<2)
+assert(length(PCoA(:,1))==4)
+assert(2==exist('Heatmap.eps','file'))
+assert(2==exist('Metabolic_Diversity.eps','file'))
+delete Metabolic_Diversity.eps Heatmap.eps
+
 % test checkNomenConsist
 [autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix);
 
