@@ -102,8 +102,16 @@ else
     JD = pdist(fSpOld','euclidean');
     [Y, eigvals] = cmdscale(JD);
     P = [eigvals eigvals / max(abs(eigvals))];
+    expr = [eigvals/sum(eigvals)];
     if patStat == 0
         plot(Y(:, 1), Y(:, 2), 'bx')
+        xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+        ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+        if length(sampName)<30
+            text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
+        else
+            warning('Plot annotation with individuals names disabled because of their big number'); 
+        end
         print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
         title('PCoA of NMPCs');
     else
@@ -122,6 +130,8 @@ else
                     end
                 end
        scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
+       xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+       ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
        title('PCoA of NMPCs');
     end
 end

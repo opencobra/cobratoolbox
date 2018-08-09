@@ -1,11 +1,12 @@
-function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)
+function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName)
 % This function computes and automatically plots information coming from
 % the mapping data as metabolic diversity and classical multidimensional
-% scaling of individuals' reactions repertoire
+% scaling of individuals' reactions repertoire. If the last argument is 
+% specified MDS plots will be annotated with samples names
 %
 % USAGE:
 %
-%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)
+%   Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName)
 %
 % INPUTS:
 %   resPath:            char with path of directory where results are saved
@@ -22,6 +23,7 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indI
 %                       full path and name to related documentation(default: no)
 %                       is available
 %   figForm:            format to use for saving figures
+%   sampName:           nx1 cell array cell array with names of individuals in the study
 %
 % OUTPUTS:
 %   Y:                  classical multidimensional scaling of individuals'
@@ -29,12 +31,21 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indI
 %
 % .. Author: - Federico Baldini, 2017-2018
 
+if ~exist('sampName', 'var')
+    sampName = 0;
+    aN = 0;
+else
+    aN=1;
+end
+
 figure(1)
 imagesc(reacPat);
 colorbar
 xlabel('Individuals');  % x-axis label
 ylabel('Organisms');  % y-axis label
-title('Heatmap individuals | organisms reactions')
+ax = gca;
+ax.XTick = [1:length(patOrg)];
+title('Heatmap individuals | organisms reactions');
 print(strcat(resPath, 'Heatmap'), figForm)
 
 if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
@@ -44,9 +55,25 @@ else
 end
 
 if patStat == 0
-    % Plot:metabolic diversity
+% Plot:metabolic diversity
 figure(2)
-scatter(patOrg, reacNumber, 60, jet(length(patOrg)), 'filled')
+A=[patOrg' reacNumber'];
+[Auniq,~,IC] = unique(A,'rows');
+cnt = accumarray(IC,1);
+
+scatter(Auniq(:,1), Auniq(:,2), (10+5*(cnt>1)).^2); % make the ones where we'll put a number inside a bit bigger
+for ii=1:numel(cnt)
+    if cnt(ii)>1
+        text(Auniq(ii,1),Auniq(ii,2),num2str(cnt(ii)), ...
+            'HorizontalAlignment','center', ...
+            'VerticalAlignment','middle', ...
+            'FontSize', 6);
+    end
+end
+ax = gca;
+ax.XTick = [min(patOrg):max(patOrg)];
+%xlim([min(patOrg) max(patOrg)]);
+ylim([min(reacNumber) max(reacNumber)]);
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
 title('Metabolic Diversity')
@@ -58,14 +85,22 @@ D = pdist(reacTab','jaccard');
     if (length(Y(1,:))>1)
         figure(3)
         P = [eigvals eigvals / max(abs(eigvals))];
+        expr = [eigvals/sum(eigvals)];
         plot(Y(:, 1), Y(:, 2), 'bx')
         title('PCoA of reaction presence');
+        xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+        ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+        if aN>0
+            text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
+        end
         print(strcat(resPath, 'PCoA reactions'), figForm)
     else
         disp('noPcoA will be plotted')     
-    end  
+    end
+    
+
 % build numbers of patients
-% lab = 1:length(Y(:,1)) ;
+% lab = 1:length(Y(:,1));
 % lab = strread(num2str(a),'%s');
 % labels = lab';
 % text(Y(:,1),Y(:,2),labels,'HorizontalAlignment','left');%to insert numbers
@@ -81,7 +116,7 @@ N = length(patients(1, :));
 colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
     for k = 1: length(patients(1, :))
         if str2double(patients(1, k)) == 1
-            colorMap(k, :) = [1, 0, 0];  % Red
+            colorMap(k, :) = [1, 0, 0];  % Red -> sick
         end
         if str2double(patients(1, k)) == 0
             colorMap(k, :) = [0, 1, 0];  % Green
@@ -92,7 +127,7 @@ figure(2)
 scatter(patOrg, reacNumber, 24 * ones(length(reacNumber), 1), colorMap, 'filled');
 xlabel('Microbiota Size')  % x-axis label
 ylabel('Number of unique reactions')  % y-axis label
-title('Metabolic Diversity')
+title('Metabolic diversity with individuals stratification')
 print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
@@ -101,8 +136,11 @@ D = pdist(reacTab','jaccard');
 figure(3)
 P = [eigvals eigvals / max(abs(eigvals))];
     if (length(Y(1,:))>2)
+        expr = [eigvals/sum(eigvals)];
         scatter(Y(:, 1), Y(:, 2), 24 * ones(length(reacNumber), 1), colorMap, 'filled')
         title('PCoA of reaction presence');
+        xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+        ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
         print(strcat(resPath, 'PCoA reactions'), figForm)
     else
         disp('noPcoA will be plotted')    
