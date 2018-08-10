@@ -12,7 +12,7 @@ repertoire are examples.  [PART 2]: 1 Constructing a global metabolic model
 (setup) containing all the microbes listed in the study. 2 Building
 individuals' specific models integrating abundance data retrieved from
 metagenomics. For each organism, reactions are coupled to their objective
-function.  [PART 3] Simulations under different diet regimesand analysis of the 
+function.  [PART 3] Simulations under different diet regimesand analysis of the
 predicted metabolic profile (PCoA of computed MNPCs of
 individuals).
 
@@ -150,7 +150,7 @@ outputs are:
 | microbiota_model_XXX.mat   | .mat file containing the personalized model                                                   |
 | simRes.mat                 | .mat file containing NMPCs (FVAct), the complementary FVAs results (NSct), values of the objective function (Presol), names of infeasible models (InFesMat)|
 
-For simplicity, besides the .mat files containing all the results, the main results are also saved in open format (.csv) in the dedicated results folder. The saved tables are: 
+For simplicity, besides the .mat files containing all the results, the main results are also saved in open format (.csv) in the dedicated results folder. The saved tables are:
 
 | File                       | Description                                                                                  |
 | ---------------------------|----------------------------------------------------------------------------------------------|
@@ -185,7 +185,7 @@ from any different source was not tested and it is not guaranteed to work.
 
 # Status of implementation
 
-[Part 1, 2, 3] are implemented structured and tested. 
+[Part 1, 2, 3] are implemented structured and tested.
 
 A tutorial showing how to use the pipeline was created.
 
@@ -217,12 +217,12 @@ dedicated page.
 ## Tutorial
 
 A livescript tutorial `mgPipeTutorial.mlx` and its correspondent version `mgPipeTutorial.m` are available in
-`tutorials/additionalTutorials/microbiomeModelingToolbox/`.
+`tutorials/analysis/microbiomeModelingToolbox/`.
 
 ## Funding
 
 This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN
-grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union’s Horizon 2020 research and innovation
+grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union?s Horizon 2020 research and innovation
 programme (grant agreement No 757922).
 
 ## Author & Documentation Date
