@@ -52,3 +52,7 @@ for a detailed description of the simulation results.
 The LiveScripts `MicrobeMicrobeInteractions.mlx` and `HostMicrobeInteractions.mlx`
 located in the `/tutorials` folder provide examples application using the AGORA
 resource (PMID:27893703).
+
+This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN
+grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union’s Horizon 2020 research and innovation
+programme (grant agreement No 757922).
