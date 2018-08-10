@@ -1035,13 +1035,14 @@ name of variable</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.plotMappingInfo">
-<code class="descname">plotMappingInfo</code><span class="sig-paren">(</span><em>resPath</em>, <em>patOrg</em>, <em>reacPat</em>, <em>reacTab</em>, <em>reacNumber</em>, <em>indInfoFilePath</em>, <em>figForm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.plotMappingInfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plotMappingInfo</code><span class="sig-paren">(</span><em>resPath</em>, <em>patOrg</em>, <em>reacPat</em>, <em>reacTab</em>, <em>reacNumber</em>, <em>indInfoFilePath</em>, <em>figForm</em>, <em>sampName</em>, <em>organisms</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.plotMappingInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function computes and automatically plots information coming from
 the mapping data as metabolic diversity and classical multidimensional
-scaling of individuals&#8217; reactions repertoire</p>
+scaling of individuals&#8217; reactions repertoire. If the last 2 arguments are
+specified MDS plots will be annotated with samples and organisms names</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm)</div></blockquote>
+<div>Y =plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, indInfoFilePath, figForm, sampName, organisms)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1068,6 +1069,10 @@ full path and name to related documentation(default: no)
 is available</li>
 <li><strong>figForm</strong> &#8211;
 format to use for saving figures</li>
+<li><strong>sampName</strong> &#8211;
+nx1 cell array cell array with names of individuals in the study</li>
+<li><strong>organisms</strong> &#8211;
+nx1 cell array cell array with names of organisms in the study</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
