@@ -7,6 +7,7 @@ Microbiome Modeling Toolbox
 
 .. toctree::
 
+   additionalAnalysis/index
    pairwiseInteractionModeling/index
    mgPipe/index
 
