@@ -14,27 +14,23 @@ function createPanModels(agoraPath,panPath,taxonLevel)
 %
 % USAGE:
 %
-%      createPanModels(agoraPath,panPath,taxonLevel)
+%   createPanModels(agoraPath,panPath,taxonLevel)
 %
-% REQUIRED INPUTS:
-%     agoraPath     String containing the path to the folder where the AGORA
-%                   reconstructions are located. Needs to end in '\' or '/'
-%                   depending on operating system.
-%     panPath       String containing the path to an empty folder that the
-%                   created pan-models will be stored in. Needs to end in '\'
-%                   or '/' depending on operating system.
-%     taxonLevel    String with desired taxonomical level of the pan-models.
-%                   Allowed inputs are 'Species','Genus','Family','Order',
-%                   'Class','Phylum'.
+% INPUTS:
+%    agoraPath     String containing the path to the AGORA reconstructions.
+%                  Must end with a file separator.
+%    panPath       String containing the path to an empty folder that the
+%                  created pan-models will be stored in. Must end with a file separator.
+%    taxonLevel    String with desired taxonomical level of the pan-models.
+%                  Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
 %
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 06/2018: adapted to function.
 
-%% Create the pan-models
-% List all species in the AGORA resource
+[~,infoFile,~]=xlsread('AGORA_infoFile.xlsx'); % create the pan-models
 
-[~,infoFile,~]=xlsread('AGORA_infoFile.xlsx');
+% List all species in the AGORA resource
 findTaxCol=find(strcmp(infoFile(1,:),taxonLevel));
 allTaxa=unique(infoFile(2:end,findTaxCol));
 

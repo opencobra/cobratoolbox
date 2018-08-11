@@ -1,4 +1,4 @@
-function [shadowPrices]=analyseObjectiveshadowPrices(modelList,objectiveList,varargin)
+function [shadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
 % This function determines the shadow prices indicating metabolites that
 % are relevant for the flux through one or multiple objective functions
 % optimized in one or more COBRA model structures. The objective functions
@@ -16,30 +16,30 @@ function [shadowPrices]=analyseObjectiveshadowPrices(modelList,objectiveList,var
 %
 % USAGE:
 %
-%      [shadowPrices]=analyseObjectiveshadowPrices(modelList,objectiveList,varargin)
+%   [shadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
 %
-% REQUIRED INPUTS:
-%     modelList         Cell array containing one or more COBRA model
-%                       structures in vertical order
-%     objectiveList     Cell array containing the names of one or more
-%                       objective functions of interest in vertical order
+% INPUTS:
+%   modelList         Cell array containing one or more COBRA model
+%                     structures in vertical order
+%   objectiveList     Cell array containing the names of one or more
+%                     objective functions of interest in vertical order
 %
 % OPTIONAL INPUTS:
-%     modelIDs          Cell array containing IDs of the models displayed in
-%                       the output table in same order as corresponding models
-%                       (default IDs assigned if not entered)
-%     osenseStr         String indicating whether objective function(s)
-%                       should be maximized or minimized. Allowed inputs:
-%                       'min','max', default:'max'.
-%     SPDef             String indicating whether positive, negative, or
-%                       all nonzero shadow prices should be collected.
-%                       Allowed inputs: 'Positive','Negative','Nonzero',
-%                       default: 'Nonzero'.
-%     numWorkers        Number indicating number of workers in parallel pool
-%                       (default: 0).
+%   modelIDs          Cell array containing IDs of the models displayed in
+%                     the output table in same order as corresponding models
+%                     (default IDs assigned if not entered)
+%   osenseStr         String indicating whether objective function(s)
+%                     should be maximized or minimized. Allowed inputs:
+%                     'min','max', default:'max'.
+%   SPDef             String indicating whether positive, negative, or
+%                     all nonzero shadow prices should be collected.
+%                     Allowed inputs: 'Positive','Negative','Nonzero',
+%                     default: 'Nonzero'.
+%   numWorkers        Number indicating number of workers in parallel pool
+%                     (default: 0).
 %
 % OUTPUT:
-%     shadowPrices      Table with shadow prices for metabolites that are
+%   shadowPrices      Table with shadow prices for metabolites that are
 %                       relevant for each analyzed objective in each analyzed
 %                       model
 %
