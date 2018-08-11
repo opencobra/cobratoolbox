@@ -1,5 +1,5 @@
 function [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
-% This function determines the shadow prices indicating metabolites that 
+% This function determines the shadow prices indicating metabolites that
 % are relevant for the flux through one or multiple objective functions
 % optimized in one or more COBRA model structures. The objective functions
 % entered are optimized one by one. By default, all metabolites with
@@ -8,41 +8,43 @@ function [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,var
 % for any COBRA model structure(s) and objective function(s).
 % When used with the Microbiome Modeling Toolbox, this function should be
 % used after running mgPipe and determining metabolites of interest that
-% are stratifying the modeled personalized microbiomes. The fecal exchanges 
-% secreting the metabolites of interest (e.g., EX_co2[fe]) should be used 
+% are stratifying the modeled personalized microbiomes. The fecal exchanges
+% secreting the metabolites of interest (e.g., EX_co2[fe]) should be used
 % as the objective functions entered in the present function to determine
 % model compounds that have value for the secretion of the metabolite of
 % interest.
 %
 % USAGE:
-% [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
+%
+%      [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
 %
 % REQUIRED INPUTS:
-% modelList         Cell array containing one or more COBRA model
-%                   structures in vertical order
-% objectiveList     Cell array containing the names of one or more
-%                   objective functions of interest in vertical order
+%     modelList         Cell array containing one or more COBRA model
+%                       structures in vertical order
+%     objectiveList     Cell array containing the names of one or more
+%                       objective functions of interest in vertical order
+%
 % OPTIONAL INPUTS:
-% modelIDs          Cell array containing IDs of the models displayed in 
-%                   the output table in same order as corresponding models
-%                   (default IDs assigned if not entered)
-% osenseStr         String indicating whether objective function(s)
-%                   should be maximized or minimized. Allowed inputs:
-%                   'min','max', default:'max'.
-% SPDef             String indicating whether positive, negative, or
-%                   all nonzero shadow prices should be collected. 
-%                   Allowed inputs: 'Positive','Negative','Nonzero',
-%                   default: 'Nonzero'.
-% numWorkers        Number indicating number of workers in parallel pool
-%                   (default: 0).
+%     modelIDs          Cell array containing IDs of the models displayed in
+%                       the output table in same order as corresponding models
+%                       (default IDs assigned if not entered)
+%     osenseStr         String indicating whether objective function(s)
+%                       should be maximized or minimized. Allowed inputs:
+%                       'min','max', default:'max'.
+%     SPDef             String indicating whether positive, negative, or
+%                       all nonzero shadow prices should be collected.
+%                       Allowed inputs: 'Positive','Negative','Nonzero',
+%                       default: 'Nonzero'.
+%     numWorkers        Number indicating number of workers in parallel pool
+%                       (default: 0).
 %
 % OUTPUT:
-% ShadowPrices      Table with shadow prices for metabolites that are 
-%                   relevant for each analyzed objective in each analyzed
-%                   model
-% 
-% Author:
-%-Almut Heinken, 07/2018
+%     ShadowPrices      Table with shadow prices for metabolites that are
+%                       relevant for each analyzed objective in each analyzed
+%                       model
+%
+% .. Author:
+%       - Almut Heinken, 07/2018
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);

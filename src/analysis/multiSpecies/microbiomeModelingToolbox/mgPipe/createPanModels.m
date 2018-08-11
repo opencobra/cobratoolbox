@@ -13,34 +13,37 @@ function createPanModels(agoraPath,panPath,taxonLevel)
 % available at a higher level than strain, e.g., species, genus.
 %
 % USAGE:
-% createPanModels(agoraPath,panPath,taxonLevel)
+%
+%      createPanModels(agoraPath,panPath,taxonLevel)
 %
 % REQUIRED INPUTS:
-% agoraPath     String containing the path to the folder where the AGORA
-%               reconstructions are located. Needs to end in '\' or '/'
-%               depending on operating system.
-% panPath       String containing the path to an empty folder that the
-%               created pan-models will be stored in. Needs to end in '\'
-%               or '/' depending on operating system.
-% taxonLevel    String with desired taxonomical level of the pan-models.
-%               Allowed inputs are 'Species','Genus','Family','Order',
-%               'Class','Phylum'.
+%     agoraPath     String containing the path to the folder where the AGORA
+%                   reconstructions are located. Needs to end in '\' or '/'
+%                   depending on operating system.
+%     panPath       String containing the path to an empty folder that the
+%                   created pan-models will be stored in. Needs to end in '\'
+%                   or '/' depending on operating system.
+%     taxonLevel    String with desired taxonomical level of the pan-models.
+%                   Allowed inputs are 'Species','Genus','Family','Order',
+%                   'Class','Phylum'.
 %
-% Authors
-% -Stefania Magnusdottir, 2016
-% -Almut Heinken, 06/2018: adapted to function.
+% .. Authors
+%       - Stefania Magnusdottir, 2016
+%       - Almut Heinken, 06/2018: adapted to function.
 
 %% Create the pan-models
 % List all species in the AGORA resource
+
 [~,infoFile,~]=xlsread('AGORA_infoFile.xlsx');
 findTaxCol=find(strcmp(infoFile(1,:),taxonLevel));
 allTaxa=unique(infoFile(2:end,findTaxCol));
+
 % Remove unclassified organisms
 allTaxa(strncmp('unclassified',allTaxa,12))=[];
 allTaxa(~cellfun(@isempty,strfind(allTaxa,'bacteri')))
 built=ls(panPath);
-% Remove models that have already been assembled from the list of models to
-% create
+
+% Remove models that have already been assembled from the list of models to create
 built=cellstr(built);
 built=strrep(built,'.mat','');
 toCreate=setdiff(allTaxa,built);
@@ -174,7 +177,7 @@ for i=1:size(toCreate,1)
     model.description.name = toCreate{i,1};
     model.description.author = 'Stefania Magnusdottir, Almut Heinken, Laura Kutt, Dmitry A. Ravcheev, Eugen Bauer, Alberto Noronha, Kacy Greenhalgh, Christian Jaeger, Joanna Baginska, Paul Wilmes, Ronan M.T. Fleming, and Ines Thiele';
     model.description.date=date;
-    
+
     % Adapt fields to current standard
     model=convertOldStyleModel(model);
     save([panPath,'pan',strrep(toCreate{i,1},' ','_'),'.mat'],'model')
@@ -234,5 +237,5 @@ for i=1:length(panModels)
         % Adapt fields to current standard
         model=convertOldStyleModel(model);
         save([panPath,panModels{i}],'model')
-    end   
+    end
 end
