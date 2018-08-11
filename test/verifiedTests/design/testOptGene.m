@@ -37,8 +37,8 @@ generxnList = model.rxns(setdiff([1:95], [11, 13, 26, 39]));  % Everything besid
 
 for k = 1:length(solvers.LP)
 
-    changeCobraSolver(solvers.LP, 'LP', 0);
-    changeCobraSolver(solvers.MILP, 'MILP', 0);
+    changeCobraSolver(solvers.LP{k}, 'LP', 0);
+    changeCobraSolver(solvers.MILP{k}, 'MILP', 0);
     fprintf(' -- Running testOptGene using the solver interfaces: LP: %s ; MILP: %s... ', solvers.LP{k}, solvers.MILP{k});
     basicsolution = optimizeCbModel(model);
     % function outputs
