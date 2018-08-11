@@ -3,6 +3,8 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 % plots the correlations between fluxes for one or more reactions of
 % interest in a number of microbiome samples and the relative microbe
 % abundance on different taxonomical levels in the same samples.
+% The function should be used after running mgPipe to identify correlations
+% between the computed metabolic profiles and specific taxa in the samples.
 %
 % USAGE
 %
