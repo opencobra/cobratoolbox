@@ -214,20 +214,20 @@ for i=1:length(panModels)
     if FBA.f > 50
         for j=2:size(reactionsToReplace,1)
             rxns=strsplit(reactionsToReplace{j,1},' AND ');
-            go=1;
+            go = true;
             for k=1:size(rxns,2)
                 if isempty(find(ismember(model.rxns,rxns{k})))
-                    go=0;
+                    go = false;
                 end
             end
-            if go==1
+            if go
                 % Only make the change if biomass can still be produced
                 modelTest=removeRxns(model,reactionsToReplace{j,2});
                 if ~isempty(reactionsToReplace{j,4})
                     modelTest=addReaction(modelTest,reactionsToReplace{j,4},reactionsToReplace{j,5});
                 end
-                FBA=optimizeCbModel(modelTest,'max');
-                if FBA.f>0.00001
+                FBA = optimizeCbModel(modelTest,'max');
+                if FBA.f>1e-5
                     model=modelTest;
                 end
             end
