@@ -167,6 +167,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">MultiSpecies</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../SteadyCom/index.html">SteadyCom</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Microbiome Modeling Toolbox</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../additionalAnalysis/index.html">additionalAnalysis</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../pairwiseInteractionModeling/index.html">Pairwise Interaction Modeling</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">mgPipe</a></li>
 </ul>
@@ -369,55 +370,6 @@ COBRA model structure</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.calculateReactionAbundance">
-<code class="descname">calculateReactionAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>modelPath</em>, <em>taxonomy</em>, <em>rxnsList</em>, <em>numWorkers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/calculateReactionAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
-plots the total abundance of reactions of interest in a given microbiome
-sample based on the strain-level composition.
-Reaction presence or absence in each strain is derived from the reaction content
-of the respective AGORA model. Two outputs are given: the total abundance,
-and optionally the abundance on different taxonomical levels.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>ReactionAbundance =calculateReactionAbundance(abundance, modelPath, taxonomy, rxnsList, numWorkers)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>abundance</strong> &#8211;
-Table of relative abundances with AGORA model
-IDs of the strains as rows and sample IDs as columns</li>
-<li><strong>modelPath</strong> &#8211;
-Folder containing the strain-specific AGORA models</li>
-<li><strong>taxonomy</strong> &#8211;
-Table with information on the taxonomy of each
-AGORA model strain</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>rxnsList</strong> &#8211;
-List of reactions for which the abundance
-should be calculated (if left empty: all
-reactions in all models)</li>
-<li><strong>numWorkers</strong> &#8211;
-Number of workers used for parallel pool. If
-left empty, the parallel pool will not be
-started. Parallellization is recommended if
-all reactions are computed.</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>ReactionAbundance       Structure with abundance for each microbiome</strong> &#8211;</p>
-<p>and reaction in total and on taxon levels</p>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.checkNomenConsist">
 <code class="descname">checkNomenConsist</code><span class="sig-paren">(</span><em>organisms</em>, <em>autoFix</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/checkNomenConsist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.checkNomenConsist" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function checks consistence of inputs (organisms names). If the parameter
@@ -449,48 +401,35 @@ nx1 cell array cell array with non ambiguous names of organisms in the study</li
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.correlateFluxWithTaxonAbundance">
-<code class="descname">correlateFluxWithTaxonAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>fluxes</em>, <em>taxonomy</em>, <em>corrMethod</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
-plots the correlations between fluxes for one or more reactions of
-interest in a number of microbiome samples and the relative microbe
-abundance on different taxonomical levels in the same samples.</p>
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPanModels">
+<code class="descname">createPanModels</code><span class="sig-paren">(</span><em>agoraPath</em>, <em>panPath</em>, <em>taxonLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/createPanModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPanModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates pan-models for all unique taxa (e.g., species)
+included in the AGORA resource. If reconstructions of multiple strains
+in a given taxon are present, the reactions in these reconstructions will
+be combined into a pan-reconstruction. The pan-biomass reactions will be
+built from the average of all biomasses. Futile cycles that result from
+the newly combined reaction content are removed by setting certain
+reactions irreversible. These reactions have been determined manually.
+NOTE: Futile cycle removal has only been tested at the species and genus
+level. Pan-models at higher taxonomical levels (e.g., family) may
+contain futile cycles and produce unrealistically high ATP flux.
+The pan-models can be used an input for mgPipe if taxon abundance data is
+available at a higher level than strain, e.g., species, genus.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)</div></blockquote>
+<div>createPanModels(agoraPath,panPath,taxonLevel)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>abundance</strong> &#8211;
-Table of relative abundances with AGORA model IDs
-of the strains as rows and sample IDs as columns</li>
-<li><strong>fluxes</strong> &#8211;
-Table of fluxes for reactions of interest with
-reaction IDs in microbiome community models as rows
-and sample IDs as columns</li>
-<li><strong>taxonomy</strong> &#8211;
-Table with information on the taxonomy of each
-AGORA model strain</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>corrMethod</strong> &#8211;
-Method to compute the linear correlation
-coefficient. Allowed inputs: &#8216;Pearson&#8217; (default),
-&#8216;Kendall&#8217;, &#8216;Spearman&#8217;.</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>FluxCorrelations</strong> &#8211;
-Structure with correlations between fluxes for each
-reaction and abundances on taxon levels</li>
-<li><strong>PValues</strong> &#8211;
-p-values corresponding to each calculated
-correlation</li>
+<div><ul>
+<li><p class="first"><strong>agoraPath     String containing the path to the AGORA reconstructions.</strong> &#8211;</p>
+<p>Must end with a file separator.</p>
+</li>
+<li><p class="first"><strong>panPath       String containing the path to an empty folder that the</strong> &#8211;</p>
+<p>created pan-models will be stored in. Must end with a file separator.</p>
+</li>
+<li><p class="first"><strong>taxonLevel    String with desired taxonomical level of the pan-models.</strong> &#8211;</p>
+<p>Allowed inputs are &#8216;Species&#8217;,&#8217;Genus&#8217;,&#8217;Family&#8217;,&#8217;Order&#8217;, &#8216;Class&#8217;,&#8217;Phylum&#8217;.</p>
+</li>
 </ul>
 </div></blockquote>
 </dd></dl>
