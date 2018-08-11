@@ -42,7 +42,7 @@ modelCoupled = changeRxnBounds(modelCoupled, rxnC, constrFlux, 'u');
 tol = 1e-4;
 
 %test solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
 
 for k = 1:length(solverPkgs)
 

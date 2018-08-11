@@ -13,10 +13,10 @@ currentDir = pwd;
 
 % The testmodel used is structured as follows:
 %
-%   <=> A -> F ---> H <=> J ->      
-%        \     /          ^         
-%         -> E            |     
-%            | \          L         
+%   <=> A -> F ---> H <=> J ->
+%        \     /          ^
+%         -> E            |
+%            | \          L
 %            v   -> I     |
 %   <=> B -> D       \    v
 %        \             -> K <=>
@@ -38,15 +38,15 @@ assert(all(ismember(model.mets(mets),{'D','L','C'})));
 
 %When detectDeadEnds is changed according to Ronans suggestion, we need to test
 %multiple solvers.
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
 
 for k = 1:length(solverPkgs)
-    
+
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    
+
     if solverOK == 1
-        
+
         %Only determine those, which are not involved in an exchange reaction
         [mets] = detectDeadEnds(model,1);
         assert(all(ismember(model.mets(mets),{'D','L'})));

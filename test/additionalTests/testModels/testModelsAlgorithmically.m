@@ -21,7 +21,7 @@ function results = testModelsAlgorithmically(solvers,matFolder,modelNames,printL
 global CBT_LP_SOLVER
 if 1
     %%parameters
-    
+
     %select solver to use
     if ~exist('solvers','var')
         if ~isunix || ismac
@@ -36,18 +36,18 @@ if 1
                 solvers={CBT_LP_SOLVER,'dqqMinos'};
             end
         end
-        
+
         %gurobi (http://www.gurobi.com/) gurboi versions 5 and 6 are supported
-        %solvers={'gurobi6'};
+        %solvers={'gurobi'};
         %optionally also test with quadMinos (a quadruple precision solver by Michael Saunders, Stanford Systems Optimization Laboratory)
-        %solvers={'gurobi6','dqqMinos'};
+        %solvers={'gurobi','dqqMinos'};
         solvers={'dqqMinos'};
     end
-        
+
     pth=which('initCobraToolbox.m');
     global CBTDIR
     CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
-    
+
     if ~exist('matFolder','var')
         matFolder=pwd;
         % set the folder within the folder 'testModels' where the .xml files are located
@@ -59,14 +59,14 @@ if 1
         matFolder='~/Dropbox/modelling/natureComm/source/MSP_ME';
         matFolder='~/Dropbox/modelling/natureComm/source/MSP_ReconX/';
     end
-    
+
     %modelNameStructure='MSP_ReconX';
     if ~exist('modelNames','var')
         modelNames=[];
     else
         if ~isempty(modelNames)
         if ~isstruct(modelNames)
-            
+
         %choose the ordering of the table of results, the second column contains a
         %unique abbreviation for each model
         switch modelNames
@@ -188,25 +188,25 @@ if 1
     if 0
         %the folder where the SBML .xml files are located
         xmlFolder='m_model_collection';
-        
+
         %folder where he .mat files are to be located
         matFolder=[pathContainingOpencobra 'cobratoolbox_master/testing/testModels/m_model_collection_mat'];
-        
+
         %parsing via cobra toolbox and sbml toolbox and libsbml with matlab bindings
         sbmlTestModelToMat(xmlFolder,matFolder);
     end
-    
+
     if ~exist('printLevel','var')
         printLevel=0;
-    end    
+    end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+
     %%
-    
+
     %The remainder of this code should run uninterupted,
     if any(strcmp(solvers,'quadMinos')) && isunix
         %quadMinos
@@ -219,28 +219,28 @@ if 1
             warning('Minos not installed or not on system path.');
         end
     end
-    
 
-    
+
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % batch of mat files models the matFolder directory
     cd(matFolder)
-    
+
     %batch of models in .mat format in a directory
     %assumes that each .mat file is a model
     matFiles=dir(matFolder);
     nModels=length(matFiles)-2;
-    
+
     modelResults=cell(nModels,2+length(solvers));
     j=1;
     for k=3:length(matFiles) %loop through the mat files in the directory
         if strcmp(matFiles(k).name(end-2:end),'mat')
-            
+
             if printLevel>0
                 %disp(j)
                 disp(matFiles(k).name)
             end
-            
+
             %get the id of the model from the filename
             whosFile=whos('-file',matFiles(k).name);
             modelID=matFiles(k).name(1:end-4);
@@ -253,7 +253,7 @@ if 1
             %stamp the model with the ID of the file
             model.modelID=modelID;
             model.description=modelID;
-            
+
             %find the exchange reactions
             [m,n]=size(model.S);
             try
@@ -272,19 +272,19 @@ if 1
             catch
                 disp('good');
             end
-            
+
             if 0
                 %check if stoichiometrically consistent
                 [inform,m,model]=checkStoichiometricConsistency(model,printLevel-1);
             end
-            
+
             %record the reaction to be optimized
             if any(model.c~=0) && isfield(model,'rxns')
                 modelResults{j,2}=model.rxns{model.c~=0};
             else
                 modelResults{j,2}='?';
             end
-                        
+
             %test with different solvers
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
             %save results
@@ -294,7 +294,7 @@ if 1
             j=j+1;%used below
         end
     end
-    
+
 
     %depending how the data is to be ordered, results structure is
     %different

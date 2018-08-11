@@ -20,7 +20,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 samplePoints = [5, 190];
 
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
 
 for k = 1:length(solverPkgs)
 

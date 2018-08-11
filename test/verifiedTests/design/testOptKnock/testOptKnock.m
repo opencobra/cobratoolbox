@@ -61,7 +61,7 @@ maxTime = 3600; %time in seconds
 changeCobraSolverParams('MILP', 'timeLimit', maxTime);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex'};
+solverPkgs = {'gurobi', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 
