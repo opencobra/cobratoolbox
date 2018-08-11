@@ -39,7 +39,7 @@ tol = 1e-6;
 v_ref = [10/3; 10/3; 20/3; -10; 10]; % reference flux distribution
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi6'};
+solverPkgs = {'tomlab_cplex', 'gurobi'};
 
 for k = 1:length(solverPkgs)
 

@@ -246,7 +246,7 @@ if nargin < 1
 end
 
 % legacy support for other versions of gurobi
-if strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'gurobi6') ||  strcmpi(solverName, 'gurobi7')
+if strcmpi(solverName, 'gurobi6') || strcmpi(solverName, 'gurobi7')
     solverName = 'gurobi';
 end
 

@@ -25,7 +25,7 @@ ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'};
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
 
 % create a parallel pool
 try
