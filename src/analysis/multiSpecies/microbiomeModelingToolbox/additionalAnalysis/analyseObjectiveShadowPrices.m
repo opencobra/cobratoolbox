@@ -1,4 +1,4 @@
-function [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
+function [shadowPrices]=analyseObjectiveshadowPrices(modelList,objectiveList,varargin)
 % This function determines the shadow prices indicating metabolites that
 % are relevant for the flux through one or multiple objective functions
 % optimized in one or more COBRA model structures. The objective functions
@@ -16,7 +16,7 @@ function [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,var
 %
 % USAGE:
 %
-%      [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)
+%      [shadowPrices]=analyseObjectiveshadowPrices(modelList,objectiveList,varargin)
 %
 % REQUIRED INPUTS:
 %     modelList         Cell array containing one or more COBRA model
@@ -39,7 +39,7 @@ function [ShadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,var
 %                       (default: 0).
 %
 % OUTPUT:
-%     ShadowPrices      Table with shadow prices for metabolites that are
+%     shadowPrices      Table with shadow prices for metabolites that are
 %                       relevant for each analyzed objective in each analyzed
 %                       model
 %
@@ -81,15 +81,15 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
-ShadowPrices{1,1}='Metabolite';
-ShadowPrices{1,2}='Objective';
+shadowPrices{1,1}='Metabolite';
+shadowPrices{1,2}='Objective';
 
 % Compute the solutions for all entered models and objective functions
 solutions={};
 if numWorkers > 0
     % with parallelization
     parfor i=1:size(modelList,1)
-        ShadowPrices{1,i+2}=modelIDs{i,1};
+        shadowPrices{1,i+2}=modelIDs{i,1};
         model=modelList{i,1};
         if osenseStr=='max'
             model.osenseStr='max';
@@ -104,7 +104,7 @@ if numWorkers > 0
 else
     % without parallelization
     for i=1:size(modelList,1)
-        ShadowPrices{1,i+2}=modelIDs{i,1};
+        shadowPrices{1,i+2}=modelIDs{i,1};
         model=modelList{i,1};
         [model, solutions{j,i}] = computeSolForObj(model, objectiveList);
     end
@@ -118,21 +118,21 @@ for i=1:size(modelList,1)
             FBAsolution=solutions{j,i};
             % verify that a feasible solution was obtained
             if FBAsolution.stat==1
-                [extractedShadowPrices]=extractShadowPrices(model,FBAsolution,SPDef);
-                for k=1:size(extractedShadowPrices,1)
+                [extractedshadowPrices]=extractshadowPrices(model,FBAsolution,SPDef);
+                for k=1:size(extractedshadowPrices,1)
                     % check if the metabolite relevant for this objective
                     % function is already in the table
-                    findMet=find(strcmp(ShadowPrices(:,1),extractedShadowPrices{k,1}));
-                    findObj=find(strcmp(ShadowPrices(:,2),objectiveList{j,1}));
+                    findMet=find(strcmp(shadowPrices(:,1),extractedshadowPrices{k,1}));
+                    findObj=find(strcmp(shadowPrices(:,2),objectiveList{j,1}));
                     if ~isempty(intersect(findMet,findObj))
                         % Add the shadow price for this model
-                        ShadowPrices{intersect(findMet,findObj),i+2}=extractedShadowPrices{k,2};
+                        shadowPrices{intersect(findMet,findObj),i+2}=extractedshadowPrices{k,2};
                     else
                         % Add a new row for this metabolite and objective function with the shadow price for this model
-                        newRow=size(ShadowPrices,1)+1;
-                        ShadowPrices{newRow,1}=extractedShadowPrices{k,1};
-                        ShadowPrices{newRow,2}=objectiveList{j,1};
-                        ShadowPrices{newRow,i+2}=extractedShadowPrices{k,2};
+                        newRow=size(shadowPrices,1)+1;
+                        shadowPrices{newRow,1}=extractedshadowPrices{k,1};
+                        shadowPrices{newRow,2}=objectiveList{j,1};
+                        shadowPrices{newRow,i+2}=extractedshadowPrices{k,2};
                     end
                 end
             end
@@ -152,11 +152,11 @@ function [model, FBAsolution] = computeSolForObj(model, objectiveList)
     end
 end
 
-function [extractedShadowPrices] = extractShadowPrices(model,FBAsolution,SPDef)
+function [extractedshadowPrices] = extractshadowPrices(model,FBAsolution,SPDef)
 % Finds all shadow prices in a solution computed for a COBRA model
 % structure that indicate the metabolite is relevant for the flux through the objective function.
 
-extractedShadowPrices={};
+extractedshadowPrices={};
 % Find all shadow prices (negative or positive depending on variable
 % SPDef)
 cnt=1;
@@ -167,20 +167,20 @@ for i=1:length(model.mets)
     if ~strncmp('slack_',model.mets{i},6)
         if strcmp(SPDef,'Negative')
             if FBAsolution.dual(i)  <0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                extractedshadowPrices{cnt,1}=model.mets{i};
+                extractedshadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
             end
         elseif strcmp(SPDef,'Positive')
             if FBAsolution.dual(i)  >0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                extractedshadowPrices{cnt,1}=model.mets{i};
+                extractedshadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
             end
         elseif strcmp(SPDef,'Nonzero')
             if FBAsolution.dual(i)  ~=0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                extractedshadowPrices{cnt,1}=model.mets{i};
+                extractedshadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
             end
         end
