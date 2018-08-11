@@ -158,7 +158,7 @@ for i=1:size(modelList,1)
 end
 end
 
-function [extractedShadowPrices]=extractShadowPrices(model,FBAsolution,SPDef)
+function [extractedShadowPrices] = extractShadowPrices(model,FBAsolution,SPDef)
 % Finds all shadow prices in a solution computed for a COBRA model
 % structure that indicate the metabolite is relevant for the flux through the objective function.
 
@@ -166,23 +166,25 @@ extractedShadowPrices={};
 % Find all shadow prices (negative or positive depending on variable
 % SPDef)
 cnt=1;
+tol = 1e-8;
+
 for i=1:length(model.mets)
     % Do not include slack variables
     if ~strncmp('slack_',model.mets{i},6)
         if strcmp(SPDef,'Negative')
-            if FBAsolution.dual(i)  <0 && abs(FBAsolution.dual(i))>0.00000001
+            if FBAsolution.dual(i)  <0 && abs(FBAsolution.dual(i)) > tol
                 extractedShadowPrices{cnt,1}=model.mets{i};
                 extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
             end
         elseif strcmp(SPDef,'Positive')
-            if FBAsolution.dual(i)  >0 && abs(FBAsolution.dual(i))>0.00000001
+            if FBAsolution.dual(i)  >0 && abs(FBAsolution.dual(i)) > tol
                 extractedShadowPrices{cnt,1}=model.mets{i};
                 extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
             end
         elseif strcmp(SPDef,'Nonzero')
-            if FBAsolution.dual(i)  ~=0 && abs(FBAsolution.dual(i))>0.00000001
+            if FBAsolution.dual(i)  ~=0 && abs(FBAsolution.dual(i)) > tol
                 extractedShadowPrices{cnt,1}=model.mets{i};
                 extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
                 cnt=cnt+1;
