@@ -89,7 +89,6 @@ solutions={};
 if numWorkers > 0
     % with parallelization
     parfor i=1:size(modelList,1)
-        i
         ShadowPrices{1,i+2}=modelIDs{i,1};
         model=modelList{i,1};
         if osenseStr=='max'
@@ -99,15 +98,7 @@ if numWorkers > 0
         end
         changeCobraSolver(solver, 'LP');
         solutionsTemp={};
-        % Compute the solutions for all objectives
-        for j=1:size(objectiveList,1)
-            % optimize for the objective if it is present in the model
-            if ~isempty(find(ismember(model.rxns,objectiveList{j,1})))
-            model=changeObjective(model,objectiveList{j,1});
-            FBAsolution=solveCobraLP(model);
-            solutionsTemp{j,1}=FBAsolution;
-            end
-        end
+        [model, solutionsTemp{j,1}] = computeSolForObj(model, objectiveList);
         solutions(:,i)=solutionsTemp;
     end
 else
@@ -115,15 +106,7 @@ else
     for i=1:size(modelList,1)
         ShadowPrices{1,i+2}=modelIDs{i,1};
         model=modelList{i,1};
-        % Compute the solutions for all objectives
-        for j=1:size(objectiveList,1)
-            % optimize for the objective if it is present in the model
-            if ~isempty(find(ismember(model.rxns,objectiveList{j,1})))
-                model=changeObjective(model,objectiveList{j,1});
-                FBAsolution=solveCobraLP(model);
-                solutions{j,i}=FBAsolution;
-            end
-        end
+        [model, solutions{j,i}] = computeSolForObj(model, objectiveList);
     end
 end
 % Extract all shadow prices and save them in a table
@@ -156,6 +139,17 @@ for i=1:size(modelList,1)
         end
     end
 end
+end
+
+function [model, FBAsolution] = computeSolForObj(model, objectiveList)
+% Compute the solutions for all objectives
+    for j = 1:size(objectiveList, 1)
+        % optimize for the objective if it is present in the model
+        if ~isempty(find(ismember(model.rxns,objectiveList{j,1})))
+            model = changeObjective(model,objectiveList{j,1});
+            FBAsolution = solveCobraLP(model);
+        end
+    end
 end
 
 function [extractedShadowPrices] = extractShadowPrices(model,FBAsolution,SPDef)
