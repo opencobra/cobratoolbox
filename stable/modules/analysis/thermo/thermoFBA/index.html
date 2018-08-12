@@ -278,7 +278,7 @@
 <span id="id1"></span><h1>thermoFBA<a class="headerlink" href="#thermofba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.thermoFBA"></span><dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.addLoopLawConstraints">
-<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em>, <em>method</em>, <em>reduce_vars</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/thermo/thermoFBA/addLoopLawConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em>, <em>method</em>, <em>reduce_vars</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/addLoopLawConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds loop law constraints to LP problem or MILP problem.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -333,7 +333,7 @@ Problem structure containing the following fields describing an MILP problem:<ul
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.checkThermodynamicConsistency">
-<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Usage</strong></p>
 <blockquote>
 <div>v = checkThermodynamicConsistency(model, q)</div></blockquote>
@@ -354,7 +354,7 @@ Problem structure containing the following fields describing an MILP problem:<ul
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.consistentPotentials">
-<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/thermo/thermoFBA/consistentPotentials.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
+<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/consistentPotentials.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a consistent set of potentials for each metabolite in a biochemical
 network, given the directions specified by the bounds on each reaction
 i.e. find y0, such that <span class="math">\(S^T y_0 &lt; 0\)</span> for a forward reaction and the opposite
@@ -386,8 +386,69 @@ consistent set of chemical potentials</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.cycleFreeFlux">
+<code class="descname">cycleFreeFlux</code><span class="sig-paren">(</span><em>V0</em>, <em>C</em>, <em>model</em>, <em>isInternalRxn</em>, <em>relaxBounds</em>, <em>parallelize</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/cycleFreeFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.cycleFreeFlux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes stoichiometrically balanced cycles from FBA solutions when
+possible.</p>
+<p>A Matlab implementation of the CycleFreeFlux algorithm from Desouki et
+al., 2015. Minimises the one norm of fluxes subject to bounds determined
+by input flux.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>V1 = cycleFreeFlux(V0, C, model, isInternalRxn, relaxBounds);</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>V0</strong> &#8211;
+<cite>n x k</cite> matrix of <cite>k</cite> FBA solutions</li>
+<li><strong>C</strong> &#8211;
+<cite>n x k</cite> matrix of <cite>k</cite> FBA objectives</li>
+<li><strong>model</strong> &#8211;
+COBRA model structure with required fields:<ul>
+<li>.S  - <cite>m x n</cite> stoichiometric matrix</li>
+<li>.b  - <cite>m x 1</cite> RHS vector</li>
+<li>.lb - <cite>n x 1</cite> lower bound vector</li>
+<li>.ub - <cite>n x 1</cite> lower bound vector</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>isInternalRxn</strong> &#8211;
+<cite>n x 1</cite> logical array. True for internal reactions.</li>
+<li><strong>relaxBounds</strong> &#8211;
+Relax bounds that don&#8217;t include zero. Default is false.</li>
+<li><strong>parallelize</strong> &#8211;
+Turn parfor use on or off. Default is true if k &gt; 12.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>V1</strong> &#8211;
+<cite>n x k</cite> matrix of cycle free flux vectors</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Remove</span> <span class="n">cycles</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">single</span> <span class="n">flux</span> <span class="n">vector</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">optimizeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="n">v1</span> <span class="o">=</span> <span class="n">cycleFreeFlux</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">model</span><span class="p">);</span>
+
+<span class="o">%</span> <span class="n">Remove</span> <span class="n">cycles</span> <span class="kn">from</span> <span class="nn">multiple</span> <span class="n">flux</span> <span class="n">vectors</span>
+<span class="p">[</span><span class="n">minFlux</span><span class="p">,</span> <span class="n">maxFlux</span><span class="p">,</span> <span class="n">Vmin</span><span class="p">,</span> <span class="n">Vmax</span><span class="p">]</span> <span class="o">=</span> <span class="n">fluxVariability</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;FBA&#39;</span><span class="p">);</span>
+<span class="n">V0</span> <span class="o">=</span> <span class="p">[</span><span class="n">Vmin</span><span class="p">,</span> <span class="n">Vmax</span><span class="p">];</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)];</span>
+<span class="n">V1</span> <span class="o">=</span> <span class="n">cycleFreeFlux</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">model</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot">
-<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots the top N reactions producing and consuming a metabolite in a flux solution</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -409,7 +470,7 @@ Number of reactions to include for production/consumption</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.thermoFBA.printDirectionalityFromBounds">
-<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6a4b12e3da97c4da898167b76db048f1dda333c7/src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the directionality for each reaction depending on the bounds for
 each reaction. Defaults to using <cite>model.lb</cite> &amp;  <cite>model.ub</cite> if none provided</p>
 <p><strong>Usage</strong></p>

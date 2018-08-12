@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lrs &mdash; The COBRA Toolbox</title>
+  <title>additionalAnalysis &mdash; The COBRA Toolbox</title>
   
 
   
@@ -63,9 +63,9 @@
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
-        <link rel="up" title="extremeRays" href="../index.html"/>
-        <link rel="next" title="lrsInterface" href="lrsInterface/index.html"/>
-        <link rel="prev" title="extremeRays" href="../index.html"/> 
+        <link rel="up" title="Microbiome Modeling Toolbox" href="../index.html"/>
+        <link rel="next" title="Pairwise Interaction Modeling" href="../pairwiseInteractionModeling/index.html"/>
+        <link rel="prev" title="Microbiome Modeling Toolbox" href="../index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -164,7 +164,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../KLdistance/index.html">KLdistance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../mdFBA/index.html">mdFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../MOMA/index.html">MOMA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">MultiSpecies</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../SteadyCom/index.html">SteadyCom</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Microbiome Modeling Toolbox</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">additionalAnalysis</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../pairwiseInteractionModeling/index.html">Pairwise Interaction Modeling</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mgPipe/index.html">mgPipe</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../relaxedFBA/index.html">relaxedFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../rFBA/index.html">rFBA</a></li>
@@ -174,21 +183,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">sparseFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../subspaces/index.html">Subspaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../thermo/index.html">Thermo</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Topology</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../circuits/index.html">Circuits</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../conservedMoieties/index.html">conservedMoieties</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../index.html">extremeRays</a><ul class="current">
-<li class="toctree-l5 current"><a class="current reference internal" href="#">lrs</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="lrsInterface/index.html">lrsInterface</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="../optimalRays/index.html">optimalRays</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="../../FR/index.html">FR</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../graphHypergraphConversion/index.html">graphHypergraphConversion</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../uFBA/index.html">uFBA</a></li>
 </ul>
@@ -254,11 +249,11 @@
         
           <li><a href="../../../index.html">Analysis</a> &raquo;</li>
         
-          <li><a href="../../index.html">Topology</a> &raquo;</li>
+          <li><a href="../../index.html">MultiSpecies</a> &raquo;</li>
         
-          <li><a href="../index.html">extremeRays</a> &raquo;</li>
+          <li><a href="../index.html">Microbiome Modeling Toolbox</a> &raquo;</li>
         
-      <li>lrs</li>
+      <li>additionalAnalysis</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -275,115 +270,165 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lrs">
-<span id="id1"></span><h1>lrs<a class="headerlink" href="#lrs" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="lrsInterface/index.html">lrsInterface</a></li>
-</ul>
-</div>
-<span class="target" id="module-src.analysis.topology.extremeRays.lrs"></span><dl class="function">
-<dt id="src.analysis.topology.extremeRays.lrs.equivalentSets">
-<code class="descname">equivalentSets</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/topology/extremeRays/lrs/equivalentSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.equivalentSets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the stoichiometrically balanced loops and the equivalent sets</p>
+  <div class="section" id="additionalanalysis">
+<span id="id1"></span><h1>additionalAnalysis<a class="headerlink" href="#additionalanalysis" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis"></span><dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices">
+<code class="descname">analyseObjectiveShadowPrices</code><span class="sig-paren">(</span><em>modelList</em>, <em>objectiveList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyseObjectiveShadowPrices.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines the shadow prices indicating metabolites that
+are relevant for the flux through one or multiple objective functions
+optimized in one or more COBRA model structures. The objective functions
+entered are optimized one by one. By default, all metabolites with
+nonzero shadow prices are extracted from the computed flux solutions. The
+function was wirtten for the Microbiome Modeling Toolbox but can be used
+for any COBRA model structure(s) and objective function(s).
+When used with the Microbiome Modeling Toolbox, this function should be
+used after running mgPipe and determining metabolites of interest that
+are stratifying the modeled personalized microbiomes. The fecal exchanges
+secreting the metabolites of interest (e.g., EX_co2[fe]) should be used
+as the objective functions entered in the present function to determine
+model compounds that have value for the secretion of the metabolite of
+interest.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)</div></blockquote>
-<p><strong>Input</strong></p>
+<div>[shadowPrices]=analyseObjectiveShadowPrices(modelList,objectiveList,varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA Toolbox model with fields:<ul>
-<li>.S - matrix</li>
-<li>.lb - lower bounds</li>
-<li>.ub - upper bounds</li>
-<li>.biomassAbbr - biomass abbreviation</li>
-</ul>
+<div><ul>
+<li><p class="first"><strong>modelList         Cell array containing one or more COBRA model</strong> &#8211;</p>
+<p>structures in vertical order</p>
 </li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>loops</strong> &#8211;
-stoichiometrically balanced loops</li>
-<li><strong>eqSets</strong> &#8211;
-equivalent sets</li>
-<li><strong>P</strong> &#8211;
-as <cite>P2</cite> but additinally dependent on <cite>cyclicBool</cite></li>
-<li><strong>P2</strong> &#8211;
-output of <cite>lrsOutputReadRay</cite></li>
-<li><strong>cyclicBool</strong> &#8211;
-boolean variable</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.topology.extremeRays.lrs.extremePathways">
-<code class="descname">extremePathways</code><span class="sig-paren">(</span><em>model</em>, <em>positivity</em>, <em>inequality</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/topology/extremeRays/lrs/extremePathways.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.extremePathways" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the extreme pathways of a stoichiometric model using the vertex/facet enumeration package</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[R, V] = extremePathways(model, positivity, inequality)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA Toolbox model with fields:<ul>
-<li>.description - string used to name files</li>
-<li>.lb - lower bounds and</li>
-<li>.ub - upper bounds to derive directionality</li>
-<li>.b - dxdt</li>
-</ul>
+<li><p class="first"><strong>objectiveList     Cell array containing the names of one or more</strong> &#8211;</p>
+<p>objective functions of interest in vertical order</p>
 </li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>positivity</strong> &#8211;
-{0, (1)} if <cite>positivity == 1</cite>, then positive orthant base</li>
-<li><strong>inequality</strong> &#8211;
-{(0), 1} if <cite>inequality == 1</cite>, then use two inequalities rather than a single equality</li>
+<div><ul>
+<li><p class="first"><strong>modelIDs          Cell array containing IDs of the models displayed in</strong> &#8211;</p>
+<p>the output table in same order as corresponding models
+(default IDs assigned if not entered)</p>
+</li>
+<li><p class="first"><strong>osenseStr         String indicating whether objective function(s)</strong> &#8211;</p>
+<p>should be maximized or minimized. Allowed inputs:
+&#8216;min&#8217;,&#8217;max&#8217;, default:&#8217;max&#8217;.</p>
+</li>
+<li><p class="first"><strong>SPDef             String indicating whether positive, negative, or</strong> &#8211;</p>
+<p>all nonzero shadow prices should be collected.
+Allowed inputs: &#8216;Positive&#8217;,&#8217;Negative&#8217;,&#8217;Nonzero&#8217;,
+default: &#8216;Nonzero&#8217;.</p>
+</li>
+<li><p class="first"><strong>numWorkers        Number indicating number of workers in parallel pool</strong> &#8211;</p>
+<p>(default: 0).</p>
+</li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>R</strong> &#8211;
-<cite>nDim</cite> by <cite>nRay</cite> matrix of extreme rays</li>
-<li><strong>V</strong> &#8211;
-<cite>nDim</cite> by <cite>nVertex</cite> matrix of vertices</li>
+<div><ul>
+<li><p class="first"><strong>shadowPrices      Table with shadow prices for metabolites that are</strong> &#8211;</p>
+<p>relevant for each analyzed objective in each analyzed
+model</p>
+</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.topology.extremeRays.lrs.extremePools">
-<code class="descname">extremePools</code><span class="sig-paren">(</span><em>model</em>, <em>positivity</em>, <em>inequality</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/topology/extremeRays/lrs/extremePools.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.extremePools" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the extreme pools of a stoichiometric model using the vertex / facet enumeration package</p>
-<p><strong>Input</strong></p>
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance">
+<code class="descname">calculateReactionAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>modelPath</em>, <em>taxonomy</em>, <em>rxnsList</em>, <em>numWorkers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the total abundance of reactions of interest in a given microbiome
+sample based on the strain-level composition.
+Reaction presence or absence in each strain is derived from the reaction content
+of the respective AGORA model. Two outputs are given: the total abundance,
+and optionally the abundance on different taxonomical levels.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>ReactionAbundance =calculateReactionAbundance(abundance, modelPath, taxonomy, rxnsList, numWorkers)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with:<ul>
-<li>.S - <cite>m x n</cite> Stoichiometric matrix with integer coefficients. If no
-other inputs are specified it is assumed that all reactions are
-reversible and <cite>S.v = 0</cite></li>
-<li>.SIntRxnBool - <cite>n x 1</cite> boolean vector with 1 for internal reactions</li>
-<li>.description - description</li>
-</ul>
-</li>
+<li><strong>abundance</strong> &#8211;
+Table of relative abundances with AGORA model
+IDs of the strains as rows and sample IDs as columns</li>
+<li><strong>modelPath</strong> &#8211;
+Folder containing the strain-specific AGORA models</li>
+<li><strong>taxonomy</strong> &#8211;
+Table with information on the taxonomy of each
+AGORA model strain</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>positivity</strong> &#8211;
-{0, (1)} if <cite>positivity == 1</cite>, then positive orthant base</li>
-<li><strong>inequality</strong> &#8211;
-{(0), 1} if <cite>inequality == 1</cite>, then use two inequalities rather than a single equaltiy</li>
+<li><strong>rxnsList</strong> &#8211;
+List of reactions for which the abundance
+should be calculated (if left empty: all
+reactions in all models)</li>
+<li><strong>numWorkers</strong> &#8211;
+Number of workers used for parallel pool. If
+left empty, the parallel pool will not be
+started. Parallellization is recommended if
+all reactions are computed.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>ReactionAbundance       Structure with abundance for each microbiome</strong> &#8211;</p>
+<p>and reaction in total and on taxon levels</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance">
+<code class="descname">correlateFluxWithTaxonAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>fluxes</em>, <em>taxonomy</em>, <em>corrMethod</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the correlations between fluxes for one or more reactions of
+interest in a number of microbiome samples and the relative microbe
+abundance on different taxonomical levels in the same samples.
+The function should be used after running mgPipe to identify correlations
+between the computed metabolic profiles and specific taxa in the samples.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abundance</strong> &#8211;
+Table of relative abundances with AGORA model IDs
+of the strains as rows and sample IDs as columns</li>
+<li><strong>fluxes</strong> &#8211;
+Table of fluxes for reactions of interest with
+reaction IDs in microbiome community models as rows
+and sample IDs as columns</li>
+<li><strong>taxonomy</strong> &#8211;
+Table with information on the taxonomy of each
+AGORA model strain</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>corrMethod</strong> &#8211;
+Method to compute the linear correlation
+coefficient. Allowed inputs: &#8216;Pearson&#8217; (default),
+&#8216;Kendall&#8217;, &#8216;Spearman&#8217;.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FluxCorrelations</strong> &#8211;
+Structure with correlations between fluxes for each
+reaction and abundances on taxon levels</li>
+<li><strong>PValues</strong> &#8211;
+p-values corresponding to each calculated
+correlation</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -400,10 +445,10 @@ reversible and <cite>S.v = 0</cite></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lrsInterface/index.html" class="btn btn-default float-right" title="lrsInterface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../pairwiseInteractionModeling/index.html" class="btn btn-default float-right" title="Pairwise Interaction Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="extremeRays" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Microbiome Modeling Toolbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
