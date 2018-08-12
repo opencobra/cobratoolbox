@@ -268,7 +268,7 @@ if inform~=1
             MILPproblem.vartype(nMet+1:nMet+nMet,1)='B';
             MILPproblem.x0 = zeros(nMet+nMet,1);
 
-%             solverOK = changeCobraSolver('gurobi6','MILP');
+%             solverOK = changeCobraSolver('gurobi','MILP');
             %Requires the COBRA toolbox
             tic
             if isfield(method,'param')

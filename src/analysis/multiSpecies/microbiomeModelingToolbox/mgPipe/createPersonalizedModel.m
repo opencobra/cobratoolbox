@@ -22,10 +22,35 @@ function [createdModels] = createPersonalizedModel(abunFilePath, resPath, model,
 %
 % .. Author: Federico Baldini 2017-2018
 
+[ab] = readtable(abunFilePath);
+fcol=table2cell(ab(:,1));
+if  ~isa(fcol{2,1},'char')
+     fcol=cellstr(num2str(cell2mat(fcol))); 
+end
+spaceColInd=strmatch(' ',fcol);
+if length(spaceColInd)>0
+   fcol(spaceColInd)=strrep(fcol(spaceColInd),' ','');
+end
+pIndex=cellstr(num2str((1:height(ab))'));
+spaceInd=strmatch(' ',pIndex);
+pIndexN=pIndex;
+if length(spaceInd)>0
+    pIndexN(spaceInd)=strrep(pIndex(spaceInd),' ','');
+end 
+ % Adding index column if needed
+if isequal(fcol,pIndexN)
+    disp('Index fashion input file detected');
+else
+    disp('Plain csv input format: adding index for internal purposes');
+    addIndex=pIndexN;
+    ab=horzcat((cell2table(addIndex)),ab);
+end
 createdModels = {};
+
 parfor k = 2:(patNumb + 1)
     mgmodel = model
-    [abundance] = readtable(abunFilePath);
+%   [abundance] = readtable(abunFilePath);
+    abundance=ab
     abundance = table2array(abundance(:, k + 1));
     % retrieving current model ID
     id = sampName((k - 1), 1)

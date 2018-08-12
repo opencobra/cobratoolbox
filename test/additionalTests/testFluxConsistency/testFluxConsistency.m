@@ -5,7 +5,7 @@ function bool=testFluxConsistency()
 global CBT_LP_SOLVER;
 origSolverLP = CBT_LP_SOLVER;
 
-changeCobraSolver('gurobi6','LP');
+changeCobraSolver('gurobi','LP');
 
 modelToUse='toy';
 switch modelToUse
@@ -24,7 +24,7 @@ switch modelToUse
         model.S=S;
         model.lb=zeros(6,1);
         model.ub=10*ones(6,1);
-        model.b=zeros(4,1);        
+        model.b=zeros(4,1);
     otherwise
         load 121114_Recon2betaModel.mat
         model=modelRecon2beta121114;
@@ -51,7 +51,7 @@ else
         modelRev=model;
         modelRev.lb(:)=-1000;
         modelRev.ub(:)=1000;
-        
+
         rev_fluxConsistentBool = fastcc(modelRev,epsilon,printLevel);
         nnz(rev_fluxConsistentBool)
     end

@@ -5,7 +5,7 @@ function bool=testFastcc()
 global CBT_LP_SOLVER;
 origSolverLP = CBT_LP_SOLVER;
 
-changeCobraSolver('gurobi6','LP');
+changeCobraSolver('gurobi','LP');
 
 epsilon = 1e-4;
 printLevel=2;
@@ -22,12 +22,12 @@ if 1
         bool=0;
     end
 else
-    %make a recon model with all reactions reversible, 
+    %make a recon model with all reactions reversible,
     %to see which reactions are still not flux consistent
     modelRev=model;
     modelRev.lb(:)=-1000;
     modelRev.ub(:)=1000;
-    
+
     rev_fluxConsistentBool = fastcc(modelRev,epsilon,printLevel);
     nnz(rev_fluxConsistentBool)
 end

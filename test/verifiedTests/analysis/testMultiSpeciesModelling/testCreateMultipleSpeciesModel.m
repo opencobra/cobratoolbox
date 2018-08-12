@@ -32,7 +32,7 @@ model = convertOldStyleModel(model);
 host = model;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'glpk', 'gurobi6', 'tomlab_cplex'};
+solverPkgs = {'glpk', 'gurobi', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 

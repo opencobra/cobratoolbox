@@ -146,7 +146,7 @@ for k = startIter:(patNumb + 1)
 
 model_sd=model;
 [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota')
-[model_sd] = useDiet(model_sd, adaptedDiet)
+[model_sd] = useDiet(model_sd, adaptedDiet,0)
     if exist('unfre') ==1 %option to directly add other essential nutrients
        warning('Feasibility forced with addition of essential nutrients')
        model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')

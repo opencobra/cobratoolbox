@@ -342,7 +342,7 @@ for i = 1:numIterations
 
     switch solvingStrategy
         case 'case1'
-            changeCobraSolver('gurobi7', 'MILP');
+            changeCobraSolver('gurobi', 'MILP');
             MILPproblem.c=[zeros(length(model.rxns), 1);
                 zeros(numSinkRxns, 1);
                 ones(numSinkRxns, 1);
@@ -361,7 +361,7 @@ for i = 1:numIterations
             MILPproblem.c(targetIndices(cMetIndices))=MILPproblem.c(targetIndices(cMetIndices)) * eWeight;
             tmpSol=solveCobraMILP(MILPproblem, 'timeLimit', timeLimit);
         case 'case2'
-            changeCobraSolver('gurobi7', 'LP');
+            changeCobraSolver('gurobi', 'LP');
             MILPproblem.c=[zeros(length(model.rxns), 1);
                 ones(numSinkRxns, 1);
                 zeros(numSinkRxns, 1);
@@ -380,7 +380,7 @@ for i = 1:numIterations
             MILPproblem.c(targetIndices(cMetIndices))=MILPproblem.c(targetIndices(cMetIndices)) * eWeight;
             tmpSol=solveCobraMILP(MILPproblem, 'timeLimit', timeLimit);
         case 'case3'
-            changeCobraSolver('gurobi7', 'LP');
+            changeCobraSolver('gurobi', 'LP');
             MILPproblem.c=[ones(length(model.rxns), 1);
                 ones(numSinkRxns, 1);
                 zeros(numSinkRxns, 1);
@@ -399,7 +399,7 @@ for i = 1:numIterations
             MILPproblem.c(targetIndices(cMetIndices))=MILPproblem.c(targetIndices(cMetIndices)) * eWeight;
             tmpSol=solveCobraMILP(MILPproblem, 'timeLimit', timeLimit);
         case 'case4'
-            changeCobraSolver('gurobi7', 'MIQP');
+            changeCobraSolver('gurobi', 'MIQP');
             MILPproblem.c=[zeros(length(model.rxns), 1);
                 zeros(numSinkRxns, 1);
                 zeros(numSinkRxns, 1);
@@ -423,7 +423,7 @@ for i = 1:numIterations
                 MILPproblem.F(targetIndices(fMetIndices), targetIndices(fMetIndices)) * eWeight;
             tmpSol=solveCobraMIQP(MILPproblem, 'timeLimit', timeLimit);
         case 'case5'
-            changeCobraSolver('gurobi7', 'MIQP');
+            changeCobraSolver('gurobi', 'MIQP');
             MILPproblem.c=[zeros(length(model.rxns), 1);
                 zeros(numSinkRxns, 1);
                 zeros(numSinkRxns, 1);
@@ -605,13 +605,13 @@ end
 tmpModel.c=zeros(length(tmpModel.c), 1);
 
 if strcmp(solvingStrategy, 'case1') || strcmp(solvingStrategy, 'case2') || strcmp(solvingStrategy, 'case3')
-    changeCobraSolver('gurobi7', 'LP');
+    changeCobraSolver('gurobi', 'LP');
 
     tmpModel.c(length(model.c) + 1:end)=1;
     tmpSol=optimizeCbModel(tmpModel, 'min');
     tmpModel.ub(length(model.c) + 1:end)=tmpSol.x(length(model.c) + 1:end) * lambda;
 else
-    changeCobraSolver('gurobi7', 'QP');
+    changeCobraSolver('gurobi', 'QP');
 
     tmpProb.A=tmpModel.S;
     tmpProb.b=tmpModel.b;

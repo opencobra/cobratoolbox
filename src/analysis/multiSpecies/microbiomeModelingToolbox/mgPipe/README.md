@@ -12,7 +12,7 @@ repertoire are examples.  [PART 2]: 1 Constructing a global metabolic model
 (setup) containing all the microbes listed in the study. 2 Building
 individuals' specific models integrating abundance data retrieved from
 metagenomics. For each organism, reactions are coupled to their objective
-function.  [PART 3] Simulations under different diet regimesand analysis of the 
+function.  [PART 3] Simulations under different diet regimesand analysis of the
 predicted metabolic profile (PCoA of computed MNPCs of
 individuals).
 
@@ -55,7 +55,7 @@ supplied in the current folder and in `papers/2018_microbiomeModelingToolbox`
 | microbiotaModelSimulator.m                     | *function to simulate under different diets the created models (called from mgPipe)*|
 | makeDummyModel.m                               | *function to create a dummy model*                                     |
 | mgSimResCollect.m                              | *function to collect and output simulation results*                    |
-| extractFullRes.m                               | *function to retrieve and export all the results (fluxes) computed during the simulations *|
+| extractFullRes.m                               | *function to retrieve and export all the results (fluxes) computed during the simulations*|
 | README.md                                      | *this file*                                                            |
 | useDiet.m                                      | *function to impose a specific diet and add essential elements to microbiota models*|
 | adaptVMHDietToAGORA.m                          | *function to convert a specific diet from VMH into an AGORA compatible one*|
@@ -150,15 +150,15 @@ outputs are:
 | microbiota_model_XXX.mat   | .mat file containing the personalized model                                                   |
 | simRes.mat                 | .mat file containing NMPCs (FVAct), the complementary FVAs results (NSct), values of the objective function (Presol), names of infeasible models (InFesMat)|
 
-For simplicity, besides the .mat files containing all the results, the main results are also saved in open format (.csv) in the dedicated results folder. The saved tables are: 
+For simplicity, besides the .mat files containing all the results, the main results are also saved in open format (.csv) in the dedicated results folder. The saved tables are:
 
 | File                       | Description                                                                                  |
 | ---------------------------|----------------------------------------------------------------------------------------------|
 | ID.csv                     | table containing list of metabolites for which simulations(FVA)and NMPCs are computed        |
 | standard.csv               | table containing metabolite resolved NMPCs for each individual under the same diet conditions|
-| sDiet_allFlux.csv          | table containing metabolite resolved min and max value of uptake and secretion or each individual under the same diet conditions|
+| sDiet_allFlux.csv          | table containing metabolite resolved min and max value of uptake and secretion for each individual under the same diet conditions|
 | rich.csv (if eneabled)     | table containing metabolite resolved NMPCs for each individual under rich diet conditions|
-| rDiet_allFlux.csv (if eneabled)| table containing metabolite resolved min and max value of uptake and secretion or each individual under rich diet conditions|
+| rDiet_allFlux.csv (if eneabled)| table containing metabolite resolved min and max value of uptake and secretion for each individual under rich diet conditions|
 
 If the specific option is enabled in the input file, some of the other outputs are also saved in open format (.csv) in the dedicated folder.
 
@@ -185,7 +185,7 @@ from any different source was not tested and it is not guaranteed to work.
 
 # Status of implementation
 
-[Part 1, 2, 3] are implemented structured and tested. 
+[Part 1, 2, 3] are implemented structured and tested.
 
 A tutorial showing how to use the pipeline was created.
 
@@ -217,10 +217,20 @@ dedicated page.
 ## Tutorial
 
 A livescript tutorial `mgPipeTutorial.mlx` and its correspondent version `mgPipeTutorial.m` are available in
-`tutorials/additionalTutorials/microbiomeModelingToolbox/`.
+`tutorials/analysis/microbiomeModelingToolbox/`.
+
+## Funding
+
+This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN
+grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union?s Horizon 2020 research and innovation
+programme (grant agreement No 757922).
 
 ## Author & Documentation Date
 
 *Federico Baldini, 26.07.18*
 
+*Luxembourg Centre for Systems Biomedicine, University of Luxembourg, Campus Belval, Esch-sur-Alzette, Luxembourg*
+
 *[federico.baldini@uni.lu](federico.baldini@uni.lu)*
+
+

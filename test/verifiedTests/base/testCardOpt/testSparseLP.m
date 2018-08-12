@@ -18,7 +18,7 @@ cd(fileDir);
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
 
 % vector of approximations for sparseLP
 approxVect = {'exp', 'cappedL1', 'log', 'SCAD', 'lp-', 'lp+'};

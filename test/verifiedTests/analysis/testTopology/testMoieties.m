@@ -64,7 +64,7 @@ N = model.S(mbool, rbool);
 
 solverOK = changeCobraSolver('gurobi', 'MILP', 0);
 if solverOK
-    fprintf(' -- Running testMoieties using the solver interface: gurobi6 ... ');
+    fprintf(' -- Running testMoieties using the solver interface: gurobi ... ');
 
     D = decomposeMoietyVectors(L, N);
     assert(all(all(D == D0)), 'Decomposed moiety matrix does not match reference.')

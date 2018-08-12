@@ -18,7 +18,7 @@ fileDir = fileparts(which('testFastLeakTest.m'));
 cd(fileDir);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
 
 model = getDistributedModel('ecoli_core_model.mat');
 
@@ -31,12 +31,12 @@ model.ub(model.ub < 0) = 0;
 for k = 1:length(solverPkgs)
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    
+
     if solverOK == 1
         fprintf('   Testing empty Leak Test with solver %s ... \n', solverPkgs{k});
-        
+
         [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, {}, 'true');
-        
+
         assert(isempty(LeakMets));
     end
 end
@@ -48,12 +48,12 @@ modelWithLeaks = addReaction(modelWithLeaks,'A2','metaboliteList',{model.mets{2}
 for k = 1:length(solverPkgs)
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    
+
     if solverOK == 1
         fprintf('   Testing non empty Leak Test with solver %s ... \n', solverPkgs{k});
-        
+
         [LeakMets, modelClosed, FluxExV] = fastLeakTest(modelWithLeaks, {}, 'true');
-        
+
         assert(any(ismember(['DM_' model.mets{2}],LeakMets))|| any(ismember(['DM_' model.mets{2}],LeakMets)));
     end
 end
@@ -65,12 +65,12 @@ modelWithLeaks = addReaction(modelWithLeaks,'A2','metaboliteList',{'h[x]','h[c]'
 for k = 1:length(solverPkgs)
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    
+
     if solverOK == 1
         fprintf('   Testing proton Leak Test with solver %s ... \n', solverPkgs{k});
-        
+
         [LeakMets, modelClosed, FluxExV] = fastLeakTest(modelWithLeaks, {}, 'true');
-        
+
         %Only Protons in the leaks.
         assert(all(~cellfun(@isempty, regexp(LeakMets,'^(DM_)|(EX_)h\[[a-z]\]$'))));
     end

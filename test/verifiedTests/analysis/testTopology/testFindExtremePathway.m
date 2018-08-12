@@ -42,7 +42,7 @@ for k = 1:length(solverPkgs)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
-% 
+%
 %         % testing findExtremePathway with different arguments
 %         if isfield(model, 'revRxns')
 %             model = rmfield(model, 'revRxns');
@@ -58,7 +58,7 @@ for k = 1:length(solverPkgs)
         model.lb = [ 0, -1,  0,  0,  0,  0,  0, -1,  0,  0];
         v = findExtremePathway(model);
         assert(all(abs(model.S * v) < tol))
-        
+
         v = findExtremePathway(model, obj);
         assert(all(refV == v))
         assert(all(model.S * v == zeros(size(model.S, 1), 1)))
@@ -67,7 +67,7 @@ for k = 1:length(solverPkgs)
                      1, -1,  0;
                      0,  1, -1];
 
-        %solverOK = changeCobraSolver('gurobi6', 'LP', 0);
+        %solverOK = changeCobraSolver('gurobi', 'LP', 0);
 
         [x, output] = findExtremePool(model2);
 

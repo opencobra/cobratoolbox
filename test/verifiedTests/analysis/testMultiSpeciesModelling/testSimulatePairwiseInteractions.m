@@ -41,7 +41,7 @@ if ~exist('pairedModelInfo', 'var')
 end
 
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
 
 for p = 1:length(solverPkgs)
 
