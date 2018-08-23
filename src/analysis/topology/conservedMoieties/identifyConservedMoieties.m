@@ -1,10 +1,11 @@
-function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances,E] = identifyConservedMoieties(model, ATN)
+function [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoieties(model, ATN)
 % Identifies conserved moieties in a metabolic network (model) by graph
 % theoretical analysis of the corresponding atom transition network (ATN).
+% 
 %
 % USAGE:
 %
-%    [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instances,E] = identifyConservedMoieties(model, ATN)
+%    [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoieties(model, ATN)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -33,15 +34,18 @@ function [L, M, moietyFormulas, instances2mets, instances2moieties, atoms2instan
 %                           space of `S`.
 %    M:                     The `u x v` incidence matrix of the moiety supergraph
 %                           where each connected component is a moiety graph.
-%    moietyFormulas:        `m x r` cell array with chemical formulas of moieties
-%    instances2mets:        `u x 1` vector mapping moieties (rows of `M`) to
+%    moietyFormulas:        `r x 1` cell array with chemical formulas of moieties
+%    moieties2mets:         `u x 1` vector mapping moieties (rows of `M`) to
 %                           metabolites (rows of S)
-%    instances2moieties:    `u x 1` vector mapping moieties (rows of `M`) to
+%    moieties2vectors:      `u x 1` vector mapping moieties (rows of `M`) to
 %                           moiety vectors (columns of `L`)
-%    atoms2instances:       `p x 1` vector mapping atoms (rows of `A`) to moieties
+%    atoms2moieties:        `p x 1` vector mapping atoms (rows of `A`) to moieties
 %                           (rows of `M`)
-%    E:                     Moiety vectors that are not in left null space.
-%                           Should be empty.
+%    mtrans2rxns:           'v x 1' vector mapping moiety transitions
+%                           (columns of M) to reactions (columns of S)
+%    atrans2mtrans:         'q x 1' vector mapping atom transitions
+%                           (columns of A) to moiety transitions (columns
+%                           of M)
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 
@@ -60,7 +64,7 @@ elements = ATN.elements;
 clear ATN
 
 [nMets] = size(N,1);
-[nAtoms] = size(A,1);
+[nAtoms, nAtrans] = size(A);
 
 xt = 1:size(A,2);
 
@@ -111,9 +115,11 @@ nMoieties = sum(sum(L)); % Total number of nodes in moiety supergraph
 nEdges = sum(any(A(ismember(components,xi),:),1)); % Total number of edges in moiety supergraph
 
 moietyFormulas = cell(nVectors,1); % Cell array with chemical formulas of moieties
-instances2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to metabolites (rows of S)
-instances2moieties = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to moiety vectors (columns of L)
-atoms2instances = zeros(nAtoms,1); % Vector mapping atoms (rows of A) to moieties (rows of M)
+moieties2mets = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to metabolites (rows of S)
+moieties2vectors = zeros(nMoieties,1); % Vector mapping moieties (rows of M) to moiety vectors (columns of L)
+atoms2moieties = zeros(nAtoms,1); % Vector mapping atoms (rows of A) to moieties (rows of M)
+mtrans2rxns = zeros(nEdges,1); % 'v x 1' vector mapping moiety transitions (columns of M) to reactions (columns of S)
+atrans2mtrans = zeros(nAtrans,1); % 'q x 1' vector mapping atom transitions (columns of A) to moiety transitions (columns of M)
 
 M = sparse(nMoieties,nEdges); % Moiety supergraph
 firstrow = 1;
@@ -135,10 +141,10 @@ for i = 1:nVectors
     
     % Mappings
     mets1 = atoms2mets(comp1); % map atoms to metabolites
-    instances2mets(rowidx) = mets1; % map moieties to metabolites
+    moieties2mets(rowidx) = mets1; % map moieties to metabolites
     rxns1 = trans2rxns(xt(trans1)); % Map edges in first component to reactions
-    instances2moieties(rowidx) = i; % Map moieties to moiety vectors
-    atoms2instances(comp1) = rowidx; % Map atoms in first atom component of current moiety conservation relation to rows of moiety supergraph
+    moieties2vectors(rowidx) = i; % Map moieties to moiety vectors
+    atoms2moieties(comp1) = rowidx; % Map atoms in first atom component of current moiety conservation relation to rows of moiety supergraph
     
     % Initialize element array for moiety
     e = unique(elements(comp1));
@@ -156,7 +162,7 @@ for i = 1:nVectors
             e = [e; unique(elements(comp2))];
             
             if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))
-                atoms2instances(comp2) = rowidx; % map atoms to moieties
+                atoms2moieties(comp2) = rowidx; % map atoms to moieties
                 continue;
             end
             
@@ -183,7 +189,7 @@ for i = 1:nVectors
             trans2 = trans2(perm);
             
             if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))
-                atoms2instances(comp2) = rowidx; % map atoms to moieties
+                atoms2moieties(comp2) = rowidx; % map atoms to moieties
                 continue;
             end
             
@@ -216,7 +222,7 @@ for i = 1:nVectors
                 
                 if ~isempty(p)
                     d2 = reordernodes(d2,p);
-                    atoms2instances(d2.Nodes.Atom) = rowidx; % map atoms to moieties
+                    atoms2moieties(d2.Nodes.Atom) = rowidx; % map atoms to moieties
                 else
                     warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
                 end
@@ -234,7 +240,7 @@ for i = 1:nVectors
                 
                 if isIsomorphic
                     comp2 = comp2(p);
-                    atoms2instances(comp2) = rowidx;
+                    atoms2moieties(comp2) = rowidx;
                 else
                     warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
                 end
