@@ -109,7 +109,7 @@ if any(~leftNullBool)
     warning('Not all moiety vectors are in the left null space of S. Check that atom transitions in A match the stoichiometry in S.');
 end
 
-% Construct incidence matrix for moiety supergraph
+% Initialise index vectors to map between data structures
 nVectors = size(L,2); % Number of moiety conservation relations (unique moiety vectors)
 nMoieties = sum(sum(L)); % Total number of nodes in moiety supergraph
 nEdges = sum(any(A(ismember(components,xi),:),1)); % Total number of edges in moiety supergraph
@@ -121,6 +121,7 @@ atoms2moieties = zeros(nAtoms,1); % Vector mapping atoms (rows of A) to moieties
 mtrans2rxns = zeros(nEdges,1); % 'v x 1' vector mapping moiety transitions (columns of M) to reactions (columns of S)
 atrans2mtrans = zeros(nAtrans,1); % 'q x 1' vector mapping atom transitions (columns of A) to moiety transitions (columns of M)
 
+% Construct incidence matrix for moiety supergraph
 M = sparse(nMoieties,nEdges); % Moiety supergraph
 firstrow = 1;
 firstcol = 1;
@@ -140,17 +141,21 @@ for i = 1:nVectors
     firstcol = firstcol + ncols;
     
     % Mappings
-    mets1 = atoms2mets(comp1); % map atoms to metabolites
-    moieties2mets(rowidx) = mets1; % map moieties to metabolites
+    mets1 = atoms2mets(comp1); % Map atoms to metabolites
+    moieties2mets(rowidx) = mets1; % Map moieties to metabolites
     rxns1 = trans2rxns(xt(trans1)); % Map edges in first component to reactions
     moieties2vectors(rowidx) = i; % Map moieties to moiety vectors
     atoms2moieties(comp1) = rowidx; % Map atoms in first atom component of current moiety conservation relation to rows of moiety supergraph
+    mtrans2rxns(colidx) = rxns1; % Map moiety transitions to reactions
+    atrans2mtrans(trans1) = colidx; % Map edges in first component to moiety transitions
     
     % Initialize element array for moiety
     e = unique(elements(comp1));
     
     idx = setdiff(find(xj == i),xi(i)); % Indices of other atom components in current moiety conservation relation
     
+    % The rest of the code is to map atoms to moieties and atom
+    % transitions to moiety transitions
     if ~isempty(idx)
         
         for j = idx' % Loop through other atom components in current moiety conservation relation
@@ -163,6 +168,7 @@ for i = 1:nVectors
             
             if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))
                 atoms2moieties(comp2) = rowidx; % map atoms to moieties
+                atrans2mtrans(trans2) = colidx; % map atom transitions to moiety transitions
                 continue;
             end
             
@@ -177,6 +183,7 @@ for i = 1:nVectors
             rxns1 = mgraph1(:,1);
             mgraph1 = mgraph1(:,2:end)';
             trans1 = trans1(perm);
+            colidx = colidx(perm);
             
             [mgraph2,perm] = sortrows([mets2 mgraph2]);
             mets2 = mgraph2(:,1);
@@ -190,13 +197,14 @@ for i = 1:nVectors
             
             if (all(mets2 == mets1) && all(rxns2 == rxns1)) && all(all(mgraph2 == mgraph1))
                 atoms2moieties(comp2) = rowidx; % map atoms to moieties
+                atrans2mtrans(trans2) = colidx; % map atom transitions to moiety transitions
                 continue;
             end
             
             if ~verLessThan('matlab','9.1')
                 % Use Matlab's built in isomorphism algorithm. Introduced in R2016b
                 % Last resort because it's slow. Should only need it in rare cases.
-                [g1,o2n1,n2o1] = unique(mgraph1','rows','stable'); % Matlab graphs do not support replicate edges
+                [g1,o2n1] = unique(mgraph1','rows','stable'); % Matlab graphs do not support replicate edges
                 g1 = g1';
                 urxns1 = rxns1(o2n1);
                 utrans1 = trans1(o2n1);
@@ -221,19 +229,23 @@ for i = 1:nVectors
                 p = isomorphism(d1,d2,'NodeVariables','Met','EdgeVariables','Rxn');
                 
                 if ~isempty(p)
-                    d2 = reordernodes(d2,p);
+                    [d2, pE] = reordernodes(d2,p);
+                    trans2Map = sparse(n2o2, 1:ncols, ones(ncols, 1)); % to keep track of the order of atom transitions
+                    trans2Map = trans2Map(pE, :);
+                    [~, n2o2] = find(trans2Map);
                     atoms2moieties(d2.Nodes.Atom) = rowidx; % map atoms to moieties
+                    atrans2mtrans(trans2(n2o2)) = colidx; % map atom transitions to moiety transitions
                 else
                     warning('atom graphs not isomorphic'); % Should never get here. Something went wrong.
                 end
                 
             elseif license('test','Bioinformatics_Toolbox')
                 [h1,~] = find(mgraph1 < 0);
-                [t1,~] = find(mgraph1 >0);
+                [t1,~] = find(mgraph1 > 0);
                 g1 = sparse([t1;h1],[h1;t1],ones(size([t1;h1])));
                 
                 [h2,~] = find(mgraph2 < 0);
-                [t2,~] = find(mgraph2 >0);
+                [t2,~] = find(mgraph2 > 0);
                 g2 = sparse([t2;h2],[h2;t2],ones(size([t2;h2])));
                 
                 [isIsomorphic, p] = graphisomorphism(g1, g2);
