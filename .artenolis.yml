@@ -14,7 +14,7 @@ script:
     - bash .artenolis/runtests.sh
 
 after_success:
-    - if [ "$MATLAB_VER" == "R2016b" ]; then
+    - if [ "$MATLAB_VER" == "R2017b" ]; then
       if [ "$ARCH" == "Linux" ]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
