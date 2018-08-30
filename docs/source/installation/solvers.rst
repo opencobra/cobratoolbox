@@ -242,7 +242,7 @@ MOSEK
 
 2) Apply for a license
    `here <https://mosek.com/products/trial/>`__. A free academic
-   license is `here <https://license.mosek.com/academic/>`__. You will
+   license is `here <https://www.mosek.com/products/academic-licenses/>`__. You will
    receive an email with your ``mosek.lic`` file.
 
 3) |linux| Save (or move) the downloaded archive ``tar.bz2`` to ``/opt/.`` (you
