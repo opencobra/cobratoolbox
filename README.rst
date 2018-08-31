@@ -15,9 +15,9 @@ The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
      <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
        <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
        <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
-       <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/badges/linux.svg"></a>
-       <a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://prince.lcsb.uni.lu/badges/macOS.svg"></a>
-       <a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/badges/windows.svg"></a>
+       <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://prince.lcsb.uni.lu/badges/linux-cobratoolbox.svg"></a>
+       <a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://prince.lcsb.uni.lu/badges/macOS-cobratoolbox.svg"></a>
+       <a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://prince.lcsb.uni.lu/badges/windows-cobratoolbox.svg"></a>
        <a href="http://opencobra.github.io/cobratoolbox/docs/builds.html"><img src="http://concordion.org/img/benefit-links.png?maxAge=0" height="20px" alt="All continuous integration builds"></a>
        </div></td>
        <td><div align="center"><img src="https://prince.lcsb.uni.lu/badges/codegrade.svg" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.">
