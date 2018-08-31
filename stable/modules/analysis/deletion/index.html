@@ -261,7 +261,7 @@
 <span id="id1"></span><h1>Deletion<a class="headerlink" href="#deletion" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.deletion"></span><dl class="function">
 <dt id="src.analysis.deletion.deleteModelGenes">
-<code class="descname">deleteModelGenes</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>downRegFraction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/deletion/deleteModelGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.deleteModelGenes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">deleteModelGenes</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>downRegFraction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/analysis/deletion/deleteModelGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.deleteModelGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes one or more genes and constrain the reactions
 affected to zero and appends &#8216;_deleted&#8217; to the gene(s)</p>
 <p><strong>Usage</strong></p>
@@ -303,11 +303,11 @@ The list of genes removed from the model.</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.doubleGeneDeletion">
-<code class="descname">doubleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList1</em>, <em>geneList2</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/deletion/doubleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.doubleGeneDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doubleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList1</em>, <em>geneList2</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/analysis/deletion/doubleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.doubleGeneDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs double gene deletion analysis using FBA, MOMA or linear MOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, method, geneList1, geneList2, verbFlag)</div></blockquote>
+<div>[grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, method, geneList1, geneList2, printLevel)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -324,8 +324,8 @@ Either &#8216;FBA&#8217; (default), &#8216;MOMA&#8217; or &#8216;lMOMA&#8217;</l
 List of query genes to be deleted (default = all genes)</li>
 <li><strong>geneList2</strong> &#8211;
 List of target genes to be deleted (default = geneList1)</li>
-<li><strong>verbFlag</strong> &#8211;
-Verbose output (default = false)</li>
+<li><strong>printLevel</strong> &#8211;
+Level of verbose output (default = 0)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -344,7 +344,7 @@ Wild type growth rate (1/h)</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.singleGeneDeletion">
-<code class="descname">singleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList</em>, <em>verbFlag</em>, <em>uniqueGene</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/deletion/singleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleGeneDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleGeneDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>geneList</em>, <em>verbFlag</em>, <em>uniqueGene</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/analysis/deletion/singleGeneDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleGeneDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs single gene deletion analysis using FBA, MOMA or linearMOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -391,7 +391,7 @@ FBA/MOMA/lMOMA fluxes for <cite>KO</cite> strains</li>
 
 <dl class="function">
 <dt id="src.analysis.deletion.singleRxnDeletion">
-<code class="descname">singleRxnDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>rxnList</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/ef3990edbe54d0850aa95c8afadb64e448ef6093/src/analysis/deletion/singleRxnDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleRxnDeletion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleRxnDeletion</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>rxnList</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/analysis/deletion/singleRxnDeletion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.deletion.singleRxnDeletion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs single reaction deletion analysis using FBA, MOMA or linearMOMA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
