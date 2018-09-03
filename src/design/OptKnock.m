@@ -97,7 +97,7 @@ else
     solutionFileName = solutionFileNameTmp;
 end
 
-if ~isfield(options,'targetRxn') || any(~ismember(model.rxns,options.targetRxn))
+if ~isfield(options,'targetRxn') || any(~ismember(options.targetRxn,model.rxns))
     if ~isfield(options, 'targetRxn')
         error('No target reaction (options.targetRxn) defined')
     else
