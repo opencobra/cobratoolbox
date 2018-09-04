@@ -43,3 +43,15 @@ description	NaN	NaN	ischar(x) || isstruct(x)					struct()		String or Struct	Name
 modelVersion	NaN	NaN	isstruct(x)					struct()		Struct	Information on the model version	'false(1)'	struct
 modelName	NaN	NaN	ischar(x)					'Model Exported from COBRA Toolbox'		String	A Descriptive Name of the model	'false(1)'	char
 modelID	NaN	NaN	ischar(x)					'COBRAModel'		String	The ID of the model	'false(1)'	char
+E	mets	evars	isnumeric(x) || issparse(x)					0		Sparse or Full Matrix of Double	Matrix of additional, non metabolic variables (e.g. Enzyme capacity variables)	'false(1)'	sparse
+evarlb	evars	1	isnumeric(x)					-1000		Column Vector of Doubles	Lower bounds of the additional variables	'false(1)'	numeric
+evarub	evars	1	isnumeric(x)					1000		Column Vector of Doubles	Upper bounds of the additional variables	'false(1)'	numeric
+evarc	evars	1	isnumeric(x)					0		Column Vector of Doubles	Objective coefficient of the additional variables 	'false(1)'	numeric
+evars	evars	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					['Variable' num2str(i)]		Column Cell Array of Strings	IDs of the additional variables	'false(1)'	cell
+evarNames	evars	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					model.evars{i}		Column Cell Array of Strings	Names of the additional variables	'false(1)'	cell
+C	ctrs	rxns	isnumeric(x) || issparse(x)					0		Sparse or Full Matrix of Double	Matrix of additional Constraints (e.g. Coupling Constraints)	'false(1)'	sparse
+ctrs	ctrs	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					['Constraint' num2str(i)]		Column Cell Array of Strings	IDs of the additional Constraints	'false(1)'	cell
+ctrNames	ctrs	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					model.ctrs{i}		Column Cell Array of Strings	Names of the of the additional Constraints	'false(1)'	cell
+d	ctrs	1	isnumeric(x)					0		Column Vector of Doubles	Right hand side values of the additional Constraints	'false(1)'	numeric
+dsense	ctrs	1	ischar(x)					E		Column Vector of Chars	Senses of the additional Constraints	'false(1)'	char
+D	ctrs	evars	isnumeric(x) || issparse(x)					0		Sparse or Full Matrix of Double	Matrix to store elements that contain interactions between additional Constraints and additional Variables	'false(1)'	sparse
