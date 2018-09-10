@@ -249,7 +249,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.fastGapFill"></span><dl class="function">
 <dt id="src.reconstruction.fastGapFill.fastGapFill">
-<code class="descname">fastGapFill</code><span class="sig-paren">(</span><em>consistMatricesSUX</em>, <em>epsilon</em>, <em>weights</em>, <em>weightsPerReaction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/fastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.fastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastGapFill</code><span class="sig-paren">(</span><em>consistMatricesSUX</em>, <em>epsilon</em>, <em>weights</em>, <em>weightsPerReaction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/fastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.fastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function requires the fastCORE algorithm (Vlassis et al., 2013, <a class="reference external" href="http://arxiv.org/abs/1304.7992">http://arxiv.org/abs/1304.7992</a>) as
 well as the output from <cite>prepareFastGapFill</cite>.</p>
 <p><strong>Usage</strong></p>
@@ -295,7 +295,7 @@ Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></li
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.generateSUXMatrix">
-<code class="descname">generateSUXMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>dictionary</em>, <em>KEGGFilename</em>, <em>KEGGBlackList</em>, <em>compartment</em>, <em>addModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/generateSUXMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.generateSUXMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateSUXMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>dictionary</em>, <em>KEGGFilename</em>, <em>KEGGBlackList</em>, <em>compartment</em>, <em>addModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/generateSUXMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.generateSUXMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the matrices for matlab smiley &#8211; &gt; combines <cite>S</cite>, <cite>U</cite>, (<cite>KEGG</cite>), <cite>X</cite> (transport)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -334,7 +334,7 @@ model naming. Also, the list should be unique.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.identifyBlockedRxns">
-<code class="descname">identifyBlockedRxns</code><span class="sig-paren">(</span><em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/identifyBlockedRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.identifyBlockedRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">identifyBlockedRxns</code><span class="sig-paren">(</span><em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/identifyBlockedRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.identifyBlockedRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function computes all blocked reactions using the approach described
 in <cite>The FASTCORE algorithm for context-specific metabolic network reconstructions, Vlassis et
 al., 2013, PLoS Comp Biol.`</cite></p>
@@ -364,7 +364,7 @@ Structure containing all blocked reactions and their reaction formula that were 
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.postProcessGapFillSolutions">
-<code class="descname">postProcessGapFillSolutions</code><span class="sig-paren">(</span><em>AddedRxns</em>, <em>model</em>, <em>BlockedRxns</em>, <em>IdentifyPW</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/postProcessGapFillSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.postProcessGapFillSolutions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">postProcessGapFillSolutions</code><span class="sig-paren">(</span><em>AddedRxns</em>, <em>model</em>, <em>BlockedRxns</em>, <em>IdentifyPW</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/postProcessGapFillSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.postProcessGapFillSolutions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function uses the output from <cite>fastGapFill</cite> and signs generalized
 function to the identified solutions from the universal database (e.g.,
 &#8216;Metabolic reaction&#8217;, &#8216;Transport reaction&#8217;, &#8216;Exchange reaction&#8217;). It also
@@ -402,7 +402,7 @@ the flux vectors.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.prepareFastGapFill">
-<code class="descname">prepareFastGapFill</code><span class="sig-paren">(</span><em>model</em>, <em>listCompartments</em>, <em>epsilon</em>, <em>filename</em>, <em>dictionary_file</em>, <em>blackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/prepareFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.prepareFastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">prepareFastGapFill</code><span class="sig-paren">(</span><em>model</em>, <em>listCompartments</em>, <em>epsilon</em>, <em>filename</em>, <em>dictionary_file</em>, <em>blackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/prepareFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.prepareFastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function generate the input file (consistMatricesSUX) for
 <cite>fastGapFill.m</cite>. Please refer to Thiele et al, 2013 for more details.
 This function is based on the fastCORE algorithm (<cite>Vlassis et al., 2013</cite>).</p>
@@ -449,7 +449,7 @@ Blocked reactions in mode%</li>
 
 <dl class="function">
 <dt id="src.reconstruction.fastGapFill.submitFastGapFill">
-<code class="descname">submitFastGapFill</code><span class="sig-paren">(</span><em>modelFile</em>, <em>dbFile</em>, <em>dictionaryFile</em>, <em>prepareFGFResults</em>, <em>weightsPerRxnFile</em>, <em>forceRerun</em>, <em>epsilon</em>, <em>blackList</em>, <em>listCompartments</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/75d530c517f1d719a4087061e16f2fa8f234ebd4/src/reconstruction/fastGapFill/submitFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.submitFastGapFill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">submitFastGapFill</code><span class="sig-paren">(</span><em>modelFile</em>, <em>dbFile</em>, <em>dictionaryFile</em>, <em>prepareFGFResults</em>, <em>weightsPerRxnFile</em>, <em>forceRerun</em>, <em>epsilon</em>, <em>blackList</em>, <em>listCompartments</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/reconstruction/fastGapFill/submitFastGapFill.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.submitFastGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>A test function for both <cite>prepareFastGapFill</cite> and
 <cite>fastGapFill</cite>, allowing all files to be optionally specified and not
 requiring <cite>prepareFastGapFill</cite> to be rerun (if relevant variables are saved
