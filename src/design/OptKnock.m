@@ -97,6 +97,13 @@ else
     solutionFileName = solutionFileNameTmp;
 end
 
+if ~isfield(options,'targetRxn') || any(~ismember(options.targetRxn,model.rxns))
+    if ~isfield(options, 'targetRxn')
+        error('No target reaction (options.targetRxn) defined')
+    else
+        error('The reaction %s is not part of the model. Try using searchModel(model, ''%s'') to find reactions with a similar name.',options.targetRxn,options.targetRxn);
+    end
+end
 % Convert to irreversible rxns
 [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model,'OrderReactions',true);
 
