@@ -64,8 +64,8 @@ for k = 1:length(solverPkgs)
         modelForUTest.genes([1,5]) = strcat(model.genes(1),{'.1','.2'});
         targetValues = [1 2 3 4 ];
         %Check functionality of uniqueGene Flag
-        [grRatio, grRateKO, grRateWT, hasEffect, delRxns] = singleGeneDeletion(modelForUTest,'FBA',modelForUTest.genes([1 2 3 4]),true,true);
-                % check if correct hasEffect value
+        [grRatio, grRateKO, grRateWT, hasEffect, delRxns] = singleGeneDeletion(modelForUTest,'FBA',regexprep(modelForUTest.genes([1 2 3 4]),'(.*)\.[0-9]+$','$1'),true,true);
+        % check if correct hasEffect value
         assert(isequal(hasEffect,hasEffectSD(targetValues)))
 
         % check if correctly deleted reactions
