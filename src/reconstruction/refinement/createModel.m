@@ -161,6 +161,6 @@ for i = 1:nRxns
 end
 
 model = addMultipleReactions(model,rxnAbrList,metabs,stoich','lb',lowerBoundList,...
-    'ub',upperBoundList,'subSystems',subSystemList,'grRules',grRuleList);
+    'ub',upperBoundList,'subSystems',subSystemList,'grRules',grRuleList,'printLevel',printLevel);
 
 end
