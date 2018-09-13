@@ -59,6 +59,8 @@ for k = 1:length(solverPkgs)
         %Now, we combine gene 1 and two. 1 has no effect, so 1 and 2 should
         %yield the same as 2.
         modelForUTest = model;
+        %Model has to consistently present transcripts
+        modelForUTest.genes = strcat(modelForUTest.genes, '.1');
         modelForUTest.genes([1,5]) = strcat(model.genes(1),{'.1','.2'});
         targetValues = [1 2 3 4 ];
         %Check functionality of uniqueGene Flag

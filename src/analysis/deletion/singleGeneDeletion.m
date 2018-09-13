@@ -12,8 +12,14 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singl
 %    method:          Either 'FBA', 'MOMA' or 'lMOMA' (Default = 'FBA')
 %    geneList:        List of genes to be deleted (default = all genes)
 %    verbFlag:        Verbose output (Default false)
-%    uniqueGene:      Run unique gene deletion (default = 0).
-%
+%    uniqueGene:      Run unique gene deletion. This option will remove
+%                     transcript information from the model and test
+%                     complete gene knockouts instead of transcript
+%                     knockouts. If this flag is set, all genes in the
+%                     model have to have transcript information at the end of their
+%                     name as a '.' followed by a number. If only a part of
+%                     the genes has transcript information, this option will be
+%                     ignored (default = 0) 
 %
 % OUTPUTS:
 %    grRatio:         Computed growth rate ratio between deletion strain and wild type
