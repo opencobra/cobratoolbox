@@ -23,6 +23,7 @@ function model = createModel(varargin)
 %    geneNameList:      List of gene names (used only for translation
 %                       from common gene names to systematic gene names)
 %    systNameList:      List of systematic names
+%    printLevel:        Verbosity (0 - no outputs, except warnings, 1- normal printout (default))
 %
 % OUTPUT:
 %    model:             COBRA model structure
@@ -61,7 +62,7 @@ end
 %Ok, some arguments are provided, we need at least three then.
 
 optionalParameters = {'revFlagList',...
-    'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList','systNameList'};
+    'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList','systNameList','printLevel'};
 oldOptionalOrder = {'revFlagList',...
     'lowerBoundList','upperBoundList','subSystemList','grRuleList','geneNameList','systNameList'};
 if (numel(varargin) > 3 && (~ischar(varargin{4}) || ~any(ismember(varargin{4},optionalParameters))))
@@ -103,6 +104,7 @@ parser.addParamValue('subSystemList', subSysDefault ,@iscell);
 parser.addParamValue('grRuleList', grRuleDefault,@iscell);
 parser.addParamValue('geneNameList', geneNameDefault,@iscell);
 parser.addParamValue('systNameList', systNameDefault,@iscell);
+parser.addParamValue('printLevel',1,@isnumeric);
 parser.parse(varargin{:});
 
 rxnAbrList = parser.Results.rxnAbrList;
@@ -115,10 +117,13 @@ revFlagList = parser.Results.revFlagList;
 lowerBoundList = parser.Results.lowerBoundList;
 upperBoundList = parser.Results.upperBoundList;
 subSystemList = parser.Results.subSystemList;
+printLevel = parser.Results.printLevel;
+
 if ischar([subSystemList{:}])
     subSystemList = cellfun(@(x) strsplit(x,';'), subSystemList, 'UniformOutput',0);
 end
-
+metaboliteLists = cell(nRxns,1);
+coefLists = cell(nRxns,1);
 for i = 1 : nRxns
     if ~isempty(grRuleList{i})
         if ~isempty(strfind(grRuleList{i},','))
@@ -131,7 +136,7 @@ for i = 1 : nRxns
           grRuleList{i}= (regexprep(grRuleList{i},'+',' and '));
        end
     end
-    [metaboliteList,stoichCoeffList,revFlag_i] = parseRxnFormula(rxnList{i});
+    [metaboliteList,coefLists{i},revFlag_i] = parseRxnFormula(rxnList{i});
     if  any(ismember('lowerBoundList',parser.UsingDefaults))
         if any(ismember('revFlagList',parser.UsingDefaults))
             %if both revFlag and lb are not given, update the revFlag
@@ -143,14 +148,19 @@ for i = 1 : nRxns
             lowerBoundList(i) = revFlagList(i) * lowerBoundList(i);
         end
     end
-    for q=1:length(metaboliteList)
-        if isempty(regexp(metaboliteList{q},'\[[^\[]*\]$','ONCE'))
-            %If there is a compartment ID, don't add one.
-            %If there is none, add cytoplasm
-            metaboliteList{q}=[metaboliteList{q},'[c]'];
-        end
-    end
-    model = addReaction(model,{rxnAbrList{i},rxnNameList{i}},metaboliteList,stoichCoeffList,...
-        revFlagList(i),lowerBoundList(i),upperBoundList(i),0,...
-        subSystemList{i},grRuleList{i},geneNameList,systNameList,false);
+    hasComp = cellfun(@(x) ~isempty(regexp(x,'\[[^\[]*\]$','ONCE')),metaboliteList);
+    metaboliteList(~hasComp) = strcat(metaboliteList(~hasComp),'[c]');
+    metaboliteLists{i} = metaboliteList;
+end
+metabs = unique([metaboliteLists{:}]);
+model = addMultipleMetabolites(model,metabs);
+stoich = zeros(numel(metabs),nRxns);
+for i = 1:nRxns
+    [pres,pos] = ismember(metaboliteLists{i},metabs);
+    stoich(pos(pres),i) = coefLists{i};
+end
+
+model = addMultipleReactions(model,rxnAbrList,metabs,stoich','lb',lowerBoundList,...
+    'ub',upperBoundList,'subSystems',subSystemList,'grRules',grRuleList);
+
 end
