@@ -29,7 +29,7 @@ The usage of `ILOG CPLEX` solver is strongly advised to obtain the best speed pe
 (required for the fastFVA.m function).
 
 MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
-version 1.0 from https://vmh.uni.lu/#downloadview and place the mat files into
+version 1.0 from https://www.vmh.life/#downloadview and place the mat files into
 a dedicated folder.
 
 ## Main Folder Structure and Files
