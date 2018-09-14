@@ -258,7 +258,7 @@
 </div>
 <span class="target" id="module-src.base.solvers"></span><dl class="function">
 <dt id="src.base.solvers.CPLEXParamSet">
-<code class="descname">CPLEXParamSet</code><span class="sig-paren">(</span><em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/CPLEXParamSet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.CPLEXParamSet" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CPLEXParamSet</code><span class="sig-paren">(</span><em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/CPLEXParamSet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.CPLEXParamSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a function which returns user specified CPLEX control
 parameters. It is not necessary to use a file like this if you want to use
 CPLEX default control parameters. It is intended to be a template for
@@ -298,7 +298,7 @@ CPLEX control parameter <cite>cpxControl.LPMETHOD</cite></p>
 
 <dl class="function">
 <dt id="src.base.solvers.NLPobjPerFlux">
-<code class="descname">NLPobjPerFlux</code><span class="sig-paren">(</span><em>fluxVector</em>, <em>Prob</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/NLPobjPerFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.NLPobjPerFlux" title="Permalink to this definition">¶</a></dt>
+<code class="descname">NLPobjPerFlux</code><span class="sig-paren">(</span><em>fluxVector</em>, <em>Prob</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/NLPobjPerFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.NLPobjPerFlux" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the value of the objective - <cite>(Prob.osense * Prob.user.model.c)/sum(v.^2)</cite> based on
 a flux distribution
 This function is meant to be used with NLP solvers</p>
@@ -325,7 +325,7 @@ NLP problem structure</li>
 
 <dl class="function">
 <dt id="src.base.solvers.buildLPproblemFromModel">
-<code class="descname">buildLPproblemFromModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildLPproblemFromModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -375,7 +375,7 @@ A COBRA LPproblem structure with the following fields:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.changeCobraSolver">
-<code class="descname">changeCobraSolver</code><span class="sig-paren">(</span><em>solverName</em>, <em>solverType</em>, <em>printLevel</em>, <em>validationLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/changeCobraSolver.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeCobraSolver</code><span class="sig-paren">(</span><em>solverName</em>, <em>solverType</em>, <em>printLevel</em>, <em>validationLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/changeCobraSolver.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes the Cobra Toolbox optimization solver(s)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -708,7 +708,7 @@ get rid of net flux around loops</td>
 
 <dl class="function">
 <dt id="src.base.solvers.changeCobraSolverParams">
-<code class="descname">changeCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramName</em>, <em>paramValue</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/changeCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolverParams" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramName</em>, <em>paramValue</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/changeCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes parameters for the Cobra Toolbox optimization solver(s)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -776,7 +776,7 @@ without regularisation.</p>
 
 <dl class="function">
 <dt id="src.base.solvers.checkGAMSSolvers">
-<code class="descname">checkGAMSSolvers</code><span class="sig-paren">(</span><em>problemType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/checkGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkGAMSSolvers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkGAMSSolvers</code><span class="sig-paren">(</span><em>problemType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/checkGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkGAMSSolvers" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function return the solvers that can be used in GAMS to solve the
 type of problem especified by the user</p>
 <p><strong>Usage</strong></p>
@@ -814,7 +814,7 @@ solve problems of type &#8220;problemType&#8221;</li>
 
 <dl class="function">
 <dt id="src.base.solvers.checkSolFeas">
-<code class="descname">checkSolFeas</code><span class="sig-paren">(</span><em>LP</em>, <em>sol</em>, <em>maxInfeas</em>, <em>tol</em>, <em>internal</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/checkSolFeas.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkSolFeas" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkSolFeas</code><span class="sig-paren">(</span><em>LP</em>, <em>sol</em>, <em>maxInfeas</em>, <em>tol</em>, <em>internal</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/checkSolFeas.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkSolFeas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the infeasibility of solutions given a COBRA model or LP structure, or a IBM-ILOG CPLEX class</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -864,7 +864,7 @@ If <span class="math">\(infeas \leq tol\)</span>, <cite>sol.stat = 1</cite>. Oth
 
 <dl class="function">
 <dt id="src.base.solvers.configEnvVars">
-<code class="descname">configEnvVars</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/configEnvVars.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.configEnvVars" title="Permalink to this definition">¶</a></dt>
+<code class="descname">configEnvVars</code><span class="sig-paren">(</span><em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/configEnvVars.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.configEnvVars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures the global variables based on the system&#8217;s configuration
 First, all environment variables for each solver are defined together
 with all eventual solver paths.
@@ -893,7 +893,7 @@ default = 0, verbose level</li>
 
 <dl class="function">
 <dt id="src.base.solvers.getAvailableGAMSSolvers">
-<code class="descname">getAvailableGAMSSolvers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getAvailableGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableGAMSSolvers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getAvailableGAMSSolvers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getAvailableGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableGAMSSolvers" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function return the GAMS solvers which are available in your system
 according to the license.</p>
 <p><strong>Usage</strong></p>
@@ -930,7 +930,7 @@ Description: list of solvers available in GAMS</li>
 
 <dl class="function">
 <dt id="src.base.solvers.getAvailableSolversByType">
-<code class="descname">getAvailableSolversByType</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getAvailableSolversByType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableSolversByType" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getAvailableSolversByType</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getAvailableSolversByType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableSolversByType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the available solvers for the different solver types on the system.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -948,7 +948,7 @@ Also contains an ALL field indicating all available solvers</li>
 
 <dl class="function">
 <dt id="src.base.solvers.getCobraSolverParams">
-<code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function gets the specified parameters in <cite>paramNames</cite> from
 parameters, the global cobra paramters variable or default values set within
 this script. It will use values with the following priority</p>
@@ -999,7 +999,7 @@ is outputted to.</li>
 
 <dl class="function">
 <dt id="src.base.solvers.getCobraSolverParamsOptionsForType">
-<code class="descname">getCobraSolverParamsOptionsForType</code><span class="sig-paren">(</span><em>solverType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getCobraSolverParamsOptionsForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParamsOptionsForType" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCobraSolverParamsOptionsForType</code><span class="sig-paren">(</span><em>solverType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getCobraSolverParamsOptionsForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParamsOptionsForType" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the available optional parameters for the specified
 solver type.</p>
 <p><strong>Usage</strong></p>
@@ -1025,7 +1025,7 @@ Toolbox (&#8216;LP&#8217;,&#8217;QP&#8217;,&#8217;MILP&#8217;,&#8217;MIQP&#8217;
 
 <dl class="function">
 <dt id="src.base.solvers.getCobraSolverVersion">
-<code class="descname">getCobraSolverVersion</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>rootPathSolver</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getCobraSolverVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverVersion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCobraSolverVersion</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>rootPathSolver</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getCobraSolverVersion.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>detects the version of given COBRA solver</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1052,7 +1052,7 @@ string that contains the version number</li>
 
 <dl class="function">
 <dt id="src.base.solvers.getParamList">
-<code class="descname">getParamList</code><span class="sig-paren">(</span><em>param</em>, <em>bottomFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/getParamList.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getParamList" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getParamList</code><span class="sig-paren">(</span><em>param</em>, <em>bottomFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/getParamList.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getParamList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the end parameters and their paths for matching CPLEX parameters appropriately
 (e.g., if param.simplex.display is a parameter, then we will have &#8216;display&#8217;
 in paramList and &#8216;param.simplex&#8217; in paramPath)</p>
@@ -1085,7 +1085,7 @@ added to the <cite>paramPath</cite> for user-supplied parameters</li>
 
 <dl class="function">
 <dt id="src.base.solvers.isCompatible">
-<code class="descname">isCompatible</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>specificSolverVersion</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/isCompatible.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
+<code class="descname">isCompatible</code><span class="sig-paren">(</span><em>solverName</em>, <em>printLevel</em>, <em>specificSolverVersion</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/isCompatible.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
 <dd><p>determine the compatibility status of a solver based on the file compatMatrix.rst</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1117,7 +1117,7 @@ compatibility status<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.liftModel">
-<code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
 coupling constraints of the form:
 <span class="math">\(max c*v\)</span>  subject to: <span class="math">\(Sv = 0, x, Cv &lt;= 0\)</span>
@@ -1161,7 +1161,7 @@ COBRA Structure contain the reformulated LP to be solved.</li>
 
 <dl class="function">
 <dt id="src.base.solvers.lp_solve">
-<code class="descname">lp_solve</code><span class="sig-paren">(</span><em>f</em>, <em>a</em>, <em>b</em>, <em>e</em>, <em>vlb</em>, <em>vub</em>, <em>xint</em>, <em>scalemode</em>, <em>keep</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/lp_solve.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.lp_solve" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lp_solve</code><span class="sig-paren">(</span><em>f</em>, <em>a</em>, <em>b</em>, <em>e</em>, <em>vlb</em>, <em>vub</em>, <em>xint</em>, <em>scalemode</em>, <em>keep</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/lp_solve.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.lp_solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves mixed integer linear programming problems.
 Solves the MILP problem
 <span class="math">\(max v = f'*x\)</span>
@@ -1223,7 +1223,7 @@ result of <cite>mxlpsolve</cite> function</li>
 
 <dl class="function">
 <dt id="src.base.solvers.optimizeCbModelNLP">
-<code class="descname">optimizeCbModelNLP</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/optimizeCbModelNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeCbModelNLP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeCbModelNLP</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/optimizeCbModelNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeCbModelNLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimizes constraint-based model using a non-linear objective</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1283,7 +1283,7 @@ Array of flux distribution of each iteration</li>
 
 <dl class="function">
 <dt id="src.base.solvers.optimizeTwoCbModels">
-<code class="descname">optimizeTwoCbModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>osenseStr</em>, <em>minFluxFlag</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/optimizeTwoCbModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeTwoCbModels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeTwoCbModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>osenseStr</em>, <em>minFluxFlag</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/optimizeTwoCbModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeTwoCbModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simultaneously solve two flux balance problems and
 minimize the difference between the two solutions</p>
 <p><strong>Usage</strong></p>
@@ -1360,7 +1360,7 @@ Solution for the 2nd model</li>
 
 <dl class="function">
 <dt id="src.base.solvers.parseSolverParameters">
-<code class="descname">parseSolverParameters</code><span class="sig-paren">(</span><em>problemType</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/parseSolverParameters.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.parseSolverParameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parseSolverParameters</code><span class="sig-paren">(</span><em>problemType</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/parseSolverParameters.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.parseSolverParameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the solver parameters for a specified problem</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1403,7 +1403,7 @@ of direct solver input structs.</li>
 
 <dl class="function">
 <dt id="src.base.solvers.reformulate">
-<code class="descname">reformulate</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>BIG</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/reformulate.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.reformulate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reformulate</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>BIG</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/reformulate.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.reformulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reformulates badly-scaled FBA program
 Transforms LPproblems with badly-scaled stoichiometric and
 coupling constraints of the form:
@@ -1448,7 +1448,7 @@ Structure contain the reformulated LP to be solved.</li>
 
 <dl class="function">
 <dt id="src.base.solvers.setCplexParam">
-<code class="descname">setCplexParam</code><span class="sig-paren">(</span><em>LP</em>, <em>solverParams</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/setCplexParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.setCplexParam" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setCplexParam</code><span class="sig-paren">(</span><em>LP</em>, <em>solverParams</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/setCplexParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.setCplexParam" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the parameters of the IBM ILOG CPLEX object according to the structure <cite>solverParams</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1474,7 +1474,7 @@ true to show which parameter input is problematic if any (optional, default true
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraCPLEX">
-<code class="descname">solveCobraCPLEX</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraCPLEX" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraCPLEX</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraCPLEX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls CPLEX to solve an LP or QP problem using the matlab API to cplex written by ILOG</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1589,7 +1589,7 @@ automatically chosen for you.</p>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraLP">
-<code class="descname">solveCobraLP</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraLP</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based LP problems</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1711,7 +1711,7 @@ includes the minNorm and the <cite>printLevel</cite> flags.</p>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraLPCPLEX">
-<code class="descname">solveCobraLPCPLEX</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraLPCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEX" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraLPCPLEX</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraLPCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls CPLEX to solve an LP problem
 By default, use the matlab interface to cplex written by TOMLAB, in
 preference to the one written by ILOG.</p>
@@ -1845,7 +1845,7 @@ automatically chosen for you</p>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraLPCPLEXcard">
-<code class="descname">solveCobraLPCPLEXcard</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>theNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraLPCPLEXcard.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEXcard" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraLPCPLEXcard</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>theNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraLPCPLEXcard.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEXcard" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls CPLEX to solve an LP problem
 By default, use the matlab interface to cplex written by TOMLAB, in
 preference to the one written by ILOG.</p>
@@ -1959,7 +1959,7 @@ automatically chosen for you.</p>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraLPLindo">
-<code class="descname">solveCobraLPLindo</code><span class="sig-paren">(</span><em>A</em>, <em>b</em>, <em>c</em>, <em>csense</em>, <em>lb</em>, <em>ub</em>, <em>osense</em>, <em>primalOnlyFlag</em>, <em>oldAPIFlag</em>, <em>verbLevel</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraLPLindo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPLindo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraLPLindo</code><span class="sig-paren">(</span><em>A</em>, <em>b</em>, <em>c</em>, <em>csense</em>, <em>lb</em>, <em>ub</em>, <em>osense</em>, <em>primalOnlyFlag</em>, <em>oldAPIFlag</em>, <em>verbLevel</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraLPLindo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPLindo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a LP problem using Lindo</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -2017,7 +2017,7 @@ Original status returned by the specific solver</li>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraMILP">
-<code class="descname">solveCobraMILP</code><span class="sig-paren">(</span><em>MILPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraMILP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMILP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraMILP</code><span class="sig-paren">(</span><em>MILPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraMILP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMILP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based MILP problems
 The solver is defined in the CBT_MILP_SOLVER global variable
 (set using <cite>changeCobraSolver</cite>). Solvers currently available are
@@ -2112,7 +2112,7 @@ Structure containing the following fields describing a MILP solution<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraMIQP">
-<code class="descname">solveCobraMIQP</code><span class="sig-paren">(</span><em>MIQPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraMIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMIQP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraMIQP</code><span class="sig-paren">(</span><em>MIQPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraMIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMIQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based QP problems
 The solver defined in the <cite>CBT_MIQP_SOLVER</cite> global variable (set using
 <cite>changeCobraSolver</cite>). Solvers currently available are &#8216;tomlab_cplex&#8217;</p>
@@ -2192,7 +2192,7 @@ Structure containing the following fields describing a MIQP solution<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraNLP">
-<code class="descname">solveCobraNLP</code><span class="sig-paren">(</span><em>NLPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraNLP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraNLP</code><span class="sig-paren">(</span><em>NLPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraNLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a COBRA non-linear (objective and/or constraints) problem.
 Solves a problem of the following form:
 optimize <cite>objFunction(x)</cite> or <cite>c&#8217;*x</cite>
@@ -2282,7 +2282,7 @@ Structure containing the following fields describing a NLP solution:<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.solveCobraQP">
-<code class="descname">solveCobraQP</code><span class="sig-paren">(</span><em>QPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/solveCobraQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraQP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveCobraQP</code><span class="sig-paren">(</span><em>QPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/solveCobraQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based QP problems</p>
 <p>The solver is defined in the CBT_MILP_SOLVER global variable
 (set using changeCobraSolver). Solvers currently available are
@@ -2364,7 +2364,7 @@ Structure containing the following fields describing a QP solution<ul>
 
 <dl class="function">
 <dt id="src.base.solvers.tuneParam">
-<code class="descname">tuneParam</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>contFunctName</em>, <em>timelimit</em>, <em>nrepeat</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/tuneParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParam" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tuneParam</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>contFunctName</em>, <em>timelimit</em>, <em>nrepeat</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/tuneParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParam" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimizes cplex parameters to make model resolution faster.
 Particularly interetsing for large-scale MILP models and repeated runs of
 optimisation.
@@ -2407,7 +2407,7 @@ contFunctName argument in solveCobraLP function</li>
 
 <dl class="function">
 <dt id="src.base.solvers.tuneParamForModel">
-<code class="descname">tuneParamForModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/tuneParamForModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParamForModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tuneParamForModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/tuneParamForModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.tuneParamForModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimizes cplex parameters to make model resolution faster.
 Particularly interetsing for large-scale MILP models and repeated runs of
 optimisation.
@@ -2455,7 +2455,7 @@ using a Cobra model structure converted to a LP problem.</p>
 
 <dl class="function">
 <dt id="src.base.solvers.verifyCobraProblem">
-<code class="descname">verifyCobraProblem</code><span class="sig-paren">(</span><em>XPproblem</em>, <em>x</em>, <em>tol</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/4e14e584a3fa8dfd89a40c42e9dd63b72a96da4d/src/base/solvers/verifyCobraProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
+<code class="descname">verifyCobraProblem</code><span class="sig-paren">(</span><em>XPproblem</em>, <em>x</em>, <em>tol</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/base/solvers/verifyCobraProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verifies dimensions of fields in <cite>XPproblem</cite> and determines if they are
 valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
 If <cite>x</cite> is provided, it will see if <cite>x</cite> is a valid solution to tolerance (tol).</p>
