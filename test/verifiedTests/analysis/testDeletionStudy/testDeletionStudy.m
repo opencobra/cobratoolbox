@@ -59,11 +59,13 @@ for k = 1:length(solverPkgs)
         %Now, we combine gene 1 and two. 1 has no effect, so 1 and 2 should
         %yield the same as 2.
         modelForUTest = model;
+        %Model has to consistently present transcripts
+        modelForUTest.genes = strcat(modelForUTest.genes, '.1');
         modelForUTest.genes([1,5]) = strcat(model.genes(1),{'.1','.2'});
         targetValues = [1 2 3 4 ];
         %Check functionality of uniqueGene Flag
-        [grRatio, grRateKO, grRateWT, hasEffect, delRxns] = singleGeneDeletion(modelForUTest,'FBA',modelForUTest.genes([1 2 3 4]),true,true);
-                % check if correct hasEffect value
+        [grRatio, grRateKO, grRateWT, hasEffect, delRxns] = singleGeneDeletion(modelForUTest,'FBA',regexprep(modelForUTest.genes([1 2 3 4]),'(.*)\.[0-9]+$','$1'),true,true);
+        % check if correct hasEffect value
         assert(isequal(hasEffect,hasEffectSD(targetValues)))
 
         % check if correctly deleted reactions

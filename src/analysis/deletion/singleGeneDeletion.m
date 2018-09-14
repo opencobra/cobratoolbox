@@ -12,8 +12,14 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singl
 %    method:          Either 'FBA', 'MOMA' or 'lMOMA' (Default = 'FBA')
 %    geneList:        List of genes to be deleted (default = all genes)
 %    verbFlag:        Verbose output (Default false)
-%    uniqueGene:      Run unique gene deletion (default = 0).
-%
+%    uniqueGene:      Run unique gene deletion. This option will remove
+%                     transcript information from the model and test
+%                     complete gene knockouts instead of transcript
+%                     knockouts. If this flag is set, all genes in the
+%                     model have to have transcript information at the end of their
+%                     name as a '.' followed by a number. If only a part of
+%                     the genes has transcript information, this option will be
+%                     ignored (default = 0) 
 %
 % OUTPUTS:
 %    grRatio:         Computed growth rate ratio between deletion strain and wild type
@@ -54,111 +60,63 @@ if ~isfield(model,'rxnGeneMat')
     model = buildRxnGeneMat(model);
 end
 
-if (uniqueGene == 1)
+% initialize the non Transcript gene and the genes to Test arrays
+noTransGenes = model.genes;
 
-    % detect whether there are alternate transcripts
-    transcriptsPresent = false;
-    if any(~cellfun(@isempty, regexp(model.genes,'\.[0-9]+$'))) %If there are any genes that end on a transcript.
-        transcriptsPresent = true;
-        [geneList,rem] = strtok(geneList,'.');
-        geneList = unique(geneList);
-        nGenes = length(geneList);
-        nDelGenes = length(geneList);
-    else
-        nGenes = length(model.genes);
-        nDelGenes = length(geneList);
-    end
-    %solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
-    solWT = optimizeCbModel(model,'max');
-    grRateWT = solWT.f
-
-    grRateKO = ones(nDelGenes,1)*grRateWT;
-    grRatio = ones(nDelGenes,1);
-    hasEffect = true(nDelGenes,1);
-    fluxSolution = zeros(length(model.rxns),nDelGenes);
-    delRxns = cell(nDelGenes,1);
-    if (verbFlag)
-        fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
-    end
-    showprogress(0,'Single gene deletion analysis in progress ...');
-    for i = 1:nDelGenes
-        showprogress(i/nDelGenes);
-        if transcriptsPresent
-            % delete all alternate transcripts
-            delGenes = model.genes(strmatch(geneList{i},model.genes));
-            [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,delGenes);
-        else
-            [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
-        end
-        delRxns{i} = constrRxnNames;
-        if (hasEffect(i))
-            switch method
-                case 'lMOMA'
-                    solKO = linearMOMA(model,modelDel,'max');
-                case 'MOMA'
-                    solKO = MOMA(model,modelDel,'max',false,true);
-                otherwise
-                    solKO = optimizeCbModel(modelDel, 'max');
-            end
-            if (solKO.stat == 1 ||solKO.stat == 5 )
-                grRateKO(i) = solKO.f;
-                fluxSolution(:,i) = solKO.x;
-            else
-                grRateKO(i) = NaN;
-            end
-        end
-        if (verbFlag)
-            fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelGenes,geneList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
-        end
-    end
-
-
-else
-    nDelGenes = length(geneList);
-
-    solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
-    grRateWT = solWT.f;
-
-    % Identify J_z, the set of reactions that do not carry a flux in solWT
-    Jz = solWT.x==0;
-
-    grRateKO = ones(nDelGenes,1)*grRateWT;
-    hasEffect = true(nDelGenes,1);
-    % Assign the WT flux distribution to all deletions; those that differ
-    % will be replaced in the loop below
-    fluxSolution = repmat(solWT.x, 1, nDelGenes);
-    delRxns = cell(nDelGenes,1);
-    if (verbFlag)
-        fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
-    end
-    showprogress(0,'Single gene deletion analysis in progress ...');
-    for i = 1:nDelGenes
-        showprogress(i/nDelGenes);
-        [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
-        delRxns{i} = constrRxnNames;
-        % If all the reactions being deleted carried no flux in WT,
-	    % deleting them cannot affect the flux solution. 
-        if (hasEffect(i) && ~all(ismember(delRxns{i},model.rxns(Jz))))
-            switch method
-                case 'lMOMA'
-                    solKO = linearMOMA(model,modelDel,'max');
-                case 'MOMA'
-                    solKO = MOMA(model,modelDel,'max',false,true);
-                otherwise
-                    solKO = optimizeCbModel(modelDel,'max');
-            end
-            if (solKO.stat == 1)
-                grRateKO(i) = solKO.f;
-                fluxSolution(:,i) = solKO.x;
-            else
-                grRateKO(i) = NaN;
-                fluxSolution(:,i) = nan(length(model.rxns),1);
-            end
-        end
-        if (verbFlag)
-            fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelGenes,geneList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
-        end
+% overwrite them if uniqueGene is requested AND we do have a transcript
+% model
+if uniqueGene
+    % check, whether all genes have transcripts
+    % if not, we cannot do uniqueGene, if, we can.
+    if all(cellfun(@(x) ~isempty(regexp(x,'\.[0-9]+$')),model.genes))
+        % all genes have a transcript, so we can simply remove the
+        % transcript information.
+        noTransGenes = regexprep(model.genes,'(.*)\.[0-9]+$','$1');
     end
 end
+
+nDelGenes = numel(geneList);
+
+solWT = optimizeCbModel(model,'max');
+% init the vector of unused reactions
+Jz = solWT.x==0;
+
+grRateWT = solWT.f;
+grRateKO = ones(nDelGenes,1)*grRateWT;
+grRatio = ones(nDelGenes,1);
+hasEffect = true(nDelGenes,1);
+fluxSolution = zeros(length(model.rxns),nDelGenes);
+delRxns = cell(nDelGenes,1);
+if (verbFlag)
+    fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
+end
+showprogress(0,'Single gene deletion analysis in progress ...');
+for i = 1:nDelGenes
+	showprogress(i/nDelGenes);
+    delGenes = model.genes(ismember(noTransGenes,geneList{i}));            
+    [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,delGenes);
+    delRxns{i} = constrRxnNames;
+    
+    if (hasEffect(i)) && ~all(ismember(delRxns{i},model.rxns(Jz)))
+        switch method
+            case 'lMOMA'
+                solKO = linearMOMA(model,modelDel,'max');
+            case 'MOMA'
+                solKO = MOMA(model,modelDel,'max',false,true);
+            otherwise
+                solKO = optimizeCbModel(modelDel, 'max');
+        end
+        if (solKO.stat == 1 ||solKO.stat == 5 )
+            grRateKO(i) = solKO.f;
+            fluxSolution(:,i) = solKO.x;
+        else
+            grRateKO(i) = NaN;
+        end
+    end
+    if (verbFlag)
+        fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelGenes,geneList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
+    end
+end
+
 
 grRatio = grRateKO/grRateWT;
