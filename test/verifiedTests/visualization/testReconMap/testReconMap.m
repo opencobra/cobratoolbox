@@ -22,7 +22,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 % Get the minerva structure
 load('minerva.mat');
 
-prepareTest('needsWebAddress','https://vmh.uni.lu/minerva/')
+prepareTest('needsWebAddress','https://www.vmh.life/minerva/')
 
 % check if the URL exists
 % Set the user to testing user
