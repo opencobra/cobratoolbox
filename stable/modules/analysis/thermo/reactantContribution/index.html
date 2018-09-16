@@ -278,7 +278,7 @@
 <span id="id1"></span><h1>reactantContribution<a class="headerlink" href="#reactantcontribution" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.reactantContribution"></span><dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.acidDissociationConstant">
-<code class="descname">acidDissociationConstant</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/analysis/thermo/reactantContribution/acidDissociationConstant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
+<code class="descname">acidDissociationConstant</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/939de1923fed56dd84f5d4bf021c17d140500823/src/analysis/thermo/reactantContribution/acidDissociationConstant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Acid dissociation constant for the different metabolite species that make up a reactant</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -325,7 +325,7 @@ apparent equilibrium constants</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.calcdGHT">
-<code class="descname">calcdGHT</code><span class="sig-paren">(</span><em>dGzero</em>, <em>dHzero</em>, <em>zi</em>, <em>nH</em>, <em>pHr</em>, <em>is</em>, <em>temp</em>, <em>chi</em>, <em>Legendre</em>, <em>LegendreCHI</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/analysis/thermo/reactantContribution/calcdGHT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calcdGHT</code><span class="sig-paren">(</span><em>dGzero</em>, <em>dHzero</em>, <em>zi</em>, <em>nH</em>, <em>pHr</em>, <em>is</em>, <em>temp</em>, <em>chi</em>, <em>Legendre</em>, <em>LegendreCHI</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/939de1923fed56dd84f5d4bf021c17d140500823/src/analysis/thermo/reactantContribution/calcdGHT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the standard transformed Gibbs energy of a reactant</p>
 <p>Reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
 gives the standard transformed Gibbs energy of formation of a reactant
@@ -407,7 +407,7 @@ See <cite>p41 Alberty 2003</cite></p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation">
-<code class="descname">setCommonZeroStandardGibbsEnergyOfFormation</code><span class="sig-paren">(</span><em>model</em>, <em>adjustedMetList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setCommonZeroStandardGibbsEnergyOfFormation</code><span class="sig-paren">(</span><em>model</em>, <em>adjustedMetList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/939de1923fed56dd84f5d4bf021c17d140500823/src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets all Alberty&#8217;s cofactor metabolites to have a common thermodynamic baseline.</p>
 <p>Sets all the exceptional metabolites to have a common baseline.
 i.e. Standard transformed Gibbs energies of reactants with the baseline adjusted
@@ -455,7 +455,7 @@ consistent with the group contribution data</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction">
-<code class="descname">singleMetaboliteSpeciesReaction</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleMetaboliteSpeciesReaction</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/939de1923fed56dd84f5d4bf021c17d140500823/src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies reactions involving reactants with only one metabolite species.</p>
 <p>Identifies the reactions involving one substrate metabolite species reactant,
 one product metabolite species reactant and where each reactant is composed
@@ -478,7 +478,7 @@ structure with fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry">
-<code class="descname">thermodynamicAdjustmentToStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/3b4e3455557b29203b8253fe90b5fe8b558dcee8/src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
+<code class="descname">thermodynamicAdjustmentToStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/939de1923fed56dd84f5d4bf021c17d140500823/src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thermodynamic adjustments to the stoichiometric matrix for &#8216;co2&#8217;, &#8216;h2o&#8217;, and bound cofactors.</p>
 <p>In aqueous phase, carbon dioxide is distributed between &#8216;CO2(aq)&#8217;, &#8216;H2CO3&#8217;, &#8216;HCO3^-&#8216;, &#8216;CO3^2-&#8216;.
 For each &#8216;CO2(tot)&#8217; in a reaction  add an &#8216;H2O&#8217; to the other side of reaction, and change the formula for
