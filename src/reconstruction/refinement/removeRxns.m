@@ -103,3 +103,10 @@ if metFlag
         modelOut = removeMetabolites(modelOut, selMets, false);
     end
 end
+
+%Also if there is a C field, remove all empty Constraints (i.e. constraints
+%with nnz = 0)
+if isfield(modelOut,'ctrs')
+    emptyConstraints = getEmptyConstraints(modelOut);
+    modelOut = removeCOBRAConstraints(modelOut,emptyConstraints);    
+end
