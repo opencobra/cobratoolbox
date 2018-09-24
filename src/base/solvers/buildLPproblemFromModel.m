@@ -1,4 +1,4 @@
-function LPproblem = buildLPproblemFromModel(model)
+function LPproblem = buildLPproblemFromModel(model, checked)
 % Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.
 %
 % USAGE:
@@ -14,19 +14,20 @@ function LPproblem = buildLPproblemFromModel(model)
 %                * `.ub` - Upper bound vector              
 %
 % OPTIONAL INPUTS:
-%    model:     The model structure can also have these additional fields:
-%
-%                * `.b`: accumulation/depletion vector (default 0 for each metabolite).
-%                * `.osense`: Objective sense (-1 means maximise (default), 1 means minimise)
-%                * `.csense`: a string with the constraint sense for each row in A ('E', equality(default), 'G' greater than, 'L' less than).
-%                * `.C`: the Constraint matrix;
-%                * `.d`: the right hand side vector for C;
-%                * `.dsense`: the constraint sense vector;
-%                * `.E`: the additional Variable Matrix
-%                * `.evarub`: the upper bounds of the variables from E;
-%                * `.evarlb`: the lower bounds of the variables from E;
-%                * `.evarc`: the objective coefficients of the variables from E;
-%                * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
+%    model:       The model structure can also have these additional fields:
+% 
+%                  * `.b`: accumulation/depletion vector (default 0 for each metabolite).
+%                  * `.osense`: Objective sense (-1 means maximise (default), 1 means minimise)
+%                  * `.csense`: a string with the constraint sense for each row in A ('E', equality(default), 'G' greater than, 'L' less than).
+%                  * `.C`: the Constraint matrix;
+%                  * `.d`: the right hand side vector for C;
+%                  * `.dsense`: the constraint sense vector;
+%                  * `.E`: the additional Variable Matrix
+%                  * `.evarub`: the upper bounds of the variables from E;
+%                  * `.evarlb`: the lower bounds of the variables from E;
+%                  * `.evarc`: the objective coefficients of the variables from E;
+%                  * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
+%    checked:     Check the input (default: true);
 %
 % OUTPUT:
 %    LPproblem: A COBRA LPproblem structure with the following fields:
@@ -39,13 +40,18 @@ function LPproblem = buildLPproblemFromModel(model)
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
 
-optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub','evarc','D'};
+if ~exist('checked','var')
+    checked = true;
+end
 
+optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub','evarc','D'};
 fieldsToBuild = setdiff(optionalFields,fieldnames(model));
 
-res = verifyModel(model);
-if ~isempty(fieldnames(res))
-    error('The input model does have inconsistent fields! Use verifyModel(model) for further information.')
+if checked    
+    res = verifyModel(model);
+    if ~isempty(fieldnames(res))
+        error('The input model does have inconsistent fields! Use verifyModel(model) for further information.')
+    end
 end
     
 if isfield(model,'dxdt')
