@@ -82,7 +82,7 @@ coefs(sub2ind(size(coefs),constInd',rxnInd)) = 1;
 cs = - plusminus * c;
 coefs(:,rxnCID ) = cs;
 % determine the senses for the indices
-dsenses = [repmat('G',1,nRxnList);repmat('E',1,nRxnList)];
+dsenses = [repmat('L',1,nRxnList);repmat('G',1,nRxnList)];
 dsenses = dsenses(:);
 ds = plusminus * u;
 
