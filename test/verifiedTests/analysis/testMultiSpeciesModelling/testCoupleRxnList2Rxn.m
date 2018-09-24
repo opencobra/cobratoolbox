@@ -51,22 +51,14 @@ for k = 1:length(solverPkgs)
 
     if solverOK == 1
         fprintf('   Testing coupleRxnList2Rxn using %s ... ', solverPkgs{k});
-        
+        LPproblem = buildLPproblemFromModel(modelCoupled);
         % optimize a random coupled reaction 100 times
         for i = 1:100
             rxnInd = rxnList{randi(length(rxnList), 1), 1};
-            modelCoupled = changeObjective(modelCoupled, rxnInd);
-            solution = solveCobraLP(buildLPproblemFromModel(modelCoupled));
-            assert(abs(solution.obj) <= (constrFlux * c) + u + tol)
-        end
-
-        % now do the same test for the uncoupled model-should fail
-        model = changeRxnBounds(model, rxnC, constrFlux, 'u');
-
-        for i = 1:100
-            rxnInd = rxnList{randi(length(rxnList), 1), 1};
-            model = changeObjective(model, rxnInd);
-            solution = solveCobraLP(buildLPproblemFromModel(modelCoupled));
+            rxnPos = findRxnIDs(model,rxnInd);
+            LPproblem.c(:) = 0; 
+            LPproblem.c(rxnPos) = 1;
+            solution = solveCobraLP(LPproblem);
             assert(abs(solution.obj) <= (constrFlux * c) + u + tol)
         end
     end
