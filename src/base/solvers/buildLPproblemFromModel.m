@@ -43,11 +43,23 @@ optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub
 
 fieldsToBuild = setdiff(optionalFields,fieldnames(model));
 
+res = verifyModel(model);
+if ~isempty(fieldnames(res))
+    error('The input model does have inconsistent fields! Use verifyModel(model) for further information.')
+end
+    
+if isfield(model,'dxdt')
+    if length(model.dxdt)~=size(model.S,1)
+        error('Number of rows in model.dxdt and model.S must match')
+    end
+    model.b = model.dxdt; %Overwrite b
+end
+
 model = createEmptyFields(model,fieldsToBuild);
 LPproblem.A = [model.S,model.E;model.C,model.D];
 LPproblem.ub = [model.ub;model.evarub];
 LPproblem.lb = [model.lb;model.evarlb];
 LPproblem.c = [model.c;model.evarc];
 LPproblem.b = [model.b;model.d];
-[~,LPproblem.osenseStr] = getObjectiveSense(model);
+[~,LPproblem.osense] = getObjectiveSense(model);
 LPproblem.csense = [model.csense;model.dsense];
