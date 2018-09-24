@@ -11,7 +11,7 @@ function LPproblem = buildLPproblemFromModel(model)
 %                * `.S` - The stoichiometric matrix
 %                * `.c` - Objective coeff vector
 %                * `.lb` - Lower bound vector
-%                * `.ub` - Upper bound vector
+%                * `.ub` - Upper bound vector              
 %
 % OPTIONAL INPUTS:
 %    model:     The model structure can also have these additional fields:
@@ -19,6 +19,14 @@ function LPproblem = buildLPproblemFromModel(model)
 %                * `.b`: accumulation/depletion vector (default 0 for each metabolite).
 %                * `.osense`: Objective sense (-1 means maximise (default), 1 means minimise)
 %                * `.csense`: a string with the constraint sense for each row in A ('E', equality(default), 'G' greater than, 'L' less than).
+%                * `.C`: the Constraint matrix;
+%                * `.d`: the right hand side vector for C;
+%                * `.dsense`: the constraint sense vector;
+%                * `.E`: the additional Variable Matrix
+%                * `.evarub`: the upper bounds of the variables from E;
+%                * `.evarlb`: the lower bounds of the variables from E;
+%                * `.evarc`: the objective coefficients of the variables from E;
+%                * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
 %
 % OUTPUT:
 %    LPproblem: A COBRA LPproblem structure with the following fields:
@@ -31,20 +39,15 @@ function LPproblem = buildLPproblemFromModel(model)
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
 
-LPproblem.A = model.S;
-LPproblem.ub = model.ub;
-LPproblem.lb = model.lb;
-LPproblem.c = model.c;
+optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub','evarc','D'};
 
-if isfield(model,'b')
-    LPproblem.b = model.b;
-else
-    LPproblem.b = repmat(0,size(model.mets));
-end
+fieldsToBuild = setdiff(optionalFields,fieldnames(model));
 
-[~,LPproblem.osense] = getObjectiveSense(model);
-if isfield(model,'csense')
-    LPproblem.csense = model.csense;
-else
-    LPproblem.csense = repmat('E',size(model.mets));
-end
+model = createEmptyFields(model,fieldsToBuild);
+LPproblem.A = [model.S,model.E;model.C,model.D];
+LPproblem.ub = [model.ub;model.evarub];
+LPproblem.lb = [model.lb;model.evarlb];
+LPproblem.c = [model.c;model.evarc];
+LPproblem.b = [model.b;model.d];
+[~,LPproblem.osenseStr] = getObjectiveSense(model);
+LPproblem.csense = [model.csense;model.dsense];

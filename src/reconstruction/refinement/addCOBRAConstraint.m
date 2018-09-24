@@ -159,16 +159,16 @@ end
 if checkDuplicate && multiAdd
     %If we check for duplicates, and don't want to add them, we will first
     %filter them from the input, but only if we add multiple things.
-    [sorted,order] = sort(idList,2);
+    [sorted,order] = sort(idList,2);    
     sortedC = c;
+    sorted = repmat(sorted,size(c,1),1);
     for i = 1:size(idList,1)
         sortedC(i,:) = c(i,order(i,:));
     end
     %Now, concatenate all inputs (except names) 
     toCompare = [sorted,sortedC,dsense]; %This will convert the dsense into doubles which is fine to get uniques.
     [~,pos] = unique(toCompare,'rows');
-    %Now lets remove anything thats duplicated.
-    idList = idList(pos,:);
+    %Now lets remove anything thats duplicated.    
     d = d(pos,:);
     c = c(pos,:);
     dsense = dsense(pos,:);
@@ -184,17 +184,18 @@ end
 
 %Also check for duplicates in the C Matrix.
 if varspresent
-    mixrows = zeros(size(idList,1),size(model.E,2));
+    mixrows = zeros(size(c,1),size(model.E,2));
 end
-constRow = zeros(size(idList,1),size(model.C,2));
+constRow = sparse(size(c,1),size(model.C,2));
 duppedRows = false(size(idList,1),1);
 nRxns = numel(model.rxns);
-for i = 1:size(idList,1)     
-    rxnpos = idList(i,:) <= nRxns;     
-    varpos = idList(i,:) > nRxns; 
-    constRow(i,idList(i,rxnpos)) = c(i,rxnpos);         
+rxnpos = idList <= nRxns;     
+varpos = idList > nRxns; 
+    
+for i = 1:size(c,1)     
+    constRow(i,idList(rxnpos)) = c(i,rxnpos);         
     if varspresent
-         mixrows(i,idList(i,varpos)-nRxns) = c(i,varpos);
+         mixrows(i,idList(varpos)-nRxns) = c(i,varpos);
     end
     cRow = constRow(i,:);    
     dupRows = all(model.C == cRow(ones(size(model.C,1),1),:),2);
