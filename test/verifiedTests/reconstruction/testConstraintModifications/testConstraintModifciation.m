@@ -10,7 +10,7 @@
 %       manipulating them e.g. by addReaction/removeReaction, reorderModelFields or similar.
 %       
 %       NOTE: This Test does NOT test the functionality of these coupling
-%       constraints in any way. IT only tests, that the model manipulations
+%       constraints in any way. It only tests, that the model manipulations
 %       keep the Constraint fields valid and correct.
 % Authors:
 %     Thomas Pfau - Nov 2017
@@ -112,9 +112,9 @@ assert(isequal(modelAdd.C(:,~newReacPosition),modelWConst.C));
 assert(all(modelAdd.C(:,newReacPosition)== 0));
 
 %Also test adding multiple Constraints:
-c = [1,2; 3,4 ; 5,6];
+c = [0,1,2,0,0;0,3,0,4,0 ; 5,0,0,0,6];
 d = [1;2;3];
-rxnList = [2,3;2,4;1,5];
+rxnList = [1,2,3,4,5];
 dsense = ['E';'L';'G'];
 modelWMultConst = addCOBRAConstraint(model,rxnList,d,'c',c,'dsense',dsense);
 assert(size(modelWMultConst.C,2) == size(model.S,2));
@@ -132,7 +132,7 @@ modelWMultConst2 = addCOBRAConstraint(modelWMultConst,rxnList,d,'c',c,'dsense',d
 assert(isSameCobraModel(modelWMultConst,modelWMultConst2));
 
 %No duplicates, within the Constraints are added:
-modelWMultConst = addCOBRAConstraint(model,[rxnList;rxnList],[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
+modelWMultConst = addCOBRAConstraint(model,rxnList,[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
 assert(size(modelWMultConst.C,1) == 3); %Three constraints
 
 
