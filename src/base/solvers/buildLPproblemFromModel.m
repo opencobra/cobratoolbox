@@ -48,7 +48,7 @@ optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub
 fieldsToBuild = setdiff(optionalFields,fieldnames(model));
 
 if checked    
-    res = verifyModel(model);
+    res = verifyModel(model,'FBAOnly',true);
     if ~isempty(fieldnames(res))
         error('The input model does have inconsistent fields! Use verifyModel(model) for further information.')
     end

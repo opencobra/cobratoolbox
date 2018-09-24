@@ -15,36 +15,17 @@ function results = verifyModel(model, varargin)
 %                 Value pairs (e.g. verifyModel(model, 'massBalance', true)
 %                 Options are:
 %
-%                   * 'massBalance' (checks for Mass balance if the
-%                     `metFormula` Field is present), (Default: false)
+%                   * 'massBalance' (checks for Mass balance if the `metFormula` Field is present), (Default: false)
 %                   * 'chargeBalance' (checks for charge Balance) (Default: false)
-%                   * 'fluxConsistency' (checks for reaction flux
-%                     consistency) (Default: false)
-%                   * 'stoichiometricConsistency' (checks for Stoichiometric
-%                     Consisteny, according to `Gevorgyan, Bioinformatics,
-%                     2008`) (Default: false)
-%                   * 'deadEndMetabolites' (metabolites which can either not
-%                     be produced, or consumed) (Default: false)
-%                   * 'simpleCheck' returns false if this is not a valid model
-%                     and true if it is a valid model, ignored if any other
-%                     option is selected. (Default: false)
-%                   * 'requiredFields' sets the fields which are required,
-%                     the argument must be firectly followed by the list of
-%                     required fields.
-%                     (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
-%                   * 'checkDatabaseIDs', check whether the database
-%                     identifiers in specified fields (please have a look
-%                     at the documentation), match to the expected patterns
-%                     for those databases.
-%                   * 'silentCheck', do not print any information. Only
-%                     applies to the model structure check. (default is to
-%                     print info)
-%                   * 'restrictToFields' restricts the check to the listed
-%                     fields. This will lead to requiredFields being reduced 
-%                     to those fields present in the restricted fields. If
-%                     an empty cell array is provided no restriction is
-%                     applied.
-%                     (default: {})
+%                   * 'fluxConsistency' (checks for reaction flux consistency) (Default: false)
+%                   * 'stoichiometricConsistency' (checks for Stoichiometric Consisteny, according to `Gevorgyan, Bioinformatics, 2008`) (Default: false)
+%                   * 'deadEndMetabolites' (metabolites which can either not be produced, or consumed) (Default: false)
+%                   * 'simpleCheck' returns false if this is not a valid model and true if it is a valid model, ignored if any other option is selected. (Default: false)
+%                   * 'requiredFields' sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                   * 'checkDatabaseIDs', check whether the database identifiers in specified fields (please have a look at the documentation), match to the expected patterns for those databases.
+%                   * 'silentCheck', do not print any information. Only applies to the model structure check. (default is to print info)
+%                   * 'restrictToFields' restricts the check to the listed fields. This will lead to requiredFields being reduced to those fields present in the restricted fields. If an empty cell array is provided no restriction is applied. (default: {})
+%                   * 'FBAOnly' checks only fields relevant for FBA (default: false) 
 %
 % OUTPUT:
 %
@@ -70,7 +51,9 @@ function results = verifyModel(model, varargin)
 
 optionalFields = getDefinedFieldProperties();
 
-fluxConsistencyFields = optionalFields(cellfun(@(x) x, optionalFields(:,6)),1);
+basicFields = optionalFields(cellfun(@(x) x, optionalFields(:,6)),1);
+FBAFields = optionalFields(cellfun(@(x) x, optionalFields(:,8)),1);
+
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
@@ -80,10 +63,11 @@ parser.addParamValue('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
-parser.addParamValue('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParamValue('requiredFields',basicFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
 parser.addParamValue('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('silentCheck',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('restrictToFields',{},@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParamValue('FBAOnly',false,@(x) islogical(x) || isnumeric(x) );
 
 
 parser.parse(model,varargin{:});
@@ -98,13 +82,19 @@ stoichiometricConsistency = parser.Results.stoichiometricConsistency;
 checkDBs = parser.Results.checkDatabaseIDs;
 silentCheck = parser.Results.silentCheck;
 restrictToFields = parser.Results.restrictToFields;
-
+FBAOnly = parser.Results.FBAOnly;
 
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
+
 if ~isempty(restrictToFields)
     requiredFields = requiredFields(ismember(requiredFields(:,1),restrictToFields),:);
     optionalFields = optionalFields(ismember(optionalFields(:,1),restrictToFields),:);
+end
+
+if FBAOnly
+    requiredFields = requiredFields(ismember(requiredFields(:,1),FBAFields),:);
+    optionalFields = optionalFields(ismember(optionalFields(:,1),FBAFields),:);
 end
 
 results = struct();
@@ -177,11 +167,12 @@ if massBalance || chargeBalance
 end
 
 if fluxConsistency
-    ProblematicFields = checkFields(results,fluxConsistencyFields(1:7),model);
+    basicFBAFields = intersect(basicFields,FBAFields);
+    ProblematicFields = checkFields(results,basicFBAFields,model);
     if ~all(ProblematicFields) %this is odd... shouldn't refer to 1:7...
         warning('Fields Missing for consistency Testing')
         results.consistency = struct();
-        results.consistency.problematicFields = fluxConsistencyFields(ProblematicFields,1);
+        results.consistency.problematicFields = basicFBAFields(ProblematicFields,1);
     else
         [mins,maxs] = fluxVariability(model);
         %if this is not a simple check, or we have reactions which can't
