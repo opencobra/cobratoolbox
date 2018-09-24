@@ -157,23 +157,18 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 
 if exist('osenseStr', 'var') % Process arguments and set up problem
     if isempty(osenseStr)
-        osenseStr = 'max';
+        model.osenseStr = 'max';
+    else
+        model.osenseStr = osenseStr;
     end
 else
     if isfield(model, 'osenseStr')
-        osenseStr = model.osenseStr;
+        model.osenseStr = model.osenseStr;
     else
-        osenseStr = 'max';
+        model.osenseStr = 'max';
     end
 end
 % Figure out objective sense
-if strcmpi(osenseStr,'max')
-    LPproblem.osense = -1;
-elseif strcmpi(osenseStr,'min')
-    LPproblem.osense = +1;
-else
-    error('%s is not a valid osenseStr. Use either ''min'' or ''max''' ,osenseStr);
-end
 
 if exist('minNorm', 'var')
     if isempty(minNorm)
