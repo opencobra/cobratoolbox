@@ -40,12 +40,21 @@ function LPproblem = buildLPproblemFromModel(model, checked)
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
 
+
 if ~exist('checked','var')
     checked = true;
 end
 
-optionalFields = {'b','osenseStr','csense','C','d','dsense','E','evarlb','evarub','evarc','D'};
+%Build some fields, if they don't exist
+
+optionalFields = {'C','d','dsense','E','evarlb','evarub','evarc','D'};
+basicFields = { 'b','osenseStr','csense'};
+basicFieldsToBuild = setdiff(basicFields,fieldnames(model));
 fieldsToBuild = setdiff(optionalFields,fieldnames(model));
+if ~isempty(basicFieldsToBuild)
+    model = createEmptyFields(model,basicFieldsToBuild );
+end
+
 
 if checked    
     res = verifyModel(model,'FBAOnly',true);
@@ -60,7 +69,6 @@ if isfield(model,'dxdt')
     end
     model.b = model.dxdt; %Overwrite b
 end
-
 model = createEmptyFields(model,fieldsToBuild);
 LPproblem.A = [model.S,model.E;model.C,model.D];
 LPproblem.ub = [model.ub;model.evarub];

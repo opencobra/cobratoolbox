@@ -195,12 +195,12 @@ assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
 assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
 assert(any(ismember('EX_microbeBiomass[fe]',microbiota_model.rxns)) > 0)
 assert(length(microbiota_model.rxns(strmatch('DUt',microbiota_model.rxns)))== length(microbiota_model.rxns(strmatch('UFEt',microbiota_model.rxns)))-1)
-assert(microbiota_model.A(1,1) == -0.3000)
-assert(microbiota_model.A(2,1) == -0.2000)
-assert(microbiota_model.A(3,1) == -0.1000)
-assert(microbiota_model.A(4,1) == -0.2000)
-assert(microbiota_model.A(5,1) == -0.2000)
-assert(microbiota_model.A(6,1) == 1)
+assert(microbiota_model.S(1,1) == -0.3000)
+assert(microbiota_model.S(2,1) == -0.2000)
+assert(microbiota_model.S(3,1) == -0.1000)
+assert(microbiota_model.S(4,1) == -0.2000)
+assert(microbiota_model.S(5,1) == -0.2000)
+assert(microbiota_model.S(6,1) == 1)
 
 % test simulation
 [ID, fvaCt, ~, presol]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
