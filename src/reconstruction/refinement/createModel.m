@@ -153,14 +153,14 @@ for i = 1 : nRxns
     metaboliteLists{i} = metaboliteList;
 end
 metabs = unique([metaboliteLists{:}]);
-model = addMultipleMetabolites(model,metabs);
+model = addMultipleMetabolites(model,metabs,'printLevel',printLevel);
 stoich = zeros(numel(metabs),nRxns);
 for i = 1:nRxns
     [pres,pos] = ismember(metaboliteLists{i},metabs);
     stoich(pos(pres),i) = coefLists{i};
 end
 
-model = addMultipleReactions(model,rxnAbrList,metabs,stoich','lb',lowerBoundList,...
+model = addMultipleReactions(model,rxnAbrList,metabs,stoich,'lb',lowerBoundList,...
     'ub',upperBoundList,'subSystems',subSystemList,'grRules',grRuleList,'printLevel',printLevel);
 
 end
