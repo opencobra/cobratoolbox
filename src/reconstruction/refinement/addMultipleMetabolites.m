@@ -69,7 +69,7 @@ for field = 1:2:numel(varargin)
     %information, as we don't know how the field should look.
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
-        if printLevel > 0
+        if printLevel > 0 && ~strcmp('printLevel',cfield)
             warning('Field %s is excluded',cfield);
         end
         continue;
