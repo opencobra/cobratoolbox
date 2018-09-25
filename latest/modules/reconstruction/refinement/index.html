@@ -495,7 +495,7 @@ and no ID may be present in the supplied model.</li>
 <div><ul>
 <li><p class="first"><strong>varargin</strong> &#8211;
 fieldName, Value pairs with additional properties for the
-added metabolites.
+added metabolites. In addition, a &#8216;printLevel&#8217; flag can be used (default: 0).
 The given values fields will be set according to the values.
 Only fields associated with mets defined in the COBRA definitions (except <cite>S</cite>)
 or fields already in the model may be used.
@@ -1179,6 +1179,8 @@ List of gene names (used only for translation
 from common gene names to systematic gene names)</li>
 <li><strong>systNameList</strong> &#8211;
 List of systematic names</li>
+<li><strong>printLevel</strong> &#8211;
+Verbosity (0 - no outputs, except warnings, 1- normal printout (default))</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
