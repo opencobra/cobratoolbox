@@ -43,8 +43,14 @@ function generateTutorials(destinationFolder, varargin)
         showprogress(0, 'Generating HTML and PDF files ...');
         for k = 1:totalNumberOfFiles
             fullFileName = fullfile(mlxFiles(k).folder, mlxFiles(k).name);
+            mFileName = fullfile([mlxFiles(k).folder filesep mlxFiles(k).name(1:end-4) '.m']);
             [~, ~, ~] = mkdir([destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '')]);
             openAndConvert(fullFileName, [destinationFolder strrep(mlxFiles(k).folder, CBTDIR, '') filesep mlxFiles(k).name(1:end-4) '.html'])
+
+            % Note: for converting manually the .mlx files ta a .m file, uncomment the following lines:
+            % delete(mFileName)
+            % openAndConvert(fullFileName, mFileName)
+
             showprogress(k / totalNumberOfFiles);
         end
     else
