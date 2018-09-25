@@ -134,37 +134,8 @@ if printLevel > 1
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
 end
 
-if ~isfield(model,'b')
-    model.b = zeros(size(model.S,1),1);
-end
 % Set up the general problem
-rxnListFull = model.rxns;
-
-if strcmpi(osenseStr,'max')
-    LPproblem.osense = -1;
-elseif strcmpi(osenseStr,'min')    
-    LPproblem.osense = 1;
-else
-    error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
-end
-
-LPproblem.c = model.c;
-LPproblem.lb = model.lb;
-LPproblem.ub = model.ub;
-if ~isfield(model,'csense')
-    LPproblem.csense(1:nMets,1) = 'E';
-else
-    LPproblem.csense = model.csense(1:nMets);
-
-    % print a warning message if the csense vector does not have the same length as the mets vector
-    if length(model.mets) ~= length(model.csense)
-        warning(' > model.csense does not have the same length as model.mets. Consider checking the model using >> verifyModel.');
-    end
-end
-LPproblem.csense = columnVector(LPproblem.csense);
-LPproblem.A = model.S;
-LPproblem.b = model.b;
-
+LPproblem = buildLPproblemFromModel(model);
 
 % Solve initial (normal) LP
 if allowLoops
@@ -186,8 +157,8 @@ end
 
 %set the objective
 if hasObjective
-    LPproblem.A = [model.S;columnVector(model.c)'];
-    LPproblem.b = [model.b;objValue];
+    LPproblem.A = [LPproblem.A;columnVector(LPproblem.c)'];
+    LPproblem.b = [LPproblem.b;objValue];
     if strcmp(osenseStr, 'max')
         LPproblem.csense(end+1) = 'G';
     else
