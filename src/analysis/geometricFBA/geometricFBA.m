@@ -48,6 +48,14 @@ if length(ind) == 1
     model.lb(ind) = FBAsolution.f;
 end
 
+if isfield(model,'C') || isfield(model,'E')
+    warning('geometricFBA will only consider the Stoichiometric matrix S and no additional constraints!')
+end
+
+if isfield(model,'csense') && any(model.csense~='E')
+    warning('geometricFBA assumes a strict S*v = b condition. Non equality constraints will be considered as equality constraints!')
+end
+
 A = model.S;
 b = model.b;
 L = model.lb;
