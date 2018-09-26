@@ -98,7 +98,7 @@ model.ub(end+1:end+nRevRxns) = max(0,-model.lb(revReacs));
 model.lb(end+1:end+nRevRxns) = max(0,-model.ub(revReacs));
 model.lb(revReacs) = max(0,model.lb(revReacs));
 model.ub(revReacs) = max(0,model.ub(revReacs));
-
+reacdir = [ones(nRxns,1);-ones(nRevRxns,1)];
 %Extend the c vector by the negative (otherwise the objective changes)
 model.c(end+1:end+nRevRxns) = -model.c(revReacs);
 
@@ -111,10 +111,14 @@ model.rxns(end+1:end+nRevRxns) = strcat(RelReacNames,'_b');
 fields = getModelFieldsForType(model,'rxns','fieldSize',nRxns);
 for i = 1:length(fields)    
     cfield = fields{i};
-    if size(model.(cfield),1) == nRxns
+    if size(model.(cfield),1) == nRxns        
         model.(cfield)(end+1:end+nRevRxns,:) = model.(cfield)(revReacs,:);
     elseif size(model.(cfield),2) == nRxns
-        model.(cfield)(:,end+1:end+nRevRxns) = model.(cfield)(:,revReacs);
+        if strcmp(cfield,'C')
+            model.(cfield)(:,end+1:end+nRevRxns) = model.(cfield)(:,revReacs)*-1;
+        else
+            model.(cfield)(:,end+1:end+nRevRxns) = model.(cfield)(:,revReacs);
+        end
     end
 end
 
@@ -164,7 +168,12 @@ if orderReactions
         if size(model.(cfield),1) == nIrrevRxns
             model.(cfield)(:,:) = model.(cfield)(reacorder,:);
         elseif size(model.(cfield),2) == nIrrevRxns
-            model.(cfield)(:,:) = model.(cfield)(:,reacorder);
+            if strcmp(cfield,'C')
+                tempData = model.(cfield)(:,:).*reacdir;
+                model.(cfield)(:,:) = tempData(:,reacorder);
+            else
+                model.(cfield)(:,:) = model.(cfield)(:,reacorder);
+            end
         end
     end
     matchRev = newMatchRev;

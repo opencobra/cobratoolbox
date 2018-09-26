@@ -109,7 +109,7 @@ parser.parse(model,idList,d,varargin{:});
 
 c = parser.Results.c;
 d = columnVector(parser.Results.d);
-dsense = parser.Results.dsense;
+dsense = columnVector(parser.Results.dsense);
 ctrID = parser.Results.ConstraintID;
 if ischar(ctrID)
     ctrID = {ctrID};
