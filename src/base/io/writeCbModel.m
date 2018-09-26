@@ -44,8 +44,10 @@ function outmodel = writeCbModel(model, varargin)
 
 newKeyWords = {'format', 'fileName', 'compSymbols', 'compNames'};
 
+% set default values
 supportedSBML = 3;
 supportedSBMLv = 1;
+fileName = '';
 
 % We can assume, that the old syntax is not used, if there is no varargin
 % i.e. if numel varargin == 0
