@@ -107,6 +107,10 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, vara
 %                        * LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)
 %                        * xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. 'xxx' is one of the status above.
 
+if isfield(modelCom,'C') || isfield(modelCom,'E')
+    warning('SteadyCom does not handle the additional constraints and variables defined in the model structre.\n It will only use the stoichiometry provided.');
+end
+
 t = tic;
 t0 = 0;
 %% Initialization

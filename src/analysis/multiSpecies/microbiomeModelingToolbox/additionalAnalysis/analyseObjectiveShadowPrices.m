@@ -147,7 +147,7 @@ function [model, FBAsolution] = computeSolForObj(model, objectiveList)
         % optimize for the objective if it is present in the model
         if ~isempty(find(ismember(model.rxns,objectiveList{j,1})))
             model = changeObjective(model,objectiveList{j,1});
-            FBAsolution = solveCobraLP(model);
+            FBAsolution = solveCobraLP(buildLPproblemFromModel(model));
         end
     end
 end
