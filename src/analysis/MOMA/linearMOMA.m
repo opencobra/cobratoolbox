@@ -200,7 +200,7 @@ if (solutionWT.stat > 0)
             fprintf('%f seconds\n',LPsolution.time);
         end
         if (LPsolution.stat > 0)
-            solutionDel.x = LPsolution.full((nRxns1+1):(nRxns1+nRxns2));
+            solutionDel.x = LPsolution.full((nWTVars+1):(nWTVars+nRxns2));
             solutionDel.f = sum(modelDel.c.*solutionDel.x);
             solutionWT.x = LPsolution.full(1:nRxns1);
         end
