@@ -155,15 +155,11 @@ end
 if (solutionWT.stat > 0)
 
     if minNormFlag
-
-        b = zeros(nMets2,1);
-        A = modelDel.S;
-        c = -2*solutionWT.x;
-        F = 2*eye(nRxns2);
-        lb = modelDel.lb;
-        ub = modelDel.ub;
-        csense(1:nMets2) = 'E';
-
+        QPproblem = buildLPproblemFromModel(modelDel);
+        QPproblem.c(1:nRxns) = -2*solutionWT.x;
+        QPproblem.F = sparse(size(QPproblem.A,2));
+        QPproblem.F(1:nRxns2,1:nRxns2) = 2*speye(nRxns2);
+        
     else
 
         % Construct the LHS matrix
@@ -171,45 +167,55 @@ if (solutionWT.stat > 0)
         % 1: Swt*v1 = 0 for the wild type
         % 2: Sdel*v2 = 0 for the deletion strain
         % 5: c'v1 = f1 (wild type)
+        LPWT = buildLPproblemFromModel(modelWT);
+        LPDel = buildLPproblemFromModel(modelDel);        
+        [nWTCtrs,nWTVars] = size(LPWT.A);
+        [nDelCtrs,nDelVars] = size(LPDel.A);
         deltaMat = createDeltaMatchMatrix(modelWT.rxns,modelDel.rxns);
         deltaMat = deltaMat(1:nCommon,1:(nRxns1+nRxns2+nCommon));
-        A = [modelWT.S sparse(nMets1,nRxns2+nCommon);
-            sparse(nMets2,nRxns1) modelDel.S sparse(nMets2,nCommon);
-            deltaMat;
-            modelWT.c' sparse(1,nRxns2+nCommon)];
-
+        deltaMatWT = deltaMat(1:nCommon,1:nRxns1);
+        deltaMatDel = deltaMat(1:nCommon,nRxns1+(1:nRxns2));
+        deltaMatCom = deltaMat(1:nCommon,(nRxns1+nRxns2)+(1:nCommon));
+        QPproblem.A = [LPWT.A, sparse(nWTCtrs,nDelVars+nCommon);...
+                       sparse(nDelCtrs,nWTVars),LPDel.A,sparse(nDelCtrs,nCommon);...
+                       deltaMatWT, sparse(nCommon,nWTVars - nRxns1), deltaMatDel, sparse(nCommon,nDelVars - nRxns2), deltaMatCom;...
+                       LPWT.c',sparse(1,nDelVars+nCommon)];
         % Construct the RHS vector
-        b = [zeros(nMets1+nMets2+nCommon,1);objValWT];
+        QPproblem.b = [LPWT.b;LPDel.b;zeros(nCommon,1);objValWT];
 
         % Linear objective = 0
-        c = zeros(nRxns1+nRxns2+nCommon,1);
+        QPproblem.c = zeros(nWTVars+nDelVars+nCommon,1);
 
         % Construct the ub/lb
         % delta [-10000 10000]
-        lb = [modelWT.lb;modelDel.lb;-10000*ones(nCommon,1)];
-        ub = [modelWT.ub;modelDel.ub;10000*ones(nCommon,1)];
+        QPproblem.lb = [LPWT.lb;LPDel.lb;-10000*ones(nCommon,1)];
+        QPproblem.ub = [LPWT.ub;LPDel.ub;10000*ones(nCommon,1)];
 
         % Construct the constraint direction vector (G for delta's, E for
         % everything else)
-        csense(1:(nMets1+nMets2+nCommon)) = 'E';
         if (strcmp(osenseStr,'max'))
-            csense(end+1) = 'G';
+            csense = 'G';
         else
-            csense(end+1) = 'L';
+            csense = 'L';
         end
+        
+        QPproblem.csense = [LPWT.csense;LPDel.csense;repmat('E',nCommon,1);csense];        
+        
 
         % F matrix
-        F = [sparse(nRxns1+nRxns2,nRxns1+nRxns2+nCommon);
-            sparse(nCommon,nRxns1+nRxns2) 2*eye(nCommon)];
+        QPproblem.F = [sparse(nWTVars+nDelVars,nWTVars+nDelVars+nCommon);
+                       sparse(nCommon,nWTVars+nDelVars) 2*eye(nCommon)];
 
     end
-
+    
+    % in either case: minimize the distance
+    QPproblem.osense = 1;
+    
     if (verbFlag)
-        fprintf('Solving MOMA: %d constraints %d variables ',size(A,1),size(A,2));
+        fprintf('Solving MOMA: %d constraints %d variables ',size(QPproblem.A,1),size(QPproblem.A,2));
     end
 
-    % Solve the linearMOMA problem
-    [QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,QPproblem.csense,QPproblem.osense] = deal(A,b,F,c,lb,ub,csense,1);
+    % Solve the linearMOMA problem    
     %QPsolution = solveCobraQP(QPproblem,[],verbFlag-1);
     QPsolution = solveCobraQP(QPproblem, 'printLevel', verbFlag-1, 'method', 0);
 
