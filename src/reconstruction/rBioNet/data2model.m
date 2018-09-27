@@ -3,13 +3,13 @@ function model_out = data2model(data,description,database)
 %
 % USAGE:
 %
-%    model_out = data2model(data, description)
+%    model_out = data2model(data, description,database)
 %
 % INPUTS:
 %    data:          data from `rbionet`
 %    description:   model description
 %
-% OPTIONAL INPUT
+% OPTIONAL INPUT:
 %    database:     file with reaction and metabolite database in format:
 %                  database.reactions=reaction database
 %                  database.metabolites=metabolite database
@@ -19,7 +19,8 @@ function model_out = data2model(data,description,database)
 %
 % .. Author: - Stefan G. Thorleifsson 2011
 %            - Almut Heinken 09/2018: added option to manually input
-%            database file
+%              database file
+
 
 model_out = [];
 S = size(data);
@@ -147,7 +148,7 @@ model.metCharges = {};
 %
 
 % if reaction and metabolite database is input manually instead of through rBioNet GUI
-if nargin>2
+if isfield(database,'reactions') && isfield(database,'metabolites')
     reactions=database.reactions;
     metabolites=database.metabolites;
 else
