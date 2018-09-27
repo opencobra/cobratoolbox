@@ -395,9 +395,18 @@ end
 
 solution.time = etime(clock, t1);
 solution.v = solution.x;%eventually we should depreciate solution.x
-solution.v = solution.v(1:nRxns); %v should only include reaction fluxes
-solution.w = solution.w(1:nRxns); %w should only include reaction fluxes
-solution.y = solution.y(1:nMets); %y should only include reduced costs.
+if solution.stat == 1
+    %If this has a solution
+    solution.v = solution.v(1:nRxns); %v should only include reaction fluxes    
+    if (~primalOnlyFlag && allowLoops)
+        if size(solution.w,1) >= nRxns
+            solution.w = solution.w(1:nRxns); %w should only include reaction fluxes       
+        end
+        if size(solution.y,1) >= nMets
+            solution.y = solution.y(1:nMets); %y should only include reduced costs.
+        end
+    end
+end
 
 
 
