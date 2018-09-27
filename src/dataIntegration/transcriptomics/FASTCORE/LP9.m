@@ -1,4 +1,4 @@
-function V = LP9(K, P, model, epsilon)
+function V = LP9(K, P, model, LPproblem, epsilon)
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
 %
 % USAGE:
@@ -18,37 +18,38 @@ function V = LP9(K, P, model, epsilon)
     np = numel(P);
     nk = numel(K);
     [m,n] = size(model.S);
+    [m2,n2] = size(LPproblem.A);
 
     % objective
-    f = [zeros(n,1); ones(np,1)];
+    f = [zeros(n2,1); ones(np,1)];
 
     % equalities
-    Aeq = [model.S, sparse(m,np)];
-    beq = zeros(m,1);
+    Aeq = [LPproblem.A, sparse(m,np)];
+    beq = LPproblem.b;
 
     % inequalities
-    Ip = sparse(np,n); Ip(sub2ind(size(Ip),(1:np)',P(:))) = 1;
-    Ik = sparse(nk,n); Ik(sub2ind(size(Ik),(1:nk)',K(:))) = 1;
+    Ip = sparse(np,n2); Ip(sub2ind(size(Ip),(1:np)',P(:))) = 1;
+    Ik = sparse(nk,n2); Ik(sub2ind(size(Ik),(1:nk)',K(:))) = 1;
     Aineq = sparse([[Ip, -speye(np)]; ...
                     [-Ip, -speye(np)]; ...
                     [-Ik, sparse(nk,np)]]);
     bineq = [zeros(2*np,1); -ones(nk,1)*epsilon*scalingfactor];
 
     % bounds
-    lb = [model.lb; zeros(np,1)] * scalingfactor;
-    ub = [model.ub; max(abs(model.ub(P)),abs(model.lb(P)))] * scalingfactor;
+    lb = [LPproblem.lb; zeros(np,1)] * scalingfactor;
+    ub = [LPproblem.ub; max(abs(model.ub(P)),abs(model.lb(P)))] * scalingfactor;
 
     % Set up LP problem
-    LPproblem.A=[Aeq;Aineq];
-    LPproblem.b=[beq;bineq];
-    LPproblem.lb=lb;
-    LPproblem.ub=ub;
-    LPproblem.c=f;
-    LPproblem.osense=1;%minimise
-    LPproblem.csense(1:size(LPproblem.A,1))='E';
-    LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
+    LP9problem.A=[Aeq;Aineq];
+    LP9problem.b=[beq;bineq];
+    LP9problem.lb=lb;
+    LP9problem.ub=ub;
+    LP9problem.c=f;
+    LP9problem.osense=1;%minimise
+    LP9problem.csense = [LPproblem.csense; repmat('L',2*np + nk,1)];
+    
 
-    solution = solveCobraLP(LPproblem);
+    solution = solveCobraLP(LP9problem);
 
     if solution.stat~=1
         fprintf('\n%s%s\n',num2str(solution.stat),' = sol.stat')
