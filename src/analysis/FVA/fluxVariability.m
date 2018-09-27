@@ -394,14 +394,11 @@ function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
     elseif strcmp(method, 'FBA')
         V=LPsolution.full(1:nRxns);
     elseif strcmp(method, 'minOrigSol')
-        LPproblemMOMA = LPproblem;
-        LPproblemMOMA=rmfield(LPproblemMOMA, 'csense');
-        LPproblemMOMA.A = model.S;
-        LPproblemMOMA.S = LPproblemMOMA.A;
-        LPproblemMOMA.b = model.b;
-        LPproblemMOMA.lb(LPproblem.c~=0) = cFlux - 1e-12;
-        LPproblemMOMA.ub(LPproblem.c~=0) = cFlux + 1e-12;
-        LPproblemMOMA.rxns = model.rxns;
+        % we take the original model, and constrain the objective reaction
+        % accordingly.
+        LPproblemMOMA = model;                
+        LPproblemMOMA.lb(LPproblem.c(1:nRxns)~=0) = cFlux - 1e-12;
+        LPproblemMOMA.ub(LPproblem.c(1:nRxns)~=0) = cFlux + 1e-12;        
         momaSolution = linearMOMA(model,LPproblemMOMA);
         V=momaSolution.x;
     end
