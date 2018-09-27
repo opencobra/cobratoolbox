@@ -33,6 +33,11 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile, epsilon)
 %
 % .. Authors:  - Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
+if isfield(modelCom,'C') || isfield(modelCom,'E')
+    issueConfirmationWarning('INIT does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
+end
+
+
 if nargin < 6 || isempty(epsilon)
     epsilon=1;
 end
