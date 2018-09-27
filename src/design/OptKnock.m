@@ -57,6 +57,11 @@ function [optKnockSol, bilevelMILPproblem] = OptKnock(model, selectedRxnList, op
 % irreversible reactions. If you wish to constrain a reaction, use
 % `constrOpt`.
 
+if isfield(modelCom,'C') || isfield(modelCom,'E')
+    issueConfirmationWarning('optKnock does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
+end
+
+
 global MILPproblemType;
 global selectedRxnIndIrrev;
 global rxnList;
