@@ -48,7 +48,7 @@ end
 %Build some fields, if they don't exist
 
 optionalFields = {'C','d','dsense','E','evarlb','evarub','evarc','D'};
-basicFields = { 'b','osenseStr','csense'};
+basicFields = { 'b','csense','osenseStr'};
 basicFieldsToBuild = setdiff(basicFields,fieldnames(model));
 fieldsToBuild = setdiff(optionalFields,fieldnames(model));
 if ~isempty(basicFieldsToBuild)
