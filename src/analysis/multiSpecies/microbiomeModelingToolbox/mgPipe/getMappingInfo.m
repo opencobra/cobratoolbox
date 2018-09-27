@@ -151,7 +151,7 @@ reacLng = length(reac);
 parfor j = 1:patNumb
     for i = 1:reacLng
         indrxn = find(strcmp(reac(i, 1), completeset(:, j)));
-        numbtab(i, j) = sum(completeabunorm(indrxn));
+        numbtab(i, j) = sum(completeabunorm(indrxn,j));
     end
 end
 
