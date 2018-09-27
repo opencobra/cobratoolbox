@@ -108,7 +108,7 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, vara
 %                        * xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. 'xxx' is one of the status above.
 
 if isfield(modelCom,'C') || isfield(modelCom,'E')
-    warning('SteadyCom does not handle the additional constraints and variables defined in the model structre.\n It will only use the stoichiometry provided.');
+    issueConfirmationWarning('SteadyCom does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
 end
 
 t = tic;

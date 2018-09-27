@@ -49,7 +49,7 @@ if length(ind) == 1
 end
 
 if isfield(model,'C') || isfield(model,'E')
-    warning('geometricFBA will only consider the Stoichiometric matrix S and no additional constraints!')
+    issueConfirmationWarning('geometricFBA will only consider the Stoichiometric matrix S and no additional constraints!')
 end
 
 if isfield(model,'csense') && any(model.csense~='E')
