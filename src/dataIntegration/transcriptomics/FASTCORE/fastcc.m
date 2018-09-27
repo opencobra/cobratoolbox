@@ -42,6 +42,8 @@ end
 tic
 
 if strcmp(method,'nonconvex') && (isfield(model,'C') || isfield(model,'E'))
+    issueConfirmationWarning('The non convex Version of fastcc does not additional constraints in the C and E fields of the model');
+end
     
 
 %number of reactions
