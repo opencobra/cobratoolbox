@@ -393,17 +393,12 @@ else
     solution.x = [];
 end
 
-solution.stat = solution.stat;
-solution.origStat = solution.origStat;
-solution.solver = solution.solver;
 solution.time = etime(clock, t1);
 solution.v = solution.x;%eventually we should depreciate solution.x
+solution.v = solution.v(1:nRxns); %v should only include reaction fluxes
+solution.w = solution.w(1:nRxns); %w should only include reaction fluxes
+solution.y = solution.y(1:nMets); %y should only include reduced costs.
 
-%remove fields from solveCobraLP
-%{
-solution   = rmfield(solution,'obj');
-solution   = rmfield(solution,'full');
-solution   = rmfield(solution,'rcost');
-solution   = rmfield(solution,'dual');
-solution   = rmfield(solution,'slack');
-%}
+
+
+
