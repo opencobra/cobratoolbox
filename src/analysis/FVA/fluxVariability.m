@@ -158,12 +158,13 @@ end
 %set the objective
 if hasObjective
     LPproblem.A = [LPproblem.A;columnVector(LPproblem.c)'];
-    LPproblem.b = [LPproblem.b;objValue];
+    LPproblem.b = [LPproblem.b;objValue];    
     if strcmp(osenseStr, 'max')
         LPproblem.csense(end+1) = 'G';
     else
         LPproblem.csense(end+1) = 'L';
     end
+    model = addCOBRAConstraint(model,model.rxns(find(model.c)),objValue,'dsense',LPproblem.csense(end));
 end
 
 %get the initial basis
@@ -337,7 +338,8 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
     %get Number of reactions
     nRxns = numel(model.rxns);
     %Set the correct objective
-    LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
+    LPproblem.c(:) = 0;
+    LPproblem.c(find(ismember(model.rxns,rxnNameList{i}))) = 1;
     if isempty(sol)
         if printLevel == 1 && ~parallelMode
             fprintf('iteration %d.\n', i);
