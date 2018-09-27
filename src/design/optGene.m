@@ -58,7 +58,7 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %             - Modified by Sebastian Mendoza 18/06/17. Improving handling
 %             of optional inputs (varargin)
 
-if isfield(modelCom,'C') || isfield(modelCom,'E')
+if isfield(model,'C') || isfield(model,'E')
     issueConfirmationWarning('optGene does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
 end
 
