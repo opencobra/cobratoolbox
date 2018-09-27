@@ -26,6 +26,10 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weights
 %
 % .. Author: - Ines Thiele, June 2013, http://thielelab.eu.
 
+if isfield(modelCom,'C') || isfield(modelCom,'E')
+    issueConfirmationWarning('fastGapFill does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
+end
+
 if ~exist('epsilon','var') || isempty(epsilon)
     epsilon = 1e-4;
 end

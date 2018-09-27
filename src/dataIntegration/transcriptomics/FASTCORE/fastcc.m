@@ -41,6 +41,9 @@ end
 
 tic
 
+if strcmp(method,'nonconvex') && (isfield(model,'C') || isfield(model,'E'))
+    
+
 %number of reactions
 N = (1:size(model.S,2));
 
