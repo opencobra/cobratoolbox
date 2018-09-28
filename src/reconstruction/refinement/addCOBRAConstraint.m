@@ -181,10 +181,9 @@ if isempty(ctrID)
 end
 
 
-
 %Also check for duplicates in the C Matrix.
 if varspresent
-    mixrows = zeros(size(c,1),size(model.E,2));
+    mixrows = sparse(size(c,1),size(model.E,2));
 end
 constRow = sparse(size(c,1),size(model.C,2));
 duppedRows = false(size(idList,1),1);
@@ -196,19 +195,22 @@ for i = 1:size(c,1)
     constRow(i,idList(rxnpos)) = c(i,rxnpos);         
     if varspresent
          mixrows(i,idList(varpos)-nRxns) = c(i,varpos);
-    end
+    end    
     cRow = constRow(i,:);    
-    dupRows = all(model.C == cRow(ones(size(model.C,1),1),:),2);
+    if checkDuplicate
+        dupRows = all(model.C == cRow(ones(size(model.C,1),1),:),2);    
+    end
     if varspresent
         cmRow = mixrows(i,:);
-        vdupRows = all(model.E == cmRow(ones(size(model.E,1),1),:),2);
-        dupRows = dupRows & vdupRows;
+        if checkDuplicate
+            vdupRows = all(model.E == cmRow(ones(size(model.E,1),1),:),2);       
+            dupRows = dupRows & vdupRows;
+        end        
     end
     if checkDuplicate
         duppedRows(i) = any(dupRows) && (model.dsense(dupRows) == dsense(i)) && (model.d(dupRows) == d(i));
     end
 end
-    
 
 if any(duppedRows) && checkDuplicate
     warning('Constraint(s) not added, because it already exists with ID: %s',strjoin(model.ctrs(dupRows)));    
