@@ -148,7 +148,7 @@ model.metCharges = {};
 %
 
 % if reaction and metabolite database is input manually instead of through rBioNet GUI
-if isfield(database,'reactions') && isfield(database,'metabolites')
+if exist('database','var') && isfield(database,'reactions') && isfield(database,'metabolites')
     reactions=database.reactions;
     metabolites=database.metabolites;
 else
