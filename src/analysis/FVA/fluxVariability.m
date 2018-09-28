@@ -382,7 +382,8 @@ function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
         QPproblem.ub(LPproblem.c~=0) = cFlux + 1e12;
         QPproblem.c(:)=0;
         %Minimise Euclidean norm using quadratic programming
-        QPproblem.F = speye(nRxns,nRxns);
+        QPproblem.F = [speye(nRxns,nRxns), sparse(nRxns,size(LPproblem.A,2)-nRxns);...
+                      sparse(size(LPproblem.A,2)-nRxns,size(LPproblem.A,2))];
         QPproblem.osense = 1;
         %quadratic optimization
         solution = solveCobraQP(QPproblem);
