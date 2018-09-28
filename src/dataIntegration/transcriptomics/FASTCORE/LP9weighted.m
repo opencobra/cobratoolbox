@@ -38,10 +38,10 @@ LP9problem.A=[Aeq;Aineq];
 LP9problem.b=[beq;bineq];
 LP9problem.lb=lb;
 LP9problem.ub=ub;
-LP9problem.c=f;
+LP9problem.c=columnVector(f);
 LP9problem.osense=1;%minimise
 LP9problem.csense = [LPproblem.csense; repmat('L',2*np + nk,1)];
-
+keyboard
 solution = solveCobraLP(LP9problem);
 
 if solution.stat~=1
