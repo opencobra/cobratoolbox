@@ -865,11 +865,11 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="function">
 <dt id="src.reconstruction.rBioNet.data2model">
-<code class="descname">data2model</code><span class="sig-paren">(</span><em>data</em>, <em>description</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d7ce7d64432bc262c4bc72d804f1a0314668c6ff/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
+<code class="descname">data2model</code><span class="sig-paren">(</span><em>data</em>, <em>description</em>, <em>database</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d7ce7d64432bc262c4bc72d804f1a0314668c6ff/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in data from <cite>rbionet</cite> to create a complete reconstruction</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model_out = data2model(data, description)</div></blockquote>
+<div>model_out = data2model(data, description,database)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -877,6 +877,15 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 data from <cite>rbionet</cite></li>
 <li><strong>description</strong> &#8211;
 model description</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>database</strong> &#8211;
+file with reaction and metabolite database in format:
+database.reactions=reaction database
+database.metabolites=metabolite database</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
