@@ -1,18 +1,27 @@
-function model_out = data2model(data,description)
+function model_out = data2model(data,description,database)
 % Takes in data from `rbionet` to create a complete reconstruction
 %
 % USAGE:
 %
-%    model_out = data2model(data, description)
+%    model_out = data2model(data, description,database)
 %
 % INPUTS:
 %    data:          data from `rbionet`
 %    description:   model description
 %
+% OPTIONAL INPUT:
+%    database:     file with reaction and metabolite database in format:
+%                  database.reactions=reaction database
+%                  database.metabolites=metabolite database
+%
 % OUTPUT:
 %    model_out:     creates a complete reconstruction
 %
 % .. Author: - Stefan G. Thorleifsson 2011
+%            - Almut Heinken 09/2018: added option to manually input
+%              database file
+
+
 model_out = [];
 S = size(data);
 data_in = {};
@@ -41,10 +50,10 @@ if size(u_data,1) ~= size(data,1)
         if sum(strcmp(u_data{i}, data(:,2))) > 1
             % It's a short vector so the growing issue doesn't matter
             d_entry = [d_entry i];
-
+            
         end
     end
-
+    
     if isempty(d_entry)
         msgbox(['Reactions are non-unique but the script was unable to locate'...
             ' the duplicate entries.'],'Warning','warn');
@@ -138,8 +147,14 @@ model.metCharges = {};
 % max_msgbox = 0;
 %
 
-reactions   = rBioNetSaveLoad('load','rxn');
-metabolites = rBioNetSaveLoad('load','met');
+% if reaction and metabolite database is input manually instead of through rBioNet GUI
+if exist('database','var') && isfield(database,'reactions') && isfield(database,'metabolites')
+    reactions=database.reactions;
+    metabolites=database.metabolites;
+else
+    reactions   = rBioNetSaveLoad('load','rxn');
+    metabolites = rBioNetSaveLoad('load','met');
+end
 
 %----New
 %Find all metabolites and reactions that are not in database
@@ -181,21 +196,21 @@ for k = 1:S(1) % Check all reactions in model
     rxn = rxns{k};
     line = any(strcmp(rxn,reactions(:,1)),1);
     if line == 0
-
+        
         cnt_r = cnt_r + 1;
         missing_rxn(cnt_r,:) = data(k,:);
-
+        
     end
 end
 answer = [];
 
 %There are reactions and metabolites in model that are not in database.
 if cnt_r ~=0 || cnt_m ~=0
-
+    
     if cnt_r ~=0 && cnt_m ~=0
         m_mets = ['Metabolites: ' mets2str(missing_met) '.'];
         m_rxns = ['Reactions: ' mets2str(missing_rxn(:,2)) '.'];
-
+        
         answer = questdlg(char(m_mets,m_rxns,'',['Are missing from database.'...
             'The reconstruction cannot be completed without them. Do you want',...
             ' to add them now?']),'Missing metabolites/reactions','Yes',...
@@ -213,7 +228,7 @@ if cnt_r ~=0 || cnt_m ~=0
             ' to add them now?']),'Missing metabolites/reactions','Yes',...
             'No','Yes');
     end
-
+    
     if isempty(answer)
         answer = 'No';
     end
@@ -254,7 +269,7 @@ for i = 1:length(time)-3
     if isempty(date)
         date = [num2str(round(time(i)))];
     else
-
+        
         date = [date '/' num2str(round(time(i)))];
     end
 end
