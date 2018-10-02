@@ -241,3 +241,12 @@ end
 if isfield(model,'comps') && ischar(model.comps)
     model.comps = columnVector(arrayfun(@(x) {x},model.comps));
 end
+
+if isfield(model,'metChEBIID')
+    %some provide the chebi IDs as numbers, while the rest is string..
+    numericIDs = cellfun(@isnumeric, model.metChEBIID);
+    if any(numericIDs)
+        model.metChEBIID(numericIDs) = cellfun(@num2str, model.metChEBIID(numericIDs),'Uniform',0);
+    end
+end
+    

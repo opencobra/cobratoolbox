@@ -46,6 +46,20 @@ s = s(1, 2);
 sampName = sampName(1, 3:s);
 sampName = table2cell(sampName);
 sampName = sampName';
+%Cheching that names are valid matlab ids
+for i=1:length(sampName)
+    if isvarname(sampName{i,1})==0
+       warning('It looks like the name of your samples is not a valid Matlab name. Most probably you have names starting with numbers. I will convert names in Matlab valid names to avoid problems during export into csv. Plese, consider changing the names of samples.')
+       sampName(i,1)=cellstr(matlab.lang.makeValidName(sampName{i,1}));
+   end
+end
+
+for i=1:length(sampName)
+   if isvarname(sampName{i,1})==0
+       error('ERROR:I tried with no success to change your samples names into Matlab valid names. Please change your samples (observations) names and try running again mgPipe.')
+   end
+end
+
 indNumb = length(sampName);  % number of individuals
 % getting info on present strains
 organisms = oldSampName(2:height(oldSampName), 2);  

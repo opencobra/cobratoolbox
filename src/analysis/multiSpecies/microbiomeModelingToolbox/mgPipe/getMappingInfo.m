@@ -117,6 +117,14 @@ end
 patOrg = patOrg';
 
 % number and names of UNIQUE reactions per patient
+% Briefly, the nonunique reaction content of each individual (reacvec) is 
+% retrieved from the binary matrix of microbial presence (binOrg) and each of 
+% the related models. The same is also done using the abundance table for 
+% establishing reactions coefficients (abunvec) on the base of microbial presence. 
+% We end up with two nonunique matrices: (completeset) containing reaction content 
+% for each individual and (completeabunnorm).  Finally, for each individual using 
+% a list of unique reactions in all the study (reac) all the matches are found and 
+% the correspondent abundances summed up (numbtab). 
 
 reacSet = {};
 reacNumber = [];
@@ -142,8 +150,8 @@ reacLng = length(reac);
 
 parfor j = 1:patNumb
     for i = 1:reacLng
-        indrxn = find(strncmp(reac(i, 1), completeset(:, j), length(char(reac(i, 1)))));
-        numbtab(i, j) = sum(completeabunorm(indrxn));
+        indrxn = find(strcmp(reac(i, 1), completeset(:, j)));
+        numbtab(i, j) = sum(completeabunorm(indrxn,j));
     end
 end
 

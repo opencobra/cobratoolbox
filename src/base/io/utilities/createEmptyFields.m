@@ -79,7 +79,8 @@ for field = 1:length(fieldNames)
             model.(fieldNames{field}) = sparse(xdim,ydim);            
         case 'cell'
             model.(fieldNames{field}) =cell(xdim,ydim);
-            if strcmp(eval(defaultValue),'')
+            % need to both check, whether the eval is a char AND if it is empty.
+            if ischar(eval(defaultValue)) && strcmp(eval(defaultValue),'') 
                 model.(fieldNames{field})(:) = {''};
             else
                 for i = 1:xdim

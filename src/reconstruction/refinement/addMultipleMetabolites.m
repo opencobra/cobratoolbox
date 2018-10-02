@@ -12,7 +12,7 @@ function newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %
 % OPTIONAL INPUTS:
 %    varargin:      fieldName, Value pairs with additional properties for the
-%                   added metabolites.  
+%                   added metabolites. In addition, a 'printLevel' flag can be used (default: 0). 
 %                   The given values fields will be set according to the values. 
 %                   Only fields associated with mets defined in the COBRA definitions (except `S`) 
 %                   or fields already in the model may be used.  
@@ -46,8 +46,21 @@ fieldDefs = getDefinedFieldProperties();
 fieldDefs = fieldDefs(cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,2)) | cellfun(@(x) strcmp(x,'mets'), fieldDefs(:,3)));
 modelMetFields = getModelFieldsForType(model,'mets');
 
+% extract additional parameters which are not fields (currently only
+% printLevel
+printLevel = 0;
+
+for parameter = 1:2:numel(varargin)
+    if strcmp(varargin{parameter},'printLevel')
+        printLevel = varargin{parameter+1};
+    end
+end    
+
 %Then we add the ids.
 model.mets = [model.mets;columnVector(metIDs)];
+if printLevel > 0
+    fprintf('Adding the following Metabolites to the model:\n%s\n',strjoin(metIDs,'\n'));
+end
 
 %Now, add the the data from the additional supplied fields, and check that
 %they are in sync
@@ -56,13 +69,18 @@ for field = 1:2:numel(varargin)
     %information, as we don't know how the field should look.
     cfield = varargin{field};
     if strcmp('S',cfield) || (~any(ismember(fieldDefs(:,1),cfield)) && ~any(ismember(modelMetFields,cfield)))
-        warning('Field %s is excluded',cfield);
+        if printLevel > 0 && ~strcmp('printLevel',cfield)
+            warning('Field %s is excluded',cfield);
+        end
         continue;
     end
     %Now add the field data. 
     if ~isfield(model,cfield)
         %If its not yet in the model, create it
         %according to its defaults and replace the final elements.
+        if printLevel > 2
+            fprintf('Creating model field %s\n',cfield);
+        end
         model = createEmptyFields(model,cfield);    
         model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});    
     else

@@ -109,7 +109,7 @@ createLocalVariables(){
 }
 
 buildHTMLTutorials(){
-    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath');exit;"
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -124,7 +124,7 @@ buildHTMLTutorials(){
 
 buildHTMLSpecificTutorial(){
     specificTutorial=$1
-    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.ci');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath', '$specificTutorial');exit;"
     createLocalVariables $specificTutorial
     # create PDF file
     /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
