@@ -14,26 +14,26 @@ function solution = optimizeCardinality(problem, param)
 % INPUT:
 %    problem:     Structure containing the following fields describing the problem:
 %
-%                   * .p - size of vector `x`
-%                   * .q - size of vector `y`
-%                   * .r - size of vector `z`
-%                   * .A - `s x (p+q+r)` LHS matrix
+%                   * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x.
+%                   * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y.
+%                   * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z.
+%                   * .A - `s x size(A,2)` LHS matrix
 %                   * .b - `s x 1` RHS vector
 %                   * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
 %                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
-%                   * .lb - `(p+q+r) x 1` Lower bound vector
-%                   * .ub - `(p+q+r) x 1` Upper bound vector
-%                   * .c - `(p+q+r) x 1` linear objective function vector
+%                   * .lb - `size(A,2) x 1` Lower bound vector
+%                   * .ub - `size(A,2) x 1` Upper bound vector
+%                   * .c -  `size(A,2) x 1` linear objective function vector
 %
 % OPTIONAL INPUTS:
 %    problem:     Structure containing the following fields describing the problem:
 %                   * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
+%                   * .k - `p x 1` IR `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
+%                   * .d - `q x 1` OR `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
 %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
 %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
-%                   * .k - `p x 1` strictly positive weight vector on minimise `||x||_0`
 %                   * .delta0 - trade-off parameter on maximise `||y||_0`
 %                   * .delta1 - trade-off parameter on maximise `||y||_1
-%                   * .d - `q x 1` strictly positive weight vector on maximise `||y||_0`
 %
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
@@ -56,6 +56,12 @@ function solution = optimizeCardinality(problem, param)
 %                     * 0 =  Infeasible
 %                     * -1=  Invalid input
 %
+% OPTIONAL OUTPUT:
+%    solution:    Structure may also contain the following field:
+%                   * .xyz - 'size(A,2) x 1` solution vector, where model.p,q,r are 'size(A,2) x 1` boolean vectors and 
+%                     x=solution.xyz(problem.p);
+%                     y=solution.xyz(problem.q);
+%                     z=solution.xyz(problem.r);
 
 % .. Author: - Hoai Minh Le &  Ronan Fleming
 
