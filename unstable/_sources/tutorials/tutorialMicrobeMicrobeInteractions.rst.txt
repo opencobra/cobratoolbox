@@ -1,7 +1,7 @@
 .. _tutorialMicrobeMicrobeInteractions:
 
-tutorialNoName
-==============
+Computation and analysis of microbe-microbe metabolic interactions
+==================================================================
 
 
 .. raw:: html

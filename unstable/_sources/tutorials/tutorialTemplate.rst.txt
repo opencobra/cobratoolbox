@@ -1,7 +1,7 @@
 .. _tutorialTemplate:
 
-tutorialNoName
-==============
+Succinct tutorial title
+=======================
 
 
 .. raw:: html
