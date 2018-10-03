@@ -261,7 +261,7 @@
 <span id="id1"></span><h1>gMCS<a class="headerlink" href="#gmcs" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.gMCS"></span><dl class="function">
 <dt id="src.analysis.gMCS.GPR2models">
-<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Each GPR rule is converted into a network where the reaction and genes
 involved are interconnected.</p>
 <p><strong>Usage</strong></p>
@@ -311,7 +311,7 @@ rule for each reaction.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.buildGmatrix">
-<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model</em>, <em>separate_isoform</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model</em>, <em>separate_isoform</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the G matrix required for the calculation of genetic Minimal Cut
 Sets (gMCSs).</p>
 <p><strong>Usage</strong></p>
@@ -366,7 +366,7 @@ Calculation times for each of the steps.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateGeneMCS">
-<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>max_len_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>max_len_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate genetic Minimal Cut Sets (gMCSs) using the warm-start strategy
 available in CPLEX, namely cplex.populate(), with or without selecting a
 given knockout, among all the genes included in the model or a given
@@ -472,7 +472,7 @@ the algorithm.</li>
 
 <dl class="function">
 <dt id="src.analysis.gMCS.calculateMCS">
-<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>max_len_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/761ec665dd8da04a6c9be3402179af4bb9bc5f65/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>max_len_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Minimal Cut Sets (MCSs) using the warm-start strategy available
 in CPLEX, namely cplex.populate(), with or without selecting a given
 knockout, among all the reactions included in the model or a given subset

@@ -27,11 +27,17 @@ Analysis
 * :doc:`tutorialGMCS`
 * :doc:`tutorialSparseFBA_protonShuttle`
 * :doc:`tutorialRelaxedFBA`
-* :doc:`tutorialRelaxedFBABounds`
 * :doc:`tutorialSparseFBA`
 * :doc:`tutorialSparseFBA_freeATPtest`
 * :doc:`tutorialSparseLP`
 * :doc:`tutorialVonBertalanffy`
+* :doc:`tutorialBrowseNetwork`
+* :doc:`tutorialEssentialRxns4MultipleModels`
+* :doc:`tutorialMgPipe`
+* :doc:`tutorialPFBA`
+* :doc:`tutorialRelaxedFBABounds`
+* :doc:`tutorialRobustnessPhPP`
+* :doc:`tutorialSteadyCom`
 * :doc:`tutorialUniformSampling`
 * :doc:`tutorialVariationalKinetics`
 
@@ -99,6 +105,9 @@ Design
      <div class="sectionContent">
 
 * :doc:`tutorialOptForce`
+* :doc:`tutorialOptForceGAMS`
+* :doc:`tutorialOptGene`
+* :doc:`tutorialOptKnock`
 
 .. raw:: html
 
@@ -128,6 +137,37 @@ Reconstruction
 * :doc:`tutorialModelSanityChecks`
 * :doc:`tutorialFidelityTesting`
 * :doc:`tutorialModelATPYield`
+* :doc:`tutorialCOBRAconcepts`
+* :doc:`tutorialConstrainingModels`
+* :doc:`tutorialEcoliCoreModel_part1`
+* :doc:`tutorialEcoliCoreModel_part2`
+* :doc:`tutorialEcoliCoreModel_part3`
+* :doc:`tutorialHostMicrobeInteractions`
+* :doc:`tutorialLeakSiphonModes`
+* :doc:`tutorialMicrobeMicrobeInteractions`
+* :doc:`tutorialModelBorgifier`
+* :doc:`tutorialModelCreation`
+* :doc:`tutorialModelProperties`
+
+.. raw:: html
+
+   <br>
+   </div>
+   </div>
+
+
+
+---------
+
+
+.. raw:: html
+
+   <div class="tutorialSectionBox .template">
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_.template_wb.png" alt=".template"></div>
+     <div class="sectionTitle"><h3><a class="headerlink" href="#.template" title="Permalink to this headline">¶</a></h3></div>
+     <div class="sectionContent">
+
+* :doc:`tutorialTemplate`
 
 .. raw:: html
 
@@ -149,7 +189,9 @@ Visualization
 
 * :doc:`tutorialRemoteVisualisation`
 * :doc:`tutorialPaint4net`
-* :doc:`tutorialMetabolicCartography`
+* :doc:`tutorialCellDesigner`
+* :doc:`tutorialMetabolicCartography_part1`
+* :doc:`tutorialMetabolicCartography_part2`
 
 .. raw:: html
 
