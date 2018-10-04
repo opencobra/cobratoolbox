@@ -32,7 +32,7 @@ buildTutorialList(){
                 continue  # if not a directory, skip
             fi
 
-	    if [["${d}" == *.template* ]]; then
+	    if [[ "${d}" == *template* ]]; then
             	continue  # if the directory is the template directory, skip
 	    fi 
 
@@ -146,7 +146,7 @@ buildPDF=false
 buildRST=false
 buildMD=false
 buildPNG=false
-matlab=/Applications/MATLAB_R2018b.app/bin/matlab
+matlab=/Applications/MATLAB_R2016b.app/bin/matlab
 
 for i in "$@"
 do
