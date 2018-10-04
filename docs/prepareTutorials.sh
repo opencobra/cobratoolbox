@@ -32,9 +32,9 @@ buildTutorialList(){
                 continue  # if not a directory, skip
             fi
 
-	    if [[ "${d}" == *template* ]]; then
-            	continue  # if the directory is the template directory, skip
-	    fi 
+            if [[ "${d}" == *.template* ]]; then
+                    continue  # if the directory is the template directory, skip
+            fi
 
             # check for MLX files.
             for tutorial in ${d}/*.mlx
