@@ -381,7 +381,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
-    scp -P 8022 -r "$pdfPath/tutorials" sbg-jenkins@10.240.6.84:/home/sbg-jenkins/tmp/.
+    #scp -P 8022 -r "$pdfPath/tutorials" sbg-jenkins@10.240.6.84:/home/sbg-jenkins/tmp/.
     scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
     #scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux://mnt/isilon-dat/.
 fi
