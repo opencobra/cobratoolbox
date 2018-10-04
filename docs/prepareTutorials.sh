@@ -32,6 +32,10 @@ buildTutorialList(){
                 continue  # if not a directory, skip
             fi
 
+            if [[ "${d}" == *template* ]]; then
+                continue  # if the directory is the template directory, skip
+            fi
+
             # check for MLX files.
             for tutorial in ${d}/*.mlx
             do
@@ -259,7 +263,7 @@ rstPath="$COBRAToolboxPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
 
 if [[ $buildHTML = true ]]; then
-    cd $COBRATutorialsPath
+    cd $COBRAToolboxPath
     if [[ -z "$specificTutorial" ]]; then
         buildHTMLTutorials;
     else
@@ -377,7 +381,8 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
+    scp -P 8022 -r "$pdfPath/tutorials" sbg-jenkins@10.240.6.84:/home/sbg-jenkins/tmp/.
     scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux://mnt/isilon-dat/.
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/.
 fi
 

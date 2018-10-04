@@ -14,13 +14,18 @@ script:
     - bash .artenolis/runtests.sh
 
 after_success:
-    - if [ "$MATLAB_VER" == "R2017b" ]; then
-      if [ "$ARCH" == "Linux" ]; then
+
+    # submit coverage report
+    - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" ]]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
+      fi
+
+    # deploy documentation
+    - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" && JENKINS_PULL_REQUEST == False ]]; then
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
+      ssh sbg-jenkins@10.184.148.14 'cd ~/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore && ./docs/prepareTutorials.sh -c=$(pwd) -t=$(pwd)/tutorials -p=~/tmp -m=html,pdf,png';
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
-      fi
       fi
