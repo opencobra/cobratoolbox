@@ -22,7 +22,7 @@ after_success:
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
 
       # generate the PDF, HTML, and PNG files of the tutorials on the macOS node (GUI)
-      ssh sbg-jenkins@10.184.148.14 'export pathCT='/Users/sbg-jenkins/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore' && echo $pathCT && cd $pathCT && ./docs/prepareTutorials.sh -c=$pathCT -t=$pathCT/tutorials -p=/Users/sbg-jenkins/tmp -m=html,pdf,png'
+      ssh sbg-jenkins@10.184.148.14 'cd /Users/sbg-jenkins/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore && ./docs/prepareTutorials.sh -c=/Users/sbg-jenkins/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore -t=$pathCT/tutorials -p=/Users/sbg-jenkins/tmp -m=html,pdf,png'
 
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
