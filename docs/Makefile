@@ -52,8 +52,6 @@ clean:
 html:
 	@echo "Creating modules index page."
 	bash createModulesPage.sh
-	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -t=~/tmp/tutorials -c=$(shell pwd)/.. -p=~/tmp -m=rst
 	@echo "Generating list of suggestions for the websearch."
 	python generateJSONList.py
 	@echo
