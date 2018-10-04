@@ -20,6 +20,7 @@ after_success:
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
+      ssh sbg-jenkins@10.184.148.14 'cd /Users/sbg-jenkins/jenkins/cobratoolbox_for_tutorials && /Users/sbg-jenkins/jenkins/cobratoolbox_for_tutorials/docs/prepareTutorials.sh -c=/Users/sbg-jenkins/jenkins/cobratoolbox_for_tutorials -t=/Users/sbg-jenkins/jenkins/cobratoolbox_for_tutorials/tutorials -p=/Users/sbg-jenkins/tmp -m=html,pdf,png'
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
       fi
