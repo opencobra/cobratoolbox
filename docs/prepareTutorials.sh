@@ -263,7 +263,7 @@ rstPath="$COBRAToolboxPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
 
 if [[ $buildHTML = true ]]; then
-    #cd $COBRATutorialsPath
+    cd $COBRAToolboxPath
     if [[ -z "$specificTutorial" ]]; then
         buildHTMLTutorials;
     else
