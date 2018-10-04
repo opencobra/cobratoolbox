@@ -53,10 +53,7 @@ html:
 	@echo "Creating modules index page."
 	bash createModulesPage.sh
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	git clone $(shell pwd)/../tutorials ~/tmp/COBRA.tutorials
-	bash prepareTutorials.sh -t=~/tmp/COBRA.tutorials -c=$(shell pwd)/.. -p=~/tmp -m=rst
-	@echo "Removing temporary clone of COBRA.tutorials
-	rm -rf ~/tmp/COBRA.tutorials
+	bash prepareTutorials.sh -t=$(shell pwd)/../tutorials -c=$(shell pwd)/.. -p=~/tmp -m=rst
 	@echo "Generating list of suggestions for the websearch."
 	python generateJSONList.py
 	@echo
