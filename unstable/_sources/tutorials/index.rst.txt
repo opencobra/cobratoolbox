@@ -3,16 +3,3 @@
 Tutorials
 =========
 
-
-
-.. raw:: html
-
-   <style>h2 {font-size:0px;}</style>
-
-
-.. raw:: html
-
-     </div>
-   </div>
-   <br>
-
