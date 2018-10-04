@@ -24,8 +24,6 @@ after_success:
       # generate the PDF, HTML, and PNG files of the tutorials on the macOS node (GUI)
       ssh sbg-jenkins@10.184.148.14 'export pathCT='/Users/sbg-jenkins/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore' && echo $pathCT && cd $pathCT && ./docs/prepareTutorials.sh -c=$pathCT -t=$pathCT/tutorials -p=/Users/sbg-jenkins/tmp -m=html,pdf,png'
 
-      # copy tutorials into source/_static/tutorials/.
-      mkdir $(pwd)/docs/source/_static/tutorials && cp -R ~/tmp/tutorials/* $(pwd)/docs/source/_static/tutorials/.
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
       fi
