@@ -1,7 +1,7 @@
 .. _tutorialEcoliCoreModel_part3:
 
-tutorialNoName
-==============
+E.coli Core Model for Beginners (PART 3)
+========================================
 
 
 .. raw:: html

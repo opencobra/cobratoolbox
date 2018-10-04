@@ -1,7 +1,7 @@
 .. _tutorialMgPipe:
 
-tutorialNoName
-==============
+Creation and simulation of personalized microbiota models through metagenomic data integration
+==============================================================================================
 
 
 .. raw:: html

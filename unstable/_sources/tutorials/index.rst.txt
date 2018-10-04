@@ -20,26 +20,26 @@ Analysis
      <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialSteadyCom`
+* :doc:`tutorialPFBA`
 * :doc:`tutorialAtomicallyResolveReconstruction`
 * :doc:`tutorialBrowseNetwork`
-* :doc:`tutorialEssentialRxns4MultipleModels`
+* :doc:`tutorialMgPipe`
+* :doc:`tutorialMinSpan`
 * :doc:`tutorialFBA`
 * :doc:`tutorialFVA`
 * :doc:`tutorialGMCS`
-* :doc:`tutorialMgPipe`
-* :doc:`tutorialMinSpan`
-* :doc:`tutorialPFBA`
-* :doc:`tutorialRelaxedFBABounds`
-* :doc:`tutorialRelaxedFBA`
-* :doc:`tutorialRobustnessPhPP`
-* :doc:`tutorialSparseFBA_freeATPtest`
-* :doc:`tutorialSparseFBA`
 * :doc:`tutorialSparseFBA_protonShuttle`
+* :doc:`tutorialEssentialRxns4MultipleModels`
+* :doc:`tutorialRelaxedFBA`
+* :doc:`tutorialRelaxedFBABounds`
+* :doc:`tutorialSparseFBA`
+* :doc:`tutorialSparseFBA_freeATPtest`
 * :doc:`tutorialSparseLP`
-* :doc:`tutorialSteadyCom`
+* :doc:`tutorialVonBertalanffy`
 * :doc:`tutorialUniformSampling`
 * :doc:`tutorialVariationalKinetics`
-* :doc:`tutorialVonBertalanffy`
+* :doc:`tutorialRobustnessPhPP`
 
 .. raw:: html
 
@@ -82,8 +82,8 @@ Data integration
      <div class="sectionContent">
 
 * :doc:`tutorialExtraction_transcriptomic`
-* :doc:`tutorialMetabotoolsII`
 * :doc:`tutorialMetabotoolsI`
+* :doc:`tutorialMetabotoolsII`
 * :doc:`tutorialUFBA`
 
 .. raw:: html
@@ -127,27 +127,27 @@ Reconstruction
      <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
-* :doc:`tutorialCOBRAconcepts`
 * :doc:`tutorialConstrainingModels`
+* :doc:`tutorialMicrobeMicrobeInteractions`
+* :doc:`tutorialHostMicrobeInteractions`
+* :doc:`tutorialCOBRAconcepts`
+* :doc:`tutorialReconToFBAmodel`
 * :doc:`tutorialCreateSubnetworkRecon`
+* :doc:`tutorialModelProperties`
+* :doc:`tutorialModelCreation`
 * :doc:`tutorialEcoliCoreModel_part1`
 * :doc:`tutorialEcoliCoreModel_part2`
 * :doc:`tutorialEcoliCoreModel_part3`
-* :doc:`tutorialFastGapFill`
-* :doc:`tutorialFidelityTesting`
-* :doc:`tutorialHostMicrobeInteractions`
-* :doc:`tutorialLeakSiphonModes`
-* :doc:`tutorialMicrobeMicrobeInteractions`
-* :doc:`tutorialModelATPYield`
-* :doc:`tutorialModelBorgifier`
-* :doc:`tutorialModelCreation`
-* :doc:`tutorialModelManipulation`
-* :doc:`tutorialModelProperties`
-* :doc:`tutorialModelSanityChecks`
-* :doc:`tutorialNumCharact`
-* :doc:`tutorialRBioNet`
-* :doc:`tutorialReconToFBAmodel`
 * :doc:`tutorialReconstructionSOP`
+* :doc:`tutorialFastGapFill`
+* :doc:`tutorialLeakSiphonModes`
+* :doc:`tutorialRBioNet`
+* :doc:`tutorialModelBorgifier`
+* :doc:`tutorialModelManipulation`
+* :doc:`tutorialNumCharact`
+* :doc:`tutorialModelSanityChecks`
+* :doc:`tutorialFidelityTesting`
+* :doc:`tutorialModelATPYield`
 
 .. raw:: html
 
@@ -167,11 +167,11 @@ Visualization
      <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialRemoteVisualisation`
+* :doc:`tutorialPaint4net`
 * :doc:`tutorialCellDesigner`
 * :doc:`tutorialMetabolicCartography_part1`
 * :doc:`tutorialMetabolicCartography_part2`
-* :doc:`tutorialPaint4net`
-* :doc:`tutorialRemoteVisualisation`
 
 .. raw:: html
 

@@ -1,7 +1,7 @@
 .. _tutorialMinSpan:
 
-tutorialNoName
-==============
+Determining MinSpan vectors of COBRA model
+==========================================
 
 
 .. raw:: html
