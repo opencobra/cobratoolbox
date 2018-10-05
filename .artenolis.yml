@@ -25,5 +25,11 @@ after_success:
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
-      ssh -t sbg-jenkins@10.184.148.14 'env >> ~/env1.txt && cd ~/tmp/cobratoolboxForTutorials && git checkout develop && git pull origin develop && git submodule update --init && $(pwd)/docs/prepareTutorials.sh -c=$(pwd) -t=~/tmp/COBRA.tutorials -p=~/tmp -m=html,pdf,png && env >> ~/env2.txt';
+      ssh -t sbg-jenkins@10.184.148.14 'cd ~/tmp/COBRA.tutorials && git checkout master && git pull origin master';
+      ssh -t sbg-jenkins@10.184.148.14 'cd ~/tmp/cobratoolbox && git checkout develop && git pull origin develop && git submodule update --init';
+      ssh -t sbg-jenkins@10.184.148.14 'cd ~/tmp/cobratoolbox && $(pwd)/docs/prepareTutorials.sh -c=$(pwd) -t=~/tmp/COBRA.tutorials -p=~/tmp -m=html,pdf,png';
+      cd ~/tmp/COBRA.tutorials && git checkout master && git pull origin master;
+      cd ~/tmp/cobratoolbox && git checkout develop && git pull origin develop && git submodule update --init;
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
+      bash .artenolis/generateZip.sh;
       fi
