@@ -337,6 +337,48 @@ reactions.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.dataIntegration.chemoInformatics.mol2sdf">
+<code class="descname">mol2sdf</code><span class="sig-paren">(</span><em>mets</em>, <em>molfileDir</em>, <em>sdfFileName</em>, <em>includeRs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/dataIntegration/chemoInformatics/mol2sdf.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.mol2sdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates molfiles in <cite>molfileDir</cite> into one SDF file.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includeRs)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mets</strong> &#8211;
+<cite>m x 1</cite> cell array of metabolite identifiers (e.g., BiGG
+abbreviations)</li>
+<li><strong>molfileDir</strong> &#8211;
+Path to directory containing molfiles for metabolites
+in mets. Molfile names should match the metabolite
+identifiers in mets without compartment assignments.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sdfFileName</strong> &#8211;
+Name of SDF file. Default is <cite>MetStructures.sdf</cite>.</li>
+<li><strong>includeRs</strong> &#8211;
+{0, (1)}. If 0, variable structures such as R groups and
+repeat units will not be included in SDF.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metList</strong> &#8211;
+Cell array listing metabolites in SDF.</li>
+<li><strong>noMolMetList</strong> &#8211;
+Cell array listing metabolites without mol file.</li>
+</ul>
+</div></blockquote>
+<p>Written output is <cite>sdfFileName.sdf</cite> - SDF with metabolite structures in same order as in
+metList. Metabolite identifiers in the SDF are the same as in <cite>MetList</cite>.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.dataIntegration.chemoInformatics.obtainAtomMappingsRDT">
 <code class="descname">obtainAtomMappingsRDT</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>outputDir</em>, <em>maxTime</em>, <em>standariseRxn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/dataIntegration/chemoInformatics/obtainAtomMappingsRDT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.obtainAtomMappingsRDT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute atom mappings for reactions with implicit hydrogens in a
