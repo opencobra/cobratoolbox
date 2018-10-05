@@ -29,7 +29,7 @@ after_success:
       echo $GIT_LOCAL_BRANCH;
       ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH && cd ~/tmp/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH';
       ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH && cd ~/tmp/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init';
-      ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH cd ~/tmp/cobratoolbox && ~/tmp/cobratoolbox/docs/prepareTutorials.sh -c=$(pwd) -t=~/tmp/COBRA.tutorials -p=~/tmp -m=html,pdf,png';
+      ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH cd ~/tmp/cobratoolbox && ~/tmp/cobratoolbox/docs/prepareTutorials.sh -c=~/tmp/cobratoolbox -t=~/tmp/COBRA.tutorials -p=~/tmp -m=html,pdf,png';
       cd ~/tmp/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
       cd ~/tmp/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
