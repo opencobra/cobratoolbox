@@ -27,6 +27,7 @@ after_success:
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
       ssh sbg-jenkins@10.184.148.14 'cd ~/jenkins/workspace/COBRAToolbox-branches-auto-macOS/MATLAB_VER/R2017b/label/macOS-biocore && ./docs/prepareTutorials.sh -c=$(pwd) -t=$(pwd)/tutorials -p=~/tmp -m=html,pdf,png';
       cd $CURRENT_DIR && echo $(pwd);
+      git submodule update --init;
       bash $(pwd)/docs/prepareTutorials.sh -t=$(pwd)/tutorials -c=$(pwd) -p=~/tmp -m=rst;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
