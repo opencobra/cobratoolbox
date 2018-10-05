@@ -1,7 +1,7 @@
 .. _tutorialOptForceGAMS:
 
-OptForce Tutorial
-=================
+OptForce GAMS
+=============
 
 
 .. raw:: html

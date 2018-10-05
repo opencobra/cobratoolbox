@@ -104,8 +104,8 @@ Design
      <div class="sectionTitle"><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
-* :doc:`tutorialOptForceGAMS`
 * :doc:`tutorialOptForce`
+* :doc:`tutorialOptForceGAMS`
 * :doc:`tutorialOptGene`
 * :doc:`tutorialOptKnock`
 
@@ -167,9 +167,9 @@ Visualization
      <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialCellDesigner`
 * :doc:`tutorialRemoteVisualisation`
 * :doc:`tutorialPaint4net`
-* :doc:`tutorialCellDesigner`
 * :doc:`tutorialMetabolicCartography_part1`
 * :doc:`tutorialMetabolicCartography_part2`
 

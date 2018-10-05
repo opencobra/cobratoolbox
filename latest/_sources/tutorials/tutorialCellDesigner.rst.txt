@@ -1,6 +1,6 @@
 .. _tutorialCellDesigner:
 
- Quick summary of reactions: 
+Intrdouction to Cell Designer
 =============================
 
 
