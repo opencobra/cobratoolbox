@@ -53,7 +53,7 @@ html:
 	@echo "Creating modules index page."
 	bash createModulesPage.sh
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -t=$(shell pwd)/../tutorials -c=$(shell pwd)/.. -p=~/tmp -m=rst
+	bash prepareTutorials.sh -t=$(pwd)/../tutorials -c=$(pwd)/.. -p=~/tmp -m=rst
 	@echo "Generating list of suggestions for the websearch."
 	python generateJSONList.py
 	@echo
