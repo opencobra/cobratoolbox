@@ -300,12 +300,15 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             if [[ -f $pngPath/${tutorialName}.png ]]; then
                 rm $pngPath/${tutorialName}.png
             fi
-	    echo $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
-	    export PATH=/usr/local/bin:$PATH;
+
+            echo $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
+            export PATH=/usr/local/bin:$PATH;
+
             #/usr/bin/sips -s format png "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" --out $pngPath/${tutorialName}.png
-            /usr/local/bin/convert -density 900 "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" ${tutorialName}_%04d.png
+            /usr/local/bin/convert -density 800 "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" ${tutorialName}_%04d.png
             /usr/local/bin/convert -shave 4%x5% -append ${tutorialName}*.png ${tutorialName}2.png && rm ${tutorialName}_*.png
             #/usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
+            echo " >> $tutorialName.png generated in $pngPath \n"
         fi
 
         # create markdown README
