@@ -21,7 +21,7 @@ after_success:
       fi
 
     # deploy documentation
-    - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" && JENKINS_PULL_REQUEST == False ]]; then
+    - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" && "$JENKINS_PULL_REQUEST" != "True" ]]; then
       export PATH="/home/sbg-jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
