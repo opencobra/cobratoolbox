@@ -1,7 +1,7 @@
 .. _tutorialOptForce:
 
-OptForce Tutorial
-=================
+OptForce
+========
 
 
 .. raw:: html

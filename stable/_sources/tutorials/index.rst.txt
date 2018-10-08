@@ -20,12 +20,17 @@ Analysis
      <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialSteadyCom`
+* :doc:`tutorialPFBA`
 * :doc:`tutorialAtomicallyResolveReconstruction`
+* :doc:`tutorialBrowseNetwork`
+* :doc:`tutorialMgPipe`
 * :doc:`tutorialMinSpan`
 * :doc:`tutorialFBA`
 * :doc:`tutorialFVA`
 * :doc:`tutorialGMCS`
 * :doc:`tutorialSparseFBA_protonShuttle`
+* :doc:`tutorialEssentialRxns4MultipleModels`
 * :doc:`tutorialRelaxedFBA`
 * :doc:`tutorialRelaxedFBABounds`
 * :doc:`tutorialSparseFBA`
@@ -34,6 +39,7 @@ Analysis
 * :doc:`tutorialVonBertalanffy`
 * :doc:`tutorialUniformSampling`
 * :doc:`tutorialVariationalKinetics`
+* :doc:`tutorialRobustnessPhPP`
 
 .. raw:: html
 
@@ -99,6 +105,9 @@ Design
      <div class="sectionContent">
 
 * :doc:`tutorialOptForce`
+* :doc:`tutorialOptForceGAMS`
+* :doc:`tutorialOptGene`
+* :doc:`tutorialOptKnock`
 
 .. raw:: html
 
@@ -118,11 +127,22 @@ Reconstruction
      <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialConstrainingModels`
+* :doc:`tutorialMicrobeMicrobeInteractions`
+* :doc:`tutorialHostMicrobeInteractions`
+* :doc:`tutorialCOBRAconcepts`
 * :doc:`tutorialReconToFBAmodel`
 * :doc:`tutorialCreateSubnetworkRecon`
+* :doc:`tutorialModelProperties`
+* :doc:`tutorialModelCreation`
+* :doc:`tutorialEcoliCoreModel_part1`
+* :doc:`tutorialEcoliCoreModel_part2`
+* :doc:`tutorialEcoliCoreModel_part3`
 * :doc:`tutorialReconstructionSOP`
 * :doc:`tutorialFastGapFill`
+* :doc:`tutorialLeakSiphonModes`
 * :doc:`tutorialRBioNet`
+* :doc:`tutorialModelBorgifier`
 * :doc:`tutorialModelManipulation`
 * :doc:`tutorialNumCharact`
 * :doc:`tutorialModelSanityChecks`
@@ -147,9 +167,11 @@ Visualization
      <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
+* :doc:`tutorialCellDesigner`
 * :doc:`tutorialRemoteVisualisation`
 * :doc:`tutorialPaint4net`
-* :doc:`tutorialMetabolicCartography`
+* :doc:`tutorialMetabolicCartography_part1`
+* :doc:`tutorialMetabolicCartography_part2`
 
 .. raw:: html
 
