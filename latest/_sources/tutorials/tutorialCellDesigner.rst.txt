@@ -1,6 +1,6 @@
 .. _tutorialCellDesigner:
 
-Intrdouction to Cell Designer
+Introduction to Cell Designer
 =============================
 
 
