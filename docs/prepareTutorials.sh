@@ -32,6 +32,10 @@ buildTutorialList(){
                 continue  # if not a directory, skip
             fi
 
+            if [[ "${d}" == *template* ]]; then
+                continue  # if the directory is the template directory, skip
+            fi
+
             # check for MLX files.
             for tutorial in ${d}/*.mlx
             do
@@ -109,7 +113,7 @@ createLocalVariables(){
 }
 
 buildHTMLTutorials(){
-    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath');restoredefaultpath;savepath;exit;"
     for tutorial in "${tutorials[@]}" #"${tutorials[@]}"
     do
         createLocalVariables $tutorial
@@ -124,7 +128,7 @@ buildHTMLTutorials(){
 
 buildHTMLSpecificTutorial(){
     specificTutorial=$1
-    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath', '$specificTutorial');exit;"
+    $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath', '$specificTutorial');restoredefaultpath;savepath;exit;"
     createLocalVariables $specificTutorial
     # create PDF file
     /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
@@ -259,7 +263,7 @@ rstPath="$COBRAToolboxPath/docs/source/tutorials"
 mkdir -p "$tutorialDestination"
 
 if [[ $buildHTML = true ]]; then
-    cd $COBRATutorialsPath
+    cd $COBRAToolboxPath
     if [[ -z "$specificTutorial" ]]; then
         buildHTMLTutorials;
     else
@@ -296,11 +300,17 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             if [[ -f $pngPath/${tutorialName}.png ]]; then
                 rm $pngPath/${tutorialName}.png
             fi
-	    echo $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
-	    export PATH=/usr/local/bin:$PATH;
-            /usr/local/bin/convert -density 125 "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" ${tutorialName}_%04d.png
-            /usr/local/bin/convert -shave 4%x5% -append ${tutorialName}*.png ${tutorialName}2.png && rm ${tutorialName}_*.png
-            /usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
+
+            echo $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
+            export PATH=/usr/local/bin:$PATH;
+
+            # change directory for the generation of PNGs
+            cd $pngPath
+
+            /usr/local/bin/convert -density 768 "$pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf" ${tutorialName}_%04d.png
+            /usr/local/bin/convert -shave 4%x5% -append ${tutorialName}*.png ${tutorialName}.png && rm ${tutorialName}_*.png
+            #/usr/local/bin/pngquant ${tutorialName}2.png --ext -2.png && mv ${tutorialName}2-2.png $pngPath/${tutorialName}.png && rm ${tutorialName}2.png
+            echo " >> $tutorialName.png generated in $pngPath \n"
         fi
 
         # create markdown README
@@ -377,7 +387,8 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 fi
 
 if [ $buildPNG = true ] || [ $buildPDF = true ]; then
+    scp -P 8022 -r "$pdfPath/tutorials" sbg-jenkins@10.240.6.84:/home/sbg-jenkins/tmp/.
     scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux://mnt/isilon-dat/.
+    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/.
 fi
 
