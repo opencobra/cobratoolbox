@@ -123,7 +123,7 @@ end
 
 % Figure out if reaction already exists
 nRxns = length(model.rxns);
-if checkIDsForTypeExist(model,rxnIDs,'rxns')
+if checkIDsForTypeExist(model,rxnID,'rxns')
     [reactionpresence,rxnPos] = ismember(rxnID,model.rxns);
     if any(reactionpresence)
         warning('Reaction with the same name already exists in the model, updating the reaction');

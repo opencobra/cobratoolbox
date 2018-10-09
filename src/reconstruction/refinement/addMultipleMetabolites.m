@@ -45,7 +45,7 @@ if checkIDsForTypeExist(model,metIDs,'mets')
         pres = ismember(model.mets,dups);        
         error('The following Metabolite ID(s) are already present in the model:\n%s',strjoin(model.mets(pres),'\n'));
     else
-        error('The following Metabolite ID(s) are already present Ids of constraints in the model:\n%s',dups,'\n'));
+        error('The following Metabolite ID(s) are already present Ids of constraints in the model:\n%s',strjoin(dups,'\n'));
     end
 end
 
