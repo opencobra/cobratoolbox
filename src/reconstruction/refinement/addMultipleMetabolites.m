@@ -31,10 +31,22 @@ function newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %    model = addMultipleMetabolites(model,{'A','b','c'},'metCharges', [ -1 1 0], 'metFormulas', {'C','CO2','H2OKOPF'}, 'metKEGGID',{'C000012','C000023','C000055'})
 %    
 
-if (any(ismember(model.mets,metIDs)) || numel(unique(metIDs)) < numel(metIDs))
-    %Check, if there are either duplicate metabolite IDS to be added OR if
-    %any metabolite is already in the model.
-    error('Duplicate Metabolite ID detected.');
+if numel(unique(metIDs)) < numel(metIDs)
+    % check, if there are either duplicate metabolite IDS to be added OR if
+    % any metabolite is already in the model.
+    error('Duplicate Metabolite ID in the given IDs detected.');
+end
+
+if checkIDsForTypeExist(model,metIDs,'mets')
+    % check, if there are either duplicate metabolite IDS to be added OR if
+    % any metabolite is already in the model.
+    [tf,dups] = checkIDsForTypeExist(model,metIDs,'mets');    
+    if any(ismember(model.mets,dups))
+        pres = ismember(model.mets,dups);        
+        error('The following Metabolite ID(s) are already present in the model:\n%s',strjoin(model.mets(pres),'\n'));
+    else
+        error('The following Metabolite ID(s) are already present Ids of constraints in the model:\n%s',dups,'\n'));
+    end
 end
 
 nMets = numel(model.mets);

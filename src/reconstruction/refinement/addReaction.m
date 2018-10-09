@@ -123,11 +123,15 @@ end
 
 % Figure out if reaction already exists
 nRxns = length(model.rxns);
-[reactionpresence,rxnPos] = ismember(rxnID,model.rxns);
-if any(reactionpresence)
-    warning('Reaction with the same name already exists in the model, updating the reaction');
-    oldRxnFlag = true;
-else
+if checkIDsForTypeExist(model,rxnIDs,'rxns')
+    [reactionpresence,rxnPos] = ismember(rxnID,model.rxns);
+    if any(reactionpresence)
+        warning('Reaction with the same name already exists in the model, updating the reaction');
+        oldRxnFlag = true;
+    else
+        error('%s is already the ID of a variable in the model, reactions and variables are not allowed to have the same ID!',rxnID);
+    end
+else        
     rxnPos = nRxns+1;
     oldRxnFlag = false;
 end
