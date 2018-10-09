@@ -83,14 +83,14 @@ modelTest2 = removeCOBRAConstraints(modelWConst,modelWConst.ctrs{1}); % Remove t
 assert(isSameCobraModel(modelTest,modelTest2));
 
 %And Add another Constraint
-modelWConst = addCOBRAConstraint(modelWConst,model.rxns(1:3), 6, 'c',[1,1,1],'dsense','L','ConstraintID','NewConstraint');
+modelWConst = addCOBRAConstraints(modelWConst,model.rxns(1:3), 6, 'c',[1,1,1],'dsense','L','ConstraintID','NewConstraint');
 assert(size(modelWConst.C,2) == size(model.S,2));
 assert(size(modelWConst.C,1) == size(modelWConst.d,1));
 assert(size(modelWConst.C,1) == size(modelWConst.ctrs,1));
 assert(size(modelWConst.C,1) == size(modelWConst.dsense,1));
 assert(size(modelWConst.C,1) == nCtrs+3)
 assert(verifyCobraFunctionError('addCOBRAConstraint','inputs',{modelWConst,model.rxns(1:3), 6, 'c', [1,1,1],'dsense','L','ConstraintID','NewConstraint'})); %Assert duplication error.
-modelWConst2 = addCOBRAConstraint(modelWConst,model.rxns(1:3), 6,'c',[1,1,1],'dsense','L','checkDuplicate',true); 
+modelWConst2 = addCOBRAConstraints(modelWConst,model.rxns(1:3), 6,'c',[1,1,1],'dsense','L','checkDuplicate',true); 
 assert(isSameCobraModel(modelWConst2,modelWConst)) % No new constraint was added, as it already exists.
 
 %Finally, test whether modifications in the model correctly update the C
@@ -116,7 +116,7 @@ c = [0,1,2,0,0;0,3,0,4,0 ; 5,0,0,0,6];
 d = [1;2;3];
 rxnList = [1,2,3,4,5];
 dsense = ['E';'L';'G'];
-modelWMultConst = addCOBRAConstraint(model,rxnList,d,'c',c,'dsense',dsense);
+modelWMultConst = addCOBRAConstraints(model,rxnList,d,'c',c,'dsense',dsense);
 assert(size(modelWMultConst.C,2) == size(model.S,2));
 assert(size(modelWMultConst.C,1) == 3); %Three constraints
 assert(size(modelWMultConst.C,1) == size(modelWMultConst.d,1));
@@ -128,11 +128,11 @@ assert(isequal(modelWMultConst.dsense,dsense));
 assert(verifyCobraFunctionError('addCOBRAConstraint', 'input',{modelWMultConst,rxnList,d,'c',c,'dsense',dsense,'ConstraintID', {'Constraint1','B','C'}}));
 
 %No Constraint gets added if duplicates are checked.
-modelWMultConst2 = addCOBRAConstraint(modelWMultConst,rxnList,d,'c',c,'dsense',dsense,'checkDuplicate',true);
+modelWMultConst2 = addCOBRAConstraints(modelWMultConst,rxnList,d,'c',c,'dsense',dsense,'checkDuplicate',true);
 assert(isSameCobraModel(modelWMultConst,modelWMultConst2));
 
 %No duplicates, within the Constraints are added:
-modelWMultConst = addCOBRAConstraint(model,rxnList,[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
+modelWMultConst = addCOBRAConstraints(model,rxnList,[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
 assert(size(modelWMultConst.C,1) == 3); %Three constraints
 
 

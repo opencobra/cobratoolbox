@@ -52,7 +52,7 @@ for k = 1:length(solverPkgs)
         
         % add a constraint that restricts the flux over R1 and R2 to a
         % maximum of 500
-        modelMod = addCOBRAConstraint(model,{'R1','R2'},500,'dsense','L');
+        modelMod = addCOBRAConstraints(model,{'R1','R2'},500,'dsense','L');
         [res,newAct] = mdFBA(modelMod);
         % with dilution it has to be below 500
         assert(res.obj < 500) 

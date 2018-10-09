@@ -93,5 +93,5 @@ ctrs = ctrs(~toRemove);
 coefs = coefs(~toRemove,:);
 dsenses = dsenses(~toRemove);
 
-modelCoupled = addCOBRAConstraint(model,rxnList,ds,'c', coefs,'dsense',dsenses, 'ConstraintID',ctrs);
+modelCoupled = addCOBRAConstraints(model,rxnList,ds,'c', coefs,'dsense',dsenses, 'ConstraintID',ctrs);
 

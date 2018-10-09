@@ -106,7 +106,7 @@ for k = 1:length(solverPkgs.LP)
             % test.... However, we should test it on the CI for
             % functionality checks.
             if strcmp(solverPkgs.QP{k},'ibm_cplex')
-                constraintModel = addCOBRAConstraint(model,{'PFK'},1);
+                constraintModel = addCOBRAConstraints(model,{'PFK'},1);
                 [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNames, 1, 1, testMethods{j});
                 assert(maxFluxT(ismember(rxnNames,'PFK')) - 1 <= tol);
                 assert(~isequal(Vmin, []));
@@ -200,7 +200,7 @@ if ~isempty(pttoolboxPath)
                 % test.... However, we should test it on the CI for
                 % functionality checks.
                 if strcmp(solverPkgs.QP{k},'ibm_cplex')
-                    constraintModel = addCOBRAConstraint(model,{'PFK'},1);                    
+                    constraintModel = addCOBRAConstraints(model,{'PFK'},1);                    
                     [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNames, 1, 1, testMethods{j});
                     assert(maxFluxT(ismember(rxnNames,'PFK')) - 1 <= tol);
                     assert(~isequal(Vmin, []));

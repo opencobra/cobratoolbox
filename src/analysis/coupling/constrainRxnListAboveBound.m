@@ -32,4 +32,4 @@ function modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ine
 %    ineqSense = 'G';
 %    modelConstrained = constrainRxnListAboveBound(modelIrrev, rxnList, C, d, ineqSense);
 
-modelConstrained = addCOBRAConstraint(model, rxnList, d, 'c', c, 'dsense', ineqSense);
+modelConstrained = addCOBRAConstraints(model, rxnList, d, 'c', c, 'dsense', ineqSense);

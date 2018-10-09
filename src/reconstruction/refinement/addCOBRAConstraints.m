@@ -39,7 +39,7 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %    model = addCOBRAConstraints(model, {'EX_glc','EX_fru'}, 5)
 %    Assume Reaction 4 to be 2 A -> D and reaction 5 being A -> F. Create a
 %    constraint that requires that the two reactions remove at least 4 units of A:
-%    model = addCOBRAConstraint(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
+%    model = addCOBRAConstraints(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
 %
 % Author: Thomas Pfau, Nov 2017
 

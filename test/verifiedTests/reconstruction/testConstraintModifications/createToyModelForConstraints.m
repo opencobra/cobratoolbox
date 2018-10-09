@@ -42,5 +42,5 @@ model = changeGeneAssociation(model,'R4','(G3 or G5) and G6');
 %Add Exchangers
 model = addExchangeRxn(model,ExchangedMets,-1000*ones(numel(ExchangedMets),1),1000*ones(numel(ExchangedMets),1));
 model = changeObjective(model,'EX_E',1);
-model = addCOBRAConstraint(model,{'R3','R7'},5, 'c',[1,1],'dsense','G','ConstraintID','R3_and_R7_above_5');
-model = addCOBRAConstraint(model,{'R4','R6'},30, 'c',[1,1],'dsense','L','ConstraintID','R4_and_R6_lowerthan_30');
+model = addCOBRAConstraints(model,{'R3','R7'},5, 'c',[1,1],'dsense','G','ConstraintID','R3_and_R7_above_5');
+model = addCOBRAConstraints(model,{'R4','R6'},30, 'c',[1,1],'dsense','L','ConstraintID','R4_and_R6_lowerthan_30');

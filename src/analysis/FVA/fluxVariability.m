@@ -164,7 +164,7 @@ if hasObjective
     else
         LPproblem.csense(end+1) = 'L';
     end
-    model = addCOBRAConstraint(model,model.rxns(find(model.c)),objValue,'dsense',LPproblem.csense(end));
+    model = addCOBRAConstraints(model,model.rxns(find(model.c)),objValue,'dsense',LPproblem.csense(end));
 end
 
 %get the initial basis
