@@ -1,10 +1,10 @@
-function model = addCOBRAConstraint(model, idList, d, varargin)
+function model = addCOBRAConstraints(model, idList, d, varargin)
 % Add a constraint to the model in the form c1 * v(id1) + c2 * v(id2) * ... cj * v(idj) dsense d
 % where c is a vector with coefficients for each element in idList
 % (default 1 for each reaction), dsense is one of lower than ('L', default), greater than
 % ('G'), or equal ('E'), and d is a value. 
 % USAGE:
-%    model = addCOBRAConstraint(model, idList, d, varargin)
+%    model = addCOBRAConstraints(model, idList, d, varargin)
 %
 % INPUTS:
 %    model:         model structure
@@ -36,10 +36,10 @@ function model = addCOBRAConstraint(model, idList, d, varargin)
 % EXAMPLE:
 %    Add a constraint that leads to EX_glc and EX_fru not carrying a
 %    combined flux higher than 5
-%    model = addNMConstraint(model, {'EX_glc','EX_fru'}, 5)
+%    model = addCOBRAConstraints(model, {'EX_glc','EX_fru'}, 5)
 %    Assume Reaction 4 to be 2 A -> D and reaction 5 being A -> F. Create a
 %    constraint that requires that the two reactions remove at least 4 units of A:
-%    model = addNMConstraint(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
+%    model = addCOBRAConstraint(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
 %
 % Author: Thomas Pfau, Nov 2017
 
@@ -229,11 +229,14 @@ end
 model.C = [model.C;constRow];
 model.d = [model.d;d];
 model.dsense = [model.dsense;dsense];
+originalSize = numel(model.ctrs);
 model.ctrs = [model.ctrs;ctrID];
 if varspresent
-    model.E = [model.E;mixrows];
+    model.D = [model.D;mixrows];
 end
-    
+
+model = extendModelFieldsForType(model,'ctrs','originalSize',originalSize);
+
 end
 
 function name = getConstraintName(model, count)
