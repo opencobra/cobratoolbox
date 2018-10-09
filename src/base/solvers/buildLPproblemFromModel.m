@@ -69,7 +69,10 @@ if isfield(model,'dxdt')
     end
     model.b = model.dxdt; %Overwrite b
 end
-model = createEmptyFields(model,fieldsToBuild);
+% create empty fields if necessary
+if ~isempty(fieldsToBuild)
+    model = createEmptyFields(model,fieldsToBuild);
+end
 LPproblem.A = [model.S,model.E;model.C,model.D];
 LPproblem.ub = [model.ub;model.evarub];
 LPproblem.lb = [model.lb;model.evarlb];
