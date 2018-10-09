@@ -68,7 +68,7 @@ modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C
 assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
 
 %Also add a Constraint to the model
-model = addCOBRAConstraint(model,{'GLCt1'; 'HEX1'; 'PGI'},[1000,50],'c',[1,1,0;0,0,1],'dsense','LL');
+model = addCOBRAConstraints(model,{'GLCt1'; 'HEX1'; 'PGI'},[1000,50],'c',[1,1,0;0,0,1],'dsense','LL');
 
 %And test this also with a different input of subSystems:
 modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem',{'Some Sub', 'And another sub'},'geneRule','GeneA or GeneB');
