@@ -24,7 +24,30 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %    * 3 - More detailed information
 %    * > 10 - Pause statements, and maximal printing (debug mode)
 %
-%  * primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%  * primalOnly:        {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%
+%  * saveInput:         Saves LPproblem to filename specified in field.
+%                       i.e. parameters.saveInput = 'LPproblem.mat';
+%
+%  * minNorm:           {(0), scalar , `n x 1` vector}, where `[m, n] = size(S)`;
+%                       If not zero then, minimise the Euclidean length
+%                       of the solution to the LP problem. minNorm ~1e-6 should be
+%                       high enough for regularisation yet maintain the same value for
+%                       the linear part of the objective. However, this should be
+%                       checked on a case by case basis, by optimization with and
+%                       without regularisation.
+%
+%  * optTol             Optimality tolerance
+%
+%  * feasTol            Feasibility tolerance
+%
+%  * timeLimit:         Global solver time limit
+%
+%  * intTol:            Integrality tolerance
+%
+%  * relMipGapTol:      Relative MIP gap tolerance
+%
+%  * logFile:           Log file (for CPLEX)
 %
 % NOTE:
 %
@@ -41,6 +64,7 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %       - Markus Herrgard, 5/3/07
 %       - Jan Schellenberger, 09/28/09
 %       - Ronan Fleming, 12/07/09 commenting of input/output
+%       - Thomas Pfau 2018 - Update to allow all solver Types 
 
 
 global CBT_LP_PARAMS;
