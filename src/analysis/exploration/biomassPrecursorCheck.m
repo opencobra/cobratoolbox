@@ -65,6 +65,7 @@ if checkCoupling
     model_newDemand = changeRxnBounds(model_newDemand,addedRxns,zeros(numel(addedRxns,1)),repmat('b',numel(addedRxns,1)));    
 end
 
+optTol = getCobraSolverParams('LP','optTol');
 [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = deal({});
 for i = 1:length(biomassMetabs)
     if checkCoupling
@@ -74,13 +75,13 @@ for i = 1:length(biomassMetabs)
     % find maximum production of the precursor
     model_newDemand = changeObjective(model_newDemand, addedRxns{i});
     solution = optimizeCbModel(model_newDemand);
-    if solution.f == 0
+    if abs(solution.f) < optTol
         % if it is not able to be synthesized
         if checkCoupling
             % allow other precursors to be synthesized to check coupling
             model_newDemand = changeRxnBounds(model_newDemand, addedRxns, 1000, 'u');
             solution = optimizeCbModel(model_newDemand);
-            if solution.f > 0
+            if solution.f > optTol
                 % if it can be synthesized with other sinks unblocked, it is a coupled met
                 coupledMets(c) = biomassMetabs(i);
                 c = c + 1;
@@ -153,7 +154,7 @@ if checkConservedQuantities && ~isempty(missingMets)
         % maximize its production
         model_newDemand = changeObjective(model_newDemand, 'cofactor_prod', 1);
         solution = optimizeCbModel(model_newDemand);
-        producible(i) = ~isempty(solution.f) && solution.f > 0;
+        producible(i) = ~isempty(solution.f) && solution.f > optTol;
         % store the reaction formula
         cofactorFormula(i) = printRxnFormula(model_newDemand, 'rxnAbbrList', 'cofactor_prod', 'printFlag', false);
     end
