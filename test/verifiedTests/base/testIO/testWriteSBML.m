@@ -45,6 +45,10 @@ delete 'testModelSBML.sbml.xml';
 % change the directory
 cd(currentDir)
 
-% shut down any left open parpool
-poolobj = gcp('nocreate');
-delete(poolobj);
+% try to shut down any left open parpool
+try
+    poolobj = gcp('nocreate');
+    delete(poolobj);
+catch
+    % pass
+end

@@ -84,10 +84,10 @@ end
 
 if exist('minNorm', 'var')
     if isempty(minNorm)
-        minNorm = 1;
+        minNorm = 0;
     end
 else
-    minNorm = 1;
+    minNorm = 0;
 end
 
     modelIrrev = convertToIrreversible(model);% Convert the model to amodel with only irreversible reactions

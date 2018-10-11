@@ -52,7 +52,8 @@ for k = 1:length(solverPkgs.LP)
         solution = optimizeCbModel(model);
         v1 = cycleFreeFlux(solution.v, model.c, model, isInternalRxn);
         d1 = v1 - solution.v;
-        assert(norm(d1(isCycleRxn)) > 500);
+        % assert, that the cycle free variant does not contain a cycle.
+        assert(norm(v1(isCycleRxn)) - 5.0643756 < 1e-4);        
         assert(norm(d1(~isCycleRxn)) <= tol);
         
         % Attempt to remove a forced cycle
@@ -67,7 +68,7 @@ for k = 1:length(solverPkgs.LP)
         relaxBounds = true; % Relax flux bounds that do not include 0
         v3 = cycleFreeFlux(solution.v, model.c, model, isInternalRxn, relaxBounds);
         d3 = v3 - solution.v;
-        assert(norm(d3(isCycleRxn)) > 500);
+        assert(norm(v3(isCycleRxn)) - 5.0643756 < 1e-4);        
         assert(norm(d3(~isCycleRxn)) <= tol);
         
         % Remove cycle from a set of flux vectors
@@ -79,7 +80,7 @@ for k = 1:length(solverPkgs.LP)
         relaxBounds = false;
         V1 = cycleFreeFlux(V0, C, model, isInternalRxn, relaxBounds, parTest);
         D1 = V1 - V0;
-        assert(norm(D1(isCycleRxn, :)) > 500);
+        assert(norm(V1(isCycleRxn)) - 5.0643756 < 1e-4);        
         assert(norm(D1(~isCycleRxn, :)) <= tol);
     end
     

@@ -471,26 +471,26 @@ end
 % set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
     solverInstalled = true;
-    if strcmpi(SOLVERS.(solverName).categ, 'active')
-        if validationLevel > 0
-            cwarn = warning;
-            warning('off');
-            eval(['oldval = CBT_', solverType, '_SOLVER;']);
-            eval(['CBT_', solverType, '_SOLVER = solverName;']);
-            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
-            try
-                eval(['solveCobra' solverType '(problem,''printLevel'', 0);']);
-            catch ME
-                if printLevel > 0
-                    disp(ME.message);
-                end
-                solverOK = false;
-                eval(['CBT_', solverType, '_SOLVER = oldval;']);
+    if validationLevel > 0
+        cwarn = warning;
+        warning('off');
+        eval(['oldval = CBT_', solverType, '_SOLVER;']);
+        eval(['CBT_', solverType, '_SOLVER = solverName;']);
+        % validate with a simple problem.
+        problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        try
+            eval(['solveCobra' solverType '(problem,''printLevel'',0);']);            
+        catch ME
+            if printLevel > 0
+                disp(ME.message);
             end
-            warning(cwarn)
-        else
-            eval(['CBT_', solverType, '_SOLVER = solverName;']);
+            solverOK = false;
+            eval(['CBT_', solverType, '_SOLVER = oldval;']);
         end
+        warning(cwarn)
+    else
+        % if unvalidated, simply set the solver without testing.
+        eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
 end
 end

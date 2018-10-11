@@ -308,7 +308,7 @@ switch solver
         Prob = updateStructData(Prob,solverParams);
 
         %Call Solver
-        Result = tomRun('snopt', Prob, printLevel);
+        Result = tomRun('snopt', Prob, cobraParams.printLevel);
 
         % Assign results
         x = Result.x_k;
@@ -326,7 +326,6 @@ switch solver
         else
             stat = -1;
         end
-        save ttt
     otherwise
         if isempty(solver)
             error('There is no solver for LP problems available');
