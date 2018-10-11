@@ -8,7 +8,7 @@ function model = extendModelFieldsForType(model, type, varargin)
 %
 %    model:              the model to update
 %    type:               the Type of field to update one of 
-%                        ('rxns','mets','comps','genes')
+%                        ('rxns','mets','comps','genes','evars','ctrs')
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
@@ -39,7 +39,7 @@ function model = extendModelFieldsForType(model, type, varargin)
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
 
 
-PossibleTypes = {'rxns','mets','comps','genes'}';
+PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs'}';
 
 
 parser = inputParser();

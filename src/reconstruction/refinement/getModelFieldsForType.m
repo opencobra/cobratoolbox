@@ -7,7 +7,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %
 %    model:              the model to update
 %    type:               the Type of field to update one of 
-%                        ('rxns','mets','comps','genes')
+%                        ('rxns','mets','comps','genes','ctrs','evars')
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
@@ -33,7 +33,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 
 
 
-PossibleTypes = {'rxns','mets','comps','genes'};
+PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs'};
 
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));
@@ -71,32 +71,26 @@ if fieldSize == 1 || fieldSize == 0
     %This is special. We will only check the first dimension in this
     %instance, and we will check the field properties of S and
     %rxnGeneMat, Also, we will ONLY return defined fields, or fields with a clear starting ID...
-    if isfield(model, 'rxnGeneMat') 
-        if (strcmp(type,'genes') && size(model.rxnGeneMat,2) == fieldSize) 
-            possibleFields{end+1,1} = 'rxnGeneMat';
-            dimensions(end+1,1) = 2;
+    [multiDimFields,firstDim,secondDim] = getMultiDimensionFields(definedFields);
+    for i = 1:numel(multiDimFields)
+        cMultiDimField = multiDimFields{i};
+        if isfield(model, cMultiDimField) 
+            if (strcmp(type, firstDim{i}) && size(model.(cMultiDimField),1) == fieldSize) 
+                possibleFields{end+1,1} = cMultiDimField;
+                dimensions(end+1,1) = 1;
+            end
+            if (strcmp(type, secondDim{i}) && size(model.(cMultiDimField),2) == fieldSize) 
+                possibleFields{end+1,1} = cMultiDimField;
+                dimensions(end+1,1) = 2;
+            end
         end
-        if (strcmp(type,'rxns') && size(model.rxnGeneMat,1) == fieldSize)
-            possibleFields{end+1,1} = 'rxnGeneMat';
-            dimensions(end+1,1) = 1;
-        end
-    end
-    if isfield(model, 'S') 
-        if (strcmp(type,'mets') && size(model.S,1) == fieldSize) 
-            possibleFields{end+1,1} = 'S';
-            dimensions(end+1,1) = 1;
-        end
-        if (strcmp(type,'rxns') && size(model.S,2) == fieldSize)
-            possibleFields{end+1,1} = 'S';
-            dimensions(end+1,1) = 2;
-        end        
-    end
-    modelFields = setdiff(modelFields,{'S','rxnGeneMat'});
+    end    
+    modelFields = setdiff(modelFields,multiDimFields);
     for i = 1:numel(modelFields)
         if size(model.(modelFields{i}),1) == fieldSize
             possibleFields{end+1,1} = modelFields{i};
             dimensions(end+1,1) = 1;
-        end
+        end        
     end
     %This is a New empty model, we only look at defined fields.
     fields = definedFields;

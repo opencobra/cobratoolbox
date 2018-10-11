@@ -102,7 +102,7 @@ for k = startIter:(patNumb + 1)
     if isempty(solver)
         initCobraToolbox(false); %Don't update the toolbox automatically
     end
-    solution_allOpen = solveCobraLP(model);
+    solution_allOpen = solveCobraLP(buildLPproblemFromModel(model));
     % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
     if solution_allOpen.stat==0
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
@@ -151,7 +151,7 @@ model_sd=model;
        warning('Feasibility forced with addition of essential nutrients')
        model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')
     end
-solution_sDiet=solveCobraLP(model_sd);
+solution_sDiet=solveCobraLP(buildLPproblemFromModel(model_sd));
 % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
 presol{k,2}=solution_sDiet.obj
  if solution_sDiet.stat==0
@@ -205,7 +205,7 @@ if pDiet==1
  DietID = regexprep(DietID,'\(e\)','\[d\]');
  
  model_pd = setDietConstraints(model_pd,DietID);
- solution_pdiet=solveCobraLP(model_pd)
+ solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd))
  %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
  presol{k,3}=solution_pdiet.obj
  if isnan(solution_pdiet.obj)

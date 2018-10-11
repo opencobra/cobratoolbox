@@ -135,7 +135,7 @@ if numWorkers > 0
         pairedModel = changeRxnBounds(pairedModel, biomass1, 0.001, 'l');
         pairedModel = changeRxnBounds(pairedModel, biomass2, 0.001, 'l');
         % calculate joint biomass
-        solutionPaired = solveCobraLP(pairedModel);
+        solutionPaired = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
         solutionPairedTemp{i} = solutionPaired;
         % separate growth
         % silence model 2 and optimize model 1
@@ -149,7 +149,7 @@ if numWorkers > 0
         % disable flux through the second model
         pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 4}, '_'), pairedModel.rxns)), 0, 'b');
         % calculate single biomass
-        solutionSingle1 = solveCobraLP(pairedModel);
+        solutionSingle1 = solveCobraLP(buildLPproblemFromModel(pairedModel),false);
         solutionSingle1Temp{i} = solutionSingle1;
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
@@ -162,7 +162,7 @@ if numWorkers > 0
         % disable flux through the first model
         pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
         % calculate single biomass
-        solutionSingle2 = solveCobraLP(pairedModel);
+        solutionSingle2 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
         solutionSingle2Temp{i} = solutionSingle2;
 
         % interpret computed growth rates-only if solutions are feasible
@@ -229,7 +229,7 @@ else
         pairedModel = changeRxnBounds(pairedModel, biomass1, 0.001, 'l');
         pairedModel = changeRxnBounds(pairedModel, biomass2, 0.001, 'l');
         % calculate joint biomass
-        solutionPaired = solveCobraLP(pairedModel);
+        solutionPaired = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
         % separate growth
         % silence model 2 and optimize model 1
         % load the model again to avoid errors
@@ -242,7 +242,7 @@ else
         % disable flux through the second model
         pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 4}, '_'), pairedModel.rxns)), 0, 'b');
         % calculate single biomass
-        solutionSingle1 = solveCobraLP(pairedModel);
+        solutionSingle1 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
         pairedModel = pairedModels{i};
@@ -254,7 +254,7 @@ else
         % disable flux through the first model
         pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
         % calculate single biomass
-        solutionSingle2 = solveCobraLP(pairedModel);
+        solutionSingle2 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
 
         % interpret computed growth rates-only if solutions are feasible
         if solutionPaired.stat ~= 0 && solutionSingle1.stat ~= 0 && solutionSingle2.stat ~= 0

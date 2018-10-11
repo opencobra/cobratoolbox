@@ -72,8 +72,13 @@ if any(metPos == 0)
     error('The following Metabolites are not part of the model:\n%s',strjoin(metList(metPos==0)));
 end
 
-if any(ismember(model.rxns,rxnIDs)) || numel(unique(rxnIDs)) < numel(rxnIDs)
-    error('Duplicate Reaction ID detected.');
+if checkIDsForTypeExist(model,rxnIDs,'rxns')
+    [tf,dups] = checkIDsForTypeExist(model,rxnIDs,'rxns');
+    if any(ismember(model.rxns,dups))
+        error('Duplicate Reaction ID detected.');    
+    else
+        error('The following reaction IDs are already IDs of variables in the model:\n%s', strjoin(dups,'\n'));    
+    end        
 end
 
 if numel(unique(metList)) < numel(metList)

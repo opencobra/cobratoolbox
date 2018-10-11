@@ -134,37 +134,8 @@ if printLevel > 1
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
 end
 
-if ~isfield(model,'b')
-    model.b = zeros(size(model.S,1),1);
-end
 % Set up the general problem
-rxnListFull = model.rxns;
-
-if strcmpi(osenseStr,'max')
-    LPproblem.osense = -1;
-elseif strcmpi(osenseStr,'min')    
-    LPproblem.osense = 1;
-else
-    error('%s is not a valid objective sense. Use either ''min'' or ''max''.',osenseStr);
-end
-
-LPproblem.c = model.c;
-LPproblem.lb = model.lb;
-LPproblem.ub = model.ub;
-if ~isfield(model,'csense')
-    LPproblem.csense(1:nMets,1) = 'E';
-else
-    LPproblem.csense = model.csense(1:nMets);
-
-    % print a warning message if the csense vector does not have the same length as the mets vector
-    if length(model.mets) ~= length(model.csense)
-        warning(' > model.csense does not have the same length as model.mets. Consider checking the model using >> verifyModel.');
-    end
-end
-LPproblem.csense = columnVector(LPproblem.csense);
-LPproblem.A = model.S;
-LPproblem.b = model.b;
-
+LPproblem = buildLPproblemFromModel(model);
 
 % Solve initial (normal) LP
 if allowLoops
@@ -186,13 +157,14 @@ end
 
 %set the objective
 if hasObjective
-    LPproblem.A = [model.S;columnVector(model.c)'];
-    LPproblem.b = [model.b;objValue];
+    LPproblem.A = [LPproblem.A;columnVector(LPproblem.c)'];
+    LPproblem.b = [LPproblem.b;objValue];    
     if strcmp(osenseStr, 'max')
         LPproblem.csense(end+1) = 'G';
     else
         LPproblem.csense(end+1) = 'L';
     end
+    model = addCOBRAConstraints(model,model.rxns(find(model.c)),objValue,'dsense',LPproblem.csense(end));
 end
 
 %get the initial basis
@@ -366,7 +338,8 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
     %get Number of reactions
     nRxns = numel(model.rxns);
     %Set the correct objective
-    LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
+    LPproblem.c(:) = 0;
+    LPproblem.c(find(ismember(model.rxns,rxnNameList{i}))) = 1;
     if isempty(sol)
         if printLevel == 1 && ~parallelMode
             fprintf('iteration %d.\n', i);
@@ -409,7 +382,8 @@ function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
         QPproblem.ub(LPproblem.c~=0) = cFlux + 1e12;
         QPproblem.c(:)=0;
         %Minimise Euclidean norm using quadratic programming
-        QPproblem.F = speye(nRxns,nRxns);
+        QPproblem.F = [speye(nRxns,nRxns), sparse(nRxns,size(LPproblem.A,2)-nRxns);...
+                      sparse(size(LPproblem.A,2)-nRxns,size(LPproblem.A,2))];
         QPproblem.osense = 1;
         %quadratic optimization
         solution = solveCobraQP(QPproblem);
@@ -423,14 +397,11 @@ function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
     elseif strcmp(method, 'FBA')
         V=LPsolution.full(1:nRxns);
     elseif strcmp(method, 'minOrigSol')
-        LPproblemMOMA = LPproblem;
-        LPproblemMOMA=rmfield(LPproblemMOMA, 'csense');
-        LPproblemMOMA.A = model.S;
-        LPproblemMOMA.S = LPproblemMOMA.A;
-        LPproblemMOMA.b = model.b;
-        LPproblemMOMA.lb(LPproblem.c~=0) = cFlux - 1e-12;
-        LPproblemMOMA.ub(LPproblem.c~=0) = cFlux + 1e-12;
-        LPproblemMOMA.rxns = model.rxns;
+        % we take the original model, and constrain the objective reaction
+        % accordingly.
+        LPproblemMOMA = model;                
+        LPproblemMOMA.lb(LPproblem.c(1:nRxns)~=0) = cFlux - 1e-12;
+        LPproblemMOMA.ub(LPproblem.c(1:nRxns)~=0) = cFlux + 1e-12;        
         momaSolution = linearMOMA(model,LPproblemMOMA);
         V=momaSolution.x;
     end

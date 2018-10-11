@@ -56,6 +56,18 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.modelVersion`| `` | Struct | Information on the model version | 
 |`model.modelName`| `` | String | A Descriptive Name of the model | 
 |`model.modelID`| `` | String | The ID of the model | 
+|`model.E`| `m x evars` | Sparse or Full Matrix of Double | Matrix of additional, non metabolic variables (e.g. Enzyme capacity variables) | 
+|`model.evarlb`| `evars x 1` | Column Vector of Doubles | Lower bounds of the additional variables | 
+|`model.evarub`| `evars x 1` | Column Vector of Doubles | Upper bounds of the additional variables | 
+|`model.evarc`| `evars x 1` | Column Vector of Doubles | Objective coefficient of the additional variables | 
+|`model.evars`| `evars x 1` | Column Cell Array of Strings | IDs of the additional variables | 
+|`model.evarNames`| `evars x 1` | Column Cell Array of Strings | Names of the additional variables | 
+|`model.C`| `ctrs x n` | Sparse or Full Matrix of Double | Matrix of additional Constraints (e.g. Coupling Constraints) | 
+|`model.ctrs`| `ctrs x 1` | Column Cell Array of Strings | IDs of the additional Constraints | 
+|`model.ctrNames`| `ctrs x 1` | Column Cell Array of Strings | Names of the of the additional Constraints | 
+|`model.d`| `ctrs x 1` | Column Vector of Doubles | Right hand side values of the additional Constraints | 
+|`model.dsense`| `ctrs x 1` | Column Vector of Chars | Senses of the additional Constraints | 
+|`model.D`| `ctrs x evars` | Sparse or Full Matrix of Double | Matrix to store elements that contain interactions between additional Constraints and additional Variables | 
 ### Model Specific Fields
 Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices).
 

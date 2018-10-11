@@ -57,6 +57,14 @@ for k = 1:length(solverPkgs)
         sol = linearMOMA(model, modelOut);
 
         assert(abs(0.8608 - sol.f) < LPtol)
+        
+        %run linear moma with minimal fluxes
+        solMin = linearMOMA(model, modelOut,'max',1);
+        assert(abs(0.8608 - solMin.f) < LPtol)
+        
+        %We know that at least in this case, the flux sum is actually
+        %smaller.
+        assert(sum(abs(sol.x)) > sum(abs(solMin.x)))
     else
         fprintf('\nMOMA requires a QP solver to be installed. QPNG does not work.\n');
     end

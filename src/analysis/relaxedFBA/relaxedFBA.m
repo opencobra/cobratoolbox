@@ -109,6 +109,11 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 % .. Authors: - Hoai Minh Le, Ronan Fleming
 %              
 
+if isfield(model,'E')
+    issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
+end
+
+
 [nMets,nRxns] = size(model.S); %Check inputs
 
 if ~isfield(param,'maxUB')

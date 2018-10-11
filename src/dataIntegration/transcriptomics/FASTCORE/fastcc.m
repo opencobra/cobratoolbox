@@ -41,28 +41,33 @@ end
 
 tic
 
+if strcmp(method,'nonconvex') && (isfield(model,'C') || isfield(model,'E'))
+    issueConfirmationWarning('The non convex Version of fastcc does not additional constraints in the C and E fields of the model');
+end
+    
+
 %number of reactions
 N = (1:size(model.S,2));
+
+% build the Lp problem.
+LPproblem = buildLPproblemFromModel(model);
 
 veryOrigModel=model;
 
 %reactions irreversible in the reverse direction
 Ir = find(model.ub<=0);
 %flip direction of reactions irreversible in the reverse direction
-model.S(:,Ir) = -model.S(:,Ir);
-tmp = model.ub(Ir);
-model.ub(Ir) = -model.lb(Ir);
-model.lb(Ir) = -tmp;
+LPproblem.A(:,Ir) = -LPproblem.A(:,Ir);
+tmp = LPproblem.ub(Ir);
+LPproblem.ub(Ir) = -LPproblem.lb(Ir);
+LPproblem.lb(Ir) = -tmp;
+%Now, no backward irreversible reactions are left.
 
 %save the model with only the flips of the reverse reactions
 origModel=model;
 
 %all irreversible reactions should only be in the forward direction
 I  = find(model.lb>=0);
-if any(model.lb<0 & model.ub<0)
-    %Feb 13th 2017, Added by Ronan for the second time.
-    error('fastcc only works for models with reversible or forward irreversible reactions')
-end
 
 A = [];
 
@@ -80,7 +85,7 @@ V=[];
 
 %v is the flux vector that approximately maximizes the cardinality
 %of the set of irreversible reactions v(J)
-[v, basis] = LP7( J, model, epsilon);
+[v, basis] = LP7( J, model, LPproblem, epsilon);
 
 %A is the set of reactions in v with absoulte value greater than epsilon
 Supp = find( abs(v) >= 0.99*epsilon );
@@ -122,10 +127,10 @@ while ~isempty( J )
         case 'original'
             if singleton
                 Ji = J(1);
-                [v, basis] = LP3( Ji, model, basis);
+                [v, basis] = LP3( Ji, model, LPproblem, basis);
             else
                 Ji = J;
-                [v, basis] = LP7( Ji, model, epsilon, basis);
+                [v, basis] = LP7( Ji, model, LPproblem, epsilon, basis);
             end
         case 'nonconvex'
             if singleton
@@ -206,10 +211,10 @@ while ~isempty( J )
             end
         else
             %flipping the orientation of reactions
-            model.S(:,JiRev) = -model.S(:,JiRev);
-            tmp = model.ub(JiRev);
-            model.ub(JiRev) = -model.lb(JiRev);
-            model.lb(JiRev) = -tmp;
+            LPproblem.A(:,JiRev) = -LPproblem.A(:,JiRev);
+            tmp = LPproblem.ub(JiRev);
+            LPproblem.ub(JiRev) = -LPproblem.lb(JiRev);
+            LPproblem.lb(JiRev) = -tmp;
             flipped = true;
             %need to keep track of the orientation of model.S compared with
             %origModel.S
