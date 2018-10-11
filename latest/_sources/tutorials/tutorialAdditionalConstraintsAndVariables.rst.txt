@@ -1,7 +1,7 @@
 .. _tutorialAdditionalConstraintsAndVariables:
 
-tutorialNoName
-==============
+Adding more complex constraints on a model 
+===========================================
 
 
 .. raw:: html
