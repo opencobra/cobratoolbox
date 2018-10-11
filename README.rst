@@ -186,7 +186,7 @@ implemented in The COBRA Toolbox v3.0 [2], was employed.*
     A. Saunders, Costas D. Maranas, Nathan E. Lewis, Thomas Sauter,
     Bernhard Ø. Palsson, Ines Thiele, Ronan M.T. Fleming, **Creation and
     analysis of biochemical constraint-based models: the COBRA Toolbox
-    v3.0** (submitted), 2017,
+    v3.0**, accepted in Nature Protocols, 2018,
     `arXiv:1710.04038 <https://arxiv.org/abs/1710.04038>`__.
 
 .. end-how-to-cite-marker
