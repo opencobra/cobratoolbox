@@ -675,6 +675,35 @@ The folder the model should be located in.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.getMultiDimensionFields">
+<code class="descname">getMultiDimensionFields</code><span class="sig-paren">(</span><em>fieldDefinitions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/base/io/utilities/getMultiDimensionFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getMultiDimensionFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get those fields which have multiple dimensions depending on another
+field from the definitions</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[fieldNames,firstDim,secondDim] = getMultiDimensionFields(fieldDefinitions)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldDefinitions</strong> &#8211;
+Field Definitilons as obtained from
+getDefinedFieldProperties();</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldNames</strong> &#8211;
+The names of the multi-dimensional fields</li>
+<li><strong>firstDim</strong> &#8211;
+the referenced field in the first dimension</li>
+<li><strong>secondDim</strong> &#8211;
+the referenced field in the second dimension</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.initFBAFields">
 <code class="descname">initFBAFields</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/base/io/utilities/initFBAFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.initFBAFields" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function initializes all fields in a model that are required for

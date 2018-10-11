@@ -325,7 +325,7 @@ NLP problem structure</li>
 
 <dl class="function">
 <dt id="src.base.solvers.buildLPproblemFromModel">
-<code class="descname">buildLPproblemFromModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildLPproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>checked</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -343,7 +343,7 @@ A COBRA model structure with at least the following fields<ul>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
@@ -351,8 +351,18 @@ The model structure can also have these additional fields:<ul>
 <li><cite>.b</cite>: accumulation/depletion vector (default 0 for each metabolite).</li>
 <li><cite>.osense</cite>: Objective sense (-1 means maximise (default), 1 means minimise)</li>
 <li><cite>.csense</cite>: a string with the constraint sense for each row in A (&#8216;E&#8217;, equality(default), &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
+<li><cite>.C</cite>: the Constraint matrix;</li>
+<li><cite>.d</cite>: the right hand side vector for C;</li>
+<li><cite>.dsense</cite>: the constraint sense vector;</li>
+<li><cite>.E</cite>: the additional Variable Matrix</li>
+<li><cite>.evarub</cite>: the upper bounds of the variables from E;</li>
+<li><cite>.evarlb</cite>: the lower bounds of the variables from E;</li>
+<li><cite>.evarc</cite>: the objective coefficients of the variables from E;</li>
+<li><cite>.D</cite>: The matrix coupling additional Constraints (form C), with additional Variables (from E);</li>
 </ul>
 </li>
+<li><strong>checked</strong> &#8211;
+Check the input (default: true);</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>

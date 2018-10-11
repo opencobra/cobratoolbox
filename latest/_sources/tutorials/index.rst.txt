@@ -81,9 +81,9 @@ Data integration
      <div class="sectionTitle"><h3>Data integration<a class="headerlink" href="#dataIntegration" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
-* :doc:`tutorialExtraction_transcriptomic`
 * :doc:`tutorialMetabotoolsI`
 * :doc:`tutorialMetabotoolsII`
+* :doc:`tutorialExtractionTranscriptomic`
 * :doc:`tutorialUFBA`
 
 .. raw:: html
@@ -105,9 +105,9 @@ Design
      <div class="sectionContent">
 
 * :doc:`tutorialOptForce`
-* :doc:`tutorialOptForceGAMS`
 * :doc:`tutorialOptGene`
 * :doc:`tutorialOptKnock`
+* :doc:`tutorialOptForceGAMS`
 
 .. raw:: html
 
@@ -148,6 +148,7 @@ Reconstruction
 * :doc:`tutorialModelSanityChecks`
 * :doc:`tutorialFidelityTesting`
 * :doc:`tutorialModelATPYield`
+* :doc:`tutorialAdditionalConstraintsAndVariables`
 
 .. raw:: html
 

@@ -249,7 +249,7 @@
 <span id="id1"></span><h1>FASTCORE<a class="headerlink" href="#fastcore" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.FASTCORE"></span><dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.LP3">
-<code class="descname">LP3</code><span class="sig-paren">(</span><em>J</em>, <em>model</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP3.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP3" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LP3</code><span class="sig-paren">(</span><em>J</em>, <em>model</em>, <em>LPproblem</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP3.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP3" title="Permalink to this definition">¶</a></dt>
 <dd><p>CPLEX implementation of LP-3 for input set J (see FASTCORE paper)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -258,7 +258,7 @@
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.LP7">
-<code class="descname">LP7</code><span class="sig-paren">(</span><em>J</em>, <em>model</em>, <em>epsilon</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP7.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP7" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LP7</code><span class="sig-paren">(</span><em>J</em>, <em>model</em>, <em>LPproblem</em>, <em>epsilon</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP7.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP7" title="Permalink to this definition">¶</a></dt>
 <dd><p>CPLEX implementation of LP-7 for input set J (see FASTCORE paper).
 Maximises the number of feasible fluxes in J whose value is at least epsilon</p>
 <p><strong>Usage</strong></p>
@@ -271,6 +271,8 @@ Maximises the number of feasible fluxes in J whose value is at least epsilon</p>
 indicies of irreversible reactions</li>
 <li><strong>model</strong> &#8211;
 model</li>
+<li><strong>LPproblem</strong> &#8211;
+LP problem</li>
 <li><strong>epsilon</strong> &#8211;
 tolerance</li>
 </ul>
@@ -288,7 +290,7 @@ basis</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.LP9">
-<code class="descname">LP9</code><span class="sig-paren">(</span><em>K</em>, <em>P</em>, <em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP9.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP9" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LP9</code><span class="sig-paren">(</span><em>K</em>, <em>P</em>, <em>model</em>, <em>LPproblem</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/LP9.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP9" title="Permalink to this definition">¶</a></dt>
 <dd><p>CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -432,12 +434,12 @@ e1003424.&#8217;</p>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.findSparseMode">
-<code class="descname">findSparseMode</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>epsilon</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findSparseMode</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>LPproblem</em>, <em>epsilon</em>, <em>basis</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a mode that contains as many reactions from J and as few from P.
 Returns its support, or [] if no reaction from J can get flux above epsilon</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>Supp = findSparseMode(J, P, singleton, model, epsilon)</div></blockquote>
+<div>Supp = findSparseMode(J, P, singleton, model, LPproblem, epsilon)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -448,7 +450,9 @@ Reactions</li>
 <li><strong>singleton</strong> &#8211;
 Takes only first instance from <cite>J</cite>, else takes whole <cite>J</cite></li>
 <li><strong>model</strong> &#8211;
-Model structure</li>
+Model structure (for reference)</li>
+<li><strong>LPproblem</strong> &#8211;
+LPproblem structure</li>
 <li><strong>epsilon</strong> &#8211;
 Parameter (default: 1e-4; see <cite>Vlassis et al</cite> for more details)</li>
 </ul>
@@ -473,7 +477,7 @@ Basis</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted">
-<code class="descname">findSparseModeWeighted</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>weights</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/findSparseModeWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findSparseModeWeighted</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>LPproblem</em>, <em>weights</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/dataIntegration/transcriptomics/FASTCORE/findSparseModeWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a mode that contains as many reactions from J and as few from P.
 Returns its support, or [] if no reaction from J can get flux above epsilon.
 Based on: <cite>The FASTCORE algorithm for context-specific metabolic network reconstruction.
@@ -493,6 +497,10 @@ Reactions</li>
 Takes only first instance from J, else takes whole J</li>
 <li><strong>model</strong> &#8211;
 Model structure</li>
+<li><strong>LPproblem</strong> &#8211;
+The LP problem for the model structure</li>
+<li><strong>weights</strong> &#8211;
+The weights associated with the reactions.</li>
 <li><strong>epsilon</strong> &#8211;
 Parameter (default: 1e-4; see Vlassis et al for more details)</li>
 </ul>

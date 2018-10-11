@@ -240,6 +240,134 @@
   <div class="section" id="refinement">
 <span id="id1"></span><h1>Refinement<a class="headerlink" href="#refinement" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.refinement"></span><dl class="function">
+<dt id="src.reconstruction.refinement.addCOBRAConstraints">
+<code class="descname">addCOBRAConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>idList</em>, <em>d</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/addCOBRAConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a constraint to the model in the form c1 * v(id1) + c2 * v(id2) * ... cj * v(idj) dsense d
+where c is a vector with coefficients for each element in idList
+(default 1 for each reaction), dsense is one of lower than (&#8216;L&#8217;, default), greater than
+(&#8216;G&#8217;), or equal (&#8216;E&#8217;), and d is a value.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = addCOBRAConstraints(model, idList, d, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>idList</strong> &#8211;
+cell array of ids either from either the rxns, or the
+evars vectors. Can also be a a double vector of indices (in which
+case indices in evars have to be set off by
+numel(rxns).</li>
+<li><strong>d</strong> &#8211;
+The right hand side of the C*v &lt;= d constraint (or a
+vector, for multiple simultaneous addition;</li>
+<li><strong>varargin</strong> &#8211;<ul>
+<li><dl class="first docutils">
+<dt>c:                the coefficients to use with one entry per</dt>
+<dd>reaction of a constraint for multiple constraints, a matrix
+(default: 1 for each element indicated in idList)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>dsense:           the constraint sense (&#8216;L&#8217;: &lt;= ,</dt>
+<dd>&#8216;G&#8217;: &gt;=, &#8216;E&#8217;: =), or a vector for multiple constraints
+(default: (&#8216;L&#8217;))</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ConstraintID:     the Name of the constraint. by</dt>
+<dd>(default: &#8216;ConstraintXYZ&#8217; with XYZ being the initial
+position in the mets vector)
+or a cell array of Strings for
+multiple Constraints</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>checkDuplicates:  check whether the constraint already</dt>
+<dd>exists, and if it does, don&#8217;t add it (default: false)</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelConstrained</strong> &#8211;
+constrained model</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Add</span> <span class="n">a</span> <span class="n">constraint</span> <span class="n">that</span> <span class="n">leads</span> <span class="n">to</span> <span class="n">EX_glc</span> <span class="ow">and</span> <span class="n">EX_fru</span> <span class="ow">not</span> <span class="n">carrying</span> <span class="n">a</span>
+<span class="n">combined</span> <span class="n">flux</span> <span class="n">higher</span> <span class="n">than</span> <span class="mi">5</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addCOBRAConstraints</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_glc&#39;</span><span class="p">,</span><span class="s1">&#39;EX_fru&#39;</span><span class="p">},</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">Assume</span> <span class="n">Reaction</span> <span class="mi">4</span> <span class="n">to</span> <span class="n">be</span> <span class="mi">2</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">D</span> <span class="ow">and</span> <span class="n">reaction</span> <span class="mi">5</span> <span class="n">being</span> <span class="n">A</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="o">.</span> <span class="n">Create</span> <span class="n">a</span>
+<span class="n">constraint</span> <span class="n">that</span> <span class="n">requires</span> <span class="n">that</span> <span class="n">the</span> <span class="n">two</span> <span class="n">reactions</span> <span class="n">remove</span> <span class="n">at</span> <span class="n">least</span> <span class="mi">4</span> <span class="n">units</span> <span class="n">of</span> <span class="n">A</span><span class="p">:</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addCOBRAConstraints</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span><span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;dsense&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Author: Thomas Pfau, Nov 2017</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addCOBRAVariables">
+<code class="descname">addCOBRAVariables</code><span class="sig-paren">(</span><em>model</em>, <em>idList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/addCOBRAVariables.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addCOBRAVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Variable to the COBRA model provided. These variables can be
+referred to by additional constraints added via addCOBRAConstraint. Their
+IDs have to be mutually exclusive with the IDs in model.rxns
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = addCOBRAVariables(model, idList, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>idList</strong> &#8211;
+cell array of ids</li>
+<li><strong>varargin</strong> &#8211;<ul>
+<li><dl class="first docutils">
+<dt>lb:               The lower bounds of the variables</dt>
+<dd>Has to be of the same size as
+idlist
+(default: -1000)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ub:               The upper bounds of the variables.</dt>
+<dd>Has to be of the same size as
+idlist
+(default: 1000)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>c:                The objective coefficient of the variables</dt>
+<dd>Has to be of the same size as idlist
+(default: 0)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Names:            Descriptive names of the variables.</dt>
+<dd>(default: idList)</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+constrained model</li>
+</ul>
+</div></blockquote>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.addDemandReaction">
 <code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/addDemandReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addDemandReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds demand reactions for a set of metabolites
@@ -922,6 +1050,96 @@ COBRA model structure with subsystem assignment</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.changeCOBRAConstraints">
+<code class="descname">changeCOBRAConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>constraintID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/changeCOBRAConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify an existing COBRA constraint by providing new settings for the
+constraint to update existing settings.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = changeCOBRAConstraints(model, constraintID, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>constraintID</strong> &#8211;
+The ID of the constraint (or the index in the
+ctrs field)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargin</strong> &#8211;
+all elements (name, d, dsense and c can be modified as indicated below.
+* idList:           cell array of ids either from either the rxns, or the evars vectors. Can also be a a double vector of indices (in which case indices in evars have to be set off by numel(rxns).
+* c:                the elements of the C matrix. If idList is empty, this has to be a vector of length #rxns + #evars
+* dsense:           the constraint sense (&#8216;L&#8217;: &lt;= ,&#8217;G&#8217;: &gt;=, &#8216;E&#8217;: =), or a vector for multiple constraints
+* d:                The right hand side of the C*v &lt;= d constraint (or a vector, for multiple simultaneous addition)
+* name:             The new, descriptive name of the constraint.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+constrained model</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Modify</span> <span class="n">the</span> <span class="n">constraint</span> <span class="s1">&#39;A_and_B_Lower_10&#39;</span> <span class="n">to</span> <span class="n">read</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">+</span> <span class="n">C</span> <span class="o">&lt;=</span> <span class="mi">10</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addCOBRAConstraints</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;A_and_B_Lower_10&#39;</span><span class="p">,</span> <span class="s1">&#39;idList&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If c is provided, the whole constraint coefficients will be reset and
+existing coefficients will be removed!</p>
+</div>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.changeCOBRAVariable">
+<code class="descname">changeCOBRAVariable</code><span class="sig-paren">(</span><em>model</em>, <em>variableID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/changeCOBRAVariable.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeCOBRAVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify an existing COBRA variable by providing new settings for the
+variable to update existing settings.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = changeCOBRAVariable(model, variableID, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>variableID</strong> &#8211;
+The ID of the variable (or the index in the
+evars field)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>varargin</strong> &#8211;<ul>
+<li>lb:               the lower bound of the variable</li>
+<li>ub:               the upper bound of the variable</li>
+<li>c:                the objective coefficient of the variable</li>
+<li>Name:             The new, descriptive name of the variable.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model with modified variable</li>
+</ul>
+</div></blockquote>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.changeGeneAssociation">
 <code class="descname">changeGeneAssociation</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>addRxnGeneMat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/changeGeneAssociation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeGeneAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change gene associations in a model</p>
@@ -1011,6 +1229,37 @@ NewStoich = [ 2 4; 1 3]</p>
 COBRA model structure with changed reaction</li>
 <li><strong>ModifiedRxns</strong> &#8211;
 <cite>Rxns</cite> which were modified</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.checkIDsForTypeExist">
+<code class="descname">checkIDsForTypeExist</code><span class="sig-paren">(</span><em>model</em>, <em>ids</em>, <em>basefield</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/checkIDsForTypeExist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.checkIDsForTypeExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the given IDs exist for the given type of base field. Base
+fields include rxns, mets, genes, comps, proteins, ctrs, evars. ctrs/mets
+as well as rxns/evars will be considered as a combined field.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[tf,existing] = checkIDsForTypeExist(model,ids,basefield)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>ids</strong> &#8211;
+cell array of reaction names</li>
+<li><strong>basefield</strong> &#8211;
+Any base field defined.</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>tf</strong> &#8211;
+Whether any of the IDs exists.</li>
+<li><strong>existing</strong> &#8211;
+the already existing IDs for this base field.</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -1254,7 +1503,7 @@ field of the given type, or a specified size.
 the model to update</li>
 <li><strong>type</strong> &#8211;
 the Type of field to update one of
-(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;,&#8217;evars&#8217;,&#8217;ctrs&#8217;)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -1479,6 +1728,67 @@ same model but with model.rules added</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.getEmptyConstraints">
+<code class="descname">getEmptyConstraints</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/getEmptyConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getEmptyConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of empty constraints (i.e. constraints that have no non-zero
+values.
+<strong>Usage</strong></p>
+<blockquote>
+<div>emptyConstraints = getEmptyConstraints(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>emptyConstraints</strong> &#8211;
+A list of IDs of empty constraints.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd>Thomas Pfau - Sep 2018</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.getIDPositions">
+<code class="descname">getIDPositions</code><span class="sig-paren">(</span><em>model</em>, <em>ids</em>, <em>basefield</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/getIDPositions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getIDPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the positions of the IDs for the given basefield.
+This function will currently only work for rxns and mets and also checks the
+associated ctrs (for mets) and evars (for rxns) fields for the given IDs.
+elements from evars / ctrs will have positions nRxns/nMets + position
+respectively.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[pos,pres] = getIDPositions(model,ids,basefield)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>ids</strong> &#8211;
+cell array of reaction names</li>
+<li><strong>basefield</strong> &#8211;
+Either &#8216;rxns&#8217;, or &#8216;mets&#8217;</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>pos</strong> &#8211;
+The positions of the given ids in the
+[rxns;evars] or [mets;ctrs] vectors for rxns and
+mets , respectively.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.getModelFieldsForType">
 <code class="descname">getModelFieldsForType</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/getModelFieldsForType.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getModelFieldsForType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the fields in the model which are associated with the given type.
@@ -1492,7 +1802,7 @@ same model but with model.rules added</li>
 the model to update</li>
 <li><strong>type</strong> &#8211;
 the Type of field to update one of
-(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;,&#8217;ctrs&#8217;,&#8217;evars&#8217;)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -1810,6 +2120,37 @@ Maximum fluxes</li>
 Minimum fluxes</li>
 </ul>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeCOBRAConstraints">
+<code class="descname">removeCOBRAConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>constraintsToRemove</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/reconstruction/refinement/removeCOBRAConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the specified Non Metabolic Constraints.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = removeCOBRAConstraint(model, constraintsToRemove)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>constraintsToRemove</strong> &#8211;
+cell array of Constraint IDs, or Constraint
+Positions to remove, or a boolean vector of
+positions to remove.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model with the constraints removed.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd>Thomas Pfau - Nov 2017</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
