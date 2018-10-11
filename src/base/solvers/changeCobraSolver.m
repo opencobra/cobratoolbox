@@ -477,6 +477,7 @@ if solverOK
             warning('off');
             eval(['oldval = CBT_', solverType, '_SOLVER;']);
             eval(['CBT_', solverType, '_SOLVER = solverName;']);
+            % validate with a simple problem.
             problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
             try
                 eval(['solveCobra' solverType '(problem,''printLevel'', 0);']);
@@ -489,8 +490,13 @@ if solverOK
             end
             warning(cwarn)
         else
+            % if unvalidated, simply set the solver without testing.
             eval(['CBT_', solverType, '_SOLVER = solverName;']);
         end
+    else
+        % if no active support, we simply set the requested solver, without
+        % testing.
+        eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
 end
 end
