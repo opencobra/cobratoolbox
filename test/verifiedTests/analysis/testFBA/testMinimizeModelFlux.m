@@ -18,18 +18,20 @@ cd(fileDir);
 tol = 1e-6;
 
 % define the solver packages to be used to run this test
-solverPkgs = prepareTest('needsLP',true);
+solverPkgs = prepareTest('needsLP',true, 'requiredSolvers',{'glpk'});
 
 % load the model
 model = createToyModelForMinimizeFlux();
 
 for k = 1:length(solverPkgs.LP)
     changeCobraSolver(solverPkgs.LP{k},'LP');
-    sol = minimizeModelFlux(model,'min',1);
+    % qpng does not support this model size, so we don't use quadratic
+    % minimzation.
+    sol = minimizeModelFlux(model,'min','one');
     assert(sol.x(end) == 0);
     sol = minimizeModelFlux(model);
     assert(sol.x(end) == 12000); %Since its reversible, exchangers cycle and all rev reactions cycle.
-    sol = minimizeModelFlux(model,'max',2); %same as before.
+    sol = minimizeModelFlux(model,'max','one'); %same as before.
     assert(sol.x(end) == 12000); %Since its reversible, exchangers cycle and all rev reactions cycle.
     model.osenseStr = 'min';
     modelChanged = changeRxnBounds(model,'R3',5,'l');

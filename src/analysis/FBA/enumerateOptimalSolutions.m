@@ -20,117 +20,73 @@ function [solution] = enumerateOptimalSolutions(model)
 %       - Reed, J.L. and Palsson, B.O., "Genome-scale in silico models of ''E. coli'' have multiple equivalent phenotypic states: assessment of correlated reaction subsets that comprise network states" , Genome Research, 14:1797-1805(2004).
 
 
-[m,n] = size(model.S);
+[nMets,nRxns] = size(model.S);
 
-solution.fluxes = zeros(n,0);
-solution.nonzero = zeros(n,0);
+solution.fluxes = zeros(nRxns,0);
+solution.nonzero = zeros(nRxns,0);
 
-sol = optimizeCbModel(model);
-maxObjective = sol.f;
+%sol = optimizeCbModel(model);
+LPproblem = buildLPproblemFromModel(model);
+NZ = zeros(nRxns,0);
+sol = solveCobraLP(LPproblem);
+tol = getCobraSolverParams('LP','feasTol');
+NZ(:,end+1) = abs(sol.full(1:nRxns))>tol;
+PrevNZ = NZ(:,end);
+PrevFW = sol.full(1:nRxns) > tol;
+solution.fluxes(:,end+1) = sol.full(1:nRxns);
 
+maxObjective = sol.obj;
+MILPproblem = LPproblem;
+% Add a Line to keep the objective value
+MILPproblem.A = [MILPproblem.A;LPproblem.c'];
+MILPproblem.b = [MILPproblem.b;maxObjective];
+if MILPproblem.osense == 1
+    sense = 'L';
+else
+    sense = 'G';
+end
+MILPproblem.csense = [MILPproblem.csense;sense];
 
-prevNZ = abs(sol.x) > .0001;
-NZ = prevNZ;
-solution.fluxes = sol.x;
-solution.nonzero = prevNZ;
+% add the indicator variables to the LP:
 
+[nCtrs,nVars] = size(MILPproblem.A);
+% v_+ / v_-
+MILPproblem.A = [MILPproblem.A,sparse(nCtrs,nRxns*2);...
+               speye(nRxns,nVars), -diag(model.ub), sparse(nRxns,nRxns);... %v - v_+*ub <= 0
+               speye(nRxns,nVars+nRxns), -diag(model.lb);....%v - v_-*lb >= 0
+               sparse(nRxns,nVars),speye(nRxns,nRxns), speye(nRxns,nRxns)];%;...% v_i+ + v_i- <= 1
+               %sparse(1,nVars),~(PrevFW & PrevNZ)',~(~PrevFW & PrevNZ)']; %At least one reaction that was not yet active has to be active now!
+MILPproblem.vartype = [repmat('C',nVars,1);repmat('B',2*nRxns,1)];
+MILPproblem.lb = [MILPproblem.lb;zeros(2*nRxns,1)];
+MILPproblem.ub = [MILPproblem.ub;ones(2*nRxns,1)];
+MILPproblem.csense = [MILPproblem.csense;...
+                    repmat('L',nRxns,1);...
+                    repmat('G',nRxns,1);...
+                    repmat('L',nRxns,1)];
+MILPproblem.b = [MILPproblem.b;...
+               zeros(2*nRxns,1);...                    
+               ones(nRxns,1)]; 
+           
+MILPproblem.c = [LPproblem.c; zeros(2*nRxns,1)];
+
+NonZeroConstPos = size(MILPproblem.A,1);
 while 1
-    % variables:
-    %    v's (n), y's (n) w's (n)  3n total variables
-
-    % constriants:
-    %    m mass balance constraints
-    A = [model.S, zeros(m,2*n)];
-    b = zeros(m,1);
-    csense = '';
-    for i = 1:m
-        csense(end+1) = 'E';
-    end
-    % constrain UB fluxes w/ integer constraints
-    A = [A;
-        [eye(n,2*n), -diag(model.ub)] ];
-    b = [b;
-        zeros(n,1)];
-    for i = 1:n
-        csense(end+1) = 'L';
-    end
-    % constrain LB fluxes w/ integer constraints
-    A = [A;
-        eye(n,2*n), -diag(model.lb) ];
-    b = [b;
-        zeros(n,1)];
-    for i = 1:n
-        csense(end+1) = 'G';
-    end
-
-
-    % constrain w+y <=1
-    A = [A;
-        zeros(n,n), eye(n,n), eye(n,n) ];
-    b = [b;
-        ones(n,1)];
-    for i = 1:n
-        csense(end+1) = 'L';
-    end
-
-    % constrain with previous zero results
-    A = [A;
-        zeros(1,n), prevNZ', zeros(1,n) ];
-    b = [b;
-        1];
-    csense(end+1) = 'G';
-
-    % constrain with previous results (altbases)
-    for i = 1:size(NZ,2)
-        A = [A;
-            [zeros(1,n), zeros(1,n) NZ(:,i)']];
-        b(end+1) = sum(NZ(:,i))-1;
-        csense(end+1) = 'L';
-    end
-
-    % vartype
-    vartype = char();
-    for i = 1:n
-        vartype(i,1) = 'C';
-    end
-    for i = 1:2*n
-        vartype(end+1,1) = 'B';
-    end
-
-    % lb,ub
-    lb = [model.lb; zeros(2*n,1)];
-    ub = [model.ub; ones(2*n,1)];
-    % c
-    c = [model.c; zeros(2*n,1)];
-
-
-    % create structure
-    MILPproblem.A = A;
-    MILPproblem.b = b;
-    MILPproblem.c = c;
-    MILPproblem.csense = csense;
-    MILPproblem.lb = lb;
-    MILPproblem.ub = ub;
-    MILPproblem.osense = -1;
-    MILPproblem.vartype = vartype;
-    MILPproblem.x0 = [];%zeros(2*n,1);
-    %MILPproblem.intSolInd = [];
-    %MILPproblem.contSolInd = [];
-
-%    pause;
-    MILPsol = solveCobraMILP(MILPproblem);
-%    MILPsol.full
-    NZ(:,end+1) = abs(MILPsol.full(1:n))>.000000001;
-    PrevNZ = NZ(:,end);
-
-
-    if (abs(MILPsol.full - maxObjective) > .001)
-        'done';
+    % modify the "At least one new reaction" constraint
+    %MILPproblem.A(NonZeroConstPos,:) = [sparse(1,nVars),~PrevNZ',~PrevNZ'];
+    % add the "this solution is no longer allowed constraint
+    MILPproblem.A = [MILPproblem.A;...
+                   sparse(1,nVars), (PrevFW & PrevNZ)', (~PrevFW & PrevNZ)'];
+    MILPproblem.csense = [MILPproblem.csense; 'L'];
+    MILPproblem.b = [MILPproblem.b; sum(PrevNZ)-1];
+    solMILP = solveCobraMILP(MILPproblem);
+    if solMILP.stat ~= 1
+        % No more solutions can be found
+        solution.nonzero = NZ;
         return;
-    end
-    solution.fluxes = [solution.fluxes,MILPsol.full(1:n)];
-    solution.nonzero = [solution.nonzero, NZ(:,end)];
-    solution
+    end        
+    NZ(:,end+1) = abs(solMILP.full(1:nRxns))>tol;
+    PrevNZ = NZ(:,end);
+    PrevFW = solMILP.full(1:nRxns) > tol;
+    solution.fluxes(:,end+1) = solMILP.full(1:nRxns);   
 end
 
-return;

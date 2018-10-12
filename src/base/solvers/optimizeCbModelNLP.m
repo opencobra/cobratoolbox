@@ -111,15 +111,10 @@ else
 end
 
 [nMets,nRxns] = size(model.S);
+NLPproblem = buildLPproblemFromModel(model);
 
-NLPproblem.osense = osense;
-NLPproblem.A = model.S;
-NLPproblem.b = model.b;
-NLPproblem.lb = model.lb;
-NLPproblem.ub = model.ub;
 NLPproblem.objFunction = objFunction;
 NLPproblem.objArguments = objArgs;
-NLPproblem.csense(1:nMets) = 'E';
 
 % Current best solution
 currentSol.f = osense*inf;

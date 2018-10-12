@@ -37,6 +37,12 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 % .. Author: - Implementation adapted from the cobra toolbox
 % (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
+
+if isfield(modelCom,'C') || isfield(modelCom,'E')
+    issueConfirmationWarning('iMat does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');
+end
+
+
 if nargin < 9 || isempty(epsilon)
     epsilon=1;
 end

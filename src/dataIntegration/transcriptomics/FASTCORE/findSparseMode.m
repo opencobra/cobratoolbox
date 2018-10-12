@@ -1,16 +1,17 @@
-function [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon, basis)
+function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsilon, basis)
 % Finds a mode that contains as many reactions from J and as few from P.
 % Returns its support, or [] if no reaction from J can get flux above epsilon
 %
 % USAGE:
 %
-%    Supp = findSparseMode(J, P, singleton, model, epsilon)
+%    Supp = findSparseMode(J, P, singleton, model, LPproblem, epsilon)
 %
 % INPUTS:
 %    J:           Indicies of irreversible reactions
 %    P:           Reactions
 %    singleton:   Takes only first instance from `J`, else takes whole `J`
-%    model:       Model structure
+%    model:       Model structure (for reference)
+%    LPproblem:   LPproblem structure
 %    epsilon:     Parameter (default: 1e-4; see `Vlassis et al` for more details)
 %
 % OPTIONAL INPUT:
@@ -32,9 +33,9 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon, basis)
     end
 
     if singleton
-      [V, basis] = LP7(J(1), model, epsilon, basis);
+      [V, basis] = LP7(J(1), model, LPproblem, epsilon, basis);
     else
-      [V, basis] = LP7(J, model, epsilon, basis);
+      [V, basis] = LP7(J, model, LPproblem, epsilon, basis);
     end
 
     K = intersect(J, find(V >= 0.99*epsilon));
@@ -43,5 +44,5 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon, basis)
       return;
     end
 
-    V = LP9( K, P, model, epsilon );
+    V = LP9( K, P, model, LPproblem, epsilon );
     Supp = find(abs(V) >= 0.99*epsilon);

@@ -517,7 +517,7 @@ function initCobraToolbox(updateToolbox)
             end
             k = 1;
             for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
-                if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).installed
+                if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).working
                     if k == 1
                         msg = '''%s'' ';
                     else

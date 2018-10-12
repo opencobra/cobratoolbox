@@ -35,66 +35,63 @@ function [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
 %    - May 2012: Added a warning if the coupled reaction is not in model. AH
 
 if ~exist('rxnList', 'var') || isempty(rxnList)
-    rxnList = model.rxns;
+    rxnList = model.rxns;   
 end
 
-if exist('c', 'var')
-    c = c * ones(length(rxnList), 1);
+if ischar(rxnC)
+    rxnC = {rxnC};
 end
 
 if ~exist('c', 'var') || isempty(c)
-    c = 1000 * ones(length(rxnList), 1);
-end
-
-if exist('u', 'var')
-    u = u * ones(length(rxnList), 1);
+    c = 1000; 
 end
 
 if ~exist('u', 'var') || isempty(u)
-    u = 0.01 * ones(length(rxnList), 1);
+    u = 0.01;
 end
 
-% model.csense
-if ~isfield(model, 'csense') || isempty(model.csense)
-    % assume all constraints are equality
-    model.csense(1:length(model.b), 1) = 'E';
+nRxnList = numel(rxnList);
+% create the constraint IDs.
+ctrs = [strcat('slack_',rxnList)';strcat('slack_',rxnList,'_R')'];
+ctrs = ctrs(:);
+% get those reactions which are not reversible.
+[pres,pos] = ismember(rxnList,model.rxns);
+revs = model.lb(pos(pres)) < 0;
+toRemove = [false(1,nRxnList);~revs'];
+toRemove = toRemove(:);
+
+% if rxnC is not part of the rxnList, we add it to the end for constraint
+% addition.
+if isempty(intersect(rxnList,rxnC))
+    rxnList(end+1) = rxnC;
 end
+% get the rxnC Position;
+rxnCID = find(ismember(rxnList,rxnC));
 
-% find index for rxnC
-rxnCID = find(ismember(model.rxns, rxnC));
+plusminus = [ones(1,nRxnList);-ones(1,nRxnList)];
+plusminus = plusminus(:);
 
-if isempty(find(ismember(model.rxns, rxnC)))
-    fprintf('Reaction not in model!');
-    modelCoupled = [];
+% generate the coefficient matrix
+coefs = sparse(2*nRxnList,nRxnList + numel(setdiff(rxnC,rxnList)));
+% determine the indices for the coefficients.
+rxnInd =  [1:nRxnList;1:nRxnList];
+rxnInd = rxnInd(:);
+constInd = 1:2*nRxnList;
+coefs(sub2ind(size(coefs),constInd',rxnInd)) = 1;
+% set the coupling coefficients
+cs = - plusminus * c;
+coefs(:,rxnCID ) = cs;
+% determine the senses for the indices
+dsenses = [repmat('L',1,nRxnList);repmat('G',1,nRxnList)];
+dsenses = dsenses(:);
+ds = plusminus * u;
 
-else modelCoupled = model;
-    if ~isfield(modelCoupled, 'A')
-        modelCoupled.A = modelCoupled.S;
-    end
-    [nRows, nCols] = size(modelCoupled.A);
-    nRows = nRows + 1;
 
-    for i = 1:length(rxnList)
-        RID = find(ismember(modelCoupled.rxns, rxnList(i)));
-        % for every reaction, update modelCoupled.A
-        % add 1 to position of RID, and -c to position of rxnCID, creates new row in A
-        modelCoupled.A(nRows, RID) = 1;
-        modelCoupled.A(nRows, rxnCID) = - c(i);
-        modelCoupled.b(nRows, 1) = u(i);
-        modelCoupled.mets(nRows, 1) = strcat('slack_', rxnList(i));
-        modelCoupled.csense(nRows) = 'L';
-        nRows = nRows +1;
+% remove non reversible reactions
+ds = ds(~toRemove);
+ctrs = ctrs(~toRemove);
+coefs = coefs(~toRemove,:);
+dsenses = dsenses(~toRemove);
 
-        % for reversible reactions we add a "mirror" constraint
-        if modelCoupled.lb(RID) < 0
-            modelCoupled.A(nRows,RID) = 1;
-            modelCoupled.A(nRows,rxnCID) = c(i);
-            modelCoupled.b(nRows,1) = - u(i);
-            modelCoupled.mets(nRows,1) = strcat('slack_', rxnList(i), '_R');
-            modelCoupled.csense(nRows) = 'G';
-            nRows = nRows +1;
-        end
-    end
+modelCoupled = addCOBRAConstraints(model,rxnList,ds,'c', coefs,'dsense',dsenses, 'ConstraintID',ctrs);
 
-    modelCoupled.csense = modelCoupled.csense';
-end

@@ -69,19 +69,19 @@ end
 % Find the range of possible optimal values for both objective functions
 model = changeObjective(model, rxn1);
 model.osense = -1;
-[solution] = solveCobraLP(model);
+[solution] = solveCobraLP(buildLPproblemFromModel(model));
 dmaxRxn1 = solution.obj;
 model = changeObjective(model, rxn2);
 model.osense = 1;
-[solution] = solveCobraLP(model);
+[solution] = solveCobraLP(buildLPproblemFromModel(model));
 dminRxn1 = solution.obj;
 model = changeObjective(model, rxn2);
 model.osense = -1;
-[solution] = solveCobraLP(model);
+[solution] = solveCobraLP(buildLPproblemFromModel(model));
 dmaxRxn2 = solution.obj;
 model = changeObjective(model, rxn2);
 model.osense = 1;
-[solution] = solveCobraLP(model);
+[solution] = solveCobraLP(buildLPproblemFromModel(model));
 dminRxn2 = solution.obj;
 
 % Find the indices for both reactions so the computed fluxes can be
@@ -104,7 +104,7 @@ model = changeObjective(model, rxn2);
 for i = dminRxn1:dinc:dmaxRxn1
     model = changeRxnBounds(model, rxn1, i, 'b');
     model.osense = -1;
-    [solution] = solveCobraLP(model);
+    [solution] = solveCobraLP(buildLPproblemFromModel(model));
     if solution.stat == 1
         ParetoFrontier{cnt + 1, 1} = i;
         ParetoFrontier{cnt + 1, 2} = solution.full(rxnID1);
@@ -130,7 +130,7 @@ model = changeObjective(model, rxn1);
 for i = dminRxn2:dinc:dmaxRxn2
     model = changeRxnBounds(model, rxn2, i, 'b');
     model.osense = -1;
-    [solution] = solveCobraLP(model);
+    [solution] = solveCobraLP(buildLPproblemFromModel(model));
     if solution.stat == 1
         ParetoFrontier{cnt + 1, 1} = i;
         ParetoFrontier{cnt + 1, 2} = solution.full(rxnID1);

@@ -48,10 +48,12 @@ if length(ind) == 1
     model.lb(ind) = FBAsolution.f;
 end
 
-A = model.S;
-b = model.b;
-L = model.lb;
-U = model.ub;
+LPproblem = buildLPproblemFromModel(model);
+A = LPproblem.A;
+b = LPproblem.b;
+L = LPproblem.lb;
+U = LPproblem.ub;
+csense = LPproblem.csense;
 
 % ensure column vectors
 b = b(:); L = L(:); U = U(:);
@@ -72,13 +74,13 @@ end
 L0 = L; U0 = U;
 for k = J(:)'
     f = zeros(length(v),1); f(k) = -1;
-    [dummy,opt,conv] = easyLP(f,A,b,L0,U0);
+    [dummy,opt,conv] = easyLP(f,A,b,L0,U0,csense);
     if conv
         vL = max(-opt,L(k));
     else
         vL = L(k);
     end
-    [dummy,opt,conv] = easyLP(-f,A,b,L0,U0);
+    [dummy,opt,conv] = easyLP(-f,A,b,L0,U0,csense);
     if conv
         vU = min(opt,U(k));
     else vU = U(k);
@@ -127,7 +129,7 @@ while ~isempty(J)
     end
 
     mu(:,n) = M;                                                %#ok<AGROW>
-    allL = L; allU = U; allA = A; allB = b;
+    allL = L; allU = U; allA = A; allB = b;allcsense = csense;
     [a1,a2] = size(A);
 
     % build new matrices
@@ -138,7 +140,9 @@ while ~isempty(J)
         allA = [allA,sparse(b1,2*a2);
             speye(a2,a2),sparse(a2,b2-a2),-speye(a2),speye(a2);
             f(:)'];                                             %#ok<AGROW>
+        nB = numel(allB);
         allB = [allB;mu(:,k);opt];                              %#ok<AGROW>
+        allcsense = [allcsense;repmat('E',numel(allB) - nB,1)];
         allL = [allL;zeros(2*a2,1)];                            %#ok<AGROW>
         allU = [allU;inf*ones(2*a2,1)];                         %#ok<AGROW>
     end
@@ -147,27 +151,31 @@ while ~isempty(J)
     f = zeros(b2+2*a2,1); f((b2+1):end) = -1;
     allA = [allA,sparse(b1,2*a2);
         speye(a2,a2),sparse(a2,b2-a2),-speye(a2),speye(a2)];	%#ok<AGROW>
-    allB = [allB;M];                                            %#ok<AGROW>
+    nB = numel(allB);
+    allB = [allB;M];         
+    allcsense = [allcsense;repmat('E',numel(allB) - nB,1)];      %#ok<AGROW>
     allL = [allL;zeros(2*a2,1)];                                %#ok<AGROW>
     allU = [allU;inf*ones(2*a2,1)];                             %#ok<AGROW>
 
-    [v,opt,conv] = easyLP(f,allA,allB,allL,allU);
+    [v,opt,conv] = easyLP(f,allA,allB,allL,allU,allcsense);
     if ~conv, disp('error: no convergence'); flux = (L+U)/2; return; end
 
     opt = ceil(-opt/eps)*eps;
     Z(n) = opt;                                                 %#ok<AGROW>
     allA = [allA; sparse(f(:)')];                               %#ok<AGROW>
+    nB = numel(allB);
     allB = [allB; -opt];                                        %#ok<AGROW>
+    allcsense = [allcsense;repmat('E',numel(allB) - nB,1)];      %#ok<AGROW>
 
     for k = J(:)'
         f = zeros(length(allL),1); f(k) = -1;
-        [dummy,opt,conv] = easyLP(f,allA,allB,allL,allU);
+        [dummy,opt,conv] = easyLP(f,allA,allB,allL,allU,allcsense);
         if conv
             vL = max(-opt,L(k));
         else
             vL = L(k);
         end
-        [dummy,opt,conv] = easyLP(-f,allA,allB,allL,allU);
+        [dummy,opt,conv] = easyLP(-f,allA,allB,allL,allU,allcsense);
         if conv
             vU = min(opt,U(k));
         else
@@ -205,7 +213,7 @@ while ~isempty(J)
     flux = v;
 end
 
-function [v,fOpt,conv] = easyLP(c,A,b,lb,ub)
+function [v,fOpt,conv] = easyLP(c,A,b,lb,ub,csense)
 %easyLP
 %
 % solves the linear programming problem:
@@ -229,7 +237,6 @@ function [v,fOpt,conv] = easyLP(c,A,b,lb,ub)
 %
 %kieran smallbone, 5 may 2010
 
-csense(1:length(b)) = 'E';
 model = struct('A',A,'b',b,'c',full(c),'lb',lb,'ub',ub,'osense',-1,'csense',csense);
 solution = solveCobraLP(model);
 v = solution.full;

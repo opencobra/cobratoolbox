@@ -94,12 +94,12 @@ modelJointOri = modelJoint;
 % First reaction
 modelJoint = modelJointOri;
 modelJoint = changeObjective(modelJoint, Rxn1);
-solutionWT = solveCobraLP(modelJoint);
+solutionWT = solveCobraLP(buildLPproblemFromModel(modelJoint));
 OptSolWT.(strcat('JoinedModel_', Rxn1)) = solutionWT.obj;
 % Second reaction
 modelJoint = modelJointOri;
 modelJoint = changeObjective(modelJoint, Rxn2);
-solutionWT = solveCobraLP(modelJoint);
+solutionWT = solveCobraLP(buildLPproblemFromModel(modelJoint));
 OptSolWT.(strcat('JoinedModel_', Rxn2)) = solutionWT.obj;
 
 % Define the different model scenarios that will be tested.
@@ -110,10 +110,10 @@ SecondModelSingle = changeRxnBounds(modelJointRxn2, modelJointRxn2.rxns(strmatch
 
 % Determine the wild-type solutions in single models.
 % First reaction
-solutionWT_Rxn1 = solveCobraLP(FirstModelSingle);
+solutionWT_Rxn1 = solveCobraLP(buildLPproblemFromModel(FirstModelSingle));
 OptSolWT.(strcat('SingleModel_', Rxn1)) = solutionWT_Rxn1.obj;
 % Second reaction
-solutionWT_Rxn2 = solveCobraLP(SecondModelSingle);
+solutionWT_Rxn2 = solveCobraLP(buildLPproblemFromModel(SecondModelSingle));
 OptSolWT.(strcat('SingleModel_', Rxn2)) = solutionWT_Rxn2.obj;
 
 
@@ -132,7 +132,7 @@ for i = 1:length(OriModel1.genes)
         constrRxnNames = strcat(nameTag1, constrRxnNames);
         modelDel = FirstModelSingle;
         modelDel = changeRxnBounds(modelDel, constrRxnNames, 0, 'b');
-        sol = solveCobraLP(modelDel);
+        sol = solveCobraLP(buildLPproblemFromModel(modelDel));
         if sol.obj < solutionWT_Rxn1.obj
             reducedGenesRxn1{cnt, 1} = OriModel1.genes(i);
             cnt = cnt + 1;
@@ -148,7 +148,7 @@ for i = 1:length(reducedGenesRxn1)
     % For joined model, reaction 1
     modelDel = modelJointRxn1;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-    sol=solveCobraLP(modelDel);
+    sol=solveCobraLP(buildLPproblemFromModel(modelDel));
     fluxesKO.(strcat('JoinedModel_',Rxn1))(i) =sol;
         OptSolKO.(strcat('JoinedModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
     OptSolRatio.(strcat('JoinedModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
@@ -163,7 +163,7 @@ for i = 1:length(reducedGenesRxn1)
     % For first model single
     modelDel=FirstModelSingle;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-    sol=solveCobraLP(modelDel);
+    sol=solveCobraLP(buildLPproblemFromModel(modelDel));
     fluxesKO.(strcat('SingleModel_',Rxn1))(i) =sol;
         OptSolKO.(strcat('SingleModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
     OptSolRatio.(strcat('SingleModel_',Rxn1)){i,1} = char(reducedGenesRxn1{i});
@@ -189,7 +189,7 @@ for i = 1:length(OriModel2.genes)
         constrRxnNames = strcat(nameTag2,constrRxnNames);
         modelDel=SecondModelSingle;
         modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-        sol=solveCobraLP(modelDel);
+        sol=solveCobraLP(buildLPproblemFromModel(modelDel));
         if sol.obj<solutionWT_Rxn2.obj
             reducedGenesRxn2{cnt,1}=OriModel2.genes(i);
             cnt=cnt+1;
@@ -206,7 +206,7 @@ for i=1:length(reducedGenesRxn2)
     % For joined model, reaction 2
     modelDel = modelJointRxn2;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-    sol=solveCobraLP(modelDel);
+    sol=solveCobraLP(buildLPproblemFromModel(modelDel));
     fluxesKO.(strcat('JoinedModel_',Rxn2))(i) =sol;
         OptSolKO.(strcat('JoinedModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
     OptSolRatio.(strcat('JoinedModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
@@ -221,7 +221,7 @@ for i=1:length(reducedGenesRxn2)
     % For second model single
     modelDel=SecondModelSingle;
     modelDel = changeRxnBounds(modelDel,constrRxnNames,0,'b');
-    sol=solveCobraLP(modelDel);
+    sol=solveCobraLP(buildLPproblemFromModel(modelDel));
     fluxesKO.(strcat('SingleModel_',Rxn2))(i) =sol;
             OptSolKO.(strcat('SingleModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});
     OptSolRatio.(strcat('SingleModel_',Rxn2)){i,1} = char(reducedGenesRxn2{i});

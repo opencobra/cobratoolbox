@@ -67,7 +67,8 @@ switch solverType
                       'printLevel',...      % print level
                       'saveInput', ...      % save the input to a file (specified)
                       'solver'};            % the solver to use
-
+    otherwise
+        error('Solver type %s is not supported by the Toolbox');
 end
 
 

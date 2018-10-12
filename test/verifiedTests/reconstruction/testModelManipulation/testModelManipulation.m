@@ -67,10 +67,13 @@ assert(model.ub(reactionPos) == 10);
 modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem','Some Sub','geneRule','GeneA or GeneB');
 assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
 
+%Also add a Constraint to the model
+model = addCOBRAConstraints(model,{'GLCt1'; 'HEX1'; 'PGI'},[1000,50],'c',[1,1,0;0,0,1],'dsense','LL');
+
 %And test this also with a different input of subSystems:
 modelWithFields = addReaction(model,'TestReaction','reactionFormula','A + B -> C','subSystem',{'Some Sub', 'And another sub'},'geneRule','GeneA or GeneB');
 assert(verifyModel(modelWithFields,'simpleCheck',true,'requiredFields',{}))
-
+assert(size(modelWithFields.C,2) == size(modelWithFields.S,2));
 
 %Trying to add a reaction without stoichiometry will fail.
 errorCall = @() addReaction(model,'NoStoich');
