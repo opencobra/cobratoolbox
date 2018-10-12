@@ -260,8 +260,60 @@
   <div class="section" id="coupling">
 <span id="id1"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.coupling"></span><dl class="function">
+<dt id="src.analysis.coupling.addCouplingConstraint">
+<code class="descname">addCouplingConstraint</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/51e487bfcb959950e6212b6dfc4f8bf1ed3f81c5/src/analysis/coupling/addCouplingConstraint.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addCouplingConstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
+Appends to existing inequality constraints if they are present</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+model structure</li>
+<li><strong>rxnList</strong> &#8211;
+cell array of reaction names</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>c</strong> &#8211;
+<cite>k x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
+<li><strong>d</strong> &#8211;
+<cite>n x 1</cite> vector <span class="math">\(c*v \geq d\)</span></li>
+<li><strong>ineqSense</strong> &#8211;
+<cite>k x 1</cite> inequality sense {&#8216;L&#8217;,&#8217;G&#8217;}</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelConstrained</strong> &#8211;
+constrained model:<ul>
+<li>S - Stoichiometric matrix</li>
+<li>b - Right hand side = dx/dt</li>
+<li>C - Inequality constraint matrix</li>
+<li>d - Inequality constraint right hand side
+<span class="math">\([S; C] * v {=, \leq, \geq } [dxdt, d]\)</span></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rxnList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PCHOLP_hs_f&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_f&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_f&#39;</span><span class="p">,</span><span class="s1">&#39;PCHOLP_hs_b&#39;</span><span class="p">,</span> <span class="s1">&#39;PLA2_2_b&#39;</span><span class="p">,</span> <span class="s1">&#39;SMS_b&#39;</span><span class="p">};</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">ineqSense</span> <span class="o">=</span> <span class="s1">&#39;G&#39;</span><span class="p">;</span>
+<span class="n">modelConstrained</span> <span class="o">=</span> <span class="n">constrainRxnListAboveBound</span><span class="p">(</span><span class="n">modelIrrev</span><span class="p">,</span> <span class="n">rxnList</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ineqSense</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.coupling.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/51e487bfcb959950e6212b6dfc4f8bf1ed3f81c5/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds ratio reaction.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -293,7 +345,7 @@ COBRA model structure containing the ratio</li>
 
 <dl class="function">
 <dt id="src.analysis.coupling.constrainRxnListAboveBound">
-<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
+<code class="descname">constrainRxnListAboveBound</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>c</em>, <em>d</em>, <em>ineqSense</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/51e487bfcb959950e6212b6dfc4f8bf1ed3f81c5/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
 Appends to existing inequality constraints if they are present</p>
 <p><strong>Usage</strong></p>
@@ -345,7 +397,7 @@ constrained model:<ul>
 
 <dl class="function">
 <dt id="src.analysis.coupling.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7f79108b12c19747477e72418f82a0a019ec34c3/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/51e487bfcb959950e6212b6dfc4f8bf1ed3f81c5/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
 (<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
 reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
