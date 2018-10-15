@@ -29,24 +29,33 @@ function expressionCol = selectGeneFromGPR(model, gene_names, gene_exp, parsedGP
 if ~exist('minSum','var')
     minSum = false;
 end
-
-expressionCol = -1*ones(length(model.rxns),1); %-1 means unknown/no data
+% -1 means unknown/no data
+expressionCol = -1*ones(length(model.rxns),1); 
 for i = 1:length(model.rxns)
     curExprArr=parsedGPR{i};
     curExpr= [];
     for j=1:length(curExprArr)
         if length(curExprArr{j})>=1
             geneID = find(ismember(gene_names,curExprArr{j}));
-            if ~isempty(geneID) %if the gene is measured
-                curExpr= [curExpr, min(gene_exp(geneID))]; %If there is data for any gene in 'AND' rule, take the minimum value
+            % if the gene is measured
+            if ~isempty(geneID) 
+                if minSum
+                    % This is an or rule, so we sum up all options.
+                    curExpr= [curExpr, sum(gene_exp(geneID))]; 
+                else
+                    % If there is data for any gene in 'AND' rule, take the minimum value
+                    curExpr= [curExpr, min(gene_exp(geneID))];
+                end
             end
         end
     end
     if ~isempty(curExpr)
         if minSum
-            expressionCol(i)=sum(curExpr);
+            % in case of min sum these are and clauses that are combined, so its the minimum.
+            expressionCol(i)=min(curExpr); 
         else
-            expressionCol(i)=max(curExpr);%If there is data for any gene in the 'OR' rule, take the maximum value
+            % if there is data for any gene in the 'OR' rule, take the maximum value
+            expressionCol(i)=max(curExpr);
         end
     end
 end

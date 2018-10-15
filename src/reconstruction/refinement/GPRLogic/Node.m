@@ -198,7 +198,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             end
         end
         
-        function [geneSets,genePos] = getFunctionalGeneSets(self,geneNames)
+        function [geneSets,genePos] = getFunctionalGeneSets(self, geneNames, getCNFSets)
             % Get all functional gene sets useable for this node
             % USAGE:
             %    geneSets = Node.getFunctionalGeneSets(geneNames)
@@ -207,6 +207,12 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %    geneNames:   the genes in the order represented by the
             %                 literals (which represent positions)
             %
+            % OPTIONAL INPUTS:
+            %    getCNFSets:    Get the CNF sets from this node instead of the DNF sets.
+            %                   (i.e. get the or clauses instead of the
+            %                   protein representing and clauses)
+            %                   (Default: false)
+            %
             % OUTPUTS:
             %    geneSets:    A cell array of gene Combinations that would make this node active
             %
@@ -214,25 +220,32 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %                 Rules) of genes that would make this tree
             %                 evaluate to true.
             %
-            dnfNode = self.convertToDNF();
-            if isa(dnfNode,'LiteralNode')
+            if ~exist('getCNFSets','var')
+                getCNFSets = false;
+            end
+            if getCNFSets
+                normNode = self.convertToCNF();
+            else
+                normNode = self.convertToDNF();            
+            end
+            if isa(normNode,'LiteralNode')
                 geneSets = cell(1,1);
                 genePos = cell(1,1);
-                literals = dnfNode.getLiterals();
+                literals = normNode.getLiterals();
                 pos = cellfun(@str2num, literals);
                 genePos{1} = pos;
                 geneSets{1} = geneNames(sort(pos));
             else
-                geneSets = cell(numel(dnfNode.children),1);
-                genePos = cell(numel(dnfNode.children),1);
-                for i = 1:numel(dnfNode.children)
-                    childliterals = dnfNode.children(i).getLiterals();
+                geneSets = cell(numel(normNode.children),1);
+                genePos = cell(numel(normNode.children),1);
+                for i = 1:numel(normNode.children)
+                    childliterals = normNode.children(i).getLiterals();
                     pos = cellfun(@str2num, childliterals);
                     genePos{i} = pos;
                     geneSets{i} = geneNames(sort(pos));
                 end
             end
-        end
+        end                
         
         function tf = isequal(self,otherNode)
             % Get all functional gene sets useable for this node

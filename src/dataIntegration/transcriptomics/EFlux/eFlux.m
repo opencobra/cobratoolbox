@@ -1,4 +1,4 @@
-function [ constraintModel ] = eFlux( model, expression, minSum)
+function [ constraintModel ] = eFlux( model, expression, varargin)
 % Implementation of the EFlux algorithm as described in:
 % Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
 % Colijn C, Brandes A, Zucker J, Lun DS, Weiner B, et al. (2009)
@@ -21,9 +21,9 @@ function [ constraintModel ] = eFlux( model, expression, minSum)
 %
 % OPTIONAL INPUTS:
 %
-%    minSum:       Switch for the processing of Genetic data. If false
-%                  (default), ORs in the GPR will be treated as min. If
-%                  true, ORs will be treated as addition.
+%    varargin:       * minSum:           Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true(default), ORs will be treated as addition.
+%                    * softBounds:       Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).
+%                    * weightFactor:     The weight factor for soft bounds (default: 1) 
 %
 % NOTE:
 %
@@ -32,17 +32,31 @@ function [ constraintModel ] = eFlux( model, expression, minSum)
 %
 % ..Authors
 %     - Thomas Pfau
+%
+% NOTE:
+%    Implementation of the EFlux algorithm as described in:
+%    Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
+%    Colijn C, Brandes A, Zucker J, Lun DS, Weiner B, et al. (2009)
+%    PLOS Computational Biology 5(8): e1000489. https://doi.org/10.1371/journal.pcbi.1000489
+
 if ~isfield(expression,'preprocessed')
-    expression.preprocessed = 0;
+    expression.preprocessed = true;
 end
 
-if ~exist('minSum','var')
-    minSum = false;
-end
+parser = inputParser();
+parser.addParameter('minSum',false,@(x) islogical(x) || (isnumeric(x) && (x==1 || x==0)));
+parser.addParameter('softBounds',false,@(x) islogical(x) || (isnumeric(x) && (x==1 || x==0)));
+parser.addParameter('weightFactor',1,@isnumeric);
+
+parser.parse(varargin{:});
+
+minSum = parser.Results.minSum;
+softBounds = parser.Results.softBounds;
+weightFactor = parser.Results.weightFactor;
 
 if ~expression.preprocessed
     %This leads to -1 for unassociated genes
-    reactionExpression = mapExpressionToReactions(model,struct('gene',expression.target,'value',expression.value));
+    reactionExpression = mapExpressionToReactions(model,struct('gene',expression.target,'value',expression.value), minSum);
 else
     %Default : unconstraint.
     reactionExpression = -ones(size(model.rxns));
@@ -59,9 +73,24 @@ expression(~unconstraintReactions) = reactionExpression(~unconstraintReactions)/
 if(any(model.lb > 0 | model.ub < 0))
     warning('Enforcing bounds for the following fluxes have been removed:\n%s', strjoin(model.rxns((model.lb > 0 | model.ub < 0)),'\n'));
 end
-
-model.lb(model.lb < 0) = -expression(model.lb<0);
-model.ub(model.ub > 0) = expression(model.ub);
+if ~softBounds
+    model.lb(model.lb < 0) = -expression(model.lb<0);
+    model.ub(model.ub > 0) = expression(model.ub);
+else
+   backRxns = model.lb<0;
+   fwRxns = model.ub>0;
+   Alpha_IDs = strcat('Alpha_',model.rxns(model.lb<0));
+   Beta_IDs = strcat('Beta_',model.rxns(model.ub>0));
+   model = addCOBRAVariables(model, Alpha_IDs,'lb',0,'ub',1000,'c',-weightFactor, 'Names', strcat('Punishment term for violation of expression derived bounds for reaction ', model.rxns(model.lb < 0)));
+   model = addCOBRAVariables(model, Beta_IDs,'lb',0,'ub',1000,'c',-weightFactor, 'Names', strcat('Punishment term for violation of expression derived bounds for reaction ', model.rxns(model.lb < 0)));
+   rxnspeye = speye(numel(model.rxns));
+   fwConst = [rxnspeye(backRxns,:),rxnspeye(backRxns,backRxns)];
+   backConst = [rxnspeye(fwRxns,:),rxnspeye(backRxns,fwRxns)];
+   % add the backward constraints
+   model = addCOBRAConstraints(model,[model.rxns;Alpha_IDs],-expression(backRxns),'dsense',repmat('G',sum(backRxns),1),'c',fwConst);
+   % add the forward flex
+   model = addCOBRAConstraints(model,[model.rxns;Beta_IDs],expression(fwRxns),'c',backConst);
+end
 
 constraintModel = model;
 

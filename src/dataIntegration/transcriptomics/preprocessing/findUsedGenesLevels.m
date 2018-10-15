@@ -41,6 +41,7 @@ for i = 1:numel(gene_id)
 	dataID=find(ismember(exprData.gene,cur_ID)==1);
 	if isempty (dataID)
     	gene_expr(i)=-1;
+        warning(
     elseif length(dataID)==1
     	gene_expr(i)=exprData.value(dataID);
     elseif length(dataID)>1    	

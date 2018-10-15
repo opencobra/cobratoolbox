@@ -14,7 +14,7 @@ function [expressionRxns parsedGPR] = mapExpressionToReactions(model, expression
 %                               value (FPKM/RPKM)
 % OPTIONAL INPUTS:
 %   minSum:         instead of using min and max, use min for AND and Sum
-%                   for OR
+%                   for OR (default: false, i.e. use min)
 % OUTPUTS:
 %   expressionRxns:         reaction expression, corresponding to model.rxns.
 %   parsedGPR:              cell matrix containing parsed GPR rule
@@ -26,10 +26,10 @@ if ~exist('minSum','var')
     minSum = false;
 end
 
-parsedGPR = GPRparser(model);% Extracting GPR data from model
+parsedGPR = GPRparser(model,minSum);% Extracting GPR data from model
 
 % Find wich genes in expression data are used in the model
-[gene_id, gene_expr] = findUsedGenesLevels(model,expressionData,minSum);
+[gene_id, gene_expr] = findUsedGenesLevels(model,expressionData);
 
 % Link the gene to the model reactions
 expressionRxns = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum);
