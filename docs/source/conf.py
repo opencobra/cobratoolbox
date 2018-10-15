@@ -47,7 +47,7 @@ extensions = [
     'sphinx.ext.linkcode',
     'sphinxcontrib.fulltoc']
 
-mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+mathjax_path = 'https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 
 def linkcode_resolve(domain, info):
     return github_linkcode_resolve(
