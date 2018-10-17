@@ -31,8 +31,17 @@ function [foldChange,standardError,solControl,solCondition] = eFlux(model,contro
 %                            expression
 %    standardError:          The error if noise is being used.
 %    solControl:             The solution of the given Control expression;
-%    solCondition:           The solution of the given Condition
-%    expression;
+%    solCondition:           The solution of the given Condition expression;
+%
+% ..Author:    Thomas Pfau OCt 2018
+%
+% NOTE:
+%    This si an implementation of the eFlux concept as presented in:
+%    Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
+%    Colijn C, Brandes A, Zucker J, Lun DS, Weiner B, et al. (2009)
+%    PLOS Computational Biology 5(8): e1000489. https://doi.org/10.1371/journal.pcbi.1000489
+%    Please note, that this code does not perform any preprocessing expcept
+%    for that described in the above paper after array normalization. 
 
 normFun = @(mean,std) normrnd(mean,std);
 
