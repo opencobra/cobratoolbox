@@ -37,9 +37,9 @@ p = inputParser();
 p.CaseSensitive = false;
 p.addRequired('model',@isstruct);
 p.addRequired('idList',@iscell);
-p.addParameter('lb',columnVector(-1000*ones(size(idList))),@(x) isnumeric(x) && numel(x) == numel(idList));
+p.addParameter('lb',columnVector(-1000*ones(size(idList))),@(x) isnumeric(x) && (numel(x) == numel(idList) || numel(x) == 1));
 p.addParameter('ub',columnVector(1000*ones(size(idList))),@(x) isnumeric(x) && (numel(x) == numel(idList) || numel(x) == 1));
-p.addParameter('c',columnVector(zeros(size(idList))),@(x) isnumeric(x) && numel(x) == numel(idList));
+p.addParameter('c',columnVector(zeros(size(idList))),@(x) isnumeric(x) &&( numel(x) == numel(idList) || numel(x) == 1));
 p.addParameter('Names',idList, @(x) (iscell(x) && numel(x) == numel(idList)) || ischar(x) && numel(idList == 1));
 p.parse(model,idList,varargin{:});
 
@@ -80,15 +80,14 @@ else
     end
 end
 
+% this is all checks done, now lets get to work.
+[~,nVars] = size(model.E);
+
 if ~isfield(model,'evarNames') && ~any(strcmp(p.UsingDefaults,'Names'))
     % if the field does not yet exist, and we got actual names, we need to
     % create the field.
     model = createEmptyFields(model,{'evarNames'});
 end
-
-
-% this is all checks done, now lets get to work.
-[~,nVars] = size(model.E);
 
 
 % extend the IDs.

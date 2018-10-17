@@ -85,9 +85,9 @@ else
     multiAdd = true;
 end
 
-defaultcoefficients = ones(size(idList));
+defaultcoefficients = ones(numel(d),numel(idList));
 
-defaultcsense = 'L';
+defaultcsense = repmat('L',numel(d),1);
 if ~multiAdd
     defaultConstraintName = getConstraintName(model,1);
 else
