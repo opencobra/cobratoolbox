@@ -88,9 +88,18 @@ assert(Rule5.evaluate(assignment))
 assert(~Rule5.contains('20'))
 assert(Rule5.contains('5'))
 
+% also test deletion with and clause removal
+comparison = '(x(4) & x(5) & (x(6) | x(2)))';
+compForm = fp.parseFormula(comparison);
+head = fp.parseFormula(model.rules{6});
+head.deleteLiterals('1',false);
+assert(head.isequal(compForm));
+
+
 %Finally, test the deletion of a literal
 head = fp.parseFormula(model.rules{5});
 head.deleteLiteral('1');
+
 %Delete all unnecessary rules (makes this faster)
 modelNorm.rules(:) = {''};
 modelNorm = rmfield(modelNorm,'grRules');
