@@ -38,10 +38,9 @@ gene_id = model.genes;
 for i = 1:numel(gene_id)
         
     cur_ID = gene_id{i};
-	dataID=find(ismember(exprData.gene,cur_ID)==1);
+	dataID=find(ismember(exprData.gene,cur_ID));
 	if isempty (dataID)
-    	gene_expr(i)=-1;
-        warning(
+    	gene_expr(i)=-1;        
     elseif length(dataID)==1
     	gene_expr(i)=exprData.value(dataID);
     elseif length(dataID)>1    	
