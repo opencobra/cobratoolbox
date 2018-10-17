@@ -278,94 +278,93 @@ fprintf('>> Testing addReaction with name-value argument input\n');
 % options available in the input:
 name = {'reactionName', 'reversible', ...
     'lowerBound', 'upperBound', 'objectiveCoef', 'subSystem', 'geneRule', ...
-    'geneNameList', 'systNameList', 'checkDuplicate', 'printLevel'};
+    'geneNameList', 'systNameList', 'checkDuplicate'};
 value = {'TEST', true, ...
     -1000, 1000, 0, '', '', ...
-    {}, {}, true, 1};
+    {}, {}, true};
 arg = [name; value];
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], arg{:});
 assert(verifyModel(model2, 'simpleCheck', 1));
 for k = 1:numel(name)
     % test differet optional name-value argument as the first argument after rxnID
-    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'reactionFormula', [model.mets{1} ' <=>']);
+    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'printLevel', 0, 'reactionFormula', [model.mets{1} ' <=>']);
     assert(verifyModel(model2b, 'simpleCheck', 1));
     assert(isequal(model2, model2b))  
     
-    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
+    model2b = addReaction(model, 'TEST', name{k}, value{k}, 'printLevel', 0, 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
     assert(verifyModel(model2b, 'simpleCheck', 1));
     assert(isequal(model2, model2b))  
     
     % test differet optional name-value argument as argument after reactionFormula or stoichCoeffList
-    model2b = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], name{k}, value{k});
+    model2b = addReaction(model, 'TEST', 'printLevel', 0, 'reactionFormula', [model.mets{1} ' <=>'], name{k}, value{k});
     assert(verifyModel(model2b, 'simpleCheck', 1));
     assert(isequal(model2, model2b))  
     
-    model2b = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, name{k}, value{k});
+    model2b = addReaction(model, 'TEST', 'printLevel', 0, 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, name{k}, value{k});
     assert(verifyModel(model2b, 'simpleCheck', 1));
     assert(isequal(model2, model2b))  
 end
 
 % Test addReaction backward compatibility
-fprintf('>> Testing addReaction backward compatibility\n');
 % backward signature: model = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
 % reactionName
-fprintf('reactionFormula\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'reactionName', 'TestReaction');
+fprintf('>> Done \n\n >> Testing reactionFormula\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'reactionName', 'TestReaction');
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, {'TEST', 'TestReaction'}, [model.mets{1} ' <=>']);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % metaboliteList & stoichCoeffList
-fprintf('metaboliteList & stoichCoeffList\n');
-model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1);
+fprintf('>> Done \n\n >> Testing metaboliteList & stoichCoeffList\n');
+model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'printLevel', 0, 'stoichCoeffList', -1);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', model.mets(1), -1);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % revFlag
-fprintf('reversible\n');
-model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'stoichCoeffList', -1, 'reversible', 0);
+fprintf('>> Done \n\n >> Testing reversible\n');
+model2 = addReaction(model, 'TEST', 'metaboliteList', model.mets(1), 'printLevel', 0, 'stoichCoeffList', -1, 'reversible', 0);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', model.mets(1), -1, 0);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % irreversible revFlag overridden by reversible reaction formula
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'stoichCoeffList', -1, 'reversible', 0);
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'stoichCoeffList', -1, 'reversible', 0);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], 0);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % lowerBound
-fprintf('lowerBound\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'lowerBound', -10);
+fprintf('>> Done \n\n >> Testing lowerBound\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'lowerBound', -10);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], -10);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % upperBound
-fprintf('upperBound\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'upperBound', 10);
+fprintf('>> Done \n\n >> Testing upperBound\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'upperBound', 10);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], 10);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % objCoeff
-fprintf('objectiveCoef\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'objectiveCoef', 3);
+fprintf('>> Done \n\n >> Testing objectiveCoef\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'objectiveCoef', 3);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], 3);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % subSystem
-fprintf('subSystem\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'subSystem', 'testSubSystem');
+fprintf('>> Done \n\n >> Testing subSystem\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'subSystem', 'testSubSystem');
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], 'testSubSystem');
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model2b))
 % grRule
-fprintf('geneRule\n');
-model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'geneRule', 'test1 & test2');
+fprintf('>> Done \n\n >> Testing geneRule\n');
+model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], 'printLevel', 0, 'geneRule', 'test1 & test2');
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], [], 'test1 & test2');
 assert(verifyModel(model2b, 'simpleCheck', 1));
@@ -374,10 +373,10 @@ assert(isequal(model2, model2b) ...
     & isequal(model2.genes(end-1:end), {'test1'; 'test2'}) & strcmp(model2.grRules{end}, 'test1 and test2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % geneNameList & systNameList
-fprintf('geneRule with geneNameList and systNameList\n');
+fprintf('>> Done \n\n >> Testing geneRule with geneNameList and systNameList\n');
 model2 = addReaction(model, 'TEST', 'reactionFormula', [model.mets{1} ' <=>'], ...
     'geneRule', 'testGeneName1 & testGeneName2', 'geneNameList', {'testGeneName1'; 'testGeneName2'}, ...
-    'systNameList', {'testSystName1'; 'testSystName2'});
+    'systNameList', {'testSystName1'; 'testSystName2'}, 'printLevel', 0);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', [model.mets{1} ' <=>'], [], [], [], [], [], [], ...
     'testGeneName1 & testGeneName2', {'testGeneName1'; 'testGeneName2'}, {'testSystName1'; 'testSystName2'});
@@ -387,14 +386,14 @@ assert(isequal(model2, model2b) ...
     & isequal(model2.genes(end-1:end), {'testSystName1'; 'testSystName2'}) & strcmp(model2.grRules{end}, 'testSystName1 and testSystName2') ...
     & strcmp(model2.rules{end}, ['x(' num2str(nGene-1) ') & x(' num2str(nGene) ')']))
 % checkDuplicate
-fprintf('checkDuplicate\n');
+fprintf('>> Done \n\n >> Testing checkDuplicate\n');
 formula = printRxnFormula(model,'rxnAbbrList', model.rxns(1), 'printFlag', false);
-model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'checkDuplicate', true);
+model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'printLevel', 0, 'checkDuplicate', true, 'printLevel', 0);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', formula{1}, [], [], [], [], [], [], [], [], [], true);
 assert(verifyModel(model2b, 'simpleCheck', 1));
 assert(isequal(model2, model) & isequal(model2b, model2))
-model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'checkDuplicate', false);
+model2 = addReaction(model, 'TEST', 'reactionFormula', formula{1}, 'printLevel', 0, 'checkDuplicate', false, 'printLevel', 0);
 assert(verifyModel(model2, 'simpleCheck', 1));
 model2b = addReaction(model, 'TEST', formula{1}, [], [], [], [], [], [], [], [], [], false);
 assert(verifyModel(model2b, 'simpleCheck', 1));
@@ -439,12 +438,37 @@ modelWGenes = addGenes(model,genes,...
 [~,genepos] = ismember(genes,modelWGenes.genes);
 assert(isequal(modelWGenes.geneField2(genepos), gField2));
 assert(all(cellfun(@(x) isequal(x,''),modelWGenes.geneField2(~ismember(modelWGenes.genes,genes)))));
+gprRule = '(G1 or InterestingGene) and Gene2 or (Gene2 and G1)';
+ruleWithoutG1 = 'InterestingGene and Gene2';
+ruleWithoutG2 = 'InterestingGene and Gene2 or Gene2';
+
+
 
 %And finally test duplication errors.
 assert(verifyCobraFunctionError('addGenes', 'inputs', {model,{'b0008','G1'}}));
 assert(verifyCobraFunctionError('addGenes', 'inputs', {model,{'G2','G1','G2'}}));
 
+modelMod = changeGeneAssociation(model,model.rxns{1},gprRule);
+modelMod = changeGeneAssociation(modelMod,modelMod.rxns{2},ruleWithoutG1);
+modelMod = changeGeneAssociation(modelMod,modelMod.rxns{3},ruleWithoutG2);
 
+fprintf('>> Done \n\n >> Testing Gene removal...\n');
+
+%Test removal of a gene
+modelMod1 = removeGenes(modelMod,'G1');
+% now, rules{1} and rules{3} should be equal;
+fp = FormulaParser();
+rule = fp.parseFormula(modelMod1.rules{1});
+rule2 = fp.parseFormula(modelMod1.rules{3});
+assert(rule2.isequal(rule));
+% and now without keeping the clauses
+modelMod2 = removeGenes(modelMod,'G1','keepClauses',false);
+fp = FormulaParser();
+rule = fp.parseFormula(modelMod2.rules{1});
+rule2 = fp.parseFormula(modelMod2.rules{2});
+assert(rule2.isequal(rule));
+
+fprintf('>> Done\n');
 
 % change the directory
 cd(currentDir)
