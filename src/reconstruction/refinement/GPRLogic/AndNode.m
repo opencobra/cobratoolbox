@@ -23,34 +23,35 @@ classdef (HandleCompatible) AndNode < Node
             end
         end
         
-        function deleteLiteral(self,literalID)            
-            toDelete = false(size(self.children));            
-           % originalNodeString = self.toString(1);
-
-            for child = 1:numel(self.children)
-                cchild = self.children(child);
-                if cchild.contains(literalID)
-                    if isa(cchild,'LiteralNode')
-                        toDelete(child) = true; %This is a child that needs to be removed.
-                    else
-                        %Remove it from the child
-                        cchild.deleteLiteral(literalID)
-                        %and, if that child now only has one child left,
-                        %move that child up (and remove the node).                        
-                        if numel(cchild.children) <= 1
-                            if numel(cchild.children) == 1
-                                %Add the child only if there is anything.
-                                if ~exist('childrenToAdd','var')
-                                    childrenToAdd = cchild.children;
-                                else
-                                    childrenToAdd(end+1) = cchild.children;
-                                end
-                            end
-                            toDelete(child) = true; %This child is discarded
-                        end
-                    end
+        function tf = deleteLiteral(self,literalID, keepClauses)            
+            tf = true;            
+            if ~exist('keepClauses','var')
+                keepClauses = true;
+            end
+            if ~keepClauses
+                % reduce to properly delete elements
+                self.reduce();
+            end
+            arrayfun(@(x) ~isa(x,'LiteralNode') && x.deleteLiteral(literalID, keepClauses), self.children);    
+            % originalNodeString = self.toString(1);            
+            literalMatches = arrayfun(@(x) (isa(x, 'LiteralNode') && x.contains(literalID) ), self.children);
+            emptyChildren = arrayfun(@(x) (~isa(x,'LiteralNode') && numel(x.children) <= 1), self.children);
+            if ~keepClauses
+                % if we don't keep and clauses containing the literal
+                if any(literalMatches)
+                    % and the literal is a direct child of this clause
+                    % we empty this node
+                    self.children(:) = [];
+                    return
                 end
             end
+            % otherwise, we only remove the child.
+            % and check for one element entries
+            mergeChildren = arrayfun(@(x) ~isa(x,'LiteralNode') && numel(x.children) == 1, self.children);            
+            toDelete = literalMatches|emptyChildren;
+            if any(mergeChildren)
+                childrenToAdd = arrayfun(@(x) x.children, self.children(mergeChildren));
+            end             
             self.children(toDelete) = [];
             if exist('childrenToAdd','var')
                 for child = 1:numel(childrenToAdd)
@@ -193,6 +194,7 @@ classdef (HandleCompatible) AndNode < Node
         function reduce(self)
             %we can merge any children of and nodes directly.
             mergeNode.children = [];
+            childrenChanged = false;
             for i = 1:numel(self.children)
                 cchild = self.children(i);                
                 cchild.reduce()              
@@ -201,15 +203,19 @@ classdef (HandleCompatible) AndNode < Node
                     %If there is only one child, we can directly add the
                     %child to this node.
                     mergeNode.children = [mergeNode.children,cchild.children];
+                    childrenChanged = true;
                 elseif isa(cchild,'AndNode')
-                    mergeNode.children = [mergeNode.children,cchild.children];
-                else
+                    mergeNode.children = [mergeNode.children,cchild.children];                    
+                    childrenChanged = true;
+                else                    
                     mergeNode.children = [mergeNode.children,cchild];
                 end
             end
-            self.children = mergeNode.children;
-            for i = 1:numel(self.children)
-                self.children(i).parent = self;
+            if childrenChanged
+                self.children = mergeNode.children;
+                for i = 1:numel(self.children)
+                    self.children(i).parent = self;        
+                end
             end
         end
     end

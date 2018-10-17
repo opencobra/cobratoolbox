@@ -48,7 +48,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         % OUTPUTS:
         %    res:           A Node in DNF form (i.e. and clauses separated
         %                   by or )
-        %        
+        %                
         cnfNode = convertToCNF(self);
         % Convert to a CNF Node.
         % USAGE:
@@ -68,18 +68,20 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         %    Node:    The Node is modified in this process.
         %
         
-        deleteLiteral(self,literalID)
+        tf = deleteLiteral(self,literalID, keepClauses)
         % Delete a literal from this Node and all children
         % USAGE:
         %    newHead = node.deleteLiteral(literalID)
         % 
         % INPUT:
         %    literalID: The LiteralID (As string or number)
+        % OPTIONAL INPUT:
+        %    keepClauses:    Whether to retain AND nodes in which the
+        %                    literal occurs (default: true)
         %        
         % NOTE:
         %    The Node will no longer contain the corresponding literal
         %
-        
         
     end
     methods
@@ -196,6 +198,47 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
                 toRemove = setdiff(literals,toKeep);
                 self.children(toRemove) = [];
             end
+        end               
+        
+        function tf = hasNestedChildren(self)
+        % Check, whether this Node has nested children (i.e. whether it has
+        % non literal children)
+        % USAGE:
+        %    tf = Node.hasNestedChildren()
+        %
+        % OUTPUTS:
+        %    tf:           Whether this node has nested children
+        %  
+        tf = true;
+        if isa(self,'LiteralNode') || all(arrayfun(@(x) isa(x,'LiteralNode'),self.children)) 
+            tf = false;
+        end        
+        end
+        
+        function tf = isDNF(self)
+        % Check, whether this is a DNF node (i.e.)
+        % i.e. it is either a literal node, or an or node which only has 
+        % children which are and nodes (with only literal children), or
+        % literal nodes. Or an AND node with only literal children
+        % USAGE:
+        %    tf = Node.isDNF()
+        %
+        % OUTPUTS:
+        %    tf:           Whether this node is a DNF node or not.        
+        %        
+        tf = false;
+        if isa(self,'AndNode')
+            if all(arrayfun(@(x) isa(x,'LiteralNode'),self.children))
+                tf = true;
+            end
+        elseif isa(self,'LiteralNode')
+            tf = true;
+        elseif isa(self,'OrNode')
+            if all(arrayfun(@(x) isa(x,'LiteralNode') || ( isa(x,'AndNode') && ~x.hasNestedChildren), self.children))
+                tf = true;
+            end
+        end
+        
         end
         
         function [geneSets,genePos] = getFunctionalGeneSets(self, geneNames, getCNFSets)
@@ -246,6 +289,20 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
                 end
             end
         end                
+        
+        function deleteLiterals(self, literals, keepClauses)
+        % Remove all duplicate literal nodes in this node.
+        % USAGE:
+        %    node.removeLiterals(literals, keepClauses)
+        % INPUTS:
+        %    literals:       The literals to remove
+        %    keepClauses:    Whether to retain AND nodes in which
+        %                    any of the lietrals are nested.
+        self.reduce();
+        for i = 1:numel(literals)
+            self.deleteLiteral(literals(i),keepClauses);
+        end
+        end
         
         function tf = isequal(self,otherNode)
             % Get all functional gene sets useable for this node
@@ -300,7 +357,11 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             end
             while ~isempty(otherGeneSets)
                 setFound = false;
-                for i = 1:numel(presentsets)
+                for i = 1:numel(presentsets) 
+                    if isempty(geneSets)
+                        % cannot be found, since geneSets is empty.
+                        break; 
+                    end
                     if isempty(setxor(geneSets{1},presentsets{i}))
                         geneSets(1) = [];
                         setFound = true;
