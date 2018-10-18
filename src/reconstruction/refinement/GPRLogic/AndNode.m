@@ -50,7 +50,15 @@ classdef (HandleCompatible) AndNode < Node
             mergeChildren = arrayfun(@(x) ~isa(x,'LiteralNode') && numel(x.children) == 1, self.children);            
             toDelete = literalMatches|emptyChildren;
             if any(mergeChildren)
-                childrenToAdd = arrayfun(@(x) x.children, self.children(mergeChildren));
+                childsToMerge = self.children(mergeChildren);
+                childrenToAdd = AndNode();
+                for i = 1:numel(childsToMerge)
+                    cchild = childsToMerge(i);
+                    childrenToAdd(i) = cchild.children;
+                end
+                % the following works only on 2017b or newer, but is more
+                % efficient.
+                %childrenToAdd = arrayfun(@(x) x.children, self.children(mergeChildren));
             end             
             self.children(toDelete) = [];
             if exist('childrenToAdd','var')

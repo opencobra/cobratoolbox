@@ -7,6 +7,10 @@
 %     - Original file: Thomas Pfau
 
 currentDir = pwd;
+% initialize the test
+fileDir = fileparts(which('testEFlux.m'));
+cd(fileDir);
+
 % requires access to GEO to download data.
 solverPkgs = prepareTest('needsLP',true)
 
@@ -23,7 +27,7 @@ expressionCondition.value = cell2mat(anaerobic.Data(:,2));
 expressionCondition.target = cellfun(@(x) x(1:5),anaerobic.Data(:,1),'Uniform',false);
 % return to original directory
 for k = 1:numel(solverPkgs.LP)
-    changeCobraSolver(solvePkgs.LP{k},'LP');
+    changeCobraSolver(solverPkgs.LP{k},'LP');
     [fChangeOrig,~,solContOrig,solCondOrig] = eFlux(model,expressionControl,expressionCondition);
     %anaerobic growth less than aerobic.
     assert(fChangeOrig < 1); 

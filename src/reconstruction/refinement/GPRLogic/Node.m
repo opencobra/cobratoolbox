@@ -94,7 +94,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %    obj:    The Node Object
             %
             obj.children = [];
-        end
+        end                            
         
         function nodeCopy = copy(self)
             if isa(self,'LiteralNode')
