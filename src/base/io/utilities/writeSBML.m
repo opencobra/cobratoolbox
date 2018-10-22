@@ -169,8 +169,14 @@ for i=1:size(model.mets, 1)
     
     if isfield(model, 'metCharges')
         if ~isnan(model.metCharges(i))
-            tmp_metCharge=model.metCharges(i);
-            tmp_isSetfbc_charge=1;
+            if mod(model.metCharges(i),1) ~= 0
+                warning('Metabolite %s has a charge of %f. FBC 2.1 only allows integer values for charges.\nDiscarding the value.',model.mets{i},model.metCharges(i));
+                tmp_metCharge=0;
+                tmp_isSetfbc_charge=0;
+            else
+                tmp_metCharge=model.metCharges(i);
+                tmp_isSetfbc_charge=1;
+            end
         else
             tmp_metCharge=0;
             tmp_isSetfbc_charge=0;
