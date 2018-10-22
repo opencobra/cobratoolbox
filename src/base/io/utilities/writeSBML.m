@@ -162,7 +162,17 @@ for i=1:size(model.mets, 1)
     end
     
     if isfield(model, 'metFormulas')
-        tmp_metFormulas = model.metFormulas{i};
+        % check the chemical formula
+        tmp_metFormulas = model.metFormulas{i};        
+        if ~isempty(model.metFormulas{i})
+            coefs = regexp(model.metFormulas{i},'(?<nums>[\.0-9]+)','names');
+            intVals = cellfun(@(x) mod(str2double(x),1) == 0,{coefs.nums});
+            if any(~intVals)
+                warning('Metabolite %s has formula %s. FBC 2.1 only allows integer values for coefficients.\nDiscarding the formula.',model.mets{i},model.metFormulas{i});
+                tmp_metFormulas = emptyChar;
+            end
+        end
+        
     else
         tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
