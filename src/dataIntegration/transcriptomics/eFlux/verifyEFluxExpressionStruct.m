@@ -1,5 +1,5 @@
 function tf = verifyEFluxExpressionStruct(model,expression)
-% verify the expression struct structure for EFlux
+% Verify the expression struct structure for EFlux
 %
 % USAGE:
 %    tf = verifyEFluxExpressionStruct(model,expression)
@@ -14,11 +14,13 @@ function tf = verifyEFluxExpressionStruct(model,expression)
 
 tf = true;
 if isfield(expression,'preprocessed') && ~expression.preprocessed
-    %This leads to -1 for unassociated genes
+    % checkoptional field preprocessed
+    % This leads to -1 for unassociated genes
     if ~isempty(setdiff(model.genes,expression.target))
         error('The following genes are lacking assignments:\n%s\nAll genes need to be assigned in order to use eFlux. You can remove genes by using the removeGenes function',strjoin(setdiff(model.genes,expression.target),'\n')); 
     end                
 end
+% check sizes of the value/target fields. They must be of equal size.
 if size(expression.value,1) ~= numel(expression.target)
     error('The number of values in the expression struct does not fit the number of  targets in the expression struct');
 end

@@ -75,6 +75,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         % 
         % INPUT:
         %    literalID: The LiteralID (As string or number)
+        %
         % OPTIONAL INPUT:
         %    keepClauses:    Whether to retain AND nodes in which the
         %                    literal occurs (default: true)
@@ -250,7 +251,7 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
             %    geneNames:   the genes in the order represented by the
             %                 literals (which represent positions)
             %
-            % OPTIONAL INPUTS:
+            % OPTIONAL INPUT:
             %    getCNFSets:    Get the CNF sets from this node instead of the DNF sets.
             %                   (i.e. get the or clauses instead of the
             %                   protein representing and clauses)

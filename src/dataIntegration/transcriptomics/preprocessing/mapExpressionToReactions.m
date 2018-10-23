@@ -12,7 +12,7 @@ function [expressionRxns parsedGPR] = mapExpressionToReactions(model, expression
 %                               format as model.genes
 %       .value                  Vector containing corresponding expression
 %                               value (FPKM/RPKM)
-% OPTIONAL INPUTS:
+% OPTIONAL INPUT:
 %   minSum:         instead of using min and max, use min for AND and Sum
 %                   for OR (default: false, i.e. use min)
 % OUTPUTS:

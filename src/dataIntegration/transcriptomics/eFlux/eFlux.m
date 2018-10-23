@@ -25,7 +25,7 @@ function [foldChange,standardError,solControl,solCondition] = eFlux(model,contro
 %                             * minSum:           Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true(default), ORs will be treated as addition.
 %                             * softBounds:       Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).
 %                             * weightFactor:     The weight factor for soft bounds (default: 1) 
-% OUTPUT:
+% OUTPUTS:
 %    foldChange:             The fold change between the objective of the
 %                            condition and the objective of the control
 %                            expression

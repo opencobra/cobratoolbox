@@ -12,13 +12,13 @@ fileDir = fileparts(which('testEFlux.m'));
 cd(fileDir);
 
 % requires access to GEO to download data.
-solverPkgs = prepareTest('needsLP',true)
+solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'});
 
 model = getDistributedModel('ecoli_core_model.mat');
 model = removeGenes(model,'s0001','keepReactions',true);
 
-aerobic = geosoftread('Aerobic.txt');
-anaerobic = geosoftread('Anaerobic.txt');
+anaerobic = getgeodata('GSM1010240');
+aerobic = getgeodata('GSM1126445');
 expressionControl.preprocessed = false;
 expressionControl.value = cell2mat(aerobic.Data(:,2));
 expressionControl.target = cellfun(@(x) x(1:5),aerobic.Data(:,1),'Uniform',false);
