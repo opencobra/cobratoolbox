@@ -154,8 +154,8 @@ end
 if ~isempty(needsWebAddress)
     [status_curl, result_curl] = system(['curl -s -k ' needsWebAddress]);
     if status_curl ~= 0 || isempty(result_curl)
-        errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);    	
-    end    
+        errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);
+    end
     if needsWebRead
         if verLessThan('MATLAB','9.3') && isunix && strncmp(needsWebAddress,'https',5)
             errorString = sprintf(['This function needs to connect to a ''https'' address using webread.\n', ...
@@ -169,9 +169,9 @@ if ~isempty(needsWebAddress)
                                    'Please note that this test will not be able to run on your system,\n',...
                                    'regardless on whether you fixed the library or not. If you want to run it,',...
                                    'you will have to remove the ''needsWebRead'' flag from the ''prepareTest''',...
-                                   'statement in the test and run it again.'],...                                   
-                                   matlabroot,matlabroot,matlabroot);                                   
-            errorMessage{end + 1} = errorString;    	
+                                   'statement in the test and run it again.'],...
+                                   matlabroot,matlabroot,matlabroot);
+            errorMessage{end + 1} = errorString;
         end
     end
 end
@@ -337,7 +337,7 @@ end
 % collect the Used Solvers.
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
-if strcmpi(runtype,'fullRun')
+if strcmpi(runtype, 'extensive')
     solversToUse = solversForTest;
     %exclude pdco if not explicitly requested and available, as it does
     %have issues at the moment.
