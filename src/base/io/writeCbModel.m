@@ -59,8 +59,13 @@ if numel(varargin) > 0
     if ischar(varargin{1})        
         if any(ismember(varargin{1}, newKeyWords))
             legacySignature = false;            
-        else
-            legacySignature = true;            
+        else 
+            if ~isempty(regexp(varargin{1},'\.','ONCE')) % this is a file name.
+                varargin = {'fileName', varargin{1}, varargin{2:end}};
+                legacySignature = false;            
+            else
+               legacySignature = true;            
+            end
         end
     else
         %If its not a char, its not the old signature, as that signature
