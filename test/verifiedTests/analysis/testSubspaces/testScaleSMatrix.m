@@ -1,13 +1,11 @@
-% The COBRAToolbox: <testNameOfSrcFile>.m
+% The COBRAToolbox: testScaleSMatrix.m
 %
 % Purpose:
-%     - <provide a short description of the purpose of the test
+%     - test the functionality of scaleSmatrix
 %
 % Authors:
-%     - <major change>: <your name> <date>
+%     - Loic Marx
 %
-
-global CBTDIR
 
 % save the current path
 currentDir = pwd;
@@ -18,7 +16,7 @@ cd(fileparts(which(mfilename)));
 % load the model
 model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
 
-%Load reference data
+% load reference data
 load('refData_scaledS.mat');
 
 % run the function to scale de S matrix
