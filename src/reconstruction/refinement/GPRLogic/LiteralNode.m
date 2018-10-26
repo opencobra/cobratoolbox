@@ -26,9 +26,9 @@ classdef (HandleCompatible) LiteralNode < Node
             cnfNode.addChild(litnode);
         end
         
-        function deleteLiteral(self,literalID)
+        function tf = deleteLiteral(self,literalID, keepClauses)
             %This function is not applicable to a literal node, as a
-            %literal node cannot delete itself.
+            %literal node cannot delete itself.            
             error('Cannot delete from a Literal Node.');
         end
         

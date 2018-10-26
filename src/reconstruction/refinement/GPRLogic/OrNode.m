@@ -121,33 +121,33 @@ classdef (HandleCompatible) OrNode < Node
             end
         end
         
-        function deleteLiteral(self,literalID)
-            toDelete = false(size(self.children));
-            % originalNodeString = self.toString(1);
-            for child = 1:numel(self.children)
-                cchild = self.children(child);
-                if cchild.contains(literalID)
-                    if isa(cchild,'LiteralNode')
-                        toDelete(child) = true; %This is a child that needs to be removed.
-                    else
-                        %Remove it from the child
-                        cchild.deleteLiteral(literalID)
-                        %and, if that child now only has one child left,
-                        %move that child up.
-                        if numel(cchild.children) <= 1
-                            if numel(cchild.children) == 1
-                                %Add the child only if there is anything.
-                                if ~exist('childrenToAdd','var')
-                                    childrenToAdd = cchild.children;
-                                else
-                                    childrenToAdd(end+1) = cchild.children;
-                                end
-                            end
-                            toDelete(child) = true; %This child is discarded
-                        end
-                    end
-                end
+        function tf = deleteLiteral(self, literalID, keepClauses)
+            tf = true;            
+            if ~exist('keepClauses','var')
+                keepClauses = true;
             end
+            if ~keepClauses
+                % we need to be careful about the nesting
+                self.reduce();
+            end
+            % delete the literals from all non Literal children
+            arrayfun(@(x) ~isa(x,'LiteralNode') && x.deleteLiteral(literalID, keepClauses), self.children);
+            % now, look for children which are empty, or only contain one
+            % element
+            toDelete = arrayfun(@(x) (isa(x, 'LiteralNode') && x.contains(literalID) ) || (~isa(x,'LiteralNode') && numel(x.children) <= 1), self.children);
+            % and check for one element entries
+            mergeChildren = arrayfun(@(x) ~isa(x,'LiteralNode') && numel(x.children) == 1, self.children);            
+            if any(mergeChildren)
+                childsToMerge = self.children(mergeChildren);
+                childrenToAdd = OrNode();
+                for i = 1:numel(childsToMerge)
+                    cchild = childsToMerge(i);
+                    childrenToAdd(i) = cchild.children;
+                end
+                % the following works only on 2017b or newer, but is more
+                % efficient.
+                % childrenToAdd = arrayfun(@(x) x.children, self.children(mergeChildren));
+            end            
             self.children(toDelete) = [];
             if exist('childrenToAdd','var')
                 for child = 1:numel(childrenToAdd)
@@ -160,6 +160,7 @@ classdef (HandleCompatible) OrNode < Node
         end
         
         function reduce(self)
+            childrenChanged = false;
             mergeNode.children = [];
             for i = 1:numel(self.children)
                 cchild = self.children(i);
@@ -169,17 +170,22 @@ classdef (HandleCompatible) OrNode < Node
                     %If there is only one child, we can directly add the
                     %child to this node.
                     mergeNode.children = [mergeNode.children,cchild.children];
+                    childrenChanged = true;
                 elseif isa(cchild,'OrNode')
                     %If its an OR node, we can directly add all children to
                     %this node.
                     mergeNode.children = [mergeNode.children,cchild.children];
+                    childrenChanged = true;
                 else
                     mergeNode.children = [mergeNode.children,cchild];
                 end
-            end            
-            self.children = mergeNode.children;
-            for i = 1:numel(self.children)
-                self.children(i).parent = self;
+            end       
+            if childrenChanged
+                
+                self.children = mergeNode.children;
+                for i = 1:numel(self.children)
+                    self.children(i).parent = self;
+                end
             end
         end
         
