@@ -160,6 +160,10 @@ for i=1:size(model.mets, 1)
     else
         tmp_metName=emptyChar;
     end
+    % create annotations and notes
+    tmp_species.metaid=tmp_species.id;  % set the metaid for each species
+    [tmp_annot,met_notes] = makeSBMLAnnotationString(model,tmp_species.metaid,'met',i);
+
     
     if isfield(model, 'metFormulas')
         % check the chemical formula
@@ -169,7 +173,8 @@ for i=1:size(model.mets, 1)
             intVals = cellfun(@(x) mod(str2double(x),1) == 0,{coefs.nums});
             if any(~intVals)
                 warning('Metabolite %s has formula %s. FBC 2.1 only allows integer values for coefficients.\nDiscarding the formula.',model.mets{i},model.metFormulas{i});
-                tmp_metFormulas = emptyChar;
+                met_notes(end+1,1:2) = {'FORMULA',tmp_metFormulas};
+                tmp_metFormulas = emptyChar;                
             end
         end
         
@@ -181,6 +186,7 @@ for i=1:size(model.mets, 1)
         if ~isnan(model.metCharges(i))
             if mod(model.metCharges(i),1) ~= 0
                 warning('Metabolite %s has a charge of %f. FBC 2.1 only allows integer values for charges.\nDiscarding the value.',model.mets{i},model.metCharges(i));
+                met_notes(end+1,1:2) = {'CHARGE',num2str(model.metCharges(i))};
                 tmp_metCharge=0;
                 tmp_isSetfbc_charge=0;
             else
@@ -219,13 +225,11 @@ for i=1:size(model.mets, 1)
     tmp_species.fbc_chemicalFormula=tmp_metFormulas;
     tmp_species.isSetfbc_charge=tmp_isSetfbc_charge;
     %% Add annotations for metaoblites to the reconstruction
-    tmp_species.metaid=tmp_species.id;  % set the metaid for each species
-    [tmp_annot,met_notes] = makeSBMLAnnotationString(model,tmp_species.metaid,'met',i);
     
     tmp_note = emptyChar;
     if ~isempty(met_notes)
         for noteid = 1:size(met_notes,1)
-            tmp_note = [ tmp_note ' <p>' regexprep(met_notes{noteid,1},'^rxn','') ':' met_notes{noteid,2} '</p>'];
+            tmp_note = [ tmp_note ' <p>' regexprep(met_notes{noteid,1},'^met','') ':' met_notes{noteid,2} '</p>'];
         end
     end
     if isfield(model,'metNotes')
